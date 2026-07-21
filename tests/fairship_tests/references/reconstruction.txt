@@ -1,0 +1,97 @@
+Info in <TGeoManager::CloseGeometry>: Geometry loaded from file...
+Info in <TGeoManager::SetTopVolume>: Top volume is cave. Master volume is cave
+Info in <TGeoNavigator::BuildCache>: --- Maximum geometry depth set to 100
+Info in <TGeoManager::Voxelize>: Voxelizing...
+Info in <TGeoManager::CountLevels>: max level = 5, max placements = 14153
+Info in <TGeoManager::CloseGeometry>: 46607 nodes/ 695 volume UID's in FAIR geometry
+Info in <TGeoManager::CloseGeometry>: ----------------modeler ready----------------
+[INFO] x limits: -500, 500, dx = 10
+[INFO] y limits: -500, 500, dy = 10
+[INFO] z limits: -750, 750, dz = 10
+[INFO] Offsets: x = 0, y = 0, z = 8957
+[INFO] Angles : phi = 0, theta = 0, psi = 0
+[INFO] Total number of bins = 1540351; Nx = 101, Ny = 101, Nz = 151
+[INFO] x limits: 0, 219.922, dx = 1.99929
+[INFO] y limits: 0, 217.969, dy = 1.99971
+[INFO] z limits: -50, 3075, dz = 5
+[INFO] Offsets: x = 0, y = 0, z = 204
+[INFO] Angles : phi = 0, theta = 0, psi = 0
+[INFO] Total number of bins = 7643460; Nx = 111, Ny = 110, Nz = 626
+Adding field MainSpecMap
+Adding field muonShieldField
+Setting the Global field
+Adding field TotalField to Global
+The virtual MC pointer gMC is null! The global field can't be used by Geant4 but will work for track fitting and track extrapolation
+configured to process  999999  events from  sim_muonback_io.root  starting with event  0  with option Yheight =  None  with vertexing True  and pattern reco  AR
+Calling addVMCFields
+event  0
+save tracklets:
+event  1
+save tracklets:
+event  2
+save tracklets:
+event  3
+save tracklets:
+event  4
+save tracklets:
+event  5
+save tracklets:
+event  6
+save tracklets:
+event  7
+save tracklets:
+event  8
+save tracklets:
+event  9
+save tracklets:
+event  10
+save tracklets:
+event  11
+save tracklets:
+event  12
+save tracklets:
+event  13
+save tracklets:
+event  14
+save tracklets:
+event  15
+save tracklets:
+event  16
+save tracklets:
+event  17
+save tracklets:
+event  18
+save tracklets:
+event  19
+save tracklets:
+event  20
+save tracklets:
+event  21
+save tracklets:
+event  22
+save tracklets:
+event  23
+save tracklets:
+event  24
+save tracklets:
+event  25
+save tracklets:
+event  26
+save tracklets:
+event  27
+save tracklets:
+event  28
+save tracklets:
+event  29
+save tracklets:
+event  30
+save tracklets:
+event  31
+save tracklets:
+event  32
+save tracklets:
+event  33
+save tracklets:
+event  34
+save tracklets:
+finished writing tree

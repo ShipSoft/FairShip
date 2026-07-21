@@ -1,0 +1,1887 @@
+[DEBUG] - RTDB container factory FairBaseContFact
+
+[DEBUG] FairRootFileSink created------------
+Info in <FairDetector::SetDetectorDesign>:  to 4
+[DEBUG]  Function ShipMuonShield MS 
+
+ *------------------------------------------------------------------------------------* 
+ |                                                                                    | 
+ |  *------------------------------------------------------------------------------*  | 
+ |  |                                                                              |  | 
+ |  |                                                                              |  | 
+ |  |   PPP   Y   Y  TTTTT  H   H  III    A      Welcome to the Lund Monte Carlo!  |  | 
+ |  |   P  P   Y Y     T    H   H   I    A A     This is PYTHIA version 8.312      |  | 
+ |  |   PPP     Y      T    HHHHH   I   AAAAA    Last date of change: 23 May 2024  |  | 
+ |  |   P       Y      T    H   H   I   A   A                                      |  | 
+ |  |                                                                              |  | 
+ |  |   Program documentation and an archive of historic versions is found on:     |  | 
+ |  |                                                                              |  | 
+ |  |                               https://pythia.org/                            |  | 
+ |  |                                                                              |  | 
+ |  |   PYTHIA is authored by a collaboration consisting of:                       |  | 
+ |  |                                                                              |  | 
+ |  |   Javira Altmann, Christian Bierlich, Naomi Cooke, Nishita Desai,            |  | 
+ |  |   Leif Gellersen, Ilkka Helenius, Philip Ilten, Leif Lonnblad,               |  | 
+ |  |   Stephen Mrenna, Christian Preuss, Torbjorn Sjostrand, Peter Skands,        |  | 
+ |  |   Marius Utheim, and Rob Verheyen.                                           |  | 
+ |  |                                                                              |  | 
+ |  |   The complete list of authors, including contact information and            |  | 
+ |  |   affiliations, can be found on https://pythia.org/.                         |  | 
+ |  |   Problems or bugs should be reported on email at authors@pythia.org.        |  | 
+ |  |                                                                              |  | 
+ |  |   The main program reference is C. Bierlich et al,                           |  | 
+ |  |   'A comprehensive guide to the physics and usage of Pythia 8.3',            |  | 
+ |  |   SciPost Phys. Codebases 8-r8.3 (2022) [arXiv:2203.11601 [hep-ph]]          |  | 
+ |  |                                                                              |  | 
+ |  |   PYTHIA is released under the GNU General Public Licence version 2 or later.|  | 
+ |  |   Please respect the MCnet Guidelines for Event Generator Authors and Users. |  | 
+ |  |                                                                              |  | 
+ |  |   Disclaimer: this program comes without any guarantees.                     |  | 
+ |  |   Beware of errors and use common sense when interpreting results.           |  | 
+ |  |                                                                              |  | 
+ |  |   Copyright (C) 2024 Torbjorn Sjostrand                                      |  | 
+ |  |                                                                              |  | 
+ |  |                                                                              |  | 
+ |  *------------------------------------------------------------------------------*  | 
+ |                                                                                    | 
+ *------------------------------------------------------------------------------------* 
+
+[DEBUG] fPythia->readString("Next:numberCount    =  0")
+[DEBUG] fPythia->readString("HardQCD::hardccbar  = on")
+[DEBUG] fPythia->readString("9900015:new = N2 N2 2 0 0 1.0 0.0 0.0 0.0 64439435.5355  0   1   0   1   0")
+[DEBUG] fPythia->readString("9900015:isResonance = false")
+[DEBUG] fPythia->readString("9900015:addChannel =  1 0.0941122393137 0 211 13")
+[DEBUG] fPythia->readString("9900015:addChannel =  1 0.0941122393137 0 -211 -13")
+[DEBUG] fPythia->readString("9900015:mayDecay = on")
+[DEBUG] fPythia->readString("4132:new  Xi_c0            Xi_cbar0    2   0   0    2.47088    0.00000    0.00000    0.00000  3.36000e-02   0   1   0   1   0")
+[DEBUG] fPythia->readString("421:new  D0  Dbar0    1   0   0    1.86486    0.00000    0.00000    0.00000  1.22900e-01   0   1   0   1   0")
+[DEBUG] fPythia->readString("431:new  D_s+  D_s-    1   3   0    1.96849    0.00000    0.00000    0.00000  1.49900e-01   0   1   0   1   0")
+[DEBUG] fPythia->readString("4122:new  Lambda_c+   Lambda_cbar-    2   3   0    2.28646    0.00000    0.00000    0.00000  5.99000e-02   0   1   0   1   0")
+[DEBUG] fPythia->readString("411:new  D+ D-    1   3   0    1.86962    0.00000    0.00000    0.00000  3.11800e-01   0   1   0   1   0")
+[DEBUG] fPythia->readString("15:new  tau-  tau+    2   -3   0    1.77682    0.00000    0.00000    0.00000  8.71100e-02   0   1   0   1   0")
+[DEBUG] fPythia->readString("4132:addChannel      1  4.9648543278775927e-06   22      -11       9900015   -3312")
+[DEBUG] fPythia->readString("4132:addChannel      1  3.6067574240258648e-05   22      -13       9900015   -3312")
+[DEBUG] fPythia->readString("421:addChannel      1  0.00042133198603154325   22      -11       9900015   -321")
+[DEBUG] fPythia->readString("421:addChannel      1  0.0055549407674330212   22      -13       9900015   -321")
+[DEBUG] fPythia->readString("431:addChannel      1  0.92801838463873643    0       9900015      -13")
+[DEBUG] fPythia->readString("431:addChannel      1  0.057102543400208421    0       9900015      -11")
+[DEBUG] fPythia->readString("431:addChannel      1  0.00055203417721480356   22      -11       9900015   221")
+[DEBUG] fPythia->readString("431:addChannel      1  0.0077723284774612184   22      -13       9900015   221")
+[DEBUG] fPythia->readString("4122:addChannel      1  2.5164587558414057e-05   22      -11       9900015   3122")
+[DEBUG] fPythia->readString("4122:addChannel      1  0.00014276748136769047   22      -13       9900015   3122")
+[DEBUG] fPythia->readString("411:addChannel      1  0.060171266937806903    0       9900015      -13")
+[DEBUG] fPythia->readString("411:addChannel      1  0.0037015891094863938    0       9900015      -11")
+[DEBUG] fPythia->readString("411:addChannel      1  0.0010809769798012109   22      -11       9900015   -311")
+[DEBUG] fPythia->readString("411:addChannel      1  0.014262154127562572   22      -13       9900015   -311")
+[DEBUG] fPythia->readString("431:addChannel      1  0.00655470930638    0      -15       16")
+[DEBUG] fPythia->readString("15:addChannel      1  0.2437410269496529    1521       9900015      -211")
+[DEBUG] fPythia->readString("15:addChannel      1  0.01141276230424944    1521       9900015      -321")
+[DEBUG] fPythia->readString("15:addChannel      1  0.05044299985797746    1521       9900015      -213")
+[DEBUG] fPythia->readString("15:addChannel      1  0.123689133403953    1531       9900015      11 -12")
+[DEBUG] fPythia->readString("15:addChannel      1  0.02940903031940181    1531       9900015      11 16")
+[DEBUG] fPythia->readString("15:addChannel      1  0.1126969533410586    1531       9900015      13 -14")
+[DEBUG] fPythia->readString("15:addChannel      1  0.4286080938237068    1531       9900015      13 16")
+[DEBUG] fPythia->readString("4132:addChannel      1   0.9999589675714319    0       22      22")
+[DEBUG] fPythia->readString("421:addChannel      1   0.9940237272465354    0       22      22")
+[DEBUG] fPythia->readString("4122:addChannel      1   0.9998320679310739    0       22      -11")
+[DEBUG] fPythia->readString("411:addChannel      1   0.9207840128453429    0       22      -11")
+
+ --------  PYTHIA Particle Data Table (partial)  -----------------------------------------------------------------------------------
+ 
+      id   name            antiName         spn chg col      m0        mWidth      mMin       mMax       tau0    res dec ext vis wid
+             no onMode   bRatio   meMode     products 
+
+ 9900015  N2               N2                 2   0   0    1.00000    0.00000    0.00000    0.00000  6.44394e+07   0   1   0   1   0
+              0     1   0.0941122    0      211       13 
+              1     1   0.0941122    0     -211      -13 
+
+ --------  End PYTHIA Particle Data Table  -----------------------------------------------------------------------------------------
+
+[DEBUG] fPythia->readString("ProcessLevel:all = off")
+[INFO] FairRootFileSink initialized.
+[INFO]  - cbmroot
+[INFO]     - ./sim_ci-test.root
+[INFO] ==============  FairRunSim: Initialising simulation run ==============
+Info in <TGeoManager::TGeoManager>: Geometry FAIRGeom, FAIR geometry created
+[INFO] FairGeoMedia: Read media 
+
+************************************************************* 
+************************************************************* 
+[WARN] FairGenericVMCConfig::Setup() Using gConfig.C macro DEPRACATED.
+[WARN] Check FairRoot/examples/common/gconfig/ for current YAML implementation.
+[INFO] ---------------User config is used: g4Config.C
+
+=============================================================
+ Virtual Monte Carlo Library
+ Version 2.2 ( 22 April 2026 )
+=============================================================
+
+=============================================================
+ Geant4 Virtual Monte Carlo 
+ Version 6.8 ( 2 February 2026 )
+ WWW : http://root.cern.ch/drupal/content/geant4-vmc
+=============================================================
+
+Running TVirtualMCApplication::ConstructGeometry
+Info in <TGeoManager::SetTopVolume>: Top volume is cave. Master volume is cave
+Info in <TGeoNavigator::BuildCache>: --- Maximum geometry depth set to 100
+[INFO] -- Target cooler: PressurisedHe90 T=363.15 K, P=9.98641e+09 MeV/mm3, Density=0.002121
+[INFO] Fiber length set to 60.2272 cm
+[DEBUG]  Construct Geometry of the MS 
+[DEBUG]  Initialize the MS 
+[DEBUG] magnet i: Magn1
+[DEBUG] magnet i: Magn2
+[DEBUG] magnet i: Magn3
+[DEBUG] magnet i: Magn4
+[DEBUG] magnet i: Magn5
+[DEBUG] Magnet 0: dZ=0, Z_rel=115.5, dXIn=50, dXOut=50, dYIn=119, dYOut=119, gapIn=2, gapOut=2, ratio_yokesIn=1, ratio_yokesOut=1, dY_yokeIn=50, dY_yokeOut=50, midGapIn=0, midGapOut=0, Bgoal=1.9, Z=319.5
+[DEBUG] Magnet 1: dZ=20, Z_rel=495, dXIn=67.1, dXOut=79.92, dYIn=27, dYOut=43, gapIn=5, gapOut=5, ratio_yokesIn=1.38, ratio_yokesOut=1.06, dY_yokeIn=67.1, dY_yokeOut=79.92, midGapIn=0, midGapOut=0, Bgoal=1.9, Z=950
+[DEBUG] Magnet 2: dZ=10, Z_rel=280.48, dXIn=53.12, dXOut=49.56, dYIn=43, dYOut=56, gapIn=5.03, gapOut=5, ratio_yokesIn=2.11, ratio_yokesOut=2.4, dY_yokeIn=53.12, dY_yokeOut=49.56, midGapIn=0, midGapOut=0, Bgoal=1.9, Z=1735.48
+[DEBUG] Magnet 3: dZ=10, Z_rel=232.53, dXIn=2.73, dXOut=3.68, dYIn=56, dYOut=56, gapIn=5, gapOut=5.21, ratio_yokesIn=60.44, ratio_yokesOut=45.63, dY_yokeIn=2.73, dY_yokeOut=3.68, midGapIn=0.5, midGapOut=0.5, Bgoal=-1.91, Z=2258.49
+[DEBUG] Magnet 4: dZ=10, Z_rel=85, dXIn=31, dXOut=107.12, dYIn=56, dYOut=56, gapIn=5.27, gapOut=5, ratio_yokesIn=4.55, ratio_yokesOut=0.63, dY_yokeIn=1, dY_yokeOut=77.12, midGapIn=0, midGapOut=0, Bgoal=-1.91, Z=2586.02
+[DEBUG] Magnet 5: dZ=10, Z_rel=233.82, dXIn=30.03, dXOut=40, dYIn=56, dYOut=56, gapIn=5, gapOut=5.01, ratio_yokesIn=4.83, ratio_yokesOut=3.37, dY_yokeIn=30.03, dY_yokeOut=40, midGapIn=0, midGapOut=0, Bgoal=-1.91, Z=2914.84
+[DEBUG]  ending of Initialize the MS 
+[DEBUG]  Create a magnet of the MS 
+[DEBUG]  Create CreateArb8 of the MS 
+[DEBUG]  Create CreateArb8 of the MS 
+[DEBUG]  Create CreateArb8 of the MS 
+[DEBUG]  Create CreateArb8 of the MS 
+[DEBUG]  Create CreateArb8 of the MS 
+[DEBUG]  Create CreateArb8 of the MS 
+[DEBUG]  Create CreateArb8 of the MS 
+[DEBUG]  Create CreateArb8 of the MS 
+[DEBUG]  Create a magnet of the MS 
+[DEBUG]  Create CreateArb8 of the MS 
+[DEBUG]  Create CreateArb8 of the MS 
+[DEBUG]  Create CreateArb8 of the MS 
+[DEBUG]  Create CreateArb8 of the MS 
+[DEBUG]  Create CreateArb8 of the MS 
+[DEBUG]  Create CreateArb8 of the MS 
+[DEBUG]  Create CreateArb8 of the MS 
+[DEBUG]  Create CreateArb8 of the MS 
+[DEBUG]  Create a magnet of the MS 
+[DEBUG]  Create CreateArb8 of the MS 
+[DEBUG]  Create CreateArb8 of the MS 
+[DEBUG]  Create CreateArb8 of the MS 
+[DEBUG]  Create CreateArb8 of the MS 
+[DEBUG]  Create CreateArb8 of the MS 
+[DEBUG]  Create CreateArb8 of the MS 
+[DEBUG]  Create CreateArb8 of the MS 
+[DEBUG]  Create CreateArb8 of the MS 
+[DEBUG]  Create a magnet of the MS 
+[DEBUG]  Create CreateArb8 of the MS 
+[DEBUG]  Create CreateArb8 of the MS 
+[DEBUG]  Create CreateArb8 of the MS 
+[DEBUG]  Create CreateArb8 of the MS 
+[DEBUG]  Create CreateArb8 of the MS 
+[DEBUG]  Create CreateArb8 of the MS 
+[DEBUG]  Create CreateArb8 of the MS 
+[DEBUG]  Create CreateArb8 of the MS 
+[DEBUG]  Create a magnet of the MS 
+[DEBUG]  Create CreateArb8 of the MS 
+[DEBUG]  Create CreateArb8 of the MS 5
+[DEBUG]  Create CreateArb8 of the MS 
+[DEBUG]  Create CreateArb8 of the MS 5
+[DEBUG]  Create CreateArb8 of the MS 
+[DEBUG]  Create CreateArb8 of the MS 
+[DEBUG]  Create CreateArb8 of the MS 
+[DEBUG]  Create CreateArb8 of the MS 
+[DEBUG]  Create CreateArb8 of the MS 
+[DEBUG]  Create CreateArb8 of the MS 
+[DEBUG]  Create a magnet of the MS 
+[DEBUG]  Create CreateArb8 of the MS 
+[DEBUG]  Create CreateArb8 of the MS 5
+[DEBUG]  Create CreateArb8 of the MS 
+[DEBUG]  Create CreateArb8 of the MS 5
+[DEBUG]  Create CreateArb8 of the MS 
+[DEBUG]  Create CreateArb8 of the MS 
+[DEBUG]  Create CreateArb8 of the MS 
+[DEBUG]  Create CreateArb8 of the MS 
+[DEBUG]  Create CreateArb8 of the MS 
+[DEBUG]  Create CreateArb8 of the MS 
+[INFO] veto: Decay Volume medium set as: vacuums
+Info in <TGeoManager::SetVisLevel>: Automatic visible depth disabled
+ Z Position (Upstream Tagger1) 3272.0000000
+Info in <TGeoManager::CheckGeometry>: Fixing runtime shapes...
+Info in <TGeoManager::CheckGeometry>: ...Nothing to fix
+Info in <TGeoManager::CloseGeometry>: Counting nodes...
+Info in <TGeoManager::Voxelize>: Voxelizing...
+Info in <TGeoManager::CloseGeometry>: Building cache...
+Info in <TGeoManager::CountLevels>: max level = 6, max placements = 14153
+Info in <TGeoManager::CloseGeometry>: 3731249 nodes/ 722 volume UID's in FAIR geometry
+Info in <TGeoManager::CloseGeometry>: ----------------modeler ready----------------
+[INFO] TGeometry will be imported to VMC
+
+Info in <TObject::SetNavigator>: TG4RootNavigator created and registered to G4TransportationManager
+isMaster=1
+
+**************************************************************
+ Geant4 version Name: geant4-11-04-patch-02 [MT]   (12-June-2026)
+                       Copyright : Geant4 Collaboration
+                      References : NIM A 506 (2003), 250-303
+                                 : IEEE-TNS 53 (2006), 270-278
+                                 : NIM A 835 (2016), 186-225
+                             WWW : http://geant4.org/
+**************************************************************
+
+Info in <TObject::Initialize>: Creating G4 hierarchy ...
+Info in <TGeoManager::ConvertReflections>: Converting reflections in: FAIRGeom - FAIR geometry ...
+Info in <TGeoManager::ConvertReflections>: Done
+===> GEANT4 materials created and mapped to TGeo ones...
+===> GEANT4 physical volumes created and mapped to TGeo hierarchy...
+### INFO: TG4RootDetectorConstruction::Construct() finished
+TG4PostDetConstruction::Initialize
+G4 Stat: instantiated 1316 logical volumes 
+                      230963 physical volumes
+Info in <TObject::ConnectToG4>: ROOT detector construction class connected to G4RunManager
+Adding HadronPhysicsList FTFP_BERT_HP_EMZ
+G4PhysListFactory::GetReferencePhysList <FTFP_BERT_HP_EMZ>
+<<< Geant4 Physics List simulation engine: FTFP_BERT_HP
+
+G4VModularPhysicsList::ReplacePhysics: G4EmStandard with type : 2 is replaced with G4EmStandard_opt4
+
+Adding SpecialPhysicsList stepLimiter+specialCuts+
+[INFO] External Decay Modes with script 
+[INFO] TEvtGenDecayer: Added PDG 443 to EvtGen particle list (Total: 1)
+[INFO] TEvtGenDecayer: Added PDG 553 to EvtGen particle list (Total: 2)
+
+ *------------------------------------------------------------------------------------* 
+ |                                                                                    | 
+ |  *------------------------------------------------------------------------------*  | 
+ |  |                                                                              |  | 
+ |  |                                                                              |  | 
+ |  |   PPP   Y   Y  TTTTT  H   H  III    A      Welcome to the Lund Monte Carlo!  |  | 
+ |  |   P  P   Y Y     T    H   H   I    A A     This is PYTHIA version 8.312      |  | 
+ |  |   PPP     Y      T    HHHHH   I   AAAAA    Last date of change: 23 May 2024  |  | 
+ |  |   P       Y      T    H   H   I   A   A                                      |  | 
+ |  |                                                                              |  | 
+ |  |   Program documentation and an archive of historic versions is found on:     |  | 
+ |  |                                                                              |  | 
+ |  |                               https://pythia.org/                            |  | 
+ |  |                                                                              |  | 
+ |  |   PYTHIA is authored by a collaboration consisting of:                       |  | 
+ |  |                                                                              |  | 
+ |  |   Javira Altmann, Christian Bierlich, Naomi Cooke, Nishita Desai,            |  | 
+ |  |   Leif Gellersen, Ilkka Helenius, Philip Ilten, Leif Lonnblad,               |  | 
+ |  |   Stephen Mrenna, Christian Preuss, Torbjorn Sjostrand, Peter Skands,        |  | 
+ |  |   Marius Utheim, and Rob Verheyen.                                           |  | 
+ |  |                                                                              |  | 
+ |  |   The complete list of authors, including contact information and            |  | 
+ |  |   affiliations, can be found on https://pythia.org/.                         |  | 
+ |  |   Problems or bugs should be reported on email at authors@pythia.org.        |  | 
+ |  |                                                                              |  | 
+ |  |   The main program reference is C. Bierlich et al,                           |  | 
+ |  |   'A comprehensive guide to the physics and usage of Pythia 8.3',            |  | 
+ |  |   SciPost Phys. Codebases 8-r8.3 (2022) [arXiv:2203.11601 [hep-ph]]          |  | 
+ |  |                                                                              |  | 
+ |  |   PYTHIA is released under the GNU General Public Licence version 2 or later.|  | 
+ |  |   Please respect the MCnet Guidelines for Event Generator Authors and Users. |  | 
+ |  |                                                                              |  | 
+ |  |   Disclaimer: this program comes without any guarantees.                     |  | 
+ |  |   Beware of errors and use common sense when interpreting results.           |  | 
+ |  |                                                                              |  | 
+ |  |   Copyright (C) 2024 Torbjorn Sjostrand                                      |  | 
+ |  |                                                                              |  | 
+ |  |                                                                              |  | 
+ |  *------------------------------------------------------------------------------*  | 
+ |                                                                                    | 
+ *------------------------------------------------------------------------------------* 
+
+
+ *-------  PYTHIA Process Initialization  --------------------------*
+ |                                                                  |
+ | We collide p+ with p+ at a CM energy of 1.400e+04 GeV            |
+ |                                                                  |
+ |------------------------------------------------------------------|
+ |                                                    |             |
+ | Subprocess                                    Code |   Estimated |
+ |                                                    |    max (mb) |
+ |                                                    |             |
+ |------------------------------------------------------------------|
+ |                                                    |             |
+ | A B -> A B elastic                             102 |   2.258e+01 |
+ |                                                                  |
+ *-------  End PYTHIA Process Initialization -----------------------*
+
+ *-------  PYTHIA Multiparton Interactions Initialization  ---------* 
+ |                                                                  | 
+ |                   sigmaNonDiffractive =    57.17 mb              | 
+ |                                                                  | 
+ |    pT0 =  2.65 gives sigmaInteraction =   328.46 mb: accepted    | 
+ |                                                                  | 
+ *-------  End PYTHIA Multiparton Interactions Initialization  -----* 
+
+ *-------  PYTHIA Flag + Mode + Parm + Word + FVec + MVec + PVec + WVec Settings (changes only)  ------------------* 
+ |                                                                                                                 | 
+ | Name                                          |                      Now |      Default         Min         Max | 
+ |                                               |                          |                                      | 
+ | SoftQCD:elastic                               |                       on |          off                         | 
+ |                                                                                                                 | 
+ *-------  End PYTHIA Flag + Mode + Parm + Word + FVec + MVec + PVec + WVec Settings  -----------------------------* 
+
+ --------  PYTHIA Particle Data Table (changed only)  ------------------------------------------------------------------------------
+ 
+      id   name            antiName         spn chg col      m0        mWidth      mMin       mMax       tau0    res dec ext vis wid
+             no onMode   bRatio   meMode     products 
+
+ no particle data has been changed from its default value 
+
+ --------  End PYTHIA Particle Data Table  -----------------------------------------------------------------------------------------
+
+
+ *------------------------------------------------------------------------------------* 
+ |                                                                                    | 
+ |  *------------------------------------------------------------------------------*  | 
+ |  |                                                                              |  | 
+ |  |                                                                              |  | 
+ |  |   PPP   Y   Y  TTTTT  H   H  III    A      Welcome to the Lund Monte Carlo!  |  | 
+ |  |   P  P   Y Y     T    H   H   I    A A     This is PYTHIA version 8.312      |  | 
+ |  |   PPP     Y      T    HHHHH   I   AAAAA    Last date of change: 23 May 2024  |  | 
+ |  |   P       Y      T    H   H   I   A   A                                      |  | 
+ |  |                                                                              |  | 
+ |  |   Program documentation and an archive of historic versions is found on:     |  | 
+ |  |                                                                              |  | 
+ |  |                               https://pythia.org/                            |  | 
+ |  |                                                                              |  | 
+ |  |   PYTHIA is authored by a collaboration consisting of:                       |  | 
+ |  |                                                                              |  | 
+ |  |   Javira Altmann, Christian Bierlich, Naomi Cooke, Nishita Desai,            |  | 
+ |  |   Leif Gellersen, Ilkka Helenius, Philip Ilten, Leif Lonnblad,               |  | 
+ |  |   Stephen Mrenna, Christian Preuss, Torbjorn Sjostrand, Peter Skands,        |  | 
+ |  |   Marius Utheim, and Rob Verheyen.                                           |  | 
+ |  |                                                                              |  | 
+ |  |   The complete list of authors, including contact information and            |  | 
+ |  |   affiliations, can be found on https://pythia.org/.                         |  | 
+ |  |   Problems or bugs should be reported on email at authors@pythia.org.        |  | 
+ |  |                                                                              |  | 
+ |  |   The main program reference is C. Bierlich et al,                           |  | 
+ |  |   'A comprehensive guide to the physics and usage of Pythia 8.3',            |  | 
+ |  |   SciPost Phys. Codebases 8-r8.3 (2022) [arXiv:2203.11601 [hep-ph]]          |  | 
+ |  |                                                                              |  | 
+ |  |   PYTHIA is released under the GNU General Public Licence version 2 or later.|  | 
+ |  |   Please respect the MCnet Guidelines for Event Generator Authors and Users. |  | 
+ |  |                                                                              |  | 
+ |  |   Disclaimer: this program comes without any guarantees.                     |  | 
+ |  |   Beware of errors and use common sense when interpreting results.           |  | 
+ |  |                                                                              |  | 
+ |  |   Copyright (C) 2024 Torbjorn Sjostrand                                      |  | 
+ |  |                                                                              |  | 
+ |  |                                                                              |  | 
+ |  *------------------------------------------------------------------------------*  | 
+ |                                                                                    | 
+ *------------------------------------------------------------------------------------* 
+
+ PYTHIA Error in ProcessLevel::init: no process switched on
+ PYTHIA Abort from Pythia::init: processLevel initialization failed
+[DEBUG] TEvtGenDecayer: Pythia8 RNG seeded with 42
+EvtMTRandomEngine:Mersenne-Twister random number generator with seed = 42
+[INFO] TEvtGenDecayer: Random engine initialized with seed 42
+EvtGen:Defining EvtPhotosEngine using photonType = gamma
+EvtGen:Setting up PHOTOS.
+EvtGen:Using EvtGen random number engine also for Photos++
+Message from PHCORK(MODCOR):: initialization
+MODOP=5 -- corrects Energy from mass+flow
+
+********************************************************************************
+
+                            =========================
+                              PHOTOS, Version:  3.64
+                              Released at:  18/2/20
+                            =========================
+
+                     Photos QED corrections in Particle Decays
+
+           Monte Carlo Program - by E. Barberio, B. van Eijk and Z. Was
+           From version 2.09   - by P. Golonka and Z. Was
+           From version 3.00   - by N. Davidson, T. Przedzinski and Z. Was
+********************************************************************************
+
+                  Internal (default) input parameters: 
+
+                    INTERF= 1 ISEC= 0 ITRE= 0 IEXP= 1 IFTOP= 1 IFW= 1
+                    ALPHA_QED= 7.297350e-03 XPHCUT= 1.000000e-07
+
+                    Option with interference is active
+                    Option with exponentiation is active EPSEXP=1.000000e-04
+                    Emision in t tbar production is active
+                    Correction wt in decay of W is active
+
+          WARNING:  /HEPEVT/ is not anymore used.
+
+********************************************************************************
+MODOP=2 -- blocks emission in Kl  to gamma e+e-: DEFAULT
+MODOP=2 -- blocks emission in pi0 to gamma e+e-: DEFAULT
+ IPHQRK_setQarknoEmission MODOP=1 -- blocks emission from light quarks:  DEFAULT
+Message from PHCORK(MODCOR):: initialization
+MODOP=5 -- corrects Energy from mass+flow
+EvtGen:Pythia 8 codes need to be used in decay files
+EvtGen:Using EvtGen random engine for Pythia 8 as well
+EvtGen:Creating generic Pythia generator
+
+ *------------------------------------------------------------------------------------* 
+ |                                                                                    | 
+ |  *------------------------------------------------------------------------------*  | 
+ |  |                                                                              |  | 
+ |  |                                                                              |  | 
+ |  |   PPP   Y   Y  TTTTT  H   H  III    A      Welcome to the Lund Monte Carlo!  |  | 
+ |  |   P  P   Y Y     T    H   H   I    A A     This is PYTHIA version 8.312      |  | 
+ |  |   PPP     Y      T    HHHHH   I   AAAAA    Last date of change: 23 May 2024  |  | 
+ |  |   P       Y      T    H   H   I   A   A                                      |  | 
+ |  |                                                                              |  | 
+ |  |   Program documentation and an archive of historic versions is found on:     |  | 
+ |  |                                                                              |  | 
+ |  |                               https://pythia.org/                            |  | 
+ |  |                                                                              |  | 
+ |  |   PYTHIA is authored by a collaboration consisting of:                       |  | 
+ |  |                                                                              |  | 
+ |  |   Javira Altmann, Christian Bierlich, Naomi Cooke, Nishita Desai,            |  | 
+ |  |   Leif Gellersen, Ilkka Helenius, Philip Ilten, Leif Lonnblad,               |  | 
+ |  |   Stephen Mrenna, Christian Preuss, Torbjorn Sjostrand, Peter Skands,        |  | 
+ |  |   Marius Utheim, and Rob Verheyen.                                           |  | 
+ |  |                                                                              |  | 
+ |  |   The complete list of authors, including contact information and            |  | 
+ |  |   affiliations, can be found on https://pythia.org/.                         |  | 
+ |  |   Problems or bugs should be reported on email at authors@pythia.org.        |  | 
+ |  |                                                                              |  | 
+ |  |   The main program reference is C. Bierlich et al,                           |  | 
+ |  |   'A comprehensive guide to the physics and usage of Pythia 8.3',            |  | 
+ |  |   SciPost Phys. Codebases 8-r8.3 (2022) [arXiv:2203.11601 [hep-ph]]          |  | 
+ |  |                                                                              |  | 
+ |  |   PYTHIA is released under the GNU General Public Licence version 2 or later.|  | 
+ |  |   Please respect the MCnet Guidelines for Event Generator Authors and Users. |  | 
+ |  |                                                                              |  | 
+ |  |   Disclaimer: this program comes without any guarantees.                     |  | 
+ |  |   Beware of errors and use common sense when interpreting results.           |  | 
+ |  |                                                                              |  | 
+ |  |   Copyright (C) 2024 Torbjorn Sjostrand                                      |  | 
+ |  |                                                                              |  | 
+ |  |                                                                              |  | 
+ |  *------------------------------------------------------------------------------*  | 
+ |                                                                                    | 
+ *------------------------------------------------------------------------------------* 
+
+EvtGen:Creating alias Pythia generator
+EvtGen:Defining EvtTauolaEngine.
+EvtGen:Setting up TAUOLA.
+EvtGen:Using EvtGen random number engine also for Tauola++
+
+
+
+ ***************************************************************************
+ *                         *****TAUOLA LIBRARY: VERSION 2.9 ******         *
+ *                         ***********October 2011 ***************         *
+ *                         **AUTHORS: S.JADACH, Z.WAS*************         *
+ *                         **R. DECKER, M. JEZABEK, J.H.KUEHN*****         *
+ *                         **AVAILABLE FROM: www.cern.ch/wasm****          *
+ *                         ***** PUBLISHED IN COMP. PHYS. COMM.***         *
+ *                         0: Physics initialization  CLEO collab          *
+ *                          see Alain Weinstein www home page:             *
+ *                         http://www.cithep.caltech.edu/~ajw/             *
+ *                         /korb_doc.html#files                            *
+ *                         1: Physics initialization RChL of:              *
+ *                          O. Shekhovtsova, T. Przedzinski,               *
+ *                          P. Roig and Z. Was                             *
+ *                          IFJPAN-2013-5, UAB-FT-731                      *
+ *                         *******CPC 76 (1993) 361          *****         *
+ *                         **5 or more pi dec.: precision limited          *
+ *                         ****DEKAY ROUTINE: INITIALIZATION******         *
+ *                   0     JAK1   = DECAY MODE TAU+                        *
+ *                   0     JAK2   = DECAY MODE TAU-                        *
+ ***************************************************************************
+
+ *                   1     IVER   = hadronic current version           *
+  RANMAR INITIALIZED:   54217137           0         0
+
+ *************************************
+ *     TAUOLA C++ Interface v1.1.8   *
+ *-----------------------------------*
+ *                                   *
+ *   (c) Nadia    Davidson,   (1,2)  *
+ *   (c) Gizo     Nanava,     (3)    *
+ *       Tomasz   Przedzinski,(4)    *
+ *       Elzbieta Richter-Was,(2,4)  *
+ *       Zbigniew Was         (2,5)  *
+ *                                   *
+ *  1) Unimelb, Melbourne, Australia *
+ *  2)     INP, Krakow, Poland       *
+ *  3) University Bonn, Germany      *
+ *  4)      UJ, Krakow, Poland       *
+ *  5)    CERN, Geneva, Switzerland  *
+ *************************************
+  In F3pi: chpt + 1 resonance + 2 resonance (RchT)
+  KORB: rho/rhop -> pi-pi0 mixing:
+  KORB: rho   =  0.769900024      0.151199996    
+  KORB: rhop  =   1.37000000      0.509999990     -0.109999999    
+  KORB: K*/K*prime -> Kpi mixing:
+  KORB: kstp  =   1.70000005      0.234999999      -3.79999988E-02
+  KORB: a1/a1prime -> 3pi, KKpi mixing:
+  KORB: a1    =   1.27499998      0.699999988    
+  KORB: a1prim=   1.46099997      0.250000000       0.00000000    
+  KORB: K1A/K1B -> Kpipi mixing:
+  KORB: K1A   =   1.26999998       9.00000036E-02   1.00000000    
+  KORB: K1B   =   1.40199995      0.173999995      0.800000012    
+  KORB: rho/rhop/rhopp -> 4pi mixing:
+  KORB: rho   =  0.769900024      0.151199996    
+  KORB: rhopp =   1.46500003      0.310000002     -0.109999999    
+  KORB: rhoppp=   1.70000005      0.234999999     -0.109999999    
+  KORB: 3PI-PI0 PARAMS:   0.00000000      0.124200001      0.160400003      0.271100014      0.444299996    
+  KORB: PI-3PI0 PARAMS:   0.00000000       1.00000000    
+
+ ***************************************************************************
+
+Reading SANC input files.
+File 'table1-1.txt'  missing... skipped.
+File 'table2-2.txt'  missing... skipped.
+File 'table11-11.txt' missing... skipped.
+
+[INFO] TEvtGenDecayer: PHOTOS radiative corrections enabled
+EvtGen:Initializing EvtGen
+EvtGen:Storing known decay models
+EvtGen:Defining EvtBcToNPi model: Bc -> V + npi and Bc -> P + npi decays
+from A.V. Berezhnoy, A.K. Likhoded, A.V. Luchinsky: Phys.Rev.D 82, 014012 (2010) and arXiV:1104.0808.
+EvtGen:Warning, sum of branching fractions for omega is 0.994
+EvtGen:rescaled to one! 
+EvtGen:Warning, sum of branching fractions for phi is 0.999
+EvtGen:rescaled to one! 
+EvtGen:Warning, sum of branching fractions for f_2 is 0.999
+EvtGen:rescaled to one! 
+EvtGen:Warning, sum of branching fractions for chi_c1 is 0.996
+EvtGen:rescaled to one! 
+EvtGen:Warning, sum of branching fractions for Upsilon(2S) is 0.992
+EvtGen:rescaled to one! 
+EvtGen:Warning, sum of branching fractions for Upsilon(3S) is 0.999
+EvtGen:rescaled to one! 
+EvtGen:Mixing type integer set to 1
+EvtGen:Done initializing EvtGen
+[DEBUG] TEvtGenDecayer: EvtGen created with 549 particle entries
+[INFO] TEvtGenDecayer initialized - EvtGen: YES, Pythia8 fallback: YES, Particles configured for EvtGen: 2
+[DEBUG]   EvtGen particle: PDG 443
+[DEBUG]   EvtGen particle: PDG 553
+=== TEvtGenDecayer Configuration ===
+Particles using EvtGen: J/psi(443), Upsilon(553)
+Other particles use TPythia8Decayer fallback
+### TG4SpecialControlsV2 constructed
+Visualization Manager instantiating with verbosity "warnings (3)"...
+SetCuts Macro: Setting Processes..
+SetCuts Macro: Setting cuts..
+TG4RootDetectorConstruction::ConstructSDandField
+TG4PostDetConstruction::InitializeSDandField
+[INFO] FairMCApplication::InitGeometry: 0
+[DEBUG] nn.Data before: cbmroot.Event.MCEventHeader.
+[DEBUG] nn.Data after: MCEventHeader.
+[DEBUG] ##################
+[DEBUG] nn.Data before: cbmroot.Event.MCEventHeader.TNamed
+[DEBUG] nn.Data after: MCEventHeader.TNamed
+[DEBUG] ##################
+[DEBUG] nn.Data before: cbmroot.Event.MCEventHeader.TNamed.TObject
+[DEBUG] nn.Data after: MCEventHeader.TNamed.TObject
+[DEBUG] ##################
+[DEBUG] nn.Data before: cbmroot.Event.MCEventHeader.TNamed.fUniqueID
+[DEBUG] nn.Data after: MCEventHeader.TNamed.fUniqueID
+[DEBUG] ##################
+[DEBUG] nn.Data before: cbmroot.Event.MCEventHeader.TNamed.fBits
+[DEBUG] nn.Data after: MCEventHeader.TNamed.fBits
+[DEBUG] ##################
+[DEBUG] nn.Data before: cbmroot.Event.MCEventHeader.TNamed.fName
+[DEBUG] nn.Data after: MCEventHeader.TNamed.fName
+[DEBUG] ##################
+[DEBUG] nn.Data before: cbmroot.Event.MCEventHeader.TNamed.fTitle
+[DEBUG] nn.Data after: MCEventHeader.TNamed.fTitle
+[DEBUG] ##################
+[DEBUG] nn.Data before: cbmroot.Event.MCEventHeader.fRunId
+[DEBUG] nn.Data after: MCEventHeader.fRunId
+[DEBUG] ##################
+[DEBUG] nn.Data before: cbmroot.Event.MCEventHeader.fEventId
+[DEBUG] nn.Data after: MCEventHeader.fEventId
+[DEBUG] ##################
+[DEBUG] nn.Data before: cbmroot.Event.MCEventHeader.fX
+[DEBUG] nn.Data after: MCEventHeader.fX
+[DEBUG] ##################
+[DEBUG] nn.Data before: cbmroot.Event.MCEventHeader.fY
+[DEBUG] nn.Data after: MCEventHeader.fY
+[DEBUG] ##################
+[DEBUG] nn.Data before: cbmroot.Event.MCEventHeader.fZ
+[DEBUG] nn.Data after: MCEventHeader.fZ
+[DEBUG] ##################
+[DEBUG] nn.Data before: cbmroot.Event.MCEventHeader.fT
+[DEBUG] nn.Data after: MCEventHeader.fT
+[DEBUG] ##################
+[DEBUG] nn.Data before: cbmroot.Event.MCEventHeader.fB
+[DEBUG] nn.Data after: MCEventHeader.fB
+[DEBUG] ##################
+[DEBUG] nn.Data before: cbmroot.Event.MCEventHeader.fNPrim
+[DEBUG] nn.Data after: MCEventHeader.fNPrim
+[DEBUG] ##################
+[DEBUG] nn.Data before: cbmroot.Event.MCEventHeader.fIsSet
+[DEBUG] nn.Data after: MCEventHeader.fIsSet
+[DEBUG] ##################
+[DEBUG] nn.Data before: cbmroot.Event.MCEventHeader.fRotX
+[DEBUG] nn.Data after: MCEventHeader.fRotX
+[DEBUG] ##################
+[DEBUG] nn.Data before: cbmroot.Event.MCEventHeader.fRotY
+[DEBUG] nn.Data after: MCEventHeader.fRotY
+[DEBUG] ##################
+[DEBUG] nn.Data before: cbmroot.Event.MCEventHeader.fRotZ
+[DEBUG] nn.Data after: MCEventHeader.fRotZ
+[DEBUG] ##################
+[DEBUG] nn.Data before: MCEventHeader.
+[DEBUG] nn.Data after: MCEventHeader.
+[DEBUG] ##################
+[DEBUG] nn.Data before: MCEventHeader.TNamed
+[DEBUG] nn.Data after: MCEventHeader.TNamed
+[DEBUG] ##################
+[DEBUG] nn.Data before: MCEventHeader.TNamed.TObject
+[DEBUG] nn.Data after: MCEventHeader.TNamed.TObject
+[DEBUG] ##################
+[DEBUG] nn.Data before: MCEventHeader.TNamed.fUniqueID
+[DEBUG] nn.Data after: MCEventHeader.TNamed.fUniqueID
+[DEBUG] ##################
+[DEBUG] nn.Data before: MCEventHeader.TNamed.fBits
+[DEBUG] nn.Data after: MCEventHeader.TNamed.fBits
+[DEBUG] ##################
+[DEBUG] nn.Data before: MCEventHeader.TNamed.fName
+[DEBUG] nn.Data after: MCEventHeader.TNamed.fName
+[DEBUG] ##################
+[DEBUG] nn.Data before: MCEventHeader.TNamed.fTitle
+[DEBUG] nn.Data after: MCEventHeader.TNamed.fTitle
+[DEBUG] ##################
+[DEBUG] nn.Data before: MCEventHeader.fRunId
+[DEBUG] nn.Data after: MCEventHeader.fRunId
+[DEBUG] ##################
+[DEBUG] nn.Data before: MCEventHeader.fEventId
+[DEBUG] nn.Data after: MCEventHeader.fEventId
+[DEBUG] ##################
+[DEBUG] nn.Data before: MCEventHeader.fX
+[DEBUG] nn.Data after: MCEventHeader.fX
+[DEBUG] ##################
+[DEBUG] nn.Data before: MCEventHeader.fY
+[DEBUG] nn.Data after: MCEventHeader.fY
+[DEBUG] ##################
+[DEBUG] nn.Data before: MCEventHeader.fZ
+[DEBUG] nn.Data after: MCEventHeader.fZ
+[DEBUG] ##################
+[DEBUG] nn.Data before: MCEventHeader.fT
+[DEBUG] nn.Data after: MCEventHeader.fT
+[DEBUG] ##################
+[DEBUG] nn.Data before: MCEventHeader.fB
+[DEBUG] nn.Data after: MCEventHeader.fB
+[DEBUG] ##################
+[DEBUG] nn.Data before: MCEventHeader.fNPrim
+[DEBUG] nn.Data after: MCEventHeader.fNPrim
+[DEBUG] ##################
+[DEBUG] nn.Data before: MCEventHeader.fIsSet
+[DEBUG] nn.Data after: MCEventHeader.fIsSet
+[DEBUG] ##################
+[DEBUG] nn.Data before: MCEventHeader.fRotX
+[DEBUG] nn.Data after: MCEventHeader.fRotX
+[DEBUG] ##################
+[DEBUG] nn.Data before: MCEventHeader.fRotY
+[DEBUG] nn.Data after: MCEventHeader.fRotY
+[DEBUG] ##################
+[DEBUG] nn.Data before: MCEventHeader.fRotZ
+[DEBUG] nn.Data after: MCEventHeader.fRotZ
+[DEBUG] ##################
+[DEBUG] nn.Data before: MCEventHeader.
+[DEBUG] nn.Data after: MCEventHeader.
+[DEBUG] ##################
+[DEBUG] nn.Data before: MCEventHeader.TNamed
+[DEBUG] nn.Data after: MCEventHeader.TNamed
+[DEBUG] ##################
+[DEBUG] nn.Data before: MCEventHeader.TNamed.TObject
+[DEBUG] nn.Data after: MCEventHeader.TNamed.TObject
+[DEBUG] ##################
+[DEBUG] nn.Data before: MCEventHeader.TNamed.fUniqueID
+[DEBUG] nn.Data after: MCEventHeader.TNamed.fUniqueID
+[DEBUG] ##################
+[DEBUG] nn.Data before: MCEventHeader.TNamed.fBits
+[DEBUG] nn.Data after: MCEventHeader.TNamed.fBits
+[DEBUG] ##################
+[DEBUG] nn.Data before: MCEventHeader.TNamed.fName
+[DEBUG] nn.Data after: MCEventHeader.TNamed.fName
+[DEBUG] ##################
+[DEBUG] nn.Data before: MCEventHeader.TNamed.fTitle
+[DEBUG] nn.Data after: MCEventHeader.TNamed.fTitle
+[DEBUG] ##################
+[DEBUG] nn.Data before: MCEventHeader.fRunId
+[DEBUG] nn.Data after: MCEventHeader.fRunId
+[DEBUG] ##################
+[DEBUG] nn.Data before: MCEventHeader.fEventId
+[DEBUG] nn.Data after: MCEventHeader.fEventId
+[DEBUG] ##################
+[DEBUG] nn.Data before: MCEventHeader.fX
+[DEBUG] nn.Data after: MCEventHeader.fX
+[DEBUG] ##################
+[DEBUG] nn.Data before: MCEventHeader.fY
+[DEBUG] nn.Data after: MCEventHeader.fY
+[DEBUG] ##################
+[DEBUG] nn.Data before: MCEventHeader.fZ
+[DEBUG] nn.Data after: MCEventHeader.fZ
+[DEBUG] ##################
+[DEBUG] nn.Data before: MCEventHeader.fT
+[DEBUG] nn.Data after: MCEventHeader.fT
+[DEBUG] ##################
+[DEBUG] nn.Data before: MCEventHeader.fB
+[DEBUG] nn.Data after: MCEventHeader.fB
+[DEBUG] ##################
+[DEBUG] nn.Data before: MCEventHeader.fNPrim
+[DEBUG] nn.Data after: MCEventHeader.fNPrim
+[DEBUG] ##################
+[DEBUG] nn.Data before: MCEventHeader.fIsSet
+[DEBUG] nn.Data after: MCEventHeader.fIsSet
+[DEBUG] ##################
+[DEBUG] nn.Data before: MCEventHeader.fRotX
+[DEBUG] nn.Data after: MCEventHeader.fRotX
+[DEBUG] ##################
+[DEBUG] nn.Data before: MCEventHeader.fRotY
+[DEBUG] nn.Data after: MCEventHeader.fRotY
+[DEBUG] ##################
+[DEBUG] nn.Data before: MCEventHeader.fRotZ
+[DEBUG] nn.Data after: MCEventHeader.fRotZ
+[DEBUG] ##################
+[INFO] CREATING BRANCH MCTrack
+[INFO] CREATING BRANCH MTCDetPoint
+[INFO] CREATING BRANCH SiliconTargetPoint
+[INFO] CREATING BRANCH TTPoint
+[INFO] CREATING BRANCH TargetPoint
+[INFO] CREATING BRANCH TimeDetPoint
+[INFO] CREATING BRANCH UpstreamTaggerPoint
+[INFO] CREATING BRANCH splitcalPoint
+[INFO] CREATING BRANCH strawtubesPoint
+[INFO] CREATING BRANCH vetoPoint
+Global field created with stepper DormandPrince745
+Local (in MTC_iron) field created with stepper DormandPrince745
+ G4ChordFinder: stepperDriverId: 2
+### INFO: TG4RootDetectorConstruction::ConstructSDandField finished
+
+ hInelastic FTFP_BERT_HP : threshold between BERT and FTFP is over the interval 
+ for pions :   3 to 6 GeV
+ for kaons :   3 to 6 GeV
+ for proton :  3 to 6 GeV
+ for neutron : 3 to 6 GeV
+
+TG4ComposedPhysicsList::ConstructProcess done
+Available UI session types: [ Qt, tcsh, csh ]
+[INFO] Open external file with charm or beauty hadrons: $FAIRSHIP/files/Cascade-parp16-MSTP82-1-MSEL4-76Mpot_1_5000.root
+[DEBUG] tau root 0.000214947[s] ctau root = 6.4484e+06[cm]
+[DEBUG] ctau pythia 6.44394e+07[mm]
+
+ *-------  PYTHIA Flag + Mode + Parm + Word + FVec + MVec + PVec + WVec Settings (changes only)  ------------------* 
+ |                                                                                                                 | 
+ | Name                                          |                      Now |      Default         Min         Max | 
+ |                                               |                          |                                      | 
+ | HardQCD:hardccbar                             |                       on |          off                         | 
+ | Next:numberCount                              |                        0 |         1000           0             | 
+ | ProcessLevel:all                              |                      off |           on                         | 
+ |                                                                                                                 | 
+ *-------  End PYTHIA Flag + Mode + Parm + Word + FVec + MVec + PVec + WVec Settings  -----------------------------* 
+
+ --------  PYTHIA Particle Data Table (changed only)  ------------------------------------------------------------------------------
+ 
+      id   name            antiName         spn chg col      m0        mWidth      mMin       mMax       tau0    res dec ext vis wid
+             no onMode   bRatio   meMode     products 
+
+      13  mu-              mu+                2  -3   0    0.10566    0.00000    0.10566    0.10566  6.58654e+05   0   0   0   1   0
+              0     1   1.0000000   22      -12       11       14 
+
+      15  tau-             tau+               2  -3   0    1.77682    0.00000    1.77682    1.77682  8.71100e-02   0   1   0   1   0
+              0     1   0.2437410 1521  9900015     -211 
+              1     1   0.0114128 1521  9900015     -321 
+              2     1   0.0504430 1521  9900015     -213 
+              3     1   0.1236891 1531  9900015       11      -12 
+              4     1   0.0294090 1531  9900015       11       16 
+              5     1   0.1126970 1531  9900015       13      -14 
+              6     1   0.4286081 1531  9900015       13       16 
+
+     130  K_L0                                1   0   0    0.49761    0.00000    0.49761    0.49761  1.53300e+04   0   0   0   1   0
+              0     1   0.1952278    0      111      111      111 
+              1     1   0.1254178    0      211     -211      111 
+              2     1   0.2027688   22      -12       11      211 
+              3     1   0.2027688   22       12      -11     -211 
+              4     1   0.1352191   22      -14       13      211 
+              5     1   0.1352191   22       14      -13     -211 
+              6     1   0.0019673    0      211     -211 
+              7     1   0.0008641    0      111      111 
+              8     1   0.0005471    0       22       22 
+
+     211  pi+              pi-                1   3   0    0.13957    0.00000    0.13957    0.13957  7.80450e+03   0   0   0   1   0
+              0     1   0.9998770    0      -13       14 
+              1     1   0.0001230    0      -11       12 
+
+     310  K_S0                                1   0   0    0.49761    0.00000    0.49761    0.49761  2.68420e+01   0   0   0   1   0
+              0     1   0.6922420    0      211     -211 
+              1     1   0.3070073    0      111      111 
+              2     1   0.0000479   12      211     -211       11      -11 
+              3     1   0.0003501   22      -12       11      211 
+              4     1   0.0003501   22       12      -11     -211 
+              5     1   0.0000026    0       22       22 
+
+     321  K+               K-                 1   3   0    0.49368    0.00000    0.49368    0.49368  3.71300e+03   0   0   0   1   0
+              0     1   0.6355250    0      -13       14 
+              1     1   0.0000158    0      -11       12 
+              2     1   0.2066081    0      211      111 
+              3     1   0.0559022    0      211      211     -211 
+              4     1   0.0176107    0      211      111      111 
+              5     1   0.0507020   22       12      -11      111 
+              6     1   0.0335313   22       14      -13      111 
+              7     1   0.0000220    0      -11       12      111      111 
+              8     1   0.0000409    0      -11       12      211     -211 
+              9     1   0.0000140    0      -13       14      111      111 
+             10     1   0.0000280    0      -13       14      211     -211 
+
+     411  D+               D-                 1   3   0    1.86962    0.00000    1.86962    1.86962  3.11800e-01   0   1   0   1   0
+              0     1   0.0601713    0  9900015      -13 
+              1     1   0.0037016    0  9900015      -11 
+              2     1   0.0010810   22      -11  9900015     -311 
+              3     1   0.0142622   22      -13  9900015     -311 
+              4     1   0.9207840    0       22      -11 
+
+     421  D0               Dbar0              1   0   0    1.86486    0.00000    1.86486    1.86486  1.22900e-01   0   1   0   1   0
+              0     1   0.0004213   22      -11  9900015     -321 
+              1     1   0.0055549   22      -13  9900015     -321 
+              2     1   0.9940237    0       22       22 
+
+     431  D_s+             D_s-               1   3   0    1.96849    0.00000    1.96849    1.96849  1.49900e-01   0   1   0   1   0
+              0     1   0.9280184    0  9900015      -13 
+              1     1   0.0571025    0  9900015      -11 
+              2     1   0.0005520   22      -11  9900015      221 
+              3     1   0.0077723   22      -13  9900015      221 
+              4     1   0.0065547    0      -15       16 
+
+    2112  n0               nbar0              2   0   0    0.93957    0.00000    0.93957    0.93957  2.65500e+14   0   0   0   1   0
+              0     1   1.0000000   22      -12       11     2212 
+
+    3112  Sigma-           Sigmabar+          2  -3   0    1.19745    0.00000    1.19745    1.19745  4.43400e+01   0   0   0   1   0
+              0     1   0.9984757    0     2112     -211 
+              1     1   0.0010170   22      -12       11     2112 
+              2     1   0.0004500   22      -14       13     2112 
+              3     1   0.0000573   22      -12       11     3122 
+
+    3122  Lambda0          Lambdabar0         2   0   0    1.11568    0.00000    1.11568    1.11568  7.89000e+01   0   0   0   1   0
+              0     1   0.6391668    0     2212     -211 
+              1     1   0.3580935    0     2112      111 
+              2     1   0.0017505    0     2112       22 
+              3     1   0.0008322   22      -12       11     2212 
+              4     1   0.0001570   22      -14       13     2212 
+
+    3222  Sigma+           Sigmabar-          2   3   0    1.18937    0.00000    1.18937    1.18937  2.40400e+01   0   0   0   1   0
+              0     1   0.5156743    0     2212      111 
+              1     1   0.4830758    0     2112      211 
+              2     1   0.0012299    0     2212       22 
+              3     1   0.0000200   22      -11       12     3122 
+
+    3312  Xi-              Xibar+             2  -3   0    1.32171    0.00000    1.32171    1.32171  4.91000e+01   0   0   0   1   0
+              0     1   0.9988730    0     3122     -211 
+              1     1   0.0001270    0     3112       22 
+              2     1   0.0005630   22      -12       11     3122 
+              3     1   0.0003500   22      -14       13     3122 
+              4     1   0.0000870   22      -12       11     3212 
+
+    3322  Xi0              Xibar0             2   0   0    1.31486    0.00000    1.31486    1.31486  8.71000e+01   0   0   0   1   0
+              0     1   0.9952424    0     3122      111 
+              1     1   0.0011700    0     3122       22 
+              2     1   0.0033300    0     3212       22 
+              3     1   0.0002530   22      -12       11     3222 
+              4     1   0.0000046   22      -14       13     3222 
+
+    3334  Omega-           Omegabar+          4  -3   0    1.67245    0.00000    1.67245    1.67245  2.46100e+01   0   0   0   1   0
+              0     1   0.6737955    0     3122     -321 
+              1     1   0.2345365    0     3322     -211 
+              2     1   0.0854667    0     3312      111 
+              3     1   0.0006360    0     3324     -211 
+              4     1   0.0055653   22      -12       11     3322 
+
+    4122  Lambda_c+        Lambda_cbar-       2   3   0    2.28646    0.00000    2.28646    2.28646  5.99000e-02   0   1   0   1   0
+              0     1   0.0000252   22      -11  9900015     3122 
+              1     1   0.0001428   22      -13  9900015     3122 
+              2     1   0.9998321    0       22      -11 
+
+    4132  Xi_c0            Xi_cbar0           2   0   0    2.47088    0.00000    2.47088    2.47088  3.36000e-02   0   1   0   1   0
+              0     1   0.0000050   22      -11  9900015    -3312 
+              1     1   0.0000361   22      -13  9900015    -3312 
+              2     1   0.9999590    0       22       22 
+
+ 9900015  N2               N2                 2   0   0    1.00000    0.00000    1.00000    1.00000  6.44394e+07   0   1   0   1   0
+              0     1   0.0941122    0      211       13 
+              1     1   0.0941122    0     -211      -13 
+
+ --------  End PYTHIA Particle Data Table  -----------------------------------------------------------------------------------------
+
+
+**********************************************
+    GEANT4 Geometry statistics: 
+           1316 logical volumes
+          230963 physical volumes
+             31 materials
+             27 user limits
+            712 sensitive detectors
+**********************************************
+
+[INFO] Monte Carlo Engine Initialisation with: TGeant4
+[INFO] FairGenericVMCConfig::SetupPostInit() OFF.
+[INFO] x limits: -500, 500, dx = 10
+[INFO] y limits: -500, 500, dy = 10
+[INFO] z limits: -750, 750, dz = 10
+[INFO] Offsets: x = 0, y = 0, z = 8957
+[INFO] Angles : phi = 0, theta = 0, psi = 0
+[INFO] Total number of bins = 1540351; Nx = 101, Ny = 101, Nz = 151
+[INFO] x limits: 0, 209.961, dx = 1.99963
+[INFO] y limits: 0, 200, dy = 2
+[INFO] z limits: -50, 3100, dz = 5
+[INFO] Offsets: x = 0, y = 0, z = 204
+[INFO] Angles : phi = 0, theta = 0, psi = 0
+[INFO] Total number of bins = 6755486; Nx = 106, Ny = 101, Nz = 631
+Adding field MainSpecMap
+Adding field muonShieldField
+Setting the Global field
+Adding field TotalField to Global
+[INFO] FairMCApplication::InitGeometry: 0
+ G4ChordFinder: stepperDriverId: 2
+ G4ChordFinder: stepperDriverId: 2
+
+-------- WWWW ------- G4Exception-START -------- WWWW -------
+*** G4Exception : GeomFieldParameters0001
+      issued by : G4FieldBuilder::ConstructField:
+Field was already constructed.
+*** This is just a warning message. ***
+-------- WWWW -------- G4Exception-END --------- WWWW -------
+
+
+GammaToMuPair:  gamma->mu+mu- Bethe Heitler process, SubType= 15
+        good cross section parametrization from 211.317 MeV to 1e+12 GeV for all Z.
+        cross section factor: 1
+
+AnnihiToMuPair:  e+e->mu+mu- annihilation, atomic e- at rest, SubType=6
+        threshold at 43.6931 GeV good description up to 1000 TeV for all Z.
+
+AnnihiToTauPair:  e+e->tau+tau- annihilation, atomic e- at rest, SubType=18
+        threshold at 12357.1 GeV good description up to 1000 TeV for all Z.
+======================================================================
+======          Radioactive Decay Physics Parameters           =======
+======================================================================
+min MeanLife (from G4NuclideTable)                1 ns 
+Max life time (from G4DeexPrecoParameters)        1000 ps 
+Internal e- conversion flag                       1
+Stored internal conversion coefficients           1
+Enabled atomic relaxation mode                    1
+Enable correlated gamma emission                  0
+Max 2J for sampling of angular correlations       10
+Atomic de-excitation enabled                      1
+Auger electron emission enabled                   1
+Check EM cuts disabled for atomic de-excitation   1
+Use Bearden atomic level energies                 0
+Use ANSTO fluorescence model                      0
+Threshold for very long decay time at rest        1 y  
+======================================================================
+
+=======================================================
+======       ParticleHP Physics Parameters     ========
+=======================================================
+ Use only photo-evaporation      0
+ Skip missing isotopes           0
+ Neglect Doppler                 0
+ Do not adjust final state       0
+ Produce fission fragments       0
+ Use WendtFissionModel           0
+ Use NRESP71Model                0
+ Use DBRC                        0
+ PHP use Poisson                 0
+ PHP check                       1
+ CHECK HP NAMES                  0
+ Enable DEBUG                    0
+ Use probability tables from     
+=======================================================
+
+
+====================================================================
+                  HADRONIC PROCESSES SUMMARY (verbose level 1)
+-----------------------------------------------------------------------
+                           Hadronic Processes for B-
+  Process: hadElastic
+        Model:              hElasticLHEP: 0 eV  ---> 100 TeV
+     Cr_sctns:            Glauber-Gribov: 0 eV  ---> 100 TeV
+  Process: B-Inelastic
+        Model:                      FTFP: 0 eV  ---> 100 TeV
+     Cr_sctns:            Glauber-Gribov: 0 eV  ---> 100 TeV
+-----------------------------------------------------------------------
+                           Hadronic Processes for D-
+  Process: hadElastic
+        Model:              hElasticLHEP: 0 eV  ---> 100 TeV
+     Cr_sctns:            Glauber-Gribov: 0 eV  ---> 100 TeV
+  Process: D-Inelastic
+        Model:                      FTFP: 0 eV  ---> 100 TeV
+     Cr_sctns:            Glauber-Gribov: 0 eV  ---> 100 TeV
+-----------------------------------------------------------------------
+                           Hadronic Processes for GenericIon
+  Process: ionInelastic
+        Model:  Binary Light Ion Cascade: 0 eV /n ---> 6 GeV/n
+        Model:                      FTFP: 3 GeV/n ---> 100 TeV/n
+     Cr_sctns:  Glauber-Gribov Nucl-nucl: 0 eV  ---> 25.6 PeV
+  Process: RadioactiveDecay
+-----------------------------------------------------------------------
+                           Hadronic Processes for He3
+  Process: hadElastic
+        Model:              hElasticLHEP: 0 eV /n ---> 100 TeV/n
+     Cr_sctns:  Glauber-Gribov Nucl-nucl: 0 eV  ---> 25.6 PeV
+  Process: He3Inelastic
+        Model:  Binary Light Ion Cascade: 0 eV /n ---> 6 GeV/n
+        Model:                      FTFP: 3 GeV/n ---> 100 TeV/n
+     Cr_sctns:  Glauber-Gribov Nucl-nucl: 0 eV  ---> 25.6 PeV
+-----------------------------------------------------------------------
+                           Hadronic Processes for alpha
+  Process: hadElastic
+        Model:              hElasticLHEP: 0 eV /n ---> 100 TeV/n
+     Cr_sctns:  Glauber-Gribov Nucl-nucl: 0 eV  ---> 25.6 PeV
+  Process: alphaInelastic
+        Model:  Binary Light Ion Cascade: 0 eV /n ---> 6 GeV/n
+        Model:                      FTFP: 3 GeV/n ---> 100 TeV/n
+     Cr_sctns:  Glauber-Gribov Nucl-nucl: 0 eV  ---> 25.6 PeV
+-----------------------------------------------------------------------
+                           Hadronic Processes for anti_He3
+  Process: hadElastic
+        Model:              hElasticLHEP: 0 eV /n ---> 100.1 MeV/n
+        Model:              AntiAElastic: 100 MeV/n ---> 100 TeV/n
+     Cr_sctns:              AntiAGlauber: 0 eV  ---> 25.6 PeV
+  Process: anti_He3Inelastic
+        Model:                      FTFP: 0 eV /n ---> 100 TeV/n
+     Cr_sctns:              AntiAGlauber: 0 eV  ---> 25.6 PeV
+  Process: hFritiofCaptureAtRest
+-----------------------------------------------------------------------
+                           Hadronic Processes for anti_alpha
+  Process: hadElastic
+        Model:              hElasticLHEP: 0 eV /n ---> 100.1 MeV/n
+        Model:              AntiAElastic: 100 MeV/n ---> 100 TeV/n
+     Cr_sctns:              AntiAGlauber: 0 eV  ---> 25.6 PeV
+  Process: anti_alphaInelastic
+        Model:                      FTFP: 0 eV /n ---> 100 TeV/n
+     Cr_sctns:              AntiAGlauber: 0 eV  ---> 25.6 PeV
+  Process: hFritiofCaptureAtRest
+-----------------------------------------------------------------------
+                           Hadronic Processes for anti_deuteron
+  Process: hadElastic
+        Model:              hElasticLHEP: 0 eV /n ---> 100.1 MeV/n
+        Model:              AntiAElastic: 100 MeV/n ---> 100 TeV/n
+     Cr_sctns:              AntiAGlauber: 0 eV  ---> 25.6 PeV
+  Process: anti_deuteronInelastic
+        Model:                      FTFP: 0 eV /n ---> 100 TeV/n
+     Cr_sctns:              AntiAGlauber: 0 eV  ---> 25.6 PeV
+  Process: hFritiofCaptureAtRest
+-------------------------------------------------------------------------
+                           Hadronic Processes for anti_hypertriton
+  Process: hFritiofCaptureAtRest
+-----------------------------------------------------------------------
+                           Hadronic Processes for anti_lambda
+  Process: hadElastic
+        Model:              hElasticLHEP: 0 eV  ---> 100 TeV
+     Cr_sctns:            Glauber-Gribov: 0 eV  ---> 100 TeV
+  Process: anti_lambdaInelastic
+        Model:                      FTFP: 0 eV  ---> 100 TeV
+     Cr_sctns:            Glauber-Gribov: 0 eV  ---> 100 TeV
+  Process: hFritiofCaptureAtRest
+-----------------------------------------------------------------------
+                           Hadronic Processes for anti_neutron
+  Process: hadElastic
+        Model:              hElasticLHEP: 0 eV  ---> 100.1 MeV
+        Model:              AntiAElastic: 100 MeV ---> 100 TeV
+     Cr_sctns:              AntiAGlauber: 0 eV  ---> 25.6 PeV
+  Process: anti_neutronInelastic
+        Model:                      FTFP: 0 eV  ---> 100 TeV
+     Cr_sctns:              AntiAGlauber: 0 eV  ---> 25.6 PeV
+  Process: hFritiofCaptureAtRest
+-----------------------------------------------------------------------
+                           Hadronic Processes for anti_proton
+  Process: hadElastic
+        Model:              hElasticLHEP: 0 eV  ---> 100.1 MeV
+        Model:              AntiAElastic: 100 MeV ---> 100 TeV
+     Cr_sctns:              AntiAGlauber: 0 eV  ---> 25.6 PeV
+  Process: anti_protonInelastic
+        Model:                      FTFP: 0 eV  ---> 100 TeV
+     Cr_sctns:              AntiAGlauber: 0 eV  ---> 25.6 PeV
+  Process: hFritiofCaptureAtRest
+-----------------------------------------------------------------------
+                           Hadronic Processes for anti_triton
+  Process: hadElastic
+        Model:              hElasticLHEP: 0 eV /n ---> 100.1 MeV/n
+        Model:              AntiAElastic: 100 MeV/n ---> 100 TeV/n
+     Cr_sctns:              AntiAGlauber: 0 eV  ---> 25.6 PeV
+  Process: anti_tritonInelastic
+        Model:                      FTFP: 0 eV /n ---> 100 TeV/n
+     Cr_sctns:              AntiAGlauber: 0 eV  ---> 25.6 PeV
+  Process: hFritiofCaptureAtRest
+-----------------------------------------------------------------------
+                           Hadronic Processes for deuteron
+  Process: hadElastic
+        Model:              hElasticLHEP: 0 eV /n ---> 100 TeV/n
+     Cr_sctns:  Glauber-Gribov Nucl-nucl: 0 eV  ---> 25.6 PeV
+  Process: dInelastic
+        Model:  Binary Light Ion Cascade: 0 eV /n ---> 6 GeV/n
+        Model:                      FTFP: 3 GeV/n ---> 100 TeV/n
+     Cr_sctns:  Glauber-Gribov Nucl-nucl: 0 eV  ---> 25.6 PeV
+-----------------------------------------------------------------------
+                           Hadronic Processes for e+
+  Process: positronNuclear
+        Model:   G4ElectroVDNuclearModel: 0 eV  ---> 1 PeV
+     Cr_sctns:          ElectroNuclearXS: 0 eV  ---> 100 TeV
+-----------------------------------------------------------------------
+                           Hadronic Processes for e-
+  Process: electronNuclear
+        Model:   G4ElectroVDNuclearModel: 0 eV  ---> 1 PeV
+     Cr_sctns:          ElectroNuclearXS: 0 eV  ---> 100 TeV
+-----------------------------------------------------------------------
+                           Hadronic Processes for kaon+
+  Process: hadElastic
+        Model:              hElasticLHEP: 0 eV  ---> 100 TeV
+     Cr_sctns:            Glauber-Gribov: 0 eV  ---> 100 TeV
+  Process: kaon+Inelastic
+        Model:                      FTFP: 3 GeV ---> 100 TeV
+        Model:            BertiniCascade: 0 eV  ---> 6 GeV
+     Cr_sctns:            Glauber-Gribov: 0 eV  ---> 100 TeV
+-----------------------------------------------------------------------
+                           Hadronic Processes for kaon-
+  Process: hadElastic
+        Model:              hElasticLHEP: 0 eV  ---> 100 TeV
+     Cr_sctns:            Glauber-Gribov: 0 eV  ---> 100 TeV
+  Process: kaon-Inelastic
+        Model:                      FTFP: 3 GeV ---> 100 TeV
+        Model:            BertiniCascade: 0 eV  ---> 6 GeV
+     Cr_sctns:            Glauber-Gribov: 0 eV  ---> 100 TeV
+  Process: hBertiniCaptureAtRest
+-----------------------------------------------------------------------
+                           Hadronic Processes for lambda
+  Process: hadElastic
+        Model:              hElasticLHEP: 0 eV  ---> 100 TeV
+     Cr_sctns:            Glauber-Gribov: 0 eV  ---> 100 TeV
+  Process: lambdaInelastic
+        Model:                      FTFP: 3 GeV ---> 100 TeV
+        Model:            BertiniCascade: 0 eV  ---> 6 GeV
+     Cr_sctns:            Glauber-Gribov: 0 eV  ---> 100 TeV
+-----------------------------------------------------------------------
+                           Hadronic Processes for mu+
+  Process: muonNuclear
+        Model:      G4MuonVDNuclearModel: 0 eV  ---> 1 PeV
+     Cr_sctns:     KokoulinMuonNuclearXS: 0 eV  ---> 100 TeV
+-----------------------------------------------------------------------
+                           Hadronic Processes for mu-
+  Process: muonNuclear
+        Model:      G4MuonVDNuclearModel: 0 eV  ---> 1 PeV
+     Cr_sctns:     KokoulinMuonNuclearXS: 0 eV  ---> 100 TeV
+  Process: muMinusCaptureAtRest
+-----------------------------------------------------------------------
+                           Hadronic Processes for neutron
+  Process: hadElastic
+        Model:             hElasticCHIPS: 19.5 MeV ---> 100 TeV
+        Model:          NeutronHPElastic: 0 eV  ---> 20 MeV
+     Cr_sctns:        NeutronHPElasticXS: 0 eV  ---> 20 MeV
+     Cr_sctns:        G4NeutronElasticXS: 0 eV  ---> 100 TeV
+  Process: neutronInelastic
+        Model:                      FTFP: 3 GeV ---> 100 TeV
+        Model:            BertiniCascade: 19.9 MeV ---> 6 GeV
+        Model:        NeutronHPInelastic: 0 eV  ---> 20 MeV
+     Cr_sctns:      NeutronHPInelasticXS: 0 eV  ---> 20 MeV
+     Cr_sctns:      G4NeutronInelasticXS: 0 eV  ---> 100 TeV
+  Process: nCapture
+        Model:             nRadCaptureHP: 0 eV  ---> 20 MeV
+        Model:               nRadCapture: 19.9 MeV ---> 100 TeV
+     Cr_sctns:        NeutronHPCaptureXS: 0 eV  ---> 100 TeV
+     Cr_sctns:        G4NeutronCaptureXS: 0 eV  ---> 100 TeV
+  Process: nFission
+        Model:          NeutronHPFission: 0 eV  ---> 20 MeV
+        Model:                G4LFission: 19.9 MeV ---> 100 TeV
+     Cr_sctns:        NeutronHPFissionXS: 0 eV  ---> 20 MeV
+     Cr_sctns:                    ZeroXS: 0 eV  ---> 100 TeV
+-----------------------------------------------------------------------
+                           Hadronic Processes for pi+
+  Process: hadElastic
+        Model:           hElasticGlauber: 0 eV  ---> 100 TeV
+     Cr_sctns:  BarashenkovGlauberGribov: 0 eV  ---> 100 TeV
+  Process: pi+Inelastic
+        Model:                      FTFP: 3 GeV ---> 100 TeV
+        Model:            BertiniCascade: 0 eV  ---> 6 GeV
+     Cr_sctns:  BarashenkovGlauberGribov: 0 eV  ---> 100 TeV
+-----------------------------------------------------------------------
+                           Hadronic Processes for pi-
+  Process: hadElastic
+        Model:           hElasticGlauber: 0 eV  ---> 100 TeV
+     Cr_sctns:  BarashenkovGlauberGribov: 0 eV  ---> 100 TeV
+  Process: pi-Inelastic
+        Model:                      FTFP: 3 GeV ---> 100 TeV
+        Model:            BertiniCascade: 0 eV  ---> 6 GeV
+     Cr_sctns:  BarashenkovGlauberGribov: 0 eV  ---> 100 TeV
+  Process: hBertiniCaptureAtRest
+-----------------------------------------------------------------------
+                           Hadronic Processes for proton
+  Process: hadElastic
+        Model:             hElasticCHIPS: 0 eV  ---> 100 TeV
+     Cr_sctns:  BarashenkovGlauberGribov: 0 eV  ---> 100 TeV
+  Process: protonInelastic
+        Model:                      FTFP: 3 GeV ---> 100 TeV
+        Model:            BertiniCascade: 0 eV  ---> 6 GeV
+     Cr_sctns:  BarashenkovGlauberGribov: 0 eV  ---> 100 TeV
+-----------------------------------------------------------------------
+                           Hadronic Processes for sigma-
+  Process: hadElastic
+        Model:              hElasticLHEP: 0 eV  ---> 100 TeV
+     Cr_sctns:            Glauber-Gribov: 0 eV  ---> 100 TeV
+  Process: sigma-Inelastic
+        Model:                      FTFP: 3 GeV ---> 100 TeV
+        Model:            BertiniCascade: 0 eV  ---> 6 GeV
+     Cr_sctns:            Glauber-Gribov: 0 eV  ---> 100 TeV
+  Process: hBertiniCaptureAtRest
+-----------------------------------------------------------------------
+                           Hadronic Processes for triton
+  Process: hadElastic
+        Model:              hElasticLHEP: 0 eV /n ---> 100 TeV/n
+     Cr_sctns:  Glauber-Gribov Nucl-nucl: 0 eV  ---> 25.6 PeV
+  Process: tInelastic
+        Model:  Binary Light Ion Cascade: 0 eV /n ---> 6 GeV/n
+        Model:                      FTFP: 3 GeV/n ---> 100 TeV/n
+     Cr_sctns:  Glauber-Gribov Nucl-nucl: 0 eV  ---> 25.6 PeV
+  Process: RadioactiveDecay
+=======================================================================
+======       Geant4 Native Pre-compound Model Parameters       ========
+=======================================================================
+Type of pre-compound model                          0
+Type of pre-compound inverse x-section              1
+Pre-compound model active                           1
+Pre-compound excitation low energy                  0.1 MeV 
+Pre-compound excitation high energy                 15 MeV 
+Angular generator for pre-compound model            1
+Use NeverGoBack option for pre-compound model       0
+Use SoftCutOff option for pre-compound model        0
+Use CEM transitions for pre-compound model          1
+Use GNASH transitions for pre-compound model        0
+Use HETC submodel for pre-compound model            0
+=======================================================================
+======       Nuclear De-excitation Module Parameters           ========
+=======================================================================
+Type of de-excitation inverse x-section             3
+Type of de-excitation factory                       Evaporation+GEM
+Number of de-excitation channels                    68
+Type of Fermi BreakUp model                         ModelVI
+Min excitation energy                               0.01 keV 
+Min energy per nucleon for multifragmentation       2e+05 MeV
+Level density (1/MeV)                               0.075
+Use simple level density model                      1
+Use discrete excitation energy of the residual      0
+Time limit for long lived isomeres                  1 ns 
+Isomer production flag                              1
+Internal e- conversion flag                         1
+Store e- internal conversion data                   1
+Correlated gamma emission flag                      0
+Max 2J for sampling of angular correlations         10
+=======================================================================
+ PYTHIA Warning in Pythia::check: not quite matched particle energy/momentum/mass
+
+ --------  PYTHIA Event Listing  (complete event)  ---------------------------------------------------------------------------------
+ 
+    no         id  name            status     mothers   daughters     colours      p_x        p_y        p_z         e          m 
+     0         90  (system)           -11     0     0     0     0     0     0      0.233      1.128     50.285     50.333      1.869
+     1        411  D+                   1     0     0     0     0     0     0      0.233      1.128     50.285     50.333      1.869
+                                   Charge sum:  1.000           Momentum sum:      0.233      1.128     50.285     50.333      1.869
+
+ --------  End PYTHIA Event Listing  -----------------------------------------------------------------------------------------------
+
+ --------  PYTHIA Event Listing  (complete event)  ---------------------------------------------------------------------------------
+ 
+    no         id  name            status     mothers   daughters     colours      p_x        p_y        p_z         e          m 
+     0         90  (system)           -11     0     0     0     0     0     0      0.233      1.128     50.285     50.333      1.869
+     1        411  (D+)                -1     0     0     2     3     0     0      0.233      1.128     50.285     50.333      1.869
+     2         22  gamma               91     1     0     0     0     0     0      0.383      1.429     48.051     48.074      0.000
+     3        -11  e+                  91     1     0     0     0     0     0     -0.150     -0.301      2.234      2.259      0.001
+                                   Charge sum:  1.000           Momentum sum:      0.233      1.128     50.285     50.333      1.869
+
+ --------  End PYTHIA Event Listing  -----------------------------------------------------------------------------------------------
+[INFO] ship event 0 / pythia event-nr 41
+[DEBUG] (Event 1) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 1 (MC 0)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 2) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 2 (MC 1)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 3) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 3 (MC 2)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 4) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 4 (MC 3)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 5) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 5 (MC 4)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 6) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 6 (MC 5)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 7) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 7 (MC 6)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 8) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 8 (MC 7)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 9) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 9 (MC 8)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 10) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 10 (MC 9)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 11) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 11 (MC 10)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 12) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 12 (MC 11)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 13) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 13 (MC 12)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 14) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 14 (MC 13)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 15) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 15 (MC 14)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 16) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 16 (MC 15)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 17) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 17 (MC 16)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 18) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 18 (MC 17)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 19) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 19 (MC 18)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 20) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 20 (MC 19)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 21) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 21 (MC 20)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 22) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 22 (MC 21)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 23) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 23 (MC 22)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 24) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 24 (MC 23)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 25) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 25 (MC 24)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 26) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 26 (MC 25)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 27) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 27 (MC 26)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 28) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 28 (MC 27)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 29) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 29 (MC 28)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 30) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 30 (MC 29)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 31) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 31 (MC 30)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 32) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 32 (MC 31)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 33) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 33 (MC 32)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 34) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 34 (MC 33)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 35) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 35 (MC 34)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 36) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 36 (MC 35)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 37) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 37 (MC 36)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 38) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 38 (MC 37)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 39) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 39 (MC 38)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 40) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 40 (MC 39)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 41) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+
+-------- WWWW ------- G4Exception-START -------- WWWW -------
+*** G4Exception : part0005
+      issued by : G4PrimaryParticle::Set4Momentum
+Primary particle PDG=-13 deltaMass(MeV)=1.64106 is larger than the tolerance(MeV)=1
+ Specified mass(MeV)=104.017 while PDG mass(MEV)=105.658
+ To change the tolerance or the exception severity, use G4PrimaryTransformer::SetKETolerance() method.
+*** This is just a warning message. ***
+-------- WWWW -------- G4Exception-END --------- WWWW -------
+
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 41 (MC 40)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 42) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+
+-------- WWWW ------- G4Exception-START -------- WWWW -------
+*** G4Exception : part0005
+      issued by : G4PrimaryParticle::Set4Momentum
+Primary particle PDG=211 deltaMass(MeV)=1.76146 is larger than the tolerance(MeV)=1
+ Specified mass(MeV)=141.332 while PDG mass(MEV)=139.57
+ To change the tolerance or the exception severity, use G4PrimaryTransformer::SetKETolerance() method.
+*** This is just a warning message. ***
+-------- WWWW -------- G4Exception-END --------- WWWW -------
+
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 42 (MC 41)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 43) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 43 (MC 42)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 44) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 44 (MC 43)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 45) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 45 (MC 44)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 46) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 46 (MC 45)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 47) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 47 (MC 46)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 48) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 48 (MC 47)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 49) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 49 (MC 48)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 50) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 50 (MC 49)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 51) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 51 (MC 50)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 52) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 52 (MC 51)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 53) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 53 (MC 52)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 54) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 54 (MC 53)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 55) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 55 (MC 54)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 56) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 56 (MC 55)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 57) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 57 (MC 56)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 58) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 58 (MC 57)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 59) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 59 (MC 58)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 60) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 60 (MC 59)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 61) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 61 (MC 60)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 62) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 62 (MC 61)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 63) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 63 (MC 62)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 64) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 64 (MC 63)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 65) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 65 (MC 64)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 66) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 66 (MC 65)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 67) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 67 (MC 66)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 68) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 68 (MC 67)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 69) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 69 (MC 68)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 70) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 70 (MC 69)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 71) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 71 (MC 70)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 72) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 72 (MC 71)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 73) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 73 (MC 72)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 74) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 74 (MC 73)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 75) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 75 (MC 74)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 76) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 76 (MC 75)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 77) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 77 (MC 76)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 78) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 78 (MC 77)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 79) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 79 (MC 78)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 80) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+
+-------- WWWW ------- G4Exception-START -------- WWWW -------
+*** G4Exception : part0005
+      issued by : G4PrimaryParticle::Set4Momentum
+Primary particle PDG=-211 deltaMass(MeV)=7.61907 is larger than the tolerance(MeV)=1
+ Specified mass(MeV)=147.189 while PDG mass(MEV)=139.57
+ To change the tolerance or the exception severity, use G4PrimaryTransformer::SetKETolerance() method.
+*** This is just a warning message. ***
+-------- WWWW -------- G4Exception-END --------- WWWW -------
+
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 80 (MC 79)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 81) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 81 (MC 80)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 82) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 82 (MC 81)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 83) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 83 (MC 82)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 84) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 84 (MC 83)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 85) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 85 (MC 84)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 86) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 86 (MC 85)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 87) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 87 (MC 86)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 88) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 88 (MC 87)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 89) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 89 (MC 88)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 90) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 90 (MC 89)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 91) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+
+-------- WWWW ------- G4Exception-START -------- WWWW -------
+*** G4Exception : part0005
+      issued by : G4PrimaryParticle::Set4Momentum
+Primary particle PDG=-13 deltaMass(MeV)=1.11581 is larger than the tolerance(MeV)=1
+ Specified mass(MeV)=104.543 while PDG mass(MEV)=105.658
+ To change the tolerance or the exception severity, use G4PrimaryTransformer::SetKETolerance() method.
+*** This is just a warning message. ***
+-------- WWWW -------- G4Exception-END --------- WWWW -------
+
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 91 (MC 90)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 92) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 92 (MC 91)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 93) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 93 (MC 92)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 94) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 94 (MC 93)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 95) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 95 (MC 94)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 96) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 96 (MC 95)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 97) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 97 (MC 96)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 98) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 98 (MC 97)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 99) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 99 (MC 98)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] (Event 100) 5 primary tracks from vertex (0, 0, 0) with beam angle (0, 0) 
+[DEBUG] [0 FairMCMCApplication::FinishEvent: 100 (MC 99)
+[DEBUG] ShipStack: Filling MCTrack array...
+[DEBUG] ShipStack: Updating track indizes...
+[DEBUG] ...stack and  9 collections updated.
+[DEBUG] FairMCMCApplication::FinishRun() start
+[DEBUG] FairRootFileSink::Write to file: ./sim_ci-test.root
+[DEBUG] Done FairMCMCApplication::FinishRun()
+[DEBUG] RuntimeDb: write container: FairBaseParSet
+[INFO] ***  FairBaseParSet written to ROOT file   version: 1
+[DEBUG] RuntimeDb: write container: FairGeoParSet
+[INFO] ***  FairGeoParSet written to ROOT file   version: 1
+['tungsten', 'tungsten', 'tungsten', 'tungsten', 'tungsten', 'tungsten', 'tungsten', 'tungsten', 'tungsten', 'tungsten', 'tungsten', 'tungsten', 'tungsten', 'tungsten', 'tungsten', 'tungsten', 'tungsten', 'tungsten', 'tungsten'] [4.5, 1.8, 1.7, 1.7, 1.8, 1.9, 2.1, 1.9, 2.1, 2.4, 2.8, 3.3, 4.1, 5.6, 8.8, 17.2, 28.7, 28.8, 28.8] [0.45, 0.45, 0.45, 0.45, 0.45, 0.45, 0.45, 0.45, 0.45, 0.45, 0.45, 0.45, 0.45, 0.45, 0.48, 0.5, 0.68, 0.68, 0]
+SiliconTarget zPosition set to  2605.02
+Generating HNL events of mass 1.000 GeV
+and with couplings= [4.47e-10, 7.15e-09, 1.88e-09]
+Pythia8 configuration: Made mu- stable for Pythia, should decay in Geant4
+Pythia8 configuration: Made K_L0 stable for Pythia, should decay in Geant4
+Pythia8 configuration: Made pi+ stable for Pythia, should decay in Geant4
+Pythia8 configuration: Made K_S0 stable for Pythia, should decay in Geant4
+Pythia8 configuration: Made K+ stable for Pythia, should decay in Geant4
+Pythia8 configuration: Made n0 stable for Pythia, should decay in Geant4
+Pythia8 configuration: Made Sigma- stable for Pythia, should decay in Geant4
+Pythia8 configuration: Made Lambda0 stable for Pythia, should decay in Geant4
+Pythia8 configuration: Made Sigma+ stable for Pythia, should decay in Geant4
+Pythia8 configuration: Made Xi- stable for Pythia, should decay in Geant4
+Pythia8 configuration: Made Xi0 stable for Pythia, should decay in Geant4
+Pythia8 configuration: Made Omega- stable for Pythia, should decay in Geant4
+HNLbranchings instance initialized with couplings:
+	U2e   = 4.47e-10
+	U2mu  = 7.15e-09
+	U2tau = 1.88e-09
+and mass:
+	m = 1.0 GeV
+HNL ctau 6443943.553548283
+One simulated event per 4.671e+08 meson decays
+Using TEvtGenDecayer for J/psi and quarkonium decays with EvtGen
+Calling addVMCFields
+ 
+Macro finished successfully.
+number of retries (no HNL produced)  2566
+number of geometric rejections (outside vessel acceptance)  183
+Output file is  ./sim_ci-test.root
+Parameter file is  ./params_ci-test.root
+Geometry file is  ./geo_ci-test.root
+========================================================================
+Simulation finished successfully
+========================================================================
+[DEBUG] Enter Destructor of FairRunSim 
+[DEBUG] Start deleting all registered modules
+[DEBUG] Finish deleting all registered modules
+[DEBUG] Enter Destructor of FairRun
+[DEBUG] RuntimeDb: write container: FairBaseParSet
+[DEBUG] RuntimeDb: write container: FairGeoParSet
+[DEBUG] Leave Destructor of FairRun
+[DEBUG] Enter Destructor of FairLinkManager
+[DEBUG] Leave Destructor of FairLinkManager
+[DEBUG] Enter Destructor of FairRootManager
+[DEBUG] removed RTDB container factory FairBaseContFact

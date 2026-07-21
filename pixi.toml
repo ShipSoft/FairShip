@@ -29,8 +29,6 @@ numpy = "*"
 scipy = "*"
 matplotlib = "*"
 pandas = "*"
-pytest = "*"
-pytest-xdist = "*"
 pyyaml = "*"
 tabulate = "*"
 
@@ -71,7 +69,9 @@ configure = { cmd = """cmake -S . -B build -G Ninja \
     "-DCMAKE_CXX_FLAGS=-isystem $CONDA_PREFIX/include/geant4vmc -isystem $CONDA_PREFIX/include/Geant4" """ }
 build = { cmd = "cmake --build build -j$(nproc)", depends-on = ["configure"] }
 install = { cmd = "cmake --install build", depends-on = ["build"] }
-test = { cmd = "ctest --test-dir build --output-on-failure", depends-on = ["build"] }
+test = { cmd = "ctest --test-dir build --output-on-failure -LE regression", depends-on = ["build"] }
+test-fairship = { cmd = "ctest --test-dir build --output-on-failure --parallel 4 -L regression", depends-on = ["build"] }
+regenerate-fairship-references = { cmd = "tests/fairship_tests/regenerate_references.sh", depends-on = ["build"]  }
 
 # --- CI sim-chain tasks ---
 # Mirror the per-step commands in .github/workflows/build-run.yml so the

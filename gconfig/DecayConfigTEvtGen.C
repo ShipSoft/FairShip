@@ -9,6 +9,14 @@ void DecayConfig() {
   // Create the custom EvtGen decayer
   TEvtGenDecayer* decayer = new TEvtGenDecayer();
 
+  // run_simScript exports the resolved command-line seed before VMC loads this
+  // macro. Pass it explicitly so initialization cannot advance the ROOT RNG
+  // and silently change the EvtGen/Pythia8-decayer seed.
+  TString RandomSeed = gSystem->Getenv("FAIRSHIP_RANDOM_SEED");
+  if (!RandomSeed.IsNull()) {
+    decayer->SetSeed(static_cast<UInt_t>(RandomSeed.Atoll()));
+  }
+
   // Configure EvtGen files using EVTGENDATA
   TString DecayFile = TString(gSystem->Getenv("EVTGENDATA")) + "/DECAY.DEC";
   TString ParticleFile = TString(gSystem->Getenv("EVTGENDATA")) + "/evt.pdl";

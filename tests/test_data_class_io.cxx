@@ -1,10 +1,10 @@
 /**
- * Test script to verify data classes can be used with std::vector and RNtuple
+ * Test executable to verify selected data classes can be used with std::vector.
  * This test verifies:
  * - Copy constructors are public
- * - Move constructors are accessible
- * - Getters are const-correct
- * - Classes work with std::vector
+ * - Copy assignment is available
+ * - Selected getters can be called through const references
+ * - Classes support basic std::vector operations
  */
 
 #include <iostream>
@@ -185,7 +185,7 @@ bool test_vector_operations(const char* class_name) {
     const T& const_ref = vec[0];
     test_const_access(const_ref);
 
-    // Test 6: Vector resize (uses copy constructor)
+    // Test 6: Default-construct additional elements
     vec.resize(5);
 
     std::cout << "PASS" << std::endl;
@@ -258,14 +258,15 @@ int main(int argc, char** argv) {
 
   if (passed == total) {
     std::cout << "\n✓ All tests PASSED!" << std::endl;
-    std::cout
-        << "All data classes are compatible with std::vector and RNtuple I/O\n"
-        << std::endl;
+    std::cout << "All selected data classes support the tested std::vector "
+                 "operations\n"
+              << std::endl;
     return 0;
   } else {
     std::cout << "\n✗ Some tests FAILED!" << std::endl;
-    std::cout << "Fix the failing classes before using with RNtuple\n"
-              << std::endl;
+    std::cout
+        << "Fix the failing classes before using these std::vector operations\n"
+        << std::endl;
     return 1;
   }
 }
