@@ -227,7 +227,7 @@ var searchData=
   ['storemothers_224',['StoreMothers',['../classShipStack.html#a73a85c05c1693667e28c591665de0b89',1,'ShipStack']]],
   ['storesecondaries_225',['StoreSecondaries',['../classShipStack.html#a5c50e960fb20579bb8f220220610ec77',1,'ShipStack']]],
   ['strawdecode_226',['StrawDecode',['../classstrawtubes.html#ae3e906a77fed45747cf8fd6084b571b5',1,'strawtubes']]],
-  ['strawendpoints_227',['StrawEndPoints',['../classstrawtubes.html#a49574e3d2ed60566c2709b7effa6dc42',1,'strawtubes']]],
+  ['strawendpoints_227',['StrawEndPoints',['../classstrawtubes.html#a072fc478125d996e5bcb30c5b1ae5acb',1,'strawtubes']]],
   ['strawsigmaspatial_228',['StrawSigmaSpatial',['../classstrawtubes.html#a486c78280bb67cf8e38dd3079e841723',1,'strawtubes']]],
   ['strawtubes_229',['strawtubes',['../classstrawtubes.html#a017929be84b88aabc9776863254cec34',1,'strawtubes::strawtubes(const strawtubes &amp;)=delete'],['../classstrawtubes.html#a62363a63aad6039db2047531cf8ae0cf',1,'strawtubes::strawtubes()'],['../classstrawtubes.html#a23ed2c046613502278cc4c2a2441582a',1,'strawtubes::strawtubes(std::string medium)'],['../classstrawtubes.html#ad43527fbd6a42b9b35113435219caf0f',1,'strawtubes::strawtubes(const char *Name, Bool_t Active)']]],
   ['strawtubescontfact_230',['strawtubesContFact',['../classstrawtubesContFact.html#ad8a71a67999fa501039ef0a1791e953a',1,'strawtubesContFact']]],
