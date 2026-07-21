@@ -768,18 +768,18 @@ Simulation finished successfully
   Countable branches           : 5
  
 [MCTrack Validation]
-  Total tracks                 : 14461
+  Total tracks                 : 14612
   Primary tracks               : 100
-  Secondary tracks             : 14361
-  Tracks per event             : 144.6
-  Track momentum               : 3.933 +- 30.09  [min=0.01149, max=400]
-  Track energy                 : 4.03 +- 30.09  [min=0.1, max=400]
-  Track start Z                : 1.05e+04 +- 2700  [min=0, max=1.603e+04]
-  Top PDG counts               : 22:4213, 11:2677, -11:2044, 2112:1320, 2212:1244, 211:766, 111:762, -211:678, -13:119, 9900015:100
+  Secondary tracks             : 14512
+  Tracks per event             : 146.1
+  Track momentum               : 3.902 +- 29.94  [min=0.02005, max=400]
+  Track energy                 : 4.001 +- 29.93  [min=0.1, max=400]
+  Track start Z                : 1.053e+04 +- 2678  [min=0, max=1.603e+04]
+  Top PDG counts               : 22:4240, 11:2666, -11:2057, 2112:1342, 2212:1308, 211:768, 111:765, -211:680, -13:126, 9900015:100
  
 [Branch Multiplicity]
-  MCTrack                : total=14461, mean/event=144.6 +- 149.6, active=100/100 (100.0%), max=1088
-  TimeDetPoint           : total=518, mean/event=5.18 +- 7.361, active=90/100 ( 90.0%), max=48
-  splitcalPoint          : total=71203, mean/event=712 +- 1141, active=90/100 ( 90.0%), max=6110
-  strawtubesPoint        : total=5750, mean/event=57.5 +- 40.85, active=94/100 ( 94.0%), max=296
-  vetoPoint              : total=15801, mean/event=158 +- 347.2, active=51/100 ( 51.0%), max=2437
+  MCTrack                : total=14612, mean/event=146.1 +- 149.3, active=100/100 (100.0%), max=1088
+  TimeDetPoint           : total=520, mean/event=5.2 +- 7.412, active=91/100 ( 91.0%), max=48
+  splitcalPoint          : total=70132, mean/event=701.3 +- 1174, active=90/100 ( 90.0%), max=6110
+  strawtubesPoint        : total=5714, mean/event=57.14 +- 40.72, active=95/100 ( 95.0%), max=296
+  vetoPoint              : total=15866, mean/event=158.7 +- 350.6, active=52/100 ( 52.0%), max=2437
