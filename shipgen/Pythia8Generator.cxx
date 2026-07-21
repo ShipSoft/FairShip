@@ -40,8 +40,10 @@ Pythia8Generator::Pythia8Generator() {
 
 // -----   Default constructor   -------------------------------------------
 Bool_t Pythia8Generator::Init() {
-  if (fUseRandom1) fRandomEngine = std::make_shared<PyTr1Rng>();
-  if (fUseRandom3) fRandomEngine = std::make_shared<PyTr3Rng>();
+  const UInt_t seed = fSeed != 0 ? fSeed : gRandom->GetSeed();
+  if (fUseRandom1) fRandomEngine = std::make_shared<PyTr1Rng>(seed);
+  if (fUseRandom3) fRandomEngine = std::make_shared<PyTr3Rng>(seed);
+  fPythia->setRndmEnginePtr(fRandomEngine);
   if (fextFile) {
     if (firstEvent < 0) {
       LOG(error) << "Pythia8Generator: firstEvent must be >= 0, got "
@@ -130,7 +132,6 @@ Bool_t Pythia8Generator::Init() {
       }
     }
   } else {
-    fPythia->setRndmEnginePtr(fRandomEngine);
     fPythia->settings.mode("Beams:idA", fId);
     fPythia->settings.mode("Beams:idB", 2212);
     fPythia->settings.mode("Beams:frameType", 2);

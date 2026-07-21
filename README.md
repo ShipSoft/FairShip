@@ -11,6 +11,7 @@
     - [Using pixi](#using-pixi)
     - [Run instructions](#run-instructions)
     - [Docker instructions](#docker-instructions)
+    - [Testing](#testing)
     - [Troubleshooting information](#troubleshooting-information)
     - [Documentation](#documentation)
     - [License](#license)
@@ -173,6 +174,20 @@ desirable.
     fairship /bin/bash
     ```
     The option `-e DISPLAY=unix$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix` forwards graphics from the docker to your local system (similar to `ssh -X`). The option `-v /local_workdir:/image_workdir` mounts `/local_workdir` on the local system as `/image_workdir` within docker.
+
+## Testing
+
+Build and run the complete CTest suite, including the C++ and terminal-output
+regression tests, with:
+
+```bash
+pixi run test
+```
+
+Some regression tests download remote input data and therefore require network
+access. See [`tests/README.md`](tests/README.md) for commands that select
+individual tests or only the regression suite, and for instructions on adding
+tests and regenerating reference output.
 
 ## Troubleshooting information
 

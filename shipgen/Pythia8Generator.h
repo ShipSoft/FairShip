@@ -40,6 +40,7 @@ class Pythia8Generator : public SHiP::Generator {
 
   void SetMom(Double_t mom) { fMom = mom; };
   void SetId(Double_t id) { fId = id; };
+  void SetSeed(UInt_t seed) { fSeed = seed; };
   void UseRandom1() {
     fUseRandom1 = kTRUE;
     fUseRandom3 = kFALSE;
@@ -70,6 +71,7 @@ class Pythia8Generator : public SHiP::Generator {
   Int_t fId;           // target type
   Bool_t fUseRandom1;  // flag to use TRandom1
   Bool_t fUseRandom3;  // flag to use TRandom3 (default)
+  UInt_t fSeed{0};     // explicit RNG seed; 0 uses gRandom's seed
   Float_t hpx[1], hpy[1], hpz[1], hE[1], hM[1], mpx[1], mpy[1], mpz[1], mE[1],
       hid[1], mid[1], ck[1];
   Float_t ancestors[16], subprocCodes[16];

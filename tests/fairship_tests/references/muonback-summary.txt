@@ -1,0 +1,707 @@
+TStreamerInfo::BuildOld:0: RuntimeWarning: Cannot convert vetoPoint::fLpos from type: TVector3 to type: array<double,3>, skip element
+TStreamerInfo::BuildOld:0: RuntimeWarning: Cannot convert vetoPoint::fLmom from type: TVector3 to type: array<double,3>, skip element
+[INFO] Opening input file to find keys https://cernbox.cern.ch/remote.php/dav/public-files/vdwtXtgM5P2Z0S5/pythia8_Geant4_10.0_withCharmandBeauty0_mu.root
+[INFO] Opening input file https://cernbox.cern.ch/remote.php/dav/public-files/vdwtXtgM5P2Z0S5/pythia8_Geant4_10.0_withCharmandBeauty0_mu.root
+[INFO] Reading 13450391 entries
+[INFO] Using TClonesArray format (vetoPoint)
+[INFO] Seed: 42
+[INFO] FairRootFileSink initialized.
+[INFO]  - cbmroot
+[INFO]     - ./sim_muonback_summary.root
+[INFO] ==============  FairRunSim: Initialising simulation run ==============
+[INFO] FairGeoMedia: Read media 
+
+************************************************************* 
+************************************************************* 
+[WARN] FairGenericVMCConfig::Setup() Using gConfig.C macro DEPRACATED.
+[WARN] Check FairRoot/examples/common/gconfig/ for current YAML implementation.
+[INFO] ---------------User config is used: g4Config.C
+
+=============================================================
+ Virtual Monte Carlo Library
+ Version 2.2 ( 22 April 2026 )
+=============================================================
+
+=============================================================
+ Geant4 Virtual Monte Carlo 
+ Version 6.8 ( 2 February 2026 )
+ WWW : http://root.cern.ch/drupal/content/geant4-vmc
+=============================================================
+
+Running TVirtualMCApplication::ConstructGeometry
+[INFO] -- Target cooler: PressurisedHe90 T=363.15 K, P=9.98641e+09 MeV/mm3, Density=0.002121
+[INFO] veto: Decay Volume medium set as: helium
+[INFO] veto: made sensitive for following muons: Cavern
+ Z Position (Upstream Tagger1) 3272
+[INFO] TGeometry will be imported to VMC
+
+isMaster=1
+
+**************************************************************
+ Geant4 version Name: geant4-11-04-patch-02 [MT]   (12-June-2026)
+                       Copyright : Geant4 Collaboration
+                      References : NIM A 506 (2003), 250-303
+                                 : IEEE-TNS 53 (2006), 270-278
+                                 : NIM A 835 (2016), 186-225
+                             WWW : http://geant4.org/
+**************************************************************
+
+===> GEANT4 materials created and mapped to TGeo ones...
+===> GEANT4 physical volumes created and mapped to TGeo hierarchy...
+### INFO: TG4RootDetectorConstruction::Construct() finished
+TG4PostDetConstruction::Initialize
+G4 Stat: instantiated 701 logical volumes 
+                      46126 physical volumes
+Adding HadronPhysicsList FTFP_BERT_HP_EMZ
+G4PhysListFactory::GetReferencePhysList <FTFP_BERT_HP_EMZ>
+<<< Geant4 Physics List simulation engine: FTFP_BERT_HP
+
+G4VModularPhysicsList::ReplacePhysics: G4EmStandard with type : 2 is replaced with G4EmStandard_opt4
+
+Adding SpecialPhysicsList stepLimiter+specialCuts+
+### TG4SpecialControlsV2 constructed
+Visualization Manager instantiating with verbosity "warnings (3)"...
+SetCuts Macro: Setting Processes..
+SetCuts Macro: Setting cuts..
+TG4RootDetectorConstruction::ConstructSDandField
+TG4PostDetConstruction::InitializeSDandField
+[INFO] FairMCApplication::InitGeometry: 0
+[INFO] CREATING BRANCH MCTrack
+[INFO] CREATING BRANCH TimeDetPoint
+CreateReadMemberWiseActions:0: RuntimeWarning:    The StreamerInfo of class FairMCPoint read from file https://cernbox.cern.ch/remote.php/dav/public-files/vdwtXtgM5P2Z0S5/pythia8_Geant4_10.0_withCharmandBeauty0_mu.root
+   has the same version (=5) as the active class but a different checksum.
+   You should update the version to ClassDef(FairMCPoint,6).
+   The objects on this file might not be readable because:
+   The in-memory layout version 5 for class 'FairMCPoint' has a base class (FairMultiLinkedData_Interface) with version 6 but the on-file layout version 5 recorded the version number 5 for this base class (FairMultiLinkedData_Interface).
+[INFO] CREATING BRANCH UpstreamTaggerPoint
+[INFO] CREATING BRANCH splitcalPoint
+[INFO] CREATING BRANCH strawtubesPoint
+[INFO] CREATING BRANCH vetoPoint
+Global field created with stepper DormandPrince745
+### INFO: TG4RootDetectorConstruction::ConstructSDandField finished
+
+ hInelastic FTFP_BERT_HP : threshold between BERT and FTFP is over the interval 
+ for pions :   3 to 6 GeV
+ for kaons :   3 to 6 GeV
+ for proton :  3 to 6 GeV
+ for neutron : 3 to 6 GeV
+
+TG4ComposedPhysicsList::ConstructProcess done
+Available UI session types: [ Qt, tcsh, csh ]
+
+**********************************************
+    GEANT4 Geometry statistics: 
+            701 logical volumes
+          46126 physical volumes
+             22 materials
+             20 user limits
+            694 sensitive detectors
+**********************************************
+
+[INFO] Monte Carlo Engine Initialisation with: TGeant4
+[INFO] FairGenericVMCConfig::SetupPostInit() OFF.
+[INFO] x limits: -500, 500, dx = 10
+[INFO] y limits: -500, 500, dy = 10
+[INFO] z limits: -750, 750, dz = 10
+[INFO] Offsets: x = 0, y = 0, z = 8957
+[INFO] Angles : phi = 0, theta = 0, psi = 0
+[INFO] Total number of bins = 1540351; Nx = 101, Ny = 101, Nz = 151
+[INFO] x limits: 0, 219.922, dx = 1.99929
+[INFO] y limits: 0, 217.969, dy = 1.99971
+[INFO] z limits: -50, 3075, dz = 5
+[INFO] Offsets: x = 0, y = 0, z = 204
+[INFO] Angles : phi = 0, theta = 0, psi = 0
+[INFO] Total number of bins = 7643460; Nx = 111, Ny = 110, Nz = 626
+Adding field MainSpecMap
+Adding field muonShieldField
+Setting the Global field
+Adding field TotalField to Global
+[INFO] FairMCApplication::InitGeometry: 0
+ G4ChordFinder: stepperDriverId: 2
+
+-------- WWWW ------- G4Exception-START -------- WWWW -------
+*** G4Exception : GeomFieldParameters0001
+      issued by : G4FieldBuilder::ConstructField:
+Field was already constructed.
+*** This is just a warning message. ***
+-------- WWWW -------- G4Exception-END --------- WWWW -------
+
+
+GammaToMuPair:  gamma->mu+mu- Bethe Heitler process, SubType= 15
+        good cross section parametrization from 211.317 MeV to 1e+12 GeV for all Z.
+        cross section factor: 1
+
+AnnihiToMuPair:  e+e->mu+mu- annihilation, atomic e- at rest, SubType=6
+        threshold at 43.6931 GeV good description up to 1000 TeV for all Z.
+
+AnnihiToTauPair:  e+e->tau+tau- annihilation, atomic e- at rest, SubType=18
+        threshold at 12357.1 GeV good description up to 1000 TeV for all Z.
+======================================================================
+======          Radioactive Decay Physics Parameters           =======
+======================================================================
+min MeanLife (from G4NuclideTable)                1 ns 
+Max life time (from G4DeexPrecoParameters)        1000 ps 
+Internal e- conversion flag                       1
+Stored internal conversion coefficients           1
+Enabled atomic relaxation mode                    1
+Enable correlated gamma emission                  0
+Max 2J for sampling of angular correlations       10
+Atomic de-excitation enabled                      1
+Auger electron emission enabled                   1
+Check EM cuts disabled for atomic de-excitation   1
+Use Bearden atomic level energies                 0
+Use ANSTO fluorescence model                      0
+Threshold for very long decay time at rest        1 y  
+======================================================================
+
+=======================================================
+======       ParticleHP Physics Parameters     ========
+=======================================================
+ Use only photo-evaporation      0
+ Skip missing isotopes           0
+ Neglect Doppler                 0
+ Do not adjust final state       0
+ Produce fission fragments       0
+ Use WendtFissionModel           0
+ Use NRESP71Model                0
+ Use DBRC                        0
+ PHP use Poisson                 0
+ PHP check                       1
+ CHECK HP NAMES                  0
+ Enable DEBUG                    0
+ Use probability tables from     
+=======================================================
+
+
+====================================================================
+                  HADRONIC PROCESSES SUMMARY (verbose level 1)
+-----------------------------------------------------------------------
+                           Hadronic Processes for B-
+  Process: hadElastic
+        Model:              hElasticLHEP: 0 eV  ---> 100 TeV
+     Cr_sctns:            Glauber-Gribov: 0 eV  ---> 100 TeV
+  Process: B-Inelastic
+        Model:                      FTFP: 0 eV  ---> 100 TeV
+     Cr_sctns:            Glauber-Gribov: 0 eV  ---> 100 TeV
+-----------------------------------------------------------------------
+                           Hadronic Processes for D-
+  Process: hadElastic
+        Model:              hElasticLHEP: 0 eV  ---> 100 TeV
+     Cr_sctns:            Glauber-Gribov: 0 eV  ---> 100 TeV
+  Process: D-Inelastic
+        Model:                      FTFP: 0 eV  ---> 100 TeV
+     Cr_sctns:            Glauber-Gribov: 0 eV  ---> 100 TeV
+-----------------------------------------------------------------------
+                           Hadronic Processes for GenericIon
+  Process: ionInelastic
+        Model:  Binary Light Ion Cascade: 0 eV /n ---> 6 GeV/n
+        Model:                      FTFP: 3 GeV/n ---> 100 TeV/n
+     Cr_sctns:  Glauber-Gribov Nucl-nucl: 0 eV  ---> 25.6 PeV
+  Process: RadioactiveDecay
+-----------------------------------------------------------------------
+                           Hadronic Processes for He3
+  Process: hadElastic
+        Model:              hElasticLHEP: 0 eV /n ---> 100 TeV/n
+     Cr_sctns:  Glauber-Gribov Nucl-nucl: 0 eV  ---> 25.6 PeV
+  Process: He3Inelastic
+        Model:  Binary Light Ion Cascade: 0 eV /n ---> 6 GeV/n
+        Model:                      FTFP: 3 GeV/n ---> 100 TeV/n
+     Cr_sctns:  Glauber-Gribov Nucl-nucl: 0 eV  ---> 25.6 PeV
+-----------------------------------------------------------------------
+                           Hadronic Processes for alpha
+  Process: hadElastic
+        Model:              hElasticLHEP: 0 eV /n ---> 100 TeV/n
+     Cr_sctns:  Glauber-Gribov Nucl-nucl: 0 eV  ---> 25.6 PeV
+  Process: alphaInelastic
+        Model:  Binary Light Ion Cascade: 0 eV /n ---> 6 GeV/n
+        Model:                      FTFP: 3 GeV/n ---> 100 TeV/n
+     Cr_sctns:  Glauber-Gribov Nucl-nucl: 0 eV  ---> 25.6 PeV
+-----------------------------------------------------------------------
+                           Hadronic Processes for anti_He3
+  Process: hadElastic
+        Model:              hElasticLHEP: 0 eV /n ---> 100.1 MeV/n
+        Model:              AntiAElastic: 100 MeV/n ---> 100 TeV/n
+     Cr_sctns:              AntiAGlauber: 0 eV  ---> 25.6 PeV
+  Process: anti_He3Inelastic
+        Model:                      FTFP: 0 eV /n ---> 100 TeV/n
+     Cr_sctns:              AntiAGlauber: 0 eV  ---> 25.6 PeV
+  Process: hFritiofCaptureAtRest
+-----------------------------------------------------------------------
+                           Hadronic Processes for anti_alpha
+  Process: hadElastic
+        Model:              hElasticLHEP: 0 eV /n ---> 100.1 MeV/n
+        Model:              AntiAElastic: 100 MeV/n ---> 100 TeV/n
+     Cr_sctns:              AntiAGlauber: 0 eV  ---> 25.6 PeV
+  Process: anti_alphaInelastic
+        Model:                      FTFP: 0 eV /n ---> 100 TeV/n
+     Cr_sctns:              AntiAGlauber: 0 eV  ---> 25.6 PeV
+  Process: hFritiofCaptureAtRest
+-----------------------------------------------------------------------
+                           Hadronic Processes for anti_deuteron
+  Process: hadElastic
+        Model:              hElasticLHEP: 0 eV /n ---> 100.1 MeV/n
+        Model:              AntiAElastic: 100 MeV/n ---> 100 TeV/n
+     Cr_sctns:              AntiAGlauber: 0 eV  ---> 25.6 PeV
+  Process: anti_deuteronInelastic
+        Model:                      FTFP: 0 eV /n ---> 100 TeV/n
+     Cr_sctns:              AntiAGlauber: 0 eV  ---> 25.6 PeV
+  Process: hFritiofCaptureAtRest
+-------------------------------------------------------------------------
+                           Hadronic Processes for anti_hypertriton
+  Process: hFritiofCaptureAtRest
+-----------------------------------------------------------------------
+                           Hadronic Processes for anti_lambda
+  Process: hadElastic
+        Model:              hElasticLHEP: 0 eV  ---> 100 TeV
+     Cr_sctns:            Glauber-Gribov: 0 eV  ---> 100 TeV
+  Process: anti_lambdaInelastic
+        Model:                      FTFP: 0 eV  ---> 100 TeV
+     Cr_sctns:            Glauber-Gribov: 0 eV  ---> 100 TeV
+  Process: hFritiofCaptureAtRest
+-----------------------------------------------------------------------
+                           Hadronic Processes for anti_neutron
+  Process: hadElastic
+        Model:              hElasticLHEP: 0 eV  ---> 100.1 MeV
+        Model:              AntiAElastic: 100 MeV ---> 100 TeV
+     Cr_sctns:              AntiAGlauber: 0 eV  ---> 25.6 PeV
+  Process: anti_neutronInelastic
+        Model:                      FTFP: 0 eV  ---> 100 TeV
+     Cr_sctns:              AntiAGlauber: 0 eV  ---> 25.6 PeV
+  Process: hFritiofCaptureAtRest
+-----------------------------------------------------------------------
+                           Hadronic Processes for anti_proton
+  Process: hadElastic
+        Model:              hElasticLHEP: 0 eV  ---> 100.1 MeV
+        Model:              AntiAElastic: 100 MeV ---> 100 TeV
+     Cr_sctns:              AntiAGlauber: 0 eV  ---> 25.6 PeV
+  Process: anti_protonInelastic
+        Model:                      FTFP: 0 eV  ---> 100 TeV
+     Cr_sctns:              AntiAGlauber: 0 eV  ---> 25.6 PeV
+  Process: hFritiofCaptureAtRest
+-----------------------------------------------------------------------
+                           Hadronic Processes for anti_triton
+  Process: hadElastic
+        Model:              hElasticLHEP: 0 eV /n ---> 100.1 MeV/n
+        Model:              AntiAElastic: 100 MeV/n ---> 100 TeV/n
+     Cr_sctns:              AntiAGlauber: 0 eV  ---> 25.6 PeV
+  Process: anti_tritonInelastic
+        Model:                      FTFP: 0 eV /n ---> 100 TeV/n
+     Cr_sctns:              AntiAGlauber: 0 eV  ---> 25.6 PeV
+  Process: hFritiofCaptureAtRest
+-----------------------------------------------------------------------
+                           Hadronic Processes for deuteron
+  Process: hadElastic
+        Model:              hElasticLHEP: 0 eV /n ---> 100 TeV/n
+     Cr_sctns:  Glauber-Gribov Nucl-nucl: 0 eV  ---> 25.6 PeV
+  Process: dInelastic
+        Model:  Binary Light Ion Cascade: 0 eV /n ---> 6 GeV/n
+        Model:                      FTFP: 3 GeV/n ---> 100 TeV/n
+     Cr_sctns:  Glauber-Gribov Nucl-nucl: 0 eV  ---> 25.6 PeV
+-----------------------------------------------------------------------
+                           Hadronic Processes for e+
+  Process: positronNuclear
+        Model:   G4ElectroVDNuclearModel: 0 eV  ---> 1 PeV
+     Cr_sctns:          ElectroNuclearXS: 0 eV  ---> 100 TeV
+-----------------------------------------------------------------------
+                           Hadronic Processes for e-
+  Process: electronNuclear
+        Model:   G4ElectroVDNuclearModel: 0 eV  ---> 1 PeV
+     Cr_sctns:          ElectroNuclearXS: 0 eV  ---> 100 TeV
+-----------------------------------------------------------------------
+                           Hadronic Processes for kaon+
+  Process: hadElastic
+        Model:              hElasticLHEP: 0 eV  ---> 100 TeV
+     Cr_sctns:            Glauber-Gribov: 0 eV  ---> 100 TeV
+  Process: kaon+Inelastic
+        Model:                      FTFP: 3 GeV ---> 100 TeV
+        Model:            BertiniCascade: 0 eV  ---> 6 GeV
+     Cr_sctns:            Glauber-Gribov: 0 eV  ---> 100 TeV
+-----------------------------------------------------------------------
+                           Hadronic Processes for kaon-
+  Process: hadElastic
+        Model:              hElasticLHEP: 0 eV  ---> 100 TeV
+     Cr_sctns:            Glauber-Gribov: 0 eV  ---> 100 TeV
+  Process: kaon-Inelastic
+        Model:                      FTFP: 3 GeV ---> 100 TeV
+        Model:            BertiniCascade: 0 eV  ---> 6 GeV
+     Cr_sctns:            Glauber-Gribov: 0 eV  ---> 100 TeV
+  Process: hBertiniCaptureAtRest
+-----------------------------------------------------------------------
+                           Hadronic Processes for lambda
+  Process: hadElastic
+        Model:              hElasticLHEP: 0 eV  ---> 100 TeV
+     Cr_sctns:            Glauber-Gribov: 0 eV  ---> 100 TeV
+  Process: lambdaInelastic
+        Model:                      FTFP: 3 GeV ---> 100 TeV
+        Model:            BertiniCascade: 0 eV  ---> 6 GeV
+     Cr_sctns:            Glauber-Gribov: 0 eV  ---> 100 TeV
+-----------------------------------------------------------------------
+                           Hadronic Processes for mu+
+  Process: muonNuclear
+        Model:      G4MuonVDNuclearModel: 0 eV  ---> 1 PeV
+     Cr_sctns:     KokoulinMuonNuclearXS: 0 eV  ---> 100 TeV
+-----------------------------------------------------------------------
+                           Hadronic Processes for mu-
+  Process: muonNuclear
+        Model:      G4MuonVDNuclearModel: 0 eV  ---> 1 PeV
+     Cr_sctns:     KokoulinMuonNuclearXS: 0 eV  ---> 100 TeV
+  Process: muMinusCaptureAtRest
+-----------------------------------------------------------------------
+                           Hadronic Processes for neutron
+  Process: hadElastic
+        Model:             hElasticCHIPS: 19.5 MeV ---> 100 TeV
+        Model:          NeutronHPElastic: 0 eV  ---> 20 MeV
+     Cr_sctns:        NeutronHPElasticXS: 0 eV  ---> 20 MeV
+     Cr_sctns:        G4NeutronElasticXS: 0 eV  ---> 100 TeV
+  Process: neutronInelastic
+        Model:                      FTFP: 3 GeV ---> 100 TeV
+        Model:            BertiniCascade: 19.9 MeV ---> 6 GeV
+        Model:        NeutronHPInelastic: 0 eV  ---> 20 MeV
+     Cr_sctns:      NeutronHPInelasticXS: 0 eV  ---> 20 MeV
+     Cr_sctns:      G4NeutronInelasticXS: 0 eV  ---> 100 TeV
+  Process: nCapture
+        Model:             nRadCaptureHP: 0 eV  ---> 20 MeV
+        Model:               nRadCapture: 19.9 MeV ---> 100 TeV
+     Cr_sctns:        NeutronHPCaptureXS: 0 eV  ---> 100 TeV
+     Cr_sctns:        G4NeutronCaptureXS: 0 eV  ---> 100 TeV
+  Process: nFission
+        Model:          NeutronHPFission: 0 eV  ---> 20 MeV
+        Model:                G4LFission: 19.9 MeV ---> 100 TeV
+     Cr_sctns:        NeutronHPFissionXS: 0 eV  ---> 20 MeV
+     Cr_sctns:                    ZeroXS: 0 eV  ---> 100 TeV
+-----------------------------------------------------------------------
+                           Hadronic Processes for pi+
+  Process: hadElastic
+        Model:           hElasticGlauber: 0 eV  ---> 100 TeV
+     Cr_sctns:  BarashenkovGlauberGribov: 0 eV  ---> 100 TeV
+  Process: pi+Inelastic
+        Model:                      FTFP: 3 GeV ---> 100 TeV
+        Model:            BertiniCascade: 0 eV  ---> 6 GeV
+     Cr_sctns:  BarashenkovGlauberGribov: 0 eV  ---> 100 TeV
+-----------------------------------------------------------------------
+                           Hadronic Processes for pi-
+  Process: hadElastic
+        Model:           hElasticGlauber: 0 eV  ---> 100 TeV
+     Cr_sctns:  BarashenkovGlauberGribov: 0 eV  ---> 100 TeV
+  Process: pi-Inelastic
+        Model:                      FTFP: 3 GeV ---> 100 TeV
+        Model:            BertiniCascade: 0 eV  ---> 6 GeV
+     Cr_sctns:  BarashenkovGlauberGribov: 0 eV  ---> 100 TeV
+  Process: hBertiniCaptureAtRest
+-----------------------------------------------------------------------
+                           Hadronic Processes for proton
+  Process: hadElastic
+        Model:             hElasticCHIPS: 0 eV  ---> 100 TeV
+     Cr_sctns:  BarashenkovGlauberGribov: 0 eV  ---> 100 TeV
+  Process: protonInelastic
+        Model:                      FTFP: 3 GeV ---> 100 TeV
+        Model:            BertiniCascade: 0 eV  ---> 6 GeV
+     Cr_sctns:  BarashenkovGlauberGribov: 0 eV  ---> 100 TeV
+-----------------------------------------------------------------------
+                           Hadronic Processes for sigma-
+  Process: hadElastic
+        Model:              hElasticLHEP: 0 eV  ---> 100 TeV
+     Cr_sctns:            Glauber-Gribov: 0 eV  ---> 100 TeV
+  Process: sigma-Inelastic
+        Model:                      FTFP: 3 GeV ---> 100 TeV
+        Model:            BertiniCascade: 0 eV  ---> 6 GeV
+     Cr_sctns:            Glauber-Gribov: 0 eV  ---> 100 TeV
+  Process: hBertiniCaptureAtRest
+-----------------------------------------------------------------------
+                           Hadronic Processes for triton
+  Process: hadElastic
+        Model:              hElasticLHEP: 0 eV /n ---> 100 TeV/n
+     Cr_sctns:  Glauber-Gribov Nucl-nucl: 0 eV  ---> 25.6 PeV
+  Process: tInelastic
+        Model:  Binary Light Ion Cascade: 0 eV /n ---> 6 GeV/n
+        Model:                      FTFP: 3 GeV/n ---> 100 TeV/n
+     Cr_sctns:  Glauber-Gribov Nucl-nucl: 0 eV  ---> 25.6 PeV
+  Process: RadioactiveDecay
+=======================================================================
+======       Geant4 Native Pre-compound Model Parameters       ========
+=======================================================================
+Type of pre-compound model                          0
+Type of pre-compound inverse x-section              1
+Pre-compound model active                           1
+Pre-compound excitation low energy                  0.1 MeV 
+Pre-compound excitation high energy                 15 MeV 
+Angular generator for pre-compound model            1
+Use NeverGoBack option for pre-compound model       0
+Use SoftCutOff option for pre-compound model        0
+Use CEM transitions for pre-compound model          1
+Use GNASH transitions for pre-compound model        0
+Use HETC submodel for pre-compound model            0
+=======================================================================
+======       Nuclear De-excitation Module Parameters           ========
+=======================================================================
+Type of de-excitation inverse x-section             3
+Type of de-excitation factory                       Evaporation+GEM
+Number of de-excitation channels                    68
+Type of Fermi BreakUp model                         ModelVI
+Min excitation energy                               0.01 keV 
+Min energy per nucleon for multifragmentation       2e+05 MeV
+Level density (1/MeV)                               0.075
+Use simple level density model                      1
+Use discrete excitation energy of the residual      0
+Time limit for long lived isomeres                  1 ns 
+Isomer production flag                              1
+Internal e- conversion flag                         1
+Store e- internal conversion data                   1
+Correlated gamma emission flag                      0
+Max 2J for sampling of angular correlations         10
+=======================================================================
+
+-------- WWWW ------- G4Exception-START -------- WWWW -------
+*** G4Exception : part0005
+      issued by : G4PrimaryParticle::Set4Momentum
+Primary particle PDG=-13 deltaMass(MeV)=1.69357 is larger than the tolerance(MeV)=1
+ Specified mass(MeV)=107.352 while PDG mass(MEV)=105.658
+ To change the tolerance or the exception severity, use G4PrimaryTransformer::SetKETolerance() method.
+*** This is just a warning message. ***
+-------- WWWW -------- G4Exception-END --------- WWWW -------
+
+
+-------- WWWW ------- G4Exception-START -------- WWWW -------
+*** G4Exception : part0005
+      issued by : G4PrimaryParticle::Set4Momentum
+Primary particle PDG=13 deltaMass(MeV)=4.00013 is larger than the tolerance(MeV)=1
+ Specified mass(MeV)=109.659 while PDG mass(MEV)=105.658
+ To change the tolerance or the exception severity, use G4PrimaryTransformer::SetKETolerance() method.
+*** This is just a warning message. ***
+-------- WWWW -------- G4Exception-END --------- WWWW -------
+
+
+-------- WWWW ------- G4Exception-START -------- WWWW -------
+*** G4Exception : part0005
+      issued by : G4PrimaryParticle::Set4Momentum
+Primary particle PDG=-13 deltaMass(MeV)=1.79762 is larger than the tolerance(MeV)=1
+ Specified mass(MeV)=107.456 while PDG mass(MEV)=105.658
+ To change the tolerance or the exception severity, use G4PrimaryTransformer::SetKETolerance() method.
+*** This is just a warning message. ***
+-------- WWWW -------- G4Exception-END --------- WWWW -------
+
+
+-------- WWWW ------- G4Exception-START -------- WWWW -------
+*** G4Exception : part0005
+      issued by : G4PrimaryParticle::Set4Momentum
+Primary particle PDG=-13 deltaMass(MeV)=3.30828 is larger than the tolerance(MeV)=1
+ Specified mass(MeV)=102.35 while PDG mass(MEV)=105.658
+ To change the tolerance or the exception severity, use G4PrimaryTransformer::SetKETolerance() method.
+*** This is just a warning message. ***
+-------- WWWW -------- G4Exception-END --------- WWWW -------
+
+
+-------- WWWW ------- G4Exception-START -------- WWWW -------
+*** G4Exception : part0005
+      issued by : G4PrimaryParticle::Set4Momentum
+Primary particle PDG=-13 deltaMass(MeV)=1.88192 is larger than the tolerance(MeV)=1
+ Specified mass(MeV)=103.776 while PDG mass(MEV)=105.658
+ To change the tolerance or the exception severity, use G4PrimaryTransformer::SetKETolerance() method.
+*** This is just a warning message. ***
+-------- WWWW -------- G4Exception-END --------- WWWW -------
+
+
+-------- WWWW ------- G4Exception-START -------- WWWW -------
+*** G4Exception : part0005
+      issued by : G4PrimaryParticle::Set4Momentum
+Primary particle PDG=13 deltaMass(MeV)=6.24323 is larger than the tolerance(MeV)=1
+ Specified mass(MeV)=111.902 while PDG mass(MEV)=105.658
+ To change the tolerance or the exception severity, use G4PrimaryTransformer::SetKETolerance() method.
+*** This is just a warning message. ***
+-------- WWWW -------- G4Exception-END --------- WWWW -------
+
+
+-------- WWWW ------- G4Exception-START -------- WWWW -------
+*** G4Exception : part0005
+      issued by : G4PrimaryParticle::Set4Momentum
+Primary particle PDG=-13 deltaMass(MeV)=3.90225 is larger than the tolerance(MeV)=1
+ Specified mass(MeV)=109.561 while PDG mass(MEV)=105.658
+ To change the tolerance or the exception severity, use G4PrimaryTransformer::SetKETolerance() method.
+*** This is just a warning message. ***
+-------- WWWW -------- G4Exception-END --------- WWWW -------
+
+
+-------- WWWW ------- G4Exception-START -------- WWWW -------
+*** G4Exception : part0005
+      issued by : G4PrimaryParticle::Set4Momentum
+Primary particle PDG=-13 deltaMass(MeV)=1.57726 is larger than the tolerance(MeV)=1
+ Specified mass(MeV)=104.081 while PDG mass(MEV)=105.658
+ To change the tolerance or the exception severity, use G4PrimaryTransformer::SetKETolerance() method.
+*** This is just a warning message. ***
+-------- WWWW -------- G4Exception-END --------- WWWW -------
+
+
+-------- WWWW ------- G4Exception-START -------- WWWW -------
+*** G4Exception : part0005
+      issued by : G4PrimaryParticle::Set4Momentum
+Primary particle PDG=13 deltaMass(MeV)=1.75622 is larger than the tolerance(MeV)=1
+ Specified mass(MeV)=103.902 while PDG mass(MEV)=105.658
+ To change the tolerance or the exception severity, use G4PrimaryTransformer::SetKETolerance() method.
+*** This is just a warning message. ***
+-------- WWWW -------- G4Exception-END --------- WWWW -------
+
+
+-------- WWWW ------- G4Exception-START -------- WWWW -------
+*** G4Exception : part0005
+      issued by : G4PrimaryParticle::Set4Momentum
+Primary particle PDG=-13 deltaMass(MeV)=1.78711 is larger than the tolerance(MeV)=1
+ Specified mass(MeV)=107.445 while PDG mass(MEV)=105.658
+ To change the tolerance or the exception severity, use G4PrimaryTransformer::SetKETolerance() method.
+*** This is just a warning message. ***
+-------- WWWW -------- G4Exception-END --------- WWWW -------
+
+
+-------- WWWW ------- G4Exception-START -------- WWWW -------
+*** G4Exception : part0005
+      issued by : G4PrimaryParticle::Set4Momentum
+Primary particle PDG=13 deltaMass(MeV)=1.64751 is larger than the tolerance(MeV)=1
+ Specified mass(MeV)=107.306 while PDG mass(MEV)=105.658
+ To change the tolerance or the exception severity, use G4PrimaryTransformer::SetKETolerance() method.
+*** This is just a warning message. ***
+-------- WWWW -------- G4Exception-END --------- WWWW -------
+
+
+-------- WWWW ------- G4Exception-START -------- WWWW -------
+*** G4Exception : part0005
+      issued by : G4PrimaryParticle::Set4Momentum
+Primary particle PDG=13 deltaMass(MeV)=5.54992 is larger than the tolerance(MeV)=1
+ Specified mass(MeV)=100.108 while PDG mass(MEV)=105.658
+ To change the tolerance or the exception severity, use G4PrimaryTransformer::SetKETolerance() method.
+*** This is just a warning message. ***
+-------- WWWW -------- G4Exception-END --------- WWWW -------
+
+
+-------- WWWW ------- G4Exception-START -------- WWWW -------
+*** G4Exception : part0005
+      issued by : G4PrimaryParticle::Set4Momentum
+Primary particle PDG=13 deltaMass(MeV)=1.61963 is larger than the tolerance(MeV)=1
+ Specified mass(MeV)=104.039 while PDG mass(MEV)=105.658
+ To change the tolerance or the exception severity, use G4PrimaryTransformer::SetKETolerance() method.
+*** This is just a warning message. ***
+-------- WWWW -------- G4Exception-END --------- WWWW -------
+
+
+-------- WWWW ------- G4Exception-START -------- WWWW -------
+*** G4Exception : part0005
+      issued by : G4PrimaryParticle::Set4Momentum
+Primary particle PDG=-13 deltaMass(MeV)=2.51767 is larger than the tolerance(MeV)=1
+ Specified mass(MeV)=103.141 while PDG mass(MEV)=105.658
+ To change the tolerance or the exception severity, use G4PrimaryTransformer::SetKETolerance() method.
+*** This is just a warning message. ***
+-------- WWWW -------- G4Exception-END --------- WWWW -------
+
+
+-------- WWWW ------- G4Exception-START -------- WWWW -------
+*** G4Exception : part0005
+      issued by : G4PrimaryParticle::Set4Momentum
+Primary particle PDG=13 deltaMass(MeV)=1.42903 is larger than the tolerance(MeV)=1
+ Specified mass(MeV)=107.087 while PDG mass(MEV)=105.658
+ To change the tolerance or the exception severity, use G4PrimaryTransformer::SetKETolerance() method.
+*** This is just a warning message. ***
+-------- WWWW -------- G4Exception-END --------- WWWW -------
+
+
+-------- WWWW ------- G4Exception-START -------- WWWW -------
+*** G4Exception : part0005
+      issued by : G4PrimaryParticle::Set4Momentum
+Primary particle PDG=13 deltaMass(MeV)=4.29342 is larger than the tolerance(MeV)=1
+ Specified mass(MeV)=109.952 while PDG mass(MEV)=105.658
+ To change the tolerance or the exception severity, use G4PrimaryTransformer::SetKETolerance() method.
+*** This is just a warning message. ***
+-------- WWWW -------- G4Exception-END --------- WWWW -------
+
+
+-------- WWWW ------- G4Exception-START -------- WWWW -------
+*** G4Exception : part0005
+      issued by : G4PrimaryParticle::Set4Momentum
+Primary particle PDG=-13 deltaMass(MeV)=1.45931 is larger than the tolerance(MeV)=1
+ Specified mass(MeV)=107.118 while PDG mass(MEV)=105.658
+ To change the tolerance or the exception severity, use G4PrimaryTransformer::SetKETolerance() method.
+*** This is just a warning message. ***
+-------- WWWW -------- G4Exception-END --------- WWWW -------
+
+
+-------- WWWW ------- G4Exception-START -------- WWWW -------
+*** G4Exception : part0005
+      issued by : G4PrimaryParticle::Set4Momentum
+Primary particle PDG=-13 deltaMass(MeV)=8.83006 is larger than the tolerance(MeV)=1
+ Specified mass(MeV)=114.488 while PDG mass(MEV)=105.658
+ To change the tolerance or the exception severity, use G4PrimaryTransformer::SetKETolerance() method.
+*** This is just a warning message. ***
+-------- WWWW -------- G4Exception-END --------- WWWW -------
+
+
+-------- WWWW ------- G4Exception-START -------- WWWW -------
+*** G4Exception : part0005
+      issued by : G4PrimaryParticle::Set4Momentum
+Primary particle PDG=-13 deltaMass(MeV)=1.10932 is larger than the tolerance(MeV)=1
+ Specified mass(MeV)=104.549 while PDG mass(MEV)=105.658
+ To change the tolerance or the exception severity, use G4PrimaryTransformer::SetKETolerance() method.
+*** This is just a warning message. ***
+-------- WWWW -------- G4Exception-END --------- WWWW -------
+
+
+-------- WWWW ------- G4Exception-START -------- WWWW -------
+*** G4Exception : part0005
+      issued by : G4PrimaryParticle::Set4Momentum
+Primary particle PDG=-13 deltaMass(MeV)=1.53377 is larger than the tolerance(MeV)=1
+ Specified mass(MeV)=104.125 while PDG mass(MEV)=105.658
+ To change the tolerance or the exception severity, use G4PrimaryTransformer::SetKETolerance() method.
+*** This is just a warning message. ***
+-------- WWWW -------- G4Exception-END --------- WWWW -------
+
+
+-------- WWWW ------- G4Exception-START -------- WWWW -------
+*** G4Exception : part0005
+      issued by : G4PrimaryParticle::Set4Momentum
+Primary particle PDG=-13 deltaMass(MeV)=1.58398 is larger than the tolerance(MeV)=1
+ Specified mass(MeV)=104.074 while PDG mass(MEV)=105.658
+ To change the tolerance or the exception severity, use G4PrimaryTransformer::SetKETolerance() method.
+*** This is just a warning message. ***
+-------- WWWW -------- G4Exception-END --------- WWWW -------
+
+[INFO] ***  FairBaseParSet written to ROOT file   version: 1
+[INFO] ***  FairGeoParSet written to ROOT file   version: 1
+['tungsten', 'tungsten', 'tungsten', 'tungsten', 'tungsten', 'tungsten', 'tungsten', 'tungsten', 'tungsten', 'tungsten', 'tungsten', 'tungsten', 'tungsten', 'tungsten', 'tungsten', 'tungsten', 'tungsten', 'tungsten', 'tungsten'] [4.5, 1.8, 1.7, 1.7, 1.8, 1.9, 2.1, 1.9, 2.1, 2.4, 2.8, 3.3, 4.1, 5.6, 8.8, 17.2, 28.7, 28.8, 28.8] [0.45, 0.45, 0.45, 0.45, 0.45, 0.45, 0.45, 0.45, 0.45, 0.45, 0.45, 0.45, 0.45, 0.45, 0.48, 0.5, 0.68, 0.68, 0]
+INFO: Processing a file from the old production - setting target z offset to 70.845m
+Process  5000  from input file, with 𝜎 =  5 , with smear radius r =  0.8 with MCTracksWithHitsOnly True
+Calling addVMCFields
+ 
+Macro finished successfully.
+Output file is  ./sim_muonback_summary.root
+Parameter file is  ./params_muonback_summary.root
+Geometry file is  ./geo_muonback_summary.root
+removed empty events, left with: 1721
+WARNING: FileHeader not found in simulation output; skipped FileHeader RunID update
+========================================================================
+Simulation finished successfully
+========================================================================
+ 
+[Generator Validation]
+  Scanned input entries        : 5000
+  Accepted input entries       : 5000
+  Selected muons               : 6148
+  Transported tracks           : 39861
+ 
+[Tree Validation]
+  Requested events             : 5000
+  Final cbmsim entries         : 1721
+  Kept fraction                : 34.42%
+  Branches in cbmsim           : 7
+  ROOT objects                 : 2
+  Countable branches           : 3
+ 
+[MCTrack Validation]
+  Total tracks                 : 13001
+  Primary tracks               : 3402
+  Secondary tracks             : 9599
+  Tracks per event             : 7.554
+  Track momentum               : 128.6 +- 140.3  [min=4.086e-14, max=400]
+  Track energy                 : nan +- 0  [min=0.1711, max=400]
+  Track start Z                : 17.32 +- 16.96  [min=0.001465, max=124.3]
+  Top PDG counts               : 2212:2557, 2:2309, 1:1702, 2112:1017, 13:979, -13:960, 21:765, 223:621, 22:380, 113:359
+ 
+[Branch Multiplicity]
+  MCTrack                : total=13001, mean/event=7.554 +- 1.915, active=1721/1721 (100.0%), max=14
+  UpstreamTaggerPoint    : total=1560, mean/event=0.9064 +- 0.5102, active=1409/1721 ( 81.9%), max=2
+  vetoPoint              : total=1941, mean/event=1.128 +- 0.3374, active=1721/1721 (100.0%), max=3

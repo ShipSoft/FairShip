@@ -174,8 +174,10 @@ Bool_t FixedTargetGenerator::Init() {
     LOG(error) << "Option not known " << Option.Data() << ", abort";
     return kFALSE;
   }
-  if (fUseRandom1) fRandomEngine = std::make_shared<PyTr1Rng>();
-  if (fUseRandom3) fRandomEngine = std::make_shared<PyTr3Rng>();
+  const UInt_t seed =
+      fSeed != 0 ? static_cast<UInt_t>(fSeed) : gRandom->GetSeed();
+  if (fUseRandom1) fRandomEngine = std::make_shared<PyTr1Rng>(seed);
+  if (fUseRandom3) fRandomEngine = std::make_shared<PyTr3Rng>(seed);
   std::vector<int> r = {221, 221, 223, 223, 113, 331, 333};
   std::vector<int> c = {6, 7, 5, 7, 5, 6, 9};  // decay channel mumu mumuX
 

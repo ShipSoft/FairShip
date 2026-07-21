@@ -21,7 +21,7 @@ class FairPrimaryGenerator;
 
 class PyTr1Rng : public Pythia8::RndmEngine {
  public:
-  PyTr1Rng() : rng(std::make_unique<TRandom1>(gRandom->GetSeed())) {}
+  explicit PyTr1Rng(UInt_t seed) : rng(std::make_unique<TRandom1>(seed)) {}
   ~PyTr1Rng() override = default;
 
   Double_t flat() override { return rng->Rndm(); };
@@ -32,7 +32,7 @@ class PyTr1Rng : public Pythia8::RndmEngine {
 
 class PyTr3Rng : public Pythia8::RndmEngine {
  public:
-  PyTr3Rng() : rng(std::make_unique<TRandom3>(gRandom->GetSeed())) {}
+  explicit PyTr3Rng(UInt_t seed) : rng(std::make_unique<TRandom3>(seed)) {}
   ~PyTr3Rng() override = default;
 
   Double_t flat() override { return rng->Rndm(); };
@@ -69,6 +69,7 @@ class HNLPythia8Generator : public SHiP::Generator {
 
   void SetMom(Double_t mom) { fMom = mom; };
   void SetId(Double_t id) { fId = id; };
+  void SetSeed(UInt_t seed) { fSeed = seed; };
   void SetHNLId(Int_t id) { fHNL = id; };
   void SetLmin(Double_t z) { fLmin = z * 10; };  // Conversion from cm to mm
   void SetLmax(Double_t z) { fLmax = z * 10; };  // Conversion from cm to mm
@@ -101,6 +102,7 @@ class HNLPythia8Generator : public SHiP::Generator {
   Int_t fId;                   // target type
   Bool_t fUseRandom1{kFALSE};  // flag to use TRandom1
   Bool_t fUseRandom3{kTRUE};   // flag to use TRandom3 (default)
+  UInt_t fSeed{0};             // explicit RNG seed; 0 uses gRandom's seed
   Double_t fLmin;              // m minimum  decay position z
   Double_t fLmax;              // m maximum decay position z
   Int_t fnRetries;             // retries: no HNL produced

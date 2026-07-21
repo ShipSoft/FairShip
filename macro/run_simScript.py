@@ -479,6 +479,7 @@ if seed == 0:
 if seed > 900000000:
     seed = seed % 900000000
 ROOT.gRandom.SetSeed(seed)
+os.environ["FAIRSHIP_RANDOM_SEED"] = str(seed)
 shipRoot_conf.configure(0)  # load basic libraries, prepare atexit for python
 if options.reproducible and options.debug == 0:
     ROOT.gErrorIgnoreLevel = ROOT.kWarning
@@ -616,6 +617,7 @@ if options.pythia8:
             sys.exit()
     if HNL or options.RPVSUSY or options.DarkPhoton:
         assert P8gen is not None  # guaranteed by the three branches above
+        P8gen.SetSeed(seed)
         P8gen.SetSmearBeam(options.SmearBeam * u.cm)  # Gaussian beam smearing
         P8gen.SetPaintRadius(options.PaintBeam * u.cm)  # beam painting radius
         P8gen.SetLmin(ship_geo.decayVolume.z0 - ship_geo.target.z0)
@@ -640,6 +642,7 @@ if options.pythia8:
             )  # Uniform distribution in x/y on the target (0.5 cm of margin at both sides)
             primGen.SmearVertexXY(True)
         P8gen = ROOT.Pythia8Generator()
+        P8gen.SetSeed(seed)
         P8gen.UseExternalFile(inputFile, options.firstEvent)
         # Use geometry constants instead of fragile TGeo navigation
         P8gen.SetTargetCoordinates(ship_geo.target.z0, ship_geo.target.z0 + ship_geo.target.length)
@@ -651,6 +654,7 @@ if options.pythia8:
 if options.fixedTarget:
     HNL = False
     P8gen = ROOT.FixedTargetGenerator()
+    P8gen.SetSeed(seed)
     P8gen.SetZoffset(options.z_offset * u.mm)
     # Use geometry constants instead of fragile TGeo navigation
     P8gen.SetTargetCoordinates(ship_geo.target.z0, ship_geo.target.z0 + ship_geo.target.length)
