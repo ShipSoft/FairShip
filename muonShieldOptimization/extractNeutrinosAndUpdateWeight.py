@@ -11,7 +11,7 @@ path = "/eos/experiment/ship/data/Mbias/background-prod-2018/"
 # should fill hisograms with neutrinos, for mbias, exclude neutrinos from charm
 # update weight based on process/decay and PoT
 
-charmExtern = [4332, 4232, 4132, 4232, 4122, 431, 411, 421, 15]
+charmExtern = [4332, 4232, 4132, 4322, 4122, 431, 411, 421, 15]
 neutrinos = [12, 14, 16]
 
 # for 10GeV Yandex Production 65.041 Billion PoT, weight = 768.75 for 5E13 pot

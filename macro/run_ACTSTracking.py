@@ -13,7 +13,7 @@ parser.add_argument("-f", "--inputFile", dest="inputFile", help="Input file", re
 parser.add_argument("-g", "--geoFile", dest="geoFile", help="ROOT geofile", required=True)
 parser.add_argument("-o", "--outputDir", dest="outputDir", help="Output directory", required=False, default=os.getcwd())
 parser.add_argument(
-    "-n", "--nEvents", dest="nEvents", help="Num of events to process", type=int, required=False, default=1e6
+    "-n", "--nEvents", dest="nEvents", help="Num of events to process", type=int, required=False, default=1000000
 )
 parser.add_argument(
     "--detector",
@@ -59,8 +59,7 @@ global_variables.minHits = options.minHits
 # Outfile should be in local directory
 tmp = options.inputFile.split("/")
 outFile = tmp[len(tmp) - 1].replace(".root", "_tracked.root")
-outDir = options.inputFile.rsplit("/", 1)[0]
-fullpath = options.outputDir + "" + str(outFile)
+fullpath = os.path.join(options.outputDir, str(outFile))
 # Clone input file for writing
 os.system("cp " + options.inputFile + " " + fullpath)
 global_variables.outputFile = fullpath

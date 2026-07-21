@@ -169,7 +169,7 @@ def addAllHistograms() -> None:
         ut.readHists(h, path + fname)
         if i == 0:
             h[1012].Draw()
-    for x in h:
+    for x in list(h):
         if h[x].GetName().find("proj") > 0:
             h.pop(x)
     ut.writeHists(h, "pythia8_Geant4_" + ecut + "_c" + str(Nmax) + "-histos.root")
@@ -212,7 +212,7 @@ def compactify(charm: bool | str, runMin=0, runMax=0, checkOnly=False) -> None:
     ecut = "10.0"
     if charm:
         allDirs = os.listdir(globalPath + "/charm")
-        allFiles = []
+        allFiles = ""
         for r in range(int(runMin), int(runMax) + 1):
             # collect the 20 subdirectories connected to a run
             nr = "9000" + str(r)
@@ -371,11 +371,10 @@ def makePrintout() -> None:
 
 
 if len(sys.argv) > 1:
-    runMin = sys.argv[1]
-    runMax = sys.argv[2]
-    if len(sys.argv) > 3:
-        charm = sys.argv[3]
-    compactify(charm)
+    runMin = int(sys.argv[1])
+    runMax = int(sys.argv[2])
+    charm = int(sys.argv[3]) if len(sys.argv) > 3 else 0
+    compactify(charm, runMin=runMin, runMax=runMax)
 else:
     # production without boost factor
     # runMin = 1000000

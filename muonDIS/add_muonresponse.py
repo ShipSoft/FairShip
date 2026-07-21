@@ -137,7 +137,7 @@ def modify_file(inputfile, muonfile) -> None:
         for hit in input_event.vetoPoint:
             if combined_vetoPoint.GetSize() == index:
                 combined_vetoPoint.Expand(index + 1)
-            combined_vetoPoint[index] = hit  # pending fix to support ROOT 6.32+
+            combined_vetoPoint.ConstructedAt(index).__assign__(hit)
             index += 1
 
         muoncount = 0
@@ -145,7 +145,7 @@ def modify_file(inputfile, muonfile) -> None:
             if hit.GetZ() < interaction_point.Z():
                 if combined_vetoPoint.GetSize() == index:
                     combined_vetoPoint.Expand(index + 1)
-                combined_vetoPoint[index] = hit  # pending fix to support ROOT 6.32+
+                combined_vetoPoint.ConstructedAt(index).__assign__(hit)
                 index += 1
                 muoncount += 1
 
@@ -156,7 +156,7 @@ def modify_file(inputfile, muonfile) -> None:
         for hit in input_event.UpstreamTaggerPoint:
             if combined_UpstreamTaggerPoint.GetSize() == ubt_index:
                 combined_UpstreamTaggerPoint.Expand(ubt_index + 1)
-            combined_UpstreamTaggerPoint[ubt_index] = hit  # pending fix to support ROOT 6.32+
+            combined_UpstreamTaggerPoint.ConstructedAt(ubt_index).__assign__(hit)
             ubt_index += 1
 
         muon_ubtcount = 0
@@ -164,7 +164,7 @@ def modify_file(inputfile, muonfile) -> None:
             if hit.GetZ() < interaction_point.Z():
                 if combined_UpstreamTaggerPoint.GetSize() == ubt_index:
                     combined_UpstreamTaggerPoint.Expand(ubt_index + 1)
-                combined_UpstreamTaggerPoint[ubt_index] = hit  # pending fix to support ROOT 6.32+
+                combined_UpstreamTaggerPoint.ConstructedAt(ubt_index).__assign__(hit)
                 ubt_index += 1
                 muon_ubtcount += 1
 

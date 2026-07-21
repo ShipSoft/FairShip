@@ -222,7 +222,7 @@ parser.add_argument("--MuDIS", dest="mudis", help="Use muon deep inelastic scatt
 parser.add_argument("--RpvSusy", dest="RPVSUSY", help="Generate events based on RPV neutralino", action="store_true")
 parser.add_argument("--FixedTarget", dest="fixedTarget", help="Enable fixed target simulation", action="store_true")
 parser.add_argument("--DarkPhoton", help="Generate dark photons", action="store_true")
-parser.add_argument("--SusyBench", dest="RPVSUSYbench", help="Generate HP Susy", default=2)
+parser.add_argument("--SusyBench", dest="RPVSUSYbench", help="Generate HP Susy", type=int, default=2)
 parser.add_argument(
     "-m",
     "--mass",
@@ -421,16 +421,23 @@ if options.cosmics:
 if options.inputFile:
     if options.inputFile == ["none"]:
         options.inputFile = None
-    inputFile = []
-    for _f in options.inputFile:
-        if options.remoteInput:
-            inputFile.append(os.path.expandvars(_f))
+    else:
+        inputFile = []
+        for _f in options.inputFile:
+            if options.remoteInput:
+                inputFile.append(os.path.expandvars(_f))
+            else:
+                inputFile.extend(glob.glob(_f))
+        inputFile = list(dict.fromkeys(inputFile))
+        if options.nFiles > 0:
+            inputFile = inputFile[: options.nFiles]
+        # Only disable the default-input fallback when at least one path
+        # actually resolved; an explicit --inputFile that globs to nothing is a
+        # mistake and would otherwise run downstream setup with no input files.
+        if inputFile:
+            defaultInputFile = False
         else:
-            inputFile.extend(glob.glob(_f))
-    inputFile = list(dict.fromkeys(inputFile))
-    if options.nFiles > 0:
-        inputFile = inputFile[: options.nFiles]
-    defaultInputFile = False
+            parser.error(f"--inputFile {options.inputFile} matched no files")
 if options.RPVSUSY:
     HNL = False
 if options.DarkPhoton:
@@ -463,12 +470,12 @@ if (options.command == "Genie" or options.nuradio) and defaultInputFile:
 if options.mudis and defaultInputFile:
     print("input file required if simEngine = muonDIS")
     print(" for example -f  $EOSSHIP/eos/experiment/ship/data/muonDIS/muonDis_1.root")
-    sys.exit()
+    sys.exit(1)
 
 if (options.ntuple or options.muonback) and defaultInputFile:
     print("input file required if simEngine = Ntuple or MuonBack")
     print(" for example -f $EOSSHIP/eos/experiment/ship/data/Mbias/pythia8_Geant4-withCharm_onlyMuons_4magTarget.root")
-    sys.exit()
+    sys.exit(1)
 # PYTHIA8 requires Random:seed to be in range [0, 900000000]
 # When theSeed=0, ROOT generates a seed from system time which can exceed this limit
 seed = options.theSeed
@@ -872,7 +879,7 @@ if options.cosmics:
     CMBG_conf.configure(Cosmicsgen, ship_geo)
     if not Cosmicsgen.Init(Opt_high):
         print("initialization of cosmic background generator failed ", Opt_high)
-        sys.exit(0)
+        sys.exit(1)
     Cosmicsgen.n_EVENTS = options.nEvents
     primGen.AddGenerator(Cosmicsgen)
     ROOT.SetOwnership(Cosmicsgen, False)  # C++ FairPrimaryGenerator takes ownership

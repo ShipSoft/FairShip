@@ -71,7 +71,7 @@ def execute_parallel(prefix, ncpu: int = 4):
                 inputfile = f.replace("geofile_full", "ship")
                 log[k] = open("logRec", "w")  # noqa: SIM115
                 cpus[k] = subprocess.Popen(
-                    ["python", cmd, "-n 9999999 -f " + inputfile],
+                    ["python", cmd, "-n", "9999999", "-f", inputfile, "-g", f],
                     stdout=log[k],
                 )
                 k += 1
@@ -136,9 +136,11 @@ def executeSimple(prefixes: list[str], reset=False) -> None:
                 with contextlib.suppress(Exception):
                     os.system("rm logRec")
                 if reset:
-                    os.system("python " + cmd + " -n 9999999 -f " + inputfile + " --saveDisk >> logRec &")
+                    os.system(
+                        "python " + cmd + " -n 9999999 -f " + inputfile + " -g " + geofile + " --saveDisk >> logRec &"
+                    )
                 else:
-                    os.system("python " + cmd + " -n 9999999 -f " + inputfile + " >> logRec &")
+                    os.system("python " + cmd + " -n 9999999 -f " + inputfile + " -g " + geofile + " >> logRec &")
                 os.chdir("../")
                 time.sleep(10)
     nJobs = len(proc)
@@ -163,7 +165,13 @@ def executeSimple(prefixes: list[str], reset=False) -> None:
                 with contextlib.suppress(Exception):
                     os.system("rm logAna")
                 os.system(
-                    "python " + cmdAna + " -n 9999999 -f " + inputfile.replace(".root", "_rec.root") + " >> logAna &"
+                    "python "
+                    + cmdAna
+                    + " -n 9999999 -f "
+                    + inputfile.replace(".root", "_rec.root")
+                    + " -g "
+                    + geofile
+                    + " >> logAna &"
                 )
                 proc.pop(p)
                 time.sleep(10)
@@ -188,7 +196,17 @@ def executeAna(prefixes) -> None:
                     inputfile = f.replace("geofile_full", "ship")
                     log[x] = open("logAna", "w")  # noqa: SIM115
                     process = subprocess.Popen(
-                        ["python", cmdAna, "-n 9999999", "-f " + inputfile.replace(".root", "_rec.root")], stdout=log[x]
+                        [
+                            "python",
+                            cmdAna,
+                            "-n",
+                            "9999999",
+                            "-f",
+                            inputfile.replace(".root", "_rec.root"),
+                            "-g",
+                            f,
+                        ],
+                        stdout=log[x],
                     )
                     process.wait()
                     print("finished ", process.returncode)

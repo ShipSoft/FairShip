@@ -252,6 +252,7 @@ def create_config(
         + 207.5 * u.mm  # Distance between hadron absorber and proximity shielding
         - 10 * u.cm  # Remove spacing internal to hadron absorber
     )
+    c.hadronAbsorber.length = 3.0 * u.m
 
     # DEFINITION OF THE MUON SHIELD
     c.muShield = AttrDict()
