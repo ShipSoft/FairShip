@@ -13,28 +13,47 @@ it in future.
 ## Unreleased
 
 ### Added
-* Add option to split kaons and pions right before they decay, to increase the number of muons
-
-* Added TRY_2026 MS version.
-
-* Make particle gun polar angle configurable via `--thetaMin`/`--thetaMax`
-* Add `run_tracking_scan.py` to sweep the tracking benchmark over angle and multiplicity grids
-* Add charge-ID efficiency metric to the tracking benchmark
 
 ### Changed
 
 ### Fixed
 
+### Removed
+
+## 26.07 - 2026-07-21
+
+### Added
+
+* Add option to split kaons and pions right before they decay, to increase the number of muons
+* Added TRY_2026 MS version.
+* Make particle gun polar angle configurable via `--thetaMin`/`--thetaMax`
+* Add `run_tracking_scan.py` to sweep the tracking benchmark over angle and multiplicity grids
+* Add charge-ID efficiency metric to the tracking benchmark
+* Add iron material definition and simplified SiTarget digitization in the MTC, with strawtubes gating in the reconstruction flow
+
+### Changed
+
+* Flatten field-map storage and make the field evaluator reentrant
+
+### Fixed
+
 * Fix pot branch in Decay tree from makeDecay
-
 * Fix check of existing particle pdg in makeCascade
-
 * Restore `tPythia6Generator` instantiation from Python — broken since 26.02 by the `SHiP::Generator` base-class refactor leaving the file-based `Init` overloads pure virtual without a stub override (#1272)
 * Fix call to next Pythia event generation
-
 * Eliminate redundant hadron absorber field map
-
 * Fix Magnet MS5 and MS6 to store new SND conceptual design
+* Fix a batch of generator bugs: null-pointer dereferences and vertex fallback, mother/vertex/energy bookkeeping, RNG-selection and engine member initialisation, charm interaction-point sampling in geometry-coordinates mode, and assorted low-severity issues
+* Plug `HNLPythia8Generator` memory leaks
+* Fix scintillator tile hit processing
+* Exclude clone tracks from tracking metrics and guard the scan sort, and improve error handling in the tracking scan
+* Skip RMSE fill when there are no matched extrapolations
+* Correct MC-track checkbox state and truth/fit pairing in the event display
+* Give `shipVertex` `VertexError` a uniform 3-tuple return
+* Don't crash on unreadable ROOT files where a skip was intended
+* Match `run_simScript` output `TFile` by full path
+* Correct return types in `compute_total_br` and `compute_max_total_br`
+
 ### Removed
 
 * Remove unused legacy `Pythia6Generator` (custom text-format event-record reader from 2008, zero callsites anywhere in the tree). `tPythia6Generator` is unaffected.
