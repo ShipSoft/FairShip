@@ -21,7 +21,7 @@ class FairPrimaryGenerator;
 
 class PyTr1Rng : public Pythia8::RndmEngine {
  public:
-  PyTr1Rng() : rng(std::make_unique<TRandom1>(gRandom->GetSeed())) {}
+  explicit PyTr1Rng(UInt_t seed) : rng(std::make_unique<TRandom1>(seed)) {}
   ~PyTr1Rng() override = default;
 
   Double_t flat() override { return rng->Rndm(); };
@@ -32,7 +32,7 @@ class PyTr1Rng : public Pythia8::RndmEngine {
 
 class PyTr3Rng : public Pythia8::RndmEngine {
  public:
-  PyTr3Rng() : rng(std::make_unique<TRandom3>(gRandom->GetSeed())) {}
+  explicit PyTr3Rng(UInt_t seed) : rng(std::make_unique<TRandom3>(seed)) {}
   ~PyTr3Rng() override = default;
 
   Double_t flat() override { return rng->Rndm(); };

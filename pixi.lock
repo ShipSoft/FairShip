@@ -283,7 +283,6 @@ environments:
       - conda: https://prefix.dev/conda-forge/noarch/cached_property-1.5.2-pyha770c72_2.conda
       - conda: https://prefix.dev/conda-forge/noarch/certifi-2026.6.17-pyhd8ed1ab_0.conda
       - conda: https://prefix.dev/conda-forge/noarch/charset-normalizer-3.4.9-pyhd8ed1ab_0.conda
-      - conda: https://prefix.dev/conda-forge/noarch/colorama-0.4.6-pyhd8ed1ab_1.conda
       - conda: https://prefix.dev/conda-forge/noarch/comm-0.2.3-pyhe01879c_0.conda
       - conda: https://prefix.dev/conda-forge/noarch/compiler-rt22_linux-64-22.1.8-hffcefe0_1.conda
       - conda: https://prefix.dev/conda-forge/noarch/compiler-rt_linux-64-22.1.8-ha770c72_1.conda
@@ -292,7 +291,6 @@ environments:
       - conda: https://prefix.dev/conda-forge/noarch/decorator-5.3.1-pyhd8ed1ab_0.conda
       - conda: https://prefix.dev/conda-forge/noarch/defusedxml-0.7.1-pyhd8ed1ab_0.tar.bz2
       - conda: https://prefix.dev/conda-forge/noarch/exceptiongroup-1.3.1-pyhd8ed1ab_0.conda
-      - conda: https://prefix.dev/conda-forge/noarch/execnet-2.1.2-pyhd8ed1ab_0.conda
       - conda: https://prefix.dev/conda-forge/noarch/executing-2.2.1-pyhd8ed1ab_0.conda
       - conda: https://prefix.dev/conda-forge/noarch/font-ttf-dejavu-sans-mono-2.37-hab24e00_0.tar.bz2
       - conda: https://prefix.dev/conda-forge/noarch/font-ttf-inconsolata-3.000-h77eed37_0.tar.bz2
@@ -321,7 +319,6 @@ environments:
       - conda: https://prefix.dev/conda-forge/noarch/hyperframe-6.1.0-pyhd8ed1ab_0.conda
       - conda: https://prefix.dev/conda-forge/noarch/idna-3.18-pyhcf101f3_0.conda
       - conda: https://prefix.dev/conda-forge/noarch/importlib-metadata-9.0.0-pyhcf101f3_0.conda
-      - conda: https://prefix.dev/conda-forge/noarch/iniconfig-2.3.0-pyhd8ed1ab_0.conda
       - conda: https://prefix.dev/conda-forge/noarch/ipykernel-7.3.0-pyha191276_0.conda
       - conda: https://prefix.dev/conda-forge/noarch/ipyparallel-9.2.0-pyhcf101f3_0.conda
       - conda: https://prefix.dev/conda-forge/noarch/ipython-9.15.0-pyh53cf698_0.conda
@@ -364,7 +361,6 @@ environments:
       - conda: https://prefix.dev/conda-forge/noarch/parso-0.8.7-pyhcf101f3_0.conda
       - conda: https://prefix.dev/conda-forge/noarch/pexpect-4.9.0-pyhd8ed1ab_1.conda
       - conda: https://prefix.dev/conda-forge/noarch/platformdirs-4.10.1-pyhcf101f3_0.conda
-      - conda: https://prefix.dev/conda-forge/noarch/pluggy-1.6.0-pyhf9edf01_1.conda
       - conda: https://prefix.dev/conda-forge/noarch/prometheus_client-0.25.0-pyhd8ed1ab_0.conda
       - conda: https://prefix.dev/conda-forge/noarch/prompt-toolkit-3.0.52-pyha770c72_0.conda
       - conda: https://prefix.dev/conda-forge/noarch/ptyprocess-0.7.0-pyhd8ed1ab_1.conda
@@ -373,8 +369,6 @@ environments:
       - conda: https://prefix.dev/conda-forge/noarch/pygments-2.20.0-pyhd8ed1ab_0.conda
       - conda: https://prefix.dev/conda-forge/noarch/pyparsing-3.3.2-pyhcf101f3_0.conda
       - conda: https://prefix.dev/conda-forge/noarch/pysocks-1.7.1-pyha55dd90_7.conda
-      - conda: https://prefix.dev/conda-forge/noarch/pytest-9.1.1-pyhc364b38_2.conda
-      - conda: https://prefix.dev/conda-forge/noarch/pytest-xdist-3.8.0-pyhd8ed1ab_0.conda
       - conda: https://prefix.dev/conda-forge/noarch/python-dateutil-2.9.0.post0-pyhe01879c_2.conda
       - conda: https://prefix.dev/conda-forge/noarch/python-fastjsonschema-2.21.2-pyhe01879c_0.conda
       - conda: https://prefix.dev/conda-forge/noarch/python-gil-3.13.14-h4df99d1_100.conda
@@ -719,7 +713,6 @@ environments:
       - conda: https://prefix.dev/conda-forge/noarch/docopt-0.6.2-pyhd8ed1ab_2.conda
       - conda: https://prefix.dev/conda-forge/noarch/entrypoints-0.4-pyhd8ed1ab_1.conda
       - conda: https://prefix.dev/conda-forge/noarch/exceptiongroup-1.3.1-pyhd8ed1ab_0.conda
-      - conda: https://prefix.dev/conda-forge/noarch/execnet-2.1.2-pyhd8ed1ab_0.conda
       - conda: https://prefix.dev/conda-forge/noarch/executing-2.2.1-pyhd8ed1ab_0.conda
       - conda: https://prefix.dev/conda-forge/noarch/font-ttf-dejavu-sans-mono-2.37-hab24e00_0.tar.bz2
       - conda: https://prefix.dev/conda-forge/noarch/font-ttf-inconsolata-3.000-h77eed37_0.tar.bz2
@@ -744,7 +737,6 @@ environments:
       - conda: https://prefix.dev/conda-forge/noarch/hyperframe-6.1.0-pyhd8ed1ab_0.conda
       - conda: https://prefix.dev/conda-forge/noarch/idna-3.18-pyhcf101f3_0.conda
       - conda: https://prefix.dev/conda-forge/noarch/importlib-metadata-9.0.0-pyhcf101f3_0.conda
-      - conda: https://prefix.dev/conda-forge/noarch/iniconfig-2.3.0-pyhd8ed1ab_0.conda
       - conda: https://prefix.dev/conda-forge/noarch/ipykernel-6.29.5-pyh3099207_0.conda
       - conda: https://prefix.dev/conda-forge/noarch/ipyparallel-9.2.0-pyhcf101f3_0.conda
       - conda: https://prefix.dev/conda-forge/noarch/ipython-9.15.0-pyh53cf698_0.conda
@@ -782,7 +774,6 @@ environments:
       - conda: https://prefix.dev/conda-forge/noarch/pathspec-1.1.1-pyhd8ed1ab_0.conda
       - conda: https://prefix.dev/conda-forge/noarch/pexpect-4.9.0-pyhd8ed1ab_1.conda
       - conda: https://prefix.dev/conda-forge/noarch/platformdirs-4.10.1-pyhcf101f3_0.conda
-      - conda: https://prefix.dev/conda-forge/noarch/pluggy-1.6.0-pyhf9edf01_1.conda
       - conda: https://prefix.dev/conda-forge/noarch/pre-commit-hooks-6.0.0-pyhd8ed1ab_0.conda
       - conda: https://prefix.dev/conda-forge/noarch/prometheus_client-0.25.0-pyhd8ed1ab_0.conda
       - conda: https://prefix.dev/conda-forge/noarch/prompt-toolkit-3.0.51-pyha770c72_0.conda
@@ -794,8 +785,6 @@ environments:
       - conda: https://prefix.dev/conda-forge/noarch/pykwalify-1.8.0-pyhd8ed1ab_1.conda
       - conda: https://prefix.dev/conda-forge/noarch/pyparsing-3.3.2-pyhcf101f3_0.conda
       - conda: https://prefix.dev/conda-forge/noarch/pysocks-1.7.1-pyha55dd90_7.conda
-      - conda: https://prefix.dev/conda-forge/noarch/pytest-9.1.1-pyhc364b38_2.conda
-      - conda: https://prefix.dev/conda-forge/noarch/pytest-xdist-3.8.0-pyhd8ed1ab_0.conda
       - conda: https://prefix.dev/conda-forge/noarch/python-dateutil-2.9.0.post0-pyhe01879c_2.conda
       - conda: https://prefix.dev/conda-forge/noarch/python-debian-1.1.1-pyhcf101f3_0.conda
       - conda: https://prefix.dev/conda-forge/noarch/python-fastjsonschema-2.21.2-pyhe01879c_0.conda
@@ -919,7 +908,7 @@ packages:
   license: MIT
   license_family: MIT
   purls:
-  - pkg:pypi/ast-serialize?source=hash-mapping
+  - pkg:pypi/ast-serialize?source=compressed-mapping
   run_exports: {}
   size: 1120486
   timestamp: 1782863830347
@@ -986,7 +975,7 @@ packages:
   - zstd >=1.5.7,<1.6.0a0
   license: BSD-3-Clause AND MIT AND EPL-2.0
   purls:
-  - pkg:pypi/backports-zstd?source=compressed-mapping
+  - pkg:pypi/backports-zstd?source=hash-mapping
   run_exports: {}
   size: 242845
   timestamp: 1781450812380
@@ -1558,7 +1547,7 @@ packages:
   license: MIT
   license_family: MIT
   purls:
-  - pkg:pypi/debugpy?source=compressed-mapping
+  - pkg:pypi/debugpy?source=hash-mapping
   run_exports: {}
   size: 2825625
   timestamp: 1780390153372
@@ -3929,7 +3918,7 @@ packages:
   license: BSD-3-Clause
   license_family: BSD
   purls:
-  - pkg:pypi/numpy?source=compressed-mapping
+  - pkg:pypi/numpy?source=hash-mapping
   run_exports:
     weak:
     - numpy >=1.23,<3
@@ -5914,18 +5903,6 @@ packages:
   run_exports: {}
   size: 21333
   timestamp: 1763918099466
-- conda: https://prefix.dev/conda-forge/noarch/execnet-2.1.2-pyhd8ed1ab_0.conda
-  sha256: 1acc6a420efc5b64c384c1f35f49129966f8a12c93b4bb2bdc30079e5dc9d8a8
-  md5: a57b4be42619213a94f31d2c69c5dda7
-  depends:
-  - python >=3.10
-  license: MIT
-  license_family: MIT
-  purls:
-  - pkg:pypi/execnet?source=hash-mapping
-  run_exports: {}
-  size: 39499
-  timestamp: 1762974150770
 - conda: https://prefix.dev/conda-forge/noarch/executing-2.2.1-pyhd8ed1ab_0.conda
   sha256: 210c8165a58fdbf16e626aac93cc4c14dbd551a01d1516be5ecad795d2422cad
   md5: ff9efb7f7469aed3c4a8106ffa29593c
@@ -6219,18 +6196,6 @@ packages:
   run_exports: {}
   size: 34766
   timestamp: 1779714582554
-- conda: https://prefix.dev/conda-forge/noarch/iniconfig-2.3.0-pyhd8ed1ab_0.conda
-  sha256: e1a9e3b1c8fe62dc3932a616c284b5d8cbe3124bbfbedcf4ce5c828cb166ee19
-  md5: 9614359868482abba1bd15ce465e3c42
-  depends:
-  - python >=3.10
-  license: MIT
-  license_family: MIT
-  purls:
-  - pkg:pypi/iniconfig?source=hash-mapping
-  run_exports: {}
-  size: 13387
-  timestamp: 1760831448842
 - conda: https://prefix.dev/conda-forge/noarch/ipykernel-6.29.5-pyh3099207_0.conda
   sha256: 33cfd339bb4efac56edf93474b37ddc049e08b1b4930cf036c893cc1f5a1f32a
   md5: b40131ab6a36ac2c09b7c57d4d3fbf99
@@ -6558,7 +6523,7 @@ packages:
   license: BSD-3-Clause
   license_family: BSD
   purls:
-  - pkg:pypi/jupyter-client?source=compressed-mapping
+  - pkg:pypi/jupyter-client?source=hash-mapping
   run_exports: {}
   size: 117954
   timestamp: 1781019994076
@@ -6677,7 +6642,7 @@ packages:
   license: BSD-3-Clause
   license_family: BSD
   purls:
-  - pkg:pypi/jupyter-server?source=compressed-mapping
+  - pkg:pypi/jupyter-server?source=hash-mapping
   run_exports: {}
   size: 363068
   timestamp: 1781713810089
@@ -7136,19 +7101,6 @@ packages:
   run_exports: {}
   size: 26412
   timestamp: 1784376970393
-- conda: https://prefix.dev/conda-forge/noarch/pluggy-1.6.0-pyhf9edf01_1.conda
-  sha256: e14aafa63efa0528ca99ba568eaf506eb55a0371d12e6250aaaa61718d2eb62e
-  md5: d7585b6550ad04c8c5e21097ada2888e
-  depends:
-  - python >=3.9
-  - python
-  license: MIT
-  license_family: MIT
-  purls:
-  - pkg:pypi/pluggy?source=hash-mapping
-  run_exports: {}
-  size: 25877
-  timestamp: 1764896838868
 - conda: https://prefix.dev/conda-forge/noarch/pre-commit-hooks-6.0.0-pyhd8ed1ab_0.conda
   sha256: 292e8666ed5338b1a43a3a7f21030e95e393cfa245725c3d502d87481c4d6ef9
   md5: 00a7fda6ccb684f36a8f2f0a17851da9
@@ -7303,44 +7255,6 @@ packages:
   run_exports: {}
   size: 21085
   timestamp: 1733217331982
-- conda: https://prefix.dev/conda-forge/noarch/pytest-9.1.1-pyhc364b38_2.conda
-  sha256: 430051d80765207a7d782b2b188230ba1489d35c6e75fd9903f76cb9fda4af16
-  md5: 64c98a12c4e23eb238bf66bbecafdf3c
-  depends:
-  - colorama
-  - pygments >=2.7.2
-  - python >=3.10
-  - iniconfig >=1.0.1
-  - packaging >=22
-  - pluggy >=1.5,<2
-  - tomli >=1
-  - exceptiongroup >=1
-  - python
-  constrains:
-  - pytest-faulthandler >=2
-  license: MIT
-  license_family: MIT
-  purls:
-  - pkg:pypi/pytest?source=compressed-mapping
-  run_exports: {}
-  size: 306724
-  timestamp: 1782127176429
-- conda: https://prefix.dev/conda-forge/noarch/pytest-xdist-3.8.0-pyhd8ed1ab_0.conda
-  sha256: b7b58a5be090883198411337b99afb6404127809c3d1c9f96e99b59f36177a96
-  md5: 8375cfbda7c57fbceeda18229be10417
-  depends:
-  - execnet >=2.1
-  - pytest >=7.0.0
-  - python >=3.9
-  constrains:
-  - psutil >=3.0
-  license: MIT
-  license_family: MIT
-  purls:
-  - pkg:pypi/pytest-xdist?source=hash-mapping
-  run_exports: {}
-  size: 39300
-  timestamp: 1751452761594
 - conda: https://prefix.dev/conda-forge/noarch/python-dateutil-2.9.0.post0-pyhe01879c_2.conda
   sha256: d6a17ece93bbd5139e02d2bd7dbfa80bee1a4261dced63f65f679121686bf664
   md5: 5b8d21249ff20967101ffa321cab24e8
