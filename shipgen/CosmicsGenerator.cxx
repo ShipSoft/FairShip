@@ -90,7 +90,7 @@ void CosmicsGenerator::GenerateDynamics() {
 // -----   Initiate the CMBG   -----------------------------------------
 Bool_t CosmicsGenerator::Init(Bool_t largeMom) {
   // general
-  fRandomEngine = new Co3Rng();
+  fRandomEngine = new Co3Rng(GetSeed());
   TDatabasePDG* pdgBase = TDatabasePDG::Instance();
   mass = pdgBase->GetParticle(13)->Mass();  // muons!
   cout << "--------------------------------------------------------------------"

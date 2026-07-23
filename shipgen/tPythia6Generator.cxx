@@ -25,7 +25,7 @@ tPythia6Generator::tPythia6Generator() {
 
 // -----   Default constructor   -------------------------------------------
 Bool_t tPythia6Generator::Init() {
-  fPythia->SetMRPY(1, gRandom->GetSeed());
+  fPythia->SetMRPY(1, GetSeed());
 
   cout << "Muon Momentum " << fMom << endl;
 
