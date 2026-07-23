@@ -40,7 +40,7 @@ Pythia8Generator::Pythia8Generator() {
 
 // -----   Default constructor   -------------------------------------------
 Bool_t Pythia8Generator::Init() {
-  const UInt_t seed = fSeed != 0 ? fSeed : gRandom->GetSeed();
+  const UInt_t seed = GetSeed();
   if (fUseRandom1) fRandomEngine = std::make_shared<PyTr1Rng>(seed);
   if (fUseRandom3) fRandomEngine = std::make_shared<PyTr3Rng>(seed);
   fPythia->setRndmEnginePtr(fRandomEngine);

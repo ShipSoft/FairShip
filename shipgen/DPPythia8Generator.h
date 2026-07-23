@@ -57,7 +57,6 @@ class DPPythia8Generator : public SHiP::Generator {
   void SetMom(Double_t mom) { fMom = mom; };
   Double_t GetMom() { return fMom; };
   void SetId(Double_t id) { fId = id; };
-  void SetSeed(UInt_t seed) { fSeed = seed; };
   void SetDPId(Int_t id) { fDP = id; };
   Int_t GetDPId() { return fDP; };
   void SetLmin(Double_t z) { fLmin = z; };
@@ -99,7 +98,6 @@ class DPPythia8Generator : public SHiP::Generator {
   Int_t fId;                   // target type
   Bool_t fUseRandom1{kFALSE};  // flag to use TRandom1
   Bool_t fUseRandom3{kTRUE};   // flag to use TRandom3 (default)
-  UInt_t fSeed{0};             // explicit RNG seed; 0 uses gRandom's seed
   Bool_t
       fpbrem;  // flag to do proton bremstrahlung production (default is false)
   TH2F* fpbremPDF;   // pointer to TH2 containing PDF(p,theta) to have a dark

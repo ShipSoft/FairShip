@@ -41,7 +41,7 @@ Bool_t HNLPythia8Generator::Init() {
   if (debug) {
     List(9900015);
   }
-  const UInt_t seed = fSeed != 0 ? fSeed : gRandom->GetSeed();
+  const UInt_t seed = GetSeed();
   if (fUseRandom1) fRandomEngine = std::make_shared<PyTr1Rng>(seed);
   if (fUseRandom3) fRandomEngine = std::make_shared<PyTr3Rng>(seed);
   fPythia->setRndmEnginePtr(fRandomEngine);
