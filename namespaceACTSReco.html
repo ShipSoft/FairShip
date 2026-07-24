@@ -146,7 +146,7 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">   47</span> </div>
 <div class="line"><span class="lineno">   48</span>    <span class="keywordflow">elif</span> global_variables.detector == <span class="stringliteral">&quot;MTC&quot;</span>:</div>
 <div class="line"><span class="lineno">   49</span>        <span class="comment"># MTC setup to be updated.</span></div>
-<div class="line"><span class="lineno">   50</span>        field = acts.ConstantBField(acts.Vector3(0.0, -1.2, 0.0 * u.T))</div>
+<div class="line"><span class="lineno">   50</span>        field = acts.ConstantBField(acts.Vector3(0.0, -1.2 * u.T, 0.0 * u.T))</div>
 <div class="line"><span class="lineno">   51</span>        simHitTree = <span class="stringliteral">&quot;mtcHits&quot;</span></div>
 <div class="line"><span class="lineno">   52</span>        digiConfigFile = currentPath + <span class="stringliteral">&quot;/MTC-digi-config.json&quot;</span></div>
 <div class="line"><span class="lineno">   53</span>        detector = acts.examples.MTCBuilder(</div>

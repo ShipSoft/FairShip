@@ -1,7 +1,8 @@
 var compare__histograms_8py =
 [
     [ "compare_histograms", "compare__histograms_8py.html#aa085abd70ec6e91ce8cd3233f1bb44b1", null ],
-    [ "main", "compare__histograms_8py.html#ae67891535b68161e792983dba1f912c7", null ],
+    [ "histograms_identical", "compare__histograms_8py.html#af6dbf09acea43aceea58147dcfbeece0", null ],
+    [ "main", "compare__histograms_8py.html#aeb831e15a289966f95345e6a202e7c05", null ],
     [ "action", "compare__histograms_8py.html#a1104376ca7039bd88330e7638f3239de", null ],
     [ "args", "compare__histograms_8py.html#aa62b2d0a16f870914fa42a905426fa08", null ],
     [ "default", "compare__histograms_8py.html#a0e2a384032972aef3899f407e01bba51", null ],

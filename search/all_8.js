@@ -119,7 +119,7 @@ var searchData=
   ['dpt2dtheta_116',['dPt2dTheta',['../namespaceproton__bremsstrahlung.html#a8317f12f6cfbdda00f7c16e7f1bef570',1,'proton_bremsstrahlung']]],
   ['dqm_117',['DQM',['../namespacerun__ACTSTracking.html#ab4132b0575d937e226784acc7c66b0f5',1,'run_ACTSTracking']]],
   ['draw_5fchannel_118',['draw_channel',['../classSciFiMapping_1_1SciFiMapping.html#a9fbd4c16992f2b06625b7c6932970e98',1,'SciFiMapping::SciFiMapping']]],
-  ['draw_5fchannel_5fxy_119',['draw_channel_XY',['../classSciFiMapping_1_1SciFiMapping.html#aa7602450158acc571e8c864726d5a27a',1,'SciFiMapping::SciFiMapping']]],
+  ['draw_5fchannel_5fxy_119',['draw_channel_XY',['../classSciFiMapping_1_1SciFiMapping.html#a63ba712eae9f3a97153b5fbc7819f900',1,'SciFiMapping::SciFiMapping']]],
   ['draw_5fcombined_5fscifi_5fviews_120',['draw_combined_scifi_views',['../classSciFiMapping_1_1SciFiMapping.html#a83bbcd6aa462e9763d462f34906c24bc',1,'SciFiMapping::SciFiMapping']]],
   ['draw_5fmany_5fchannels_121',['draw_many_channels',['../classSciFiMapping_1_1SciFiMapping.html#a1eb581a8b0869e3ffa49a81c01c3d9d0',1,'SciFiMapping::SciFiMapping']]],
   ['drawboth_122',['drawBoth',['../namespaceana__ShipMuon.html#ae1e391ff46b9184e19c6159fd3f08445',1,'ana_ShipMuon']]],

@@ -495,57 +495,62 @@ Variables</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="proton__bremsstrahlung_8py_source.html#l00184">184</a> of file <a class="el" href="proton__bremsstrahlung_8py_source.html">proton_bremsstrahlung.py</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  184</span><span class="keyword">def </span>hProdPDF(mDarkPhoton, epsilon, norm, binsp, binstheta, tmin=-0.5 * math.pi, tmax=0.5 * math.pi, suffix=&quot;&quot;):</div>
 <div class="line"><span class="lineno">  185</span>    <span class="stringliteral">&quot;&quot;&quot;Histogram of the PDF for A&#39; production in SHIP&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  186</span>    angles = np.linspace(tmin, tmax, binstheta).tolist()</div>
-<div class="line"><span class="lineno">  187</span>    anglestep = 2.0 * (tmax - tmin) / binstheta</div>
-<div class="line"><span class="lineno">  188</span>    momentumStep = (pMax(mDarkPhoton) - pMin(mDarkPhoton)) / (binsp - 1)</div>
-<div class="line"><span class="lineno">  189</span>    momenta = np.linspace(pMin(mDarkPhoton), pMax(mDarkPhoton), binsp, endpoint=<span class="keyword">False</span>).tolist()</div>
-<div class="line"><span class="lineno">  190</span>    hPDF = r.TH2F(</div>
-<div class="line"><span class="lineno">  191</span>        f<span class="stringliteral">&quot;hPDF_eps{epsilon}_m{mDarkPhoton}&quot;</span>,</div>
-<div class="line"><span class="lineno">  192</span>        f<span class="stringliteral">&quot;hPDF_eps{epsilon}_m{mDarkPhoton}&quot;</span>,</div>
-<div class="line"><span class="lineno">  193</span>        binsp,</div>
-<div class="line"><span class="lineno">  194</span>        pMin(mDarkPhoton) - 0.5 * momentumStep,</div>
-<div class="line"><span class="lineno">  195</span>        pMax(mDarkPhoton) - 0.5 * momentumStep,</div>
-<div class="line"><span class="lineno">  196</span>        binstheta,</div>
-<div class="line"><span class="lineno">  197</span>        tmin - 0.5 * anglestep,</div>
-<div class="line"><span class="lineno">  198</span>        tmax - 0.5 * anglestep,</div>
-<div class="line"><span class="lineno">  199</span>    )</div>
-<div class="line"><span class="lineno">  200</span>    hPDF.SetTitle(f<span class="stringliteral">&quot;PDF for A&#39; production (m_{{A&#39;}}={mDarkPhoton} GeV, #epsilon ={epsilon})&quot;</span>)</div>
-<div class="line"><span class="lineno">  201</span>    hPDF.GetXaxis().SetTitle(<span class="stringliteral">&quot;P_{A&#39;} [GeV]&quot;</span>)</div>
-<div class="line"><span class="lineno">  202</span>    hPDF.GetYaxis().SetTitle(<span class="stringliteral">&quot;#theta_{A&#39;} [rad]&quot;</span>)</div>
-<div class="line"><span class="lineno">  203</span>    hPDFtheta = r.TH1F(</div>
-<div class="line"><span class="lineno">  204</span>        f<span class="stringliteral">&quot;hPDFtheta_eps{epsilon}_m{mDarkPhoton}&quot;</span>,</div>
-<div class="line"><span class="lineno">  205</span>        f<span class="stringliteral">&quot;hPDFtheta_eps{epsilon}_m{mDarkPhoton}&quot;</span>,</div>
-<div class="line"><span class="lineno">  206</span>        binstheta,</div>
-<div class="line"><span class="lineno">  207</span>        tmin - 0.5 * anglestep,</div>
-<div class="line"><span class="lineno">  208</span>        tmax - 0.5 * anglestep,</div>
-<div class="line"><span class="lineno">  209</span>    )</div>
-<div class="line"><span class="lineno">  210</span>    hPDFp = r.TH1F(</div>
-<div class="line"><span class="lineno">  211</span>        f<span class="stringliteral">&quot;hPDFp_eps{epsilon}_m{mDarkPhoton}&quot;</span>,</div>
-<div class="line"><span class="lineno">  212</span>        f<span class="stringliteral">&quot;hPDFp_eps{epsilon}_m{mDarkPhoton}&quot;</span>,</div>
-<div class="line"><span class="lineno">  213</span>        binsp,</div>
-<div class="line"><span class="lineno">  214</span>        pMin(mDarkPhoton) - 0.5 * momentumStep,</div>
-<div class="line"><span class="lineno">  215</span>        pMax(mDarkPhoton) - 0.5 * momentumStep,</div>
-<div class="line"><span class="lineno">  216</span>    )</div>
-<div class="line"><span class="lineno">  217</span>    hPDFp.GetXaxis().SetTitle(<span class="stringliteral">&quot;P_{A&#39;} [GeV]&quot;</span>)</div>
-<div class="line"><span class="lineno">  218</span>    hPDFtheta.GetXaxis().SetTitle(<span class="stringliteral">&quot;#theta_{A&#39;} [rad]&quot;</span>)</div>
-<div class="line"><span class="lineno">  219</span>    <span class="keywordflow">for</span> theta <span class="keywordflow">in</span> angles:</div>
-<div class="line"><span class="lineno">  220</span>        <span class="keywordflow">for</span> p <span class="keywordflow">in</span> momenta:</div>
-<div class="line"><span class="lineno">  221</span>            w = normalisedProductionPDF(p, theta, mDarkPhoton, epsilon, norm)</div>
-<div class="line"><span class="lineno">  222</span>            hPDF.Fill(p, theta, w)</div>
-<div class="line"><span class="lineno">  223</span>            hPDFtheta.Fill(theta, w)</div>
-<div class="line"><span class="lineno">  224</span>            hPDFp.Fill(p, w)</div>
-<div class="line"><span class="lineno">  225</span>    hPdfFilename = sys.modules[<span class="stringliteral">&quot;__main__&quot;</span>].options.outputDir + f<span class="stringliteral">&quot;/ParaPhoton_eps{epsilon}_m{mDarkPhoton}{suffix}.root&quot;</span></div>
-<div class="line"><span class="lineno">  226</span>    outfile = r.TFile(hPdfFilename, <span class="stringliteral">&quot;recreate&quot;</span>)</div>
-<div class="line"><span class="lineno">  227</span>    <span class="comment"># weight = hPDF.Integral(&quot;width&quot;)</span></div>
-<div class="line"><span class="lineno">  228</span>    <span class="comment"># print &quot;Weight = %3.3f&quot;%weight</span></div>
-<div class="line"><span class="lineno">  229</span>    <span class="comment"># hPDF.Scale(1./weight)</span></div>
-<div class="line"><span class="lineno">  230</span>    hPDF.Write()</div>
-<div class="line"><span class="lineno">  231</span>    hPDFp.Write()</div>
-<div class="line"><span class="lineno">  232</span>    hPDFtheta.Write()</div>
-<div class="line"><span class="lineno">  233</span>    outfile.Close()</div>
-<div class="line"><span class="lineno">  234</span>    del angles</div>
-<div class="line"><span class="lineno">  235</span>    del momenta</div>
-<div class="line"><span class="lineno">  236</span>    <span class="keywordflow">return</span> hPDF</div>
+<div class="line"><span class="lineno">  186</span>    <span class="keywordflow">if</span> binstheta &lt; 2:</div>
+<div class="line"><span class="lineno">  187</span>        <span class="keywordflow">raise</span> ValueError(f<span class="stringliteral">&quot;binstheta must be &gt;= 2 to define a theta grid, got {binstheta}&quot;</span>)</div>
+<div class="line"><span class="lineno">  188</span>    angles = np.linspace(tmin, tmax, binstheta).tolist()</div>
+<div class="line"><span class="lineno">  189</span>    <span class="comment"># angles is an endpoint-inclusive grid (step over binstheta-1 intervals);</span></div>
+<div class="line"><span class="lineno">  190</span>    <span class="comment"># momenta excludes the endpoint (step over binsp intervals). Match each bin</span></div>
+<div class="line"><span class="lineno">  191</span>    <span class="comment"># width to its own grid so the sampled points land on bin centres.</span></div>
+<div class="line"><span class="lineno">  192</span>    anglestep = (tmax - tmin) / (binstheta - 1)</div>
+<div class="line"><span class="lineno">  193</span>    momentumStep = (pMax(mDarkPhoton) - pMin(mDarkPhoton)) / binsp</div>
+<div class="line"><span class="lineno">  194</span>    momenta = np.linspace(pMin(mDarkPhoton), pMax(mDarkPhoton), binsp, endpoint=<span class="keyword">False</span>).tolist()</div>
+<div class="line"><span class="lineno">  195</span>    hPDF = r.TH2F(</div>
+<div class="line"><span class="lineno">  196</span>        f<span class="stringliteral">&quot;hPDF_eps{epsilon}_m{mDarkPhoton}&quot;</span>,</div>
+<div class="line"><span class="lineno">  197</span>        f<span class="stringliteral">&quot;hPDF_eps{epsilon}_m{mDarkPhoton}&quot;</span>,</div>
+<div class="line"><span class="lineno">  198</span>        binsp,</div>
+<div class="line"><span class="lineno">  199</span>        pMin(mDarkPhoton) - 0.5 * momentumStep,</div>
+<div class="line"><span class="lineno">  200</span>        pMax(mDarkPhoton) - 0.5 * momentumStep,</div>
+<div class="line"><span class="lineno">  201</span>        binstheta,</div>
+<div class="line"><span class="lineno">  202</span>        tmin - 0.5 * anglestep,</div>
+<div class="line"><span class="lineno">  203</span>        tmax + 0.5 * anglestep,</div>
+<div class="line"><span class="lineno">  204</span>    )</div>
+<div class="line"><span class="lineno">  205</span>    hPDF.SetTitle(f<span class="stringliteral">&quot;PDF for A&#39; production (m_{{A&#39;}}={mDarkPhoton} GeV, #epsilon ={epsilon})&quot;</span>)</div>
+<div class="line"><span class="lineno">  206</span>    hPDF.GetXaxis().SetTitle(<span class="stringliteral">&quot;P_{A&#39;} [GeV]&quot;</span>)</div>
+<div class="line"><span class="lineno">  207</span>    hPDF.GetYaxis().SetTitle(<span class="stringliteral">&quot;#theta_{A&#39;} [rad]&quot;</span>)</div>
+<div class="line"><span class="lineno">  208</span>    hPDFtheta = r.TH1F(</div>
+<div class="line"><span class="lineno">  209</span>        f<span class="stringliteral">&quot;hPDFtheta_eps{epsilon}_m{mDarkPhoton}&quot;</span>,</div>
+<div class="line"><span class="lineno">  210</span>        f<span class="stringliteral">&quot;hPDFtheta_eps{epsilon}_m{mDarkPhoton}&quot;</span>,</div>
+<div class="line"><span class="lineno">  211</span>        binstheta,</div>
+<div class="line"><span class="lineno">  212</span>        tmin - 0.5 * anglestep,</div>
+<div class="line"><span class="lineno">  213</span>        tmax + 0.5 * anglestep,</div>
+<div class="line"><span class="lineno">  214</span>    )</div>
+<div class="line"><span class="lineno">  215</span>    hPDFp = r.TH1F(</div>
+<div class="line"><span class="lineno">  216</span>        f<span class="stringliteral">&quot;hPDFp_eps{epsilon}_m{mDarkPhoton}&quot;</span>,</div>
+<div class="line"><span class="lineno">  217</span>        f<span class="stringliteral">&quot;hPDFp_eps{epsilon}_m{mDarkPhoton}&quot;</span>,</div>
+<div class="line"><span class="lineno">  218</span>        binsp,</div>
+<div class="line"><span class="lineno">  219</span>        pMin(mDarkPhoton) - 0.5 * momentumStep,</div>
+<div class="line"><span class="lineno">  220</span>        pMax(mDarkPhoton) - 0.5 * momentumStep,</div>
+<div class="line"><span class="lineno">  221</span>    )</div>
+<div class="line"><span class="lineno">  222</span>    hPDFp.GetXaxis().SetTitle(<span class="stringliteral">&quot;P_{A&#39;} [GeV]&quot;</span>)</div>
+<div class="line"><span class="lineno">  223</span>    hPDFtheta.GetXaxis().SetTitle(<span class="stringliteral">&quot;#theta_{A&#39;} [rad]&quot;</span>)</div>
+<div class="line"><span class="lineno">  224</span>    <span class="keywordflow">for</span> theta <span class="keywordflow">in</span> angles:</div>
+<div class="line"><span class="lineno">  225</span>        <span class="keywordflow">for</span> p <span class="keywordflow">in</span> momenta:</div>
+<div class="line"><span class="lineno">  226</span>            w = normalisedProductionPDF(p, theta, mDarkPhoton, epsilon, norm)</div>
+<div class="line"><span class="lineno">  227</span>            hPDF.Fill(p, theta, w)</div>
+<div class="line"><span class="lineno">  228</span>            hPDFtheta.Fill(theta, w)</div>
+<div class="line"><span class="lineno">  229</span>            hPDFp.Fill(p, w)</div>
+<div class="line"><span class="lineno">  230</span>    hPdfFilename = sys.modules[<span class="stringliteral">&quot;__main__&quot;</span>].options.outputDir + f<span class="stringliteral">&quot;/ParaPhoton_eps{epsilon}_m{mDarkPhoton}{suffix}.root&quot;</span></div>
+<div class="line"><span class="lineno">  231</span>    outfile = r.TFile(hPdfFilename, <span class="stringliteral">&quot;recreate&quot;</span>)</div>
+<div class="line"><span class="lineno">  232</span>    <span class="comment"># weight = hPDF.Integral(&quot;width&quot;)</span></div>
+<div class="line"><span class="lineno">  233</span>    <span class="comment"># print &quot;Weight = %3.3f&quot;%weight</span></div>
+<div class="line"><span class="lineno">  234</span>    <span class="comment"># hPDF.Scale(1./weight)</span></div>
+<div class="line"><span class="lineno">  235</span>    hPDF.Write()</div>
+<div class="line"><span class="lineno">  236</span>    hPDFp.Write()</div>
+<div class="line"><span class="lineno">  237</span>    hPDFtheta.Write()</div>
+<div class="line"><span class="lineno">  238</span>    outfile.Close()</div>
+<div class="line"><span class="lineno">  239</span>    del angles</div>
+<div class="line"><span class="lineno">  240</span>    del momenta</div>
+<div class="line"><span class="lineno">  241</span>    <span class="keywordflow">return</span> hPDF</div>
 </div><!-- fragment -->
 </div>
 </div>

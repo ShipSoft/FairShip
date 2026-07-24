@@ -118,7 +118,8 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="global__variables_8py_source.html#l00007">7</a> of file <a class="el" href="global__variables_8py_source.html">global_variables.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">    7</span><span class="keyword">def </span>__getattr__(name: str) -&gt; Any: ...</div>
+<div class="fragment"><div class="line"><span class="lineno">    7</span><span class="keyword">def </span>__getattr__(name: str) -&gt; Any:</div>
+<div class="line"><span class="lineno">    8</span>    <span class="keywordflow">raise</span> AttributeError(name)</div>
 </div><!-- fragment -->
 </div>
 </div>

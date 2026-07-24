@@ -117,8 +117,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a9fbd4c16992f2b06625b7c6932970e98"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1eb581a8b0869e3ffa49a81c01c3d9d0" id="r_a1eb581a8b0869e3ffa49a81c01c3d9d0"><td class="memItemLeft" align="right" valign="top">None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSciFiMapping_1_1SciFiMapping.html#a1eb581a8b0869e3ffa49a81c01c3d9d0">draw_many_channels</a> (self, <a class="el" href="namespaceSciFiMapping.html#afd115a916bc26005c27a865d524cd352">sGeo</a>, <a class="el" href="namespaceSciFiMapping.html#a10eca142a442661ad9b44e8b062da22f">number_of_channels</a>=20, output_file=&quot;scifi_mapping_many_channels.pdf&quot;, labeling=True, figsize=(16, 16), dpi=300, cmap_name=&quot;tab20&quot;, alpha_fibre=0.4)</td></tr>
 <tr class="separator:a1eb581a8b0869e3ffa49a81c01c3d9d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa7602450158acc571e8c864726d5a27a" id="r_aa7602450158acc571e8c864726d5a27a"><td class="memItemLeft" align="right" valign="top">None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSciFiMapping_1_1SciFiMapping.html#aa7602450158acc571e8c864726d5a27a">draw_channel_XY</a> (self, int <a class="el" href="namespaceSciFiMapping.html#a10eca142a442661ad9b44e8b062da22f">number_of_channels</a>=20, bool <a class="el" href="namespaceSciFiMapping.html#ac56b90cfa7dce12563a4a660d59634de">real_event</a>=False, x_coords=None, str output_file=&quot;scifi_channel_ribbons_XY.pdf&quot;, tuple[int, int] figsize=(16, 16), int dpi=300)</td></tr>
-<tr class="separator:aa7602450158acc571e8c864726d5a27a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a63ba712eae9f3a97153b5fbc7819f900" id="r_a63ba712eae9f3a97153b5fbc7819f900"><td class="memItemLeft" align="right" valign="top">None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSciFiMapping_1_1SciFiMapping.html#a63ba712eae9f3a97153b5fbc7819f900">draw_channel_XY</a> (self, int <a class="el" href="namespaceSciFiMapping.html#a10eca142a442661ad9b44e8b062da22f">number_of_channels</a>=20, bool <a class="el" href="namespaceSciFiMapping.html#ac56b90cfa7dce12563a4a660d59634de">real_event</a>=False, list[float]|None x_coords=None, str output_file=&quot;scifi_channel_ribbons_XY.pdf&quot;, tuple[int, int] figsize=(16, 16), int dpi=300)</td></tr>
+<tr class="separator:a63ba712eae9f3a97153b5fbc7819f900"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a83bbcd6aa462e9763d462f34906c24bc" id="r_a83bbcd6aa462e9763d462f34906c24bc"><td class="memItemLeft" align="right" valign="top">None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSciFiMapping_1_1SciFiMapping.html#a83bbcd6aa462e9763d462f34906c24bc">draw_combined_scifi_views</a> (self, <a class="el" href="namespaceSciFiMapping.html#afd115a916bc26005c27a865d524cd352">sGeo</a>, <a class="el" href="namespaceSciFiMapping.html#a10eca142a442661ad9b44e8b062da22f">number_of_channels</a>=20, output_file=&quot;scifi_combined_views.pdf&quot;, figsize=(18, 8), dpi=300, alpha_fibre=0.4)</td></tr>
 <tr class="separator:a83bbcd6aa462e9763d462f34906c24bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac6a4ec44a7b7271173cbe9dca5c0a676" id="r_ac6a4ec44a7b7271173cbe9dca5c0a676"><td class="memItemLeft" align="right" valign="top">None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSciFiMapping_1_1SciFiMapping.html#ac6a4ec44a7b7271173cbe9dca5c0a676">mapping_validation</a> (self)</td></tr>
@@ -488,8 +488,8 @@ Saves a PDF file named 'scifi_mapping_channel_1_{channel}.pdf' with the plot.</p
 </div><!-- fragment -->
 </div>
 </div>
-<a id="aa7602450158acc571e8c864726d5a27a" name="aa7602450158acc571e8c864726d5a27a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa7602450158acc571e8c864726d5a27a">&#9670;&#160;</a></span>draw_channel_XY()</h2>
+<a id="a63ba712eae9f3a97153b5fbc7819f900" name="a63ba712eae9f3a97153b5fbc7819f900"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a63ba712eae9f3a97153b5fbc7819f900">&#9670;&#160;</a></span>draw_channel_XY()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -515,7 +515,7 @@ Saves a PDF file named 'scifi_mapping_channel_1_{channel}.pdf' with the plot.</p
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">&#160;</td>
+          <td class="paramtype">list[float] | None &#160;</td>
           <td class="paramname"><em>x_coords</em> = <code>None</code>, </td>
         </tr>
         <tr>
@@ -567,217 +567,221 @@ dpi : int
 Side Effects
 ------------
 Saves a PDF file with the specified filename containing the plot.</pre> 
-<p class="definition">Definition at line <a class="el" href="SciFiMapping_8py_source.html#l00417">417</a> of file <a class="el" href="SciFiMapping_8py_source.html">SciFiMapping.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  425</span>    ) -&gt; <span class="keywordtype">None</span>:</div>
-<div class="line"><span class="lineno">  426</span>        <span class="stringliteral">&quot;&quot;&quot;Plot SciFi channel ribbons and SiPM boxes in X–Y view.</span></div>
-<div class="line"><span class="lineno">  427</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  428</span><span class="stringliteral">        Simplified X–Y view: one ribbon per channel (no per-fiber loops).</span></div>
-<div class="line"><span class="lineno">  429</span><span class="stringliteral">        Ribbons span Y from -25 to +25 (length=50 cm), thickness equal</span></div>
-<div class="line"><span class="lineno">  430</span><span class="stringliteral">        to channel height = 2*DZ, tilted +5° for U-plane channels, -5° for</span></div>
-<div class="line"><span class="lineno">  431</span><span class="stringliteral">        V-plane. SiPM boxes sit on top at y=25→25+2*DZ.</span></div>
-<div class="line"><span class="lineno">  432</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  433</span><span class="stringliteral">        Parameters</span></div>
-<div class="line"><span class="lineno">  434</span><span class="stringliteral">        ----------</span></div>
-<div class="line"><span class="lineno">  435</span><span class="stringliteral">        number_of_channels : int</span></div>
-<div class="line"><span class="lineno">  436</span><span class="stringliteral">            Total ribbons (split around center) per plane.</span></div>
-<div class="line"><span class="lineno">  437</span><span class="stringliteral">        real_event : bool</span></div>
-<div class="line"><span class="lineno">  438</span><span class="stringliteral">            If True, highlight ribbons corresponding to given x_coords.</span></div>
-<div class="line"><span class="lineno">  439</span><span class="stringliteral">        x_coords : list of float</span></div>
-<div class="line"><span class="lineno">  440</span><span class="stringliteral">            If real_event is True, list of two x-coordinates [x_U, x_V] to highlight.</span></div>
-<div class="line"><span class="lineno">  441</span><span class="stringliteral">        output_file : str</span></div>
-<div class="line"><span class="lineno">  442</span><span class="stringliteral">            Path to save the PDF.</span></div>
-<div class="line"><span class="lineno">  443</span><span class="stringliteral">        figsize : tuple of float</span></div>
-<div class="line"><span class="lineno">  444</span><span class="stringliteral">            Figure size in inches.</span></div>
-<div class="line"><span class="lineno">  445</span><span class="stringliteral">        dpi : int</span></div>
-<div class="line"><span class="lineno">  446</span><span class="stringliteral">            Figure resolution in dots per inch.</span></div>
-<div class="line"><span class="lineno">  447</span><span class="stringliteral">        Side Effects</span></div>
-<div class="line"><span class="lineno">  448</span><span class="stringliteral">        ------------</span></div>
-<div class="line"><span class="lineno">  449</span><span class="stringliteral">        Saves a PDF file with the specified filename containing the plot.</span></div>
-<div class="line"><span class="lineno">  450</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  451</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  452</span>        <span class="comment"># 2) Geometry constants</span></div>
-<div class="line"><span class="lineno">  453</span>        DZ = 0.135 / 2  <span class="comment"># SiPM half-height [cm]</span></div>
-<div class="line"><span class="lineno">  454</span>        DX = 0.025  <span class="comment"># SiPM half-width [cm]</span></div>
-<div class="line"><span class="lineno">  455</span>        L = 50.0  <span class="comment"># ribbon length (full Y-span) [cm]</span></div>
-<div class="line"><span class="lineno">  456</span>        angle_U = -5.0  <span class="comment"># tilt for U</span></div>
-<div class="line"><span class="lineno">  457</span>        angle_V = +5.0  <span class="comment"># tilt for V</span></div>
-<div class="line"><span class="lineno">  458</span> </div>
-<div class="line"><span class="lineno">  459</span>        <span class="comment"># These are only used in the real_event branch; bound to 0 here so static</span></div>
-<div class="line"><span class="lineno">  460</span>        <span class="comment"># analysis sees them defined on the not-real_event branch too.</span></div>
-<div class="line"><span class="lineno">  461</span>        channels_x_U = 0</div>
-<div class="line"><span class="lineno">  462</span>        channels_x_V = 0</div>
-<div class="line"><span class="lineno">  463</span>        channel_x_U = 0</div>
-<div class="line"><span class="lineno">  464</span>        channel_x_V = 0</div>
-<div class="line"><span class="lineno">  465</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> real_event:</div>
-<div class="line"><span class="lineno">  466</span>            alpha_sipm, alpha_fibre = 0.75, 0.5</div>
-<div class="line"><span class="lineno">  467</span>        <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  468</span>            alpha_sipm, alpha_fibre = 0.1, 0.1</div>
-<div class="line"><span class="lineno">  469</span>            <span class="comment"># find the channels corresponding to x_coords</span></div>
-<div class="line"><span class="lineno">  470</span>            channels_x_U = next(c <span class="keywordflow">for</span> c, x <span class="keywordflow">in</span> self.sipm_pos_U.items() <span class="keywordflow">if</span> abs(x - x_coords[0]) &lt; DX)</div>
-<div class="line"><span class="lineno">  471</span>            channel_x_U = [c <span class="keywordflow">for</span> c, x <span class="keywordflow">in</span> self.sipm_pos_U.items() <span class="keywordflow">if</span> abs(x - x_coords[0]) &lt; DX][0]</div>
-<div class="line"><span class="lineno">  472</span>            channels_x_V = next(c <span class="keywordflow">for</span> c, x <span class="keywordflow">in</span> self.sipm_pos_V.items() <span class="keywordflow">if</span> abs(x - x_coords[1]) &lt; DX)</div>
-<div class="line"><span class="lineno">  473</span>            channel_x_V = [c <span class="keywordflow">for</span> c, x <span class="keywordflow">in</span> self.sipm_pos_V.items() <span class="keywordflow">if</span> abs(x - x_coords[1]) &lt; DX][0]</div>
-<div class="line"><span class="lineno">  474</span>        <span class="comment"># 1) Figure setup</span></div>
-<div class="line"><span class="lineno">  475</span>        fig, ax = plt.subplots(figsize=figsize, dpi=dpi)</div>
-<div class="line"><span class="lineno">  476</span> </div>
-<div class="line"><span class="lineno">  477</span>        <span class="comment"># get center channels + neighbors</span></div>
-<div class="line"><span class="lineno">  478</span>        centerU = next(c <span class="keywordflow">for</span> c, x <span class="keywordflow">in</span> self.sipm_pos_U.items() <span class="keywordflow">if</span> abs(x) &lt; DX)</div>
-<div class="line"><span class="lineno">  479</span>        centerV = next(c <span class="keywordflow">for</span> c, x <span class="keywordflow">in</span> self.sipm_pos_V.items() <span class="keywordflow">if</span> abs(x) &lt; DX)</div>
-<div class="line"><span class="lineno">  480</span> </div>
-<div class="line"><span class="lineno">  481</span>        <span class="keyword">def </span>get_surrounding(d, target, N):</div>
-<div class="line"><span class="lineno">  482</span>            keys = sorted(d.keys(), key=<span class="keyword">lambda</span> k: d[k])</div>
-<div class="line"><span class="lineno">  483</span>            i = keys.index(target)</div>
-<div class="line"><span class="lineno">  484</span>            half = N // 2</div>
-<div class="line"><span class="lineno">  485</span>            start = max(0, i - half)</div>
-<div class="line"><span class="lineno">  486</span>            end = min(len(keys), i + half + 1)</div>
-<div class="line"><span class="lineno">  487</span>            <span class="keywordflow">return</span> keys[start:end]</div>
+<p class="definition">Definition at line <a class="el" href="SciFiMapping_8py_source.html#l00421">421</a> of file <a class="el" href="SciFiMapping_8py_source.html">SciFiMapping.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  429</span>    ) -&gt; <span class="keywordtype">None</span>:</div>
+<div class="line"><span class="lineno">  430</span>        <span class="stringliteral">&quot;&quot;&quot;Plot SciFi channel ribbons and SiPM boxes in X–Y view.</span></div>
+<div class="line"><span class="lineno">  431</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  432</span><span class="stringliteral">        Simplified X–Y view: one ribbon per channel (no per-fiber loops).</span></div>
+<div class="line"><span class="lineno">  433</span><span class="stringliteral">        Ribbons span Y from -25 to +25 (length=50 cm), thickness equal</span></div>
+<div class="line"><span class="lineno">  434</span><span class="stringliteral">        to channel height = 2*DZ, tilted +5° for U-plane channels, -5° for</span></div>
+<div class="line"><span class="lineno">  435</span><span class="stringliteral">        V-plane. SiPM boxes sit on top at y=25→25+2*DZ.</span></div>
+<div class="line"><span class="lineno">  436</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  437</span><span class="stringliteral">        Parameters</span></div>
+<div class="line"><span class="lineno">  438</span><span class="stringliteral">        ----------</span></div>
+<div class="line"><span class="lineno">  439</span><span class="stringliteral">        number_of_channels : int</span></div>
+<div class="line"><span class="lineno">  440</span><span class="stringliteral">            Total ribbons (split around center) per plane.</span></div>
+<div class="line"><span class="lineno">  441</span><span class="stringliteral">        real_event : bool</span></div>
+<div class="line"><span class="lineno">  442</span><span class="stringliteral">            If True, highlight ribbons corresponding to given x_coords.</span></div>
+<div class="line"><span class="lineno">  443</span><span class="stringliteral">        x_coords : list of float</span></div>
+<div class="line"><span class="lineno">  444</span><span class="stringliteral">            If real_event is True, list of two x-coordinates [x_U, x_V] to highlight.</span></div>
+<div class="line"><span class="lineno">  445</span><span class="stringliteral">        output_file : str</span></div>
+<div class="line"><span class="lineno">  446</span><span class="stringliteral">            Path to save the PDF.</span></div>
+<div class="line"><span class="lineno">  447</span><span class="stringliteral">        figsize : tuple of float</span></div>
+<div class="line"><span class="lineno">  448</span><span class="stringliteral">            Figure size in inches.</span></div>
+<div class="line"><span class="lineno">  449</span><span class="stringliteral">        dpi : int</span></div>
+<div class="line"><span class="lineno">  450</span><span class="stringliteral">            Figure resolution in dots per inch.</span></div>
+<div class="line"><span class="lineno">  451</span><span class="stringliteral">        Side Effects</span></div>
+<div class="line"><span class="lineno">  452</span><span class="stringliteral">        ------------</span></div>
+<div class="line"><span class="lineno">  453</span><span class="stringliteral">        Saves a PDF file with the specified filename containing the plot.</span></div>
+<div class="line"><span class="lineno">  454</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  455</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  456</span>        <span class="comment"># 2) Geometry constants</span></div>
+<div class="line"><span class="lineno">  457</span>        DZ = 0.135 / 2  <span class="comment"># SiPM half-height [cm]</span></div>
+<div class="line"><span class="lineno">  458</span>        DX = 0.025  <span class="comment"># SiPM half-width [cm]</span></div>
+<div class="line"><span class="lineno">  459</span>        L = 50.0  <span class="comment"># ribbon length (full Y-span) [cm]</span></div>
+<div class="line"><span class="lineno">  460</span>        angle_U = -5.0  <span class="comment"># tilt for U</span></div>
+<div class="line"><span class="lineno">  461</span>        angle_V = +5.0  <span class="comment"># tilt for V</span></div>
+<div class="line"><span class="lineno">  462</span> </div>
+<div class="line"><span class="lineno">  463</span>        <span class="comment"># These are only used in the real_event branch; bound to 0 here so static</span></div>
+<div class="line"><span class="lineno">  464</span>        <span class="comment"># analysis sees them defined on the not-real_event branch too.</span></div>
+<div class="line"><span class="lineno">  465</span>        channels_x_U = 0</div>
+<div class="line"><span class="lineno">  466</span>        channels_x_V = 0</div>
+<div class="line"><span class="lineno">  467</span>        channel_x_U = 0</div>
+<div class="line"><span class="lineno">  468</span>        channel_x_V = 0</div>
+<div class="line"><span class="lineno">  469</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> real_event:</div>
+<div class="line"><span class="lineno">  470</span>            alpha_sipm, alpha_fibre = 0.75, 0.5</div>
+<div class="line"><span class="lineno">  471</span>        <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  472</span>            alpha_sipm, alpha_fibre = 0.1, 0.1</div>
+<div class="line"><span class="lineno">  473</span>            <span class="keywordflow">if</span> x_coords <span class="keywordflow">is</span> <span class="keywordtype">None</span> <span class="keywordflow">or</span> len(x_coords) &lt; 2:</div>
+<div class="line"><span class="lineno">  474</span>                <span class="keywordflow">raise</span> ValueError(<span class="stringliteral">&quot;x_coords must provide at least two coordinates when real_event is True&quot;</span>)</div>
+<div class="line"><span class="lineno">  475</span>            <span class="comment"># find the channels corresponding to x_coords</span></div>
+<div class="line"><span class="lineno">  476</span>            matches_U = [c <span class="keywordflow">for</span> c, x <span class="keywordflow">in</span> self.sipm_pos_U.items() <span class="keywordflow">if</span> abs(x - x_coords[0]) &lt; DX]</div>
+<div class="line"><span class="lineno">  477</span>            matches_V = [c <span class="keywordflow">for</span> c, x <span class="keywordflow">in</span> self.sipm_pos_V.items() <span class="keywordflow">if</span> abs(x - x_coords[1]) &lt; DX]</div>
+<div class="line"><span class="lineno">  478</span>            <span class="keywordflow">if</span> <span class="keywordflow">not</span> matches_U <span class="keywordflow">or</span> <span class="keywordflow">not</span> matches_V:</div>
+<div class="line"><span class="lineno">  479</span>                <span class="keywordflow">raise</span> ValueError(f<span class="stringliteral">&quot;x_coords {x_coords} do not match any SciFi channel within {DX} cm&quot;</span>)</div>
+<div class="line"><span class="lineno">  480</span>            channels_x_U = channel_x_U = matches_U[0]</div>
+<div class="line"><span class="lineno">  481</span>            channels_x_V = channel_x_V = matches_V[0]</div>
+<div class="line"><span class="lineno">  482</span>        <span class="comment"># 1) Figure setup</span></div>
+<div class="line"><span class="lineno">  483</span>        fig, ax = plt.subplots(figsize=figsize, dpi=dpi)</div>
+<div class="line"><span class="lineno">  484</span> </div>
+<div class="line"><span class="lineno">  485</span>        <span class="comment"># get center channels + neighbors</span></div>
+<div class="line"><span class="lineno">  486</span>        centerU = next(c <span class="keywordflow">for</span> c, x <span class="keywordflow">in</span> self.sipm_pos_U.items() <span class="keywordflow">if</span> abs(x) &lt; DX)</div>
+<div class="line"><span class="lineno">  487</span>        centerV = next(c <span class="keywordflow">for</span> c, x <span class="keywordflow">in</span> self.sipm_pos_V.items() <span class="keywordflow">if</span> abs(x) &lt; DX)</div>
 <div class="line"><span class="lineno">  488</span> </div>
-<div class="line"><span class="lineno">  489</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> real_event:</div>
-<div class="line"><span class="lineno">  490</span>            chansU = get_surrounding(self.sipm_pos_U, centerU, number_of_channels)</div>
-<div class="line"><span class="lineno">  491</span>            chansV = get_surrounding(self.sipm_pos_V, centerV, number_of_channels)</div>
-<div class="line"><span class="lineno">  492</span>        <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  493</span>            chansU = get_surrounding(self.sipm_pos_U, channels_x_U, number_of_channels)</div>
-<div class="line"><span class="lineno">  494</span>            chansV = get_surrounding(self.sipm_pos_V, channels_x_V, number_of_channels)</div>
-<div class="line"><span class="lineno">  495</span>        all_chans = chansU + chansV</div>
+<div class="line"><span class="lineno">  489</span>        <span class="keyword">def </span>get_surrounding(d, target, N):</div>
+<div class="line"><span class="lineno">  490</span>            keys = sorted(d.keys(), key=<span class="keyword">lambda</span> k: d[k])</div>
+<div class="line"><span class="lineno">  491</span>            i = keys.index(target)</div>
+<div class="line"><span class="lineno">  492</span>            half = N // 2</div>
+<div class="line"><span class="lineno">  493</span>            start = max(0, i - half)</div>
+<div class="line"><span class="lineno">  494</span>            end = min(len(keys), i + half + 1)</div>
+<div class="line"><span class="lineno">  495</span>            <span class="keywordflow">return</span> keys[start:end]</div>
 <div class="line"><span class="lineno">  496</span> </div>
-<div class="line"><span class="lineno">  497</span>        <span class="comment"># cmap_U = plt.get_cmap(&#39;tab20&#39;)</span></div>
-<div class="line"><span class="lineno">  498</span>        <span class="comment"># cmap_V = plt.get_cmap(&#39;tab20b&#39;)</span></div>
-<div class="line"><span class="lineno">  499</span>        <span class="comment"># colorsU = [cmap_U(i/(len(chansU)-1)) for i in range(len(chansU))]</span></div>
-<div class="line"><span class="lineno">  500</span>        <span class="comment"># colorsV = [cmap_V(i/(len(chansV)-1)) for i in range(len(chansV))]</span></div>
-<div class="line"><span class="lineno">  501</span>        <span class="comment"># alpha (tilt of the last drawn ribbon, used below to shift xlim)</span></div>
-<div class="line"><span class="lineno">  502</span>        <span class="comment"># initialised here so static analysis sees it defined even if the loop</span></div>
-<div class="line"><span class="lineno">  503</span>        <span class="comment"># doesn&#39;t iterate; both U and V have the same |alpha|.</span></div>
-<div class="line"><span class="lineno">  504</span>        alpha = np.deg2rad(angle_U)</div>
-<div class="line"><span class="lineno">  505</span>        <span class="comment"># 3) Draw ribbons and SiPM boxes per channel</span></div>
-<div class="line"><span class="lineno">  506</span>        <span class="keywordflow">for</span> chan <span class="keywordflow">in</span> all_chans:</div>
-<div class="line"><span class="lineno">  507</span>            isU = chan <span class="keywordflow">in</span> chansU</div>
-<div class="line"><span class="lineno">  508</span>            x0 = self.sipm_pos_U[chan] <span class="keywordflow">if</span> isU <span class="keywordflow">else</span> self.sipm_pos_V[chan]</div>
-<div class="line"><span class="lineno">  509</span>            angle = angle_U <span class="keywordflow">if</span> isU <span class="keywordflow">else</span> angle_V</div>
-<div class="line"><span class="lineno">  510</span> </div>
-<div class="line"><span class="lineno">  511</span>            alpha = np.deg2rad(angle)  <span class="comment"># e.g. angle_deg = +5 or -5</span></div>
-<div class="line"><span class="lineno">  512</span>            dx = DX</div>
-<div class="line"><span class="lineno">  513</span>            dy = L / 2</div>
-<div class="line"><span class="lineno">  514</span>            shift = dy * np.tan(alpha)  <span class="comment"># horizontal shear of bottom edge</span></div>
-<div class="line"><span class="lineno">  515</span>            <span class="comment"># define the four corners in XY</span></div>
-<div class="line"><span class="lineno">  516</span>            coords = [</div>
-<div class="line"><span class="lineno">  517</span>                (x0 - dx, +dy),  <span class="comment"># top-left</span></div>
-<div class="line"><span class="lineno">  518</span>                (x0 + dx, +dy),  <span class="comment"># top-right</span></div>
-<div class="line"><span class="lineno">  519</span>                (x0 + dx - shift, -dy),  <span class="comment"># bottom-right</span></div>
-<div class="line"><span class="lineno">  520</span>                (x0 - dx - shift, -dy),  <span class="comment"># bottom-left</span></div>
-<div class="line"><span class="lineno">  521</span>            ]</div>
-<div class="line"><span class="lineno">  522</span> </div>
-<div class="line"><span class="lineno">  523</span>            <span class="comment"># col = colorsU[k_U] if isU else colorsV[k_V]</span></div>
-<div class="line"><span class="lineno">  524</span>            col = <span class="stringliteral">&quot;blue&quot;</span> <span class="keywordflow">if</span> isU <span class="keywordflow">else</span> <span class="stringliteral">&quot;red&quot;</span>  <span class="comment"># override with solid colors for clarity</span></div>
-<div class="line"><span class="lineno">  525</span>            <span class="keywordflow">if</span> <span class="keywordflow">not</span> real_event:</div>
-<div class="line"><span class="lineno">  526</span>                ribbon = patches.Polygon(</div>
-<div class="line"><span class="lineno">  527</span>                    coords,</div>
-<div class="line"><span class="lineno">  528</span>                    closed=<span class="keyword">True</span>,</div>
-<div class="line"><span class="lineno">  529</span>                    facecolor=col,  <span class="comment"># fill in your color</span></div>
-<div class="line"><span class="lineno">  530</span>                    edgecolor=<span class="stringliteral">&quot;black&quot;</span>,</div>
-<div class="line"><span class="lineno">  531</span>                    alpha=alpha_fibre,  <span class="comment"># semi-transparent</span></div>
-<div class="line"><span class="lineno">  532</span>                )</div>
-<div class="line"><span class="lineno">  533</span>                ax.add_patch(ribbon)</div>
-<div class="line"><span class="lineno">  534</span> </div>
-<div class="line"><span class="lineno">  535</span>                y_top = L / 2 <span class="keywordflow">if</span> isU <span class="keywordflow">else</span> L / 2 + DZ</div>
-<div class="line"><span class="lineno">  536</span> </div>
-<div class="line"><span class="lineno">  537</span>                box = patches.Rectangle(</div>
-<div class="line"><span class="lineno">  538</span>                    (x0 - DX, y_top),</div>
-<div class="line"><span class="lineno">  539</span>                    2 * DX,</div>
-<div class="line"><span class="lineno">  540</span>                    DZ,</div>
-<div class="line"><span class="lineno">  541</span>                    facecolor=col,  <span class="comment"># same fill color</span></div>
-<div class="line"><span class="lineno">  542</span>                    edgecolor=<span class="stringliteral">&quot;black&quot;</span>,</div>
-<div class="line"><span class="lineno">  543</span>                    alpha=alpha_sipm,  <span class="comment"># a bit more opaque</span></div>
-<div class="line"><span class="lineno">  544</span>                    hatch=<span class="stringliteral">&quot;//&quot;</span> <span class="keywordflow">if</span> isU <span class="keywordflow">else</span> <span class="stringliteral">&quot;\\\\&quot;</span>,</div>
-<div class="line"><span class="lineno">  545</span>                )</div>
-<div class="line"><span class="lineno">  546</span>                ax.add_patch(box)</div>
-<div class="line"><span class="lineno">  547</span>            <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  548</span>                <span class="keywordflow">if</span> channel_x_U == chan <span class="keywordflow">or</span> channel_x_V == chan:</div>
-<div class="line"><span class="lineno">  549</span>                    <span class="comment"># draw the ribbon</span></div>
-<div class="line"><span class="lineno">  550</span>                    ribbon = patches.Polygon(</div>
-<div class="line"><span class="lineno">  551</span>                        coords,</div>
-<div class="line"><span class="lineno">  552</span>                        closed=<span class="keyword">True</span>,</div>
-<div class="line"><span class="lineno">  553</span>                        facecolor=col,  <span class="comment"># fill in your color</span></div>
-<div class="line"><span class="lineno">  554</span>                        edgecolor=<span class="stringliteral">&quot;black&quot;</span>,</div>
-<div class="line"><span class="lineno">  555</span>                        alpha=0.50,  <span class="comment"># semi-transparent</span></div>
-<div class="line"><span class="lineno">  556</span>                    )</div>
-<div class="line"><span class="lineno">  557</span>                    ax.add_patch(ribbon)</div>
-<div class="line"><span class="lineno">  558</span> </div>
-<div class="line"><span class="lineno">  559</span>                    y_top = L / 2 <span class="keywordflow">if</span> isU <span class="keywordflow">else</span> L / 2 + DZ</div>
-<div class="line"><span class="lineno">  560</span> </div>
-<div class="line"><span class="lineno">  561</span>                    box = patches.Rectangle(</div>
-<div class="line"><span class="lineno">  562</span>                        (x0 - DX, y_top),</div>
-<div class="line"><span class="lineno">  563</span>                        2 * DX,</div>
-<div class="line"><span class="lineno">  564</span>                        DZ,</div>
-<div class="line"><span class="lineno">  565</span>                        facecolor=col,  <span class="comment"># same fill color</span></div>
-<div class="line"><span class="lineno">  566</span>                        edgecolor=<span class="stringliteral">&quot;black&quot;</span>,</div>
-<div class="line"><span class="lineno">  567</span>                        alpha=0.75,  <span class="comment"># a bit more opaque</span></div>
-<div class="line"><span class="lineno">  568</span>                        hatch=<span class="stringliteral">&quot;//&quot;</span> <span class="keywordflow">if</span> isU <span class="keywordflow">else</span> <span class="stringliteral">&quot;\\\\&quot;</span>,</div>
-<div class="line"><span class="lineno">  569</span>                    )</div>
-<div class="line"><span class="lineno">  570</span>                    ax.add_patch(box)</div>
-<div class="line"><span class="lineno">  571</span>                <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  572</span>                    ribbon = patches.Polygon(</div>
-<div class="line"><span class="lineno">  573</span>                        coords,</div>
-<div class="line"><span class="lineno">  574</span>                        closed=<span class="keyword">True</span>,</div>
-<div class="line"><span class="lineno">  575</span>                        facecolor=col,  <span class="comment"># fill in your color</span></div>
-<div class="line"><span class="lineno">  576</span>                        edgecolor=<span class="stringliteral">&quot;black&quot;</span>,</div>
-<div class="line"><span class="lineno">  577</span>                        alpha=alpha_fibre,  <span class="comment"># semi-transparent</span></div>
-<div class="line"><span class="lineno">  578</span>                    )</div>
-<div class="line"><span class="lineno">  579</span>                    ax.add_patch(ribbon)</div>
-<div class="line"><span class="lineno">  580</span> </div>
-<div class="line"><span class="lineno">  581</span>                    y_top = L / 2 <span class="keywordflow">if</span> isU <span class="keywordflow">else</span> L / 2 + DZ</div>
-<div class="line"><span class="lineno">  582</span> </div>
-<div class="line"><span class="lineno">  583</span>                    box = patches.Rectangle(</div>
-<div class="line"><span class="lineno">  584</span>                        (x0 - DX, y_top),</div>
-<div class="line"><span class="lineno">  585</span>                        2 * DX,</div>
-<div class="line"><span class="lineno">  586</span>                        DZ,</div>
-<div class="line"><span class="lineno">  587</span>                        facecolor=col,  <span class="comment"># same fill color</span></div>
-<div class="line"><span class="lineno">  588</span>                        edgecolor=<span class="stringliteral">&quot;black&quot;</span>,</div>
-<div class="line"><span class="lineno">  589</span>                        alpha=alpha_sipm,  <span class="comment"># a bit more opaque</span></div>
-<div class="line"><span class="lineno">  590</span>                        hatch=<span class="stringliteral">&quot;//&quot;</span> <span class="keywordflow">if</span> isU <span class="keywordflow">else</span> <span class="stringliteral">&quot;\\\\&quot;</span>,</div>
-<div class="line"><span class="lineno">  591</span>                    )</div>
-<div class="line"><span class="lineno">  592</span>                    ax.add_patch(box)</div>
-<div class="line"><span class="lineno">  593</span> </div>
-<div class="line"><span class="lineno">  594</span>        <span class="comment"># 4) Finalize plot</span></div>
-<div class="line"><span class="lineno">  595</span>        ax.set_aspect(<span class="stringliteral">&quot;equal&quot;</span>)</div>
-<div class="line"><span class="lineno">  596</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> real_event:</div>
-<div class="line"><span class="lineno">  597</span>            shift = 3 * np.tan(alpha)</div>
-<div class="line"><span class="lineno">  598</span>            min_x = min([self.sipm_pos_U[chan] <span class="keywordflow">for</span> chan <span class="keywordflow">in</span> chansU]) - shift</div>
-<div class="line"><span class="lineno">  599</span>            max_x = max(self.sipm_pos_V[chan] <span class="keywordflow">for</span> chan <span class="keywordflow">in</span> chansV) + shift</div>
-<div class="line"><span class="lineno">  600</span>            ax.set_xlim(min_x, max_x)</div>
-<div class="line"><span class="lineno">  601</span>            ax.set_ylim(22, 26)</div>
-<div class="line"><span class="lineno">  602</span>        <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  603</span>            min_x, max_x = -25, 25</div>
-<div class="line"><span class="lineno">  604</span>            ax.set_ylim(-25, 26)</div>
-<div class="line"><span class="lineno">  605</span>        ax.set_xlim(min_x, max_x)</div>
-<div class="line"><span class="lineno">  606</span>        <span class="comment"># ax.set_ylim(22, 26)</span></div>
-<div class="line"><span class="lineno">  607</span>        ax.set_xlabel(<span class="stringliteral">&quot;X [cm]&quot;</span>)</div>
-<div class="line"><span class="lineno">  608</span>        ax.set_ylabel(<span class="stringliteral">&quot;Y [cm]&quot;</span>)</div>
-<div class="line"><span class="lineno">  609</span>        ax.set_title(<span class="stringliteral">&quot;SciFi channel ribbons &amp; SiPM boxes (X–Y view)&quot;</span>)</div>
-<div class="line"><span class="lineno">  610</span>        ax.grid(<span class="keyword">True</span>)</div>
-<div class="line"><span class="lineno">  611</span>        <span class="comment"># create legend handles</span></div>
-<div class="line"><span class="lineno">  612</span>        legend_handles = [</div>
-<div class="line"><span class="lineno">  613</span>            patches.Patch(</div>
-<div class="line"><span class="lineno">  614</span>                facecolor=<span class="stringliteral">&quot;blue&quot;</span>,</div>
-<div class="line"><span class="lineno">  615</span>                edgecolor=<span class="stringliteral">&quot;black&quot;</span>,</div>
-<div class="line"><span class="lineno">  616</span>                hatch=<span class="stringliteral">&quot;//&quot;</span>,</div>
-<div class="line"><span class="lineno">  617</span>                label=<span class="stringliteral">&quot;U plane&quot;</span>,</div>
-<div class="line"><span class="lineno">  618</span>                alpha=0.75,</div>
-<div class="line"><span class="lineno">  619</span>            ),</div>
-<div class="line"><span class="lineno">  620</span>            patches.Patch(</div>
-<div class="line"><span class="lineno">  621</span>                facecolor=<span class="stringliteral">&quot;red&quot;</span>,</div>
-<div class="line"><span class="lineno">  622</span>                edgecolor=<span class="stringliteral">&quot;black&quot;</span>,</div>
-<div class="line"><span class="lineno">  623</span>                hatch=<span class="stringliteral">&quot;\\\\&quot;</span>,</div>
-<div class="line"><span class="lineno">  624</span>                label=<span class="stringliteral">&quot;V plane&quot;</span>,</div>
-<div class="line"><span class="lineno">  625</span>                alpha=0.75,</div>
-<div class="line"><span class="lineno">  626</span>            ),</div>
-<div class="line"><span class="lineno">  627</span>        ]</div>
-<div class="line"><span class="lineno">  628</span> </div>
-<div class="line"><span class="lineno">  629</span>        ax.legend(handles=legend_handles, title=<span class="stringliteral">&quot;Plane&quot;</span>, loc=<span class="stringliteral">&quot;upper right&quot;</span>)</div>
-<div class="line"><span class="lineno">  630</span>        plt.tight_layout()</div>
-<div class="line"><span class="lineno">  631</span>        plt.savefig(output_file)</div>
-<div class="line"><span class="lineno">  632</span>        plt.close(fig)</div>
-<div class="line"><span class="lineno">  633</span>        print(f<span class="stringliteral">&quot;Saved channel ribbons + SiPM boxes to {output_file}&quot;</span>)</div>
-<div class="line"><span class="lineno">  634</span> </div>
+<div class="line"><span class="lineno">  497</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> real_event:</div>
+<div class="line"><span class="lineno">  498</span>            chansU = get_surrounding(self.sipm_pos_U, centerU, number_of_channels)</div>
+<div class="line"><span class="lineno">  499</span>            chansV = get_surrounding(self.sipm_pos_V, centerV, number_of_channels)</div>
+<div class="line"><span class="lineno">  500</span>        <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  501</span>            chansU = get_surrounding(self.sipm_pos_U, channels_x_U, number_of_channels)</div>
+<div class="line"><span class="lineno">  502</span>            chansV = get_surrounding(self.sipm_pos_V, channels_x_V, number_of_channels)</div>
+<div class="line"><span class="lineno">  503</span>        all_chans = chansU + chansV</div>
+<div class="line"><span class="lineno">  504</span> </div>
+<div class="line"><span class="lineno">  505</span>        <span class="comment"># cmap_U = plt.get_cmap(&#39;tab20&#39;)</span></div>
+<div class="line"><span class="lineno">  506</span>        <span class="comment"># cmap_V = plt.get_cmap(&#39;tab20b&#39;)</span></div>
+<div class="line"><span class="lineno">  507</span>        <span class="comment"># colorsU = [cmap_U(i/(len(chansU)-1)) for i in range(len(chansU))]</span></div>
+<div class="line"><span class="lineno">  508</span>        <span class="comment"># colorsV = [cmap_V(i/(len(chansV)-1)) for i in range(len(chansV))]</span></div>
+<div class="line"><span class="lineno">  509</span>        <span class="comment"># alpha (tilt of the last drawn ribbon, used below to shift xlim)</span></div>
+<div class="line"><span class="lineno">  510</span>        <span class="comment"># initialised here so static analysis sees it defined even if the loop</span></div>
+<div class="line"><span class="lineno">  511</span>        <span class="comment"># doesn&#39;t iterate; both U and V have the same |alpha|.</span></div>
+<div class="line"><span class="lineno">  512</span>        alpha = np.deg2rad(angle_U)</div>
+<div class="line"><span class="lineno">  513</span>        <span class="comment"># 3) Draw ribbons and SiPM boxes per channel</span></div>
+<div class="line"><span class="lineno">  514</span>        <span class="keywordflow">for</span> chan <span class="keywordflow">in</span> all_chans:</div>
+<div class="line"><span class="lineno">  515</span>            isU = chan <span class="keywordflow">in</span> chansU</div>
+<div class="line"><span class="lineno">  516</span>            x0 = self.sipm_pos_U[chan] <span class="keywordflow">if</span> isU <span class="keywordflow">else</span> self.sipm_pos_V[chan]</div>
+<div class="line"><span class="lineno">  517</span>            angle = angle_U <span class="keywordflow">if</span> isU <span class="keywordflow">else</span> angle_V</div>
+<div class="line"><span class="lineno">  518</span> </div>
+<div class="line"><span class="lineno">  519</span>            alpha = np.deg2rad(angle)  <span class="comment"># e.g. angle_deg = +5 or -5</span></div>
+<div class="line"><span class="lineno">  520</span>            dx = DX</div>
+<div class="line"><span class="lineno">  521</span>            dy = L / 2</div>
+<div class="line"><span class="lineno">  522</span>            shift = dy * np.tan(alpha)  <span class="comment"># horizontal shear of bottom edge</span></div>
+<div class="line"><span class="lineno">  523</span>            <span class="comment"># define the four corners in XY</span></div>
+<div class="line"><span class="lineno">  524</span>            coords = [</div>
+<div class="line"><span class="lineno">  525</span>                (x0 - dx, +dy),  <span class="comment"># top-left</span></div>
+<div class="line"><span class="lineno">  526</span>                (x0 + dx, +dy),  <span class="comment"># top-right</span></div>
+<div class="line"><span class="lineno">  527</span>                (x0 + dx - shift, -dy),  <span class="comment"># bottom-right</span></div>
+<div class="line"><span class="lineno">  528</span>                (x0 - dx - shift, -dy),  <span class="comment"># bottom-left</span></div>
+<div class="line"><span class="lineno">  529</span>            ]</div>
+<div class="line"><span class="lineno">  530</span> </div>
+<div class="line"><span class="lineno">  531</span>            <span class="comment"># col = colorsU[k_U] if isU else colorsV[k_V]</span></div>
+<div class="line"><span class="lineno">  532</span>            col = <span class="stringliteral">&quot;blue&quot;</span> <span class="keywordflow">if</span> isU <span class="keywordflow">else</span> <span class="stringliteral">&quot;red&quot;</span>  <span class="comment"># override with solid colors for clarity</span></div>
+<div class="line"><span class="lineno">  533</span>            <span class="keywordflow">if</span> <span class="keywordflow">not</span> real_event:</div>
+<div class="line"><span class="lineno">  534</span>                ribbon = patches.Polygon(</div>
+<div class="line"><span class="lineno">  535</span>                    coords,</div>
+<div class="line"><span class="lineno">  536</span>                    closed=<span class="keyword">True</span>,</div>
+<div class="line"><span class="lineno">  537</span>                    facecolor=col,  <span class="comment"># fill in your color</span></div>
+<div class="line"><span class="lineno">  538</span>                    edgecolor=<span class="stringliteral">&quot;black&quot;</span>,</div>
+<div class="line"><span class="lineno">  539</span>                    alpha=alpha_fibre,  <span class="comment"># semi-transparent</span></div>
+<div class="line"><span class="lineno">  540</span>                )</div>
+<div class="line"><span class="lineno">  541</span>                ax.add_patch(ribbon)</div>
+<div class="line"><span class="lineno">  542</span> </div>
+<div class="line"><span class="lineno">  543</span>                y_top = L / 2 <span class="keywordflow">if</span> isU <span class="keywordflow">else</span> L / 2 + DZ</div>
+<div class="line"><span class="lineno">  544</span> </div>
+<div class="line"><span class="lineno">  545</span>                box = patches.Rectangle(</div>
+<div class="line"><span class="lineno">  546</span>                    (x0 - DX, y_top),</div>
+<div class="line"><span class="lineno">  547</span>                    2 * DX,</div>
+<div class="line"><span class="lineno">  548</span>                    DZ,</div>
+<div class="line"><span class="lineno">  549</span>                    facecolor=col,  <span class="comment"># same fill color</span></div>
+<div class="line"><span class="lineno">  550</span>                    edgecolor=<span class="stringliteral">&quot;black&quot;</span>,</div>
+<div class="line"><span class="lineno">  551</span>                    alpha=alpha_sipm,  <span class="comment"># a bit more opaque</span></div>
+<div class="line"><span class="lineno">  552</span>                    hatch=<span class="stringliteral">&quot;//&quot;</span> <span class="keywordflow">if</span> isU <span class="keywordflow">else</span> <span class="stringliteral">&quot;\\\\&quot;</span>,</div>
+<div class="line"><span class="lineno">  553</span>                )</div>
+<div class="line"><span class="lineno">  554</span>                ax.add_patch(box)</div>
+<div class="line"><span class="lineno">  555</span>            <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  556</span>                <span class="keywordflow">if</span> channel_x_U == chan <span class="keywordflow">or</span> channel_x_V == chan:</div>
+<div class="line"><span class="lineno">  557</span>                    <span class="comment"># draw the ribbon</span></div>
+<div class="line"><span class="lineno">  558</span>                    ribbon = patches.Polygon(</div>
+<div class="line"><span class="lineno">  559</span>                        coords,</div>
+<div class="line"><span class="lineno">  560</span>                        closed=<span class="keyword">True</span>,</div>
+<div class="line"><span class="lineno">  561</span>                        facecolor=col,  <span class="comment"># fill in your color</span></div>
+<div class="line"><span class="lineno">  562</span>                        edgecolor=<span class="stringliteral">&quot;black&quot;</span>,</div>
+<div class="line"><span class="lineno">  563</span>                        alpha=0.50,  <span class="comment"># semi-transparent</span></div>
+<div class="line"><span class="lineno">  564</span>                    )</div>
+<div class="line"><span class="lineno">  565</span>                    ax.add_patch(ribbon)</div>
+<div class="line"><span class="lineno">  566</span> </div>
+<div class="line"><span class="lineno">  567</span>                    y_top = L / 2 <span class="keywordflow">if</span> isU <span class="keywordflow">else</span> L / 2 + DZ</div>
+<div class="line"><span class="lineno">  568</span> </div>
+<div class="line"><span class="lineno">  569</span>                    box = patches.Rectangle(</div>
+<div class="line"><span class="lineno">  570</span>                        (x0 - DX, y_top),</div>
+<div class="line"><span class="lineno">  571</span>                        2 * DX,</div>
+<div class="line"><span class="lineno">  572</span>                        DZ,</div>
+<div class="line"><span class="lineno">  573</span>                        facecolor=col,  <span class="comment"># same fill color</span></div>
+<div class="line"><span class="lineno">  574</span>                        edgecolor=<span class="stringliteral">&quot;black&quot;</span>,</div>
+<div class="line"><span class="lineno">  575</span>                        alpha=0.75,  <span class="comment"># a bit more opaque</span></div>
+<div class="line"><span class="lineno">  576</span>                        hatch=<span class="stringliteral">&quot;//&quot;</span> <span class="keywordflow">if</span> isU <span class="keywordflow">else</span> <span class="stringliteral">&quot;\\\\&quot;</span>,</div>
+<div class="line"><span class="lineno">  577</span>                    )</div>
+<div class="line"><span class="lineno">  578</span>                    ax.add_patch(box)</div>
+<div class="line"><span class="lineno">  579</span>                <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  580</span>                    ribbon = patches.Polygon(</div>
+<div class="line"><span class="lineno">  581</span>                        coords,</div>
+<div class="line"><span class="lineno">  582</span>                        closed=<span class="keyword">True</span>,</div>
+<div class="line"><span class="lineno">  583</span>                        facecolor=col,  <span class="comment"># fill in your color</span></div>
+<div class="line"><span class="lineno">  584</span>                        edgecolor=<span class="stringliteral">&quot;black&quot;</span>,</div>
+<div class="line"><span class="lineno">  585</span>                        alpha=alpha_fibre,  <span class="comment"># semi-transparent</span></div>
+<div class="line"><span class="lineno">  586</span>                    )</div>
+<div class="line"><span class="lineno">  587</span>                    ax.add_patch(ribbon)</div>
+<div class="line"><span class="lineno">  588</span> </div>
+<div class="line"><span class="lineno">  589</span>                    y_top = L / 2 <span class="keywordflow">if</span> isU <span class="keywordflow">else</span> L / 2 + DZ</div>
+<div class="line"><span class="lineno">  590</span> </div>
+<div class="line"><span class="lineno">  591</span>                    box = patches.Rectangle(</div>
+<div class="line"><span class="lineno">  592</span>                        (x0 - DX, y_top),</div>
+<div class="line"><span class="lineno">  593</span>                        2 * DX,</div>
+<div class="line"><span class="lineno">  594</span>                        DZ,</div>
+<div class="line"><span class="lineno">  595</span>                        facecolor=col,  <span class="comment"># same fill color</span></div>
+<div class="line"><span class="lineno">  596</span>                        edgecolor=<span class="stringliteral">&quot;black&quot;</span>,</div>
+<div class="line"><span class="lineno">  597</span>                        alpha=alpha_sipm,  <span class="comment"># a bit more opaque</span></div>
+<div class="line"><span class="lineno">  598</span>                        hatch=<span class="stringliteral">&quot;//&quot;</span> <span class="keywordflow">if</span> isU <span class="keywordflow">else</span> <span class="stringliteral">&quot;\\\\&quot;</span>,</div>
+<div class="line"><span class="lineno">  599</span>                    )</div>
+<div class="line"><span class="lineno">  600</span>                    ax.add_patch(box)</div>
+<div class="line"><span class="lineno">  601</span> </div>
+<div class="line"><span class="lineno">  602</span>        <span class="comment"># 4) Finalize plot</span></div>
+<div class="line"><span class="lineno">  603</span>        ax.set_aspect(<span class="stringliteral">&quot;equal&quot;</span>)</div>
+<div class="line"><span class="lineno">  604</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> real_event:</div>
+<div class="line"><span class="lineno">  605</span>            shift = 3 * np.tan(alpha)</div>
+<div class="line"><span class="lineno">  606</span>            min_x = min([self.sipm_pos_U[chan] <span class="keywordflow">for</span> chan <span class="keywordflow">in</span> chansU]) - shift</div>
+<div class="line"><span class="lineno">  607</span>            max_x = max(self.sipm_pos_V[chan] <span class="keywordflow">for</span> chan <span class="keywordflow">in</span> chansV) + shift</div>
+<div class="line"><span class="lineno">  608</span>            ax.set_xlim(min_x, max_x)</div>
+<div class="line"><span class="lineno">  609</span>            ax.set_ylim(22, 26)</div>
+<div class="line"><span class="lineno">  610</span>        <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  611</span>            min_x, max_x = -25, 25</div>
+<div class="line"><span class="lineno">  612</span>            ax.set_ylim(-25, 26)</div>
+<div class="line"><span class="lineno">  613</span>        ax.set_xlim(min_x, max_x)</div>
+<div class="line"><span class="lineno">  614</span>        <span class="comment"># ax.set_ylim(22, 26)</span></div>
+<div class="line"><span class="lineno">  615</span>        ax.set_xlabel(<span class="stringliteral">&quot;X [cm]&quot;</span>)</div>
+<div class="line"><span class="lineno">  616</span>        ax.set_ylabel(<span class="stringliteral">&quot;Y [cm]&quot;</span>)</div>
+<div class="line"><span class="lineno">  617</span>        ax.set_title(<span class="stringliteral">&quot;SciFi channel ribbons &amp; SiPM boxes (X–Y view)&quot;</span>)</div>
+<div class="line"><span class="lineno">  618</span>        ax.grid(<span class="keyword">True</span>)</div>
+<div class="line"><span class="lineno">  619</span>        <span class="comment"># create legend handles</span></div>
+<div class="line"><span class="lineno">  620</span>        legend_handles = [</div>
+<div class="line"><span class="lineno">  621</span>            patches.Patch(</div>
+<div class="line"><span class="lineno">  622</span>                facecolor=<span class="stringliteral">&quot;blue&quot;</span>,</div>
+<div class="line"><span class="lineno">  623</span>                edgecolor=<span class="stringliteral">&quot;black&quot;</span>,</div>
+<div class="line"><span class="lineno">  624</span>                hatch=<span class="stringliteral">&quot;//&quot;</span>,</div>
+<div class="line"><span class="lineno">  625</span>                label=<span class="stringliteral">&quot;U plane&quot;</span>,</div>
+<div class="line"><span class="lineno">  626</span>                alpha=0.75,</div>
+<div class="line"><span class="lineno">  627</span>            ),</div>
+<div class="line"><span class="lineno">  628</span>            patches.Patch(</div>
+<div class="line"><span class="lineno">  629</span>                facecolor=<span class="stringliteral">&quot;red&quot;</span>,</div>
+<div class="line"><span class="lineno">  630</span>                edgecolor=<span class="stringliteral">&quot;black&quot;</span>,</div>
+<div class="line"><span class="lineno">  631</span>                hatch=<span class="stringliteral">&quot;\\\\&quot;</span>,</div>
+<div class="line"><span class="lineno">  632</span>                label=<span class="stringliteral">&quot;V plane&quot;</span>,</div>
+<div class="line"><span class="lineno">  633</span>                alpha=0.75,</div>
+<div class="line"><span class="lineno">  634</span>            ),</div>
+<div class="line"><span class="lineno">  635</span>        ]</div>
+<div class="line"><span class="lineno">  636</span> </div>
+<div class="line"><span class="lineno">  637</span>        ax.legend(handles=legend_handles, title=<span class="stringliteral">&quot;Plane&quot;</span>, loc=<span class="stringliteral">&quot;upper right&quot;</span>)</div>
+<div class="line"><span class="lineno">  638</span>        plt.tight_layout()</div>
+<div class="line"><span class="lineno">  639</span>        plt.savefig(output_file)</div>
+<div class="line"><span class="lineno">  640</span>        plt.close(fig)</div>
+<div class="line"><span class="lineno">  641</span>        print(f<span class="stringliteral">&quot;Saved channel ribbons + SiPM boxes to {output_file}&quot;</span>)</div>
+<div class="line"><span class="lineno">  642</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -856,161 +860,165 @@ alpha_fibre : float, optional
 Side Effects
 ------------
 Saves a PDF file with the specified filename containing the combined views.</pre> 
-<p class="definition">Definition at line <a class="el" href="SciFiMapping_8py_source.html#l00635">635</a> of file <a class="el" href="SciFiMapping_8py_source.html">SciFiMapping.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  643</span>    ) -&gt; <span class="keywordtype">None</span>:</div>
-<div class="line"><span class="lineno">  644</span>        <span class="stringliteral">&quot;&quot;&quot;Draw combined Z–X and X–Y views of SciFi channel mappings side by side.</span></div>
-<div class="line"><span class="lineno">  645</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  646</span><span class="stringliteral">        Parameters</span></div>
-<div class="line"><span class="lineno">  647</span><span class="stringliteral">        ----------</span></div>
-<div class="line"><span class="lineno">  648</span><span class="stringliteral">        sGeo : ROOT.TGeoManager</span></div>
-<div class="line"><span class="lineno">  649</span><span class="stringliteral">            The geometry manager for the detector setup.</span></div>
-<div class="line"><span class="lineno">  650</span><span class="stringliteral">        number_of_channels : int, optional</span></div>
-<div class="line"><span class="lineno">  651</span><span class="stringliteral">            Total number of channels to display (split evenly between U and V planes).</span></div>
-<div class="line"><span class="lineno">  652</span><span class="stringliteral">            Default is 20.</span></div>
-<div class="line"><span class="lineno">  653</span><span class="stringliteral">        output_file : str, optional</span></div>
-<div class="line"><span class="lineno">  654</span><span class="stringliteral">            Filename for the saved PDF plot. Default: &#39;scifi_combined_views.pdf&#39;.</span></div>
-<div class="line"><span class="lineno">  655</span><span class="stringliteral">        figsize : tuple of float, optional</span></div>
-<div class="line"><span class="lineno">  656</span><span class="stringliteral">            Figure size in inches. Default is (18, 8).</span></div>
-<div class="line"><span class="lineno">  657</span><span class="stringliteral">        dpi : int, optional</span></div>
-<div class="line"><span class="lineno">  658</span><span class="stringliteral">            Resolution of the figure in dots per inch. Default is 300.</span></div>
-<div class="line"><span class="lineno">  659</span><span class="stringliteral">        alpha_fibre : float, optional</span></div>
-<div class="line"><span class="lineno">  660</span><span class="stringliteral">            Transparency for fibre ellipses. Default is 0.4.</span></div>
-<div class="line"><span class="lineno">  661</span><span class="stringliteral">        Side Effects</span></div>
-<div class="line"><span class="lineno">  662</span><span class="stringliteral">        ------------</span></div>
-<div class="line"><span class="lineno">  663</span><span class="stringliteral">        Saves a PDF file with the specified filename containing the combined views.</span></div>
-<div class="line"><span class="lineno">  664</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  665</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  666</span>        <span class="comment"># Prepare fig &amp; axes</span></div>
-<div class="line"><span class="lineno">  667</span> </div>
-<div class="line"><span class="lineno">  668</span>        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=figsize, dpi=dpi)</div>
-<div class="line"><span class="lineno">  669</span> </div>
-<div class="line"><span class="lineno">  670</span>        fibreVol = sGeo.FindVolumeFast(<span class="stringliteral">&quot;FiberVol&quot;</span>)</div>
-<div class="line"><span class="lineno">  671</span>        R = fibreVol.GetShape().GetDX()</div>
-<div class="line"><span class="lineno">  672</span>        DX, DZ = 0.025, 0.135 / 2</div>
-<div class="line"><span class="lineno">  673</span> </div>
-<div class="line"><span class="lineno">  674</span>        center_U = [chan <span class="keywordflow">for</span> chan, x <span class="keywordflow">in</span> self.sipm_pos_U.items() <span class="keywordflow">if</span> abs(x) &lt;= DX - 0.001][0]</div>
-<div class="line"><span class="lineno">  675</span>        center_V = [chan <span class="keywordflow">for</span> chan, x <span class="keywordflow">in</span> self.sipm_pos_V.items() <span class="keywordflow">if</span> abs(x) &lt;= DX - 0.001][0]</div>
-<div class="line"><span class="lineno">  676</span> </div>
-<div class="line"><span class="lineno">  677</span>        <span class="keyword">def </span>get_keys(d, target, N):</div>
-<div class="line"><span class="lineno">  678</span>            ks = sorted(d, key=<span class="keyword">lambda</span> k: d[k])</div>
-<div class="line"><span class="lineno">  679</span>            i = ks.index(target)</div>
-<div class="line"><span class="lineno">  680</span>            half = N // 2</div>
-<div class="line"><span class="lineno">  681</span>            start = max(0, i - half)</div>
-<div class="line"><span class="lineno">  682</span>            end = min(len(ks), i + half + 1)</div>
-<div class="line"><span class="lineno">  683</span>            <span class="keywordflow">return</span> ks[start:end]</div>
+<p class="definition">Definition at line <a class="el" href="SciFiMapping_8py_source.html#l00643">643</a> of file <a class="el" href="SciFiMapping_8py_source.html">SciFiMapping.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  651</span>    ) -&gt; <span class="keywordtype">None</span>:</div>
+<div class="line"><span class="lineno">  652</span>        <span class="stringliteral">&quot;&quot;&quot;Draw combined Z–X and X–Y views of SciFi channel mappings side by side.</span></div>
+<div class="line"><span class="lineno">  653</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  654</span><span class="stringliteral">        Parameters</span></div>
+<div class="line"><span class="lineno">  655</span><span class="stringliteral">        ----------</span></div>
+<div class="line"><span class="lineno">  656</span><span class="stringliteral">        sGeo : ROOT.TGeoManager</span></div>
+<div class="line"><span class="lineno">  657</span><span class="stringliteral">            The geometry manager for the detector setup.</span></div>
+<div class="line"><span class="lineno">  658</span><span class="stringliteral">        number_of_channels : int, optional</span></div>
+<div class="line"><span class="lineno">  659</span><span class="stringliteral">            Total number of channels to display (split evenly between U and V planes).</span></div>
+<div class="line"><span class="lineno">  660</span><span class="stringliteral">            Default is 20.</span></div>
+<div class="line"><span class="lineno">  661</span><span class="stringliteral">        output_file : str, optional</span></div>
+<div class="line"><span class="lineno">  662</span><span class="stringliteral">            Filename for the saved PDF plot. Default: &#39;scifi_combined_views.pdf&#39;.</span></div>
+<div class="line"><span class="lineno">  663</span><span class="stringliteral">        figsize : tuple of float, optional</span></div>
+<div class="line"><span class="lineno">  664</span><span class="stringliteral">            Figure size in inches. Default is (18, 8).</span></div>
+<div class="line"><span class="lineno">  665</span><span class="stringliteral">        dpi : int, optional</span></div>
+<div class="line"><span class="lineno">  666</span><span class="stringliteral">            Resolution of the figure in dots per inch. Default is 300.</span></div>
+<div class="line"><span class="lineno">  667</span><span class="stringliteral">        alpha_fibre : float, optional</span></div>
+<div class="line"><span class="lineno">  668</span><span class="stringliteral">            Transparency for fibre ellipses. Default is 0.4.</span></div>
+<div class="line"><span class="lineno">  669</span><span class="stringliteral">        Side Effects</span></div>
+<div class="line"><span class="lineno">  670</span><span class="stringliteral">        ------------</span></div>
+<div class="line"><span class="lineno">  671</span><span class="stringliteral">        Saves a PDF file with the specified filename containing the combined views.</span></div>
+<div class="line"><span class="lineno">  672</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  673</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  674</span>        <span class="comment"># Prepare fig &amp; axes</span></div>
+<div class="line"><span class="lineno">  675</span> </div>
+<div class="line"><span class="lineno">  676</span>        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=figsize, dpi=dpi)</div>
+<div class="line"><span class="lineno">  677</span> </div>
+<div class="line"><span class="lineno">  678</span>        fibreVol = sGeo.FindVolumeFast(<span class="stringliteral">&quot;FiberVol&quot;</span>)</div>
+<div class="line"><span class="lineno">  679</span>        R = fibreVol.GetShape().GetDX()</div>
+<div class="line"><span class="lineno">  680</span>        DX, DZ = 0.025, 0.135 / 2</div>
+<div class="line"><span class="lineno">  681</span> </div>
+<div class="line"><span class="lineno">  682</span>        center_U = [chan <span class="keywordflow">for</span> chan, x <span class="keywordflow">in</span> self.sipm_pos_U.items() <span class="keywordflow">if</span> abs(x) &lt;= DX - 0.001][0]</div>
+<div class="line"><span class="lineno">  683</span>        center_V = [chan <span class="keywordflow">for</span> chan, x <span class="keywordflow">in</span> self.sipm_pos_V.items() <span class="keywordflow">if</span> abs(x) &lt;= DX - 0.001][0]</div>
 <div class="line"><span class="lineno">  684</span> </div>
-<div class="line"><span class="lineno">  685</span>        chansU = get_keys(self.sipm_pos_U, center_U, number_of_channels)</div>
-<div class="line"><span class="lineno">  686</span>        chansV = get_keys(self.sipm_pos_V, center_V, number_of_channels)</div>
-<div class="line"><span class="lineno">  687</span>        channels = chansU + chansV</div>
-<div class="line"><span class="lineno">  688</span>        n_chan = len(channels)</div>
-<div class="line"><span class="lineno">  689</span>        cmap = plt.get_cmap(<span class="stringliteral">&quot;tab20&quot;</span>)</div>
-<div class="line"><span class="lineno">  690</span>        colors = [cmap(i / (n_chan - 1)) <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(n_chan)]</div>
-<div class="line"><span class="lineno">  691</span> </div>
-<div class="line"><span class="lineno">  692</span>        AF = ROOT.TVector3()</div>
-<div class="line"><span class="lineno">  693</span>        BF = ROOT.TVector3()</div>
-<div class="line"><span class="lineno">  694</span>        <span class="keywordflow">for</span> idx, chan <span class="keywordflow">in</span> enumerate(channels):</div>
-<div class="line"><span class="lineno">  695</span>            col = colors[idx]</div>
-<div class="line"><span class="lineno">  696</span>            locChan = chan % 1000000</div>
-<div class="line"><span class="lineno">  697</span>            fmap = self.fibre_to_simp_map_U <span class="keywordflow">if</span> chan <span class="keywordflow">in</span> chansU <span class="keywordflow">else</span> self.fibre_to_simp_map_V</div>
-<div class="line"><span class="lineno">  698</span>            xs, zs = [], []</div>
-<div class="line"><span class="lineno">  699</span>            <span class="keywordflow">for</span> fid <span class="keywordflow">in</span> fmap[locChan]:</div>
-<div class="line"><span class="lineno">  700</span>                gid = fid + int(1e8 + 1e6 + (0 <span class="keywordflow">if</span> chan <span class="keywordflow">in</span> chansU <span class="keywordflow">else</span> 1) * 1e5)</div>
-<div class="line"><span class="lineno">  701</span>                self.scifi.GetPosition(gid, AF, BF)</div>
-<div class="line"><span class="lineno">  702</span>                loc = self.scifi.GetLocalPos(fid, BF)</div>
-<div class="line"><span class="lineno">  703</span>                xs.append(loc[0])</div>
-<div class="line"><span class="lineno">  704</span>                zs.append(loc[2])</div>
-<div class="line"><span class="lineno">  705</span>            <span class="keywordflow">for</span> x, z <span class="keywordflow">in</span> zip(xs, zs):</div>
-<div class="line"><span class="lineno">  706</span>                ell = patches.Ellipse((x, z), 2 * R, 2 * R, color=<span class="stringliteral">&quot;orange&quot;</span>, alpha=alpha_fibre)</div>
-<div class="line"><span class="lineno">  707</span>                ax1.add_patch(ell)</div>
-<div class="line"><span class="lineno">  708</span>            self.scifi.GetSiPMPosition(chan, BF, AF)</div>
-<div class="line"><span class="lineno">  709</span>            loc = self.scifi.GetLocalPos(fid, BF)</div>
-<div class="line"><span class="lineno">  710</span>            rx, rz = loc[0], loc[2]</div>
-<div class="line"><span class="lineno">  711</span>            rect = patches.Rectangle(</div>
-<div class="line"><span class="lineno">  712</span>                (rx - DX, rz - DZ),</div>
-<div class="line"><span class="lineno">  713</span>                2 * DX,</div>
-<div class="line"><span class="lineno">  714</span>                2 * DZ,</div>
-<div class="line"><span class="lineno">  715</span>                linewidth=1,</div>
-<div class="line"><span class="lineno">  716</span>                edgecolor=<span class="stringliteral">&quot;black&quot;</span>,</div>
-<div class="line"><span class="lineno">  717</span>                facecolor=col,</div>
-<div class="line"><span class="lineno">  718</span>                alpha=alpha_fibre * 0.8,</div>
-<div class="line"><span class="lineno">  719</span>            )</div>
-<div class="line"><span class="lineno">  720</span>            ax1.add_patch(rect)</div>
-<div class="line"><span class="lineno">  721</span> </div>
-<div class="line"><span class="lineno">  722</span>        ax1.set_xlabel(<span class="stringliteral">&quot;X [cm]&quot;</span>)</div>
-<div class="line"><span class="lineno">  723</span>        ax1.set_ylabel(<span class="stringliteral">&quot;Z [cm]&quot;</span>)</div>
-<div class="line"><span class="lineno">  724</span>        ax1.set_aspect(<span class="stringliteral">&quot;equal&quot;</span>)</div>
-<div class="line"><span class="lineno">  725</span>        ax1.grid(<span class="keyword">True</span>)</div>
-<div class="line"><span class="lineno">  726</span>        ax1.set_title(<span class="stringliteral">&quot;Z–X: SciFi mappings&quot;</span>)</div>
-<div class="line"><span class="lineno">  727</span> </div>
-<div class="line"><span class="lineno">  728</span>        DZ = 0.135 / 2</div>
-<div class="line"><span class="lineno">  729</span>        DX = 0.025</div>
-<div class="line"><span class="lineno">  730</span>        L = 50.0</div>
-<div class="line"><span class="lineno">  731</span>        angleU = 5.0</div>
-<div class="line"><span class="lineno">  732</span>        angleV = -5.0</div>
-<div class="line"><span class="lineno">  733</span>        centerU = [c <span class="keywordflow">for</span> c, x <span class="keywordflow">in</span> self.sipm_pos_U.items() <span class="keywordflow">if</span> abs(x) &lt; DX][0]</div>
-<div class="line"><span class="lineno">  734</span>        centerV = [c <span class="keywordflow">for</span> c, x <span class="keywordflow">in</span> self.sipm_pos_V.items() <span class="keywordflow">if</span> abs(x) &lt; DX][0]</div>
-<div class="line"><span class="lineno">  735</span>        chansU = get_keys(self.sipm_pos_U, centerU, number_of_channels)</div>
-<div class="line"><span class="lineno">  736</span>        chansV = get_keys(self.sipm_pos_V, centerV, number_of_channels)</div>
-<div class="line"><span class="lineno">  737</span>        all_ch = chansU + chansV</div>
-<div class="line"><span class="lineno">  738</span>        colorsU = [plt.get_cmap(<span class="stringliteral">&quot;Blues&quot;</span>)(i / max(len(chansU) - 1, 1)) <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(len(chansU))]</div>
-<div class="line"><span class="lineno">  739</span>        colorsV = [plt.get_cmap(<span class="stringliteral">&quot;Reds&quot;</span>)(i / max(len(chansV) - 1, 1)) <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(len(chansV))]</div>
-<div class="line"><span class="lineno">  740</span> </div>
-<div class="line"><span class="lineno">  741</span>        <span class="keywordflow">for</span> chan <span class="keywordflow">in</span> all_ch:</div>
-<div class="line"><span class="lineno">  742</span>            isU = chan <span class="keywordflow">in</span> chansU</div>
-<div class="line"><span class="lineno">  743</span>            x0 = self.sipm_pos_U[chan] <span class="keywordflow">if</span> isU <span class="keywordflow">else</span> self.sipm_pos_V[chan]</div>
-<div class="line"><span class="lineno">  744</span>            angle = angleU <span class="keywordflow">if</span> isU <span class="keywordflow">else</span> angleV</div>
-<div class="line"><span class="lineno">  745</span>            alpha_rad = np.deg2rad(angle)</div>
-<div class="line"><span class="lineno">  746</span>            dy = L / 2</div>
-<div class="line"><span class="lineno">  747</span>            dx = DX</div>
-<div class="line"><span class="lineno">  748</span>            shift = dy * np.tan(alpha_rad)</div>
-<div class="line"><span class="lineno">  749</span>            coords = [</div>
-<div class="line"><span class="lineno">  750</span>                (x0 - dx, dy),</div>
-<div class="line"><span class="lineno">  751</span>                (x0 + dx, dy),</div>
-<div class="line"><span class="lineno">  752</span>                (x0 + dx - shift, -dy),</div>
-<div class="line"><span class="lineno">  753</span>                (x0 - dx - shift, -dy),</div>
-<div class="line"><span class="lineno">  754</span>            ]</div>
-<div class="line"><span class="lineno">  755</span>            col = colorsU[chansU.index(chan)] <span class="keywordflow">if</span> isU <span class="keywordflow">else</span> colorsV[chansV.index(chan)]</div>
-<div class="line"><span class="lineno">  756</span>            poly = patches.Polygon(coords, closed=<span class="keyword">True</span>, facecolor=col, edgecolor=<span class="stringliteral">&quot;black&quot;</span>, alpha=0.5)</div>
-<div class="line"><span class="lineno">  757</span>            ax2.add_patch(poly)</div>
-<div class="line"><span class="lineno">  758</span>            y_top = dy</div>
-<div class="line"><span class="lineno">  759</span>            box = patches.Rectangle(</div>
-<div class="line"><span class="lineno">  760</span>                (x0 - DX, y_top),</div>
-<div class="line"><span class="lineno">  761</span>                2 * DX,</div>
-<div class="line"><span class="lineno">  762</span>                2 * DZ,</div>
-<div class="line"><span class="lineno">  763</span>                facecolor=col,</div>
-<div class="line"><span class="lineno">  764</span>                edgecolor=<span class="stringliteral">&quot;black&quot;</span>,</div>
-<div class="line"><span class="lineno">  765</span>                alpha=0.75,</div>
-<div class="line"><span class="lineno">  766</span>            )</div>
-<div class="line"><span class="lineno">  767</span>            ax2.add_patch(box)</div>
-<div class="line"><span class="lineno">  768</span> </div>
-<div class="line"><span class="lineno">  769</span>        ax2.set_xlabel(<span class="stringliteral">&quot;X [cm]&quot;</span>)</div>
-<div class="line"><span class="lineno">  770</span>        ax2.set_ylabel(<span class="stringliteral">&quot;Y [cm]&quot;</span>)</div>
-<div class="line"><span class="lineno">  771</span>        ax2.set_aspect(<span class="stringliteral">&quot;equal&quot;</span>)</div>
-<div class="line"><span class="lineno">  772</span>        ax2.grid(<span class="keyword">True</span>)</div>
-<div class="line"><span class="lineno">  773</span>        ax2.set_title(<span class="stringliteral">&quot;X–Y: Channel ribbons&quot;</span>)</div>
-<div class="line"><span class="lineno">  774</span> </div>
-<div class="line"><span class="lineno">  775</span>        legend_handles = [</div>
-<div class="line"><span class="lineno">  776</span>            patches.Patch(</div>
-<div class="line"><span class="lineno">  777</span>                facecolor=<span class="stringliteral">&quot;blue&quot;</span>,</div>
-<div class="line"><span class="lineno">  778</span>                edgecolor=<span class="stringliteral">&quot;black&quot;</span>,</div>
-<div class="line"><span class="lineno">  779</span>                hatch=<span class="stringliteral">&quot;//&quot;</span>,</div>
-<div class="line"><span class="lineno">  780</span>                label=<span class="stringliteral">&quot;U plane&quot;</span>,</div>
-<div class="line"><span class="lineno">  781</span>                alpha=0.75,</div>
-<div class="line"><span class="lineno">  782</span>            ),</div>
-<div class="line"><span class="lineno">  783</span>            patches.Patch(</div>
-<div class="line"><span class="lineno">  784</span>                facecolor=<span class="stringliteral">&quot;red&quot;</span>,</div>
-<div class="line"><span class="lineno">  785</span>                edgecolor=<span class="stringliteral">&quot;black&quot;</span>,</div>
-<div class="line"><span class="lineno">  786</span>                hatch=<span class="stringliteral">&quot;\\&quot;</span>,</div>
-<div class="line"><span class="lineno">  787</span>                label=<span class="stringliteral">&quot;V plane&quot;</span>,</div>
-<div class="line"><span class="lineno">  788</span>                alpha=0.75,</div>
-<div class="line"><span class="lineno">  789</span>            ),</div>
-<div class="line"><span class="lineno">  790</span>        ]</div>
-<div class="line"><span class="lineno">  791</span>        ax2.legend(handles=legend_handles, title=<span class="stringliteral">&quot;Plane&quot;</span>, loc=<span class="stringliteral">&quot;upper right&quot;</span>)</div>
-<div class="line"><span class="lineno">  792</span> </div>
-<div class="line"><span class="lineno">  793</span>        plt.tight_layout()</div>
-<div class="line"><span class="lineno">  794</span>        plt.savefig(output_file)</div>
-<div class="line"><span class="lineno">  795</span>        plt.close(fig)</div>
-<div class="line"><span class="lineno">  796</span> </div>
+<div class="line"><span class="lineno">  685</span>        <span class="keyword">def </span>get_keys(d, target, N):</div>
+<div class="line"><span class="lineno">  686</span>            ks = sorted(d, key=<span class="keyword">lambda</span> k: d[k])</div>
+<div class="line"><span class="lineno">  687</span>            i = ks.index(target)</div>
+<div class="line"><span class="lineno">  688</span>            half = N // 2</div>
+<div class="line"><span class="lineno">  689</span>            start = max(0, i - half)</div>
+<div class="line"><span class="lineno">  690</span>            end = min(len(ks), i + half + 1)</div>
+<div class="line"><span class="lineno">  691</span>            <span class="keywordflow">return</span> ks[start:end]</div>
+<div class="line"><span class="lineno">  692</span> </div>
+<div class="line"><span class="lineno">  693</span>        chansU = get_keys(self.sipm_pos_U, center_U, number_of_channels)</div>
+<div class="line"><span class="lineno">  694</span>        chansV = get_keys(self.sipm_pos_V, center_V, number_of_channels)</div>
+<div class="line"><span class="lineno">  695</span>        channels = chansU + chansV</div>
+<div class="line"><span class="lineno">  696</span>        n_chan = len(channels)</div>
+<div class="line"><span class="lineno">  697</span>        cmap = plt.get_cmap(<span class="stringliteral">&quot;tab20&quot;</span>)</div>
+<div class="line"><span class="lineno">  698</span>        colors = [cmap(i / (n_chan - 1)) <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(n_chan)]</div>
+<div class="line"><span class="lineno">  699</span> </div>
+<div class="line"><span class="lineno">  700</span>        AF = ROOT.TVector3()</div>
+<div class="line"><span class="lineno">  701</span>        BF = ROOT.TVector3()</div>
+<div class="line"><span class="lineno">  702</span>        <span class="keywordflow">for</span> idx, chan <span class="keywordflow">in</span> enumerate(channels):</div>
+<div class="line"><span class="lineno">  703</span>            col = colors[idx]</div>
+<div class="line"><span class="lineno">  704</span>            locChan = chan % 1000000</div>
+<div class="line"><span class="lineno">  705</span>            fmap = self.fibre_to_simp_map_U <span class="keywordflow">if</span> chan <span class="keywordflow">in</span> chansU <span class="keywordflow">else</span> self.fibre_to_simp_map_V</div>
+<div class="line"><span class="lineno">  706</span>            xs, zs = [], []</div>
+<div class="line"><span class="lineno">  707</span>            <span class="keywordflow">for</span> fid <span class="keywordflow">in</span> fmap[locChan]:</div>
+<div class="line"><span class="lineno">  708</span>                gid = fid + int(1e8 + 1e6 + (0 <span class="keywordflow">if</span> chan <span class="keywordflow">in</span> chansU <span class="keywordflow">else</span> 1) * 1e5)</div>
+<div class="line"><span class="lineno">  709</span>                self.scifi.GetPosition(gid, AF, BF)</div>
+<div class="line"><span class="lineno">  710</span>                loc = self.scifi.GetLocalPos(gid, BF)</div>
+<div class="line"><span class="lineno">  711</span>                xs.append(loc[0])</div>
+<div class="line"><span class="lineno">  712</span>                zs.append(loc[2])</div>
+<div class="line"><span class="lineno">  713</span>            <span class="keywordflow">for</span> x, z <span class="keywordflow">in</span> zip(xs, zs):</div>
+<div class="line"><span class="lineno">  714</span>                ell = patches.Ellipse((x, z), 2 * R, 2 * R, color=<span class="stringliteral">&quot;orange&quot;</span>, alpha=alpha_fibre)</div>
+<div class="line"><span class="lineno">  715</span>                ax1.add_patch(ell)</div>
+<div class="line"><span class="lineno">  716</span>            self.scifi.GetSiPMPosition(chan, BF, AF)</div>
+<div class="line"><span class="lineno">  717</span>            <span class="comment"># Build the global detector id from the channel so it does not depend</span></div>
+<div class="line"><span class="lineno">  718</span>            <span class="comment"># on the (now stale) fibre loop variable, which is also unbound if the</span></div>
+<div class="line"><span class="lineno">  719</span>            <span class="comment"># fibre list is empty.</span></div>
+<div class="line"><span class="lineno">  720</span>            gidSiPM = locChan + int(1e8 + 1e6 + (0 <span class="keywordflow">if</span> chan <span class="keywordflow">in</span> chansU <span class="keywordflow">else</span> 1) * 1e5)</div>
+<div class="line"><span class="lineno">  721</span>            loc = self.scifi.GetLocalPos(gidSiPM, BF)</div>
+<div class="line"><span class="lineno">  722</span>            rx, rz = loc[0], loc[2]</div>
+<div class="line"><span class="lineno">  723</span>            rect = patches.Rectangle(</div>
+<div class="line"><span class="lineno">  724</span>                (rx - DX, rz - DZ),</div>
+<div class="line"><span class="lineno">  725</span>                2 * DX,</div>
+<div class="line"><span class="lineno">  726</span>                2 * DZ,</div>
+<div class="line"><span class="lineno">  727</span>                linewidth=1,</div>
+<div class="line"><span class="lineno">  728</span>                edgecolor=<span class="stringliteral">&quot;black&quot;</span>,</div>
+<div class="line"><span class="lineno">  729</span>                facecolor=col,</div>
+<div class="line"><span class="lineno">  730</span>                alpha=alpha_fibre * 0.8,</div>
+<div class="line"><span class="lineno">  731</span>            )</div>
+<div class="line"><span class="lineno">  732</span>            ax1.add_patch(rect)</div>
+<div class="line"><span class="lineno">  733</span> </div>
+<div class="line"><span class="lineno">  734</span>        ax1.set_xlabel(<span class="stringliteral">&quot;X [cm]&quot;</span>)</div>
+<div class="line"><span class="lineno">  735</span>        ax1.set_ylabel(<span class="stringliteral">&quot;Z [cm]&quot;</span>)</div>
+<div class="line"><span class="lineno">  736</span>        ax1.set_aspect(<span class="stringliteral">&quot;equal&quot;</span>)</div>
+<div class="line"><span class="lineno">  737</span>        ax1.grid(<span class="keyword">True</span>)</div>
+<div class="line"><span class="lineno">  738</span>        ax1.set_title(<span class="stringliteral">&quot;Z–X: SciFi mappings&quot;</span>)</div>
+<div class="line"><span class="lineno">  739</span> </div>
+<div class="line"><span class="lineno">  740</span>        DZ = 0.135 / 2</div>
+<div class="line"><span class="lineno">  741</span>        DX = 0.025</div>
+<div class="line"><span class="lineno">  742</span>        L = 50.0</div>
+<div class="line"><span class="lineno">  743</span>        angleU = 5.0</div>
+<div class="line"><span class="lineno">  744</span>        angleV = -5.0</div>
+<div class="line"><span class="lineno">  745</span>        centerU = [c <span class="keywordflow">for</span> c, x <span class="keywordflow">in</span> self.sipm_pos_U.items() <span class="keywordflow">if</span> abs(x) &lt; DX][0]</div>
+<div class="line"><span class="lineno">  746</span>        centerV = [c <span class="keywordflow">for</span> c, x <span class="keywordflow">in</span> self.sipm_pos_V.items() <span class="keywordflow">if</span> abs(x) &lt; DX][0]</div>
+<div class="line"><span class="lineno">  747</span>        chansU = get_keys(self.sipm_pos_U, centerU, number_of_channels)</div>
+<div class="line"><span class="lineno">  748</span>        chansV = get_keys(self.sipm_pos_V, centerV, number_of_channels)</div>
+<div class="line"><span class="lineno">  749</span>        all_ch = chansU + chansV</div>
+<div class="line"><span class="lineno">  750</span>        colorsU = [plt.get_cmap(<span class="stringliteral">&quot;Blues&quot;</span>)(i / max(len(chansU) - 1, 1)) <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(len(chansU))]</div>
+<div class="line"><span class="lineno">  751</span>        colorsV = [plt.get_cmap(<span class="stringliteral">&quot;Reds&quot;</span>)(i / max(len(chansV) - 1, 1)) <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(len(chansV))]</div>
+<div class="line"><span class="lineno">  752</span> </div>
+<div class="line"><span class="lineno">  753</span>        <span class="keywordflow">for</span> chan <span class="keywordflow">in</span> all_ch:</div>
+<div class="line"><span class="lineno">  754</span>            isU = chan <span class="keywordflow">in</span> chansU</div>
+<div class="line"><span class="lineno">  755</span>            x0 = self.sipm_pos_U[chan] <span class="keywordflow">if</span> isU <span class="keywordflow">else</span> self.sipm_pos_V[chan]</div>
+<div class="line"><span class="lineno">  756</span>            angle = angleU <span class="keywordflow">if</span> isU <span class="keywordflow">else</span> angleV</div>
+<div class="line"><span class="lineno">  757</span>            alpha_rad = np.deg2rad(angle)</div>
+<div class="line"><span class="lineno">  758</span>            dy = L / 2</div>
+<div class="line"><span class="lineno">  759</span>            dx = DX</div>
+<div class="line"><span class="lineno">  760</span>            shift = dy * np.tan(alpha_rad)</div>
+<div class="line"><span class="lineno">  761</span>            coords = [</div>
+<div class="line"><span class="lineno">  762</span>                (x0 - dx, dy),</div>
+<div class="line"><span class="lineno">  763</span>                (x0 + dx, dy),</div>
+<div class="line"><span class="lineno">  764</span>                (x0 + dx - shift, -dy),</div>
+<div class="line"><span class="lineno">  765</span>                (x0 - dx - shift, -dy),</div>
+<div class="line"><span class="lineno">  766</span>            ]</div>
+<div class="line"><span class="lineno">  767</span>            col = colorsU[chansU.index(chan)] <span class="keywordflow">if</span> isU <span class="keywordflow">else</span> colorsV[chansV.index(chan)]</div>
+<div class="line"><span class="lineno">  768</span>            poly = patches.Polygon(coords, closed=<span class="keyword">True</span>, facecolor=col, edgecolor=<span class="stringliteral">&quot;black&quot;</span>, alpha=0.5)</div>
+<div class="line"><span class="lineno">  769</span>            ax2.add_patch(poly)</div>
+<div class="line"><span class="lineno">  770</span>            y_top = dy</div>
+<div class="line"><span class="lineno">  771</span>            box = patches.Rectangle(</div>
+<div class="line"><span class="lineno">  772</span>                (x0 - DX, y_top),</div>
+<div class="line"><span class="lineno">  773</span>                2 * DX,</div>
+<div class="line"><span class="lineno">  774</span>                2 * DZ,</div>
+<div class="line"><span class="lineno">  775</span>                facecolor=col,</div>
+<div class="line"><span class="lineno">  776</span>                edgecolor=<span class="stringliteral">&quot;black&quot;</span>,</div>
+<div class="line"><span class="lineno">  777</span>                alpha=0.75,</div>
+<div class="line"><span class="lineno">  778</span>            )</div>
+<div class="line"><span class="lineno">  779</span>            ax2.add_patch(box)</div>
+<div class="line"><span class="lineno">  780</span> </div>
+<div class="line"><span class="lineno">  781</span>        ax2.set_xlabel(<span class="stringliteral">&quot;X [cm]&quot;</span>)</div>
+<div class="line"><span class="lineno">  782</span>        ax2.set_ylabel(<span class="stringliteral">&quot;Y [cm]&quot;</span>)</div>
+<div class="line"><span class="lineno">  783</span>        ax2.set_aspect(<span class="stringliteral">&quot;equal&quot;</span>)</div>
+<div class="line"><span class="lineno">  784</span>        ax2.grid(<span class="keyword">True</span>)</div>
+<div class="line"><span class="lineno">  785</span>        ax2.set_title(<span class="stringliteral">&quot;X–Y: Channel ribbons&quot;</span>)</div>
+<div class="line"><span class="lineno">  786</span> </div>
+<div class="line"><span class="lineno">  787</span>        legend_handles = [</div>
+<div class="line"><span class="lineno">  788</span>            patches.Patch(</div>
+<div class="line"><span class="lineno">  789</span>                facecolor=<span class="stringliteral">&quot;blue&quot;</span>,</div>
+<div class="line"><span class="lineno">  790</span>                edgecolor=<span class="stringliteral">&quot;black&quot;</span>,</div>
+<div class="line"><span class="lineno">  791</span>                hatch=<span class="stringliteral">&quot;//&quot;</span>,</div>
+<div class="line"><span class="lineno">  792</span>                label=<span class="stringliteral">&quot;U plane&quot;</span>,</div>
+<div class="line"><span class="lineno">  793</span>                alpha=0.75,</div>
+<div class="line"><span class="lineno">  794</span>            ),</div>
+<div class="line"><span class="lineno">  795</span>            patches.Patch(</div>
+<div class="line"><span class="lineno">  796</span>                facecolor=<span class="stringliteral">&quot;red&quot;</span>,</div>
+<div class="line"><span class="lineno">  797</span>                edgecolor=<span class="stringliteral">&quot;black&quot;</span>,</div>
+<div class="line"><span class="lineno">  798</span>                hatch=<span class="stringliteral">&quot;\\&quot;</span>,</div>
+<div class="line"><span class="lineno">  799</span>                label=<span class="stringliteral">&quot;V plane&quot;</span>,</div>
+<div class="line"><span class="lineno">  800</span>                alpha=0.75,</div>
+<div class="line"><span class="lineno">  801</span>            ),</div>
+<div class="line"><span class="lineno">  802</span>        ]</div>
+<div class="line"><span class="lineno">  803</span>        ax2.legend(handles=legend_handles, title=<span class="stringliteral">&quot;Plane&quot;</span>, loc=<span class="stringliteral">&quot;upper right&quot;</span>)</div>
+<div class="line"><span class="lineno">  804</span> </div>
+<div class="line"><span class="lineno">  805</span>        plt.tight_layout()</div>
+<div class="line"><span class="lineno">  806</span>        plt.savefig(output_file)</div>
+<div class="line"><span class="lineno">  807</span>        plt.close(fig)</div>
+<div class="line"><span class="lineno">  808</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1219,7 +1227,7 @@ Saves an overlay PDF plot with the specified filename.</pre>
 <div class="line"><span class="lineno">  342</span>                    <span class="keywordflow">else</span> fibreID + 100000000 + 1000000 + 1 * 100000</div>
 <div class="line"><span class="lineno">  343</span>                )</div>
 <div class="line"><span class="lineno">  344</span>                self.scifi.GetPosition(globfiberID, AF, BF)</div>
-<div class="line"><span class="lineno">  345</span>                loc = self.scifi.GetLocalPos(fibreID, BF)</div>
+<div class="line"><span class="lineno">  345</span>                loc = self.scifi.GetLocalPos(globfiberID, BF)</div>
 <div class="line"><span class="lineno">  346</span>                xs.append(loc[0])</div>
 <div class="line"><span class="lineno">  347</span>                ys.append(loc[2])</div>
 <div class="line"><span class="lineno">  348</span> </div>
@@ -1238,59 +1246,63 @@ Saves an overlay PDF plot with the specified filename.</pre>
 <div class="line"><span class="lineno">  361</span> </div>
 <div class="line"><span class="lineno">  362</span>            <span class="comment"># draw SiPM rect in its unique shade</span></div>
 <div class="line"><span class="lineno">  363</span>            self.scifi.GetSiPMPosition(chan, BF, AF)</div>
-<div class="line"><span class="lineno">  364</span>            loc_siPM = self.scifi.GetLocalPos(fibreID, BF)</div>
-<div class="line"><span class="lineno">  365</span>            rx, ry = loc_siPM[0], loc_siPM[2]</div>
-<div class="line"><span class="lineno">  366</span>            rect = patches.Rectangle(</div>
-<div class="line"><span class="lineno">  367</span>                (rx - DX, ry - DZ),</div>
-<div class="line"><span class="lineno">  368</span>                2 * DX,</div>
-<div class="line"><span class="lineno">  369</span>                2 * DZ,</div>
-<div class="line"><span class="lineno">  370</span>                linewidth=1,</div>
-<div class="line"><span class="lineno">  371</span>                edgecolor=<span class="stringliteral">&quot;black&quot;</span>,</div>
-<div class="line"><span class="lineno">  372</span>                facecolor=<span class="stringliteral">&quot;blue&quot;</span> <span class="keywordflow">if</span> isU <span class="keywordflow">else</span> <span class="stringliteral">&quot;red&quot;</span>,  <span class="comment"># override with solid colors for clarity,</span></div>
-<div class="line"><span class="lineno">  373</span>                alpha=alpha_fibre * 0.8,</div>
-<div class="line"><span class="lineno">  374</span>                hatch=<span class="stringliteral">&quot;//&quot;</span> <span class="keywordflow">if</span> isU <span class="keywordflow">else</span> <span class="stringliteral">&quot;\\\\&quot;</span>,</div>
-<div class="line"><span class="lineno">  375</span>            )</div>
-<div class="line"><span class="lineno">  376</span>            ax.add_patch(rect)</div>
-<div class="line"><span class="lineno">  377</span> </div>
-<div class="line"><span class="lineno">  378</span>            <span class="keywordflow">if</span> labeling:</div>
-<div class="line"><span class="lineno">  379</span>                <span class="comment"># compute a fontsize that fits the rect width</span></div>
-<div class="line"><span class="lineno">  380</span>                <span class="comment"># 1) data→display coords:</span></div>
-<div class="line"><span class="lineno">  381</span>                p0 = ax.transData.transform((rx - DX, ry))</div>
-<div class="line"><span class="lineno">  382</span>                p1 = ax.transData.transform((rx + DX, ry))</div>
-<div class="line"><span class="lineno">  383</span>                disp_width = abs(p1[0] - p0[0])</div>
-<div class="line"><span class="lineno">  384</span>                <span class="comment"># 2) convert px→points (1pt = 1/72in; fig.dpi px/inch):</span></div>
-<div class="line"><span class="lineno">  385</span>                pts = disp_width * 72.0 / fig.dpi</div>
-<div class="line"><span class="lineno">  386</span>                fontsize = max(2, min(12, pts * 0.8))</div>
-<div class="line"><span class="lineno">  387</span> </div>
-<div class="line"><span class="lineno">  388</span>                <span class="comment"># label above the rect</span></div>
-<div class="line"><span class="lineno">  389</span>                text = f<span class="stringliteral">&quot;SiPM: {(chan // 1000) % 10} \n ch: {chan % 1000}&quot;</span></div>
-<div class="line"><span class="lineno">  390</span>                ax.text(</div>
-<div class="line"><span class="lineno">  391</span>                    rx - DX / 2,</div>
-<div class="line"><span class="lineno">  392</span>                    ry + DZ + R * 0.1,</div>
-<div class="line"><span class="lineno">  393</span>                    text,</div>
-<div class="line"><span class="lineno">  394</span>                    ha=<span class="stringliteral">&quot;left&quot;</span>,</div>
-<div class="line"><span class="lineno">  395</span>                    va=<span class="stringliteral">&quot;bottom&quot;</span>,</div>
-<div class="line"><span class="lineno">  396</span>                    fontsize=fontsize,</div>
-<div class="line"><span class="lineno">  397</span>                    color=<span class="stringliteral">&quot;black&quot;</span>,</div>
-<div class="line"><span class="lineno">  398</span>                    clip_on=<span class="keyword">True</span>,</div>
-<div class="line"><span class="lineno">  399</span>                )</div>
-<div class="line"><span class="lineno">  400</span> </div>
-<div class="line"><span class="lineno">  401</span>        <span class="comment"># finalize plot</span></div>
-<div class="line"><span class="lineno">  402</span>        ax.relim()</div>
-<div class="line"><span class="lineno">  403</span>        ax.autoscale_view()</div>
-<div class="line"><span class="lineno">  404</span>        ax.set_aspect(<span class="stringliteral">&quot;equal&quot;</span>)</div>
-<div class="line"><span class="lineno">  405</span>        ax.tick_params(axis=<span class="stringliteral">&quot;both&quot;</span>, which=<span class="stringliteral">&quot;major&quot;</span>, labelsize=18)</div>
-<div class="line"><span class="lineno">  406</span>        ax.tick_params(axis=<span class="stringliteral">&quot;both&quot;</span>, which=<span class="stringliteral">&quot;minor&quot;</span>, labelsize=18)</div>
-<div class="line"><span class="lineno">  407</span>        ax.set_xlabel(<span class="stringliteral">&quot;X [cm]&quot;</span>, fontsize=20)</div>
-<div class="line"><span class="lineno">  408</span>        ax.set_ylabel(<span class="stringliteral">&quot;Z [cm]&quot;</span>, fontsize=20)</div>
-<div class="line"><span class="lineno">  409</span>        ax.set_title(<span class="stringliteral">&quot;SiPM-Channel Mappings Overlaid&quot;</span>, fontsize=24)</div>
-<div class="line"><span class="lineno">  410</span>        ax.grid(<span class="keyword">True</span>)</div>
-<div class="line"><span class="lineno">  411</span> </div>
-<div class="line"><span class="lineno">  412</span>        plt.tight_layout()</div>
-<div class="line"><span class="lineno">  413</span>        plt.savefig(output_file)</div>
-<div class="line"><span class="lineno">  414</span>        plt.close(fig)</div>
-<div class="line"><span class="lineno">  415</span>        print(f<span class="stringliteral">&quot;Saved overlay plot of {n_chan} channels to {output_file}&quot;</span>)</div>
-<div class="line"><span class="lineno">  416</span> </div>
+<div class="line"><span class="lineno">  364</span>            <span class="comment"># GetLocalPos needs the global detector id (station/plane encoded);</span></div>
+<div class="line"><span class="lineno">  365</span>            <span class="comment"># build it from the channel so it does not depend on the (now stale)</span></div>
+<div class="line"><span class="lineno">  366</span>            <span class="comment"># fibre loop variable, which is also unbound if the fibre list is empty.</span></div>
+<div class="line"><span class="lineno">  367</span>            globSiPMID = locChan + 100000000 + 1000000 + (0 <span class="keywordflow">if</span> isU <span class="keywordflow">else</span> 1) * 100000</div>
+<div class="line"><span class="lineno">  368</span>            loc_siPM = self.scifi.GetLocalPos(globSiPMID, BF)</div>
+<div class="line"><span class="lineno">  369</span>            rx, ry = loc_siPM[0], loc_siPM[2]</div>
+<div class="line"><span class="lineno">  370</span>            rect = patches.Rectangle(</div>
+<div class="line"><span class="lineno">  371</span>                (rx - DX, ry - DZ),</div>
+<div class="line"><span class="lineno">  372</span>                2 * DX,</div>
+<div class="line"><span class="lineno">  373</span>                2 * DZ,</div>
+<div class="line"><span class="lineno">  374</span>                linewidth=1,</div>
+<div class="line"><span class="lineno">  375</span>                edgecolor=<span class="stringliteral">&quot;black&quot;</span>,</div>
+<div class="line"><span class="lineno">  376</span>                facecolor=<span class="stringliteral">&quot;blue&quot;</span> <span class="keywordflow">if</span> isU <span class="keywordflow">else</span> <span class="stringliteral">&quot;red&quot;</span>,  <span class="comment"># override with solid colors for clarity,</span></div>
+<div class="line"><span class="lineno">  377</span>                alpha=alpha_fibre * 0.8,</div>
+<div class="line"><span class="lineno">  378</span>                hatch=<span class="stringliteral">&quot;//&quot;</span> <span class="keywordflow">if</span> isU <span class="keywordflow">else</span> <span class="stringliteral">&quot;\\\\&quot;</span>,</div>
+<div class="line"><span class="lineno">  379</span>            )</div>
+<div class="line"><span class="lineno">  380</span>            ax.add_patch(rect)</div>
+<div class="line"><span class="lineno">  381</span> </div>
+<div class="line"><span class="lineno">  382</span>            <span class="keywordflow">if</span> labeling:</div>
+<div class="line"><span class="lineno">  383</span>                <span class="comment"># compute a fontsize that fits the rect width</span></div>
+<div class="line"><span class="lineno">  384</span>                <span class="comment"># 1) data→display coords:</span></div>
+<div class="line"><span class="lineno">  385</span>                p0 = ax.transData.transform((rx - DX, ry))</div>
+<div class="line"><span class="lineno">  386</span>                p1 = ax.transData.transform((rx + DX, ry))</div>
+<div class="line"><span class="lineno">  387</span>                disp_width = abs(p1[0] - p0[0])</div>
+<div class="line"><span class="lineno">  388</span>                <span class="comment"># 2) convert px→points (1pt = 1/72in; fig.dpi px/inch):</span></div>
+<div class="line"><span class="lineno">  389</span>                pts = disp_width * 72.0 / fig.dpi</div>
+<div class="line"><span class="lineno">  390</span>                fontsize = max(2, min(12, pts * 0.8))</div>
+<div class="line"><span class="lineno">  391</span> </div>
+<div class="line"><span class="lineno">  392</span>                <span class="comment"># label above the rect</span></div>
+<div class="line"><span class="lineno">  393</span>                text = f<span class="stringliteral">&quot;SiPM: {(chan // 1000) % 10} \n ch: {chan % 1000}&quot;</span></div>
+<div class="line"><span class="lineno">  394</span>                ax.text(</div>
+<div class="line"><span class="lineno">  395</span>                    rx - DX / 2,</div>
+<div class="line"><span class="lineno">  396</span>                    ry + DZ + R * 0.1,</div>
+<div class="line"><span class="lineno">  397</span>                    text,</div>
+<div class="line"><span class="lineno">  398</span>                    ha=<span class="stringliteral">&quot;left&quot;</span>,</div>
+<div class="line"><span class="lineno">  399</span>                    va=<span class="stringliteral">&quot;bottom&quot;</span>,</div>
+<div class="line"><span class="lineno">  400</span>                    fontsize=fontsize,</div>
+<div class="line"><span class="lineno">  401</span>                    color=<span class="stringliteral">&quot;black&quot;</span>,</div>
+<div class="line"><span class="lineno">  402</span>                    clip_on=<span class="keyword">True</span>,</div>
+<div class="line"><span class="lineno">  403</span>                )</div>
+<div class="line"><span class="lineno">  404</span> </div>
+<div class="line"><span class="lineno">  405</span>        <span class="comment"># finalize plot</span></div>
+<div class="line"><span class="lineno">  406</span>        ax.relim()</div>
+<div class="line"><span class="lineno">  407</span>        ax.autoscale_view()</div>
+<div class="line"><span class="lineno">  408</span>        ax.set_aspect(<span class="stringliteral">&quot;equal&quot;</span>)</div>
+<div class="line"><span class="lineno">  409</span>        ax.tick_params(axis=<span class="stringliteral">&quot;both&quot;</span>, which=<span class="stringliteral">&quot;major&quot;</span>, labelsize=18)</div>
+<div class="line"><span class="lineno">  410</span>        ax.tick_params(axis=<span class="stringliteral">&quot;both&quot;</span>, which=<span class="stringliteral">&quot;minor&quot;</span>, labelsize=18)</div>
+<div class="line"><span class="lineno">  411</span>        ax.set_xlabel(<span class="stringliteral">&quot;X [cm]&quot;</span>, fontsize=20)</div>
+<div class="line"><span class="lineno">  412</span>        ax.set_ylabel(<span class="stringliteral">&quot;Z [cm]&quot;</span>, fontsize=20)</div>
+<div class="line"><span class="lineno">  413</span>        ax.set_title(<span class="stringliteral">&quot;SiPM-Channel Mappings Overlaid&quot;</span>, fontsize=24)</div>
+<div class="line"><span class="lineno">  414</span>        ax.grid(<span class="keyword">True</span>)</div>
+<div class="line"><span class="lineno">  415</span> </div>
+<div class="line"><span class="lineno">  416</span>        plt.tight_layout()</div>
+<div class="line"><span class="lineno">  417</span>        plt.savefig(output_file)</div>
+<div class="line"><span class="lineno">  418</span>        plt.close(fig)</div>
+<div class="line"><span class="lineno">  419</span>        print(f<span class="stringliteral">&quot;Saved overlay plot of {n_chan} channels to {output_file}&quot;</span>)</div>
+<div class="line"><span class="lineno">  420</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1425,36 +1437,36 @@ Currently is used in python/shipDigiReco.py.
 
 Prints out the mappings for the U plane, showing fibre indices,
 SiPM channels, weights, and x-positions for both mapping directions.</pre> 
-<p class="definition">Definition at line <a class="el" href="SciFiMapping_8py_source.html#l00797">797</a> of file <a class="el" href="SciFiMapping_8py_source.html">SciFiMapping.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  797</span>    <span class="keyword">def </span>mapping_validation(self) -&gt; None:</div>
-<div class="line"><span class="lineno">  798</span>        <span class="stringliteral">&quot;&quot;&quot;Validate and print the SiPM-to-fibre and fibre-to-SiPM mappings.</span></div>
-<div class="line"><span class="lineno">  799</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  800</span><span class="stringliteral">        Prints out the mappings for the U plane, showing fibre indices,</span></div>
-<div class="line"><span class="lineno">  801</span><span class="stringliteral">        SiPM channels, weights, and x-positions for both mapping directions.</span></div>
-<div class="line"><span class="lineno">  802</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  803</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  804</span>        sipm_to_fiber_map_U, _ = self.get_sipm_to_fibre_map()</div>
-<div class="line"><span class="lineno">  805</span>        fiber_to_sipm_map_U, _ = self.get_fibre_to_simp_map()</div>
-<div class="line"><span class="lineno">  806</span> </div>
-<div class="line"><span class="lineno">  807</span>        print(<span class="stringliteral">&quot;Validating U plane mapping:&quot;</span>)</div>
-<div class="line"><span class="lineno">  808</span>        <span class="keywordflow">for</span> sipm_chan, fibers <span class="keywordflow">in</span> sipm_to_fiber_map_U.items():</div>
-<div class="line"><span class="lineno">  809</span>            <span class="keywordflow">for</span> fiber_id, chan_info <span class="keywordflow">in</span> fibers.items():</div>
-<div class="line"><span class="lineno">  810</span>                weight = chan_info[<span class="stringliteral">&quot;weight&quot;</span>]</div>
-<div class="line"><span class="lineno">  811</span>                xpos = chan_info[<span class="stringliteral">&quot;xpos&quot;</span>]</div>
-<div class="line"><span class="lineno">  812</span>                print(</div>
-<div class="line"><span class="lineno">  813</span>                    f<span class="stringliteral">&quot;&quot;&quot;---- SiPM Channel: {sipm_chan}, Fiber index: {fiber_id},</span></div>
-<div class="line"><span class="lineno">  814</span><span class="stringliteral">                    Weight: {weight}, X Position: {xpos}&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  815</span>                )</div>
-<div class="line"><span class="lineno">  816</span>        <span class="keywordflow">for</span> fiber_id, sipm_fibers <span class="keywordflow">in</span> fiber_to_sipm_map_U.items():</div>
-<div class="line"><span class="lineno">  817</span>            <span class="keywordflow">for</span> sipm_chan, fiber_info <span class="keywordflow">in</span> sipm_fibers.items():</div>
-<div class="line"><span class="lineno">  818</span>                weight = fiber_info[<span class="stringliteral">&quot;weight&quot;</span>]</div>
-<div class="line"><span class="lineno">  819</span>                xpos = fiber_info[<span class="stringliteral">&quot;xpos&quot;</span>]</div>
-<div class="line"><span class="lineno">  820</span>                print(</div>
-<div class="line"><span class="lineno">  821</span>                    f<span class="stringliteral">&quot;&quot;&quot;++++ Fiber index: {fiber_id}, SiPM Channel: {sipm_chan},</span></div>
-<div class="line"><span class="lineno">  822</span><span class="stringliteral">                    Weight: {weight}, X Position: {xpos}&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  823</span>                )</div>
-<div class="line"><span class="lineno">  824</span> </div>
-<div class="line"><span class="lineno">  825</span> </div>
+<p class="definition">Definition at line <a class="el" href="SciFiMapping_8py_source.html#l00809">809</a> of file <a class="el" href="SciFiMapping_8py_source.html">SciFiMapping.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  809</span>    <span class="keyword">def </span>mapping_validation(self) -&gt; None:</div>
+<div class="line"><span class="lineno">  810</span>        <span class="stringliteral">&quot;&quot;&quot;Validate and print the SiPM-to-fibre and fibre-to-SiPM mappings.</span></div>
+<div class="line"><span class="lineno">  811</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  812</span><span class="stringliteral">        Prints out the mappings for the U plane, showing fibre indices,</span></div>
+<div class="line"><span class="lineno">  813</span><span class="stringliteral">        SiPM channels, weights, and x-positions for both mapping directions.</span></div>
+<div class="line"><span class="lineno">  814</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  815</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  816</span>        sipm_to_fiber_map_U, _ = self.get_sipm_to_fibre_map()</div>
+<div class="line"><span class="lineno">  817</span>        fiber_to_sipm_map_U, _ = self.get_fibre_to_simp_map()</div>
+<div class="line"><span class="lineno">  818</span> </div>
+<div class="line"><span class="lineno">  819</span>        print(<span class="stringliteral">&quot;Validating U plane mapping:&quot;</span>)</div>
+<div class="line"><span class="lineno">  820</span>        <span class="keywordflow">for</span> sipm_chan, fibers <span class="keywordflow">in</span> sipm_to_fiber_map_U.items():</div>
+<div class="line"><span class="lineno">  821</span>            <span class="keywordflow">for</span> fiber_id, chan_info <span class="keywordflow">in</span> fibers.items():</div>
+<div class="line"><span class="lineno">  822</span>                weight = chan_info[<span class="stringliteral">&quot;weight&quot;</span>]</div>
+<div class="line"><span class="lineno">  823</span>                xpos = chan_info[<span class="stringliteral">&quot;xpos&quot;</span>]</div>
+<div class="line"><span class="lineno">  824</span>                print(</div>
+<div class="line"><span class="lineno">  825</span>                    f<span class="stringliteral">&quot;&quot;&quot;---- SiPM Channel: {sipm_chan}, Fiber index: {fiber_id},</span></div>
+<div class="line"><span class="lineno">  826</span><span class="stringliteral">                    Weight: {weight}, X Position: {xpos}&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  827</span>                )</div>
+<div class="line"><span class="lineno">  828</span>        <span class="keywordflow">for</span> fiber_id, sipm_fibers <span class="keywordflow">in</span> fiber_to_sipm_map_U.items():</div>
+<div class="line"><span class="lineno">  829</span>            <span class="keywordflow">for</span> sipm_chan, fiber_info <span class="keywordflow">in</span> sipm_fibers.items():</div>
+<div class="line"><span class="lineno">  830</span>                weight = fiber_info[<span class="stringliteral">&quot;weight&quot;</span>]</div>
+<div class="line"><span class="lineno">  831</span>                xpos = fiber_info[<span class="stringliteral">&quot;xpos&quot;</span>]</div>
+<div class="line"><span class="lineno">  832</span>                print(</div>
+<div class="line"><span class="lineno">  833</span>                    f<span class="stringliteral">&quot;&quot;&quot;++++ Fiber index: {fiber_id}, SiPM Channel: {sipm_chan},</span></div>
+<div class="line"><span class="lineno">  834</span><span class="stringliteral">                    Weight: {weight}, X Position: {xpos}&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  835</span>                )</div>
+<div class="line"><span class="lineno">  836</span> </div>
+<div class="line"><span class="lineno">  837</span> </div>
 </div><!-- fragment -->
 </div>
 </div>

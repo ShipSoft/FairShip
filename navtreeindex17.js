@@ -1,5 +1,6 @@
 var NAVTREEINDEX17 =
 {
+"makeGenieEvents_8py.html#a81f9b7fc054fb2f9fe4a2cd9f8f6ad45":[7,0,6,17,6],
 "makeGenieEvents_8py.html#a8d85a53750f8937b2e67972a0871d41e":[7,0,6,17,3],
 "makeGenieEvents_8py.html#a8d9f64a726e1f2908898186e0345a12e":[7,0,6,17,10],
 "makeGenieEvents_8py.html#aa43083eb0dfff8f3af821a35a17837d8":[7,0,6,17,5],
@@ -248,6 +249,5 @@ var NAVTREEINDEX17 =
 "md_CHANGELOG.html#autotoc_md62":[1,6,2,6],
 "md_CHANGELOG.html#autotoc_md63":[1,6,2,7],
 "md_CHANGELOG.html#autotoc_md64":[1,6,3],
-"md_CHANGELOG.html#autotoc_md65":[1,6,3,0],
-"md_CHANGELOG.html#autotoc_md66":[1,6,3,1]
+"md_CHANGELOG.html#autotoc_md65":[1,6,3,0]
 };

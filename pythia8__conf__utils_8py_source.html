@@ -190,7 +190,7 @@ $(document).ready(function(){initNavTree('pythia8__conf__utils_8py_source.html',
 <div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    th1f_exp = re.compile(<span class="stringliteral">r&quot;^TH1F\|.+&quot;</span>)</div>
 <div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    header_exp = re.compile(<span class="stringliteral">r&quot;^TH1F\|(.+?)\|B(?:R|F)/U2(.+?)\|.+? mass \&zwj;(GeV\&zwj;)\|?&quot;</span>)</div>
 <div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    subheader_exp = re.compile(<span class="stringliteral">r&quot;^\s*?(\d+?),\s*(\d+?\.\d+?),\s*(\d+\.\d+)\s*$&quot;</span>)</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    data_exp = re.compile(<span class="stringliteral">r&quot;^\s*(\d+?)\s*,\s*(\d+\.\d+)\s*$&quot;</span>)</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    data_exp = re.compile(<span class="stringliteral">r&quot;^\s*(\d+?)\s*,\s*(-?\d+\.\d+)\s*$&quot;</span>)</div>
 <div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    <span class="comment"># Locate beginning of each histogram</span></div>
 <div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    header_line_idx = [i <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(len(lines)) <span class="keywordflow">if</span> th1f_exp.match(lines[i]) <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span>]</div>
 <div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    <span class="comment"># Iterate over histograms</span></div>
@@ -211,7 +211,7 @@ $(document).ready(function(){initNavTree('pythia8__conf__utils_8py_source.html',
 <div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>        masses = np.linspace(min_mass, max_mass, npoints, endpoint=<span class="keyword">False</span>)</div>
 <div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>        branching_ratios = np.zeros(npoints)</div>
 <div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>        <span class="comment"># Now read the data lines (skipping the two header lines)</span></div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>        <span class="keywordflow">for</span> line <span class="keywordflow">in</span> lines[offset + 2 : offset + npoints + 1]:</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>        <span class="keywordflow">for</span> line <span class="keywordflow">in</span> lines[offset + 2 : offset + npoints + 2]:</div>
 <div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>            md = data_exp.match(line)</div>
 <div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>            <span class="keywordflow">if</span> md <span class="keywordflow">is</span> <span class="keywordtype">None</span> <span class="keywordflow">or</span> len(md.groups()) != 2:</div>
 <div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>                <span class="keywordflow">raise</span> ValueError(f<span class="stringliteral">&quot;Malformed data row encountered: {line}&quot;</span>)</div>

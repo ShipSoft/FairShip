@@ -5,7 +5,7 @@ var classSciFiMapping_1_1SciFiMapping =
     [ "create_sipm_to_fibre_map", "classSciFiMapping_1_1SciFiMapping.html#a03810b54baa02b65aa2a653aebeedc1f", null ],
     [ "create_sipm_to_position_map", "classSciFiMapping_1_1SciFiMapping.html#a64e8a6a8cba78cf30e74c40841897d72", null ],
     [ "draw_channel", "classSciFiMapping_1_1SciFiMapping.html#a9fbd4c16992f2b06625b7c6932970e98", null ],
-    [ "draw_channel_XY", "classSciFiMapping_1_1SciFiMapping.html#aa7602450158acc571e8c864726d5a27a", null ],
+    [ "draw_channel_XY", "classSciFiMapping_1_1SciFiMapping.html#a63ba712eae9f3a97153b5fbc7819f900", null ],
     [ "draw_combined_scifi_views", "classSciFiMapping_1_1SciFiMapping.html#a83bbcd6aa462e9763d462f34906c24bc", null ],
     [ "draw_many_channels", "classSciFiMapping_1_1SciFiMapping.html#a1eb581a8b0869e3ffa49a81c01c3d9d0", null ],
     [ "get_fibre_to_simp_map", "classSciFiMapping_1_1SciFiMapping.html#a5480fa98a3a3047af83ebf35f6e40c55", null ],

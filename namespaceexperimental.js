@@ -6,7 +6,8 @@ var namespaceexperimental =
     ] ],
     [ "compare_histograms", "namespaceexperimental_1_1compare__histograms.html", [
       [ "compare_histograms", "namespaceexperimental_1_1compare__histograms.html#aa085abd70ec6e91ce8cd3233f1bb44b1", null ],
-      [ "main", "namespaceexperimental_1_1compare__histograms.html#ae67891535b68161e792983dba1f912c7", null ],
+      [ "histograms_identical", "namespaceexperimental_1_1compare__histograms.html#af6dbf09acea43aceea58147dcfbeece0", null ],
+      [ "main", "namespaceexperimental_1_1compare__histograms.html#aeb831e15a289966f95345e6a202e7c05", null ],
       [ "action", "namespaceexperimental_1_1compare__histograms.html#a1104376ca7039bd88330e7638f3239de", null ],
       [ "args", "namespaceexperimental_1_1compare__histograms.html#aa62b2d0a16f870914fa42a905426fa08", null ],
       [ "default", "namespaceexperimental_1_1compare__histograms.html#a0e2a384032972aef3899f407e01bba51", null ],

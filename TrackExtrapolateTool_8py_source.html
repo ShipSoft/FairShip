@@ -149,13 +149,18 @@ $(document).ready(function(){initNavTree('TrackExtrapolateTool_8py_source.html',
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>                rc = <span class="keyword">True</span></div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>            <span class="keywordflow">except</span> Exception:</div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>                <span class="comment"># print &#39;error with extrapolation: z=&#39;,z/u.m,&#39;m&#39;,pos.X(),pos.Y(),pos.Z(),mom.X(),mom.Y(),mom.Z()</span></div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>                <span class="keywordflow">pass</span></div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>            <span class="keywordflow">if</span> <span class="keywordflow">not</span> rc <span class="keywordflow">or</span> z &gt; z_ecal:</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>                <span class="comment"># use linear extrapolation</span></div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>                px, py, pz = mom.X(), mom.Y(), mom.Z()</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>                lam = (z - pos.Z()) / pz</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>                pos = ROOT.TVector3(pos.X() + lam * px, pos.Y() + lam * py, z)</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    <span class="keywordflow">return</span> rc, pos, mom</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>                <span class="comment"># Honour the contract: no valid extrapolation -&gt; pos/mom are None.</span></div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>                rc, pos, mom = <span class="keyword">False</span>, <span class="keywordtype">None</span>, <span class="keywordtype">None</span></div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>            <span class="keywordflow">if</span> rc <span class="keywordflow">and</span> z &gt; z_ecal:</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>                <span class="comment"># RK only reaches z_ecal; continue with linear extrapolation</span></div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>                px, py, pz = mom.X(), mom.Y(), mom.Z()</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>                <span class="keywordflow">if</span> pz != 0:</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>                    lam = (z - pos.Z()) / pz</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>                    pos = ROOT.TVector3(pos.X() + lam * px, pos.Y() + lam * py, z)</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>                <span class="keywordflow">else</span>:</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>                    <span class="comment"># cannot extrapolate in z with zero longitudinal momentum</span></div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>                    rc, pos, mom = <span class="keyword">False</span>, <span class="keywordtype">None</span>, <span class="keywordtype">None</span></div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    <span class="keywordflow">return</span> rc, pos, mom</div>
 </div>
 <div class="ttc" id="anamespaceTrackExtrapolateTool_html_ab8db142297238572f1496a88dcb73c28"><div class="ttname"><a href="namespaceTrackExtrapolateTool.html#ab8db142297238572f1496a88dcb73c28">TrackExtrapolateTool.cmp</a></div><div class="ttdeci">cmp(a, b)</div><div class="ttdef"><b>Definition</b> <a href="TrackExtrapolateTool_8py_source.html#l00010">TrackExtrapolateTool.py:10</a></div></div>
 <div class="ttc" id="anamespaceTrackExtrapolateTool_html_ac357e10f3671079a5b9c5706b564b421"><div class="ttname"><a href="namespaceTrackExtrapolateTool.html#ac357e10f3671079a5b9c5706b564b421">TrackExtrapolateTool.extrapolateToPlane</a></div><div class="ttdeci">tuple[bool, Any, Any] extrapolateToPlane(fT, z)</div><div class="ttdef"><b>Definition</b> <a href="TrackExtrapolateTool_8py_source.html#l00024">TrackExtrapolateTool.py:24</a></div></div>

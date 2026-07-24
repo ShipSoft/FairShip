@@ -147,7 +147,7 @@ $(document).ready(function(){initNavTree('ACTSReco_8py_source.html',''); initRes
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <span class="keywordflow">elif</span> global_variables.detector == <span class="stringliteral">&quot;MTC&quot;</span>:</div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>        <span class="comment"># MTC setup to be updated.</span></div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>        field = acts.ConstantBField(acts.Vector3(0.0, -1.2, 0.0 * u.T))</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>        field = acts.ConstantBField(acts.Vector3(0.0, -1.2 * u.T, 0.0 * u.T))</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>        simHitTree = <span class="stringliteral">&quot;mtcHits&quot;</span></div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>        digiConfigFile = currentPath + <span class="stringliteral">&quot;/MTC-digi-config.json&quot;</span></div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>        detector = acts.examples.MTCBuilder(</div>
