@@ -34,10 +34,8 @@ ShipStack::ShipStack(Int_t size)
       fStack(),
       fParticles(new TClonesArray("TParticle", size)),
       fTracks(nullptr),
-      fStoreMap(),
-      fStoreIter(),
+      fStoreFlags(),
       fIndexMap(),
-      fIndexIter(),
       fPointsMap(),
       fCurrentTrack(-1),
       fNPrimaries(0),
@@ -225,8 +223,8 @@ void ShipStack::FillTrackArray() {
 
   Int_t evtNo = -1;
 
-  // --> Reset index map and number of output tracks
-  fIndexMap.clear();
+  // --> Reset index map (-2 = not stored) and number of output tracks
+  fIndexMap.assign(fNParticles, -2);
   fNTracks = 0;
 
   // --> Check tracks for selection criteria
@@ -236,26 +234,15 @@ void ShipStack::FillTrackArray() {
 
   // --> Loop over fParticles array and copy selected tracks
   for (Int_t iPart = 0; iPart < fNParticles; iPart++) {
-    fStoreIter = fStoreMap.find(iPart);
-    if (fStoreIter == fStoreMap.end()) {
-      LOGF(fatal, "ShipStack: Particle %i not found in storage map! ", iPart);
-    }
-    Bool_t store = (*fStoreIter).second;
-
-    if (store) {
+    if (fStoreFlags[iPart]) {
       fTracks->emplace_back(dynamic_cast<TParticle*>(GetParticle(iPart)));
       ShipMCTrack& track = fTracks->back();
       fIndexMap[iPart] = fNTracks;
       track.SetTrackID(fNTracks);
       track.SetEventID(evtNo);
       fNTracks++;
-    } else {
-      fIndexMap[iPart] = -2;
     }
   }
-
-  // --> Map index for primary mothers
-  fIndexMap[-1] = -1;
 
   // --> Screen output
   // Print(1);
@@ -271,12 +258,11 @@ void ShipStack::UpdateTrackIndex(TRefArray* detList) {
   for (Int_t i = 0; i < fNTracks; i++) {
     ShipMCTrack& track = (*fTracks)[i];
     Int_t iMotherOld = track.GetMotherId();
-    fIndexIter = fIndexMap.find(iMotherOld);
-    if (fIndexIter == fIndexMap.end()) {
+    if (iMotherOld >= static_cast<Int_t>(fIndexMap.size())) {
       LOGF(fatal, "ShipStack: Particle index %i not found in dex map! ",
            iMotherOld);
     }
-    track.SetMotherId((*fIndexIter).second);
+    track.SetMotherId(iMotherOld < 0 ? -1 : fIndexMap[iMotherOld]);
   }
 
   if (fDetList == nullptr) {
@@ -308,12 +294,11 @@ void ShipStack::UpdateTrackIndex(TRefArray* detList) {
           FairMCPoint* point = dynamic_cast<FairMCPoint*>(hitArray->At(iPoint));
           Int_t iTrack = point->GetTrackID();
 
-          fIndexIter = fIndexMap.find(iTrack);
-          if (fIndexIter == fIndexMap.end()) {
+          if (iTrack < -1 || iTrack >= static_cast<Int_t>(fIndexMap.size())) {
             LOGF(fatal, "ShipStack: Particle index %i not found in index map! ",
                  iTrack);
           }
-          point->SetTrackID((*fIndexIter).second);
+          point->SetTrackID(iTrack < 0 ? -1 : fIndexMap[iTrack]);
         }
 
       }  // Collections of this detector
@@ -399,8 +384,8 @@ TParticle* ShipStack::GetParticle(Int_t trackID) const {
 
 // -----   Private method SelectTracks   -----------------------------------
 void ShipStack::SelectTracks() {
-  // --> Clear storage map
-  fStoreMap.clear();
+  // --> Reset storage flags
+  fStoreFlags.assign(fNParticles, kFALSE);
 
   // --> Check particles in the fParticle array
   for (Int_t i = 0; i < fNParticles; i++) {
@@ -444,7 +429,7 @@ void ShipStack::SelectTracks() {
       }
     }
     // --> Set storage flag
-    fStoreMap[i] = store;
+    fStoreFlags[i] = store;
     // special case for Ship generators, want to keep all original particles
     // with their mother daughter relationship independent if tracked or not.
     // apply a dirty trick and use second mother to identify original generator
@@ -455,11 +440,11 @@ void ShipStack::SelectTracks() {
   // --> If flag is set, flag recursively mothers of selected tracks
   if (fStoreMothers) {
     for (Int_t i = 0; i < fNParticles; i++) {
-      if (fStoreMap[i]) {
+      if (fStoreFlags[i]) {
         Int_t iMother = GetParticle(i)->GetMother(0);
         {
           while (iMother >= 0) {
-            fStoreMap[iMother] = kTRUE;
+            fStoreFlags[iMother] = kTRUE;
             iMother = GetParticle(iMother)->GetMother(0);
           }
         }
