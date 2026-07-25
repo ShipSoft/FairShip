@@ -16,6 +16,8 @@ it in future.
 
 ### Changed
 
+* Use dense vectors instead of `std::map` for ShipStack track selection and index remapping, roughly halving CPU time and reducing peak memory for high-multiplicity events (e.g. kaon/pion splitting)
+
 ### Fixed
 
 ### Removed
