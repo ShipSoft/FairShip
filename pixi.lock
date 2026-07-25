@@ -843,11 +843,10 @@ environments:
       - conda: https://prefix.dev/ship/linux-64/rootegpythia6-0.1-hc97bc57_9.conda
       - conda: https://prefix.dev/ship/noarch/ship-ci-metrics-0.1.0-pyh4616a5c_0.conda
       - pypi: https://files.pythonhosted.org/packages/06/a2/c01db32be2ae7d6a1689972f3c492b149ee4e164b12fdfd9f64b50888215/types_pyyaml-6.0.12.20260518-py3-none-any.whl
-      - pypi: https://files.pythonhosted.org/packages/62/c1/c455be45ee4d3a886d2353d8c6af5071536d35fee7adf2c4fdf56713fbf9/gersemi-0.27.7-cp313-cp313-manylinux_2_28_x86_64.whl
+      - pypi: https://files.pythonhosted.org/packages/20/ea/5abe742c9d5f60aeb249f02c3a160b8bb72476e695ecb0bbb9230df5e3c7/gersemi-0.28.0-cp313-cp313-manylinux_2_28_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/66/65/08d3a5039b565231c501b31d1a973d4222e9803c03b2c31a9c08bdec3e30/cpplint-2.0.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/a0/36/443b700f54a585cf8ed4e76d8ad08b12df6914f8782a2788ecd0d8491519/types_tabulate-0.10.0.20260508-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/b6/e7/30e085b31fed978ecb675bdbb54df566673ab550469e5af2d350f6af0be6/pyrefly-1.1.1-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
-      - pypi: https://files.pythonhosted.org/packages/d2/a8/84baf48e05b603480b963f655e73b97230f7296433d3cc8206b742c167fd/ignore_python-0.3.3-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
 packages:
 - conda: https://conda.anaconda.org/conda-forge/noarch/faircmakemodules-1.0.0-h98f672e_0.conda
   sha256: 2634b440823429b61cde095e1b0135aace6302238ab783049cac92c6922e4bcb
@@ -8064,15 +8063,12 @@ packages:
   version: 6.0.12.20260518
   sha256: d2150f75a231c9fe9c7463bd29487d93e60bac90400287351384bc2284eba7cd
   requires_python: '>=3.10'
-- pypi: https://files.pythonhosted.org/packages/62/c1/c455be45ee4d3a886d2353d8c6af5071536d35fee7adf2c4fdf56713fbf9/gersemi-0.27.7-cp313-cp313-manylinux_2_28_x86_64.whl
+- pypi: https://files.pythonhosted.org/packages/20/ea/5abe742c9d5f60aeb249f02c3a160b8bb72476e695ecb0bbb9230df5e3c7/gersemi-0.28.0-cp313-cp313-manylinux_2_28_x86_64.whl
   name: gersemi
-  version: 0.27.7
-  sha256: a1816240cdefdd548d37af57a9771875db53d4ddd7883452e96e1af53c554c5f
+  version: 0.28.0
+  sha256: 61b7d977680ff649bebeee29dfd3913b3dfa6a748c5a4e6b8bc70a4375a7f430
   requires_dist:
-  - ignore-python>=0.3,<0.4
-  - platformdirs
   - pyyaml>=5,<7
-  - colorama>=0.4 ; extra == 'color'
   requires_python: '>=3.8'
 - pypi: https://files.pythonhosted.org/packages/66/65/08d3a5039b565231c501b31d1a973d4222e9803c03b2c31a9c08bdec3e30/cpplint-2.0.2-py3-none-any.whl
   name: cpplint
@@ -8096,9 +8092,4 @@ packages:
   name: pyrefly
   version: 1.1.1
   sha256: c08b814ad03175e9cf47111390537161828b472044c39ab3320252b3ac6b2edd
-  requires_python: '>=3.8'
-- pypi: https://files.pythonhosted.org/packages/d2/a8/84baf48e05b603480b963f655e73b97230f7296433d3cc8206b742c167fd/ignore_python-0.3.3-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
-  name: ignore-python
-  version: 0.3.3
-  sha256: ebb00b54e5a01d8b10a51a7de7d2f884359375f4abb5352378f6f7f2c8878a58
   requires_python: '>=3.8'

@@ -178,7 +178,7 @@ commitizen = "*"
 # mypy stubs are pinned to match the previous additional_dependencies.
 [feature.lint.pypi-dependencies]
 cpplint = "==2.0.2"
-gersemi = "==0.27.7"
+gersemi = "==0.28.0"
 types-PyYAML = "*"
 types-tabulate = "*"
 typing-extensions = ">=4.8"
