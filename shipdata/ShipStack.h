@@ -153,13 +153,17 @@ class ShipStack : public FairGenericStack {
   void StoreMothers(Bool_t choice = kTRUE) { fStoreMothers = choice; }
   void SetSplitting() { fSplitting = kTRUE; }
 
-  /** Increment number of points for the current track in a given detector
-   *@param iDet  Detector unique identifier
+  /** Increment the point total for the current track.
+   ** The count is per track, aggregated across all detectors; iDet is retained
+   ** for call-site compatibility but ignored for counting.
+   *@param iDet  Detector unique identifier (ignored)
    **/
   void AddPoint(DetectorId iDet);
 
-  /** Increment number of points for an arbitrary track in a given detector
-   *@param iDet    Detector unique identifier
+  /** Increment the point total for an arbitrary track.
+   ** The count is per track, aggregated across all detectors; iDet is retained
+   ** for call-site compatibility but ignored for counting.
+   *@param iDet    Detector unique identifier (ignored)
    *@param iTrack  Track number
    **/
   void AddPoint(DetectorId iDet, Int_t iTrack);
