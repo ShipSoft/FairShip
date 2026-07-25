@@ -427,16 +427,17 @@ void ShipStack::SelectTracks() {
     // GetParticle(i)->GetMother(1); maybe should set Mother2 to -1 in the
     // generator if (iMother == iMother2) {fStoreMap[i] = kTRUE;}
   }
-  // --> If flag is set, flag recursively mothers of selected tracks
+  // --> If flag is set, flag recursively mothers of selected tracks.
+  // A mother always has a smaller index than its daughters and every walk
+  // continues to the root, so an already-flagged mother implies its whole
+  // ancestor chain is flagged and the walk can stop early.
   if (fStoreMothers) {
     for (Int_t i = 0; i < fNParticles; i++) {
       if (fStoreFlags[i]) {
         Int_t iMother = GetParticle(i)->GetMother(0);
-        {
-          while (iMother >= 0) {
-            fStoreFlags[iMother] = kTRUE;
-            iMother = GetParticle(iMother)->GetMother(0);
-          }
+        while (iMother >= 0 && !fStoreFlags[iMother]) {
+          fStoreFlags[iMother] = kTRUE;
+          iMother = GetParticle(iMother)->GetMother(0);
         }
       }
     }
