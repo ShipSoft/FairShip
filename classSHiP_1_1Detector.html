@@ -148,9 +148,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a1f405a7f2839bcf329dc672c1c572110"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa26128b41a20aa40655e52c9328aa8a5" id="r_aa26128b41a20aa40655e52c9328aa8a5"><td class="memItemLeft" align="right" valign="top">TClonesArray *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSHiP_1_1Detector.html#aa26128b41a20aa40655e52c9328aa8a5">GetCollection</a> (Int_t iColl) const override</td></tr>
 <tr class="separator:aa26128b41a20aa40655e52c9328aa8a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4810198266164567bff61adcad9be168" id="r_a4810198266164567bff61adcad9be168"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSHiP_1_1Detector.html#a4810198266164567bff61adcad9be168">UpdatePointTrackIndices</a> (const std::map&lt; Int_t, Int_t &gt; &amp;indexMap) override</td></tr>
-<tr class="memdesc:a4810198266164567bff61adcad9be168"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update track indices in point collection after track filtering.  <br /></td></tr>
-<tr class="separator:a4810198266164567bff61adcad9be168"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acb1b4c0cb31f66fe01b217b7bd4d0a0c" id="r_acb1b4c0cb31f66fe01b217b7bd4d0a0c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSHiP_1_1Detector.html#acb1b4c0cb31f66fe01b217b7bd4d0a0c">UpdatePointTrackIndices</a> (const std::vector&lt; Int_t &gt; &amp;indexMap) override</td></tr>
+<tr class="memdesc:acb1b4c0cb31f66fe01b217b7bd4d0a0c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update track indices in point collection after track filtering.  <br /></td></tr>
+<tr class="separator:acb1b4c0cb31f66fe01b217b7bd4d0a0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa32a8ce2828f00bc3994cdd314ef2851" id="r_aa32a8ce2828f00bc3994cdd314ef2851"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSHiP_1_1Detector.html#aa32a8ce2828f00bc3994cdd314ef2851">SetSpecialPhysicsCuts</a> () override</td></tr>
 <tr class="separator:aa32a8ce2828f00bc3994cdd314ef2851"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a77ac86b73dcf5b1be0e92126d3066bd3" id="r_a77ac86b73dcf5b1be0e92126d3066bd3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSHiP_1_1Detector.html#a77ac86b73dcf5b1be0e92126d3066bd3">FinishPrimary</a> () override</td></tr>
@@ -313,14 +313,14 @@ template&lt;typename PointType &gt; </div>
 <div class="line"><span class="lineno">   31</span>        <a class="code hl_variable" href="classSHiP_1_1Detector.html#a59b2901f4062e764c35947220fe99cee">fTime</a>(-1.),</div>
 <div class="line"><span class="lineno">   32</span>        <a class="code hl_variable" href="classSHiP_1_1Detector.html#ae214ab7c082d1472301f659910703f70">fLength</a>(-1.),</div>
 <div class="line"><span class="lineno">   33</span>        <a class="code hl_variable" href="classSHiP_1_1Detector.html#a73510d2ac4e0508cd8297620923db8e4">fELoss</a>(-1) {}</div>
-<div class="ttc" id="aclassSHiP_1_1Detector_html_a0f51e2d392c158d28d09fc71e9ef6a88"><div class="ttname"><a href="classSHiP_1_1Detector.html#a0f51e2d392c158d28d09fc71e9ef6a88">SHiP::Detector::fTrackID</a></div><div class="ttdeci">Int_t fTrackID</div><div class="ttdoc">event index</div><div class="ttdef"><b>Definition</b> <a href="Detector_8h_source.html#l00085">Detector.h:85</a></div></div>
-<div class="ttc" id="aclassSHiP_1_1Detector_html_a258d30f054a736fb3e5f7c2f1aafec54"><div class="ttname"><a href="classSHiP_1_1Detector.html#a258d30f054a736fb3e5f7c2f1aafec54">SHiP::Detector::fVolumeID</a></div><div class="ttdeci">Int_t fVolumeID</div><div class="ttdoc">track index</div><div class="ttdef"><b>Definition</b> <a href="Detector_8h_source.html#l00086">Detector.h:86</a></div></div>
-<div class="ttc" id="aclassSHiP_1_1Detector_html_a5017601ade4c6805f6685562092b72f4"><div class="ttname"><a href="classSHiP_1_1Detector.html#a5017601ade4c6805f6685562092b72f4">SHiP::Detector::fPos</a></div><div class="ttdeci">TLorentzVector fPos</div><div class="ttdoc">volume id</div><div class="ttdef"><b>Definition</b> <a href="Detector_8h_source.html#l00087">Detector.h:87</a></div></div>
-<div class="ttc" id="aclassSHiP_1_1Detector_html_a59b2901f4062e764c35947220fe99cee"><div class="ttname"><a href="classSHiP_1_1Detector.html#a59b2901f4062e764c35947220fe99cee">SHiP::Detector::fTime</a></div><div class="ttdeci">Double_t fTime</div><div class="ttdoc">momentum at entrance</div><div class="ttdef"><b>Definition</b> <a href="Detector_8h_source.html#l00089">Detector.h:89</a></div></div>
-<div class="ttc" id="aclassSHiP_1_1Detector_html_a73510d2ac4e0508cd8297620923db8e4"><div class="ttname"><a href="classSHiP_1_1Detector.html#a73510d2ac4e0508cd8297620923db8e4">SHiP::Detector::fELoss</a></div><div class="ttdeci">Double_t fELoss</div><div class="ttdoc">length</div><div class="ttdef"><b>Definition</b> <a href="Detector_8h_source.html#l00091">Detector.h:91</a></div></div>
-<div class="ttc" id="aclassSHiP_1_1Detector_html_a9a38f37bdd864a330614332b9846f206"><div class="ttname"><a href="classSHiP_1_1Detector.html#a9a38f37bdd864a330614332b9846f206">SHiP::Detector::fMom</a></div><div class="ttdeci">TLorentzVector fMom</div><div class="ttdoc">position at entrance</div><div class="ttdef"><b>Definition</b> <a href="Detector_8h_source.html#l00088">Detector.h:88</a></div></div>
-<div class="ttc" id="aclassSHiP_1_1Detector_html_ac4ba571377f2accd0775e010df940ba1"><div class="ttname"><a href="classSHiP_1_1Detector.html#ac4ba571377f2accd0775e010df940ba1">SHiP::Detector::fEventID</a></div><div class="ttdeci">Int_t fEventID</div><div class="ttdef"><b>Definition</b> <a href="Detector_8h_source.html#l00084">Detector.h:84</a></div></div>
-<div class="ttc" id="aclassSHiP_1_1Detector_html_ae214ab7c082d1472301f659910703f70"><div class="ttname"><a href="classSHiP_1_1Detector.html#ae214ab7c082d1472301f659910703f70">SHiP::Detector::fLength</a></div><div class="ttdeci">Double_t fLength</div><div class="ttdoc">time</div><div class="ttdef"><b>Definition</b> <a href="Detector_8h_source.html#l00090">Detector.h:90</a></div></div>
+<div class="ttc" id="aclassSHiP_1_1Detector_html_a0f51e2d392c158d28d09fc71e9ef6a88"><div class="ttname"><a href="classSHiP_1_1Detector.html#a0f51e2d392c158d28d09fc71e9ef6a88">SHiP::Detector::fTrackID</a></div><div class="ttdeci">Int_t fTrackID</div><div class="ttdoc">event index</div><div class="ttdef"><b>Definition</b> <a href="Detector_8h_source.html#l00083">Detector.h:83</a></div></div>
+<div class="ttc" id="aclassSHiP_1_1Detector_html_a258d30f054a736fb3e5f7c2f1aafec54"><div class="ttname"><a href="classSHiP_1_1Detector.html#a258d30f054a736fb3e5f7c2f1aafec54">SHiP::Detector::fVolumeID</a></div><div class="ttdeci">Int_t fVolumeID</div><div class="ttdoc">track index</div><div class="ttdef"><b>Definition</b> <a href="Detector_8h_source.html#l00084">Detector.h:84</a></div></div>
+<div class="ttc" id="aclassSHiP_1_1Detector_html_a5017601ade4c6805f6685562092b72f4"><div class="ttname"><a href="classSHiP_1_1Detector.html#a5017601ade4c6805f6685562092b72f4">SHiP::Detector::fPos</a></div><div class="ttdeci">TLorentzVector fPos</div><div class="ttdoc">volume id</div><div class="ttdef"><b>Definition</b> <a href="Detector_8h_source.html#l00085">Detector.h:85</a></div></div>
+<div class="ttc" id="aclassSHiP_1_1Detector_html_a59b2901f4062e764c35947220fe99cee"><div class="ttname"><a href="classSHiP_1_1Detector.html#a59b2901f4062e764c35947220fe99cee">SHiP::Detector::fTime</a></div><div class="ttdeci">Double_t fTime</div><div class="ttdoc">momentum at entrance</div><div class="ttdef"><b>Definition</b> <a href="Detector_8h_source.html#l00087">Detector.h:87</a></div></div>
+<div class="ttc" id="aclassSHiP_1_1Detector_html_a73510d2ac4e0508cd8297620923db8e4"><div class="ttname"><a href="classSHiP_1_1Detector.html#a73510d2ac4e0508cd8297620923db8e4">SHiP::Detector::fELoss</a></div><div class="ttdeci">Double_t fELoss</div><div class="ttdoc">length</div><div class="ttdef"><b>Definition</b> <a href="Detector_8h_source.html#l00089">Detector.h:89</a></div></div>
+<div class="ttc" id="aclassSHiP_1_1Detector_html_a9a38f37bdd864a330614332b9846f206"><div class="ttname"><a href="classSHiP_1_1Detector.html#a9a38f37bdd864a330614332b9846f206">SHiP::Detector::fMom</a></div><div class="ttdeci">TLorentzVector fMom</div><div class="ttdoc">position at entrance</div><div class="ttdef"><b>Definition</b> <a href="Detector_8h_source.html#l00086">Detector.h:86</a></div></div>
+<div class="ttc" id="aclassSHiP_1_1Detector_html_ac4ba571377f2accd0775e010df940ba1"><div class="ttname"><a href="classSHiP_1_1Detector.html#ac4ba571377f2accd0775e010df940ba1">SHiP::Detector::fEventID</a></div><div class="ttdeci">Int_t fEventID</div><div class="ttdef"><b>Definition</b> <a href="Detector_8h_source.html#l00082">Detector.h:82</a></div></div>
+<div class="ttc" id="aclassSHiP_1_1Detector_html_ae214ab7c082d1472301f659910703f70"><div class="ttname"><a href="classSHiP_1_1Detector.html#ae214ab7c082d1472301f659910703f70">SHiP::Detector::fLength</a></div><div class="ttdeci">Double_t fLength</div><div class="ttdoc">time</div><div class="ttdef"><b>Definition</b> <a href="Detector_8h_source.html#l00088">Detector.h:88</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -400,7 +400,7 @@ template&lt;typename... Args&gt; </div>
 <div class="line"><span class="lineno">   39</span>    <a class="code hl_variable" href="classSHiP_1_1Detector.html#a15abb9db813d378f7c19b79bc53cac88">fDetPoints</a>-&gt;emplace_back(std::forward&lt;Args&gt;(args)...);</div>
 <div class="line"><span class="lineno">   40</span>    <span class="keywordflow">return</span> &amp;(<a class="code hl_variable" href="classSHiP_1_1Detector.html#a15abb9db813d378f7c19b79bc53cac88">fDetPoints</a>-&gt;back());</div>
 <div class="line"><span class="lineno">   41</span>  }</div>
-<div class="ttc" id="aclassSHiP_1_1Detector_html_a15abb9db813d378f7c19b79bc53cac88"><div class="ttname"><a href="classSHiP_1_1Detector.html#a15abb9db813d378f7c19b79bc53cac88">SHiP::Detector::fDetPoints</a></div><div class="ttdeci">std::vector&lt; PointType &gt; * fDetPoints</div><div class="ttdoc">energy loss</div><div class="ttdef"><b>Definition</b> <a href="Detector_8h_source.html#l00092">Detector.h:92</a></div></div>
+<div class="ttc" id="aclassSHiP_1_1Detector_html_a15abb9db813d378f7c19b79bc53cac88"><div class="ttname"><a href="classSHiP_1_1Detector.html#a15abb9db813d378f7c19b79bc53cac88">SHiP::Detector::fDetPoints</a></div><div class="ttdeci">std::vector&lt; PointType &gt; * fDetPoints</div><div class="ttdoc">energy loss</div><div class="ttdef"><b>Definition</b> <a href="Detector_8h_source.html#l00090">Detector.h:90</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -429,8 +429,8 @@ template&lt;typename PointType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Detector_8h_source.html#l00077">77</a> of file <a class="el" href="Detector_8h_source.html">Detector.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   77</span>{ ; }</div>
+<p class="definition">Definition at line <a class="el" href="Detector_8h_source.html#l00075">75</a> of file <a class="el" href="Detector_8h_source.html">Detector.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   75</span>{ ; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -459,8 +459,8 @@ template&lt;typename PointType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Detector_8h_source.html#l00074">74</a> of file <a class="el" href="Detector_8h_source.html">Detector.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   74</span>{ ; }</div>
+<p class="definition">Definition at line <a class="el" href="Detector_8h_source.html#l00072">72</a> of file <a class="el" href="Detector_8h_source.html">Detector.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   72</span>{ ; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -536,10 +536,10 @@ template&lt;typename PointType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Detector_8h_source.html#l00078">78</a> of file <a class="el" href="Detector_8h_source.html">Detector.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   78</span>                                                                               {</div>
-<div class="line"><span class="lineno">   79</span>    ;</div>
-<div class="line"><span class="lineno">   80</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="Detector_8h_source.html#l00076">76</a> of file <a class="el" href="Detector_8h_source.html">Detector.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   76</span>                                                                               {</div>
+<div class="line"><span class="lineno">   77</span>    ;</div>
+<div class="line"><span class="lineno">   78</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -598,8 +598,8 @@ template&lt;typename PointType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Detector_8h_source.html#l00072">72</a> of file <a class="el" href="Detector_8h_source.html">Detector.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   72</span>{ ; }</div>
+<p class="definition">Definition at line <a class="el" href="Detector_8h_source.html#l00070">70</a> of file <a class="el" href="Detector_8h_source.html">Detector.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   70</span>{ ; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -628,8 +628,8 @@ template&lt;typename PointType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Detector_8h_source.html#l00073">73</a> of file <a class="el" href="Detector_8h_source.html">Detector.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   73</span>{ ; }</div>
+<p class="definition">Definition at line <a class="el" href="Detector_8h_source.html#l00071">71</a> of file <a class="el" href="Detector_8h_source.html">Detector.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   71</span>{ ; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -719,8 +719,8 @@ template&lt;typename PointType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Detector_8h_source.html#l00075">75</a> of file <a class="el" href="Detector_8h_source.html">Detector.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   75</span>{ ; }</div>
+<p class="definition">Definition at line <a class="el" href="Detector_8h_source.html#l00073">73</a> of file <a class="el" href="Detector_8h_source.html">Detector.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   73</span>{ ; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -749,8 +749,8 @@ template&lt;typename PointType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Detector_8h_source.html#l00076">76</a> of file <a class="el" href="Detector_8h_source.html">Detector.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   76</span>{ ; }</div>
+<p class="definition">Definition at line <a class="el" href="Detector_8h_source.html#l00074">74</a> of file <a class="el" href="Detector_8h_source.html">Detector.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   74</span>{ ; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -843,13 +843,13 @@ template&lt;typename PointType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Detector_8h_source.html#l00071">71</a> of file <a class="el" href="Detector_8h_source.html">Detector.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   71</span>{ ; }</div>
+<p class="definition">Definition at line <a class="el" href="Detector_8h_source.html#l00069">69</a> of file <a class="el" href="Detector_8h_source.html">Detector.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   69</span>{ ; }</div>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="a4810198266164567bff61adcad9be168" name="a4810198266164567bff61adcad9be168"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4810198266164567bff61adcad9be168">&#9670;&#160;</a></span>UpdatePointTrackIndices()</h2>
+<a id="acb1b4c0cb31f66fe01b217b7bd4d0a0c" name="acb1b4c0cb31f66fe01b217b7bd4d0a0c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acb1b4c0cb31f66fe01b217b7bd4d0a0c">&#9670;&#160;</a></span>UpdatePointTrackIndices()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -862,7 +862,7 @@ template&lt;typename PointType &gt; </div>
         <tr>
           <td class="memname">void <a class="el" href="classSHiP_1_1Detector.html">SHiP::Detector</a>&lt; PointType &gt;::UpdatePointTrackIndices </td>
           <td>(</td>
-          <td class="paramtype">const std::map&lt; Int_t, Int_t &gt; &amp;&#160;</td>
+          <td class="paramtype">const std::vector&lt; Int_t &gt; &amp;&#160;</td>
           <td class="paramname"><em>indexMap</em></td><td>)</td>
           <td></td>
         </tr>
@@ -877,23 +877,22 @@ template&lt;typename PointType &gt; </div>
 <p>Update track indices in point collection after track filtering. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">indexMap</td><td>Map from old (particle) track index to new (stored) track index </td></tr>
+    <tr><td class="paramname">indexMap</td><td>Old (particle) track index to new (stored) track index, indexed by old track index; -2 marks tracks that were not stored </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Implements <a class="el" href="classISTLPointContainer.html#ac2df1de47576d45fa00f744ce898fa3b">ISTLPointContainer</a>.</p>
+<p>Implements <a class="el" href="classISTLPointContainer.html#a78a9f8d491c704979d44b27d988049e9">ISTLPointContainer</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="Detector_8h_source.html#l00060">60</a> of file <a class="el" href="Detector_8h_source.html">Detector.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   61</span>                                                     {</div>
-<div class="line"><span class="lineno">   62</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp; point : *<a class="code hl_variable" href="classSHiP_1_1Detector.html#a15abb9db813d378f7c19b79bc53cac88">fDetPoints</a>) {</div>
-<div class="line"><span class="lineno">   63</span>      Int_t oldTrackID = point.GetTrackID();</div>
-<div class="line"><span class="lineno">   64</span>      <span class="keyword">auto</span> iter = indexMap.find(oldTrackID);</div>
-<div class="line"><span class="lineno">   65</span>      <span class="keywordflow">if</span> (iter != indexMap.end()) {</div>
-<div class="line"><span class="lineno">   66</span>        point.SetTrackID(iter-&gt;second);</div>
-<div class="line"><span class="lineno">   67</span>      }</div>
-<div class="line"><span class="lineno">   68</span>    }</div>
-<div class="line"><span class="lineno">   69</span>  }</div>
+<div class="fragment"><div class="line"><span class="lineno">   60</span>                                                                          {</div>
+<div class="line"><span class="lineno">   61</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp; point : *<a class="code hl_variable" href="classSHiP_1_1Detector.html#a15abb9db813d378f7c19b79bc53cac88">fDetPoints</a>) {</div>
+<div class="line"><span class="lineno">   62</span>      Int_t oldTrackID = point.GetTrackID();</div>
+<div class="line"><span class="lineno">   63</span>      <span class="keywordflow">if</span> (oldTrackID &gt;= 0 &amp;&amp; oldTrackID &lt; <span class="keyword">static_cast&lt;</span>Int_t<span class="keyword">&gt;</span>(indexMap.size())) {</div>
+<div class="line"><span class="lineno">   64</span>        point.SetTrackID(indexMap[oldTrackID]);</div>
+<div class="line"><span class="lineno">   65</span>      }</div>
+<div class="line"><span class="lineno">   66</span>    }</div>
+<div class="line"><span class="lineno">   67</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -920,7 +919,7 @@ template&lt;typename PointType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Detector_8h_source.html#l00094">94</a> of file <a class="el" href="Detector_8h_source.html">Detector.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Detector_8h_source.html#l00092">92</a> of file <a class="el" href="Detector_8h_source.html">Detector.h</a>.</p>
 
 </div>
 </div>
@@ -948,7 +947,7 @@ template&lt;typename PointType &gt; </div>
 
 <p>energy loss </p>
 
-<p class="definition">Definition at line <a class="el" href="Detector_8h_source.html#l00092">92</a> of file <a class="el" href="Detector_8h_source.html">Detector.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Detector_8h_source.html#l00090">90</a> of file <a class="el" href="Detector_8h_source.html">Detector.h</a>.</p>
 
 </div>
 </div>
@@ -976,7 +975,7 @@ template&lt;typename PointType &gt; </div>
 
 <p>length </p>
 
-<p class="definition">Definition at line <a class="el" href="Detector_8h_source.html#l00091">91</a> of file <a class="el" href="Detector_8h_source.html">Detector.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Detector_8h_source.html#l00089">89</a> of file <a class="el" href="Detector_8h_source.html">Detector.h</a>.</p>
 
 </div>
 </div>
@@ -1003,7 +1002,7 @@ template&lt;typename PointType &gt; </div>
 </div><div class="memdoc">
 <p>Track information to be stored until the track leaves the active volume. </p>
 
-<p class="definition">Definition at line <a class="el" href="Detector_8h_source.html#l00084">84</a> of file <a class="el" href="Detector_8h_source.html">Detector.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Detector_8h_source.html#l00082">82</a> of file <a class="el" href="Detector_8h_source.html">Detector.h</a>.</p>
 
 </div>
 </div>
@@ -1031,7 +1030,7 @@ template&lt;typename PointType &gt; </div>
 
 <p>time </p>
 
-<p class="definition">Definition at line <a class="el" href="Detector_8h_source.html#l00090">90</a> of file <a class="el" href="Detector_8h_source.html">Detector.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Detector_8h_source.html#l00088">88</a> of file <a class="el" href="Detector_8h_source.html">Detector.h</a>.</p>
 
 </div>
 </div>
@@ -1059,7 +1058,7 @@ template&lt;typename PointType &gt; </div>
 
 <p>position at entrance </p>
 
-<p class="definition">Definition at line <a class="el" href="Detector_8h_source.html#l00088">88</a> of file <a class="el" href="Detector_8h_source.html">Detector.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Detector_8h_source.html#l00086">86</a> of file <a class="el" href="Detector_8h_source.html">Detector.h</a>.</p>
 
 </div>
 </div>
@@ -1087,7 +1086,7 @@ template&lt;typename PointType &gt; </div>
 
 <p>volume id </p>
 
-<p class="definition">Definition at line <a class="el" href="Detector_8h_source.html#l00087">87</a> of file <a class="el" href="Detector_8h_source.html">Detector.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Detector_8h_source.html#l00085">85</a> of file <a class="el" href="Detector_8h_source.html">Detector.h</a>.</p>
 
 </div>
 </div>
@@ -1115,7 +1114,7 @@ template&lt;typename PointType &gt; </div>
 
 <p>momentum at entrance </p>
 
-<p class="definition">Definition at line <a class="el" href="Detector_8h_source.html#l00089">89</a> of file <a class="el" href="Detector_8h_source.html">Detector.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Detector_8h_source.html#l00087">87</a> of file <a class="el" href="Detector_8h_source.html">Detector.h</a>.</p>
 
 </div>
 </div>
@@ -1143,7 +1142,7 @@ template&lt;typename PointType &gt; </div>
 
 <p>event index </p>
 
-<p class="definition">Definition at line <a class="el" href="Detector_8h_source.html#l00085">85</a> of file <a class="el" href="Detector_8h_source.html">Detector.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Detector_8h_source.html#l00083">83</a> of file <a class="el" href="Detector_8h_source.html">Detector.h</a>.</p>
 
 </div>
 </div>
@@ -1171,7 +1170,7 @@ template&lt;typename PointType &gt; </div>
 
 <p>track index </p>
 
-<p class="definition">Definition at line <a class="el" href="Detector_8h_source.html#l00086">86</a> of file <a class="el" href="Detector_8h_source.html">Detector.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Detector_8h_source.html#l00084">84</a> of file <a class="el" href="Detector_8h_source.html">Detector.h</a>.</p>
 
 </div>
 </div>

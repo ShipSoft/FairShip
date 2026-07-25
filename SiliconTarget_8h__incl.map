@@ -1,38 +1,37 @@
 <map id="SND/SiliconTarget/SiliconTarget.h" name="SND/SiliconTarget/SiliconTarget.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="359,5,543,45"/>
-<area shape="rect" id="Node000002" href="$Detector_8h.html" title=" " alt="" coords="407,93,496,119"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="454,46,454,79,449,79,449,46"/>
-<area shape="rect" id="Node000015" href="$SiliconTargetPoint_8h.html" title=" " alt="" coords="63,93,213,119"/>
-<area shape="poly" id="edge15_Node000001_Node000015" title=" " alt="" coords="377,48,198,93,196,87,376,43"/>
-<area shape="rect" id="Node000017" title=" " alt="" coords="520,93,641,119"/>
-<area shape="poly" id="edge19_Node000001_Node000017" title=" " alt="" coords="484,43,551,84,549,88,481,48"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="1033,167,1093,192"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="497,114,508,116,650,132,762,138,876,145,1020,164,1020,170,875,150,762,143,649,137,507,121,496,120"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="308,167,371,192"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="435,121,371,161,368,157,432,116"/>
-<area shape="rect" id="Node000005" href="$DetectorPoint_8h.html" title=" " alt="" coords="161,167,283,192"/>
-<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="415,121,273,165,272,160,414,116"/>
-<area shape="rect" id="Node000008" title=" " alt="" coords="51,240,142,265"/>
-<area shape="poly" id="edge14_Node000002_Node000008" title=" " alt="" coords="407,114,266,134,197,150,150,169,136,181,124,197,108,229,103,226,120,194,132,178,147,164,195,145,265,129,406,109"/>
-<area shape="rect" id="Node000009" title=" " alt="" coords="395,167,507,192"/>
-<area shape="poly" id="edge8_Node000002_Node000009" title=" " alt="" coords="454,119,454,153,449,153,449,119"/>
-<area shape="rect" id="Node000010" title=" " alt="" coords="531,167,673,192"/>
-<area shape="poly" id="edge9_Node000002_Node000010" title=" " alt="" coords="477,116,566,158,564,163,475,121"/>
-<area shape="rect" id="Node000011" href="$ISTLPointContainer_8h.html" title=" " alt="" coords="697,167,853,192"/>
-<area shape="poly" id="edge10_Node000002_Node000011" title=" " alt="" coords="497,114,711,161,710,166,496,120"/>
-<area shape="rect" id="Node000014" title=" " alt="" coords="878,167,1009,192"/>
-<area shape="poly" id="edge13_Node000002_Node000014" title=" " alt="" coords="497,114,508,116,684,141,865,164,864,169,684,147,507,121,496,119"/>
-<area shape="rect" id="Node000006" title=" " alt="" coords="302,240,358,265"/>
-<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="241,190,303,230,300,235,238,194"/>
-<area shape="rect" id="Node000007" title=" " alt="" coords="167,240,277,265"/>
-<area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="225,192,225,226,219,226,219,192"/>
-<area shape="poly" id="edge7_Node000005_Node000008" title=" " alt="" coords="203,194,131,235,128,231,201,190"/>
-<area shape="rect" id="Node000012" title=" " alt="" coords="802,240,853,265"/>
-<area shape="poly" id="edge11_Node000011_Node000012" title=" " alt="" coords="786,191,813,227,809,230,782,194"/>
-<area shape="rect" id="Node000013" title=" " alt="" coords="669,240,778,265"/>
-<area shape="poly" id="edge12_Node000011_Node000013" title=" " alt="" coords="769,194,742,230,738,227,765,191"/>
-<area shape="poly" id="edge17_Node000015_Node000005" title=" " alt="" coords="153,117,200,155,196,160,150,121"/>
-<area shape="poly" id="edge18_Node000015_Node000008" title=" " alt="" coords="83,121,43,139,26,152,12,168,9,177,9,186,18,203,36,218,58,232,55,236,33,223,14,206,3,187,3,176,8,165,22,148,41,134,80,116"/>
-<area shape="rect" id="Node000016" title=" " alt="" coords="23,167,85,192"/>
-<area shape="poly" id="edge16_Node000015_Node000016" title=" " alt="" coords="126,121,80,160,77,155,123,117"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="771,5,955,45"/>
+<area shape="rect" id="Node000002" href="$Detector_8h.html" title=" " alt="" coords="447,93,537,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="775,48,551,95,550,90,773,43"/>
+<area shape="rect" id="Node000014" href="$SiliconTargetPoint_8h.html" title=" " alt="" coords="787,93,938,119"/>
+<area shape="poly" id="edge15_Node000001_Node000014" title=" " alt="" coords="865,46,865,79,860,79,860,46"/>
+<area shape="rect" id="Node000016" title=" " alt="" coords="962,93,1083,119"/>
+<area shape="poly" id="edge19_Node000001_Node000016" title=" " alt="" coords="902,43,988,85,986,90,900,48"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="27,167,87,192"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="448,115,298,135,101,169,101,164,297,130,447,110"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="154,240,217,265"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="448,112,200,131,79,148,38,158,17,169,9,183,11,195,22,207,40,217,89,233,141,243,140,248,88,238,38,222,19,211,6,198,4,182,13,165,36,153,78,142,199,126,447,107"/>
+<area shape="rect" id="Node000005" href="$DetectorPoint_8h.html" title=" " alt="" coords="851,167,973,192"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="538,112,838,163,837,168,537,118"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="741,240,832,265"/>
+<area shape="poly" id="edge14_Node000002_Node000008" title=" " alt="" coords="537,105,582,109,635,119,689,137,739,165,765,194,781,226,776,228,761,197,736,169,687,142,634,124,582,115,537,111"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="112,167,224,192"/>
+<area shape="poly" id="edge8_Node000002_Node000009" title=" " alt="" coords="448,120,234,166,233,161,447,114"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="247,167,390,192"/>
+<area shape="poly" id="edge9_Node000002_Node000010" title=" " alt="" coords="465,121,361,164,359,159,463,116"/>
+<area shape="rect" id="Node000011" href="$ISTLPointContainer_8h.html" title=" " alt="" coords="414,167,570,192"/>
+<area shape="poly" id="edge10_Node000002_Node000011" title=" " alt="" coords="495,119,495,153,489,153,489,119"/>
+<area shape="rect" id="Node000013" title=" " alt="" coords="595,167,725,192"/>
+<area shape="poly" id="edge13_Node000002_Node000013" title=" " alt="" coords="520,116,621,159,619,164,518,121"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="992,240,1048,265"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="931,190,993,230,990,235,928,194"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="857,240,967,265"/>
+<area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="915,192,915,226,909,226,909,192"/>
+<area shape="poly" id="edge7_Node000005_Node000008" title=" " alt="" coords="893,194,821,235,818,231,891,190"/>
+<area shape="poly" id="edge11_Node000011_Node000004" title=" " alt="" coords="443,195,231,244,229,238,442,189"/>
+<area shape="rect" id="Node000012" title=" " alt="" coords="437,240,547,265"/>
+<area shape="poly" id="edge12_Node000011_Node000012" title=" " alt="" coords="495,192,495,226,489,226,489,192"/>
+<area shape="poly" id="edge17_Node000014_Node000005" title=" " alt="" coords="873,117,899,154,894,157,869,121"/>
+<area shape="poly" id="edge18_Node000014_Node000008" title=" " alt="" coords="859,120,801,229,797,227,854,118"/>
+<area shape="rect" id="Node000015" title=" " alt="" coords="998,167,1061,192"/>
+<area shape="poly" id="edge16_Node000014_Node000015" title=" " alt="" coords="891,116,991,159,989,164,889,121"/>
 </map>

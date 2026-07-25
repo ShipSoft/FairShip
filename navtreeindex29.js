@@ -1,7 +1,5 @@
 var NAVTREEINDEX29 =
 {
-"shipStrawTracking_8py.html#a2e6f923fb8027c031209c42d2a9c8551":[7,0,10,34,8],
-"shipStrawTracking_8py.html#a33f41ada450d677435ffd880e7462d3a":[7,0,10,34,15],
 "shipStrawTracking_8py.html#a348735a590af3f354f03a440fd23573b":[7,0,10,34,9],
 "shipStrawTracking_8py.html#a5999ce65eda12da41dc6c1d663202168":[7,0,10,34,12],
 "shipStrawTracking_8py.html#a6f1c8ab4a8627d83bd87a950231721c6":[7,0,10,34,14],
@@ -249,5 +247,7 @@ var NAVTREEINDEX29 =
 "structTrackBuffer.html#a2fa4fb48462704230ab5ee31cbafcafe":[6,0,84,9],
 "structTrackBuffer.html#a36e839e7b233707e7be3f754df7ca6b6":[6,0,84,7],
 "structTrackBuffer.html#a3fe69e804f05632bfdac87fc2c7f1e40":[6,0,84,1],
-"structTrackBuffer.html#a56a37ba18ae2d353fa762f580ff8a141":[6,0,84,2]
+"structTrackBuffer.html#a56a37ba18ae2d353fa762f580ff8a141":[6,0,84,2],
+"structTrackBuffer.html#a76e3d69f5306d69c9cbcb3254f020dd5":[6,0,84,12],
+"structTrackBuffer.html#a78d78f89b63f557dfd153539991223f8":[6,0,84,10]
 };

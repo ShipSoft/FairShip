@@ -1,7 +1,5 @@
 var NAVTREEINDEX22 =
 {
-"namespacemakeMuonEM.html#a8fd1a8248626227b207de3ca945212f4":[5,0,51,3],
-"namespacemakeMuonEM.html#a99c96dfb8a40c5507c7a62921d306e5e":[5,0,51,7],
 "namespacemakeMuonEM.html#aa5ad61c03c3524787a582bfe545ca6cc":[5,0,51,5],
 "namespacemakeMuonEM.html#ab601c963f2068c0096eee496020b9003":[5,0,51,30],
 "namespacemakeMuonEM.html#ab93402e2713d9360691ffeafc3621b27":[5,0,51,13],
@@ -135,16 +133,16 @@ var NAVTREEINDEX22 =
 "namespacemake__time__window.html#ad702651157375d054d152e52e2d33ce9":[5,0,46,5],
 "namespacemake__time__window.html#ad9a5f138839e002e69063ec327aa04af":[5,0,46,3],
 "namespacemake__time__window.html#afda1a6f3fb6cb9bc575146730c927cfb":[5,0,46,0],
-"namespacemembers.html":[5,1,0,0],
 "namespacemembers.html":[5,1,0],
+"namespacemembers.html":[5,1,0,0],
 "namespacemembers_a.html":[5,1,0,1],
 "namespacemembers_b.html":[5,1,0,2],
 "namespacemembers_c.html":[5,1,0,3],
 "namespacemembers_d.html":[5,1,0,4],
 "namespacemembers_e.html":[5,1,0,5],
 "namespacemembers_f.html":[5,1,0,6],
-"namespacemembers_func.html":[5,1,1],
 "namespacemembers_func.html":[5,1,1,0],
+"namespacemembers_func.html":[5,1,1],
 "namespacemembers_func_a.html":[5,1,1,1],
 "namespacemembers_func_b.html":[5,1,1,2],
 "namespacemembers_func_c.html":[5,1,1,3],
@@ -185,8 +183,8 @@ var NAVTREEINDEX22 =
 "namespacemembers_t.html":[5,1,0,20],
 "namespacemembers_u.html":[5,1,0,21],
 "namespacemembers_v.html":[5,1,0,22],
-"namespacemembers_vars.html":[5,1,2],
 "namespacemembers_vars.html":[5,1,2,0],
+"namespacemembers_vars.html":[5,1,2],
 "namespacemembers_vars_a.html":[5,1,2,1],
 "namespacemembers_vars_b.html":[5,1,2,2],
 "namespacemembers_vars_c.html":[5,1,2,3],
@@ -249,5 +247,7 @@ var NAVTREEINDEX22 =
 "namespacemuDIS__mergeFiles.html#a83f94c211fdeec0f62c2f112ef51da13":[5,0,55,4],
 "namespacemuDIS__mergeFiles.html#ab4fbf22cc0259817a2268d6b4f736bf6":[5,0,55,2],
 "namespacemuDIS__mergeFiles.html#ac9b6cc3beba4698015a60694a23fb16a":[5,0,55,3],
-"namespacemuDIS__mergeFiles.html#aec573fccfc6fe0a2450b5d41ae58767a":[5,0,55,1]
+"namespacemuDIS__mergeFiles.html#aec573fccfc6fe0a2450b5d41ae58767a":[5,0,55,1],
+"namespaceproton__bremsstrahlung.html":[5,0,56],
+"namespaceproton__bremsstrahlung.html#a02ebc2a3f305d5759d35769151edf25b":[5,0,56,10]
 };

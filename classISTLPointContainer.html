@@ -151,9 +151,9 @@ Inheritance diagram for ISTLPointContainer:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ac2df1de47576d45fa00f744ce898fa3b" id="r_ac2df1de47576d45fa00f744ce898fa3b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classISTLPointContainer.html#ac2df1de47576d45fa00f744ce898fa3b">UpdatePointTrackIndices</a> (const std::map&lt; Int_t, Int_t &gt; &amp;indexMap)=0</td></tr>
-<tr class="memdesc:ac2df1de47576d45fa00f744ce898fa3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update track indices in point collection after track filtering.  <br /></td></tr>
-<tr class="separator:ac2df1de47576d45fa00f744ce898fa3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a78a9f8d491c704979d44b27d988049e9" id="r_a78a9f8d491c704979d44b27d988049e9"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classISTLPointContainer.html#a78a9f8d491c704979d44b27d988049e9">UpdatePointTrackIndices</a> (const std::vector&lt; Int_t &gt; &amp;indexMap)=0</td></tr>
+<tr class="memdesc:a78a9f8d491c704979d44b27d988049e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update track indices in point collection after track filtering.  <br /></td></tr>
+<tr class="separator:a78a9f8d491c704979d44b27d988049e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af144c50bff38311b1409fea530f97b50" id="r_af144c50bff38311b1409fea530f97b50"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classISTLPointContainer.html#af144c50bff38311b1409fea530f97b50">~ISTLPointContainer</a> ()=default</td></tr>
 <tr class="separator:af144c50bff38311b1409fea530f97b50"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -189,8 +189,8 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="ac2df1de47576d45fa00f744ce898fa3b" name="ac2df1de47576d45fa00f744ce898fa3b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac2df1de47576d45fa00f744ce898fa3b">&#9670;&#160;</a></span>UpdatePointTrackIndices()</h2>
+<a id="a78a9f8d491c704979d44b27d988049e9" name="a78a9f8d491c704979d44b27d988049e9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a78a9f8d491c704979d44b27d988049e9">&#9670;&#160;</a></span>UpdatePointTrackIndices()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -201,7 +201,7 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">virtual void ISTLPointContainer::UpdatePointTrackIndices </td>
           <td>(</td>
-          <td class="paramtype">const std::map&lt; Int_t, Int_t &gt; &amp;&#160;</td>
+          <td class="paramtype">const std::vector&lt; Int_t &gt; &amp;&#160;</td>
           <td class="paramname"><em>indexMap</em></td><td>)</td>
           <td></td>
         </tr>
@@ -216,12 +216,12 @@ Public Member Functions</h2></td></tr>
 <p>Update track indices in point collection after track filtering. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">indexMap</td><td>Map from old (particle) track index to new (stored) track index </td></tr>
+    <tr><td class="paramname">indexMap</td><td>Old (particle) track index to new (stored) track index, indexed by old track index; -2 marks tracks that were not stored </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="classSHiP_1_1Detector.html#a4810198266164567bff61adcad9be168">SHiP::Detector&lt; PointType &gt;</a>, <a class="el" href="classSHiP_1_1Detector.html#a4810198266164567bff61adcad9be168">SHiP::Detector&lt; MTCDetPoint &gt;</a>, <a class="el" href="classSHiP_1_1Detector.html#a4810198266164567bff61adcad9be168">SHiP::Detector&lt; SiliconTargetPoint &gt;</a>, <a class="el" href="classSHiP_1_1Detector.html#a4810198266164567bff61adcad9be168">SHiP::Detector&lt; splitcalPoint &gt;</a>, <a class="el" href="classSHiP_1_1Detector.html#a4810198266164567bff61adcad9be168">SHiP::Detector&lt; strawtubesPoint &gt;</a>, <a class="el" href="classSHiP_1_1Detector.html#a4810198266164567bff61adcad9be168">SHiP::Detector&lt; TargetPoint &gt;</a>, <a class="el" href="classSHiP_1_1Detector.html#a4810198266164567bff61adcad9be168">SHiP::Detector&lt; TimeDetPoint &gt;</a>, <a class="el" href="classSHiP_1_1Detector.html#a4810198266164567bff61adcad9be168">SHiP::Detector&lt; TTPoint &gt;</a>, <a class="el" href="classSHiP_1_1Detector.html#a4810198266164567bff61adcad9be168">SHiP::Detector&lt; UpstreamTaggerPoint &gt;</a>, and <a class="el" href="classSHiP_1_1Detector.html#a4810198266164567bff61adcad9be168">SHiP::Detector&lt; vetoPoint &gt;</a>.</p>
+<p>Implemented in <a class="el" href="classSHiP_1_1Detector.html#acb1b4c0cb31f66fe01b217b7bd4d0a0c">SHiP::Detector&lt; PointType &gt;</a>, <a class="el" href="classSHiP_1_1Detector.html#acb1b4c0cb31f66fe01b217b7bd4d0a0c">SHiP::Detector&lt; MTCDetPoint &gt;</a>, <a class="el" href="classSHiP_1_1Detector.html#acb1b4c0cb31f66fe01b217b7bd4d0a0c">SHiP::Detector&lt; SiliconTargetPoint &gt;</a>, <a class="el" href="classSHiP_1_1Detector.html#acb1b4c0cb31f66fe01b217b7bd4d0a0c">SHiP::Detector&lt; splitcalPoint &gt;</a>, <a class="el" href="classSHiP_1_1Detector.html#acb1b4c0cb31f66fe01b217b7bd4d0a0c">SHiP::Detector&lt; strawtubesPoint &gt;</a>, <a class="el" href="classSHiP_1_1Detector.html#acb1b4c0cb31f66fe01b217b7bd4d0a0c">SHiP::Detector&lt; TargetPoint &gt;</a>, <a class="el" href="classSHiP_1_1Detector.html#acb1b4c0cb31f66fe01b217b7bd4d0a0c">SHiP::Detector&lt; TimeDetPoint &gt;</a>, <a class="el" href="classSHiP_1_1Detector.html#acb1b4c0cb31f66fe01b217b7bd4d0a0c">SHiP::Detector&lt; TTPoint &gt;</a>, <a class="el" href="classSHiP_1_1Detector.html#acb1b4c0cb31f66fe01b217b7bd4d0a0c">SHiP::Detector&lt; UpstreamTaggerPoint &gt;</a>, and <a class="el" href="classSHiP_1_1Detector.html#acb1b4c0cb31f66fe01b217b7bd4d0a0c">SHiP::Detector&lt; vetoPoint &gt;</a>.</p>
 
 </div>
 </div>

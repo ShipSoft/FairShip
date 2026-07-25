@@ -19,7 +19,7 @@ var classSHiP_1_1Detector =
     [ "Register", "classSHiP_1_1Detector.html#a1f405a7f2839bcf329dc672c1c572110", null ],
     [ "Reset", "classSHiP_1_1Detector.html#a103ca9a2efe245ed360682958561bbf7", null ],
     [ "SetSpecialPhysicsCuts", "classSHiP_1_1Detector.html#aa32a8ce2828f00bc3994cdd314ef2851", null ],
-    [ "UpdatePointTrackIndices", "classSHiP_1_1Detector.html#a4810198266164567bff61adcad9be168", null ],
+    [ "UpdatePointTrackIndices", "classSHiP_1_1Detector.html#acb1b4c0cb31f66fe01b217b7bd4d0a0c", null ],
     [ "fDetector", "classSHiP_1_1Detector.html#a97ab161eb00fb79673c501a571781c39", null ],
     [ "fDetPoints", "classSHiP_1_1Detector.html#a15abb9db813d378f7c19b79bc53cac88", null ],
     [ "fELoss", "classSHiP_1_1Detector.html#a73510d2ac4e0508cd8297620923db8e4", null ],

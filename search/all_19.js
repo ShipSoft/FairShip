@@ -13,7 +13,7 @@ var searchData=
   ['update_5ffile_10',['update_file',['../namespacemakeMuonDIS.html#acda8ed87a2a7dae5198cd1b5d0f1f1b5',1,'makeMuonDIS']]],
   ['update_5fnumeric_5fstat_11',['update_numeric_stat',['../namespacevalidationTools.html#a609e5981bf437388589ab4804356f777',1,'validationTools']]],
   ['updateenergy_12',['UpdateEnergy',['../classsplitcalHit.html#a5896b24a017d44df6a292d4afa4b9c32',1,'splitcalHit']]],
-  ['updatepointtrackindices_13',['updatepointtrackindices',['../classISTLPointContainer.html#ac2df1de47576d45fa00f744ce898fa3b',1,'ISTLPointContainer::UpdatePointTrackIndices()'],['../classSHiP_1_1Detector.html#a4810198266164567bff61adcad9be168',1,'SHiP::Detector::UpdatePointTrackIndices()']]],
+  ['updatepointtrackindices_13',['updatepointtrackindices',['../classISTLPointContainer.html#a78a9f8d491c704979d44b27d988049e9',1,'ISTLPointContainer::UpdatePointTrackIndices()'],['../classSHiP_1_1Detector.html#acb1b4c0cb31f66fe01b217b7bd4d0a0c',1,'SHiP::Detector::UpdatePointTrackIndices()']]],
   ['updates_14',['Detector Geometry Updates',['../md_CHANGELOG.html#autotoc_md47',1,'']]],
   ['updatetrackindex_15',['UpdateTrackIndex',['../classShipStack.html#afbe9564e96a068a1be591663b1c5f248',1,'ShipStack']]],
   ['upperironthick_16',['upperIronThick',['../classMTCDetector.html#a5d95ddbeca95c7a451da9e8b6af18e10',1,'MTCDetector']]],
