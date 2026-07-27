@@ -154,7 +154,7 @@ random sequence.
 
 ### Fixed
 
-* Remove duplicated 4232 pdg code in extractNeutrinosAndUpdateWeight
+* Remove duplicated 4232 pdg code in extractNeutrinosAndUpdateWeight and extractMuonsAndUpdateWeight
 * Update charm and beauty over mbias cross sections in run_fixedTarget
 * Fix pot branch in Decay tree from makeDecay
 * Fix check of existing particle pdg in makeCascade
