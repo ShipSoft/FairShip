@@ -21,7 +21,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        version: ["26.02", "26.06"]
+        version: ["26.02", "26.07"]
     container:
       image: registry.cern.ch/ship/gha-runner:latest
       volumes:
