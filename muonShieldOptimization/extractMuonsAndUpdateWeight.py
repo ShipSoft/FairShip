@@ -10,7 +10,7 @@ path = "/eos/experiment/ship/data/Mbias/background-prod-2018/"
 # functions, should extract events with muons, update weight based on process/decay and PoT
 
 muSources = {"eta": 221, "omega": 223, "phi": 333, "rho0": 113, "eta_prime": 331}
-charmExtern = [4332, 4232, 4132, 4232, 4122, 431, 411, 421]
+charmExtern = [4332, 4232, 4132, 4122, 431, 411, 421]
 
 # for 10GeV Yandex Production 65.041 Billion PoT, weight = 768.75 for 5E13 pot
 weightMbias = 768.75
