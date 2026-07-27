@@ -36,6 +36,7 @@ it in future.
 ### Changed
 
 * Flatten field-map storage and make the field evaluator reentrant
+* Changed option name from --target_composition to --target-composition in makeCascade and makeDecay
 
 ### Fixed
 
