@@ -55,8 +55,8 @@ it in future.
 
 ### Fixed
 
+* Remove duplicated 4232 pdg code in extractNeutrinosAndUpdateWeight
 * Update charm and beauty over mbias cross sections in run_fixedTarget
-
 * Fix pot branch in Decay tree from makeDecay
 * Fix check of existing particle pdg in makeCascade
 * Restore `tPythia6Generator` instantiation from Python — broken since 26.02 by the `SHiP::Generator` base-class refactor leaving the file-based `Init` overloads pure virtual without a stub override (#1272)
