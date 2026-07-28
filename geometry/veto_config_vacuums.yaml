@@ -6,7 +6,7 @@ outerSupport: 2 # cm
 outerSupportMed: "steel"
 lidThickness: 0.0 # cm
 sensitiveThickness: 20 # cm
-sensitiveMed: "Scintillator"
+sensitiveMed: "LiquidScintillator"
 decayMed: "vacuums"
 rib: 1.5 # cm
 ribMed: "steel"

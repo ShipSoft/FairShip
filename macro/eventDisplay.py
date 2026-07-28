@@ -68,6 +68,7 @@ transparentMaterials = {
     "steel": 80,
     "Aluminum": 80,
     "Scintillator": 80,
+    "LiquidScintillator": 80,
     #                        tau nu detector
     "CoilCopper": 70,
     "copper": 90,
