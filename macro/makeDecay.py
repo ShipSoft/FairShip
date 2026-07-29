@@ -8,19 +8,10 @@ import os
 
 import ROOT
 import rootUtils as ut
+from heavyFlavourScaling import derive_cross_sections, format_summary
 
 ROOT.gROOT.LoadMacro("$VMCWORKDIR/gconfig/basiclibs.C")
 ROOT.basiclibs()
-
-# Reference values for Molybdenum (historical defaults). Cross-section ratios
-# scale heavy-flavour ~ A and mbias ~ A^(0.71).
-heavyflavour_Ascale = 1
-mbias_Ascale = 0.71
-
-A_REF = 98.0
-CHICC_REF = 1.7e-3  # prob to produce primary ccbar pair/pot on Mo
-CHIBB_REF = 1.6e-7  # prob to produce primary bbbar pair/pot on Mo
-TARGET_A = {"W": 184.0, "Mo": 98.0}
 
 ap = argparse.ArgumentParser(description="Decay charm/beauty signals from makeCascade output with Pythia8")
 ap.add_argument(
@@ -57,22 +48,11 @@ args = ap.parse_args()
 fname = args.input.replace(".root", "")
 nrpotspill = args.pot
 
-A = args.A if args.A is not None else TARGET_A[args.target_composition]
-scale = (A / A_REF) ** (heavyflavour_Ascale - mbias_Ascale)
+cs = derive_cross_sections(args.target_composition, args.A, args.chicc, args.chibb)
+chicc, chibb = cs.chicc, cs.chibb
+setByHand = args.chicc is not None
 
-if args.chicc is not None:
-    chicc = args.chicc
-    setByHand = True
-else:
-    chicc = CHICC_REF * scale
-    setByHand = False
-
-chibb = args.chibb if args.chibb is not None else CHIBB_REF * scale
-
-print(
-    f"Target composition: {args.target_composition}, A={A}, scale=(A/{A_REF})^({heavyflavour_Ascale}-{mbias_Ascale})={scale:.4f}"
-)
-print(f"Derived cross-section ratios: chicc={chicc:.3e}, chibb={chibb:.3e}")
+print(format_summary(cs, args.target_composition))
 
 FIN = fname + ".root"
 tmp = os.path.abspath(FIN).split("/")
