@@ -301,6 +301,10 @@ def configure(run, ship_geo):
     TargetStation.SetLayerPosMat(
         ship_geo.target.xy, ship_geo.target.slices_length, ship_geo.target.slices_gap, ship_geo.target.slices_material
     )
+    target_version = getattr(ship_geo.target, "version", 1)
+    TargetStation.SetDesign(target_version)
+    if target_version >= 2:
+        TargetStation.SetLastDiskDiameter(ship_geo.target.xy2)
     detectorList.append(TargetStation)
 
     # For SND: support multiple designs

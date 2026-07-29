@@ -30,15 +30,22 @@ class ShipTargetStation : public FairModule {
     assert(G.size() == fnS);
     fG = G;
   }
+  /** Target design version: 1 = legacy Ta-clad disks in steel enclosure,
+      2 = 2026 BDF target (pure W disks, steel core with He grooves) */
+  void SetDesign(Int_t design) { fDesign = design; }
+  /** Diameter of the last (larger) disk, design 2 only */
+  void SetLastDiskDiameter(Double_t d) { fDiameter2 = d; }
 
  protected:
   Double_t fTargetLength;       //
   Double_t fTargetZ;            //
   Double_t fDiameter;           //
+  Double_t fDiameter2{0};       // diameter of last disk (design 2)
   std::vector<float> fL;        // absorber width per layer
   std::vector<float> fG;        // gap after layer
   std::vector<std::string> fM;  // absorber material
   size_t fnS;
   Int_t fHeT;
+  Int_t fDesign{1};
 };
 #endif  // PASSIVE_SHIPTARGETSTATION_H_
