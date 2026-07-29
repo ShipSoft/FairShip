@@ -41,6 +41,21 @@ def derive_cross_sections(target_composition=None, A=None, chicc=None, chibb=Non
     return CrossSections(chicc, chibb, A, scale)
 
 
+def check_run_type_override(is_beauty, chicc, chibb):
+    """Reject a cross-section override that does not match the run type.
+
+    A run is either charm or beauty, so at most one of ``chicc``/``chibb`` is
+    meaningful. Passing the wrong one (or both) is a mistake and raises
+    ``ValueError`` with a clear message rather than being silently ignored.
+    """
+    if chicc is not None and chibb is not None:
+        raise ValueError("Set only one of --chicc / --chibb; a run is either charm or beauty.")
+    if is_beauty and chicc is not None:
+        raise ValueError("This is a beauty run: pass --chibb, not --chicc.")
+    if not is_beauty and chibb is not None:
+        raise ValueError("This is a charm run: pass --chicc, not --chibb.")
+
+
 def format_summary(cs, target_composition=None):
     """One human-readable summary of the derived cross-section ratios."""
     label = target_composition or "custom (A given)"

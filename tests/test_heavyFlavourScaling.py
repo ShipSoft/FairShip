@@ -5,6 +5,7 @@ import pytest
 from heavyFlavourScaling import (
     CHIBB_REF,
     CHICC_REF,
+    check_run_type_override,
     derive_cross_sections,
 )
 
@@ -56,3 +57,22 @@ def test_non_positive_A_raises():
         derive_cross_sections(A=0)
     with pytest.raises(ValueError):
         derive_cross_sections(A=-1.0)
+
+
+def test_override_matching_run_type_is_accepted():
+    # charm run with chicc, beauty run with chibb, and no override at all.
+    check_run_type_override(is_beauty=False, chicc=1e-3, chibb=None)
+    check_run_type_override(is_beauty=True, chicc=None, chibb=1e-7)
+    check_run_type_override(is_beauty=False, chicc=None, chibb=None)
+
+
+def test_override_wrong_run_type_raises():
+    with pytest.raises(ValueError, match="beauty run"):
+        check_run_type_override(is_beauty=True, chicc=1e-3, chibb=None)
+    with pytest.raises(ValueError, match="charm run"):
+        check_run_type_override(is_beauty=False, chicc=None, chibb=1e-7)
+
+
+def test_both_overrides_raise():
+    with pytest.raises(ValueError, match="only one"):
+        check_run_type_override(is_beauty=False, chicc=1e-3, chibb=1e-7)

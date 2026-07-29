@@ -8,7 +8,11 @@ import os
 
 import ROOT
 import rootUtils as ut
-from heavyFlavourScaling import derive_cross_sections, format_summary
+from heavyFlavourScaling import (
+    check_run_type_override,
+    derive_cross_sections,
+    format_summary,
+)
 
 ROOT.gROOT.LoadMacro("$VMCWORKDIR/gconfig/basiclibs.C")
 ROOT.basiclibs()
@@ -21,10 +25,12 @@ ap.add_argument(
     help="input file with charm/beauty hadrons (.root suffix optional)",
 )
 ap.add_argument("-p", "--pot", type=float, default=5.0e13, help="number of protons on target per spill to normalise on")
-ap.add_argument(
+# A run is either charm or beauty, so only one ratio override is ever meaningful.
+cross_section = ap.add_mutually_exclusive_group()
+cross_section.add_argument(
     "-c", "--chicc", type=float, default=None, help="ccbar over mbias cross section (overrides target-derived value)"
 )
-ap.add_argument(
+cross_section.add_argument(
     "--chibb", type=float, default=None, help="bbbar over mbias cross section (overrides target-derived value)"
 )
 ap.add_argument(
@@ -50,7 +56,6 @@ nrpotspill = args.pot
 
 cs = derive_cross_sections(args.target_composition, args.A, args.chicc, args.chibb)
 chicc, chibb = cs.chicc, cs.chibb
-setByHand = args.chicc is not None
 
 print(format_summary(cs, None if args.A is not None else args.target_composition))
 
@@ -128,7 +133,9 @@ for n in range(nEvents):
     rc = sTree.GetEvent(n)
     # check if we deal with charm or beauty:
     if n == 0:
-        if not setByHand and sTree.M > 5:
+        is_beauty = sTree.M > 5
+        check_run_type_override(is_beauty, args.chicc, args.chibb)
+        if is_beauty:
             chicc = chibb
             print("automatic detection of beauty, configured for beauty")
             print("bb cross section / mbias ", chicc)
