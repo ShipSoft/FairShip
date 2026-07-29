@@ -102,10 +102,14 @@ Added</h2>
 <h2><a class="anchor" id="autotoc_md3"></a>
 Changed</h2>
 <ul>
+<li>SBT sensitive medium is now LAB-based liquid scintillator (<code>LiquidScintillator</code>) rather than the plastic <code>Scintillator</code>, which remains in use by SplitCal</li>
 <li>Use dense vectors instead of <code>std::map</code> for <a class="el" href="classShipStack.html">ShipStack</a> track selection and index remapping, roughly halving CPU time and reducing peak memory for high-multiplicity events (e.g. kaon/pion splitting)</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md4"></a>
 Fixed</h2>
+<ul>
+<li><code>veto</code> now registers the configured <code>sensitiveMed</code> instead of a hardcoded medium name; previously any other value resolved to a null <code>TGeoMedium</code></li>
+</ul>
 <h2><a class="anchor" id="autotoc_md5"></a>
 Removed</h2>
 <h1><a class="anchor" id="autotoc_md6"></a>
