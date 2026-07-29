@@ -14,6 +14,8 @@ it in future.
 
 ### Added
 
+* 2026 BDF target design (33 pure tungsten disks with a larger rear block, steel core with serpentine He cooling grooves, jacket tube, flanges and domed rear endcap), extracted from CATIA model ST1A07710_01_AB.02. Select with `--target-yaml geometry/target_config_2026.yaml`; the legacy design remains the default. Downstream elements are positioned using the nominal legacy target length so both designs can be compared directly.
+
 ### Changed
 
 * SBT sensitive medium is now LAB-based liquid scintillator (`LiquidScintillator`) rather than the plastic `Scintillator`, which remains in use by SplitCal
