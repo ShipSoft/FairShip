@@ -47,6 +47,16 @@ def get_work_dir(run_number, tag: str | None = None) -> str:
 
 logger.info("SHiP proton-on-taget simulator (C) Thomas Ruf, 2017")
 
+# Reference values for Molybdenum (historical defaults). Cross-section ratios
+# scale heavy-flavour ~ A and mbias ~ A^(0.71).
+heavyflavour_Ascale = 1
+mbias_Ascale = 0.71
+
+A_REF = 98.0
+CHICC_REF = 1.7e-3  # prob to produce primary ccbar pair/pot on Mo
+CHIBB_REF = 1.6e-7  # prob to produce primary bbbar pair/pot on Mo
+TARGET_A = {"W": 184.0, "Mo": 98.0}
+
 ap = argparse.ArgumentParser(description='Run SHiP "pot" simulation')
 ap.add_argument("-d", "--debug", action="store_true")
 ap.add_argument("-f", "--force", action="store_true", help="force overwriting output directory")
@@ -107,8 +117,28 @@ ap.add_argument(
     help="enable ntuple production",
 )
 # for charm production
-ap.add_argument("-cc", "--chicc", default=1.7e-3, help="ccbar over mbias cross section")
-ap.add_argument("-bb", "--chibb", default=1.6e-7, help="bbbar over mbias cross section")
+ap.add_argument(
+    "-cc", "--chicc", type=float, default=None, help="ccbar over mbias cross section (overrides target-derived value)"
+)
+ap.add_argument(
+    "-bb", "--chibb", type=float, default=None, help="bbbar over mbias cross section (overrides target-derived value)"
+)
+ap.add_argument(
+    "--target-composition",
+    default="W",
+    choices=["W", "Mo"],
+    help="Target composition. Default is Tungsten (W); Molybdenum (Mo) is the other preset.",
+)
+ap.add_argument(
+    "-A",
+    type=float,
+    default=None,
+    help=(
+        "Target mass number; overrides --target-composition preset. "
+        "Used to scale chicc/chibb as (A/A_Mo)^(heavyflavour_Ascale-mbias_Ascale) "
+        "(default exponent: 0.29)."
+    ),
+)
 ap.add_argument("-p", "--pot", default=4e13, help="number of protons on target per spill to normalize on")
 ap.add_argument("-S", "--nStart", type=int, help="first event of input file to start", dest="nStart", default=0)
 ap.add_argument(
@@ -427,6 +457,23 @@ P8gen.SetSeed(seed)
 #        print ' for experts: p pot= number of protons on target per spill to normalize on'
 #        print '            : c chicc= ccbar over mbias cross section'
 if args.charm or args.beauty:
+    A = args.A if args.A is not None else TARGET_A[args.target_composition]
+    if A <= 0:
+        raise ValueError(f"Invalid target mass number A={A}. Must be > 0.")
+    scale = (A / A_REF) ** (heavyflavour_Ascale - mbias_Ascale)
+
+    if args.chicc is not None:
+        chicc = args.chicc
+    else:
+        chicc = CHICC_REF * scale
+
+    chibb = args.chibb if args.chibb is not None else CHIBB_REF * scale
+    P8gen.SetChicc(chicc)
+    P8gen.SetChibb(chibb)
+    print(
+        f"Target composition: {args.target_composition}, A={A}, scale=(A/{A_REF})^({heavyflavour_Ascale}-{mbias_Ascale})={scale:.4f}"
+    )
+    print(f"Derived cross-section ratios: chicc={chicc:.3e}, chibb={chibb:.3e}")
     print("--- process heavy flavours ---")
     P8gen.InitForCharmOrBeauty(charmInputFile, args.nev, args.pot, args.nStart)
 primGen.AddGenerator(P8gen)

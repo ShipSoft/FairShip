@@ -39,8 +39,11 @@ it in future.
 ### Changed
 
 * Flatten field-map storage and make the field evaluator reentrant
+* Changed option name from --target_composition to --target-composition in makeCascade and makeDecay
 
 ### Fixed
+
+* Update charm and beauty over mbias cross sections in run_fixedTarget
 
 * Fix pot branch in Decay tree from makeDecay
 * Fix check of existing particle pdg in makeCascade
