@@ -9,7 +9,11 @@ import geometry_config
 import ROOT
 import shipRoot_conf
 import shipunit as u
-from heavyFlavourScaling import derive_cross_sections, format_summary
+from heavyFlavourScaling import (
+    check_run_type_override,
+    derive_cross_sections,
+    format_summary,
+)
 
 mcEngine = "TGeant4"
 simEngine = "Pythia8"
@@ -108,10 +112,12 @@ ap.add_argument(
     help="enable ntuple production",
 )
 # for charm production
-ap.add_argument(
+# A run is either charm or beauty, so only one ratio override is ever meaningful.
+cross_section = ap.add_mutually_exclusive_group()
+cross_section.add_argument(
     "-cc", "--chicc", type=float, default=None, help="ccbar over mbias cross section (overrides target-derived value)"
 )
-ap.add_argument(
+cross_section.add_argument(
     "-bb", "--chibb", type=float, default=None, help="bbbar over mbias cross section (overrides target-derived value)"
 )
 ap.add_argument(
@@ -453,6 +459,7 @@ P8gen.SetSeed(seed)
 #        print ' for experts: p pot= number of protons on target per spill to normalize on'
 #        print '            : c chicc= ccbar over mbias cross section'
 if args.charm or args.beauty:
+    check_run_type_override(args.beauty, args.chicc, args.chibb)
     cs = derive_cross_sections(args.target_composition, args.A, args.chicc, args.chibb)
     P8gen.SetChicc(cs.chicc)
     P8gen.SetChibb(cs.chibb)
