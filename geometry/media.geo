@@ -166,6 +166,22 @@ Inconel718	    6 51.9961 55.845 95.96 92.906 58.6934 47.867 24 26 42 41 28 22 8.
 		    0
 
 
+// ----- SBT materials -----
+
+// Liquid scintillator filling the SBT cells: linear alkylbenzene (LAB) doped
+// with 2 g/l PPO. LAB = C6H5-CnH2n+1 with n = 10-13, i.e. <C17.2H28.4>, giving
+// an H/C atom ratio of 1.65. PPO (C15H11NO) is 0.23 % by mass and is neglected
+// here; the bulk properties are those of the LAB solvent.
+// rho = 0.86 g/cm3 (20 C); X0 = 44.4 g/cm2 = 51.6 cm; lambda_I = 79.5 g/cm2 = 92 cm.
+// NB: this is NOT "Scintillator", defined further down inside the ecal block,
+// which is the plastic C8H8 at 1.032 g/cm3. Do not use that one for the SBT.
+// Ref: SHiP SBT, arXiv:2311.07340, arXiv:2503.10250
+LiquidScintillator 2  1.00794 12.011 1. 6. 0.86 0.1216 0.8784
+                   1  0  20.  .001
+                   0
+
+// ----- End SBT materials -----
+
 // ----- MVD materials -----
 carbonfoam2       1  12.011  6.0  0.2265
                   0  1  20.  .001

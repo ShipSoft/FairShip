@@ -831,7 +831,7 @@ void veto::ConstructGeometry() {
   ShipGeo::InitMedium("vacuums");
   ShipGeo::InitMedium("Aluminum");
   ShipGeo::InitMedium("helium");
-  ShipGeo::InitMedium("Scintillator");
+  ShipGeo::InitMedium(vetoMed_name.Data());
   ShipGeo::InitMedium("steel");
 
   gGeoManager->SetNsegments(100);
