@@ -344,6 +344,10 @@ TargetStation.SetLayerPosMat(
     G=ship_geo.target.slices_gap,
     M=ship_geo.target.slices_material,
 )
+target_version = getattr(ship_geo.target, "version", 1)
+TargetStation.SetDesign(target_version)
+if target_version >= 2:
+    TargetStation.SetLastDiskDiameter(ship_geo.target.xy2)
 run.AddModule(TargetStation)
 ROOT.SetOwnership(TargetStation, False)  # C++ FairRunSim takes ownership
 
