@@ -131,7 +131,6 @@ class ShipDigiReco:
 
     def reconstruct(self) -> None:
 
-
         geo_ctx = acts.GeometryContext()
         self.fACTSArray.clear()
         self.fACTSVertexArray.clear()
@@ -146,8 +145,9 @@ class ShipDigiReco:
         vector_ptr = ROOT.addressof(self.fACTSArray)
         vertex_vector_ptr = ROOT.addressof(self.fACTSVertexArray)
 
-        for track, hit_indices in zip(output_tracks, track_hit_indices):
-            acts.examples.pushRecoTrack(vector_ptr, track, geo_ctx)
+        for i, (_, hit_indices) in enumerate(zip(output_tracks, track_hit_indices)):
+
+            acts.examples.pushRecoTrack(vector_ptr, geo_ctx, i, output_tracks)
 
             track_ids = []
             for index in hit_indices:

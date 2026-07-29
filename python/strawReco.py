@@ -64,7 +64,8 @@ def runTracking(candidates, trackingGeometry, fieldMap, strawHits):
     measurements = acts.processMeasurements(strawHits, trackingGeometry)
     acts_index_map = build_acts_index_map(measurements, len(strawHits))
     # Setup output containers
-    output_tracks = acts.examples.makeTrackContainer()
+    output_tracks = acts.examples.TrackContainer()
+
     track_hit_indices_list = []
 
     # Loop over seeds (e.g., from PatRec or Truth)
@@ -98,13 +99,16 @@ def runTracking(candidates, trackingGeometry, fieldMap, strawHits):
 
         initial_params = make_seed(cand["pos"], cand["mom"], cand["charge"], target_surface, geo_ctx, len(strawHits))
 
-        tracks_before_fit = sum(1 for _ in output_tracks)
+        tracks_before_fit = len(output_tracks)
 
         acts.fitTrack(measurements, filtered_indices, initial_params, output_tracks, trackingGeometry, fieldMap)
 
-        tracks_after_fit = sum(1 for _ in output_tracks)
+        tracks_after_fit = len(output_tracks)
+
         if tracks_after_fit > tracks_before_fit:
-           track_hit_indices_list.append(list(filtered_indices))
+            track_hit_indices_list.append(list(filtered_indices))
+
+    const_tracks = output_tracks.makeConst()
 
     vertices = []
     # Define vertex cuts
@@ -112,19 +116,22 @@ def runTracking(candidates, trackingGeometry, fieldMap, strawHits):
     max_chi2_ndf = 25.0
 
     good_proxies = []
-    for track in output_tracks:
-        if not track.hasReferenceSurface():
+    for i, track in enumerate(const_tracks):
+        if not track.referenceSurface:
             continue
 
-        chi2_ndf = track.chi2 / track.nDoF if track.nDoF > 0 else float("inf")
+        track_chi2 = const_tracks.chi2[i]
+        track_ndf = const_tracks.ndf[i]
+
+        chi2_ndf = track_chi2 / track_ndf if track_ndf > 0 else float("inf")
 
         if track.nMeasurements >= min_hits and chi2_ndf <= max_chi2_ndf:
             good_proxies.append(track)
 
     # Check for at least one positive and one negative track
 
-    has_pos = any(t.charge > 0 for t in good_proxies)
-    has_neg = any(t.charge < 0 for t in good_proxies)
+    has_pos = any(t.parameters[4] > 0 for t in good_proxies)
+    has_neg = any(t.parameters[4] < 0 for t in good_proxies)
 
     if 2 <= len(good_proxies) <= 4 and has_pos and has_neg:
         print(f"Fitting vertex for {len(good_proxies)} tracks with opposite charge candidates.")
@@ -133,7 +140,7 @@ def runTracking(candidates, trackingGeometry, fieldMap, strawHits):
         for vtx in vertices:
             print(f"Vertex found at: {vtx.position()}")
 
-    return output_tracks, vertices, track_hit_indices_list
+    return const_tracks, vertices, track_hit_indices_list
 
 
 def calculateSBTDOCA(output_tracks, sbt_digis, trackingGeometry, fieldMap):
@@ -153,15 +160,22 @@ def calculateSBTDOCA(output_tracks, sbt_digis, trackingGeometry, fieldMap):
     geo_ctx = acts.GeometryContext()
     mag_ctx = acts.MagneticFieldContext()
 
-    distMin = 99999
-    hitID = -1
+    event_parameters_array = output_tracks.parameters  # shape (N, 6)
+    event_covariance_array = output_tracks.covariance  # shape (N, 6, 6)
 
     veto_results = []
-
     for _t_idx, track in enumerate(output_tracks):
-        if not track.hasReferenceSurface():
+        if not track.referenceSurface:
             continue
-        start_params = track.parametersObject
+
+        track_params_numpy = event_parameters_array[_t_idx]     
+        track_covariance_numpy = event_covariance_array[_t_idx] 
+
+        start_params = acts.examples.makeBoundTrackParameters(
+            track.referenceSurface,
+            track_params_numpy,
+            track_covariance_numpy
+        )
 
         distMin = 99999
         hitID = -1
