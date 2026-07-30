@@ -5,6 +5,8 @@
 #ifndef SHIPGEN_HNLPYTHIA8GENERATOR_H_
 #define SHIPGEN_HNLPYTHIA8GENERATOR_H_
 
+#include <memory>
+
 #include "FairLogger.h"  // for FairLogger, MESSAGE_ORIGIN
 #include "Generator.h"
 #include "Pythia8/Pythia.h"
@@ -19,24 +21,24 @@ class FairPrimaryGenerator;
 
 class PyTr1Rng : public Pythia8::RndmEngine {
  public:
-  PyTr1Rng() { rng = new TRandom1(gRandom->GetSeed()); };
+  PyTr1Rng() : rng(std::make_unique<TRandom1>(gRandom->GetSeed())) {}
   ~PyTr1Rng() override = default;
 
   Double_t flat() override { return rng->Rndm(); };
 
  private:
-  TRandom1* rng;  //!
+  std::unique_ptr<TRandom1> rng;  //!
 };
 
 class PyTr3Rng : public Pythia8::RndmEngine {
  public:
-  PyTr3Rng() { rng = new TRandom3(gRandom->GetSeed()); };
+  PyTr3Rng() : rng(std::make_unique<TRandom3>(gRandom->GetSeed())) {}
   ~PyTr3Rng() override = default;
 
   Double_t flat() override { return rng->Rndm(); };
 
  private:
-  TRandom3* rng;  //!
+  std::unique_ptr<TRandom3> rng;  //!
 };
 
 class HNLPythia8Generator : public SHiP::Generator {
@@ -94,16 +96,16 @@ class HNLPythia8Generator : public SHiP::Generator {
   std::shared_ptr<Pythia8::RndmEngine> fRandomEngine;
 
  protected:
-  Double_t fMom;       // proton momentum
-  Int_t fHNL;          // HNL ID
-  Int_t fId;           // target type
-  Bool_t fUseRandom1;  // flag to use TRandom1
-  Bool_t fUseRandom3;  // flag to use TRandom3 (default)
-  Double_t fLmin;      // m minimum  decay position z
-  Double_t fLmax;      // m maximum decay position z
-  Int_t fnRetries;     // retries: no HNL produced
-  Double_t fctau;      // hnl lifetime
-  Double_t fFDs;       // correction for Pythia6 to match measured Ds production
+  Double_t fMom;               // proton momentum
+  Int_t fHNL;                  // HNL ID
+  Int_t fId;                   // target type
+  Bool_t fUseRandom1{kFALSE};  // flag to use TRandom1
+  Bool_t fUseRandom3{kTRUE};   // flag to use TRandom3 (default)
+  Double_t fLmin;              // m minimum  decay position z
+  Double_t fLmax;              // m maximum decay position z
+  Int_t fnRetries;             // retries: no HNL produced
+  Double_t fctau;              // hnl lifetime
+  Double_t fFDs;  // correction for Pythia6 to match measured Ds production
   Double_t fsmearBeam;  // finite beam size
   Double_t fPaintBeam;  // beam painting radius
   TFile* fInputFile;    //! pointer to a file

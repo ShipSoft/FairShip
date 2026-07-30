@@ -9,7 +9,6 @@
 
 #include "FairLogger.h"  // for FairLogger, MESSAGE_ORIGIN
 #include "Generator.h"
-#include "GenieGenerator.h"
 #include "Pythia8/Pythia.h"
 #include "TNtuple.h"
 #include "TROOT.h"
@@ -31,8 +30,6 @@ class FixedTargetGenerator : public SHiP::Generator {
 
   /** public method ReadEvent **/
   Bool_t ReadEvent(FairPrimaryGenerator*) override;
-  void SetParameters(char*);
-  void Print();
   Bool_t Init(const char* inFile) override { return Init(inFile, 0); };
 
   Bool_t Init(const char* inFile, int startEvent) override {
@@ -115,15 +112,15 @@ class FixedTargetGenerator : public SHiP::Generator {
   Bool_t fUseRandom1;  // flag to use TRandom1
   Bool_t fUseRandom3;  // flag to use TRandom3 (default)
   Double_t fSeed, EMax, fBoost, chicc, chibb, wspill, nrpotspill;
-  Int_t nEvents, nEntry, pot, nDsprim, ntotprim;
+  Double_t pot;  // proton-on-target counter, incremented by 0.5 per signal
+  Int_t nEvents, nEntry, nDsprim, ntotprim;
   Bool_t tauOnly, JpsiMainly, DrellYan, PhotonCollision, G4only, setByHand,
       Debug, withEvtGen, OnlyMuons;
   FairLogger* fLogger;        //!   don't make it persistent, magic ROOT command
   Pythia8::Pythia* fPythiaN;  //!
   Pythia8::Pythia* fPythiaP;  //!
-  Pythia8::EvtGenDecays* evtgenN;         //!
-  Pythia8::EvtGenDecays* evtgenP;         //!
-  GenieGenerator* fMaterialInvestigator;  //!
+  Pythia8::EvtGenDecays* evtgenN;  //!
+  Pythia8::EvtGenDecays* evtgenP;  //!
   Bool_t withNtuple;  //! special option for Dark Photon physics studies
   TNtuple* fNtuple;   //!
   TString targetName, Option;

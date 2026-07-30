@@ -54,7 +54,7 @@ Bool_t HNLPythia8Generator::Init() {
     fInputFile = TFile::Open(fextFile->c_str(), "READ");
     LOG(info) << "Open external file with charm or beauty hadrons: "
               << *fextFile;
-    if (!fInputFile || fInputFile->IsZombie()) {
+    if (!fInputFile) {
       LOG(error) << "HNLPythia8Generator: error opening input file "
                  << *fextFile;
       delete fInputFile;
@@ -145,6 +145,8 @@ HNLPythia8Generator::~HNLPythia8Generator() {
     fInputFile = nullptr;
     fTree = nullptr;
   }
+  delete fPythia;
+  fPythia = nullptr;
 }
 // -------------------------------------------------------------------------
 

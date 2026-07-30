@@ -43,9 +43,10 @@ def make_relative_path(file_path, repo_name="FairShip") -> str:
     Convert absolute path to relative path from repo root.
 
     aliBuild creates paths like:
-    /__w/FairShip/FairShip/sw/SOURCES/FairShip/master/0/shipdata/ShipHit.cxx
+    /__w/FairShip/FairShip/sw/SOURCES/FairShip/<branch>/0/shipdata/ShipHit.cxx
 
-    We need to extract the part after 'SOURCES/FairShip/master/0/'
+    We need to extract the part after 'SOURCES/FairShip/<branch>/0/', where
+    <branch> is the branch aliBuild checked out (e.g. main).
     """
     # Strip any aliBuild debug prefix
     # (format: "YYYY-MM-DD@HH:MM:SS:DEBUG:package:package:N: ")
@@ -59,17 +60,12 @@ def make_relative_path(file_path, repo_name="FairShip") -> str:
     path = Path(file_path)
     parts = path.parts
 
-    # Look for the pattern: SOURCES/FairShip/master/0/...
+    # Look for the pattern: SOURCES/FairShip/<branch>/0/...
     try:
         sources_idx = parts.index("SOURCES")
-        # Verify this is followed by FairShip/master/0
-        if (
-            sources_idx + 3 < len(parts)
-            and parts[sources_idx + 1] == repo_name
-            and parts[sources_idx + 2] == "master"
-            and parts[sources_idx + 3] == "0"
-        ):
-            # Extract everything after SOURCES/FairShip/master/0/
+        # Verify this is followed by FairShip/<branch>/0 (any branch name)
+        if sources_idx + 3 < len(parts) and parts[sources_idx + 1] == repo_name and parts[sources_idx + 3] == "0":
+            # Extract everything after SOURCES/FairShip/<branch>/0/
             relative_parts = parts[sources_idx + 4 :]
             if relative_parts:
                 return str(Path(*relative_parts))

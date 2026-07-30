@@ -29,7 +29,7 @@ Bool_t EvtCalcGenerator::Init(const char* fileName, const int startEvent) {
   }
   fInputFile = std::unique_ptr<TFile>(TFile::Open(fileName, "read"));
   LOGF(info, "Info EvtCalcGenerator: Opening input file %s", fileName);
-  if (!fInputFile || fInputFile->IsZombie()) {
+  if (!fInputFile) {
     LOG(error) << "EvtCalcGenerator: error opening input file " << fileName;
     fInputFile.reset();
     return kFALSE;

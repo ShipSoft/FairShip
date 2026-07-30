@@ -68,13 +68,13 @@ class Task:
         res[0] = abs(y_data[0]) - a[5]
         res[1] = y_data[1] - a[3]
         res[2] = y_data[2] - a[4]
-        res[3] = y_data[3] - a[0] - a[3] * (a[2] - z0)
-        res[4] = y_data[4] - a[1] - a[4] * (a[2] - z0)
+        res[3] = y_data[3] - a[0] - a[3] * (z0 - a[2])
+        res[4] = y_data[4] - a[1] - a[4] * (z0 - a[2])
         res[5] = abs(y_data[5]) - a[8]
         res[6] = y_data[6] - a[6]
         res[7] = y_data[7] - a[7]
-        res[8] = y_data[8] - a[0] - a[6] * (a[2] - z0)
-        res[9] = y_data[9] - a[1] - a[7] * (a[2] - z0)
+        res[8] = y_data[8] - a[0] - a[6] * (z0 - a[2])
+        res[9] = y_data[9] - a[1] - a[7] * (z0 - a[2])
         return res
 
     def fcn(self, npar, gin, f, par, iflag) -> None:
@@ -135,7 +135,7 @@ class Task:
                 # ignore this for background studies
                 if PosDirCharge[t2]["charge"] == c1:
                     continue
-                newPos, doca = self.VertexError(t1, t2, PosDirCharge)
+                newPos, _covX, doca = self.VertexError(t1, t2, PosDirCharge)
                 # Extrapolate both tracks toward the initial vertex
                 # estimate in steps to avoid long backward extrapolation
                 # through the magnetic field which causes RK failures.
@@ -164,7 +164,7 @@ class Task:
                 if not rc:
                     continue
                 # Recompute DOCA from the extrapolated positions
-                newPos, doca = self.VertexError(t1, t2, extrapolatedPosDir)
+                newPos, _covX, doca = self.VertexError(t1, t2, extrapolatedPosDir)
                 # as we have learned, need iterative procedure
                 dz = 99999.0
                 step = 0
@@ -185,7 +185,7 @@ class Task:
                         }
                     if not rc:
                         break
-                    newPos, doca = self.VertexError(t1, t2, self.newPosDir)
+                    newPos, _covX, doca = self.VertexError(t1, t2, self.newPosDir)
                     dz = abs(zBefore - newPos[2])
                     step += 1
                     if step > 10:
@@ -222,8 +222,13 @@ class Task:
                 # print "DEBUG",HNLPos[0],HNLPos[1],HNLPos[2],dist,covX[0][0],covX[1][1],covX[2][2]
                 # print "     ",mctrack.GetStartX(),mctrack.GetStartY(),mctrack.GetStartZ()
 
-                st1 = fittedTracks[t1].getFittedState()
-                st2 = fittedTracks[t2].getFittedState()
+                # Copy the fitted states: getFittedState() returns a reference to
+                # the state cached in the track's KalmanFitterInfo, and the
+                # stepwise extrapolation below would otherwise mutate the stored
+                # genfit::Track in place (affecting later pairs / getFittedState
+                # calls, making results depend on pair-processing order).
+                st1 = ROOT.genfit.MeasuredStateOnPlane(fittedTracks[t1].getFittedState())
+                st2 = ROOT.genfit.MeasuredStateOnPlane(fittedTracks[t2].getFittedState())
                 # Extrapolate to the vertex Z-plane stepwise to avoid
                 # RK failures for long backward extrapolation.
                 rc = True
@@ -322,33 +327,10 @@ class Task:
                 )
                 dValue = ctypes.c_double()
                 dError = ctypes.c_double()
-                rc = gMinuit.GetParameter(0, dValue, dError)
-                values[0] = dValue.value
-                errors[0] = dError.value
-                rc = gMinuit.GetParameter(1, dValue, dError)
-                values[1] = dValue.value
-                errors[1] = dError.value
-                rc = gMinuit.GetParameter(2, dValue, dError)
-                values[2] = dValue.value
-                errors[2] = dError.value
-                rc = gMinuit.GetParameter(3, dValue, dError)
-                values[3] = dValue.value
-                errors[3] = dError.value
-                rc = gMinuit.GetParameter(4, dValue, dError)
-                values[4] = dValue.value
-                errors[4] = dError.value
-                rc = gMinuit.GetParameter(5, dValue, dError)
-                values[5] = dValue.value
-                errors[5] = dError.value
-                rc = gMinuit.GetParameter(6, dValue, dError)
-                values[6] = dValue.value
-                errors[6] = dError.value
-                rc = gMinuit.GetParameter(7, dValue, dError)
-                values[7] = dValue.value
-                errors[7] = dError.value
-                rc = gMinuit.GetParameter(8, dValue, dError)
-                values[8] = dValue.value
-                errors[8] = dError.value
+                for i in range(9):
+                    gMinuit.GetParameter(i, dValue, dError)
+                    values[i] = dValue.value
+                    errors[i] = dError.value
 
                 xFit = values[0]
                 yFit = values[1]
@@ -516,7 +498,8 @@ class Task:
         # self.h['N_Vtx'].Fill(hasVertex)
 
     def VertexError(self, t1, t2, PosDir, CovMat=None, scalFac=None):
-        # with improved Vx x,y resolution
+        # with improved Vx x,y resolution. Returns (X, covX, dist) where covX is
+        # None when no track covariance was supplied.
         a, u = PosDir[t1]["position"], PosDir[t1]["direction"]
         c, v = PosDir[t2]["position"], PosDir[t2]["direction"]
         Vsq = v.Dot(v)
@@ -532,7 +515,8 @@ class Task:
         l1 = a - X + u * Va  # l2 = c - X + v*Vb
         dist = 2.0 * ROOT.TMath.Sqrt(l1.Dot(l1))
         if not CovMat:
-            return X, dist
+            return X, None, dist
+        assert scalFac is not None, "VertexError requires scalFac when CovMat is set"
         T = ROOT.TMatrixD(3, 12)
         for i in range(3):
             for k in range(4):

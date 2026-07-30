@@ -293,7 +293,7 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
           for (unsigned i = 0; i < list.size(); i++) {
             auto* v = getVetoPoint(list.at(i));
             Int_t muIndex = v->GetTrackID();
-            muList.insert({muIndex, i});
+            muList.insert({muIndex, list.at(i)});
           }
         }
       }

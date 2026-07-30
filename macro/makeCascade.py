@@ -45,7 +45,7 @@ ap.add_argument(
     help="If this argument is used, store all particles produced together with charm.",
 )
 ap.add_argument(
-    "--target_composition",
+    "--target-composition",
     default="W",
     help="Target composition (to determine the ratio of protons in the material). Default is Tungsten (W). Only other choice is Molybdenum (Mo)",
     choices=["W", "Mo"],

@@ -42,5 +42,3 @@ void SHiP::DetectorPoint::Print() const {
 void SHiP::DetectorPoint::extraPrintInfo() const {
   LOG(info) << "Nothing to see here";
 }
-
-ClassImp(SHiP::DetectorPoint)

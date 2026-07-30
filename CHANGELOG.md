@@ -18,12 +18,52 @@ it in future.
 
 ### Changed
 
+* SBT sensitive medium is now LAB-based liquid scintillator (`LiquidScintillator`) rather than the plastic `Scintillator`, which remains in use by SplitCal
+* Use dense vectors instead of `std::map` for ShipStack track selection and index remapping, roughly halving CPU time and reducing peak memory for high-multiplicity events (e.g. kaon/pion splitting)
+
 ### Fixed
 
-* Fix check of existing particle pdg in makeCascade
+* `veto` now registers the configured `sensitiveMed` instead of a hardcoded medium name; previously any other value resolved to a null `TGeoMedium`
 
+### Removed
+
+## 26.07 - 2026-07-21
+
+### Added
+
+* Add option to split kaons and pions right before they decay, to increase the number of muons
+* Added TRY_2026 MS version.
+* Make particle gun polar angle configurable via `--thetaMin`/`--thetaMax`
+* Add `run_tracking_scan.py` to sweep the tracking benchmark over angle and multiplicity grids
+* Add charge-ID efficiency metric to the tracking benchmark
+* Add iron material definition and simplified SiTarget digitization in the MTC, with strawtubes gating in the reconstruction flow
+
+### Changed
+
+* Flatten field-map storage and make the field evaluator reentrant
+* Changed option name from --target_composition to --target-composition in makeCascade and makeDecay
+
+### Fixed
+
+* Update charm and beauty over mbias cross sections in run_fixedTarget
+
+* Fix pot branch in Decay tree from makeDecay
+* Fix check of existing particle pdg in makeCascade
 * Restore `tPythia6Generator` instantiation from Python — broken since 26.02 by the `SHiP::Generator` base-class refactor leaving the file-based `Init` overloads pure virtual without a stub override (#1272)
 * Fix call to next Pythia event generation
+* Eliminate redundant hadron absorber field map
+* Fix Magnet MS5 and MS6 to store new SND conceptual design
+* Fix a batch of generator bugs: null-pointer dereferences and vertex fallback, mother/vertex/energy bookkeeping, RNG-selection and engine member initialisation, charm interaction-point sampling in geometry-coordinates mode, and assorted low-severity issues
+* Plug `HNLPythia8Generator` memory leaks
+* Fix scintillator tile hit processing
+* Exclude clone tracks from tracking metrics and guard the scan sort, and improve error handling in the tracking scan
+* Skip RMSE fill when there are no matched extrapolations
+* Correct MC-track checkbox state and truth/fit pairing in the event display
+* Give `shipVertex` `VertexError` a uniform 3-tuple return
+* Don't crash on unreadable ROOT files where a skip was intended
+* Match `run_simScript` output `TFile` by full path
+* Correct return types in `compute_total_br` and `compute_max_total_br`
+
 ### Removed
 
 * Remove unused legacy `Pythia6Generator` (custom text-format event-record reader from 2008, zero callsites anywhere in the tree). `tPythia6Generator` is unaffected.
@@ -33,6 +73,7 @@ it in future.
 ### Added
 
 * Add experimental script to import Muons and Matter pkl files
+* Added GenieOption to read simulations with the GENIE Geometry Driver (i.e. gevgen_fnal)
 * Add `TTreeGenerator` to read events from ROOT TTrees (including the converted M&M ntuples)
 * Add `--ttree` option to `run_simScript.py` for ROOT TTree input
 * Add `--target_composition` option to `makeDecay`, defaulting to Tungsten and mirroring the `makeCascade.py` flag

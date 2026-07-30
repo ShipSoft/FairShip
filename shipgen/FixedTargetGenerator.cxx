@@ -19,6 +19,7 @@
 #include "TGeoBBox.h"
 #include "TGeoNode.h"
 #include "TGeoVolume.h"
+#include "TH1.h"
 #include "TMCProcess.h"
 #include "TMath.h"
 #include "TROOT.h"
@@ -75,7 +76,7 @@ Bool_t FixedTargetGenerator::InitForCharmOrBeauty(const TString& fInName,
     return kFALSE;
   }
   fin = TFile::Open(fInName, "READ");
-  if (!fin || fin->IsZombie()) {
+  if (!fin) {
     LOG(error) << "FixedTargetGenerator: could not open input file "
                << fInName.Data();
     delete fin;
@@ -171,6 +172,7 @@ Bool_t FixedTargetGenerator::Init() {
     fPythiaN = new Pythia8::Pythia();
   } else if (Option != "charm" && Option != "beauty" && !G4only) {
     LOG(error) << "Option not known " << Option.Data() << ", abort";
+    return kFALSE;
   }
   if (fUseRandom1) fRandomEngine = std::make_shared<PyTr1Rng>();
   if (fUseRandom3) fRandomEngine = std::make_shared<PyTr3Rng>();
@@ -304,7 +306,6 @@ Bool_t FixedTargetGenerator::Init() {
   }
   if (targetFromGeometry) {
     // Use geometry-based coordinates passed from run_simScript.py
-    fMaterialInvestigator = new GenieGenerator();
     start[0] = xOff;
     start[1] = yOff;
     start[2] = startZ + zOff;
@@ -319,7 +320,6 @@ Bool_t FixedTargetGenerator::Init() {
     maxCrossSection = mparam[9];
   } else if (targetName != "") {
     // Fallback to fragile TGeo navigation for backward compatibility
-    fMaterialInvestigator = new GenieGenerator();
     TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();
     if (nav->CheckPath(targetName)) {
       nav->cd(targetName);
@@ -465,7 +465,7 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
     Double_t pt = TMath::Sqrt((n_mpx * n_mpx) + (n_mpy * n_mpy));
     // every event appears twice, i.e.
     if (pt < 1.e-5 && n_mid == 2212) {
-      pot += +0.5;
+      pot += 0.5;
       ntotprim += 1;
     }
     Int_t idabs = static_cast<int>(TMath::Abs(n_id));

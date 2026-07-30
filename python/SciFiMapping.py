@@ -342,7 +342,7 @@ class SciFiMapping:
                     else fibreID + 100000000 + 1000000 + 1 * 100000
                 )
                 self.scifi.GetPosition(globfiberID, AF, BF)
-                loc = self.scifi.GetLocalPos(fibreID, BF)
+                loc = self.scifi.GetLocalPos(globfiberID, BF)
                 xs.append(loc[0])
                 ys.append(loc[2])
 
@@ -361,7 +361,11 @@ class SciFiMapping:
 
             # draw SiPM rect in its unique shade
             self.scifi.GetSiPMPosition(chan, BF, AF)
-            loc_siPM = self.scifi.GetLocalPos(fibreID, BF)
+            # GetLocalPos needs the global detector id (station/plane encoded);
+            # build it from the channel so it does not depend on the (now stale)
+            # fibre loop variable, which is also unbound if the fibre list is empty.
+            globSiPMID = locChan + 100000000 + 1000000 + (0 if isU else 1) * 100000
+            loc_siPM = self.scifi.GetLocalPos(globSiPMID, BF)
             rx, ry = loc_siPM[0], loc_siPM[2]
             rect = patches.Rectangle(
                 (rx - DX, ry - DZ),
@@ -418,7 +422,7 @@ class SciFiMapping:
         self,
         number_of_channels: int = 20,
         real_event: bool = False,
-        x_coords=None,
+        x_coords: list[float] | None = None,
         output_file: str = "scifi_channel_ribbons_XY.pdf",
         figsize: tuple[int, int] = (16, 16),
         dpi: int = 300,
@@ -466,11 +470,15 @@ class SciFiMapping:
             alpha_sipm, alpha_fibre = 0.75, 0.5
         else:
             alpha_sipm, alpha_fibre = 0.1, 0.1
+            if x_coords is None or len(x_coords) < 2:
+                raise ValueError("x_coords must provide at least two coordinates when real_event is True")
             # find the channels corresponding to x_coords
-            channels_x_U = next(c for c, x in self.sipm_pos_U.items() if abs(x - x_coords[0]) < DX)
-            channel_x_U = [c for c, x in self.sipm_pos_U.items() if abs(x - x_coords[0]) < DX][0]
-            channels_x_V = next(c for c, x in self.sipm_pos_V.items() if abs(x - x_coords[1]) < DX)
-            channel_x_V = [c for c, x in self.sipm_pos_V.items() if abs(x - x_coords[1]) < DX][0]
+            matches_U = [c for c, x in self.sipm_pos_U.items() if abs(x - x_coords[0]) < DX]
+            matches_V = [c for c, x in self.sipm_pos_V.items() if abs(x - x_coords[1]) < DX]
+            if not matches_U or not matches_V:
+                raise ValueError(f"x_coords {x_coords} do not match any SciFi channel within {DX} cm")
+            channels_x_U = channel_x_U = matches_U[0]
+            channels_x_V = channel_x_V = matches_V[0]
         # 1) Figure setup
         fig, ax = plt.subplots(figsize=figsize, dpi=dpi)
 
@@ -699,14 +707,18 @@ class SciFiMapping:
             for fid in fmap[locChan]:
                 gid = fid + int(1e8 + 1e6 + (0 if chan in chansU else 1) * 1e5)
                 self.scifi.GetPosition(gid, AF, BF)
-                loc = self.scifi.GetLocalPos(fid, BF)
+                loc = self.scifi.GetLocalPos(gid, BF)
                 xs.append(loc[0])
                 zs.append(loc[2])
             for x, z in zip(xs, zs):
                 ell = patches.Ellipse((x, z), 2 * R, 2 * R, color="orange", alpha=alpha_fibre)
                 ax1.add_patch(ell)
             self.scifi.GetSiPMPosition(chan, BF, AF)
-            loc = self.scifi.GetLocalPos(fid, BF)
+            # Build the global detector id from the channel so it does not depend
+            # on the (now stale) fibre loop variable, which is also unbound if the
+            # fibre list is empty.
+            gidSiPM = locChan + int(1e8 + 1e6 + (0 if chan in chansU else 1) * 1e5)
+            loc = self.scifi.GetLocalPos(gidSiPM, BF)
             rx, rz = loc[0], loc[2]
             rect = patches.Rectangle(
                 (rx - DX, rz - DZ),
@@ -805,20 +817,20 @@ class SciFiMapping:
         fiber_to_sipm_map_U, _ = self.get_fibre_to_simp_map()
 
         print("Validating U plane mapping:")
-        for fiber_id, fibers in sipm_to_fiber_map_U.items():
-            for sipm_chan, chan_info in fibers.items():
+        for sipm_chan, fibers in sipm_to_fiber_map_U.items():
+            for fiber_id, chan_info in fibers.items():
                 weight = chan_info["weight"]
                 xpos = chan_info["xpos"]
                 print(
-                    f"""---- Fiber index: {fiber_id}, SiPM Channel: {sipm_chan},
+                    f"""---- SiPM Channel: {sipm_chan}, Fiber index: {fiber_id},
                     Weight: {weight}, X Position: {xpos}"""
                 )
-        for sipm_chan, sipm_fibers in fiber_to_sipm_map_U.items():
-            for fiber_id, fiber_info in sipm_fibers.items():
+        for fiber_id, sipm_fibers in fiber_to_sipm_map_U.items():
+            for sipm_chan, fiber_info in sipm_fibers.items():
                 weight = fiber_info["weight"]
                 xpos = fiber_info["xpos"]
                 print(
-                    f"""++++ SiPM Channel: {sipm_chan}, Fiber index: {fiber_id},
+                    f"""++++ Fiber index: {fiber_id}, SiPM Channel: {sipm_chan},
                     Weight: {weight}, X Position: {xpos}"""
                 )
 

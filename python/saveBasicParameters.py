@@ -6,13 +6,14 @@ import os
 import subprocess
 
 import ROOT
-from ShipGeoConfig import AttrDict
+from ShipGeoConfig import Config
 
 
 def retrieveGitTags(o):
     if "FAIRSHIP_HASH" in os.environ:
         o.FairShip = os.environ["FAIRSHIP_HASH"]
-        o.FairRoot = os.environ["FAIRROOT_HASH"]
+        if "FAIRROOT_HASH" in os.environ:
+            o.FairRoot = os.environ["FAIRROOT_HASH"]
     else:
         source_dir = os.environ.get("FAIRSHIP", os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
         with contextlib.suppress(subprocess.CalledProcessError, FileNotFoundError):
@@ -27,7 +28,9 @@ def retrieveGitTags(o):
 def execute(f, ox, name="ShipGeo"):
     """Save geometry configuration to ROOT file as JSON string"""
     if isinstance(ox, str):
-        ox = AttrDict()
+        # A string input is the JSON serialisation of the config; parse it into a
+        # Config so the content is preserved and dumps_json() is available.
+        ox = Config().loads_json(ox)
     o = retrieveGitTags(ox)
 
     if isinstance(f, str):

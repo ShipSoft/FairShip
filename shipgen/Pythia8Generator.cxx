@@ -20,7 +20,6 @@
 const Double_t cm = 10.;                  // pythia units are mm
 const Double_t c_light = 2.99792458e+10;  // speed of light in cm/sec (c_light
                                           // = 2.99792458e+8 * m/s)
-Int_t counter = 0;
 constexpr Double_t mbarn = 1E-3 * 1E-24 * TMath::Na();  // cm^2 * Avogadro
 
 // -----   Default constructor   -------------------------------------------
@@ -52,7 +51,7 @@ Bool_t Pythia8Generator::Init() {
     fInputFile = TFile::Open(fextFile->c_str(), "READ");
     LOG(info) << "Open external file with charm or beauty hadrons: "
               << *fextFile;
-    if (!fInputFile || fInputFile->IsZombie()) {
+    if (!fInputFile) {
       LOG(error) << "Pythia8Generator: error opening input file " << *fextFile;
       delete fInputFile;
       fInputFile = nullptr;
@@ -141,7 +140,6 @@ Bool_t Pythia8Generator::Init() {
   fPythia->init();
   if (targetFromGeometry) {
     // Use geometry-based coordinates passed from run_simScript.py
-    fMaterialInvestigator = new GenieGenerator();
     start[0] = xOff;
     start[1] = yOff;
     start[2] = startZ;
@@ -156,7 +154,6 @@ Bool_t Pythia8Generator::Init() {
     maxCrossSection = mparam[9];
   } else if (targetName != "") {
     // Fallback to fragile TGeo navigation for backward compatibility
-    fMaterialInvestigator = new GenieGenerator();
     TGeoVolume* top = gGeoManager->GetTopVolume();
     TGeoNode* target = top->FindNode(targetName);
     if (!target) {
@@ -190,6 +187,16 @@ Bool_t Pythia8Generator::ReadEvent(FairPrimaryGenerator* cpg) {
   Double_t x, y, z, px, py, pz, dl, e, tof;
   Int_t im, id, key;
   fnRetries = 0;
+  // ReadEvent only supports the external-file mode (charm/beauty hadrons read
+  // from fTree). The standalone (no external file) branch in Init() has no
+  // corresponding event path here, so guard against dereferencing a null fTree
+  // instead of crashing on an uninitialized pointer.
+  if (!fTree) {
+    LOG(fatal) << "Pythia8Generator::ReadEvent: no external input tree is set; "
+                  "standalone generation is not implemented. Call "
+                  "UseExternalFile() before generating.";
+    return kFALSE;
+  }
   // take charm hadrons from external file
   // correct eventually for too much primary Ds produced by pythia6
   key = 0;
@@ -222,7 +229,7 @@ Bool_t Pythia8Generator::ReadEvent(FairPrimaryGenerator* cpg) {
     }
   }
   Double_t zinter = 0;
-  if (targetName != "") {
+  if (targetFromGeometry || targetName != "") {
     // calculate primary proton interaction point:
     // loop over trajectory between start and end to pick an interaction point,
     // copied from GenieGenerator and adapted to hadrons
@@ -334,7 +341,6 @@ Bool_t Pythia8Generator::ReadEvent(FairPrimaryGenerator* cpg) {
     }
     key += addedParticles - 1;  // pythia counts from 1
   }
-  counter += 1;
   // now the underlying event
   bool lx = true;
   while (lx) {

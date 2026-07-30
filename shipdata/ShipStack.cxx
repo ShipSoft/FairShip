@@ -34,10 +34,8 @@ ShipStack::ShipStack(Int_t size)
       fStack(),
       fParticles(new TClonesArray("TParticle", size)),
       fTracks(nullptr),
-      fStoreMap(),
-      fStoreIter(),
+      fStoreFlags(),
       fIndexMap(),
-      fIndexIter(),
       fPointsMap(),
       fCurrentTrack(-1),
       fNPrimaries(0),
@@ -47,7 +45,8 @@ ShipStack::ShipStack(Int_t size)
       fStoreSecondaries(kTRUE),
       fMinPoints(1),
       fEnergyCut(0.),
-      fStoreMothers(kTRUE) {
+      fStoreMothers(kTRUE),
+      fSplitting(kFALSE) {
   fTracks = new std::vector<ShipMCTrack>();
   fTracks->reserve(size);
 }
@@ -86,14 +85,33 @@ void ShipStack::PushTrack(Int_t toBeDone, Int_t parentId, Int_t pdgCode,
   LOG(debug2) << "ShipStack:  " << fNParticles << " " << pdgCode << " " << parentId
 	     <<    " " << secondparentID<<" "<<proc<< endl;
 
+  // update weight to correspond to parentWeight * weight for splitting cases
+  if (fSplitting) {
+    if (parentId >= 0) {
+      if (parentId < fParticles->GetEntriesFast()) {
+        TParticle* parentPart =
+            dynamic_cast<TParticle*>(fParticles->At(parentId));
+        if (parentPart) {
+          Double_t parentWeight = parentPart->GetWeight();
+          weight = weight * parentWeight;
+        }
+      }
+    }
+  }
+
+  Int_t trackId = fNParticles;
+
   // --> Get TParticle array
   TClonesArray& partArray = *fParticles;
 
-  // --> Create new TParticle and add it to the TParticle array
-  Int_t trackId = fNParticles;
+  // --> Set argument variable
+  ntr = trackId;
+
   Int_t nPoints = 0;
   Int_t daughter1Id = -1;
   Int_t daughter2Id = -1;
+
+  // --> Create new TParticle and add it to the TParticle array
   TParticle* particle = new (partArray[fNParticles++])
       TParticle(pdgCode, trackId, parentId, nPoints, daughter1Id, daughter2Id,
                 px, py, pz, e, vx, vy, vz, time);
@@ -118,12 +136,8 @@ void ShipStack::PushTrack(Int_t toBeDone, Int_t parentId, Int_t pdgCode,
   if (parentId < 0) {
     fNPrimaries++;
   }
-
-  // --> Set argument variable
-  ntr = trackId;
-
-  // --> Push particle on the stack if toBeDone is set
   if (toBeDone == 1) {
+    // --> Push particle on the stack if toBeDone is set
     particle->SetBit(kDoneBit);
     fStack.push(particle);
   }
@@ -209,8 +223,8 @@ void ShipStack::FillTrackArray() {
 
   Int_t evtNo = -1;
 
-  // --> Reset index map and number of output tracks
-  fIndexMap.clear();
+  // --> Reset index map (-2 = not stored) and number of output tracks
+  fIndexMap.assign(fNParticles, -2);
   fNTracks = 0;
 
   // --> Check tracks for selection criteria
@@ -220,31 +234,15 @@ void ShipStack::FillTrackArray() {
 
   // --> Loop over fParticles array and copy selected tracks
   for (Int_t iPart = 0; iPart < fNParticles; iPart++) {
-    fStoreIter = fStoreMap.find(iPart);
-    if (fStoreIter == fStoreMap.end()) {
-      LOGF(fatal, "ShipStack: Particle %i not found in storage map! ", iPart);
-    }
-    Bool_t store = (*fStoreIter).second;
-
-    if (store) {
+    if (fStoreFlags[iPart]) {
       fTracks->emplace_back(dynamic_cast<TParticle*>(GetParticle(iPart)));
       ShipMCTrack& track = fTracks->back();
       fIndexMap[iPart] = fNTracks;
-      // --> Set the number of points in the detectors for this track
-      for (Int_t iDet = kVETO; iDet < kEndOfList; iDet++) {
-        pair<Int_t, Int_t> a(iPart, iDet);
-        track.SetNPoints(iDet, fPointsMap[a]);
-      }
       track.SetTrackID(fNTracks);
       track.SetEventID(evtNo);
       fNTracks++;
-    } else {
-      fIndexMap[iPart] = -2;
     }
   }
-
-  // --> Map index for primary mothers
-  fIndexMap[-1] = -1;
 
   // --> Screen output
   //Print(1);
@@ -260,16 +258,16 @@ void ShipStack::UpdateTrackIndex(TRefArray* detList) {
   for (Int_t i = 0; i < fNTracks; i++) {
     ShipMCTrack& track = (*fTracks)[i];
     Int_t iMotherOld = track.GetMotherId();
-    fIndexIter = fIndexMap.find(iMotherOld);
-    if (fIndexIter == fIndexMap.end()) {
+    if (iMotherOld >= static_cast<Int_t>(fIndexMap.size())) {
       LOGF(fatal, "ShipStack: Particle index %i not found in dex map! ",
            iMotherOld);
     }
-    track.SetMotherId((*fIndexIter).second);
+    track.SetMotherId(iMotherOld < 0 ? -1 : fIndexMap[iMotherOld]);
   }
 
   if (fDetList == nullptr) {
     // Now iterate through all active detectors
+    fDetList = detList;
     fDetIter = detList->MakeIterator();
     fDetIter->Reset();
   } else {
@@ -296,12 +294,11 @@ void ShipStack::UpdateTrackIndex(TRefArray* detList) {
           FairMCPoint* point = dynamic_cast<FairMCPoint*>(hitArray->At(iPoint));
           Int_t iTrack = point->GetTrackID();
 
-          fIndexIter = fIndexMap.find(iTrack);
-          if (fIndexIter == fIndexMap.end()) {
+          if (iTrack < -1 || iTrack >= static_cast<Int_t>(fIndexMap.size())) {
             LOGF(fatal, "ShipStack: Particle index %i not found in index map! ",
                  iTrack);
           }
-          point->SetTrackID((*fIndexIter).second);
+          point->SetTrackID(iTrack < 0 ? -1 : fIndexMap[iTrack]);
         }
 
       }  // Collections of this detector
@@ -387,8 +384,8 @@ TParticle* ShipStack::GetParticle(Int_t trackID) const {
 
 // -----   Private method SelectTracks   -----------------------------------
 void ShipStack::SelectTracks() {
-  // --> Clear storage map
-  fStoreMap.clear();
+  // --> Reset storage flags
+  fStoreFlags.assign(fNParticles, kFALSE);
 
   // --> Check particles in the fParticle array
   for (Int_t i = 0; i < fNParticles; i++) {
@@ -432,7 +429,7 @@ void ShipStack::SelectTracks() {
       }
     }
     // --> Set storage flag
-    fStoreMap[i] = store;
+    fStoreFlags[i] = store;
     // special case for Ship generators, want to keep all original particles
     // with their mother daughter relationship independent if tracked or not.
     // apply a dirty trick and use second mother to identify original generator
@@ -443,13 +440,12 @@ void ShipStack::SelectTracks() {
   // --> If flag is set, flag recursively mothers of selected tracks
   if (fStoreMothers) {
     for (Int_t i = 0; i < fNParticles; i++) {
-  
-      if (fStoreMap[i]) {
+      if (fStoreFlags[i]) {
         Int_t iMother = GetParticle(i)->GetMother(0);
         {
 	  int safeCount = 0;
           while (iMother >= 0) {
-            fStoreMap[iMother] = kTRUE;
+            fStoreFlags[iMother] = kTRUE;
             iMother = GetParticle(iMother)->GetMother(0);
 	    safeCount++;
 	    if (safeCount > 10000) {

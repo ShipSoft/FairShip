@@ -115,19 +115,18 @@ def brMesonToDP(mass, epsilon, mumPdg, doprint=False):
         return brMesonToMesonDP(mass, epsilon, mumPdg, 113, doprint), brMesonToGammaDP(mass, epsilon, mumPdg, doprint)
     else:
         print("Warning! Unknown mother pdgId %d, not implemented. Setting br to 0." % mumPdg)
-        return 1
+        return 0
 
 
 def mesonProdRate(mass, epsilon, mumPdg, doprint=False):
     brM2DP = brMesonToDP(mass, epsilon, mumPdg, doprint)
-    if mumPdg == 331:
+    if isinstance(brM2DP, tuple):
         avgMeson = getAverageMesonRate(mumPdg) * brM2DP[0]
         avgMeson1 = getAverageMesonRate(mumPdg) * brM2DP[1]
         return avgMeson * 0.6, avgMeson1 * 0.6
         # return avgMeson + avgMeson1
-    if mumPdg != 331:
-        avgMeson = getAverageMesonRate(mumPdg) * brM2DP
-        return avgMeson * 0.6
+    avgMeson = getAverageMesonRate(mumPdg) * brM2DP
+    return avgMeson * 0.6
 
 
 # from interpolation of Pythia XS, normalised to epsilon^2
@@ -143,16 +142,16 @@ def qcdprodRate(mass, epsilon, doprint=False):
 
 
 def getDPprodRate(mass, epsilon, prodMode, mumPdg, doprint=False):
-    if "pbrem" in prodMode:
-        print("VDM")
-        return pbremProdRateVDM(mass, epsilon, doprint)
-    elif "pbrem1" in prodMode:
+    if "pbrem1" in prodMode:
         print("Dipole")
         return pbremProdRateDipole(mass, epsilon, doprint)
+    elif "pbrem" in prodMode:
+        print("VDM")
+        return pbremProdRateVDM(mass, epsilon, doprint)
     elif "meson" in prodMode:
         return mesonProdRate(mass, epsilon, mumPdg, doprint)
     elif "qcd" in prodMode:
         return qcdprodRate(mass, epsilon, doprint)
     else:
         print("Unknown production mode! Choose among pbrem, meson or qcd.")
-        return 1
+        return 0

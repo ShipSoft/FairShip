@@ -68,8 +68,7 @@ def addHNLdecayChannels(P8Gen, hnl, conffile=os.path.expandvars("$FAIRSHIP/pytho
     # Add decay channels
     for dec in allowed:
         if dec not in wanted:
-            print("addHNLdecayChannels ERROR: channel not configured!\t", dec)
-            quit()
+            raise ValueError(f"addHNLdecayChannels: channel not configured: {dec}")
         if allowed[dec] == "yes" and wanted[dec] == "yes":
             particles = list(dec.replace("->", " ").split())
             children = particles[1:]
@@ -106,8 +105,7 @@ def addDarkPhotondecayChannels(
     for dec in allowed:
         print("channel allowed:", dec)
         if dec not in wanted:
-            print("addDarkPhotondecayChannels WARNING: channel not configured! Please add also in conf file.\t", dec)
-            quit()
+            raise ValueError(f"addDarkPhotondecayChannels: channel not configured (add it to the conf file): {dec}")
         print("channel wanted:", dec)
 
         if allowed[dec] == "yes" and wanted[dec] == "yes":

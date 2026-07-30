@@ -17,9 +17,6 @@ class UpstreamTaggerPoint;
 class FairVolume;
 class TClonesArray;
 
-using ShipUnit::cm;
-using ShipUnit::m;
-
 /**
  * @brief Upstream Background Tagger (UBT) detector
  *
@@ -68,21 +65,17 @@ class UpstreamTagger : public SHiP::Detector<UpstreamTaggerPoint> {
   /**  Create the detector geometry */
   void ConstructGeometry() override;
 
-  Double_t module[11][3];  // x,y,z centre positions for each module
-  // TODO Avoid 1-indexed array!
-
   /** Detector parameters.*/
 
   Double_t det_zPos;  //!  z-position of detector (set via SetZposition)
   // Detector box dimensions (set via SetBoxDimensions, defaults provided below)
-  Double_t xbox_fulldet = 4.4 * m;  //!  X dimension (default: 4.4 m)
-  Double_t ybox_fulldet = 6.4 * m;  //!  Y dimension (default: 6.4 m)
+  Double_t xbox_fulldet = 4.4 * ShipUnit::m;  //!  X dimension (default: 4.4 m)
+  Double_t ybox_fulldet = 6.4 * ShipUnit::m;  //!  Y dimension (default: 6.4 m)
   Double_t zbox_fulldet =
-      16.0 * cm;  //!  Z dimension/thickness (default: 16 cm)
+      16.0 * ShipUnit::cm;  //!  Z dimension/thickness (default: 16 cm)
 
  private:
   TGeoVolume* UpstreamTagger_fulldet;  // Timing_detector_1 object
-  TGeoVolume* scoringPlaneUBText;      // new scoring plane
   /** container for data points */
 
   UpstreamTagger(const UpstreamTagger&) = delete;

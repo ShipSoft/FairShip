@@ -1,24 +1,27 @@
 name: Legacy CVMFS CI
 on:
-  pull_request:
-    branches: [master]
   push:
-    branches: [master]
-    tags: ['v*']
+    branches: [main]
+    # Releases use unprefixed CalVer tags (e.g. 26.06, 26.05.1), not v-prefixed
+    # (matches the container-build workflow's trigger). The YY.MM[.patch] shape
+    # keeps out non-release tags such as 26-debug or 2026-rc1.
+    tags: ['[0-9][0-9].[0-9]*']
   workflow_dispatch:
-  merge_group:
+  schedule:
+    - cron: 30 2 * * *
 concurrency:
-  group: legacy-cvmfs-${{ github.event.pull_request.number || github.ref }}
+  group: legacy-cvmfs-${{ github.ref }}
   cancel-in-progress: true
 permissions:
   contents: read
 jobs:
   build-and-test:
+    name: Build & test (${{ matrix.version }})
     runs-on: self-hosted
     strategy:
       fail-fast: false
       matrix:
-        version: ["26.02", "26.06"]
+        version: ["26.02", "26.07"]
     container:
       image: registry.cern.ch/ship/gha-runner:latest
       volumes:
@@ -27,7 +30,7 @@ jobs:
       version: ${{ matrix.version }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           path: FairShip
           lfs: true

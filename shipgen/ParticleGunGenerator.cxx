@@ -47,7 +47,7 @@ static const std::map<std::string, ModelSpec>& kVertexModels() {
         [](ParticleGunParticle& p, const std::vector<Double32_t>& pars) {
           p.X = (pars[1] > 0) ? gRandom->Uniform(pars[0] - pars[1] / 2.,
                                                  pars[0] + pars[1] / 2.)
-                              : pars[1];
+                              : pars[0];
           p.Y = (pars[3] > 0) ? gRandom->Uniform(pars[2] - pars[3] / 2.,
                                                  pars[2] + pars[3] / 2.)
                               : pars[2];
@@ -88,7 +88,7 @@ void ParticleGunGenerator::LoadHistoFromFile(
     const std::string& inFile, const std::string& inHisto,
     std::vector<std::string> varNames) {
   TFile* loadFile = TFile::Open(inFile.c_str(), "READ");
-  if (!loadFile || loadFile->IsZombie()) {
+  if (!loadFile) {
     delete loadFile;
     LOG(fatal) << "ParticleGunGenerator: Cannot open file " << inFile;
     throw std::runtime_error("ParticleGunGenerator: Cannot open file " +

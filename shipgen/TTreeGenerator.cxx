@@ -49,7 +49,7 @@ Bool_t TTreeGenerator::Init(const char* fileName, int startEvent) {
   fCurrentEvent = 0;
 
   fInputFile = TFile::Open(fileName, "READ");
-  if (!fInputFile || fInputFile->IsZombie()) {
+  if (!fInputFile) {
     LOG(error) << "TTreeGenerator: Cannot open file " << fileName;
     delete fInputFile;
     fInputFile = nullptr;
@@ -104,8 +104,10 @@ Bool_t TTreeGenerator::ReadEvent(FairPrimaryGenerator* primGen) {
     return kFALSE;
   }
 
-  // Position in cm, momentum in GeV/c
-  primGen->AddTrack(fPdgId, fPx, fPy, fPz, fX, fY, fZ, -1, true, 0., 0.,
+  // Position in cm, momentum in GeV/c. Pass e < 0 (-9e9) so
+  // FairPrimaryGenerator computes the energy from the momentum and PDG mass
+  // instead of storing E = 0.
+  primGen->AddTrack(fPdgId, fPx, fPy, fPz, fX, fY, fZ, -1, true, -9e9, 0.,
                     fWeight);
 
   fCurrentEvent++;

@@ -10,6 +10,7 @@
 #ifndef FIELD_SHIPBFIELDMAP_H_
 #define FIELD_SHIPBFIELDMAP_H_
 
+#include <array>
 #include <string>
 #include <utility>
 #include <vector>
@@ -79,8 +80,9 @@ class ShipBFieldMap : public TVirtualMagField {
   */
   void Field(const Double_t* position, Double_t* B) override;
 
-  //! Typedef for a vector containing a vector of floats
-  typedef std::vector<std::vector<Float_t>> floatArray;
+  //! Typedef for the field-map storage: one contiguous (Bx, By, Bz) triple per
+  //! grid node, giving cache-friendly access with no per-node heap allocation.
+  typedef std::vector<std::array<Float_t, 3>> floatArray;
 
   //! Retrieve the field map
   /*!
@@ -354,14 +356,15 @@ class ShipBFieldMap : public TVirtualMagField {
   */
   Int_t getMapBin(Int_t iX, Int_t iY, Int_t iZ);
 
-  //! Calculate the magnetic field component using trilinear interpolation.
-  //! This function uses the various "binX" integers and "uFrac" variables
+  //! Trilinear interpolation of one field component from its eight corner
+  //! values A..H and the fractional bin distances (with their complements)
   /*!
-    \param [in] theAxis The coordinate axis (CoordAxis enumeration for x, y or
-    z)
-    \returns the magnetic field component for the given axis
+    \returns the interpolated field component
   */
-  Float_t BInterCalc(CoordAxis theAxis);
+  static Float_t triLinearInterp(Float_t A, Float_t B, Float_t C, Float_t D,
+                                 Float_t E, Float_t F, Float_t G, Float_t H,
+                                 Float_t xFrac, Float_t xFrac1, Float_t yFrac,
+                                 Float_t yFrac1, Float_t zFrac, Float_t zFrac1);
 
   //! Store the field map information as a vector of 3 floats.
   //! Map data ordering is given by first incrementing z, then y, then x
@@ -454,48 +457,6 @@ class ShipBFieldMap : public TVirtualMagField {
 
   //! Double converting Tesla to kiloGauss (for VMC/FairRoot B field units)
   Float_t Tesla_;
-
-  //! Bin A for the trilinear interpolation
-  Int_t binA_;
-
-  //! Bin B for the trilinear interpolation
-  Int_t binB_;
-
-  //! Bin C for the trilinear interpolation
-  Int_t binC_;
-
-  //! Bin D for the trilinear interpolation
-  Int_t binD_;
-
-  //! Bin E for the trilinear interpolation
-  Int_t binE_;
-
-  //! Bin F for the trilinear interpolation
-  Int_t binF_;
-
-  //! Bin G for the trilinear interpolation
-  Int_t binG_;
-
-  //! Bin H for the trilinear interpolation
-  Int_t binH_;
-
-  //! Fractional bin distance along x
-  Float_t xFrac_;
-
-  //! Fractional bin distance along y
-  Float_t yFrac_;
-
-  //! Fractional bin distance along z
-  Float_t zFrac_;
-
-  //! Complimentary fractional bin distance along x
-  Float_t xFrac1_;
-
-  //! Complimentary fractional bin distance along y
-  Float_t yFrac1_;
-
-  //! Complimentary fractional bin distance along z
-  Float_t zFrac1_;
 };
 
 #endif  // FIELD_SHIPBFIELDMAP_H_

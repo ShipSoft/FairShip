@@ -18,12 +18,11 @@ using std::cout;
 using std::endl;
 using std::setw;
 
-Double_t kilogauss = 1.;
-Double_t tesla = 10 * kilogauss;
+constexpr Double_t kilogauss = 1.;
+constexpr Double_t tesla = 10 * kilogauss;
 
-Double_t cm = 1;         // cm
-Double_t m = 100 * cm;   //  m
-Double_t mm = 0.1 * cm;  //  mm
+constexpr Double_t cm = 1;        // cm
+constexpr Double_t m = 100 * cm;  //  m
 
 // -----   Default constructor   -------------------------------------------
 ShipBellField::ShipBellField()

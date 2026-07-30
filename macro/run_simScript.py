@@ -8,6 +8,7 @@ import sys
 import uuid
 from argparse import ArgumentParser
 from array import array
+from typing import cast
 
 import geometry_config
 import ROOT
@@ -23,8 +24,6 @@ def _fraction_0_1(value: str) -> float:
         raise ValueError("--chargeFraction must be between 0 and 1")
     return v
 
-
-DownScaleDiMuon = False
 
 # Default HNL parameters
 theHNLMass = 1.0 * u.GeV
@@ -162,9 +161,18 @@ pg_parser.add_argument(
     default=False,
     help="Print out the PG models that are available",
 )
+pg_parser.add_argument("--thetaMin", type=float, default=0, help="Minimum polar angle [deg] (default: 0)")
+pg_parser.add_argument("--thetaMax", type=float, default=0, help="Maximum polar angle [deg] (default: 0)")
 # === End of PG commands ===
 # === Genie subcommand ===
 genie_parser = subparsers.add_parser("Genie", help="Genie for reading and processing neutrino interactions")
+genie_parser.add_argument(
+    "--GenieOption",
+    dest="GenieOption",
+    default="simple_gevgen",
+    choices=["simple_gevgen", "genie_geometry"],
+    help="Genie generation option: (simple_gevgen, genie_geometry)",
+)
 genie_parser.add_argument(
     "--z_start_nu",
     dest="z_start_nu",
@@ -323,8 +331,8 @@ parser.add_argument("-D", "--display", dest="eventDisplay", help="store trajecto
 parser.add_argument(
     "--shieldName",
     help="The name of the muon shield in the database to use.",
-    default="TRY_2025",
-    choices=["TRY_2025"],
+    default="TRY_2026",
+    choices=["TRY_2025", "TRY_2026"],
 )
 parser.add_argument(
     "--MesonMother", dest="MM", help="Choose DP production meson source: pi0, eta, omega, eta1, eta11", default="pi0"
@@ -581,6 +589,7 @@ if options.pythia8:
                 P8gen, options.theMass, theProductionCouplings, theDecayCouplings, inclusive, options.deepCopy
             )
         if options.RPVSUSY:
+            assert theCouplings is not None, "options.thecouplings is required for --RPVSUSY"
             print("Generating RPVSUSY events of mass %.3f GeV" % theHNLMass)
             print(f"and with couplings=[{theCouplings[0]:.3f},{theCouplings[1]:.3f}]")
             print("and with stop mass=%.3f GeV\n" % theCouplings[2])
@@ -612,6 +621,7 @@ if options.pythia8:
         if passDPconf != 1:
             sys.exit()
     if HNL or options.RPVSUSY or options.DarkPhoton:
+        assert P8gen is not None  # guaranteed by the three branches above
         P8gen.SetSmearBeam(options.SmearBeam * u.cm)  # Gaussian beam smearing
         P8gen.SetPaintRadius(options.PaintBeam * u.cm)  # beam painting radius
         P8gen.SetLmin(ship_geo.decayVolume.z0 - ship_geo.target.z0)
@@ -694,10 +704,9 @@ if options.command == "PG":
         sys.exit(0)
     myPgun.SetPRange(options.Estart, options.Eend)
     myPgun.SetPhiRange(0, 360)  # // Azimuth angle range [degree]
-    if (options.thetamin>=0 and options.thetamax<=90 and options.thetamin <= options.thetamax):
-        myPgun.SetThetaRange(options.thetamin, options.thetamax)  # // Polar angle in lab system range [degree]
-    else:
-        myPgun.SetThetaRange(0,90)  # // Polar angle in lab system range [degree]
+    if options.thetaMin > options.thetaMax:
+        sys.exit(f"thetaMin ({options.thetaMin}) must not exceed thetaMax ({options.thetaMax})")
+    myPgun.SetThetaRange(options.thetaMin, options.thetaMax)  # Polar angle in lab system [degree]
     if options.bothCharges:
         myPgun.SetBothCharges(True, options.chargeFraction)
     if options.multiplePG:
@@ -750,9 +759,14 @@ if options.command == "Genie":
     ut.checkFileExists(inputFile)
     primGen.SetTarget(0.0, 0.0)  # do not interfere with GenieGenerator
     Geniegen = ROOT.GenieGenerator()
+
+    GenieOptions = {"simple_gevgen": 0, "genie_geometry": 3}
+    genie_option = GenieOptions[options.GenieOption]  # 0 standard, 3 GENIE geometry driver
+    Geniegen.SetGenerationOption(genie_option)
     if not Geniegen.Init(inputFile, options.firstEvent):
         raise RuntimeError(f"Failed to initialize GenieGenerator from input: {inputFile}")
-    Geniegen.SetPositions(ship_geo.target.z0, options.z_start_nu, options.z_end_nu)
+    if genie_option == 0:
+        Geniegen.SetPositions(ship_geo.target.z0, options.z_start_nu, options.z_end_nu)
     primGen.AddGenerator(Geniegen)
     ROOT.SetOwnership(Geniegen, False)  # C++ FairPrimaryGenerator takes ownership
     options.nEvents = Geniegen.GetNevents() if options.nEvents == -1 else min(options.nEvents, Geniegen.GetNevents())
@@ -821,12 +835,6 @@ if options.muonback:
     MuonBackgen.SetPaintRadius(options.PaintBeam * u.cm)
     MuonBackgen.SetSmearBeam(options.SmearBeam * u.cm)
     MuonBackgen.SetPhiRandomize(options.phiRandom)
-    if DownScaleDiMuon:
-        testf = ROOT.TFile.Open(inputFile[0])
-        if not testf.FileHeader.GetTitle().find("diMu100.0") < 0:
-            MuonBackgen.SetDownScaleDiMuon()  # avoid interference with boosted channels
-            print("MuonBackgenerator: set downscale for dimuon on")
-        testf.Close()
     if options.sameSeed:
         MuonBackgen.SetSameSeed(options.sameSeed)
     primGen.AddGenerator(MuonBackgen)
@@ -855,6 +863,7 @@ if options.muonback:
     # ROOT.kShipMuonsCrossSectionFactor = 100.
 #
 if options.cosmics:
+    assert Opt_high is not None  # guaranteed by the same options.cosmics check above
     primGen.SetTarget(0.0, 0.0)
     Cosmicsgen = ROOT.CosmicsGenerator()
     import CMBG_conf
@@ -999,14 +1008,13 @@ if not options.reproducible:
 # remove empty events
 if options.muonback:
     tmpFile = outFile + "tmp"
-    xxx = outFile.split("/")
-    check = xxx[len(xxx) - 1]
-    fin = False
+    target = os.path.normpath(outFile)
+    fin: ROOT.TFile | None = None
     for ff in ROOT.gROOT.GetListOfFiles():
-        nm = ff.GetName().split("/")
-        if nm[len(nm) - 1] == check:
-            fin = ff
-    if not fin:
+        if os.path.normpath(ff.GetName()) == target:
+            fin = cast(ROOT.TFile, ff)
+            break
+    if fin is None:
         fin = ROOT.TFile.Open(outFile)
     t = fin["cbmsim"]
     fout = ROOT.TFile(tmpFile, "recreate")
@@ -1087,8 +1095,6 @@ if options.command == "Genie":
     # Copy Genie (gst TTree) information to the output file
     input_path = inputFile[0] if isinstance(inputFile, (list, tuple)) else inputFile
     f_input = ROOT.TFile.Open(input_path, "READ")
-    if not f_input or f_input.IsZombie():
-        raise OSError(f"Failed to open GENIE input file: {input_path}")
     gst = f_input["gst"]
     if not gst:
         raise KeyError("TTree 'gst' not found in GENIE input file")

@@ -5,6 +5,7 @@
 #ifndef MUONSHIELDOPTIMIZATION_EXITHADRONABSORBER_H_
 #define MUONSHIELDOPTIMIZATION_EXITHADRONABSORBER_H_
 
+#include <set>
 #include <utility>
 
 #include "Detector.h"
@@ -13,6 +14,15 @@
 #include "vetoPoint.h"
 
 class FairVolume;
+
+struct TrackBuffer {
+  Int_t pdg;
+  Double_t px, py, pz, e;
+  Double_t x, y, z, t;
+  Double_t polx, poly, polz;
+  Double_t weight;
+  Int_t parentID;
+};
 
 class exitHadronAbsorber : public SHiP::Detector<vetoPoint> {
  public:
@@ -29,6 +39,12 @@ class exitHadronAbsorber : public SHiP::Detector<vetoPoint> {
 
   void FinishRun() override;
   void PreTrack() override;
+  void PostTrack() override;
+  void BeginEvent() override;
+  // void FinishEvent();
+
+  void SetNSplits(Int_t n) { fNsplits = n; }
+  void SetSplitMultipleTimes() { fSplitOnce = kFALSE; }
 
   inline void SetEnergyCut(Float_t emax) { EMax = emax; }
   inline void SetOnlyMuons() { fOnlyMuons = kTRUE; }
@@ -50,6 +66,18 @@ class exitHadronAbsorber : public SHiP::Detector<vetoPoint> {
   Float_t EMax;              //! max energy to transport
   Bool_t fCylindricalPlane;  //! cylindrical sensPlane flag
   Bool_t fUseCaveCoordinates;  //! set position from cave
+
+  int32_t fNsplits;
+  Double_t fCurrentSurvivalFactor;  // survival factor at every step, if we
+                                    // choose to split at every step
+  Bool_t fSplitOnce =
+      kTRUE;  // determine if we want to split once (when the particle decays)
+              // or at every step (taking decay probabilities into account)
+
+  std::vector<TrackBuffer> fSecondaryBuffer;
+  std::set<Int_t> fCloneTracks;
+  std::set<Int_t> fContinuationTracks;
+  std::set<Int_t> fDecayedParentIDs;
 
   TFile* fout;               //!
   TClonesArray* fElectrons;  //!

@@ -157,9 +157,9 @@ class veto : public SHiP::Detector<vetoPoint> {
                 TGeoVolumeAssembly* tDecayVacuum,
                 TGeoVolumeAssembly* tOuterWall, TGeoVolumeAssembly* tLongitRib,
                 TGeoVolumeAssembly* tVerticalRib, TGeoVolumeAssembly* ttLiSc,
-                int& liScCounter, int blockNr, int nx, int ny, double z1,
-                double z2, double Zshift, double dist, double wallThick,
-                double liscThick1, double liscThick2, double ribThick);
+                int blockNr, int nx, int ny, double z1, double z2,
+                double Zshift, double dist, double wallThick, double liscThick1,
+                double liscThick2, double ribThick);
   /**Definition of a Corner Rib Support Structure.
    */
   TGeoVolumeAssembly* GeoCornerRib(const TString& xname, double ribThick,

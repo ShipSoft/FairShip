@@ -173,7 +173,12 @@ function(ship_add_library)
                 "$<$<BOOL:$<TARGET_PROPERTY:${ARG_NAME},COMPILE_DEFINITIONS>>:-D$<JOIN:$<TARGET_PROPERTY:${ARG_NAME},COMPILE_DEFINITIONS>,$<SEMICOLON>-D>>"
                 ${_abs_headers} ${_abs_linkdef}
             COMMAND
-                ${CMAKE_COMMAND} -E copy_if_different
+                # Plain copy (not copy_if_different): the destination is a
+                # declared OUTPUT, so it must always be refreshed to be newer
+                # than its header dependencies. copy_if_different preserves the
+                # source mtime when content is unchanged, leaving the OUTPUT
+                # older than a touched header and re-running rootcling forever.
+                ${CMAKE_COMMAND} -E copy
                 ${CMAKE_CURRENT_BINARY_DIR}/${_pcm_base} ${_pcm_file}
             COMMAND_EXPAND_LISTS
             DEPENDS ${_abs_headers} ${_abs_linkdef}

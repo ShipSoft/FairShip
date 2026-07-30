@@ -30,14 +30,12 @@ DPPythia8Generator::DPPythia8Generator() {
   fDP = 9900015;        // DP  pdg code
   fLmin = 5000. * cm;   // mm minimum  decay position z  ROOT units !
   fLmax = 12000. * cm;  // mm maximum decay position z
-  fFDs = 7.7 / 10.4;  // correction for Pythia6 to match measured Ds production
   fpbrem = kFALSE;
   fpbremPDF = nullptr;
   fsmearBeam = 8 * mm;  // default value for smearing beam (8 mm)
   fPaintBeam = 5 * cm;  // default value for painting beam (5 cm)
   fdy = kFALSE;
   fDPminM = 0.5;
-  fInputFile = nullptr;
   fnRetries = 0;
   fnDPtot = 0;
   fShipEventNr = 0;

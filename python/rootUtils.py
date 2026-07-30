@@ -53,6 +53,7 @@ def readHists(h, fname, wanted=None) -> None:
                     h[projname] = h[hname].ProjectionY()
                 h[projname].SetName(name + p)
                 h[projname].SetDirectory(ROOT.gROOT)
+    f.Close()
     return
 
 
@@ -102,7 +103,7 @@ def bookProf(
     rkey = str(key)  # in case somebody wants to use integers, or floats as keys
     if key in h:
         h[key].Reset()
-    if ymin is None or ymax is None:
+    elif ymin is None or ymax is None:
         h[key] = ROOT.TProfile(rkey, title, nbinsx, xmin, xmax, option)
     else:
         h[key] = ROOT.TProfile(rkey, title, nbinsx, xmin, xmax, ymin, ymax, option)
@@ -159,12 +160,13 @@ def checkFileExists(x) -> str:
             if not test:
                 print("ERROR FileCheck: input file", f, " does not exist. Missing authentication?")
                 sys.exit(1)
-            if test.FindObjectAny("cbmsim") and fileType in ["tree", ""]:
-                fileType = "tree"
-            elif fileType in ["ntuple", ""]:
-                fileType = "ntuple"
-            else:
+            thisType = "tree" if test.FindObjectAny("cbmsim") else "ntuple"
+            test.Close()
+            if fileType == "":
+                fileType = thisType
+            elif fileType != thisType:
                 print("ERROR FileCheck: Supplied list of files not all of tree or ntuple type")
+                sys.exit(1)
         return fileType
     else:
         print("ERROR FileCheck: File must be either a string or list of files")

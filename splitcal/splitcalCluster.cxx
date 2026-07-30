@@ -54,13 +54,21 @@ void splitcalCluster::ComputeEtaPhiE(const std::vector<splitcalHit>& hits) {
     }
   }  // end loop on hit
 
+  // A cluster needs both an X and a Y projection to yield a 3D start/end
+  // point; dereferencing an empty map below would be undefined behaviour.
+  if (mapLayerWeigthedX.empty() || mapLayerWeigthedY.empty()) {
+    double zeroEta = 0., zeroPhi = 0.;
+    SetEtaPhiE(zeroEta, zeroPhi, energy);
+    return;
+  }
+
   auto const& [minLayerX, weightedMinX] = *mapLayerWeigthedX.begin();
   double minX = weightedMinX / mapLayerSumWeigthsX[minLayerX];
   double minZ1 = mapLayerZ1[minLayerX];
 
   auto const& [minLayerY, weightedMinY] = *mapLayerWeigthedY.begin();
   double minY = weightedMinY / mapLayerSumWeigthsY[minLayerY];
-  double minZ2 = mapLayerZ1[minLayerY];
+  double minZ2 = mapLayerZ2[minLayerY];
 
   double minZ = (minZ1 + minZ2) / 2.;
 
@@ -72,7 +80,7 @@ void splitcalCluster::ComputeEtaPhiE(const std::vector<splitcalHit>& hits) {
 
   auto const& [maxLayerY, weightedMaxY] = *mapLayerWeigthedY.rbegin();
   double maxY = weightedMaxY / mapLayerSumWeigthsY[maxLayerY];
-  double maxZ2 = mapLayerZ1[maxLayerY];
+  double maxZ2 = mapLayerZ2[maxLayerY];
 
   double maxZ = (maxZ1 + maxZ2) / 2.;
 

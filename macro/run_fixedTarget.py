@@ -47,6 +47,16 @@ def get_work_dir(run_number, tag: str | None = None) -> str:
 
 logger.info("SHiP proton-on-taget simulator (C) Thomas Ruf, 2017")
 
+# Reference values for Molybdenum (historical defaults). Cross-section ratios
+# scale heavy-flavour ~ A and mbias ~ A^(0.71).
+heavyflavour_Ascale = 1
+mbias_Ascale = 0.71
+
+A_REF = 98.0
+CHICC_REF = 1.7e-3  # prob to produce primary ccbar pair/pot on Mo
+CHIBB_REF = 1.6e-7  # prob to produce primary bbbar pair/pot on Mo
+TARGET_A = {"W": 184.0, "Mo": 98.0}
+
 ap = argparse.ArgumentParser(description='Run SHiP "pot" simulation')
 ap.add_argument("-d", "--debug", action="store_true")
 ap.add_argument("-f", "--force", action="store_true", help="force overwriting output directory")
@@ -78,6 +88,16 @@ ap.add_argument("-t", "--tau-only", action=argparse.BooleanOptionalAction, dest=
 ap.add_argument("-J", "--Jpsi-mainly", action=argparse.BooleanOptionalAction, dest="JpsiMainly", default=False)
 ap.add_argument("-b", "--boostDiMuon", type=float, default=1.0, help="boost Di-muon branching ratios")
 ap.add_argument("-X", "--boostFactor", type=float, default=1.0, help="boost Di-muon prod cross sections")
+ap.add_argument(
+    "--kaon-pion-splits",
+    type=int,
+    default=0,
+    help="splitting factor for kaons and pions, in order to boost the number of muons stemming from their decays",
+)
+ap.add_argument(
+    "--multiple-kpi-splits", action="store_true", help="split kaons and pions multiple times along the track path"
+)
+
 ap.add_argument("-C", "--charm", action=argparse.BooleanOptionalAction, default=False, help="generate charm decays")
 ap.add_argument("-B", "--beauty", action=argparse.BooleanOptionalAction, default=False, help="generate beauty decays")
 ap.add_argument(
@@ -97,8 +117,28 @@ ap.add_argument(
     help="enable ntuple production",
 )
 # for charm production
-ap.add_argument("-cc", "--chicc", default=1.7e-3, help="ccbar over mbias cross section")
-ap.add_argument("-bb", "--chibb", default=1.6e-7, help="bbbar over mbias cross section")
+ap.add_argument(
+    "-cc", "--chicc", type=float, default=None, help="ccbar over mbias cross section (overrides target-derived value)"
+)
+ap.add_argument(
+    "-bb", "--chibb", type=float, default=None, help="bbbar over mbias cross section (overrides target-derived value)"
+)
+ap.add_argument(
+    "--target-composition",
+    default="W",
+    choices=["W", "Mo"],
+    help="Target composition. Default is Tungsten (W); Molybdenum (Mo) is the other preset.",
+)
+ap.add_argument(
+    "-A",
+    type=float,
+    default=None,
+    help=(
+        "Target mass number; overrides --target-composition preset. "
+        "Used to scale chicc/chibb as (A/A_Mo)^(heavyflavour_Ascale-mbias_Ascale) "
+        "(default exponent: 0.29)."
+    ),
+)
 ap.add_argument("-p", "--pot", default=4e13, help="number of protons on target per spill to normalize on")
 ap.add_argument("-S", "--nStart", type=int, help="first event of input file to start", dest="nStart", default=0)
 ap.add_argument(
@@ -123,8 +163,8 @@ ap.add_argument(
 ap.add_argument(
     "--shieldName",
     help="Name of the shield in the database.",
-    default="TRY_2025",
-    choices=["TRY_2025"],
+    default="TRY_2026",
+    choices=["TRY_2025", "TRY_2026"],
 )
 ap.add_argument(
     "--AddMuonShield",
@@ -185,6 +225,11 @@ ap.add_argument(
 args = ap.parse_args()
 if args.debug:
     logger.setLevel(logging.DEBUG)
+
+if args.kaon_pion_splits < 0:
+    ap.error("--kaon-pion-splits must be >= 0")
+if args.multiple_kpi_splits and args.kaon_pion_splits == 0:
+    ap.error("--multiple-kpi-splits requires --kaon-pion-splits > 0")
 
 
 if args.G4only:
@@ -272,6 +317,8 @@ ROOT.SetOwnership(sink, False)  # C++ FairRun takes ownership
 if args.boostFactor > 1:
     # Turn off UseGeneralProcess to access GammaToMuons directly when cross-sections need to be changed
     os.environ["SET_GENERAL_PROCESS_TO_FALSE"] = "1"
+if args.kaon_pion_splits > 0:
+    os.environ["KAON_PION_SPLITS"] = str(args.kaon_pion_splits)
 run.SetUserConfig("g4Config.C")  # user configuration file default g4Config.C
 rtdb = run.GetRuntimeDb()
 
@@ -342,6 +389,9 @@ if args.AddMuonShield or args.AddHadronAbsorberOnly:
 
 
 sensPlaneHA = ROOT.exitHadronAbsorber()
+sensPlaneHA.SetNSplits(args.kaon_pion_splits)  # type: ignore[missing-attribute]
+if args.multiple_kpi_splits:
+    sensPlaneHA.SetSplitMultipleTimes()  # type: ignore[missing-attribute]
 sensPlaneHA.SetEnergyCut(args.ecut * u.GeV)
 sensPlaneHA.SetVetoPointName("PlaneHA")
 
@@ -407,6 +457,23 @@ P8gen.SetSeed(seed)
 #        print ' for experts: p pot= number of protons on target per spill to normalize on'
 #        print '            : c chicc= ccbar over mbias cross section'
 if args.charm or args.beauty:
+    A = args.A if args.A is not None else TARGET_A[args.target_composition]
+    if A <= 0:
+        raise ValueError(f"Invalid target mass number A={A}. Must be > 0.")
+    scale = (A / A_REF) ** (heavyflavour_Ascale - mbias_Ascale)
+
+    if args.chicc is not None:
+        chicc = args.chicc
+    else:
+        chicc = CHICC_REF * scale
+
+    chibb = args.chibb if args.chibb is not None else CHIBB_REF * scale
+    P8gen.SetChicc(chicc)
+    P8gen.SetChibb(chibb)
+    print(
+        f"Target composition: {args.target_composition}, A={A}, scale=(A/{A_REF})^({heavyflavour_Ascale}-{mbias_Ascale})={scale:.4f}"
+    )
+    print(f"Derived cross-section ratios: chicc={chicc:.3e}, chibb={chibb:.3e}")
     print("--- process heavy flavours ---")
     P8gen.InitForCharmOrBeauty(charmInputFile, args.nev, args.pot, args.nStart)
 primGen.AddGenerator(P8gen)
@@ -422,6 +489,8 @@ gMC = ROOT.TVirtualMC.GetMC()
 fStack = gMC.GetStack()
 fStack.SetMinPoints(1)
 fStack.SetEnergyCut(-1.0)
+if args.kaon_pion_splits > 0:
+    fStack.SetSplitting()
 #
 import AddDiMuonDecayChannelsToG4
 
