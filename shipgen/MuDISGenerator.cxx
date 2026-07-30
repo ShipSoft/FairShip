@@ -165,23 +165,24 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
   if (nDIS>0){//if fMat branch has elements
     //add also soft tracks up to z_interaction
     //first particle is the original muon with startZ necessarily before vtx_z...
-    bool doTracking = false;
+    bool first = true;
     int idxMum = -1;
     for (auto&& mcTrk : *(finEv.mcTrks)) {
       ShipMCTrack & softP = static_cast<ShipMCTrack&>(mcTrk);
       if (softP.GetStartZ()<=(*lBr->DISvz)[fnmuDis]) {
+	bool wantTracking = !first && softP.GetPz()>0 && softP.GetStartZ()<12000;
 	cpg->AddTrack(softP.GetPdgCode(),
 		      softP.GetPx(),softP.GetPy(),softP.GetPz(),
 		      softP.GetStartX(), softP.GetStartY(), softP.GetStartZ(), 
 		      idxMum,
-		      doTracking,
+		      wantTracking,
 		      softP.GetEnergy(),
 		      softP.GetStartT(),
 		      softP.GetWeight());
       }
-      if (!doTracking){
+      if (first){
 	//passed the first track, we want to track the soft particles and they all stem from first one.
-	doTracking = true;
+	first = false;
 	idxMum = 0;
       }
     }
@@ -196,10 +197,11 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
 	continue;
       }
       DISparticle & lDau = (*lBr->DISparticles)[fnmuDisDau+iD];
+      bool wantTracking = lDau.pz>0;
       cpg->AddTrack(lDau.pid,lDau.px,lDau.py,lDau.pz,
-		    (*lBr->DISvx)[fnmuDis],(*lBr->DISvy)[fnmuDis],(*lBr->DISvz)[fnmuDis],
-		    0,true, lDau.E,
-		    (*lBr->DISvt)[fnmuDis], lBr->wDIS);
+      	    (*lBr->DISvx)[fnmuDis],(*lBr->DISvy)[fnmuDis],(*lBr->DISvz)[fnmuDis],
+      	    0,wantTracking, lDau.E,
+      	    (*lBr->DISvt)[fnmuDis], lBr->wDIS);
     }
     fnmuDisDau += nDaughters;
     LOG(debug) << " ---- index dau end " << fnmuDisDau;

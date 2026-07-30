@@ -471,6 +471,7 @@ def configure(run, ship_geo):
     detElements: dict[str, Any] = {}
     for x in detectorList:
         if x.GetName() in exclusionList:
+            print("****** Excluding : ",x.GetName()," from detector list considered! ******")
             continue
         run.AddModule(x)
         ROOT.SetOwnership(x, False)  # C++ FairRunSim takes ownership

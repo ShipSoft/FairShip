@@ -56,7 +56,10 @@ std::string MuonPath::GetLabel(const std::string& aVol,
     return "SSTsens";
   else if (aVol.find("wire") != aVol.npos && aMat.find("tungsten") != aMat.npos)
     return "SSTsens";
-  else if (aVol.find("Tr1_frame") != aVol.npos &&
+  else if ((aVol.find("Tr1_frame") != aVol.npos ||
+	    aVol.find("Tr2_frame") != aVol.npos ||
+	    aVol.find("Tr3_frame") != aVol.npos ||
+	    aVol.find("Tr4_frame") != aVol.npos) &&
            aMat.find("steel") != aMat.npos)
     return "SSTfr";
   else if ((aVol.find("Veto") != aVol.npos ||

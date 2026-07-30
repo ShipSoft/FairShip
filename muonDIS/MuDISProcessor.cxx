@@ -77,6 +77,12 @@ void MuDISProcessor::rotate(const TVector3& pvec, const double& theta,
 
 void MuDISProcessor::process_file(const std::string& input,
                                   const std::string& output) {
+
+
+
+
+
+
   TFile* infile = TFile::Open(input.c_str(), "READ");
   if (!infile) return;
   ftree = (TTree*)infile->Get("cbmsim");
@@ -173,6 +179,7 @@ void MuDISProcessor::generateDISevents(const std::string& tType,
 
   double lastxs = 0;
   for (int ia(0); ia < fnDIS; ++ia) {
+    if (ia%100==0) LOG(info) << " -- Processing DIS event " << ia;
     //@FIXME AMM - half-way through, we change to neutron target with 50-50 :
     //---> update to real material ??
     if (ia == static_cast<int>(fnDIS / 2)) {
