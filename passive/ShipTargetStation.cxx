@@ -223,8 +223,9 @@ void ShipTargetStation::ConstructGeometry() {
                     "use SetLastDiskDiameter()";
     }
 
-    // He container: encloses steel core, jacket, flanges and rear endcap
-    const double he_zmin = -35.8 * mm;   // upstream face of front flange
+    // He container: encloses steel core, jacket, flanges, beam window,
+    // cover-plate bore rings and rear endcap
+    const double he_zmin = -37.8 * mm;   // upstream face of the cover plate
     const double he_zmax = 1509.7 * mm;  // downstream end of rear endcap
     const double he_rmax = 237 * mm;     // rear flange outer radius
     const double he_zc = (he_zmin + he_zmax) / 2.;
@@ -348,11 +349,42 @@ void ShipTargetStation::ConstructGeometry() {
                               (jacket_zmax - jacket_zmin) / 2.);
     jacket->SetLineColor(46);
     heVolume->AddNode(jacket, 1, placeAt(jacket_zmin, jacket_zmax));
+    // The flange proper starts at the cover-plate step; upstream of it the
+    // outer radius is the r 195 nose that slides into the cover-plate bore
+    const double flange_front_zmin = -23.8 * mm;
+    const double nose_zmin = -35.8 * mm;  // upstream face of the vessel
     auto flangeFront =
         gGeoManager->MakeTube("target_flange_front", steel316L, core_front_rout,
-                              225 * mm, (jacket_zmin - he_zmin) / 2.);
+                              225 * mm, (jacket_zmin - flange_front_zmin) / 2.);
     flangeFront->SetLineColor(46);
-    heVolume->AddNode(flangeFront, 1, placeAt(he_zmin, jacket_zmin));
+    heVolume->AddNode(flangeFront, 1, placeAt(flange_front_zmin, jacket_zmin));
+    // Beam window: dished membrane closing the bore, 8 mm of steel on the
+    // beam axis (z -33.5..-25.5); the dishing is simplified to a flat disc,
+    // preserving the on-axis material budget. The r 141-195 nose ring
+    // connects the window rim to the flange.
+    const double window_rmax = 141 * mm;
+    auto window = gGeoManager->MakeTube("target_front_window", steel316L, 0,
+                                        window_rmax, (33.5 - 25.5) * mm / 2.);
+    window->SetLineColor(46);
+    heVolume->AddNode(window, 1, placeAt(-33.5 * mm, -25.5 * mm));
+    auto nose = gGeoManager->MakeTube("target_front_nose", steel316L,
+                                      window_rmax, core_front_rout,
+                                      (flange_front_zmin - nose_zmin) / 2.);
+    nose->SetLineColor(46);
+    heVolume->AddNode(nose, 1, placeAt(nose_zmin, flange_front_zmin));
+    // Cover plate (600 x 650 x 20 mm, stepped bore r 196/226): the part
+    // within the He container radius is modelled as two rings here; the
+    // rectangular remainder is added to the TargetArea below
+    auto coverRing1 =
+        gGeoManager->MakeTube("target_cover_ring1", steel316L, 196 * mm,
+                              he_rmax, (flange_front_zmin - he_zmin) / 2.);
+    coverRing1->SetLineColor(46);
+    heVolume->AddNode(coverRing1, 1, placeAt(he_zmin, flange_front_zmin));
+    auto coverRing2 =
+        gGeoManager->MakeTube("target_cover_ring2", steel316L, 226 * mm,
+                              he_rmax, (-17.8 * mm - flange_front_zmin) / 2.);
+    coverRing2->SetLineColor(46);
+    heVolume->AddNode(coverRing2, 1, placeAt(flange_front_zmin, -17.8 * mm));
     const double flange_rear_zmax = 1263.7 * mm;
     auto flangeRear =
         gGeoManager->MakeTube("target_flange_back", steel316L, 225 * mm,
@@ -387,6 +419,27 @@ void ShipTargetStation::ConstructGeometry() {
          {endcapTube, endcapDome1, endcapDome2, endcapDome3, endcapCap}) {
       v->SetLineColor(46);
     }
+
+    // Cover plate remainder outside the He container: rectangular plate,
+    // asymmetric about the beam axis (x +-300, y -400..+250), with the
+    // central hole covering the He container; the stepped bore is modelled
+    // by the rings inside HeVolume above
+    const double cover_y_offset = -75 * mm;  // plate centre below the axis
+    [[maybe_unused]] auto cover_box =
+        new TGeoBBox("target_cover_box", 300 * mm, 325 * mm, 10 * mm);
+    [[maybe_unused]] auto cover_hole =
+        new TGeoTube("target_cover_hole", 0, he_rmax, 11 * mm);
+    auto cover_hole_shift =
+        new TGeoTranslation("target_cover_hole_shift", 0, -cover_y_offset, 0);
+    cover_hole_shift->RegisterYourself();
+    auto cover_shape = new TGeoCompositeShape(
+        "target_cover_shape",
+        "target_cover_box - target_cover_hole:target_cover_hole_shift");
+    auto coverPlate =
+        new TGeoVolume("target_cover_plate", cover_shape, steel316L);
+    coverPlate->SetLineColor(46);
+    tTarget->AddNode(coverPlate, 1,
+                     new TGeoTranslation(0, cover_y_offset, -27.8 * mm));
 
     // add the He + target to the target area
     tTarget->AddNode(heVolume, 1, new TGeoTranslation(0, 0, he_zc));
