@@ -308,7 +308,7 @@ parser.add_argument(
 parser.add_argument("-Y", dest="dy", help="max height of vacuum tank", default=6.0, type=float)
 parser.add_argument(
     "--strawDesign",
-    help="Tracker station frame material: 4=aluminium; 10=steel (default)",
+    help="Tracker station frame material: 4=Aluminium; 10=steel (default)",
     default=10,
     type=int,
     choices=[4, 10],

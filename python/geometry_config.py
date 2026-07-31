@@ -11,7 +11,7 @@ from ShipGeoConfig import AttrDict, Config
 # nuTargetPassive = 1  #0 = with active layers, 1 = only passive
 
 # targetOpt      = 5  # 0=solid   >0 sliced, 5: 5 pieces of tungsten, 4 air slits, 17: molybdenum tungsten interleaved with H20
-# strawOpt       = 0  # 4=aluminium frame 10=steel frame (default)
+# strawOpt       = 0  # 4=Aluminium frame 10=steel frame (default)
 
 # Here you can select the MS geometry
 # The first row is the length of the magnets
@@ -159,7 +159,7 @@ def create_config(
     Args:
         DecayVolumeMedium: Medium in decay volume ("helium" or "vacuums"), default: "helium"
         Yheight: Height of vacuum tank in meters, default: 6.0
-        strawDesign: Straw tube design (4=aluminium frame, 10=steel frame), default: 10
+        strawDesign: Straw tube design (4=Aluminium frame, 10=steel frame), default: 10
         muShieldGeo: Muon shield geometry file (for experts), default: None
         shieldName: Name of shield configuration, default: "TRY_2025"
         nuTargetPassive: Target type (0=with active layers, 1=only passive), default: 1

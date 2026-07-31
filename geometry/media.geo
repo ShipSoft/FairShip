@@ -6,7 +6,7 @@
 //name	ncomp	aw	an	dens
 //sensflag	fldflag	fld	epsil
 //npckov
-//ncomp: - number of components in the material (ncomp= 1 for a basic material and <1 or >1 for a mixture
+//ncomp: - number of components in the material (ncomp= 1 for a basic material and <1 or >1 for a mixture)
 //aw: 	- atomic weights A for the components
 //an: 	- atomic numbers Z for the components
 //dens:	density DENS in g cm(**-3)
@@ -108,10 +108,7 @@ silicon            1  28.0855 14.0 2.33
 HYPsilicon         1  28.0855 14.0 2.33
                    1  1  20.  .001
                    0
-aluminium          1  26.98 13. 2.7
-                   0  1  20.  .001
-                   0
-Aluminum           1  26.98 13. 2.7
+Aluminium          1  26.98 13. 2.7
                    0  1  20.  .001
                    0
 //  powder of Al to simulate sensitive material with 900cm of radiation length
@@ -216,7 +213,7 @@ SMD               1 26.98 13. 1.41
 PVC               3 1.00794 12.0107 35.453 1. 6. 17. 1.30  0.048380 0.384360 0.567260
                   0 1 20. .001
                   0
-// Polyvinylchloride (PVC2) Heavier definition for MVD containing some aluminum
+// Polyvinylchloride (PVC2) Heavier definition for MVD containing some aluminium
 PVCHEAVY          4 1.00794 12.0107 35.453 26.981539 1. 6. 17. 13. 1.44 0.043542 0.345924 0.510534 0.1
                   0	1	20.	.001
                   0

@@ -222,7 +222,7 @@ def configure_strawtubes(yaml_file: str, ship_geo) -> None:
 
     # Choose frame material
     if ship_geo.strawDesign == 4:
-        ship_geo.strawtubes_geo.frame_material = "aluminium"
+        ship_geo.strawtubes_geo.frame_material = "Aluminium"
     elif ship_geo.strawDesign == 10:
         ship_geo.strawtubes_geo.frame_material = "steel"
 
