@@ -20,9 +20,9 @@ runnr = 1
 nev = 10  # 000000
 
 setup = {}
-setup["10"] = {"thickness": 2 * u.cm, "material": "aluminium", "momentum": 10 * u.GeV}
-setup["100"] = {"thickness": 2 * u.cm, "material": "aluminium", "momentum": 100 * u.GeV}
-setup["200"] = {"thickness": 2 * u.cm, "material": "aluminium", "momentum": 200 * u.GeV}
+setup["10"] = {"thickness": 2 * u.cm, "material": "Aluminium", "momentum": 10 * u.GeV}
+setup["100"] = {"thickness": 2 * u.cm, "material": "Aluminium", "momentum": 100 * u.GeV}
+setup["200"] = {"thickness": 2 * u.cm, "material": "Aluminium", "momentum": 200 * u.GeV}
 
 # 8cm = 0.9X0
 

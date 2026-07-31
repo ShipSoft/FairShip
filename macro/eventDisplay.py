@@ -62,11 +62,10 @@ withMCTracks = True
 #                        muon shield  strawtube                     decay vessel
 transparentMaterials = {
     "iron": 80,
-    "aluminium": 80,
+    "Aluminium": 80,
     "mylar": 60,
     "STTmix9010_2bar": 95,
     "steel": 80,
-    "Aluminum": 80,
     "Scintillator": 80,
     "LiquidScintillator": 80,
     #                        tau nu detector
