@@ -305,6 +305,7 @@ def configure(run, ship_geo):
     TargetStation.SetDesign(target_version)
     if target_version >= 2:
         TargetStation.SetLastDiskDiameter(ship_geo.target.xy2)
+    TargetStation.SetShieldingReferenceLength(ship_geo.target.length_fixed)
     detectorList.append(TargetStation)
 
     # For SND: support multiple designs

@@ -450,8 +450,12 @@ void ShipTargetStation::ConstructGeometry() {
   // Proximity shielding
 
   double start_of_target = fTargetZ - fTargetLength / 2.;
-  fTargetLength =
-      1586.4 * mm;  // Make shielding independent of actual target length
+  if (fShieldingReferenceLength <= 0) {
+    LOG(fatal) << "Shielding reference length not set, "
+                  "use SetShieldingReferenceLength()";
+  }
+  // Make shielding independent of actual target length
+  fTargetLength = fShieldingReferenceLength;
   double shielding_width = 1600 * mm;
   double shielding_length = 3000 * mm;
   double proximity_shielding_height = 1126 * mm;
