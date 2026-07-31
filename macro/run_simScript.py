@@ -314,7 +314,7 @@ parser.add_argument(
 parser.add_argument("-Y", dest="dy", help="max height of vacuum tank", default=6.0, type=float)
 parser.add_argument(
     "--strawDesign",
-    help="Tracker station frame material: 4=aluminium; 10=steel (default)",
+    help="Tracker station frame material: 4=Aluminium; 10=steel (default)",
     default=10,
     type=int,
     choices=[4, 10],
@@ -492,13 +492,13 @@ if options.reproducible and options.debug == 0:
 # Configure FairLogger verbosity based on debug level
 ROOT.gInterpreter.ProcessLine('#include "FairLogger.h"')
 if options.debug == 0:
-    ROOT.gInterpreter.ProcessLine('fair::Logger::SetConsoleSeverity("info");')
+    ROOT.gInterpreter.ProcessLine('fair::Logger::SetConsoleSeverity("warn");')
 elif options.debug == 1:
-    ROOT.gInterpreter.ProcessLine('fair::Logger::SetConsoleSeverity("debug");')
+    ROOT.gInterpreter.ProcessLine('fair::Logger::SetConsoleSeverity("info");')
 elif options.debug == 2:
-    ROOT.gInterpreter.ProcessLine('fair::Logger::SetConsoleSeverity("debug1");')
+    ROOT.gInterpreter.ProcessLine('fair::Logger::SetConsoleSeverity("debug");')
 elif options.debug == 3:
-    ROOT.gInterpreter.ProcessLine('fair::Logger::SetConsoleSeverity("debug2");')
+    ROOT.gInterpreter.ProcessLine('fair::Logger::SetConsoleSeverity("debug1");')
 ship_geo = geometry_config.create_config(
     Yheight=options.dy,
     strawDesign=options.strawDesign,

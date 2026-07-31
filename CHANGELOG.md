@@ -357,7 +357,7 @@ it in future.
 
 * Add access to decoded numbers (stations, views etc.) of strawtubes hits
 * Add enough straws to cover aperture entirely
-* Add SST frame option (4 = aluminium, 10 = steel [default])
+* Add SST frame option (4 = Aluminium, 10 = steel [default])
 * Add z-offset to FixedTargetGenerator
 * Add missing --FixedTarget option to run_simScript.py
 

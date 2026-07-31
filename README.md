@@ -71,14 +71,14 @@ PS: no need to source the environment from cvmfs with this...
    ```bash
    pixi info
    ```
-   And if required, move the .pixi and .cache directories and set the environment variables to where you want them in .bashrc:
+   And if required, set the environment variables in .bashrc:
    ```bash
-   export PATH="<full_path>/.pixi/bin:$PATH"
-   export PIXI_HOME=<full_path>/.pixi
-   export PIXI_CACHE_DIR=<full_path>/.cache
+   export PATH="<your_path>/.pixi/bin:$PATH"
+   export PIXI_HOME=<your_path>/.pixi
+   export PIXI_CACHE_DIR=<your_path>/.cache
    ```
 (PS: Remember to source again the .bashrc to set them properly)
-
+   
 2. Clone and build:
     ```bash
     git clone https://github.com/ShipSoft/FairShip.git

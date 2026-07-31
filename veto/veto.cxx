@@ -829,7 +829,7 @@ void veto::ConstructGeometry() {
   TGeoVolume* top = gGeoManager->GetTopVolume();
 
   ShipGeo::InitMedium("vacuums");
-  ShipGeo::InitMedium("Aluminum");
+  ShipGeo::InitMedium("Aluminium");
   ShipGeo::InitMedium("helium");
   ShipGeo::InitMedium(vetoMed_name.Data());
   ShipGeo::InitMedium("steel");

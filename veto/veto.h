@@ -100,9 +100,9 @@ class veto : public SHiP::Detector<vetoPoint> {
 
   //! medium of veto counter, liquid or plastic scintillator
   TString vetoMed_name;
-  //! medium of internal support structure(Default = Aluminum).
+  //! medium of internal support structure(Default = Aluminium).
   TString supportMedIn_name;
-  //! medium of external support structure(Default = Aluminum).
+  //! medium of external support structure(Default = Aluminium).
   TString supportMedOut_name;
   //! medium of decay volume(Default= helium).
   TString decayVolumeMed_name;
