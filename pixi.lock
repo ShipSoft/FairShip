@@ -106,6 +106,8 @@ environments:
       - conda: https://prefix.dev/conda-forge/linux-64/libasprintf-devel-0.25.1-h3f43e3d_1.conda
       - conda: https://prefix.dev/conda-forge/linux-64/libblas-3.11.0-8_h4a7cf45_openblas.conda
       - conda: https://prefix.dev/conda-forge/linux-64/libboost-1.90.0-hd24cca6_1.conda
+      - conda: https://prefix.dev/conda-forge/linux-64/libboost-devel-1.90.0-hfcd1e18_1.conda
+      - conda: https://prefix.dev/conda-forge/linux-64/libboost-headers-1.90.0-ha770c72_1.conda
       - conda: https://prefix.dev/conda-forge/linux-64/libboost-python-1.90.0-py313hfaae9d9_1.conda
       - conda: https://prefix.dev/conda-forge/linux-64/libbrotlicommon-1.2.0-hb03c661_1.conda
       - conda: https://prefix.dev/conda-forge/linux-64/libbrotlidec-1.2.0-hb03c661_1.conda
@@ -520,6 +522,8 @@ environments:
       - conda: https://prefix.dev/conda-forge/linux-64/libasprintf-devel-0.25.1-h3f43e3d_1.conda
       - conda: https://prefix.dev/conda-forge/linux-64/libblas-3.11.0-8_h4a7cf45_openblas.conda
       - conda: https://prefix.dev/conda-forge/linux-64/libboost-1.90.0-hd24cca6_1.conda
+      - conda: https://prefix.dev/conda-forge/linux-64/libboost-devel-1.90.0-hfcd1e18_1.conda
+      - conda: https://prefix.dev/conda-forge/linux-64/libboost-headers-1.90.0-ha770c72_1.conda
       - conda: https://prefix.dev/conda-forge/linux-64/libboost-python-1.90.0-py313hfaae9d9_1.conda
       - conda: https://prefix.dev/conda-forge/linux-64/libbrotlicommon-1.2.0-hb03c661_1.conda
       - conda: https://prefix.dev/conda-forge/linux-64/libbrotlidec-1.2.0-hb03c661_1.conda
@@ -1161,7 +1165,7 @@ packages:
   license: MIT
   license_family: MIT
   purls:
-  - pkg:pypi/cffi?source=hash-mapping
+  - pkg:pypi/cffi?source=compressed-mapping
   run_exports: {}
   size: 304647
   timestamp: 1783424174920
@@ -2490,6 +2494,31 @@ packages:
   run_exports: {}
   size: 3229874
   timestamp: 1766347309472
+- conda: https://prefix.dev/conda-forge/linux-64/libboost-devel-1.90.0-hfcd1e18_1.conda
+  sha256: a46970575b8ec39fe103833ed988bc9d56292146b417aeddb333a94e980053b0
+  md5: 5e5227b43bdd65d0028a322b2636d02e
+  depends:
+  - libboost 1.90.0 hd24cca6_1
+  - libboost-headers 1.90.0 ha770c72_1
+  constrains:
+  - boost-cpp <0.0a0
+  license: BSL-1.0
+  purls: []
+  run_exports:
+    weak:
+    - libboost >=1.90.0,<1.91.0a0
+  size: 38562
+  timestamp: 1766347475462
+- conda: https://prefix.dev/conda-forge/linux-64/libboost-headers-1.90.0-ha770c72_1.conda
+  sha256: be43ec008a4fd297b5cdccea6c8e05bedd1d40315bdaefe4cc2f75363dab3f73
+  md5: a1da1e4c15eb57bb506b33e283107dc5
+  constrains:
+  - boost-cpp <0.0a0
+  license: BSL-1.0
+  purls: []
+  run_exports: {}
+  size: 14676487
+  timestamp: 1766347330772
 - conda: https://prefix.dev/conda-forge/linux-64/libboost-python-1.90.0-py313hfaae9d9_1.conda
   sha256: f6927b6d2043f4d88dfa55152008a9b37b613341bf8c3c07867872c2440deab0
   md5: 836842dd7b4c7349f484a0957edbbc9c
@@ -3788,8 +3817,7 @@ packages:
   - tornado >=5
   license: PSF-2.0
   license_family: PSF
-  purls:
-  - pkg:pypi/matplotlib?source=compressed-mapping
+  purls: []
   run_exports: {}
   size: 14966
   timestamp: 1785211130546
@@ -3821,7 +3849,7 @@ packages:
   license: PSF-2.0
   license_family: PSF
   purls:
-  - pkg:pypi/matplotlib?source=compressed-mapping
+  - pkg:pypi/matplotlib?source=hash-mapping
   run_exports: {}
   size: 9005023
   timestamp: 1785211111407
@@ -3906,7 +3934,7 @@ packages:
   license: BSD-2-Clause
   license_family: BSD
   purls:
-  - pkg:pypi/numba?source=compressed-mapping
+  - pkg:pypi/numba?source=hash-mapping
   run_exports: {}
   size: 5803841
   timestamp: 1785418464628
@@ -4132,7 +4160,7 @@ packages:
   - openjpeg >=2.5.4,<3.0a0
   license: HPND
   purls:
-  - pkg:pypi/pillow?source=compressed-mapping
+  - pkg:pypi/pillow?source=hash-mapping
   run_exports: {}
   size: 1077037
   timestamp: 1782912080163
@@ -4588,7 +4616,7 @@ packages:
   license: MIT
   license_family: MIT
   purls:
-  - pkg:pypi/rpds-py?source=compressed-mapping
+  - pkg:pypi/rpds-py?source=hash-mapping
   run_exports: {}
   size: 299711
   timestamp: 1782831281126
@@ -4643,7 +4671,7 @@ packages:
   license: BSD-3-Clause
   license_family: BSD
   purls:
-  - pkg:pypi/scipy?source=compressed-mapping
+  - pkg:pypi/scipy?source=hash-mapping
   run_exports: {}
   size: 17171066
   timestamp: 1781912954186
@@ -5530,7 +5558,7 @@ packages:
   license: Apache-2.0
   license_family: Apache
   purls:
-  - pkg:pypi/asttokens?source=compressed-mapping
+  - pkg:pypi/asttokens?source=hash-mapping
   run_exports: {}
   size: 34639
   timestamp: 1783975742052
@@ -5659,8 +5687,7 @@ packages:
   - cached_property >=1.5.2,<1.5.3.0a0
   license: BSD-3-Clause
   license_family: BSD
-  purls:
-  - pkg:pypi/cached-property?source=compressed-mapping
+  purls: []
   run_exports: {}
   size: 6836
   timestamp: 1783242914545
@@ -6277,7 +6304,7 @@ packages:
   license: BSD-3-Clause
   license_family: BSD
   purls:
-  - pkg:pypi/ipykernel?source=compressed-mapping
+  - pkg:pypi/ipykernel?source=hash-mapping
   run_exports: {}
   size: 138635
   timestamp: 1781101665847
@@ -6500,7 +6527,7 @@ packages:
   - nodejs >=22
   license: BSD-3-Clause AND MIT AND ISC
   purls:
-  - pkg:pypi/jupyter-builder?source=compressed-mapping
+  - pkg:pypi/jupyter-builder?source=hash-mapping
   run_exports: {}
   size: 861857
   timestamp: 1785469520950
@@ -6553,7 +6580,7 @@ packages:
   license: BSD-3-Clause
   license_family: BSD
   purls:
-  - pkg:pypi/jupyter-client?source=compressed-mapping
+  - pkg:pypi/jupyter-client?source=hash-mapping
   run_exports: {}
   size: 117954
   timestamp: 1781019994076
@@ -7762,7 +7789,7 @@ packages:
   - ipywidgets >=6.0
   license: MPL-2.0 and MIT
   purls:
-  - pkg:pypi/tqdm?source=compressed-mapping
+  - pkg:pypi/tqdm?source=hash-mapping
   run_exports: {}
   size: 98184
   timestamp: 1785172528905
@@ -7798,7 +7825,7 @@ packages:
   license: PSF-2.0
   license_family: PSF
   purls:
-  - pkg:pypi/typing-extensions?source=compressed-mapping
+  - pkg:pypi/typing-extensions?source=hash-mapping
   run_exports: {}
   size: 52631
   timestamp: 1783002732887
