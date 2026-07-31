@@ -213,7 +213,7 @@ void ShipTargetStation::ConstructGeometry() {
     tTarget->AddNode(
         vessel, 1,
         new TGeoTranslation(0, 0, -1. * vessel_shift + vessel_length / 2.));
-  } else {
+  } else if (fDesign == 2) {
     // Design 2: 2026 BDF target, from CATIA model ST1A07710_01_AB.02.
     // Simplified to axisymmetric shapes. All z coordinates below are measured
     // from the front face of the first disk, which coincides with the local
@@ -443,6 +443,8 @@ void ShipTargetStation::ConstructGeometry() {
 
     // add the He + target to the target area
     tTarget->AddNode(heVolume, 1, new TGeoTranslation(0, 0, he_zc));
+  } else {
+    LOG(fatal) << "Unknown target design " << fDesign << ", expected 1 or 2";
   }
 
   // Proximity shielding
