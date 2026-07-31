@@ -187,6 +187,21 @@ set(PROJECT_LIBRARY_PROPERTIES
 
 install(DIRECTORY geometry DESTINATION share/${PROJECT_NAME})
 
+
+## Add flags to identify memory issues using AddressSanitizer
+## when enabled, execute these commands before running:
+## export LD_PRELOAD=$(gcc -print-file-name=libasan.so)
+## export ASAN_OPTIONS=detect_leaks=0:halt_on_error=1
+#set(CMAKE_CXX_FLAGS
+#    "${CMAKE_CXX_FLAGS} -g -O1 -fno-omit-frame-pointer -fsanitize=address,undefined")
+#set(CMAKE_EXE_LINKER_FLAGS
+#    "${CMAKE_EXE_LINKER_FLAGS} -fsanitize=address,undefined")
+#set(CMAKE_SHARED_LINKER_FLAGS
+#    "${CMAKE_SHARED_LINKER_FLAGS} -fsanitize=address,undefined")
+
+
+
+
 # Generate a Clang compile_commands.json "compilation database" file for use
 # with various development tools, such as Vim's YouCompleteMe plugin. See
 # http://clang.llvm.org/docs/JSONCompilationDatabase.html

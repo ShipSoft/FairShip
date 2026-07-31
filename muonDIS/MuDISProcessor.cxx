@@ -25,15 +25,18 @@ MuDISProcessor::MuDISProcessor() {
   fPythia = TPythia6::Instance();
   fPDG = TDatabasePDG::Instance();
 
+  fMinPythiaP = 2;
   fnDIS = 10;
   fP6seed = 0;
 
   fGeoProcessor.CheckAllVolumes();
 }
 
-void MuDISProcessor::init(const int& aEvts, const int& aDIS, const int& aSeed,
+void MuDISProcessor::init(const int& aEvts, const double& aMinPythiaP,
+			  const int& aDIS, const int& aSeed,
                           const double& aZmax) {
   fnEvts = aEvts;
+  fMinPythiaP = aMinPythiaP;
   fnDIS = aDIS;
   fP6seed = aSeed;
   fGeoProcessor.SetZmax(aZmax);
@@ -43,7 +46,7 @@ void MuDISProcessor::initPythia6() {
   // set process 1=QCD, 2=DY/others
   fPythia->SetMSEL(2);
   // set min hard scale: 2 GeV --->try 1.5 for soft muons ?
-  fPythia->SetPARP(2, 2);
+  fPythia->SetPARP(2, fMinPythiaP);
   // disable decay for those PDGID
   unsigned hadrons[10] = {211,  321,  130,  310,  3112,
                           3122, 3222, 3312, 3322, 3334};
@@ -171,7 +174,16 @@ void MuDISProcessor::generateDISevents(const std::string& tType,
                                        MuonDISBranches& aDISBr) {
   // for Pythia beam, just use the initial muon momentum...
   //@FIXME AMM - is this OK ? Reinitialising each time will be too heavy...
+  if (aPath.GetNSlices()<1) {
+    LOG(error) << " --- calling generateDISevents on an empty path. Doing nothing.";
+    return;
+  }
   double P = aPath.GetMomentum(0);
+  if (P<fMinPythiaP) {
+    LOG(info) << " --- calling Pythia initialise with momentum " << P << " in material " << aLabel
+	      << " , min value for Pythia is: " << fMinPythiaP << ". Doing nothing.";
+    return;
+  }
   fPythia->Initialize("FIXT", tType.c_str(), "p+", P);  // target = "p+"
   bool isProton = true;
   // print summary of initialisation params
@@ -179,7 +191,7 @@ void MuDISProcessor::generateDISevents(const std::string& tType,
 
   double lastxs = 0;
   for (int ia(0); ia < fnDIS; ++ia) {
-    if (ia%100==0) LOG(info) << " -- Processing DIS event " << ia;
+    LOG(debug) << " ---- Processing DIS event " << ia;
     //@FIXME AMM - half-way through, we change to neutron target with 50-50 :
     //---> update to real material ??
     if (ia == static_cast<int>(fnDIS / 2)) {
@@ -267,6 +279,7 @@ void MuDISProcessor::ProcessMuons() {
   unsigned nminus = 0;
 
   for (Long64_t iEvent = 0; iEvent < nEntries; ++iEvent) {
+    LOG(debug) << " --- Processing event " << iEvent << std::endl;
     if (iEvent % 100 == 0)
       LOG(info) << " --- Processing event " << iEvent << std::endl;
     ftree->GetEntry(iEvent);
@@ -284,10 +297,25 @@ void MuDISProcessor::ProcessMuons() {
     ShipMCTrack& track = (*finEv.MCTrack)[static_cast<unsigned>(muIdx)];
     int pid = track.GetPdgCode();
 
-    if (pid == 13)
+    TVector3 mup;
+    track.GetMomentum(mup);
+
+    if (mup.Mag() < fMinPythiaP){
+      LOG(info) << iEvent << " skipped: muon momentum "
+		<< mup.Mag() << " below min value for Pythia:"
+		<< fMinPythiaP;
+      continue;
+    }
+
+    std::string targetType;
+    if (pid == 13){
       nplus++;
-    else if (pid == -13)
+      targetType = "gamma/mu+";
+    }
+    else if (pid == -13){
       nminus++;
+      targetType = "gamma/mu-";
+    }
     else {
       LOG(warning) << iEvent << " skipped: "
                    << " nTracks= " << nTr
@@ -306,12 +334,6 @@ void MuDISProcessor::ProcessMuons() {
                << " ---- UBT Hits: " << foutEv.ubtPt.size() << std::endl
                << " ---- SBT Hits: " << foutEv.sbtPt.size() << std::endl
                << " ---- SST Hits: " << foutEv.sstPt.size() << std::endl;
-
-    std::string targetType;
-    if (pid == 13)
-      targetType = "gamma/mu+";
-    else
-      targetType = "gamma/mu-";
 
     // retrieve a map of material label, with same density, and lengths, and
     // [zin,zout] ranges

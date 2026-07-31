@@ -23,7 +23,8 @@ class MuDISProcessor {
   /** destructor **/
   ~MuDISProcessor() {};
 
-  void init(const int& aEvts, const int& aDIS, const int& aSeed,
+  void init(const int& aEvts, const double& aMinPythiaP,
+	    const int& aDIS, const int& aSeed,
             const double& aZmax);
   void initPythia6();
 
@@ -55,6 +56,7 @@ class MuDISProcessor {
   TPythia6* fPythia;
   TDatabasePDG* fPDG;
 
+  double fMinPythiaP;
   int fnDIS;
   int fP6seed;
 
