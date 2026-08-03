@@ -210,6 +210,8 @@ def create_config(
     with open(c.target_yaml) as file:
         targetconfig = yaml.safe_load(file)
         c.target = AttrDict(targetconfig["target"])
+    if "version" not in c.target:
+        c.target.version = 1  # legacy design
 
     c.target.slices_length = []
     c.target.slices_gap = []
@@ -244,9 +246,16 @@ def create_config(
 
     c.hadronAbsorber = AttrDict()
 
+    # Downstream elements are positioned using the nominal length of the
+    # legacy target so that they stay put when a different (e.g. shorter)
+    # target design is selected. This is the single authoritative value for the
+    # fixed length; it is passed to ShipTargetStation (SetShieldingReferenceLength)
+    # so the proximity shielding stays independent of the actual target length.
+    c.target.length_fixed = 158.64 * u.cm
+
     c.hadronAbsorber.z = (
         c.target.z0
-        + c.target.length
+        + c.target.length_fixed
         + 96.1 * u.mm  # Distance between target and proximity shielding
         + 250 * u.mm  # Thickness of proximity shielding
         + 207.5 * u.mm  # Distance between hadron absorber and proximity shielding
