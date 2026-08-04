@@ -18,11 +18,13 @@ it in future.
 
 ### Changed
 
+* He Balloon added with configurable thickness and material. 
 * SBT sensitive medium is now LAB-based liquid scintillator (`LiquidScintillator`) rather than the plastic `Scintillator`, which remains in use by SplitCal
 * Use dense vectors instead of `std::map` for ShipStack track selection and index remapping, roughly halving CPU time and reducing peak memory for high-multiplicity events (e.g. kaon/pion splitting)
 
 ### Fixed
 
+* All materials in the veto class now registers the configured media instead of a hardcoded medium name.
 * `veto` now registers the configured `sensitiveMed` instead of a hardcoded medium name; previously any other value resolved to a null `TGeoMedium`
 
 ### Removed

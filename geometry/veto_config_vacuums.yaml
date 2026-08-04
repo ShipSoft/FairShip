@@ -8,6 +8,8 @@ lidThickness: 0.0 # cm
 sensitiveThickness: 20 # cm
 sensitiveMed: "LiquidScintillator"
 decayMed: "vacuums"
+he_balloon_thickness: 0.1 # cm
+he_balloon_med: "PVC"
 rib: 1.5 # cm
 ribMed: "steel"
 xstartInner: 100.0 # cm
