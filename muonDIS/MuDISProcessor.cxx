@@ -308,11 +308,11 @@ void MuDISProcessor::ProcessMuons() {
     }
 
     std::string targetType;
-    if (pid == 13){
+    if (pid == -13){
       nplus++;
       targetType = "gamma/mu+";
     }
-    else if (pid == -13){
+    else if (pid == 13){
       nminus++;
       targetType = "gamma/mu-";
     }
