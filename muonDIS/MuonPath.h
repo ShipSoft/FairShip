@@ -104,13 +104,13 @@ class MuonPath {
   bool Add(const MuonPath& aEle);
 
   inline double GetX(const double& aZ, const unsigned& idx) const {
-    if (idx >= GetNSlices()) return 0;
+    if (idx >= GetNSlices() || fpvec[idx].Z()==0) return 0;
     return fvtx[idx].X() +
            (aZ - fvtx[idx].Z()) * fpvec[idx].X() / fpvec[idx].Z();
   };
 
   inline double GetY(const double& aZ, const unsigned& idx) const {
-    if (idx >= GetNSlices()) return 0;
+    if (idx >= GetNSlices() || fpvec[idx].Z()==0) return 0;
     return fvtx[idx].Y() +
            (aZ - fvtx[idx].Z()) * fpvec[idx].Y() / fpvec[idx].Z();
   };
@@ -127,7 +127,7 @@ class MuonPath {
     double P = fpvec[idx].Mag();
     double v = c_light * P /
                TMath::Sqrt(TMath::Power(P, 2) + TMath::Power(muon_mass, 2));
-
+    if (v==0) return 0;
     return fvtxT[idx] + GetLength(aZ, idx) / v;
   };
 

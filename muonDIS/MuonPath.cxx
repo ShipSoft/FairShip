@@ -35,8 +35,8 @@ double MuonPath::GetZ(const double& aZ, unsigned& idx) const {
     }
     prevz += stepz;
   }
-  // set a default but should not happen?
-  return 0;
+  // set a default to the last value
+  return fendZ[fendZ.size()-1];
 }
 
 std::string MuonPath::GetLabel(const std::string& aVol,
@@ -59,12 +59,10 @@ std::string MuonPath::GetLabel(const std::string& aVol,
   else if ((aVol.find("Tr1_frame") != aVol.npos ||
 	    aVol.find("Tr2_frame") != aVol.npos ||
 	    aVol.find("Tr3_frame") != aVol.npos ||
-	    aVol.find("Tr4_frame") != aVol.npos) &&
-           aMat.find("steel") != aMat.npos)
+	    aVol.find("Tr4_frame") != aVol.npos))
     return "SSTfr";
   else if ((aVol.find("Veto") != aVol.npos ||
-            aVol.find("vLongitRib") != aVol.npos) &&
-           aMat.find("Aluminum") != aMat.npos)
+            aVol.find("vLongitRib") != aVol.npos))
     return "SBTfr";
   else if (aVol.find("LiSc") != aVol.npos)
     return "SBTsens";
@@ -77,8 +75,10 @@ std::string MuonPath::GetLabel(const std::string& aVol,
 void MuonPath::Print() {
   std::ostringstream ldebug;
   ldebug << flabel << " "
-         << " d=" << fdensity << " <d>=" << fwdensity / flength << std::endl
-         << " l=" << flength << " l_in_z=" << fzlength
+         << " d=" << fdensity
+         << " l=" << flength << " l_in_z=" << fzlength;
+  if (flength > 0) ldebug << " <d>=" << fwdensity / flength;
+  ldebug << std::endl
          << " zIn=" << fstart[0].Z() << " zOut=" << fendZ[GetNSlices() - 1]
          << std::endl;
   ldebug << "z-slices n=" << GetNSlices() << ": " << std::endl;

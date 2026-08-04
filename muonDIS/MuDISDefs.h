@@ -11,6 +11,7 @@
 #include "ShipMCTrack.h"
 #include "TROOT.h"
 #include "TTree.h"  // for TTree
+#include "TChain.h"  // for TTree
 #include "TVector3.h"
 #include "UpstreamTaggerPoint.h"
 #include "strawtubesPoint.h"
@@ -51,17 +52,17 @@ namespace ShipMuDIS {
     std::vector<int> nDISdau;               // per DIS event muon
     std::vector<DISparticle> DISparticles;  // all DIS events together.
     
-    void InitTree(TTree*& t, TString label) {
-      t->Branch("muon_nDISevt_" + label, &nDISevts);
-      t->Branch("muon_wDIS_" + label, &wDIS);
-      t->Branch("mudis_DISxsec_" + label, &DISxsec);
-      t->Branch("mudis_DIStarget_" + label, &DIStarget);
-      t->Branch("mudis_DISvx_" + label, &DISvx);
-      t->Branch("mudis_DISvy_" + label, &DISvy);
-      t->Branch("mudis_DISvz_" + label, &DISvz);
-      t->Branch("mudis_DISvt_" + label, &DISvt);
-      t->Branch("mudis_nDISdaughters_" + label, &nDISdau);
-      t->Branch("mudis_DISproducts_" + label, &DISparticles);
+    void InitTree(TTree*& aT, TString & aLabel) {
+      aT->Branch("muon_nDISevt_" + aLabel, &nDISevts);
+      aT->Branch("muon_wDIS_" + aLabel, &wDIS);
+      aT->Branch("mudis_DISxsec_" + aLabel, &DISxsec);
+      aT->Branch("mudis_DIStarget_" + aLabel, &DIStarget);
+      aT->Branch("mudis_DISvx_" + aLabel, &DISvx);
+      aT->Branch("mudis_DISvy_" + aLabel, &DISvy);
+      aT->Branch("mudis_DISvz_" + aLabel, &DISvz);
+      aT->Branch("mudis_DISvt_" + aLabel, &DISvt);
+      aT->Branch("mudis_nDISdaughters_" + aLabel, &nDISdau);
+      aT->Branch("mudis_DISproducts_" + aLabel, &DISparticles);
     };
     
     void initEvent(const int& nDIS) {
@@ -92,14 +93,24 @@ namespace ShipMuDIS {
     std::vector<UpstreamTaggerPoint> ubtPt;
     std::vector<strawtubesPoint> sstPt;
     MuonDISBranches br[nMats];
-    void InitTree(TTree*& t) {
-      t->Branch("muon_MCTracks", &mcTrks);
-      t->Branch("muon_SBTPoints", &sbtPt);
-      t->Branch("muon_SSTPoints", &sstPt);
-      t->Branch("muon_UBTPoints", &ubtPt);
+    void InitTree(TTree*& aT) {
+      aT->Branch("muon_MCTracks", &mcTrks);
+      aT->Branch("muon_SBTPoints", &sbtPt);
+      aT->Branch("muon_SSTPoints", &sstPt);
+      aT->Branch("muon_UBTPoints", &ubtPt);
       for (unsigned i(0);i<nMats;++i){
-	br[i].InitTree(t, MatTypeStr[i]);
+	br[i].InitTree(aT, MatTypeStr[i]);
       }
+    };
+    void initEvent(const int& nMax = 100) {
+      mcTrks.clear();
+      mcTrks.reserve(nMax);
+      sbtPt.clear();
+      sbtPt.reserve(nMax);
+      ubtPt.clear();
+      ubtPt.reserve(nMax);
+      sstPt.clear();
+      sstPt.reserve(nMax);
     };
   };
   
@@ -109,15 +120,17 @@ namespace ShipMuDIS {
     std::vector<UpstreamTaggerPoint>* ubtPt = nullptr;
     std::vector<strawtubesPoint>* sstPt = nullptr;
     
-    void Setup(TTree* t) {
-      t->SetBranchAddress("MCTrack", &MCTrack);
-      t->SetBranchAddress("vetoPoint", &sbtPt);
-      t->SetBranchAddress("UpstreamTaggerPoint", &ubtPt);
-      t->SetBranchAddress("strawtubesPoint", &sstPt);
+    bool Setup(TChain* aT) {
+      bool ok = true;
+      ok &= (aT->SetBranchAddress("MCTrack", &MCTrack) >= 0);
+      ok &= (aT->SetBranchAddress("vetoPoint", &sbtPt) >= 0);
+      ok &= (aT->SetBranchAddress("UpstreamTaggerPoint", &ubtPt) >= 0);
+      ok &= (aT->SetBranchAddress("strawtubesPoint", &sstPt) >= 0);
+      return ok;
     };
   };
   
-  //For reading back the tree
+  //For reading back the DIS tree
   struct MuonDISInBranches {
     int nDISevts = 0;                 // per input muon per volume
     double wDIS = 1;                  // per input muon per volume
@@ -130,18 +143,18 @@ namespace ShipMuDIS {
     std::vector<int>* nDISdau = nullptr;               // per DIS event muon
     std::vector<DISparticle>* DISparticles = nullptr;  // all DIS events together.
     
-    bool SetupTree(TTree* t, TString label) {
+    bool SetupTree(TTree* aT, TString aLabel) {
       bool ok = true;
-      ok &= (t->SetBranchAddress("muon_nDISevt_" + label, &nDISevts) >= 0);
-      ok &= (t->SetBranchAddress("muon_wDIS_" + label, &wDIS) >= 0);
-      ok &= (t->SetBranchAddress("mudis_DISxsec_" + label, &DISxsec) >= 0);
-      ok &= (t->SetBranchAddress("mudis_DIStarget_" + label, &DIStarget) >= 0);
-      ok &= (t->SetBranchAddress("mudis_DISvx_" + label, &DISvx) >= 0);
-      ok &= (t->SetBranchAddress("mudis_DISvy_" + label, &DISvy) >= 0);
-      ok &= (t->SetBranchAddress("mudis_DISvz_" + label, &DISvz) >= 0);
-      ok &= (t->SetBranchAddress("mudis_DISvt_" + label, &DISvt) >= 0);
-      ok &= (t->SetBranchAddress("mudis_nDISdaughters_" + label, &nDISdau) >= 0);
-      ok &= (t->SetBranchAddress("mudis_DISproducts_" + label, &DISparticles) >= 0);
+      ok &= (aT->SetBranchAddress("muon_nDISevt_" + aLabel, &nDISevts) >= 0);
+      ok &= (aT->SetBranchAddress("muon_wDIS_" + aLabel, &wDIS) >= 0);
+      ok &= (aT->SetBranchAddress("mudis_DISxsec_" + aLabel, &DISxsec) >= 0);
+      ok &= (aT->SetBranchAddress("mudis_DIStarget_" + aLabel, &DIStarget) >= 0);
+      ok &= (aT->SetBranchAddress("mudis_DISvx_" + aLabel, &DISvx) >= 0);
+      ok &= (aT->SetBranchAddress("mudis_DISvy_" + aLabel, &DISvy) >= 0);
+      ok &= (aT->SetBranchAddress("mudis_DISvz_" + aLabel, &DISvz) >= 0);
+      ok &= (aT->SetBranchAddress("mudis_DISvt_" + aLabel, &DISvt) >= 0);
+      ok &= (aT->SetBranchAddress("mudis_nDISdaughters_" + aLabel, &nDISdau) >= 0);
+      ok &= (aT->SetBranchAddress("mudis_DISproducts_" + aLabel, &DISparticles) >= 0);
       return ok;
     };
 
@@ -156,9 +169,9 @@ namespace ShipMuDIS {
       return lOut.str();
     };    
 
-    std::ostringstream Print(const unsigned & evt, const TString & label){
+    std::ostringstream Print(const unsigned & aEvt, const TString & aLabel){
       std::ostringstream lOut;
-      lOut << "------------ print evt " << evt << " branch " << label << " -------------" << std::endl
+      lOut << "------------ print evt " << aEvt << " branch " << aLabel << " -------------" << std::endl
 	   << " - nDISevts = " << nDISevts  << std::endl
 	   << " - wDIS = " << wDIS  << std::endl;
       lOut << Print(*DISxsec,"DISxsec");
@@ -184,14 +197,14 @@ namespace ShipMuDIS {
     std::vector<strawtubesPoint>* sstPt = nullptr;
     MuonDISInBranches br[nMats];
 
-    bool Setup(TTree* t) {
+    bool Setup(TTree* aT) {
       bool ok = true;
-      ok &= (t->SetBranchAddress("muon_MCTracks", &mcTrks) >= 0);
-      ok &= (t->SetBranchAddress("muon_SBTPoints", &sbtPt) >= 0);
-      ok &= (t->SetBranchAddress("muon_SSTPoints", &sstPt) >= 0);
-      ok &= (t->SetBranchAddress("muon_UBTPoints", &ubtPt) >= 0);
+      ok &= (aT->SetBranchAddress("muon_MCTracks", &mcTrks) >= 0);
+      ok &= (aT->SetBranchAddress("muon_SBTPoints", &sbtPt) >= 0);
+      ok &= (aT->SetBranchAddress("muon_SSTPoints", &sstPt) >= 0);
+      ok &= (aT->SetBranchAddress("muon_UBTPoints", &ubtPt) >= 0);
       for (unsigned i(0);i<nMats;++i){
-	ok &= br[i].SetupTree(t, MatTypeStr[i]);
+	ok &= br[i].SetupTree(aT, MatTypeStr[i]);
       }
       return ok;
     };

@@ -8,6 +8,7 @@ import logging
 import time
 
 import ROOT as r
+from pathlib import Path
 
 r.gSystem.Load("libShipMuDIS.so")
 pdg = r.TDatabasePDG.Instance()
@@ -72,4 +73,24 @@ r.gGeoManager.Print()  # Read geometry
 
 muDis = r.MuDISProcessor()
 muDis.init(args.n_events, 2.0, args.nDIS, theseed, args.z_max)
-muDis.process_file(args.inputfile, args.outputfile)
+p = Path(args.inputfile)
+
+if p.is_file():
+    muDis.process_file(args.inputfile, args.outputfile)
+    
+elif p.is_dir():
+    pattern = "sim_"
+
+    matching_files = [
+        str(path)
+        for path in p.rglob("*")
+        if path.is_file() and pattern in path.name
+    ]
+    
+    print(f"Found {len(matching_files)} files:")
+    for f in matching_files:
+        print(f)
+        
+    muDis.process_file(matching_files, args.outputfile)
+else:
+    print("Inputfile string does not exist")

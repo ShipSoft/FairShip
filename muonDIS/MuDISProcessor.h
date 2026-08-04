@@ -9,7 +9,7 @@
 #include "TPythia6.h"
 #include "TPythia6Calls.h"
 #include "TROOT.h"
-#include "TTree.h"  // for TTree
+#include "TChain.h"  // for TTree
 #include "TVector3.h"
 #include "vector"
 
@@ -25,26 +25,33 @@ class MuDISProcessor {
 
   void init(const int& aEvts, const double& aMinPythiaP,
 	    const int& aDIS, const int& aSeed,
-            const double& aZmax);
+            const double& aZmax, const double& aZmin=2500);
   void initPythia6();
 
   void rotate(const TVector3& pvec, const double& theta, const double& phi,
               TVector3& newp);
 
+  Bool_t InitFile(const char*, int);
+  Bool_t InitFile(const char*);
+  Bool_t InitFiles(const std::vector<std::string>&, int);
+  Bool_t InitFiles(const std::vector<std::string>&);
   void process_file(const std::string& input, const std::string& output);
+  void process_file(const std::vector<std::string>& input, const std::string& output);
   void initEvent();
   void fillMCTracks(const Int_t aIdx);
   void fillSBTHits(const Int_t aIdx);
   void fillUBTHits(const Int_t aIdx);
   void fillSSTHits(const Int_t aIdx);
 
-  void generateDISevents(const std::string& tType, const std::string& aLabel,
+  void generateDISevents(const std::string& tType,
+			 const double& amuonW,
+			 const std::string& aLabel,
                          const MuonPath& aPath, MuonDISBranches& aDISBr);
 
   void ProcessMuons();
 
  private:
-  TTree* ftree;
+  TChain* ftree;
   CBMSimBranches finEv;
 
   TTree* fouttree;

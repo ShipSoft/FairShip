@@ -34,12 +34,13 @@ MuDISProcessor::MuDISProcessor() {
 
 void MuDISProcessor::init(const int& aEvts, const double& aMinPythiaP,
 			  const int& aDIS, const int& aSeed,
-                          const double& aZmax) {
+                          const double& aZmax, const double& aZmin) {
   fnEvts = aEvts;
   fMinPythiaP = aMinPythiaP;
   fnDIS = aDIS;
   fP6seed = aSeed;
   fGeoProcessor.SetZmax(aZmax);
+  fGeoProcessor.SetZmin(aZmin);
 }
 
 void MuDISProcessor::initPythia6() {
@@ -78,22 +79,96 @@ void MuDISProcessor::rotate(const TVector3& pvec, const double& theta,
   newp = rotation * pvec;
 }
 
+
+Bool_t MuDISProcessor::InitFile(const char* fileName) {
+  return InitFile(fileName,0);
+}
+
+Bool_t MuDISProcessor::InitFiles(const std::vector<std::string>& fileNames) {
+  return InitFiles(fileNames, 0);
+}
+
+// -----   Default constructor   -------------------------------------------
+Bool_t MuDISProcessor::InitFile(const char* fileName, const int startEvent) {
+  std::vector<std::string> fileNames = {fileName};
+  return InitFiles(fileNames, startEvent);
+}
+
+Bool_t MuDISProcessor::InitFiles(const std::vector<std::string>& fileNames,
+			    const int startEvent) {
+  
+  if (fileNames.empty()) {
+    LOG(error) << "MuDISProcessor: no input files provided. "
+               << "Check the -f/--inputFile argument or input file glob.";
+    return kFALSE;
+  }
+  for (const auto& fileName : fileNames) {
+    if (fileName.empty()) {
+      LOG(error) << "MuDISProcessor: received an empty input file name. "
+                 << "Check the -f/--inputFile argument.";
+      return kFALSE;
+    }
+  }
+  
+  LOG(info) << "Opening input file to find keys " << fileNames.at(0);
+  TFile* testFile = TFile::Open(fileNames.at(0).c_str(), "READ");
+  auto testKeys = testFile ? testFile->GetListOfKeys() : nullptr;
+  if (testKeys == nullptr) {
+    delete testFile;
+    LOG(error) << "MuDISProcessor: Error opening input file "
+               << fileNames.at(0)
+               << ". Check that the path is correct and the file is a readable "
+                  "ROOT file.";
+    return kFALSE;
+  }  
+  const bool hastree =
+    testKeys->FindObject("cbmsim") != nullptr;
+  testFile->Close();
+  delete testFile;
+
+  if (hastree) {
+    ftree = new TChain("cbmsim");
+    for (auto& f : fileNames) {
+      LOG(info) << "Opening input file " << f;
+      ftree->Add(f.c_str());
+    }
+    int treeEvts = ftree->GetEntries();
+    LOG(info) << "Reading " << treeEvts << " entries.";
+    
+    bool ok = finEv.Setup(ftree);
+    
+    if (!ok) {
+      LOG(error)
+        << "MuDISProcessor: failed to bind one or more required branches";
+      return kFALSE;
+    }
+    LOG(info) << "MuDISProcessor: Initialization successful.";
+    return kTRUE;
+  }
+  return kFALSE;
+}
+
 void MuDISProcessor::process_file(const std::string& input,
                                   const std::string& output) {
+  std::vector<std::string> fileNames = {input};
+  return process_file(fileNames,output);
+}
 
+void MuDISProcessor::process_file(const std::vector<std::string>& input,
+                                  const std::string& output) {
 
+  Bool_t treeOK = InitFiles(input);
 
-
-
-
-  TFile* infile = TFile::Open(input.c_str(), "READ");
-  if (!infile) return;
-  ftree = (TTree*)infile->Get("cbmsim");
-
-  if (!ftree) return;
-  finEv.Setup(ftree);
-
+  if (!treeOK) {
+    LOG(error) << " -- Error reading input files: " << input.size() << " first file: " << input[0];
+    return;
+  }
+  
   TFile* outfile = TFile::Open(output.c_str(), "RECREATE");
+  if (!outfile) {
+    LOG(error) << " -- Error creating outputfile: " << output;
+    return;
+  }
   outfile->cd();
   fouttree = new TTree(
       "MuonDIS", "Muon information, DIS products and soft interaction tracks");
@@ -109,25 +184,13 @@ void MuDISProcessor::process_file(const std::string& input,
   outfile->cd();
   fouttree->Write();
   outfile->Close();
-  infile->Close();
 }
 
 void MuDISProcessor::initEvent() {
-  // soft particles
-  foutEv.mcTrks.clear();
-  foutEv.mcTrks.reserve(20);
-  // At the moment only one hit, @TODO AMM-adapt for future real detector
-  foutEv.ubtPt.clear();
-  foutEv.ubtPt.reserve(1);
-  // SBT hits, could be more for muons travelling through aligned with vessel.
-  foutEv.sbtPt.clear();
-  foutEv.sbtPt.reserve(30);
-  // 8 straws per tracker station, 4 TS.
-  foutEv.sstPt.clear();
-  foutEv.sstPt.reserve(32);
+  // soft particles + detector hits
+  foutEv.initEvent(100);
   // Number of DIS events generated per volume.
   for (unsigned i(0);i<nMats;++i) foutEv.br[i].initEvent(fnDIS);
- 
 }
 
 void MuDISProcessor::fillMCTracks(const Int_t aIdx) {
@@ -169,6 +232,7 @@ void MuDISProcessor::fillSSTHits(const Int_t aIdx) {
 }
 
 void MuDISProcessor::generateDISevents(const std::string& tType,
+				       const double& amuonW,
                                        const std::string& aLabel,
                                        const MuonPath& aPath,
                                        MuonDISBranches& aDISBr) {
@@ -219,7 +283,12 @@ void MuDISProcessor::generateDISevents(const std::string& tType,
     aDISBr.DISvx.push_back(aPath.GetX(realz, slice));
     aDISBr.DISvy.push_back(aPath.GetY(realz, slice));
     aDISBr.DISvt.push_back(aPath.GetTimeNs(realz, slice));
-    double theta = TMath::ACos(aPath.Getpz(slice) / aPath.GetMomentum(slice));
+    double sliceP = aPath.GetMomentum(slice);
+    if (sliceP==0) {
+      LOG(error) << "Slice in z has momentum " << sliceP << ". Skipping DIS event " << ia;
+      continue;
+    }
+    double theta = TMath::ACos(aPath.Getpz(slice) / sliceP);
     // returns phi between -pi and pi
     double phi = TMath::ATan2(aPath.Getpy(slice), aPath.Getpx(slice));
 
@@ -247,11 +316,11 @@ void MuDISProcessor::generateDISevents(const std::string& tType,
   }  // loop on DIS events
 
   // calculate weight
-  //@FIXME AMM propagate input muon weight too
   // times length divided by length, length cancels out...
-  aDISBr.wDIS = lastxs / fnDIS * aPath.GetWeightedDensity();
+  if (fnDIS>0)
+    aDISBr.wDIS = amuonW * lastxs / fnDIS * aPath.GetWeightedDensity();
 
-  LOG(debug) << " -- path " << aLabel
+  LOG(debug) << " -- path " << aLabel << " muonW " << amuonW
              << " -- size of DISparticles collections: " << std::endl
              << " ---- particles: " << aDISBr.DISparticles.size() << std::endl
              << " ---- nDIS events: " << aDISBr.nDISevts << std::endl
@@ -277,33 +346,47 @@ void MuDISProcessor::ProcessMuons() {
 
   unsigned nplus = 0;
   unsigned nminus = 0;
-
+  unsigned skipMu = 0;
+  unsigned skipEvt = 0;
+  
   for (Long64_t iEvent = 0; iEvent < nEntries; ++iEvent) {
     LOG(debug) << " --- Processing event " << iEvent << std::endl;
-    if (iEvent % 100 == 0)
-      LOG(info) << " --- Processing event " << iEvent << std::endl;
-    ftree->GetEntry(iEvent);
+    if (iEvent % 10000 == 0)
+      LOG(info) << " --- Processing event " << iEvent/10000 << "k" << std::endl;
+    Long64_t bytes = ftree->GetEntry(iEvent);
 
-    if (finEv.MCTrack == nullptr) continue;
+    if (bytes <= 0) {
+      LOG(error) << " --- Error reading tree entry: " << iEvent;
+      skipEvt++;
+      continue;
+    }
+    
+    if (finEv.MCTrack == nullptr) {
+      skipEvt++;
+      continue;
+    }
 
     unsigned nTr = (*finEv.MCTrack).size();
-    if (nTr == 0) continue;
-
+    if (nTr == 0) {
+      skipEvt++;
+      continue;
+    }
     // interested in the first muon track - for PG setting
     //@FIXME AMM adapt also to MuonBack input, take all muons?
     // for now take MCTrack[0]
     Int_t muIdx = 0;
-
+    
     ShipMCTrack& track = (*finEv.MCTrack)[static_cast<unsigned>(muIdx)];
     int pid = track.GetPdgCode();
+    double muW = track.GetWeight();
+    
+    double mup =  track.GetP();
 
-    TVector3 mup;
-    track.GetMomentum(mup);
-
-    if (mup.Mag() < fMinPythiaP){
-      LOG(info) << iEvent << " skipped: muon momentum "
-		<< mup.Mag() << " below min value for Pythia:"
-		<< fMinPythiaP;
+    if (mup < fMinPythiaP){
+      LOG(debug) << iEvent << " skipped: muon momentum "
+		 << mup << " below min value for Pythia:"
+		 << fMinPythiaP;
+      skipMu++;
       continue;
     }
 
@@ -320,6 +403,7 @@ void MuDISProcessor::ProcessMuons() {
       LOG(warning) << iEvent << " skipped: "
                    << " nTracks= " << nTr
                    << " -- 1st track pid not a muon: " << pid << std::endl;
+      skipEvt++;
       continue;
     }
 
@@ -329,6 +413,18 @@ void MuDISProcessor::ProcessMuons() {
     fillSBTHits(muIdx);
     fillSSTHits(muIdx);
 
+    //Skip events which have no hit in either SBT or SST, muon just flying out of vessel acceptance never bouncing back...
+    if (foutEv.sbtPt.size()==0 && foutEv.sstPt.size() == 0) {
+      LOG(debug) << " Skipping muon event " << iEvent
+		 << " UBT Hits: " << foutEv.ubtPt.size()
+		 << ", SBT Hits: " << foutEv.sbtPt.size()
+		 << ", SST Hits: " << foutEv.sstPt.size()
+		 << std::endl;
+      skipMu++;
+      continue;
+    }
+
+    
     LOG(debug) << " -- size of hits collections: " << std::endl
                << " ---- mcTracks: " << foutEv.mcTrks.size() << std::endl
                << " ---- UBT Hits: " << foutEv.ubtPt.size() << std::endl
@@ -342,6 +438,7 @@ void MuDISProcessor::ProcessMuons() {
 
     if (lPathMap.size() == 0) {
       LOG(error) << " -- No elements in path... Not doing anything...";
+      skipMu++;
       continue;
     }
 
@@ -351,7 +448,7 @@ void MuDISProcessor::ProcessMuons() {
     // length*density.
     for (unsigned i(0);i<nMats;++i){
       if (lPathMap.find(MatTypeStr[i].Data()) != lPathMap.end())
-	generateDISevents(targetType,
+	generateDISevents(targetType,muW,
 			  MatTypeStr[i].Data(),
 			  lPathMap.find(MatTypeStr[i].Data())->second,
 			  foutEv.br[i]);
@@ -362,5 +459,7 @@ void MuDISProcessor::ProcessMuons() {
   }  // loop on events
 
   LOG(info) << "Found " << nplus << " mu+ and " << nminus << " mu-."
-            << std::endl;
+            << std::endl
+	    << "Skipped: " << skipEvt << " events and "
+	    << skipMu << " muons.";
 }

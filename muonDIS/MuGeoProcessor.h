@@ -32,6 +32,11 @@ class MuGeoProcessor {
               << " cm.";
     fZmax = zmax;
   };
+  inline void SetZmin(const double& zmin) {
+    LOG(info) << " Minimum z position for MuonPath building: " << zmin
+              << " cm.";
+    fZmin = zmin;
+  };
 
   TVector3 GetVertex(const TVector3& r1, const TVector3& p1, const TVector3& r2,
                      const TVector3& p2);
@@ -40,6 +45,7 @@ class MuGeoProcessor {
 
  private:
   double fZmax;
+  double fZmin;
   // position
   TVector3 fStartpos;
   TVector3 fUBTpos;

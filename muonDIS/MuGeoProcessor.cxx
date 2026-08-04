@@ -1,7 +1,8 @@
 #include "MuGeoProcessor.h"
 
 MuGeoProcessor::MuGeoProcessor() {
-  fZmax = 20000;
+  fZmax = 14000;
+  fZmin = 2500;
   fhasUBThit = false;
   fhasSBThit = false;
   fhasSSThit = false;
@@ -47,7 +48,7 @@ void MuGeoProcessor::initialise(MuonBranches& aEvt) {
     aEvt.sstPt[0].Momentum(fSSTp);
     fSSTT = aEvt.sstPt[0].GetTime();
   }
-
+  // @FIXME-AM what to do if startpos is greater than UBTpos, protect ?
   // extract intersections
   fVtx12 = GetVertex(fStartpos, fStartp, fUBTpos, fUBTp);
   fVtx13 = GetVertex(fStartpos, fStartp, fSBTpos, fSBTp);
@@ -112,7 +113,7 @@ void MuGeoProcessor::CheckAllVolumes() {
     LOG(error) << "gGeoManager does not exist!";
   }
 
-  double z = 3131;
+  double z = fZmin;
   double step = 50;
   double stepd = 0.1;
   int nS = 8;
@@ -146,8 +147,11 @@ void MuGeoProcessor::CheckAllVolumes() {
             snext += gGeoManager->GetStep() * dz;
 
             // for safety...
-            if (lcount > 5000) break;
-            lcount++;
+            if (lcount > 5000) {
+	      LOG(info) << "Reached 5000 iterations in checking all volumes, stopping there: z=" << snext << " cm";
+	      break;
+	    }
+	    lcount++;
           }
         }
       }
@@ -169,6 +173,17 @@ std::map<std::string, MuonPath>& MuGeoProcessor::FillMuonPath() {
 
   // Initialise start point and direction
   double muonp = fStartp.Mag();
+  if (muonp == 0) {
+    LOG(error) << "Muon has momentum " << muonp << ", not filling path";
+    return fPathMap;
+  }
+
+  if (fStartpos.Z()<fZmin){
+    LOG(error) << " This muon has a starting Z position of " << fStartpos.Z() << " before the minimum to be considered: " << fZmin
+	       << "==> not filling path, please adapt minimum position or muon input.";
+    return fPathMap;
+  }
+
   TGeoNode* startnode = gGeoManager->InitTrack(
       fStartpos.X(), fStartpos.Y(), fStartpos.Z(), fStartp.X() / muonp,
       fStartp.Y() / muonp, fStartp.Z() / muonp);
@@ -252,6 +267,10 @@ std::map<std::string, MuonPath>& MuGeoProcessor::FillMuonPath() {
     TVector3 currentPos(lpos[0], lpos[1], lpos[2]);
 
     muonp = dirVec[iV].Mag();
+    if (muonp == 0) {
+      LOG(error) << "Muon has momentum " << muonp << ", stop filling path";
+      break;
+    }
 
     if (doInit[iV]) {
       currentnode =
@@ -317,15 +336,18 @@ std::map<std::string, MuonPath>& MuGeoProcessor::FillMuonPath() {
     // increment vtx index to go to next change in direction...
     if (iV < nVtx - 1 && switchVtx) iV++;
     // for safety...
-    if (lcount > 1000) break;
+    if (lcount > 1000) {
+      LOG(info) << "Reached 1000 iterations in filling path, stopping there: z=" << zpos << " cm";
+      break;
+    }
     lcount++;
   }
 
-  LOG(debug) << " -- Map elements: n=" << fPathMap.size();
+  LOG(debug) << " -- Map elements after " << lcount << "steps: n=" << fPathMap.size();
   for (auto lele = fPathMap.begin(); lele != fPathMap.end(); ++lele) {
     LOG(debug) << lele->first << ": ";
     lele->second.Print();
   }
-
+  
   return fPathMap;
 }
