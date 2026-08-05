@@ -22,6 +22,7 @@ MuDISProcessor::MuDISProcessor() {
 
   fLogger = FairLogger::GetLogger();
   fnEvts = -1;
+  fstartEvt = 0;
   fPythia = TPythia6::Instance();
   fPDG = TDatabasePDG::Instance();
 
@@ -32,10 +33,12 @@ MuDISProcessor::MuDISProcessor() {
   fGeoProcessor.CheckAllVolumes();
 }
 
-void MuDISProcessor::init(const int& aEvts, const double& aMinPythiaP,
+void MuDISProcessor::init(const int& aEvts, const int& aStart,
+			  const double& aMinPythiaP,
 			  const int& aDIS, const int& aSeed,
                           const double& aZmax, const double& aZmin) {
   fnEvts = aEvts;
+  fstartEvt = aStart;
   fMinPythiaP = aMinPythiaP;
   fnDIS = aDIS;
   fP6seed = aSeed;
@@ -349,21 +352,27 @@ void MuDISProcessor::generateDISevents(const std::string& tType,
 void MuDISProcessor::ProcessMuons() {
   LOG(info) << " * Start of event loop" << std::endl;
 
-  const Long64_t nEntries =
-      fnEvts > 0 ? std::min(static_cast<Long64_t>(fnEvts), ftree->GetEntries())
-                 : ftree->GetEntries();
-  LOG(info) << " - Processing " << nEntries << " events" << std::endl;
+  if (static_cast<Long64_t>(fstartEvt) >= ftree->GetEntries()){
+    LOG(error) << " ** Trying to start from event " << fstartEvt << " which is greater than the tree entries: " << ftree->GetEntries()
+	       << ". Doing nothing...";
+    return;
+  }
 
+  const Long64_t nEntries =
+      fnEvts > 0 ? std::min(static_cast<Long64_t>(fstartEvt+fnEvts), ftree->GetEntries())
+                 : ftree->GetEntries();
+  LOG(info) << " - Processing event " << fstartEvt << " to event " << nEntries-1 << std::endl;
+  
   unsigned nplus = 0;
   unsigned nminus = 0;
   unsigned skipMu_pmin = 0;
   unsigned skipMu_acc = 0;
   unsigned skipEvt = 0;
   
-  for (Long64_t iEvent = 0; iEvent < nEntries; ++iEvent) {
+  for (Long64_t iEvent = static_cast<Long64_t>(fstartEvt); iEvent < nEntries; ++iEvent) {
     LOG(debug) << " --- Processing event " << iEvent << std::endl;
-    if (iEvent % 1000 == 0)
-      LOG(info) << " --- Processing event " << iEvent/1000 << "k" << std::endl;
+    if (iEvent % 100 == 0)
+      LOG(info) << " --- Processing event " << iEvent << std::endl;
     Long64_t bytes = ftree->GetEntry(iEvent);
 
     if (bytes <= 0) {

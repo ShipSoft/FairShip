@@ -22,6 +22,7 @@ parser.add_argument(
     default="muonsProduction_wsoft.root",
 )
 parser.add_argument("-n", "--n_events", type=int, default=-1)
+parser.add_argument("-s", "--start_event", type=int, default=0)
 parser.add_argument("-z", "--z_max", type=float, default=20000)
 parser.add_argument("-d", "--nDIS", help="Number of DIS per muon to generate", required=False, default=1000, type=int)
 parser.add_argument("-g", "--geoFile", dest="geoFile", help="ROOT geofile", required=True)
@@ -72,7 +73,7 @@ logging.info("Geometry successfully loaded.")
 r.gGeoManager.Print()  # Read geometry
 
 muDis = r.MuDISProcessor()
-muDis.init(args.n_events, 2.0, args.nDIS, theseed, args.z_max)
+muDis.init(args.n_events, args.start_event, 2.0, args.nDIS, theseed, args.z_max)
 p = Path(args.inputfile)
 
 if p.is_file():

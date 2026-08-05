@@ -23,7 +23,8 @@ class MuDISProcessor {
   /** destructor **/
   ~MuDISProcessor() {};
 
-  void init(const int& aEvts, const double& aMinPythiaP,
+  void init(const int& aEvts, const int& aStart,
+	    const double& aMinPythiaP,
 	    const int& aDIS, const int& aSeed,
             const double& aZmax, const double& aZmin=2500);
   void initPythia6();
@@ -53,12 +54,13 @@ class MuDISProcessor {
  private:
   TChain* ftree;
   CBMSimBranches finEv;
-
+  
   TTree* fouttree;
   MuonBranches foutEv;
 
   FairLogger* fLogger;  //!   don't make it persistent, magic ROOT command
   int fnEvts;
+  int fstartEvt;
 
   TPythia6* fPythia;
   TDatabasePDG* fPDG;
