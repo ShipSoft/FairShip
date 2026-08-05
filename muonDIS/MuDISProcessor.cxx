@@ -41,6 +41,7 @@ void MuDISProcessor::init(const int& aEvts, const double& aMinPythiaP,
   fP6seed = aSeed;
   fGeoProcessor.SetZmax(aZmax);
   fGeoProcessor.SetZmin(aZmin);
+  fGeoProcessor.FillZmaxVolumes();
 }
 
 void MuDISProcessor::initPythia6() {
@@ -184,6 +185,9 @@ void MuDISProcessor::process_file(const std::vector<std::string>& input,
   outfile->cd();
   fouttree->Write();
   outfile->Close();
+
+  fGeoProcessor.PrintVolumes();
+  
 }
 
 void MuDISProcessor::initEvent() {
@@ -274,8 +278,14 @@ void MuDISProcessor::generateDISevents(const std::string& tType,
 
     // choose a random vertex position to set to all daughters
     // Take into account "broken" paths with different slices in z.
-    double vtx_z = gRandom->Uniform(aPath.GetstartZ(),
-                                    aPath.GetstartZ() + aPath.GetZLength());
+    
+    double vtx_z = 0;
+    //restrict to last lambda for MS...
+    if (aLabel.find("MS")!=aLabel.npos) vtx_z = gRandom->Uniform(std::max(aPath.GetstartZ(),aPath.GetstartZ() + aPath.GetZLength() - 20),
+								 aPath.GetstartZ() + aPath.GetZLength());
+    else vtx_z = gRandom->Uniform(aPath.GetstartZ(),
+				  aPath.GetstartZ() + aPath.GetZLength());
+    
     // put back to real Z position for paths with different slices in z.
     unsigned slice = 0;
     double realz = aPath.GetZ(vtx_z, slice);
@@ -285,7 +295,7 @@ void MuDISProcessor::generateDISevents(const std::string& tType,
     aDISBr.DISvt.push_back(aPath.GetTimeNs(realz, slice));
     double sliceP = aPath.GetMomentum(slice);
     if (sliceP==0) {
-      LOG(error) << "Slice in z has momentum " << sliceP << ". Skipping DIS event " << ia;
+      LOG(error) << " --- Slice in z has momentum " << sliceP << ". Skipping DIS event " << ia;
       continue;
     }
     double theta = TMath::ACos(aPath.Getpz(slice) / sliceP);
@@ -346,13 +356,14 @@ void MuDISProcessor::ProcessMuons() {
 
   unsigned nplus = 0;
   unsigned nminus = 0;
-  unsigned skipMu = 0;
+  unsigned skipMu_pmin = 0;
+  unsigned skipMu_acc = 0;
   unsigned skipEvt = 0;
   
   for (Long64_t iEvent = 0; iEvent < nEntries; ++iEvent) {
     LOG(debug) << " --- Processing event " << iEvent << std::endl;
-    if (iEvent % 10000 == 0)
-      LOG(info) << " --- Processing event " << iEvent/10000 << "k" << std::endl;
+    if (iEvent % 1000 == 0)
+      LOG(info) << " --- Processing event " << iEvent/1000 << "k" << std::endl;
     Long64_t bytes = ftree->GetEntry(iEvent);
 
     if (bytes <= 0) {
@@ -386,7 +397,7 @@ void MuDISProcessor::ProcessMuons() {
       LOG(debug) << iEvent << " skipped: muon momentum "
 		 << mup << " below min value for Pythia:"
 		 << fMinPythiaP;
-      skipMu++;
+      skipMu_pmin++;
       continue;
     }
 
@@ -413,14 +424,17 @@ void MuDISProcessor::ProcessMuons() {
     fillSBTHits(muIdx);
     fillSSTHits(muIdx);
 
-    //Skip events which have no hit in either SBT or SST, muon just flying out of vessel acceptance never bouncing back...
-    if (foutEv.sbtPt.size()==0 && foutEv.sstPt.size() == 0) {
+    //Count events which have no hit in either UBT, SBT or SST, muon just flying out of vessel acceptance never bouncing back...
+    //For those, very numerous in the cudaMu files, skip to optimise processing.
+    //@FIXME AM to do: a study of whether the events created in the last lambda of MS could still contribute or would hit UBT...
+    if (foutEv.ubtPt.size()==0 && foutEv.sbtPt.size()==0 && foutEv.sstPt.size() == 0) {
       LOG(debug) << " Skipping muon event " << iEvent
 		 << " UBT Hits: " << foutEv.ubtPt.size()
 		 << ", SBT Hits: " << foutEv.sbtPt.size()
 		 << ", SST Hits: " << foutEv.sstPt.size()
 		 << std::endl;
-      skipMu++;
+      skipMu_acc++;
+      //counting, but want to still fill DIS in MS (and UBT detector)...
       continue;
     }
 
@@ -438,7 +452,7 @@ void MuDISProcessor::ProcessMuons() {
 
     if (lPathMap.size() == 0) {
       LOG(error) << " -- No elements in path... Not doing anything...";
-      skipMu++;
+      skipMu_acc++;
       continue;
     }
 
@@ -446,7 +460,8 @@ void MuDISProcessor::ProcessMuons() {
     // length*density. That way, do only once the calculation of the path, and
     // plenty of DIS in each material. fill a branch with weight = path
     // length*density.
-    for (unsigned i(0);i<nMats;++i){
+    // Discarding REST: many muons go through CONCRETE,no need to record DIS there....
+    for (unsigned i(0);i<nMats-1;++i){
       if (lPathMap.find(MatTypeStr[i].Data()) != lPathMap.end())
 	generateDISevents(targetType,muW,
 			  MatTypeStr[i].Data(),
@@ -461,5 +476,6 @@ void MuDISProcessor::ProcessMuons() {
   LOG(info) << "Found " << nplus << " mu+ and " << nminus << " mu-."
             << std::endl
 	    << "Skipped: " << skipEvt << " events and "
-	    << skipMu << " muons.";
+	    << skipMu_pmin << " muons with too low p, "
+	    << skipMu_acc << " muons outside of acceptance.";
 }

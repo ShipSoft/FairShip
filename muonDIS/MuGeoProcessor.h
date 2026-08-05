@@ -38,11 +38,22 @@ class MuGeoProcessor {
     fZmin = zmin;
   };
 
+  inline double FindZmax(const std::string& aLabel){
+    auto it = fZmaxMap.find(aLabel);
+    if (it != fZmaxMap.end()) return it->second;
+    else {
+      LOG(error) << " * MuGeoProcessor::FindZmax() Volume label " << aLabel << " not found, using default Zmax: " << fZmax << "." << std::endl;
+      return fZmax;
+    }
+  };
+  
   TVector3 GetVertex(const TVector3& r1, const TVector3& p1, const TVector3& r2,
                      const TVector3& p2);
   void CheckAllVolumes();
+  void FillZmaxVolumes();
   std::map<std::string, MuonPath>& FillMuonPath();
-
+  void PrintVolumes();
+  
  private:
   double fZmax;
   double fZmin;
@@ -74,6 +85,8 @@ class MuGeoProcessor {
   bool fhasSSThit;
 
   std::map<std::string, MuonPath> fPathMap;
+  std::map<std::string, std::set<std::string>> fVolMap;
+  std::map<std::string, double> fZmaxMap;
 
 };  // class
 
