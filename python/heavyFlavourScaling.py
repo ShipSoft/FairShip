@@ -22,13 +22,17 @@ TARGET_A = {"W": 184.0, "Mo": 98.0}
 CrossSections = namedtuple("CrossSections", ["chicc", "chibb", "A", "scale"])
 
 
-def derive_cross_sections(target_composition, A=None, chicc=None, chibb=None):
+def derive_cross_sections(target_composition=None, A=None, chicc=None, chibb=None):
     """Return default-scaled chicc/chibb, honouring explicit overrides.
 
     ``A`` overrides the ``target_composition`` preset; ``chicc``/``chibb``
-    override the target-derived value when not ``None``.
+    override the target-derived value when not ``None``. Supply either
+    ``target_composition`` (a known preset) or an explicit ``A``.
     """
-    A = A if A is not None else TARGET_A[target_composition]
+    if A is None:
+        if target_composition is None:
+            raise ValueError(f"Provide either target_composition (one of {sorted(TARGET_A)}) or an explicit A.")
+        A = TARGET_A[target_composition]
     if A <= 0:
         raise ValueError(f"Invalid target mass number A={A}. Must be > 0.")
     scale = (A / A_REF) ** (heavyflavour_Ascale - mbias_Ascale)
@@ -37,10 +41,11 @@ def derive_cross_sections(target_composition, A=None, chicc=None, chibb=None):
     return CrossSections(chicc, chibb, A, scale)
 
 
-def format_summary(cs, target_composition):
+def format_summary(cs, target_composition=None):
     """One human-readable summary of the derived cross-section ratios."""
+    label = target_composition or "custom (A given)"
     return (
-        f"Target composition: {target_composition}, A={cs.A}, "
+        f"Target composition: {label}, A={cs.A}, "
         f"scale=(A/{A_REF})^({heavyflavour_Ascale}-{mbias_Ascale})={cs.scale:.4f}\n"
         f"Derived cross-section ratios: chicc={cs.chicc:.3e}, chibb={cs.chibb:.3e}"
     )

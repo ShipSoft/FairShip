@@ -52,7 +52,7 @@ cs = derive_cross_sections(args.target_composition, args.A, args.chicc, args.chi
 chicc, chibb = cs.chicc, cs.chibb
 setByHand = args.chicc is not None
 
-print(format_summary(cs, args.target_composition))
+print(format_summary(cs, None if args.A is not None else args.target_composition))
 
 FIN = fname + ".root"
 tmp = os.path.abspath(FIN).split("/")

@@ -456,7 +456,7 @@ if args.charm or args.beauty:
     cs = derive_cross_sections(args.target_composition, args.A, args.chicc, args.chibb)
     P8gen.SetChicc(cs.chicc)
     P8gen.SetChibb(cs.chibb)
-    print(format_summary(cs, args.target_composition))
+    print(format_summary(cs, None if args.A is not None else args.target_composition))
     print("--- process heavy flavours ---")
     P8gen.InitForCharmOrBeauty(charmInputFile, args.nev, args.pot, args.nStart)
 primGen.AddGenerator(P8gen)
