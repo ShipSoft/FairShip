@@ -1030,7 +1030,7 @@ Private Attributes</h2></td></tr>
 <div class="ttc" id="aclassShipBFieldMap_html_ac066904278e00e14789f6287e6422f18"><div class="ttname"><a href="classShipBFieldMap.html#ac066904278e00e14789f6287e6422f18">ShipBFieldMap::insideRange</a></div><div class="ttdeci">Bool_t insideRange(Float_t x, Float_t y, Float_t z)</div><div class="ttdoc">Check to see if a point is within the map validity range.</div><div class="ttdef"><b>Definition</b> <a href="ShipBFieldMap_8cxx_source.html#l00394">ShipBFieldMap.cxx:394</a></div></div>
 <div class="ttc" id="aclassShipBFieldMap_html_ad89fd4e71cf67011e40940c6293a2ffe"><div class="ttname"><a href="classShipBFieldMap.html#ad89fd4e71cf67011e40940c6293a2ffe">ShipBFieldMap::getMapBin</a></div><div class="ttdeci">Int_t getMapBin(Int_t iX, Int_t iY, Int_t iZ)</div><div class="ttdoc">Find the vector entry of the field map data given the bins iX, iY and iZ.</div><div class="ttdef"><b>Definition</b> <a href="ShipBFieldMap_8cxx_source.html#l00486">ShipBFieldMap.cxx:486</a></div></div>
 <div class="ttc" id="anamespaceShipAna_html_aa4bf87f4d17f9d38b1d8f4d009bb54b3"><div class="ttname"><a href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">ShipAna.i</a></div><div class="ttdeci">int i</div><div class="ttdef"><b>Definition</b> <a href="ShipAna_8py_source.html#l00102">ShipAna.py:102</a></div></div>
-<div class="ttc" id="anamespacerun__fixedTarget_html_a68f8e54ebe34ed88a1aff4505c32be7c"><div class="ttname"><a href="namespacerun__fixedTarget.html#a68f8e54ebe34ed88a1aff4505c32be7c">run_fixedTarget.x</a></div><div class="ttdeci">x</div><div class="ttdef"><b>Definition</b> <a href="run__fixedTarget_8py_source.html#l00590">run_fixedTarget.py:590</a></div></div>
+<div class="ttc" id="anamespacerun__fixedTarget_html_a68f8e54ebe34ed88a1aff4505c32be7c"><div class="ttname"><a href="namespacerun__fixedTarget.html#a68f8e54ebe34ed88a1aff4505c32be7c">run_fixedTarget.x</a></div><div class="ttdeci">x</div><div class="ttdef"><b>Definition</b> <a href="run__fixedTarget_8py_source.html#l00568">run_fixedTarget.py:568</a></div></div>
 <div class="ttc" id="anamespacerun__simScript_html_a90c25390918b8dd5a6f17d8efa00c9ed"><div class="ttname"><a href="namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed">run_simScript.z</a></div><div class="ttdeci">z</div><div class="ttdef"><b>Definition</b> <a href="run__simScript_8py_source.html#l00684">run_simScript.py:684</a></div></div>
 <div class="ttc" id="anamespacerun__tracking__scan_html_a60149f5e9c7fe53ba27d5ee50faa64de"><div class="ttname"><a href="namespacerun__tracking__scan.html#a60149f5e9c7fe53ba27d5ee50faa64de">run_tracking_scan.y</a></div><div class="ttdeci">y</div><div class="ttdef"><b>Definition</b> <a href="run__tracking__scan_8py_source.html#l00327">run_tracking_scan.py:327</a></div></div>
 </div><!-- fragment -->
@@ -2567,8 +2567,7 @@ Private Attributes</h2></td></tr>
 </dl>
 
 <p class="definition">Definition at line <a class="el" href="ShipBFieldMap_8h_source.html#l00135">135</a> of file <a class="el" href="ShipBFieldMap_8h_source.html">ShipBFieldMap.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  135</span>{ <a class="code hl_variable" href="classShipBFieldMap.html#aaff1f8dc28c0bf4b9d9ba2960f454608">scale_</a> = <a class="code hl_variable" href="namespacemakeDecay.html#a623b9d889ae161ebb139e0181427e1e0">scale</a>; }</div>
-<div class="ttc" id="anamespacemakeDecay_html_a623b9d889ae161ebb139e0181427e1e0"><div class="ttname"><a href="namespacemakeDecay.html#a623b9d889ae161ebb139e0181427e1e0">makeDecay.scale</a></div><div class="ttdeci">tuple scale</div><div class="ttdef"><b>Definition</b> <a href="makeDecay_8py_source.html#l00061">makeDecay.py:61</a></div></div>
+<div class="fragment"><div class="line"><span class="lineno">  135</span>{ <a class="code hl_variable" href="classShipBFieldMap.html#aaff1f8dc28c0bf4b9d9ba2960f454608">scale_</a> = scale; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -2834,7 +2833,7 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  507</span>  <span class="comment">// A..H (bit-for-bit the arithmetic previously performed per axis by</span></div>
 <div class="line"><span class="lineno">  508</span>  <span class="comment">// BInterCalc).</span></div>
 <div class="line"><span class="lineno">  509</span>  <span class="comment">// Linear interpolation along x</span></div>
-<div class="line"><span class="lineno">  510</span>  <span class="keyword">const</span> Float_t F00 = <a class="code hl_variable" href="namespacemakeDecay.html#a234f721ed0ca83b4e18faedb52e5ca8e">A</a> * xFrac1 + B * xFrac;</div>
+<div class="line"><span class="lineno">  510</span>  <span class="keyword">const</span> Float_t F00 = <a class="code hl_variable" href="namespacerunPythia8.html#a527266378c7f0299bad9b3c32d02d15b">A</a> * xFrac1 + B * xFrac;</div>
 <div class="line"><span class="lineno">  511</span>  <span class="keyword">const</span> Float_t F10 = C * xFrac1 + D * xFrac;</div>
 <div class="line"><span class="lineno">  512</span>  <span class="keyword">const</span> Float_t F01 = <a class="code hl_variable" href="namespacemakeMuonEM.html#a2f541edec5da16cf64dcce3ea03d80c8">E</a> * xFrac1 + F * xFrac;</div>
 <div class="line"><span class="lineno">  513</span>  <span class="keyword">const</span> Float_t F11 = <a class="code hl_variable" href="namespacerun__fixedTarget.html#a049620ba28aeb292c74bb28518aa6c2f">G</a> * xFrac1 + <a class="code hl_function" href="namespaceproton__bremsstrahlung.html#aad8a33cd3d889bef7f25142f8489dbd4">H</a> * xFrac;</div>
@@ -2846,10 +2845,10 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  519</span>  <span class="comment">// Linear interpolation along z</span></div>
 <div class="line"><span class="lineno">  520</span>  <span class="keywordflow">return</span> F0 * zFrac1 + F1 * zFrac;</div>
 <div class="line"><span class="lineno">  521</span>}</div>
-<div class="ttc" id="anamespacemakeDecay_html_a234f721ed0ca83b4e18faedb52e5ca8e"><div class="ttname"><a href="namespacemakeDecay.html#a234f721ed0ca83b4e18faedb52e5ca8e">makeDecay.A</a></div><div class="ttdeci">dict A</div><div class="ttdef"><b>Definition</b> <a href="makeDecay_8py_source.html#l00060">makeDecay.py:60</a></div></div>
 <div class="ttc" id="anamespacemakeMuonEM_html_a2f541edec5da16cf64dcce3ea03d80c8"><div class="ttname"><a href="namespacemakeMuonEM.html#a2f541edec5da16cf64dcce3ea03d80c8">makeMuonEM.E</a></div><div class="ttdeci">E</div><div class="ttdef"><b>Definition</b> <a href="makeMuonEM_8py_source.html#l00050">makeMuonEM.py:50</a></div></div>
 <div class="ttc" id="anamespaceproton__bremsstrahlung_html_aad8a33cd3d889bef7f25142f8489dbd4"><div class="ttname"><a href="namespaceproton__bremsstrahlung.html#aad8a33cd3d889bef7f25142f8489dbd4">proton_bremsstrahlung.H</a></div><div class="ttdeci">H(p, theta, mDarkPhoton)</div><div class="ttdef"><b>Definition</b> <a href="proton__bremsstrahlung_8py_source.html#l00067">proton_bremsstrahlung.py:67</a></div></div>
-<div class="ttc" id="anamespacerun__fixedTarget_html_a049620ba28aeb292c74bb28518aa6c2f"><div class="ttname"><a href="namespacerun__fixedTarget.html#a049620ba28aeb292c74bb28518aa6c2f">run_fixedTarget.G</a></div><div class="ttdeci">G</div><div class="ttdef"><b>Definition</b> <a href="run__fixedTarget_8py_source.html#l00344">run_fixedTarget.py:344</a></div></div>
+<div class="ttc" id="anamespacerunPythia8_html_a527266378c7f0299bad9b3c32d02d15b"><div class="ttname"><a href="namespacerunPythia8.html#a527266378c7f0299bad9b3c32d02d15b">runPythia8.A</a></div><div class="ttdeci">dict A</div><div class="ttdef"><b>Definition</b> <a href="runPythia8_8py_source.html#l00146">runPythia8.py:146</a></div></div>
+<div class="ttc" id="anamespacerun__fixedTarget_html_a049620ba28aeb292c74bb28518aa6c2f"><div class="ttname"><a href="namespacerun__fixedTarget.html#a049620ba28aeb292c74bb28518aa6c2f">run_fixedTarget.G</a></div><div class="ttdeci">G</div><div class="ttdef"><b>Definition</b> <a href="run__fixedTarget_8py_source.html#l00335">run_fixedTarget.py:335</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

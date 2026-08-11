@@ -107,6 +107,7 @@ Changed</h2>
 <ul>
 <li>SBT sensitive medium is now LAB-based liquid scintillator (<code>LiquidScintillator</code>) rather than the plastic <code>Scintillator</code>, which remains in use by SplitCal</li>
 <li>Use dense vectors instead of <code>std::map</code> for <a class="el" href="classShipStack.html">ShipStack</a> track selection and index remapping, roughly halving CPU time and reducing peak memory for high-multiplicity events (e.g. kaon/pion splitting)</li>
+<li>Deduplicate the charm/beauty over min-bias cross-section scaling shared by <code><a class="el" href="namespacemakeDecay.html">makeDecay</a></code> and <code><a class="el" href="namespacerun__fixedTarget.html">run_fixedTarget</a></code> into <code><a class="el" href="heavyFlavourScaling_8py.html">python/heavyFlavourScaling.py</a></code></li>
 </ul>
 <h2><a class="anchor" id="autotoc_md4"></a>
 Fixed</h2>

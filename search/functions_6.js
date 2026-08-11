@@ -38,9 +38,10 @@ var searchData=
   ['forcedecay_35',['ForceDecay',['../classTEvtGenDecayer.html#a999f726140ff6ebae67b717983116712',1,'TEvtGenDecayer']]],
   ['format_5fmean_5fstd_36',['format_mean_std',['../namespacevalidationTools.html#a91e349526672a4da7a7d81a9d74e0081',1,'validationTools']]],
   ['format_5fstat_5fsummary_37',['format_stat_summary',['../namespacevalidationTools.html#ab1e3a10d6f62999ea06535aee5e6db9c',1,'validationTools']]],
-  ['formatnumber_38',['formatNumber',['../namespaceconvertRALMap.html#a6ccc94556d4744636a48f5e3e967cd36',1,'convertRALMap']]],
-  ['forreadingoldfile_39',['forReadingOldFile',['../namespaceshipRoot__conf.html#afe7a5abdf5ac74baa52b7d271a6b18ad',1,'shipRoot_conf']]],
-  ['fracmcsame_40',['fracmcsame',['../classshipDigiReco_1_1ShipDigiReco.html#a06ef79c2d32574a4e9dda71d56fde1ad',1,'shipDigiReco.ShipDigiReco.fracMCsame()'],['../namespaceshipStrawTracking.html#a005e72c92291692e5a0b39ae98d0ab13',1,'shipStrawTracking.fracMCsame()']]],
-  ['frontview_41',['frontView',['../classeventDisplay_1_1EventLoop.html#a3db62c40a0d6b400c56187a64750d948',1,'eventDisplay::EventLoop']]],
-  ['fspectruml_42',['fSpectrumL',['../classCo3Rng.html#a0f0dc53f94daac34c87b9707d143f74d',1,'Co3Rng']]]
+  ['format_5fsummary_38',['format_summary',['../namespaceheavyFlavourScaling.html#a7e8c6bf277ce1ad2e7e0773910e6d31a',1,'heavyFlavourScaling']]],
+  ['formatnumber_39',['formatNumber',['../namespaceconvertRALMap.html#a6ccc94556d4744636a48f5e3e967cd36',1,'convertRALMap']]],
+  ['forreadingoldfile_40',['forReadingOldFile',['../namespaceshipRoot__conf.html#afe7a5abdf5ac74baa52b7d271a6b18ad',1,'shipRoot_conf']]],
+  ['fracmcsame_41',['fracmcsame',['../classshipDigiReco_1_1ShipDigiReco.html#a06ef79c2d32574a4e9dda71d56fde1ad',1,'shipDigiReco.ShipDigiReco.fracMCsame()'],['../namespaceshipStrawTracking.html#a005e72c92291692e5a0b39ae98d0ab13',1,'shipStrawTracking.fracMCsame()']]],
+  ['frontview_42',['frontView',['../classeventDisplay_1_1EventLoop.html#a3db62c40a0d6b400c56187a64750d948',1,'eventDisplay::EventLoop']]],
+  ['fspectruml_43',['fSpectrumL',['../classCo3Rng.html#a0f0dc53f94daac34c87b9707d143f74d',1,'Co3Rng']]]
 ];
