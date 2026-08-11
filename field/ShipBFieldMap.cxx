@@ -424,6 +424,13 @@ void ShipBFieldMap::setLimits() {
     Nz_ = static_cast<Int_t>(((zMax_ - zMin_) / dz_) + 1.5);
   }
 
+  // Trilinear interpolation needs at least two bins per axis; a smaller map
+  // would silently be treated as out of range for every point.
+  if (Nx_ < 2 || Ny_ < 2 || Nz_ < 2) {
+    LOG(fatal) << "ShipBFieldMap: field map needs at least 2 bins per axis; "
+               << "got Nx = " << Nx_ << ", Ny = " << Ny_ << ", Nz = " << Nz_;
+  }
+
   N_ = Nx_ * Ny_ * Nz_;
 
   LOG(info) << "x limits: " << xMin_ << ", " << xMax_ << ", dx = " << dx_;
