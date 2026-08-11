@@ -1337,6 +1337,7 @@ def eventsWithStrawPoints(i) -> None:
             sp.Momentum(mom)
             mom.Print()
             print("-----------------------")
+    f.Close()
 
 
 def eventsWithEntryPoints(i) -> None:
@@ -1354,6 +1355,7 @@ def eventsWithEntryPoints(i) -> None:
             print(i, detName, vp.PdgCode())
             mom.Print()
             print("-----------------------")
+    f.Close()
 
 
 def depEnergy(sTree) -> None:
