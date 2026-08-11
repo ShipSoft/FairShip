@@ -216,7 +216,7 @@ Private Attributes</h2></td></tr>
 <tr class="separator:a37990ce2591625ea6bc4ef7b17833fff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4138634fb01520deb5468c8f85f33967" id="r_a4138634fb01520deb5468c8f85f33967"><td class="memItemLeft" align="right" valign="top">Double_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classShipFieldPar.html#a4138634fb01520deb5468c8f85f33967">fMiddle</a></td></tr>
 <tr class="separator:a4138634fb01520deb5468c8f85f33967"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa5b0859e9ef85800a0ddc4f6bacfcaab" id="r_aa5b0859e9ef85800a0ddc4f6bacfcaab"><td class="memItemLeft" align="right" valign="top">Double_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classShipFieldPar.html#aa5b0859e9ef85800a0ddc4f6bacfcaab">fBtube</a></td></tr>
+<tr class="memitem:aa5b0859e9ef85800a0ddc4f6bacfcaab" id="r_aa5b0859e9ef85800a0ddc4f6bacfcaab"><td class="memItemLeft" align="right" valign="top">Double_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classShipFieldPar.html#aa5b0859e9ef85800a0ddc4f6bacfcaab">fBtube</a> {0}</td></tr>
 <tr class="separator:aa5b0859e9ef85800a0ddc4f6bacfcaab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -611,7 +611,7 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  110</span>    <span class="keywordflow">if</span> (!list-&gt;fill(<span class="stringliteral">&quot;Field By&quot;</span>, &amp;<a class="code hl_variable" href="classShipFieldPar.html#a0b7827f01aa3c296b5c9ad5cce1f1157">fBy</a>)) <span class="keywordflow">return</span> kFALSE;</div>
 <div class="line"><span class="lineno">  111</span>    <span class="keywordflow">if</span> (!list-&gt;fill(<span class="stringliteral">&quot;Field Bz&quot;</span>, &amp;<a class="code hl_variable" href="classShipFieldPar.html#a88318d0dcee5ec9fc3b3ebfaaec431b4">fBz</a>)) <span class="keywordflow">return</span> kFALSE;</div>
 <div class="line"><span class="lineno">  112</span> </div>
-<div class="line"><span class="lineno">  113</span>  } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code hl_variable" href="classShipFieldPar.html#ac36fa2454e00651bdbf7e25caa89cbe2">fType</a> &gt;= 1 &amp;&amp; <a class="code hl_variable" href="classShipFieldPar.html#ac36fa2454e00651bdbf7e25caa89cbe2">fType</a> &lt;= <a class="code hl_variable" href="ShipFieldPar_8h.html#a5e1d1fe261a8b4cb49d7d0a5f5c35bc4">kMaxFieldMapType</a>) {</div>
+<div class="line"><span class="lineno">  113</span>  } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code hl_variable" href="classShipFieldPar.html#ac36fa2454e00651bdbf7e25caa89cbe2">fType</a> == 1) {</div>
 <div class="line"><span class="lineno">  114</span>    <span class="keywordflow">if</span> (!list-&gt;fill(<span class="stringliteral">&quot;Field Peak&quot;</span>, &amp;<a class="code hl_variable" href="classShipFieldPar.html#a37990ce2591625ea6bc4ef7b17833fff">fPeak</a>)) <span class="keywordflow">return</span> kFALSE;</div>
 <div class="line"><span class="lineno">  115</span>    <span class="keywordflow">if</span> (!list-&gt;fill(<span class="stringliteral">&quot;Field Middle&quot;</span>, &amp;<a class="code hl_variable" href="classShipFieldPar.html#a4138634fb01520deb5468c8f85f33967">fMiddle</a>)) <span class="keywordflow">return</span> kFALSE;</div>
 <div class="line"><span class="lineno">  116</span> </div>
@@ -1065,7 +1065,7 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">   80</span>    list-&gt;add(<span class="stringliteral">&quot;Field Bx&quot;</span>, <a class="code hl_variable" href="classShipFieldPar.html#a923328f792d346bb6ffdcdd8e00167b2">fBx</a>);</div>
 <div class="line"><span class="lineno">   81</span>    list-&gt;add(<span class="stringliteral">&quot;Field By&quot;</span>, <a class="code hl_variable" href="classShipFieldPar.html#a0b7827f01aa3c296b5c9ad5cce1f1157">fBy</a>);</div>
 <div class="line"><span class="lineno">   82</span>    list-&gt;add(<span class="stringliteral">&quot;Field Bz&quot;</span>, <a class="code hl_variable" href="classShipFieldPar.html#a88318d0dcee5ec9fc3b3ebfaaec431b4">fBz</a>);</div>
-<div class="line"><span class="lineno">   83</span>  } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code hl_variable" href="classShipFieldPar.html#ac36fa2454e00651bdbf7e25caa89cbe2">fType</a> &gt;= 1 &amp;&amp; <a class="code hl_variable" href="classShipFieldPar.html#ac36fa2454e00651bdbf7e25caa89cbe2">fType</a> &lt;= <a class="code hl_variable" href="ShipFieldPar_8h.html#a5e1d1fe261a8b4cb49d7d0a5f5c35bc4">kMaxFieldMapType</a>) {  <span class="comment">//</span></div>
+<div class="line"><span class="lineno">   83</span>  } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code hl_variable" href="classShipFieldPar.html#ac36fa2454e00651bdbf7e25caa89cbe2">fType</a> == 1) {  <span class="comment">//</span></div>
 <div class="line"><span class="lineno">   84</span>    list-&gt;add(<span class="stringliteral">&quot;Field Peak&quot;</span>, <a class="code hl_variable" href="classShipFieldPar.html#a37990ce2591625ea6bc4ef7b17833fff">fPeak</a>);</div>
 <div class="line"><span class="lineno">   85</span>    list-&gt;add(<span class="stringliteral">&quot;Field Middle&quot;</span>, <a class="code hl_variable" href="classShipFieldPar.html#a4138634fb01520deb5468c8f85f33967">fMiddle</a>);</div>
 <div class="line"><span class="lineno">   86</span>  } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code hl_variable" href="classShipFieldPar.html#ac36fa2454e00651bdbf7e25caa89cbe2">fType</a> &gt;= 2 &amp;&amp; <a class="code hl_variable" href="classShipFieldPar.html#ac36fa2454e00651bdbf7e25caa89cbe2">fType</a> &lt;= <a class="code hl_variable" href="ShipFieldPar_8h.html#a5e1d1fe261a8b4cb49d7d0a5f5c35bc4">kMaxFieldMapType</a>) {  <span class="comment">// field map</span></div>
@@ -1154,7 +1154,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">Double_t ShipFieldPar::fBtube</td>
+          <td class="memname">Double_t ShipFieldPar::fBtube {0}</td>
         </tr>
       </table>
   </td>
@@ -1165,7 +1165,8 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="ShipFieldPar_8h_source.html#l00086">86</a> of file <a class="el" href="ShipFieldPar_8h_source.html">ShipFieldPar.h</a>.</p>
-
+<div class="fragment"><div class="line"><span class="lineno">   86</span>{0};</div>
+</div><!-- fragment -->
 </div>
 </div>
 <a id="a923328f792d346bb6ffdcdd8e00167b2" name="a923328f792d346bb6ffdcdd8e00167b2"></a>

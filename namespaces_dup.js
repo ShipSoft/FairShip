@@ -19,7 +19,7 @@ var namespaces_dup =
       [ "required", "namespaceadd__muonresponse.html#aac7731f940c514fafd1ff48518e20131", null ]
     ] ],
     [ "add_noise_to_field", "namespaceadd__noise__to__field.html", [
-      [ "generate_file", "namespaceadd__noise__to__field.html#a3356885f502d87d3993647f6dd50b10b", null ],
+      [ "generate_file", "namespaceadd__noise__to__field.html#a13fc0238a214812064b5a20f5b183d21", null ],
       [ "plot_my_hist", "namespaceadd__noise__to__field.html#a4a1ca5a3f64e4f2870b0367c97a78416", null ],
       [ "action", "namespaceadd__noise__to__field.html#ab9f26e8d25a833305a6398ce27105747", null ],
       [ "args", "namespaceadd__noise__to__field.html#a0c9f7358e4b40f6222907cf9737b120d", null ],

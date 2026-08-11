@@ -154,7 +154,7 @@ Private Attributes</h2></td></tr>
 <tr class="separator:ada04d6e3b4cad0f46a70bb0c544495c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae3c7ccfa6c8724ed07abd8e46b4002c9" id="r_ae3c7ccfa6c8724ed07abd8e46b4002c9"><td class="memItemLeft" align="right" valign="top">Double_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classShipBellField.html#ae3c7ccfa6c8724ed07abd8e46b4002c9">fBtube</a></td></tr>
 <tr class="separator:ae3c7ccfa6c8724ed07abd8e46b4002c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8f9741dc1b9cf4c4da0cb34529962b9a" id="r_a8f9741dc1b9cf4c4da0cb34529962b9a"><td class="memItemLeft" align="right" valign="top">Int_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classShipBellField.html#a8f9741dc1b9cf4c4da0cb34529962b9a">fOrient</a></td></tr>
+<tr class="memitem:a8f9741dc1b9cf4c4da0cb34529962b9a" id="r_a8f9741dc1b9cf4c4da0cb34529962b9a"><td class="memItemLeft" align="right" valign="top">Int_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classShipBellField.html#a8f9741dc1b9cf4c4da0cb34529962b9a">fOrient</a> {1}</td></tr>
 <tr class="separator:a8f9741dc1b9cf4c4da0cb34529962b9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a459939c657c5d2097bb472a77b7396da" id="r_a459939c657c5d2097bb472a77b7396da"><td class="memItemLeft" align="right" valign="top">Bool_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classShipBellField.html#a459939c657c5d2097bb472a77b7396da">fInclTarget</a></td></tr>
 <tr class="separator:a459939c657c5d2097bb472a77b7396da"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -636,12 +636,16 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  129</span>  cout &lt;&lt; <span class="stringliteral">&quot;======================================================&quot;</span> &lt;&lt; endl;</div>
 <div class="line"><span class="lineno">  130</span>  cout &lt;&lt; <span class="stringliteral">&quot;----  &quot;</span> &lt;&lt; fTitle &lt;&lt; <span class="stringliteral">&quot; : &quot;</span> &lt;&lt; fName &lt;&lt; endl;</div>
 <div class="line"><span class="lineno">  131</span>  cout &lt;&lt; <span class="stringliteral">&quot;----&quot;</span> &lt;&lt; endl;</div>
-<div class="line"><span class="lineno">  132</span>  cout &lt;&lt; <span class="stringliteral">&quot;----  Field type    : constant&quot;</span> &lt;&lt; endl;</div>
+<div class="line"><span class="lineno">  132</span>  cout &lt;&lt; <span class="stringliteral">&quot;----  Field type       : Bell&quot;</span> &lt;&lt; endl;</div>
 <div class="line"><span class="lineno">  133</span>  cout &lt;&lt; <span class="stringliteral">&quot;----&quot;</span> &lt;&lt; endl;</div>
-<div class="line"><span class="lineno">  134</span>  cout &lt;&lt; <span class="stringliteral">&quot;----  Field regions : &quot;</span> &lt;&lt; endl;</div>
-<div class="line"><span class="lineno">  135</span>  cout.precision(4);</div>
-<div class="line"><span class="lineno">  136</span>  cout &lt;&lt; <span class="stringliteral">&quot;======================================================&quot;</span> &lt;&lt; endl;</div>
-<div class="line"><span class="lineno">  137</span>}</div>
+<div class="line"><span class="lineno">  134</span>  cout.precision(4);</div>
+<div class="line"><span class="lineno">  135</span>  cout &lt;&lt; <span class="stringliteral">&quot;----  Peak field       : &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipBellField.html#a679c59e359577aca6da8cae4c8e52665">fPeak</a> &lt;&lt; <span class="stringliteral">&quot; kG&quot;</span> &lt;&lt; endl;</div>
+<div class="line"><span class="lineno">  136</span>  cout &lt;&lt; <span class="stringliteral">&quot;----  Middle (z centre) : &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipBellField.html#ada04d6e3b4cad0f46a70bb0c544495c8">fMiddle</a> &lt;&lt; <span class="stringliteral">&quot; cm&quot;</span> &lt;&lt; endl;</div>
+<div class="line"><span class="lineno">  137</span>  cout &lt;&lt; <span class="stringliteral">&quot;----  Btube            : &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipBellField.html#ae3c7ccfa6c8724ed07abd8e46b4002c9">fBtube</a> &lt;&lt; <span class="stringliteral">&quot; cm&quot;</span> &lt;&lt; endl;</div>
+<div class="line"><span class="lineno">  138</span>  cout &lt;&lt; <span class="stringliteral">&quot;----  Orientation      : &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipBellField.html#a8f9741dc1b9cf4c4da0cb34529962b9a">fOrient</a> &lt;&lt; endl;</div>
+<div class="line"><span class="lineno">  139</span>  cout &lt;&lt; <span class="stringliteral">&quot;----  Include target   : &quot;</span> &lt;&lt; (<a class="code hl_variable" href="classShipBellField.html#a459939c657c5d2097bb472a77b7396da">fInclTarget</a> ? <span class="stringliteral">&quot;yes&quot;</span> : <span class="stringliteral">&quot;no&quot;</span>) &lt;&lt; endl;</div>
+<div class="line"><span class="lineno">  140</span>  cout &lt;&lt; <span class="stringliteral">&quot;======================================================&quot;</span> &lt;&lt; endl;</div>
+<div class="line"><span class="lineno">  141</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -728,7 +732,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">Int_t ShipBellField::fOrient</td>
+          <td class="memname">Int_t ShipBellField::fOrient {1}</td>
         </tr>
       </table>
   </td>
@@ -739,7 +743,8 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="ShipBellField_8h_source.html#l00063">63</a> of file <a class="el" href="ShipBellField_8h_source.html">ShipBellField.h</a>.</p>
-
+<div class="fragment"><div class="line"><span class="lineno">   63</span>{1};</div>
+</div><!-- fragment -->
 </div>
 </div>
 <a id="a679c59e359577aca6da8cae4c8e52665" name="a679c59e359577aca6da8cae4c8e52665"></a>
