@@ -19,7 +19,9 @@ def plot_my_hist(datum) -> None:
     plt.show()
 
 
-def generate_file(input_fileName, output, xSpace=73, ySpace=128, zSpace=1214, step=2.5, args=None) -> None:
+def generate_file(
+    input_fileName, output, xSpace=73, ySpace=128, zSpace=1214, step=2.5, *, args: argparse.Namespace
+) -> None:
     # (min, max, max/stepSize + 1)  in case of Z: (0, nSteps*2.5 - 2.5, nSteps)
     field = pd.read_csv(input_fileName, skiprows=1, sep=r"\s+", names=["x", "y", "z", "bx", "by", "bz"])
 
@@ -52,7 +54,7 @@ def generate_file(input_fileName, output, xSpace=73, ySpace=128, zSpace=1214, st
     # plot_my_hist(field)
     # plot_my_hist(field_new)
     # plot_my_hist(rezult)
-    rezult.to_csv(output, sep="\t", header=None, index=None)
+    rezult.to_csv(output, sep="\t", header=False, index=False)
 
 
 if __name__ == "__main__":
