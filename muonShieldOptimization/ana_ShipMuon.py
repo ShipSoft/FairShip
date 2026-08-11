@@ -18,7 +18,8 @@ parallel = True
 if parallel:
     # Define an output queue
     output = mp.Queue()
-    processes = []
+# Process objects when parallel, plain filenames otherwise
+processes: list[mp.Process | str] = []
 
 
 # 11-19 with QGSP_BERT_EMV instead of QGSP_BERT_HP_PEN
@@ -341,12 +342,17 @@ path = ""
 if prefixes[0] != "":
     testdir = path + prefixes[0] + "1"
 # figure out which setup
+fgeo = None
+sGeo = None
+inputFile = None
 for f in os.listdir(testdir):
     if not f.find("geofile_full") < 0:
         fgeo = ROOT.TFile(testdir + "/" + f)
         sGeo = fgeo.Get("FAIRGeom")
         inputFile = f.replace("geofile_full", "ship")
         break
+if fgeo is None or sGeo is None or inputFile is None:
+    raise RuntimeError("No geofile_full found in " + testdir)
 # try to extract from input file name
 tmp = inputFile.split(".")
 try:
@@ -599,7 +605,7 @@ def BigEventLoop() -> None:
     # Run processes
     n = 0
     for p in processes:
-        if parallel:
+        if isinstance(p, mp.Process):
             p.start()
             n += 1
         else:
@@ -607,7 +613,8 @@ def BigEventLoop() -> None:
     if parallel:
         # Exit the completed processes
         for p in processes:
-            p.join()
+            if isinstance(p, mp.Process):
+                p.join()
             # clean histos before reading in the new ones
         for x in h:
             h[x].Reset()
@@ -738,6 +745,7 @@ def executeOneFile(fn, output=None, pid=None) -> None:
                 trackID = ahit.GetTrackID()
                 phit = -100.0
                 mom = ROOT.TVector3()
+                aTrack = None
                 if not trackID < 0:
                     aTrack = sTree.MCTrack[trackID]
                     pdgID = aTrack.GetPdgCode()
@@ -762,7 +770,7 @@ def executeOneFile(fn, output=None, pid=None) -> None:
                 h[detName + "_id"].Fill(pdgID, w)
                 h[detName + "_P"].Fill(phit, w)
                 h[detName + "_LP"].Fill(phit, w)
-                if not trackID < 0:
+                if aTrack is not None:
                     r = ROOT.TMath.Sqrt(aTrack.GetStartX() ** 2 + aTrack.GetStartY() ** 2) / u.m
                     h["origin"].Fill(aTrack.GetStartZ() / u.m, r, w)
                     h[detName + "_origin"].Fill(aTrack.GetStartZ() / u.m, r, w)
@@ -1430,6 +1438,9 @@ def makeNicePrintout(x: list[str] | None = None):
                     w = tmp[2].replace(" ", "")
                     ff = tmp[1].split("/")[0].replace(" ", "")
                     recTrack = {"w": w, "file": ff}
+                elif recTrack is None:
+                    # skip anything before the first "rare event" marker
+                    continue
                 elif not line.find("original") < 0:
                     tmp = line.split(",")
                     recTrack["origin"] = tmp[0].split(" ")[2]
