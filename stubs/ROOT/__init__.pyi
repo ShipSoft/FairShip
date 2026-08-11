@@ -16,6 +16,7 @@ from typing import Any, overload
 from ROOT import Math as Math
 from ROOT import Pythia8 as Pythia8
 from ROOT import genfit as genfit
+from ROOT import shipgen as shipgen
 from ROOT import std as std
 
 # ---------------------------------------------------------------------------
