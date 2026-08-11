@@ -1,5 +1,13 @@
 var NAVTREEINDEX18 =
 {
+"md_CHANGELOG.html#autotoc_md5":[1,0,3],
+"md_CHANGELOG.html#autotoc_md50":[1,6,1,9],
+"md_CHANGELOG.html#autotoc_md51":[1,6,1,10],
+"md_CHANGELOG.html#autotoc_md52":[1,6,1,11],
+"md_CHANGELOG.html#autotoc_md53":[1,6,1,12],
+"md_CHANGELOG.html#autotoc_md54":[1,6,1,13],
+"md_CHANGELOG.html#autotoc_md55":[1,6,2],
+"md_CHANGELOG.html#autotoc_md56":[1,6,2,0],
 "md_CHANGELOG.html#autotoc_md57":[1,6,2,1],
 "md_CHANGELOG.html#autotoc_md58":[1,6,2,2],
 "md_CHANGELOG.html#autotoc_md59":[1,6,2,3],
@@ -241,13 +249,5 @@ var NAVTREEINDEX18 =
 "namespaceTrackExtrapolateTool.html#ab8db142297238572f1496a88dcb73c28":[5,0,103,0],
 "namespaceTrackExtrapolateTool.html#ac357e10f3671079a5b9c5706b564b421":[5,0,103,1],
 "namespaceTrackExtrapolateTool.html#ad1aa89145b6188edd90c6266aebaa095":[5,0,103,4],
-"namespaceTrackExtrapolateTool.html#aeb68a90b815acb1e2f1453cb90bf5b60":[5,0,103,5],
-"namespaceUpstreamTaggerDetector.html":[5,0,105],
-"namespaceadd__muonresponse.html":[5,0,1],
-"namespaceadd__muonresponse.html#a09495aade917e02ac0ebed7c98c142ca":[5,0,1,6],
-"namespaceadd__muonresponse.html#a15597a8e3100e6b4b24642d38c15295e":[5,0,1,2],
-"namespaceadd__muonresponse.html#a29b72ac3853266c162e109e30b028287":[5,0,1,1],
-"namespaceadd__muonresponse.html#a379e276fffa8319443f49b2249b754f2":[5,0,1,0],
-"namespaceadd__muonresponse.html#a52981cb8fd991a0b5e889fdbcedd5cb7":[5,0,1,3],
-"namespaceadd__muonresponse.html#a55e193298dc5f0f17334eee4e4568886":[5,0,1,5]
+"namespaceTrackExtrapolateTool.html#aeb68a90b815acb1e2f1453cb90bf5b60":[5,0,103,5]
 };

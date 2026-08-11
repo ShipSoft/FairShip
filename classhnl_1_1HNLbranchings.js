@@ -19,6 +19,8 @@ var classhnl_1_1HNLbranchings =
     [ "Width_nu_f_fbar", "classhnl_1_1HNLbranchings.html#a9dcc74b231abfd622f6a56afc2c260b7", null ],
     [ "Width_quarks_lepton", "classhnl_1_1HNLbranchings.html#afc3da0c7a4a43f46c442861556424f7f", null ],
     [ "Width_quarks_neutrino", "classhnl_1_1HNLbranchings.html#a0dd1a2b4398c558e8567107c6e3fcb33", null ],
+    [ "_integrand_tf1", "classhnl_1_1HNLbranchings.html#a12ee12b611bc83c16d8ed93ac42acc2f", null ],
+    [ "_totalWidth", "classhnl_1_1HNLbranchings.html#a91c7367c0ac1a33120c04abdefc749b2", null ],
     [ "CKM", "classhnl_1_1HNLbranchings.html#a3c9a00b61f6d63bc24ff826ff8fd9fd6", null ],
     [ "CKMelemSq", "classhnl_1_1HNLbranchings.html#a82d1ecb0efc6a7dbbd3fbc0a50a426b8", null ],
     [ "decays", "classhnl_1_1HNLbranchings.html#ad0ccc66b383a2a6509655b371fe6555f", null ],

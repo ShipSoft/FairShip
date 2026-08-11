@@ -274,7 +274,7 @@ Variables</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">  595</span><span class="keyword">def </span>artificial_retina_pat_rec_stereo_views(SmearedHits_stereo, recognized_tracks_y, min_hits: int):</div>
 <div class="line"><span class="lineno">  596</span>    </div>
 <div class="line"><span class="lineno">  597</span>    recognized_tracks_stereo = []</div>
-<div class="line"><span class="lineno">  598</span>    used_hits = []</div>
+<div class="line"><span class="lineno">  598</span>    used_hits = set()</div>
 <div class="line"><span class="lineno">  599</span>    n_y_tracks_with_stereo = 0</div>
 <div class="line"><span class="lineno">  600</span> </div>
 <div class="line"><span class="lineno">  601</span>    <span class="keywordflow">for</span> atrack_y <span class="keywordflow">in</span> recognized_tracks_y:</div>
@@ -357,7 +357,7 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">  678</span>            atrack[<span class="stringliteral">&quot;hits_stereo&quot;</span>] = max_track[<span class="stringliteral">&quot;hits_stereo&quot;</span>]</div>
 <div class="line"><span class="lineno">  679</span>            n_y_tracks_with_stereo += 1</div>
 <div class="line"><span class="lineno">  680</span>            <span class="keywordflow">for</span> ahit <span class="keywordflow">in</span> max_track[<span class="stringliteral">&quot;hits_stereo&quot;</span>]:</div>
-<div class="line"><span class="lineno">  681</span>                used_hits.append(ahit[<span class="stringliteral">&quot;digiHit&quot;</span>])</div>
+<div class="line"><span class="lineno">  681</span>                used_hits.add(ahit[<span class="stringliteral">&quot;digiHit&quot;</span>])</div>
 <div class="line"><span class="lineno">  682</span> </div>
 <div class="line"><span class="lineno">  683</span>        recognized_tracks_stereo.append(atrack)</div>
 <div class="line"><span class="lineno">  684</span> </div>
@@ -695,7 +695,7 @@ SmearedHits : list
 <div class="fragment"><div class="line"><span class="lineno">  327</span><span class="keyword">def </span>fast_hough_pat_rec_stereo_views(SmearedHits_stereo, recognized_tracks_y, min_hits: int):</div>
 <div class="line"><span class="lineno">  328</span>    </div>
 <div class="line"><span class="lineno">  329</span>    recognized_tracks_stereo = []</div>
-<div class="line"><span class="lineno">  330</span>    used_hits = []</div>
+<div class="line"><span class="lineno">  330</span>    used_hits = set()</div>
 <div class="line"><span class="lineno">  331</span>    n_y_tracks_with_stereo = 0</div>
 <div class="line"><span class="lineno">  332</span> </div>
 <div class="line"><span class="lineno">  333</span>    <span class="keywordflow">for</span> atrack_y <span class="keywordflow">in</span> recognized_tracks_y:</div>
@@ -777,7 +777,7 @@ SmearedHits : list
 <div class="line"><span class="lineno">  409</span>            atrack[<span class="stringliteral">&quot;hits_stereo&quot;</span>] = max_track[<span class="stringliteral">&quot;hits_stereo&quot;</span>]</div>
 <div class="line"><span class="lineno">  410</span>            n_y_tracks_with_stereo += 1</div>
 <div class="line"><span class="lineno">  411</span>            <span class="keywordflow">for</span> ahit <span class="keywordflow">in</span> max_track[<span class="stringliteral">&quot;hits_stereo&quot;</span>]:</div>
-<div class="line"><span class="lineno">  412</span>                used_hits.append(ahit[<span class="stringliteral">&quot;digiHit&quot;</span>])</div>
+<div class="line"><span class="lineno">  412</span>                used_hits.add(ahit[<span class="stringliteral">&quot;digiHit&quot;</span>])</div>
 <div class="line"><span class="lineno">  413</span> </div>
 <div class="line"><span class="lineno">  414</span>        recognized_tracks_stereo.append(atrack)</div>
 <div class="line"><span class="lineno">  415</span> </div>
@@ -1569,7 +1569,7 @@ SmearedHits : list
 <div class="fragment"><div class="line"><span class="lineno"> 1073</span><span class="keyword">def </span>pat_rec_stereo_views(SmearedHits_stereo, recognized_tracks_y, min_hits: int):</div>
 <div class="line"><span class="lineno"> 1074</span>    </div>
 <div class="line"><span class="lineno"> 1075</span>    recognized_tracks_stereo = []</div>
-<div class="line"><span class="lineno"> 1076</span>    used_hits = []</div>
+<div class="line"><span class="lineno"> 1076</span>    used_hits = set()</div>
 <div class="line"><span class="lineno"> 1077</span>    n_y_tracks_with_stereo = 0</div>
 <div class="line"><span class="lineno"> 1078</span> </div>
 <div class="line"><span class="lineno"> 1079</span>    <span class="keywordflow">for</span> atrack_y <span class="keywordflow">in</span> recognized_tracks_y:</div>
@@ -1646,7 +1646,7 @@ SmearedHits : list
 <div class="line"><span class="lineno"> 1150</span>            atrack[<span class="stringliteral">&quot;hits_stereo&quot;</span>] = max_track[<span class="stringliteral">&quot;hits_stereo&quot;</span>]</div>
 <div class="line"><span class="lineno"> 1151</span>            n_y_tracks_with_stereo += 1</div>
 <div class="line"><span class="lineno"> 1152</span>            <span class="keywordflow">for</span> ahit <span class="keywordflow">in</span> max_track[<span class="stringliteral">&quot;hits_stereo&quot;</span>]:</div>
-<div class="line"><span class="lineno"> 1153</span>                used_hits.append(ahit[<span class="stringliteral">&quot;digiHit&quot;</span>])</div>
+<div class="line"><span class="lineno"> 1153</span>                used_hits.add(ahit[<span class="stringliteral">&quot;digiHit&quot;</span>])</div>
 <div class="line"><span class="lineno"> 1154</span> </div>
 <div class="line"><span class="lineno"> 1155</span>        recognized_tracks_stereo.append(atrack)</div>
 <div class="line"><span class="lineno"> 1156</span> </div>
@@ -1822,7 +1822,7 @@ min_hits : int
 <div class="line"><span class="lineno">  848</span><span class="stringliteral">        Minimal number of hits per track.</span></div>
 <div class="line"><span class="lineno">  849</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
 <div class="line"><span class="lineno">  850</span> </div>
-<div class="line"><span class="lineno">  851</span>    used_hits = []</div>
+<div class="line"><span class="lineno">  851</span>    used_hits = set()</div>
 <div class="line"><span class="lineno">  852</span>    tracks_no_clones = []</div>
 <div class="line"><span class="lineno">  853</span>    n_hits = [len(atrack[<span class="stringliteral">&quot;hits_y&quot;</span>]) <span class="keywordflow">for</span> atrack <span class="keywordflow">in</span> recognized_tracks]</div>
 <div class="line"><span class="lineno">  854</span> </div>
@@ -1839,7 +1839,7 @@ min_hits : int
 <div class="line"><span class="lineno">  865</span>        <span class="keywordflow">if</span> len(new_track[<span class="stringliteral">&quot;hits_y&quot;</span>]) &gt;= min_hits:</div>
 <div class="line"><span class="lineno">  866</span>            tracks_no_clones.append(new_track)</div>
 <div class="line"><span class="lineno">  867</span>            <span class="keywordflow">for</span> ahit <span class="keywordflow">in</span> new_track[<span class="stringliteral">&quot;hits_y&quot;</span>]:</div>
-<div class="line"><span class="lineno">  868</span>                used_hits.append(ahit[<span class="stringliteral">&quot;digiHit&quot;</span>])</div>
+<div class="line"><span class="lineno">  868</span>                used_hits.add(ahit[<span class="stringliteral">&quot;digiHit&quot;</span>])</div>
 <div class="line"><span class="lineno">  869</span> </div>
 <div class="line"><span class="lineno">  870</span>    <span class="keywordflow">return</span> tracks_no_clones</div>
 <div class="line"><span class="lineno">  871</span> </div>

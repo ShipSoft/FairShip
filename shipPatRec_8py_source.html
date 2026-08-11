@@ -433,7 +433,7 @@ $(document).ready(function(){initNavTree('shipPatRec_8py_source.html',''); initR
 <div class="line"><a id="l00327" name="l00327"></a><span class="lineno"><a class="line" href="namespaceshipPatRec.html#a9e2f47a844779b583cf01e4bfd5d4c40">  327</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceshipPatRec.html#a9e2f47a844779b583cf01e4bfd5d4c40">fast_hough_pat_rec_stereo_views</a>(SmearedHits_stereo, recognized_tracks_y, min_hits: int):</div>
 <div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>    </div>
 <div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span>    recognized_tracks_stereo = []</div>
-<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span>    used_hits = []</div>
+<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span>    used_hits = set()</div>
 <div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span>    n_y_tracks_with_stereo = 0</div>
 <div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span> </div>
 <div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span>    <span class="keywordflow">for</span> atrack_y <span class="keywordflow">in</span> recognized_tracks_y:</div>
@@ -515,7 +515,7 @@ $(document).ready(function(){initNavTree('shipPatRec_8py_source.html',''); initR
 <div class="line"><a id="l00409" name="l00409"></a><span class="lineno">  409</span>            atrack[<span class="stringliteral">&quot;hits_stereo&quot;</span>] = max_track[<span class="stringliteral">&quot;hits_stereo&quot;</span>]</div>
 <div class="line"><a id="l00410" name="l00410"></a><span class="lineno">  410</span>            n_y_tracks_with_stereo += 1</div>
 <div class="line"><a id="l00411" name="l00411"></a><span class="lineno">  411</span>            <span class="keywordflow">for</span> ahit <span class="keywordflow">in</span> max_track[<span class="stringliteral">&quot;hits_stereo&quot;</span>]:</div>
-<div class="line"><a id="l00412" name="l00412"></a><span class="lineno">  412</span>                used_hits.append(ahit[<span class="stringliteral">&quot;digiHit&quot;</span>])</div>
+<div class="line"><a id="l00412" name="l00412"></a><span class="lineno">  412</span>                used_hits.add(ahit[<span class="stringliteral">&quot;digiHit&quot;</span>])</div>
 <div class="line"><a id="l00413" name="l00413"></a><span class="lineno">  413</span> </div>
 <div class="line"><a id="l00414" name="l00414"></a><span class="lineno">  414</span>        recognized_tracks_stereo.append(atrack)</div>
 <div class="line"><a id="l00415" name="l00415"></a><span class="lineno">  415</span> </div>
@@ -705,7 +705,7 @@ $(document).ready(function(){initNavTree('shipPatRec_8py_source.html',''); initR
 <div class="line"><a id="l00595" name="l00595"></a><span class="lineno"><a class="line" href="namespaceshipPatRec.html#a7bd6836b680505a30ee0d503878636cb">  595</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceshipPatRec.html#a7bd6836b680505a30ee0d503878636cb">artificial_retina_pat_rec_stereo_views</a>(SmearedHits_stereo, recognized_tracks_y, min_hits: int):</div>
 <div class="line"><a id="l00596" name="l00596"></a><span class="lineno">  596</span>    </div>
 <div class="line"><a id="l00597" name="l00597"></a><span class="lineno">  597</span>    recognized_tracks_stereo = []</div>
-<div class="line"><a id="l00598" name="l00598"></a><span class="lineno">  598</span>    used_hits = []</div>
+<div class="line"><a id="l00598" name="l00598"></a><span class="lineno">  598</span>    used_hits = set()</div>
 <div class="line"><a id="l00599" name="l00599"></a><span class="lineno">  599</span>    n_y_tracks_with_stereo = 0</div>
 <div class="line"><a id="l00600" name="l00600"></a><span class="lineno">  600</span> </div>
 <div class="line"><a id="l00601" name="l00601"></a><span class="lineno">  601</span>    <span class="keywordflow">for</span> atrack_y <span class="keywordflow">in</span> recognized_tracks_y:</div>
@@ -788,7 +788,7 @@ $(document).ready(function(){initNavTree('shipPatRec_8py_source.html',''); initR
 <div class="line"><a id="l00678" name="l00678"></a><span class="lineno">  678</span>            atrack[<span class="stringliteral">&quot;hits_stereo&quot;</span>] = max_track[<span class="stringliteral">&quot;hits_stereo&quot;</span>]</div>
 <div class="line"><a id="l00679" name="l00679"></a><span class="lineno">  679</span>            n_y_tracks_with_stereo += 1</div>
 <div class="line"><a id="l00680" name="l00680"></a><span class="lineno">  680</span>            <span class="keywordflow">for</span> ahit <span class="keywordflow">in</span> max_track[<span class="stringliteral">&quot;hits_stereo&quot;</span>]:</div>
-<div class="line"><a id="l00681" name="l00681"></a><span class="lineno">  681</span>                used_hits.append(ahit[<span class="stringliteral">&quot;digiHit&quot;</span>])</div>
+<div class="line"><a id="l00681" name="l00681"></a><span class="lineno">  681</span>                used_hits.add(ahit[<span class="stringliteral">&quot;digiHit&quot;</span>])</div>
 <div class="line"><a id="l00682" name="l00682"></a><span class="lineno">  682</span> </div>
 <div class="line"><a id="l00683" name="l00683"></a><span class="lineno">  683</span>        recognized_tracks_stereo.append(atrack)</div>
 <div class="line"><a id="l00684" name="l00684"></a><span class="lineno">  684</span> </div>
@@ -964,7 +964,7 @@ $(document).ready(function(){initNavTree('shipPatRec_8py_source.html',''); initR
 <div class="line"><a id="l00848" name="l00848"></a><span class="lineno">  848</span><span class="stringliteral">        Minimal number of hits per track.</span></div>
 <div class="line"><a id="l00849" name="l00849"></a><span class="lineno">  849</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
 <div class="line"><a id="l00850" name="l00850"></a><span class="lineno">  850</span> </div>
-<div class="line"><a id="l00851" name="l00851"></a><span class="lineno">  851</span>    used_hits = []</div>
+<div class="line"><a id="l00851" name="l00851"></a><span class="lineno">  851</span>    used_hits = set()</div>
 <div class="line"><a id="l00852" name="l00852"></a><span class="lineno">  852</span>    tracks_no_clones = []</div>
 <div class="line"><a id="l00853" name="l00853"></a><span class="lineno">  853</span>    n_hits = [len(atrack[<span class="stringliteral">&quot;hits_y&quot;</span>]) <span class="keywordflow">for</span> atrack <span class="keywordflow">in</span> recognized_tracks]</div>
 <div class="line"><a id="l00854" name="l00854"></a><span class="lineno">  854</span> </div>
@@ -981,7 +981,7 @@ $(document).ready(function(){initNavTree('shipPatRec_8py_source.html',''); initR
 <div class="line"><a id="l00865" name="l00865"></a><span class="lineno">  865</span>        <span class="keywordflow">if</span> len(new_track[<span class="stringliteral">&quot;hits_y&quot;</span>]) &gt;= min_hits:</div>
 <div class="line"><a id="l00866" name="l00866"></a><span class="lineno">  866</span>            tracks_no_clones.append(new_track)</div>
 <div class="line"><a id="l00867" name="l00867"></a><span class="lineno">  867</span>            <span class="keywordflow">for</span> ahit <span class="keywordflow">in</span> new_track[<span class="stringliteral">&quot;hits_y&quot;</span>]:</div>
-<div class="line"><a id="l00868" name="l00868"></a><span class="lineno">  868</span>                used_hits.append(ahit[<span class="stringliteral">&quot;digiHit&quot;</span>])</div>
+<div class="line"><a id="l00868" name="l00868"></a><span class="lineno">  868</span>                used_hits.add(ahit[<span class="stringliteral">&quot;digiHit&quot;</span>])</div>
 <div class="line"><a id="l00869" name="l00869"></a><span class="lineno">  869</span> </div>
 <div class="line"><a id="l00870" name="l00870"></a><span class="lineno">  870</span>    <span class="keywordflow">return</span> tracks_no_clones</div>
 <div class="line"><a id="l00871" name="l00871"></a><span class="lineno">  871</span> </div>
@@ -1199,7 +1199,7 @@ $(document).ready(function(){initNavTree('shipPatRec_8py_source.html',''); initR
 <div class="line"><a id="l01073" name="l01073"></a><span class="lineno"><a class="line" href="namespaceshipPatRec.html#ae1daa38a326c9335e4e69dc4aad9d990"> 1073</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceshipPatRec.html#ae1daa38a326c9335e4e69dc4aad9d990">pat_rec_stereo_views</a>(SmearedHits_stereo, recognized_tracks_y, min_hits: int):</div>
 <div class="line"><a id="l01074" name="l01074"></a><span class="lineno"> 1074</span>    </div>
 <div class="line"><a id="l01075" name="l01075"></a><span class="lineno"> 1075</span>    recognized_tracks_stereo = []</div>
-<div class="line"><a id="l01076" name="l01076"></a><span class="lineno"> 1076</span>    used_hits = []</div>
+<div class="line"><a id="l01076" name="l01076"></a><span class="lineno"> 1076</span>    used_hits = set()</div>
 <div class="line"><a id="l01077" name="l01077"></a><span class="lineno"> 1077</span>    n_y_tracks_with_stereo = 0</div>
 <div class="line"><a id="l01078" name="l01078"></a><span class="lineno"> 1078</span> </div>
 <div class="line"><a id="l01079" name="l01079"></a><span class="lineno"> 1079</span>    <span class="keywordflow">for</span> atrack_y <span class="keywordflow">in</span> recognized_tracks_y:</div>
@@ -1276,7 +1276,7 @@ $(document).ready(function(){initNavTree('shipPatRec_8py_source.html',''); initR
 <div class="line"><a id="l01150" name="l01150"></a><span class="lineno"> 1150</span>            atrack[<span class="stringliteral">&quot;hits_stereo&quot;</span>] = max_track[<span class="stringliteral">&quot;hits_stereo&quot;</span>]</div>
 <div class="line"><a id="l01151" name="l01151"></a><span class="lineno"> 1151</span>            n_y_tracks_with_stereo += 1</div>
 <div class="line"><a id="l01152" name="l01152"></a><span class="lineno"> 1152</span>            <span class="keywordflow">for</span> ahit <span class="keywordflow">in</span> max_track[<span class="stringliteral">&quot;hits_stereo&quot;</span>]:</div>
-<div class="line"><a id="l01153" name="l01153"></a><span class="lineno"> 1153</span>                used_hits.append(ahit[<span class="stringliteral">&quot;digiHit&quot;</span>])</div>
+<div class="line"><a id="l01153" name="l01153"></a><span class="lineno"> 1153</span>                used_hits.add(ahit[<span class="stringliteral">&quot;digiHit&quot;</span>])</div>
 <div class="line"><a id="l01154" name="l01154"></a><span class="lineno"> 1154</span> </div>
 <div class="line"><a id="l01155" name="l01155"></a><span class="lineno"> 1155</span>        recognized_tracks_stereo.append(atrack)</div>
 <div class="line"><a id="l01156" name="l01156"></a><span class="lineno"> 1156</span> </div>

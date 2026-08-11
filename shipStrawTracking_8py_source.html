@@ -801,7 +801,7 @@ $(document).ready(function(){initNavTree('shipStrawTracking_8py_source.html','')
 <div class="line"><a id="l00692" name="l00692"></a><span class="lineno">  692</span>    <span class="comment"># 4. Find straws that have multiple hits</span></div>
 <div class="line"><a id="l00693" name="l00693"></a><span class="lineno">  693</span>    nHits = sTree.strawtubesPoint.GetEntriesFast()</div>
 <div class="line"><a id="l00694" name="l00694"></a><span class="lineno">  694</span>    hitstraws = {}</div>
-<div class="line"><a id="l00695" name="l00695"></a><span class="lineno">  695</span>    duplicatestrawhit = []</div>
+<div class="line"><a id="l00695" name="l00695"></a><span class="lineno">  695</span>    duplicatestrawhit = set()</div>
 <div class="line"><a id="l00696" name="l00696"></a><span class="lineno">  696</span> </div>
 <div class="line"><a id="l00697" name="l00697"></a><span class="lineno">  697</span>    <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(nHits):</div>
 <div class="line"><a id="l00698" name="l00698"></a><span class="lineno">  698</span>        ahit = sTree.strawtubesPoint[i]</div>
@@ -811,10 +811,10 @@ $(document).ready(function(){initNavTree('shipStrawTracking_8py_source.html','')
 <div class="line"><a id="l00702" name="l00702"></a><span class="lineno">  702</span>            <span class="comment"># straw was already hit</span></div>
 <div class="line"><a id="l00703" name="l00703"></a><span class="lineno">  703</span>            <span class="keywordflow">if</span> ahit.GetX() &gt; hitstraws[strawname][1]:</div>
 <div class="line"><a id="l00704" name="l00704"></a><span class="lineno">  704</span>                <span class="comment"># this hit has higher x, discard it</span></div>
-<div class="line"><a id="l00705" name="l00705"></a><span class="lineno">  705</span>                duplicatestrawhit.append(i)</div>
+<div class="line"><a id="l00705" name="l00705"></a><span class="lineno">  705</span>                duplicatestrawhit.add(i)</div>
 <div class="line"><a id="l00706" name="l00706"></a><span class="lineno">  706</span>            <span class="keywordflow">else</span>:</div>
 <div class="line"><a id="l00707" name="l00707"></a><span class="lineno">  707</span>                <span class="comment"># del hitstraws[strawname]</span></div>
-<div class="line"><a id="l00708" name="l00708"></a><span class="lineno">  708</span>                duplicatestrawhit.append(hitstraws[strawname][0])</div>
+<div class="line"><a id="l00708" name="l00708"></a><span class="lineno">  708</span>                duplicatestrawhit.add(hitstraws[strawname][0])</div>
 <div class="line"><a id="l00709" name="l00709"></a><span class="lineno">  709</span>                hitstraws[strawname] = [i, ahit.GetX()]</div>
 <div class="line"><a id="l00710" name="l00710"></a><span class="lineno">  710</span>        <span class="keywordflow">else</span>:</div>
 <div class="line"><a id="l00711" name="l00711"></a><span class="lineno">  711</span>            hitstraws[strawname] = [i, ahit.GetX()]</div>
@@ -824,7 +824,7 @@ $(document).ready(function(){initNavTree('shipStrawTracking_8py_source.html','')
 <div class="line"><a id="l00715" name="l00715"></a><span class="lineno">  715</span>    hits2 = {}</div>
 <div class="line"><a id="l00716" name="l00716"></a><span class="lineno">  716</span>    hits3 = {}</div>
 <div class="line"><a id="l00717" name="l00717"></a><span class="lineno">  717</span>    hits4 = {}</div>
-<div class="line"><a id="l00718" name="l00718"></a><span class="lineno">  718</span>    trackoutsidestations = []</div>
+<div class="line"><a id="l00718" name="l00718"></a><span class="lineno">  718</span>    trackoutsidestations = set()</div>
 <div class="line"><a id="l00719" name="l00719"></a><span class="lineno">  719</span> </div>
 <div class="line"><a id="l00720" name="l00720"></a><span class="lineno">  720</span>    margin = 5.0 * u.cm</div>
 <div class="line"><a id="l00721" name="l00721"></a><span class="lineno">  721</span>    x_bound = ShipGeo.strawtubes_geo.width - margin</div>
@@ -838,318 +838,317 @@ $(document).ready(function(){initNavTree('shipStrawTracking_8py_source.html','')
 <div class="line"><a id="l00729" name="l00729"></a><span class="lineno">  729</span> </div>
 <div class="line"><a id="l00730" name="l00730"></a><span class="lineno">  730</span>        <span class="comment"># is hit inside acceptance (width/height minus margin)?</span></div>
 <div class="line"><a id="l00731" name="l00731"></a><span class="lineno">  731</span>        <span class="keywordflow">if</span> abs(ahit.GetX()) &gt;= x_bound <span class="keywordflow">or</span> abs(ahit.GetY()) &gt;= y_bound:</div>
-<div class="line"><a id="l00732" name="l00732"></a><span class="lineno">  732</span>            <span class="keywordflow">if</span> ahit.GetTrackID() <span class="keywordflow">not</span> <span class="keywordflow">in</span> trackoutsidestations:</div>
-<div class="line"><a id="l00733" name="l00733"></a><span class="lineno">  733</span>                trackoutsidestations.append(ahit.GetTrackID())</div>
-<div class="line"><a id="l00734" name="l00734"></a><span class="lineno">  734</span> </div>
-<div class="line"><a id="l00735" name="l00735"></a><span class="lineno">  735</span>        <span class="keywordflow">if</span> ahit.GetTrackID() <span class="keywordflow">not</span> <span class="keywordflow">in</span> MCTrackIDs:</div>
-<div class="line"><a id="l00736" name="l00736"></a><span class="lineno">  736</span>            <span class="comment"># hit on not reconstructible track</span></div>
-<div class="line"><a id="l00737" name="l00737"></a><span class="lineno">  737</span>            <span class="keywordflow">continue</span></div>
-<div class="line"><a id="l00738" name="l00738"></a><span class="lineno">  738</span> </div>
-<div class="line"><a id="l00739" name="l00739"></a><span class="lineno">  739</span>        <span class="comment"># group hits per tracking station, key = trackid</span></div>
-<div class="line"><a id="l00740" name="l00740"></a><span class="lineno">  740</span>        <span class="keywordflow">if</span> str(ahit.GetDetectorID())[:1] == <span class="stringliteral">&quot;1&quot;</span>:</div>
-<div class="line"><a id="l00741" name="l00741"></a><span class="lineno">  741</span>            <span class="keywordflow">if</span> ahit.GetTrackID() <span class="keywordflow">in</span> hits1:</div>
-<div class="line"><a id="l00742" name="l00742"></a><span class="lineno">  742</span>                hits1[ahit.GetTrackID()] = [hits1[ahit.GetTrackID()][0], i]</div>
-<div class="line"><a id="l00743" name="l00743"></a><span class="lineno">  743</span>            <span class="keywordflow">else</span>:</div>
-<div class="line"><a id="l00744" name="l00744"></a><span class="lineno">  744</span>                hits1[ahit.GetTrackID()] = [i]</div>
-<div class="line"><a id="l00745" name="l00745"></a><span class="lineno">  745</span> </div>
-<div class="line"><a id="l00746" name="l00746"></a><span class="lineno">  746</span>        <span class="keywordflow">if</span> str(ahit.GetDetectorID())[:1] == <span class="stringliteral">&quot;2&quot;</span>:</div>
-<div class="line"><a id="l00747" name="l00747"></a><span class="lineno">  747</span>            <span class="keywordflow">if</span> ahit.GetTrackID() <span class="keywordflow">in</span> hits2:</div>
-<div class="line"><a id="l00748" name="l00748"></a><span class="lineno">  748</span>                hits2[ahit.GetTrackID()] = [hits2[ahit.GetTrackID()][0], i]</div>
-<div class="line"><a id="l00749" name="l00749"></a><span class="lineno">  749</span>            <span class="keywordflow">else</span>:</div>
-<div class="line"><a id="l00750" name="l00750"></a><span class="lineno">  750</span>                hits2[ahit.GetTrackID()] = [i]</div>
-<div class="line"><a id="l00751" name="l00751"></a><span class="lineno">  751</span> </div>
-<div class="line"><a id="l00752" name="l00752"></a><span class="lineno">  752</span>        <span class="keywordflow">if</span> str(ahit.GetDetectorID())[:1] == <span class="stringliteral">&quot;3&quot;</span>:</div>
-<div class="line"><a id="l00753" name="l00753"></a><span class="lineno">  753</span>            <span class="keywordflow">if</span> ahit.GetTrackID() <span class="keywordflow">in</span> hits3:</div>
-<div class="line"><a id="l00754" name="l00754"></a><span class="lineno">  754</span>                hits3[ahit.GetTrackID()] = [hits3[ahit.GetTrackID()][0], i]</div>
-<div class="line"><a id="l00755" name="l00755"></a><span class="lineno">  755</span>            <span class="keywordflow">else</span>:</div>
-<div class="line"><a id="l00756" name="l00756"></a><span class="lineno">  756</span>                hits3[ahit.GetTrackID()] = [i]</div>
-<div class="line"><a id="l00757" name="l00757"></a><span class="lineno">  757</span> </div>
-<div class="line"><a id="l00758" name="l00758"></a><span class="lineno">  758</span>        <span class="keywordflow">if</span> str(ahit.GetDetectorID())[:1] == <span class="stringliteral">&quot;4&quot;</span>:</div>
-<div class="line"><a id="l00759" name="l00759"></a><span class="lineno">  759</span>            <span class="keywordflow">if</span> ahit.GetTrackID() <span class="keywordflow">in</span> hits4:</div>
-<div class="line"><a id="l00760" name="l00760"></a><span class="lineno">  760</span>                hits4[ahit.GetTrackID()] = [hits4[ahit.GetTrackID()][0], i]</div>
-<div class="line"><a id="l00761" name="l00761"></a><span class="lineno">  761</span>            <span class="keywordflow">else</span>:</div>
-<div class="line"><a id="l00762" name="l00762"></a><span class="lineno">  762</span>                hits4[ahit.GetTrackID()] = [i]</div>
-<div class="line"><a id="l00763" name="l00763"></a><span class="lineno">  763</span> </div>
-<div class="line"><a id="l00764" name="l00764"></a><span class="lineno">  764</span>    <span class="comment"># 6. Make list of tracks with hits in in station 1,2,3 &amp; 4</span></div>
-<div class="line"><a id="l00765" name="l00765"></a><span class="lineno">  765</span>    tracks_with_hits_in_all_stations = []</div>
-<div class="line"><a id="l00766" name="l00766"></a><span class="lineno">  766</span> </div>
-<div class="line"><a id="l00767" name="l00767"></a><span class="lineno">  767</span>    <span class="keywordflow">for</span> key <span class="keywordflow">in</span> hits1:</div>
-<div class="line"><a id="l00768" name="l00768"></a><span class="lineno">  768</span>        <span class="keywordflow">if</span> (key <span class="keywordflow">in</span> hits2 <span class="keywordflow">and</span> key <span class="keywordflow">in</span> hits3) <span class="keywordflow">and</span> key <span class="keywordflow">in</span> hits4:</div>
-<div class="line"><a id="l00769" name="l00769"></a><span class="lineno">  769</span>            <span class="keywordflow">if</span> key <span class="keywordflow">not</span> <span class="keywordflow">in</span> tracks_with_hits_in_all_stations <span class="keywordflow">and</span> key <span class="keywordflow">not</span> <span class="keywordflow">in</span> trackoutsidestations:</div>
-<div class="line"><a id="l00770" name="l00770"></a><span class="lineno">  770</span>                tracks_with_hits_in_all_stations.append(key)</div>
-<div class="line"><a id="l00771" name="l00771"></a><span class="lineno">  771</span> </div>
-<div class="line"><a id="l00772" name="l00772"></a><span class="lineno">  772</span>    <span class="keywordflow">for</span> key <span class="keywordflow">in</span> hits2:</div>
-<div class="line"><a id="l00773" name="l00773"></a><span class="lineno">  773</span>        <span class="keywordflow">if</span> (key <span class="keywordflow">in</span> hits1 <span class="keywordflow">and</span> key <span class="keywordflow">in</span> hits3) <span class="keywordflow">and</span> key <span class="keywordflow">in</span> hits4:</div>
-<div class="line"><a id="l00774" name="l00774"></a><span class="lineno">  774</span>            <span class="keywordflow">if</span> key <span class="keywordflow">not</span> <span class="keywordflow">in</span> tracks_with_hits_in_all_stations <span class="keywordflow">and</span> key <span class="keywordflow">not</span> <span class="keywordflow">in</span> trackoutsidestations:</div>
-<div class="line"><a id="l00775" name="l00775"></a><span class="lineno">  775</span>                tracks_with_hits_in_all_stations.append(key)</div>
-<div class="line"><a id="l00776" name="l00776"></a><span class="lineno">  776</span> </div>
-<div class="line"><a id="l00777" name="l00777"></a><span class="lineno">  777</span>    <span class="keywordflow">for</span> key <span class="keywordflow">in</span> hits3:</div>
-<div class="line"><a id="l00778" name="l00778"></a><span class="lineno">  778</span>        <span class="keywordflow">if</span> (key <span class="keywordflow">in</span> hits2 <span class="keywordflow">and</span> key <span class="keywordflow">in</span> hits1) <span class="keywordflow">and</span> key <span class="keywordflow">in</span> hits4:</div>
-<div class="line"><a id="l00779" name="l00779"></a><span class="lineno">  779</span>            <span class="keywordflow">if</span> key <span class="keywordflow">not</span> <span class="keywordflow">in</span> tracks_with_hits_in_all_stations <span class="keywordflow">and</span> key <span class="keywordflow">not</span> <span class="keywordflow">in</span> trackoutsidestations:</div>
-<div class="line"><a id="l00780" name="l00780"></a><span class="lineno">  780</span>                tracks_with_hits_in_all_stations.append(key)</div>
-<div class="line"><a id="l00781" name="l00781"></a><span class="lineno">  781</span> </div>
-<div class="line"><a id="l00782" name="l00782"></a><span class="lineno">  782</span>    <span class="keywordflow">for</span> key <span class="keywordflow">in</span> hits4:</div>
-<div class="line"><a id="l00783" name="l00783"></a><span class="lineno">  783</span>        <span class="keywordflow">if</span> (key <span class="keywordflow">in</span> hits2 <span class="keywordflow">and</span> key <span class="keywordflow">in</span> hits3) <span class="keywordflow">and</span> key <span class="keywordflow">in</span> hits1:</div>
-<div class="line"><a id="l00784" name="l00784"></a><span class="lineno">  784</span>            <span class="keywordflow">if</span> key <span class="keywordflow">not</span> <span class="keywordflow">in</span> tracks_with_hits_in_all_stations <span class="keywordflow">and</span> key <span class="keywordflow">not</span> <span class="keywordflow">in</span> trackoutsidestations:</div>
-<div class="line"><a id="l00785" name="l00785"></a><span class="lineno">  785</span>                tracks_with_hits_in_all_stations.append(key)</div>
-<div class="line"><a id="l00786" name="l00786"></a><span class="lineno">  786</span> </div>
-<div class="line"><a id="l00787" name="l00787"></a><span class="lineno">  787</span>    <span class="comment"># 7. Remove tracks from MCTrackIDs with hits outside acceptance or doesn&#39;t have hits in all stations</span></div>
-<div class="line"><a id="l00788" name="l00788"></a><span class="lineno">  788</span>    itemstoremove = []</div>
-<div class="line"><a id="l00789" name="l00789"></a><span class="lineno">  789</span> </div>
-<div class="line"><a id="l00790" name="l00790"></a><span class="lineno">  790</span>    <span class="keywordflow">for</span> item <span class="keywordflow">in</span> MCTrackIDs:</div>
-<div class="line"><a id="l00791" name="l00791"></a><span class="lineno">  791</span>        <span class="keywordflow">if</span> item <span class="keywordflow">not</span> <span class="keywordflow">in</span> tracks_with_hits_in_all_stations:</div>
-<div class="line"><a id="l00792" name="l00792"></a><span class="lineno">  792</span>            itemstoremove.append(item)</div>
-<div class="line"><a id="l00793" name="l00793"></a><span class="lineno">  793</span> </div>
-<div class="line"><a id="l00794" name="l00794"></a><span class="lineno">  794</span>    <span class="keywordflow">for</span> item <span class="keywordflow">in</span> itemstoremove:</div>
-<div class="line"><a id="l00795" name="l00795"></a><span class="lineno">  795</span>        MCTrackIDs.remove(item)</div>
-<div class="line"><a id="l00796" name="l00796"></a><span class="lineno">  796</span> </div>
-<div class="line"><a id="l00797" name="l00797"></a><span class="lineno">  797</span>    <span class="keywordflow">if</span> len(MCTrackIDs) == 0:</div>
-<div class="line"><a id="l00798" name="l00798"></a><span class="lineno">  798</span>        <span class="keywordflow">return</span> MCTrackIDs</div>
-<div class="line"><a id="l00799" name="l00799"></a><span class="lineno">  799</span> </div>
-<div class="line"><a id="l00800" name="l00800"></a><span class="lineno">  800</span>    itemstoremove = []</div>
-<div class="line"><a id="l00801" name="l00801"></a><span class="lineno">  801</span> </div>
-<div class="line"><a id="l00802" name="l00802"></a><span class="lineno">  802</span>    <span class="keywordflow">for</span> item <span class="keywordflow">in</span> MCTrackIDs:</div>
-<div class="line"><a id="l00803" name="l00803"></a><span class="lineno">  803</span>        atrack = sTree.MCTrack.At(item)</div>
-<div class="line"><a id="l00804" name="l00804"></a><span class="lineno">  804</span>        motherId = atrack.GetMotherId()</div>
-<div class="line"><a id="l00805" name="l00805"></a><span class="lineno">  805</span>        <span class="keywordflow">if</span> motherId != 2:  <span class="comment">#!!!!</span></div>
-<div class="line"><a id="l00806" name="l00806"></a><span class="lineno">  806</span>            itemstoremove.append(item)</div>
-<div class="line"><a id="l00807" name="l00807"></a><span class="lineno">  807</span> </div>
-<div class="line"><a id="l00808" name="l00808"></a><span class="lineno">  808</span>    <span class="keywordflow">for</span> item <span class="keywordflow">in</span> itemstoremove:</div>
-<div class="line"><a id="l00809" name="l00809"></a><span class="lineno">  809</span>        MCTrackIDs.remove(item)</div>
-<div class="line"><a id="l00810" name="l00810"></a><span class="lineno">  810</span> </div>
-<div class="line"><a id="l00811" name="l00811"></a><span class="lineno">  811</span>    <span class="keywordflow">return</span> MCTrackIDs</div>
+<div class="line"><a id="l00732" name="l00732"></a><span class="lineno">  732</span>            trackoutsidestations.add(ahit.GetTrackID())</div>
+<div class="line"><a id="l00733" name="l00733"></a><span class="lineno">  733</span> </div>
+<div class="line"><a id="l00734" name="l00734"></a><span class="lineno">  734</span>        <span class="keywordflow">if</span> ahit.GetTrackID() <span class="keywordflow">not</span> <span class="keywordflow">in</span> MCTrackIDs:</div>
+<div class="line"><a id="l00735" name="l00735"></a><span class="lineno">  735</span>            <span class="comment"># hit on not reconstructible track</span></div>
+<div class="line"><a id="l00736" name="l00736"></a><span class="lineno">  736</span>            <span class="keywordflow">continue</span></div>
+<div class="line"><a id="l00737" name="l00737"></a><span class="lineno">  737</span> </div>
+<div class="line"><a id="l00738" name="l00738"></a><span class="lineno">  738</span>        <span class="comment"># group hits per tracking station, key = trackid</span></div>
+<div class="line"><a id="l00739" name="l00739"></a><span class="lineno">  739</span>        <span class="keywordflow">if</span> str(ahit.GetDetectorID())[:1] == <span class="stringliteral">&quot;1&quot;</span>:</div>
+<div class="line"><a id="l00740" name="l00740"></a><span class="lineno">  740</span>            <span class="keywordflow">if</span> ahit.GetTrackID() <span class="keywordflow">in</span> hits1:</div>
+<div class="line"><a id="l00741" name="l00741"></a><span class="lineno">  741</span>                hits1[ahit.GetTrackID()] = [hits1[ahit.GetTrackID()][0], i]</div>
+<div class="line"><a id="l00742" name="l00742"></a><span class="lineno">  742</span>            <span class="keywordflow">else</span>:</div>
+<div class="line"><a id="l00743" name="l00743"></a><span class="lineno">  743</span>                hits1[ahit.GetTrackID()] = [i]</div>
+<div class="line"><a id="l00744" name="l00744"></a><span class="lineno">  744</span> </div>
+<div class="line"><a id="l00745" name="l00745"></a><span class="lineno">  745</span>        <span class="keywordflow">if</span> str(ahit.GetDetectorID())[:1] == <span class="stringliteral">&quot;2&quot;</span>:</div>
+<div class="line"><a id="l00746" name="l00746"></a><span class="lineno">  746</span>            <span class="keywordflow">if</span> ahit.GetTrackID() <span class="keywordflow">in</span> hits2:</div>
+<div class="line"><a id="l00747" name="l00747"></a><span class="lineno">  747</span>                hits2[ahit.GetTrackID()] = [hits2[ahit.GetTrackID()][0], i]</div>
+<div class="line"><a id="l00748" name="l00748"></a><span class="lineno">  748</span>            <span class="keywordflow">else</span>:</div>
+<div class="line"><a id="l00749" name="l00749"></a><span class="lineno">  749</span>                hits2[ahit.GetTrackID()] = [i]</div>
+<div class="line"><a id="l00750" name="l00750"></a><span class="lineno">  750</span> </div>
+<div class="line"><a id="l00751" name="l00751"></a><span class="lineno">  751</span>        <span class="keywordflow">if</span> str(ahit.GetDetectorID())[:1] == <span class="stringliteral">&quot;3&quot;</span>:</div>
+<div class="line"><a id="l00752" name="l00752"></a><span class="lineno">  752</span>            <span class="keywordflow">if</span> ahit.GetTrackID() <span class="keywordflow">in</span> hits3:</div>
+<div class="line"><a id="l00753" name="l00753"></a><span class="lineno">  753</span>                hits3[ahit.GetTrackID()] = [hits3[ahit.GetTrackID()][0], i]</div>
+<div class="line"><a id="l00754" name="l00754"></a><span class="lineno">  754</span>            <span class="keywordflow">else</span>:</div>
+<div class="line"><a id="l00755" name="l00755"></a><span class="lineno">  755</span>                hits3[ahit.GetTrackID()] = [i]</div>
+<div class="line"><a id="l00756" name="l00756"></a><span class="lineno">  756</span> </div>
+<div class="line"><a id="l00757" name="l00757"></a><span class="lineno">  757</span>        <span class="keywordflow">if</span> str(ahit.GetDetectorID())[:1] == <span class="stringliteral">&quot;4&quot;</span>:</div>
+<div class="line"><a id="l00758" name="l00758"></a><span class="lineno">  758</span>            <span class="keywordflow">if</span> ahit.GetTrackID() <span class="keywordflow">in</span> hits4:</div>
+<div class="line"><a id="l00759" name="l00759"></a><span class="lineno">  759</span>                hits4[ahit.GetTrackID()] = [hits4[ahit.GetTrackID()][0], i]</div>
+<div class="line"><a id="l00760" name="l00760"></a><span class="lineno">  760</span>            <span class="keywordflow">else</span>:</div>
+<div class="line"><a id="l00761" name="l00761"></a><span class="lineno">  761</span>                hits4[ahit.GetTrackID()] = [i]</div>
+<div class="line"><a id="l00762" name="l00762"></a><span class="lineno">  762</span> </div>
+<div class="line"><a id="l00763" name="l00763"></a><span class="lineno">  763</span>    <span class="comment"># 6. Make list of tracks with hits in in station 1,2,3 &amp; 4</span></div>
+<div class="line"><a id="l00764" name="l00764"></a><span class="lineno">  764</span>    tracks_with_hits_in_all_stations = []</div>
+<div class="line"><a id="l00765" name="l00765"></a><span class="lineno">  765</span> </div>
+<div class="line"><a id="l00766" name="l00766"></a><span class="lineno">  766</span>    <span class="keywordflow">for</span> key <span class="keywordflow">in</span> hits1:</div>
+<div class="line"><a id="l00767" name="l00767"></a><span class="lineno">  767</span>        <span class="keywordflow">if</span> (key <span class="keywordflow">in</span> hits2 <span class="keywordflow">and</span> key <span class="keywordflow">in</span> hits3) <span class="keywordflow">and</span> key <span class="keywordflow">in</span> hits4:</div>
+<div class="line"><a id="l00768" name="l00768"></a><span class="lineno">  768</span>            <span class="keywordflow">if</span> key <span class="keywordflow">not</span> <span class="keywordflow">in</span> tracks_with_hits_in_all_stations <span class="keywordflow">and</span> key <span class="keywordflow">not</span> <span class="keywordflow">in</span> trackoutsidestations:</div>
+<div class="line"><a id="l00769" name="l00769"></a><span class="lineno">  769</span>                tracks_with_hits_in_all_stations.append(key)</div>
+<div class="line"><a id="l00770" name="l00770"></a><span class="lineno">  770</span> </div>
+<div class="line"><a id="l00771" name="l00771"></a><span class="lineno">  771</span>    <span class="keywordflow">for</span> key <span class="keywordflow">in</span> hits2:</div>
+<div class="line"><a id="l00772" name="l00772"></a><span class="lineno">  772</span>        <span class="keywordflow">if</span> (key <span class="keywordflow">in</span> hits1 <span class="keywordflow">and</span> key <span class="keywordflow">in</span> hits3) <span class="keywordflow">and</span> key <span class="keywordflow">in</span> hits4:</div>
+<div class="line"><a id="l00773" name="l00773"></a><span class="lineno">  773</span>            <span class="keywordflow">if</span> key <span class="keywordflow">not</span> <span class="keywordflow">in</span> tracks_with_hits_in_all_stations <span class="keywordflow">and</span> key <span class="keywordflow">not</span> <span class="keywordflow">in</span> trackoutsidestations:</div>
+<div class="line"><a id="l00774" name="l00774"></a><span class="lineno">  774</span>                tracks_with_hits_in_all_stations.append(key)</div>
+<div class="line"><a id="l00775" name="l00775"></a><span class="lineno">  775</span> </div>
+<div class="line"><a id="l00776" name="l00776"></a><span class="lineno">  776</span>    <span class="keywordflow">for</span> key <span class="keywordflow">in</span> hits3:</div>
+<div class="line"><a id="l00777" name="l00777"></a><span class="lineno">  777</span>        <span class="keywordflow">if</span> (key <span class="keywordflow">in</span> hits2 <span class="keywordflow">and</span> key <span class="keywordflow">in</span> hits1) <span class="keywordflow">and</span> key <span class="keywordflow">in</span> hits4:</div>
+<div class="line"><a id="l00778" name="l00778"></a><span class="lineno">  778</span>            <span class="keywordflow">if</span> key <span class="keywordflow">not</span> <span class="keywordflow">in</span> tracks_with_hits_in_all_stations <span class="keywordflow">and</span> key <span class="keywordflow">not</span> <span class="keywordflow">in</span> trackoutsidestations:</div>
+<div class="line"><a id="l00779" name="l00779"></a><span class="lineno">  779</span>                tracks_with_hits_in_all_stations.append(key)</div>
+<div class="line"><a id="l00780" name="l00780"></a><span class="lineno">  780</span> </div>
+<div class="line"><a id="l00781" name="l00781"></a><span class="lineno">  781</span>    <span class="keywordflow">for</span> key <span class="keywordflow">in</span> hits4:</div>
+<div class="line"><a id="l00782" name="l00782"></a><span class="lineno">  782</span>        <span class="keywordflow">if</span> (key <span class="keywordflow">in</span> hits2 <span class="keywordflow">and</span> key <span class="keywordflow">in</span> hits3) <span class="keywordflow">and</span> key <span class="keywordflow">in</span> hits1:</div>
+<div class="line"><a id="l00783" name="l00783"></a><span class="lineno">  783</span>            <span class="keywordflow">if</span> key <span class="keywordflow">not</span> <span class="keywordflow">in</span> tracks_with_hits_in_all_stations <span class="keywordflow">and</span> key <span class="keywordflow">not</span> <span class="keywordflow">in</span> trackoutsidestations:</div>
+<div class="line"><a id="l00784" name="l00784"></a><span class="lineno">  784</span>                tracks_with_hits_in_all_stations.append(key)</div>
+<div class="line"><a id="l00785" name="l00785"></a><span class="lineno">  785</span> </div>
+<div class="line"><a id="l00786" name="l00786"></a><span class="lineno">  786</span>    <span class="comment"># 7. Remove tracks from MCTrackIDs with hits outside acceptance or doesn&#39;t have hits in all stations</span></div>
+<div class="line"><a id="l00787" name="l00787"></a><span class="lineno">  787</span>    itemstoremove = []</div>
+<div class="line"><a id="l00788" name="l00788"></a><span class="lineno">  788</span> </div>
+<div class="line"><a id="l00789" name="l00789"></a><span class="lineno">  789</span>    <span class="keywordflow">for</span> item <span class="keywordflow">in</span> MCTrackIDs:</div>
+<div class="line"><a id="l00790" name="l00790"></a><span class="lineno">  790</span>        <span class="keywordflow">if</span> item <span class="keywordflow">not</span> <span class="keywordflow">in</span> tracks_with_hits_in_all_stations:</div>
+<div class="line"><a id="l00791" name="l00791"></a><span class="lineno">  791</span>            itemstoremove.append(item)</div>
+<div class="line"><a id="l00792" name="l00792"></a><span class="lineno">  792</span> </div>
+<div class="line"><a id="l00793" name="l00793"></a><span class="lineno">  793</span>    <span class="keywordflow">for</span> item <span class="keywordflow">in</span> itemstoremove:</div>
+<div class="line"><a id="l00794" name="l00794"></a><span class="lineno">  794</span>        MCTrackIDs.remove(item)</div>
+<div class="line"><a id="l00795" name="l00795"></a><span class="lineno">  795</span> </div>
+<div class="line"><a id="l00796" name="l00796"></a><span class="lineno">  796</span>    <span class="keywordflow">if</span> len(MCTrackIDs) == 0:</div>
+<div class="line"><a id="l00797" name="l00797"></a><span class="lineno">  797</span>        <span class="keywordflow">return</span> MCTrackIDs</div>
+<div class="line"><a id="l00798" name="l00798"></a><span class="lineno">  798</span> </div>
+<div class="line"><a id="l00799" name="l00799"></a><span class="lineno">  799</span>    itemstoremove = []</div>
+<div class="line"><a id="l00800" name="l00800"></a><span class="lineno">  800</span> </div>
+<div class="line"><a id="l00801" name="l00801"></a><span class="lineno">  801</span>    <span class="keywordflow">for</span> item <span class="keywordflow">in</span> MCTrackIDs:</div>
+<div class="line"><a id="l00802" name="l00802"></a><span class="lineno">  802</span>        atrack = sTree.MCTrack.At(item)</div>
+<div class="line"><a id="l00803" name="l00803"></a><span class="lineno">  803</span>        motherId = atrack.GetMotherId()</div>
+<div class="line"><a id="l00804" name="l00804"></a><span class="lineno">  804</span>        <span class="keywordflow">if</span> motherId != 2:  <span class="comment">#!!!!</span></div>
+<div class="line"><a id="l00805" name="l00805"></a><span class="lineno">  805</span>            itemstoremove.append(item)</div>
+<div class="line"><a id="l00806" name="l00806"></a><span class="lineno">  806</span> </div>
+<div class="line"><a id="l00807" name="l00807"></a><span class="lineno">  807</span>    <span class="keywordflow">for</span> item <span class="keywordflow">in</span> itemstoremove:</div>
+<div class="line"><a id="l00808" name="l00808"></a><span class="lineno">  808</span>        MCTrackIDs.remove(item)</div>
+<div class="line"><a id="l00809" name="l00809"></a><span class="lineno">  809</span> </div>
+<div class="line"><a id="l00810" name="l00810"></a><span class="lineno">  810</span>    <span class="keywordflow">return</span> MCTrackIDs</div>
+<div class="line"><a id="l00811" name="l00811"></a><span class="lineno">  811</span> </div>
 <div class="line"><a id="l00812" name="l00812"></a><span class="lineno">  812</span> </div>
-<div class="line"><a id="l00813" name="l00813"></a><span class="lineno">  813</span> </div>
 </div>
-<div class="foldopen" id="foldopen00814" data-start="" data-end="">
-<div class="line"><a id="l00814" name="l00814"></a><span class="lineno"><a class="line" href="namespaceshipStrawTracking.html#afd5476d8c8880a51e22ca2334c0c30e3">  814</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceshipStrawTracking.html#afd5476d8c8880a51e22ca2334c0c30e3">getPtruthFirst</a>(sTree, mcPartKey):</div>
-<div class="line"><a id="l00815" name="l00815"></a><span class="lineno">  815</span>    Ptruth, Ptruthx, Ptruthy, Ptruthz = -1.0, -1.0, -1.0, -1.0</div>
-<div class="line"><a id="l00816" name="l00816"></a><span class="lineno">  816</span>    <span class="keywordflow">for</span> ahit <span class="keywordflow">in</span> sTree.strawtubesPoint:</div>
-<div class="line"><a id="l00817" name="l00817"></a><span class="lineno">  817</span>        <span class="keywordflow">if</span> ahit.GetTrackID() == mcPartKey:</div>
-<div class="line"><a id="l00818" name="l00818"></a><span class="lineno">  818</span>            Ptruthx, Ptruthy, Ptruthz = ahit.GetPx(), ahit.GetPy(), ahit.GetPz()</div>
-<div class="line"><a id="l00819" name="l00819"></a><span class="lineno">  819</span>            Ptruth = ROOT.TMath.Sqrt(Ptruthx**2 + Ptruthy**2 + Ptruthz**2)</div>
-<div class="line"><a id="l00820" name="l00820"></a><span class="lineno">  820</span>            <span class="keywordflow">break</span></div>
-<div class="line"><a id="l00821" name="l00821"></a><span class="lineno">  821</span>    <span class="keywordflow">return</span> Ptruth, Ptruthx, Ptruthy, Ptruthz</div>
+<div class="foldopen" id="foldopen00813" data-start="" data-end="">
+<div class="line"><a id="l00813" name="l00813"></a><span class="lineno"><a class="line" href="namespaceshipStrawTracking.html#afd5476d8c8880a51e22ca2334c0c30e3">  813</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceshipStrawTracking.html#afd5476d8c8880a51e22ca2334c0c30e3">getPtruthFirst</a>(sTree, mcPartKey):</div>
+<div class="line"><a id="l00814" name="l00814"></a><span class="lineno">  814</span>    Ptruth, Ptruthx, Ptruthy, Ptruthz = -1.0, -1.0, -1.0, -1.0</div>
+<div class="line"><a id="l00815" name="l00815"></a><span class="lineno">  815</span>    <span class="keywordflow">for</span> ahit <span class="keywordflow">in</span> sTree.strawtubesPoint:</div>
+<div class="line"><a id="l00816" name="l00816"></a><span class="lineno">  816</span>        <span class="keywordflow">if</span> ahit.GetTrackID() == mcPartKey:</div>
+<div class="line"><a id="l00817" name="l00817"></a><span class="lineno">  817</span>            Ptruthx, Ptruthy, Ptruthz = ahit.GetPx(), ahit.GetPy(), ahit.GetPz()</div>
+<div class="line"><a id="l00818" name="l00818"></a><span class="lineno">  818</span>            Ptruth = ROOT.TMath.Sqrt(Ptruthx**2 + Ptruthy**2 + Ptruthz**2)</div>
+<div class="line"><a id="l00819" name="l00819"></a><span class="lineno">  819</span>            <span class="keywordflow">break</span></div>
+<div class="line"><a id="l00820" name="l00820"></a><span class="lineno">  820</span>    <span class="keywordflow">return</span> Ptruth, Ptruthx, Ptruthy, Ptruthz</div>
+<div class="line"><a id="l00821" name="l00821"></a><span class="lineno">  821</span> </div>
 <div class="line"><a id="l00822" name="l00822"></a><span class="lineno">  822</span> </div>
-<div class="line"><a id="l00823" name="l00823"></a><span class="lineno">  823</span> </div>
 </div>
-<div class="line"><a id="l00824" name="l00824"></a><span class="lineno">  824</span> </div>
-<div class="line"><a id="l00826" name="l00826"></a><span class="lineno">  826</span> </div>
-<div class="line"><a id="l00827" name="l00827"></a><span class="lineno">  827</span><span class="keyword">import</span> math</div>
-<div class="line"><a id="l00828" name="l00828"></a><span class="lineno">  828</span> </div>
-<div class="line"><a id="l00829" name="l00829"></a><span class="lineno">  829</span><span class="keyword">import</span> rootUtils <span class="keyword">as</span> ut</div>
+<div class="line"><a id="l00823" name="l00823"></a><span class="lineno">  823</span> </div>
+<div class="line"><a id="l00825" name="l00825"></a><span class="lineno">  825</span> </div>
+<div class="line"><a id="l00826" name="l00826"></a><span class="lineno">  826</span><span class="keyword">import</span> math</div>
+<div class="line"><a id="l00827" name="l00827"></a><span class="lineno">  827</span> </div>
+<div class="line"><a id="l00828" name="l00828"></a><span class="lineno">  828</span><span class="keyword">import</span> rootUtils <span class="keyword">as</span> ut</div>
+<div class="line"><a id="l00829" name="l00829"></a><span class="lineno">  829</span> </div>
 <div class="line"><a id="l00830" name="l00830"></a><span class="lineno">  830</span> </div>
 <div class="line"><a id="l00831" name="l00831"></a><span class="lineno">  831</span> </div>
 <div class="line"><a id="l00832" name="l00832"></a><span class="lineno">  832</span> </div>
 <div class="line"><a id="l00833" name="l00833"></a><span class="lineno">  833</span> </div>
 <div class="line"><a id="l00834" name="l00834"></a><span class="lineno">  834</span> </div>
 <div class="line"><a id="l00835" name="l00835"></a><span class="lineno">  835</span> </div>
-<div class="line"><a id="l00836" name="l00836"></a><span class="lineno">  836</span> </div>
-<div class="foldopen" id="foldopen00837" data-start="" data-end="">
-<div class="line"><a id="l00837" name="l00837"></a><span class="lineno"><a class="line" href="namespaceshipStrawTracking.html#a2e6f923fb8027c031209c42d2a9c8551">  837</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceshipStrawTracking.html#a2e6f923fb8027c031209c42d2a9c8551">save_hists</a>(h, path) -&gt; None:</div>
-<div class="line"><a id="l00838" name="l00838"></a><span class="lineno">  838</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><a id="l00839" name="l00839"></a><span class="lineno">  839</span><span class="stringliteral">    Save book of plots.</span></div>
-<div class="line"><a id="l00840" name="l00840"></a><span class="lineno">  840</span><span class="stringliteral">    Parameters</span></div>
-<div class="line"><a id="l00841" name="l00841"></a><span class="lineno">  841</span><span class="stringliteral">    ----------</span></div>
-<div class="line"><a id="l00842" name="l00842"></a><span class="lineno">  842</span><span class="stringliteral">    h : dict</span></div>
-<div class="line"><a id="l00843" name="l00843"></a><span class="lineno">  843</span><span class="stringliteral">        Dictionary of plots.</span></div>
-<div class="line"><a id="l00844" name="l00844"></a><span class="lineno">  844</span><span class="stringliteral">    path : string</span></div>
-<div class="line"><a id="l00845" name="l00845"></a><span class="lineno">  845</span><span class="stringliteral">        Path where the plots will be saved.</span></div>
-<div class="line"><a id="l00846" name="l00846"></a><span class="lineno">  846</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
-<div class="line"><a id="l00847" name="l00847"></a><span class="lineno">  847</span>    ut.writeHists(h, path)</div>
+<div class="foldopen" id="foldopen00836" data-start="" data-end="">
+<div class="line"><a id="l00836" name="l00836"></a><span class="lineno"><a class="line" href="namespaceshipStrawTracking.html#a2e6f923fb8027c031209c42d2a9c8551">  836</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceshipStrawTracking.html#a2e6f923fb8027c031209c42d2a9c8551">save_hists</a>(h, path) -&gt; None:</div>
+<div class="line"><a id="l00837" name="l00837"></a><span class="lineno">  837</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00838" name="l00838"></a><span class="lineno">  838</span><span class="stringliteral">    Save book of plots.</span></div>
+<div class="line"><a id="l00839" name="l00839"></a><span class="lineno">  839</span><span class="stringliteral">    Parameters</span></div>
+<div class="line"><a id="l00840" name="l00840"></a><span class="lineno">  840</span><span class="stringliteral">    ----------</span></div>
+<div class="line"><a id="l00841" name="l00841"></a><span class="lineno">  841</span><span class="stringliteral">    h : dict</span></div>
+<div class="line"><a id="l00842" name="l00842"></a><span class="lineno">  842</span><span class="stringliteral">        Dictionary of plots.</span></div>
+<div class="line"><a id="l00843" name="l00843"></a><span class="lineno">  843</span><span class="stringliteral">    path : string</span></div>
+<div class="line"><a id="l00844" name="l00844"></a><span class="lineno">  844</span><span class="stringliteral">        Path where the plots will be saved.</span></div>
+<div class="line"><a id="l00845" name="l00845"></a><span class="lineno">  845</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00846" name="l00846"></a><span class="lineno">  846</span>    ut.writeHists(h, path)</div>
+<div class="line"><a id="l00847" name="l00847"></a><span class="lineno">  847</span> </div>
 <div class="line"><a id="l00848" name="l00848"></a><span class="lineno">  848</span> </div>
-<div class="line"><a id="l00849" name="l00849"></a><span class="lineno">  849</span> </div>
 </div>
-<div class="foldopen" id="foldopen00850" data-start="" data-end="">
-<div class="line"><a id="l00850" name="l00850"></a><span class="lineno"><a class="line" href="namespaceshipStrawTracking.html#a6f8170056fea500eadaec343a3b75173">  850</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceshipStrawTracking.html#a6f8170056fea500eadaec343a3b75173">init_book_hist</a>():</div>
-<div class="line"><a id="l00851" name="l00851"></a><span class="lineno">  851</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><a id="l00852" name="l00852"></a><span class="lineno">  852</span><span class="stringliteral">    Creates empty plots.</span></div>
-<div class="line"><a id="l00853" name="l00853"></a><span class="lineno">  853</span><span class="stringliteral">    Returns</span></div>
-<div class="line"><a id="l00854" name="l00854"></a><span class="lineno">  854</span><span class="stringliteral">    -------</span></div>
-<div class="line"><a id="l00855" name="l00855"></a><span class="lineno">  855</span><span class="stringliteral">    h : dict</span></div>
-<div class="line"><a id="l00856" name="l00856"></a><span class="lineno">  856</span><span class="stringliteral">        Dictionary of plots.</span></div>
-<div class="line"><a id="l00857" name="l00857"></a><span class="lineno">  857</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
-<div class="line"><a id="l00858" name="l00858"></a><span class="lineno">  858</span> </div>
-<div class="line"><a id="l00859" name="l00859"></a><span class="lineno">  859</span>    h = {}  <span class="comment"># dictionary of histograms</span></div>
-<div class="line"><a id="l00860" name="l00860"></a><span class="lineno">  860</span> </div>
-<div class="line"><a id="l00861" name="l00861"></a><span class="lineno">  861</span>    ut.bookHist(h, <span class="stringliteral">&quot;TracksPassed&quot;</span>, <span class="stringliteral">&quot;Tracks passing the pattern recognition&quot;</span>, 8, -0.5, 7.5)</div>
-<div class="line"><a id="l00862" name="l00862"></a><span class="lineno">  862</span>    h[<span class="stringliteral">&quot;TracksPassed&quot;</span>].GetXaxis().SetBinLabel(1, <span class="stringliteral">&quot;Reconstructible tracks&quot;</span>)</div>
-<div class="line"><a id="l00863" name="l00863"></a><span class="lineno">  863</span>    h[<span class="stringliteral">&quot;TracksPassed&quot;</span>].GetXaxis().SetBinLabel(2, <span class="stringliteral">&quot;Y view station 1&amp;2&quot;</span>)</div>
-<div class="line"><a id="l00864" name="l00864"></a><span class="lineno">  864</span>    h[<span class="stringliteral">&quot;TracksPassed&quot;</span>].GetXaxis().SetBinLabel(3, <span class="stringliteral">&quot;Stereo station 1&amp;2&quot;</span>)</div>
-<div class="line"><a id="l00865" name="l00865"></a><span class="lineno">  865</span>    h[<span class="stringliteral">&quot;TracksPassed&quot;</span>].GetXaxis().SetBinLabel(4, <span class="stringliteral">&quot;station 1&amp;2&quot;</span>)</div>
-<div class="line"><a id="l00866" name="l00866"></a><span class="lineno">  866</span>    h[<span class="stringliteral">&quot;TracksPassed&quot;</span>].GetXaxis().SetBinLabel(5, <span class="stringliteral">&quot;Y view station 3&amp;4&quot;</span>)</div>
-<div class="line"><a id="l00867" name="l00867"></a><span class="lineno">  867</span>    h[<span class="stringliteral">&quot;TracksPassed&quot;</span>].GetXaxis().SetBinLabel(6, <span class="stringliteral">&quot;Stereo station 3&amp;4&quot;</span>)</div>
-<div class="line"><a id="l00868" name="l00868"></a><span class="lineno">  868</span>    h[<span class="stringliteral">&quot;TracksPassed&quot;</span>].GetXaxis().SetBinLabel(7, <span class="stringliteral">&quot;station 3&amp;4&quot;</span>)</div>
-<div class="line"><a id="l00869" name="l00869"></a><span class="lineno">  869</span>    h[<span class="stringliteral">&quot;TracksPassed&quot;</span>].GetXaxis().SetBinLabel(8, <span class="stringliteral">&quot;Combined stations 1&amp;2/3&amp;4&quot;</span>)</div>
-<div class="line"><a id="l00870" name="l00870"></a><span class="lineno">  870</span> </div>
-<div class="line"><a id="l00871" name="l00871"></a><span class="lineno">  871</span>    ut.bookHist(h, <span class="stringliteral">&quot;TracksPassedU&quot;</span>, <span class="stringliteral">&quot;Tracks passing the pattern recognition. No clones.&quot;</span>, 8, -0.5, 7.5)</div>
-<div class="line"><a id="l00872" name="l00872"></a><span class="lineno">  872</span>    h[<span class="stringliteral">&quot;TracksPassedU&quot;</span>].GetXaxis().SetBinLabel(1, <span class="stringliteral">&quot;Reconstructible tracks&quot;</span>)</div>
-<div class="line"><a id="l00873" name="l00873"></a><span class="lineno">  873</span>    h[<span class="stringliteral">&quot;TracksPassedU&quot;</span>].GetXaxis().SetBinLabel(2, <span class="stringliteral">&quot;Y view station 1&amp;2&quot;</span>)</div>
-<div class="line"><a id="l00874" name="l00874"></a><span class="lineno">  874</span>    h[<span class="stringliteral">&quot;TracksPassedU&quot;</span>].GetXaxis().SetBinLabel(3, <span class="stringliteral">&quot;Stereo station 1&amp;2&quot;</span>)</div>
-<div class="line"><a id="l00875" name="l00875"></a><span class="lineno">  875</span>    h[<span class="stringliteral">&quot;TracksPassedU&quot;</span>].GetXaxis().SetBinLabel(4, <span class="stringliteral">&quot;station 1&amp;2&quot;</span>)</div>
-<div class="line"><a id="l00876" name="l00876"></a><span class="lineno">  876</span>    h[<span class="stringliteral">&quot;TracksPassedU&quot;</span>].GetXaxis().SetBinLabel(5, <span class="stringliteral">&quot;Y view station 3&amp;4&quot;</span>)</div>
-<div class="line"><a id="l00877" name="l00877"></a><span class="lineno">  877</span>    h[<span class="stringliteral">&quot;TracksPassedU&quot;</span>].GetXaxis().SetBinLabel(6, <span class="stringliteral">&quot;Stereo station 3&amp;4&quot;</span>)</div>
-<div class="line"><a id="l00878" name="l00878"></a><span class="lineno">  878</span>    h[<span class="stringliteral">&quot;TracksPassedU&quot;</span>].GetXaxis().SetBinLabel(7, <span class="stringliteral">&quot;station 3&amp;4&quot;</span>)</div>
-<div class="line"><a id="l00879" name="l00879"></a><span class="lineno">  879</span>    h[<span class="stringliteral">&quot;TracksPassedU&quot;</span>].GetXaxis().SetBinLabel(8, <span class="stringliteral">&quot;Combined stations 1&amp;2/3&amp;4&quot;</span>)</div>
-<div class="line"><a id="l00880" name="l00880"></a><span class="lineno">  880</span> </div>
-<div class="line"><a id="l00881" name="l00881"></a><span class="lineno">  881</span>    ut.bookProf(h, <span class="stringliteral">&quot;TracksPassed_p&quot;</span>, <span class="stringliteral">&quot;Tracks passing the pattern recognition from momentum&quot;</span>, 30, 0, 150)</div>
-<div class="line"><a id="l00882" name="l00882"></a><span class="lineno">  882</span>    h[<span class="stringliteral">&quot;TracksPassed_p&quot;</span>].GetXaxis().SetTitle(<span class="stringliteral">&quot;Momentum&quot;</span>)</div>
-<div class="line"><a id="l00883" name="l00883"></a><span class="lineno">  883</span>    h[<span class="stringliteral">&quot;TracksPassed_p&quot;</span>].GetYaxis().SetTitle(<span class="stringliteral">&quot;N&quot;</span>)</div>
-<div class="line"><a id="l00884" name="l00884"></a><span class="lineno">  884</span> </div>
-<div class="line"><a id="l00885" name="l00885"></a><span class="lineno">  885</span>    ut.bookHist(h, <span class="stringliteral">&quot;ptrue-p/ptrue&quot;</span>, <span class="stringliteral">&quot;(p - p-true)/p&quot;</span>, 200, -0.25, 0.25)</div>
-<div class="line"><a id="l00886" name="l00886"></a><span class="lineno">  886</span>    ut.bookHist(h, <span class="stringliteral">&quot;pttrue-pt/pttrue&quot;</span>, <span class="stringliteral">&quot;(pt - pt-true)/pt&quot;</span>, 200, -0.25, 0.25)</div>
-<div class="line"><a id="l00887" name="l00887"></a><span class="lineno">  887</span>    ut.bookHist(h, <span class="stringliteral">&quot;pxtrue-px/pxtrue&quot;</span>, <span class="stringliteral">&quot;(px - px-true)/px&quot;</span>, 200, -0.25, 0.25)</div>
-<div class="line"><a id="l00888" name="l00888"></a><span class="lineno">  888</span>    ut.bookHist(h, <span class="stringliteral">&quot;pytrue-py/pytrue&quot;</span>, <span class="stringliteral">&quot;(py - py-true)/py&quot;</span>, 200, -0.25, 0.25)</div>
-<div class="line"><a id="l00889" name="l00889"></a><span class="lineno">  889</span>    ut.bookHist(h, <span class="stringliteral">&quot;pztrue-pz/pztrue&quot;</span>, <span class="stringliteral">&quot;(pz - pz-true)/pz&quot;</span>, 200, -0.25, 0.25)</div>
-<div class="line"><a id="l00890" name="l00890"></a><span class="lineno">  890</span> </div>
-<div class="line"><a id="l00891" name="l00891"></a><span class="lineno">  891</span>    ut.bookHist(h, <span class="stringliteral">&quot;n_hits_reco&quot;</span>, <span class="stringliteral">&quot;Number of recognized hits per track, total&quot;</span>, 64, 0.0, 64.01)</div>
-<div class="line"><a id="l00892" name="l00892"></a><span class="lineno">  892</span>    ut.bookHist(h, <span class="stringliteral">&quot;n_hits_reco_12&quot;</span>, <span class="stringliteral">&quot;Number of recognized hits per track, station 1&amp;2&quot;</span>, 32, 0.0, 32.01)</div>
-<div class="line"><a id="l00893" name="l00893"></a><span class="lineno">  893</span>    ut.bookHist(h, <span class="stringliteral">&quot;n_hits_reco_y12&quot;</span>, <span class="stringliteral">&quot;Number of recognized hits per track, Y view station 1&amp;2&quot;</span>, 32, 0.0, 32.01)</div>
-<div class="line"><a id="l00894" name="l00894"></a><span class="lineno">  894</span>    ut.bookHist(</div>
-<div class="line"><a id="l00895" name="l00895"></a><span class="lineno">  895</span>        h, <span class="stringliteral">&quot;n_hits_reco_stereo12&quot;</span>, <span class="stringliteral">&quot;Number of recognized hits per track, Stereo view station 1&amp;2&quot;</span>, 32, 0.0, 32.01</div>
-<div class="line"><a id="l00896" name="l00896"></a><span class="lineno">  896</span>    )</div>
-<div class="line"><a id="l00897" name="l00897"></a><span class="lineno">  897</span>    ut.bookHist(h, <span class="stringliteral">&quot;n_hits_reco_34&quot;</span>, <span class="stringliteral">&quot;Number of recognized hits per track, station 3&amp;4&quot;</span>, 32, 0.0, 32.01)</div>
-<div class="line"><a id="l00898" name="l00898"></a><span class="lineno">  898</span>    ut.bookHist(h, <span class="stringliteral">&quot;n_hits_reco_y34&quot;</span>, <span class="stringliteral">&quot;Number of recognized hits per track, Y view station 3&amp;4&quot;</span>, 32, 0.0, 32.01)</div>
-<div class="line"><a id="l00899" name="l00899"></a><span class="lineno">  899</span>    ut.bookHist(</div>
-<div class="line"><a id="l00900" name="l00900"></a><span class="lineno">  900</span>        h, <span class="stringliteral">&quot;n_hits_reco_stereo34&quot;</span>, <span class="stringliteral">&quot;Number of recognized hits per track, Stereo view station 3&amp;4&quot;</span>, 32, 0.0, 32.01</div>
-<div class="line"><a id="l00901" name="l00901"></a><span class="lineno">  901</span>    )</div>
-<div class="line"><a id="l00902" name="l00902"></a><span class="lineno">  902</span> </div>
-<div class="line"><a id="l00903" name="l00903"></a><span class="lineno">  903</span>    <span class="comment"># Momentum dependences</span></div>
-<div class="line"><a id="l00904" name="l00904"></a><span class="lineno">  904</span>    ut.bookProf(h, <span class="stringliteral">&quot;n_hits_total&quot;</span>, <span class="stringliteral">&quot;Number of recognized hits per track, total&quot;</span>, 30, 0, 150)</div>
-<div class="line"><a id="l00905" name="l00905"></a><span class="lineno">  905</span>    h[<span class="stringliteral">&quot;n_hits_total&quot;</span>].GetXaxis().SetTitle(<span class="stringliteral">&quot;Momentum&quot;</span>)</div>
-<div class="line"><a id="l00906" name="l00906"></a><span class="lineno">  906</span>    h[<span class="stringliteral">&quot;n_hits_total&quot;</span>].GetYaxis().SetTitle(<span class="stringliteral">&quot;N&quot;</span>)</div>
-<div class="line"><a id="l00907" name="l00907"></a><span class="lineno">  907</span> </div>
-<div class="line"><a id="l00908" name="l00908"></a><span class="lineno">  908</span>    ut.bookProf(h, <span class="stringliteral">&quot;n_hits_y12&quot;</span>, <span class="stringliteral">&quot;Number of recognized hits per track, Y view station 1&amp;2&quot;</span>, 30, 0, 150)</div>
-<div class="line"><a id="l00909" name="l00909"></a><span class="lineno">  909</span>    h[<span class="stringliteral">&quot;n_hits_y12&quot;</span>].GetXaxis().SetTitle(<span class="stringliteral">&quot;Momentum&quot;</span>)</div>
-<div class="line"><a id="l00910" name="l00910"></a><span class="lineno">  910</span>    h[<span class="stringliteral">&quot;n_hits_y12&quot;</span>].GetYaxis().SetTitle(<span class="stringliteral">&quot;N&quot;</span>)</div>
-<div class="line"><a id="l00911" name="l00911"></a><span class="lineno">  911</span> </div>
-<div class="line"><a id="l00912" name="l00912"></a><span class="lineno">  912</span>    ut.bookProf(h, <span class="stringliteral">&quot;n_hits_stereo12&quot;</span>, <span class="stringliteral">&quot;Number of recognized hits per track, Stereo view station 1&amp;2&quot;</span>, 30, 0, 150)</div>
-<div class="line"><a id="l00913" name="l00913"></a><span class="lineno">  913</span>    h[<span class="stringliteral">&quot;n_hits_stereo12&quot;</span>].GetXaxis().SetTitle(<span class="stringliteral">&quot;Momentum&quot;</span>)</div>
-<div class="line"><a id="l00914" name="l00914"></a><span class="lineno">  914</span>    h[<span class="stringliteral">&quot;n_hits_stereo12&quot;</span>].GetYaxis().SetTitle(<span class="stringliteral">&quot;N&quot;</span>)</div>
-<div class="line"><a id="l00915" name="l00915"></a><span class="lineno">  915</span> </div>
-<div class="line"><a id="l00916" name="l00916"></a><span class="lineno">  916</span>    ut.bookProf(h, <span class="stringliteral">&quot;n_hits_12&quot;</span>, <span class="stringliteral">&quot;Number of recognized hits per track, station 1&amp;2&quot;</span>, 30, 0, 150)</div>
-<div class="line"><a id="l00917" name="l00917"></a><span class="lineno">  917</span>    h[<span class="stringliteral">&quot;n_hits_12&quot;</span>].GetXaxis().SetTitle(<span class="stringliteral">&quot;Momentum&quot;</span>)</div>
-<div class="line"><a id="l00918" name="l00918"></a><span class="lineno">  918</span>    h[<span class="stringliteral">&quot;n_hits_12&quot;</span>].GetYaxis().SetTitle(<span class="stringliteral">&quot;N&quot;</span>)</div>
-<div class="line"><a id="l00919" name="l00919"></a><span class="lineno">  919</span> </div>
-<div class="line"><a id="l00920" name="l00920"></a><span class="lineno">  920</span>    ut.bookProf(h, <span class="stringliteral">&quot;n_hits_y34&quot;</span>, <span class="stringliteral">&quot;Number of recognized hits per track, Y view station 3&amp;4&quot;</span>, 30, 0, 150)</div>
-<div class="line"><a id="l00921" name="l00921"></a><span class="lineno">  921</span>    h[<span class="stringliteral">&quot;n_hits_y34&quot;</span>].GetXaxis().SetTitle(<span class="stringliteral">&quot;Momentum&quot;</span>)</div>
-<div class="line"><a id="l00922" name="l00922"></a><span class="lineno">  922</span>    h[<span class="stringliteral">&quot;n_hits_y34&quot;</span>].GetYaxis().SetTitle(<span class="stringliteral">&quot;N&quot;</span>)</div>
-<div class="line"><a id="l00923" name="l00923"></a><span class="lineno">  923</span> </div>
-<div class="line"><a id="l00924" name="l00924"></a><span class="lineno">  924</span>    ut.bookProf(h, <span class="stringliteral">&quot;n_hits_stereo34&quot;</span>, <span class="stringliteral">&quot;Number of recognized hits per track, Stereo view station 3&amp;4&quot;</span>, 30, 0, 150)</div>
-<div class="line"><a id="l00925" name="l00925"></a><span class="lineno">  925</span>    h[<span class="stringliteral">&quot;n_hits_stereo34&quot;</span>].GetXaxis().SetTitle(<span class="stringliteral">&quot;Momentum&quot;</span>)</div>
-<div class="line"><a id="l00926" name="l00926"></a><span class="lineno">  926</span>    h[<span class="stringliteral">&quot;n_hits_stereo34&quot;</span>].GetYaxis().SetTitle(<span class="stringliteral">&quot;N&quot;</span>)</div>
-<div class="line"><a id="l00927" name="l00927"></a><span class="lineno">  927</span> </div>
-<div class="line"><a id="l00928" name="l00928"></a><span class="lineno">  928</span>    ut.bookProf(h, <span class="stringliteral">&quot;n_hits_34&quot;</span>, <span class="stringliteral">&quot;Number of recognized hits per track, station 3&amp;4&quot;</span>, 30, 0, 150)</div>
-<div class="line"><a id="l00929" name="l00929"></a><span class="lineno">  929</span>    h[<span class="stringliteral">&quot;n_hits_34&quot;</span>].GetXaxis().SetTitle(<span class="stringliteral">&quot;Momentum&quot;</span>)</div>
-<div class="line"><a id="l00930" name="l00930"></a><span class="lineno">  930</span>    h[<span class="stringliteral">&quot;n_hits_34&quot;</span>].GetYaxis().SetTitle(<span class="stringliteral">&quot;N&quot;</span>)</div>
-<div class="line"><a id="l00931" name="l00931"></a><span class="lineno">  931</span> </div>
-<div class="line"><a id="l00932" name="l00932"></a><span class="lineno">  932</span>    ut.bookProf(h, <span class="stringliteral">&quot;perr&quot;</span>, <span class="stringliteral">&quot;(p - p-true)/p&quot;</span>, 30, 0, 150)</div>
-<div class="line"><a id="l00933" name="l00933"></a><span class="lineno">  933</span>    h[<span class="stringliteral">&quot;perr&quot;</span>].GetXaxis().SetTitle(<span class="stringliteral">&quot;Momentum&quot;</span>)</div>
-<div class="line"><a id="l00934" name="l00934"></a><span class="lineno">  934</span>    h[<span class="stringliteral">&quot;perr&quot;</span>].GetYaxis().SetTitle(<span class="stringliteral">&quot;(p - p-true)/p&quot;</span>)</div>
-<div class="line"><a id="l00935" name="l00935"></a><span class="lineno">  935</span> </div>
-<div class="line"><a id="l00936" name="l00936"></a><span class="lineno">  936</span>    ut.bookProf(h, <span class="stringliteral">&quot;perr_direction&quot;</span>, <span class="stringliteral">&quot;(p - p-true)/p from track direction in YZ plane&quot;</span>, 20, 0, 10.01)</div>
-<div class="line"><a id="l00937" name="l00937"></a><span class="lineno">  937</span>    h[<span class="stringliteral">&quot;perr_direction&quot;</span>].GetXaxis().SetTitle(<span class="stringliteral">&quot;Degree&quot;</span>)</div>
-<div class="line"><a id="l00938" name="l00938"></a><span class="lineno">  938</span>    h[<span class="stringliteral">&quot;perr_direction&quot;</span>].GetYaxis().SetTitle(<span class="stringliteral">&quot;(p - p-true)/p&quot;</span>)</div>
-<div class="line"><a id="l00939" name="l00939"></a><span class="lineno">  939</span> </div>
-<div class="line"><a id="l00940" name="l00940"></a><span class="lineno">  940</span>    ut.bookProf(h, <span class="stringliteral">&quot;frac_total&quot;</span>, <span class="stringliteral">&quot;Fraction of hits the same as MC hits, total&quot;</span>, 30, 0, 150)</div>
-<div class="line"><a id="l00941" name="l00941"></a><span class="lineno">  941</span>    h[<span class="stringliteral">&quot;frac_total&quot;</span>].GetXaxis().SetTitle(<span class="stringliteral">&quot;Momentum&quot;</span>)</div>
-<div class="line"><a id="l00942" name="l00942"></a><span class="lineno">  942</span>    h[<span class="stringliteral">&quot;frac_total&quot;</span>].GetYaxis().SetTitle(<span class="stringliteral">&quot;Fraction&quot;</span>)</div>
-<div class="line"><a id="l00943" name="l00943"></a><span class="lineno">  943</span> </div>
-<div class="line"><a id="l00944" name="l00944"></a><span class="lineno">  944</span>    ut.bookProf(h, <span class="stringliteral">&quot;frac_y12&quot;</span>, <span class="stringliteral">&quot;Fraction of hits the same as MC hits, Y view station 1&amp;2&quot;</span>, 30, 0, 150)</div>
-<div class="line"><a id="l00945" name="l00945"></a><span class="lineno">  945</span>    h[<span class="stringliteral">&quot;frac_y12&quot;</span>].GetXaxis().SetTitle(<span class="stringliteral">&quot;Momentum&quot;</span>)</div>
-<div class="line"><a id="l00946" name="l00946"></a><span class="lineno">  946</span>    h[<span class="stringliteral">&quot;frac_y12&quot;</span>].GetYaxis().SetTitle(<span class="stringliteral">&quot;Fraction&quot;</span>)</div>
-<div class="line"><a id="l00947" name="l00947"></a><span class="lineno">  947</span> </div>
-<div class="line"><a id="l00948" name="l00948"></a><span class="lineno">  948</span>    ut.bookProf(h, <span class="stringliteral">&quot;frac_stereo12&quot;</span>, <span class="stringliteral">&quot;Fraction of hits the same as MC hits, Stereo view station 1&amp;2&quot;</span>, 30, 0, 150)</div>
-<div class="line"><a id="l00949" name="l00949"></a><span class="lineno">  949</span>    h[<span class="stringliteral">&quot;frac_stereo12&quot;</span>].GetXaxis().SetTitle(<span class="stringliteral">&quot;Momentum&quot;</span>)</div>
-<div class="line"><a id="l00950" name="l00950"></a><span class="lineno">  950</span>    h[<span class="stringliteral">&quot;frac_stereo12&quot;</span>].GetYaxis().SetTitle(<span class="stringliteral">&quot;Fraction&quot;</span>)</div>
-<div class="line"><a id="l00951" name="l00951"></a><span class="lineno">  951</span> </div>
-<div class="line"><a id="l00952" name="l00952"></a><span class="lineno">  952</span>    ut.bookProf(h, <span class="stringliteral">&quot;frac_12&quot;</span>, <span class="stringliteral">&quot;Fraction of hits the same as MC hits, station 1&amp;2&quot;</span>, 30, 0, 150)</div>
-<div class="line"><a id="l00953" name="l00953"></a><span class="lineno">  953</span>    h[<span class="stringliteral">&quot;frac_12&quot;</span>].GetXaxis().SetTitle(<span class="stringliteral">&quot;Momentum&quot;</span>)</div>
-<div class="line"><a id="l00954" name="l00954"></a><span class="lineno">  954</span>    h[<span class="stringliteral">&quot;frac_12&quot;</span>].GetYaxis().SetTitle(<span class="stringliteral">&quot;Fraction&quot;</span>)</div>
-<div class="line"><a id="l00955" name="l00955"></a><span class="lineno">  955</span> </div>
-<div class="line"><a id="l00956" name="l00956"></a><span class="lineno">  956</span>    ut.bookProf(h, <span class="stringliteral">&quot;frac_y34&quot;</span>, <span class="stringliteral">&quot;Fraction of hits the same as MC hits, Y view station 3&amp;4&quot;</span>, 30, 0, 150)</div>
-<div class="line"><a id="l00957" name="l00957"></a><span class="lineno">  957</span>    h[<span class="stringliteral">&quot;frac_y34&quot;</span>].GetXaxis().SetTitle(<span class="stringliteral">&quot;Momentum&quot;</span>)</div>
-<div class="line"><a id="l00958" name="l00958"></a><span class="lineno">  958</span>    h[<span class="stringliteral">&quot;frac_y34&quot;</span>].GetYaxis().SetTitle(<span class="stringliteral">&quot;Fraction&quot;</span>)</div>
-<div class="line"><a id="l00959" name="l00959"></a><span class="lineno">  959</span> </div>
-<div class="line"><a id="l00960" name="l00960"></a><span class="lineno">  960</span>    ut.bookProf(h, <span class="stringliteral">&quot;frac_stereo34&quot;</span>, <span class="stringliteral">&quot;Fraction of hits the same as MC hits, Stereo view station 3&amp;4&quot;</span>, 30, 0, 150)</div>
-<div class="line"><a id="l00961" name="l00961"></a><span class="lineno">  961</span>    h[<span class="stringliteral">&quot;frac_stereo34&quot;</span>].GetXaxis().SetTitle(<span class="stringliteral">&quot;Momentum&quot;</span>)</div>
-<div class="line"><a id="l00962" name="l00962"></a><span class="lineno">  962</span>    h[<span class="stringliteral">&quot;frac_stereo34&quot;</span>].GetYaxis().SetTitle(<span class="stringliteral">&quot;Fraction&quot;</span>)</div>
-<div class="line"><a id="l00963" name="l00963"></a><span class="lineno">  963</span> </div>
-<div class="line"><a id="l00964" name="l00964"></a><span class="lineno">  964</span>    ut.bookProf(h, <span class="stringliteral">&quot;frac_34&quot;</span>, <span class="stringliteral">&quot;Fraction of hits the same as MC hits, station 3&amp;4&quot;</span>, 30, 0, 150)</div>
-<div class="line"><a id="l00965" name="l00965"></a><span class="lineno">  965</span>    h[<span class="stringliteral">&quot;frac_34&quot;</span>].GetXaxis().SetTitle(<span class="stringliteral">&quot;Momentum&quot;</span>)</div>
-<div class="line"><a id="l00966" name="l00966"></a><span class="lineno">  966</span>    h[<span class="stringliteral">&quot;frac_34&quot;</span>].GetYaxis().SetTitle(<span class="stringliteral">&quot;Fraction&quot;</span>)</div>
-<div class="line"><a id="l00967" name="l00967"></a><span class="lineno">  967</span> </div>
-<div class="line"><a id="l00968" name="l00968"></a><span class="lineno">  968</span>    ut.bookHist(h, <span class="stringliteral">&quot;frac_y12_dist&quot;</span>, <span class="stringliteral">&quot;Fraction of hits the same as MC hits, Y view station 1&amp;2&quot;</span>, 50, 0.5, 1.001)</div>
-<div class="line"><a id="l00969" name="l00969"></a><span class="lineno">  969</span>    ut.bookHist(</div>
-<div class="line"><a id="l00970" name="l00970"></a><span class="lineno">  970</span>        h, <span class="stringliteral">&quot;frac_stereo12_dist&quot;</span>, <span class="stringliteral">&quot;Fraction of hits the same as MC hits, Stereo view station 1&amp;2&quot;</span>, 50, 0.5, 1.001</div>
-<div class="line"><a id="l00971" name="l00971"></a><span class="lineno">  971</span>    )</div>
-<div class="line"><a id="l00972" name="l00972"></a><span class="lineno">  972</span>    ut.bookHist(h, <span class="stringliteral">&quot;frac_12_dist&quot;</span>, <span class="stringliteral">&quot;Fraction of hits the same as MC hits, station 1&amp;2&quot;</span>, 50, 0.5, 1.001)</div>
-<div class="line"><a id="l00973" name="l00973"></a><span class="lineno">  973</span>    ut.bookHist(h, <span class="stringliteral">&quot;frac_y34_dist&quot;</span>, <span class="stringliteral">&quot;Fraction of hits the same as MC hits, Y view station 3&amp;4&quot;</span>, 50, 0.5, 1.001)</div>
-<div class="line"><a id="l00974" name="l00974"></a><span class="lineno">  974</span>    ut.bookHist(</div>
-<div class="line"><a id="l00975" name="l00975"></a><span class="lineno">  975</span>        h, <span class="stringliteral">&quot;frac_stereo34_dist&quot;</span>, <span class="stringliteral">&quot;Fraction of hits the same as MC hits, Stereo view station 3&amp;4&quot;</span>, 50, 0.5, 1.001</div>
-<div class="line"><a id="l00976" name="l00976"></a><span class="lineno">  976</span>    )</div>
-<div class="line"><a id="l00977" name="l00977"></a><span class="lineno">  977</span>    ut.bookHist(h, <span class="stringliteral">&quot;frac_34_dist&quot;</span>, <span class="stringliteral">&quot;Fraction of hits the same as MC hits, station 3&amp;4&quot;</span>, 50, 0.5, 1.001)</div>
-<div class="line"><a id="l00978" name="l00978"></a><span class="lineno">  978</span>    ut.bookHist(h, <span class="stringliteral">&quot;frac_total_dist&quot;</span>, <span class="stringliteral">&quot;Fraction of hits the same as MC hits, total&quot;</span>, 50, 0.5, 1.001)</div>
-<div class="line"><a id="l00979" name="l00979"></a><span class="lineno">  979</span> </div>
-<div class="line"><a id="l00980" name="l00980"></a><span class="lineno">  980</span>    ut.bookHist(</div>
-<div class="line"><a id="l00981" name="l00981"></a><span class="lineno">  981</span>        h, <span class="stringliteral">&quot;Reco_tracks&quot;</span>, <span class="stringliteral">&quot;Number of recognized tracks, clones and ghosts for reconstructible tracks.&quot;</span>, 5, -0.5, 4.5</div>
-<div class="line"><a id="l00982" name="l00982"></a><span class="lineno">  982</span>    )</div>
-<div class="line"><a id="l00983" name="l00983"></a><span class="lineno">  983</span>    h[<span class="stringliteral">&quot;Reco_tracks&quot;</span>].GetXaxis().SetBinLabel(1, <span class="stringliteral">&quot;N total&quot;</span>)</div>
-<div class="line"><a id="l00984" name="l00984"></a><span class="lineno">  984</span>    h[<span class="stringliteral">&quot;Reco_tracks&quot;</span>].GetXaxis().SetBinLabel(2, <span class="stringliteral">&quot;N recognized tracks&quot;</span>)</div>
-<div class="line"><a id="l00985" name="l00985"></a><span class="lineno">  985</span>    h[<span class="stringliteral">&quot;Reco_tracks&quot;</span>].GetXaxis().SetBinLabel(3, <span class="stringliteral">&quot;N clones&quot;</span>)</div>
-<div class="line"><a id="l00986" name="l00986"></a><span class="lineno">  986</span>    h[<span class="stringliteral">&quot;Reco_tracks&quot;</span>].GetXaxis().SetBinLabel(4, <span class="stringliteral">&quot;N ghosts&quot;</span>)</div>
-<div class="line"><a id="l00987" name="l00987"></a><span class="lineno">  987</span>    h[<span class="stringliteral">&quot;Reco_tracks&quot;</span>].GetXaxis().SetBinLabel(5, <span class="stringliteral">&quot;N others&quot;</span>)</div>
-<div class="line"><a id="l00988" name="l00988"></a><span class="lineno">  988</span> </div>
-<div class="line"><a id="l00989" name="l00989"></a><span class="lineno">  989</span>    <span class="comment"># Fitted values</span></div>
-<div class="line"><a id="l00990" name="l00990"></a><span class="lineno">  990</span>    ut.bookHist(h, <span class="stringliteral">&quot;chi2fittedtracks&quot;</span>, <span class="stringliteral">&quot;Chi^2 per NDOF for fitted tracks&quot;</span>, 210, -0.05, 20.05)</div>
-<div class="line"><a id="l00991" name="l00991"></a><span class="lineno">  991</span>    ut.bookHist(h, <span class="stringliteral">&quot;pvalfittedtracks&quot;</span>, <span class="stringliteral">&quot;pval for fitted tracks&quot;</span>, 110, -0.05, 1.05)</div>
-<div class="line"><a id="l00992" name="l00992"></a><span class="lineno">  992</span>    ut.bookHist(h, <span class="stringliteral">&quot;momentumfittedtracks&quot;</span>, <span class="stringliteral">&quot;momentum for fitted tracks&quot;</span>, 251, -0.05, 250.05)</div>
-<div class="line"><a id="l00993" name="l00993"></a><span class="lineno">  993</span>    ut.bookHist(h, <span class="stringliteral">&quot;xdirectionfittedtracks&quot;</span>, <span class="stringliteral">&quot;x-direction for fitted tracks&quot;</span>, 91, -0.5, 90.5)</div>
-<div class="line"><a id="l00994" name="l00994"></a><span class="lineno">  994</span>    ut.bookHist(h, <span class="stringliteral">&quot;ydirectionfittedtracks&quot;</span>, <span class="stringliteral">&quot;y-direction for fitted tracks&quot;</span>, 91, -0.5, 90.5)</div>
-<div class="line"><a id="l00995" name="l00995"></a><span class="lineno">  995</span>    ut.bookHist(h, <span class="stringliteral">&quot;zdirectionfittedtracks&quot;</span>, <span class="stringliteral">&quot;z-direction for fitted tracks&quot;</span>, 91, -0.5, 90.5)</div>
-<div class="line"><a id="l00996" name="l00996"></a><span class="lineno">  996</span>    ut.bookHist(h, <span class="stringliteral">&quot;massfittedtracks&quot;</span>, <span class="stringliteral">&quot;mass fitted tracks&quot;</span>, 210, -0.005, 0.205)</div>
-<div class="line"><a id="l00997" name="l00997"></a><span class="lineno">  997</span>    ut.bookHist(h, <span class="stringliteral">&quot;pvspfitted&quot;</span>, <span class="stringliteral">&quot;p-patrec vs p-fitted&quot;</span>, 401, -200.5, 200.5, 401, -200.5, 200.5)</div>
-<div class="line"><a id="l00998" name="l00998"></a><span class="lineno">  998</span> </div>
-<div class="line"><a id="l00999" name="l00999"></a><span class="lineno">  999</span>    ut.bookHist(h, <span class="stringliteral">&quot;abs(x - x-true)&quot;</span>, <span class="stringliteral">&quot;Hits abs(x - x-true)&quot;</span>, 260, -0.05, 5.05)</div>
-<div class="line"><a id="l01000" name="l01000"></a><span class="lineno"> 1000</span>    ut.bookHist(h, <span class="stringliteral">&quot;abs(y - y-true)&quot;</span>, <span class="stringliteral">&quot;Hits abs(y - y-true)&quot;</span>, 260, -0.05, 5.05)</div>
-<div class="line"><a id="l01001" name="l01001"></a><span class="lineno"> 1001</span> </div>
-<div class="line"><a id="l01002" name="l01002"></a><span class="lineno"> 1002</span>    ut.bookHist(h, <span class="stringliteral">&quot;rmse_x&quot;</span>, <span class="stringliteral">&quot;Hits x fit rmse&quot;</span>, 260, -0.05, 5.05)</div>
-<div class="line"><a id="l01003" name="l01003"></a><span class="lineno"> 1003</span>    ut.bookHist(h, <span class="stringliteral">&quot;rmse_y&quot;</span>, <span class="stringliteral">&quot;Hits y fit rmse&quot;</span>, 260, -0.05, 5.05)</div>
-<div class="line"><a id="l01004" name="l01004"></a><span class="lineno"> 1004</span> </div>
-<div class="line"><a id="l01005" name="l01005"></a><span class="lineno"> 1005</span>    <span class="keywordflow">return</span> h</div>
+<div class="foldopen" id="foldopen00849" data-start="" data-end="">
+<div class="line"><a id="l00849" name="l00849"></a><span class="lineno"><a class="line" href="namespaceshipStrawTracking.html#a6f8170056fea500eadaec343a3b75173">  849</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceshipStrawTracking.html#a6f8170056fea500eadaec343a3b75173">init_book_hist</a>():</div>
+<div class="line"><a id="l00850" name="l00850"></a><span class="lineno">  850</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00851" name="l00851"></a><span class="lineno">  851</span><span class="stringliteral">    Creates empty plots.</span></div>
+<div class="line"><a id="l00852" name="l00852"></a><span class="lineno">  852</span><span class="stringliteral">    Returns</span></div>
+<div class="line"><a id="l00853" name="l00853"></a><span class="lineno">  853</span><span class="stringliteral">    -------</span></div>
+<div class="line"><a id="l00854" name="l00854"></a><span class="lineno">  854</span><span class="stringliteral">    h : dict</span></div>
+<div class="line"><a id="l00855" name="l00855"></a><span class="lineno">  855</span><span class="stringliteral">        Dictionary of plots.</span></div>
+<div class="line"><a id="l00856" name="l00856"></a><span class="lineno">  856</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00857" name="l00857"></a><span class="lineno">  857</span> </div>
+<div class="line"><a id="l00858" name="l00858"></a><span class="lineno">  858</span>    h = {}  <span class="comment"># dictionary of histograms</span></div>
+<div class="line"><a id="l00859" name="l00859"></a><span class="lineno">  859</span> </div>
+<div class="line"><a id="l00860" name="l00860"></a><span class="lineno">  860</span>    ut.bookHist(h, <span class="stringliteral">&quot;TracksPassed&quot;</span>, <span class="stringliteral">&quot;Tracks passing the pattern recognition&quot;</span>, 8, -0.5, 7.5)</div>
+<div class="line"><a id="l00861" name="l00861"></a><span class="lineno">  861</span>    h[<span class="stringliteral">&quot;TracksPassed&quot;</span>].GetXaxis().SetBinLabel(1, <span class="stringliteral">&quot;Reconstructible tracks&quot;</span>)</div>
+<div class="line"><a id="l00862" name="l00862"></a><span class="lineno">  862</span>    h[<span class="stringliteral">&quot;TracksPassed&quot;</span>].GetXaxis().SetBinLabel(2, <span class="stringliteral">&quot;Y view station 1&amp;2&quot;</span>)</div>
+<div class="line"><a id="l00863" name="l00863"></a><span class="lineno">  863</span>    h[<span class="stringliteral">&quot;TracksPassed&quot;</span>].GetXaxis().SetBinLabel(3, <span class="stringliteral">&quot;Stereo station 1&amp;2&quot;</span>)</div>
+<div class="line"><a id="l00864" name="l00864"></a><span class="lineno">  864</span>    h[<span class="stringliteral">&quot;TracksPassed&quot;</span>].GetXaxis().SetBinLabel(4, <span class="stringliteral">&quot;station 1&amp;2&quot;</span>)</div>
+<div class="line"><a id="l00865" name="l00865"></a><span class="lineno">  865</span>    h[<span class="stringliteral">&quot;TracksPassed&quot;</span>].GetXaxis().SetBinLabel(5, <span class="stringliteral">&quot;Y view station 3&amp;4&quot;</span>)</div>
+<div class="line"><a id="l00866" name="l00866"></a><span class="lineno">  866</span>    h[<span class="stringliteral">&quot;TracksPassed&quot;</span>].GetXaxis().SetBinLabel(6, <span class="stringliteral">&quot;Stereo station 3&amp;4&quot;</span>)</div>
+<div class="line"><a id="l00867" name="l00867"></a><span class="lineno">  867</span>    h[<span class="stringliteral">&quot;TracksPassed&quot;</span>].GetXaxis().SetBinLabel(7, <span class="stringliteral">&quot;station 3&amp;4&quot;</span>)</div>
+<div class="line"><a id="l00868" name="l00868"></a><span class="lineno">  868</span>    h[<span class="stringliteral">&quot;TracksPassed&quot;</span>].GetXaxis().SetBinLabel(8, <span class="stringliteral">&quot;Combined stations 1&amp;2/3&amp;4&quot;</span>)</div>
+<div class="line"><a id="l00869" name="l00869"></a><span class="lineno">  869</span> </div>
+<div class="line"><a id="l00870" name="l00870"></a><span class="lineno">  870</span>    ut.bookHist(h, <span class="stringliteral">&quot;TracksPassedU&quot;</span>, <span class="stringliteral">&quot;Tracks passing the pattern recognition. No clones.&quot;</span>, 8, -0.5, 7.5)</div>
+<div class="line"><a id="l00871" name="l00871"></a><span class="lineno">  871</span>    h[<span class="stringliteral">&quot;TracksPassedU&quot;</span>].GetXaxis().SetBinLabel(1, <span class="stringliteral">&quot;Reconstructible tracks&quot;</span>)</div>
+<div class="line"><a id="l00872" name="l00872"></a><span class="lineno">  872</span>    h[<span class="stringliteral">&quot;TracksPassedU&quot;</span>].GetXaxis().SetBinLabel(2, <span class="stringliteral">&quot;Y view station 1&amp;2&quot;</span>)</div>
+<div class="line"><a id="l00873" name="l00873"></a><span class="lineno">  873</span>    h[<span class="stringliteral">&quot;TracksPassedU&quot;</span>].GetXaxis().SetBinLabel(3, <span class="stringliteral">&quot;Stereo station 1&amp;2&quot;</span>)</div>
+<div class="line"><a id="l00874" name="l00874"></a><span class="lineno">  874</span>    h[<span class="stringliteral">&quot;TracksPassedU&quot;</span>].GetXaxis().SetBinLabel(4, <span class="stringliteral">&quot;station 1&amp;2&quot;</span>)</div>
+<div class="line"><a id="l00875" name="l00875"></a><span class="lineno">  875</span>    h[<span class="stringliteral">&quot;TracksPassedU&quot;</span>].GetXaxis().SetBinLabel(5, <span class="stringliteral">&quot;Y view station 3&amp;4&quot;</span>)</div>
+<div class="line"><a id="l00876" name="l00876"></a><span class="lineno">  876</span>    h[<span class="stringliteral">&quot;TracksPassedU&quot;</span>].GetXaxis().SetBinLabel(6, <span class="stringliteral">&quot;Stereo station 3&amp;4&quot;</span>)</div>
+<div class="line"><a id="l00877" name="l00877"></a><span class="lineno">  877</span>    h[<span class="stringliteral">&quot;TracksPassedU&quot;</span>].GetXaxis().SetBinLabel(7, <span class="stringliteral">&quot;station 3&amp;4&quot;</span>)</div>
+<div class="line"><a id="l00878" name="l00878"></a><span class="lineno">  878</span>    h[<span class="stringliteral">&quot;TracksPassedU&quot;</span>].GetXaxis().SetBinLabel(8, <span class="stringliteral">&quot;Combined stations 1&amp;2/3&amp;4&quot;</span>)</div>
+<div class="line"><a id="l00879" name="l00879"></a><span class="lineno">  879</span> </div>
+<div class="line"><a id="l00880" name="l00880"></a><span class="lineno">  880</span>    ut.bookProf(h, <span class="stringliteral">&quot;TracksPassed_p&quot;</span>, <span class="stringliteral">&quot;Tracks passing the pattern recognition from momentum&quot;</span>, 30, 0, 150)</div>
+<div class="line"><a id="l00881" name="l00881"></a><span class="lineno">  881</span>    h[<span class="stringliteral">&quot;TracksPassed_p&quot;</span>].GetXaxis().SetTitle(<span class="stringliteral">&quot;Momentum&quot;</span>)</div>
+<div class="line"><a id="l00882" name="l00882"></a><span class="lineno">  882</span>    h[<span class="stringliteral">&quot;TracksPassed_p&quot;</span>].GetYaxis().SetTitle(<span class="stringliteral">&quot;N&quot;</span>)</div>
+<div class="line"><a id="l00883" name="l00883"></a><span class="lineno">  883</span> </div>
+<div class="line"><a id="l00884" name="l00884"></a><span class="lineno">  884</span>    ut.bookHist(h, <span class="stringliteral">&quot;ptrue-p/ptrue&quot;</span>, <span class="stringliteral">&quot;(p - p-true)/p&quot;</span>, 200, -0.25, 0.25)</div>
+<div class="line"><a id="l00885" name="l00885"></a><span class="lineno">  885</span>    ut.bookHist(h, <span class="stringliteral">&quot;pttrue-pt/pttrue&quot;</span>, <span class="stringliteral">&quot;(pt - pt-true)/pt&quot;</span>, 200, -0.25, 0.25)</div>
+<div class="line"><a id="l00886" name="l00886"></a><span class="lineno">  886</span>    ut.bookHist(h, <span class="stringliteral">&quot;pxtrue-px/pxtrue&quot;</span>, <span class="stringliteral">&quot;(px - px-true)/px&quot;</span>, 200, -0.25, 0.25)</div>
+<div class="line"><a id="l00887" name="l00887"></a><span class="lineno">  887</span>    ut.bookHist(h, <span class="stringliteral">&quot;pytrue-py/pytrue&quot;</span>, <span class="stringliteral">&quot;(py - py-true)/py&quot;</span>, 200, -0.25, 0.25)</div>
+<div class="line"><a id="l00888" name="l00888"></a><span class="lineno">  888</span>    ut.bookHist(h, <span class="stringliteral">&quot;pztrue-pz/pztrue&quot;</span>, <span class="stringliteral">&quot;(pz - pz-true)/pz&quot;</span>, 200, -0.25, 0.25)</div>
+<div class="line"><a id="l00889" name="l00889"></a><span class="lineno">  889</span> </div>
+<div class="line"><a id="l00890" name="l00890"></a><span class="lineno">  890</span>    ut.bookHist(h, <span class="stringliteral">&quot;n_hits_reco&quot;</span>, <span class="stringliteral">&quot;Number of recognized hits per track, total&quot;</span>, 64, 0.0, 64.01)</div>
+<div class="line"><a id="l00891" name="l00891"></a><span class="lineno">  891</span>    ut.bookHist(h, <span class="stringliteral">&quot;n_hits_reco_12&quot;</span>, <span class="stringliteral">&quot;Number of recognized hits per track, station 1&amp;2&quot;</span>, 32, 0.0, 32.01)</div>
+<div class="line"><a id="l00892" name="l00892"></a><span class="lineno">  892</span>    ut.bookHist(h, <span class="stringliteral">&quot;n_hits_reco_y12&quot;</span>, <span class="stringliteral">&quot;Number of recognized hits per track, Y view station 1&amp;2&quot;</span>, 32, 0.0, 32.01)</div>
+<div class="line"><a id="l00893" name="l00893"></a><span class="lineno">  893</span>    ut.bookHist(</div>
+<div class="line"><a id="l00894" name="l00894"></a><span class="lineno">  894</span>        h, <span class="stringliteral">&quot;n_hits_reco_stereo12&quot;</span>, <span class="stringliteral">&quot;Number of recognized hits per track, Stereo view station 1&amp;2&quot;</span>, 32, 0.0, 32.01</div>
+<div class="line"><a id="l00895" name="l00895"></a><span class="lineno">  895</span>    )</div>
+<div class="line"><a id="l00896" name="l00896"></a><span class="lineno">  896</span>    ut.bookHist(h, <span class="stringliteral">&quot;n_hits_reco_34&quot;</span>, <span class="stringliteral">&quot;Number of recognized hits per track, station 3&amp;4&quot;</span>, 32, 0.0, 32.01)</div>
+<div class="line"><a id="l00897" name="l00897"></a><span class="lineno">  897</span>    ut.bookHist(h, <span class="stringliteral">&quot;n_hits_reco_y34&quot;</span>, <span class="stringliteral">&quot;Number of recognized hits per track, Y view station 3&amp;4&quot;</span>, 32, 0.0, 32.01)</div>
+<div class="line"><a id="l00898" name="l00898"></a><span class="lineno">  898</span>    ut.bookHist(</div>
+<div class="line"><a id="l00899" name="l00899"></a><span class="lineno">  899</span>        h, <span class="stringliteral">&quot;n_hits_reco_stereo34&quot;</span>, <span class="stringliteral">&quot;Number of recognized hits per track, Stereo view station 3&amp;4&quot;</span>, 32, 0.0, 32.01</div>
+<div class="line"><a id="l00900" name="l00900"></a><span class="lineno">  900</span>    )</div>
+<div class="line"><a id="l00901" name="l00901"></a><span class="lineno">  901</span> </div>
+<div class="line"><a id="l00902" name="l00902"></a><span class="lineno">  902</span>    <span class="comment"># Momentum dependences</span></div>
+<div class="line"><a id="l00903" name="l00903"></a><span class="lineno">  903</span>    ut.bookProf(h, <span class="stringliteral">&quot;n_hits_total&quot;</span>, <span class="stringliteral">&quot;Number of recognized hits per track, total&quot;</span>, 30, 0, 150)</div>
+<div class="line"><a id="l00904" name="l00904"></a><span class="lineno">  904</span>    h[<span class="stringliteral">&quot;n_hits_total&quot;</span>].GetXaxis().SetTitle(<span class="stringliteral">&quot;Momentum&quot;</span>)</div>
+<div class="line"><a id="l00905" name="l00905"></a><span class="lineno">  905</span>    h[<span class="stringliteral">&quot;n_hits_total&quot;</span>].GetYaxis().SetTitle(<span class="stringliteral">&quot;N&quot;</span>)</div>
+<div class="line"><a id="l00906" name="l00906"></a><span class="lineno">  906</span> </div>
+<div class="line"><a id="l00907" name="l00907"></a><span class="lineno">  907</span>    ut.bookProf(h, <span class="stringliteral">&quot;n_hits_y12&quot;</span>, <span class="stringliteral">&quot;Number of recognized hits per track, Y view station 1&amp;2&quot;</span>, 30, 0, 150)</div>
+<div class="line"><a id="l00908" name="l00908"></a><span class="lineno">  908</span>    h[<span class="stringliteral">&quot;n_hits_y12&quot;</span>].GetXaxis().SetTitle(<span class="stringliteral">&quot;Momentum&quot;</span>)</div>
+<div class="line"><a id="l00909" name="l00909"></a><span class="lineno">  909</span>    h[<span class="stringliteral">&quot;n_hits_y12&quot;</span>].GetYaxis().SetTitle(<span class="stringliteral">&quot;N&quot;</span>)</div>
+<div class="line"><a id="l00910" name="l00910"></a><span class="lineno">  910</span> </div>
+<div class="line"><a id="l00911" name="l00911"></a><span class="lineno">  911</span>    ut.bookProf(h, <span class="stringliteral">&quot;n_hits_stereo12&quot;</span>, <span class="stringliteral">&quot;Number of recognized hits per track, Stereo view station 1&amp;2&quot;</span>, 30, 0, 150)</div>
+<div class="line"><a id="l00912" name="l00912"></a><span class="lineno">  912</span>    h[<span class="stringliteral">&quot;n_hits_stereo12&quot;</span>].GetXaxis().SetTitle(<span class="stringliteral">&quot;Momentum&quot;</span>)</div>
+<div class="line"><a id="l00913" name="l00913"></a><span class="lineno">  913</span>    h[<span class="stringliteral">&quot;n_hits_stereo12&quot;</span>].GetYaxis().SetTitle(<span class="stringliteral">&quot;N&quot;</span>)</div>
+<div class="line"><a id="l00914" name="l00914"></a><span class="lineno">  914</span> </div>
+<div class="line"><a id="l00915" name="l00915"></a><span class="lineno">  915</span>    ut.bookProf(h, <span class="stringliteral">&quot;n_hits_12&quot;</span>, <span class="stringliteral">&quot;Number of recognized hits per track, station 1&amp;2&quot;</span>, 30, 0, 150)</div>
+<div class="line"><a id="l00916" name="l00916"></a><span class="lineno">  916</span>    h[<span class="stringliteral">&quot;n_hits_12&quot;</span>].GetXaxis().SetTitle(<span class="stringliteral">&quot;Momentum&quot;</span>)</div>
+<div class="line"><a id="l00917" name="l00917"></a><span class="lineno">  917</span>    h[<span class="stringliteral">&quot;n_hits_12&quot;</span>].GetYaxis().SetTitle(<span class="stringliteral">&quot;N&quot;</span>)</div>
+<div class="line"><a id="l00918" name="l00918"></a><span class="lineno">  918</span> </div>
+<div class="line"><a id="l00919" name="l00919"></a><span class="lineno">  919</span>    ut.bookProf(h, <span class="stringliteral">&quot;n_hits_y34&quot;</span>, <span class="stringliteral">&quot;Number of recognized hits per track, Y view station 3&amp;4&quot;</span>, 30, 0, 150)</div>
+<div class="line"><a id="l00920" name="l00920"></a><span class="lineno">  920</span>    h[<span class="stringliteral">&quot;n_hits_y34&quot;</span>].GetXaxis().SetTitle(<span class="stringliteral">&quot;Momentum&quot;</span>)</div>
+<div class="line"><a id="l00921" name="l00921"></a><span class="lineno">  921</span>    h[<span class="stringliteral">&quot;n_hits_y34&quot;</span>].GetYaxis().SetTitle(<span class="stringliteral">&quot;N&quot;</span>)</div>
+<div class="line"><a id="l00922" name="l00922"></a><span class="lineno">  922</span> </div>
+<div class="line"><a id="l00923" name="l00923"></a><span class="lineno">  923</span>    ut.bookProf(h, <span class="stringliteral">&quot;n_hits_stereo34&quot;</span>, <span class="stringliteral">&quot;Number of recognized hits per track, Stereo view station 3&amp;4&quot;</span>, 30, 0, 150)</div>
+<div class="line"><a id="l00924" name="l00924"></a><span class="lineno">  924</span>    h[<span class="stringliteral">&quot;n_hits_stereo34&quot;</span>].GetXaxis().SetTitle(<span class="stringliteral">&quot;Momentum&quot;</span>)</div>
+<div class="line"><a id="l00925" name="l00925"></a><span class="lineno">  925</span>    h[<span class="stringliteral">&quot;n_hits_stereo34&quot;</span>].GetYaxis().SetTitle(<span class="stringliteral">&quot;N&quot;</span>)</div>
+<div class="line"><a id="l00926" name="l00926"></a><span class="lineno">  926</span> </div>
+<div class="line"><a id="l00927" name="l00927"></a><span class="lineno">  927</span>    ut.bookProf(h, <span class="stringliteral">&quot;n_hits_34&quot;</span>, <span class="stringliteral">&quot;Number of recognized hits per track, station 3&amp;4&quot;</span>, 30, 0, 150)</div>
+<div class="line"><a id="l00928" name="l00928"></a><span class="lineno">  928</span>    h[<span class="stringliteral">&quot;n_hits_34&quot;</span>].GetXaxis().SetTitle(<span class="stringliteral">&quot;Momentum&quot;</span>)</div>
+<div class="line"><a id="l00929" name="l00929"></a><span class="lineno">  929</span>    h[<span class="stringliteral">&quot;n_hits_34&quot;</span>].GetYaxis().SetTitle(<span class="stringliteral">&quot;N&quot;</span>)</div>
+<div class="line"><a id="l00930" name="l00930"></a><span class="lineno">  930</span> </div>
+<div class="line"><a id="l00931" name="l00931"></a><span class="lineno">  931</span>    ut.bookProf(h, <span class="stringliteral">&quot;perr&quot;</span>, <span class="stringliteral">&quot;(p - p-true)/p&quot;</span>, 30, 0, 150)</div>
+<div class="line"><a id="l00932" name="l00932"></a><span class="lineno">  932</span>    h[<span class="stringliteral">&quot;perr&quot;</span>].GetXaxis().SetTitle(<span class="stringliteral">&quot;Momentum&quot;</span>)</div>
+<div class="line"><a id="l00933" name="l00933"></a><span class="lineno">  933</span>    h[<span class="stringliteral">&quot;perr&quot;</span>].GetYaxis().SetTitle(<span class="stringliteral">&quot;(p - p-true)/p&quot;</span>)</div>
+<div class="line"><a id="l00934" name="l00934"></a><span class="lineno">  934</span> </div>
+<div class="line"><a id="l00935" name="l00935"></a><span class="lineno">  935</span>    ut.bookProf(h, <span class="stringliteral">&quot;perr_direction&quot;</span>, <span class="stringliteral">&quot;(p - p-true)/p from track direction in YZ plane&quot;</span>, 20, 0, 10.01)</div>
+<div class="line"><a id="l00936" name="l00936"></a><span class="lineno">  936</span>    h[<span class="stringliteral">&quot;perr_direction&quot;</span>].GetXaxis().SetTitle(<span class="stringliteral">&quot;Degree&quot;</span>)</div>
+<div class="line"><a id="l00937" name="l00937"></a><span class="lineno">  937</span>    h[<span class="stringliteral">&quot;perr_direction&quot;</span>].GetYaxis().SetTitle(<span class="stringliteral">&quot;(p - p-true)/p&quot;</span>)</div>
+<div class="line"><a id="l00938" name="l00938"></a><span class="lineno">  938</span> </div>
+<div class="line"><a id="l00939" name="l00939"></a><span class="lineno">  939</span>    ut.bookProf(h, <span class="stringliteral">&quot;frac_total&quot;</span>, <span class="stringliteral">&quot;Fraction of hits the same as MC hits, total&quot;</span>, 30, 0, 150)</div>
+<div class="line"><a id="l00940" name="l00940"></a><span class="lineno">  940</span>    h[<span class="stringliteral">&quot;frac_total&quot;</span>].GetXaxis().SetTitle(<span class="stringliteral">&quot;Momentum&quot;</span>)</div>
+<div class="line"><a id="l00941" name="l00941"></a><span class="lineno">  941</span>    h[<span class="stringliteral">&quot;frac_total&quot;</span>].GetYaxis().SetTitle(<span class="stringliteral">&quot;Fraction&quot;</span>)</div>
+<div class="line"><a id="l00942" name="l00942"></a><span class="lineno">  942</span> </div>
+<div class="line"><a id="l00943" name="l00943"></a><span class="lineno">  943</span>    ut.bookProf(h, <span class="stringliteral">&quot;frac_y12&quot;</span>, <span class="stringliteral">&quot;Fraction of hits the same as MC hits, Y view station 1&amp;2&quot;</span>, 30, 0, 150)</div>
+<div class="line"><a id="l00944" name="l00944"></a><span class="lineno">  944</span>    h[<span class="stringliteral">&quot;frac_y12&quot;</span>].GetXaxis().SetTitle(<span class="stringliteral">&quot;Momentum&quot;</span>)</div>
+<div class="line"><a id="l00945" name="l00945"></a><span class="lineno">  945</span>    h[<span class="stringliteral">&quot;frac_y12&quot;</span>].GetYaxis().SetTitle(<span class="stringliteral">&quot;Fraction&quot;</span>)</div>
+<div class="line"><a id="l00946" name="l00946"></a><span class="lineno">  946</span> </div>
+<div class="line"><a id="l00947" name="l00947"></a><span class="lineno">  947</span>    ut.bookProf(h, <span class="stringliteral">&quot;frac_stereo12&quot;</span>, <span class="stringliteral">&quot;Fraction of hits the same as MC hits, Stereo view station 1&amp;2&quot;</span>, 30, 0, 150)</div>
+<div class="line"><a id="l00948" name="l00948"></a><span class="lineno">  948</span>    h[<span class="stringliteral">&quot;frac_stereo12&quot;</span>].GetXaxis().SetTitle(<span class="stringliteral">&quot;Momentum&quot;</span>)</div>
+<div class="line"><a id="l00949" name="l00949"></a><span class="lineno">  949</span>    h[<span class="stringliteral">&quot;frac_stereo12&quot;</span>].GetYaxis().SetTitle(<span class="stringliteral">&quot;Fraction&quot;</span>)</div>
+<div class="line"><a id="l00950" name="l00950"></a><span class="lineno">  950</span> </div>
+<div class="line"><a id="l00951" name="l00951"></a><span class="lineno">  951</span>    ut.bookProf(h, <span class="stringliteral">&quot;frac_12&quot;</span>, <span class="stringliteral">&quot;Fraction of hits the same as MC hits, station 1&amp;2&quot;</span>, 30, 0, 150)</div>
+<div class="line"><a id="l00952" name="l00952"></a><span class="lineno">  952</span>    h[<span class="stringliteral">&quot;frac_12&quot;</span>].GetXaxis().SetTitle(<span class="stringliteral">&quot;Momentum&quot;</span>)</div>
+<div class="line"><a id="l00953" name="l00953"></a><span class="lineno">  953</span>    h[<span class="stringliteral">&quot;frac_12&quot;</span>].GetYaxis().SetTitle(<span class="stringliteral">&quot;Fraction&quot;</span>)</div>
+<div class="line"><a id="l00954" name="l00954"></a><span class="lineno">  954</span> </div>
+<div class="line"><a id="l00955" name="l00955"></a><span class="lineno">  955</span>    ut.bookProf(h, <span class="stringliteral">&quot;frac_y34&quot;</span>, <span class="stringliteral">&quot;Fraction of hits the same as MC hits, Y view station 3&amp;4&quot;</span>, 30, 0, 150)</div>
+<div class="line"><a id="l00956" name="l00956"></a><span class="lineno">  956</span>    h[<span class="stringliteral">&quot;frac_y34&quot;</span>].GetXaxis().SetTitle(<span class="stringliteral">&quot;Momentum&quot;</span>)</div>
+<div class="line"><a id="l00957" name="l00957"></a><span class="lineno">  957</span>    h[<span class="stringliteral">&quot;frac_y34&quot;</span>].GetYaxis().SetTitle(<span class="stringliteral">&quot;Fraction&quot;</span>)</div>
+<div class="line"><a id="l00958" name="l00958"></a><span class="lineno">  958</span> </div>
+<div class="line"><a id="l00959" name="l00959"></a><span class="lineno">  959</span>    ut.bookProf(h, <span class="stringliteral">&quot;frac_stereo34&quot;</span>, <span class="stringliteral">&quot;Fraction of hits the same as MC hits, Stereo view station 3&amp;4&quot;</span>, 30, 0, 150)</div>
+<div class="line"><a id="l00960" name="l00960"></a><span class="lineno">  960</span>    h[<span class="stringliteral">&quot;frac_stereo34&quot;</span>].GetXaxis().SetTitle(<span class="stringliteral">&quot;Momentum&quot;</span>)</div>
+<div class="line"><a id="l00961" name="l00961"></a><span class="lineno">  961</span>    h[<span class="stringliteral">&quot;frac_stereo34&quot;</span>].GetYaxis().SetTitle(<span class="stringliteral">&quot;Fraction&quot;</span>)</div>
+<div class="line"><a id="l00962" name="l00962"></a><span class="lineno">  962</span> </div>
+<div class="line"><a id="l00963" name="l00963"></a><span class="lineno">  963</span>    ut.bookProf(h, <span class="stringliteral">&quot;frac_34&quot;</span>, <span class="stringliteral">&quot;Fraction of hits the same as MC hits, station 3&amp;4&quot;</span>, 30, 0, 150)</div>
+<div class="line"><a id="l00964" name="l00964"></a><span class="lineno">  964</span>    h[<span class="stringliteral">&quot;frac_34&quot;</span>].GetXaxis().SetTitle(<span class="stringliteral">&quot;Momentum&quot;</span>)</div>
+<div class="line"><a id="l00965" name="l00965"></a><span class="lineno">  965</span>    h[<span class="stringliteral">&quot;frac_34&quot;</span>].GetYaxis().SetTitle(<span class="stringliteral">&quot;Fraction&quot;</span>)</div>
+<div class="line"><a id="l00966" name="l00966"></a><span class="lineno">  966</span> </div>
+<div class="line"><a id="l00967" name="l00967"></a><span class="lineno">  967</span>    ut.bookHist(h, <span class="stringliteral">&quot;frac_y12_dist&quot;</span>, <span class="stringliteral">&quot;Fraction of hits the same as MC hits, Y view station 1&amp;2&quot;</span>, 50, 0.5, 1.001)</div>
+<div class="line"><a id="l00968" name="l00968"></a><span class="lineno">  968</span>    ut.bookHist(</div>
+<div class="line"><a id="l00969" name="l00969"></a><span class="lineno">  969</span>        h, <span class="stringliteral">&quot;frac_stereo12_dist&quot;</span>, <span class="stringliteral">&quot;Fraction of hits the same as MC hits, Stereo view station 1&amp;2&quot;</span>, 50, 0.5, 1.001</div>
+<div class="line"><a id="l00970" name="l00970"></a><span class="lineno">  970</span>    )</div>
+<div class="line"><a id="l00971" name="l00971"></a><span class="lineno">  971</span>    ut.bookHist(h, <span class="stringliteral">&quot;frac_12_dist&quot;</span>, <span class="stringliteral">&quot;Fraction of hits the same as MC hits, station 1&amp;2&quot;</span>, 50, 0.5, 1.001)</div>
+<div class="line"><a id="l00972" name="l00972"></a><span class="lineno">  972</span>    ut.bookHist(h, <span class="stringliteral">&quot;frac_y34_dist&quot;</span>, <span class="stringliteral">&quot;Fraction of hits the same as MC hits, Y view station 3&amp;4&quot;</span>, 50, 0.5, 1.001)</div>
+<div class="line"><a id="l00973" name="l00973"></a><span class="lineno">  973</span>    ut.bookHist(</div>
+<div class="line"><a id="l00974" name="l00974"></a><span class="lineno">  974</span>        h, <span class="stringliteral">&quot;frac_stereo34_dist&quot;</span>, <span class="stringliteral">&quot;Fraction of hits the same as MC hits, Stereo view station 3&amp;4&quot;</span>, 50, 0.5, 1.001</div>
+<div class="line"><a id="l00975" name="l00975"></a><span class="lineno">  975</span>    )</div>
+<div class="line"><a id="l00976" name="l00976"></a><span class="lineno">  976</span>    ut.bookHist(h, <span class="stringliteral">&quot;frac_34_dist&quot;</span>, <span class="stringliteral">&quot;Fraction of hits the same as MC hits, station 3&amp;4&quot;</span>, 50, 0.5, 1.001)</div>
+<div class="line"><a id="l00977" name="l00977"></a><span class="lineno">  977</span>    ut.bookHist(h, <span class="stringliteral">&quot;frac_total_dist&quot;</span>, <span class="stringliteral">&quot;Fraction of hits the same as MC hits, total&quot;</span>, 50, 0.5, 1.001)</div>
+<div class="line"><a id="l00978" name="l00978"></a><span class="lineno">  978</span> </div>
+<div class="line"><a id="l00979" name="l00979"></a><span class="lineno">  979</span>    ut.bookHist(</div>
+<div class="line"><a id="l00980" name="l00980"></a><span class="lineno">  980</span>        h, <span class="stringliteral">&quot;Reco_tracks&quot;</span>, <span class="stringliteral">&quot;Number of recognized tracks, clones and ghosts for reconstructible tracks.&quot;</span>, 5, -0.5, 4.5</div>
+<div class="line"><a id="l00981" name="l00981"></a><span class="lineno">  981</span>    )</div>
+<div class="line"><a id="l00982" name="l00982"></a><span class="lineno">  982</span>    h[<span class="stringliteral">&quot;Reco_tracks&quot;</span>].GetXaxis().SetBinLabel(1, <span class="stringliteral">&quot;N total&quot;</span>)</div>
+<div class="line"><a id="l00983" name="l00983"></a><span class="lineno">  983</span>    h[<span class="stringliteral">&quot;Reco_tracks&quot;</span>].GetXaxis().SetBinLabel(2, <span class="stringliteral">&quot;N recognized tracks&quot;</span>)</div>
+<div class="line"><a id="l00984" name="l00984"></a><span class="lineno">  984</span>    h[<span class="stringliteral">&quot;Reco_tracks&quot;</span>].GetXaxis().SetBinLabel(3, <span class="stringliteral">&quot;N clones&quot;</span>)</div>
+<div class="line"><a id="l00985" name="l00985"></a><span class="lineno">  985</span>    h[<span class="stringliteral">&quot;Reco_tracks&quot;</span>].GetXaxis().SetBinLabel(4, <span class="stringliteral">&quot;N ghosts&quot;</span>)</div>
+<div class="line"><a id="l00986" name="l00986"></a><span class="lineno">  986</span>    h[<span class="stringliteral">&quot;Reco_tracks&quot;</span>].GetXaxis().SetBinLabel(5, <span class="stringliteral">&quot;N others&quot;</span>)</div>
+<div class="line"><a id="l00987" name="l00987"></a><span class="lineno">  987</span> </div>
+<div class="line"><a id="l00988" name="l00988"></a><span class="lineno">  988</span>    <span class="comment"># Fitted values</span></div>
+<div class="line"><a id="l00989" name="l00989"></a><span class="lineno">  989</span>    ut.bookHist(h, <span class="stringliteral">&quot;chi2fittedtracks&quot;</span>, <span class="stringliteral">&quot;Chi^2 per NDOF for fitted tracks&quot;</span>, 210, -0.05, 20.05)</div>
+<div class="line"><a id="l00990" name="l00990"></a><span class="lineno">  990</span>    ut.bookHist(h, <span class="stringliteral">&quot;pvalfittedtracks&quot;</span>, <span class="stringliteral">&quot;pval for fitted tracks&quot;</span>, 110, -0.05, 1.05)</div>
+<div class="line"><a id="l00991" name="l00991"></a><span class="lineno">  991</span>    ut.bookHist(h, <span class="stringliteral">&quot;momentumfittedtracks&quot;</span>, <span class="stringliteral">&quot;momentum for fitted tracks&quot;</span>, 251, -0.05, 250.05)</div>
+<div class="line"><a id="l00992" name="l00992"></a><span class="lineno">  992</span>    ut.bookHist(h, <span class="stringliteral">&quot;xdirectionfittedtracks&quot;</span>, <span class="stringliteral">&quot;x-direction for fitted tracks&quot;</span>, 91, -0.5, 90.5)</div>
+<div class="line"><a id="l00993" name="l00993"></a><span class="lineno">  993</span>    ut.bookHist(h, <span class="stringliteral">&quot;ydirectionfittedtracks&quot;</span>, <span class="stringliteral">&quot;y-direction for fitted tracks&quot;</span>, 91, -0.5, 90.5)</div>
+<div class="line"><a id="l00994" name="l00994"></a><span class="lineno">  994</span>    ut.bookHist(h, <span class="stringliteral">&quot;zdirectionfittedtracks&quot;</span>, <span class="stringliteral">&quot;z-direction for fitted tracks&quot;</span>, 91, -0.5, 90.5)</div>
+<div class="line"><a id="l00995" name="l00995"></a><span class="lineno">  995</span>    ut.bookHist(h, <span class="stringliteral">&quot;massfittedtracks&quot;</span>, <span class="stringliteral">&quot;mass fitted tracks&quot;</span>, 210, -0.005, 0.205)</div>
+<div class="line"><a id="l00996" name="l00996"></a><span class="lineno">  996</span>    ut.bookHist(h, <span class="stringliteral">&quot;pvspfitted&quot;</span>, <span class="stringliteral">&quot;p-patrec vs p-fitted&quot;</span>, 401, -200.5, 200.5, 401, -200.5, 200.5)</div>
+<div class="line"><a id="l00997" name="l00997"></a><span class="lineno">  997</span> </div>
+<div class="line"><a id="l00998" name="l00998"></a><span class="lineno">  998</span>    ut.bookHist(h, <span class="stringliteral">&quot;abs(x - x-true)&quot;</span>, <span class="stringliteral">&quot;Hits abs(x - x-true)&quot;</span>, 260, -0.05, 5.05)</div>
+<div class="line"><a id="l00999" name="l00999"></a><span class="lineno">  999</span>    ut.bookHist(h, <span class="stringliteral">&quot;abs(y - y-true)&quot;</span>, <span class="stringliteral">&quot;Hits abs(y - y-true)&quot;</span>, 260, -0.05, 5.05)</div>
+<div class="line"><a id="l01000" name="l01000"></a><span class="lineno"> 1000</span> </div>
+<div class="line"><a id="l01001" name="l01001"></a><span class="lineno"> 1001</span>    ut.bookHist(h, <span class="stringliteral">&quot;rmse_x&quot;</span>, <span class="stringliteral">&quot;Hits x fit rmse&quot;</span>, 260, -0.05, 5.05)</div>
+<div class="line"><a id="l01002" name="l01002"></a><span class="lineno"> 1002</span>    ut.bookHist(h, <span class="stringliteral">&quot;rmse_y&quot;</span>, <span class="stringliteral">&quot;Hits y fit rmse&quot;</span>, 260, -0.05, 5.05)</div>
+<div class="line"><a id="l01003" name="l01003"></a><span class="lineno"> 1003</span> </div>
+<div class="line"><a id="l01004" name="l01004"></a><span class="lineno"> 1004</span>    <span class="keywordflow">return</span> h</div>
+<div class="line"><a id="l01005" name="l01005"></a><span class="lineno"> 1005</span> </div>
 <div class="line"><a id="l01006" name="l01006"></a><span class="lineno"> 1006</span> </div>
-<div class="line"><a id="l01007" name="l01007"></a><span class="lineno"> 1007</span> </div>
 </div>
-<div class="line"><a id="l01008" name="l01008"></a><span class="lineno"> 1008</span> </div>
+<div class="line"><a id="l01007" name="l01007"></a><span class="lineno"> 1007</span> </div>
+<div class="line"><a id="l01009" name="l01009"></a><span class="lineno"> 1009</span> </div>
 <div class="line"><a id="l01010" name="l01010"></a><span class="lineno"> 1010</span> </div>
-<div class="line"><a id="l01011" name="l01011"></a><span class="lineno"> 1011</span> </div>
-<div class="line"><a id="l01012" name="l01012"></a><span class="lineno"> 1012</span><span class="keywordflow">if</span> __name__ == <span class="stringliteral">&quot;__main__&quot;</span>:</div>
-<div class="line"><a id="l01013" name="l01013"></a><span class="lineno"><a class="line" href="namespaceshipStrawTracking.html#a6f1c8ab4a8627d83bd87a950231721c6"> 1013</a></span>    parser = ArgumentParser(description=__doc__)</div>
-<div class="line"><a id="l01014" name="l01014"></a><span class="lineno"><a class="line" href="namespaceshipStrawTracking.html#abc9eca6c9f512fcddfc991f29bac4b87"> 1014</a></span>    parser.add_argument(<span class="stringliteral">&quot;-f&quot;</span>, <span class="stringliteral">&quot;--input&quot;</span>, help=<span class="stringliteral">&quot;Input file&quot;</span>, required=<span class="keyword">True</span>)</div>
-<div class="line"><a id="l01015" name="l01015"></a><span class="lineno"> 1015</span>    parser.add_argument(<span class="stringliteral">&quot;-g&quot;</span>, <span class="stringliteral">&quot;--geo&quot;</span>, help=<span class="stringliteral">&quot;Geometry file&quot;</span>, required=<span class="keyword">True</span>)</div>
-<div class="line"><a id="l01016" name="l01016"></a><span class="lineno"><a class="line" href="namespaceshipStrawTracking.html#a11c0a12bc12c6f289a0eb2ccb0c01a53"> 1016</a></span>    parser.add_argument(<span class="stringliteral">&quot;-o&quot;</span>, <span class="stringliteral">&quot;--output&quot;</span>, help=<span class="stringliteral">&quot;Output file&quot;</span>, default=<span class="stringliteral">&quot;hists.root&quot;</span>)</div>
-<div class="line"><a id="l01017" name="l01017"></a><span class="lineno"> 1017</span>    parser.add_argument(</div>
-<div class="line"><a id="l01018" name="l01018"></a><span class="lineno"> 1018</span>        <span class="stringliteral">&quot;-m&quot;</span>,</div>
-<div class="line"><a id="l01019" name="l01019"></a><span class="lineno"> 1019</span>        <span class="stringliteral">&quot;--method&quot;</span>,</div>
-<div class="line"><a id="l01020" name="l01020"></a><span class="lineno"> 1020</span>        help=<span class="stringliteral">&quot;Track pattern recognition method&quot;</span>,</div>
-<div class="line"><a id="l01021" name="l01021"></a><span class="lineno"><a class="line" href="namespaceshipStrawTracking.html#a348735a590af3f354f03a440fd23573b"> 1021</a></span>        choices=[<span class="stringliteral">&quot;Baseline&quot;</span>, <span class="stringliteral">&quot;FH&quot;</span>, <span class="stringliteral">&quot;AR&quot;</span>, <span class="stringliteral">&quot;R&quot;</span>],</div>
-<div class="line"><a id="l01022" name="l01022"></a><span class="lineno"> 1022</span>        default=<span class="stringliteral">&quot;Baseline&quot;</span>,</div>
-<div class="line"><a id="l01023" name="l01023"></a><span class="lineno"> 1023</span>    )</div>
-<div class="line"><a id="l01024" name="l01024"></a><span class="lineno"><a class="line" href="namespaceshipStrawTracking.html#a227a906d2ad0b9acf995e73827e33015"> 1024</a></span>    options = parser.parse_args()</div>
-<div class="line"><a id="l01025" name="l01025"></a><span class="lineno"> 1025</span> </div>
-<div class="line"><a id="l01026" name="l01026"></a><span class="lineno"><a class="line" href="namespaceshipStrawTracking.html#a5999ce65eda12da41dc6c1d663202168"> 1026</a></span>    metrics = <a class="code hl_function" href="namespaceshipStrawTracking.html#acd4b4f7a68c7fad0e0799cf537be7ce0">run_track_pattern_recognition</a>(options.input, options.geo, options.output, options.method)</div>
+<div class="line"><a id="l01011" name="l01011"></a><span class="lineno"> 1011</span><span class="keywordflow">if</span> __name__ == <span class="stringliteral">&quot;__main__&quot;</span>:</div>
+<div class="line"><a id="l01012" name="l01012"></a><span class="lineno"><a class="line" href="namespaceshipStrawTracking.html#a6f1c8ab4a8627d83bd87a950231721c6"> 1012</a></span>    parser = ArgumentParser(description=__doc__)</div>
+<div class="line"><a id="l01013" name="l01013"></a><span class="lineno"><a class="line" href="namespaceshipStrawTracking.html#abc9eca6c9f512fcddfc991f29bac4b87"> 1013</a></span>    parser.add_argument(<span class="stringliteral">&quot;-f&quot;</span>, <span class="stringliteral">&quot;--input&quot;</span>, help=<span class="stringliteral">&quot;Input file&quot;</span>, required=<span class="keyword">True</span>)</div>
+<div class="line"><a id="l01014" name="l01014"></a><span class="lineno"> 1014</span>    parser.add_argument(<span class="stringliteral">&quot;-g&quot;</span>, <span class="stringliteral">&quot;--geo&quot;</span>, help=<span class="stringliteral">&quot;Geometry file&quot;</span>, required=<span class="keyword">True</span>)</div>
+<div class="line"><a id="l01015" name="l01015"></a><span class="lineno"><a class="line" href="namespaceshipStrawTracking.html#a11c0a12bc12c6f289a0eb2ccb0c01a53"> 1015</a></span>    parser.add_argument(<span class="stringliteral">&quot;-o&quot;</span>, <span class="stringliteral">&quot;--output&quot;</span>, help=<span class="stringliteral">&quot;Output file&quot;</span>, default=<span class="stringliteral">&quot;hists.root&quot;</span>)</div>
+<div class="line"><a id="l01016" name="l01016"></a><span class="lineno"> 1016</span>    parser.add_argument(</div>
+<div class="line"><a id="l01017" name="l01017"></a><span class="lineno"> 1017</span>        <span class="stringliteral">&quot;-m&quot;</span>,</div>
+<div class="line"><a id="l01018" name="l01018"></a><span class="lineno"> 1018</span>        <span class="stringliteral">&quot;--method&quot;</span>,</div>
+<div class="line"><a id="l01019" name="l01019"></a><span class="lineno"> 1019</span>        help=<span class="stringliteral">&quot;Track pattern recognition method&quot;</span>,</div>
+<div class="line"><a id="l01020" name="l01020"></a><span class="lineno"><a class="line" href="namespaceshipStrawTracking.html#a348735a590af3f354f03a440fd23573b"> 1020</a></span>        choices=[<span class="stringliteral">&quot;Baseline&quot;</span>, <span class="stringliteral">&quot;FH&quot;</span>, <span class="stringliteral">&quot;AR&quot;</span>, <span class="stringliteral">&quot;R&quot;</span>],</div>
+<div class="line"><a id="l01021" name="l01021"></a><span class="lineno"> 1021</span>        default=<span class="stringliteral">&quot;Baseline&quot;</span>,</div>
+<div class="line"><a id="l01022" name="l01022"></a><span class="lineno"> 1022</span>    )</div>
+<div class="line"><a id="l01023" name="l01023"></a><span class="lineno"><a class="line" href="namespaceshipStrawTracking.html#a227a906d2ad0b9acf995e73827e33015"> 1023</a></span>    options = parser.parse_args()</div>
+<div class="line"><a id="l01024" name="l01024"></a><span class="lineno"> 1024</span> </div>
+<div class="line"><a id="l01025" name="l01025"></a><span class="lineno"><a class="line" href="namespaceshipStrawTracking.html#a5999ce65eda12da41dc6c1d663202168"> 1025</a></span>    metrics = <a class="code hl_function" href="namespaceshipStrawTracking.html#acd4b4f7a68c7fad0e0799cf537be7ce0">run_track_pattern_recognition</a>(options.input, options.geo, options.output, options.method)</div>
 <div class="ttc" id="anamespacegeomGeant4_html_a92c04a276d287a72320c3f0ed4f5a420"><div class="ttname"><a href="namespacegeomGeant4.html#a92c04a276d287a72320c3f0ed4f5a420">geomGeant4.addVMCFields</a></div><div class="ttdeci">addVMCFields(shipGeo, str controlFile=&quot;&quot;, bool verbose=False, bool withVirtualMC=True)</div><div class="ttdef"><b>Definition</b> <a href="geomGeant4_8py_source.html#l00166">geomGeant4.py:166</a></div></div>
 <div class="ttc" id="anamespacegeometry__config_html_afb514e222a0f704f678c3b3f465ee7e7"><div class="ttname"><a href="namespacegeometry__config.html#afb514e222a0f704f678c3b3f465ee7e7">geometry_config.create_config</a></div><div class="ttdeci">create_config(str DecayVolumeMedium=&quot;helium&quot;, float Yheight=6.0, int strawDesign=10, muShieldGeo=None, str shieldName=&quot;TRY_2025&quot;, int nuTargetPassive=1, bool SND=True, SND_design=None, TARGET_YAML=None)</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00145">geometry_config.py:155</a></div></div>
 <div class="ttc" id="anamespaceshipDet__conf_html_a7f232397871353ce80c1ea03eb15bd20"><div class="ttname"><a href="namespaceshipDet__conf.html#a7f232397871353ce80c1ea03eb15bd20">shipDet_conf.configure</a></div><div class="ttdeci">configure(run, ship_geo)</div><div class="ttdef"><b>Definition</b> <a href="shipDet__conf_8py_source.html#l00268">shipDet_conf.py:268</a></div></div>
 <div class="ttc" id="anamespaceshipStrawTracking_html_a005e72c92291692e5a0b39ae98d0ab13"><div class="ttname"><a href="namespaceshipStrawTracking.html#a005e72c92291692e5a0b39ae98d0ab13">shipStrawTracking.fracMCsame</a></div><div class="ttdeci">fracMCsame(trackids)</div><div class="ttdef"><b>Definition</b> <a href="shipStrawTracking_8py_source.html#l00576">shipStrawTracking.py:576</a></div></div>
-<div class="ttc" id="anamespaceshipStrawTracking_html_a2e6f923fb8027c031209c42d2a9c8551"><div class="ttname"><a href="namespaceshipStrawTracking.html#a2e6f923fb8027c031209c42d2a9c8551">shipStrawTracking.save_hists</a></div><div class="ttdeci">None save_hists(h, path)</div><div class="ttdoc">Helping functions #####################################################.</div><div class="ttdef"><b>Definition</b> <a href="shipStrawTracking_8py_source.html#l00837">shipStrawTracking.py:837</a></div></div>
-<div class="ttc" id="anamespaceshipStrawTracking_html_a6f8170056fea500eadaec343a3b75173"><div class="ttname"><a href="namespaceshipStrawTracking.html#a6f8170056fea500eadaec343a3b75173">shipStrawTracking.init_book_hist</a></div><div class="ttdeci">init_book_hist()</div><div class="ttdef"><b>Definition</b> <a href="shipStrawTracking_8py_source.html#l00850">shipStrawTracking.py:850</a></div></div>
+<div class="ttc" id="anamespaceshipStrawTracking_html_a2e6f923fb8027c031209c42d2a9c8551"><div class="ttname"><a href="namespaceshipStrawTracking.html#a2e6f923fb8027c031209c42d2a9c8551">shipStrawTracking.save_hists</a></div><div class="ttdeci">None save_hists(h, path)</div><div class="ttdoc">Helping functions #####################################################.</div><div class="ttdef"><b>Definition</b> <a href="shipStrawTracking_8py_source.html#l00836">shipStrawTracking.py:836</a></div></div>
+<div class="ttc" id="anamespaceshipStrawTracking_html_a6f8170056fea500eadaec343a3b75173"><div class="ttname"><a href="namespaceshipStrawTracking.html#a6f8170056fea500eadaec343a3b75173">shipStrawTracking.init_book_hist</a></div><div class="ttdeci">init_book_hist()</div><div class="ttdef"><b>Definition</b> <a href="shipStrawTracking_8py_source.html#l00849">shipStrawTracking.py:849</a></div></div>
 <div class="ttc" id="anamespaceshipStrawTracking_html_a83f7bb574b00fdb506afca159273f046"><div class="ttname"><a href="namespaceshipStrawTracking.html#a83f7bb574b00fdb506afca159273f046">shipStrawTracking.getReconstructibleTracks</a></div><div class="ttdeci">getReconstructibleTracks(int iEvent, sTree, sGeo, ShipGeo)</div><div class="ttdef"><b>Definition</b> <a href="shipStrawTracking_8py_source.html#l00615">shipStrawTracking.py:615</a></div></div>
 <div class="ttc" id="anamespaceshipStrawTracking_html_ab4452cfc0291a3acdd577be659beae63"><div class="ttname"><a href="namespaceshipStrawTracking.html#ab4452cfc0291a3acdd577be659beae63">shipStrawTracking.get_n_hits</a></div><div class="ttdeci">int get_n_hits(hits)</div><div class="ttdef"><b>Definition</b> <a href="shipStrawTracking_8py_source.html#l00024">shipStrawTracking.py:24</a></div></div>
 <div class="ttc" id="anamespaceshipStrawTracking_html_acd4b4f7a68c7fad0e0799cf537be7ce0"><div class="ttname"><a href="namespaceshipStrawTracking.html#acd4b4f7a68c7fad0e0799cf537be7ce0">shipStrawTracking.run_track_pattern_recognition</a></div><div class="ttdeci">run_track_pattern_recognition(input_file, geo_file, output_file, method, dy=None)</div><div class="ttdef"><b>Definition</b> <a href="shipStrawTracking_8py_source.html#l00032">shipStrawTracking.py:32</a></div></div>
 <div class="ttc" id="anamespaceshipStrawTracking_html_adc66dfda583a285e93e3230b61844e05"><div class="ttname"><a href="namespaceshipStrawTracking.html#adc66dfda583a285e93e3230b61844e05">shipStrawTracking.extrapolateToPlane</a></div><div class="ttdeci">extrapolateToPlane(fT, z)</div><div class="ttdef"><b>Definition</b> <a href="shipStrawTracking_8py_source.html#l00537">shipStrawTracking.py:537</a></div></div>
 <div class="ttc" id="anamespaceshipStrawTracking_html_afa3352edb87c33e580243f775a6cc5ed"><div class="ttname"><a href="namespaceshipStrawTracking.html#afa3352edb87c33e580243f775a6cc5ed">shipStrawTracking.cmp</a></div><div class="ttdeci">cmp(a, int b)</div><div class="ttdef"><b>Definition</b> <a href="shipStrawTracking_8py_source.html#l00028">shipStrawTracking.py:28</a></div></div>
-<div class="ttc" id="anamespaceshipStrawTracking_html_afd5476d8c8880a51e22ca2334c0c30e3"><div class="ttname"><a href="namespaceshipStrawTracking.html#afd5476d8c8880a51e22ca2334c0c30e3">shipStrawTracking.getPtruthFirst</a></div><div class="ttdeci">getPtruthFirst(sTree, mcPartKey)</div><div class="ttdef"><b>Definition</b> <a href="shipStrawTracking_8py_source.html#l00814">shipStrawTracking.py:814</a></div></div>
+<div class="ttc" id="anamespaceshipStrawTracking_html_afd5476d8c8880a51e22ca2334c0c30e3"><div class="ttname"><a href="namespaceshipStrawTracking.html#afd5476d8c8880a51e22ca2334c0c30e3">shipStrawTracking.getPtruthFirst</a></div><div class="ttdeci">getPtruthFirst(sTree, mcPartKey)</div><div class="ttdef"><b>Definition</b> <a href="shipStrawTracking_8py_source.html#l00813">shipStrawTracking.py:813</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

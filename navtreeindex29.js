@@ -1,5 +1,13 @@
 var NAVTREEINDEX29 =
 {
+"shipDet__conf_8py.html#aa4ac8d6cef9fc6657dedbd2090cf8f13":[7,0,10,30,1],
+"shipDet__conf_8py_source.html":[7,0,10,30],
+"shipDigiReco_8py.html":[7,0,10,31],
+"shipDigiReco_8py.html#a0c278bbffd4fe9af5ba2582232f8ff77":[7,0,10,31,1],
+"shipDigiReco_8py_source.html":[7,0,10,31],
+"shipPatRec_8py.html":[7,0,10,33],
+"shipPatRec_8py.html#a14630232c258b560f832ed72fb3f9138":[7,0,10,33,24],
+"shipPatRec_8py.html#a34ca2cd92dbeecb478eb4b53152a3f46":[7,0,10,33,7],
 "shipPatRec_8py.html#a371e8899cacb15e2020e0b6c4a605198":[7,0,10,33,16],
 "shipPatRec_8py.html#a4d4091fbd8bc88c49ee621dd481e131f":[7,0,10,33,8],
 "shipPatRec_8py.html#a50f1d2cf92badc6046881b76c02c5c6d":[7,0,10,33,10],
@@ -241,13 +249,5 @@ var NAVTREEINDEX29 =
 "strawtubesHit_8h_source.html":[7,0,15,6],
 "strawtubesPoint_8cxx.html":[7,0,15,7],
 "strawtubesPoint_8cxx_source.html":[7,0,15,7],
-"strawtubesPoint_8h.html":[7,0,15,8],
-"strawtubesPoint_8h_source.html":[7,0,15,8],
-"strawtubes_2LinkDef_8h.html":[7,0,15,0],
-"strawtubes_2LinkDef_8h_source.html":[7,0,15,0],
-"strawtubes_8cxx.html":[7,0,15,1],
-"strawtubes_8cxx_source.html":[7,0,15,1],
-"strawtubes_8h.html":[7,0,15,2],
-"strawtubes_8h_source.html":[7,0,15,2],
-"structModelSpec.html":[6,0,34]
+"strawtubesPoint_8h.html":[7,0,15,8]
 };

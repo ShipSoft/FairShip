@@ -2,6 +2,7 @@ var classtracking__benchmark_1_1TrackingBenchmark =
 [
     [ "__init__", "classtracking__benchmark_1_1TrackingBenchmark.html#a49f74fb39d0c9862b4f4976e833f0d74", null ],
     [ "__del__", "classtracking__benchmark_1_1TrackingBenchmark.html#a16825769361e41860ae4a5b5b9fbc2e5", null ],
+    [ "_build_straw_index", "classtracking__benchmark_1_1TrackingBenchmark.html#ae81170b52b2bf090f687e853ca6f3457", null ],
     [ "_fracMCsame", "classtracking__benchmark_1_1TrackingBenchmark.html#a88b132ab11154e664d21f19522f1bb94", null ],
     [ "_get_ptruth_first", "classtracking__benchmark_1_1TrackingBenchmark.html#a8395b7239f3a4735ec49c51445243608", null ],
     [ "_get_truth_pos_first", "classtracking__benchmark_1_1TrackingBenchmark.html#a61a742d9a78e49e92bb3eaeb8469197a", null ],
@@ -12,6 +13,7 @@ var classtracking__benchmark_1_1TrackingBenchmark =
     [ "save_histograms", "classtracking__benchmark_1_1TrackingBenchmark.html#a4aeec4547316a67467cb120008e9073d", null ],
     [ "save_json", "classtracking__benchmark_1_1TrackingBenchmark.html#ad585047aabb1df8b470a85f680f20e71", null ],
     [ "_histos", "classtracking__benchmark_1_1TrackingBenchmark.html#a74bc2bbb9e1dc493febaeedd1ec0f9c5", null ],
+    [ "_straw_index", "classtracking__benchmark_1_1TrackingBenchmark.html#ab7977050cc5f6116594c9ce23ec2aa33", null ],
     [ "f_geo", "classtracking__benchmark_1_1TrackingBenchmark.html#a5421b14acc6ea3948fd0509474d36d5f", null ],
     [ "f_reco", "classtracking__benchmark_1_1TrackingBenchmark.html#a5edc5a84fb8cc5b24b7af50251ada342", null ],
     [ "f_sim", "classtracking__benchmark_1_1TrackingBenchmark.html#a2f082ca7238cc2e696ea8cbb10ccb65b", null ],

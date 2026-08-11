@@ -1082,198 +1082,202 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  370</span>  <span class="comment">// Calculate beam smearing and painting</span></div>
 <div class="line"><span class="lineno">  371</span>  <span class="keyword">auto</span> [dx, <a class="code hl_variable" href="namespacerun__fixedTarget.html#a3112a5faf6aba672ca6db63ae2691c5c">dy</a>] = <a class="code hl_function" href="BeamSmearingUtils_8cxx.html#adf7404615c66ba9771106a05a6c0abbc">CalculateBeamOffset</a>(<a class="code hl_variable" href="classFixedTargetGenerator.html#a1f932a57ac5562bdcb34123db2700ccb">fsmearBeam</a>, <a class="code hl_variable" href="classFixedTargetGenerator.html#a5e39b75988aa425ae783720f6a0df42f">fPaintBeam</a>);</div>
 <div class="line"><span class="lineno">  372</span> </div>
-<div class="line"><span class="lineno">  373</span>  Double_t zinter = 0;</div>
-<div class="line"><span class="lineno">  374</span>  Double_t ZoverA = 1.;</div>
-<div class="line"><span class="lineno">  375</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classFixedTargetGenerator.html#a0e8e528cc53ba28b6aa7560f471330ae">targetName</a>.IsNull()) {</div>
-<div class="line"><span class="lineno">  376</span>    <span class="comment">// calculate primary proton interaction point:</span></div>
-<div class="line"><span class="lineno">  377</span>    <span class="comment">// loop over trajectory between start and end to pick an interaction point,</span></div>
-<div class="line"><span class="lineno">  378</span>    <span class="comment">// copied from GenieGenerator and adapted to hadrons</span></div>
-<div class="line"><span class="lineno">  379</span>    Double_t prob2int = -1.;</div>
-<div class="line"><span class="lineno">  380</span>    Double_t rndm = 0.;</div>
-<div class="line"><span class="lineno">  381</span>    Double_t <a class="code hl_variable" href="namespacerunPythia8.html#aa6ccf15df5382fe526735a07d97d3cd4">sigma</a>;</div>
-<div class="line"><span class="lineno">  382</span>    Double_t zinterStart = <a class="code hl_variable" href="classFixedTargetGenerator.html#a8552803d031ff4799c32c0c330f75f46">start</a>[2];</div>
-<div class="line"><span class="lineno">  383</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classFixedTargetGenerator.html#ad27ea400e92d6ae34e3c8f5da1c239fb">Option</a> == <span class="stringliteral">&quot;charm&quot;</span> || <a class="code hl_variable" href="classFixedTargetGenerator.html#ad27ea400e92d6ae34e3c8f5da1c239fb">Option</a> == <span class="stringliteral">&quot;beauty&quot;</span>) {</div>
-<div class="line"><span class="lineno">  384</span>      <span class="comment">// simulate more downstream interaction points for interactions down in</span></div>
-<div class="line"><span class="lineno">  385</span>      <span class="comment">// the cascade</span></div>
-<div class="line"><span class="lineno">  386</span>      <span class="keywordflow">if</span> (!(<a class="code hl_variable" href="classFixedTargetGenerator.html#a4724b22b55854e36ae67fa2246f3cad1">nTree</a>-&gt;GetBranch(<span class="stringliteral">&quot;k&quot;</span>))) {</div>
-<div class="line"><span class="lineno">  387</span>        <a class="code hl_variable" href="classFixedTargetGenerator.html#a1c16e3ca5c6deb372c237a171b71b19c">ck</a> = 1;</div>
-<div class="line"><span class="lineno">  388</span>      }</div>
-<div class="line"><span class="lineno">  389</span>    } <span class="keywordflow">else</span> {</div>
-<div class="line"><span class="lineno">  390</span>      <a class="code hl_variable" href="classFixedTargetGenerator.html#a1c16e3ca5c6deb372c237a171b71b19c">ck</a> = 1;</div>
-<div class="line"><span class="lineno">  391</span>    }</div>
-<div class="line"><span class="lineno">  392</span>    <span class="keywordflow">while</span> (<a class="code hl_variable" href="classFixedTargetGenerator.html#a1c16e3ca5c6deb372c237a171b71b19c">ck</a> &gt; 0.5) {</div>
-<div class="line"><span class="lineno">  393</span>      <span class="keywordflow">while</span> (prob2int &lt; rndm) {</div>
-<div class="line"><span class="lineno">  394</span>        <span class="comment">// place x,y,z uniform along path</span></div>
-<div class="line"><span class="lineno">  395</span>        zinter = gRandom-&gt;Uniform(zinterStart, <a class="code hl_variable" href="classFixedTargetGenerator.html#a59ae4f1dfb442d58254275e5a83692ce">end</a>[2]);</div>
-<div class="line"><span class="lineno">  396</span>        Double_t point[3] = {<a class="code hl_variable" href="classFixedTargetGenerator.html#a29a0822f3d61012c5178500b3c6f9567">xOff</a>, <a class="code hl_variable" href="classFixedTargetGenerator.html#ac575dc0a0ee8177e0adf1062fabd956a">yOff</a>, zinter};</div>
-<div class="line"><span class="lineno">  397</span>        <a class="code hl_variable" href="classFixedTargetGenerator.html#a56e1bbca0149a15f64ea79646b813823">bparam</a> = <a class="code hl_function" href="namespaceshipgen.html#ac85d3b1e8d74de7b65eee39a98e92c1b">shipgen::MeanMaterialBudget</a>(<a class="code hl_variable" href="classFixedTargetGenerator.html#a8552803d031ff4799c32c0c330f75f46">start</a>, point, <a class="code hl_variable" href="classFixedTargetGenerator.html#a6cea4d6180ac40f839d81f66db73569a">mparam</a>);</div>
-<div class="line"><span class="lineno">  398</span>        Double_t interLength = <a class="code hl_variable" href="classFixedTargetGenerator.html#a6cea4d6180ac40f839d81f66db73569a">mparam</a>[8];</div>
-<div class="line"><span class="lineno">  399</span>        TGeoNode* node = gGeoManager-&gt;FindNode(point[0], point[1], point[2]);</div>
-<div class="line"><span class="lineno">  400</span>        TGeoMaterial* mat = <span class="keyword">nullptr</span>;</div>
-<div class="line"><span class="lineno">  401</span>        <span class="keywordflow">if</span> (node &amp;&amp; !gGeoManager-&gt;IsOutside()) {</div>
-<div class="line"><span class="lineno">  402</span>          mat = node-&gt;GetVolume()-&gt;GetMaterial();</div>
-<div class="line"><span class="lineno">  403</span>          Double_t <a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a> = mat-&gt;GetDensity() / mat-&gt;GetA();</div>
-<div class="line"><span class="lineno">  404</span>          ZoverA = mat-&gt;GetZ() / mat-&gt;GetA();</div>
-<div class="line"><span class="lineno">  405</span>          <a class="code hl_variable" href="namespacerunPythia8.html#aa6ccf15df5382fe526735a07d97d3cd4">sigma</a> = 1. / (<a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a> * mat-&gt;GetIntLen()) / <a class="code hl_variable" href="FixedTargetGenerator_8cxx.html#a357b34ec460558c0942628e20a171eef">mbarn</a>;</div>
-<div class="line"><span class="lineno">  406</span>          prob2int = TMath::Exp(-interLength) * <a class="code hl_variable" href="namespacerunPythia8.html#aa6ccf15df5382fe526735a07d97d3cd4">sigma</a> / <a class="code hl_variable" href="classFixedTargetGenerator.html#aa2dba48cbd74c877b9eb466be6f5a712">maxCrossSection</a>;</div>
-<div class="line"><span class="lineno">  407</span>        } <span class="keywordflow">else</span> {</div>
-<div class="line"><span class="lineno">  408</span>          prob2int = 0.;</div>
-<div class="line"><span class="lineno">  409</span>        }</div>
-<div class="line"><span class="lineno">  410</span>        rndm = gRandom-&gt;Uniform(0., 1.);</div>
-<div class="line"><span class="lineno">  411</span>      }</div>
-<div class="line"><span class="lineno">  412</span>      zinterStart = zinter;</div>
-<div class="line"><span class="lineno">  413</span>      <a class="code hl_variable" href="classFixedTargetGenerator.html#a1c16e3ca5c6deb372c237a171b71b19c">ck</a> -= 1;</div>
-<div class="line"><span class="lineno">  414</span>    }</div>
-<div class="line"><span class="lineno">  415</span>    zinter = zinter * <a class="code hl_variable" href="ShipBellField_8cxx.html#a9842927f33236414d34831f59ed1c28f">cm</a>;</div>
-<div class="line"><span class="lineno">  416</span>  }</div>
-<div class="line"><span class="lineno">  417</span>  Pythia8::Pythia* fPythia;</div>
-<div class="line"><span class="lineno">  418</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classFixedTargetGenerator.html#a577dfcc36a4f54e69ebec43be167359b">G4only</a>) {</div>
-<div class="line"><span class="lineno">  419</span>    <a class="code hl_function" href="classSHiP_1_1Generator.html#a225ef62e734c3b42f9ddc1ce9c44538a">IncrementCounter</a>(<span class="stringliteral">&quot;generated_events&quot;</span>);</div>
-<div class="line"><span class="lineno">  420</span>    <a class="code hl_function" href="classSHiP_1_1Generator.html#a225ef62e734c3b42f9ddc1ce9c44538a">IncrementCounter</a>(<span class="stringliteral">&quot;g4only_events&quot;</span>);</div>
-<div class="line"><span class="lineno">  421</span>    <a class="code hl_function" href="classSHiP_1_1Generator.html#a225ef62e734c3b42f9ddc1ce9c44538a">IncrementCounter</a>(<span class="stringliteral">&quot;stored_tracks&quot;</span>);</div>
-<div class="line"><span class="lineno">  422</span>    cpg-&gt;AddTrack(2212, 0., 0., <a class="code hl_variable" href="classFixedTargetGenerator.html#acc2a9e21ec646c4000f1ab0d2c184ed4">fMom</a>, (<a class="code hl_variable" href="classFixedTargetGenerator.html#a29a0822f3d61012c5178500b3c6f9567">xOff</a> + dx) / cm, (<a class="code hl_variable" href="classFixedTargetGenerator.html#ac575dc0a0ee8177e0adf1062fabd956a">yOff</a> + dy) / cm,</div>
-<div class="line"><span class="lineno">  423</span>                  <a class="code hl_variable" href="classFixedTargetGenerator.html#a8552803d031ff4799c32c0c330f75f46">start</a>[2], -1, kTRUE, -1., 0., 1.);</div>
-<div class="line"><span class="lineno">  424</span>    <span class="keywordflow">return</span> kTRUE;</div>
-<div class="line"><span class="lineno">  425</span>  } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code hl_variable" href="classFixedTargetGenerator.html#ad27ea400e92d6ae34e3c8f5da1c239fb">Option</a> == <span class="stringliteral">&quot;Primary&quot;</span>) {</div>
-<div class="line"><span class="lineno">  426</span>    <span class="keyword">constexpr</span> <span class="keywordtype">int</span> kMaxPythiaRetries = 100;</div>
-<div class="line"><span class="lineno">  427</span>    <span class="keywordflow">if</span> (gRandom-&gt;Uniform(0., 1.) &lt; ZoverA) {</div>
-<div class="line"><span class="lineno">  428</span>      <span class="keywordtype">int</span> retries = 0;</div>
-<div class="line"><span class="lineno">  429</span>      <span class="keywordflow">while</span> (!<a class="code hl_variable" href="classFixedTargetGenerator.html#ac285ccdf5ec4eefd671b44a5eb6e20eb">fPythiaP</a>-&gt;next()) {</div>
-<div class="line"><span class="lineno">  430</span>        <span class="keywordflow">if</span> (++retries &gt;= kMaxPythiaRetries) {</div>
-<div class="line"><span class="lineno">  431</span>          LOG(error) &lt;&lt; <span class="stringliteral">&quot;PythiaP failed to generate an event after &quot;</span></div>
-<div class="line"><span class="lineno">  432</span>                     &lt;&lt; kMaxPythiaRetries &lt;&lt; <span class="stringliteral">&quot; retries&quot;</span>;</div>
-<div class="line"><span class="lineno">  433</span>          <span class="keywordflow">return</span> kFALSE;</div>
-<div class="line"><span class="lineno">  434</span>        }</div>
-<div class="line"><span class="lineno">  435</span>        LOG(warning) &lt;&lt; <span class="stringliteral">&quot;PythiaP failed to generate event, retry &quot;</span> &lt;&lt; retries;</div>
-<div class="line"><span class="lineno">  436</span>      }</div>
-<div class="line"><span class="lineno">  437</span>      <span class="keywordflow">if</span> (<a class="code hl_variable" href="classFixedTargetGenerator.html#ac8d1a7cc5304e3c24de79f4c79bc4eeb">withEvtGen</a>) {</div>
-<div class="line"><span class="lineno">  438</span>        <a class="code hl_variable" href="classFixedTargetGenerator.html#aeec5ade00ef00598d968b593a9c5dec5">evtgenP</a>-&gt;decay();</div>
-<div class="line"><span class="lineno">  439</span>      }</div>
-<div class="line"><span class="lineno">  440</span>      fPythia = <a class="code hl_variable" href="classFixedTargetGenerator.html#ac285ccdf5ec4eefd671b44a5eb6e20eb">fPythiaP</a>;</div>
-<div class="line"><span class="lineno">  441</span>    } <span class="keywordflow">else</span> {</div>
-<div class="line"><span class="lineno">  442</span>      <span class="keywordtype">int</span> retries = 0;</div>
-<div class="line"><span class="lineno">  443</span>      <span class="keywordflow">while</span> (!<a class="code hl_variable" href="classFixedTargetGenerator.html#ae542dc215e3f951183fb5f8792f76e88">fPythiaN</a>-&gt;next()) {</div>
-<div class="line"><span class="lineno">  444</span>        <span class="keywordflow">if</span> (++retries &gt;= kMaxPythiaRetries) {</div>
-<div class="line"><span class="lineno">  445</span>          LOG(error) &lt;&lt; <span class="stringliteral">&quot;PythiaN failed to generate an event after &quot;</span></div>
-<div class="line"><span class="lineno">  446</span>                     &lt;&lt; kMaxPythiaRetries &lt;&lt; <span class="stringliteral">&quot; retries&quot;</span>;</div>
-<div class="line"><span class="lineno">  447</span>          <span class="keywordflow">return</span> kFALSE;</div>
-<div class="line"><span class="lineno">  448</span>        }</div>
-<div class="line"><span class="lineno">  449</span>        LOG(warning) &lt;&lt; <span class="stringliteral">&quot;PythiaN failed to generate event, retry &quot;</span> &lt;&lt; retries;</div>
-<div class="line"><span class="lineno">  450</span>      }</div>
-<div class="line"><span class="lineno">  451</span>      <span class="keywordflow">if</span> (<a class="code hl_variable" href="classFixedTargetGenerator.html#ac8d1a7cc5304e3c24de79f4c79bc4eeb">withEvtGen</a>) {</div>
-<div class="line"><span class="lineno">  452</span>        <a class="code hl_variable" href="classFixedTargetGenerator.html#ac91569df5a1c7106332667b2cc03c943">evtgenN</a>-&gt;decay();</div>
-<div class="line"><span class="lineno">  453</span>      }</div>
-<div class="line"><span class="lineno">  454</span>      fPythia = <a class="code hl_variable" href="classFixedTargetGenerator.html#ae542dc215e3f951183fb5f8792f76e88">fPythiaN</a>;</div>
-<div class="line"><span class="lineno">  455</span>    }</div>
-<div class="line"><span class="lineno">  456</span>  } <span class="keywordflow">else</span> {</div>
-<div class="line"><span class="lineno">  457</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classFixedTargetGenerator.html#aece8920a879cad3bfc82da462b1fb39e">nEntry</a> == <a class="code hl_variable" href="classFixedTargetGenerator.html#a35f465dd532d80c7f18e43b6c32a59ab">nEvents</a>) {</div>
-<div class="line"><span class="lineno">  458</span>      LOG(info) &lt;&lt; <span class="stringliteral">&quot;Rewind input file: &quot;</span> &lt;&lt; <a class="code hl_variable" href="classFixedTargetGenerator.html#aece8920a879cad3bfc82da462b1fb39e">nEntry</a>;</div>
-<div class="line"><span class="lineno">  459</span>      <a class="code hl_variable" href="classFixedTargetGenerator.html#aece8920a879cad3bfc82da462b1fb39e">nEntry</a> = 0;</div>
-<div class="line"><span class="lineno">  460</span>    }</div>
-<div class="line"><span class="lineno">  461</span>    <a class="code hl_variable" href="classFixedTargetGenerator.html#a4724b22b55854e36ae67fa2246f3cad1">nTree</a>-&gt;GetEvent(<a class="code hl_variable" href="classFixedTargetGenerator.html#aece8920a879cad3bfc82da462b1fb39e">nEntry</a>);</div>
-<div class="line"><span class="lineno">  462</span>    <a class="code hl_variable" href="classFixedTargetGenerator.html#aece8920a879cad3bfc82da462b1fb39e">nEntry</a> += 1;</div>
-<div class="line"><span class="lineno">  463</span>    <a class="code hl_function" href="classSHiP_1_1Generator.html#a225ef62e734c3b42f9ddc1ce9c44538a">IncrementCounter</a>(<span class="stringliteral">&quot;charm_input_pairs&quot;</span>);</div>
-<div class="line"><span class="lineno">  464</span>    <span class="comment">// sanity check, count number of p.o.t. on input file.</span></div>
-<div class="line"><span class="lineno">  465</span>    Double_t <a class="code hl_variable" href="namespacemakeDecay.html#afdee173103d608b5c98240c05154f34d">pt</a> = TMath::Sqrt((<a class="code hl_variable" href="classFixedTargetGenerator.html#abf73624df3a1ec6ecbdf98079a66c205">n_mpx</a> * <a class="code hl_variable" href="classFixedTargetGenerator.html#abf73624df3a1ec6ecbdf98079a66c205">n_mpx</a>) + (<a class="code hl_variable" href="classFixedTargetGenerator.html#a954f372d9824844ab77a25f255ca7786">n_mpy</a> * <a class="code hl_variable" href="classFixedTargetGenerator.html#a954f372d9824844ab77a25f255ca7786">n_mpy</a>));</div>
-<div class="line"><span class="lineno">  466</span>    <span class="comment">// every event appears twice, i.e.</span></div>
-<div class="line"><span class="lineno">  467</span>    <span class="keywordflow">if</span> (pt &lt; 1.e-5 &amp;&amp; <a class="code hl_variable" href="classFixedTargetGenerator.html#a4fe7b753f23b3c867a6e143e3607be17">n_mid</a> == 2212) {</div>
-<div class="line"><span class="lineno">  468</span>      <a class="code hl_variable" href="classFixedTargetGenerator.html#ac9af49bea67fc1f5e1c2a9b60446dc16">pot</a> += 0.5;</div>
-<div class="line"><span class="lineno">  469</span>      <a class="code hl_variable" href="classFixedTargetGenerator.html#ad0616dc329316d475f5f37fb301e4c56">ntotprim</a> += 1;</div>
-<div class="line"><span class="lineno">  470</span>    }</div>
-<div class="line"><span class="lineno">  471</span>    Int_t <a class="code hl_variable" href="namespacemakeCascade.html#a6727d7bb8472fc986a59166a91b33c15">idabs</a> = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(TMath::Abs(<a class="code hl_variable" href="classFixedTargetGenerator.html#a53317a2db8067c4d488ae96769b2eef8">n_id</a>));</div>
-<div class="line"><span class="lineno">  472</span>    <span class="keywordflow">if</span> (idabs == 431) {</div>
-<div class="line"><span class="lineno">  473</span>      <a class="code hl_variable" href="classFixedTargetGenerator.html#abe57fd9e95ce8a0d9941e89437a2fe4c">nDsprim</a> += 1;</div>
+<div class="line"><span class="lineno">  373</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classFixedTargetGenerator.html#a577dfcc36a4f54e69ebec43be167359b">G4only</a>) {</div>
+<div class="line"><span class="lineno">  374</span>    <span class="comment">// Geant4 determines the primary interaction point, so skip the expensive</span></div>
+<div class="line"><span class="lineno">  375</span>    <span class="comment">// interaction-point sampling below (it would only be discarded).</span></div>
+<div class="line"><span class="lineno">  376</span>    <a class="code hl_function" href="classSHiP_1_1Generator.html#a225ef62e734c3b42f9ddc1ce9c44538a">IncrementCounter</a>(<span class="stringliteral">&quot;generated_events&quot;</span>);</div>
+<div class="line"><span class="lineno">  377</span>    <a class="code hl_function" href="classSHiP_1_1Generator.html#a225ef62e734c3b42f9ddc1ce9c44538a">IncrementCounter</a>(<span class="stringliteral">&quot;g4only_events&quot;</span>);</div>
+<div class="line"><span class="lineno">  378</span>    <a class="code hl_function" href="classSHiP_1_1Generator.html#a225ef62e734c3b42f9ddc1ce9c44538a">IncrementCounter</a>(<span class="stringliteral">&quot;stored_tracks&quot;</span>);</div>
+<div class="line"><span class="lineno">  379</span>    cpg-&gt;AddTrack(2212, 0., 0., <a class="code hl_variable" href="classFixedTargetGenerator.html#acc2a9e21ec646c4000f1ab0d2c184ed4">fMom</a>, (<a class="code hl_variable" href="classFixedTargetGenerator.html#a29a0822f3d61012c5178500b3c6f9567">xOff</a> + dx) / cm, (<a class="code hl_variable" href="classFixedTargetGenerator.html#ac575dc0a0ee8177e0adf1062fabd956a">yOff</a> + dy) / cm,</div>
+<div class="line"><span class="lineno">  380</span>                  <a class="code hl_variable" href="classFixedTargetGenerator.html#a8552803d031ff4799c32c0c330f75f46">start</a>[2], -1, kTRUE, -1., 0., 1.);</div>
+<div class="line"><span class="lineno">  381</span>    <span class="keywordflow">return</span> kTRUE;</div>
+<div class="line"><span class="lineno">  382</span>  }</div>
+<div class="line"><span class="lineno">  383</span> </div>
+<div class="line"><span class="lineno">  384</span>  Double_t zinter = 0;</div>
+<div class="line"><span class="lineno">  385</span>  Double_t ZoverA = 1.;</div>
+<div class="line"><span class="lineno">  386</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classFixedTargetGenerator.html#a0e8e528cc53ba28b6aa7560f471330ae">targetName</a>.IsNull()) {</div>
+<div class="line"><span class="lineno">  387</span>    <span class="comment">// calculate primary proton interaction point:</span></div>
+<div class="line"><span class="lineno">  388</span>    <span class="comment">// loop over trajectory between start and end to pick an interaction point,</span></div>
+<div class="line"><span class="lineno">  389</span>    <span class="comment">// copied from GenieGenerator and adapted to hadrons</span></div>
+<div class="line"><span class="lineno">  390</span>    Double_t prob2int = -1.;</div>
+<div class="line"><span class="lineno">  391</span>    Double_t rndm = 0.;</div>
+<div class="line"><span class="lineno">  392</span>    Double_t <a class="code hl_variable" href="namespacerunPythia8.html#aa6ccf15df5382fe526735a07d97d3cd4">sigma</a>;</div>
+<div class="line"><span class="lineno">  393</span>    Double_t zinterStart = <a class="code hl_variable" href="classFixedTargetGenerator.html#a8552803d031ff4799c32c0c330f75f46">start</a>[2];</div>
+<div class="line"><span class="lineno">  394</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classFixedTargetGenerator.html#ad27ea400e92d6ae34e3c8f5da1c239fb">Option</a> == <span class="stringliteral">&quot;charm&quot;</span> || <a class="code hl_variable" href="classFixedTargetGenerator.html#ad27ea400e92d6ae34e3c8f5da1c239fb">Option</a> == <span class="stringliteral">&quot;beauty&quot;</span>) {</div>
+<div class="line"><span class="lineno">  395</span>      <span class="comment">// simulate more downstream interaction points for interactions down in</span></div>
+<div class="line"><span class="lineno">  396</span>      <span class="comment">// the cascade</span></div>
+<div class="line"><span class="lineno">  397</span>      <span class="keywordflow">if</span> (!(<a class="code hl_variable" href="classFixedTargetGenerator.html#a4724b22b55854e36ae67fa2246f3cad1">nTree</a>-&gt;GetBranch(<span class="stringliteral">&quot;k&quot;</span>))) {</div>
+<div class="line"><span class="lineno">  398</span>        <a class="code hl_variable" href="classFixedTargetGenerator.html#a1c16e3ca5c6deb372c237a171b71b19c">ck</a> = 1;</div>
+<div class="line"><span class="lineno">  399</span>      }</div>
+<div class="line"><span class="lineno">  400</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><span class="lineno">  401</span>      <a class="code hl_variable" href="classFixedTargetGenerator.html#a1c16e3ca5c6deb372c237a171b71b19c">ck</a> = 1;</div>
+<div class="line"><span class="lineno">  402</span>    }</div>
+<div class="line"><span class="lineno">  403</span>    <span class="keywordflow">while</span> (<a class="code hl_variable" href="classFixedTargetGenerator.html#a1c16e3ca5c6deb372c237a171b71b19c">ck</a> &gt; 0.5) {</div>
+<div class="line"><span class="lineno">  404</span>      <span class="keywordflow">while</span> (prob2int &lt; rndm) {</div>
+<div class="line"><span class="lineno">  405</span>        <span class="comment">// place x,y,z uniform along path</span></div>
+<div class="line"><span class="lineno">  406</span>        zinter = gRandom-&gt;Uniform(zinterStart, <a class="code hl_variable" href="classFixedTargetGenerator.html#a59ae4f1dfb442d58254275e5a83692ce">end</a>[2]);</div>
+<div class="line"><span class="lineno">  407</span>        Double_t point[3] = {<a class="code hl_variable" href="classFixedTargetGenerator.html#a29a0822f3d61012c5178500b3c6f9567">xOff</a>, <a class="code hl_variable" href="classFixedTargetGenerator.html#ac575dc0a0ee8177e0adf1062fabd956a">yOff</a>, zinter};</div>
+<div class="line"><span class="lineno">  408</span>        <a class="code hl_variable" href="classFixedTargetGenerator.html#a56e1bbca0149a15f64ea79646b813823">bparam</a> = <a class="code hl_function" href="namespaceshipgen.html#ac85d3b1e8d74de7b65eee39a98e92c1b">shipgen::MeanMaterialBudget</a>(<a class="code hl_variable" href="classFixedTargetGenerator.html#a8552803d031ff4799c32c0c330f75f46">start</a>, point, <a class="code hl_variable" href="classFixedTargetGenerator.html#a6cea4d6180ac40f839d81f66db73569a">mparam</a>);</div>
+<div class="line"><span class="lineno">  409</span>        Double_t interLength = <a class="code hl_variable" href="classFixedTargetGenerator.html#a6cea4d6180ac40f839d81f66db73569a">mparam</a>[8];</div>
+<div class="line"><span class="lineno">  410</span>        TGeoNode* node = gGeoManager-&gt;FindNode(point[0], point[1], point[2]);</div>
+<div class="line"><span class="lineno">  411</span>        TGeoMaterial* mat = <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">  412</span>        <span class="keywordflow">if</span> (node &amp;&amp; !gGeoManager-&gt;IsOutside()) {</div>
+<div class="line"><span class="lineno">  413</span>          mat = node-&gt;GetVolume()-&gt;GetMaterial();</div>
+<div class="line"><span class="lineno">  414</span>          Double_t <a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a> = mat-&gt;GetDensity() / mat-&gt;GetA();</div>
+<div class="line"><span class="lineno">  415</span>          ZoverA = mat-&gt;GetZ() / mat-&gt;GetA();</div>
+<div class="line"><span class="lineno">  416</span>          <a class="code hl_variable" href="namespacerunPythia8.html#aa6ccf15df5382fe526735a07d97d3cd4">sigma</a> = 1. / (<a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a> * mat-&gt;GetIntLen()) / <a class="code hl_variable" href="FixedTargetGenerator_8cxx.html#a357b34ec460558c0942628e20a171eef">mbarn</a>;</div>
+<div class="line"><span class="lineno">  417</span>          prob2int = TMath::Exp(-interLength) * <a class="code hl_variable" href="namespacerunPythia8.html#aa6ccf15df5382fe526735a07d97d3cd4">sigma</a> / <a class="code hl_variable" href="classFixedTargetGenerator.html#aa2dba48cbd74c877b9eb466be6f5a712">maxCrossSection</a>;</div>
+<div class="line"><span class="lineno">  418</span>        } <span class="keywordflow">else</span> {</div>
+<div class="line"><span class="lineno">  419</span>          prob2int = 0.;</div>
+<div class="line"><span class="lineno">  420</span>        }</div>
+<div class="line"><span class="lineno">  421</span>        rndm = gRandom-&gt;Uniform(0., 1.);</div>
+<div class="line"><span class="lineno">  422</span>      }</div>
+<div class="line"><span class="lineno">  423</span>      zinterStart = zinter;</div>
+<div class="line"><span class="lineno">  424</span>      <a class="code hl_variable" href="classFixedTargetGenerator.html#a1c16e3ca5c6deb372c237a171b71b19c">ck</a> -= 1;</div>
+<div class="line"><span class="lineno">  425</span>    }</div>
+<div class="line"><span class="lineno">  426</span>    zinter = zinter * <a class="code hl_variable" href="ShipBellField_8cxx.html#a9842927f33236414d34831f59ed1c28f">cm</a>;</div>
+<div class="line"><span class="lineno">  427</span>  }</div>
+<div class="line"><span class="lineno">  428</span>  Pythia8::Pythia* fPythia;</div>
+<div class="line"><span class="lineno">  429</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classFixedTargetGenerator.html#ad27ea400e92d6ae34e3c8f5da1c239fb">Option</a> == <span class="stringliteral">&quot;Primary&quot;</span>) {</div>
+<div class="line"><span class="lineno">  430</span>    <span class="keyword">constexpr</span> <span class="keywordtype">int</span> kMaxPythiaRetries = 100;</div>
+<div class="line"><span class="lineno">  431</span>    <span class="keywordflow">if</span> (gRandom-&gt;Uniform(0., 1.) &lt; ZoverA) {</div>
+<div class="line"><span class="lineno">  432</span>      <span class="keywordtype">int</span> retries = 0;</div>
+<div class="line"><span class="lineno">  433</span>      <span class="keywordflow">while</span> (!<a class="code hl_variable" href="classFixedTargetGenerator.html#ac285ccdf5ec4eefd671b44a5eb6e20eb">fPythiaP</a>-&gt;next()) {</div>
+<div class="line"><span class="lineno">  434</span>        <span class="keywordflow">if</span> (++retries &gt;= kMaxPythiaRetries) {</div>
+<div class="line"><span class="lineno">  435</span>          LOG(error) &lt;&lt; <span class="stringliteral">&quot;PythiaP failed to generate an event after &quot;</span></div>
+<div class="line"><span class="lineno">  436</span>                     &lt;&lt; kMaxPythiaRetries &lt;&lt; <span class="stringliteral">&quot; retries&quot;</span>;</div>
+<div class="line"><span class="lineno">  437</span>          <span class="keywordflow">return</span> kFALSE;</div>
+<div class="line"><span class="lineno">  438</span>        }</div>
+<div class="line"><span class="lineno">  439</span>        LOG(warning) &lt;&lt; <span class="stringliteral">&quot;PythiaP failed to generate event, retry &quot;</span> &lt;&lt; retries;</div>
+<div class="line"><span class="lineno">  440</span>      }</div>
+<div class="line"><span class="lineno">  441</span>      <span class="keywordflow">if</span> (<a class="code hl_variable" href="classFixedTargetGenerator.html#ac8d1a7cc5304e3c24de79f4c79bc4eeb">withEvtGen</a>) {</div>
+<div class="line"><span class="lineno">  442</span>        <a class="code hl_variable" href="classFixedTargetGenerator.html#aeec5ade00ef00598d968b593a9c5dec5">evtgenP</a>-&gt;decay();</div>
+<div class="line"><span class="lineno">  443</span>      }</div>
+<div class="line"><span class="lineno">  444</span>      fPythia = <a class="code hl_variable" href="classFixedTargetGenerator.html#ac285ccdf5ec4eefd671b44a5eb6e20eb">fPythiaP</a>;</div>
+<div class="line"><span class="lineno">  445</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><span class="lineno">  446</span>      <span class="keywordtype">int</span> retries = 0;</div>
+<div class="line"><span class="lineno">  447</span>      <span class="keywordflow">while</span> (!<a class="code hl_variable" href="classFixedTargetGenerator.html#ae542dc215e3f951183fb5f8792f76e88">fPythiaN</a>-&gt;next()) {</div>
+<div class="line"><span class="lineno">  448</span>        <span class="keywordflow">if</span> (++retries &gt;= kMaxPythiaRetries) {</div>
+<div class="line"><span class="lineno">  449</span>          LOG(error) &lt;&lt; <span class="stringliteral">&quot;PythiaN failed to generate an event after &quot;</span></div>
+<div class="line"><span class="lineno">  450</span>                     &lt;&lt; kMaxPythiaRetries &lt;&lt; <span class="stringliteral">&quot; retries&quot;</span>;</div>
+<div class="line"><span class="lineno">  451</span>          <span class="keywordflow">return</span> kFALSE;</div>
+<div class="line"><span class="lineno">  452</span>        }</div>
+<div class="line"><span class="lineno">  453</span>        LOG(warning) &lt;&lt; <span class="stringliteral">&quot;PythiaN failed to generate event, retry &quot;</span> &lt;&lt; retries;</div>
+<div class="line"><span class="lineno">  454</span>      }</div>
+<div class="line"><span class="lineno">  455</span>      <span class="keywordflow">if</span> (<a class="code hl_variable" href="classFixedTargetGenerator.html#ac8d1a7cc5304e3c24de79f4c79bc4eeb">withEvtGen</a>) {</div>
+<div class="line"><span class="lineno">  456</span>        <a class="code hl_variable" href="classFixedTargetGenerator.html#ac91569df5a1c7106332667b2cc03c943">evtgenN</a>-&gt;decay();</div>
+<div class="line"><span class="lineno">  457</span>      }</div>
+<div class="line"><span class="lineno">  458</span>      fPythia = <a class="code hl_variable" href="classFixedTargetGenerator.html#ae542dc215e3f951183fb5f8792f76e88">fPythiaN</a>;</div>
+<div class="line"><span class="lineno">  459</span>    }</div>
+<div class="line"><span class="lineno">  460</span>  } <span class="keywordflow">else</span> {</div>
+<div class="line"><span class="lineno">  461</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classFixedTargetGenerator.html#aece8920a879cad3bfc82da462b1fb39e">nEntry</a> == <a class="code hl_variable" href="classFixedTargetGenerator.html#a35f465dd532d80c7f18e43b6c32a59ab">nEvents</a>) {</div>
+<div class="line"><span class="lineno">  462</span>      LOG(info) &lt;&lt; <span class="stringliteral">&quot;Rewind input file: &quot;</span> &lt;&lt; <a class="code hl_variable" href="classFixedTargetGenerator.html#aece8920a879cad3bfc82da462b1fb39e">nEntry</a>;</div>
+<div class="line"><span class="lineno">  463</span>      <a class="code hl_variable" href="classFixedTargetGenerator.html#aece8920a879cad3bfc82da462b1fb39e">nEntry</a> = 0;</div>
+<div class="line"><span class="lineno">  464</span>    }</div>
+<div class="line"><span class="lineno">  465</span>    <a class="code hl_variable" href="classFixedTargetGenerator.html#a4724b22b55854e36ae67fa2246f3cad1">nTree</a>-&gt;GetEvent(<a class="code hl_variable" href="classFixedTargetGenerator.html#aece8920a879cad3bfc82da462b1fb39e">nEntry</a>);</div>
+<div class="line"><span class="lineno">  466</span>    <a class="code hl_variable" href="classFixedTargetGenerator.html#aece8920a879cad3bfc82da462b1fb39e">nEntry</a> += 1;</div>
+<div class="line"><span class="lineno">  467</span>    <a class="code hl_function" href="classSHiP_1_1Generator.html#a225ef62e734c3b42f9ddc1ce9c44538a">IncrementCounter</a>(<span class="stringliteral">&quot;charm_input_pairs&quot;</span>);</div>
+<div class="line"><span class="lineno">  468</span>    <span class="comment">// sanity check, count number of p.o.t. on input file.</span></div>
+<div class="line"><span class="lineno">  469</span>    Double_t <a class="code hl_variable" href="namespacemakeDecay.html#afdee173103d608b5c98240c05154f34d">pt</a> = TMath::Sqrt((<a class="code hl_variable" href="classFixedTargetGenerator.html#abf73624df3a1ec6ecbdf98079a66c205">n_mpx</a> * <a class="code hl_variable" href="classFixedTargetGenerator.html#abf73624df3a1ec6ecbdf98079a66c205">n_mpx</a>) + (<a class="code hl_variable" href="classFixedTargetGenerator.html#a954f372d9824844ab77a25f255ca7786">n_mpy</a> * <a class="code hl_variable" href="classFixedTargetGenerator.html#a954f372d9824844ab77a25f255ca7786">n_mpy</a>));</div>
+<div class="line"><span class="lineno">  470</span>    <span class="comment">// every event appears twice, i.e.</span></div>
+<div class="line"><span class="lineno">  471</span>    <span class="keywordflow">if</span> (pt &lt; 1.e-5 &amp;&amp; <a class="code hl_variable" href="classFixedTargetGenerator.html#a4fe7b753f23b3c867a6e143e3607be17">n_mid</a> == 2212) {</div>
+<div class="line"><span class="lineno">  472</span>      <a class="code hl_variable" href="classFixedTargetGenerator.html#ac9af49bea67fc1f5e1c2a9b60446dc16">pot</a> += 0.5;</div>
+<div class="line"><span class="lineno">  473</span>      <a class="code hl_variable" href="classFixedTargetGenerator.html#ad0616dc329316d475f5f37fb301e4c56">ntotprim</a> += 1;</div>
 <div class="line"><span class="lineno">  474</span>    }</div>
-<div class="line"><span class="lineno">  475</span>    <a class="code hl_variable" href="classFixedTargetGenerator.html#ac285ccdf5ec4eefd671b44a5eb6e20eb">fPythiaP</a>-&gt;event.reset();</div>
-<div class="line"><span class="lineno">  476</span>    Int_t nID1 = <a class="code hl_variable" href="classFixedTargetGenerator.html#a53317a2db8067c4d488ae96769b2eef8">n_id</a>;</div>
-<div class="line"><span class="lineno">  477</span>    <a class="code hl_variable" href="classFixedTargetGenerator.html#ac285ccdf5ec4eefd671b44a5eb6e20eb">fPythiaP</a>-&gt;event.append(<span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(<a class="code hl_variable" href="classFixedTargetGenerator.html#a53317a2db8067c4d488ae96769b2eef8">n_id</a>), 1, 0, 0, <a class="code hl_variable" href="classFixedTargetGenerator.html#a54f0730a688c36a44924b395ab79e11b">n_px</a>, <a class="code hl_variable" href="classFixedTargetGenerator.html#a8d340c16cbd0ede37320c4738ae1f692">n_py</a>, <a class="code hl_variable" href="classFixedTargetGenerator.html#ad88b5d9e22359a7f6044b52a3533ddde">n_pz</a>,</div>
-<div class="line"><span class="lineno">  478</span>                           <a class="code hl_variable" href="classFixedTargetGenerator.html#ae7435e29af3557494013f4c469e959d2">n_E</a>, <a class="code hl_variable" href="classFixedTargetGenerator.html#ac0b6c1eca3c4b80ab2be9883c4f993cf">n_M</a>, 0., 9.);</div>
-<div class="line"><span class="lineno">  479</span>    TMCProcess procID = kPTransportation;</div>
-<div class="line"><span class="lineno">  480</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classFixedTargetGenerator.html#a4fe7b753f23b3c867a6e143e3607be17">n_mid</a> == 2212 &amp;&amp; (<a class="code hl_variable" href="classFixedTargetGenerator.html#abf73624df3a1ec6ecbdf98079a66c205">n_mpx</a> * <a class="code hl_variable" href="classFixedTargetGenerator.html#abf73624df3a1ec6ecbdf98079a66c205">n_mpx</a> + <a class="code hl_variable" href="classFixedTargetGenerator.html#a954f372d9824844ab77a25f255ca7786">n_mpy</a> * <a class="code hl_variable" href="classFixedTargetGenerator.html#a954f372d9824844ab77a25f255ca7786">n_mpy</a>) &lt; 1<a class="code hl_variable" href="namespacemakeMuonEM.html#a2f541edec5da16cf64dcce3ea03d80c8">E</a>-5) {</div>
-<div class="line"><span class="lineno">  481</span>      procID = kPPrimary;</div>
-<div class="line"><span class="lineno">  482</span>    }  <span class="comment">// probably primary and not from cascade</span></div>
-<div class="line"><span class="lineno">  483</span>    cpg-&gt;AddTrack(<span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(<a class="code hl_variable" href="classFixedTargetGenerator.html#a4fe7b753f23b3c867a6e143e3607be17">n_mid</a>), <a class="code hl_variable" href="classFixedTargetGenerator.html#abf73624df3a1ec6ecbdf98079a66c205">n_mpx</a>, <a class="code hl_variable" href="classFixedTargetGenerator.html#a954f372d9824844ab77a25f255ca7786">n_mpy</a>, <a class="code hl_variable" href="classFixedTargetGenerator.html#adba4302bfb21536142007aca0e497775">n_mpz</a>,</div>
-<div class="line"><span class="lineno">  484</span>                  (<a class="code hl_variable" href="classFixedTargetGenerator.html#a29a0822f3d61012c5178500b3c6f9567">xOff</a> + dx) * cm, (<a class="code hl_variable" href="classFixedTargetGenerator.html#ac575dc0a0ee8177e0adf1062fabd956a">yOff</a> + dy) * <a class="code hl_variable" href="ShipBellField_8cxx.html#a9842927f33236414d34831f59ed1c28f">cm</a>, zinter * <a class="code hl_variable" href="ShipBellField_8cxx.html#a9842927f33236414d34831f59ed1c28f">cm</a>, -1, kFALSE,</div>
-<div class="line"><span class="lineno">  485</span>                  <a class="code hl_variable" href="classFixedTargetGenerator.html#af312d512426bbf7ce0f43ab437805532">n_mE</a>, 0., <a class="code hl_variable" href="classFixedTargetGenerator.html#a5c41df66f567cfaec9b1975609648829">wspill</a>, procID);</div>
-<div class="line"><span class="lineno">  486</span>    <a class="code hl_function" href="classSHiP_1_1Generator.html#a225ef62e734c3b42f9ddc1ce9c44538a">IncrementCounter</a>(<span class="stringliteral">&quot;stored_tracks&quot;</span>);</div>
-<div class="line"><span class="lineno">  487</span>    <span class="comment">// second charm hadron in the event</span></div>
-<div class="line"><span class="lineno">  488</span>    <a class="code hl_variable" href="classFixedTargetGenerator.html#a4724b22b55854e36ae67fa2246f3cad1">nTree</a>-&gt;GetEvent(<a class="code hl_variable" href="classFixedTargetGenerator.html#aece8920a879cad3bfc82da462b1fb39e">nEntry</a>);</div>
-<div class="line"><span class="lineno">  489</span>    <span class="keywordflow">if</span> (nID1 * <a class="code hl_variable" href="classFixedTargetGenerator.html#a53317a2db8067c4d488ae96769b2eef8">n_id</a> &gt; 0) {</div>
-<div class="line"><span class="lineno">  490</span>      LOG(info) &lt;&lt; <span class="stringliteral">&quot;same sign charm: &quot;</span> &lt;&lt; <a class="code hl_variable" href="classFixedTargetGenerator.html#aece8920a879cad3bfc82da462b1fb39e">nEntry</a> &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; nID1 &lt;&lt; <span class="stringliteral">&quot;, &quot;</span></div>
-<div class="line"><span class="lineno">  491</span>                &lt;&lt; <a class="code hl_variable" href="classFixedTargetGenerator.html#a53317a2db8067c4d488ae96769b2eef8">n_id</a>;</div>
-<div class="line"><span class="lineno">  492</span>    }</div>
-<div class="line"><span class="lineno">  493</span>    <a class="code hl_variable" href="classFixedTargetGenerator.html#aece8920a879cad3bfc82da462b1fb39e">nEntry</a> += 1;</div>
-<div class="line"><span class="lineno">  494</span>    <a class="code hl_variable" href="classFixedTargetGenerator.html#ac285ccdf5ec4eefd671b44a5eb6e20eb">fPythiaP</a>-&gt;event.append(<span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(<a class="code hl_variable" href="classFixedTargetGenerator.html#a53317a2db8067c4d488ae96769b2eef8">n_id</a>), 1, 0, 0, <a class="code hl_variable" href="classFixedTargetGenerator.html#a54f0730a688c36a44924b395ab79e11b">n_px</a>, <a class="code hl_variable" href="classFixedTargetGenerator.html#a8d340c16cbd0ede37320c4738ae1f692">n_py</a>, <a class="code hl_variable" href="classFixedTargetGenerator.html#ad88b5d9e22359a7f6044b52a3533ddde">n_pz</a>,</div>
-<div class="line"><span class="lineno">  495</span>                           <a class="code hl_variable" href="classFixedTargetGenerator.html#ae7435e29af3557494013f4c469e959d2">n_E</a>, <a class="code hl_variable" href="classFixedTargetGenerator.html#ac0b6c1eca3c4b80ab2be9883c4f993cf">n_M</a>, 0., 9.);</div>
-<div class="line"><span class="lineno">  496</span>    <a class="code hl_variable" href="classFixedTargetGenerator.html#ac285ccdf5ec4eefd671b44a5eb6e20eb">fPythiaP</a>-&gt;next();</div>
-<div class="line"><span class="lineno">  497</span>    fPythia = <a class="code hl_variable" href="classFixedTargetGenerator.html#ac285ccdf5ec4eefd671b44a5eb6e20eb">fPythiaP</a>;</div>
-<div class="line"><span class="lineno">  498</span>  }</div>
-<div class="line"><span class="lineno">  499</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classFixedTargetGenerator.html#ac8d1a7cc5304e3c24de79f4c79bc4eeb">withEvtGen</a>) {</div>
-<div class="line"><span class="lineno">  500</span>    fPythia-&gt;moreDecays();</div>
-<div class="line"><span class="lineno">  501</span>  }  <span class="comment">// let the very short lived resonances decay via Pythia8</span></div>
-<div class="line"><span class="lineno">  502</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classFixedTargetGenerator.html#a5ae133fb3b2372d21c2d78a8bf24ac1d">Debug</a> &amp;&amp; !<a class="code hl_variable" href="classFixedTargetGenerator.html#a577dfcc36a4f54e69ebec43be167359b">G4only</a>) {</div>
-<div class="line"><span class="lineno">  503</span>    fPythia-&gt;event.list();</div>
-<div class="line"><span class="lineno">  504</span>  }</div>
-<div class="line"><span class="lineno">  505</span>  TMCProcess procID;</div>
-<div class="line"><span class="lineno">  506</span>  <span class="keywordflow">for</span> (Int_t ii = 1; <a class="code hl_variable" href="namespacerunPythia8.html#a73714686db2b6d0b7de90c8aa2382d88">ii</a> &lt; fPythia-&gt;event.size(); <a class="code hl_variable" href="namespacerunPythia8.html#a73714686db2b6d0b7de90c8aa2382d88">ii</a>++) {</div>
-<div class="line"><span class="lineno">  507</span>    Double_t e = fPythia-&gt;event[<a class="code hl_variable" href="namespacerunPythia8.html#a73714686db2b6d0b7de90c8aa2382d88">ii</a>].e();</div>
-<div class="line"><span class="lineno">  508</span>    Double_t <a class="code hl_variable" href="ShipBellField_8cxx.html#ae0699ca79e23818d99b9ee18334a9325">m</a> = fPythia-&gt;event[<a class="code hl_variable" href="namespacerunPythia8.html#a73714686db2b6d0b7de90c8aa2382d88">ii</a>].m();</div>
-<div class="line"><span class="lineno">  509</span>    Double_t <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a595c352a9b1a3ae33b95fc5937803a60">pz</a> = fPythia-&gt;event[<a class="code hl_variable" href="namespacerunPythia8.html#a73714686db2b6d0b7de90c8aa2382d88">ii</a>].pz();</div>
-<div class="line"><span class="lineno">  510</span>    Int_t <span class="keywordtype">id</span> = fPythia-&gt;event[<a class="code hl_variable" href="namespacerunPythia8.html#a73714686db2b6d0b7de90c8aa2382d88">ii</a>].id();</div>
-<div class="line"><span class="lineno">  511</span>    Bool_t wanttracking = kTRUE;</div>
-<div class="line"><span class="lineno">  512</span>    <span class="keywordflow">if</span> (e - m &lt; EMax || !fPythia-&gt;event[ii].isFinal() || pz &lt; 0) {</div>
-<div class="line"><span class="lineno">  513</span>      wanttracking = kFALSE;</div>
-<div class="line"><span class="lineno">  514</span>    }</div>
-<div class="line"><span class="lineno">  515</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classFixedTargetGenerator.html#aeb49a75cb9a3c44f78ab0f014a086c29">DrellYan</a> || <a class="code hl_variable" href="classFixedTargetGenerator.html#a3c8a1ece10b7c2aa4af76842eb19cbce">PhotonCollision</a> || <a class="code hl_variable" href="classFixedTargetGenerator.html#aaf32fade9f283dc8f731bedee010153f">OnlyMuons</a>) {</div>
-<div class="line"><span class="lineno">  516</span>      <span class="comment">// don&#39;t track underlying event</span></div>
-<div class="line"><span class="lineno">  517</span>      <span class="keywordflow">if</span> (fabs(<span class="keywordtype">id</span>) != 13) {</div>
-<div class="line"><span class="lineno">  518</span>        wanttracking = kFALSE;</div>
-<div class="line"><span class="lineno">  519</span>      }</div>
-<div class="line"><span class="lineno">  520</span>    }</div>
-<div class="line"><span class="lineno">  521</span>    Double_t <a class="code hl_variable" href="namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed">z</a> = fPythia-&gt;event[<a class="code hl_variable" href="namespacerunPythia8.html#a73714686db2b6d0b7de90c8aa2382d88">ii</a>].zProd() * <a class="code hl_variable" href="exitHadronAbsorber_8cxx.html#ab2a567bfbaee880f55a40bacfbb4bd3c">mm</a> + zinter * <a class="code hl_variable" href="ShipBellField_8cxx.html#a9842927f33236414d34831f59ed1c28f">cm</a>;</div>
-<div class="line"><span class="lineno">  522</span>    Double_t <a class="code hl_variable" href="namespacerun__fixedTarget.html#a68f8e54ebe34ed88a1aff4505c32be7c">x</a> = fPythia-&gt;event[<a class="code hl_variable" href="namespacerunPythia8.html#a73714686db2b6d0b7de90c8aa2382d88">ii</a>].xProd() * <a class="code hl_variable" href="exitHadronAbsorber_8cxx.html#ab2a567bfbaee880f55a40bacfbb4bd3c">mm</a> + <a class="code hl_variable" href="classFixedTargetGenerator.html#a29a0822f3d61012c5178500b3c6f9567">xOff</a> * <a class="code hl_variable" href="ShipBellField_8cxx.html#a9842927f33236414d34831f59ed1c28f">cm</a> + dx * <a class="code hl_variable" href="ShipBellField_8cxx.html#a9842927f33236414d34831f59ed1c28f">cm</a>;</div>
-<div class="line"><span class="lineno">  523</span>    Double_t <a class="code hl_variable" href="namespacerun__tracking__scan.html#a60149f5e9c7fe53ba27d5ee50faa64de">y</a> = fPythia-&gt;event[<a class="code hl_variable" href="namespacerunPythia8.html#a73714686db2b6d0b7de90c8aa2382d88">ii</a>].yProd() * <a class="code hl_variable" href="exitHadronAbsorber_8cxx.html#ab2a567bfbaee880f55a40bacfbb4bd3c">mm</a> + <a class="code hl_variable" href="classFixedTargetGenerator.html#ac575dc0a0ee8177e0adf1062fabd956a">yOff</a> * <a class="code hl_variable" href="ShipBellField_8cxx.html#a9842927f33236414d34831f59ed1c28f">cm</a> + <a class="code hl_variable" href="namespacerun__fixedTarget.html#a3112a5faf6aba672ca6db63ae2691c5c">dy</a> * <a class="code hl_variable" href="ShipBellField_8cxx.html#a9842927f33236414d34831f59ed1c28f">cm</a>;</div>
-<div class="line"><span class="lineno">  524</span>    Double_t tof =</div>
-<div class="line"><span class="lineno">  525</span>        fPythia-&gt;event[<a class="code hl_variable" href="namespacerunPythia8.html#a73714686db2b6d0b7de90c8aa2382d88">ii</a>].tProd() / (10 * <a class="code hl_variable" href="DPPythia8Generator_8cxx.html#a918077216eb661c02ed2a5bfd06bb77d">c_light</a>);  <span class="comment">// to go from mm to s</span></div>
-<div class="line"><span class="lineno">  526</span>    Double_t <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#acb959a726115115cca6fd66067b7e986">px</a> = fPythia-&gt;event[<a class="code hl_variable" href="namespacerunPythia8.html#a73714686db2b6d0b7de90c8aa2382d88">ii</a>].px();</div>
-<div class="line"><span class="lineno">  527</span>    Double_t <a class="code hl_variable" href="namespacerunPythia8.html#ad6b7ec130f84165691f3d15beb4ac6ea">py</a> = fPythia-&gt;event[<a class="code hl_variable" href="namespacerunPythia8.html#a73714686db2b6d0b7de90c8aa2382d88">ii</a>].py();</div>
-<div class="line"><span class="lineno">  528</span>    Int_t im = fPythia-&gt;event[<a class="code hl_variable" href="namespacerunPythia8.html#a73714686db2b6d0b7de90c8aa2382d88">ii</a>].mother1() - 1;</div>
-<div class="line"><span class="lineno">  529</span>    procID = kPPrimary;</div>
-<div class="line"><span class="lineno">  530</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classFixedTargetGenerator.html#ad27ea400e92d6ae34e3c8f5da1c239fb">Option</a> != <span class="stringliteral">&quot;Primary&quot;</span>) {</div>
-<div class="line"><span class="lineno">  531</span>      procID = kPDecay;</div>
-<div class="line"><span class="lineno">  532</span>      im += 1;</div>
-<div class="line"><span class="lineno">  533</span>      <span class="keywordflow">if</span> (ii == 1) {</div>
-<div class="line"><span class="lineno">  534</span>        procID = kPHadronic;</div>
-<div class="line"><span class="lineno">  535</span>      }</div>
-<div class="line"><span class="lineno">  536</span>    } <span class="keywordflow">else</span> {</div>
-<div class="line"><span class="lineno">  537</span>      <span class="keywordflow">if</span> (ii &lt; 3) {</div>
-<div class="line"><span class="lineno">  538</span>        im = -1;</div>
+<div class="line"><span class="lineno">  475</span>    Int_t <a class="code hl_variable" href="namespacemakeCascade.html#a6727d7bb8472fc986a59166a91b33c15">idabs</a> = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(TMath::Abs(<a class="code hl_variable" href="classFixedTargetGenerator.html#a53317a2db8067c4d488ae96769b2eef8">n_id</a>));</div>
+<div class="line"><span class="lineno">  476</span>    <span class="keywordflow">if</span> (idabs == 431) {</div>
+<div class="line"><span class="lineno">  477</span>      <a class="code hl_variable" href="classFixedTargetGenerator.html#abe57fd9e95ce8a0d9941e89437a2fe4c">nDsprim</a> += 1;</div>
+<div class="line"><span class="lineno">  478</span>    }</div>
+<div class="line"><span class="lineno">  479</span>    <a class="code hl_variable" href="classFixedTargetGenerator.html#ac285ccdf5ec4eefd671b44a5eb6e20eb">fPythiaP</a>-&gt;event.reset();</div>
+<div class="line"><span class="lineno">  480</span>    Int_t nID1 = <a class="code hl_variable" href="classFixedTargetGenerator.html#a53317a2db8067c4d488ae96769b2eef8">n_id</a>;</div>
+<div class="line"><span class="lineno">  481</span>    <a class="code hl_variable" href="classFixedTargetGenerator.html#ac285ccdf5ec4eefd671b44a5eb6e20eb">fPythiaP</a>-&gt;event.append(<span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(<a class="code hl_variable" href="classFixedTargetGenerator.html#a53317a2db8067c4d488ae96769b2eef8">n_id</a>), 1, 0, 0, <a class="code hl_variable" href="classFixedTargetGenerator.html#a54f0730a688c36a44924b395ab79e11b">n_px</a>, <a class="code hl_variable" href="classFixedTargetGenerator.html#a8d340c16cbd0ede37320c4738ae1f692">n_py</a>, <a class="code hl_variable" href="classFixedTargetGenerator.html#ad88b5d9e22359a7f6044b52a3533ddde">n_pz</a>,</div>
+<div class="line"><span class="lineno">  482</span>                           <a class="code hl_variable" href="classFixedTargetGenerator.html#ae7435e29af3557494013f4c469e959d2">n_E</a>, <a class="code hl_variable" href="classFixedTargetGenerator.html#ac0b6c1eca3c4b80ab2be9883c4f993cf">n_M</a>, 0., 9.);</div>
+<div class="line"><span class="lineno">  483</span>    TMCProcess procID = kPTransportation;</div>
+<div class="line"><span class="lineno">  484</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classFixedTargetGenerator.html#a4fe7b753f23b3c867a6e143e3607be17">n_mid</a> == 2212 &amp;&amp; (<a class="code hl_variable" href="classFixedTargetGenerator.html#abf73624df3a1ec6ecbdf98079a66c205">n_mpx</a> * <a class="code hl_variable" href="classFixedTargetGenerator.html#abf73624df3a1ec6ecbdf98079a66c205">n_mpx</a> + <a class="code hl_variable" href="classFixedTargetGenerator.html#a954f372d9824844ab77a25f255ca7786">n_mpy</a> * <a class="code hl_variable" href="classFixedTargetGenerator.html#a954f372d9824844ab77a25f255ca7786">n_mpy</a>) &lt; 1<a class="code hl_variable" href="namespacemakeMuonEM.html#a2f541edec5da16cf64dcce3ea03d80c8">E</a>-5) {</div>
+<div class="line"><span class="lineno">  485</span>      procID = kPPrimary;</div>
+<div class="line"><span class="lineno">  486</span>    }  <span class="comment">// probably primary and not from cascade</span></div>
+<div class="line"><span class="lineno">  487</span>    cpg-&gt;AddTrack(<span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(<a class="code hl_variable" href="classFixedTargetGenerator.html#a4fe7b753f23b3c867a6e143e3607be17">n_mid</a>), <a class="code hl_variable" href="classFixedTargetGenerator.html#abf73624df3a1ec6ecbdf98079a66c205">n_mpx</a>, <a class="code hl_variable" href="classFixedTargetGenerator.html#a954f372d9824844ab77a25f255ca7786">n_mpy</a>, <a class="code hl_variable" href="classFixedTargetGenerator.html#adba4302bfb21536142007aca0e497775">n_mpz</a>,</div>
+<div class="line"><span class="lineno">  488</span>                  (<a class="code hl_variable" href="classFixedTargetGenerator.html#a29a0822f3d61012c5178500b3c6f9567">xOff</a> + dx) * cm, (<a class="code hl_variable" href="classFixedTargetGenerator.html#ac575dc0a0ee8177e0adf1062fabd956a">yOff</a> + dy) * <a class="code hl_variable" href="ShipBellField_8cxx.html#a9842927f33236414d34831f59ed1c28f">cm</a>, zinter * <a class="code hl_variable" href="ShipBellField_8cxx.html#a9842927f33236414d34831f59ed1c28f">cm</a>, -1, kFALSE,</div>
+<div class="line"><span class="lineno">  489</span>                  <a class="code hl_variable" href="classFixedTargetGenerator.html#af312d512426bbf7ce0f43ab437805532">n_mE</a>, 0., <a class="code hl_variable" href="classFixedTargetGenerator.html#a5c41df66f567cfaec9b1975609648829">wspill</a>, procID);</div>
+<div class="line"><span class="lineno">  490</span>    <a class="code hl_function" href="classSHiP_1_1Generator.html#a225ef62e734c3b42f9ddc1ce9c44538a">IncrementCounter</a>(<span class="stringliteral">&quot;stored_tracks&quot;</span>);</div>
+<div class="line"><span class="lineno">  491</span>    <span class="comment">// second charm hadron in the event</span></div>
+<div class="line"><span class="lineno">  492</span>    <a class="code hl_variable" href="classFixedTargetGenerator.html#a4724b22b55854e36ae67fa2246f3cad1">nTree</a>-&gt;GetEvent(<a class="code hl_variable" href="classFixedTargetGenerator.html#aece8920a879cad3bfc82da462b1fb39e">nEntry</a>);</div>
+<div class="line"><span class="lineno">  493</span>    <span class="keywordflow">if</span> (nID1 * <a class="code hl_variable" href="classFixedTargetGenerator.html#a53317a2db8067c4d488ae96769b2eef8">n_id</a> &gt; 0) {</div>
+<div class="line"><span class="lineno">  494</span>      LOG(info) &lt;&lt; <span class="stringliteral">&quot;same sign charm: &quot;</span> &lt;&lt; <a class="code hl_variable" href="classFixedTargetGenerator.html#aece8920a879cad3bfc82da462b1fb39e">nEntry</a> &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; nID1 &lt;&lt; <span class="stringliteral">&quot;, &quot;</span></div>
+<div class="line"><span class="lineno">  495</span>                &lt;&lt; <a class="code hl_variable" href="classFixedTargetGenerator.html#a53317a2db8067c4d488ae96769b2eef8">n_id</a>;</div>
+<div class="line"><span class="lineno">  496</span>    }</div>
+<div class="line"><span class="lineno">  497</span>    <a class="code hl_variable" href="classFixedTargetGenerator.html#aece8920a879cad3bfc82da462b1fb39e">nEntry</a> += 1;</div>
+<div class="line"><span class="lineno">  498</span>    <a class="code hl_variable" href="classFixedTargetGenerator.html#ac285ccdf5ec4eefd671b44a5eb6e20eb">fPythiaP</a>-&gt;event.append(<span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(<a class="code hl_variable" href="classFixedTargetGenerator.html#a53317a2db8067c4d488ae96769b2eef8">n_id</a>), 1, 0, 0, <a class="code hl_variable" href="classFixedTargetGenerator.html#a54f0730a688c36a44924b395ab79e11b">n_px</a>, <a class="code hl_variable" href="classFixedTargetGenerator.html#a8d340c16cbd0ede37320c4738ae1f692">n_py</a>, <a class="code hl_variable" href="classFixedTargetGenerator.html#ad88b5d9e22359a7f6044b52a3533ddde">n_pz</a>,</div>
+<div class="line"><span class="lineno">  499</span>                           <a class="code hl_variable" href="classFixedTargetGenerator.html#ae7435e29af3557494013f4c469e959d2">n_E</a>, <a class="code hl_variable" href="classFixedTargetGenerator.html#ac0b6c1eca3c4b80ab2be9883c4f993cf">n_M</a>, 0., 9.);</div>
+<div class="line"><span class="lineno">  500</span>    <a class="code hl_variable" href="classFixedTargetGenerator.html#ac285ccdf5ec4eefd671b44a5eb6e20eb">fPythiaP</a>-&gt;next();</div>
+<div class="line"><span class="lineno">  501</span>    fPythia = <a class="code hl_variable" href="classFixedTargetGenerator.html#ac285ccdf5ec4eefd671b44a5eb6e20eb">fPythiaP</a>;</div>
+<div class="line"><span class="lineno">  502</span>  }</div>
+<div class="line"><span class="lineno">  503</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classFixedTargetGenerator.html#ac8d1a7cc5304e3c24de79f4c79bc4eeb">withEvtGen</a>) {</div>
+<div class="line"><span class="lineno">  504</span>    fPythia-&gt;moreDecays();</div>
+<div class="line"><span class="lineno">  505</span>  }  <span class="comment">// let the very short lived resonances decay via Pythia8</span></div>
+<div class="line"><span class="lineno">  506</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classFixedTargetGenerator.html#a5ae133fb3b2372d21c2d78a8bf24ac1d">Debug</a>) {</div>
+<div class="line"><span class="lineno">  507</span>    fPythia-&gt;event.list();</div>
+<div class="line"><span class="lineno">  508</span>  }</div>
+<div class="line"><span class="lineno">  509</span>  TMCProcess procID;</div>
+<div class="line"><span class="lineno">  510</span>  <span class="keywordflow">for</span> (Int_t ii = 1; <a class="code hl_variable" href="namespacerunPythia8.html#a73714686db2b6d0b7de90c8aa2382d88">ii</a> &lt; fPythia-&gt;event.size(); <a class="code hl_variable" href="namespacerunPythia8.html#a73714686db2b6d0b7de90c8aa2382d88">ii</a>++) {</div>
+<div class="line"><span class="lineno">  511</span>    Double_t e = fPythia-&gt;event[<a class="code hl_variable" href="namespacerunPythia8.html#a73714686db2b6d0b7de90c8aa2382d88">ii</a>].e();</div>
+<div class="line"><span class="lineno">  512</span>    Double_t <a class="code hl_variable" href="ShipBellField_8cxx.html#ae0699ca79e23818d99b9ee18334a9325">m</a> = fPythia-&gt;event[<a class="code hl_variable" href="namespacerunPythia8.html#a73714686db2b6d0b7de90c8aa2382d88">ii</a>].m();</div>
+<div class="line"><span class="lineno">  513</span>    Double_t <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a595c352a9b1a3ae33b95fc5937803a60">pz</a> = fPythia-&gt;event[<a class="code hl_variable" href="namespacerunPythia8.html#a73714686db2b6d0b7de90c8aa2382d88">ii</a>].pz();</div>
+<div class="line"><span class="lineno">  514</span>    Int_t <span class="keywordtype">id</span> = fPythia-&gt;event[<a class="code hl_variable" href="namespacerunPythia8.html#a73714686db2b6d0b7de90c8aa2382d88">ii</a>].id();</div>
+<div class="line"><span class="lineno">  515</span>    Bool_t wanttracking = kTRUE;</div>
+<div class="line"><span class="lineno">  516</span>    <span class="keywordflow">if</span> (e - m &lt; EMax || !fPythia-&gt;event[ii].isFinal() || pz &lt; 0) {</div>
+<div class="line"><span class="lineno">  517</span>      wanttracking = kFALSE;</div>
+<div class="line"><span class="lineno">  518</span>    }</div>
+<div class="line"><span class="lineno">  519</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classFixedTargetGenerator.html#aeb49a75cb9a3c44f78ab0f014a086c29">DrellYan</a> || <a class="code hl_variable" href="classFixedTargetGenerator.html#a3c8a1ece10b7c2aa4af76842eb19cbce">PhotonCollision</a> || <a class="code hl_variable" href="classFixedTargetGenerator.html#aaf32fade9f283dc8f731bedee010153f">OnlyMuons</a>) {</div>
+<div class="line"><span class="lineno">  520</span>      <span class="comment">// don&#39;t track underlying event</span></div>
+<div class="line"><span class="lineno">  521</span>      <span class="keywordflow">if</span> (fabs(<span class="keywordtype">id</span>) != 13) {</div>
+<div class="line"><span class="lineno">  522</span>        wanttracking = kFALSE;</div>
+<div class="line"><span class="lineno">  523</span>      }</div>
+<div class="line"><span class="lineno">  524</span>    }</div>
+<div class="line"><span class="lineno">  525</span>    Double_t <a class="code hl_variable" href="namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed">z</a> = fPythia-&gt;event[<a class="code hl_variable" href="namespacerunPythia8.html#a73714686db2b6d0b7de90c8aa2382d88">ii</a>].zProd() * <a class="code hl_variable" href="exitHadronAbsorber_8cxx.html#ab2a567bfbaee880f55a40bacfbb4bd3c">mm</a> + zinter * <a class="code hl_variable" href="ShipBellField_8cxx.html#a9842927f33236414d34831f59ed1c28f">cm</a>;</div>
+<div class="line"><span class="lineno">  526</span>    Double_t <a class="code hl_variable" href="namespacerun__fixedTarget.html#a68f8e54ebe34ed88a1aff4505c32be7c">x</a> = fPythia-&gt;event[<a class="code hl_variable" href="namespacerunPythia8.html#a73714686db2b6d0b7de90c8aa2382d88">ii</a>].xProd() * <a class="code hl_variable" href="exitHadronAbsorber_8cxx.html#ab2a567bfbaee880f55a40bacfbb4bd3c">mm</a> + <a class="code hl_variable" href="classFixedTargetGenerator.html#a29a0822f3d61012c5178500b3c6f9567">xOff</a> * <a class="code hl_variable" href="ShipBellField_8cxx.html#a9842927f33236414d34831f59ed1c28f">cm</a> + dx * <a class="code hl_variable" href="ShipBellField_8cxx.html#a9842927f33236414d34831f59ed1c28f">cm</a>;</div>
+<div class="line"><span class="lineno">  527</span>    Double_t <a class="code hl_variable" href="namespacerun__tracking__scan.html#a60149f5e9c7fe53ba27d5ee50faa64de">y</a> = fPythia-&gt;event[<a class="code hl_variable" href="namespacerunPythia8.html#a73714686db2b6d0b7de90c8aa2382d88">ii</a>].yProd() * <a class="code hl_variable" href="exitHadronAbsorber_8cxx.html#ab2a567bfbaee880f55a40bacfbb4bd3c">mm</a> + <a class="code hl_variable" href="classFixedTargetGenerator.html#ac575dc0a0ee8177e0adf1062fabd956a">yOff</a> * <a class="code hl_variable" href="ShipBellField_8cxx.html#a9842927f33236414d34831f59ed1c28f">cm</a> + <a class="code hl_variable" href="namespacerun__fixedTarget.html#a3112a5faf6aba672ca6db63ae2691c5c">dy</a> * <a class="code hl_variable" href="ShipBellField_8cxx.html#a9842927f33236414d34831f59ed1c28f">cm</a>;</div>
+<div class="line"><span class="lineno">  528</span>    Double_t tof =</div>
+<div class="line"><span class="lineno">  529</span>        fPythia-&gt;event[<a class="code hl_variable" href="namespacerunPythia8.html#a73714686db2b6d0b7de90c8aa2382d88">ii</a>].tProd() / (10 * <a class="code hl_variable" href="DPPythia8Generator_8cxx.html#a918077216eb661c02ed2a5bfd06bb77d">c_light</a>);  <span class="comment">// to go from mm to s</span></div>
+<div class="line"><span class="lineno">  530</span>    Double_t <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#acb959a726115115cca6fd66067b7e986">px</a> = fPythia-&gt;event[<a class="code hl_variable" href="namespacerunPythia8.html#a73714686db2b6d0b7de90c8aa2382d88">ii</a>].px();</div>
+<div class="line"><span class="lineno">  531</span>    Double_t <a class="code hl_variable" href="namespacerunPythia8.html#ad6b7ec130f84165691f3d15beb4ac6ea">py</a> = fPythia-&gt;event[<a class="code hl_variable" href="namespacerunPythia8.html#a73714686db2b6d0b7de90c8aa2382d88">ii</a>].py();</div>
+<div class="line"><span class="lineno">  532</span>    Int_t im = fPythia-&gt;event[<a class="code hl_variable" href="namespacerunPythia8.html#a73714686db2b6d0b7de90c8aa2382d88">ii</a>].mother1() - 1;</div>
+<div class="line"><span class="lineno">  533</span>    procID = kPPrimary;</div>
+<div class="line"><span class="lineno">  534</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classFixedTargetGenerator.html#ad27ea400e92d6ae34e3c8f5da1c239fb">Option</a> != <span class="stringliteral">&quot;Primary&quot;</span>) {</div>
+<div class="line"><span class="lineno">  535</span>      procID = kPDecay;</div>
+<div class="line"><span class="lineno">  536</span>      im += 1;</div>
+<div class="line"><span class="lineno">  537</span>      <span class="keywordflow">if</span> (ii == 1) {</div>
+<div class="line"><span class="lineno">  538</span>        procID = kPHadronic;</div>
 <div class="line"><span class="lineno">  539</span>      }</div>
-<div class="line"><span class="lineno">  540</span>    }</div>
-<div class="line"><span class="lineno">  541</span>    <a class="code hl_function" href="classSHiP_1_1Generator.html#a225ef62e734c3b42f9ddc1ce9c44538a">IncrementCounter</a>(<span class="stringliteral">&quot;stored_tracks&quot;</span>);</div>
-<div class="line"><span class="lineno">  542</span>    <span class="keywordflow">if</span> (wanttracking) {</div>
-<div class="line"><span class="lineno">  543</span>      <a class="code hl_function" href="classSHiP_1_1Generator.html#a225ef62e734c3b42f9ddc1ce9c44538a">IncrementCounter</a>(<span class="stringliteral">&quot;tracked_final_state_particles&quot;</span>);</div>
-<div class="line"><span class="lineno">  544</span>    } <span class="keywordflow">else</span> {</div>
-<div class="line"><span class="lineno">  545</span>      <a class="code hl_function" href="classSHiP_1_1Generator.html#a225ef62e734c3b42f9ddc1ce9c44538a">IncrementCounter</a>(<span class="stringliteral">&quot;skipped_final_state_particles&quot;</span>);</div>
-<div class="line"><span class="lineno">  546</span>    }</div>
-<div class="line"><span class="lineno">  547</span>    cpg-&gt;AddTrack(<span class="keywordtype">id</span>, px, py, pz, x * cm, y * cm, z * cm, im, wanttracking, e,</div>
-<div class="line"><span class="lineno">  548</span>                  tof, <a class="code hl_variable" href="classFixedTargetGenerator.html#a5c41df66f567cfaec9b1975609648829">wspill</a>, procID);</div>
-<div class="line"><span class="lineno">  549</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classFixedTargetGenerator.html#adbe0d15a750be256cc0dd5aa00a961cf">withNtuple</a>) {</div>
-<div class="line"><span class="lineno">  550</span>      <span class="keywordtype">int</span> <a class="code hl_variable" href="namespacemakeCascade.html#a6727d7bb8472fc986a59166a91b33c15">idabs</a> = TMath::Abs(<span class="keywordtype">id</span>);</div>
-<div class="line"><span class="lineno">  551</span>      <span class="keywordflow">if</span> (idabs &lt; 10) {</div>
-<div class="line"><span class="lineno">  552</span>        <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">  553</span>      }</div>
-<div class="line"><span class="lineno">  554</span>      <span class="keywordflow">if</span> (idabs &lt; 18 || idabs == 22 || idabs == 111 || idabs == 221 ||</div>
-<div class="line"><span class="lineno">  555</span>          idabs == 223 || idabs == 331 || idabs == 211 || idabs == 113 ||</div>
-<div class="line"><span class="lineno">  556</span>          idabs == 333 || idabs == 321 || idabs == 2212) {</div>
-<div class="line"><span class="lineno">  557</span>        Int_t moID = fPythia-&gt;event[im + 1].id();</div>
-<div class="line"><span class="lineno">  558</span>        <a class="code hl_variable" href="classFixedTargetGenerator.html#a485930ee0f6988b83b8b24105cec8a50">fNtuple</a>-&gt;Fill(0, <span class="keywordtype">id</span>, px, py, pz, e, x * cm, y * cm, z * cm, moID);</div>
-<div class="line"><span class="lineno">  559</span>      }</div>
-<div class="line"><span class="lineno">  560</span>    }</div>
-<div class="line"><span class="lineno">  561</span>  }</div>
-<div class="line"><span class="lineno">  562</span>  <a class="code hl_function" href="classSHiP_1_1Generator.html#a225ef62e734c3b42f9ddc1ce9c44538a">IncrementCounter</a>(<span class="stringliteral">&quot;generated_events&quot;</span>);</div>
-<div class="line"><span class="lineno">  563</span>  <span class="keywordflow">return</span> kTRUE;</div>
-<div class="line"><span class="lineno">  564</span>}</div>
+<div class="line"><span class="lineno">  540</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><span class="lineno">  541</span>      <span class="keywordflow">if</span> (ii &lt; 3) {</div>
+<div class="line"><span class="lineno">  542</span>        im = -1;</div>
+<div class="line"><span class="lineno">  543</span>      }</div>
+<div class="line"><span class="lineno">  544</span>    }</div>
+<div class="line"><span class="lineno">  545</span>    <a class="code hl_function" href="classSHiP_1_1Generator.html#a225ef62e734c3b42f9ddc1ce9c44538a">IncrementCounter</a>(<span class="stringliteral">&quot;stored_tracks&quot;</span>);</div>
+<div class="line"><span class="lineno">  546</span>    <span class="keywordflow">if</span> (wanttracking) {</div>
+<div class="line"><span class="lineno">  547</span>      <a class="code hl_function" href="classSHiP_1_1Generator.html#a225ef62e734c3b42f9ddc1ce9c44538a">IncrementCounter</a>(<span class="stringliteral">&quot;tracked_final_state_particles&quot;</span>);</div>
+<div class="line"><span class="lineno">  548</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><span class="lineno">  549</span>      <a class="code hl_function" href="classSHiP_1_1Generator.html#a225ef62e734c3b42f9ddc1ce9c44538a">IncrementCounter</a>(<span class="stringliteral">&quot;skipped_final_state_particles&quot;</span>);</div>
+<div class="line"><span class="lineno">  550</span>    }</div>
+<div class="line"><span class="lineno">  551</span>    cpg-&gt;AddTrack(<span class="keywordtype">id</span>, px, py, pz, x * cm, y * cm, z * cm, im, wanttracking, e,</div>
+<div class="line"><span class="lineno">  552</span>                  tof, <a class="code hl_variable" href="classFixedTargetGenerator.html#a5c41df66f567cfaec9b1975609648829">wspill</a>, procID);</div>
+<div class="line"><span class="lineno">  553</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classFixedTargetGenerator.html#adbe0d15a750be256cc0dd5aa00a961cf">withNtuple</a>) {</div>
+<div class="line"><span class="lineno">  554</span>      <span class="keywordtype">int</span> <a class="code hl_variable" href="namespacemakeCascade.html#a6727d7bb8472fc986a59166a91b33c15">idabs</a> = TMath::Abs(<span class="keywordtype">id</span>);</div>
+<div class="line"><span class="lineno">  555</span>      <span class="keywordflow">if</span> (idabs &lt; 10) {</div>
+<div class="line"><span class="lineno">  556</span>        <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">  557</span>      }</div>
+<div class="line"><span class="lineno">  558</span>      <span class="keywordflow">if</span> (idabs &lt; 18 || idabs == 22 || idabs == 111 || idabs == 221 ||</div>
+<div class="line"><span class="lineno">  559</span>          idabs == 223 || idabs == 331 || idabs == 211 || idabs == 113 ||</div>
+<div class="line"><span class="lineno">  560</span>          idabs == 333 || idabs == 321 || idabs == 2212) {</div>
+<div class="line"><span class="lineno">  561</span>        Int_t moID = fPythia-&gt;event[im + 1].id();</div>
+<div class="line"><span class="lineno">  562</span>        <a class="code hl_variable" href="classFixedTargetGenerator.html#a485930ee0f6988b83b8b24105cec8a50">fNtuple</a>-&gt;Fill(0, <span class="keywordtype">id</span>, px, py, pz, e, x * cm, y * cm, z * cm, moID);</div>
+<div class="line"><span class="lineno">  563</span>      }</div>
+<div class="line"><span class="lineno">  564</span>    }</div>
+<div class="line"><span class="lineno">  565</span>  }</div>
+<div class="line"><span class="lineno">  566</span>  <a class="code hl_function" href="classSHiP_1_1Generator.html#a225ef62e734c3b42f9ddc1ce9c44538a">IncrementCounter</a>(<span class="stringliteral">&quot;generated_events&quot;</span>);</div>
+<div class="line"><span class="lineno">  567</span>  <span class="keywordflow">return</span> kTRUE;</div>
+<div class="line"><span class="lineno">  568</span>}</div>
 <div class="ttc" id="aBeamSmearingUtils_8cxx_html_adf7404615c66ba9771106a05a6c0abbc"><div class="ttname"><a href="BeamSmearingUtils_8cxx.html#adf7404615c66ba9771106a05a6c0abbc">CalculateBeamOffset</a></div><div class="ttdeci">std::pair&lt; Double_t, Double_t &gt; CalculateBeamOffset(Double_t smearBeam, Double_t paintBeam)</div><div class="ttdef"><b>Definition</b> <a href="BeamSmearingUtils_8cxx_source.html#l00010">BeamSmearingUtils.cxx:10</a></div></div>
 <div class="ttc" id="aDPPythia8Generator_8cxx_html_a918077216eb661c02ed2a5bfd06bb77d"><div class="ttname"><a href="DPPythia8Generator_8cxx.html#a918077216eb661c02ed2a5bfd06bb77d">c_light</a></div><div class="ttdeci">const Double_t c_light</div><div class="ttdef"><b>Definition</b> <a href="DPPythia8Generator_8cxx_source.html#l00021">DPPythia8Generator.cxx:21</a></div></div>
 <div class="ttc" id="aFixedTargetGenerator_8cxx_html_a357b34ec460558c0942628e20a171eef"><div class="ttname"><a href="FixedTargetGenerator_8cxx.html#a357b34ec460558c0942628e20a171eef">mbarn</a></div><div class="ttdeci">constexpr Double_t mbarn</div><div class="ttdef"><b>Definition</b> <a href="FixedTargetGenerator_8cxx_source.html#l00031">FixedTargetGenerator.cxx:31</a></div></div>
