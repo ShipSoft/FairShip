@@ -113,9 +113,9 @@ def makeBackgroundX(runList, cycle: int = 0) -> None:
 def merge(run, cycle: int = 0) -> None:
     fname = "pythia8_Geant4_XX_10.0.root"
     cmd = " "
+    orun = run + cycle * 1000
     for n in range(ncpus):
         for x in os.listdir(path + "/run" + str(run + n)):
-            orun = run + cycle * 1000
             if not x.find("run_fixedTarget_" + str(orun + n)) < 0:
                 if cycle == 0 and run == 0 and not x.find("1001") < 0:
                     continue
