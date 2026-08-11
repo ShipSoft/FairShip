@@ -503,7 +503,7 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
   if (withEvtGen) {
     fPythia->moreDecays();
   }  // let the very short lived resonances decay via Pythia8
-  if (Debug && !G4only) {
+  if (Debug) {
     fPythia->event.list();
   }
   TMCProcess procID;
