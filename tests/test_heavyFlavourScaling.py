@@ -34,6 +34,7 @@ def test_A_without_target_composition():
 
 
 def test_explicit_A_overrides_preset():
+    """Passing both is deliberate: an explicit A wins over the "W" preset."""
     cs = derive_cross_sections("W", A=98.0)
     assert cs.A == 98.0
     assert cs.scale == pytest.approx(1.0)
