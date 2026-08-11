@@ -111,6 +111,12 @@ Functions</h2></td></tr>
 <tr class="separator:a77d40506bdae288579639111a73ead6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adff1646bf67454db33f1f66ff22587db" id="r_adff1646bf67454db33f1f66ff22587db"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetest__heavyFlavourScaling.html#adff1646bf67454db33f1f66ff22587db">test_non_positive_A_raises</a> ()</td></tr>
 <tr class="separator:adff1646bf67454db33f1f66ff22587db"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae354281815c07143ad58ce604b009edd" id="r_ae354281815c07143ad58ce604b009edd"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetest__heavyFlavourScaling.html#ae354281815c07143ad58ce604b009edd">test_override_matching_run_type_is_accepted</a> ()</td></tr>
+<tr class="separator:ae354281815c07143ad58ce604b009edd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a87f40f09bed788baab055e15389894a4" id="r_a87f40f09bed788baab055e15389894a4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetest__heavyFlavourScaling.html#a87f40f09bed788baab055e15389894a4">test_override_wrong_run_type_raises</a> ()</td></tr>
+<tr class="separator:a87f40f09bed788baab055e15389894a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f6b6f052a9005f5a52e098da3dc7a81" id="r_a9f6b6f052a9005f5a52e098da3dc7a81"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetest__heavyFlavourScaling.html#a9f6b6f052a9005f5a52e098da3dc7a81">test_both_overrides_raise</a> ()</td></tr>
+<tr class="separator:a9f6b6f052a9005f5a52e098da3dc7a81"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="ac02ea77ca560496416857f546def4103" name="ac02ea77ca560496416857f546def4103"></a>
@@ -128,15 +134,37 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__heavyFlavourScaling_8py_source.html#l00028">28</a> of file <a class="el" href="test__heavyFlavourScaling_8py_source.html">test_heavyFlavourScaling.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   28</span><span class="keyword">def </span>test_A_without_target_composition():</div>
-<div class="line"><span class="lineno">   29</span>    cs = derive_cross_sections(A=181.0)</div>
-<div class="line"><span class="lineno">   30</span>    <span class="keyword">assert</span> cs.A == 181.0</div>
-<div class="line"><span class="lineno">   31</span>    <span class="keyword">assert</span> cs.scale == pytest.approx((181.0 / 98.0) ** 0.29)</div>
-<div class="line"><span class="lineno">   32</span>    <span class="keyword">assert</span> cs.chicc == pytest.approx(CHICC_REF * cs.scale)</div>
-<div class="line"><span class="lineno">   33</span>    <span class="keyword">assert</span> cs.chibb == pytest.approx(CHIBB_REF * cs.scale)</div>
-<div class="line"><span class="lineno">   34</span> </div>
+<p class="definition">Definition at line <a class="el" href="test__heavyFlavourScaling_8py_source.html#l00029">29</a> of file <a class="el" href="test__heavyFlavourScaling_8py_source.html">test_heavyFlavourScaling.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   29</span><span class="keyword">def </span>test_A_without_target_composition():</div>
+<div class="line"><span class="lineno">   30</span>    cs = derive_cross_sections(A=181.0)</div>
+<div class="line"><span class="lineno">   31</span>    <span class="keyword">assert</span> cs.A == 181.0</div>
+<div class="line"><span class="lineno">   32</span>    <span class="keyword">assert</span> cs.scale == pytest.approx((181.0 / 98.0) ** 0.29)</div>
+<div class="line"><span class="lineno">   33</span>    <span class="keyword">assert</span> cs.chicc == pytest.approx(CHICC_REF * cs.scale)</div>
+<div class="line"><span class="lineno">   34</span>    <span class="keyword">assert</span> cs.chibb == pytest.approx(CHIBB_REF * cs.scale)</div>
 <div class="line"><span class="lineno">   35</span> </div>
+<div class="line"><span class="lineno">   36</span> </div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a9f6b6f052a9005f5a52e098da3dc7a81" name="a9f6b6f052a9005f5a52e098da3dc7a81"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9f6b6f052a9005f5a52e098da3dc7a81">&#9670;&#160;</a></span>test_both_overrides_raise()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">test_heavyFlavourScaling.test_both_overrides_raise </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="test__heavyFlavourScaling_8py_source.html#l00076">76</a> of file <a class="el" href="test__heavyFlavourScaling_8py_source.html">test_heavyFlavourScaling.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   76</span><span class="keyword">def </span>test_both_overrides_raise():</div>
+<div class="line"><span class="lineno">   77</span>    <span class="keyword">with</span> pytest.raises(ValueError, match=<span class="stringliteral">&quot;only one&quot;</span>):</div>
+<div class="line"><span class="lineno">   78</span>        check_run_type_override(is_beauty=<span class="keyword">False</span>, chicc=1e-3, chibb=1e-7)</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -155,14 +183,14 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <pre class="fragment">Passing both is deliberate: an explicit A wins over the "W" preset.</pre> 
-<p class="definition">Definition at line <a class="el" href="test__heavyFlavourScaling_8py_source.html#l00036">36</a> of file <a class="el" href="test__heavyFlavourScaling_8py_source.html">test_heavyFlavourScaling.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   36</span><span class="keyword">def </span>test_explicit_A_overrides_preset():</div>
-<div class="line"><span class="lineno">   37</span>    <span class="stringliteral">&quot;&quot;&quot;Passing both is deliberate: an explicit A wins over the &quot;W&quot; preset.&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   38</span>    cs = derive_cross_sections(<span class="stringliteral">&quot;W&quot;</span>, A=98.0)</div>
-<div class="line"><span class="lineno">   39</span>    <span class="keyword">assert</span> cs.A == 98.0</div>
-<div class="line"><span class="lineno">   40</span>    <span class="keyword">assert</span> cs.scale == pytest.approx(1.0)</div>
-<div class="line"><span class="lineno">   41</span> </div>
+<p class="definition">Definition at line <a class="el" href="test__heavyFlavourScaling_8py_source.html#l00037">37</a> of file <a class="el" href="test__heavyFlavourScaling_8py_source.html">test_heavyFlavourScaling.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   37</span><span class="keyword">def </span>test_explicit_A_overrides_preset():</div>
+<div class="line"><span class="lineno">   38</span>    <span class="stringliteral">&quot;&quot;&quot;Passing both is deliberate: an explicit A wins over the &quot;W&quot; preset.&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   39</span>    cs = derive_cross_sections(<span class="stringliteral">&quot;W&quot;</span>, A=98.0)</div>
+<div class="line"><span class="lineno">   40</span>    <span class="keyword">assert</span> cs.A == 98.0</div>
+<div class="line"><span class="lineno">   41</span>    <span class="keyword">assert</span> cs.scale == pytest.approx(1.0)</div>
 <div class="line"><span class="lineno">   42</span> </div>
+<div class="line"><span class="lineno">   43</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -181,13 +209,13 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__heavyFlavourScaling_8py_source.html#l00043">43</a> of file <a class="el" href="test__heavyFlavourScaling_8py_source.html">test_heavyFlavourScaling.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   43</span><span class="keyword">def </span>test_explicit_ratios_override_derived():</div>
-<div class="line"><span class="lineno">   44</span>    cs = derive_cross_sections(A=98.0, chicc=5e-3, chibb=2e-7)</div>
-<div class="line"><span class="lineno">   45</span>    <span class="keyword">assert</span> cs.chicc == 5e-3</div>
-<div class="line"><span class="lineno">   46</span>    <span class="keyword">assert</span> cs.chibb == 2e-7</div>
-<div class="line"><span class="lineno">   47</span> </div>
+<p class="definition">Definition at line <a class="el" href="test__heavyFlavourScaling_8py_source.html#l00044">44</a> of file <a class="el" href="test__heavyFlavourScaling_8py_source.html">test_heavyFlavourScaling.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   44</span><span class="keyword">def </span>test_explicit_ratios_override_derived():</div>
+<div class="line"><span class="lineno">   45</span>    cs = derive_cross_sections(A=98.0, chicc=5e-3, chibb=2e-7)</div>
+<div class="line"><span class="lineno">   46</span>    <span class="keyword">assert</span> cs.chicc == 5e-3</div>
+<div class="line"><span class="lineno">   47</span>    <span class="keyword">assert</span> cs.chibb == 2e-7</div>
 <div class="line"><span class="lineno">   48</span> </div>
+<div class="line"><span class="lineno">   49</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -206,12 +234,12 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__heavyFlavourScaling_8py_source.html#l00049">49</a> of file <a class="el" href="test__heavyFlavourScaling_8py_source.html">test_heavyFlavourScaling.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   49</span><span class="keyword">def </span>test_missing_target_and_A_raises():</div>
-<div class="line"><span class="lineno">   50</span>    <span class="keyword">with</span> pytest.raises(ValueError):</div>
-<div class="line"><span class="lineno">   51</span>        derive_cross_sections()</div>
-<div class="line"><span class="lineno">   52</span> </div>
+<p class="definition">Definition at line <a class="el" href="test__heavyFlavourScaling_8py_source.html#l00050">50</a> of file <a class="el" href="test__heavyFlavourScaling_8py_source.html">test_heavyFlavourScaling.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   50</span><span class="keyword">def </span>test_missing_target_and_A_raises():</div>
+<div class="line"><span class="lineno">   51</span>    <span class="keyword">with</span> pytest.raises(ValueError):</div>
+<div class="line"><span class="lineno">   52</span>        derive_cross_sections()</div>
 <div class="line"><span class="lineno">   53</span> </div>
+<div class="line"><span class="lineno">   54</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -230,15 +258,15 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__heavyFlavourScaling_8py_source.html#l00012">12</a> of file <a class="el" href="test__heavyFlavourScaling_8py_source.html">test_heavyFlavourScaling.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   12</span><span class="keyword">def </span>test_mo_preset_is_reference():</div>
-<div class="line"><span class="lineno">   13</span>    cs = derive_cross_sections(<span class="stringliteral">&quot;Mo&quot;</span>)</div>
-<div class="line"><span class="lineno">   14</span>    <span class="keyword">assert</span> cs.A == 98.0</div>
-<div class="line"><span class="lineno">   15</span>    <span class="keyword">assert</span> cs.scale == pytest.approx(1.0)</div>
-<div class="line"><span class="lineno">   16</span>    <span class="keyword">assert</span> cs.chicc == pytest.approx(CHICC_REF)</div>
-<div class="line"><span class="lineno">   17</span>    <span class="keyword">assert</span> cs.chibb == pytest.approx(CHIBB_REF)</div>
-<div class="line"><span class="lineno">   18</span> </div>
+<p class="definition">Definition at line <a class="el" href="test__heavyFlavourScaling_8py_source.html#l00013">13</a> of file <a class="el" href="test__heavyFlavourScaling_8py_source.html">test_heavyFlavourScaling.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   13</span><span class="keyword">def </span>test_mo_preset_is_reference():</div>
+<div class="line"><span class="lineno">   14</span>    cs = derive_cross_sections(<span class="stringliteral">&quot;Mo&quot;</span>)</div>
+<div class="line"><span class="lineno">   15</span>    <span class="keyword">assert</span> cs.A == 98.0</div>
+<div class="line"><span class="lineno">   16</span>    <span class="keyword">assert</span> cs.scale == pytest.approx(1.0)</div>
+<div class="line"><span class="lineno">   17</span>    <span class="keyword">assert</span> cs.chicc == pytest.approx(CHICC_REF)</div>
+<div class="line"><span class="lineno">   18</span>    <span class="keyword">assert</span> cs.chibb == pytest.approx(CHIBB_REF)</div>
 <div class="line"><span class="lineno">   19</span> </div>
+<div class="line"><span class="lineno">   20</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -257,12 +285,66 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__heavyFlavourScaling_8py_source.html#l00054">54</a> of file <a class="el" href="test__heavyFlavourScaling_8py_source.html">test_heavyFlavourScaling.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   54</span><span class="keyword">def </span>test_non_positive_A_raises():</div>
-<div class="line"><span class="lineno">   55</span>    <span class="keyword">with</span> pytest.raises(ValueError):</div>
-<div class="line"><span class="lineno">   56</span>        derive_cross_sections(A=0)</div>
-<div class="line"><span class="lineno">   57</span>    <span class="keyword">with</span> pytest.raises(ValueError):</div>
-<div class="line"><span class="lineno">   58</span>        derive_cross_sections(A=-1.0)</div>
+<p class="definition">Definition at line <a class="el" href="test__heavyFlavourScaling_8py_source.html#l00055">55</a> of file <a class="el" href="test__heavyFlavourScaling_8py_source.html">test_heavyFlavourScaling.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   55</span><span class="keyword">def </span>test_non_positive_A_raises():</div>
+<div class="line"><span class="lineno">   56</span>    <span class="keyword">with</span> pytest.raises(ValueError):</div>
+<div class="line"><span class="lineno">   57</span>        derive_cross_sections(A=0)</div>
+<div class="line"><span class="lineno">   58</span>    <span class="keyword">with</span> pytest.raises(ValueError):</div>
+<div class="line"><span class="lineno">   59</span>        derive_cross_sections(A=-1.0)</div>
+<div class="line"><span class="lineno">   60</span> </div>
+<div class="line"><span class="lineno">   61</span> </div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="ae354281815c07143ad58ce604b009edd" name="ae354281815c07143ad58ce604b009edd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae354281815c07143ad58ce604b009edd">&#9670;&#160;</a></span>test_override_matching_run_type_is_accepted()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">test_heavyFlavourScaling.test_override_matching_run_type_is_accepted </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="test__heavyFlavourScaling_8py_source.html#l00062">62</a> of file <a class="el" href="test__heavyFlavourScaling_8py_source.html">test_heavyFlavourScaling.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   62</span><span class="keyword">def </span>test_override_matching_run_type_is_accepted():</div>
+<div class="line"><span class="lineno">   63</span>    <span class="comment"># charm run with chicc, beauty run with chibb, and no override at all.</span></div>
+<div class="line"><span class="lineno">   64</span>    check_run_type_override(is_beauty=<span class="keyword">False</span>, chicc=1e-3, chibb=<span class="keywordtype">None</span>)</div>
+<div class="line"><span class="lineno">   65</span>    check_run_type_override(is_beauty=<span class="keyword">True</span>, chicc=<span class="keywordtype">None</span>, chibb=1e-7)</div>
+<div class="line"><span class="lineno">   66</span>    check_run_type_override(is_beauty=<span class="keyword">False</span>, chicc=<span class="keywordtype">None</span>, chibb=<span class="keywordtype">None</span>)</div>
+<div class="line"><span class="lineno">   67</span> </div>
+<div class="line"><span class="lineno">   68</span> </div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a87f40f09bed788baab055e15389894a4" name="a87f40f09bed788baab055e15389894a4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a87f40f09bed788baab055e15389894a4">&#9670;&#160;</a></span>test_override_wrong_run_type_raises()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">test_heavyFlavourScaling.test_override_wrong_run_type_raises </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="test__heavyFlavourScaling_8py_source.html#l00069">69</a> of file <a class="el" href="test__heavyFlavourScaling_8py_source.html">test_heavyFlavourScaling.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   69</span><span class="keyword">def </span>test_override_wrong_run_type_raises():</div>
+<div class="line"><span class="lineno">   70</span>    <span class="keyword">with</span> pytest.raises(ValueError, match=<span class="stringliteral">&quot;beauty run&quot;</span>):</div>
+<div class="line"><span class="lineno">   71</span>        check_run_type_override(is_beauty=<span class="keyword">True</span>, chicc=1e-3, chibb=<span class="keywordtype">None</span>)</div>
+<div class="line"><span class="lineno">   72</span>    <span class="keyword">with</span> pytest.raises(ValueError, match=<span class="stringliteral">&quot;charm run&quot;</span>):</div>
+<div class="line"><span class="lineno">   73</span>        check_run_type_override(is_beauty=<span class="keyword">False</span>, chicc=<span class="keywordtype">None</span>, chibb=1e-7)</div>
+<div class="line"><span class="lineno">   74</span> </div>
+<div class="line"><span class="lineno">   75</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -281,15 +363,15 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__heavyFlavourScaling_8py_source.html#l00020">20</a> of file <a class="el" href="test__heavyFlavourScaling_8py_source.html">test_heavyFlavourScaling.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   20</span><span class="keyword">def </span>test_w_preset_scales_up():</div>
-<div class="line"><span class="lineno">   21</span>    cs = derive_cross_sections(<span class="stringliteral">&quot;W&quot;</span>)</div>
-<div class="line"><span class="lineno">   22</span>    <span class="keyword">assert</span> cs.A == 184.0</div>
-<div class="line"><span class="lineno">   23</span>    <span class="keyword">assert</span> cs.scale == pytest.approx((184.0 / 98.0) ** 0.29)</div>
-<div class="line"><span class="lineno">   24</span>    <span class="keyword">assert</span> cs.chicc == pytest.approx(CHICC_REF * cs.scale)</div>
-<div class="line"><span class="lineno">   25</span>    <span class="keyword">assert</span> cs.chibb == pytest.approx(CHIBB_REF * cs.scale)</div>
-<div class="line"><span class="lineno">   26</span> </div>
+<p class="definition">Definition at line <a class="el" href="test__heavyFlavourScaling_8py_source.html#l00021">21</a> of file <a class="el" href="test__heavyFlavourScaling_8py_source.html">test_heavyFlavourScaling.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   21</span><span class="keyword">def </span>test_w_preset_scales_up():</div>
+<div class="line"><span class="lineno">   22</span>    cs = derive_cross_sections(<span class="stringliteral">&quot;W&quot;</span>)</div>
+<div class="line"><span class="lineno">   23</span>    <span class="keyword">assert</span> cs.A == 184.0</div>
+<div class="line"><span class="lineno">   24</span>    <span class="keyword">assert</span> cs.scale == pytest.approx((184.0 / 98.0) ** 0.29)</div>
+<div class="line"><span class="lineno">   25</span>    <span class="keyword">assert</span> cs.chicc == pytest.approx(CHICC_REF * cs.scale)</div>
+<div class="line"><span class="lineno">   26</span>    <span class="keyword">assert</span> cs.chibb == pytest.approx(CHIBB_REF * cs.scale)</div>
 <div class="line"><span class="lineno">   27</span> </div>
+<div class="line"><span class="lineno">   28</span> </div>
 </div><!-- fragment -->
 </div>
 </div>

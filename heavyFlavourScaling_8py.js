@@ -1,5 +1,6 @@
 var heavyFlavourScaling_8py =
 [
+    [ "check_run_type_override", "heavyFlavourScaling_8py.html#a874f2c94886cae2cfe7073979bf0bf67", null ],
     [ "derive_cross_sections", "heavyFlavourScaling_8py.html#a7425e6668d65070af46d3ce13b2076a2", null ],
     [ "format_summary", "heavyFlavourScaling_8py.html#a7e8c6bf277ce1ad2e7e0773910e6d31a", null ],
     [ "A_REF", "heavyFlavourScaling_8py.html#aecf285c836f1d97823a521083bf74f80", null ],

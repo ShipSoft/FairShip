@@ -100,6 +100,8 @@ $(document).ready(function(){initNavTree('namespaceheavyFlavourScaling.html','')
 Functions</h2></td></tr>
 <tr class="memitem:a7425e6668d65070af46d3ce13b2076a2" id="r_a7425e6668d65070af46d3ce13b2076a2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceheavyFlavourScaling.html#a7425e6668d65070af46d3ce13b2076a2">derive_cross_sections</a> (target_composition=None, A=None, chicc=None, chibb=None)</td></tr>
 <tr class="separator:a7425e6668d65070af46d3ce13b2076a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a874f2c94886cae2cfe7073979bf0bf67" id="r_a874f2c94886cae2cfe7073979bf0bf67"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceheavyFlavourScaling.html#a874f2c94886cae2cfe7073979bf0bf67">check_run_type_override</a> (is_beauty, chicc, chibb)</td></tr>
+<tr class="separator:a874f2c94886cae2cfe7073979bf0bf67"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7e8c6bf277ce1ad2e7e0773910e6d31a" id="r_a7e8c6bf277ce1ad2e7e0773910e6d31a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceheavyFlavourScaling.html#a7e8c6bf277ce1ad2e7e0773910e6d31a">format_summary</a> (cs, target_composition=None)</td></tr>
 <tr class="separator:a7e8c6bf277ce1ad2e7e0773910e6d31a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -126,6 +128,62 @@ Variables</h2></td></tr>
 Shared by ``macro/makeDecay.py`` and ``macro/run_fixedTarget.py`` so the physics
 constants and the ``chicc``/``chibb`` derivation live in a single place.
 </pre> </div><h2 class="groupheader">Function Documentation</h2>
+<a id="a874f2c94886cae2cfe7073979bf0bf67" name="a874f2c94886cae2cfe7073979bf0bf67"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a874f2c94886cae2cfe7073979bf0bf67">&#9670;&#160;</a></span>check_run_type_override()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">heavyFlavourScaling.check_run_type_override </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>is_beauty</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>chicc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>chibb</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<pre class="fragment">Reject a cross-section override that does not match the run type.
+
+A run is either charm or beauty, so at most one of ``chicc``/``chibb`` is
+meaningful. Passing the wrong one (or both) is a mistake and raises
+``ValueError`` with a clear message rather than being silently ignored.
+</pre> 
+<p class="definition">Definition at line <a class="el" href="heavyFlavourScaling_8py_source.html#l00044">44</a> of file <a class="el" href="heavyFlavourScaling_8py_source.html">heavyFlavourScaling.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   44</span><span class="keyword">def </span>check_run_type_override(is_beauty, chicc, chibb):</div>
+<div class="line"><span class="lineno">   45</span>    <span class="stringliteral">&quot;&quot;&quot;Reject a cross-section override that does not match the run type.</span></div>
+<div class="line"><span class="lineno">   46</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">   47</span><span class="stringliteral">    A run is either charm or beauty, so at most one of ``chicc``/``chibb`` is</span></div>
+<div class="line"><span class="lineno">   48</span><span class="stringliteral">    meaningful. Passing the wrong one (or both) is a mistake and raises</span></div>
+<div class="line"><span class="lineno">   49</span><span class="stringliteral">    ``ValueError`` with a clear message rather than being silently ignored.</span></div>
+<div class="line"><span class="lineno">   50</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   51</span>    <span class="keywordflow">if</span> chicc <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span> <span class="keywordflow">and</span> chibb <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span>:</div>
+<div class="line"><span class="lineno">   52</span>        <span class="keywordflow">raise</span> ValueError(<span class="stringliteral">&quot;Set only one of --chicc / --chibb; a run is either charm or beauty.&quot;</span>)</div>
+<div class="line"><span class="lineno">   53</span>    <span class="keywordflow">if</span> is_beauty <span class="keywordflow">and</span> chicc <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span>:</div>
+<div class="line"><span class="lineno">   54</span>        <span class="keywordflow">raise</span> ValueError(<span class="stringliteral">&quot;This is a beauty run: pass --chibb, not --chicc.&quot;</span>)</div>
+<div class="line"><span class="lineno">   55</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> is_beauty <span class="keywordflow">and</span> chibb <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span>:</div>
+<div class="line"><span class="lineno">   56</span>        <span class="keywordflow">raise</span> ValueError(<span class="stringliteral">&quot;This is a charm run: pass --chicc, not --chibb.&quot;</span>)</div>
+<div class="line"><span class="lineno">   57</span> </div>
+<div class="line"><span class="lineno">   58</span> </div>
+</div><!-- fragment -->
+</div>
+</div>
 <a id="a7425e6668d65070af46d3ce13b2076a2" name="a7425e6668d65070af46d3ce13b2076a2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7425e6668d65070af46d3ce13b2076a2">&#9670;&#160;</a></span>derive_cross_sections()</h2>
 
@@ -218,15 +276,15 @@ override the target-derived value when not ``None``. Supply either
       </table>
 </div><div class="memdoc">
 <pre class="fragment">One human-readable summary of the derived cross-section ratios.</pre> 
-<p class="definition">Definition at line <a class="el" href="heavyFlavourScaling_8py_source.html#l00044">44</a> of file <a class="el" href="heavyFlavourScaling_8py_source.html">heavyFlavourScaling.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   44</span><span class="keyword">def </span>format_summary(cs, target_composition=None):</div>
-<div class="line"><span class="lineno">   45</span>    <span class="stringliteral">&quot;&quot;&quot;One human-readable summary of the derived cross-section ratios.&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   46</span>    label = target_composition <span class="keywordflow">or</span> <span class="stringliteral">&quot;custom (A given)&quot;</span></div>
-<div class="line"><span class="lineno">   47</span>    <span class="keywordflow">return</span> (</div>
-<div class="line"><span class="lineno">   48</span>        f<span class="stringliteral">&quot;Target composition: {label}, A={cs.A}, &quot;</span></div>
-<div class="line"><span class="lineno">   49</span>        f<span class="stringliteral">&quot;scale=(A/{A_REF})^({heavyflavour_Ascale}-{mbias_Ascale})={cs.scale:.4f}\n&quot;</span></div>
-<div class="line"><span class="lineno">   50</span>        f<span class="stringliteral">&quot;Derived cross-section ratios: chicc={cs.chicc:.3e}, chibb={cs.chibb:.3e}&quot;</span></div>
-<div class="line"><span class="lineno">   51</span>    )</div>
+<p class="definition">Definition at line <a class="el" href="heavyFlavourScaling_8py_source.html#l00059">59</a> of file <a class="el" href="heavyFlavourScaling_8py_source.html">heavyFlavourScaling.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   59</span><span class="keyword">def </span>format_summary(cs, target_composition=None):</div>
+<div class="line"><span class="lineno">   60</span>    <span class="stringliteral">&quot;&quot;&quot;One human-readable summary of the derived cross-section ratios.&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   61</span>    label = target_composition <span class="keywordflow">or</span> <span class="stringliteral">&quot;custom (A given)&quot;</span></div>
+<div class="line"><span class="lineno">   62</span>    <span class="keywordflow">return</span> (</div>
+<div class="line"><span class="lineno">   63</span>        f<span class="stringliteral">&quot;Target composition: {label}, A={cs.A}, &quot;</span></div>
+<div class="line"><span class="lineno">   64</span>        f<span class="stringliteral">&quot;scale=(A/{A_REF})^({heavyflavour_Ascale}-{mbias_Ascale})={cs.scale:.4f}\n&quot;</span></div>
+<div class="line"><span class="lineno">   65</span>        f<span class="stringliteral">&quot;Derived cross-section ratios: chicc={cs.chicc:.3e}, chibb={cs.chibb:.3e}&quot;</span></div>
+<div class="line"><span class="lineno">   66</span>    )</div>
 </div><!-- fragment -->
 </div>
 </div>

@@ -1,5 +1,7 @@
 var NAVTREEINDEX18 =
 {
+"md_CHANGELOG.html#autotoc_md57":[1,6,2,1],
+"md_CHANGELOG.html#autotoc_md58":[1,6,2,2],
 "md_CHANGELOG.html#autotoc_md59":[1,6,2,3],
 "md_CHANGELOG.html#autotoc_md6":[1,1],
 "md_CHANGELOG.html#autotoc_md60":[1,6,2,4],
@@ -247,7 +249,5 @@ var NAVTREEINDEX18 =
 "namespaceadd__muonresponse.html#a29b72ac3853266c162e109e30b028287":[5,0,1,1],
 "namespaceadd__muonresponse.html#a379e276fffa8319443f49b2249b754f2":[5,0,1,0],
 "namespaceadd__muonresponse.html#a52981cb8fd991a0b5e889fdbcedd5cb7":[5,0,1,3],
-"namespaceadd__muonresponse.html#a55e193298dc5f0f17334eee4e4568886":[5,0,1,5],
-"namespaceadd__muonresponse.html#aac7731f940c514fafd1ff48518e20131":[5,0,1,8],
-"namespaceadd__muonresponse.html#ac9143fefa7ded9bda1efd01ab465a7cb":[5,0,1,7]
+"namespaceadd__muonresponse.html#a55e193298dc5f0f17334eee4e4568886":[5,0,1,5]
 };
