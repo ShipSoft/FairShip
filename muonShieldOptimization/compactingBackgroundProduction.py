@@ -148,7 +148,7 @@ def YandexProd(startDate, endDate) -> None:
         + ".pkl"
     )
     with open(pName, "wb") as fpi:
-        database = {}
+        database: dict[str, list] = {}
         database["goodruns"] = goodRuns
         database["badRuns"] = badRuns
         pickle.dump(database, fpi)
@@ -373,7 +373,7 @@ def makePrintout() -> None:
 if len(sys.argv) > 1:
     runMin = int(sys.argv[1])
     runMax = int(sys.argv[2])
-    charm = int(sys.argv[3]) if len(sys.argv) > 3 else 0
+    charm = bool(int(sys.argv[3])) if len(sys.argv) > 3 else False
     compactify(charm, runMin=runMin, runMax=runMax)
 else:
     # production without boost factor
