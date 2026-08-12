@@ -90,7 +90,7 @@ Info in <TGeoManager::CloseGeometry>: Counting nodes...
 Info in <TGeoManager::Voxelize>: Voxelizing...
 Info in <TGeoManager::CloseGeometry>: Building cache...
 Info in <TGeoManager::CountLevels>: max level = 5, max placements = 14153
-Info in <TGeoManager::CloseGeometry>: 46607 nodes/ 695 volume UID's in FAIR geometry
+Info in <TGeoManager::CloseGeometry>: 46607 nodes/ 694 volume UID's in FAIR geometry
 Info in <TGeoManager::CloseGeometry>: ----------------modeler ready----------------
 [INFO] TGeometry will be imported to VMC
 
@@ -610,8 +610,8 @@ Available UI session types: [ Qt, tcsh, csh ]
     GEANT4 Geometry statistics: 
             701 logical volumes
           46126 physical volumes
-             22 materials
-             20 user limits
+             23 materials
+             21 user limits
             694 sensitive detectors
 **********************************************
 
@@ -1081,21 +1081,22 @@ Simulation finished successfully
   Kept fraction                : 100.00%
   Branches in cbmsim           : 7
   ROOT objects                 : 5
-  Countable branches           : 5
+  Countable branches           : 6
  
 [MCTrack Validation]
-  Total tracks                 : 14612
+  Total tracks                 : 15248
   Primary tracks               : 100
-  Secondary tracks             : 14512
-  Tracks per event             : 146.1
-  Track momentum               : 3.902 +- 29.94  [min=0.02005, max=400]
-  Track energy                 : 4.001 +- 29.93  [min=0.1, max=400]
-  Track start Z                : 1.053e+04 +- 2678  [min=0, max=1.603e+04]
-  Top PDG counts               : 22:4240, 11:2666, -11:2057, 2112:1342, 2212:1308, 211:768, 111:765, -211:680, -13:126, 9900015:100
+  Secondary tracks             : 15148
+  Tracks per event             : 152.5
+  Track momentum               : 3.762 +- 29.32  [min=0.02437, max=400]
+  Track energy                 : 3.857 +- 29.31  [min=0.1, max=400]
+  Track start Z                : 1.05e+04 +- 2584  [min=0, max=1.605e+04]
+  Top PDG counts               : 22:4549, 11:2750, -11:2141, 2112:1378, 2212:1317, 111:822, -211:790, 211:750, -13:112, 9900015:100
  
 [Branch Multiplicity]
-  MCTrack                : total=14612, mean/event=146.1 +- 149.3, active=100/100 (100.0%), max=1088
-  TimeDetPoint           : total=520, mean/event=5.2 +- 7.412, active=91/100 ( 91.0%), max=48
-  splitcalPoint          : total=70132, mean/event=701.3 +- 1174, active=90/100 ( 90.0%), max=6110
-  strawtubesPoint        : total=5714, mean/event=57.14 +- 40.72, active=95/100 ( 95.0%), max=296
-  vetoPoint              : total=15866, mean/event=158.7 +- 350.6, active=52/100 ( 52.0%), max=2437
+  MCTrack                : total=15248, mean/event=152.5 +- 150.5, active=100/100 (100.0%), max=1101
+  TimeDetPoint           : total=612, mean/event=6.12 +- 9.512, active=90/100 ( 90.0%), max=60
+  UpstreamTaggerPoint    : total=1, mean/event=0.01 +- 0.0995, active=1/100 (  1.0%), max=1
+  splitcalPoint          : total=83550, mean/event=835.5 +- 1710, active=92/100 ( 92.0%), max=12001
+  strawtubesPoint        : total=5365, mean/event=53.65 +- 29.33, active=95/100 ( 95.0%), max=172
+  vetoPoint              : total=12647, mean/event=126.5 +- 294.9, active=49/100 ( 49.0%), max=1869

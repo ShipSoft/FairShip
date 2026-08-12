@@ -208,7 +208,7 @@ Info in <TGeoManager::CloseGeometry>: Counting nodes...
 Info in <TGeoManager::Voxelize>: Voxelizing...
 Info in <TGeoManager::CloseGeometry>: Building cache...
 Info in <TGeoManager::CountLevels>: max level = 6, max placements = 14153
-Info in <TGeoManager::CloseGeometry>: 3731249 nodes/ 722 volume UID's in FAIR geometry
+Info in <TGeoManager::CloseGeometry>: 3731249 nodes/ 721 volume UID's in FAIR geometry
 Info in <TGeoManager::CloseGeometry>: ----------------modeler ready----------------
 [INFO] TGeometry will be imported to VMC
 
@@ -911,8 +911,8 @@ Available UI session types: [ Qt, tcsh, csh ]
     GEANT4 Geometry statistics: 
            1316 logical volumes
           230963 physical volumes
-             31 materials
-             27 user limits
+             32 materials
+             28 user limits
             712 sensitive detectors
 **********************************************
 

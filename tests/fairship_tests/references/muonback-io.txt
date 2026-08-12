@@ -93,8 +93,8 @@ Available UI session types: [ Qt, tcsh, csh ]
     GEANT4 Geometry statistics: 
             701 logical volumes
           46126 physical volumes
-             22 materials
-             20 user limits
+             23 materials
+             21 user limits
             694 sensitive detectors
 **********************************************
 
