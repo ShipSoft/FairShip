@@ -59,14 +59,14 @@ class Task:
     z0 = 0
     Vy = np.zeros(100)
 
-    def chi2(self, res, Vy) -> int:
+    def chi2(self, res, Vy) -> float:
         # res^T V^-1 res, with the flat index i -> (row i//10, column i%10)
         s = 0
         for i in range(100):
             s += Vy[i] * res[i // 10] * res[i % 10]
         return s
 
-    def residuals(self, y_data, a, z0: int):
+    def residuals(self, y_data, a, z0: float):
         # fit parameters a: 0-2 vertex (x, y, z), 3-5 track 1 (dx/dz, dy/dz,
         # |q/p|), 6-8 track 2; positions are propagated from the vertex to z0
         res = np.zeros(10)
