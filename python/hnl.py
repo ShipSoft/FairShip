@@ -133,8 +133,9 @@ class HNLbranchings:
         self.U2 = couplings
         self.U = [math.sqrt(ui) for ui in self.U2]
         self.MN = mass * u.GeV
-        # Cached total width and integrand TF1; both constant for fixed
-        # mass/couplings, and binding a Python callable into a TF1 is expensive.
+        # Cache the total width (constant for fixed mass/couplings) and a
+        # reusable TF1 whose parameters are set per integral() call; binding a
+        # Python callable into a TF1 is expensive.
         self._totalWidth = None
         self._integrand_tf1 = None
         self.CKM = CKMmatrix()

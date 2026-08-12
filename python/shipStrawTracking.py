@@ -621,7 +621,7 @@ def getReconstructibleTracks(iEvent: int, sTree, sGeo, ShipGeo):
     ----------
     iEvent : int
         Event id.
-    sTree : root file
+    sTree : ROOT.TTree or ROOT.TChain
         Events in raw format.
     sGeo : object
         Contains SHiP detector geometry.
@@ -806,8 +806,9 @@ def getReconstructibleTracks(iEvent: int, sTree, sGeo, ShipGeo):
     for item in MCTrackIDs:
         atrack = sTree.MCTrack.At(item)
         motherId = atrack.GetMotherId()
-        # keep only daughters of the signal particle, assumed to be MCTrack 2
-        # (HNLPythia8Generator with external input file; it is 1 without one)
+        # keep only daughters of the signal particle; assumes the standard HNL
+        # production chain (external charm file), where the signal is MCTrack 2.
+        # Other generator configurations are not supported here.
         if motherId != 2:
             itemstoremove.append(item)
 
