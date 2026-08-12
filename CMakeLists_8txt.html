@@ -97,12 +97,12 @@ $(document).ready(function(){initNavTree('CMakeLists_8txt.html',''); initResizab
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:aa857ad2ec76af42fa679cf658dec4643" id="r_aa857ad2ec76af42fa679cf658dec4643"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="CMakeLists_8txt.html#aa857ad2ec76af42fa679cf658dec4643">cmake_minimum_required</a> (VERSION 3.20.0 FATAL_ERROR) cmake_policy(SET CMP0118 NEW) if(POLICY CMP0144) cmake_policy(SET CMP0144 NEW) endif() <a class="el" href="muonShieldOptimization_2CMakeLists_8txt.html#a83f3cb6f06cde493fe4290d12778da37">find_package</a>(Git QUIET) if(Git_FOUND) execute_process(COMMAND $</td></tr>
-<tr class="separator:aa857ad2ec76af42fa679cf658dec4643"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a07bc75ca41990c4bc56444efb4afbb35" id="r_a07bc75ca41990c4bc56444efb4afbb35"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="CMakeLists_8txt.html#a07bc75ca41990c4bc56444efb4afbb35">cmake_minimum_required</a> (VERSION 3.26 FATAL_ERROR) if(POLICY CMP0144) cmake_policy(SET CMP0144 NEW) endif() <a class="el" href="muonShieldOptimization_2CMakeLists_8txt.html#a83f3cb6f06cde493fe4290d12778da37">find_package</a>(Git QUIET) if(Git_FOUND) execute_process(COMMAND $</td></tr>
+<tr class="separator:a07bc75ca41990c4bc56444efb4afbb35"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="aa857ad2ec76af42fa679cf658dec4643" name="aa857ad2ec76af42fa679cf658dec4643"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa857ad2ec76af42fa679cf658dec4643">&#9670;&#160;</a></span>cmake_minimum_required()</h2>
+<a id="a07bc75ca41990c4bc56444efb4afbb35" name="a07bc75ca41990c4bc56444efb4afbb35"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a07bc75ca41990c4bc56444efb4afbb35">&#9670;&#160;</a></span>cmake_minimum_required()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -110,17 +110,16 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">cmake_minimum_required </td>
           <td>(</td>
-          <td class="paramtype">VERSION 3.20.0&#160;</td>
+          <td class="paramtype">VERSION 3.26&#160;</td>
           <td class="paramname"><em>FATAL_ERROR</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="CMakeLists_8txt_source.html#l00011">11</a> of file <a class="el" href="CMakeLists_8txt_source.html">CMakeLists.txt</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   14</span>                : GENERATED sources visible across directories.</div>
-<div class="line"><span class="lineno">   15</span>cmake_policy(SET CMP0118 NEW)</div>
-<div class="line"><span class="lineno">   16</span><span class="preprocessor"># CMP0144 (3.27): use &lt;PACKAGENAME&gt;_ROOT variables in find_package.</span></div>
+<p class="definition">Definition at line <a class="el" href="CMakeLists_8txt_source.html#l00013">13</a> of file <a class="el" href="CMakeLists_8txt_source.html">CMakeLists.txt</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   15</span>                : use &lt;PACKAGENAME&gt;_ROOT variables in <a class="code hl_function" href="muonShieldOptimization_2CMakeLists_8txt.html#a83f3cb6f06cde493fe4290d12778da37">find_package</a>. Still guarded</div>
+<div class="line"><span class="lineno">   16</span><span class="preprocessor"># because 3.27 is one minor above our 3.26 minimum, so the policy may not exist.</span></div>
 <div class="line"><span class="lineno">   17</span><span class="keywordflow">if</span>(POLICY CMP0144)</div>
 <div class="line"><span class="lineno">   18</span>    cmake_policy(SET CMP0144 NEW)</div>
 <div class="line"><span class="lineno">   19</span>endif()</div>
