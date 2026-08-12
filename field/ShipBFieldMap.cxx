@@ -142,10 +142,8 @@ void ShipBFieldMap::Field(const Double_t* position, Double_t* B) {
   Float_t BzSign = 1;
 
   if (isSymmetric_) {
-    // The field map coordinates only contain x > 0 and y > 0, i.e. we
-    // are using x-y quadrant symmetry. If the local x or y coordinates
-    // are negative we need to change their sign and keep track of the
-    // adjusted sign of Bx which we use as a multiplication factor at the end
+    // The map stores only the x > 0, y > 0 quadrant; fold negative
+    // coordinates in and track the induced signs of Bx and Bz.
     if (x < 0.0) {
       x = -x;
       BxSign *= -1.0;
@@ -520,9 +518,8 @@ Float_t ShipBFieldMap::triLinearInterp(Float_t A, Float_t B, Float_t C,
                                        Float_t xFrac1, Float_t yFrac,
                                        Float_t yFrac1, Float_t zFrac,
                                        Float_t zFrac1) {
-  // Trilinear interpolation of a single component from its eight corner values
-  // A..H (bit-for-bit the arithmetic previously performed per axis by
-  // BInterCalc).
+  // Trilinear interpolation of a single component from its eight corner
+  // values A..H.
   // Linear interpolation along x
   const Float_t F00 = A * xFrac1 + B * xFrac;
   const Float_t F10 = C * xFrac1 + D * xFrac;

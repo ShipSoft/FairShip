@@ -399,10 +399,8 @@ class DrawTracks(ROOT.FairTask):
         ntot = 0
         fPos = ROOT.TVector3()
         fMom = ROOT.TVector3()
-        # Build a trackID -> hits map once per event instead of rescanning every
-        # hit collection for every MC track (was O(tracks x hits)). Branch and
-        # in-branch order are preserved, so downstream hitlist building is
-        # unchanged.
+        # Map trackID -> hits once per event, preserving branch and in-branch
+        # order (the hitlist building below relies on it).
         hits_by_track: dict[int, list] = {}
         for P in [
             "vetoPoint",

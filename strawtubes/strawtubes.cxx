@@ -61,10 +61,8 @@ Bool_t strawtubes::ProcessHits(FairVolume* vol) {
     fLength = gMC->TrackLength();
     gMC->TrackPosition(fPos);
     gMC->TrackMomentum(fMom);
-    // Clear the "already recorded" marker on every fresh entry so that a later
-    // traversal of the same straw (curling track, delta ray, next track or
-    // event) is not silently dropped. The marker only exists to deduplicate
-    // repeated exit signals at the same boundary crossing.
+    // Reset the "already recorded" marker so a later traversal of the same
+    // straw (curling track, next track/event) is not silently dropped.
     fVolumeID = -1;
   }
   // Sum energy loss for all steps in the active volume
@@ -451,9 +449,8 @@ void strawtubes::StrawEndPoints(Int_t fDetectorID, TVector3& vbot,
                                 TVector3& vtop)
 // method to get end points from TGeoNavigator
 {
-  // The endpoints depend only on the (fixed) geometry, so cache them per detID:
-  // rebuilding the volume path and re-navigating on every hit is a significant
-  // cost in the stepping and digitisation hot paths.
+  // The geometry is fixed, so cache the endpoints per detID; TGeo navigation
+  // is expensive in the stepping and digitisation hot paths.
   static std::unordered_map<Int_t, std::pair<TVector3, TVector3>> endPointCache;
   if (auto it = endPointCache.find(fDetectorID); it != endPointCache.end()) {
     vbot = it->second.first;

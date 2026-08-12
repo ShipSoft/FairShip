@@ -261,16 +261,15 @@ def main():
         particleTree.Branch("outcome", outcome)
 
         # Seed the RNG once, before the event loop, so digitisation draws a
-        # fresh random sequence per event instead of repeating the same one.
+        # fresh random sequence per event.
         ROOT.gRandom.SetSeed(13)
 
         for ievent, event in enumerate(sTree):
             motherMap = defaultdict(list)
             motherMapVal = defaultdict(list)
             detHitMap = defaultdict(list)
-            # Hits already accounted for that will be discarded from detHitMap
-            # before the per-particle hit count is taken (e.g. SND SiliconTarget
-            # hits, which are cleared before the MTC block reuses detHitMap).
+            # Per-track counts of hits dropped from detHitMap before the
+            # per-particle hit count is taken.
             extraHitCount = defaultdict(int)
             detHitArray = []
             strawHitArr = []
@@ -340,8 +339,8 @@ def main():
             if global_variables.detector == "MTC" or global_variables.detector == "SND":
                 detHitArray.clear()
                 trID.clear()
-                # For SND the SiliconTarget hits were stored in detHitMap above;
-                # preserve their per-track counts before reusing the map for MTC.
+                # Preserve SiliconTarget per-track counts before reusing
+                # detHitMap for MTC.
                 for trackID in detHitMap:
                     extraHitCount[trackID] += len(detHitMap[trackID])
                 detHitMap.clear()
@@ -563,8 +562,8 @@ def main():
                 if len(particleCodes) < 2:
                     continue
                 event_id_vertex[0] = ievent
-                # Encode the per-event vertex index so each vertex gets a distinct
-                # id (previously constant, so every vertex shared the same value).
+                # Encode the per-event vertex index so each vertex gets a
+                # distinct id.
                 vertexVal = acts.Barcode(primaryVertex=1, secondaryVertex=0, part=c, gen=0, subpart=0).value
                 vertex_id.push_back(vertexVal)
                 particle_0ID = motherMap[str(i)]

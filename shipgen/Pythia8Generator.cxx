@@ -187,10 +187,6 @@ Bool_t Pythia8Generator::ReadEvent(FairPrimaryGenerator* cpg) {
   Double_t x, y, z, px, py, pz, dl, e, tof;
   Int_t im, id, key;
   fnRetries = 0;
-  // ReadEvent only supports the external-file mode (charm/beauty hadrons read
-  // from fTree). The standalone (no external file) branch in Init() has no
-  // corresponding event path here, so guard against dereferencing a null fTree
-  // instead of crashing on an uninitialized pointer.
   if (!fTree) {
     LOG(fatal) << "Pythia8Generator::ReadEvent: no external input tree is set; "
                   "standalone generation is not implemented. Call "
