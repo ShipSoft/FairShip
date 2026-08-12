@@ -114,7 +114,9 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
   Double_t start[3] = {0., 0., startZ};
   Double_t end[3] = {0., 0., endZ};
 
-  // incoming muon  array('d',[pid,px,py,pz,E,x,y,z,w,t])
+  // incoming muon
+  // array('d',[pid,px,py,pz,E,x,y,z,w,isProton,xsec,t,nDIS,nmuons]); entries
+  // 10-12 hold cross-section, time and nDIS (see below)
   TVectorD* mu = dynamic_cast<TVectorD*>(iMuon->AddrAt(0));
   LOG(debug) << "muon DIS Generator in muon " << int((*mu)[0]);
   Double_t x = (*mu)[5] * 100.;  // come in m -> cm

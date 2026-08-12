@@ -619,9 +619,9 @@ def getReconstructibleTracks(iEvent: int, sTree, sGeo, ShipGeo):
     ----------
     iEvent : int
         Event id.
-    stree : root file
+    sTree : root file
         Events in raw format.
-    fGeo : object
+    sGeo : object
         Contains SHiP detector geometry.
     ShipGeo : object
         Contains SHiP detector geometry.
