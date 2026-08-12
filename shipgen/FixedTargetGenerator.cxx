@@ -54,8 +54,9 @@ FixedTargetGenerator::FixedTargetGenerator() {
   fBoost = 1.;
   withEvtGen = kFALSE;
   withNtuple = kFALSE;
-  chicc = 1.7e-3;      // prob to produce primary ccbar pair/pot
-  chibb = 1.6e-7;      // prob to produce primary bbbar pair/pot
+  chicc = 1.7e-3;      // prob to produce primary ccbar pair/pot on Mo
+                       // (cf. python/heavyFlavourScaling.py)
+  chibb = 1.6e-7;      // prob to produce primary bbbar pair/pot on Mo
   nrpotspill = 5.E13;  // nr of protons / spill
   setByHand = kFALSE;
   Debug = kFALSE;

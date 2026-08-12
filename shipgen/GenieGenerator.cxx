@@ -172,6 +172,8 @@ Bool_t GenieGenerator::ReadEventGeometryDriver(FairPrimaryGenerator* cpg) {
   if (!fNuOnly) {
     // Add final state lepton to the MCTrack stack:
     int outgoing_lepton_pdg = neu;
+    // CC: lepton PDG = neutrino PDG - 1 (12->11, 14->13, 16->15),
+    // antineutrinos keep the negative sign
     if (cc) outgoing_lepton_pdg = copysign(TMath::Abs(neu) - 1, neu);
     if (nuel) outgoing_lepton_pdg = 11;
 

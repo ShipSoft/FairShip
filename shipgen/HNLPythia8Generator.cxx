@@ -28,7 +28,9 @@ HNLPythia8Generator::HNLPythia8Generator() {
                         // (50 m, stored in Pythia units, mm)
   fLmax = 12000. * cm;  // max decay length along the HNL flight direction
                         // (120 m, stored in Pythia units, mm)
-  fFDs = 7.7 / 10.4;  // correction for Pythia6 to match measured Ds production
+  fFDs = 7.7 / 10.4;    // correction for Pythia6 to match measured Ds
+                        // production.
+                        // TODO(olantwin, 2026-08-12): cite source of 7.7/10.4
   fsmearBeam = 8 * mm;  // default value for smearing beam (8 mm)
   fPaintBeam = 5 * cm;  // default value for painting beam (5 cm)
   fInputFile = nullptr;
@@ -246,6 +248,8 @@ Bool_t HNLPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg) {
       Double_t beta = p / e;
       tS = tp + LS / beta;  // decay time in Pythia units (mm/c): flight
                             // distance over dimensionless beta
+      // decay probability density at LS, normalised for the uniform sampling
+      // of LS over [fLmin, fLmax]
       w = TMath::Exp(-LS / (beta * gam * fctau)) *
           ((fLmax - fLmin) / (beta * gam * fctau));
       im = (Int_t)fPythia->event[i].mother1();
