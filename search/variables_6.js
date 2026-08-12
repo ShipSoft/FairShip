@@ -270,7 +270,7 @@ var searchData=
   ['fpionkaondecay_267',['fPionKaonDecay',['../classtPythia6Generator.html#a1c61fc4cd6f0b95d1612250106593e7f',1,'tPythia6Generator']]],
   ['fpmax_268',['fPMax',['../classParticleGunGenerator.html#ad66d330fdc6ce03e54c004e1d6209869',1,'ParticleGunGenerator']]],
   ['fpmin_269',['fPMin',['../classParticleGunGenerator.html#aa9f204650c7ae918eb50675be9b92497',1,'ParticleGunGenerator']]],
-  ['fpointsmap_270',['fPointsMap',['../classShipStack.html#a1e50638e079c16db3e5e17d7f4e09d6d',1,'ShipStack']]],
+  ['fpointspertrack_270',['fPointsPerTrack',['../classShipStack.html#aa0e573a0e88900286a3ef984503e5440',1,'ShipStack']]],
   ['fpos_271',['fPos',['../classSHiP_1_1Detector.html#a5017601ade4c6805f6685562092b72f4',1,'SHiP::Detector']]],
   ['fposx_272',['fPosX',['../classShipFieldPar.html#a59bd525b58fae77953aace8e6ffe062d',1,'ShipFieldPar']]],
   ['fposy_273',['fPosY',['../classShipFieldPar.html#af621defc509a642c841529607b17bc97',1,'ShipFieldPar']]],

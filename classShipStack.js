@@ -39,7 +39,7 @@ var classShipStack =
     [ "fNPrimaries", "classShipStack.html#ae50de02e3525b59cf76b8a4867c96aa1", null ],
     [ "fNTracks", "classShipStack.html#a5baabd54b15eaede50ec34cf22544a71", null ],
     [ "fParticles", "classShipStack.html#aecc7a6d2821762610c5b8cf735d99cd1", null ],
-    [ "fPointsMap", "classShipStack.html#a1e50638e079c16db3e5e17d7f4e09d6d", null ],
+    [ "fPointsPerTrack", "classShipStack.html#aa0e573a0e88900286a3ef984503e5440", null ],
     [ "fSplitting", "classShipStack.html#ab7cf72e3ef4eed3af09a4b19eb0fe138", null ],
     [ "fStack", "classShipStack.html#ae5e8e4e126509a118d38a1a2ac46aeea", null ],
     [ "fStoreFlags", "classShipStack.html#ab18fb7a40bf033b54c7617e2db098fe1", null ],

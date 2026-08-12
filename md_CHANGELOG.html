@@ -109,6 +109,7 @@ Changed</h2>
 <li>Use dense vectors instead of <code>std::map</code> for <a class="el" href="classShipStack.html">ShipStack</a> track selection and index remapping, roughly halving CPU time and reducing peak memory for high-multiplicity events (e.g. kaon/pion splitting)</li>
 <li>Deduplicate the charm/beauty over min-bias cross-section scaling shared by <code><a class="el" href="namespacemakeDecay.html">makeDecay</a></code> and <code><a class="el" href="namespacerun__fixedTarget.html">run_fixedTarget</a></code> into <code><a class="el" href="heavyFlavourScaling_8py.html">python/heavyFlavourScaling.py</a></code></li>
 <li>Make <code>--chicc</code> and <code>--chibb</code> mutually exclusive in <code><a class="el" href="namespacemakeDecay.html">makeDecay</a></code> and <code><a class="el" href="namespacerun__fixedTarget.html">run_fixedTarget</a></code>, and raise a clear error when the override does not match the run type (e.g. <code>--chicc</code> for a beauty run) instead of silently ignoring it</li>
+<li>Count <a class="el" href="classShipStack.html">ShipStack</a> MC points per track instead of per (track, detector) and stop the mother-flagging walk at already-flagged ancestors, further reducing track-selection CPU time for high-multiplicity events</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md4"></a>
 Fixed</h2>
