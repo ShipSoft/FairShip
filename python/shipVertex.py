@@ -68,7 +68,9 @@ class Task:
 
     def residuals(self, y_data, a, z0: float):
         # fit parameters a: 0-2 vertex (x, y, z), 3-5 track 1 (dx/dz, dy/dz,
-        # |q/p|), 6-8 track 2; positions are propagated from the vertex to z0
+        # 1/|p|), 6-8 track 2; positions are propagated from the vertex to z0.
+        # The q/p state component is compared via abs(), which equals 1/|p|
+        # for unit-charge tracks.
         res = np.zeros(10)
         res[0] = abs(y_data[0]) - a[5]
         res[1] = y_data[1] - a[3]
@@ -261,7 +263,8 @@ class Task:
                 ROOT.genfit.tools.invertMatrix(cov, covInv)
 
                 # pack both 5D states (and their inverse covariance below) as
-                # expected by fcn/residuals
+                # expected by fcn/residuals; the covariance is block-diagonal,
+                # i.e. the fit treats the two track states as independent
                 self.y_data = np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
                 stVal1 = st1.getState()
                 stVal2 = st2.getState()
