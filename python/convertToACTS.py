@@ -260,8 +260,8 @@ def main():
         outcome = ROOT.std.vector("float")()
         particleTree.Branch("outcome", outcome)
 
-        # Seed the RNG once, before the event loop, so digitisation draws a
-        # fresh random sequence per event.
+        # Seed the RNG once, before the event loop: all events draw from a
+        # single deterministic stream.
         ROOT.gRandom.SetSeed(13)
 
         for ievent, event in enumerate(sTree):
