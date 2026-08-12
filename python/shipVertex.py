@@ -222,11 +222,9 @@ class Task:
                 # print "DEBUG",HNLPos[0],HNLPos[1],HNLPos[2],dist,covX[0][0],covX[1][1],covX[2][2]
                 # print "     ",mctrack.GetStartX(),mctrack.GetStartY(),mctrack.GetStartZ()
 
-                # Copy the fitted states: getFittedState() returns a reference to
-                # the state cached in the track's KalmanFitterInfo, and the
-                # stepwise extrapolation below would otherwise mutate the stored
-                # genfit::Track in place (affecting later pairs / getFittedState
-                # calls, making results depend on pair-processing order).
+                # Copy the fitted states: getFittedState() returns a reference
+                # cached in the track, and extrapolating it in place would make
+                # results depend on the pair-processing order.
                 st1 = ROOT.genfit.MeasuredStateOnPlane(fittedTracks[t1].getFittedState())
                 st2 = ROOT.genfit.MeasuredStateOnPlane(fittedTracks[t2].getFittedState())
                 # Extrapolate to the vertex Z-plane stepwise to avoid
