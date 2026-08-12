@@ -24,8 +24,10 @@ HNLPythia8Generator::HNLPythia8Generator() {
   fId = 2212;           // proton
   fMom = 400;           // proton
   fHNL = 9900015;       // HNL  pdg code
-  fLmin = 5000. * cm;   // mm minimum  decay position z  ROOT units !
-  fLmax = 12000. * cm;  // mm maximum decay position z
+  fLmin = 5000. * cm;   // min decay length along the HNL flight direction
+                        // (50 m, stored in Pythia units, mm)
+  fLmax = 12000. * cm;  // max decay length along the HNL flight direction
+                        // (120 m, stored in Pythia units, mm)
   fFDs = 7.7 / 10.4;  // correction for Pythia6 to match measured Ds production
   fsmearBeam = 8 * mm;  // default value for smearing beam (8 mm)
   fPaintBeam = 5 * cm;  // default value for painting beam (5 cm)
@@ -242,10 +244,8 @@ Bool_t HNLPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg) {
       zS = zp + lam * pz;
       Double_t gam = e / TMath::Sqrt(e * e - p * p);
       Double_t beta = p / e;
-      tS = tp + LS / beta;  // units ? [mm/c] + [mm/beta] (beta is dimensionless
-                            // speed, and c=1 here) if one would use [s], then
-                            // tS = tp/(cm*c_light) + (LS/cm)/(beta*c_light) =
-                            // tS/(cm*c_light) i.e. units look consistent
+      tS = tp + LS / beta;  // decay time in Pythia units (mm/c): flight
+                            // distance over dimensionless beta
       w = TMath::Exp(-LS / (beta * gam * fctau)) *
           ((fLmax - fLmin) / (beta * gam * fctau));
       im = (Int_t)fPythia->event[i].mother1();
