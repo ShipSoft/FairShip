@@ -182,6 +182,7 @@ regression tests, with:
 
 ```bash
 pixi run test
+pixi run test-fairship
 ```
 
 Some regression tests download remote input data and therefore require network
