@@ -14,11 +14,11 @@ it in future.
 
 ### Added
 
+* He Balloon added with configurable thickness and material.
 * 2026 BDF target design (33 pure tungsten disks with a larger rear block, steel core with serpentine He cooling grooves, jacket tube, flanges, upstream beam window and cover plate, and domed rear endcap), extracted from CATIA model ST1A07710_01_AB.02. Select with `--target-yaml geometry/target_config_2026.yaml`; the legacy design remains the default. Downstream elements are positioned using the nominal legacy target length so both designs can be compared directly.
 
 ### Changed
-
-* He Balloon added with configurable thickness and material. 
+ 
 * SBT sensitive medium is now LAB-based liquid scintillator (`LiquidScintillator`) rather than the plastic `Scintillator`, which remains in use by SplitCal
 * Use dense vectors instead of `std::map` for ShipStack track selection and index remapping, roughly halving CPU time and reducing peak memory for high-multiplicity events (e.g. kaon/pion splitting)
 * Deduplicate the charm/beauty over min-bias cross-section scaling shared by `makeDecay` and `run_fixedTarget` into `python/heavyFlavourScaling.py`
@@ -27,7 +27,6 @@ it in future.
 
 ### Fixed
 
-* All materials in the veto class now registers the configured media instead of a hardcoded medium name.
 * `veto` now registers the configured `sensitiveMed` instead of a hardcoded medium name; previously any other value resolved to a null `TGeoMedium`
 
 ### Removed
