@@ -15,6 +15,7 @@
 #include "HNLPythia8Generator.h"
 #include "MeanMaterialBudget.h"
 #include "Pythia8Plugins/EvtGen.h"
+#include "PythiaSeed.h"
 #include "ShipUnit.h"
 #include "TGeoBBox.h"
 #include "TGeoNode.h"
@@ -174,6 +175,7 @@ Bool_t FixedTargetGenerator::Init() {
     return kFALSE;
   }
   const UInt_t seed = GetSeed();
+  const UInt_t pythiaSeed = SHiP::NormalizePythiaSeed(seed);
   if (fUseRandom1) fRandomEngine = std::make_shared<PyTr1Rng>(seed);
   if (fUseRandom3) fRandomEngine = std::make_shared<PyTr3Rng>(seed);
   std::vector<int> r = {221, 221, 223, 223, 113, 331, 333};
@@ -193,7 +195,7 @@ Bool_t FixedTargetGenerator::Init() {
     }
     pcount += 1;
     fPythia->setRndmEnginePtr(fRandomEngine);
-    fPythia->settings.mode("Random:seed", seed);
+    fPythia->settings.mode("Random:seed", pythiaSeed);
     fPythia->settings.mode("Next:numberCount", heartbeat);
     if (Option == "Primary") {
       fPythia->settings.mode("Beams:idA", 2212);
