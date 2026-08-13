@@ -134,11 +134,11 @@ def runTracking(candidates, trackingGeometry, fieldMap, strawHits):
     has_neg = any(t.parameters[4] < 0 for t in good_proxies)
 
     if 2 <= len(good_proxies) <= 4 and has_pos and has_neg:
-        print(f"Fitting vertex for {len(good_proxies)} tracks with opposite charge candidates.")
+        #print(f"Fitting vertex for {len(good_proxies)} tracks with opposite charge candidates.")
         vertices = acts.fitVertex(good_proxies, fieldMap, geo_ctx, trackingGeometry)
 
-        for vtx in vertices:
-            print(f"Vertex found at: {vtx.position()}")
+        #for vtx in vertices:
+            #print(f"Vertex found at: {vtx.position()}")
 
     return const_tracks, vertices, track_hit_indices_list
 

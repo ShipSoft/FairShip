@@ -9,6 +9,7 @@ import math
 import ROOT
 import acts
 import acts.examples
+import cppyy
 import rootUtils as ut
 import shipRoot_conf
 import shipunit as u
@@ -231,7 +232,7 @@ def checkFiducialVolume(sTree, tkey: int, dy) -> bool:
     if not fiducialCut:
         return True
     fT = sTree.RecoTracks[tkey]
-    rc, pos_tuple, _mom = acts.extrapolateTrackToZ(fT, ShipGeo.Bfield.z)
+    rc, pos_tuple, _mom = acts.extrapolateTrackToZ(cppyy.addressof(fT), ShipGeo.Bfield.z)
     if not rc:
         return False
     posX, posY, posZ = pos_tuple[0], pos_tuple[1], pos_tuple[2]
@@ -458,7 +459,7 @@ def myEventLoop(n: int) -> None:
 
         h["chi2"].Fill(chi2, wg)
         h["measVSchi2"].Fill(atrack.nMeasurements(), chi2)
-        p = math.hypot(atrack.px(), atrack.py(), atrack.pz())
+        P = math.hypot(atrack.px(), atrack.py(), atrack.pz())
         Px, Py, Pz = atrack.px(), atrack.py(), atrack.pz()
         cov = atrack.GetCovarianceElements()
         if len(sTree.fitTrack2MC) - 1 < key:
@@ -474,16 +475,16 @@ def myEventLoop(n: int) -> None:
         delPOverP = (Ptruth - P) / Ptruth
         h["delPOverP"].Fill(Ptruth, delPOverP)
         delPOverPz = (1.0 / Ptruthz - 1.0 / Pz) * Ptruthz
-        h["pullPOverPx"].Fill(Ptruth, (Ptruthx - Px) / ROOT.TMath.Sqrt(cov[3][3]))
-        h["pullPOverPy"].Fill(Ptruth, (Ptruthy - Py) / ROOT.TMath.Sqrt(cov[4][4]))
-        h["pullPOverPz"].Fill(Ptruth, (Ptruthz - Pz) / ROOT.TMath.Sqrt(cov[5][5]))
+        h["pullPOverPx"].Fill(Ptruth, (Ptruthx - Px) / ROOT.TMath.Sqrt(cov[15]))
+        h["pullPOverPy"].Fill(Ptruth, (Ptruthy - Py) / ROOT.TMath.Sqrt(cov[18]))
+        h["pullPOverPz"].Fill(Ptruth, (Ptruthz - Pz) / ROOT.TMath.Sqrt(cov[20]))
         h["delPOverPz"].Fill(Ptruthz, delPOverPz)
         if chi2 > chi2CutOff:
             continue
         h["delPOverP2"].Fill(Ptruth, delPOverP)
         h["delPOverP2z"].Fill(Ptruth, delPOverPz)
         # try measure impact parameter
-        trackDir = ROOT.TVector3(atrack.px()/p, atrack.py()/p, atrack.pz()/p)
+        trackDir = ROOT.TVector3(atrack.px()/P, atrack.py()/P, atrack.pz()/P)
         trackPos = ROOT.TVector3(atrack.x(), atrack.y(), atrack.z())
         vx = ROOT.TVector3()
         mcPart.GetStartVertex(vx)
@@ -596,7 +597,7 @@ def myEventLoop(n: int) -> None:
     # check extrapolation to TimeDet if exists
     if hasattr(ShipGeo, "TimeDet"):
         for fT in sTree.RecoTracks:
-            rc, pos_tuple, _mom = acts.extrapolateTrackToZ(fT, ShipGeo.Bfield.z)
+            rc, pos_tuple, _mom = acts.extrapolateTrackToZ(cppyy.addressof(fT), ShipGeo.Bfield.z)
             if rc:
                 posX, posY, posZ = pos_tuple[0], pos_tuple[1], pos_tuple[2]
                 for aPoint in sTree.TimeDetPoint:

@@ -3,8 +3,11 @@
 
 import logging
 import os
+import math
+import numpy as np
 from array import array
 from collections import Counter
+
 
 import acts
 import acts.examples
@@ -171,8 +174,20 @@ class ShipDigiReco:
 
         for vtx in vertices:
 
-            acts.pushRecoVertex(vertex_vector_ptr, vtx)
-            
+            try:
+                input_addr = int(vtx._extracted_params_addr) if hasattr(vtx, '_extracted_params_addr') else 0
+            except Exception:
+                input_addr = 0
+            try:
+                if input_addr == 0 and hasattr(acts, 'get_last_extracted_params_addr'):
+                    addr = acts.get_last_extracted_params_addr()
+                    if addr and addr != 0:
+                        input_addr = int(addr)
+            except Exception:
+                pass
+
+            acts.pushRecoVertex(vertex_vector_ptr, vtx, output_tracks, input_addr)
+
             vtx_tracks = vtx.tracks()
 
             #Create a ShipParticle from the vertex fit from 2 track vertices
@@ -181,43 +196,58 @@ class ShipDigiReco:
 
             vertex_pos = vtx.position()
 
-            vx = ROOT.TVector3(vertex_pos[2] / 10.0, vertex_pos[1] / 10.0, -vertex_pos[0] / 10.0) #Scale units to cm and rotate
+            # mm^2 -> cm^2 conversion factor (0.01)
+            s = 0.01
+            
+            vx = ROOT.TVector3(-vertex_pos[2] * s, vertex_pos[1] * s, vertex_pos[0] * s) #Scale units to cm and rotate
 
             t1 = int(vtx_tracks[0].trackIndex)
             t2 = int(vtx_tracks[1].trackIndex)
 
-            mom_daughter1 = vtx_tracks[0].fittedParams.momentum()
-            mom_daughter2 = vtx_tracks[1].fittedParams.momentum()
+            mom_daughter1 = tuple(vtx_tracks[0].momentum) if vtx_tracks[0].momentum is not None else (0.0, 0.0, 0.0)
+            mom_daughter2 = tuple(vtx_tracks[1].momentum) if vtx_tracks[1].momentum is not None else (0.0, 0.0, 0.0)
             px_mother = mom_daughter1[0] + mom_daughter2[0]
             py_mother = mom_daughter1[1] + mom_daughter2[1]
             pz_mother = mom_daughter1[2] + mom_daughter2[2]
-            P = ROOT.TLorentzVector4(px_mother, py_mother, pz_mother, 0)
+            P = ROOT.TLorentzVector(-pz_mother, py_mother, px_mother, 0) #Rotate into SHiP frame
 
             acts_covV = vtx.covariance() # 3x3 Eigen matrix in mm^2 (ACTS reco frame)
             covV = ROOT.TMatrixDSym(3)
 
-            # mm^2 -> cm^2 conversion factor (0.01)
-            s = 0.01
+            covV[0][0] = acts_covV[2, 2] * s
+            covV[1][1] = acts_covV[1, 1] * s
+            covV[2][2] = acts_covV[0, 0] * s
 
-            covV[0][0] = acts_covV(2, 2) * s  
-            covV[1][1] = acts_covV(1, 1) * s  
-            covV[2][2] = acts_covV(0, 0) * s  
-
-            covV[0][1] = -acts_covV(1, 2) * s
+            covV[0][1] = -acts_covV[1, 2] * s
             covV[1][0] = covV[0][1]
 
-            covV[0][2] = -acts_covV(0, 2) * s
+            covV[0][2] = -acts_covV[0, 2] * s
             covV[2][0] = covV[0][2]
 
-            covV[1][2] =  acts_covV(0, 1) * s
+            covV[1][2] =  acts_covV[0, 1] * s
             covV[2][1] = covV[1][2]
 
-            cov_daughter1 = vtx_tracks[0].fittedParams.covariance()
-            cov_daughter2 = vtx_tracks[1].fittedParams.covariance()
+            cov_daughter1 = vtx_tracks[0].covariance if hasattr(vtx_tracks[0], 'covariance') else None
+            cov_daughter2 = vtx_tracks[1].covariance if hasattr(vtx_tracks[1], 'covariance') else None
+
             raw_covP = ROOT.TMatrixDSym(3)
-            for i in range(3):
-                for j in range(3):
-                    raw_covP[i][j] = cov_daughter1(i + 3, j + 3) + cov_daughter2(i + 3, j + 3)
+            for ii in range(3):
+                for jj in range(3):
+                    def _get_cov_el(cov, r, c):
+                        if cov is None:
+                            return 0.0
+                        try:
+                            return cov(r, c)
+                        except Exception:
+                            try:
+                                return cov[r][c]
+                            except Exception:
+                                try:
+                                    return cov[r, c]
+                                except Exception:
+                                    return 0.0
+
+                    raw_covP[ii][jj] = _get_cov_el(cov_daughter1, ii + 3, jj + 3) + _get_cov_el(cov_daughter2, ii + 3, jj + 3)
 
             covP = ROOT.TMatrixDSym(3)
             covP[0][0] = raw_covP[2][2]
@@ -230,18 +260,67 @@ class ShipDigiReco:
             covP[0][2] = -raw_covP[0][2]
             covP[2][0] = covP[0][2]
 
-            covP[1][2] =  raw_covP[0][1]
+            covP[1][2] = raw_covP[0][1]
             covP[2][1] = covP[1][2]
 
-            pos1 = vtx_tracks[0].fittedParams.position()
-            pos2 = vtx_tracks[1].fittedParams.position()
-            doca = math.sqrt((pos1.x() - pos2.x())**2 + (pos1.y() - pos2.y())**2 + (pos1.z() - pos2.z())**2) / 10.0
+            vertex_position_4d = ROOT.TLorentzVector(vx, 0.0)
 
-            particle = ROOT.ShipParticle(9900015, 0, -1, -1, t1, t2, P, vx)
-            particle.SetCovV(covV)
-            particle.SetCovP(covP)
+            particle = ROOT.ShipParticle(9900015, 0, -1, -1, t1, t2, P, vertex_position_4d)
+            covV_list = [
+                covV[0][0], covV[0][1], covV[0][2],
+                            covV[1][1], covV[1][2],
+                                        covV[2][2]
+            ]
+
+            # Extract 6 upper-triangular elements for momentum covariance
+            covP_list = [
+                covP[0][0], covP[0][1], covP[0][2], 0.0,
+                            covP[1][1], covP[1][2], 0.0,
+                                        covP[2][2], 0.0,
+                                                    0.0  
+            ]
+
+            # Track extrapolation and DOCA calculation
+            def vec(v, name):
+                return np.array(getattr(v, name) if getattr(v, name) is not None else (0.0,0.0,0.0), dtype=float)
+
+            p1 = vec(vtx_tracks[0], 'originalPosition') if vtx_tracks[0].originalPosition is not None else vec(vtx_tracks[0],'position')
+            p2 = vec(vtx_tracks[1], 'originalPosition') if vtx_tracks[1].originalPosition is not None else vec(vtx_tracks[1],'position')
+            d1 = vec(vtx_tracks[0], 'originalMomentum') if vtx_tracks[0].originalMomentum is not None else vec(vtx_tracks[0],'momentum')
+            d2 = vec(vtx_tracks[1], 'originalMomentum') if vtx_tracks[1].originalMomentum is not None else vec(vtx_tracks[1],'momentum')
+
+            #normalize direction
+            n1 = np.linalg.norm(d1); n2 = np.linalg.norm(d2)
+            if n1>0: d1 = d1 / n1
+            if n2>0: d2 = d2 / n2
+
+            #target plane x in ACTS frame (mm)
+            target_x = float(vtx.position()[0])
+
+            def extrapolate_to_x(point, direction, x_target):
+                dx = direction[0]
+                if abs(dx) < 1e-12:
+                    return None
+                t = (x_target - point[0]) / dx
+                return point + direction * t
+
+            p1_x_tmp = extrapolate_to_x(p1, d1, target_x)
+            p1_x = p1_x_tmp if p1_x_tmp is not None else p1
+            p2_x_tmp = extrapolate_to_x(p2, d2, target_x)
+            p2_x = p2_x_tmp if p2_x_tmp is not None else p2
+            delta = p1_x - p2_x
+            n = np.cross(d1, d2); n_norm = np.linalg.norm(n)
+            if n_norm > 1e-12:
+                doca_mm = abs(np.dot(delta, n)) / n_norm
+            else:
+                doca_mm = np.linalg.norm(np.cross(delta, d1)) / max(1e-12, np.linalg.norm(d1))
+            doca = doca_mm / 10.0
+
+            particle.SetCovP(covP_list)
+            particle.SetCovV(covV_list)
             particle.SetDoca(doca)
             self.fPartArray.push_back(particle)
+
 
         if hasattr(self, "digiSBT"):
             veto_results = calculateSBTDOCA(output_tracks, self.digiSBT.det, self.trackingGeometry, self.actsFieldMap)
