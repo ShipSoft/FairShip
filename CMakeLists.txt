@@ -7,13 +7,13 @@
 # ${ShipRoot_BINARY_DIR} or ${CMAKE_BINARY_DIR}. This difference is important
 # for the base classes which are in FAIRROOT and ShipRoot.
 
-# CMake minimum version driven by ROOT 6.36.06
-cmake_minimum_required(VERSION 3.20.0 FATAL_ERROR)
+# Minimum CMake tracks the oldest still-tested build stack. cmake is provided by
+# shipdist/aliBuild: in release 26.02 it was aligned with AlmaLinux 9's 3.26.5;
+# 26.06+ (and the pixi build, cmake >=3.27) ship newer versions.
+cmake_minimum_required(VERSION 3.26 FATAL_ERROR)
 
-# CMP0028 and CMP0074 are already NEW at cmake_minimum_required 3.20.
-# CMP0118 (3.20): GENERATED sources visible across directories.
-cmake_policy(SET CMP0118 NEW)
-# CMP0144 (3.27): use <PACKAGENAME>_ROOT variables in find_package.
+# CMP0144 (3.27): use <PACKAGENAME>_ROOT variables in find_package. Still guarded
+# because 3.27 is one minor above our 3.26 minimum, so the policy may not exist.
 if(POLICY CMP0144)
     cmake_policy(SET CMP0144 NEW)
 endif()

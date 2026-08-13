@@ -573,10 +573,10 @@ void ShipFieldMaker::defineComposite(const TString& name,
         }
         vectFields.push_back(aField);
       }
-
-      ShipCompField* composite = new ShipCompField(name.Data(), vectFields);
-      theFields_[name] = composite;
     }
+
+    ShipCompField* composite = new ShipCompField(name.Data(), vectFields);
+    theFields_[name] = composite;
 
   } else {
     std::cout << "We already have a composite field with the name "

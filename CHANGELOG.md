@@ -21,6 +21,9 @@ it in future.
 * He Balloon added with configurable thickness and material. 
 * SBT sensitive medium is now LAB-based liquid scintillator (`LiquidScintillator`) rather than the plastic `Scintillator`, which remains in use by SplitCal
 * Use dense vectors instead of `std::map` for ShipStack track selection and index remapping, roughly halving CPU time and reducing peak memory for high-multiplicity events (e.g. kaon/pion splitting)
+* Deduplicate the charm/beauty over min-bias cross-section scaling shared by `makeDecay` and `run_fixedTarget` into `python/heavyFlavourScaling.py`
+* Make `--chicc` and `--chibb` mutually exclusive in `makeDecay` and `run_fixedTarget`, and raise a clear error when the override does not match the run type (e.g. `--chicc` for a beauty run) instead of silently ignoring it
+* Count ShipStack MC points per track instead of per (track, detector) and stop the mother-flagging walk at already-flagged ancestors, further reducing track-selection CPU time for high-multiplicity events
 
 ### Fixed
 

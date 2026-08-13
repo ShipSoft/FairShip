@@ -133,6 +133,12 @@ class HNLbranchings:
         self.U2 = couplings
         self.U = [math.sqrt(ui) for ui in self.U2]
         self.MN = mass * u.GeV
+        # Cached total decay width; constant for fixed mass/couplings, which are
+        # never mutated after construction.
+        self._totalWidth = None
+        # Reused TF1 wrapping the (Python) integrand; rebuilding it per call is
+        # expensive because of the PyROOT callable binding.
+        self._integrand_tf1 = None
         self.CKM = CKMmatrix()
         self.CKMelemSq = {
             "pi+": self.CKM.Vud**2.0,
@@ -324,8 +330,12 @@ class HNLbranchings:
         Numerical integral needed for 3-body decays through W boson.
         xi = mi/MN
         """
-        theFunction = self.Integrand
-        func = ROOT.TF1("func", theFunction, 0, 1, 3)  # Setting function
+        if self._integrand_tf1 is None:
+            # ROOT registers TF1s globally by name and WrappedTF1 resolves them
+            # by that name, so give each instance a unique name to avoid
+            # collisions when several HNLbranchings objects are alive at once.
+            self._integrand_tf1 = ROOT.TF1(f"hnl_integrand_{id(self):x}", self.Integrand, 0, 1, 3)
+        func = self._integrand_tf1
         func.SetParameters(x1, x2, x3)
         xmin = (x1 + x3) ** 2
         xmax = (1.0 - x2) ** 2
@@ -511,11 +521,12 @@ class HNLbranchings:
         """
         Returns the total HNL decay width
         """
-        leptonWidth = self.Width_3nu() + self.Width_charged_leptons()
-        mesonWidth = self.Width_neutral_mesons() + self.Width_charged_mesons()
-        quarkWidth = self.Width_quarks_neutrino() + self.Width_quarks_lepton()
-        totalWidth = leptonWidth + max([mesonWidth, quarkWidth])
-        return totalWidth
+        if self._totalWidth is None:
+            leptonWidth = self.Width_3nu() + self.Width_charged_leptons()
+            mesonWidth = self.Width_neutral_mesons() + self.Width_charged_mesons()
+            quarkWidth = self.Width_quarks_neutrino() + self.Width_quarks_lepton()
+            self._totalWidth = leptonWidth + max([mesonWidth, quarkWidth])
+        return self._totalWidth
 
     def findBranchingRatio(self, decayString):
         """

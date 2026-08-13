@@ -97,6 +97,39 @@ class TrackingBenchmark:
 
         self.metrics: dict[str, Any] = {}
         self._histos: dict[str, Any] = {}
+        # Per-event index over strawtubesPoint, rebuilt each event.
+        self._straw_index: dict[int, dict[str, Any]] = {}
+
+    def _build_straw_index(self) -> dict[int, dict[str, Any]]:
+        """Build a per-event index over strawtubesPoint.
+
+        Maps MC track id -> {n_hits, stations, first}, where ``first`` holds the
+        (px, py, pz, x, y, z) of the first straw hit for that track. One pass
+        replaces the repeated full-branch scans in the reconstructibility and
+        truth-lookup helpers.
+        """
+        index: dict[int, dict[str, Any]] = {}
+        for hit in self.sim_tree.strawtubesPoint:
+            tid = hit.GetTrackID()
+            station = int(hit.GetDetectorID() // 1_000_000)
+            entry = index.get(tid)
+            if entry is None:
+                index[tid] = {
+                    "n_hits": 1,
+                    "stations": {station},
+                    "first": (
+                        hit.GetPx(),
+                        hit.GetPy(),
+                        hit.GetPz(),
+                        hit.GetX(),
+                        hit.GetY(),
+                        hit.GetZ(),
+                    ),
+                }
+            else:
+                entry["n_hits"] += 1
+                entry["stations"].add(station)
+        return index
 
     def _is_reconstructible(self, mc_track_id: int) -> bool:
         """Check if an MC particle meets reconstructibility criteria.
@@ -117,46 +150,39 @@ class TrackingBenchmark:
         if particle is None or particle.Charge() == 0:
             return False
 
-        # Count hits per station
-        stations: set[int] = set()
-        n_hits = 0
-        for hit in self.sim_tree.strawtubesPoint:
-            if hit.GetTrackID() != mc_track_id:
-                continue
-            n_hits += 1
-            det_id = hit.GetDetectorID()
-            station = int(det_id // 1_000_000)
-            stations.add(station)
-
-        return n_hits >= self.min_hits and len(stations) >= self.min_stations
+        # Hit counts come from the per-event straw index (built once per event).
+        entry = self._straw_index.get(mc_track_id)
+        n_hits = entry["n_hits"] if entry else 0
+        n_stations = len(entry["stations"]) if entry else 0
+        return n_hits >= self.min_hits and n_stations >= self.min_stations
 
     def _get_ptruth_first(self, mc_track_id: int) -> tuple[float, float, float, float]:
         """Get MC truth momentum at the first straw hit.
 
         Follows the pattern from macro/ShipAna.py:getPtruthFirst().
         """
-        for hit in self.sim_tree.strawtubesPoint:
-            if hit.GetTrackID() == mc_track_id:
-                px, py, pz = hit.GetPx(), hit.GetPy(), hit.GetPz()
-                p = math.sqrt(px**2 + py**2 + pz**2)
-                return p, px, py, pz
-        return -1.0, -1.0, -1.0, -1.0
+        entry = self._straw_index.get(mc_track_id)
+        if entry is None:
+            return -1.0, -1.0, -1.0, -1.0
+        px, py, pz = entry["first"][:3]
+        p = math.sqrt(px**2 + py**2 + pz**2)
+        return p, px, py, pz
 
     def _get_truth_pos_first(self, mc_track_id: int) -> tuple[float, float, float]:
         """Get MC truth position at the first straw hit."""
-        for hit in self.sim_tree.strawtubesPoint:
-            if hit.GetTrackID() == mc_track_id:
-                return hit.GetX(), hit.GetY(), hit.GetZ()
-        return 0.0, 0.0, 0.0
+        entry = self._straw_index.get(mc_track_id)
+        if entry is None:
+            return 0.0, 0.0, 0.0
+        return entry["first"][3:6]
 
     def _get_truth_slopes(self, mc_track_id: int) -> tuple[float, float]:
         """Get MC truth track slopes tx=px/pz, ty=py/pz at first straw hit."""
-        for hit in self.sim_tree.strawtubesPoint:
-            if hit.GetTrackID() == mc_track_id:
-                px, py, pz = hit.GetPx(), hit.GetPy(), hit.GetPz()
-                if abs(pz) > 1e-10:
-                    return px / pz, py / pz
-                return 0.0, 0.0
+        entry = self._straw_index.get(mc_track_id)
+        if entry is None:
+            return 0.0, 0.0
+        px, py, pz = entry["first"][:3]
+        if abs(pz) > 1e-10:
+            return px / pz, py / pz
         return 0.0, 0.0
 
     def _fracMCsame(self, reco_track_idx: int) -> tuple[float, int]:
@@ -274,6 +300,7 @@ class TrackingBenchmark:
         for i_event in range(n_events):
             self.sim_tree.GetEvent(i_event)
             self.reco_tree.GetEvent(i_event)
+            self._straw_index = self._build_straw_index()
 
             # Find reconstructible MC particles
             reconstructible_ids: set[int] = set()

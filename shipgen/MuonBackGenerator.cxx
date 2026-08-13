@@ -338,28 +338,25 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
       tof = track->GetStartT() / 1E9;  // convert back from ns to sec;
       e = track->GetEnergy();
       Bool_t wanttracking = false;  // only transport muons
-      for (std::pair<int, int> element : muList) {
-        if (element.first == i) {
-          wanttracking = true;
-          if (!followMuons) {
-            auto* v = getVetoPoint(element.second);
-            TVector3 lpv = v->LastPoint();
-            TVector3 lmv = v->LastMom();
-            if (abspid == 22) {
-              e = lmv.Mag();
-            } else {
-              e = TMath::Sqrt(lmv.Mag2() +
-                              (track->GetMass()) * (track->GetMass()));
-            }
-            px = lmv[0];
-            py = lmv[1];
-            pz = lmv[2];
-            vx = lpv[0];
-            vy = lpv[1];
-            vz = lpv[2];
-            tof = v->GetTime() / 1E9;  // convert back from ns to sec
+      if (auto element = muList.find(i); element != muList.end()) {
+        wanttracking = true;
+        if (!followMuons) {
+          auto* v = getVetoPoint(element->second);
+          TVector3 lpv = v->LastPoint();
+          TVector3 lmv = v->LastMom();
+          if (abspid == 22) {
+            e = lmv.Mag();
+          } else {
+            e = TMath::Sqrt(lmv.Mag2() +
+                            (track->GetMass()) * (track->GetMass()));
           }
-          break;
+          px = lmv[0];
+          py = lmv[1];
+          pz = lmv[2];
+          vx = lpv[0];
+          vy = lpv[1];
+          vz = lpv[2];
+          tof = v->GetTime() / 1E9;  // convert back from ns to sec
         }
       }
       IncrementCounter("transported_tracks");

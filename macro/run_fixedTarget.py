@@ -9,6 +9,11 @@ import geometry_config
 import ROOT
 import shipRoot_conf
 import shipunit as u
+from heavyFlavourScaling import (
+    check_run_type_override,
+    derive_cross_sections,
+    format_summary,
+)
 
 mcEngine = "TGeant4"
 simEngine = "Pythia8"
@@ -46,16 +51,6 @@ def get_work_dir(run_number, tag: str | None = None) -> str:
 
 
 logger.info("SHiP proton-on-taget simulator (C) Thomas Ruf, 2017")
-
-# Reference values for Molybdenum (historical defaults). Cross-section ratios
-# scale heavy-flavour ~ A and mbias ~ A^(0.71).
-heavyflavour_Ascale = 1
-mbias_Ascale = 0.71
-
-A_REF = 98.0
-CHICC_REF = 1.7e-3  # prob to produce primary ccbar pair/pot on Mo
-CHIBB_REF = 1.6e-7  # prob to produce primary bbbar pair/pot on Mo
-TARGET_A = {"W": 184.0, "Mo": 98.0}
 
 ap = argparse.ArgumentParser(description='Run SHiP "pot" simulation')
 ap.add_argument("-d", "--debug", action="store_true")
@@ -117,10 +112,12 @@ ap.add_argument(
     help="enable ntuple production",
 )
 # for charm production
-ap.add_argument(
+# A run is either charm or beauty, so only one ratio override is ever meaningful.
+cross_section = ap.add_mutually_exclusive_group()
+cross_section.add_argument(
     "-cc", "--chicc", type=float, default=None, help="ccbar over mbias cross section (overrides target-derived value)"
 )
-ap.add_argument(
+cross_section.add_argument(
     "-bb", "--chibb", type=float, default=None, help="bbbar over mbias cross section (overrides target-derived value)"
 )
 ap.add_argument(
@@ -462,23 +459,11 @@ P8gen.SetSeed(seed)
 #        print ' for experts: p pot= number of protons on target per spill to normalize on'
 #        print '            : c chicc= ccbar over mbias cross section'
 if args.charm or args.beauty:
-    A = args.A if args.A is not None else TARGET_A[args.target_composition]
-    if A <= 0:
-        raise ValueError(f"Invalid target mass number A={A}. Must be > 0.")
-    scale = (A / A_REF) ** (heavyflavour_Ascale - mbias_Ascale)
-
-    if args.chicc is not None:
-        chicc = args.chicc
-    else:
-        chicc = CHICC_REF * scale
-
-    chibb = args.chibb if args.chibb is not None else CHIBB_REF * scale
-    P8gen.SetChicc(chicc)
-    P8gen.SetChibb(chibb)
-    print(
-        f"Target composition: {args.target_composition}, A={A}, scale=(A/{A_REF})^({heavyflavour_Ascale}-{mbias_Ascale})={scale:.4f}"
-    )
-    print(f"Derived cross-section ratios: chicc={chicc:.3e}, chibb={chibb:.3e}")
+    check_run_type_override(args.beauty, args.chicc, args.chibb)
+    cs = derive_cross_sections(args.target_composition, args.A, args.chicc, args.chibb)
+    P8gen.SetChicc(cs.chicc)
+    P8gen.SetChibb(cs.chibb)
+    print(format_summary(cs, None if args.A is not None else args.target_composition))
     print("--- process heavy flavours ---")
     P8gen.InitForCharmOrBeauty(charmInputFile, args.nev, args.pot, args.nStart)
 primGen.AddGenerator(P8gen)

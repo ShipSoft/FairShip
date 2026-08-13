@@ -26,7 +26,6 @@
 
 using std::cout;
 using std::endl;
-using std::pair;
 
 // -----   Default constructor   -------------------------------------------
 ShipStack::ShipStack(Int_t size)
@@ -36,7 +35,7 @@ ShipStack::ShipStack(Int_t size)
       fTracks(nullptr),
       fStoreFlags(),
       fIndexMap(),
-      fPointsMap(),
+      fPointsPerTrack(),
       fCurrentTrack(-1),
       fNPrimaries(0),
       fNParticles(0),
@@ -318,7 +317,7 @@ void ShipStack::Reset() {
   }
   fParticles->Clear();
   fTracks->clear();
-  fPointsMap.clear();
+  fPointsPerTrack.clear();
 }
 // -------------------------------------------------------------------------
 
@@ -342,22 +341,18 @@ void ShipStack::Print(Int_t iVerbose) const {
 // -------------------------------------------------------------------------
 
 // -----   Public method AddPoint (for current track)   --------------------
-void ShipStack::AddPoint(DetectorId detId) {
-  Int_t iDet = detId;
-  // cout << "Add point for Detektor" << iDet << endl;
-  pair<Int_t, Int_t> a(fCurrentTrack, iDet);
-  ++fPointsMap[a];
-}
+void ShipStack::AddPoint(DetectorId detId) { AddPoint(detId, fCurrentTrack); }
 // -------------------------------------------------------------------------
 
 // -----   Public method AddPoint (for arbitrary track)  -------------------
-void ShipStack::AddPoint(DetectorId detId, Int_t iTrack) {
+void ShipStack::AddPoint(DetectorId /*detId*/, Int_t iTrack) {
   if (iTrack < 0) {
     return;
   }
-  Int_t iDet = detId;
-  pair<Int_t, Int_t> a(iTrack, iDet);
-  ++fPointsMap[a];
+  if (iTrack >= static_cast<Int_t>(fPointsPerTrack.size())) {
+    fPointsPerTrack.resize(iTrack + 1, 0);
+  }
+  ++fPointsPerTrack[iTrack];
 }
 // -------------------------------------------------------------------------
 
@@ -401,14 +396,9 @@ void ShipStack::SelectTracks() {
     //    Double_t mass   = thisPart->GetMass();
     Double_t eKin = energy - mass;
 
-    // --> Calculate number of points
-    Int_t nPoints = 0;
-    for (Int_t iDet = kVETO; iDet < kEndOfList; iDet++) {
-      pair<Int_t, Int_t> a(i, iDet);
-      if (fPointsMap.contains(a)) {
-        nPoints += fPointsMap[a];
-      }
-    }
+    // --> Get number of points
+    Int_t nPoints =
+        i < static_cast<Int_t>(fPointsPerTrack.size()) ? fPointsPerTrack[i] : 0;
 
     // --> Check for cuts (store primaries in any case)
     if (iMother < 0) {
@@ -437,16 +427,17 @@ void ShipStack::SelectTracks() {
     // GetParticle(i)->GetMother(1); maybe should set Mother2 to -1 in the
     // generator if (iMother == iMother2) {fStoreMap[i] = kTRUE;}
   }
-  // --> If flag is set, flag recursively mothers of selected tracks
+  // --> If flag is set, flag recursively mothers of selected tracks.
+  // A mother always has a smaller index than its daughters and every walk
+  // continues to the root, so an already-flagged mother implies its whole
+  // ancestor chain is flagged and the walk can stop early.
   if (fStoreMothers) {
     for (Int_t i = 0; i < fNParticles; i++) {
       if (fStoreFlags[i]) {
         Int_t iMother = GetParticle(i)->GetMother(0);
-        {
-          while (iMother >= 0) {
-            fStoreFlags[iMother] = kTRUE;
-            iMother = GetParticle(iMother)->GetMother(0);
-          }
+        while (iMother >= 0 && !fStoreFlags[iMother]) {
+          fStoreFlags[iMother] = kTRUE;
+          iMother = GetParticle(iMother)->GetMother(0);
         }
       }
     }

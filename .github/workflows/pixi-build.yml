@@ -24,7 +24,7 @@ jobs:
           lfs: true
           fetch-depth: 0
           persist-credentials: false
-      - uses: prefix-dev/setup-pixi@v0.10.0
+      - uses: prefix-dev/setup-pixi@v0.10.1
         with:
           cache: true
       - name: Set up ccache
@@ -64,7 +64,7 @@ jobs:
         with:
           lfs: true
           persist-credentials: false
-      - uses: prefix-dev/setup-pixi@v0.10.0
+      - uses: prefix-dev/setup-pixi@v0.10.1
         with:
           cache: true
       - name: Download build artifact
@@ -109,7 +109,7 @@ jobs:
         with:
           lfs: true
           persist-credentials: false
-      - uses: prefix-dev/setup-pixi@v0.10.0
+      - uses: prefix-dev/setup-pixi@v0.10.1
         with:
           cache: true
       - uses: actions/download-artifact@v8
@@ -143,7 +143,7 @@ jobs:
         with:
           lfs: true
           persist-credentials: false
-      - uses: prefix-dev/setup-pixi@v0.10.0
+      - uses: prefix-dev/setup-pixi@v0.10.1
         with:
           cache: true
       - uses: actions/download-artifact@v8
@@ -175,7 +175,7 @@ jobs:
         with:
           lfs: true
           persist-credentials: false
-      - uses: prefix-dev/setup-pixi@v0.10.0
+      - uses: prefix-dev/setup-pixi@v0.10.1
         with:
           cache: true
       - uses: actions/download-artifact@v8
@@ -199,7 +199,7 @@ jobs:
         with:
           fetch-depth: 0
           persist-credentials: false
-      - uses: prefix-dev/setup-pixi@v0.10.0
+      - uses: prefix-dev/setup-pixi@v0.10.1
         with:
           cache: true
       - uses: actions/download-artifact@v8
@@ -234,7 +234,7 @@ jobs:
         with:
           fetch-depth: 1
           persist-credentials: false
-      - uses: prefix-dev/setup-pixi@v0.10.0
+      - uses: prefix-dev/setup-pixi@v0.10.1
         with:
           cache: true
       - uses: actions/download-artifact@v8
@@ -313,7 +313,7 @@ jobs:
         with:
           fetch-depth: 0
           persist-credentials: false
-      - uses: prefix-dev/setup-pixi@v0.10.0
+      - uses: prefix-dev/setup-pixi@v0.10.1
         with:
           cache: true
       - uses: actions/download-artifact@v8

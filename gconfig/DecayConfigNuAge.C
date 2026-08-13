@@ -35,7 +35,7 @@ void DecayConfig() {
   tp8->ReadString("421:mayDecay = off");
   gMC->SetUserDecay(4122);
   gMC->SetUserDecay(-4122);
-  tp8->ReadString("15:mayDecay = off");
+  tp8->ReadString("4122:mayDecay = off");
   gMC->SetUserDecay(431);
   gMC->SetUserDecay(-431);
   tp8->ReadString("431:mayDecay = off");
