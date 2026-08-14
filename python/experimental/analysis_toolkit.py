@@ -187,7 +187,7 @@ class selection_check:
 
         vertex_node = ROOT.gGeoManager.FindNode(candidate_pos.X(), candidate_pos.Y(), candidate_pos.Z())
         vertex_elem = vertex_node.GetVolume().GetName()
-        return vertex_elem.startswith("DecayVacuum_")
+        return vertex_elem.startswith("decay_medium_")
 
     def chi2nDOF(self, candidate):
         """Return the reduced chi^2 of the particle's daughter tracks."""

@@ -58,7 +58,9 @@ class veto : public SHiP::Detector<vetoPoint> {
   void ConstructGeometry() override;
 
   void SetVesselStructure(Float_t a, Float_t b, Float_t c, TString d, Float_t l,
-                          TString e, TString f, TString v, Float_t r, Float_t he_balloon_thickness, TString he_balloon_med) {
+                          TString e, TString f, TString v, Float_t r,
+                          Float_t he_balloon_thickness,
+                          TString he_balloon_med) {
     f_InnerSupportThickness = a;
     f_VetoThickness = b;
     f_OuterSupportThickness = c;
@@ -99,7 +101,7 @@ class veto : public SHiP::Detector<vetoPoint> {
   //! Thickness of the liquid scintillator along z(Default = 20cm).
   Float_t f_VetoThickness;
   Float_t f_RibThickness;
-  //! Thickness of the He Balloon 
+  //! Thickness of the He Balloon
   Float_t f_he_balloon_thickness;
 
   //! medium of veto counter, liquid or plastic scintillator
@@ -161,7 +163,7 @@ class veto : public SHiP::Detector<vetoPoint> {
    * distance along z. Ensures consistency in implementation throughout the z.
    */
   void AddBlock(TGeoVolumeAssembly* tInnerWall,
-                TGeoVolumeAssembly* tDecayVacuum,
+                TGeoVolumeAssembly* tdecay_medium,
                 TGeoVolumeAssembly* tOuterWall, TGeoVolumeAssembly* tLongitRib,
                 TGeoVolumeAssembly* tVerticalRib, TGeoVolumeAssembly* ttLiSc,
                 int blockNr, int nx, int ny, double z1, double z2,

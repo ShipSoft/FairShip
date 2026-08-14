@@ -121,11 +121,11 @@ class Task:
         if aNode:
             cNode = aNode.GetName()
         if cNode not in (
-            "DecayVacuum_block4_0",
-            "DecayVacuum_block5_0",
-            "DecayVacuum_block3_0",
-            "DecayVacuum_block2_0",
-            "DecayVacuum_block1_0",
+            "decay_medium_block4_0",
+            "decay_medium_block5_0",
+            "decay_medium_block3_0",
+            "decay_medium_block2_0",
+            "decay_medium_block1_0",
         ):
             distmin = 0.0
         else:

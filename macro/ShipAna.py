@@ -227,7 +227,7 @@ def dist2InnerWall(X, Y, Z):
     dist = 0
     # return distance to inner wall perpendicular to z-axis, if outside decayVolume return 0.
     node = sGeo.FindNode(X, Y, Z)
-    if "DecayVacuum" not in node.GetName():
+    if "decay_medium" not in node.GetName():
         return dist
     start = array("d", [X, Y, Z])
     nsteps = 8
