@@ -4,6 +4,7 @@
 
 """Toolkit for Analysis."""
 
+import math
 import numpy as np
 import pythia8_conf
 import ROOT
@@ -149,8 +150,8 @@ class selection_check:
         t1, t2 = candidate.GetDaughter(0), candidate.GetDaughter(1)
 
         for tr in [t1, t2]:
-            fit_status = self.tree.FitTracks[tr].getFitStatus()
-            nmeas.append(round(fit_status.getNdf()))  # nmeas.append(fit_status.getNdf())
+            atrack = self.tree.RecoTracks[tr]
+            nmeas.append(round(atrack.nDoF()))  # nmeas.append(fit_status.getNdf())
 
         return np.array(nmeas)
 
@@ -159,9 +160,8 @@ class selection_check:
         daughter_mom = []
         t1, t2 = candidate.GetDaughter(0), candidate.GetDaughter(1)
         for trD in [t1, t2]:
-            x = self.tree.FitTracks[trD]
-            xx = x.getFittedState()
-            daughter_mom.append(xx.getMom().Mag())
+            atrack = self.tree.RecoTracks[trD]
+            daughter_mom.append(math.hypot(atrack.px(), atrack.py(), atrack.pz())
 
         return np.array(daughter_mom)
 
@@ -195,8 +195,8 @@ class selection_check:
 
         chi2ndf = []
         for tr in [t1, t2]:
-            fit_status = self.tree.FitTracks[tr].getFitStatus()
-            chi2ndf.append(fit_status.getChi2() / fit_status.getNdf())
+            atrack = self.tree.RecoTracks[tr]
+            chi2ndf.append(atrack.chi2() / atrack.nDoF())
 
         return np.array(chi2ndf)
 
