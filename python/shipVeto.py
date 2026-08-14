@@ -84,17 +84,14 @@ class Task:
     def Track_decision(self, mcParticle=None) -> tuple[bool, int | float, int]:
         nMultCon = 0
         k = -1
-        for aTrack in self.sTree.FitTracks:
+        for aTrack in self.sTree.RecoTracks:
             k += 1
             if mcParticle:
                 if mcParticle > 0 and mcParticle != self.sTree.fitTrack2MC[k]:
                     continue
                 if mcParticle < 0 and abs(mcParticle) == self.sTree.fitTrack2MC[k]:
                     continue
-            fstatus = aTrack.getFitStatus()
-            if not fstatus.isFitConverged():
-                continue
-            if fstatus.getNdf() < 25:
+            if aTrack.nDoF() < 25:
                 continue
             nMultCon += 1
         w = 1.0
