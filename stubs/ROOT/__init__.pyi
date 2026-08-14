@@ -1257,6 +1257,8 @@ class veto:  # Partial stub
         outerSupportMed: str,
         decayMed: str,
         rib: float,
+        he_balloon_thickness: float,
+        he_balloon_med: str,
     ) -> None: ...
     def GetName(self) -> str: ...
 

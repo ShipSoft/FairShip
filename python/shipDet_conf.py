@@ -206,6 +206,8 @@ def configure_veto(yaml_file: str, z0) -> None:
         veto_geo.outerSupportMed,
         veto_geo.decayMed,
         veto_geo.rib,
+        veto_geo.he_balloon_thickness,
+        veto_geo.he_balloon_med,
     )
 
     detectorList.append(Veto)

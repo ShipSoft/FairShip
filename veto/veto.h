@@ -58,7 +58,9 @@ class veto : public SHiP::Detector<vetoPoint> {
   void ConstructGeometry() override;
 
   void SetVesselStructure(Float_t a, Float_t b, Float_t c, TString d, Float_t l,
-                          TString e, TString f, TString v, Float_t r) {
+                          TString e, TString f, TString v, Float_t r,
+                          Float_t he_balloon_thickness,
+                          TString he_balloon_med) {
     f_InnerSupportThickness = a;
     f_VetoThickness = b;
     f_OuterSupportThickness = c;
@@ -68,6 +70,8 @@ class veto : public SHiP::Detector<vetoPoint> {
     supportMedOut_name = std::move(f);
     decayVolumeMed_name = std::move(v);
     f_RibThickness = r;
+    f_he_balloon_thickness = he_balloon_thickness;
+    f_he_balloon_med_name = std::move(he_balloon_med);
   }
 
   /** The following methods can be implemented if you need to make
@@ -97,6 +101,8 @@ class veto : public SHiP::Detector<vetoPoint> {
   //! Thickness of the liquid scintillator along z(Default = 20cm).
   Float_t f_VetoThickness;
   Float_t f_RibThickness;
+  //! Thickness of the He Balloon
+  Float_t f_he_balloon_thickness;
 
   //! medium of veto counter, liquid or plastic scintillator
   TString vetoMed_name;
@@ -106,11 +112,14 @@ class veto : public SHiP::Detector<vetoPoint> {
   TString supportMedOut_name;
   //! medium of decay volume(Default= helium).
   TString decayVolumeMed_name;
+  //! medium of He Balloon(Default= PVC).
+  TString f_he_balloon_med_name;
 
   TGeoMedium* vetoMed;
   TGeoMedium* supportMedIn;
   TGeoMedium* supportMedOut;
   TGeoMedium* decayVolumeMed;
+  TGeoMedium* f_he_balloon_med;
 
   //! Width of the Vessel along X at the start
   Float_t VetoStartInnerX;
@@ -154,7 +163,7 @@ class veto : public SHiP::Detector<vetoPoint> {
    * distance along z. Ensures consistency in implementation throughout the z.
    */
   void AddBlock(TGeoVolumeAssembly* tInnerWall,
-                TGeoVolumeAssembly* tDecayVacuum,
+                TGeoVolumeAssembly* tdecay_medium,
                 TGeoVolumeAssembly* tOuterWall, TGeoVolumeAssembly* tLongitRib,
                 TGeoVolumeAssembly* tVerticalRib, TGeoVolumeAssembly* ttLiSc,
                 int blockNr, int nx, int ny, double z1, double z2,
