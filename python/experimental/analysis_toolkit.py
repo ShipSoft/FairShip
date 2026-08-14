@@ -161,7 +161,7 @@ class selection_check:
         t1, t2 = candidate.GetDaughter(0), candidate.GetDaughter(1)
         for trD in [t1, t2]:
             atrack = self.tree.RecoTracks[trD]
-            daughter_mom.append(math.hypot(atrack.px(), atrack.py(), atrack.pz())
+            daughter_mom.append(math.hypot(atrack.px(), atrack.py(), atrack.pz()))
 
         return np.array(daughter_mom)
 
