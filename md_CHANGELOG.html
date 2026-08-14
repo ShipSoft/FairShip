@@ -100,11 +100,13 @@ Unreleased</h1>
 <h2><a class="anchor" id="autotoc_md2"></a>
 Added</h2>
 <ul>
+<li>He Balloon added with configurable thickness and material.</li>
 <li>2026 BDF target design (33 pure tungsten disks with a larger rear block, steel core with serpentine He cooling grooves, jacket tube, flanges, upstream beam window and cover plate, and domed rear endcap), extracted from CATIA model ST1A07710_01_AB.02. Select with <code>--target-yaml geometry/target_config_2026.yaml</code>; the legacy design remains the default. Downstream elements are positioned using the nominal legacy target length so both designs can be compared directly.</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md3"></a>
 Changed</h2>
 <ul>
+<li>Fiducial volume "DecayVacuum_block{N}" renamed as "decay_medium_block{N}".</li>
 <li>SBT sensitive medium is now LAB-based liquid scintillator (<code>LiquidScintillator</code>) rather than the plastic <code>Scintillator</code>, which remains in use by SplitCal</li>
 <li>Use dense vectors instead of <code>std::map</code> for <a class="el" href="classShipStack.html">ShipStack</a> track selection and index remapping, roughly halving CPU time and reducing peak memory for high-multiplicity events (e.g. kaon/pion splitting)</li>
 <li>Deduplicate the charm/beauty over min-bias cross-section scaling shared by <code><a class="el" href="namespacemakeDecay.html">makeDecay</a></code> and <code><a class="el" href="namespacerun__fixedTarget.html">run_fixedTarget</a></code> into <code><a class="el" href="heavyFlavourScaling_8py.html">python/heavyFlavourScaling.py</a></code></li>

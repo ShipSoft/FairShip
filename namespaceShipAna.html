@@ -397,7 +397,7 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">  227</span>    dist = 0</div>
 <div class="line"><span class="lineno">  228</span>    <span class="comment"># return distance to inner wall perpendicular to z-axis, if outside decayVolume return 0.</span></div>
 <div class="line"><span class="lineno">  229</span>    node = sGeo.FindNode(X, Y, Z)</div>
-<div class="line"><span class="lineno">  230</span>    <span class="keywordflow">if</span> <span class="stringliteral">&quot;DecayVacuum&quot;</span> <span class="keywordflow">not</span> <span class="keywordflow">in</span> node.GetName():</div>
+<div class="line"><span class="lineno">  230</span>    <span class="keywordflow">if</span> <span class="stringliteral">&quot;decay_medium&quot;</span> <span class="keywordflow">not</span> <span class="keywordflow">in</span> node.GetName():</div>
 <div class="line"><span class="lineno">  231</span>        <span class="keywordflow">return</span> dist</div>
 <div class="line"><span class="lineno">  232</span>    start = array(<span class="stringliteral">&quot;d&quot;</span>, [X, Y, Z])</div>
 <div class="line"><span class="lineno">  233</span>    nsteps = 8</div>
