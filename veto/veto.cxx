@@ -363,9 +363,7 @@ int veto::liscId(const TString& ShapeTypeName, int blockNr, int Zlayer,
   return id;
 }
 
-void veto::AddBlock(TGeoVolumeAssembly* tInnerWall,
-                    TGeoVolumeAssembly* tHeBalloon,
-                    TGeoVolumeAssembly* tOuterWall,
+void veto::AddBlock(TGeoVolumeAssembly* tOuterWall,
                     TGeoVolumeAssembly* tLongitRib,
                     TGeoVolumeAssembly* tVerticalRib,
                     TGeoVolumeAssembly* ttLiSc, int blockNr, int nx, int ny,
@@ -387,73 +385,6 @@ void veto::AddBlock(TGeoVolumeAssembly* tInnerWall,
   double tY = 0;
   double tZ = 0;
   TString name("");
-
-  /// inner wall
-  TString nameInnerWall = (TString)tInnerWall->GetName() + "_" + blockName;
-  TGeoVolume* TIW =
-      GeoTrapezoidHollow(nameInnerWall, wallThick, wz, wx(z1), wx(z2), wy(z1),
-                         wy(z2), ribColor, supportMedIn);
-  tInnerWall->AddNode(TIW, 0, new TGeoTranslation(0, 0, Zshift));
-
-  /// PVC He Balloon
-  TString lid_name;
-  Double_t z_start_wall, z_end_wall, z_start_lid, z_end_lid, wall_shift,
-      lid_shift;
-
-  // Encoding the geometry of each block
-  if (blockNr == 1) {
-    lid_name = "pvc_front_lid";
-    z_start_wall = z1 + f_he_balloon_thickness;
-    z_end_wall = z2;
-    z_start_lid = z1;
-    z_end_lid = z1 + f_he_balloon_thickness;
-    wall_shift = Zshift + f_he_balloon_thickness / 2;
-    lid_shift = Zshift - wz / 2 + f_he_balloon_thickness / 2;
-  } else if (blockNr == 2) {
-    lid_name = "pvc_back_lid";
-    z_start_wall = z1;
-    z_end_wall = z2 - f_he_balloon_thickness;
-    z_start_lid = z2 - f_he_balloon_thickness;
-    z_end_lid = z2;
-    wall_shift = Zshift - f_he_balloon_thickness / 2;
-    lid_shift = Zshift + wz / 2 - f_he_balloon_thickness / 2;
-  }
-
-  // Build the geometry once
-  if (blockNr == 1 || blockNr == 2) {
-    /// PVC walls
-    TString pvc_layer_name = "pvc_walls_" + blockName;
-    TGeoVolume* pvc_walls = GeoTrapezoidHollow(
-        pvc_layer_name, f_he_balloon_thickness, wz - f_he_balloon_thickness,
-        wx(z_start_wall) - 2 * f_he_balloon_thickness,
-        wx(z_end_wall) - 2 * f_he_balloon_thickness,
-        wy(z_start_wall) - 2 * f_he_balloon_thickness,
-        wy(z_end_wall) - 2 * f_he_balloon_thickness, kGreen, f_he_balloon_med);
-    tHeBalloon->AddNode(pvc_walls, 0, new TGeoTranslation(0, 0, wall_shift));
-
-    /// PVC lid (Front or Back depending on blockNr)
-    TGeoVolume* pvc_lid = GeoTrapezoid(
-        lid_name, f_he_balloon_thickness, wx(z_start_lid), wx(z_end_lid),
-        wy(z_start_lid), wy(z_end_lid), kGreen, f_he_balloon_med);
-    tHeBalloon->AddNode(pvc_lid, 0, new TGeoTranslation(0, 0, lid_shift));
-
-    /// decay medium
-    TString nameDecayVol = "decay_medium_" + blockName;
-    TGeoVolume* decay_volume = GeoTrapezoid(
-        nameDecayVol, wz - f_he_balloon_thickness,
-        wx(z_start_wall) - 2 * f_he_balloon_thickness,
-        wx(z_end_wall) - 2 * f_he_balloon_thickness,
-        wy(z_start_wall) - 2 * f_he_balloon_thickness,
-        wy(z_end_wall) - 2 * f_he_balloon_thickness, 1, decayVolumeMed);
-    decay_volume->SetVisibility(kFALSE);
-    tHeBalloon->AddNode(decay_volume, 0, new TGeoTranslation(0, 0, wall_shift));
-  }
-
-  else {
-    LOG(fatal)
-        << "veto::AddBlock: Invalid blockNr " << blockNr
-        << " requested. Only blockNr 1 and 2 are supported for the He balloon!";
-  }
 
   /// outer wall
   TString nameOuterWall = (TString)tOuterWall->GetName() + "_" + blockName;
@@ -726,12 +657,6 @@ TGeoVolume* veto::MakeSegments() {
   Double_t cell_thickness_z =
       820 * mm;  // length of the cell along z (820mm) 2024 version
 
-  TString nameInnerWall = "VetoInnerWall";
-  TGeoVolumeAssembly* tInnerWall = new TGeoVolumeAssembly(nameInnerWall);
-
-  TString nameDecayVol = "HeBalloon";
-  TGeoVolumeAssembly* tHeBalloon = new TGeoVolumeAssembly(nameDecayVol);
-
   TString nameOuterWall = "VetoOuterWall";
   TGeoVolumeAssembly* tOuterWall = new TGeoVolumeAssembly(nameOuterWall);
 
@@ -759,9 +684,9 @@ TGeoVolume* veto::MakeSegments() {
 
   double Zshift = wz / 2;  // calibration of Z position
 
-  AddBlock(tInnerWall, tHeBalloon, tOuterWall, tLongitRib, tVerticalRib, ttLiSc,
-           1, nx, ny, z1, z2, Zshift, cell_thickness_z0, wallThick, liscThick,
-           liscThick, ribThick);
+  AddBlock(tOuterWall, tLongitRib, tVerticalRib, ttLiSc, 1, nx, ny, z1, z2,
+           Zshift, cell_thickness_z0, wallThick, liscThick, liscThick,
+           ribThick);
 
   //******************************** Block2
   //**************************************
@@ -774,9 +699,8 @@ TGeoVolume* veto::MakeSegments() {
 
   Zshift += wz / 2;
 
-  AddBlock(tInnerWall, tHeBalloon, tOuterWall, tLongitRib, tVerticalRib, ttLiSc,
-           2, nx, ny, z1, z2, Zshift, cell_thickness_z, wallThick, liscThick,
-           liscThick, ribThick);
+  AddBlock(tOuterWall, tLongitRib, tVerticalRib, ttLiSc, 2, nx, ny, z1, z2,
+           Zshift, cell_thickness_z, wallThick, liscThick, liscThick, ribThick);
 
   double zi = z2;
 
@@ -790,8 +714,41 @@ TGeoVolume* veto::MakeSegments() {
 
   tVerticalRib->AddNode(TVR, 0, new TGeoTranslation(0, 0, tZ));
 
-  tTankVol->AddNode(tInnerWall, 0, new TGeoTranslation(0, 0, 0));
-  tTankVol->AddNode(tHeBalloon, 0, new TGeoTranslation(0, 0, 0));
+  /// inner vessel: decay medium nested in PVC balloon nested in support wall.
+  /// The vessel is solid; the liner leaves a wall of thickness wallThick, the
+  /// decay medium leaves a balloon skin of thickness f_he_balloon_thickness
+  /// on all sides (the front/back skin doubles as the balloon lids).
+  const double z_start = 0 * m;
+  const double z_end = 50 * m;
+  const double balloon_thickness = f_he_balloon_thickness;
+  TGeoVolume* vessel = GeoTrapezoid(
+      "VetoInnerWall", z_end - z_start, wx(z_start) + 2 * wallThick,
+      wx(z_end) + 2 * wallThick, wy(z_start) + 2 * wallThick,
+      wy(z_end) + 2 * wallThick, 15, supportMedIn);
+  TGeoVolume* decay_medium = nullptr;
+  if (balloon_thickness > 0) {
+    TGeoVolume* liner =
+        GeoTrapezoid("HeBalloon", z_end - z_start, wx(z_start), wx(z_end),
+                     wy(z_start), wy(z_end), kGreen, f_he_balloon_med);
+    decay_medium =
+        GeoTrapezoid("decay_medium", (z_end - z_start) - 2 * balloon_thickness,
+                     wx(z_start + balloon_thickness) - 2 * balloon_thickness,
+                     wx(z_end - balloon_thickness) - 2 * balloon_thickness,
+                     wy(z_start + balloon_thickness) - 2 * balloon_thickness,
+                     wy(z_end - balloon_thickness) - 2 * balloon_thickness, 1,
+                     decayVolumeMed);
+    liner->AddNode(decay_medium, 0);
+    vessel->AddNode(liner, 0);
+  } else {
+    decay_medium =
+        GeoTrapezoid("decay_medium", z_end - z_start, wx(z_start), wx(z_end),
+                     wy(z_start), wy(z_end), 1, decayVolumeMed);
+    vessel->AddNode(decay_medium, 0);
+  }
+  decay_medium->SetVisibility(kFALSE);
+  tTankVol->AddNode(vessel, 0,
+                    new TGeoTranslation(0, 0, (z_start + z_end) / 2));
+
   tTankVol->AddNode(tOuterWall, 0, new TGeoTranslation(0, 0, 0));
   tTankVol->AddNode(tVerticalRib, 0, new TGeoTranslation(0, 0, 0));
   tTankVol->AddNode(tLongitRib, 0, new TGeoTranslation(0, 0, 0));
