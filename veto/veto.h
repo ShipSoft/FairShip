@@ -143,9 +143,11 @@ class veto : public SHiP::Detector<vetoPoint> {
    * dimensions of wX_start * wY_start and end cross-section dimensions of
    * wX_end *wY_end
    */
-  TGeoVolume* GeoTrapezoid(const TString& xname, Double_t wz, Double_t wX_start,
-                           Double_t wX_end, Double_t wY_start, Double_t wY_end,
-                           Int_t color, TGeoMedium* material, Bool_t sens);
+  TGeoVolume* make_geo_trapezoid(const TString& xname, Double_t wz,
+                                 Double_t wX_start, Double_t wX_end,
+                                 Double_t wY_start, Double_t wY_end,
+                                 Int_t color, TGeoMedium* material,
+                                 Bool_t sens);
 
   /** Adds a Hollow Trapezoid of thickness (along z) wz with start cross-section
    * dimensions of wX_start * wY_start and end cross-section dimensions of
@@ -162,14 +164,16 @@ class veto : public SHiP::Detector<vetoPoint> {
   /** Adds a custom block of OuterWall+LiSc+Support ribs for a given
    * distance along z. Ensures consistency in implementation throughout the z.
    */
-  void AddBlock(TGeoVolumeAssembly* tOuterWall, TGeoVolumeAssembly* tLongitRib,
-                TGeoVolumeAssembly* tVerticalRib, TGeoVolumeAssembly* ttLiSc,
-                int blockNr, int nx, int ny, double z1, double z2,
-                double Zshift, double dist, double wallThick, double liscThick1,
-                double liscThick2, double ribThick);
+  void add_block(TGeoVolumeAssembly* outer_wall,
+                 TGeoVolumeAssembly* longitudinal_rib,
+                 TGeoVolumeAssembly* vertical_rib, TGeoVolumeAssembly* lisc,
+                 int block_number, int nx, int ny, double z1, double z2,
+                 double z_shift, double cell_thickness_z, double wall_thickness,
+                 double lisc_thickness_start, double lisc_thickness_end,
+                 double rib_thickness);
   /**Definition of a Corner Rib Support Structure.
    */
-  TGeoVolumeAssembly* GeoCornerRib(const TString& xname, double ribThick,
+  TGeoVolumeAssembly* GeoCornerRib(const TString& xname, double rib_thickness,
                                    double lt1, double lt2, double dz,
                                    double slopeX, double slopeY, Int_t color,
                                    TGeoMedium* material, Bool_t sens);
@@ -179,8 +183,8 @@ class veto : public SHiP::Detector<vetoPoint> {
   int makeId(double z, double x, double y);
   /**Detector ID implementation for the SBT
    */
-  int liscId(const TString& ShapeTypeName, int blockNr, int Zlayer, int number,
-             int position);
+  int liscId(const TString& ShapeTypeName, int block_number, int Zlayer,
+             int number, int position);
   //! slope along the width (x)
   double wx(double z);
   //! slope along the length (y)
@@ -203,7 +207,7 @@ class veto : public SHiP::Detector<vetoPoint> {
                              double dA, double dB, Int_t color,
                              TGeoMedium* material, Bool_t sens);
 
-  TGeoVolume* MakeSegments();
+  TGeoVolume* make_segments();
 };
 
 #endif  // VETO_VETO_H_
