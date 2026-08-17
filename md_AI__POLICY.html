@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>FairShip: Configuration files for GENIE simulations</title>
+<title>FairShip: AI Policy</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -63,7 +63,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function(){initNavTree('md_shipgen_2genie__config_2README.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('md_AI__POLICY.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -89,32 +89,22 @@ $(document).ready(function(){initNavTree('md_shipgen_2genie__config_2README.html
 </div>
 
 <div><div class="header">
-  <div class="headertitle"><div class="title">Configuration files for GENIE simulations</div></div>
+  <div class="headertitle"><div class="title">AI Policy</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md104"></a> </p>
-<h1><a class="anchor" id="autotoc_md105"></a>
-Introduction</h1>
-<p>Following ROOT's deprecation of TPythia6, these files replace the Pythia6Decayer with Pythia8Decayer in GENIE.</p>
-<h1><a class="anchor" id="autotoc_md106"></a>
-Details</h1>
-<p>For more information, see:</p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md0"></a> AI-assisted contributions are welcome. We ask that you:</p>
 <ul>
-<li><a href="https://genie-mc.github.io/releases.html">https://genie-mc.github.io/releases.html</a></li>
-<li><a href="https://github.com/GENIE-MC/Generator/pull/430">https://github.com/GENIE-MC/Generator/pull/430</a></li>
+<li>Disclose that AI was used and name the tool/model.</li>
+<li>Review and understand every line you submit; you are responsible for it.</li>
+<li>Meet the same quality, testing, and style standards as any contribution.</li>
+<li>Not use fully autonomous agents to open issues or PRs.</li>
+<li>Respond to reviewers yourself.</li>
+<li>Clearly mark AI text in descriptions and issues.</li>
 </ul>
-<p>To use these files, set the <code>GXMLPATH</code> environment variable to this folder before launching the simulation. This is done automatically by <code><a class="el" href="makeGenieEvents_8py.html">makeGenieEvents.py</a></code>.</p>
-<p>This folder mirrors the structure of the default GENIE configuration and currently only contains the files needed to switch from Pythia6Decayer to Pythia8Decayer.</p>
-<h1><a class="anchor" id="autotoc_md107"></a>
-History</h1>
-<ul>
-<li>February 2026: Initial creation (Antonio Iuliano)</li>
-</ul>
-<h1><a class="anchor" id="autotoc_md108"></a>
-Notes on particle decays</h1>
-<p>Particle decays were previously configured in <code>UserPhysicsOptions.xml</code>. They are now provided in a "tune" folder. See for example: <a href="https://github.com/SND-LHC/sndsw/blob/master/shipgen/genie_config/SNDGHE19_00b/CommonDecay.xml">https://github.com/SND-LHC/sndsw/blob/master/shipgen/genie_config/SNDGHE19_00b/CommonDecay.xml</a></p>
-<p>GENIE no longer decays tau and charmed hadrons by default (this was the default in our old branch: <a href="https://github.com/ShipSoft/GENIE/blob/v2.12.6-ship2021/config/UserPhysicsOptions.xml">https://github.com/ShipSoft/GENIE/blob/v2.12.6-ship2021/config/UserPhysicsOptions.xml</a>), so we no longer need to override these settings. </p>
-</div></div><!-- contents -->
+<p>This applies to issues and comments as well as pull requests. Using AI for translation or grammar help is fine. Contributions that ignore this policy may be closed.</p>
+<p>Only humans can be named as co-authors, and AI can <em>never</em> sign off on a commit. The Linux kernel trailer can be used to credit AI assistance, like this:</p>
+<div class="fragment"><div class="line">Assisted-by: &lt;harness&gt;:&lt;model&gt;</div>
+</div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
 <!-- start footer part -->

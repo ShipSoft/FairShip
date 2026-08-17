@@ -8,13 +8,13 @@ var searchData=
   ['um_5',['um',['../namespaceshipunit.html#a266d8161500fa2769e26c7ad8c9283f6',1,'shipunit']]],
   ['uniform_6',['Uniform',['../classCo3Rng.html#ad21d2961f7733b8950e616855f8d7d65',1,'Co3Rng']]],
   ['universe_5fmean_5fdensity_7',['universe_mean_density',['../namespaceshipunit.html#a794ecefd028b1ef42d1c84a631f3bb0c',1,'shipunit.universe_mean_density'],['../namespacehepunit.html#a47c3a12297f05313dc856385bfa405cf',1,'hepunit.universe_mean_density']]],
-  ['unreleased_8',['Unreleased',['../md_CHANGELOG.html#autotoc_md1',1,'']]],
+  ['unreleased_8',['Unreleased',['../md_CHANGELOG.html#autotoc_md2',1,'']]],
   ['up_9',['up',['../ShipMuonShield_8h.html#a7a162bd4e07daf5d23ff100f08d1cb43a46c48bec0d282018b9d167eef7711b2c',1,'ShipMuonShield.h']]],
   ['update_5ffile_10',['update_file',['../namespacemakeMuonDIS.html#acda8ed87a2a7dae5198cd1b5d0f1f1b5',1,'makeMuonDIS']]],
   ['update_5fnumeric_5fstat_11',['update_numeric_stat',['../namespacevalidationTools.html#a609e5981bf437388589ab4804356f777',1,'validationTools']]],
   ['updateenergy_12',['UpdateEnergy',['../classsplitcalHit.html#a5896b24a017d44df6a292d4afa4b9c32',1,'splitcalHit']]],
   ['updatepointtrackindices_13',['updatepointtrackindices',['../classISTLPointContainer.html#a78a9f8d491c704979d44b27d988049e9',1,'ISTLPointContainer::UpdatePointTrackIndices()'],['../classSHiP_1_1Detector.html#acb1b4c0cb31f66fe01b217b7bd4d0a0c',1,'SHiP::Detector::UpdatePointTrackIndices()']]],
-  ['updates_14',['Detector Geometry Updates',['../md_CHANGELOG.html#autotoc_md47',1,'']]],
+  ['updates_14',['Detector Geometry Updates',['../md_CHANGELOG.html#autotoc_md48',1,'']]],
   ['updatetrackindex_15',['UpdateTrackIndex',['../classShipStack.html#afbe9564e96a068a1be591663b1c5f248',1,'ShipStack']]],
   ['upperironthick_16',['upperIronThick',['../classMTCDetector.html#a5d95ddbeca95c7a451da9e8b6af18e10',1,'MTCDetector']]],
   ['upstreamtagger_17',['upstreamtagger',['../classUpstreamTagger.html#a63dd607c0d6d84c20955d21d8dd72342',1,'UpstreamTagger::UpstreamTagger(const char *Name, Bool_t Active)'],['../classUpstreamTagger.html#ac7888dcb73c7f6f99c8b749c92bd6f57',1,'UpstreamTagger::UpstreamTagger()'],['../classUpstreamTagger.html#a18f903973a0b35a9472d2016195f72a3',1,'UpstreamTagger::UpstreamTagger(const UpstreamTagger &amp;)=delete'],['../classUpstreamTagger.html',1,'UpstreamTagger']]],
@@ -36,7 +36,7 @@ var searchData=
   ['userandom1_33',['userandom1',['../classPythia8Generator.html#aceb1443f87222964e0d7885b23d85549',1,'Pythia8Generator::UseRandom1()'],['../classHNLPythia8Generator.html#af5c3daa98bc8428d66a7569e3c60c0f9',1,'HNLPythia8Generator::UseRandom1()'],['../classFixedTargetGenerator.html#a19a2c4d106fac196fa4f874edc09c3b9',1,'FixedTargetGenerator::UseRandom1()'],['../classDPPythia8Generator.html#ab4c1edc6b0d596bb683bf06696a3cdba',1,'DPPythia8Generator::UseRandom1()']]],
   ['userandom3_34',['userandom3',['../classPythia8Generator.html#aa66765891a7fd1913ef0c20334847dc7',1,'Pythia8Generator::UseRandom3()'],['../classDPPythia8Generator.html#a31ea29b3c84e6554163ae50efcbba2fa',1,'DPPythia8Generator::UseRandom3()'],['../classFixedTargetGenerator.html#add0415acba00e5580114d0339ca14458',1,'FixedTargetGenerator::UseRandom3()'],['../classHNLPythia8Generator.html#a10cfa18bf9fcef7c426880b02a6aeb8e',1,'HNLPythia8Generator::UseRandom3()']]],
   ['usesymmetry_35',['UseSymmetry',['../classShipBFieldMap.html#a8ce60bff834f49ad519b0d381bae4333',1,'ShipBFieldMap']]],
-  ['using_20pixi_36',['Using pixi',['../md_README.html#autotoc_md91',1,'']]],
-  ['using_20the_20pre_20built_20package_37',['Using the pre-built package',['../md_README.html#autotoc_md93',1,'']]],
-  ['utilities_38',['utilities',['../md_CHANGELOG.html#autotoc_md65',1,'Custom Utilities'],['../md_CHANGELOG.html#autotoc_md37',1,'Tools and Utilities']]]
+  ['using_20pixi_36',['Using pixi',['../md_README.html#autotoc_md92',1,'']]],
+  ['using_20the_20pre_20built_20package_37',['Using the pre-built package',['../md_README.html#autotoc_md94',1,'']]],
+  ['utilities_38',['utilities',['../md_CHANGELOG.html#autotoc_md66',1,'Custom Utilities'],['../md_CHANGELOG.html#autotoc_md38',1,'Tools and Utilities']]]
 ];
