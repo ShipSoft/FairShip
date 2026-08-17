@@ -5,6 +5,9 @@ on:
     - cron: 0 6 1 * *
 jobs:
   sync:
+    permissions:
+      contents: write
+      pull-requests: write
     uses: ShipSoft/.github/.github/workflows/config-sync.yml@main
     with:
       base: main
