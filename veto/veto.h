@@ -159,12 +159,10 @@ class veto : public SHiP::Detector<vetoPoint> {
                                  Int_t color, TGeoMedium* material,
                                  Bool_t sens);
 
-  /** Adds a custom block of OuterWall+InnerWall+LiSc+Support ribs for a given
+  /** Adds a custom block of OuterWall+LiSc+Support ribs for a given
    * distance along z. Ensures consistency in implementation throughout the z.
    */
-  void AddBlock(TGeoVolumeAssembly* tInnerWall,
-                TGeoVolumeAssembly* tdecay_medium,
-                TGeoVolumeAssembly* tOuterWall, TGeoVolumeAssembly* tLongitRib,
+  void AddBlock(TGeoVolumeAssembly* tOuterWall, TGeoVolumeAssembly* tLongitRib,
                 TGeoVolumeAssembly* tVerticalRib, TGeoVolumeAssembly* ttLiSc,
                 int blockNr, int nx, int ny, double z1, double z2,
                 double Zshift, double dist, double wallThick, double liscThick1,
