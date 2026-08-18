@@ -208,7 +208,7 @@ Info in <TGeoManager::CloseGeometry>: Counting nodes...
 Info in <TGeoManager::Voxelize>: Voxelizing...
 Info in <TGeoManager::CloseGeometry>: Building cache...
 Info in <TGeoManager::CountLevels>: max level = 6, max placements = 14153
-Info in <TGeoManager::CloseGeometry>: 3731249 nodes/ 721 volume UID's in FAIR geometry
+Info in <TGeoManager::CloseGeometry>: 3731253 nodes/ 725 volume UID's in FAIR geometry
 Info in <TGeoManager::CloseGeometry>: ----------------modeler ready----------------
 [INFO] TGeometry will be imported to VMC
 
@@ -231,8 +231,8 @@ Info in <TGeoManager::ConvertReflections>: Done
 ===> GEANT4 physical volumes created and mapped to TGeo hierarchy...
 ### INFO: TG4RootDetectorConstruction::Construct() finished
 TG4PostDetConstruction::Initialize
-G4 Stat: instantiated 1316 logical volumes 
-                      230963 physical volumes
+G4 Stat: instantiated 1320 logical volumes 
+                      230967 physical volumes
 Info in <TObject::ConnectToG4>: ROOT detector construction class connected to G4RunManager
 Adding HadronPhysicsList FTFP_BERT_HP_EMZ
 G4PhysListFactory::GetReferencePhysList <FTFP_BERT_HP_EMZ>
@@ -909,11 +909,11 @@ Available UI session types: [ Qt, tcsh, csh ]
 
 **********************************************
     GEANT4 Geometry statistics: 
-           1316 logical volumes
-          230963 physical volumes
+           1320 logical volumes
+          230967 physical volumes
              32 materials
-             28 user limits
-            712 sensitive detectors
+             29 user limits
+            716 sensitive detectors
 **********************************************
 
 [INFO] Monte Carlo Engine Initialisation with: TGeant4

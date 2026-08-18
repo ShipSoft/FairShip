@@ -36,7 +36,7 @@ Info in <TGeoManager::CloseGeometry>: Counting nodes...
 Info in <TGeoManager::Voxelize>: Voxelizing...
 Info in <TGeoManager::CloseGeometry>: Building cache...
 Info in <TGeoManager::CountLevels>: max level = 5, max placements = 14153
-Info in <TGeoManager::CloseGeometry>: 3730429 nodes/ 720 volume UID's in FAIR geometry
+Info in <TGeoManager::CloseGeometry>: 3730433 nodes/ 724 volume UID's in FAIR geometry
 Info in <TGeoManager::CloseGeometry>: ----------------modeler ready----------------
 [INFO] TGeometry will be imported to VMC
 
@@ -59,8 +59,8 @@ Info in <TGeoManager::ConvertReflections>: Done
 ===> GEANT4 physical volumes created and mapped to TGeo hierarchy...
 ### INFO: TG4RootDetectorConstruction::Construct() finished
 TG4PostDetConstruction::Initialize
-G4 Stat: instantiated 1316 logical volumes 
-                      230804 physical volumes
+G4 Stat: instantiated 1320 logical volumes 
+                      230808 physical volumes
 Info in <TObject::ConnectToG4>: ROOT detector construction class connected to G4RunManager
 Adding HadronPhysicsList FTFP_BERT_HP_EMZ
 G4PhysListFactory::GetReferencePhysList <FTFP_BERT_HP_EMZ>
@@ -101,11 +101,11 @@ Available UI session types: [ Qt, tcsh, csh ]
 
 **********************************************
     GEANT4 Geometry statistics: 
-           1316 logical volumes
-          230804 physical volumes
+           1320 logical volumes
+          230808 physical volumes
              27 materials
-             24 user limits
-            712 sensitive detectors
+             25 user limits
+            716 sensitive detectors
 **********************************************
 
 [INFO] Monte Carlo Engine Initialisation with: TGeant4
@@ -476,7 +476,7 @@ Info in <TGeoManager::SetTopVolume>: Top volume is cave. Master volume is cave
 Info in <TGeoNavigator::BuildCache>: --- Maximum geometry depth set to 100
 Info in <TGeoManager::Voxelize>: Voxelizing...
 Info in <TGeoManager::CountLevels>: max level = 5, max placements = 14153
-Info in <TGeoManager::CloseGeometry>: 3730429 nodes/ 720 volume UID's in FAIR geometry
+Info in <TGeoManager::CloseGeometry>: 3730433 nodes/ 724 volume UID's in FAIR geometry
 Info in <TGeoManager::CloseGeometry>: ----------------modeler ready----------------
 [INFO] x limits: -500, 500, dx = 10
 [INFO] y limits: -500, 500, dy = 10
@@ -524,19 +524,19 @@ Phase 3: Benchmark Metrics
   Events:           1000
   Reconstructible:  1000
   Total reco:       1000
-  Efficiency:       0.9990 +/- 0.0011
+  Efficiency:       0.9980 +/- 0.0015
   Clone rate:       0.0000 +/- 0.0005
-  Ghost rate:       0.0010 +/- 0.0011
-  dp/p sigma:       0.012880 +/- 0.000371
-  dx RMS:           0.1852 +/- 0.0041 cm
-  dy RMS:           0.0053 +/- 0.0001 cm
-  dtx RMS:          0.000227 +/- 0.000005
-  dty RMS:          0.000089 +/- 0.000002
-  Hit resid RMS:    0.036993 +/- 0.000198 cm
-  Hit pull mean:    -0.0537 +/- 0.0091
-  Hit pull sigma:   1.1445 +/- 0.0070
+  Ghost rate:       0.0020 +/- 0.0015
+  dp/p sigma:       0.012636 +/- 0.000369
+  dx RMS:           0.2014 +/- 0.0045 cm
+  dy RMS:           0.0051 +/- 0.0001 cm
+  dtx RMS:          0.000224 +/- 0.000005
+  dty RMS:          0.000060 +/- 0.000001
+  Hit resid RMS:    0.036651 +/- 0.000197 cm
+  Hit pull mean:    -0.0551 +/- 0.0091
+  Hit pull sigma:   1.1407 +/- 0.0071
   Charge-ID eff:    1.0000 +/- 0.0005
-  Correct/wrong:    999/0
+  Correct/wrong:    998/0
 ==================================
 
 ============================================================

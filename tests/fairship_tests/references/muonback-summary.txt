@@ -50,8 +50,8 @@ isMaster=1
 ===> GEANT4 physical volumes created and mapped to TGeo hierarchy...
 ### INFO: TG4RootDetectorConstruction::Construct() finished
 TG4PostDetConstruction::Initialize
-G4 Stat: instantiated 701 logical volumes 
-                      46126 physical volumes
+G4 Stat: instantiated 705 logical volumes 
+                      46130 physical volumes
 Adding HadronPhysicsList FTFP_BERT_HP_EMZ
 G4PhysListFactory::GetReferencePhysList <FTFP_BERT_HP_EMZ>
 <<< Geant4 Physics List simulation engine: FTFP_BERT_HP
@@ -91,11 +91,11 @@ Available UI session types: [ Qt, tcsh, csh ]
 
 **********************************************
     GEANT4 Geometry statistics: 
-            701 logical volumes
-          46126 physical volumes
-             23 materials
-             21 user limits
-            694 sensitive detectors
+            705 logical volumes
+          46130 physical volumes
+             24 materials
+             22 user limits
+            698 sensitive detectors
 **********************************************
 
 [INFO] Monte Carlo Engine Initialisation with: TGeant4

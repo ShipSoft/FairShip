@@ -90,7 +90,7 @@ Info in <TGeoManager::CloseGeometry>: Counting nodes...
 Info in <TGeoManager::Voxelize>: Voxelizing...
 Info in <TGeoManager::CloseGeometry>: Building cache...
 Info in <TGeoManager::CountLevels>: max level = 5, max placements = 14153
-Info in <TGeoManager::CloseGeometry>: 46607 nodes/ 694 volume UID's in FAIR geometry
+Info in <TGeoManager::CloseGeometry>: 46611 nodes/ 698 volume UID's in FAIR geometry
 Info in <TGeoManager::CloseGeometry>: ----------------modeler ready----------------
 [INFO] TGeometry will be imported to VMC
 
@@ -113,8 +113,8 @@ Info in <TGeoManager::ConvertReflections>: Done
 ===> GEANT4 physical volumes created and mapped to TGeo hierarchy...
 ### INFO: TG4RootDetectorConstruction::Construct() finished
 TG4PostDetConstruction::Initialize
-G4 Stat: instantiated 701 logical volumes 
-                      46126 physical volumes
+G4 Stat: instantiated 705 logical volumes 
+                      46130 physical volumes
 Info in <TObject::ConnectToG4>: ROOT detector construction class connected to G4RunManager
 Adding HadronPhysicsList FTFP_BERT_HP_EMZ
 G4PhysListFactory::GetReferencePhysList <FTFP_BERT_HP_EMZ>
@@ -293,11 +293,11 @@ Available UI session types: [ Qt, tcsh, csh ]
 
 **********************************************
     GEANT4 Geometry statistics: 
-            701 logical volumes
-          46126 physical volumes
-             23 materials
-             21 user limits
-            694 sensitive detectors
+            705 logical volumes
+          46130 physical volumes
+             24 materials
+             22 user limits
+            698 sensitive detectors
 **********************************************
 
 [INFO] Monte Carlo Engine Initialisation with: TGeant4
@@ -765,22 +765,21 @@ Simulation finished successfully
   Kept fraction                : 100.00%
   Branches in cbmsim           : 7
   ROOT objects                 : 5
-  Countable branches           : 6
+  Countable branches           : 5
  
 [MCTrack Validation]
-  Total tracks                 : 15248
+  Total tracks                 : 14868
   Primary tracks               : 100
-  Secondary tracks             : 15148
-  Tracks per event             : 152.5
-  Track momentum               : 3.762 +- 29.32  [min=0.02437, max=400]
-  Track energy                 : 3.857 +- 29.31  [min=0.1, max=400]
-  Track start Z                : 1.05e+04 +- 2584  [min=0, max=1.605e+04]
-  Top PDG counts               : 22:4549, 11:2750, -11:2141, 2112:1378, 2212:1317, 111:822, -211:790, 211:750, -13:112, 9900015:100
+  Secondary tracks             : 14768
+  Tracks per event             : 148.7
+  Track momentum               : 3.828 +- 29.68  [min=0.05956, max=400]
+  Track energy                 : 3.922 +- 29.67  [min=0.1, max=400]
+  Track start Z                : 1.029e+04 +- 2593  [min=0, max=1.605e+04]
+  Top PDG counts               : 22:4494, 11:2713, -11:2187, 2112:1305, 2212:1201, 111:820, 211:703, -211:698, -13:118, 9900015:100
  
 [Branch Multiplicity]
-  MCTrack                : total=15248, mean/event=152.5 +- 150.5, active=100/100 (100.0%), max=1101
-  TimeDetPoint           : total=612, mean/event=6.12 +- 9.512, active=90/100 ( 90.0%), max=60
-  UpstreamTaggerPoint    : total=1, mean/event=0.01 +- 0.0995, active=1/100 (  1.0%), max=1
-  splitcalPoint          : total=83550, mean/event=835.5 +- 1710, active=92/100 ( 92.0%), max=12001
-  strawtubesPoint        : total=5365, mean/event=53.65 +- 29.33, active=95/100 ( 95.0%), max=172
-  vetoPoint              : total=12647, mean/event=126.5 +- 294.9, active=49/100 ( 49.0%), max=1869
+  MCTrack                : total=14868, mean/event=148.7 +- 155, active=100/100 (100.0%), max=1126
+  TimeDetPoint           : total=545, mean/event=5.45 +- 8.775, active=87/100 ( 87.0%), max=71
+  splitcalPoint          : total=94284, mean/event=942.8 +- 2013, active=88/100 ( 88.0%), max=16072
+  strawtubesPoint        : total=5247, mean/event=52.47 +- 28.73, active=94/100 ( 94.0%), max=184
+  vetoPoint              : total=14722, mean/event=147.2 +- 326, active=58/100 ( 58.0%), max=2235
