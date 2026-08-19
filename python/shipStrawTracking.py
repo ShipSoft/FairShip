@@ -14,6 +14,7 @@ import ROOT
 # For modules
 import shipDet_conf
 import shipunit as u
+from mc_truth import find_signal_track
 
 # For ShipGeo
 from ShipGeoConfig import load_from_root_file
@@ -801,16 +802,11 @@ def getReconstructibleTracks(iEvent: int, sTree, sGeo, ShipGeo):
     if len(MCTrackIDs) == 0:
         return MCTrackIDs
 
-    itemstoremove = []
+    # 8. Keep only the daughters of the signal particle. Everything else that
+    # reaches the tracker is a Geant secondary (delta ray, bremsstrahlung).
+    signalId = find_signal_track(sTree.MCTrack)
 
-    for item in MCTrackIDs:
-        atrack = sTree.MCTrack[item]
-        motherId = atrack.GetMotherId()
-        # keep only daughters of the signal particle; assumes the standard HNL
-        # production chain (external charm file), where the signal is MCTrack 2.
-        # Other generator configurations are not supported here.
-        if motherId != 2:
-            itemstoremove.append(item)
+    itemstoremove = [item for item in MCTrackIDs if sTree.MCTrack[item].GetMotherId() != signalId]
 
     for item in itemstoremove:
         MCTrackIDs.remove(item)
