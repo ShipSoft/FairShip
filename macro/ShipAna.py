@@ -58,6 +58,15 @@ else:
     # Add reconstruction data as friend tree
     sTree.AddFriend("ship_reco_sim", options.recoFile)
 
+from shipTrackAccess import track_info, uses_acts
+
+# reco file written with --trackFitter acts (RecoTracks) or genfit (FitTracks)?
+actsMode = uses_acts(sTree)
+if actsMode:
+    import acts
+    import acts.examples
+    import cppyy
+
 if not options.geoFile:
     options.geoFile = options.inputFile.replace("ship.", "geofile_full.").replace("_rec.", ".")
 fgeo = ROOT.TFile(options.geoFile)
@@ -303,6 +312,14 @@ def checkFiducialVolume(sTree, tkey: int, dy) -> bool:
     inside = True
     if not fiducialCut:
         return True
+    if actsMode:
+        fT = sTree.RecoTracks[tkey]
+        rc, pos, _mom = acts.extrapolateTrackToZ(cppyy.addressof(fT), ShipGeo.Bfield.z)
+        if not rc:
+            return False
+        if not dist2InnerWall(pos[0], pos[1], pos[2]) > 0:
+            return False
+        return inside
     fT = sTree.FitTracks[tkey]
     rc, pos, _mom = TrackExtrapolateTool.extrapolateToPlane(fT, ShipGeo.Bfield.z)
     if not rc:
@@ -586,32 +603,28 @@ def myEventLoop(n: int) -> None:
     for tr in hitlist:
         h["meanhits"].Fill(hitlist[tr])
     key = -1
-    fittedTracks = {}
-    for atrack in sTree.FitTracks:
+    for atrack in sTree.RecoTracks if actsMode else sTree.FitTracks:
         key += 1
         # kill tracks outside fiducial volume
         if not checkFiducialVolume(sTree, key, dy):
             continue
-        fitStatus = atrack.getFitStatus()
-        nmeas = fitStatus.getNdf()
+        info = track_info(atrack, actsMode)
+        nmeas = info.ndf
         h["meas"].Fill(nmeas)
-        if not fitStatus.isFitConverged():
+        if not info.converged:
             continue
         h["meas2"].Fill(nmeas)
         if nmeas < measCut:
             continue
-        fittedTracks[key] = atrack
         # needs different study why fit has not converged, continue with fitted tracks
-        rchi2 = fitStatus.getChi2()
+        rchi2 = info.chi2
         prob = ROOT.TMath.Prob(rchi2, int(nmeas))
         h["prob"].Fill(prob)
         chi2 = rchi2 / nmeas
-        fittedState = atrack.getFittedState()
         h["chi2"].Fill(chi2, wg)
-        h["measVSchi2"].Fill(atrack.getNumPoints(), chi2)
-        P = fittedState.getMomMag()
-        Px, Py, Pz = fittedState.getMom().x(), fittedState.getMom().y(), fittedState.getMom().z()
-        cov = fittedState.get6DCov()
+        h["measVSchi2"].Fill(info.n_points, chi2)
+        P = info.mom.Mag()
+        Px, Py, Pz = info.mom.X(), info.mom.Y(), info.mom.Z()
         if len(sTree.fitTrack2MC) - 1 < key:
             continue
         mcPartKey = sTree.fitTrack2MC[key]
@@ -625,17 +638,17 @@ def myEventLoop(n: int) -> None:
         delPOverP = (Ptruth - P) / Ptruth
         h["delPOverP"].Fill(Ptruth, delPOverP)
         delPOverPz = (1.0 / Ptruthz - 1.0 / Pz) * Ptruthz
-        h["pullPOverPx"].Fill(Ptruth, (Ptruthx - Px) / ROOT.TMath.Sqrt(cov[3][3]))
-        h["pullPOverPy"].Fill(Ptruth, (Ptruthy - Py) / ROOT.TMath.Sqrt(cov[4][4]))
-        h["pullPOverPz"].Fill(Ptruth, (Ptruthz - Pz) / ROOT.TMath.Sqrt(cov[5][5]))
+        h["pullPOverPx"].Fill(Ptruth, (Ptruthx - Px) / info.sigma_px)
+        h["pullPOverPy"].Fill(Ptruth, (Ptruthy - Py) / info.sigma_py)
+        h["pullPOverPz"].Fill(Ptruth, (Ptruthz - Pz) / info.sigma_pz)
         h["delPOverPz"].Fill(Ptruthz, delPOverPz)
         if chi2 > chi2CutOff:
             continue
         h["delPOverP2"].Fill(Ptruth, delPOverP)
         h["delPOverP2z"].Fill(Ptruth, delPOverPz)
         # try measure impact parameter
-        trackDir = fittedState.getDir()
-        trackPos = fittedState.getPos()
+        trackDir = info.dir
+        trackPos = info.pos
         vx = ROOT.TVector3()
         mcPart.GetStartVertex(vx)
         t = 0
@@ -660,9 +673,9 @@ def myEventLoop(n: int) -> None:
             continue
         checkMeasurements = True
         # cut on nDOF
+        tracks = sTree.RecoTracks if actsMode else sTree.FitTracks
         for tr in [t1, t2]:
-            fitStatus = sTree.FitTracks[tr].getFitStatus()
-            nmeas = fitStatus.getNdf()
+            nmeas = track_info(tracks[tr], actsMode).ndf
             if nmeas < measCut:
                 checkMeasurements = False
         if not checkMeasurements:
@@ -719,23 +732,36 @@ def myEventLoop(n: int) -> None:
         PosDir, newPosDir, CovMat, _scalFac = {}, {}, {}, {}
         # opening angle at vertex
         newPos = ROOT.TVector3(HNLPos.X(), HNLPos.Y(), HNLPos.Z())
-        st1, st2 = sTree.FitTracks[t1].getFittedState(), sTree.FitTracks[t2].getFittedState()
-        PosDir[t1] = {"position": st1.getPos(), "direction": st1.getDir(), "momentum": st1.getMom()}
-        PosDir[t2] = {"position": st2.getPos(), "direction": st2.getDir(), "momentum": st2.getMom()}
-        CovMat[t1] = st1.get6DCov()
-        CovMat[t2] = st2.get6DCov()
-        rep1, rep2 = ROOT.genfit.RKTrackRep(st1.getPDG()), ROOT.genfit.RKTrackRep(st2.getPDG())
-        state1, state2 = ROOT.genfit.StateOnPlane(rep1), ROOT.genfit.StateOnPlane(rep2)
-        rep1.setPosMom(state1, st1.getPos(), st1.getMom())
-        rep2.setPosMom(state2, st2.getPos(), st2.getMom())
-        try:
-            rep1.extrapolateToPoint(state1, newPos, False)
-            rep2.extrapolateToPoint(state2, newPos, False)
-            mom1, mom2 = rep1.getMom(state1), rep2.getMom(state2)
-        except Exception:
-            mom1, mom2 = st1.getMom(), st2.getMom()
-        newPosDir[t1] = {"position": rep1.getPos(state1), "direction": rep1.getDir(state1), "momentum": mom1}
-        newPosDir[t2] = {"position": rep2.getPos(state2), "direction": rep2.getDir(state2), "momentum": mom2}
+        if actsMode:
+            # momenta smoothed at the vertex, from the vertex holding exactly
+            # these two tracks; fall back to the track momenta otherwise
+            mom1 = track_info(sTree.RecoTracks[t1], actsMode).mom
+            mom2 = track_info(sTree.RecoTracks[t2], actsMode).mom
+            for vtx in sTree.RecoVertices:
+                if sorted(vtx.trackIds()) == sorted([t1, t2]):
+                    vtx_px, vtx_py, vtx_pz = vtx.trackPx(), vtx.trackPy(), vtx.trackPz()
+                    if len(vtx_px) >= 2:
+                        mom1 = ROOT.TVector3(vtx_px[0], vtx_py[0], vtx_pz[0])
+                        mom2 = ROOT.TVector3(vtx_px[1], vtx_py[1], vtx_pz[1])
+                    break
+        else:
+            st1, st2 = sTree.FitTracks[t1].getFittedState(), sTree.FitTracks[t2].getFittedState()
+            PosDir[t1] = {"position": st1.getPos(), "direction": st1.getDir(), "momentum": st1.getMom()}
+            PosDir[t2] = {"position": st2.getPos(), "direction": st2.getDir(), "momentum": st2.getMom()}
+            CovMat[t1] = st1.get6DCov()
+            CovMat[t2] = st2.get6DCov()
+            rep1, rep2 = ROOT.genfit.RKTrackRep(st1.getPDG()), ROOT.genfit.RKTrackRep(st2.getPDG())
+            state1, state2 = ROOT.genfit.StateOnPlane(rep1), ROOT.genfit.StateOnPlane(rep2)
+            rep1.setPosMom(state1, st1.getPos(), st1.getMom())
+            rep2.setPosMom(state2, st2.getPos(), st2.getMom())
+            try:
+                rep1.extrapolateToPoint(state1, newPos, False)
+                rep2.extrapolateToPoint(state2, newPos, False)
+                mom1, mom2 = rep1.getMom(state1), rep2.getMom(state2)
+            except Exception:
+                mom1, mom2 = st1.getMom(), st2.getMom()
+            newPosDir[t1] = {"position": rep1.getPos(state1), "direction": rep1.getDir(state1), "momentum": mom1}
+            newPosDir[t2] = {"position": rep2.getPos(state2), "direction": rep2.getDir(state2), "momentum": mom2}
         oa = mom1.Dot(mom2) / (mom1.Mag() * mom2.Mag())
         h["oa"].Fill(oa)
         #
@@ -752,12 +778,20 @@ def myEventLoop(n: int) -> None:
 
     # check extrapolation to TimeDet if exists
     if hasattr(ShipGeo, "TimeDet"):
-        for fT in sTree.FitTracks:
-            rc, pos, _mom = TrackExtrapolateTool.extrapolateToPlane(fT, ShipGeo.TimeDet.z)
-            if rc:
-                for aPoint in sTree.TimeDetPoint:
-                    h["extrapTimeDetX"].Fill(pos.X() - aPoint.GetX())
-                    h["extrapTimeDetY"].Fill(pos.Y() - aPoint.GetY())
+        if actsMode:
+            for fT in sTree.RecoTracks:
+                rc, pos, _mom = acts.extrapolateTrackToZ(cppyy.addressof(fT), ShipGeo.TimeDet.z)
+                if rc:
+                    for aPoint in sTree.TimeDetPoint:
+                        h["extrapTimeDetX"].Fill(pos[0] - aPoint.GetX())
+                        h["extrapTimeDetY"].Fill(pos[1] - aPoint.GetY())
+        else:
+            for fT in sTree.FitTracks:
+                rc, pos, _mom = TrackExtrapolateTool.extrapolateToPlane(fT, ShipGeo.TimeDet.z)
+                if rc:
+                    for aPoint in sTree.TimeDetPoint:
+                        h["extrapTimeDetX"].Fill(pos.X() - aPoint.GetX())
+                        h["extrapTimeDetY"].Fill(pos.Y() - aPoint.GetY())
 
 
 #
@@ -793,9 +827,9 @@ def HNLKinematics() -> None:
                 h["HNLPtNoW"].Fill(Pt)
                 for HNL in sTree.Particles:
                     t1, t2 = HNL.GetDaughter(0), HNL.GetDaughter(1)
+                    tracks = sTree.RecoTracks if actsMode else sTree.FitTracks
                     for tr in [t1, t2]:
-                        xx = sTree.FitTracks[tr].getFittedState()
-                        Prec = xx.getMom().Mag()
+                        Prec = track_info(tracks[tr], actsMode).mom.Mag()
                         h["HNLmom_recTracks"].Fill(Prec, wg)
                         h["HNLmomNoW_recTracks"].Fill(Prec)
     theSum = 0
@@ -814,7 +848,8 @@ ut.bookHist(h, "pi0Mass", "gamma gamma inv mass", 100, 0.0, 0.5)
 
 for n in range(options.nEvents):
     myEventLoop(n)
-    sTree.FitTracks.clear()
+    if not actsMode:
+        sTree.FitTracks.clear()
 makePlots()
 # output histograms
 hfile = options.inputFile.split(",")[0]
