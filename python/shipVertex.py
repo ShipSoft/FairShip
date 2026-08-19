@@ -112,12 +112,9 @@ class Task:
         for tr in goodTracks:
             fittedTracks[tr].getFitStatus()
             xx = fittedTracks[tr].getFittedState()
+            # shipDigiReco fits every track under the muon hypothesis (+-13)
             pid = xx.getPDG()
-            # without proton PID, refit protons under the pion mass
-            # hypothesis, keeping the charge
-            if not global_variables.pidProton and abs(pid) == 2212:
-                pid = int(math.copysign(211, pid))
-            rep = ROOT.genfit.RKTrackRep(xx.getPDG())
+            rep = ROOT.genfit.RKTrackRep(pid)
             state = ROOT.genfit.StateOnPlane(rep)
             rep.setPosMom(state, xx.getPos(), xx.getMom())
             PosDirCharge[tr] = {

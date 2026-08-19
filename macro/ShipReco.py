@@ -5,7 +5,6 @@
 from argparse import ArgumentParser
 
 withHists = True
-pidProton = False  # if true, take truth, if False fake with pion mass
 
 import resource
 
@@ -162,7 +161,6 @@ if hasattr(ShipGeo.Bfield, "fieldMap"):
 # make global variables
 global_variables.debug = options.Debug
 global_variables.fieldMaker = fieldMaker
-global_variables.pidProton = pidProton
 global_variables.withT0 = options.withT0
 global_variables.patRec = options.patRec
 global_variables.vertexing = vertexing
