@@ -35,6 +35,8 @@ it in future.
 * `--max-split-buffer` (default 25000): hard bound on the split clones buffered per track. Per-step splitting stops once the cap is reached, reducing the statistical boost but conserving weight. With the default `--max-event-size`, that cap is reached first, at about 10k pending clones
 * `--max-event-size` (default 5000000): cap on the projected number of particles per event, counting the particles already on the stack plus 500 for each pending split clone. Per-step splitting stops once the cap would be exceeded; weight is conserved. `run_fixedTarget.py` rejects values of this or `--max-split-buffer` that are too small for even one per-step split
 * `exitHadronAbsorber` reports the split-clone balance (decays split, clones created, clones never tracked and their weight) at the end of the run, including the final event's leftover buffer
+* ACTS is available as an alternative track fitter in the main reconstruction chain: `ShipReco.py --trackFitter acts` writes `RecoTracks`/`RecoVertices`/`Particles` branches instead of the GenFit `FitTracks`/`goodTracks` (which remain the default). Analysis tools (`ShipAna`, `shipVeto`, `analysis_toolkit`, `tracking_benchmark`) detect either output format automatically.
+* New `--patRec Truth` option for MC-truth track seeding (requires `--trackFitter acts`).
 
 ### Changed
 
