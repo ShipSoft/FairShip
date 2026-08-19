@@ -425,10 +425,18 @@ class ShipDigiReco:
         """
         from strawReco import runTracking
 
-        candidates = self.findTracks()
+        if global_variables.patRec == "Truth":
+            # MC truth seeding needs no pattern recognition, only smeared hits
+            candidates = None
+            if global_variables.withT0:
+                self.SmearedHits = self.strawtubes.withT0Estimate()
+            else:
+                self.SmearedHits = self.strawtubes.smearHits(global_variables.withNoStrawSmearing)
+        else:
+            candidates = self.findTracks()
 
         # Build the flat per-hit vectors handed to ACTS from this event's
-        # smeared hits (single smearing, done inside findTracks).
+        # smeared hits (single smearing, done above or inside findTracks).
         # Structure of hit vector (detector [straw=0], station, layer, view,
         # straw, track_id, x, y, z, t, E, drift, wire-xtop, ytop, xbot, ybot)
         self.strawHits.clear()
@@ -460,10 +468,13 @@ class ShipDigiReco:
             self.strawHitToDigi.append(digiHit)
             digi_to_straw[digiHit] = k
 
-        # Candidate hit indices refer to digi hits; remap them to positions
-        # in self.strawHits as expected by runTracking.
-        for cand in candidates:
-            cand["indices"] = [digi_to_straw[i] for i in cand["indices"] if i in digi_to_straw]
+        if candidates is None:
+            candidates = self._truthCandidates()
+        else:
+            # Candidate hit indices refer to digi hits; remap them to positions
+            # in self.strawHits as expected by runTracking.
+            for cand in candidates:
+                cand["indices"] = [digi_to_straw[i] for i in cand["indices"] if i in digi_to_straw]
 
         return runTracking(
             candidates,
@@ -472,6 +483,42 @@ class ShipDigiReco:
             self.strawHits,
             fit_vertex=global_variables.vertexing,
         )
+
+    def _truthCandidates(self) -> list[dict]:
+        """Build track candidates from MC truth: one per MC track with straw hits."""
+        candidates = []
+        for trID, tr in enumerate(self.sTree.MCTrack):
+            indices = [i for i, h in enumerate(self.strawHits) if int(h[5]) == trID]
+            if not indices:
+                continue
+            unique_indices = []
+            seen_layers = set()
+            # Sort indices by Z-position to find the first straw hit; iHit[8] is Z
+            indices.sort(key=lambda idx: self.strawHits[idx][8])
+            for idx in indices:
+                h = self.strawHits[idx]
+                # Keep only one straw per unique station/layer/view combination:
+                # the Kalman filter can't handle more than 1 measurement per acts layer
+                layer_key = (int(h[1]), int(h[2]), int(h[3]))
+                if layer_key not in seen_layers:
+                    unique_indices.append(idx)
+                    seen_layers.add(layer_key)
+            first_hit = self.strawHits[unique_indices[0]]
+
+            # Seed position from the first straw hit truth (indices 6, 7, 8)
+            pos = ROOT.TVector3(first_hit[6], first_hit[7], first_hit[8])
+
+            # Momentum from MCTrack
+            mom = ROOT.TVector3(tr.GetPx(), tr.GetPy(), tr.GetPz())
+
+            particle = self.PDG.GetParticle(tr.GetPdgCode())
+            if particle is None:
+                logger.warning("Skipping MCTrack %d with unknown PDG code %d", trID, tr.GetPdgCode())
+                continue
+            charge = particle.Charge() / 3.0
+
+            candidates.append({"pos": pos, "mom": mom, "indices": unique_indices, "charge": charge})
+        return candidates
 
     def digitize(self) -> None:
         self.sTree.t0 = self.random.Rndm() * 1 * u.microsecond
