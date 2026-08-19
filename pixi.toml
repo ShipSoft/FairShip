@@ -73,6 +73,11 @@ build = { cmd = "cmake --build build -j$(nproc)", depends-on = ["configure"] }
 install = { cmd = "cmake --install build", depends-on = ["build"] }
 test = { cmd = "ctest --test-dir build --output-on-failure", depends-on = ["build"] }
 
+# Python unit tests. Separate from `test` so they run without a build: they
+# only need `python/` on PYTHONPATH, which activate.sh provides.
+[tasks.ci-pytest]
+cmd = "pytest tests/"
+
 # --- CI sim-chain tasks ---
 # Mirror the per-step commands in .github/workflows/build-run.yml so the
 # whole sim/reco/ana/benchmark chain is reproducible locally via `pixi run`.
