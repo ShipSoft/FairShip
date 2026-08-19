@@ -58,6 +58,7 @@ ship-ci-metrics = "*"
 cmake = ">=3.27"
 ninja = "*"
 cxx-compiler = "*"
+libboost-devel = ">=1.90"
 
 # Static analysis
 # clang-tidy needs clang's builtin headers (lib/clang/<N>/include/stddef.h,
