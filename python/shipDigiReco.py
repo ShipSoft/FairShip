@@ -3,6 +3,7 @@
 
 import logging
 from array import array
+from collections import Counter
 
 import global_variables
 import ROOT
@@ -122,7 +123,8 @@ class ShipDigiReco:
     def reconstruct(self) -> None:
         if not hasattr(self, "strawtubes"):
             return
-        n_tracks = self.findTracks()
+        candidates = self.findTracks()
+        n_tracks = self.fitTracksGenfit(candidates)
         n_good_tracks = self.findGoodTracks()
         if hasattr(self, "digiSBT"):
             self.linkVetoOnTracks()
@@ -168,15 +170,17 @@ class ShipDigiReco:
         if self.validation:
             self.validation_stats["events_digitized"] += 1
 
-    def findTracks(self) -> int:
+    def findTracks(self) -> list[dict]:
+        """Digitize, run pattern recognition and build fitter-agnostic track candidates.
+
+        Each candidate holds the seed state, hit measurements and indices;
+        fitting is done separately (e.g. by fitTracksGenfit).
+        """
         hitPosLists = {}
         hit_detector_ids = {}
         stationCrossed: dict[int, dict[int, int]] = {}
         listOfIndices: dict[int, list[int]] = {}
         trackParams: dict[int, dict] = {}
-        self.fGenFitArray.clear()
-        self.fTrackletsArray.clear()
-        self.fitTrack2MC.clear()
 
         #
         if global_variables.withT0:
@@ -188,8 +192,6 @@ class ShipDigiReco:
             self.validation_stats["smeared_hits_total"] += len(self.SmearedHits)
             if len(self.SmearedHits) > 0:
                 self.validation_stats["events_with_hits"] += 1
-
-        trackCandidates = []
 
         # Do pattern recognition
         track_hits = shipPatRec.execute(self.SmearedHits, global_variables.ShipGeo, global_variables.patRec)
@@ -234,6 +236,7 @@ class ShipDigiReco:
 
         n_too_few_hits = 0
         n_too_few_stations = 0
+        track_candidates = []
 
         for atrack in hitPosLists:
             if atrack < 0:
@@ -270,6 +273,44 @@ class ShipDigiReco:
 
             # Seed state: use PatRec track parameters when available
             posM, momM = self._compute_seed_state(atrack, meas, trackParams)
+
+            track_candidates.append(
+                {
+                    "pos": posM,
+                    "mom": momM,
+                    "pdg": pdg,
+                    "meas": meas,
+                    "detIDs": detIDs,
+                    "indices": listOfIndices[atrack],
+                }
+            )
+
+        logger.debug(
+            "findTracks: %d candidates, %d too few hits, %d too few stations, %d candidates kept for fitting",
+            len(hitPosLists),
+            n_too_few_hits,
+            n_too_few_stations,
+            len(track_candidates),
+        )
+        if self.validation:
+            self.validation_stats["track_candidates_rejected_hits"] += n_too_few_hits
+            self.validation_stats["track_candidates_rejected_stations"] += n_too_few_stations
+
+        return track_candidates
+
+    def fitTracksGenfit(self, candidates) -> int:
+        """Fit track candidates with GenFit and persist the fitted tracks."""
+        self.fGenFitArray.clear()
+        self.fTrackletsArray.clear()
+        self.fitTrack2MC.clear()
+
+        fittedTracks = []
+        for cand in candidates:
+            pdg = cand["pdg"]
+            meas = cand["meas"]
+            detIDs = cand["detIDs"]
+            nM = len(meas)
+            posM, momM = cand["pos"], cand["mom"]
 
             # Try both charge hypotheses, keep the one with better chi2/NDF
             best_track = None
@@ -354,9 +395,9 @@ class ShipDigiReco:
                     best_chi2ndf = chi2ndf
                     best_track = theTrack
             if best_track is not None:
-                trackCandidates.append((best_track, atrack))
+                fittedTracks.append((best_track, cand))
 
-        for theTrack, atrack in trackCandidates:
+        for theTrack, cand in fittedTracks:
             # Tracks are already fitted from the dual-hypothesis loop above
             fitStatus = theTrack.getFitStatus()
             nmeas = fitStatus.getNdf()  # guaranteed > 0 by hypothesis loop filter
@@ -379,28 +420,19 @@ class ShipDigiReco:
                 print("save track", theTrack, chi2, nmeas, fitStatus.isFitConverged())
             # Save MC link
             track_ids = []
-            for index in listOfIndices[atrack]:
+            for index in cand["indices"]:
                 ahit = self.sTree.strawtubesPoint[index]
                 track_ids += [ahit.GetTrackID()]
             _frac, tmax = self.fracMCsame(track_ids)
             self.fitTrack2MC.push_back(tmax)
             # Save hits indexes of the the fitted tracks
             indices = ROOT.std.vector("unsigned int")()
-            for index in listOfIndices[atrack]:
+            for index in cand["indices"]:
                 indices.push_back(index)
             aTracklet = ROOT.Tracklet(1, indices)
             self.fTrackletsArray.push_back(aTracklet)
 
-        logger.debug(
-            "findTracks: %d candidates, %d too few hits, %d too few stations, %d fitted tracks saved",
-            len(hitPosLists),
-            n_too_few_hits,
-            n_too_few_stations,
-            len(self.fGenFitArray),
-        )
-        if self.validation:
-            self.validation_stats["track_candidates_rejected_hits"] += n_too_few_hits
-            self.validation_stats["track_candidates_rejected_stations"] += n_too_few_stations
+        logger.debug("fitTracksGenfit: %d fitted tracks saved", len(self.fGenFitArray))
 
         # debug
         if global_variables.debug:
@@ -502,22 +534,12 @@ class ShipDigiReco:
             self.validation_stats["veto_links_total"] += len(self.vetoHitOnTrackArray)
 
     def fracMCsame(self, trackids):
-        track = {}
-        nh = len(trackids)
-        for tid in trackids:
-            if tid in track:
-                track[tid] += 1
-            else:
-                track[tid] = 1
-        if track != {}:
-            tmax = max(track, key=lambda k: track[k])
-        else:
-            track = {-999: 0}
-            tmax = -999
-        frac = 0.0
-        if nh > 0:
-            frac = float(track[tmax]) / float(nh)
-        return frac, tmax
+        """Find the majority MC track ID and its purity fraction."""
+        if not trackids:
+            return 0.0, -999
+        counts = Counter(trackids)
+        tmax, max_count = counts.most_common(1)[0]
+        return float(max_count) / len(trackids), tmax
 
     def finish(self) -> None:
         del self.fitter
