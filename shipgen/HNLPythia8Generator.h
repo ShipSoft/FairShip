@@ -104,7 +104,8 @@ class HNLPythia8Generator : public SHiP::Generator {
   Double_t fLmin;   // min decay length along the HNL flight direction (mm)
   Double_t fLmax;   // max decay length along the HNL flight direction (mm)
   Int_t fnRetries;  // retries: no HNL produced
-  Double_t fctau;   // hnl lifetime
+  Double_t fctau;   // Pythia nominal proper lifetime tau0 = proper decay
+                    // length c*tau (mm)
   Double_t fFDs;    // correction for Pythia6 to match measured Ds production
   Double_t fsmearBeam;  // finite beam size
   Double_t fPaintBeam;  // beam painting radius
