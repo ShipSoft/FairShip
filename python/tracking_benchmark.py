@@ -17,6 +17,7 @@ import math
 from typing import Any
 
 import ROOT
+from shipTrackAccess import get_tracks, track_info, uses_acts
 
 ROOT.gROOT.SetBatch(True)
 
@@ -297,6 +298,10 @@ class TrackingBenchmark:
         n_correct_charge = 0
         n_wrong_charge = 0
 
+        acts_mode = uses_acts(self.reco_tree)
+        if acts_mode:
+            logger.info("ACTS tracks: charge-identification metrics unavailable (no charge accessor)")
+
         for i_event in range(n_events):
             self.sim_tree.GetEvent(i_event)
             self.reco_tree.GetEvent(i_event)
@@ -315,22 +320,23 @@ class TrackingBenchmark:
             n_reconstructible += len(reconstructible_ids)
 
             # Match reco tracks to MC
-            n_reco = self.reco_tree.FitTracks.size()
+            reco_tracks = get_tracks(self.reco_tree)
+            n_reco = reco_tracks.size()
             n_total_reco += n_reco
 
             # Track which MC particles have been matched in this event
             matched_mc_this_event: set[int] = set()
 
             for i_reco in range(n_reco):
-                track = self.reco_tree.FitTracks[i_reco]
-                fit_status = track.getFitStatus()
-                if not fit_status.isFitConverged():
+                track = reco_tracks[i_reco]
+                info = track_info(track, acts_mode)
+                if not info.converged:
                     continue
 
-                ndf = fit_status.getNdf()
+                ndf = info.ndf
                 if ndf <= 0:
                     continue
-                chi2 = fit_status.getChi2() / ndf
+                chi2 = info.chi2 / ndf
                 h_chi2ndf.Fill(chi2)
 
                 # Use fitTrack2MC for the MC link (already computed by fracMCsame)
@@ -357,31 +363,28 @@ class TrackingBenchmark:
                     x_t, y_t, _ = self._get_truth_pos_first(mc_id)
                     tx_t, ty_t = self._get_truth_slopes(mc_id)
 
-                    if p_truth > 0:
-                        try:
-                            fitted_state = track.getFittedState()
-                            p_reco = fitted_state.getMomMag()
-                            mom = fitted_state.getMom()
-                            pos = fitted_state.getPos()
+                    if p_truth > 0 and info.mom is not None:
+                        p_reco = info.mom.Mag()
 
-                            dp_over_p = (p_reco - p_truth) / p_truth
-                            h_dp_over_p.Fill(dp_over_p)
-                            h_dp_vs_p.Fill(p_truth, dp_over_p)
+                        dp_over_p = (p_reco - p_truth) / p_truth
+                        h_dp_over_p.Fill(dp_over_p)
+                        h_dp_vs_p.Fill(p_truth, dp_over_p)
 
-                            h_dx.Fill(pos.X() - x_t)
-                            h_dy.Fill(pos.Y() - y_t)
+                        h_dx.Fill(info.pos.X() - x_t)
+                        h_dy.Fill(info.pos.Y() - y_t)
 
-                            pz_reco = mom.Z()
-                            if abs(pz_reco) > 1e-10:
-                                tx_reco = mom.X() / pz_reco
-                                ty_reco = mom.Y() / pz_reco
-                                h_dtx.Fill(tx_reco - tx_t)
-                                h_dty.Fill(ty_reco - ty_t)
+                        pz_reco = info.mom.Z()
+                        if abs(pz_reco) > 1e-10:
+                            tx_reco = info.mom.X() / pz_reco
+                            ty_reco = info.mom.Y() / pz_reco
+                            h_dtx.Fill(tx_reco - tx_t)
+                            h_dty.Fill(ty_reco - ty_t)
 
-                            h_p_matched.Fill(p_truth)
+                        h_p_matched.Fill(p_truth)
 
-                            # Charge identification
-                            q_reco = fitted_state.getCharge()
+                        # Charge identification (ACTS tracks expose no charge)
+                        if not acts_mode:
+                            q_reco = track.getFittedState().getCharge()
                             mc_pdg = self.sim_tree.MCTrack[mc_id].GetPdgCode()
                             mc_particle = self.PDG.GetParticle(mc_pdg)
                             if mc_particle:
@@ -392,32 +395,32 @@ class TrackingBenchmark:
                                 else:
                                     n_wrong_charge += 1
                                     h_p_wrong_charge.Fill(p_truth)
-                        except Exception:
-                            logger.debug(
-                                "Failed to extract fitted state for mc_id=%d, p_truth=%.3f",
-                                mc_id,
-                                p_truth,
-                                exc_info=True,
-                            )
 
                     # Per-hit unbiased residuals and pulls
-                    n_meas = track.getNumPointsWithMeasurement()
-                    for i_hit in range(n_meas):
-                        try:
-                            tp = track.getPointWithMeasurement(i_hit)
-                            fitter_info = tp.getFitterInfo()
-                            if fitter_info is None:
-                                continue
-                            res = fitter_info.getResidual()
-                            # Index 0: 1D residual (straw drift-distance measurement)
-                            res_val = res.getState()(0)
-                            res_cov = res.getCov()(0, 0)
+                    if acts_mode:
+                        for res_val in track.GetResiduals():
                             h_hit_residual.Fill(res_val)
-                            if res_cov > 0:
-                                h_hit_pull.Fill(res_val / math.sqrt(res_cov))
-                        except (ROOT.genfit.Exception, AttributeError, IndexError) as e:
-                            logger.debug("Skipping hit %d: %s", i_hit, e)
-                            continue
+                        for pull_val in track.GetPulls():
+                            if pull_val != -999.0:
+                                h_hit_pull.Fill(pull_val)
+                    else:
+                        n_meas = track.getNumPointsWithMeasurement()
+                        for i_hit in range(n_meas):
+                            try:
+                                tp = track.getPointWithMeasurement(i_hit)
+                                fitter_info = tp.getFitterInfo()
+                                if fitter_info is None:
+                                    continue
+                                res = fitter_info.getResidual()
+                                # Index 0: 1D residual (straw drift-distance measurement)
+                                res_val = res.getState()(0)
+                                res_cov = res.getCov()(0, 0)
+                                h_hit_residual.Fill(res_val)
+                                if res_cov > 0:
+                                    h_hit_pull.Fill(res_val / math.sqrt(res_cov))
+                            except (ROOT.genfit.Exception, AttributeError, IndexError) as e:
+                                logger.debug("Skipping hit %d: %s", i_hit, e)
+                                continue
 
             n_matched_mc += len(matched_mc_this_event)
 
