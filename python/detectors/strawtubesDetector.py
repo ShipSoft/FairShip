@@ -81,7 +81,6 @@ class strawtubesDetector(BaseDetector):
         stop = ROOT.TVector3()
         start = ROOT.TVector3()
         v_drift = global_variables.modules["strawtubes"].StrawVdrift()
-        global_variables.modules["strawtubes"].StrawEndPoints(1002001, start, stop)
         for aDigi in self.det:
             key += 1
             if not aDigi.isValid():
