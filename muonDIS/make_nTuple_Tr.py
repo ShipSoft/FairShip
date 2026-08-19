@@ -222,7 +222,7 @@ for inputFolder in os.listdir(path):
             os.path.join(path, inputFolder, "ship.conical.MuonBack-TGeant4.root"),
             "read",
         )
-        tree = f.cbmsim
+        tree = f["cbmsim"]
     except Exception as e:
         print(f"Error :{e}")
 
@@ -392,7 +392,7 @@ print(
 event_data = []
 with r.TFile.Open(args.outputfile, "read") as file:
     try:
-        tree = file.MuonAndSoftInteractions
+        tree = file["MuonAndSoftInteractions"]
     except Exception as e:
         print(f"Error: {e}")
         exit(1)
