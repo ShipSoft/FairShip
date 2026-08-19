@@ -73,7 +73,7 @@ def update_file(filename: str, final_xsec) -> None:
     """Update the DIS cross section of the muon to the converged value from Pythia."""
     file = r.TFile.Open(filename, "read")
 
-    original_tree = file.DIS
+    original_tree = file["DIS"]
 
     temp_filename = filename + ".tmp"
     temp_file = r.TFile.Open(temp_filename, "recreate")
@@ -112,7 +112,7 @@ Fixtarget = {1: "p+", 0: "n0"}
 def inspect_file(filename: str) -> None:
     """Inspect the contents of muonDis file."""
     file = r.TFile.Open(filename, "READ")
-    tree = file.DIS
+    tree = file["DIS"]
 
     table_rows = []
 
@@ -141,7 +141,7 @@ def makeMuonDIS() -> None:
     muonFile = r.TFile.Open(args.inputFile, "read")
 
     try:
-        muon_tree = muonFile.MuonAndSoftInteractions
+        muon_tree = muonFile["MuonAndSoftInteractions"]
     except Exception as e:
         logging.error(e)
         muonFile.Close()
