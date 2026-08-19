@@ -397,9 +397,8 @@ def RedoVertexing(t1, t2):
     LV = {}
     for tr in [t1, t2]:
         mom = reps[tr].getMom(states[tr])
+        # tracks are always fitted under the muon hypothesis (+-13)
         pid = abs(states[tr].getPDG())
-        if pid == 2212:
-            pid = 211
         _pdg_particle = PDG.GetParticle(pid)
         assert _pdg_particle is not None, f"Unknown PDG: {pid}"
         mass = _pdg_particle.Mass()
