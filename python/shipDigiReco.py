@@ -59,6 +59,8 @@ class ShipDigiReco:
             self.fitACTSVertices = self.recoTree.Branch("RecoVertices", self.fACTSVertexArray, 32000, -1)
             self.fitTrack2MC = ROOT.std.vector("int")()
             self.mcLink = self.recoTree.Branch("fitTrack2MC", self.fitTrack2MC, 32000, -1)
+            self.goodTracksVect = ROOT.std.vector("int")()
+            self.goodTracksBranch = self.recoTree.Branch("goodTracks", self.goodTracksVect, 32000, -1)
             self.fTrackletsArray = ROOT.std.vector("Tracklet")()
             self.Tracklets = self.recoTree.Branch("Tracklets", self.fTrackletsArray, 32000, -1)
             # per-hit vectors handed to ACTS event data (not persisted)
@@ -201,6 +203,7 @@ class ShipDigiReco:
         self.fACTSArray.clear()
         self.fACTSVertexArray.clear()
         self.fitTrack2MC.clear()
+        self.goodTracksVect.clear()
         self.fPartArray.clear()
         self.fTrackletsArray.clear()
 
@@ -209,7 +212,7 @@ class ShipDigiReco:
         vector_ptr = ROOT.addressof(self.fACTSArray)
         vertex_vector_ptr = ROOT.addressof(self.fACTSVertexArray)
 
-        for i, (_, hit_indices) in enumerate(zip(output_tracks, track_hit_indices)):
+        for i, (_, hit_indices) in enumerate(zip(output_tracks, track_hit_indices, strict=True)):
             acts.examples.pushRecoTrack(vector_ptr, geo_ctx, i, output_tracks)
 
             nmeas = output_tracks.ndf[i]
@@ -236,34 +239,38 @@ class ShipDigiReco:
             aTracklet = ROOT.Tracklet(1, indices_vector)
             self.fTrackletsArray.push_back(aTracklet)
 
-        for vtx in vertices:
-            try:
-                input_addr = int(vtx._extracted_params_addr) if hasattr(vtx, "_extracted_params_addr") else 0
-            except Exception:
-                input_addr = 0
-            try:
-                if input_addr == 0 and hasattr(acts, "get_last_extracted_params_addr"):
-                    addr = acts.get_last_extracted_params_addr()
-                    if addr and addr != 0:
-                        input_addr = int(addr)
-            except Exception:
-                pass
+        n_good_tracks = self.findGoodActsTracks(output_tracks)
 
+        # acts-ship only exposes a process-global "last extracted params"
+        # pointer, so it can be attributed to a vertex unambiguously only when
+        # the event holds a single one.
+        input_addr = 0
+        if len(vertices) == 1 and hasattr(acts, "get_last_extracted_params_addr"):
+            try:
+                input_addr = int(acts.get_last_extracted_params_addr())
+            except (TypeError, ValueError):
+                logger.warning("Could not read the ACTS extracted-parameters address", exc_info=True)
+
+        for vtx in vertices:
             acts.pushRecoVertex(vertex_vector_ptr, vtx, output_tracks, input_addr)
 
             vtx_tracks = vtx.tracks()
 
             # Create a ShipParticle from the vertex fit from 2 track vertices
-            if len(vtx_tracks) > 2:
+            if len(vtx_tracks) != 2:
+                logger.debug("Skipping vertex with %d tracks (expected 2)", len(vtx_tracks))
                 continue
 
             vertex_pos = vtx.position()
 
-            # mm^2 -> cm^2 conversion factor (0.01)
-            s = 0.01
+            # ACTS reco frame is in mm, the SHiP frame in cm
+            length_scale = 0.1  # mm -> cm
+            area_scale = 0.01  # mm^2 -> cm^2 (covariances)
 
             # Scale units to cm and rotate
-            vx = ROOT.TVector3(-vertex_pos[2] * s, vertex_pos[1] * s, vertex_pos[0] * s)
+            vx = ROOT.TVector3(
+                -vertex_pos[2] * length_scale, vertex_pos[1] * length_scale, vertex_pos[0] * length_scale
+            )
 
             t1 = int(vtx_tracks[0].trackIndex)
             t2 = int(vtx_tracks[1].trackIndex)
@@ -279,17 +286,17 @@ class ShipDigiReco:
             acts_covV = vtx.covariance()  # 3x3 Eigen matrix in mm^2 (ACTS reco frame)
             covV = ROOT.TMatrixDSym(3)
 
-            covV[0][0] = acts_covV[2, 2] * s
-            covV[1][1] = acts_covV[1, 1] * s
-            covV[2][2] = acts_covV[0, 0] * s
+            covV[0][0] = acts_covV[2, 2] * area_scale
+            covV[1][1] = acts_covV[1, 1] * area_scale
+            covV[2][2] = acts_covV[0, 0] * area_scale
 
-            covV[0][1] = -acts_covV[1, 2] * s
+            covV[0][1] = -acts_covV[1, 2] * area_scale
             covV[1][0] = covV[0][1]
 
-            covV[0][2] = -acts_covV[0, 2] * s
+            covV[0][2] = -acts_covV[0, 2] * area_scale
             covV[2][0] = covV[0][2]
 
-            covV[1][2] = acts_covV[0, 1] * s
+            covV[1][2] = acts_covV[0, 1] * area_scale
             covV[2][1] = covV[1][2]
 
             cov_daughter1 = vtx_tracks[0].covariance if hasattr(vtx_tracks[0], "covariance") else None
@@ -400,19 +407,37 @@ class ShipDigiReco:
             self.fPartArray.push_back(particle)
 
         if hasattr(self, "digiSBT"):
-            veto_results = calculateSBTDOCA(output_tracks, self.digiSBT.det, self.trackingGeometry, self.actsFieldMap)
+            # As in the GenFit linkVetoOnTracks, the veto links are built for the
+            # selected tracks only: entry k of the VetoHitOnTrack branch belongs
+            # to track goodTracks[k], and its hitID indexes the SBT digi hits.
+            veto_results = calculateSBTDOCA(
+                output_tracks,
+                self.digiSBT.det,
+                self.trackingGeometry,
+                self.actsFieldMap,
+                selected_indices=list(self.goodTracksVect),
+            )
             self.vetoHitOnTrackArray.clear()
             for hitID, distMin in veto_results:
-                self.vetoHitOnTrackArray.push_back(ROOT.vetoHitOnTrack(hitID, distMin))
+                self.vetoHitOnTrackArray.push_back(ROOT.vetoHitOnTrack(hitID, float(distMin)))
+                if self.validation and hitID >= 0:  # Only record real matches
+                    self.validation_stats["veto_link_distance_sum"] += distMin
+                    self.validation_stats["veto_link_distance_sum_sq"] += distMin * distMin
+                    self.validation_stats["veto_link_distance_count"] += 1
 
         n_tracks = len(self.fACTSArray)
         if self.validation:
             self.validation_stats["events_reconstructed"] += 1
             self.validation_stats["fitted_tracks_total"] += n_tracks
+            self.validation_stats["good_tracks_total"] += n_good_tracks
             if n_tracks > 0:
                 self.validation_stats["events_with_fitted_tracks"] += 1
+            if n_good_tracks > 0:
+                self.validation_stats["events_with_good_tracks"] += 1
             validation_tools.record_event_stat(self.validation_stats, "event_fitted_tracks", n_tracks)
+            validation_tools.record_event_stat(self.validation_stats, "event_good_tracks", n_good_tracks)
             if hasattr(self, "digiSBT"):
+                self.validation_stats["veto_links_total"] += len(self.vetoHitOnTrackArray)
                 validation_tools.record_event_stat(
                     self.validation_stats, "event_veto_links", len(self.vetoHitOnTrackArray)
                 )
@@ -621,13 +646,11 @@ class ShipDigiReco:
             k_y34 = params.get("k_y34")
             if k_y12 is not None and k_y34 is not None:
                 pdg = -13 if k_y34 > k_y12 else 13
-                # NB: the ACTS path uses the opposite sign convention for the
-                # same slope difference; kept per-fitter to preserve each
-                # fitter's original behaviour.
-                charge = -1 if k_y34 > k_y12 else 1
             else:
                 pdg = 13
-                charge = 1
+            # GenFit is seeded with the PDG code, ACTS with the charge, so the two
+            # have to agree: mu- (pdg 13) carries charge -1, mu+ (pdg -13) carries +1.
+            charge = -1 if pdg > 0 else 1
             meas = hitPosLists[atrack]
             detIDs = hit_detector_ids[atrack]
             nM = len(meas)
@@ -868,6 +891,32 @@ class ShipDigiReco:
                 continue
             nmeas = fitStatus.getNdf()
             chi2 = fitStatus.getChi2() / nmeas
+            if chi2 < 50 and not chi2 < 0:
+                self.goodTracksVect.push_back(i)
+                nGoodTracks += 1
+        return nGoodTracks
+
+    def findGoodActsTracks(self, output_tracks) -> int:
+        """ACTS counterpart of findGoodTracks.
+
+        Applies the same chi2/ndf < 50 criterion as the GenFit selection, so the
+        goodTracks branch means the same thing whichever fitter produced the
+        file. A usable reference surface stands in for GenFit's isFitConverged:
+        only successful ACTS fits are persisted in the first place, but a track
+        without a reference surface cannot be extrapolated either.
+        """
+        self.goodTracksVect.clear()
+        nGoodTracks = 0
+        n_persisted = len(self.fACTSArray)
+        for i, track in enumerate(output_tracks):
+            if i >= n_persisted:
+                break
+            if not track.referenceSurface:
+                continue
+            ndf = output_tracks.ndf[i]
+            if ndf <= 0:
+                continue
+            chi2 = output_tracks.chi2[i] / ndf
             if chi2 < 50 and not chi2 < 0:
                 self.goodTracksVect.push_back(i)
                 nGoodTracks += 1

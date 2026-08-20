@@ -149,9 +149,16 @@ def runTracking(candidates, trackingGeometry, fieldMap, strawHits, fit_vertex=Tr
     return const_tracks, vertices, track_hit_indices_list
 
 
-def calculateSBTDOCA(output_tracks, sbt_digis, trackingGeometry, fieldMap):
+def calculateSBTDOCA(output_tracks, sbt_digis, trackingGeometry, fieldMap, selected_indices=None):
     """
     Extrapolates fitted tracks to the X-plane (Reco frame) of SBT hits.
+
+    Returns one ``(hitID, distMin)`` per selected track, in ascending
+    container order, so element ``k`` of the result corresponds to
+    ``selected_indices[k]``. ``selected_indices`` defaults to every track.
+    ``distMin`` is in centimetres (ROOT geometry units) to match the GenFit
+    ShipDigiReco.findVetoHitOnTrack; tracks with no match get
+    ``(-1, 99999.0)``, the same sentinel that path uses.
     """
 
     nav_cfg = acts.Navigator.Config()
@@ -169,39 +176,45 @@ def calculateSBTDOCA(output_tracks, sbt_digis, trackingGeometry, fieldMap):
     event_parameters_array = output_tracks.parameters  # shape (N, 6)
     event_covariance_array = output_tracks.covariance  # shape (N, 6, 6)
 
+    selected = None if selected_indices is None else {int(i) for i in selected_indices}
+
     veto_results = []
     for _t_idx, track in enumerate(output_tracks):
-        if not track.referenceSurface:
+        if selected is not None and _t_idx not in selected:
             continue
 
-        track_params_numpy = event_parameters_array[_t_idx]
-        track_covariance_numpy = event_covariance_array[_t_idx]
-
-        start_params = acts.examples.makeBoundTrackParameters(
-            track.referenceSurface, track_params_numpy, track_covariance_numpy
-        )
-
-        distMin = 99999
+        distMin = 99999.0
         hitID = -1
 
-        for s_idx, sbt_hit in enumerate(sbt_digis):
-            # Create surface
-            hit_pos = np.array([sbt_hit.GetZ() * 10.0, sbt_hit.GetY() * 10.0, -sbt_hit.GetX() * 10.0])
-            normal_arr = np.array([1.0, 0.0, 0.0])
-            target_surface = acts.createPlaneSurface(hit_pos, normal_arr)
+        # A track without a reference surface cannot be extrapolated, but it
+        # still gets a placeholder so the results stay aligned with the
+        # selected tracks.
+        if track.referenceSurface:
+            track_params_numpy = event_parameters_array[_t_idx]
+            track_covariance_numpy = event_covariance_array[_t_idx]
 
-            res_params = acts.extrapolateTrack(propagator, start_params, target_surface, geo_ctx, mag_ctx)
+            start_params = acts.examples.makeBoundTrackParameters(
+                track.referenceSurface, track_params_numpy, track_covariance_numpy
+            )
 
-            if res_params is not None:
-                # The target plane is centred on the SBT hit, so the local
-                # bound parameters give the in-plane distance to the hit
-                # directly (equivalent to the Y-Z distance on the X plane).
-                local_params = np.asarray(res_params.parameters)
-                doca = float(np.hypot(local_params[0], local_params[1]))
+            for s_idx, sbt_hit in enumerate(sbt_digis):
+                # Create surface
+                hit_pos = np.array([sbt_hit.GetZ() * 10.0, sbt_hit.GetY() * 10.0, -sbt_hit.GetX() * 10.0])
+                normal_arr = np.array([1.0, 0.0, 0.0])
+                target_surface = acts.createPlaneSurface(hit_pos, normal_arr)
 
-                if doca < distMin:
-                    distMin = doca
-                    hitID = s_idx
+                res_params = acts.extrapolateTrack(propagator, start_params, target_surface, geo_ctx, mag_ctx)
+
+                if res_params is not None:
+                    # The target plane is centred on the SBT hit, so the local
+                    # bound parameters give the in-plane distance to the hit
+                    # directly (equivalent to the Y-Z distance on the X plane).
+                    local_params = np.asarray(res_params.parameters)
+                    doca = float(np.hypot(local_params[0], local_params[1])) / 10.0  # mm -> cm
+
+                    if doca < distMin:
+                        distMin = doca
+                        hitID = s_idx
 
         veto_results.append((hitID, distMin))
 
