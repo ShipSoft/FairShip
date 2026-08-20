@@ -65,8 +65,8 @@ void TEvtGenDecayer::Init() {
   // Initialize EvtGen if decay files are specified
   if (fDecayFile != "" && fParticleFile != "") {
     // Set up EvtGen random engine with ROOT's random number generator seed
-    const UInt_t seed = fSeed != 0 ? fSeed : gRandom->GetSeed();
-    const UInt_t pythiaSeed = SHiP::NormalizePythiaSeed(seed);
+    const std::uint32_t seed = fSeed != 0 ? fSeed : gRandom->GetSeed();
+    const std::uint32_t pythiaSeed = SHiP::NormalizePythiaSeed(seed);
 
     // Also seed Pythia8 with the same seed for consistency
     TPythia8* pythia8 = TPythia8::Instance();

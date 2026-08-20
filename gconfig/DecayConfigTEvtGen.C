@@ -2,6 +2,8 @@
 // SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP
 // Collaboration
 
+#include <cstdint>
+
 void DecayConfig() {
   // This script uses TEvtGenDecayer that handles J/psi with EvtGen
   // and other particles with TPythia8Decayer
@@ -14,7 +16,7 @@ void DecayConfig() {
   // and silently change the EvtGen/Pythia8-decayer seed.
   TString RandomSeed = gSystem->Getenv("FAIRSHIP_RANDOM_SEED");
   if (!RandomSeed.IsNull()) {
-    decayer->SetSeed(static_cast<UInt_t>(RandomSeed.Atoll()));
+    decayer->SetSeed(static_cast<std::uint32_t>(RandomSeed.Atoi()));
   }
 
   // Configure EvtGen files using EVTGENDATA
