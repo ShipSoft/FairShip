@@ -29,6 +29,8 @@ numpy = "*"
 scipy = "*"
 matplotlib = "*"
 pandas = "*"
+pytest = "*"
+pytest-xdist = "*"
 pyyaml = "*"
 tabulate = "*"
 

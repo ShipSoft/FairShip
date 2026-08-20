@@ -56,9 +56,7 @@ def test_cases() -> list[TestCase]:
             name = configured_test["name"]
             dependencies = configured_test["depends_on"]
         else:
-            raise RuntimeError(
-                f"{location} must be a test name or a mapping containing 'name' and optional 'depends_on'"
-            )
+            raise RuntimeError(f"{location} must be a mapping with 'name' and optional 'depends_on' keys")
         if not isinstance(name, str) or not name:
             raise RuntimeError(f"{location} must be a non-empty test name")
         if VALID_TEST_NAME.fullmatch(name) is None:
@@ -210,7 +208,7 @@ def run(test_name: str, workdir: Path) -> tuple[int, str]:
         stdout += f"\nTest timed out after {TEST_TIMEOUT_SECONDS} seconds\n"
     patterns = _patterns_for(test_name)
     lines = stdout.splitlines(keepends=True)
-    output = "".join(line for line in lines if not any(pattern.fullmatch(line.rstrip("\r\n")) for pattern in patterns))
+    output = "".join(line for line in lines if not any(pattern.fullmatch(line.strip()) for pattern in patterns))
     return returncode, output
 
 

@@ -74,7 +74,7 @@ void TEvtGenDecayer::Init() {
       pythia8->Pythia8()->readString(Form("Random:seed = %u", pythiaSeed));
       pythia8->Pythia8()->readString("Random:setSeed = on");
       pythia8->Pythia8()->init();  // Re-initialize with new seed
-      LOG(debug) << "TEvtGenDecayer: Pythia8 RNG seeded with " << seed;
+      LOG(debug) << "TEvtGenDecayer: Pythia8 RNG seeded with " << pythiaSeed;
     }
 
     EvtRandomEngine* randomEngine = new EvtMTRandomEngine(seed);
