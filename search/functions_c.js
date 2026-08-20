@@ -36,7 +36,7 @@ var searchData=
   ['merge_33',['merge',['../namespacemuDIS__mergeFiles.html#ab4fbf22cc0259817a2268d6b4f736bf6',1,'muDIS_mergeFiles.merge()'],['../namespacerunCharmHadProd.html#a6f4bea52729b59da6e7ebe38443081f4',1,'runCharmHadProd.merge(run, int cycle=0)']]],
   ['mergeall_34',['mergeAll',['../namespacerunCharmHadProd.html#ad51543c577da88f9b2908d3f206f6a31',1,'runCharmHadProd']]],
   ['mergecharm_35',['mergeCharm',['../namespaceextractMuonsAndUpdateWeight.html#a3f79ff95efd1d3efedf51ce041ba3275',1,'extractMuonsAndUpdateWeight']]],
-  ['mergehistosmakeplots_36',['mergeHistosMakePlots',['../namespacerun__reco.html#a9f4ed23cf08a48f98b7458496bacfbe7',1,'run_reco']]],
+  ['mergehistosmakeplots_36',['mergeHistosMakePlots',['../namespacerun__reco.html#aad1185e5774bdd54d8ad87c83f687d66',1,'run_reco']]],
   ['mergembiasandcharm_37',['mergeMbiasAndCharm',['../namespaceextractMuonsAndUpdateWeight.html#a58b5c8c3d5a08aa8a3a4c4b197c72517',1,'extractMuonsAndUpdateWeight']]],
   ['mergeminbias_38',['mergeMinBias',['../namespacemergeMbias.html#a0244ff4c77d46f894a0360086f22f7b7',1,'mergeMbias']]],
   ['mergentuples_39',['mergeNtuples',['../namespacerun__reco.html#a9969292effee8b2e7fc302ac9f16ee2c',1,'run_reco']]],

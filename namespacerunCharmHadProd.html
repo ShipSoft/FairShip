@@ -159,7 +159,7 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">  166</span>    cmd = <span class="stringliteral">&quot;&quot;</span></div>
 <div class="line"><span class="lineno">  167</span>    Ntot = 0</div>
 <div class="line"><span class="lineno">  168</span>    NperJob = nev</div>
-<div class="line"><span class="lineno">  169</span>    <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(run, +ncpus):</div>
+<div class="line"><span class="lineno">  169</span>    <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(run, run + ncpus):</div>
 <div class="line"><span class="lineno">  170</span>        fName = path + <span class="stringliteral">&quot;run&quot;</span> + str(i) + <span class="stringliteral">&quot;/Cascade-run&quot;</span> + str(i) + <span class="stringliteral">&quot;-parp16-MSTP82-1-MSEL&quot;</span> + msel + <span class="stringliteral">&quot;.root&quot;</span></div>
 <div class="line"><span class="lineno">  171</span>        <span class="keyword">with</span> open(path + <span class="stringliteral">&quot;run&quot;</span> + str(i) + <span class="stringliteral">&quot;/log&quot;</span> + str(i)) <span class="keyword">as</span> f:</div>
 <div class="line"><span class="lineno">  172</span>            success = <span class="keyword">False</span></div>
@@ -400,9 +400,9 @@ Variables</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">  113</span><span class="keyword">def </span>merge(run, cycle: int = 0) -&gt; <span class="keywordtype">None</span>:</div>
 <div class="line"><span class="lineno">  114</span>    fname = <span class="stringliteral">&quot;pythia8_Geant4_XX_10.0.root&quot;</span></div>
 <div class="line"><span class="lineno">  115</span>    cmd = <span class="stringliteral">&quot; &quot;</span></div>
-<div class="line"><span class="lineno">  116</span>    <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(ncpus):</div>
-<div class="line"><span class="lineno">  117</span>        <span class="keywordflow">for</span> x <span class="keywordflow">in</span> os.listdir(path + <span class="stringliteral">&quot;/run&quot;</span> + str(run + n)):</div>
-<div class="line"><span class="lineno">  118</span>            orun = run + cycle * 1000</div>
+<div class="line"><span class="lineno">  116</span>    orun = run + cycle * 1000</div>
+<div class="line"><span class="lineno">  117</span>    <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(ncpus):</div>
+<div class="line"><span class="lineno">  118</span>        <span class="keywordflow">for</span> x <span class="keywordflow">in</span> os.listdir(path + <span class="stringliteral">&quot;/run&quot;</span> + str(run + n)):</div>
 <div class="line"><span class="lineno">  119</span>            <span class="keywordflow">if</span> <span class="keywordflow">not</span> x.find(<span class="stringliteral">&quot;run_fixedTarget_&quot;</span> + str(orun + n)) &lt; 0:</div>
 <div class="line"><span class="lineno">  120</span>                <span class="keywordflow">if</span> cycle == 0 <span class="keywordflow">and</span> run == 0 <span class="keywordflow">and</span> <span class="keywordflow">not</span> x.find(<span class="stringliteral">&quot;1001&quot;</span>) &lt; 0:</div>
 <div class="line"><span class="lineno">  121</span>                    <span class="keywordflow">continue</span></div>

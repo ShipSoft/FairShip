@@ -79,6 +79,7 @@ var namespaceeventDisplay =
     [ "top", "namespaceeventDisplay.html#adedb83676a54edf1159c60c4e308ea97", null ],
     [ "Track", "namespaceeventDisplay.html#aa3b325492b890fc1d7c96ea366d745f8", null ],
     [ "transparentMaterials", "namespaceeventDisplay.html#a9fe4fda0a03e04bc5ddef143e27ab81a", null ],
+    [ "type", "namespaceeventDisplay.html#a0b3bdac77c7731b651c5273f487b814b", null ],
     [ "verbose", "namespaceeventDisplay.html#ac3640904efec4904e652932a0c7da2e5", null ],
     [ "withGeo", "namespaceeventDisplay.html#a19c17c7cc197bc1d35c2b8c087e9426f", null ],
     [ "withMCTracks", "namespaceeventDisplay.html#a362e5157e1dcf1b106536f5a9cafba0b", null ]

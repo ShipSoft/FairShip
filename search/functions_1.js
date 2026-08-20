@@ -30,5 +30,6 @@ var searchData=
   ['apply_5fdecorators_27',['apply_decorators',['../namespacedecorators.html#a84f73e13d24535f8700bc2e298683b43',1,'decorators']]],
   ['artificial_5fretina_5fpat_5frec_5fstereo_5fviews_28',['artificial_retina_pat_rec_stereo_views',['../namespaceshipPatRec.html#a7bd6836b680505a30ee0d503878636cb',1,'shipPatRec']]],
   ['artificial_5fretina_5fpat_5frec_5fy_5fview_29',['artificial_retina_pat_rec_y_view',['../namespaceshipPatRec.html#ae82fd2980482d81f8bfd7ee7af91308b',1,'shipPatRec']]],
-  ['artificial_5fretina_5fpattern_5frecognition_30',['artificial_retina_pattern_recognition',['../namespaceshipPatRec.html#aaed2c3b80a8c779802840a527d840b5c',1,'shipPatRec']]]
+  ['artificial_5fretina_5fpattern_5frecognition_30',['artificial_retina_pattern_recognition',['../namespaceshipPatRec.html#aaed2c3b80a8c779802840a527d840b5c',1,'shipPatRec']]],
+  ['assignclonesarrayitem_31',['assignClonesArrayItem',['../namespacerootUtils.html#ae9fb99014f636adbd119f23c5eaf6b5f',1,'rootUtils']]]
 ];

@@ -108,6 +108,8 @@ Functions</h2></td></tr>
 <tr class="separator:a4288202f324fd0dae890c6208e1b9deb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aea2713c1fd3249a6dd7ea82c6ccc8ef5" id="r_aea2713c1fd3249a6dd7ea82c6ccc8ef5"><td class="memItemLeft" align="right" valign="top">None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerootUtils.html#aea2713c1fd3249a6dd7ea82c6ccc8ef5">bookCanvas</a> (h, key=None, str title=&quot;&quot;, int nx=900, int ny=600, int cx=1, int cy=1)</td></tr>
 <tr class="separator:aea2713c1fd3249a6dd7ea82c6ccc8ef5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae9fb99014f636adbd119f23c5eaf6b5f" id="r_ae9fb99014f636adbd119f23c5eaf6b5f"><td class="memItemLeft" align="right" valign="top">None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerootUtils.html#ae9fb99014f636adbd119f23c5eaf6b5f">assignClonesArrayItem</a> (arr, index, obj)</td></tr>
+<tr class="separator:ae9fb99014f636adbd119f23c5eaf6b5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab807114738eb9dfb5fef001e2fa9bc54" id="r_ab807114738eb9dfb5fef001e2fa9bc54"><td class="memItemLeft" align="right" valign="top">None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerootUtils.html#ab807114738eb9dfb5fef001e2fa9bc54">reportError</a> (s)</td></tr>
 <tr class="separator:ab807114738eb9dfb5fef001e2fa9bc54"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9fad8948a40e9aac00e89f938b0a03af" id="r_a9fad8948a40e9aac00e89f938b0a03af"><td class="memItemLeft" align="right" valign="top">None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerootUtils.html#a9fad8948a40e9aac00e89f938b0a03af">errorSummary</a> ()</td></tr>
@@ -123,6 +125,62 @@ Variables</h2></td></tr>
 <tr class="separator:af04f8d0c34113948aacb4ce59163ce02"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="ae9fb99014f636adbd119f23c5eaf6b5f" name="ae9fb99014f636adbd119f23c5eaf6b5f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae9fb99014f636adbd119f23c5eaf6b5f">&#9670;&#160;</a></span>assignClonesArrayItem()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"> None rootUtils.assignClonesArrayItem </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>arr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>obj</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<pre class="fragment">Copy obj into slot `index` of a TClonesArray, expanding it as needed.
+
+Item assignment (arr[i] = obj) raises in ROOT &gt;= 6.32; construct the slot
+and copy-assign into it instead. TVectorD slots are resized to match obj
+first (TVectorD::operator= requires matching sizes).
+</pre> 
+<p class="definition">Definition at line <a class="el" href="rootUtils_8py_source.html#l00135">135</a> of file <a class="el" href="rootUtils_8py_source.html">rootUtils.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  135</span><span class="keyword">def </span>assignClonesArrayItem(arr, index, obj) -&gt; None:</div>
+<div class="line"><span class="lineno">  136</span>    <span class="stringliteral">&quot;&quot;&quot;Copy obj into slot `index` of a TClonesArray, expanding it as needed.</span></div>
+<div class="line"><span class="lineno">  137</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  138</span><span class="stringliteral">    Item assignment (arr[i] = obj) raises in ROOT &gt;= 6.32; construct the slot</span></div>
+<div class="line"><span class="lineno">  139</span><span class="stringliteral">    and copy-assign into it instead. TVectorD slots are resized to match obj</span></div>
+<div class="line"><span class="lineno">  140</span><span class="stringliteral">    first (TVectorD::operator= requires matching sizes).</span></div>
+<div class="line"><span class="lineno">  141</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  142</span>    <span class="keywordflow">if</span> arr.GetSize() &lt;= index:</div>
+<div class="line"><span class="lineno">  143</span>        arr.Expand(index + 10)</div>
+<div class="line"><span class="lineno">  144</span>    slot = arr.ConstructedAt(index)</div>
+<div class="line"><span class="lineno">  145</span>    <span class="keywordflow">if</span> hasattr(slot, <span class="stringliteral">&quot;ResizeTo&quot;</span>):</div>
+<div class="line"><span class="lineno">  146</span>        slot.ResizeTo(obj)</div>
+<div class="line"><span class="lineno">  147</span>    slot.__assign__(obj)</div>
+<div class="line"><span class="lineno">  148</span> </div>
+<div class="line"><span class="lineno">  149</span> </div>
+</div><!-- fragment -->
+</div>
+</div>
 <a id="aea2713c1fd3249a6dd7ea82c6ccc8ef5" name="aea2713c1fd3249a6dd7ea82c6ccc8ef5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aea2713c1fd3249a6dd7ea82c6ccc8ef5">&#9670;&#160;</a></span>bookCanvas()</h2>
 
@@ -400,37 +458,37 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="rootUtils_8py_source.html#l00146">146</a> of file <a class="el" href="rootUtils_8py_source.html">rootUtils.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  146</span><span class="keyword">def </span>checkFileExists(x) -&gt; str:</div>
-<div class="line"><span class="lineno">  147</span>    <span class="keywordflow">if</span> isinstance(x, str):</div>
-<div class="line"><span class="lineno">  148</span>        tx = [x]</div>
-<div class="line"><span class="lineno">  149</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  150</span>        tx = x</div>
-<div class="line"><span class="lineno">  151</span>    <span class="keywordflow">if</span> isinstance(tx, (list, tuple)):</div>
-<div class="line"><span class="lineno">  152</span>        <span class="comment"># See what we are looking at and make sure all the files are of the same type</span></div>
-<div class="line"><span class="lineno">  153</span>        fileType = <span class="stringliteral">&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  154</span>        <span class="keywordflow">for</span> _f <span class="keywordflow">in</span> tx:</div>
-<div class="line"><span class="lineno">  155</span>            <span class="keywordflow">if</span> _f[0:4] == <span class="stringliteral">&quot;/eos&quot;</span>:</div>
-<div class="line"><span class="lineno">  156</span>                f = ROOT.gSystem.Getenv(<span class="stringliteral">&quot;EOSSHIP&quot;</span>) + _f</div>
-<div class="line"><span class="lineno">  157</span>            <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  158</span>                f = _f</div>
-<div class="line"><span class="lineno">  159</span>            test = ROOT.TFile.Open(f)</div>
-<div class="line"><span class="lineno">  160</span>            <span class="keywordflow">if</span> <span class="keywordflow">not</span> test:</div>
-<div class="line"><span class="lineno">  161</span>                print(<span class="stringliteral">&quot;ERROR FileCheck: input file&quot;</span>, f, <span class="stringliteral">&quot; does not exist. Missing authentication?&quot;</span>)</div>
-<div class="line"><span class="lineno">  162</span>                sys.exit(1)</div>
-<div class="line"><span class="lineno">  163</span>            thisType = <span class="stringliteral">&quot;tree&quot;</span> <span class="keywordflow">if</span> test.FindObjectAny(<span class="stringliteral">&quot;cbmsim&quot;</span>) <span class="keywordflow">else</span> <span class="stringliteral">&quot;ntuple&quot;</span></div>
-<div class="line"><span class="lineno">  164</span>            test.Close()</div>
-<div class="line"><span class="lineno">  165</span>            <span class="keywordflow">if</span> fileType == <span class="stringliteral">&quot;&quot;</span>:</div>
-<div class="line"><span class="lineno">  166</span>                fileType = thisType</div>
-<div class="line"><span class="lineno">  167</span>            <span class="keywordflow">elif</span> fileType != thisType:</div>
-<div class="line"><span class="lineno">  168</span>                print(<span class="stringliteral">&quot;ERROR FileCheck: Supplied list of files not all of tree or ntuple type&quot;</span>)</div>
-<div class="line"><span class="lineno">  169</span>                sys.exit(1)</div>
-<div class="line"><span class="lineno">  170</span>        <span class="keywordflow">return</span> fileType</div>
-<div class="line"><span class="lineno">  171</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  172</span>        print(<span class="stringliteral">&quot;ERROR FileCheck: File must be either a string or list of files&quot;</span>)</div>
-<div class="line"><span class="lineno">  173</span>        os._exit(1)</div>
-<div class="line"><span class="lineno">  174</span> </div>
-<div class="line"><span class="lineno">  175</span> </div>
+<p class="definition">Definition at line <a class="el" href="rootUtils_8py_source.html#l00161">161</a> of file <a class="el" href="rootUtils_8py_source.html">rootUtils.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  161</span><span class="keyword">def </span>checkFileExists(x) -&gt; str:</div>
+<div class="line"><span class="lineno">  162</span>    <span class="keywordflow">if</span> isinstance(x, str):</div>
+<div class="line"><span class="lineno">  163</span>        tx = [x]</div>
+<div class="line"><span class="lineno">  164</span>    <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  165</span>        tx = x</div>
+<div class="line"><span class="lineno">  166</span>    <span class="keywordflow">if</span> isinstance(tx, (list, tuple)):</div>
+<div class="line"><span class="lineno">  167</span>        <span class="comment"># See what we are looking at and make sure all the files are of the same type</span></div>
+<div class="line"><span class="lineno">  168</span>        fileType = <span class="stringliteral">&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  169</span>        <span class="keywordflow">for</span> _f <span class="keywordflow">in</span> tx:</div>
+<div class="line"><span class="lineno">  170</span>            <span class="keywordflow">if</span> _f[0:4] == <span class="stringliteral">&quot;/eos&quot;</span>:</div>
+<div class="line"><span class="lineno">  171</span>                f = ROOT.gSystem.Getenv(<span class="stringliteral">&quot;EOSSHIP&quot;</span>) + _f</div>
+<div class="line"><span class="lineno">  172</span>            <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  173</span>                f = _f</div>
+<div class="line"><span class="lineno">  174</span>            test = ROOT.TFile.Open(f)</div>
+<div class="line"><span class="lineno">  175</span>            <span class="keywordflow">if</span> <span class="keywordflow">not</span> test:</div>
+<div class="line"><span class="lineno">  176</span>                print(<span class="stringliteral">&quot;ERROR FileCheck: input file&quot;</span>, f, <span class="stringliteral">&quot; does not exist. Missing authentication?&quot;</span>)</div>
+<div class="line"><span class="lineno">  177</span>                sys.exit(1)</div>
+<div class="line"><span class="lineno">  178</span>            thisType = <span class="stringliteral">&quot;tree&quot;</span> <span class="keywordflow">if</span> test.FindObjectAny(<span class="stringliteral">&quot;cbmsim&quot;</span>) <span class="keywordflow">else</span> <span class="stringliteral">&quot;ntuple&quot;</span></div>
+<div class="line"><span class="lineno">  179</span>            test.Close()</div>
+<div class="line"><span class="lineno">  180</span>            <span class="keywordflow">if</span> fileType == <span class="stringliteral">&quot;&quot;</span>:</div>
+<div class="line"><span class="lineno">  181</span>                fileType = thisType</div>
+<div class="line"><span class="lineno">  182</span>            <span class="keywordflow">elif</span> fileType != thisType:</div>
+<div class="line"><span class="lineno">  183</span>                print(<span class="stringliteral">&quot;ERROR FileCheck: Supplied list of files not all of tree or ntuple type&quot;</span>)</div>
+<div class="line"><span class="lineno">  184</span>                sys.exit(1)</div>
+<div class="line"><span class="lineno">  185</span>        <span class="keywordflow">return</span> fileType</div>
+<div class="line"><span class="lineno">  186</span>    <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  187</span>        print(<span class="stringliteral">&quot;ERROR FileCheck: File must be either a string or list of files&quot;</span>)</div>
+<div class="line"><span class="lineno">  188</span>        os._exit(1)</div>
+<div class="line"><span class="lineno">  189</span> </div>
+<div class="line"><span class="lineno">  190</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -460,29 +518,29 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="rootUtils_8py_source.html#l00176">176</a> of file <a class="el" href="rootUtils_8py_source.html">rootUtils.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  176</span><span class="keyword">def </span>checkForBranch(inFile, branchName) -&gt; bool:</div>
-<div class="line"><span class="lineno">  177</span>    <span class="keywordflow">if</span> isinstance(inFile, str):</div>
-<div class="line"><span class="lineno">  178</span>        fileList = [inFile]</div>
-<div class="line"><span class="lineno">  179</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  180</span>        fileList = inFile</div>
-<div class="line"><span class="lineno">  181</span>    <span class="keywordflow">if</span> isinstance(fileList, (list, tuple)):</div>
-<div class="line"><span class="lineno">  182</span>        hasIt = <span class="keywordtype">None</span></div>
-<div class="line"><span class="lineno">  183</span>        <span class="keywordflow">for</span> _f <span class="keywordflow">in</span> fileList:</div>
-<div class="line"><span class="lineno">  184</span>            <span class="keyword">with</span> ROOT.TFile.Open(_f) <span class="keyword">as</span> test:</div>
-<div class="line"><span class="lineno">  185</span>                <span class="keywordflow">if</span> <span class="keywordflow">not</span> test:</div>
-<div class="line"><span class="lineno">  186</span>                    <span class="keywordflow">raise</span> FileNotFoundError(f<span class="stringliteral">&quot;ERROR FileCheck: input file {_f} does not exist. Missing authentication?&quot;</span>)</div>
-<div class="line"><span class="lineno">  187</span>                current_has_branch = bool(test.FindObjectAny(<span class="stringliteral">&quot;cbmsim&quot;</span>) <span class="keywordflow">and</span> test[<span class="stringliteral">&quot;cbmsim&quot;</span>].FindBranch(branchName))</div>
-<div class="line"><span class="lineno">  188</span>                <span class="keywordflow">if</span> hasIt <span class="keywordflow">is</span> <span class="keywordtype">None</span>:</div>
-<div class="line"><span class="lineno">  189</span>                    hasIt = current_has_branch</div>
-<div class="line"><span class="lineno">  190</span>                <span class="keywordflow">elif</span> current_has_branch != hasIt:</div>
-<div class="line"><span class="lineno">  191</span>                    <span class="keywordflow">raise</span> ValueError(</div>
-<div class="line"><span class="lineno">  192</span>                        f<span class="stringliteral">&quot;ERROR CheckForBranch: Mixed input files (some have branch {branchName} and some do not).&quot;</span></div>
-<div class="line"><span class="lineno">  193</span>                    )</div>
-<div class="line"><span class="lineno">  194</span>        <span class="keywordflow">return</span> bool(hasIt)</div>
-<div class="line"><span class="lineno">  195</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  196</span>        print(<span class="stringliteral">&quot;ERROR CheckForBranch: File must be either a string or list of files&quot;</span>)</div>
-<div class="line"><span class="lineno">  197</span>        os._exit(1)</div>
+<p class="definition">Definition at line <a class="el" href="rootUtils_8py_source.html#l00191">191</a> of file <a class="el" href="rootUtils_8py_source.html">rootUtils.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  191</span><span class="keyword">def </span>checkForBranch(inFile, branchName) -&gt; bool:</div>
+<div class="line"><span class="lineno">  192</span>    <span class="keywordflow">if</span> isinstance(inFile, str):</div>
+<div class="line"><span class="lineno">  193</span>        fileList = [inFile]</div>
+<div class="line"><span class="lineno">  194</span>    <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  195</span>        fileList = inFile</div>
+<div class="line"><span class="lineno">  196</span>    <span class="keywordflow">if</span> isinstance(fileList, (list, tuple)):</div>
+<div class="line"><span class="lineno">  197</span>        hasIt = <span class="keywordtype">None</span></div>
+<div class="line"><span class="lineno">  198</span>        <span class="keywordflow">for</span> _f <span class="keywordflow">in</span> fileList:</div>
+<div class="line"><span class="lineno">  199</span>            <span class="keyword">with</span> ROOT.TFile.Open(_f) <span class="keyword">as</span> test:</div>
+<div class="line"><span class="lineno">  200</span>                <span class="keywordflow">if</span> <span class="keywordflow">not</span> test:</div>
+<div class="line"><span class="lineno">  201</span>                    <span class="keywordflow">raise</span> FileNotFoundError(f<span class="stringliteral">&quot;ERROR FileCheck: input file {_f} does not exist. Missing authentication?&quot;</span>)</div>
+<div class="line"><span class="lineno">  202</span>                current_has_branch = bool(test.FindObjectAny(<span class="stringliteral">&quot;cbmsim&quot;</span>) <span class="keywordflow">and</span> test[<span class="stringliteral">&quot;cbmsim&quot;</span>].FindBranch(branchName))</div>
+<div class="line"><span class="lineno">  203</span>                <span class="keywordflow">if</span> hasIt <span class="keywordflow">is</span> <span class="keywordtype">None</span>:</div>
+<div class="line"><span class="lineno">  204</span>                    hasIt = current_has_branch</div>
+<div class="line"><span class="lineno">  205</span>                <span class="keywordflow">elif</span> current_has_branch != hasIt:</div>
+<div class="line"><span class="lineno">  206</span>                    <span class="keywordflow">raise</span> ValueError(</div>
+<div class="line"><span class="lineno">  207</span>                        f<span class="stringliteral">&quot;ERROR CheckForBranch: Mixed input files (some have branch {branchName} and some do not).&quot;</span></div>
+<div class="line"><span class="lineno">  208</span>                    )</div>
+<div class="line"><span class="lineno">  209</span>        <span class="keywordflow">return</span> bool(hasIt)</div>
+<div class="line"><span class="lineno">  210</span>    <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  211</span>        print(<span class="stringliteral">&quot;ERROR CheckForBranch: File must be either a string or list of files&quot;</span>)</div>
+<div class="line"><span class="lineno">  212</span>        os._exit(1)</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -501,14 +559,14 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="rootUtils_8py_source.html#l00139">139</a> of file <a class="el" href="rootUtils_8py_source.html">rootUtils.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  139</span><span class="keyword">def </span>errorSummary() -&gt; None:</div>
-<div class="line"><span class="lineno">  140</span>    <span class="keywordflow">if</span> _error_log:</div>
-<div class="line"><span class="lineno">  141</span>        print(<span class="stringliteral">&quot;Summary of recorded incidents:&quot;</span>)</div>
-<div class="line"><span class="lineno">  142</span>    <span class="keywordflow">for</span> e <span class="keywordflow">in</span> _error_log:</div>
-<div class="line"><span class="lineno">  143</span>        print(e, <span class="stringliteral">&quot;:&quot;</span>, _error_log[e])</div>
-<div class="line"><span class="lineno">  144</span> </div>
-<div class="line"><span class="lineno">  145</span> </div>
+<p class="definition">Definition at line <a class="el" href="rootUtils_8py_source.html#l00154">154</a> of file <a class="el" href="rootUtils_8py_source.html">rootUtils.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  154</span><span class="keyword">def </span>errorSummary() -&gt; None:</div>
+<div class="line"><span class="lineno">  155</span>    <span class="keywordflow">if</span> _error_log:</div>
+<div class="line"><span class="lineno">  156</span>        print(<span class="stringliteral">&quot;Summary of recorded incidents:&quot;</span>)</div>
+<div class="line"><span class="lineno">  157</span>    <span class="keywordflow">for</span> e <span class="keywordflow">in</span> _error_log:</div>
+<div class="line"><span class="lineno">  158</span>        print(e, <span class="stringliteral">&quot;:&quot;</span>, _error_log[e])</div>
+<div class="line"><span class="lineno">  159</span> </div>
+<div class="line"><span class="lineno">  160</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -611,11 +669,11 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="rootUtils_8py_source.html#l00135">135</a> of file <a class="el" href="rootUtils_8py_source.html">rootUtils.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  135</span><span class="keyword">def </span>reportError(s) -&gt; None:</div>
-<div class="line"><span class="lineno">  136</span>    _error_log[s] += 1</div>
-<div class="line"><span class="lineno">  137</span> </div>
-<div class="line"><span class="lineno">  138</span> </div>
+<p class="definition">Definition at line <a class="el" href="rootUtils_8py_source.html#l00150">150</a> of file <a class="el" href="rootUtils_8py_source.html">rootUtils.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  150</span><span class="keyword">def </span>reportError(s) -&gt; None:</div>
+<div class="line"><span class="lineno">  151</span>    _error_log[s] += 1</div>
+<div class="line"><span class="lineno">  152</span> </div>
+<div class="line"><span class="lineno">  153</span> </div>
 </div><!-- fragment -->
 </div>
 </div>

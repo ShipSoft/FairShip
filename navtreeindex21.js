@@ -1,9 +1,5 @@
 var NAVTREEINDEX21 =
 {
-"namespacehepunit.html#a6873f9620ecd5384620eec4a92f2beae":[6,0,41,100],
-"namespacehepunit.html#a6c4dce04d025cd690e7322c56ed0014e":[6,0,41,140],
-"namespacehepunit.html#a6c6f5ee1ae5a516b25b3667ed69ef325":[6,0,41,110],
-"namespacehepunit.html#a6d3f7f9927670910eef2c60b46b8f191":[6,0,41,92],
 "namespacehepunit.html#a6e5ced31b2c08f52c389811f6fce54c2":[6,0,41,15],
 "namespacehepunit.html#a6ff0706ce14856d9eb6bb84a4e9a1e3d":[6,0,41,84],
 "namespacehepunit.html#a7068164f075ffd54fd3d5acee160584b":[6,0,41,33],
@@ -249,5 +245,9 @@ var NAVTREEINDEX21 =
 "namespacemakeMuonDIS.html#a82c7870b447df507f0b9676553792b8a":[6,0,51,8],
 "namespacemakeMuonDIS.html#a83a6c50cd675445a633965c37ea8cfcd":[6,0,51,4],
 "namespacemakeMuonDIS.html#a87df2756dfbe2dd0f5799f72833a0708":[6,0,51,9],
-"namespacemakeMuonDIS.html#a92793b82e133944d8355b8d3dd8e7c92":[6,0,51,15]
+"namespacemakeMuonDIS.html#a92793b82e133944d8355b8d3dd8e7c92":[6,0,51,15],
+"namespacemakeMuonDIS.html#a98092df5b9d4572244d671370a610393":[6,0,51,6],
+"namespacemakeMuonDIS.html#ab72b5366d55a32383d832d246548ea0f":[6,0,51,14],
+"namespacemakeMuonDIS.html#abcb50714ad05940cb3edcaa6dd384cde":[6,0,51,7],
+"namespacemakeMuonDIS.html#acda8ed87a2a7dae5198cd1b5d0f1f1b5":[6,0,51,3]
 };

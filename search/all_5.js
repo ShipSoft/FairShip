@@ -81,11 +81,12 @@ var searchData=
   ['artificial_5fretina_5fpat_5frec_5fstereo_5fviews_78',['artificial_retina_pat_rec_stereo_views',['../namespaceshipPatRec.html#a7bd6836b680505a30ee0d503878636cb',1,'shipPatRec']]],
   ['artificial_5fretina_5fpat_5frec_5fy_5fview_79',['artificial_retina_pat_rec_y_view',['../namespaceshipPatRec.html#ae82fd2980482d81f8bfd7ee7af91308b',1,'shipPatRec']]],
   ['artificial_5fretina_5fpattern_5frecognition_80',['artificial_retina_pattern_recognition',['../namespaceshipPatRec.html#aaed2c3b80a8c779802840a527d840b5c',1,'shipPatRec']]],
-  ['atmosphere_81',['atmosphere',['../namespacehepunit.html#a41625aad1906dca8e9a7e43df9042c65',1,'hepunit.atmosphere'],['../namespaceshipunit.html#a7fb2582eba822b98fda265569c8dc1ca',1,'shipunit.atmosphere']]],
-  ['atracklet_82',['aTracklet',['../classTracklet.html#aee1366b8fd35ca6e40bd47c9c7796ce8',1,'Tracklet']]],
-  ['attrdict_83',['AttrDict',['../classShipGeoConfig_1_1AttrDict.html',1,'ShipGeoConfig']]],
-  ['available_5fevents_84',['available_events',['../namespacerun__simScript.html#a31e30e449e80f6ec8f193f2548f111b1',1,'run_simScript']]],
-  ['available_5fsnd_5fdesigns_85',['available_snd_designs',['../namespacerun__simScript.html#a09a47a1444f396ea256094d6dce75404',1,'run_simScript']]],
-  ['avogadro_86',['avogadro',['../namespaceshipunit.html#a8cba2d1f5bccc613355d7856be1c1df1',1,'shipunit.Avogadro'],['../namespacehepunit.html#aac81f7b697545424c233d6e9a681de99',1,'hepunit.Avogadro']]],
-  ['ax_87',['ax',['../namespacerun__tracking__scan.html#a37ed282b5bffd0a23c4c8d5edcdaea60',1,'run_tracking_scan']]]
+  ['assignclonesarrayitem_81',['assignClonesArrayItem',['../namespacerootUtils.html#ae9fb99014f636adbd119f23c5eaf6b5f',1,'rootUtils']]],
+  ['atmosphere_82',['atmosphere',['../namespaceshipunit.html#a7fb2582eba822b98fda265569c8dc1ca',1,'shipunit.atmosphere'],['../namespacehepunit.html#a41625aad1906dca8e9a7e43df9042c65',1,'hepunit.atmosphere']]],
+  ['atracklet_83',['aTracklet',['../classTracklet.html#aee1366b8fd35ca6e40bd47c9c7796ce8',1,'Tracklet']]],
+  ['attrdict_84',['AttrDict',['../classShipGeoConfig_1_1AttrDict.html',1,'ShipGeoConfig']]],
+  ['available_5fevents_85',['available_events',['../namespacerun__simScript.html#a31e30e449e80f6ec8f193f2548f111b1',1,'run_simScript']]],
+  ['available_5fsnd_5fdesigns_86',['available_snd_designs',['../namespacerun__simScript.html#a09a47a1444f396ea256094d6dce75404',1,'run_simScript']]],
+  ['avogadro_87',['avogadro',['../namespaceshipunit.html#a8cba2d1f5bccc613355d7856be1c1df1',1,'shipunit.Avogadro'],['../namespacehepunit.html#aac81f7b697545424c233d6e9a681de99',1,'hepunit.Avogadro']]],
+  ['ax_88',['ax',['../namespacerun__tracking__scan.html#a37ed282b5bffd0a23c4c8d5edcdaea60',1,'run_tracking_scan']]]
 ];

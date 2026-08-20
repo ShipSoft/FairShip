@@ -10,7 +10,7 @@ var run__reco_8py =
     [ "fitSingleGauss", "run__reco_8py.html#aeb64b43ab3c678d2c1a20f6f427deb3b", null ],
     [ "getJobs", "run__reco_8py.html#a9d4908376d6fb3dba3e1818b61525af1", null ],
     [ "killAll", "run__reco_8py.html#a05572a1e4ec79ffd714836761001a55b", null ],
-    [ "mergeHistosMakePlots", "run__reco_8py.html#a9f4ed23cf08a48f98b7458496bacfbe7", null ],
+    [ "mergeHistosMakePlots", "run__reco_8py.html#aad1185e5774bdd54d8ad87c83f687d66", null ],
     [ "mergeNtuples", "run__reco_8py.html#a9969292effee8b2e7fc302ac9f16ee2c", null ],
     [ "printFailedJobs", "run__reco_8py.html#a65a88e0c2c6866584af433f15bd3c11c", null ],
     [ "removeIntermediateFiles", "run__reco_8py.html#a95d22d06377209debcc97fb72320639c", null ],

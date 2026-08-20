@@ -1,6 +1,5 @@
 var NAVTREEINDEX8 =
 {
-"classShipParticle.html#ac6a6c727603370f6c819287ff4808800":[7,0,59,0],
 "classShipParticle.html#ac8cc0750b2dbf8b51f1767c8f111f037":[7,0,59,53],
 "classShipParticle.html#ad39a937e512d76cd5386bea4f467d962":[7,0,59,5],
 "classShipParticle.html#ade808c918fb7e27af190532b75661038":[7,0,59,36],
@@ -111,8 +110,8 @@ var NAVTREEINDEX8 =
 "classSiliconTarget.html#ad60d653777987b7c86fce889ae393abe":[7,0,64,14],
 "classSiliconTarget.html#adb60ef0f46ddc26b11237848a7053456":[7,0,64,4],
 "classSiliconTarget.html#af4c00d5186b1ee93effdccca9ff457b8":[7,0,64,3],
-"classSiliconTargetDetector_1_1SiliconTargetDetector.html":[6,0,94,0],
 "classSiliconTargetDetector_1_1SiliconTargetDetector.html":[7,0,16,0],
+"classSiliconTargetDetector_1_1SiliconTargetDetector.html":[6,0,94,0],
 "classSiliconTargetDetector_1_1SiliconTargetDetector.html#ab40a95c9a9ec50a5114160a1f4a26e8d":[6,0,94,0,0],
 "classSiliconTargetDetector_1_1SiliconTargetDetector.html#ab40a95c9a9ec50a5114160a1f4a26e8d":[7,0,16,0,0],
 "classSiliconTargetDetector_1_1SiliconTargetDetector.html#aed0917631d97f8bd8b469368d225b9ce":[6,0,94,0,1],
@@ -249,5 +248,6 @@ var NAVTREEINDEX8 =
 "classTarget.html#af11b348af9e539e5fd5c6b36e1177f96":[7,0,76,69],
 "classTarget.html#af223e5af386b7b0f8fa52728c97025fa":[7,0,76,4],
 "classTarget.html#af6f077346f17ce8be5b27b97935b804b":[7,0,76,44],
-"classTarget.html#afa4d910ed7f87b3ad72a45a5ba08dc5c":[7,0,76,21]
+"classTarget.html#afa4d910ed7f87b3ad72a45a5ba08dc5c":[7,0,76,21],
+"classTarget.html#afb1de534a204baf0bf4cd04d85a92af6":[7,0,76,37]
 };

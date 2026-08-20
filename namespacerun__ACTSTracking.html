@@ -141,10 +141,8 @@ Variables</h2></td></tr>
 <tr class="separator:a5fce0af33d0368e551b0c411e0aa7e9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a473bd60e069f89f4eb4d8588c08509b9" id="r_a473bd60e069f89f4eb4d8588c08509b9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__ACTSTracking.html#a473bd60e069f89f4eb4d8588c08509b9">outFile</a> = <a class="el" href="namespacerun__ACTSTracking.html#a5fce0af33d0368e551b0c411e0aa7e9f">tmp</a>[len(<a class="el" href="namespacerun__ACTSTracking.html#a5fce0af33d0368e551b0c411e0aa7e9f">tmp</a>) - 1].replace(&quot;.root&quot;, &quot;_tracked.root&quot;)</td></tr>
 <tr class="separator:a473bd60e069f89f4eb4d8588c08509b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa6166cc437c4f9cc17178a2922246e56" id="r_aa6166cc437c4f9cc17178a2922246e56"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__ACTSTracking.html#aa6166cc437c4f9cc17178a2922246e56">outDir</a> = options.inputFile.rsplit(&quot;/&quot;, 1)[0]</td></tr>
-<tr class="separator:aa6166cc437c4f9cc17178a2922246e56"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab2032c1f75194bf2334dad61233390b5" id="r_ab2032c1f75194bf2334dad61233390b5"><td class="memItemLeft" align="right" valign="top">str&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__ACTSTracking.html#ab2032c1f75194bf2334dad61233390b5">fullpath</a> = options.outputDir + &quot;&quot; + str(<a class="el" href="namespacerun__ACTSTracking.html#a473bd60e069f89f4eb4d8588c08509b9">outFile</a>)</td></tr>
-<tr class="separator:ab2032c1f75194bf2334dad61233390b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a419db05221da45d9cd440efeba752722" id="r_a419db05221da45d9cd440efeba752722"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__ACTSTracking.html#a419db05221da45d9cd440efeba752722">fullpath</a> = os.path.join(options.outputDir, str(<a class="el" href="namespacerun__ACTSTracking.html#a473bd60e069f89f4eb4d8588c08509b9">outFile</a>))</td></tr>
+<tr class="separator:a419db05221da45d9cd440efeba752722"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:add83f453e6b2696958aff0de0969b1dc" id="r_add83f453e6b2696958aff0de0969b1dc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__ACTSTracking.html#add83f453e6b2696958aff0de0969b1dc">outputFile</a></td></tr>
 <tr class="separator:add83f453e6b2696958aff0de0969b1dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5f50267a03dcbf057998ae2735e5540c" id="r_a5f50267a03dcbf057998ae2735e5540c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__ACTSTracking.html#a5f50267a03dcbf057998ae2735e5540c">inFile</a> = ROOT.TFile.Open(options.inputFile)</td></tr>
@@ -279,23 +277,23 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__ACTSTracking_8py_source.html#l00070">70</a> of file <a class="el" href="run__ACTSTracking_8py_source.html">run_ACTSTracking.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__ACTSTracking_8py_source.html#l00069">69</a> of file <a class="el" href="run__ACTSTracking_8py_source.html">run_ACTSTracking.py</a>.</p>
 
 </div>
 </div>
-<a id="ab2032c1f75194bf2334dad61233390b5" name="ab2032c1f75194bf2334dad61233390b5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab2032c1f75194bf2334dad61233390b5">&#9670;&#160;</a></span>fullpath</h2>
+<a id="a419db05221da45d9cd440efeba752722" name="a419db05221da45d9cd440efeba752722"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a419db05221da45d9cd440efeba752722">&#9670;&#160;</a></span>fullpath</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">str run_ACTSTracking.fullpath = options.outputDir + &quot;&quot; + str(<a class="el" href="namespacerun__ACTSTracking.html#a473bd60e069f89f4eb4d8588c08509b9">outFile</a>)</td>
+          <td class="memname">run_ACTSTracking.fullpath = os.path.join(options.outputDir, str(<a class="el" href="namespacerun__ACTSTracking.html#a473bd60e069f89f4eb4d8588c08509b9">outFile</a>))</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__ACTSTracking_8py_source.html#l00063">63</a> of file <a class="el" href="run__ACTSTracking_8py_source.html">run_ACTSTracking.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__ACTSTracking_8py_source.html#l00062">62</a> of file <a class="el" href="run__ACTSTracking_8py_source.html">run_ACTSTracking.py</a>.</p>
 
 </div>
 </div>
@@ -343,7 +341,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__ACTSTracking_8py_source.html#l00069">69</a> of file <a class="el" href="run__ACTSTracking_8py_source.html">run_ACTSTracking.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__ACTSTracking_8py_source.html#l00068">68</a> of file <a class="el" href="run__ACTSTracking_8py_source.html">run_ACTSTracking.py</a>.</p>
 
 </div>
 </div>
@@ -423,7 +421,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__ACTSTracking_8py_source.html#l00071">71</a> of file <a class="el" href="run__ACTSTracking_8py_source.html">run_ACTSTracking.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__ACTSTracking_8py_source.html#l00070">70</a> of file <a class="el" href="run__ACTSTracking_8py_source.html">run_ACTSTracking.py</a>.</p>
 
 </div>
 </div>
@@ -440,22 +438,6 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="run__ACTSTracking_8py_source.html#l00046">46</a> of file <a class="el" href="run__ACTSTracking_8py_source.html">run_ACTSTracking.py</a>.</p>
-
-</div>
-</div>
-<a id="aa6166cc437c4f9cc17178a2922246e56" name="aa6166cc437c4f9cc17178a2922246e56"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa6166cc437c4f9cc17178a2922246e56">&#9670;&#160;</a></span>outDir</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">run_ACTSTracking.outDir = options.inputFile.rsplit(&quot;/&quot;, 1)[0]</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="run__ACTSTracking_8py_source.html#l00062">62</a> of file <a class="el" href="run__ACTSTracking_8py_source.html">run_ACTSTracking.py</a>.</p>
 
 </div>
 </div>
@@ -503,7 +485,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__ACTSTracking_8py_source.html#l00066">66</a> of file <a class="el" href="run__ACTSTracking_8py_source.html">run_ACTSTracking.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__ACTSTracking_8py_source.html#l00065">65</a> of file <a class="el" href="run__ACTSTracking_8py_source.html">run_ACTSTracking.py</a>.</p>
 
 </div>
 </div>

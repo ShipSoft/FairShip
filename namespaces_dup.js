@@ -59,7 +59,7 @@ var namespaces_dup =
       [ "makeProd", "namespaceana__ShipMuon.html#a96d3303f21edf513f3ae3d141d7a6fd3", null ],
       [ "MergeRareEvents", "namespaceana__ShipMuon.html#a3a447f71694142541532694fca732361", null ],
       [ "muDISntuple", "namespaceana__ShipMuon.html#afb4c16b8c54b5f5830f52012d9f0027f", null ],
-      [ "origin", "namespaceana__ShipMuon.html#a28d7d8b8350de8fec28cb9f07ffd7a98", null ],
+      [ "origin", "namespaceana__ShipMuon.html#a05e83c6aa9234009f5e43dda6be3e5f6", null ],
       [ "originOfMuon", "namespaceana__ShipMuon.html#a334ba0573fc8a1b030943f9ed6718cc2", null ],
       [ "pers", "namespaceana__ShipMuon.html#ae6afc2ab8844bda14d46b0d348e6b917", null ],
       [ "persistency", "namespaceana__ShipMuon.html#afc158cdf693444642cde812235c82218", null ],
@@ -107,7 +107,6 @@ var namespaces_dup =
       [ "recFile1", "namespaceana__ShipMuon.html#ae1a8a33777253027514dc61b77241b78", null ],
       [ "recFile2", "namespaceana__ShipMuon.html#af0a8a8faff001569393615f9c15a513c", null ],
       [ "run", "namespaceana__ShipMuon.html#a5eb3b72a70982a8b551f0ad18738f02e", null ],
-      [ "rz_inter", "namespaceana__ShipMuon.html#accbb5f08f4f48522834e2454ec3c0422", null ],
       [ "sGeo", "namespaceana__ShipMuon.html#a4c0c13295577eadb3dce5cadf4f0e194", null ],
       [ "ShipGeo", "namespaceana__ShipMuon.html#a550db34c5b3b15b947bc1694e7b4ea0e", null ],
       [ "testdir", "namespaceana__ShipMuon.html#ae8072df8c6711706b8db306bf61f5b8a", null ],
@@ -152,7 +151,7 @@ var namespaces_dup =
       [ "makePrintout", "namespacecompactingBackgroundProduction.html#a44f50e507aa7624414498ebce7cab133", null ],
       [ "removeStupidFiles", "namespacecompactingBackgroundProduction.html#a2ef4dfa3747c8b70bb5fa33fb5285056", null ],
       [ "YandexProd", "namespacecompactingBackgroundProduction.html#a708e024acb290e4040ca0976c1be15f0", null ],
-      [ "charm", "namespacecompactingBackgroundProduction.html#a5164e95efeab04e25c0d80f2c8109c80", null ],
+      [ "charm", "namespacecompactingBackgroundProduction.html#a848d7bf8a93689b7ba1eef44d9ee50fe", null ],
       [ "ecut", "namespacecompactingBackgroundProduction.html#a68e9182156087adfdb0fed8323680296", null ],
       [ "fnames", "namespacecompactingBackgroundProduction.html#a986d4b128ad411838daa76aa5c52ce48", null ],
       [ "globalPath", "namespacecompactingBackgroundProduction.html#a9e58aabcb53c7b7e3d712782a8f57c96", null ],
@@ -240,8 +239,7 @@ var namespaces_dup =
       [ "dump", "namespacedumpEvent.html#acd584ee7f29e1ee78fbdfcdf39f7bda8", null ],
       [ "dumpStraw", "namespacedumpEvent.html#a6a638bb1473130ac43ddae2ee5efae47", null ],
       [ "printMCTrack", "namespacedumpEvent.html#a7b461e6738e67b2d3cc278033262dc9e", null ],
-      [ "PDG", "namespacedumpEvent.html#a53600608fbd2147b2fd0b88c65e95223", null ],
-      [ "ship_geo", "namespacedumpEvent.html#a3b555b352730ef741338c2003177e106", null ]
+      [ "PDG", "namespacedumpEvent.html#a53600608fbd2147b2fd0b88c65e95223", null ]
     ] ],
     [ "evd_addParticleFollower", "namespaceevd__addParticleFollower.html", [
       [ "execute", "namespaceevd__addParticleFollower.html#a0cdff59d1c9ca642826237817a5c14d7", null ],
@@ -366,7 +364,7 @@ var namespaces_dup =
       [ "top", "namespacegetGeoInformation.html#a817429de989e54975b015c0d9396b452", null ]
     ] ],
     [ "getInteractionAndRadiationLength", "namespacegetInteractionAndRadiationLength.html", [
-      [ "compute_material_budget", "namespacegetInteractionAndRadiationLength.html#acc811e922001259c96c2e4f493adffba", null ]
+      [ "compute_material_budget", "namespacegetInteractionAndRadiationLength.html#a127d95402eb8d6769d15820e3268e0d9", null ]
     ] ],
     [ "global_variables", "namespaceglobal__variables.html", [
       [ "__getattr__", "namespaceglobal__variables.html#aeff20c2fdb82cfc512c8c1fcd4dceb81", null ]
@@ -840,7 +838,6 @@ var namespaces_dup =
       [ "muPart", "namespacemakeMuonEM.html#ab93402e2713d9360691ffeafc3621b27", null ],
       [ "nJob", "namespacemakeMuonEM.html#a0d9d140e57ebdb6f5d9e3f663f855ac2", null ],
       [ "nMult", "namespacemakeMuonEM.html#a622d501e573a35cf9e01929c1cdbf4da", null ],
-      [ "nPart", "namespacemakeMuonEM.html#a04bf92186855ef0f63408756e6646729", null ],
       [ "p", "namespacemakeMuonEM.html#a0bc15f8a4a17b2a9060c7f1fc553cda9", null ],
       [ "part", "namespacemakeMuonEM.html#ade078eb3a164b74694c2f6d5e568565e", null ],
       [ "PDG", "namespacemakeMuonEM.html#aba3172b427e51caa3a9b6d5d8da4acc0", null ],
@@ -850,7 +847,6 @@ var namespaces_dup =
       [ "pz", "namespacemakeMuonEM.html#a037665dc82d4af933a5539184782ac5c", null ],
       [ "rc", "namespacemakeMuonEM.html#ae0722eff885fe6023ee0acafdae18b27", null ],
       [ "sTree", "namespacemakeMuonEM.html#a60d6f22c97137e52694045555ca0b5e9", null ],
-      [ "tca_vec", "namespacemakeMuonEM.html#a8c2468b7afeee718bbb693f0f0a9b369", null ],
       [ "w", "namespacemakeMuonEM.html#a04298ed1d5fc7dbec7e764537bfec5d5", null ],
       [ "x", "namespacemakeMuonEM.html#aed3bddf19f451fdc5e44154c54c70cf9", null ],
       [ "y", "namespacemakeMuonEM.html#a0d25cc9a190d0bdc64fa5cc1d7533039", null ],
@@ -981,6 +977,7 @@ var namespaces_dup =
       [ "pdg", "namespacereadDecayTable.html#a216e0525d0705b0b1690f178c74c2cf9", null ]
     ] ],
     [ "rootUtils", "namespacerootUtils.html", [
+      [ "assignClonesArrayItem", "namespacerootUtils.html#ae9fb99014f636adbd119f23c5eaf6b5f", null ],
       [ "bookCanvas", "namespacerootUtils.html#aea2713c1fd3249a6dd7ea82c6ccc8ef5", null ],
       [ "bookHist", "namespacerootUtils.html#a6558e8446659e2fe282f24dff579b11d", null ],
       [ "bookProf", "namespacerootUtils.html#ae7d21aa6d2c4142e2b2c17659540b018", null ],
@@ -1002,7 +999,7 @@ var namespaces_dup =
       [ "DQM", "namespacerun__ACTSTracking.html#ab4132b0575d937e226784acc7c66b0f5", null ],
       [ "False", "namespacerun__ACTSTracking.html#a9c9f2b602a14afe7eada8b6cc9a1fbac", null ],
       [ "fTree", "namespacerun__ACTSTracking.html#a2efd7eb3251602f46cf2987825ef6d17", null ],
-      [ "fullpath", "namespacerun__ACTSTracking.html#ab2032c1f75194bf2334dad61233390b5", null ],
+      [ "fullpath", "namespacerun__ACTSTracking.html#a419db05221da45d9cd440efeba752722", null ],
       [ "geoFile", "namespacerun__ACTSTracking.html#a4528b9c9df0a87dbad855fe6cdd82d92", null ],
       [ "help", "namespacerun__ACTSTracking.html#acfe3e7df7c0e44c4af0c43c1df5ab724", null ],
       [ "inFile", "namespacerun__ACTSTracking.html#a5f50267a03dcbf057998ae2735e5540c", null ],
@@ -1012,7 +1009,6 @@ var namespaces_dup =
       [ "minPt", "namespacerun__ACTSTracking.html#a5ec29eab8862cd79531eb8d33218d5d7", null ],
       [ "nEvents", "namespacerun__ACTSTracking.html#ae53a95e20963a6302fd64e695c1c779a", null ],
       [ "options", "namespacerun__ACTSTracking.html#af86a6db8f1fd628dc3d6af5bf54d03b2", null ],
-      [ "outDir", "namespacerun__ACTSTracking.html#aa6166cc437c4f9cc17178a2922246e56", null ],
       [ "outFile", "namespacerun__ACTSTracking.html#a473bd60e069f89f4eb4d8588c08509b9", null ],
       [ "outputDir", "namespacerun__ACTSTracking.html#ada17fddea233d5062ff3d42d82490ac5", null ],
       [ "outputFile", "namespacerun__ACTSTracking.html#add83f453e6b2696958aff0de0969b1dc", null ],
@@ -1127,7 +1123,7 @@ var namespaces_dup =
       [ "fitSingleGauss", "namespacerun__reco.html#aeb64b43ab3c678d2c1a20f6f427deb3b", null ],
       [ "getJobs", "namespacerun__reco.html#a9d4908376d6fb3dba3e1818b61525af1", null ],
       [ "killAll", "namespacerun__reco.html#a05572a1e4ec79ffd714836761001a55b", null ],
-      [ "mergeHistosMakePlots", "namespacerun__reco.html#a9f4ed23cf08a48f98b7458496bacfbe7", null ],
+      [ "mergeHistosMakePlots", "namespacerun__reco.html#aad1185e5774bdd54d8ad87c83f687d66", null ],
       [ "mergeNtuples", "namespacerun__reco.html#a9969292effee8b2e7fc302ac9f16ee2c", null ],
       [ "printFailedJobs", "namespacerun__reco.html#a65a88e0c2c6866584af433f15bd3c11c", null ],
       [ "removeIntermediateFiles", "namespacerun__reco.html#a95d22d06377209debcc97fb72320639c", null ],
@@ -1569,7 +1565,7 @@ var namespaces_dup =
       [ "iEvent", "namespaceShipReco.html#ab3f350587696737c07f798e0c105cde7", null ],
       [ "inputFile", "namespaceShipReco.html#af216c8c8b08ff8f49fcb82220bed70c4", null ],
       [ "modules", "namespaceShipReco.html#a4850398ee3476da47f58999b04e3a0e7", null ],
-      [ "nEvents", "namespaceShipReco.html#a5d79d13160dfaad7ee80f62adb0ee67e", null ],
+      [ "nEntries", "namespaceShipReco.html#ad7b580ede28eace1716a1ad48fbd236d", null ],
       [ "None", "namespaceShipReco.html#a19251702830556320d73755869bd74b3", null ],
       [ "options", "namespaceShipReco.html#afb5b701e9d769b20a4bf56ac2b4e5600", null ],
       [ "outFile", "namespaceShipReco.html#a7b887bc3d291d74d04fcaae703a657b3", null ],

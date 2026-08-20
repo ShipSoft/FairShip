@@ -10,7 +10,7 @@ var compactingBackgroundProduction_8py =
     [ "makePrintout", "compactingBackgroundProduction_8py.html#a44f50e507aa7624414498ebce7cab133", null ],
     [ "removeStupidFiles", "compactingBackgroundProduction_8py.html#a2ef4dfa3747c8b70bb5fa33fb5285056", null ],
     [ "YandexProd", "compactingBackgroundProduction_8py.html#a708e024acb290e4040ca0976c1be15f0", null ],
-    [ "charm", "compactingBackgroundProduction_8py.html#a5164e95efeab04e25c0d80f2c8109c80", null ],
+    [ "charm", "compactingBackgroundProduction_8py.html#a848d7bf8a93689b7ba1eef44d9ee50fe", null ],
     [ "ecut", "compactingBackgroundProduction_8py.html#a68e9182156087adfdb0fed8323680296", null ],
     [ "fnames", "compactingBackgroundProduction_8py.html#a986d4b128ad411838daa76aa5c52ce48", null ],
     [ "globalPath", "compactingBackgroundProduction_8py.html#a9e58aabcb53c7b7e3d712782a8f57c96", null ],

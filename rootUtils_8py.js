@@ -1,5 +1,6 @@
 var rootUtils_8py =
 [
+    [ "assignClonesArrayItem", "rootUtils_8py.html#ae9fb99014f636adbd119f23c5eaf6b5f", null ],
     [ "bookCanvas", "rootUtils_8py.html#aea2713c1fd3249a6dd7ea82c6ccc8ef5", null ],
     [ "bookHist", "rootUtils_8py.html#a6558e8446659e2fe282f24dff579b11d", null ],
     [ "bookProf", "rootUtils_8py.html#ae7d21aa6d2c4142e2b2c17659540b018", null ],

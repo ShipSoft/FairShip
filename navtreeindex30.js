@@ -1,11 +1,5 @@
 var NAVTREEINDEX30 =
 {
-"strawtubesHit_8h_source.html":[8,0,15,6],
-"strawtubesPoint_8cxx.html":[8,0,15,7],
-"strawtubesPoint_8cxx_source.html":[8,0,15,7],
-"strawtubesPoint_8h.html":[8,0,15,8],
-"strawtubesPoint_8h_source.html":[8,0,15,8],
-"strawtubes_2LinkDef_8h.html":[8,0,15,0],
 "strawtubes_2LinkDef_8h_source.html":[8,0,15,0],
 "strawtubes_8cxx.html":[8,0,15,1],
 "strawtubes_8cxx_source.html":[8,0,15,1],
@@ -249,5 +243,11 @@ var NAVTREEINDEX30 =
 "validationTools_8py.html#ab1e3a10d6f62999ea06535aee5e6db9c":[8,0,10,41,3],
 "validationTools_8py.html#ac349eb89a40b005ef651d6c1097ecab1":[8,0,10,41,9],
 "validationTools_8py.html#aefd7efe28bd59e0223aa709eac2169ce":[8,0,10,41,7],
-"validationTools_8py.html#affb81bcfb4fc546881c2dc5713a8106d":[8,0,10,41,5]
+"validationTools_8py.html#affb81bcfb4fc546881c2dc5713a8106d":[8,0,10,41,5],
+"validationTools_8py_source.html":[8,0,10,41],
+"vetoContFact_8cxx.html":[8,0,19,3],
+"vetoContFact_8cxx_source.html":[8,0,19,3],
+"vetoContFact_8h.html":[8,0,19,4],
+"vetoContFact_8h_source.html":[8,0,19,4],
+"vetoHitOnTrack_8cxx.html":[8,0,19,7]
 };
