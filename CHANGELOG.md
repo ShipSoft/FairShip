@@ -35,7 +35,7 @@ it in future.
 * `--max-split-buffer` (default 25000): hard bound on the split clones buffered per track. Per-step splitting stops once the cap is reached, reducing the statistical boost but conserving weight. With the default `--max-event-size`, that cap is reached first, at about 10k pending clones
 * `--max-event-size` (default 5000000): cap on the projected number of particles per event, counting the particles already on the stack plus 500 for each pending split clone. Per-step splitting stops once the cap would be exceeded; weight is conserved. `run_fixedTarget.py` rejects values of this or `--max-split-buffer` that are too small for even one per-step split
 * `exitHadronAbsorber` reports the split-clone balance (decays split, clones created, clones never tracked and their weight) at the end of the run, including the final event's leftover buffer
-* ACTS is available as an alternative track fitter in the main reconstruction chain: `ShipReco.py --trackFitter acts` writes `RecoTracks`/`RecoVertices`/`Particles` branches instead of the GenFit `FitTracks`/`goodTracks` (which remain the default). Analysis tools (`ShipAna`, `shipVeto`, `analysis_toolkit`, `tracking_benchmark`) detect either output format automatically.
+* ACTS is available as an alternative track fitter in the main reconstruction chain: `ShipReco.py --trackFitter acts` writes `RecoTracks`/`RecoVertices`/`Particles` branches instead of the GenFit `FitTracks` (which remains the default). Both fitters write `goodTracks`, and one `VetoHitOnTrack` entry per good track with the distance in cm. Analysis tools (`ShipAna`, `shipVeto`, `analysis_toolkit`, `tracking_benchmark`) detect either output format automatically.
 * New `--patRec Truth` option for MC-truth track seeding (requires `--trackFitter acts`).
 
 ### Changed
@@ -100,6 +100,8 @@ it in future.
 * With `--multiple-kpi-splits`, secondaries that a split kaon or pion makes along its path (delta rays, bremsstrahlung and pair production, elastic recoils) now carry the weight the track had when it made them. Geant4 hands secondaries to the stack only once their parent is done, so they were scaled by the parent's final weight, which the per-step splits had lowered further. The products of the interaction that ends the track already had the right weight. Muons at the scoring plane above the default energy cut are hardly affected; counts of secondaries along split tracks were too low
 * The first track after a splitting decay now carries the buffered clones to the stack popper and is exempt from the energy and neutrino cuts, so a clone set can no longer be stranded in the buffer
 * A carrier that an unsplit run would have stopped, and everything it produces, is kept out of the output. A decay turns rest mass into kinetic energy, so a carrier below the energy cut could still produce secondaries above it (a photon from a slow π⁰, a muon from a slow kaon), and a carrier kaon or pion that decayed was split again
+* ACTS vertex positions were scaled by the covariance conversion factor rather than the length one, placing every reconstructed vertex ten times too close to the target
+* Track candidates were built with a charge that contradicted their PDG code; since GenFit is seeded from the PDG code and ACTS from the charge, the ACTS fit started from the wrong charge hypothesis
 
 ### Removed
 
