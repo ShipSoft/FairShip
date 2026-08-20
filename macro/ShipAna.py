@@ -9,6 +9,7 @@ import ROOT
 import rootUtils as ut
 import shipRoot_conf
 import shipunit as u
+from mc_truth import find_signal_track, signal_weight
 from ShipGeoConfig import load_from_root_file
 
 shipRoot_conf.configure()
@@ -435,19 +436,21 @@ def fitSingleGauss(x: str, ba: float | None = None, be: float | None = None) -> 
         h[x].Fit(myGauss, "", "", ba, be)
 
 
-def match2HNL(p) -> bool:
+def match2HNL(p, signal_id) -> bool:
     matched = False
+    if signal_id is None:
+        return matched
     hnlKey = []
     for t in [p.GetDaughter(0), p.GetDaughter(1)]:
         mcp = sTree.fitTrack2MC[t]
+        # Walk up the MC mother chain looking for the signal particle.
         while mcp > -0.5:
             if mcp >= len(sTree.MCTrack):
                 break
-            mo = sTree.MCTrack[mcp]
-            if abs(mo.GetPdgCode()) == 9900015:
+            if mcp == signal_id:
                 hnlKey.append(mcp)
                 break
-            mcp = mo.GetMotherId()
+            mcp = sTree.MCTrack[mcp].GetMotherId()
     if len(hnlKey) == 2 and hnlKey[0] == hnlKey[1]:
         matched = True
     return matched
@@ -555,14 +558,10 @@ def myEventLoop(n: int) -> None:
         sTree.Particles = sTree.Particles_PR
     if not checkHNLorigin(sTree):
         return
-    if not len(sTree.MCTrack) > 1:
-        wg = 1.0
-    else:
-        wg = sTree.MCTrack[1].GetWeight()
-    if not wg > 0.0:
-        wg = 1.0
+    wg = signal_weight(sTree.MCTrack)
+    signal_id = find_signal_track(sTree.MCTrack)
 
-        # make some straw hit analysis
+    # make some straw hit analysis
     hitlist = {}
     for ahit in sTree.strawtubesPoint:
         detID = ahit.GetDetectorID()
@@ -664,7 +663,7 @@ def myEventLoop(n: int) -> None:
         if not checkMeasurements:
             continue
             # check mc matching
-        if not match2HNL(HNL):
+        if not match2HNL(HNL, signal_id):
             continue
         HNLPos = ROOT.TLorentzVector()
         HNL.ProductionVertex(HNLPos)

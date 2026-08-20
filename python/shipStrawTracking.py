@@ -14,6 +14,7 @@ import ROOT
 # For modules
 import shipDet_conf
 import shipunit as u
+from mc_truth import find_signal_track
 
 # For ShipGeo
 from ShipGeoConfig import load_from_root_file
@@ -204,7 +205,7 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method, dy=
 
         ########################################## Recognized tracks ###################################################
 
-        nTracklets = sTree.Tracklets.GetEntriesFast()
+        nTracklets = len(sTree.Tracklets)
 
         for i_track in range(nTracklets):
             atracklet = sTree.Tracklets[i_track]
@@ -649,16 +650,16 @@ def getReconstructibleTracks(iEvent: int, sTree, sGeo, ShipGeo):
     # call this routine once for each event before smearing
     MCTrackIDs = []
     sTree.GetEvent(iEvent)
-    nMCTracks = sTree.MCTrack.GetEntriesFast()
+    nMCTracks = len(sTree.MCTrack)
 
     # 1. MCTrackIDs: list of tracks decaying after the last tstation and originating before the first
     for i in reversed(range(nMCTracks)):
-        atrack = sTree.MCTrack.At(i)
+        atrack = sTree.MCTrack[i]
         # track endpoint after tstations?
         if atrack.GetStartZ() > TStation4EndZ:
             motherId = atrack.GetMotherId()
             if motherId > -1:
-                mothertrack = sTree.MCTrack.At(motherId)
+                mothertrack = sTree.MCTrack[motherId]
                 mothertrackZ = mothertrack.GetStartZ()
                 # this mother track is a HNL decay
                 # track starts inside the decay volume? (before 1 st tstation)
@@ -669,10 +670,10 @@ def getReconstructibleTracks(iEvent: int, sTree, sGeo, ShipGeo):
         return MCTrackIDs
 
     # 2. hitsinTimeDet: list of tracks with hits in TimeDet
-    # nVetoHits = sTree.vetoPoint.GetEntriesFast()
+    # nVetoHits = len(sTree.vetoPoint)
     # hitsinTimeDet=[]
     # for i in range(nVetoHits):
-    #    avetohit = sTree.vetoPoint.At(i)
+    #    avetohit = sTree.vetoPoint[i]
     #    #hit in TimeDet?
     #    if sGeo.FindNode(avetohit.GetX(), avetohit.GetY(), avetohit.GetZ()).GetName() == 'TimeDet_1':
     #        if avetohit.GetTrackID() not in hitsinTimeDet:
@@ -690,7 +691,7 @@ def getReconstructibleTracks(iEvent: int, sTree, sGeo, ShipGeo):
     #    return MCTrackIDs
 
     # 4. Find straws that have multiple hits
-    nHits = sTree.strawtubesPoint.GetEntriesFast()
+    nHits = len(sTree.strawtubesPoint)
     hitstraws = {}
     duplicatestrawhit = set()
 
@@ -796,16 +797,17 @@ def getReconstructibleTracks(iEvent: int, sTree, sGeo, ShipGeo):
     if len(MCTrackIDs) == 0:
         return MCTrackIDs
 
-    itemstoremove = []
+    # 8. Keep only the daughters of the signal particle. Everything else that
+    # reaches the tracker is a Geant secondary (delta ray, bremsstrahlung).
+    signalId = find_signal_track(sTree.MCTrack)
 
-    for item in MCTrackIDs:
-        atrack = sTree.MCTrack.At(item)
-        motherId = atrack.GetMotherId()
-        if motherId != 2:  #!!!!
-            itemstoremove.append(item)
+    if signalId is None:
+        print(f"Warning: no signal track found in event {iEvent}, skipping the signal-daughter filter.")
+    else:
+        itemstoremove = [item for item in MCTrackIDs if sTree.MCTrack[item].GetMotherId() != signalId]
 
-    for item in itemstoremove:
-        MCTrackIDs.remove(item)
+        for item in itemstoremove:
+            MCTrackIDs.remove(item)
 
     return MCTrackIDs
 
