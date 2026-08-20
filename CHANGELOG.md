@@ -24,7 +24,7 @@ it in future.
 
 * Charm runs of `run_fixedTarget.py` no longer drop the `charm` work-directory tag: a missing `elif` meant the tag was assigned and then immediately overwritten, so charm output landed in the same untagged directory as a min-bias run of the same run number.
 * ACTS vertex positions were scaled by the covariance conversion factor rather than the length one, placing every reconstructed vertex ten times too close to the target
-* Track candidates were built with a charge that contradicted their PDG code; since GenFit is seeded from the PDG code and ACTS from the charge, the ACTS fit started from the wrong charge hypothesis
+* Track candidates were built with a charge that contradicted their PDG code. The charge is the one the bending actually supports, so the PDG code was corrected to match it; GenFit results are unaffected (it does not use the seed charge) and ACTS results are unchanged
 
 ### Removed
 
