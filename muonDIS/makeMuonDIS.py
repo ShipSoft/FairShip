@@ -52,6 +52,10 @@ parser.add_argument(
 )
 
 args = parser.parse_args()
+if args.nDIS <= 0 or args.nDIS % 2 != 0:
+    parser.error(
+        f"--nDIS must be a positive even integer (got {args.nDIS}), so proton and neutron DIS phases stay balanced."
+    )
 n_events = args.n_events
 first_mu_event = args.first_mu_event
 
