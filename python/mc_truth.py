@@ -52,16 +52,13 @@ def find_signal_track(mc_tracks, pdg=None):
 
     n_tracks = len(mc_tracks)
     stack = {i for i in range(n_tracks) if mc_tracks[i].GetProcName() == PRIMARY_PROCESS}
+    mothers = {i: mc_tracks[i].GetMotherId() for i in stack}
 
-    def mother_on_stack(i):
-        mother = mc_tracks[i].GetMotherId()
-        return mother if mother in stack else None
-
-    roots = [i for i in stack if mother_on_stack(i) is None]
+    roots = [i for i in stack if mothers[i] not in stack]
     if len(roots) != 1:
         return None
 
-    with_daughters = {mother_on_stack(i) for i in stack if mother_on_stack(i) is not None}
+    with_daughters = {mothers[i] for i in stack if mothers[i] in stack}
     return max(with_daughters) if with_daughters else None
 
 
