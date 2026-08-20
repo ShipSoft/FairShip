@@ -42,7 +42,7 @@ it in future.
 * Post-process the simulation output of `run_fixedTarget.py`, not the first open ROOT file, which for charm and beauty is the cascade input file kept open by the generator, so that charm and beauty runs no longer end with `KeyError: 'cbmsim'`.
 * Added `ROOT::EGPythia8` in `shipgen/CMakeLists.txt` to avoid symbol lookup errors when using EvtGen
 * ACTS vertex positions were scaled by the covariance conversion factor rather than the length one, placing every reconstructed vertex ten times too close to the target
-* Track candidates were built with a charge that contradicted their PDG code; since GenFit is seeded from the PDG code and ACTS from the charge, the ACTS fit started from the wrong charge hypothesis
+* Track candidates were built with a charge that contradicted their PDG code. The charge is the one the bending actually supports, so the PDG code was corrected to match it; GenFit results are unaffected (it does not use the seed charge) and ACTS results are unchanged
 
 ### Removed
 

@@ -661,7 +661,9 @@ class ShipDigiReco:
             k_y12 = params.get("k_y12")
             k_y34 = params.get("k_y34")
             if k_y12 is not None and k_y34 is not None:
-                pdg = -13 if k_y34 > k_y12 else 13
+                # The slope difference between the two station pairs gives the
+                # bending sense, and with it the charge.
+                pdg = 13 if k_y34 > k_y12 else -13
             else:
                 pdg = 13
             # GenFit is seeded with the PDG code, ACTS with the charge, so the two
