@@ -24,16 +24,9 @@ def merge() -> None:
         sTree.GetEvent(n)
         dPart.Clear()
         iMuon.Clear()
-        tca_vec = iMuon.ConstructedAt(0)
-        tca_vec.ResizeTo(sTree.InMuon[0])
-        ROOT.std.swap(tca_vec, sTree.InMuon[0])
+        ut.assignClonesArrayItem(iMuon, 0, sTree.InMuon[0])
         for part in sTree.Particles:
-            nPart = len(dPart)
-            if dPart.GetSize() == nPart:
-                dPart.Expand(nPart + 10)
-            tca_vec = dPart.ConstructedAt(nPart)
-            tca_vec.ResizeTo(part)
-            ROOT.std.swap(tca_vec, part)
+            ut.assignClonesArrayItem(dPart, len(dPart), part)
         nTree.Fill()
     fm.cd()
     nTree.Write()

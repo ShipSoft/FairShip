@@ -132,6 +132,21 @@ def bookCanvas(h, key=None, title: str = "", nx: int = 900, ny: int = 600, cx: i
         h[key].Divide(cx, cy)
 
 
+def assignClonesArrayItem(arr, index, obj) -> None:
+    """Copy obj into slot `index` of a TClonesArray, expanding it as needed.
+
+    Item assignment (arr[i] = obj) raises in ROOT >= 6.32; construct the slot
+    and copy-assign into it instead. TVectorD slots are resized to match obj
+    first (TVectorD::operator= requires matching sizes).
+    """
+    if arr.GetSize() <= index:
+        arr.Expand(index + 10)
+    slot = arr.ConstructedAt(index)
+    if hasattr(slot, "ResizeTo"):
+        slot.ResizeTo(obj)
+    slot.__assign__(obj)
+
+
 def reportError(s) -> None:
     _error_log[s] += 1
 

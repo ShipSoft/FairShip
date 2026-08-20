@@ -11,6 +11,7 @@ import time
 from array import array
 
 import ROOT as r
+import rootUtils as ut
 from tabulate import tabulate
 
 r.gROOT.LoadMacro("$VMCWORKDIR/gconfig/basiclibs.C")
@@ -266,11 +267,7 @@ def makeMuonDIS() -> None:
                 proton_xsec = xsec
             else:
                 neutron_xsec = xsec
-            # TClonesArray item assignment (arr[i] = obj) raises in ROOT >= 6.32;
-            # construct the slot and copy-assign into it instead.
-            iMuon_slot = iMuon.ConstructedAt(0)
-            iMuon_slot.ResizeTo(muPart)
-            iMuon_slot.__assign__(muPart)
+            ut.assignClonesArrayItem(iMuon, 0, muPart)
 
             for itrk in range(1, myPythia.GetN() + 1):
                 did = myPythia.GetK(itrk, 2)
@@ -288,12 +285,7 @@ def makeMuonDIS() -> None:
                 E = r.TMath.Sqrt(masssq + psq)
                 m = array("d", [did, dpx, dpy, dpz, E])
                 part = r.TVectorD(5, m)
-                nPart = len(dPartDIS)
-                if dPartDIS.GetSize() == nPart:
-                    dPartDIS.Expand(nPart + 10)
-                dPartDIS_slot = dPartDIS.ConstructedAt(nPart)
-                dPartDIS_slot.ResizeTo(part)
-                dPartDIS_slot.__assign__(part)
+                ut.assignClonesArrayItem(dPartDIS, len(dPartDIS), part)
 
             cross_sections.append(xsec)
 
@@ -319,31 +311,22 @@ def makeMuonDIS() -> None:
                 m = array("d", [did, dpx, dpy, dpz, E, softx, softy, softz, time_])
 
                 part = r.TVectorD(9, m)
-                nPart = len(dPartSoft)
-                if dPartSoft.GetSize() == nPart:
-                    dPartSoft.Expand(nPart + 10)
-                dPartSoft_slot = dPartSoft.ConstructedAt(nPart)
-                dPartSoft_slot.ResizeTo(part)
-                dPartSoft_slot.__assign__(part)
+                ut.assignClonesArrayItem(dPartSoft, len(dPartSoft), part)
 
             muon_vetoPoints.Clear()
 
             index = 0
             for hit in muon_tree.muon_vetoPoints:
-                if muon_vetoPoints.GetSize() == index:
-                    muon_vetoPoints.Expand(index + 1)
                 hit.SetTrackID(0)  # Set TrackID to match for muon ID for new simulation
-                muon_vetoPoints.ConstructedAt(index).__assign__(hit)
+                ut.assignClonesArrayItem(muon_vetoPoints, index, hit)
                 index += 1
 
             muon_UpstreamTaggerPoints.Clear()
 
             ubt_index = 0
             for hit in muon_tree.muon_UpstreamTaggerPoints:
-                if muon_UpstreamTaggerPoints.GetSize() == ubt_index:
-                    muon_UpstreamTaggerPoints.Expand(ubt_index + 1)
                 hit.SetTrackID(0)  # Set TrackID to match for muon ID for new simulation
-                muon_UpstreamTaggerPoints.ConstructedAt(ubt_index).__assign__(hit)
+                ut.assignClonesArrayItem(muon_UpstreamTaggerPoints, ubt_index, hit)
                 ubt_index += 1
 
             output_tree.Fill()

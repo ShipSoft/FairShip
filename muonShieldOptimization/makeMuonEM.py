@@ -3,6 +3,7 @@
 
 
 import ROOT
+import rootUtils as ut
 
 nJob = 1
 nMult = 1000  # 100000 # number of events / muon
@@ -53,20 +54,12 @@ for k in range(sTree.GetEntries()):
     for n in range(nMult):
         dPart.Clear()
         iMuon.Clear()
-        tca_vec = iMuon.ConstructedAt(0)
-        tca_vec.ResizeTo(muPart)
         # copy (do not swap) so muPart keeps its data across all duplications
-        for i in range(muPart.GetNrows()):
-            tca_vec[i] = muPart[i]
+        ut.assignClonesArrayItem(iMuon, 0, muPart)
         m = array("d", [pid, px, py, pz, E])
         part = ROOT.TVectorD(5, m)
         # copy to branch
-        nPart = len(dPart)
-        if dPart.GetSize() == nPart:
-            dPart.Expand(nPart + 10)
-        tca_vec = dPart.ConstructedAt(nPart)
-        tca_vec.ResizeTo(part)
-        ROOT.std.swap(tca_vec, part)
+        ut.assignClonesArrayItem(dPart, len(dPart), part)
         dTree.Fill()
 fout.cd()
 dTree.Write()

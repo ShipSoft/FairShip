@@ -9,6 +9,7 @@ import logging
 import os
 
 import ROOT as r
+import rootUtils as ut
 from tabulate import tabulate
 
 logging.basicConfig(level=logging.DEBUG)
@@ -135,17 +136,13 @@ def modify_file(inputfile, muonfile) -> None:
         index = 0
 
         for hit in input_event.vetoPoint:
-            if combined_vetoPoint.GetSize() == index:
-                combined_vetoPoint.Expand(index + 1)
-            combined_vetoPoint.ConstructedAt(index).__assign__(hit)
+            ut.assignClonesArrayItem(combined_vetoPoint, index, hit)
             index += 1
 
         muoncount = 0
         for hit in muon_event.muon_vetoPoints:
             if hit.GetZ() < interaction_point.Z():
-                if combined_vetoPoint.GetSize() == index:
-                    combined_vetoPoint.Expand(index + 1)
-                combined_vetoPoint.ConstructedAt(index).__assign__(hit)
+                ut.assignClonesArrayItem(combined_vetoPoint, index, hit)
                 index += 1
                 muoncount += 1
 
@@ -154,17 +151,13 @@ def modify_file(inputfile, muonfile) -> None:
         ubt_index = 0
 
         for hit in input_event.UpstreamTaggerPoint:
-            if combined_UpstreamTaggerPoint.GetSize() == ubt_index:
-                combined_UpstreamTaggerPoint.Expand(ubt_index + 1)
-            combined_UpstreamTaggerPoint.ConstructedAt(ubt_index).__assign__(hit)
+            ut.assignClonesArrayItem(combined_UpstreamTaggerPoint, ubt_index, hit)
             ubt_index += 1
 
         muon_ubtcount = 0
         for hit in muon_event.muon_UpstreamTaggerPoints:
             if hit.GetZ() < interaction_point.Z():
-                if combined_UpstreamTaggerPoint.GetSize() == ubt_index:
-                    combined_UpstreamTaggerPoint.Expand(ubt_index + 1)
-                combined_UpstreamTaggerPoint.ConstructedAt(ubt_index).__assign__(hit)
+                ut.assignClonesArrayItem(combined_UpstreamTaggerPoint, ubt_index, hit)
                 ubt_index += 1
                 muon_ubtcount += 1
 
