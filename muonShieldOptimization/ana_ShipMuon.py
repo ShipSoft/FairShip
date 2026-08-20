@@ -1424,11 +1424,11 @@ from operator import itemgetter
 def makeNicePrintout(x: list[str] | None = None):
     if x is None:
         x = ["rareEvents_61-62.txt", "rareEvents_71-72.txt"]
-    result = []
+    result: list[dict[str, str | float]] = []
     cor = 1.0
     for fn in x:
         with open(fn) as f:
-            recTrack = None
+            recTrack: dict[str, str | float] | None = None
             if fn == "rareEvents_81-102.txt":
                 cor = 30.0
             for lx in f.readlines():
@@ -1460,6 +1460,9 @@ def makeNicePrintout(x: list[str] | None = None):
                 elif not line.find("Ptruth") < 0:
                     tmp = line.split(" ")
                     recTrack["id_hit"] = tmp[1].replace(" ", "")
+            # flush the record still being assembled when the file ends
+            if recTrack:
+                result.append(recTrack)
     # print a table
     print(
         "%4s %8s %8s %4s %8s %8s %8s %8s %8s  %8s "
