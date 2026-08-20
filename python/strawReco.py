@@ -18,6 +18,18 @@ import numpy as np
 
 logger = logging.getLogger(__name__)
 
+# Minimum straw layers for a fittable track. Must match
+# shipDigiReco.MIN_HITS_PER_TRACK, which applies the same cut when building
+# candidates from pattern recognition.
+MIN_HITS_PER_TRACK = 13
+
+# Track-quality cut for the tracks handed to the vertex fit.
+MAX_CHI2_NDF = 25.0
+
+# Number of good tracks the vertex fit is run for.
+MIN_VERTEX_TRACKS = 2
+MAX_VERTEX_TRACKS = 4
+
 
 def make_seed(pos, mom, charge, surface, geo_ctx, nM):
     sigma_drift = 5.0  # 5mm uncertainty
@@ -42,6 +54,10 @@ def runTracking(candidates, trackingGeometry, fieldMap, strawHits, fit_vertex=Tr
     """
     Fit tracks in the Reco frame using truth, or patrec seeds,
     fit vertices if tracks meet criteria
+
+    Mutates its arguments in place: each vector in ``strawHits`` gains the
+    drift-side sign as element 16 (appended only once, so repeated calls on the
+    same vectors are safe), and every ``cand["indices"]`` is sorted by hit z.
     """
 
     # Setup geo context
@@ -68,8 +84,11 @@ def runTracking(candidates, trackingGeometry, fieldMap, strawHits, fit_vertex=Tr
 
         sign = 1.0 if dot_product > 0 else -1.0
 
-        # Append sign as index 16
-        iHit.push_back(sign)
+        # Append sign as index 16, unless a previous call already did so
+        if iHit.size() > 16:
+            iHit[16] = sign
+        else:
+            iHit.push_back(sign)
 
     measurements = acts.processMeasurements(strawHits, trackingGeometry)
     acts_index_map = build_acts_index_map(measurements, len(strawHits))
@@ -94,7 +113,7 @@ def runTracking(candidates, trackingGeometry, fieldMap, strawHits, fit_vertex=Tr
                 filtered_indices.append(idx)
                 seen_layers.add(gid.layer)
 
-        if len(filtered_indices) < 13:
+        if len(filtered_indices) < MIN_HITS_PER_TRACK:
             logger.debug("Skipping track with too few hits: %d", len(filtered_indices))
             continue
 
@@ -121,9 +140,6 @@ def runTracking(candidates, trackingGeometry, fieldMap, strawHits, fit_vertex=Tr
     const_tracks = output_tracks.makeConst()
 
     vertices = []
-    # Define vertex cuts
-    min_hits = 13
-    max_chi2_ndf = 25.0
 
     good_proxies = []
     for i, track in enumerate(const_tracks):
@@ -135,7 +151,7 @@ def runTracking(candidates, trackingGeometry, fieldMap, strawHits, fit_vertex=Tr
 
         chi2_ndf = track_chi2 / track_ndf if track_ndf > 0 else float("inf")
 
-        if track.nMeasurements >= min_hits and chi2_ndf <= max_chi2_ndf:
+        if track.nMeasurements >= MIN_HITS_PER_TRACK and chi2_ndf <= MAX_CHI2_NDF:
             good_proxies.append(track)
 
     # Check for at least one positive and one negative track
@@ -143,7 +159,7 @@ def runTracking(candidates, trackingGeometry, fieldMap, strawHits, fit_vertex=Tr
     has_pos = any(t.parameters[4] > 0 for t in good_proxies)
     has_neg = any(t.parameters[4] < 0 for t in good_proxies)
 
-    if fit_vertex and 2 <= len(good_proxies) <= 4 and has_pos and has_neg:
+    if fit_vertex and MIN_VERTEX_TRACKS <= len(good_proxies) <= MAX_VERTEX_TRACKS and has_pos and has_neg:
         vertices = acts.fitVertex(good_proxies, fieldMap, geo_ctx, trackingGeometry)
 
     return const_tracks, vertices, track_hit_indices_list
@@ -242,6 +258,10 @@ def align_candidate_indices(cand, index_map, strawHits):
         layer = int(h[2])
         view = int(h[3])
         straw = int(h[4])
+        # ACTS straw layer numbering, as laid out by the acts-ship
+        # StrawtubeDetector geometry: the whole spectrometer is volume 1, and
+        # its layers are numbered consecutively with 16 per station, 4 per view
+        # and 2 per layer, offset so that station 1 / view 0 / layer 0 is 2.
         acts_layer = 16 * station + 4 * view + 2 * layer - 14
 
         gid = acts.GeometryIdentifier()
