@@ -801,10 +801,13 @@ def getReconstructibleTracks(iEvent: int, sTree, sGeo, ShipGeo):
     # reaches the tracker is a Geant secondary (delta ray, bremsstrahlung).
     signalId = find_signal_track(sTree.MCTrack)
 
-    itemstoremove = [item for item in MCTrackIDs if sTree.MCTrack[item].GetMotherId() != signalId]
+    if signalId is None:
+        print(f"Warning: no signal track found in event {iEvent}, skipping the signal-daughter filter.")
+    else:
+        itemstoremove = [item for item in MCTrackIDs if sTree.MCTrack[item].GetMotherId() != signalId]
 
-    for item in itemstoremove:
-        MCTrackIDs.remove(item)
+        for item in itemstoremove:
+            MCTrackIDs.remove(item)
 
     return MCTrackIDs
 
