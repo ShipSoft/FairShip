@@ -50,7 +50,11 @@ ship-ci-metrics = "*"
 cmake = ">=3.27"
 ninja = "*"
 cxx-compiler = "*"
-libboost-devel = ">=1.90"
+# Boost headers for the FairShip build. acts-ship depends on the runtime
+# libboost, but libboost-headers carries no run_exports, so the headers are
+# never pulled in transitively. The version follows acts-ship's
+# `libboost >=1.90.0` via libboost-devel's exact-match dependency on libboost.
+libboost-devel = "*"
 
 # Static analysis
 clang-tools = "*"  # provides clang-tidy

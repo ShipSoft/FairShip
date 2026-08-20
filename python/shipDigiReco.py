@@ -4,9 +4,10 @@
 import logging
 import os
 from array import array
-from collections import Counter
+from collections import Counter, defaultdict
 
 import global_variables
+import numpy as np
 import ROOT
 import rootUtils as ut
 import shipPatRec
@@ -22,6 +23,55 @@ from detectors.timeDetector import timeDetector
 from detectors.UpstreamTaggerDetector import UpstreamTaggerDetector
 
 logger = logging.getLogger(__name__)
+
+
+# Minimum straw layers for a fittable track candidate; the threshold is tuned to
+# the 1-plane-per-view geometry (#552). Must match strawReco.MIN_HITS_PER_TRACK,
+# which applies the same cut on the ACTS side.
+MIN_HITS_PER_TRACK = 13
+
+# Minimum number of stations a candidate has to cross to be fittable.
+MIN_STATIONS_CROSSED = 3
+
+
+def _cov_element(cov, row, col):
+    """Read one element of an ACTS vertex-track covariance.
+
+    The binding hands back a numpy array, but an unfitted track has no
+    covariance at all. Missing or unindexable data reads as zero.
+    """
+    if cov is None:
+        return 0.0
+    try:
+        return cov[row, col]
+    except (TypeError, IndexError, KeyError):
+        pass
+    try:
+        return cov[row][col]
+    except (TypeError, IndexError, KeyError):
+        return 0.0
+
+
+def _track_vector(track, name, fallback):
+    """Return an ACTS vertex-track 3-vector as a numpy array.
+
+    Falls back to ``fallback`` when the preferred attribute is unset, and to
+    the origin when neither is available.
+    """
+    value = getattr(track, name, None)
+    if value is None:
+        value = getattr(track, fallback, None)
+    if value is None:
+        value = (0.0, 0.0, 0.0)
+    return np.array(value, dtype=float)
+
+
+def _extrapolate_to_x(point, direction, x_target):
+    """Propagate a straight line to a plane of constant x, or None if parallel."""
+    dx = direction[0]
+    if abs(dx) < 1e-12:
+        return None
+    return point + direction * ((x_target - point[0]) / dx)
 
 
 class ShipDigiReco:
@@ -131,6 +181,8 @@ class ShipDigiReco:
             field_map_path = os.path.abspath(
                 os.path.join(os.path.dirname(__file__), "..", global_variables.ShipGeo.Bfield.fieldMap)
             )
+            if not os.path.exists(field_map_path):
+                raise FileNotFoundError(f"ACTS magnetic field map not found: {field_map_path}")
             uu = acts.UnitConstants
             self.actsFieldMap = acts.createShipFieldProvider(field_map_path, uu.T)
         else:
@@ -196,7 +248,6 @@ class ShipDigiReco:
         """
         import acts
         import acts.examples
-        import numpy as np
         from strawReco import calculateSBTDOCA
 
         geo_ctx = acts.GeometryContext()
@@ -299,27 +350,13 @@ class ShipDigiReco:
             covV[1][2] = acts_covV[0, 1] * area_scale
             covV[2][1] = covV[1][2]
 
-            cov_daughter1 = vtx_tracks[0].covariance if hasattr(vtx_tracks[0], "covariance") else None
-            cov_daughter2 = vtx_tracks[1].covariance if hasattr(vtx_tracks[1], "covariance") else None
-
-            def _get_cov_el(cov, r, c):
-                if cov is None:
-                    return 0.0
-                try:
-                    return cov(r, c)
-                except Exception:
-                    try:
-                        return cov[r][c]
-                    except Exception:
-                        try:
-                            return cov[r, c]
-                        except Exception:
-                            return 0.0
+            cov_daughter1 = getattr(vtx_tracks[0], "covariance", None)
+            cov_daughter2 = getattr(vtx_tracks[1], "covariance", None)
 
             raw_covP = ROOT.TMatrixDSym(3)
             for ii in range(3):
                 for jj in range(3):
-                    raw_covP[ii][jj] = _get_cov_el(cov_daughter1, ii + 3, jj + 3) + _get_cov_el(
+                    raw_covP[ii][jj] = _cov_element(cov_daughter1, ii + 3, jj + 3) + _cov_element(
                         cov_daughter2, ii + 3, jj + 3
                     )
 
@@ -345,30 +382,12 @@ class ShipDigiReco:
             # Extract 6 upper-triangular elements for momentum covariance
             covP_list = [covP[0][0], covP[0][1], covP[0][2], 0.0, covP[1][1], covP[1][2], 0.0, covP[2][2], 0.0, 0.0]
 
-            # Track extrapolation and DOCA calculation
-            def vec(v, name):
-                return np.array(getattr(v, name) if getattr(v, name) is not None else (0.0, 0.0, 0.0), dtype=float)
-
-            p1 = (
-                vec(vtx_tracks[0], "originalPosition")
-                if vtx_tracks[0].originalPosition is not None
-                else vec(vtx_tracks[0], "position")
-            )
-            p2 = (
-                vec(vtx_tracks[1], "originalPosition")
-                if vtx_tracks[1].originalPosition is not None
-                else vec(vtx_tracks[1], "position")
-            )
-            d1 = (
-                vec(vtx_tracks[0], "originalMomentum")
-                if vtx_tracks[0].originalMomentum is not None
-                else vec(vtx_tracks[0], "momentum")
-            )
-            d2 = (
-                vec(vtx_tracks[1], "originalMomentum")
-                if vtx_tracks[1].originalMomentum is not None
-                else vec(vtx_tracks[1], "momentum")
-            )
+            # Track extrapolation and DOCA calculation, preferring the
+            # pre-fit track state where the vertex fit kept one
+            p1 = _track_vector(vtx_tracks[0], "originalPosition", "position")
+            p2 = _track_vector(vtx_tracks[1], "originalPosition", "position")
+            d1 = _track_vector(vtx_tracks[0], "originalMomentum", "momentum")
+            d2 = _track_vector(vtx_tracks[1], "originalMomentum", "momentum")
 
             # normalize direction
             n1 = np.linalg.norm(d1)
@@ -381,16 +400,9 @@ class ShipDigiReco:
             # target plane x in ACTS frame (mm)
             target_x = float(vtx.position()[0])
 
-            def extrapolate_to_x(point, direction, x_target):
-                dx = direction[0]
-                if abs(dx) < 1e-12:
-                    return None
-                t = (x_target - point[0]) / dx
-                return point + direction * t
-
-            p1_x_tmp = extrapolate_to_x(p1, d1, target_x)
+            p1_x_tmp = _extrapolate_to_x(p1, d1, target_x)
             p1_x = p1_x_tmp if p1_x_tmp is not None else p1
-            p2_x_tmp = extrapolate_to_x(p2, d2, target_x)
+            p2_x_tmp = _extrapolate_to_x(p2, d2, target_x)
             p2_x = p2_x_tmp if p2_x_tmp is not None else p2
             delta = p1_x - p2_x
             n = np.cross(d1, d2)
@@ -512,8 +524,12 @@ class ShipDigiReco:
     def _truthCandidates(self) -> list[dict]:
         """Build track candidates from MC truth: one per MC track with straw hits."""
         candidates = []
+        # Bucket the straw hits by MC track in one pass; iHit[5] is the track ID
+        hits_by_track = defaultdict(list)
+        for i, h in enumerate(self.strawHits):
+            hits_by_track[int(h[5])].append(i)
         for trID, tr in enumerate(self.sTree.MCTrack):
-            indices = [i for i, h in enumerate(self.strawHits) if int(h[5]) == trID]
+            indices = hits_by_track.get(trID)
             if not indices:
                 continue
             unique_indices = []
@@ -662,10 +678,10 @@ class ShipDigiReco:
                 self.validation_stats["candidate_stations_sum"] += n_stations_crossed
                 self.validation_stats["candidate_stations_sum_sq"] += n_stations_crossed * n_stations_crossed
                 self.validation_stats["candidate_stations_count"] += 1
-            if nM < 13:
+            if nM < MIN_HITS_PER_TRACK:
                 n_too_few_hits += 1
-                continue  # not enough hits for a good trackfit (threshold tuned to the 1-plane-per-view geometry, #552)
-            if n_stations_crossed < 3:
+                continue  # not enough hits for a good trackfit
+            if n_stations_crossed < MIN_STATIONS_CROSSED:
                 n_too_few_stations += 1
                 continue  # not enough stations crossed to make a good trackfit
             if global_variables.debug:
