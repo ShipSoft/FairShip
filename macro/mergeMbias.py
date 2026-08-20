@@ -108,14 +108,13 @@ def TplotP(sTree) -> None:
             cv = h[t].cd(k)
             cv.SetLogy(1)
             h["T" + p].Draw()
-            if h["T" + p].GetEntries() < 1:
-                continue
-            if not p.find("mu") < 0:
-                h["T" + p + "+"].Draw("same")
-                h["T" + p + "-"].Draw("same")
-            cv = h[">" + t].cd(k)
-            cv.SetLogy(1)
-            h["T" + p + "_>E"].Draw()
+            if h["T" + p].GetEntries() >= 1:
+                if not p.find("mu") < 0:
+                    h["T" + p + "+"].Draw("same")
+                    h["T" + p + "-"].Draw("same")
+                cv = h[">" + t].cd(k)
+                cv.SetLogy(1)
+                h["T" + p + "_>E"].Draw()
             k += 1
         # plot different nu species:
         k = 3
