@@ -62,10 +62,7 @@ print(format_summary(cs, None if args.A is not None else args.target_composition
 FIN = fname + ".root"
 tmp = os.path.abspath(FIN).split("/")
 FOUT = "Decay-" + tmp[len(tmp) - 1]
-if FIN.find("eos") < 0:
-    fin = ROOT.TFile(FIN)
-else:
-    fin = ROOT.TFile.Open(ROOT.gSystem.Getenv("EOSSHIP") + FIN)
+fin = ROOT.TFile.Open(FIN)
 sTree = fin.FindObjectAny("pythia6")
 nEvents = sTree.GetEntries()
 
