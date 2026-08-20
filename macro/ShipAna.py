@@ -623,6 +623,10 @@ def myEventLoop(n: int) -> None:
         chi2 = rchi2 / nmeas
         h["chi2"].Fill(chi2, wg)
         h["measVSchi2"].Fill(info.n_points, chi2)
+        # mom and the sigma_p* are set together, but guard each so the fitted
+        # quantities are known to be present for the rest of the loop body
+        if info.mom is None or info.sigma_px is None or info.sigma_py is None or info.sigma_pz is None:
+            continue
         P = info.mom.Mag()
         Px, Py, Pz = info.mom.X(), info.mom.Y(), info.mom.Z()
         if len(sTree.fitTrack2MC) - 1 < key:
@@ -649,6 +653,8 @@ def myEventLoop(n: int) -> None:
         # try measure impact parameter
         trackDir = info.dir
         trackPos = info.pos
+        if trackDir is None or trackPos is None:
+            continue
         vx = ROOT.TVector3()
         mcPart.GetStartVertex(vx)
         t = 0
@@ -762,6 +768,8 @@ def myEventLoop(n: int) -> None:
                 mom1, mom2 = st1.getMom(), st2.getMom()
             newPosDir[t1] = {"position": rep1.getPos(state1), "direction": rep1.getDir(state1), "momentum": mom1}
             newPosDir[t2] = {"position": rep2.getPos(state2), "direction": rep2.getDir(state2), "momentum": mom2}
+        if mom1 is None or mom2 is None:
+            continue
         oa = mom1.Dot(mom2) / (mom1.Mag() * mom2.Mag())
         h["oa"].Fill(oa)
         #
@@ -829,7 +837,10 @@ def HNLKinematics() -> None:
                     t1, t2 = HNL.GetDaughter(0), HNL.GetDaughter(1)
                     tracks = sTree.RecoTracks if actsMode else sTree.FitTracks
                     for tr in [t1, t2]:
-                        Prec = track_info(tracks[tr], actsMode).mom.Mag()
+                        info = track_info(tracks[tr], actsMode)
+                        if info.mom is None:
+                            continue
+                        Prec = info.mom.Mag()
                         h["HNLmom_recTracks"].Fill(Prec, wg)
                         h["HNLmomNoW_recTracks"].Fill(Prec)
     theSum = 0

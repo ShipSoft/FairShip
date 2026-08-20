@@ -363,7 +363,7 @@ class TrackingBenchmark:
                     x_t, y_t, _ = self._get_truth_pos_first(mc_id)
                     tx_t, ty_t = self._get_truth_slopes(mc_id)
 
-                    if p_truth > 0 and info.mom is not None:
+                    if p_truth > 0 and info.mom is not None and info.pos is not None:
                         p_reco = info.mom.Mag()
 
                         dp_over_p = (p_reco - p_truth) / p_truth

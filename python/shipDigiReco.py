@@ -392,7 +392,7 @@ class ShipDigiReco:
                 doca_mm = abs(np.dot(delta, n)) / n_norm
             else:
                 doca_mm = np.linalg.norm(np.cross(delta, d1)) / max(1e-12, float(np.linalg.norm(d1)))
-            doca = doca_mm / 10.0
+            doca = float(doca_mm) / 10.0  # mm -> cm
 
             particle.SetCovP(covP_list)
             particle.SetCovV(covV_list)
@@ -443,7 +443,7 @@ class ShipDigiReco:
         self.strawHitToDigi = []
         digi_to_straw = {}
         for k, sm in enumerate(self.SmearedHits):
-            digiHit = sm["digiHit"]
+            digiHit = int(sm["digiHit"])
             station = self.strawtubes.det[digiHit].GetStationNumber()
             view = self.strawtubes.det[digiHit].GetViewNumber()
             layer = self.strawtubes.det[digiHit].GetLayerNumber()
