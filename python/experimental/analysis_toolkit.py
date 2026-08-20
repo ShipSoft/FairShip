@@ -157,12 +157,20 @@ class selection_check:
         return np.array(nmeas)
 
     def daughtermomentum(self, candidate):
-        """Return the momentum(Mag) of the particle's daughter tracks."""
+        """Return the momentum(Mag) of the particle's daughter tracks.
+
+        Tracks without a usable fit yield -1, which fails the preselection
+        momentum cut.
+        """
         daughter_mom = []
         t1, t2 = candidate.GetDaughter(0), candidate.GetDaughter(1)
         tracks = get_tracks(self.tree)
         for trD in [t1, t2]:
-            daughter_mom.append(track_info(tracks[trD], self.acts_tracks).mom.Mag())
+            info = track_info(tracks[trD], self.acts_tracks)
+            if not info.converged or info.mom is None or info.ndf <= 0:
+                daughter_mom.append(-1.0)
+                continue
+            daughter_mom.append(info.mom.Mag())
 
         return np.array(daughter_mom)
 
@@ -191,13 +199,20 @@ class selection_check:
         return vertex_elem.startswith("decay_medium_")
 
     def chi2nDOF(self, candidate):
-        """Return the reduced chi^2 of the particle's daughter tracks."""
+        """Return the reduced chi^2 of the particle's daughter tracks.
+
+        Tracks without a usable fit yield infinity, which fails the
+        preselection chi^2 cut.
+        """
         t1, t2 = candidate.GetDaughter(0), candidate.GetDaughter(1)
 
         chi2ndf = []
         tracks = get_tracks(self.tree)
         for tr in [t1, t2]:
             info = track_info(tracks[tr], self.acts_tracks)
+            if not info.converged or info.ndf <= 0:
+                chi2ndf.append(float("inf"))
+                continue
             chi2ndf.append(info.chi2 / info.ndf)
 
         return np.array(chi2ndf)
