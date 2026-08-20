@@ -436,10 +436,9 @@ def fitSingleGauss(x: str, ba: float | None = None, be: float | None = None) -> 
         h[x].Fit(myGauss, "", "", ba, be)
 
 
-def match2HNL(p) -> bool:
+def match2HNL(p, signal_id) -> bool:
     matched = False
-    signalId = find_signal_track(sTree.MCTrack)
-    if signalId is None:
+    if signal_id is None:
         return matched
     hnlKey = []
     for t in [p.GetDaughter(0), p.GetDaughter(1)]:
@@ -448,7 +447,7 @@ def match2HNL(p) -> bool:
         while mcp > -0.5:
             if mcp >= len(sTree.MCTrack):
                 break
-            if mcp == signalId:
+            if mcp == signal_id:
                 hnlKey.append(mcp)
                 break
             mcp = sTree.MCTrack[mcp].GetMotherId()
@@ -560,6 +559,7 @@ def myEventLoop(n: int) -> None:
     if not checkHNLorigin(sTree):
         return
     wg = signal_weight(sTree.MCTrack)
+    signal_id = find_signal_track(sTree.MCTrack)
 
     # make some straw hit analysis
     hitlist = {}
@@ -663,7 +663,7 @@ def myEventLoop(n: int) -> None:
         if not checkMeasurements:
             continue
             # check mc matching
-        if not match2HNL(HNL):
+        if not match2HNL(HNL, signal_id):
             continue
         HNLPos = ROOT.TLorentzVector()
         HNL.ProductionVertex(HNLPos)
