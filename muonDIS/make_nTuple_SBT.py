@@ -10,6 +10,7 @@ import logging
 import os
 
 import ROOT as r
+import rootUtils as ut
 import shipunit as u
 from tabulate import tabulate
 
@@ -285,9 +286,7 @@ for inputFolder in os.listdir(path):
                 if track_id != muon_:
                     continue
 
-                if muon_UpstreamTaggerPoints.GetSize() == ubt_index:
-                    muon_UpstreamTaggerPoints.Expand(ubt_index + 1)
-                muon_UpstreamTaggerPoints.ConstructedAt(ubt_index).__assign__(hit)
+                ut.assignClonesArrayItem(muon_UpstreamTaggerPoints, ubt_index, hit)
 
                 ubt_index += 1
 
@@ -307,9 +306,7 @@ for inputFolder in os.listdir(path):
                     if global_event_nr not in processed_events:
                         processed_events[global_event_nr] = []
 
-                    if muon_vetoPoints.GetSize() == index:
-                        muon_vetoPoints.Expand(index + 1)
-                    muon_vetoPoints.ConstructedAt(index).__assign__(hit)
+                    ut.assignClonesArrayItem(muon_vetoPoints, index, hit)
 
                     index += 1
 
