@@ -31,7 +31,7 @@ it in future.
 ### Fixed
 
 * ACTS vertex positions were scaled by the covariance conversion factor rather than the length one, placing every reconstructed vertex ten times too close to the target
-* Track candidates were built with a charge that contradicted their PDG code; since GenFit is seeded from the PDG code and ACTS from the charge, the ACTS fit started from the wrong charge hypothesis
+* Track candidates were built with a charge that contradicted their PDG code. The charge is the one the bending actually supports, so the PDG code was corrected to match it; GenFit results are unaffected (it does not use the seed charge) and ACTS results are unchanged
 * `veto` now registers the configured `sensitiveMed` instead of a hardcoded medium name; previously any other value resolved to a null `TGeoMedium`
 
 ### Removed
