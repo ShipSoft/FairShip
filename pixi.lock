@@ -844,11 +844,11 @@ environments:
       - conda: https://prefix.dev/ship/linux-64/pythia6-6.4.28-hb0f4dca_6.conda
       - conda: https://prefix.dev/ship/linux-64/rootegpythia6-0.1-h0566472_9.conda
       - conda: https://prefix.dev/ship/noarch/ship-ci-metrics-0.1.0-pyh4616a5c_0.conda
-      - pypi: https://files.pythonhosted.org/packages/20/ea/5abe742c9d5f60aeb249f02c3a160b8bb72476e695ecb0bbb9230df5e3c7/gersemi-0.28.0-cp313-cp313-manylinux_2_28_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/66/65/08d3a5039b565231c501b31d1a973d4222e9803c03b2c31a9c08bdec3e30/cpplint-2.0.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/8b/42/0337fefc615e20ee55d1c8f71b774a9b2b734a04669139c20753b27a2a3a/types_pyyaml-6.0.12.20260724-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/97/f7/f07087f3d185ad2eced0c56cef89ca5474dfb4ff25f146cd50a861c97553/pyrefly-1.2.0-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/a0/36/443b700f54a585cf8ed4e76d8ad08b12df6914f8782a2788ecd0d8491519/types_tabulate-0.10.0.20260508-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/ec/55/410b6c2c8fa55761bcdeb844a8d0937ed20e4afc9e70130f18412e4a8f6d/gersemi-0.28.1-cp313-cp313-manylinux_2_28_x86_64.whl
 packages:
 - conda: https://conda.anaconda.org/conda-forge/noarch/faircmakemodules-1.0.0-h98f672e_0.conda
   sha256: 2634b440823429b61cde095e1b0135aace6302238ab783049cac92c6922e4bcb
@@ -920,7 +920,7 @@ packages:
   license: MIT
   license_family: MIT
   purls:
-  - pkg:pypi/ast-serialize?source=compressed-mapping
+  - pkg:pypi/ast-serialize?source=hash-mapping
   run_exports: {}
   size: 1120486
   timestamp: 1782863830347
@@ -4311,7 +4311,7 @@ packages:
   license: MIT
   license_family: MIT
   purls:
-  - pkg:pypi/librt?source=compressed-mapping
+  - pkg:pypi/librt?source=hash-mapping
   run_exports: {}
   size: 164035
   timestamp: 1783529451161
@@ -4619,7 +4619,7 @@ packages:
   - __glibc >=2.17
   license: MIT
   purls:
-  - pkg:pypi/ruff?source=compressed-mapping
+  - pkg:pypi/ruff?source=hash-mapping
   run_exports: {}
   size: 9449104
   timestamp: 1785485613405
@@ -4840,7 +4840,7 @@ packages:
   - python_abi 3.13.* *_cp313
   license: BSD-2-Clause
   purls:
-  - pkg:pypi/wrapt?source=compressed-mapping
+  - pkg:pypi/wrapt?source=hash-mapping
   run_exports: {}
   size: 117625
   timestamp: 1785422127987
@@ -5737,7 +5737,7 @@ packages:
   license: BSD-3-Clause
   license_family: BSD
   purls:
-  - pkg:pypi/click?source=compressed-mapping
+  - pkg:pypi/click?source=hash-mapping
   run_exports: {}
   size: 107155
   timestamp: 1783085363526
@@ -7588,7 +7588,7 @@ packages:
   license: MIT
   license_family: MIT
   purls:
-  - pkg:pypi/setuptools?source=compressed-mapping
+  - pkg:pypi/setuptools?source=hash-mapping
   run_exports: {}
   size: 642081
   timestamp: 1783619174976
@@ -7746,7 +7746,7 @@ packages:
   license: MIT
   license_family: MIT
   purls:
-  - pkg:pypi/tomlkit?source=compressed-mapping
+  - pkg:pypi/tomlkit?source=hash-mapping
   run_exports: {}
   size: 49054
   timestamp: 1784287707171
@@ -8036,13 +8036,6 @@ packages:
   run_exports: {}
   size: 22612
   timestamp: 1783114107455
-- pypi: https://files.pythonhosted.org/packages/20/ea/5abe742c9d5f60aeb249f02c3a160b8bb72476e695ecb0bbb9230df5e3c7/gersemi-0.28.0-cp313-cp313-manylinux_2_28_x86_64.whl
-  name: gersemi
-  version: 0.28.0
-  sha256: 61b7d977680ff649bebeee29dfd3913b3dfa6a748c5a4e6b8bc70a4375a7f430
-  requires_dist:
-  - pyyaml>=5,<7
-  requires_python: '>=3.8'
 - pypi: https://files.pythonhosted.org/packages/66/65/08d3a5039b565231c501b31d1a973d4222e9803c03b2c31a9c08bdec3e30/cpplint-2.0.2-py3-none-any.whl
   name: cpplint
   version: 2.0.2
@@ -8071,3 +8064,10 @@ packages:
   version: 0.10.0.20260508
   sha256: b1e1a2d0456fbd655a71690b09a7aaeffdf2978d32049184ea436492aa51d20a
   requires_python: '>=3.10'
+- pypi: https://files.pythonhosted.org/packages/ec/55/410b6c2c8fa55761bcdeb844a8d0937ed20e4afc9e70130f18412e4a8f6d/gersemi-0.28.1-cp313-cp313-manylinux_2_28_x86_64.whl
+  name: gersemi
+  version: 0.28.1
+  sha256: 349c1e057d79d1ca9c6cca687799c2dfa29717c0cb1bde9c8b1329cfba5f59aa
+  requires_dist:
+  - pyyaml>=5,<7
+  requires_python: '>=3.8'
