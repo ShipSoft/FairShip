@@ -6,6 +6,8 @@ import glob
 import os
 import sys
 import uuid
+import json
+from datetime import datetime
 from argparse import ArgumentParser
 from array import array
 from typing import cast
@@ -1142,6 +1144,44 @@ if options.run_number is not None:
         else:
             print("WARNING: FileHeader not found in simulation output; skipped FileHeader RunID update")
 
+print("[INFO]: Saving FileSummary")
+
+
+def mergeFileSummary(inFiles : list) -> dict:
+    """
+    Make a file summary for the output.
+    Keeps a list of the input files so the the total
+    provenance of the events can be traced back to the sim files.
+    """
+
+    mergedFSR = {"PoT" : 0,
+                 "EnergyCut" : [],
+                 "prodSite" : [],
+                 "inputFiles" : [],
+                 "PoTperFile" : []}
+    for _f in inFiles:
+        with ROOT.TFile.Open(_f, "READ") as _of:
+            key_names = [_k.GetName() for _k in _of.GetListOfKeys()]
+            mergedFSR["inputFiles"].append(_f)
+            if "FileSummary" in key_names:
+                fsr = json.loads(str(_of.Get("FileSummary")))
+                mergedFSR["PoT"] += fsr["PoT"]
+                mergedFSR["EnergyCut"].append(fsr["EnergyCut"])
+                mergedFSR["prodSite"].append(fsr["prodSite"])
+                mergedFSR["PoTperFile"].append(fsr["PoT"])
+            else:
+                print(f"[WARNING] No FileSummary in {_f}")
+
+    mergedFSR["EnergyCut"] = list(set(mergedFSR["EnergyCut"])) # Just get unique values
+    mergedFSR["prodSite"] = list(set(mergedFSR["prodSite"]))
+    mergedFSR["PoTperFile"] = list(set(mergedFSR["PoTperFile"]))
+    mergedFSR["date"] = datetime.today().strftime('%Y-%m-%d')
+    return mergedFSR
+
+newFileSummary = mergeFileSummary(inputFile)
+with ROOT.TFile.Open(outFile, "UPDATE") as _of:
+    _of.WriteObject(ROOT.TString(json.dumps(newFileSummary)), "FileSummary")
+
 print("=" * 72)
 print("Simulation finished successfully")
 print("=" * 72)
@@ -1175,3 +1215,4 @@ def checkOverlapsWithGeant4() -> None:
     mygMC.ProcessGeantCommand("/geometry/test/recursion_start 0")
     mygMC.ProcessGeantCommand("/geometry/test/recursion_depth 2")
     mygMC.ProcessGeantCommand("/geometry/test/run")
+
