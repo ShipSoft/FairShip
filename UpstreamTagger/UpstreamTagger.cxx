@@ -430,7 +430,6 @@ void UpstreamTagger::ConstructGeometry() {
     UpstreamTagger_plastic->SetLineColor(kGreen);
     vol->AddNode(UpstreamTagger_plastic, 1, new TGeoTranslation(0.0, 0.0, -30));
     AddSensitiveVolume(UpstreamTagger_plastic);
-    std::cout << "geometry constructed" << std::endl;
     // End of tracking station loop
   }
 }
