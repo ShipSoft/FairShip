@@ -1215,4 +1215,3 @@ def checkOverlapsWithGeant4() -> None:
     mygMC.ProcessGeantCommand("/geometry/test/recursion_start 0")
     mygMC.ProcessGeantCommand("/geometry/test/recursion_depth 2")
     mygMC.ProcessGeantCommand("/geometry/test/run")
-
