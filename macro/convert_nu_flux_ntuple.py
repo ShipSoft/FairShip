@@ -125,7 +125,7 @@ for n in range(sTree.GetEntries()):
         entry["px"] = t.GetPx()  # GeV
         entry["py"] = t.GetPy()
         entry["pz"] = t.GetPz()
-        entry["weight"] = 1.0
+        entry["weight"] = t.GetWeight()
         entry["parent_pdg"] = parent_pdg
         entry["parent_px"] = parent_px
         entry["parent_py"] = parent_py
