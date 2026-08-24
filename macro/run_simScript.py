@@ -1153,6 +1153,8 @@ def mergeFileSummary(inFiles : list) -> dict:
     Keeps a list of the input files so the the total
     provenance of the events can be traced back to the sim files.
     """
+    if isinstance(inFiles, str):
+        inFiles = [inFiles]
 
     mergedFSR = {"PoT" : 0,
                  "EnergyCut" : [],
