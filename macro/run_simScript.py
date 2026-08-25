@@ -3,13 +3,13 @@
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
 import glob
+import json
 import os
 import sys
 import uuid
-import json
-from datetime import datetime
 from argparse import ArgumentParser
 from array import array
+from datetime import datetime
 from typing import cast
 
 import geometry_config
@@ -1147,7 +1147,7 @@ if options.run_number is not None:
 print("[INFO]: Saving FileSummary")
 
 
-def mergeFileSummary(inFiles : list) -> dict:
+def mergeFileSummary(inFiles: list) -> dict:
     """
     Make a file summary for the output.
     Keeps a list of the input files so the the total
@@ -1156,11 +1156,7 @@ def mergeFileSummary(inFiles : list) -> dict:
     if isinstance(inFiles, str):
         inFiles = [inFiles]
 
-    mergedFSR = {"PoT" : 0,
-                 "EnergyCut" : [],
-                 "prodSite" : [],
-                 "inputFiles" : [],
-                 "PoTperFile" : []}
+    mergedFSR = {"PoT": 0, "EnergyCut": [], "prodSite": [], "inputFiles": [], "PoTperFile": []}
     for _f in inFiles:
         with ROOT.TFile.Open(_f, "READ") as _of:
             key_names = [_k.GetName() for _k in _of.GetListOfKeys()]
@@ -1174,11 +1170,12 @@ def mergeFileSummary(inFiles : list) -> dict:
             else:
                 print(f"[WARNING] No FileSummary in {_f}")
 
-    mergedFSR["EnergyCut"] = list(set(mergedFSR["EnergyCut"])) # Just get unique values
+    mergedFSR["EnergyCut"] = list(set(mergedFSR["EnergyCut"]))  # Just get unique values
     mergedFSR["prodSite"] = list(set(mergedFSR["prodSite"]))
     mergedFSR["PoTperFile"] = list(set(mergedFSR["PoTperFile"]))
-    mergedFSR["date"] = datetime.today().strftime('%Y-%m-%d')
+    mergedFSR["date"] = datetime.today().strftime("%Y-%m-%d")
     return mergedFSR
+
 
 newFileSummary = mergeFileSummary(inputFile)
 with ROOT.TFile.Open(outFile, "UPDATE") as _of:
