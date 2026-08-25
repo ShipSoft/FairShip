@@ -1,7 +1,5 @@
 var NAVTREEINDEX30 =
 {
-"strawtubes_2LinkDef_8h_source.html":[8,0,15,0],
-"strawtubes_8cxx.html":[8,0,15,1],
 "strawtubes_8cxx_source.html":[8,0,15,1],
 "strawtubes_8h.html":[8,0,15,2],
 "strawtubes_8h_source.html":[8,0,15,2],
@@ -249,5 +247,7 @@ var NAVTREEINDEX30 =
 "vetoContFact_8cxx_source.html":[8,0,19,3],
 "vetoContFact_8h.html":[8,0,19,4],
 "vetoContFact_8h_source.html":[8,0,19,4],
-"vetoHitOnTrack_8cxx.html":[8,0,19,7]
+"vetoHitOnTrack_8cxx.html":[8,0,19,7],
+"vetoHitOnTrack_8cxx_source.html":[8,0,19,7],
+"vetoHitOnTrack_8h.html":[8,0,19,8]
 };

@@ -1421,29 +1421,22 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  420</span>    }</div>
 <div class="line"><span class="lineno">  421</span>    <span class="comment">// --&gt; Set storage flag</span></div>
 <div class="line"><span class="lineno">  422</span>    <a class="code hl_variable" href="classShipStack.html#ab18fb7a40bf033b54c7617e2db098fe1">fStoreFlags</a>[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>] = store;</div>
-<div class="line"><span class="lineno">  423</span>    <span class="comment">// special case for Ship generators, want to keep all original particles</span></div>
-<div class="line"><span class="lineno">  424</span>    <span class="comment">// with their mother daughter relationship independent if tracked or not.</span></div>
-<div class="line"><span class="lineno">  425</span>    <span class="comment">// apply a dirty trick and use second mother to identify original generator</span></div>
-<div class="line"><span class="lineno">  426</span>    <span class="comment">// particles. doesn&#39;t work, always true: Int_t iMother2 =</span></div>
-<div class="line"><span class="lineno">  427</span>    <span class="comment">// GetParticle(i)-&gt;GetMother(1); maybe should set Mother2 to -1 in the</span></div>
-<div class="line"><span class="lineno">  428</span>    <span class="comment">// generator if (iMother == iMother2) {fStoreMap[i] = kTRUE;}</span></div>
-<div class="line"><span class="lineno">  429</span>  }</div>
-<div class="line"><span class="lineno">  430</span>  <span class="comment">// --&gt; If flag is set, flag recursively mothers of selected tracks.</span></div>
-<div class="line"><span class="lineno">  431</span>  <span class="comment">// A mother always has a smaller index than its daughters and every walk</span></div>
-<div class="line"><span class="lineno">  432</span>  <span class="comment">// continues to the root, so an already-flagged mother implies its whole</span></div>
-<div class="line"><span class="lineno">  433</span>  <span class="comment">// ancestor chain is flagged and the walk can stop early.</span></div>
-<div class="line"><span class="lineno">  434</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classShipStack.html#a10dc798825c1549b7937789e32ce776b">fStoreMothers</a>) {</div>
-<div class="line"><span class="lineno">  435</span>    <span class="keywordflow">for</span> (Int_t i = 0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt; <a class="code hl_variable" href="classShipStack.html#ac346e2679c303d3e053ff95fb4d01bdd">fNParticles</a>; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>++) {</div>
-<div class="line"><span class="lineno">  436</span>      <span class="keywordflow">if</span> (<a class="code hl_variable" href="classShipStack.html#ab18fb7a40bf033b54c7617e2db098fe1">fStoreFlags</a>[i]) {</div>
-<div class="line"><span class="lineno">  437</span>        Int_t iMother = <a class="code hl_function" href="classShipStack.html#a77a5bbe99886c6fa1c89e922e70aaf91">GetParticle</a>(i)-&gt;GetMother(0);</div>
-<div class="line"><span class="lineno">  438</span>        <span class="keywordflow">while</span> (iMother &gt;= 0 &amp;&amp; !<a class="code hl_variable" href="classShipStack.html#ab18fb7a40bf033b54c7617e2db098fe1">fStoreFlags</a>[iMother]) {</div>
-<div class="line"><span class="lineno">  439</span>          <a class="code hl_variable" href="classShipStack.html#ab18fb7a40bf033b54c7617e2db098fe1">fStoreFlags</a>[iMother] = kTRUE;</div>
-<div class="line"><span class="lineno">  440</span>          iMother = <a class="code hl_function" href="classShipStack.html#a77a5bbe99886c6fa1c89e922e70aaf91">GetParticle</a>(iMother)-&gt;GetMother(0);</div>
-<div class="line"><span class="lineno">  441</span>        }</div>
-<div class="line"><span class="lineno">  442</span>      }</div>
-<div class="line"><span class="lineno">  443</span>    }</div>
-<div class="line"><span class="lineno">  444</span>  }</div>
-<div class="line"><span class="lineno">  445</span>}</div>
+<div class="line"><span class="lineno">  423</span>  }</div>
+<div class="line"><span class="lineno">  424</span>  <span class="comment">// --&gt; If flag is set, flag recursively mothers of selected tracks.</span></div>
+<div class="line"><span class="lineno">  425</span>  <span class="comment">// An already-flagged mother implies its whole ancestor chain is flagged,</span></div>
+<div class="line"><span class="lineno">  426</span>  <span class="comment">// so the walk can stop there.</span></div>
+<div class="line"><span class="lineno">  427</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classShipStack.html#a10dc798825c1549b7937789e32ce776b">fStoreMothers</a>) {</div>
+<div class="line"><span class="lineno">  428</span>    <span class="keywordflow">for</span> (Int_t i = 0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt; <a class="code hl_variable" href="classShipStack.html#ac346e2679c303d3e053ff95fb4d01bdd">fNParticles</a>; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>++) {</div>
+<div class="line"><span class="lineno">  429</span>      <span class="keywordflow">if</span> (<a class="code hl_variable" href="classShipStack.html#ab18fb7a40bf033b54c7617e2db098fe1">fStoreFlags</a>[i]) {</div>
+<div class="line"><span class="lineno">  430</span>        Int_t iMother = <a class="code hl_function" href="classShipStack.html#a77a5bbe99886c6fa1c89e922e70aaf91">GetParticle</a>(i)-&gt;GetMother(0);</div>
+<div class="line"><span class="lineno">  431</span>        <span class="keywordflow">while</span> (iMother &gt;= 0 &amp;&amp; !<a class="code hl_variable" href="classShipStack.html#ab18fb7a40bf033b54c7617e2db098fe1">fStoreFlags</a>[iMother]) {</div>
+<div class="line"><span class="lineno">  432</span>          <a class="code hl_variable" href="classShipStack.html#ab18fb7a40bf033b54c7617e2db098fe1">fStoreFlags</a>[iMother] = kTRUE;</div>
+<div class="line"><span class="lineno">  433</span>          iMother = <a class="code hl_function" href="classShipStack.html#a77a5bbe99886c6fa1c89e922e70aaf91">GetParticle</a>(iMother)-&gt;GetMother(0);</div>
+<div class="line"><span class="lineno">  434</span>        }</div>
+<div class="line"><span class="lineno">  435</span>      }</div>
+<div class="line"><span class="lineno">  436</span>    }</div>
+<div class="line"><span class="lineno">  437</span>  }</div>
+<div class="line"><span class="lineno">  438</span>}</div>
 <div class="ttc" id="anamespaceShipAna_html_aa4bf87f4d17f9d38b1d8f4d009bb54b3"><div class="ttname"><a href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">ShipAna.i</a></div><div class="ttdeci">int i</div><div class="ttdef"><b>Definition</b> <a href="ShipAna_8py_source.html#l00102">ShipAna.py:102</a></div></div>
 <div class="ttc" id="anamespacehnl_html_a8da545ce4a1f3fdbb0c5eee151176fec"><div class="ttname"><a href="namespacehnl.html#a8da545ce4a1f3fdbb0c5eee151176fec">hnl.mass</a></div><div class="ttdeci">mass(str|None particle)</div><div class="ttdef"><b>Definition</b> <a href="hnl_8py_source.html#l00054">hnl.py:54</a></div></div>
 <div class="ttc" id="anamespacemakeDecay_html_a9c90b95001a4909a6c5383da1b3066d9"><div class="ttname"><a href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">makeDecay.p</a></div><div class="ttdeci">p</div><div class="ttdef"><b>Definition</b> <a href="makeDecay_8py_source.html#l00092">makeDecay.py:92</a></div></div>

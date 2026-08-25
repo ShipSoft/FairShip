@@ -1,6 +1,5 @@
 var NAVTREEINDEX2 =
 {
-"ana__ShipMuon_8py.html#a52725c8bc8e77006c51ea21a7ae18639":[8,0,8,0,37],
 "ana__ShipMuon_8py.html#a550db34c5b3b15b947bc1694e7b4ea0e":[8,0,8,0,68],
 "ana__ShipMuon_8py.html#a572d7a276be83768b914021ab9f41902":[8,0,8,0,76],
 "ana__ShipMuon_8py.html#a5c5d59df831bdc579a9ea9a98e40bb67":[8,0,8,0,4],
@@ -82,8 +81,8 @@ var NAVTREEINDEX2 =
 "check__overlaps_8py.html":[8,0,10,1,2],
 "check__overlaps_8py.html#aecb918f10d47827def2f63fcb2a67b27":[8,0,10,1,2,0],
 "check__overlaps_8py_source.html":[8,0,10,1,2],
-"classBaseDetector_1_1BaseDetector.html":[7,0,0,0],
 "classBaseDetector_1_1BaseDetector.html":[6,0,6,0],
+"classBaseDetector_1_1BaseDetector.html":[7,0,0,0],
 "classBaseDetector_1_1BaseDetector.html#a0386332312b99247b8a098b60e5bce71":[6,0,6,0,2],
 "classBaseDetector_1_1BaseDetector.html#a0386332312b99247b8a098b60e5bce71":[7,0,0,0,2],
 "classBaseDetector_1_1BaseDetector.html#a146858d034cb57ffd0f81f4e025f9492":[6,0,6,0,6],
@@ -249,5 +248,6 @@ var NAVTREEINDEX2 =
 "classFixedTargetGenerator.html#a0569be4e0f2547af009df1212b5f1c75":[7,0,30,1],
 "classFixedTargetGenerator.html#a07b7f7762d6efdf651d166d15361dd83":[7,0,30,41],
 "classFixedTargetGenerator.html#a0e8e528cc53ba28b6aa7560f471330ae":[7,0,30,89],
-"classFixedTargetGenerator.html#a10ef2742493f673a93aea5cd8651ee2a":[7,0,30,37]
+"classFixedTargetGenerator.html#a10ef2742493f673a93aea5cd8651ee2a":[7,0,30,37],
+"classFixedTargetGenerator.html#a141c3573dcad3a144cc8581234cf457d":[7,0,30,9]
 };

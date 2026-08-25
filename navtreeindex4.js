@@ -1,6 +1,5 @@
 var NAVTREEINDEX4 =
 {
-"classMTCDetector.html#a1de28d14f79b53e388a3f6b9d8b77fce":[7,0,35,13],
 "classMTCDetector.html#a21834a83e74e51346e8eac19a134ee24":[7,0,35,12],
 "classMTCDetector.html#a2243e850816f863deeac5b169997c225":[7,0,35,15],
 "classMTCDetector.html#a27a41a12a0a5a9a57d0f38bec767d04f":[7,0,35,9],
@@ -249,5 +248,6 @@ var NAVTREEINDEX4 =
 "classPythia8Generator.html#a382c56ee9468aba19b598295298ddf6d":[7,0,44,20],
 "classPythia8Generator.html#a3f7b61dbce42df88afc6859845bc0540":[7,0,44,18],
 "classPythia8Generator.html#a429338489bf1d8c0e3af6d95b8d74072":[7,0,44,11],
-"classPythia8Generator.html#a4293febece9d96d1df5abd7742647d98":[7,0,44,45]
+"classPythia8Generator.html#a4293febece9d96d1df5abd7742647d98":[7,0,44,45],
+"classPythia8Generator.html#a44fffa49ac9b7a1d567da2260cb93e6b":[7,0,44,19]
 };

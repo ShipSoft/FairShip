@@ -214,7 +214,7 @@ var searchData=
   ['sipmmapping_211',['SiPMmapping',['../classMTCDetector.html#a30eaee4d63aec259b43bccd07bc8797c',1,'MTCDetector']]],
   ['sipmoverlap_212',['SiPMOverlap',['../classMTCDetector.html#af9dc50dcea3a6a580ab5345a6e373f50',1,'MTCDetector']]],
   ['skipneutrinos_213',['SkipNeutrinos',['../classexitHadronAbsorber.html#aac6d18966f75cfab911e6e80e22346f3',1,'exitHadronAbsorber']]],
-  ['smearhits_214',['smearHits',['../classstrawtubesDetector_1_1strawtubesDetector.html#a074db20c4040676b2df1568b1ed606a8',1,'strawtubesDetector::strawtubesDetector']]],
+  ['smearhits_214',['smearHits',['../classstrawtubesDetector_1_1strawtubesDetector.html#a97a5c17d4ec976383a2ec7c7cbbb9ae8',1,'strawtubesDetector::strawtubesDetector']]],
   ['speedup_215',['speedUp',['../namespaceeventDisplay.html#abd1f507a84e17c7a71f425a9db467bc5',1,'eventDisplay']]],
   ['splitcal_216',['splitcal',['../classsplitcal.html#acb91ab24d2a8d81c6549a7aaa3f568d2',1,'splitcal::splitcal(const splitcal &amp;)=delete'],['../classsplitcal.html#ab0893df65b7be1fffb895510311c66ba',1,'splitcal::splitcal()'],['../classsplitcal.html#a42d6f9f3e899804d2fdf35e237ded7d9',1,'splitcal::splitcal(const char *Name, Bool_t Active)']]],
   ['splitcalcluster_217',['splitcalcluster',['../classsplitcalCluster.html#a799502f6e7b07473199f1432a1be77f9',1,'splitcalCluster::splitcalCluster(const splitcalCluster &amp;cluster)=default'],['../classsplitcalCluster.html#a390c6a4ecd9984a299222ec893ff4d08',1,'splitcalCluster::splitcalCluster()']]],

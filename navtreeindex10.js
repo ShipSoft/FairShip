@@ -1,6 +1,5 @@
 var NAVTREEINDEX10 =
 {
-"classeventDisplay_1_1DrawTracks.html#aef8affef76b4a10f839f6bafda3cfc83":[6,0,29,0,13],
 "classeventDisplay_1_1DrawVetoDigi.html":[6,0,29,1],
 "classeventDisplay_1_1DrawVetoDigi.html":[7,0,2,1],
 "classeventDisplay_1_1DrawVetoDigi.html#a5a19389d4a63e92bdc7880e2dc77b1b9":[7,0,2,1,1],
@@ -249,5 +248,6 @@ var NAVTREEINDEX10 =
 "classhnl_1_1HNLbranchings.html#a8b66ab769a15c0d3730f621fb6be268c":[6,0,42,3,27],
 "classhnl_1_1HNLbranchings.html#a8b66ab769a15c0d3730f621fb6be268c":[7,0,5,3,27],
 "classhnl_1_1HNLbranchings.html#a91c7367c0ac1a33120c04abdefc749b2":[7,0,5,3,20],
-"classhnl_1_1HNLbranchings.html#a91c7367c0ac1a33120c04abdefc749b2":[6,0,42,3,20]
+"classhnl_1_1HNLbranchings.html#a91c7367c0ac1a33120c04abdefc749b2":[6,0,42,3,20],
+"classhnl_1_1HNLbranchings.html#a9dcc74b231abfd622f6a56afc2c260b7":[6,0,42,3,16]
 };

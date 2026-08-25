@@ -619,7 +619,7 @@ Private Attributes</h2></td></tr>
 <div class="ttc" id="aclassShipBFieldMap_html_a5b2d2824b14015b479bb7ff4dab0d2ae"><div class="ttname"><a href="classShipBFieldMap.html#a5b2d2824b14015b479bb7ff4dab0d2ae">ShipBFieldMap::theta_</a></div><div class="ttdeci">Float_t theta_</div><div class="ttdoc">The second Euler rotation angle about the new x axis.</div><div class="ttdef"><b>Definition</b> <a href="ShipBFieldMap_8h_source.html#l00444">ShipBFieldMap.h:444</a></div></div>
 <div class="ttc" id="aclassShipBFieldMap_html_a5cf3d9cf22af3b789ec42a2f475bf241"><div class="ttname"><a href="classShipBFieldMap.html#a5cf3d9cf22af3b789ec42a2f475bf241">ShipBFieldMap::isCopy_</a></div><div class="ttdeci">Bool_t isCopy_</div><div class="ttdef"><b>Definition</b> <a href="ShipBFieldMap_8h_source.html#l00381">ShipBFieldMap.h:381</a></div></div>
 <div class="ttc" id="aclassShipBFieldMap_html_a686affa4758dc834602d7274f111fa76"><div class="ttname"><a href="classShipBFieldMap.html#a686affa4758dc834602d7274f111fa76">ShipBFieldMap::xMin_</a></div><div class="ttdeci">Float_t xMin_</div><div class="ttdoc">The minimum value of x for the map.</div><div class="ttdef"><b>Definition</b> <a href="ShipBFieldMap_8h_source.html#l00396">ShipBFieldMap.h:396</a></div></div>
-<div class="ttc" id="aclassShipBFieldMap_html_a71e32d01e93ebca9882ad005615567cd"><div class="ttname"><a href="classShipBFieldMap.html#a71e32d01e93ebca9882ad005615567cd">ShipBFieldMap::initialise</a></div><div class="ttdeci">void initialise()</div><div class="ttdoc">Initialisation.</div><div class="ttdef"><b>Definition</b> <a href="ShipBFieldMap_8cxx_source.html#l00236">ShipBFieldMap.cxx:236</a></div></div>
+<div class="ttc" id="aclassShipBFieldMap_html_a71e32d01e93ebca9882ad005615567cd"><div class="ttname"><a href="classShipBFieldMap.html#a71e32d01e93ebca9882ad005615567cd">ShipBFieldMap::initialise</a></div><div class="ttdeci">void initialise()</div><div class="ttdoc">Initialisation.</div><div class="ttdef"><b>Definition</b> <a href="ShipBFieldMap_8cxx_source.html#l00234">ShipBFieldMap.cxx:234</a></div></div>
 <div class="ttc" id="aclassShipBFieldMap_html_a9d28380f1bd47c465a388a452419661c"><div class="ttname"><a href="classShipBFieldMap.html#a9d28380f1bd47c465a388a452419661c">ShipBFieldMap::Nx_</a></div><div class="ttdeci">Int_t Nx_</div><div class="ttdoc">The number of bins along x.</div><div class="ttdef"><b>Definition</b> <a href="ShipBFieldMap_8h_source.html#l00384">ShipBFieldMap.h:384</a></div></div>
 <div class="ttc" id="aclassShipBFieldMap_html_aabcbe3429ca9391b96a87e131d6affdc"><div class="ttname"><a href="classShipBFieldMap.html#aabcbe3429ca9391b96a87e131d6affdc">ShipBFieldMap::xRange_</a></div><div class="ttdeci">Float_t xRange_</div><div class="ttdoc">The coordinate range along x.</div><div class="ttdef"><b>Definition</b> <a href="ShipBFieldMap_8h_source.html#l00405">ShipBFieldMap.h:405</a></div></div>
 <div class="ttc" id="aclassShipBFieldMap_html_aad6dc9cbfb40bb6f1ef3dd7da657be91"><div class="ttname"><a href="classShipBFieldMap.html#aad6dc9cbfb40bb6f1ef3dd7da657be91">ShipBFieldMap::yOffset_</a></div><div class="ttdeci">Float_t yOffset_</div><div class="ttdoc">The y value of the positional offset for the map.</div><div class="ttdef"><b>Definition</b> <a href="ShipBFieldMap_8h_source.html#l00435">ShipBFieldMap.h:435</a></div></div>
@@ -935,101 +935,99 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  142</span>  Float_t BzSign = 1;</div>
 <div class="line"><span class="lineno">  143</span> </div>
 <div class="line"><span class="lineno">  144</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classShipBFieldMap.html#aeab0b9e6d133106e4ae70efec21b32c5">isSymmetric_</a>) {</div>
-<div class="line"><span class="lineno">  145</span>    <span class="comment">// The field map coordinates only contain x &gt; 0 and y &gt; 0, i.e. we</span></div>
-<div class="line"><span class="lineno">  146</span>    <span class="comment">// are using x-y quadrant symmetry. If the local x or y coordinates</span></div>
-<div class="line"><span class="lineno">  147</span>    <span class="comment">// are negative we need to change their sign and keep track of the</span></div>
-<div class="line"><span class="lineno">  148</span>    <span class="comment">// adjusted sign of Bx which we use as a multiplication factor at the end</span></div>
-<div class="line"><span class="lineno">  149</span>    <span class="keywordflow">if</span> (x &lt; 0.0) {</div>
-<div class="line"><span class="lineno">  150</span>      <a class="code hl_variable" href="namespacerun__fixedTarget.html#a68f8e54ebe34ed88a1aff4505c32be7c">x</a> = -<a class="code hl_variable" href="namespacerun__fixedTarget.html#a68f8e54ebe34ed88a1aff4505c32be7c">x</a>;</div>
-<div class="line"><span class="lineno">  151</span>      BxSign *= -1.0;</div>
-<div class="line"><span class="lineno">  152</span>    }</div>
-<div class="line"><span class="lineno">  153</span> </div>
-<div class="line"><span class="lineno">  154</span>    <span class="keywordflow">if</span> (y &lt; 0.0) {</div>
-<div class="line"><span class="lineno">  155</span>      <a class="code hl_variable" href="namespacerun__tracking__scan.html#a60149f5e9c7fe53ba27d5ee50faa64de">y</a> = -<a class="code hl_variable" href="namespacerun__tracking__scan.html#a60149f5e9c7fe53ba27d5ee50faa64de">y</a>;</div>
-<div class="line"><span class="lineno">  156</span>      BxSign *= -1.0;</div>
-<div class="line"><span class="lineno">  157</span>      BzSign = -1.0;</div>
-<div class="line"><span class="lineno">  158</span>    }</div>
-<div class="line"><span class="lineno">  159</span>  }</div>
-<div class="line"><span class="lineno">  160</span> </div>
-<div class="line"><span class="lineno">  161</span>  <span class="comment">// Initialise the B field components to zero</span></div>
-<div class="line"><span class="lineno">  162</span>  B[0] = 0.0;</div>
-<div class="line"><span class="lineno">  163</span>  B[1] = 0.0;</div>
-<div class="line"><span class="lineno">  164</span>  B[2] = 0.0;</div>
-<div class="line"><span class="lineno">  165</span> </div>
-<div class="line"><span class="lineno">  166</span>  <span class="comment">// First check to see if we are inside the field map range</span></div>
-<div class="line"><span class="lineno">  167</span>  Bool_t inside = this-&gt;<a class="code hl_function" href="classShipBFieldMap.html#ac066904278e00e14789f6287e6422f18">insideRange</a>(x, y, z);</div>
-<div class="line"><span class="lineno">  168</span>  <span class="keywordflow">if</span> (inside == kFALSE) {</div>
-<div class="line"><span class="lineno">  169</span>    <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno">  170</span>  }</div>
-<div class="line"><span class="lineno">  171</span> </div>
-<div class="line"><span class="lineno">  172</span>  <span class="comment">// Find the neighbouring bins for the given point</span></div>
-<div class="line"><span class="lineno">  173</span>  <a class="code hl_typedef" href="classShipBFieldMap.html#a1f037b96866ce64297220a5065b24aa6">binPair</a> xBinInfo = this-&gt;<a class="code hl_function" href="classShipBFieldMap.html#abda94682051dbd6af5ef32a87582f541">getBinInfo</a>(x, <a class="code hl_enumvalue" href="classShipBFieldMap.html#a861764baf5e15176bc69c9942c2a9c65ad5cd59e6ead2d6f825344e8cbf5bc68e">ShipBFieldMap::xAxis</a>);</div>
-<div class="line"><span class="lineno">  174</span>  <a class="code hl_typedef" href="classShipBFieldMap.html#a1f037b96866ce64297220a5065b24aa6">binPair</a> yBinInfo = this-&gt;<a class="code hl_function" href="classShipBFieldMap.html#abda94682051dbd6af5ef32a87582f541">getBinInfo</a>(y, <a class="code hl_enumvalue" href="classShipBFieldMap.html#a861764baf5e15176bc69c9942c2a9c65a2a92b59da7fcc9aa9e15dcd556326087">ShipBFieldMap::yAxis</a>);</div>
-<div class="line"><span class="lineno">  175</span>  <a class="code hl_typedef" href="classShipBFieldMap.html#a1f037b96866ce64297220a5065b24aa6">binPair</a> zBinInfo = this-&gt;<a class="code hl_function" href="classShipBFieldMap.html#abda94682051dbd6af5ef32a87582f541">getBinInfo</a>(z, <a class="code hl_enumvalue" href="classShipBFieldMap.html#a861764baf5e15176bc69c9942c2a9c65a8723e07c5d5678d97a2107bae653579b">ShipBFieldMap::zAxis</a>);</div>
-<div class="line"><span class="lineno">  176</span> </div>
-<div class="line"><span class="lineno">  177</span>  Int_t iX = xBinInfo.first;</div>
-<div class="line"><span class="lineno">  178</span>  Int_t iY = yBinInfo.first;</div>
-<div class="line"><span class="lineno">  179</span>  Int_t iZ = zBinInfo.first;</div>
-<div class="line"><span class="lineno">  180</span> </div>
-<div class="line"><span class="lineno">  181</span>  <span class="comment">// Check that the bins are valid</span></div>
-<div class="line"><span class="lineno">  182</span>  <span class="keywordflow">if</span> (iX == -1 || iY == -1 || iZ == -1) {</div>
-<div class="line"><span class="lineno">  183</span>    <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno">  184</span>  }</div>
-<div class="line"><span class="lineno">  185</span> </div>
-<div class="line"><span class="lineno">  186</span>  <span class="comment">// Get the various neighbouring bin entries</span></div>
-<div class="line"><span class="lineno">  187</span>  Int_t iX1(iX + 1);</div>
-<div class="line"><span class="lineno">  188</span>  Int_t iY1(iY + 1);</div>
-<div class="line"><span class="lineno">  189</span>  Int_t iZ1(iZ + 1);</div>
-<div class="line"><span class="lineno">  190</span> </div>
-<div class="line"><span class="lineno">  191</span>  <span class="keyword">const</span> Int_t binA = this-&gt;<a class="code hl_function" href="classShipBFieldMap.html#ad89fd4e71cf67011e40940c6293a2ffe">getMapBin</a>(iX, iY, iZ);</div>
-<div class="line"><span class="lineno">  192</span>  <span class="keyword">const</span> Int_t binB = this-&gt;<a class="code hl_function" href="classShipBFieldMap.html#ad89fd4e71cf67011e40940c6293a2ffe">getMapBin</a>(iX1, iY, iZ);</div>
-<div class="line"><span class="lineno">  193</span>  <span class="keyword">const</span> Int_t binC = this-&gt;<a class="code hl_function" href="classShipBFieldMap.html#ad89fd4e71cf67011e40940c6293a2ffe">getMapBin</a>(iX, iY1, iZ);</div>
-<div class="line"><span class="lineno">  194</span>  <span class="keyword">const</span> Int_t binD = this-&gt;<a class="code hl_function" href="classShipBFieldMap.html#ad89fd4e71cf67011e40940c6293a2ffe">getMapBin</a>(iX1, iY1, iZ);</div>
-<div class="line"><span class="lineno">  195</span>  <span class="keyword">const</span> Int_t binE = this-&gt;<a class="code hl_function" href="classShipBFieldMap.html#ad89fd4e71cf67011e40940c6293a2ffe">getMapBin</a>(iX, iY, iZ1);</div>
-<div class="line"><span class="lineno">  196</span>  <span class="keyword">const</span> Int_t binF = this-&gt;<a class="code hl_function" href="classShipBFieldMap.html#ad89fd4e71cf67011e40940c6293a2ffe">getMapBin</a>(iX1, iY, iZ1);</div>
-<div class="line"><span class="lineno">  197</span>  <span class="keyword">const</span> Int_t binG = this-&gt;<a class="code hl_function" href="classShipBFieldMap.html#ad89fd4e71cf67011e40940c6293a2ffe">getMapBin</a>(iX, iY1, iZ1);</div>
-<div class="line"><span class="lineno">  198</span>  <span class="keyword">const</span> Int_t binH = this-&gt;<a class="code hl_function" href="classShipBFieldMap.html#ad89fd4e71cf67011e40940c6293a2ffe">getMapBin</a>(iX1, iY1, iZ1);</div>
-<div class="line"><span class="lineno">  199</span> </div>
-<div class="line"><span class="lineno">  200</span>  <span class="comment">// Retrieve the fractional bin distances and their complements</span></div>
-<div class="line"><span class="lineno">  201</span>  <span class="keyword">const</span> Float_t xFrac = xBinInfo.second;</div>
-<div class="line"><span class="lineno">  202</span>  <span class="keyword">const</span> Float_t yFrac = yBinInfo.second;</div>
-<div class="line"><span class="lineno">  203</span>  <span class="keyword">const</span> Float_t zFrac = zBinInfo.second;</div>
-<div class="line"><span class="lineno">  204</span>  <span class="keyword">const</span> Float_t xFrac1 = 1.0 - xFrac;</div>
-<div class="line"><span class="lineno">  205</span>  <span class="keyword">const</span> Float_t yFrac1 = 1.0 - yFrac;</div>
-<div class="line"><span class="lineno">  206</span>  <span class="keyword">const</span> Float_t zFrac1 = 1.0 - zFrac;</div>
-<div class="line"><span class="lineno">  207</span> </div>
-<div class="line"><span class="lineno">  208</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classShipBFieldMap.html#a40d2bc90d23707faac34eba21b77c5dd">fieldMap_</a>) {</div>
-<div class="line"><span class="lineno">  209</span>    <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno">  210</span>  }</div>
-<div class="line"><span class="lineno">  211</span> </div>
-<div class="line"><span class="lineno">  212</span>  <span class="comment">// Fetch each of the eight corner triples once and interpolate all three</span></div>
-<div class="line"><span class="lineno">  213</span>  <span class="comment">// field components in a single pass (trilinear interpolation), then scale</span></div>
-<div class="line"><span class="lineno">  214</span>  <span class="comment">// with the appropriate multiplication factor (default = 1.0).</span></div>
-<div class="line"><span class="lineno">  215</span>  <span class="keyword">const</span> <a class="code hl_typedef" href="classShipBFieldMap.html#ac09386960df586f494427ede649eae7a">floatArray</a>&amp; fm = *<a class="code hl_variable" href="classShipBFieldMap.html#a40d2bc90d23707faac34eba21b77c5dd">fieldMap_</a>;</div>
-<div class="line"><span class="lineno">  216</span>  <span class="keyword">const</span> std::array&lt;Float_t, 3&gt;&amp; cA = fm[binA];</div>
-<div class="line"><span class="lineno">  217</span>  <span class="keyword">const</span> std::array&lt;Float_t, 3&gt;&amp; cB = fm[binB];</div>
-<div class="line"><span class="lineno">  218</span>  <span class="keyword">const</span> std::array&lt;Float_t, 3&gt;&amp; cC = fm[binC];</div>
-<div class="line"><span class="lineno">  219</span>  <span class="keyword">const</span> std::array&lt;Float_t, 3&gt;&amp; cD = fm[binD];</div>
-<div class="line"><span class="lineno">  220</span>  <span class="keyword">const</span> std::array&lt;Float_t, 3&gt;&amp; cE = fm[binE];</div>
-<div class="line"><span class="lineno">  221</span>  <span class="keyword">const</span> std::array&lt;Float_t, 3&gt;&amp; cF = fm[binF];</div>
-<div class="line"><span class="lineno">  222</span>  <span class="keyword">const</span> std::array&lt;Float_t, 3&gt;&amp; cG = fm[binG];</div>
-<div class="line"><span class="lineno">  223</span>  <span class="keyword">const</span> std::array&lt;Float_t, 3&gt;&amp; cH = fm[binH];</div>
-<div class="line"><span class="lineno">  224</span> </div>
-<div class="line"><span class="lineno">  225</span>  Float_t Bc[3];</div>
-<div class="line"><span class="lineno">  226</span>  <span class="keywordflow">for</span> (Int_t i = 0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt; 3; ++<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>) {</div>
-<div class="line"><span class="lineno">  227</span>    Bc[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>] = <a class="code hl_function" href="classShipBFieldMap.html#a15b32eb7ff244e1b86eb409db3787cb0">triLinearInterp</a>(cA[i], cB[i], cC[i], cD[i], cE[i], cF[i], cG[i],</div>
-<div class="line"><span class="lineno">  228</span>                            cH[i], xFrac, xFrac1, yFrac, yFrac1, zFrac, zFrac1);</div>
-<div class="line"><span class="lineno">  229</span>  }</div>
-<div class="line"><span class="lineno">  230</span> </div>
-<div class="line"><span class="lineno">  231</span>  B[0] = Bc[0] * <a class="code hl_variable" href="classShipBFieldMap.html#aaff1f8dc28c0bf4b9d9ba2960f454608">scale_</a> * BxSign;</div>
-<div class="line"><span class="lineno">  232</span>  B[1] = Bc[1] * <a class="code hl_variable" href="classShipBFieldMap.html#aaff1f8dc28c0bf4b9d9ba2960f454608">scale_</a>;</div>
-<div class="line"><span class="lineno">  233</span>  B[2] = Bc[2] * <a class="code hl_variable" href="classShipBFieldMap.html#aaff1f8dc28c0bf4b9d9ba2960f454608">scale_</a> * BzSign;</div>
-<div class="line"><span class="lineno">  234</span>}</div>
-<div class="ttc" id="aclassShipBFieldMap_html_a15b32eb7ff244e1b86eb409db3787cb0"><div class="ttname"><a href="classShipBFieldMap.html#a15b32eb7ff244e1b86eb409db3787cb0">ShipBFieldMap::triLinearInterp</a></div><div class="ttdeci">static Float_t triLinearInterp(Float_t A, Float_t B, Float_t C, Float_t D, Float_t E, Float_t F, Float_t G, Float_t H, Float_t xFrac, Float_t xFrac1, Float_t yFrac, Float_t yFrac1, Float_t zFrac, Float_t zFrac1)</div><div class="ttdef"><b>Definition</b> <a href="ShipBFieldMap_8cxx_source.html#l00517">ShipBFieldMap.cxx:517</a></div></div>
+<div class="line"><span class="lineno">  145</span>    <span class="comment">// The map stores only the x &gt; 0, y &gt; 0 quadrant; fold negative</span></div>
+<div class="line"><span class="lineno">  146</span>    <span class="comment">// coordinates in and track the induced signs of Bx and Bz.</span></div>
+<div class="line"><span class="lineno">  147</span>    <span class="keywordflow">if</span> (x &lt; 0.0) {</div>
+<div class="line"><span class="lineno">  148</span>      <a class="code hl_variable" href="namespacerun__fixedTarget.html#a68f8e54ebe34ed88a1aff4505c32be7c">x</a> = -<a class="code hl_variable" href="namespacerun__fixedTarget.html#a68f8e54ebe34ed88a1aff4505c32be7c">x</a>;</div>
+<div class="line"><span class="lineno">  149</span>      BxSign *= -1.0;</div>
+<div class="line"><span class="lineno">  150</span>    }</div>
+<div class="line"><span class="lineno">  151</span> </div>
+<div class="line"><span class="lineno">  152</span>    <span class="keywordflow">if</span> (y &lt; 0.0) {</div>
+<div class="line"><span class="lineno">  153</span>      <a class="code hl_variable" href="namespacerun__tracking__scan.html#a60149f5e9c7fe53ba27d5ee50faa64de">y</a> = -<a class="code hl_variable" href="namespacerun__tracking__scan.html#a60149f5e9c7fe53ba27d5ee50faa64de">y</a>;</div>
+<div class="line"><span class="lineno">  154</span>      BxSign *= -1.0;</div>
+<div class="line"><span class="lineno">  155</span>      BzSign = -1.0;</div>
+<div class="line"><span class="lineno">  156</span>    }</div>
+<div class="line"><span class="lineno">  157</span>  }</div>
+<div class="line"><span class="lineno">  158</span> </div>
+<div class="line"><span class="lineno">  159</span>  <span class="comment">// Initialise the B field components to zero</span></div>
+<div class="line"><span class="lineno">  160</span>  B[0] = 0.0;</div>
+<div class="line"><span class="lineno">  161</span>  B[1] = 0.0;</div>
+<div class="line"><span class="lineno">  162</span>  B[2] = 0.0;</div>
+<div class="line"><span class="lineno">  163</span> </div>
+<div class="line"><span class="lineno">  164</span>  <span class="comment">// First check to see if we are inside the field map range</span></div>
+<div class="line"><span class="lineno">  165</span>  Bool_t inside = this-&gt;<a class="code hl_function" href="classShipBFieldMap.html#ac066904278e00e14789f6287e6422f18">insideRange</a>(x, y, z);</div>
+<div class="line"><span class="lineno">  166</span>  <span class="keywordflow">if</span> (inside == kFALSE) {</div>
+<div class="line"><span class="lineno">  167</span>    <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">  168</span>  }</div>
+<div class="line"><span class="lineno">  169</span> </div>
+<div class="line"><span class="lineno">  170</span>  <span class="comment">// Find the neighbouring bins for the given point</span></div>
+<div class="line"><span class="lineno">  171</span>  <a class="code hl_typedef" href="classShipBFieldMap.html#a1f037b96866ce64297220a5065b24aa6">binPair</a> xBinInfo = this-&gt;<a class="code hl_function" href="classShipBFieldMap.html#abda94682051dbd6af5ef32a87582f541">getBinInfo</a>(x, <a class="code hl_enumvalue" href="classShipBFieldMap.html#a861764baf5e15176bc69c9942c2a9c65ad5cd59e6ead2d6f825344e8cbf5bc68e">ShipBFieldMap::xAxis</a>);</div>
+<div class="line"><span class="lineno">  172</span>  <a class="code hl_typedef" href="classShipBFieldMap.html#a1f037b96866ce64297220a5065b24aa6">binPair</a> yBinInfo = this-&gt;<a class="code hl_function" href="classShipBFieldMap.html#abda94682051dbd6af5ef32a87582f541">getBinInfo</a>(y, <a class="code hl_enumvalue" href="classShipBFieldMap.html#a861764baf5e15176bc69c9942c2a9c65a2a92b59da7fcc9aa9e15dcd556326087">ShipBFieldMap::yAxis</a>);</div>
+<div class="line"><span class="lineno">  173</span>  <a class="code hl_typedef" href="classShipBFieldMap.html#a1f037b96866ce64297220a5065b24aa6">binPair</a> zBinInfo = this-&gt;<a class="code hl_function" href="classShipBFieldMap.html#abda94682051dbd6af5ef32a87582f541">getBinInfo</a>(z, <a class="code hl_enumvalue" href="classShipBFieldMap.html#a861764baf5e15176bc69c9942c2a9c65a8723e07c5d5678d97a2107bae653579b">ShipBFieldMap::zAxis</a>);</div>
+<div class="line"><span class="lineno">  174</span> </div>
+<div class="line"><span class="lineno">  175</span>  Int_t iX = xBinInfo.first;</div>
+<div class="line"><span class="lineno">  176</span>  Int_t iY = yBinInfo.first;</div>
+<div class="line"><span class="lineno">  177</span>  Int_t iZ = zBinInfo.first;</div>
+<div class="line"><span class="lineno">  178</span> </div>
+<div class="line"><span class="lineno">  179</span>  <span class="comment">// Check that the bins are valid</span></div>
+<div class="line"><span class="lineno">  180</span>  <span class="keywordflow">if</span> (iX == -1 || iY == -1 || iZ == -1) {</div>
+<div class="line"><span class="lineno">  181</span>    <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">  182</span>  }</div>
+<div class="line"><span class="lineno">  183</span> </div>
+<div class="line"><span class="lineno">  184</span>  <span class="comment">// Get the various neighbouring bin entries</span></div>
+<div class="line"><span class="lineno">  185</span>  Int_t iX1(iX + 1);</div>
+<div class="line"><span class="lineno">  186</span>  Int_t iY1(iY + 1);</div>
+<div class="line"><span class="lineno">  187</span>  Int_t iZ1(iZ + 1);</div>
+<div class="line"><span class="lineno">  188</span> </div>
+<div class="line"><span class="lineno">  189</span>  <span class="keyword">const</span> Int_t binA = this-&gt;<a class="code hl_function" href="classShipBFieldMap.html#ad89fd4e71cf67011e40940c6293a2ffe">getMapBin</a>(iX, iY, iZ);</div>
+<div class="line"><span class="lineno">  190</span>  <span class="keyword">const</span> Int_t binB = this-&gt;<a class="code hl_function" href="classShipBFieldMap.html#ad89fd4e71cf67011e40940c6293a2ffe">getMapBin</a>(iX1, iY, iZ);</div>
+<div class="line"><span class="lineno">  191</span>  <span class="keyword">const</span> Int_t binC = this-&gt;<a class="code hl_function" href="classShipBFieldMap.html#ad89fd4e71cf67011e40940c6293a2ffe">getMapBin</a>(iX, iY1, iZ);</div>
+<div class="line"><span class="lineno">  192</span>  <span class="keyword">const</span> Int_t binD = this-&gt;<a class="code hl_function" href="classShipBFieldMap.html#ad89fd4e71cf67011e40940c6293a2ffe">getMapBin</a>(iX1, iY1, iZ);</div>
+<div class="line"><span class="lineno">  193</span>  <span class="keyword">const</span> Int_t binE = this-&gt;<a class="code hl_function" href="classShipBFieldMap.html#ad89fd4e71cf67011e40940c6293a2ffe">getMapBin</a>(iX, iY, iZ1);</div>
+<div class="line"><span class="lineno">  194</span>  <span class="keyword">const</span> Int_t binF = this-&gt;<a class="code hl_function" href="classShipBFieldMap.html#ad89fd4e71cf67011e40940c6293a2ffe">getMapBin</a>(iX1, iY, iZ1);</div>
+<div class="line"><span class="lineno">  195</span>  <span class="keyword">const</span> Int_t binG = this-&gt;<a class="code hl_function" href="classShipBFieldMap.html#ad89fd4e71cf67011e40940c6293a2ffe">getMapBin</a>(iX, iY1, iZ1);</div>
+<div class="line"><span class="lineno">  196</span>  <span class="keyword">const</span> Int_t binH = this-&gt;<a class="code hl_function" href="classShipBFieldMap.html#ad89fd4e71cf67011e40940c6293a2ffe">getMapBin</a>(iX1, iY1, iZ1);</div>
+<div class="line"><span class="lineno">  197</span> </div>
+<div class="line"><span class="lineno">  198</span>  <span class="comment">// Retrieve the fractional bin distances and their complements</span></div>
+<div class="line"><span class="lineno">  199</span>  <span class="keyword">const</span> Float_t xFrac = xBinInfo.second;</div>
+<div class="line"><span class="lineno">  200</span>  <span class="keyword">const</span> Float_t yFrac = yBinInfo.second;</div>
+<div class="line"><span class="lineno">  201</span>  <span class="keyword">const</span> Float_t zFrac = zBinInfo.second;</div>
+<div class="line"><span class="lineno">  202</span>  <span class="keyword">const</span> Float_t xFrac1 = 1.0 - xFrac;</div>
+<div class="line"><span class="lineno">  203</span>  <span class="keyword">const</span> Float_t yFrac1 = 1.0 - yFrac;</div>
+<div class="line"><span class="lineno">  204</span>  <span class="keyword">const</span> Float_t zFrac1 = 1.0 - zFrac;</div>
+<div class="line"><span class="lineno">  205</span> </div>
+<div class="line"><span class="lineno">  206</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classShipBFieldMap.html#a40d2bc90d23707faac34eba21b77c5dd">fieldMap_</a>) {</div>
+<div class="line"><span class="lineno">  207</span>    <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">  208</span>  }</div>
+<div class="line"><span class="lineno">  209</span> </div>
+<div class="line"><span class="lineno">  210</span>  <span class="comment">// Fetch each of the eight corner triples once and interpolate all three</span></div>
+<div class="line"><span class="lineno">  211</span>  <span class="comment">// field components in a single pass (trilinear interpolation), then scale</span></div>
+<div class="line"><span class="lineno">  212</span>  <span class="comment">// with the appropriate multiplication factor (default = 1.0).</span></div>
+<div class="line"><span class="lineno">  213</span>  <span class="keyword">const</span> <a class="code hl_typedef" href="classShipBFieldMap.html#ac09386960df586f494427ede649eae7a">floatArray</a>&amp; fm = *<a class="code hl_variable" href="classShipBFieldMap.html#a40d2bc90d23707faac34eba21b77c5dd">fieldMap_</a>;</div>
+<div class="line"><span class="lineno">  214</span>  <span class="keyword">const</span> std::array&lt;Float_t, 3&gt;&amp; cA = fm[binA];</div>
+<div class="line"><span class="lineno">  215</span>  <span class="keyword">const</span> std::array&lt;Float_t, 3&gt;&amp; cB = fm[binB];</div>
+<div class="line"><span class="lineno">  216</span>  <span class="keyword">const</span> std::array&lt;Float_t, 3&gt;&amp; cC = fm[binC];</div>
+<div class="line"><span class="lineno">  217</span>  <span class="keyword">const</span> std::array&lt;Float_t, 3&gt;&amp; cD = fm[binD];</div>
+<div class="line"><span class="lineno">  218</span>  <span class="keyword">const</span> std::array&lt;Float_t, 3&gt;&amp; cE = fm[binE];</div>
+<div class="line"><span class="lineno">  219</span>  <span class="keyword">const</span> std::array&lt;Float_t, 3&gt;&amp; cF = fm[binF];</div>
+<div class="line"><span class="lineno">  220</span>  <span class="keyword">const</span> std::array&lt;Float_t, 3&gt;&amp; cG = fm[binG];</div>
+<div class="line"><span class="lineno">  221</span>  <span class="keyword">const</span> std::array&lt;Float_t, 3&gt;&amp; cH = fm[binH];</div>
+<div class="line"><span class="lineno">  222</span> </div>
+<div class="line"><span class="lineno">  223</span>  Float_t Bc[3];</div>
+<div class="line"><span class="lineno">  224</span>  <span class="keywordflow">for</span> (Int_t i = 0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt; 3; ++<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>) {</div>
+<div class="line"><span class="lineno">  225</span>    Bc[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>] = <a class="code hl_function" href="classShipBFieldMap.html#a15b32eb7ff244e1b86eb409db3787cb0">triLinearInterp</a>(cA[i], cB[i], cC[i], cD[i], cE[i], cF[i], cG[i],</div>
+<div class="line"><span class="lineno">  226</span>                            cH[i], xFrac, xFrac1, yFrac, yFrac1, zFrac, zFrac1);</div>
+<div class="line"><span class="lineno">  227</span>  }</div>
+<div class="line"><span class="lineno">  228</span> </div>
+<div class="line"><span class="lineno">  229</span>  B[0] = Bc[0] * <a class="code hl_variable" href="classShipBFieldMap.html#aaff1f8dc28c0bf4b9d9ba2960f454608">scale_</a> * BxSign;</div>
+<div class="line"><span class="lineno">  230</span>  B[1] = Bc[1] * <a class="code hl_variable" href="classShipBFieldMap.html#aaff1f8dc28c0bf4b9d9ba2960f454608">scale_</a>;</div>
+<div class="line"><span class="lineno">  231</span>  B[2] = Bc[2] * <a class="code hl_variable" href="classShipBFieldMap.html#aaff1f8dc28c0bf4b9d9ba2960f454608">scale_</a> * BzSign;</div>
+<div class="line"><span class="lineno">  232</span>}</div>
+<div class="ttc" id="aclassShipBFieldMap_html_a15b32eb7ff244e1b86eb409db3787cb0"><div class="ttname"><a href="classShipBFieldMap.html#a15b32eb7ff244e1b86eb409db3787cb0">ShipBFieldMap::triLinearInterp</a></div><div class="ttdeci">static Float_t triLinearInterp(Float_t A, Float_t B, Float_t C, Float_t D, Float_t E, Float_t F, Float_t G, Float_t H, Float_t xFrac, Float_t xFrac1, Float_t yFrac, Float_t yFrac1, Float_t zFrac, Float_t zFrac1)</div><div class="ttdef"><b>Definition</b> <a href="ShipBFieldMap_8cxx_source.html#l00515">ShipBFieldMap.cxx:515</a></div></div>
 <div class="ttc" id="aclassShipBFieldMap_html_a1f037b96866ce64297220a5065b24aa6"><div class="ttname"><a href="classShipBFieldMap.html#a1f037b96866ce64297220a5065b24aa6">ShipBFieldMap::binPair</a></div><div class="ttdeci">std::pair&lt; Int_t, Float_t &gt; binPair</div><div class="ttdoc">Typedef for an int-double pair.</div><div class="ttdef"><b>Definition</b> <a href="ShipBFieldMap_8h_source.html#l00338">ShipBFieldMap.h:338</a></div></div>
-<div class="ttc" id="aclassShipBFieldMap_html_abda94682051dbd6af5ef32a87582f541"><div class="ttname"><a href="classShipBFieldMap.html#abda94682051dbd6af5ef32a87582f541">ShipBFieldMap::getBinInfo</a></div><div class="ttdeci">binPair getBinInfo(Float_t x, CoordAxis theAxis)</div><div class="ttdoc">Get the bin number and fractional distance from the leftmost bin edge.</div><div class="ttdef"><b>Definition</b> <a href="ShipBFieldMap_8cxx_source.html#l00449">ShipBFieldMap.cxx:449</a></div></div>
-<div class="ttc" id="aclassShipBFieldMap_html_ac066904278e00e14789f6287e6422f18"><div class="ttname"><a href="classShipBFieldMap.html#ac066904278e00e14789f6287e6422f18">ShipBFieldMap::insideRange</a></div><div class="ttdeci">Bool_t insideRange(Float_t x, Float_t y, Float_t z)</div><div class="ttdoc">Check to see if a point is within the map validity range.</div><div class="ttdef"><b>Definition</b> <a href="ShipBFieldMap_8cxx_source.html#l00395">ShipBFieldMap.cxx:395</a></div></div>
-<div class="ttc" id="aclassShipBFieldMap_html_ad89fd4e71cf67011e40940c6293a2ffe"><div class="ttname"><a href="classShipBFieldMap.html#ad89fd4e71cf67011e40940c6293a2ffe">ShipBFieldMap::getMapBin</a></div><div class="ttdeci">Int_t getMapBin(Int_t iX, Int_t iY, Int_t iZ)</div><div class="ttdoc">Find the vector entry of the field map data given the bins iX, iY and iZ.</div><div class="ttdef"><b>Definition</b> <a href="ShipBFieldMap_8cxx_source.html#l00503">ShipBFieldMap.cxx:503</a></div></div>
+<div class="ttc" id="aclassShipBFieldMap_html_abda94682051dbd6af5ef32a87582f541"><div class="ttname"><a href="classShipBFieldMap.html#abda94682051dbd6af5ef32a87582f541">ShipBFieldMap::getBinInfo</a></div><div class="ttdeci">binPair getBinInfo(Float_t x, CoordAxis theAxis)</div><div class="ttdoc">Get the bin number and fractional distance from the leftmost bin edge.</div><div class="ttdef"><b>Definition</b> <a href="ShipBFieldMap_8cxx_source.html#l00447">ShipBFieldMap.cxx:447</a></div></div>
+<div class="ttc" id="aclassShipBFieldMap_html_ac066904278e00e14789f6287e6422f18"><div class="ttname"><a href="classShipBFieldMap.html#ac066904278e00e14789f6287e6422f18">ShipBFieldMap::insideRange</a></div><div class="ttdeci">Bool_t insideRange(Float_t x, Float_t y, Float_t z)</div><div class="ttdoc">Check to see if a point is within the map validity range.</div><div class="ttdef"><b>Definition</b> <a href="ShipBFieldMap_8cxx_source.html#l00393">ShipBFieldMap.cxx:393</a></div></div>
+<div class="ttc" id="aclassShipBFieldMap_html_ad89fd4e71cf67011e40940c6293a2ffe"><div class="ttname"><a href="classShipBFieldMap.html#ad89fd4e71cf67011e40940c6293a2ffe">ShipBFieldMap::getMapBin</a></div><div class="ttdeci">Int_t getMapBin(Int_t iX, Int_t iY, Int_t iZ)</div><div class="ttdoc">Find the vector entry of the field map data given the bins iX, iY and iZ.</div><div class="ttdef"><b>Definition</b> <a href="ShipBFieldMap_8cxx_source.html#l00501">ShipBFieldMap.cxx:501</a></div></div>
 <div class="ttc" id="anamespaceShipAna_html_aa4bf87f4d17f9d38b1d8f4d009bb54b3"><div class="ttname"><a href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">ShipAna.i</a></div><div class="ttdeci">int i</div><div class="ttdef"><b>Definition</b> <a href="ShipAna_8py_source.html#l00102">ShipAna.py:102</a></div></div>
 <div class="ttc" id="anamespacerun__fixedTarget_html_a68f8e54ebe34ed88a1aff4505c32be7c"><div class="ttname"><a href="namespacerun__fixedTarget.html#a68f8e54ebe34ed88a1aff4505c32be7c">run_fixedTarget.x</a></div><div class="ttdeci">x</div><div class="ttdef"><b>Definition</b> <a href="run__fixedTarget_8py_source.html#l00575">run_fixedTarget.py:575</a></div></div>
 <div class="ttc" id="anamespacerun__simScript_html_a90c25390918b8dd5a6f17d8efa00c9ed"><div class="ttname"><a href="namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed">run_simScript.z</a></div><div class="ttdeci">z</div><div class="ttdef"><b>Definition</b> <a href="run__simScript_8py_source.html#l00691">run_simScript.py:691</a></div></div>
@@ -1081,59 +1079,59 @@ Private Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the bin number and fractional distance from the leftmost bin edge as a pair </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ShipBFieldMap_8cxx_source.html#l00449">449</a> of file <a class="el" href="ShipBFieldMap_8cxx_source.html">ShipBFieldMap.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  450</span>                                               {</div>
-<div class="line"><span class="lineno">  451</span>  Float_t du(0.0), uMin(0.0);</div>
-<div class="line"><span class="lineno">  452</span>  Int_t Nu(0);</div>
-<div class="line"><span class="lineno">  453</span> </div>
-<div class="line"><span class="lineno">  454</span>  <span class="keywordflow">if</span> (theAxis == <a class="code hl_enumvalue" href="classShipBFieldMap.html#a861764baf5e15176bc69c9942c2a9c65ad5cd59e6ead2d6f825344e8cbf5bc68e">ShipBFieldMap::xAxis</a>) {</div>
-<div class="line"><span class="lineno">  455</span>    du = <a class="code hl_variable" href="classShipBFieldMap.html#ae84cc55fdd680b200bbab5ea720b2b19">dx_</a>;</div>
-<div class="line"><span class="lineno">  456</span>    uMin = <a class="code hl_variable" href="classShipBFieldMap.html#a686affa4758dc834602d7274f111fa76">xMin_</a>;</div>
-<div class="line"><span class="lineno">  457</span>    Nu = <a class="code hl_variable" href="classShipBFieldMap.html#a9d28380f1bd47c465a388a452419661c">Nx_</a>;</div>
-<div class="line"><span class="lineno">  458</span>  } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (theAxis == <a class="code hl_enumvalue" href="classShipBFieldMap.html#a861764baf5e15176bc69c9942c2a9c65a2a92b59da7fcc9aa9e15dcd556326087">ShipBFieldMap::yAxis</a>) {</div>
-<div class="line"><span class="lineno">  459</span>    du = <a class="code hl_variable" href="classShipBFieldMap.html#a14cd573350a95b0adde53cc7f1f880ab">dy_</a>;</div>
-<div class="line"><span class="lineno">  460</span>    uMin = <a class="code hl_variable" href="classShipBFieldMap.html#a4529066c7dca47ed195f98f923f7c30c">yMin_</a>;</div>
-<div class="line"><span class="lineno">  461</span>    Nu = <a class="code hl_variable" href="classShipBFieldMap.html#a58c5500a5534268ac9fc5ff343b8d8ba">Ny_</a>;</div>
-<div class="line"><span class="lineno">  462</span>  } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (theAxis == <a class="code hl_enumvalue" href="classShipBFieldMap.html#a861764baf5e15176bc69c9942c2a9c65a8723e07c5d5678d97a2107bae653579b">ShipBFieldMap::zAxis</a>) {</div>
-<div class="line"><span class="lineno">  463</span>    du = <a class="code hl_variable" href="classShipBFieldMap.html#a1ca6516488c38f8effab03e4b6ef05ab">dz_</a>;</div>
-<div class="line"><span class="lineno">  464</span>    uMin = <a class="code hl_variable" href="classShipBFieldMap.html#ae1b7e7af5e9ab9b4220dafc40f5de51c">zMin_</a>;</div>
-<div class="line"><span class="lineno">  465</span>    Nu = <a class="code hl_variable" href="classShipBFieldMap.html#a376afd5b8219a75317a65976fa8e41b9">Nz_</a>;</div>
-<div class="line"><span class="lineno">  466</span>  }</div>
-<div class="line"><span class="lineno">  467</span> </div>
-<div class="line"><span class="lineno">  468</span>  Int_t iBin(-1);</div>
-<div class="line"><span class="lineno">  469</span>  Float_t fracL(0.0);</div>
-<div class="line"><span class="lineno">  470</span> </div>
-<div class="line"><span class="lineno">  471</span>  <span class="keywordflow">if</span> (du &gt; 1e-10) {</div>
-<div class="line"><span class="lineno">  472</span>    <span class="comment">// Get the number of fractional bin widths the point is from the first</span></div>
-<div class="line"><span class="lineno">  473</span>    <span class="comment">// volume bin</span></div>
-<div class="line"><span class="lineno">  474</span>    Float_t dist = (u - uMin) / du;</div>
-<div class="line"><span class="lineno">  475</span>    <span class="comment">// Get the integer equivalent of this distance, which is the bin number</span></div>
-<div class="line"><span class="lineno">  476</span>    iBin = <span class="keyword">static_cast&lt;</span>Int_t<span class="keyword">&gt;</span>(dist);</div>
-<div class="line"><span class="lineno">  477</span>    <span class="comment">// Get the actual fractional distance of the point from the leftmost bin</span></div>
-<div class="line"><span class="lineno">  478</span>    <span class="comment">// edge</span></div>
-<div class="line"><span class="lineno">  479</span>    fracL = (dist - iBin * 1.0);</div>
-<div class="line"><span class="lineno">  480</span>  }</div>
-<div class="line"><span class="lineno">  481</span> </div>
-<div class="line"><span class="lineno">  482</span>  <span class="comment">// Check that the bin number is valid</span></div>
-<div class="line"><span class="lineno">  483</span>  <span class="keywordflow">if</span> (iBin &lt; 0 || iBin &gt;= Nu) {</div>
-<div class="line"><span class="lineno">  484</span>    iBin = -1;</div>
-<div class="line"><span class="lineno">  485</span>    fracL = 0.0;</div>
-<div class="line"><span class="lineno">  486</span>  } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (iBin &gt;= Nu - 1) {</div>
-<div class="line"><span class="lineno">  487</span>    <span class="comment">// The point lies in the last bin along this axis. The trilinear</span></div>
-<div class="line"><span class="lineno">  488</span>    <span class="comment">// interpolation uses the iBin+1 neighbour, which would fall outside the</span></div>
-<div class="line"><span class="lineno">  489</span>    <span class="comment">// axis here, so clamp to the last valid cell (Nu-2) and use a fractional</span></div>
-<div class="line"><span class="lineno">  490</span>    <span class="comment">// weight of 1 so the upper-edge (last valid) slice is used without reading</span></div>
-<div class="line"><span class="lineno">  491</span>    <span class="comment">// the next, non-existent slice.</span></div>
-<div class="line"><span class="lineno">  492</span>    iBin = Nu - 2;</div>
-<div class="line"><span class="lineno">  493</span>    fracL = 1.0;</div>
-<div class="line"><span class="lineno">  494</span>  }</div>
-<div class="line"><span class="lineno">  495</span> </div>
-<div class="line"><span class="lineno">  496</span>  <span class="comment">// Return the bin number and fractional distance of the point from the</span></div>
-<div class="line"><span class="lineno">  497</span>  <span class="comment">// leftmost bin edge</span></div>
-<div class="line"><span class="lineno">  498</span>  <a class="code hl_typedef" href="classShipBFieldMap.html#a1f037b96866ce64297220a5065b24aa6">binPair</a> binInfo(iBin, fracL);</div>
-<div class="line"><span class="lineno">  499</span> </div>
-<div class="line"><span class="lineno">  500</span>  <span class="keywordflow">return</span> binInfo;</div>
-<div class="line"><span class="lineno">  501</span>}</div>
+<p class="definition">Definition at line <a class="el" href="ShipBFieldMap_8cxx_source.html#l00447">447</a> of file <a class="el" href="ShipBFieldMap_8cxx_source.html">ShipBFieldMap.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  448</span>                                               {</div>
+<div class="line"><span class="lineno">  449</span>  Float_t du(0.0), uMin(0.0);</div>
+<div class="line"><span class="lineno">  450</span>  Int_t Nu(0);</div>
+<div class="line"><span class="lineno">  451</span> </div>
+<div class="line"><span class="lineno">  452</span>  <span class="keywordflow">if</span> (theAxis == <a class="code hl_enumvalue" href="classShipBFieldMap.html#a861764baf5e15176bc69c9942c2a9c65ad5cd59e6ead2d6f825344e8cbf5bc68e">ShipBFieldMap::xAxis</a>) {</div>
+<div class="line"><span class="lineno">  453</span>    du = <a class="code hl_variable" href="classShipBFieldMap.html#ae84cc55fdd680b200bbab5ea720b2b19">dx_</a>;</div>
+<div class="line"><span class="lineno">  454</span>    uMin = <a class="code hl_variable" href="classShipBFieldMap.html#a686affa4758dc834602d7274f111fa76">xMin_</a>;</div>
+<div class="line"><span class="lineno">  455</span>    Nu = <a class="code hl_variable" href="classShipBFieldMap.html#a9d28380f1bd47c465a388a452419661c">Nx_</a>;</div>
+<div class="line"><span class="lineno">  456</span>  } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (theAxis == <a class="code hl_enumvalue" href="classShipBFieldMap.html#a861764baf5e15176bc69c9942c2a9c65a2a92b59da7fcc9aa9e15dcd556326087">ShipBFieldMap::yAxis</a>) {</div>
+<div class="line"><span class="lineno">  457</span>    du = <a class="code hl_variable" href="classShipBFieldMap.html#a14cd573350a95b0adde53cc7f1f880ab">dy_</a>;</div>
+<div class="line"><span class="lineno">  458</span>    uMin = <a class="code hl_variable" href="classShipBFieldMap.html#a4529066c7dca47ed195f98f923f7c30c">yMin_</a>;</div>
+<div class="line"><span class="lineno">  459</span>    Nu = <a class="code hl_variable" href="classShipBFieldMap.html#a58c5500a5534268ac9fc5ff343b8d8ba">Ny_</a>;</div>
+<div class="line"><span class="lineno">  460</span>  } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (theAxis == <a class="code hl_enumvalue" href="classShipBFieldMap.html#a861764baf5e15176bc69c9942c2a9c65a8723e07c5d5678d97a2107bae653579b">ShipBFieldMap::zAxis</a>) {</div>
+<div class="line"><span class="lineno">  461</span>    du = <a class="code hl_variable" href="classShipBFieldMap.html#a1ca6516488c38f8effab03e4b6ef05ab">dz_</a>;</div>
+<div class="line"><span class="lineno">  462</span>    uMin = <a class="code hl_variable" href="classShipBFieldMap.html#ae1b7e7af5e9ab9b4220dafc40f5de51c">zMin_</a>;</div>
+<div class="line"><span class="lineno">  463</span>    Nu = <a class="code hl_variable" href="classShipBFieldMap.html#a376afd5b8219a75317a65976fa8e41b9">Nz_</a>;</div>
+<div class="line"><span class="lineno">  464</span>  }</div>
+<div class="line"><span class="lineno">  465</span> </div>
+<div class="line"><span class="lineno">  466</span>  Int_t iBin(-1);</div>
+<div class="line"><span class="lineno">  467</span>  Float_t fracL(0.0);</div>
+<div class="line"><span class="lineno">  468</span> </div>
+<div class="line"><span class="lineno">  469</span>  <span class="keywordflow">if</span> (du &gt; 1e-10) {</div>
+<div class="line"><span class="lineno">  470</span>    <span class="comment">// Get the number of fractional bin widths the point is from the first</span></div>
+<div class="line"><span class="lineno">  471</span>    <span class="comment">// volume bin</span></div>
+<div class="line"><span class="lineno">  472</span>    Float_t dist = (u - uMin) / du;</div>
+<div class="line"><span class="lineno">  473</span>    <span class="comment">// Get the integer equivalent of this distance, which is the bin number</span></div>
+<div class="line"><span class="lineno">  474</span>    iBin = <span class="keyword">static_cast&lt;</span>Int_t<span class="keyword">&gt;</span>(dist);</div>
+<div class="line"><span class="lineno">  475</span>    <span class="comment">// Get the actual fractional distance of the point from the leftmost bin</span></div>
+<div class="line"><span class="lineno">  476</span>    <span class="comment">// edge</span></div>
+<div class="line"><span class="lineno">  477</span>    fracL = (dist - iBin * 1.0);</div>
+<div class="line"><span class="lineno">  478</span>  }</div>
+<div class="line"><span class="lineno">  479</span> </div>
+<div class="line"><span class="lineno">  480</span>  <span class="comment">// Check that the bin number is valid</span></div>
+<div class="line"><span class="lineno">  481</span>  <span class="keywordflow">if</span> (iBin &lt; 0 || iBin &gt;= Nu) {</div>
+<div class="line"><span class="lineno">  482</span>    iBin = -1;</div>
+<div class="line"><span class="lineno">  483</span>    fracL = 0.0;</div>
+<div class="line"><span class="lineno">  484</span>  } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (iBin &gt;= Nu - 1) {</div>
+<div class="line"><span class="lineno">  485</span>    <span class="comment">// The point lies in the last bin along this axis. The trilinear</span></div>
+<div class="line"><span class="lineno">  486</span>    <span class="comment">// interpolation uses the iBin+1 neighbour, which would fall outside the</span></div>
+<div class="line"><span class="lineno">  487</span>    <span class="comment">// axis here, so clamp to the last valid cell (Nu-2) and use a fractional</span></div>
+<div class="line"><span class="lineno">  488</span>    <span class="comment">// weight of 1 so the upper-edge (last valid) slice is used without reading</span></div>
+<div class="line"><span class="lineno">  489</span>    <span class="comment">// the next, non-existent slice.</span></div>
+<div class="line"><span class="lineno">  490</span>    iBin = Nu - 2;</div>
+<div class="line"><span class="lineno">  491</span>    fracL = 1.0;</div>
+<div class="line"><span class="lineno">  492</span>  }</div>
+<div class="line"><span class="lineno">  493</span> </div>
+<div class="line"><span class="lineno">  494</span>  <span class="comment">// Return the bin number and fractional distance of the point from the</span></div>
+<div class="line"><span class="lineno">  495</span>  <span class="comment">// leftmost bin edge</span></div>
+<div class="line"><span class="lineno">  496</span>  <a class="code hl_typedef" href="classShipBFieldMap.html#a1f037b96866ce64297220a5065b24aa6">binPair</a> binInfo(iBin, fracL);</div>
+<div class="line"><span class="lineno">  497</span> </div>
+<div class="line"><span class="lineno">  498</span>  <span class="keywordflow">return</span> binInfo;</div>
+<div class="line"><span class="lineno">  499</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1312,20 +1310,20 @@ Private Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the index entry for the field map data vector </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ShipBFieldMap_8cxx_source.html#l00503">503</a> of file <a class="el" href="ShipBFieldMap_8cxx_source.html">ShipBFieldMap.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  503</span>                                                           {</div>
-<div class="line"><span class="lineno">  504</span>  <span class="comment">// Get the index of the map entry corresponding to the x,y,z bins.</span></div>
-<div class="line"><span class="lineno">  505</span>  <span class="comment">// Remember that the map is ordered in ascending z, y, then x</span></div>
-<div class="line"><span class="lineno">  506</span> </div>
-<div class="line"><span class="lineno">  507</span>  Int_t <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a1391b7407359c40dbacead1473f5a96b">index</a> = (iX * <a class="code hl_variable" href="classShipBFieldMap.html#a58c5500a5534268ac9fc5ff343b8d8ba">Ny_</a> + iY) * <a class="code hl_variable" href="classShipBFieldMap.html#a376afd5b8219a75317a65976fa8e41b9">Nz_</a> + iZ;</div>
-<div class="line"><span class="lineno">  508</span>  <span class="keywordflow">if</span> (index &lt; 0) {</div>
-<div class="line"><span class="lineno">  509</span>    <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a1391b7407359c40dbacead1473f5a96b">index</a> = 0;</div>
-<div class="line"><span class="lineno">  510</span>  } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (index &gt;= <a class="code hl_variable" href="classShipBFieldMap.html#a3cba8a90fad19de37cd6589699f15256">N_</a>) {</div>
-<div class="line"><span class="lineno">  511</span>    <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a1391b7407359c40dbacead1473f5a96b">index</a> = <a class="code hl_variable" href="classShipBFieldMap.html#a3cba8a90fad19de37cd6589699f15256">N_</a> - 1;</div>
-<div class="line"><span class="lineno">  512</span>  }</div>
-<div class="line"><span class="lineno">  513</span> </div>
-<div class="line"><span class="lineno">  514</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a1391b7407359c40dbacead1473f5a96b">index</a>;</div>
-<div class="line"><span class="lineno">  515</span>}</div>
+<p class="definition">Definition at line <a class="el" href="ShipBFieldMap_8cxx_source.html#l00501">501</a> of file <a class="el" href="ShipBFieldMap_8cxx_source.html">ShipBFieldMap.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  501</span>                                                           {</div>
+<div class="line"><span class="lineno">  502</span>  <span class="comment">// Get the index of the map entry corresponding to the x,y,z bins.</span></div>
+<div class="line"><span class="lineno">  503</span>  <span class="comment">// Remember that the map is ordered in ascending z, y, then x</span></div>
+<div class="line"><span class="lineno">  504</span> </div>
+<div class="line"><span class="lineno">  505</span>  Int_t <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a1391b7407359c40dbacead1473f5a96b">index</a> = (iX * <a class="code hl_variable" href="classShipBFieldMap.html#a58c5500a5534268ac9fc5ff343b8d8ba">Ny_</a> + iY) * <a class="code hl_variable" href="classShipBFieldMap.html#a376afd5b8219a75317a65976fa8e41b9">Nz_</a> + iZ;</div>
+<div class="line"><span class="lineno">  506</span>  <span class="keywordflow">if</span> (index &lt; 0) {</div>
+<div class="line"><span class="lineno">  507</span>    <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a1391b7407359c40dbacead1473f5a96b">index</a> = 0;</div>
+<div class="line"><span class="lineno">  508</span>  } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (index &gt;= <a class="code hl_variable" href="classShipBFieldMap.html#a3cba8a90fad19de37cd6589699f15256">N_</a>) {</div>
+<div class="line"><span class="lineno">  509</span>    <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a1391b7407359c40dbacead1473f5a96b">index</a> = <a class="code hl_variable" href="classShipBFieldMap.html#a3cba8a90fad19de37cd6589699f15256">N_</a> - 1;</div>
+<div class="line"><span class="lineno">  510</span>  }</div>
+<div class="line"><span class="lineno">  511</span> </div>
+<div class="line"><span class="lineno">  512</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a1391b7407359c40dbacead1473f5a96b">index</a>;</div>
+<div class="line"><span class="lineno">  513</span>}</div>
 <div class="ttc" id="anamespacemake__nTuple__SBT_html_a1391b7407359c40dbacead1473f5a96b"><div class="ttname"><a href="namespacemake__nTuple__SBT.html#a1391b7407359c40dbacead1473f5a96b">make_nTuple_SBT.index</a></div><div class="ttdeci">int index</div><div class="ttdef"><b>Definition</b> <a href="make__nTuple__SBT_8py_source.html#l00293">make_nTuple_SBT.py:293</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -2035,30 +2033,30 @@ Private Attributes</h2></td></tr>
 
 <p>Initialisation. </p>
 
-<p class="definition">Definition at line <a class="el" href="ShipBFieldMap_8cxx_source.html#l00236">236</a> of file <a class="el" href="ShipBFieldMap_8cxx_source.html">ShipBFieldMap.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  236</span>                               {</div>
-<div class="line"><span class="lineno">  237</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classShipBFieldMap.html#a4cab125ad21421ce5561972f64ab6fcd">initialised_</a> == kFALSE) {</div>
-<div class="line"><span class="lineno">  238</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classShipBFieldMap.html#a5cf3d9cf22af3b789ec42a2f475bf241">isCopy_</a> == kFALSE) {</div>
-<div class="line"><span class="lineno">  239</span>      this-&gt;<a class="code hl_function" href="classShipBFieldMap.html#ad77b9af6b70c51d794b47732149dca92">readMapFile</a>();</div>
-<div class="line"><span class="lineno">  240</span>    }</div>
-<div class="line"><span class="lineno">  241</span> </div>
-<div class="line"><span class="lineno">  242</span>    <span class="comment">// Set the global coordinate translation and rotation info</span></div>
-<div class="line"><span class="lineno">  243</span>    <span class="keywordflow">if</span> (fabs(<a class="code hl_variable" href="classShipBFieldMap.html#adb382221b8f751522035674bbc15a340">phi_</a>) &gt; 1e-6 || fabs(<a class="code hl_variable" href="classShipBFieldMap.html#a5b2d2824b14015b479bb7ff4dab0d2ae">theta_</a>) &gt; 1e-6 || fabs(<a class="code hl_variable" href="classShipBFieldMap.html#a18a79ff151a25d3051a0beb0e398cb9a">psi_</a>) &gt; 1e-6) {</div>
-<div class="line"><span class="lineno">  244</span>      <span class="comment">// We have non-zero rotation angles. Create a combined translation and</span></div>
-<div class="line"><span class="lineno">  245</span>      <span class="comment">// rotation</span></div>
-<div class="line"><span class="lineno">  246</span>      TGeoTranslation tr(<span class="stringliteral">&quot;offsets&quot;</span>, <a class="code hl_variable" href="classShipBFieldMap.html#aef8ad7f3ddb52b6aeea3e6dc4a8ce339">xOffset_</a>, <a class="code hl_variable" href="classShipBFieldMap.html#aad6dc9cbfb40bb6f1ef3dd7da657be91">yOffset_</a>, <a class="code hl_variable" href="classShipBFieldMap.html#a46428b7020b31dec7d9a811182c49410">zOffset_</a>);</div>
-<div class="line"><span class="lineno">  247</span>      TGeoRotation rot(<span class="stringliteral">&quot;angles&quot;</span>, <a class="code hl_variable" href="classShipBFieldMap.html#adb382221b8f751522035674bbc15a340">phi_</a>, <a class="code hl_variable" href="classShipBFieldMap.html#a5b2d2824b14015b479bb7ff4dab0d2ae">theta_</a>, <a class="code hl_variable" href="classShipBFieldMap.html#a18a79ff151a25d3051a0beb0e398cb9a">psi_</a>);</div>
-<div class="line"><span class="lineno">  248</span>      <a class="code hl_variable" href="classShipBFieldMap.html#ab61086f56e1773a61db05e0e089e9aff">theTrans_</a> = <span class="keyword">new</span> TGeoCombiTrans(tr, rot);</div>
-<div class="line"><span class="lineno">  249</span> </div>
-<div class="line"><span class="lineno">  250</span>    } <span class="keywordflow">else</span> {</div>
-<div class="line"><span class="lineno">  251</span>      <span class="comment">// We only need a translation</span></div>
-<div class="line"><span class="lineno">  252</span>      <a class="code hl_variable" href="classShipBFieldMap.html#ab61086f56e1773a61db05e0e089e9aff">theTrans_</a> = <span class="keyword">new</span> TGeoTranslation(<span class="stringliteral">&quot;offsets&quot;</span>, <a class="code hl_variable" href="classShipBFieldMap.html#aef8ad7f3ddb52b6aeea3e6dc4a8ce339">xOffset_</a>, <a class="code hl_variable" href="classShipBFieldMap.html#aad6dc9cbfb40bb6f1ef3dd7da657be91">yOffset_</a>, <a class="code hl_variable" href="classShipBFieldMap.html#a46428b7020b31dec7d9a811182c49410">zOffset_</a>);</div>
-<div class="line"><span class="lineno">  253</span>    }</div>
-<div class="line"><span class="lineno">  254</span> </div>
-<div class="line"><span class="lineno">  255</span>    <a class="code hl_variable" href="classShipBFieldMap.html#a4cab125ad21421ce5561972f64ab6fcd">initialised_</a> = kTRUE;</div>
-<div class="line"><span class="lineno">  256</span>  }</div>
-<div class="line"><span class="lineno">  257</span>}</div>
-<div class="ttc" id="aclassShipBFieldMap_html_ad77b9af6b70c51d794b47732149dca92"><div class="ttname"><a href="classShipBFieldMap.html#ad77b9af6b70c51d794b47732149dca92">ShipBFieldMap::readMapFile</a></div><div class="ttdeci">void readMapFile()</div><div class="ttdoc">Read the field map data and store the information internally.</div><div class="ttdef"><b>Definition</b> <a href="ShipBFieldMap_8cxx_source.html#l00259">ShipBFieldMap.cxx:259</a></div></div>
+<p class="definition">Definition at line <a class="el" href="ShipBFieldMap_8cxx_source.html#l00234">234</a> of file <a class="el" href="ShipBFieldMap_8cxx_source.html">ShipBFieldMap.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  234</span>                               {</div>
+<div class="line"><span class="lineno">  235</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classShipBFieldMap.html#a4cab125ad21421ce5561972f64ab6fcd">initialised_</a> == kFALSE) {</div>
+<div class="line"><span class="lineno">  236</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classShipBFieldMap.html#a5cf3d9cf22af3b789ec42a2f475bf241">isCopy_</a> == kFALSE) {</div>
+<div class="line"><span class="lineno">  237</span>      this-&gt;<a class="code hl_function" href="classShipBFieldMap.html#ad77b9af6b70c51d794b47732149dca92">readMapFile</a>();</div>
+<div class="line"><span class="lineno">  238</span>    }</div>
+<div class="line"><span class="lineno">  239</span> </div>
+<div class="line"><span class="lineno">  240</span>    <span class="comment">// Set the global coordinate translation and rotation info</span></div>
+<div class="line"><span class="lineno">  241</span>    <span class="keywordflow">if</span> (fabs(<a class="code hl_variable" href="classShipBFieldMap.html#adb382221b8f751522035674bbc15a340">phi_</a>) &gt; 1e-6 || fabs(<a class="code hl_variable" href="classShipBFieldMap.html#a5b2d2824b14015b479bb7ff4dab0d2ae">theta_</a>) &gt; 1e-6 || fabs(<a class="code hl_variable" href="classShipBFieldMap.html#a18a79ff151a25d3051a0beb0e398cb9a">psi_</a>) &gt; 1e-6) {</div>
+<div class="line"><span class="lineno">  242</span>      <span class="comment">// We have non-zero rotation angles. Create a combined translation and</span></div>
+<div class="line"><span class="lineno">  243</span>      <span class="comment">// rotation</span></div>
+<div class="line"><span class="lineno">  244</span>      TGeoTranslation tr(<span class="stringliteral">&quot;offsets&quot;</span>, <a class="code hl_variable" href="classShipBFieldMap.html#aef8ad7f3ddb52b6aeea3e6dc4a8ce339">xOffset_</a>, <a class="code hl_variable" href="classShipBFieldMap.html#aad6dc9cbfb40bb6f1ef3dd7da657be91">yOffset_</a>, <a class="code hl_variable" href="classShipBFieldMap.html#a46428b7020b31dec7d9a811182c49410">zOffset_</a>);</div>
+<div class="line"><span class="lineno">  245</span>      TGeoRotation rot(<span class="stringliteral">&quot;angles&quot;</span>, <a class="code hl_variable" href="classShipBFieldMap.html#adb382221b8f751522035674bbc15a340">phi_</a>, <a class="code hl_variable" href="classShipBFieldMap.html#a5b2d2824b14015b479bb7ff4dab0d2ae">theta_</a>, <a class="code hl_variable" href="classShipBFieldMap.html#a18a79ff151a25d3051a0beb0e398cb9a">psi_</a>);</div>
+<div class="line"><span class="lineno">  246</span>      <a class="code hl_variable" href="classShipBFieldMap.html#ab61086f56e1773a61db05e0e089e9aff">theTrans_</a> = <span class="keyword">new</span> TGeoCombiTrans(tr, rot);</div>
+<div class="line"><span class="lineno">  247</span> </div>
+<div class="line"><span class="lineno">  248</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><span class="lineno">  249</span>      <span class="comment">// We only need a translation</span></div>
+<div class="line"><span class="lineno">  250</span>      <a class="code hl_variable" href="classShipBFieldMap.html#ab61086f56e1773a61db05e0e089e9aff">theTrans_</a> = <span class="keyword">new</span> TGeoTranslation(<span class="stringliteral">&quot;offsets&quot;</span>, <a class="code hl_variable" href="classShipBFieldMap.html#aef8ad7f3ddb52b6aeea3e6dc4a8ce339">xOffset_</a>, <a class="code hl_variable" href="classShipBFieldMap.html#aad6dc9cbfb40bb6f1ef3dd7da657be91">yOffset_</a>, <a class="code hl_variable" href="classShipBFieldMap.html#a46428b7020b31dec7d9a811182c49410">zOffset_</a>);</div>
+<div class="line"><span class="lineno">  251</span>    }</div>
+<div class="line"><span class="lineno">  252</span> </div>
+<div class="line"><span class="lineno">  253</span>    <a class="code hl_variable" href="classShipBFieldMap.html#a4cab125ad21421ce5561972f64ab6fcd">initialised_</a> = kTRUE;</div>
+<div class="line"><span class="lineno">  254</span>  }</div>
+<div class="line"><span class="lineno">  255</span>}</div>
+<div class="ttc" id="aclassShipBFieldMap_html_ad77b9af6b70c51d794b47732149dca92"><div class="ttname"><a href="classShipBFieldMap.html#ad77b9af6b70c51d794b47732149dca92">ShipBFieldMap::readMapFile</a></div><div class="ttdeci">void readMapFile()</div><div class="ttdoc">Read the field map data and store the information internally.</div><div class="ttdef"><b>Definition</b> <a href="ShipBFieldMap_8cxx_source.html#l00257">ShipBFieldMap.cxx:257</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -2113,17 +2111,17 @@ Private Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true/false if the point is inside the field map range </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ShipBFieldMap_8cxx_source.html#l00395">395</a> of file <a class="el" href="ShipBFieldMap_8cxx_source.html">ShipBFieldMap.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  395</span>                                                                 {</div>
-<div class="line"><span class="lineno">  396</span>  Bool_t inside(kFALSE);</div>
-<div class="line"><span class="lineno">  397</span> </div>
-<div class="line"><span class="lineno">  398</span>  <span class="keywordflow">if</span> (x &gt;= <a class="code hl_variable" href="classShipBFieldMap.html#a686affa4758dc834602d7274f111fa76">xMin_</a> &amp;&amp; x &lt;= xMax_ &amp;&amp; y &gt;= <a class="code hl_variable" href="classShipBFieldMap.html#a4529066c7dca47ed195f98f923f7c30c">yMin_</a> &amp;&amp; y &lt;= yMax_ &amp;&amp; z &gt;= <a class="code hl_variable" href="classShipBFieldMap.html#ae1b7e7af5e9ab9b4220dafc40f5de51c">zMin_</a> &amp;&amp;</div>
-<div class="line"><span class="lineno">  399</span>      z &lt;= <a class="code hl_variable" href="classShipBFieldMap.html#adaea4a95149e4923b17e6e05c0d56c9f">zMax_</a>) {</div>
-<div class="line"><span class="lineno">  400</span>    inside = kTRUE;</div>
-<div class="line"><span class="lineno">  401</span>  }</div>
-<div class="line"><span class="lineno">  402</span> </div>
-<div class="line"><span class="lineno">  403</span>  <span class="keywordflow">return</span> inside;</div>
-<div class="line"><span class="lineno">  404</span>}</div>
+<p class="definition">Definition at line <a class="el" href="ShipBFieldMap_8cxx_source.html#l00393">393</a> of file <a class="el" href="ShipBFieldMap_8cxx_source.html">ShipBFieldMap.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  393</span>                                                                 {</div>
+<div class="line"><span class="lineno">  394</span>  Bool_t inside(kFALSE);</div>
+<div class="line"><span class="lineno">  395</span> </div>
+<div class="line"><span class="lineno">  396</span>  <span class="keywordflow">if</span> (x &gt;= <a class="code hl_variable" href="classShipBFieldMap.html#a686affa4758dc834602d7274f111fa76">xMin_</a> &amp;&amp; x &lt;= xMax_ &amp;&amp; y &gt;= <a class="code hl_variable" href="classShipBFieldMap.html#a4529066c7dca47ed195f98f923f7c30c">yMin_</a> &amp;&amp; y &lt;= yMax_ &amp;&amp; z &gt;= <a class="code hl_variable" href="classShipBFieldMap.html#ae1b7e7af5e9ab9b4220dafc40f5de51c">zMin_</a> &amp;&amp;</div>
+<div class="line"><span class="lineno">  397</span>      z &lt;= <a class="code hl_variable" href="classShipBFieldMap.html#adaea4a95149e4923b17e6e05c0d56c9f">zMax_</a>) {</div>
+<div class="line"><span class="lineno">  398</span>    inside = kTRUE;</div>
+<div class="line"><span class="lineno">  399</span>  }</div>
+<div class="line"><span class="lineno">  400</span> </div>
+<div class="line"><span class="lineno">  401</span>  <span class="keywordflow">return</span> inside;</div>
+<div class="line"><span class="lineno">  402</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -2209,21 +2207,21 @@ Private Attributes</h2></td></tr>
 
 <p>Read the field map data and store the information internally. </p>
 
-<p class="definition">Definition at line <a class="el" href="ShipBFieldMap_8cxx_source.html#l00259">259</a> of file <a class="el" href="ShipBFieldMap_8cxx_source.html">ShipBFieldMap.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  259</span>                                {</div>
-<div class="line"><span class="lineno">  260</span>  LOG(info) &lt;&lt; <span class="stringliteral">&quot;ShipBFieldMap::readMapFile() creating field &quot;</span> &lt;&lt; this-&gt;GetName()</div>
-<div class="line"><span class="lineno">  261</span>            &lt;&lt; <span class="stringliteral">&quot; using file &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipBFieldMap.html#a484e859a4b353e0e66b53f8b1e54cc98">mapFileName_</a>;</div>
-<div class="line"><span class="lineno">  262</span> </div>
-<div class="line"><span class="lineno">  263</span>  <span class="comment">// Check to see if we have a ROOT file</span></div>
-<div class="line"><span class="lineno">  264</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classShipBFieldMap.html#a484e859a4b353e0e66b53f8b1e54cc98">mapFileName_</a>.find(<span class="stringliteral">&quot;.root&quot;</span>) != std::string::npos) {</div>
-<div class="line"><span class="lineno">  265</span>    this-&gt;<a class="code hl_function" href="classShipBFieldMap.html#acaa4364171c8cb1d35240f9055b7ff87">readRootFile</a>();</div>
-<div class="line"><span class="lineno">  266</span> </div>
-<div class="line"><span class="lineno">  267</span>  } <span class="keywordflow">else</span> {</div>
-<div class="line"><span class="lineno">  268</span>    this-&gt;<a class="code hl_function" href="classShipBFieldMap.html#aaf8aaa1e55d30bdec8a91e05a7a54fd4">readTextFile</a>();</div>
-<div class="line"><span class="lineno">  269</span>  }</div>
-<div class="line"><span class="lineno">  270</span>}</div>
-<div class="ttc" id="aclassShipBFieldMap_html_aaf8aaa1e55d30bdec8a91e05a7a54fd4"><div class="ttname"><a href="classShipBFieldMap.html#aaf8aaa1e55d30bdec8a91e05a7a54fd4">ShipBFieldMap::readTextFile</a></div><div class="ttdeci">void readTextFile()</div><div class="ttdoc">Process the text file containing the field map data.</div><div class="ttdef"><b>Definition</b> <a href="ShipBFieldMap_8cxx_source.html#l00349">ShipBFieldMap.cxx:349</a></div></div>
-<div class="ttc" id="aclassShipBFieldMap_html_acaa4364171c8cb1d35240f9055b7ff87"><div class="ttname"><a href="classShipBFieldMap.html#acaa4364171c8cb1d35240f9055b7ff87">ShipBFieldMap::readRootFile</a></div><div class="ttdeci">void readRootFile()</div><div class="ttdoc">Process the ROOT file containing the field map data.</div><div class="ttdef"><b>Definition</b> <a href="ShipBFieldMap_8cxx_source.html#l00272">ShipBFieldMap.cxx:272</a></div></div>
+<p class="definition">Definition at line <a class="el" href="ShipBFieldMap_8cxx_source.html#l00257">257</a> of file <a class="el" href="ShipBFieldMap_8cxx_source.html">ShipBFieldMap.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  257</span>                                {</div>
+<div class="line"><span class="lineno">  258</span>  LOG(info) &lt;&lt; <span class="stringliteral">&quot;ShipBFieldMap::readMapFile() creating field &quot;</span> &lt;&lt; this-&gt;GetName()</div>
+<div class="line"><span class="lineno">  259</span>            &lt;&lt; <span class="stringliteral">&quot; using file &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipBFieldMap.html#a484e859a4b353e0e66b53f8b1e54cc98">mapFileName_</a>;</div>
+<div class="line"><span class="lineno">  260</span> </div>
+<div class="line"><span class="lineno">  261</span>  <span class="comment">// Check to see if we have a ROOT file</span></div>
+<div class="line"><span class="lineno">  262</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classShipBFieldMap.html#a484e859a4b353e0e66b53f8b1e54cc98">mapFileName_</a>.find(<span class="stringliteral">&quot;.root&quot;</span>) != std::string::npos) {</div>
+<div class="line"><span class="lineno">  263</span>    this-&gt;<a class="code hl_function" href="classShipBFieldMap.html#acaa4364171c8cb1d35240f9055b7ff87">readRootFile</a>();</div>
+<div class="line"><span class="lineno">  264</span> </div>
+<div class="line"><span class="lineno">  265</span>  } <span class="keywordflow">else</span> {</div>
+<div class="line"><span class="lineno">  266</span>    this-&gt;<a class="code hl_function" href="classShipBFieldMap.html#aaf8aaa1e55d30bdec8a91e05a7a54fd4">readTextFile</a>();</div>
+<div class="line"><span class="lineno">  267</span>  }</div>
+<div class="line"><span class="lineno">  268</span>}</div>
+<div class="ttc" id="aclassShipBFieldMap_html_aaf8aaa1e55d30bdec8a91e05a7a54fd4"><div class="ttname"><a href="classShipBFieldMap.html#aaf8aaa1e55d30bdec8a91e05a7a54fd4">ShipBFieldMap::readTextFile</a></div><div class="ttdeci">void readTextFile()</div><div class="ttdoc">Process the text file containing the field map data.</div><div class="ttdef"><b>Definition</b> <a href="ShipBFieldMap_8cxx_source.html#l00347">ShipBFieldMap.cxx:347</a></div></div>
+<div class="ttc" id="aclassShipBFieldMap_html_acaa4364171c8cb1d35240f9055b7ff87"><div class="ttname"><a href="classShipBFieldMap.html#acaa4364171c8cb1d35240f9055b7ff87">ShipBFieldMap::readRootFile</a></div><div class="ttdeci">void readRootFile()</div><div class="ttdoc">Process the ROOT file containing the field map data.</div><div class="ttdef"><b>Definition</b> <a href="ShipBFieldMap_8cxx_source.html#l00270">ShipBFieldMap.cxx:270</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -2252,85 +2250,85 @@ Private Attributes</h2></td></tr>
 
 <p>Process the ROOT file containing the field map data. </p>
 
-<p class="definition">Definition at line <a class="el" href="ShipBFieldMap_8cxx_source.html#l00272">272</a> of file <a class="el" href="ShipBFieldMap_8cxx_source.html">ShipBFieldMap.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  272</span>                                 {</div>
-<div class="line"><span class="lineno">  273</span>  TFile* theFile = TFile::Open(<a class="code hl_variable" href="classShipBFieldMap.html#a484e859a4b353e0e66b53f8b1e54cc98">mapFileName_</a>.c_str());</div>
-<div class="line"><span class="lineno">  274</span> </div>
-<div class="line"><span class="lineno">  275</span>  <span class="keywordflow">if</span> (!theFile) {</div>
-<div class="line"><span class="lineno">  276</span>    LOG(fatal) &lt;&lt; <span class="stringliteral">&quot;ShipBFieldMap: could not find the file &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipBFieldMap.html#a484e859a4b353e0e66b53f8b1e54cc98">mapFileName_</a>;</div>
-<div class="line"><span class="lineno">  277</span>  }</div>
-<div class="line"><span class="lineno">  278</span> </div>
-<div class="line"><span class="lineno">  279</span>  <span class="comment">// Coordinate ranges</span></div>
-<div class="line"><span class="lineno">  280</span>  TTree* rTree = <span class="keyword">dynamic_cast&lt;</span>TTree*<span class="keyword">&gt;</span>(theFile-&gt;Get(<span class="stringliteral">&quot;Range&quot;</span>));</div>
-<div class="line"><span class="lineno">  281</span>  <span class="keywordflow">if</span> (!rTree) {</div>
-<div class="line"><span class="lineno">  282</span>    LOG(fatal) &lt;&lt; <span class="stringliteral">&quot;ShipBFieldMap: could not find Range tree in &quot;</span></div>
-<div class="line"><span class="lineno">  283</span>               &lt;&lt; <a class="code hl_variable" href="classShipBFieldMap.html#a484e859a4b353e0e66b53f8b1e54cc98">mapFileName_</a>;</div>
-<div class="line"><span class="lineno">  284</span>  }</div>
-<div class="line"><span class="lineno">  285</span> </div>
-<div class="line"><span class="lineno">  286</span>  rTree-&gt;SetBranchAddress(<span class="stringliteral">&quot;xMin&quot;</span>, &amp;<a class="code hl_variable" href="classShipBFieldMap.html#a686affa4758dc834602d7274f111fa76">xMin_</a>);</div>
-<div class="line"><span class="lineno">  287</span>  rTree-&gt;SetBranchAddress(<span class="stringliteral">&quot;xMax&quot;</span>, &amp;<a class="code hl_variable" href="classShipBFieldMap.html#a00ebcf5d5871b4d60a087710fca705a6">xMax_</a>);</div>
-<div class="line"><span class="lineno">  288</span>  rTree-&gt;SetBranchAddress(<span class="stringliteral">&quot;dx&quot;</span>, &amp;<a class="code hl_variable" href="classShipBFieldMap.html#ae84cc55fdd680b200bbab5ea720b2b19">dx_</a>);</div>
-<div class="line"><span class="lineno">  289</span>  rTree-&gt;SetBranchAddress(<span class="stringliteral">&quot;yMin&quot;</span>, &amp;<a class="code hl_variable" href="classShipBFieldMap.html#a4529066c7dca47ed195f98f923f7c30c">yMin_</a>);</div>
-<div class="line"><span class="lineno">  290</span>  rTree-&gt;SetBranchAddress(<span class="stringliteral">&quot;yMax&quot;</span>, &amp;<a class="code hl_variable" href="classShipBFieldMap.html#ad8a1a4c88b21f29339f361d341ba1304">yMax_</a>);</div>
-<div class="line"><span class="lineno">  291</span>  rTree-&gt;SetBranchAddress(<span class="stringliteral">&quot;dy&quot;</span>, &amp;<a class="code hl_variable" href="classShipBFieldMap.html#a14cd573350a95b0adde53cc7f1f880ab">dy_</a>);</div>
-<div class="line"><span class="lineno">  292</span>  rTree-&gt;SetBranchAddress(<span class="stringliteral">&quot;zMin&quot;</span>, &amp;<a class="code hl_variable" href="classShipBFieldMap.html#ae1b7e7af5e9ab9b4220dafc40f5de51c">zMin_</a>);</div>
-<div class="line"><span class="lineno">  293</span>  rTree-&gt;SetBranchAddress(<span class="stringliteral">&quot;zMax&quot;</span>, &amp;<a class="code hl_variable" href="classShipBFieldMap.html#adaea4a95149e4923b17e6e05c0d56c9f">zMax_</a>);</div>
-<div class="line"><span class="lineno">  294</span>  rTree-&gt;SetBranchAddress(<span class="stringliteral">&quot;dz&quot;</span>, &amp;<a class="code hl_variable" href="classShipBFieldMap.html#a1ca6516488c38f8effab03e4b6ef05ab">dz_</a>);</div>
-<div class="line"><span class="lineno">  295</span> </div>
-<div class="line"><span class="lineno">  296</span>  <span class="comment">// Fill the ranges</span></div>
-<div class="line"><span class="lineno">  297</span>  rTree-&gt;GetEntry(0);</div>
+<p class="definition">Definition at line <a class="el" href="ShipBFieldMap_8cxx_source.html#l00270">270</a> of file <a class="el" href="ShipBFieldMap_8cxx_source.html">ShipBFieldMap.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  270</span>                                 {</div>
+<div class="line"><span class="lineno">  271</span>  TFile* theFile = TFile::Open(<a class="code hl_variable" href="classShipBFieldMap.html#a484e859a4b353e0e66b53f8b1e54cc98">mapFileName_</a>.c_str());</div>
+<div class="line"><span class="lineno">  272</span> </div>
+<div class="line"><span class="lineno">  273</span>  <span class="keywordflow">if</span> (!theFile) {</div>
+<div class="line"><span class="lineno">  274</span>    LOG(fatal) &lt;&lt; <span class="stringliteral">&quot;ShipBFieldMap: could not find the file &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipBFieldMap.html#a484e859a4b353e0e66b53f8b1e54cc98">mapFileName_</a>;</div>
+<div class="line"><span class="lineno">  275</span>  }</div>
+<div class="line"><span class="lineno">  276</span> </div>
+<div class="line"><span class="lineno">  277</span>  <span class="comment">// Coordinate ranges</span></div>
+<div class="line"><span class="lineno">  278</span>  TTree* rTree = <span class="keyword">dynamic_cast&lt;</span>TTree*<span class="keyword">&gt;</span>(theFile-&gt;Get(<span class="stringliteral">&quot;Range&quot;</span>));</div>
+<div class="line"><span class="lineno">  279</span>  <span class="keywordflow">if</span> (!rTree) {</div>
+<div class="line"><span class="lineno">  280</span>    LOG(fatal) &lt;&lt; <span class="stringliteral">&quot;ShipBFieldMap: could not find Range tree in &quot;</span></div>
+<div class="line"><span class="lineno">  281</span>               &lt;&lt; <a class="code hl_variable" href="classShipBFieldMap.html#a484e859a4b353e0e66b53f8b1e54cc98">mapFileName_</a>;</div>
+<div class="line"><span class="lineno">  282</span>  }</div>
+<div class="line"><span class="lineno">  283</span> </div>
+<div class="line"><span class="lineno">  284</span>  rTree-&gt;SetBranchAddress(<span class="stringliteral">&quot;xMin&quot;</span>, &amp;<a class="code hl_variable" href="classShipBFieldMap.html#a686affa4758dc834602d7274f111fa76">xMin_</a>);</div>
+<div class="line"><span class="lineno">  285</span>  rTree-&gt;SetBranchAddress(<span class="stringliteral">&quot;xMax&quot;</span>, &amp;<a class="code hl_variable" href="classShipBFieldMap.html#a00ebcf5d5871b4d60a087710fca705a6">xMax_</a>);</div>
+<div class="line"><span class="lineno">  286</span>  rTree-&gt;SetBranchAddress(<span class="stringliteral">&quot;dx&quot;</span>, &amp;<a class="code hl_variable" href="classShipBFieldMap.html#ae84cc55fdd680b200bbab5ea720b2b19">dx_</a>);</div>
+<div class="line"><span class="lineno">  287</span>  rTree-&gt;SetBranchAddress(<span class="stringliteral">&quot;yMin&quot;</span>, &amp;<a class="code hl_variable" href="classShipBFieldMap.html#a4529066c7dca47ed195f98f923f7c30c">yMin_</a>);</div>
+<div class="line"><span class="lineno">  288</span>  rTree-&gt;SetBranchAddress(<span class="stringliteral">&quot;yMax&quot;</span>, &amp;<a class="code hl_variable" href="classShipBFieldMap.html#ad8a1a4c88b21f29339f361d341ba1304">yMax_</a>);</div>
+<div class="line"><span class="lineno">  289</span>  rTree-&gt;SetBranchAddress(<span class="stringliteral">&quot;dy&quot;</span>, &amp;<a class="code hl_variable" href="classShipBFieldMap.html#a14cd573350a95b0adde53cc7f1f880ab">dy_</a>);</div>
+<div class="line"><span class="lineno">  290</span>  rTree-&gt;SetBranchAddress(<span class="stringliteral">&quot;zMin&quot;</span>, &amp;<a class="code hl_variable" href="classShipBFieldMap.html#ae1b7e7af5e9ab9b4220dafc40f5de51c">zMin_</a>);</div>
+<div class="line"><span class="lineno">  291</span>  rTree-&gt;SetBranchAddress(<span class="stringliteral">&quot;zMax&quot;</span>, &amp;<a class="code hl_variable" href="classShipBFieldMap.html#adaea4a95149e4923b17e6e05c0d56c9f">zMax_</a>);</div>
+<div class="line"><span class="lineno">  292</span>  rTree-&gt;SetBranchAddress(<span class="stringliteral">&quot;dz&quot;</span>, &amp;<a class="code hl_variable" href="classShipBFieldMap.html#a1ca6516488c38f8effab03e4b6ef05ab">dz_</a>);</div>
+<div class="line"><span class="lineno">  293</span> </div>
+<div class="line"><span class="lineno">  294</span>  <span class="comment">// Fill the ranges</span></div>
+<div class="line"><span class="lineno">  295</span>  rTree-&gt;GetEntry(0);</div>
+<div class="line"><span class="lineno">  296</span> </div>
+<div class="line"><span class="lineno">  297</span>  this-&gt;<a class="code hl_function" href="classShipBFieldMap.html#a48f1c63fed25d604f8f37f35127e979f">setLimits</a>();</div>
 <div class="line"><span class="lineno">  298</span> </div>
-<div class="line"><span class="lineno">  299</span>  this-&gt;<a class="code hl_function" href="classShipBFieldMap.html#a48f1c63fed25d604f8f37f35127e979f">setLimits</a>();</div>
-<div class="line"><span class="lineno">  300</span> </div>
-<div class="line"><span class="lineno">  301</span>  <span class="comment">// Make sure we don&#39;t have a copy</span></div>
-<div class="line"><span class="lineno">  302</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classShipBFieldMap.html#a5cf3d9cf22af3b789ec42a2f475bf241">isCopy_</a> == kFALSE) {</div>
-<div class="line"><span class="lineno">  303</span>    <span class="comment">// The data is expected to contain Bx,By,Bz data values</span></div>
-<div class="line"><span class="lineno">  304</span>    <span class="comment">// in ascending z,y,x coordinate order</span></div>
-<div class="line"><span class="lineno">  305</span> </div>
-<div class="line"><span class="lineno">  306</span>    TTree* <a class="code hl_variable" href="namespacemakeMuonEM.html#a8fd1a8248626227b207de3ca945212f4">dTree</a> = <span class="keyword">dynamic_cast&lt;</span>TTree*<span class="keyword">&gt;</span>(theFile-&gt;Get(<span class="stringliteral">&quot;Data&quot;</span>));</div>
-<div class="line"><span class="lineno">  307</span>    <span class="keywordflow">if</span> (!dTree) {</div>
-<div class="line"><span class="lineno">  308</span>      LOG(fatal) &lt;&lt; <span class="stringliteral">&quot;ShipBFieldMap: could not find Data tree in &quot;</span></div>
-<div class="line"><span class="lineno">  309</span>                 &lt;&lt; <a class="code hl_variable" href="classShipBFieldMap.html#a484e859a4b353e0e66b53f8b1e54cc98">mapFileName_</a>;</div>
-<div class="line"><span class="lineno">  310</span>    }</div>
-<div class="line"><span class="lineno">  311</span> </div>
-<div class="line"><span class="lineno">  312</span>    Float_t Bx, By, Bz;</div>
-<div class="line"><span class="lineno">  313</span>    <span class="comment">// Only enable the field components</span></div>
-<div class="line"><span class="lineno">  314</span>    <a class="code hl_variable" href="namespacemakeMuonEM.html#a8fd1a8248626227b207de3ca945212f4">dTree</a>-&gt;SetBranchStatus(<span class="stringliteral">&quot;*&quot;</span>, 0);</div>
-<div class="line"><span class="lineno">  315</span>    <a class="code hl_variable" href="namespacemakeMuonEM.html#a8fd1a8248626227b207de3ca945212f4">dTree</a>-&gt;SetBranchStatus(<span class="stringliteral">&quot;Bx&quot;</span>, 1);</div>
-<div class="line"><span class="lineno">  316</span>    <a class="code hl_variable" href="namespacemakeMuonEM.html#a8fd1a8248626227b207de3ca945212f4">dTree</a>-&gt;SetBranchStatus(<span class="stringliteral">&quot;By&quot;</span>, 1);</div>
-<div class="line"><span class="lineno">  317</span>    <a class="code hl_variable" href="namespacemakeMuonEM.html#a8fd1a8248626227b207de3ca945212f4">dTree</a>-&gt;SetBranchStatus(<span class="stringliteral">&quot;Bz&quot;</span>, 1);</div>
-<div class="line"><span class="lineno">  318</span> </div>
-<div class="line"><span class="lineno">  319</span>    <a class="code hl_variable" href="namespacemakeMuonEM.html#a8fd1a8248626227b207de3ca945212f4">dTree</a>-&gt;SetBranchAddress(<span class="stringliteral">&quot;Bx&quot;</span>, &amp;Bx);</div>
-<div class="line"><span class="lineno">  320</span>    <a class="code hl_variable" href="namespacemakeMuonEM.html#a8fd1a8248626227b207de3ca945212f4">dTree</a>-&gt;SetBranchAddress(<span class="stringliteral">&quot;By&quot;</span>, &amp;By);</div>
-<div class="line"><span class="lineno">  321</span>    <a class="code hl_variable" href="namespacemakeMuonEM.html#a8fd1a8248626227b207de3ca945212f4">dTree</a>-&gt;SetBranchAddress(<span class="stringliteral">&quot;Bz&quot;</span>, &amp;Bz);</div>
-<div class="line"><span class="lineno">  322</span> </div>
-<div class="line"><span class="lineno">  323</span>    Int_t <a class="code hl_variable" href="namespaceShipReco.html#ad7b580ede28eace1716a1ad48fbd236d">nEntries</a> = <a class="code hl_variable" href="namespacemakeMuonEM.html#a8fd1a8248626227b207de3ca945212f4">dTree</a>-&gt;GetEntries();</div>
-<div class="line"><span class="lineno">  324</span>    <span class="keywordflow">if</span> (nEntries != <a class="code hl_variable" href="classShipBFieldMap.html#a3cba8a90fad19de37cd6589699f15256">N_</a>) {</div>
-<div class="line"><span class="lineno">  325</span>      LOG(fatal) &lt;&lt; <span class="stringliteral">&quot;Expected &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipBFieldMap.html#a3cba8a90fad19de37cd6589699f15256">N_</a> &lt;&lt; <span class="stringliteral">&quot; field map entries but found &quot;</span></div>
-<div class="line"><span class="lineno">  326</span>                 &lt;&lt; <a class="code hl_variable" href="namespaceShipReco.html#ad7b580ede28eace1716a1ad48fbd236d">nEntries</a>;</div>
-<div class="line"><span class="lineno">  327</span>      <a class="code hl_variable" href="namespaceShipReco.html#ad7b580ede28eace1716a1ad48fbd236d">nEntries</a> = 0;</div>
-<div class="line"><span class="lineno">  328</span>    }</div>
+<div class="line"><span class="lineno">  299</span>  <span class="comment">// Make sure we don&#39;t have a copy</span></div>
+<div class="line"><span class="lineno">  300</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classShipBFieldMap.html#a5cf3d9cf22af3b789ec42a2f475bf241">isCopy_</a> == kFALSE) {</div>
+<div class="line"><span class="lineno">  301</span>    <span class="comment">// The data is expected to contain Bx,By,Bz data values</span></div>
+<div class="line"><span class="lineno">  302</span>    <span class="comment">// in ascending z,y,x coordinate order</span></div>
+<div class="line"><span class="lineno">  303</span> </div>
+<div class="line"><span class="lineno">  304</span>    TTree* <a class="code hl_variable" href="namespacemakeMuonEM.html#a8fd1a8248626227b207de3ca945212f4">dTree</a> = <span class="keyword">dynamic_cast&lt;</span>TTree*<span class="keyword">&gt;</span>(theFile-&gt;Get(<span class="stringliteral">&quot;Data&quot;</span>));</div>
+<div class="line"><span class="lineno">  305</span>    <span class="keywordflow">if</span> (!dTree) {</div>
+<div class="line"><span class="lineno">  306</span>      LOG(fatal) &lt;&lt; <span class="stringliteral">&quot;ShipBFieldMap: could not find Data tree in &quot;</span></div>
+<div class="line"><span class="lineno">  307</span>                 &lt;&lt; <a class="code hl_variable" href="classShipBFieldMap.html#a484e859a4b353e0e66b53f8b1e54cc98">mapFileName_</a>;</div>
+<div class="line"><span class="lineno">  308</span>    }</div>
+<div class="line"><span class="lineno">  309</span> </div>
+<div class="line"><span class="lineno">  310</span>    Float_t Bx, By, Bz;</div>
+<div class="line"><span class="lineno">  311</span>    <span class="comment">// Only enable the field components</span></div>
+<div class="line"><span class="lineno">  312</span>    <a class="code hl_variable" href="namespacemakeMuonEM.html#a8fd1a8248626227b207de3ca945212f4">dTree</a>-&gt;SetBranchStatus(<span class="stringliteral">&quot;*&quot;</span>, 0);</div>
+<div class="line"><span class="lineno">  313</span>    <a class="code hl_variable" href="namespacemakeMuonEM.html#a8fd1a8248626227b207de3ca945212f4">dTree</a>-&gt;SetBranchStatus(<span class="stringliteral">&quot;Bx&quot;</span>, 1);</div>
+<div class="line"><span class="lineno">  314</span>    <a class="code hl_variable" href="namespacemakeMuonEM.html#a8fd1a8248626227b207de3ca945212f4">dTree</a>-&gt;SetBranchStatus(<span class="stringliteral">&quot;By&quot;</span>, 1);</div>
+<div class="line"><span class="lineno">  315</span>    <a class="code hl_variable" href="namespacemakeMuonEM.html#a8fd1a8248626227b207de3ca945212f4">dTree</a>-&gt;SetBranchStatus(<span class="stringliteral">&quot;Bz&quot;</span>, 1);</div>
+<div class="line"><span class="lineno">  316</span> </div>
+<div class="line"><span class="lineno">  317</span>    <a class="code hl_variable" href="namespacemakeMuonEM.html#a8fd1a8248626227b207de3ca945212f4">dTree</a>-&gt;SetBranchAddress(<span class="stringliteral">&quot;Bx&quot;</span>, &amp;Bx);</div>
+<div class="line"><span class="lineno">  318</span>    <a class="code hl_variable" href="namespacemakeMuonEM.html#a8fd1a8248626227b207de3ca945212f4">dTree</a>-&gt;SetBranchAddress(<span class="stringliteral">&quot;By&quot;</span>, &amp;By);</div>
+<div class="line"><span class="lineno">  319</span>    <a class="code hl_variable" href="namespacemakeMuonEM.html#a8fd1a8248626227b207de3ca945212f4">dTree</a>-&gt;SetBranchAddress(<span class="stringliteral">&quot;Bz&quot;</span>, &amp;Bz);</div>
+<div class="line"><span class="lineno">  320</span> </div>
+<div class="line"><span class="lineno">  321</span>    Int_t <a class="code hl_variable" href="namespaceShipReco.html#ad7b580ede28eace1716a1ad48fbd236d">nEntries</a> = <a class="code hl_variable" href="namespacemakeMuonEM.html#a8fd1a8248626227b207de3ca945212f4">dTree</a>-&gt;GetEntries();</div>
+<div class="line"><span class="lineno">  322</span>    <span class="keywordflow">if</span> (nEntries != <a class="code hl_variable" href="classShipBFieldMap.html#a3cba8a90fad19de37cd6589699f15256">N_</a>) {</div>
+<div class="line"><span class="lineno">  323</span>      LOG(fatal) &lt;&lt; <span class="stringliteral">&quot;Expected &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipBFieldMap.html#a3cba8a90fad19de37cd6589699f15256">N_</a> &lt;&lt; <span class="stringliteral">&quot; field map entries but found &quot;</span></div>
+<div class="line"><span class="lineno">  324</span>                 &lt;&lt; <a class="code hl_variable" href="namespaceShipReco.html#ad7b580ede28eace1716a1ad48fbd236d">nEntries</a>;</div>
+<div class="line"><span class="lineno">  325</span>      <a class="code hl_variable" href="namespaceShipReco.html#ad7b580ede28eace1716a1ad48fbd236d">nEntries</a> = 0;</div>
+<div class="line"><span class="lineno">  326</span>    }</div>
+<div class="line"><span class="lineno">  327</span> </div>
+<div class="line"><span class="lineno">  328</span>    <a class="code hl_variable" href="classShipBFieldMap.html#a40d2bc90d23707faac34eba21b77c5dd">fieldMap_</a>-&gt;reserve(nEntries);</div>
 <div class="line"><span class="lineno">  329</span> </div>
-<div class="line"><span class="lineno">  330</span>    <a class="code hl_variable" href="classShipBFieldMap.html#a40d2bc90d23707faac34eba21b77c5dd">fieldMap_</a>-&gt;reserve(nEntries);</div>
-<div class="line"><span class="lineno">  331</span> </div>
-<div class="line"><span class="lineno">  332</span>    <span class="keywordflow">for</span> (Int_t i = 0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt; <a class="code hl_variable" href="namespaceShipReco.html#ad7b580ede28eace1716a1ad48fbd236d">nEntries</a>; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>++) {</div>
-<div class="line"><span class="lineno">  333</span>      <a class="code hl_variable" href="namespacemakeMuonEM.html#a8fd1a8248626227b207de3ca945212f4">dTree</a>-&gt;GetEntry(i);</div>
-<div class="line"><span class="lineno">  334</span> </div>
-<div class="line"><span class="lineno">  335</span>      <span class="comment">// B field values are in Tesla. This means these values are multiplied</span></div>
-<div class="line"><span class="lineno">  336</span>      <span class="comment">// by a factor of ten since both FairRoot and the VMC interface use kGauss</span></div>
-<div class="line"><span class="lineno">  337</span>      Bx *= <a class="code hl_variable" href="classShipBFieldMap.html#a37781644b55bd1e55b4e61661d7fa7f0">Tesla_</a>;</div>
-<div class="line"><span class="lineno">  338</span>      By *= <a class="code hl_variable" href="classShipBFieldMap.html#a37781644b55bd1e55b4e61661d7fa7f0">Tesla_</a>;</div>
-<div class="line"><span class="lineno">  339</span>      Bz *= <a class="code hl_variable" href="classShipBFieldMap.html#a37781644b55bd1e55b4e61661d7fa7f0">Tesla_</a>;</div>
-<div class="line"><span class="lineno">  340</span> </div>
-<div class="line"><span class="lineno">  341</span>      <span class="comment">// Store the B field 3-vector</span></div>
-<div class="line"><span class="lineno">  342</span>      <a class="code hl_variable" href="classShipBFieldMap.html#a40d2bc90d23707faac34eba21b77c5dd">fieldMap_</a>-&gt;push_back({Bx, By, Bz});</div>
-<div class="line"><span class="lineno">  343</span>    }</div>
-<div class="line"><span class="lineno">  344</span>  }</div>
-<div class="line"><span class="lineno">  345</span> </div>
-<div class="line"><span class="lineno">  346</span>  theFile-&gt;Close();</div>
-<div class="line"><span class="lineno">  347</span>}</div>
-<div class="ttc" id="aclassShipBFieldMap_html_a48f1c63fed25d604f8f37f35127e979f"><div class="ttname"><a href="classShipBFieldMap.html#a48f1c63fed25d604f8f37f35127e979f">ShipBFieldMap::setLimits</a></div><div class="ttdeci">void setLimits()</div><div class="ttdef"><b>Definition</b> <a href="ShipBFieldMap_8cxx_source.html#l00406">ShipBFieldMap.cxx:406</a></div></div>
-<div class="ttc" id="anamespaceShipReco_html_ad7b580ede28eace1716a1ad48fbd236d"><div class="ttname"><a href="namespaceShipReco.html#ad7b580ede28eace1716a1ad48fbd236d">ShipReco.nEntries</a></div><div class="ttdeci">nEntries</div><div class="ttdef"><b>Definition</b> <a href="ShipReco_8py_source.html#l00179">ShipReco.py:179</a></div></div>
+<div class="line"><span class="lineno">  330</span>    <span class="keywordflow">for</span> (Int_t i = 0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt; <a class="code hl_variable" href="namespaceShipReco.html#ad7b580ede28eace1716a1ad48fbd236d">nEntries</a>; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>++) {</div>
+<div class="line"><span class="lineno">  331</span>      <a class="code hl_variable" href="namespacemakeMuonEM.html#a8fd1a8248626227b207de3ca945212f4">dTree</a>-&gt;GetEntry(i);</div>
+<div class="line"><span class="lineno">  332</span> </div>
+<div class="line"><span class="lineno">  333</span>      <span class="comment">// B field values are in Tesla. This means these values are multiplied</span></div>
+<div class="line"><span class="lineno">  334</span>      <span class="comment">// by a factor of ten since both FairRoot and the VMC interface use kGauss</span></div>
+<div class="line"><span class="lineno">  335</span>      Bx *= <a class="code hl_variable" href="classShipBFieldMap.html#a37781644b55bd1e55b4e61661d7fa7f0">Tesla_</a>;</div>
+<div class="line"><span class="lineno">  336</span>      By *= <a class="code hl_variable" href="classShipBFieldMap.html#a37781644b55bd1e55b4e61661d7fa7f0">Tesla_</a>;</div>
+<div class="line"><span class="lineno">  337</span>      Bz *= <a class="code hl_variable" href="classShipBFieldMap.html#a37781644b55bd1e55b4e61661d7fa7f0">Tesla_</a>;</div>
+<div class="line"><span class="lineno">  338</span> </div>
+<div class="line"><span class="lineno">  339</span>      <span class="comment">// Store the B field 3-vector</span></div>
+<div class="line"><span class="lineno">  340</span>      <a class="code hl_variable" href="classShipBFieldMap.html#a40d2bc90d23707faac34eba21b77c5dd">fieldMap_</a>-&gt;push_back({Bx, By, Bz});</div>
+<div class="line"><span class="lineno">  341</span>    }</div>
+<div class="line"><span class="lineno">  342</span>  }</div>
+<div class="line"><span class="lineno">  343</span> </div>
+<div class="line"><span class="lineno">  344</span>  theFile-&gt;Close();</div>
+<div class="line"><span class="lineno">  345</span>}</div>
+<div class="ttc" id="aclassShipBFieldMap_html_a48f1c63fed25d604f8f37f35127e979f"><div class="ttname"><a href="classShipBFieldMap.html#a48f1c63fed25d604f8f37f35127e979f">ShipBFieldMap::setLimits</a></div><div class="ttdeci">void setLimits()</div><div class="ttdef"><b>Definition</b> <a href="ShipBFieldMap_8cxx_source.html#l00404">ShipBFieldMap.cxx:404</a></div></div>
+<div class="ttc" id="anamespaceShipReco_html_ad7b580ede28eace1716a1ad48fbd236d"><div class="ttname"><a href="namespaceShipReco.html#ad7b580ede28eace1716a1ad48fbd236d">ShipReco.nEntries</a></div><div class="ttdeci">nEntries</div><div class="ttdef"><b>Definition</b> <a href="ShipReco_8py_source.html#l00177">ShipReco.py:177</a></div></div>
 <div class="ttc" id="anamespacemakeMuonEM_html_a8fd1a8248626227b207de3ca945212f4"><div class="ttname"><a href="namespacemakeMuonEM.html#a8fd1a8248626227b207de3ca945212f4">makeMuonEM.dTree</a></div><div class="ttdeci">dTree</div><div class="ttdef"><b>Definition</b> <a href="makeMuonEM_8py_source.html#l00034">makeMuonEM.py:34</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -2360,52 +2358,52 @@ Private Attributes</h2></td></tr>
 
 <p>Process the text file containing the field map data. </p>
 
-<p class="definition">Definition at line <a class="el" href="ShipBFieldMap_8cxx_source.html#l00349">349</a> of file <a class="el" href="ShipBFieldMap_8cxx_source.html">ShipBFieldMap.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  349</span>                                 {</div>
-<div class="line"><span class="lineno">  350</span>  std::ifstream getData(<a class="code hl_variable" href="classShipBFieldMap.html#a484e859a4b353e0e66b53f8b1e54cc98">mapFileName_</a>.c_str());</div>
-<div class="line"><span class="lineno">  351</span> </div>
-<div class="line"><span class="lineno">  352</span>  <span class="keywordflow">if</span> (!getData.is_open()) {</div>
-<div class="line"><span class="lineno">  353</span>    LOG(fatal) &lt;&lt; <span class="stringliteral">&quot;Error: Cannot open magnetic field map file: &quot;</span></div>
-<div class="line"><span class="lineno">  354</span>               &lt;&lt; <a class="code hl_variable" href="classShipBFieldMap.html#a484e859a4b353e0e66b53f8b1e54cc98">mapFileName_</a>;</div>
-<div class="line"><span class="lineno">  355</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="ShipBFieldMap_8cxx_source.html#l00347">347</a> of file <a class="el" href="ShipBFieldMap_8cxx_source.html">ShipBFieldMap.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  347</span>                                 {</div>
+<div class="line"><span class="lineno">  348</span>  std::ifstream getData(<a class="code hl_variable" href="classShipBFieldMap.html#a484e859a4b353e0e66b53f8b1e54cc98">mapFileName_</a>.c_str());</div>
+<div class="line"><span class="lineno">  349</span> </div>
+<div class="line"><span class="lineno">  350</span>  <span class="keywordflow">if</span> (!getData.is_open()) {</div>
+<div class="line"><span class="lineno">  351</span>    LOG(fatal) &lt;&lt; <span class="stringliteral">&quot;Error: Cannot open magnetic field map file: &quot;</span></div>
+<div class="line"><span class="lineno">  352</span>               &lt;&lt; <a class="code hl_variable" href="classShipBFieldMap.html#a484e859a4b353e0e66b53f8b1e54cc98">mapFileName_</a>;</div>
+<div class="line"><span class="lineno">  353</span>  }</div>
+<div class="line"><span class="lineno">  354</span> </div>
+<div class="line"><span class="lineno">  355</span>  std::string tmpString(<span class="stringliteral">&quot;&quot;</span>);</div>
 <div class="line"><span class="lineno">  356</span> </div>
-<div class="line"><span class="lineno">  357</span>  std::string tmpString(<span class="stringliteral">&quot;&quot;</span>);</div>
-<div class="line"><span class="lineno">  358</span> </div>
-<div class="line"><span class="lineno">  359</span>  getData &gt;&gt; tmpString &gt;&gt; <a class="code hl_variable" href="classShipBFieldMap.html#a686affa4758dc834602d7274f111fa76">xMin_</a> &gt;&gt; <a class="code hl_variable" href="classShipBFieldMap.html#a00ebcf5d5871b4d60a087710fca705a6">xMax_</a> &gt;&gt; <a class="code hl_variable" href="classShipBFieldMap.html#ae84cc55fdd680b200bbab5ea720b2b19">dx_</a> &gt;&gt; <a class="code hl_variable" href="classShipBFieldMap.html#a4529066c7dca47ed195f98f923f7c30c">yMin_</a> &gt;&gt; <a class="code hl_variable" href="classShipBFieldMap.html#ad8a1a4c88b21f29339f361d341ba1304">yMax_</a> &gt;&gt; <a class="code hl_variable" href="classShipBFieldMap.html#a14cd573350a95b0adde53cc7f1f880ab">dy_</a> &gt;&gt;</div>
-<div class="line"><span class="lineno">  360</span>      <a class="code hl_variable" href="classShipBFieldMap.html#ae1b7e7af5e9ab9b4220dafc40f5de51c">zMin_</a> &gt;&gt; <a class="code hl_variable" href="classShipBFieldMap.html#adaea4a95149e4923b17e6e05c0d56c9f">zMax_</a> &gt;&gt; <a class="code hl_variable" href="classShipBFieldMap.html#a1ca6516488c38f8effab03e4b6ef05ab">dz_</a>;</div>
+<div class="line"><span class="lineno">  357</span>  getData &gt;&gt; tmpString &gt;&gt; <a class="code hl_variable" href="classShipBFieldMap.html#a686affa4758dc834602d7274f111fa76">xMin_</a> &gt;&gt; <a class="code hl_variable" href="classShipBFieldMap.html#a00ebcf5d5871b4d60a087710fca705a6">xMax_</a> &gt;&gt; <a class="code hl_variable" href="classShipBFieldMap.html#ae84cc55fdd680b200bbab5ea720b2b19">dx_</a> &gt;&gt; <a class="code hl_variable" href="classShipBFieldMap.html#a4529066c7dca47ed195f98f923f7c30c">yMin_</a> &gt;&gt; <a class="code hl_variable" href="classShipBFieldMap.html#ad8a1a4c88b21f29339f361d341ba1304">yMax_</a> &gt;&gt; <a class="code hl_variable" href="classShipBFieldMap.html#a14cd573350a95b0adde53cc7f1f880ab">dy_</a> &gt;&gt;</div>
+<div class="line"><span class="lineno">  358</span>      <a class="code hl_variable" href="classShipBFieldMap.html#ae1b7e7af5e9ab9b4220dafc40f5de51c">zMin_</a> &gt;&gt; <a class="code hl_variable" href="classShipBFieldMap.html#adaea4a95149e4923b17e6e05c0d56c9f">zMax_</a> &gt;&gt; <a class="code hl_variable" href="classShipBFieldMap.html#a1ca6516488c38f8effab03e4b6ef05ab">dz_</a>;</div>
+<div class="line"><span class="lineno">  359</span> </div>
+<div class="line"><span class="lineno">  360</span>  this-&gt;<a class="code hl_function" href="classShipBFieldMap.html#a48f1c63fed25d604f8f37f35127e979f">setLimits</a>();</div>
 <div class="line"><span class="lineno">  361</span> </div>
-<div class="line"><span class="lineno">  362</span>  this-&gt;<a class="code hl_function" href="classShipBFieldMap.html#a48f1c63fed25d604f8f37f35127e979f">setLimits</a>();</div>
-<div class="line"><span class="lineno">  363</span> </div>
-<div class="line"><span class="lineno">  364</span>  <span class="comment">// Check to see if this object is a &quot;copy&quot;</span></div>
-<div class="line"><span class="lineno">  365</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classShipBFieldMap.html#a5cf3d9cf22af3b789ec42a2f475bf241">isCopy_</a> == kFALSE) {</div>
-<div class="line"><span class="lineno">  366</span>    <span class="comment">// Read the field map and store the magnetic field components</span></div>
-<div class="line"><span class="lineno">  367</span> </div>
-<div class="line"><span class="lineno">  368</span>    <span class="comment">// Second line can be ignored since they are</span></div>
-<div class="line"><span class="lineno">  369</span>    <span class="comment">// just labels for the data columns for readability</span></div>
-<div class="line"><span class="lineno">  370</span>    getData &gt;&gt; tmpString &gt;&gt; tmpString &gt;&gt; tmpString;</div>
-<div class="line"><span class="lineno">  371</span> </div>
-<div class="line"><span class="lineno">  372</span>    <span class="comment">// The remaining lines contain Bx,By,Bz data values</span></div>
-<div class="line"><span class="lineno">  373</span>    <span class="comment">// in ascending z,y,x co-ord order</span></div>
-<div class="line"><span class="lineno">  374</span>    <a class="code hl_variable" href="classShipBFieldMap.html#a40d2bc90d23707faac34eba21b77c5dd">fieldMap_</a>-&gt;reserve(<a class="code hl_variable" href="classShipBFieldMap.html#a3cba8a90fad19de37cd6589699f15256">N_</a>);</div>
+<div class="line"><span class="lineno">  362</span>  <span class="comment">// Check to see if this object is a &quot;copy&quot;</span></div>
+<div class="line"><span class="lineno">  363</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classShipBFieldMap.html#a5cf3d9cf22af3b789ec42a2f475bf241">isCopy_</a> == kFALSE) {</div>
+<div class="line"><span class="lineno">  364</span>    <span class="comment">// Read the field map and store the magnetic field components</span></div>
+<div class="line"><span class="lineno">  365</span> </div>
+<div class="line"><span class="lineno">  366</span>    <span class="comment">// Second line can be ignored since they are</span></div>
+<div class="line"><span class="lineno">  367</span>    <span class="comment">// just labels for the data columns for readability</span></div>
+<div class="line"><span class="lineno">  368</span>    getData &gt;&gt; tmpString &gt;&gt; tmpString &gt;&gt; tmpString;</div>
+<div class="line"><span class="lineno">  369</span> </div>
+<div class="line"><span class="lineno">  370</span>    <span class="comment">// The remaining lines contain Bx,By,Bz data values</span></div>
+<div class="line"><span class="lineno">  371</span>    <span class="comment">// in ascending z,y,x co-ord order</span></div>
+<div class="line"><span class="lineno">  372</span>    <a class="code hl_variable" href="classShipBFieldMap.html#a40d2bc90d23707faac34eba21b77c5dd">fieldMap_</a>-&gt;reserve(<a class="code hl_variable" href="classShipBFieldMap.html#a3cba8a90fad19de37cd6589699f15256">N_</a>);</div>
+<div class="line"><span class="lineno">  373</span> </div>
+<div class="line"><span class="lineno">  374</span>    Float_t Bx(0.0), By(0.0), Bz(0.0);</div>
 <div class="line"><span class="lineno">  375</span> </div>
-<div class="line"><span class="lineno">  376</span>    Float_t Bx(0.0), By(0.0), Bz(0.0);</div>
-<div class="line"><span class="lineno">  377</span> </div>
-<div class="line"><span class="lineno">  378</span>    <span class="keywordflow">for</span> (Int_t i = 0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt; <a class="code hl_variable" href="classShipBFieldMap.html#a3cba8a90fad19de37cd6589699f15256">N_</a>; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>++) {</div>
-<div class="line"><span class="lineno">  379</span>      getData &gt;&gt; Bx &gt;&gt; By &gt;&gt; Bz;</div>
-<div class="line"><span class="lineno">  380</span> </div>
-<div class="line"><span class="lineno">  381</span>      <span class="comment">// B field values are in Tesla. This means these values are multiplied</span></div>
-<div class="line"><span class="lineno">  382</span>      <span class="comment">// by a factor of ten since both FairRoot and the VMC interface use kGauss</span></div>
-<div class="line"><span class="lineno">  383</span>      Bx *= <a class="code hl_variable" href="classShipBFieldMap.html#a37781644b55bd1e55b4e61661d7fa7f0">Tesla_</a>;</div>
-<div class="line"><span class="lineno">  384</span>      By *= <a class="code hl_variable" href="classShipBFieldMap.html#a37781644b55bd1e55b4e61661d7fa7f0">Tesla_</a>;</div>
-<div class="line"><span class="lineno">  385</span>      Bz *= <a class="code hl_variable" href="classShipBFieldMap.html#a37781644b55bd1e55b4e61661d7fa7f0">Tesla_</a>;</div>
-<div class="line"><span class="lineno">  386</span> </div>
-<div class="line"><span class="lineno">  387</span>      <span class="comment">// Store the B field 3-vector</span></div>
-<div class="line"><span class="lineno">  388</span>      <a class="code hl_variable" href="classShipBFieldMap.html#a40d2bc90d23707faac34eba21b77c5dd">fieldMap_</a>-&gt;push_back({Bx, By, Bz});</div>
-<div class="line"><span class="lineno">  389</span>    }</div>
-<div class="line"><span class="lineno">  390</span>  }</div>
-<div class="line"><span class="lineno">  391</span> </div>
-<div class="line"><span class="lineno">  392</span>  getData.close();</div>
-<div class="line"><span class="lineno">  393</span>}</div>
+<div class="line"><span class="lineno">  376</span>    <span class="keywordflow">for</span> (Int_t i = 0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt; <a class="code hl_variable" href="classShipBFieldMap.html#a3cba8a90fad19de37cd6589699f15256">N_</a>; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>++) {</div>
+<div class="line"><span class="lineno">  377</span>      getData &gt;&gt; Bx &gt;&gt; By &gt;&gt; Bz;</div>
+<div class="line"><span class="lineno">  378</span> </div>
+<div class="line"><span class="lineno">  379</span>      <span class="comment">// B field values are in Tesla. This means these values are multiplied</span></div>
+<div class="line"><span class="lineno">  380</span>      <span class="comment">// by a factor of ten since both FairRoot and the VMC interface use kGauss</span></div>
+<div class="line"><span class="lineno">  381</span>      Bx *= <a class="code hl_variable" href="classShipBFieldMap.html#a37781644b55bd1e55b4e61661d7fa7f0">Tesla_</a>;</div>
+<div class="line"><span class="lineno">  382</span>      By *= <a class="code hl_variable" href="classShipBFieldMap.html#a37781644b55bd1e55b4e61661d7fa7f0">Tesla_</a>;</div>
+<div class="line"><span class="lineno">  383</span>      Bz *= <a class="code hl_variable" href="classShipBFieldMap.html#a37781644b55bd1e55b4e61661d7fa7f0">Tesla_</a>;</div>
+<div class="line"><span class="lineno">  384</span> </div>
+<div class="line"><span class="lineno">  385</span>      <span class="comment">// Store the B field 3-vector</span></div>
+<div class="line"><span class="lineno">  386</span>      <a class="code hl_variable" href="classShipBFieldMap.html#a40d2bc90d23707faac34eba21b77c5dd">fieldMap_</a>-&gt;push_back({Bx, By, Bz});</div>
+<div class="line"><span class="lineno">  387</span>    }</div>
+<div class="line"><span class="lineno">  388</span>  }</div>
+<div class="line"><span class="lineno">  389</span> </div>
+<div class="line"><span class="lineno">  390</span>  getData.close();</div>
+<div class="line"><span class="lineno">  391</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -2432,49 +2430,49 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipBFieldMap_8cxx_source.html#l00406">406</a> of file <a class="el" href="ShipBFieldMap_8cxx_source.html">ShipBFieldMap.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  406</span>                              {</div>
-<div class="line"><span class="lineno">  407</span>  <span class="comment">// Since the default SHIP distance unit is cm, we do not need to convert</span></div>
-<div class="line"><span class="lineno">  408</span>  <span class="comment">// these map limits, i.e. cm = 1 already</span></div>
-<div class="line"><span class="lineno">  409</span> </div>
-<div class="line"><span class="lineno">  410</span>  <a class="code hl_variable" href="classShipBFieldMap.html#aabcbe3429ca9391b96a87e131d6affdc">xRange_</a> = <a class="code hl_variable" href="classShipBFieldMap.html#a00ebcf5d5871b4d60a087710fca705a6">xMax_</a> - <a class="code hl_variable" href="classShipBFieldMap.html#a686affa4758dc834602d7274f111fa76">xMin_</a>;</div>
-<div class="line"><span class="lineno">  411</span>  <a class="code hl_variable" href="classShipBFieldMap.html#ad8b711298e1abff445205e57306242e1">yRange_</a> = <a class="code hl_variable" href="classShipBFieldMap.html#ad8a1a4c88b21f29339f361d341ba1304">yMax_</a> - <a class="code hl_variable" href="classShipBFieldMap.html#a4529066c7dca47ed195f98f923f7c30c">yMin_</a>;</div>
-<div class="line"><span class="lineno">  412</span>  <a class="code hl_variable" href="classShipBFieldMap.html#a1d73fa4ef7f0cf2173d29ce77e40127c">zRange_</a> = <a class="code hl_variable" href="classShipBFieldMap.html#adaea4a95149e4923b17e6e05c0d56c9f">zMax_</a> - <a class="code hl_variable" href="classShipBFieldMap.html#ae1b7e7af5e9ab9b4220dafc40f5de51c">zMin_</a>;</div>
-<div class="line"><span class="lineno">  413</span> </div>
-<div class="line"><span class="lineno">  414</span>  <span class="comment">// Find the number of bins using the limits and bin sizes. The number of bins</span></div>
-<div class="line"><span class="lineno">  415</span>  <span class="comment">// includes both the minimum and maximum values. To ensure correct rounding</span></div>
-<div class="line"><span class="lineno">  416</span>  <span class="comment">// up to the nearest integer we need to add 1.5 not 1.0.</span></div>
-<div class="line"><span class="lineno">  417</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classShipBFieldMap.html#ae84cc55fdd680b200bbab5ea720b2b19">dx_</a> &gt; 0.0) {</div>
-<div class="line"><span class="lineno">  418</span>    <a class="code hl_variable" href="classShipBFieldMap.html#a9d28380f1bd47c465a388a452419661c">Nx_</a> = <span class="keyword">static_cast&lt;</span>Int_t<span class="keyword">&gt;</span>(((<a class="code hl_variable" href="classShipBFieldMap.html#a00ebcf5d5871b4d60a087710fca705a6">xMax_</a> - <a class="code hl_variable" href="classShipBFieldMap.html#a686affa4758dc834602d7274f111fa76">xMin_</a>) / <a class="code hl_variable" href="classShipBFieldMap.html#ae84cc55fdd680b200bbab5ea720b2b19">dx_</a>) + 1.5);</div>
-<div class="line"><span class="lineno">  419</span>  }</div>
-<div class="line"><span class="lineno">  420</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classShipBFieldMap.html#a14cd573350a95b0adde53cc7f1f880ab">dy_</a> &gt; 0.0) {</div>
-<div class="line"><span class="lineno">  421</span>    <a class="code hl_variable" href="classShipBFieldMap.html#a58c5500a5534268ac9fc5ff343b8d8ba">Ny_</a> = <span class="keyword">static_cast&lt;</span>Int_t<span class="keyword">&gt;</span>(((<a class="code hl_variable" href="classShipBFieldMap.html#ad8a1a4c88b21f29339f361d341ba1304">yMax_</a> - <a class="code hl_variable" href="classShipBFieldMap.html#a4529066c7dca47ed195f98f923f7c30c">yMin_</a>) / <a class="code hl_variable" href="classShipBFieldMap.html#a14cd573350a95b0adde53cc7f1f880ab">dy_</a>) + 1.5);</div>
-<div class="line"><span class="lineno">  422</span>  }</div>
-<div class="line"><span class="lineno">  423</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classShipBFieldMap.html#a1ca6516488c38f8effab03e4b6ef05ab">dz_</a> &gt; 0.0) {</div>
-<div class="line"><span class="lineno">  424</span>    <a class="code hl_variable" href="classShipBFieldMap.html#a376afd5b8219a75317a65976fa8e41b9">Nz_</a> = <span class="keyword">static_cast&lt;</span>Int_t<span class="keyword">&gt;</span>(((<a class="code hl_variable" href="classShipBFieldMap.html#adaea4a95149e4923b17e6e05c0d56c9f">zMax_</a> - <a class="code hl_variable" href="classShipBFieldMap.html#ae1b7e7af5e9ab9b4220dafc40f5de51c">zMin_</a>) / <a class="code hl_variable" href="classShipBFieldMap.html#a1ca6516488c38f8effab03e4b6ef05ab">dz_</a>) + 1.5);</div>
-<div class="line"><span class="lineno">  425</span>  }</div>
-<div class="line"><span class="lineno">  426</span> </div>
-<div class="line"><span class="lineno">  427</span>  <span class="comment">// Trilinear interpolation needs at least two bins per axis; a smaller map</span></div>
-<div class="line"><span class="lineno">  428</span>  <span class="comment">// would silently be treated as out of range for every point.</span></div>
-<div class="line"><span class="lineno">  429</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classShipBFieldMap.html#a9d28380f1bd47c465a388a452419661c">Nx_</a> &lt; 2 || <a class="code hl_variable" href="classShipBFieldMap.html#a58c5500a5534268ac9fc5ff343b8d8ba">Ny_</a> &lt; 2 || <a class="code hl_variable" href="classShipBFieldMap.html#a376afd5b8219a75317a65976fa8e41b9">Nz_</a> &lt; 2) {</div>
-<div class="line"><span class="lineno">  430</span>    LOG(fatal) &lt;&lt; <span class="stringliteral">&quot;ShipBFieldMap: field map needs at least 2 bins per axis; &quot;</span></div>
-<div class="line"><span class="lineno">  431</span>               &lt;&lt; <span class="stringliteral">&quot;got Nx = &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipBFieldMap.html#a9d28380f1bd47c465a388a452419661c">Nx_</a> &lt;&lt; <span class="stringliteral">&quot;, Ny = &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipBFieldMap.html#a58c5500a5534268ac9fc5ff343b8d8ba">Ny_</a> &lt;&lt; <span class="stringliteral">&quot;, Nz = &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipBFieldMap.html#a376afd5b8219a75317a65976fa8e41b9">Nz_</a>;</div>
-<div class="line"><span class="lineno">  432</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="ShipBFieldMap_8cxx_source.html#l00404">404</a> of file <a class="el" href="ShipBFieldMap_8cxx_source.html">ShipBFieldMap.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  404</span>                              {</div>
+<div class="line"><span class="lineno">  405</span>  <span class="comment">// Since the default SHIP distance unit is cm, we do not need to convert</span></div>
+<div class="line"><span class="lineno">  406</span>  <span class="comment">// these map limits, i.e. cm = 1 already</span></div>
+<div class="line"><span class="lineno">  407</span> </div>
+<div class="line"><span class="lineno">  408</span>  <a class="code hl_variable" href="classShipBFieldMap.html#aabcbe3429ca9391b96a87e131d6affdc">xRange_</a> = <a class="code hl_variable" href="classShipBFieldMap.html#a00ebcf5d5871b4d60a087710fca705a6">xMax_</a> - <a class="code hl_variable" href="classShipBFieldMap.html#a686affa4758dc834602d7274f111fa76">xMin_</a>;</div>
+<div class="line"><span class="lineno">  409</span>  <a class="code hl_variable" href="classShipBFieldMap.html#ad8b711298e1abff445205e57306242e1">yRange_</a> = <a class="code hl_variable" href="classShipBFieldMap.html#ad8a1a4c88b21f29339f361d341ba1304">yMax_</a> - <a class="code hl_variable" href="classShipBFieldMap.html#a4529066c7dca47ed195f98f923f7c30c">yMin_</a>;</div>
+<div class="line"><span class="lineno">  410</span>  <a class="code hl_variable" href="classShipBFieldMap.html#a1d73fa4ef7f0cf2173d29ce77e40127c">zRange_</a> = <a class="code hl_variable" href="classShipBFieldMap.html#adaea4a95149e4923b17e6e05c0d56c9f">zMax_</a> - <a class="code hl_variable" href="classShipBFieldMap.html#ae1b7e7af5e9ab9b4220dafc40f5de51c">zMin_</a>;</div>
+<div class="line"><span class="lineno">  411</span> </div>
+<div class="line"><span class="lineno">  412</span>  <span class="comment">// Find the number of bins using the limits and bin sizes. The number of bins</span></div>
+<div class="line"><span class="lineno">  413</span>  <span class="comment">// includes both the minimum and maximum values. To ensure correct rounding</span></div>
+<div class="line"><span class="lineno">  414</span>  <span class="comment">// up to the nearest integer we need to add 1.5 not 1.0.</span></div>
+<div class="line"><span class="lineno">  415</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classShipBFieldMap.html#ae84cc55fdd680b200bbab5ea720b2b19">dx_</a> &gt; 0.0) {</div>
+<div class="line"><span class="lineno">  416</span>    <a class="code hl_variable" href="classShipBFieldMap.html#a9d28380f1bd47c465a388a452419661c">Nx_</a> = <span class="keyword">static_cast&lt;</span>Int_t<span class="keyword">&gt;</span>(((<a class="code hl_variable" href="classShipBFieldMap.html#a00ebcf5d5871b4d60a087710fca705a6">xMax_</a> - <a class="code hl_variable" href="classShipBFieldMap.html#a686affa4758dc834602d7274f111fa76">xMin_</a>) / <a class="code hl_variable" href="classShipBFieldMap.html#ae84cc55fdd680b200bbab5ea720b2b19">dx_</a>) + 1.5);</div>
+<div class="line"><span class="lineno">  417</span>  }</div>
+<div class="line"><span class="lineno">  418</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classShipBFieldMap.html#a14cd573350a95b0adde53cc7f1f880ab">dy_</a> &gt; 0.0) {</div>
+<div class="line"><span class="lineno">  419</span>    <a class="code hl_variable" href="classShipBFieldMap.html#a58c5500a5534268ac9fc5ff343b8d8ba">Ny_</a> = <span class="keyword">static_cast&lt;</span>Int_t<span class="keyword">&gt;</span>(((<a class="code hl_variable" href="classShipBFieldMap.html#ad8a1a4c88b21f29339f361d341ba1304">yMax_</a> - <a class="code hl_variable" href="classShipBFieldMap.html#a4529066c7dca47ed195f98f923f7c30c">yMin_</a>) / <a class="code hl_variable" href="classShipBFieldMap.html#a14cd573350a95b0adde53cc7f1f880ab">dy_</a>) + 1.5);</div>
+<div class="line"><span class="lineno">  420</span>  }</div>
+<div class="line"><span class="lineno">  421</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classShipBFieldMap.html#a1ca6516488c38f8effab03e4b6ef05ab">dz_</a> &gt; 0.0) {</div>
+<div class="line"><span class="lineno">  422</span>    <a class="code hl_variable" href="classShipBFieldMap.html#a376afd5b8219a75317a65976fa8e41b9">Nz_</a> = <span class="keyword">static_cast&lt;</span>Int_t<span class="keyword">&gt;</span>(((<a class="code hl_variable" href="classShipBFieldMap.html#adaea4a95149e4923b17e6e05c0d56c9f">zMax_</a> - <a class="code hl_variable" href="classShipBFieldMap.html#ae1b7e7af5e9ab9b4220dafc40f5de51c">zMin_</a>) / <a class="code hl_variable" href="classShipBFieldMap.html#a1ca6516488c38f8effab03e4b6ef05ab">dz_</a>) + 1.5);</div>
+<div class="line"><span class="lineno">  423</span>  }</div>
+<div class="line"><span class="lineno">  424</span> </div>
+<div class="line"><span class="lineno">  425</span>  <span class="comment">// Trilinear interpolation needs at least two bins per axis; a smaller map</span></div>
+<div class="line"><span class="lineno">  426</span>  <span class="comment">// would silently be treated as out of range for every point.</span></div>
+<div class="line"><span class="lineno">  427</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classShipBFieldMap.html#a9d28380f1bd47c465a388a452419661c">Nx_</a> &lt; 2 || <a class="code hl_variable" href="classShipBFieldMap.html#a58c5500a5534268ac9fc5ff343b8d8ba">Ny_</a> &lt; 2 || <a class="code hl_variable" href="classShipBFieldMap.html#a376afd5b8219a75317a65976fa8e41b9">Nz_</a> &lt; 2) {</div>
+<div class="line"><span class="lineno">  428</span>    LOG(fatal) &lt;&lt; <span class="stringliteral">&quot;ShipBFieldMap: field map needs at least 2 bins per axis; &quot;</span></div>
+<div class="line"><span class="lineno">  429</span>               &lt;&lt; <span class="stringliteral">&quot;got Nx = &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipBFieldMap.html#a9d28380f1bd47c465a388a452419661c">Nx_</a> &lt;&lt; <span class="stringliteral">&quot;, Ny = &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipBFieldMap.html#a58c5500a5534268ac9fc5ff343b8d8ba">Ny_</a> &lt;&lt; <span class="stringliteral">&quot;, Nz = &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipBFieldMap.html#a376afd5b8219a75317a65976fa8e41b9">Nz_</a>;</div>
+<div class="line"><span class="lineno">  430</span>  }</div>
+<div class="line"><span class="lineno">  431</span> </div>
+<div class="line"><span class="lineno">  432</span>  <a class="code hl_variable" href="classShipBFieldMap.html#a3cba8a90fad19de37cd6589699f15256">N_</a> = <a class="code hl_variable" href="classShipBFieldMap.html#a9d28380f1bd47c465a388a452419661c">Nx_</a> * <a class="code hl_variable" href="classShipBFieldMap.html#a58c5500a5534268ac9fc5ff343b8d8ba">Ny_</a> * <a class="code hl_variable" href="classShipBFieldMap.html#a376afd5b8219a75317a65976fa8e41b9">Nz_</a>;</div>
 <div class="line"><span class="lineno">  433</span> </div>
-<div class="line"><span class="lineno">  434</span>  <a class="code hl_variable" href="classShipBFieldMap.html#a3cba8a90fad19de37cd6589699f15256">N_</a> = <a class="code hl_variable" href="classShipBFieldMap.html#a9d28380f1bd47c465a388a452419661c">Nx_</a> * <a class="code hl_variable" href="classShipBFieldMap.html#a58c5500a5534268ac9fc5ff343b8d8ba">Ny_</a> * <a class="code hl_variable" href="classShipBFieldMap.html#a376afd5b8219a75317a65976fa8e41b9">Nz_</a>;</div>
-<div class="line"><span class="lineno">  435</span> </div>
-<div class="line"><span class="lineno">  436</span>  LOG(info) &lt;&lt; <span class="stringliteral">&quot;x limits: &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipBFieldMap.html#a686affa4758dc834602d7274f111fa76">xMin_</a> &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipBFieldMap.html#a00ebcf5d5871b4d60a087710fca705a6">xMax_</a> &lt;&lt; <span class="stringliteral">&quot;, dx = &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipBFieldMap.html#ae84cc55fdd680b200bbab5ea720b2b19">dx_</a>;</div>
-<div class="line"><span class="lineno">  437</span>  LOG(info) &lt;&lt; <span class="stringliteral">&quot;y limits: &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipBFieldMap.html#a4529066c7dca47ed195f98f923f7c30c">yMin_</a> &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipBFieldMap.html#ad8a1a4c88b21f29339f361d341ba1304">yMax_</a> &lt;&lt; <span class="stringliteral">&quot;, dy = &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipBFieldMap.html#a14cd573350a95b0adde53cc7f1f880ab">dy_</a>;</div>
-<div class="line"><span class="lineno">  438</span>  LOG(info) &lt;&lt; <span class="stringliteral">&quot;z limits: &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipBFieldMap.html#ae1b7e7af5e9ab9b4220dafc40f5de51c">zMin_</a> &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipBFieldMap.html#adaea4a95149e4923b17e6e05c0d56c9f">zMax_</a> &lt;&lt; <span class="stringliteral">&quot;, dz = &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipBFieldMap.html#a1ca6516488c38f8effab03e4b6ef05ab">dz_</a>;</div>
-<div class="line"><span class="lineno">  439</span> </div>
-<div class="line"><span class="lineno">  440</span>  LOG(info) &lt;&lt; <span class="stringliteral">&quot;Offsets: x = &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipBFieldMap.html#aef8ad7f3ddb52b6aeea3e6dc4a8ce339">xOffset_</a> &lt;&lt; <span class="stringliteral">&quot;, y = &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipBFieldMap.html#aad6dc9cbfb40bb6f1ef3dd7da657be91">yOffset_</a></div>
-<div class="line"><span class="lineno">  441</span>            &lt;&lt; <span class="stringliteral">&quot;, z = &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipBFieldMap.html#a46428b7020b31dec7d9a811182c49410">zOffset_</a>;</div>
-<div class="line"><span class="lineno">  442</span>  LOG(info) &lt;&lt; <span class="stringliteral">&quot;Angles : phi = &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipBFieldMap.html#adb382221b8f751522035674bbc15a340">phi_</a> &lt;&lt; <span class="stringliteral">&quot;, theta = &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipBFieldMap.html#a5b2d2824b14015b479bb7ff4dab0d2ae">theta_</a></div>
-<div class="line"><span class="lineno">  443</span>            &lt;&lt; <span class="stringliteral">&quot;, psi = &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipBFieldMap.html#a18a79ff151a25d3051a0beb0e398cb9a">psi_</a>;</div>
-<div class="line"><span class="lineno">  444</span> </div>
-<div class="line"><span class="lineno">  445</span>  LOG(info) &lt;&lt; <span class="stringliteral">&quot;Total number of bins = &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipBFieldMap.html#a3cba8a90fad19de37cd6589699f15256">N_</a> &lt;&lt; <span class="stringliteral">&quot;; Nx = &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipBFieldMap.html#a9d28380f1bd47c465a388a452419661c">Nx_</a></div>
-<div class="line"><span class="lineno">  446</span>            &lt;&lt; <span class="stringliteral">&quot;, Ny = &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipBFieldMap.html#a58c5500a5534268ac9fc5ff343b8d8ba">Ny_</a> &lt;&lt; <span class="stringliteral">&quot;, Nz = &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipBFieldMap.html#a376afd5b8219a75317a65976fa8e41b9">Nz_</a>;</div>
-<div class="line"><span class="lineno">  447</span>}</div>
+<div class="line"><span class="lineno">  434</span>  LOG(info) &lt;&lt; <span class="stringliteral">&quot;x limits: &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipBFieldMap.html#a686affa4758dc834602d7274f111fa76">xMin_</a> &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipBFieldMap.html#a00ebcf5d5871b4d60a087710fca705a6">xMax_</a> &lt;&lt; <span class="stringliteral">&quot;, dx = &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipBFieldMap.html#ae84cc55fdd680b200bbab5ea720b2b19">dx_</a>;</div>
+<div class="line"><span class="lineno">  435</span>  LOG(info) &lt;&lt; <span class="stringliteral">&quot;y limits: &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipBFieldMap.html#a4529066c7dca47ed195f98f923f7c30c">yMin_</a> &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipBFieldMap.html#ad8a1a4c88b21f29339f361d341ba1304">yMax_</a> &lt;&lt; <span class="stringliteral">&quot;, dy = &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipBFieldMap.html#a14cd573350a95b0adde53cc7f1f880ab">dy_</a>;</div>
+<div class="line"><span class="lineno">  436</span>  LOG(info) &lt;&lt; <span class="stringliteral">&quot;z limits: &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipBFieldMap.html#ae1b7e7af5e9ab9b4220dafc40f5de51c">zMin_</a> &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipBFieldMap.html#adaea4a95149e4923b17e6e05c0d56c9f">zMax_</a> &lt;&lt; <span class="stringliteral">&quot;, dz = &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipBFieldMap.html#a1ca6516488c38f8effab03e4b6ef05ab">dz_</a>;</div>
+<div class="line"><span class="lineno">  437</span> </div>
+<div class="line"><span class="lineno">  438</span>  LOG(info) &lt;&lt; <span class="stringliteral">&quot;Offsets: x = &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipBFieldMap.html#aef8ad7f3ddb52b6aeea3e6dc4a8ce339">xOffset_</a> &lt;&lt; <span class="stringliteral">&quot;, y = &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipBFieldMap.html#aad6dc9cbfb40bb6f1ef3dd7da657be91">yOffset_</a></div>
+<div class="line"><span class="lineno">  439</span>            &lt;&lt; <span class="stringliteral">&quot;, z = &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipBFieldMap.html#a46428b7020b31dec7d9a811182c49410">zOffset_</a>;</div>
+<div class="line"><span class="lineno">  440</span>  LOG(info) &lt;&lt; <span class="stringliteral">&quot;Angles : phi = &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipBFieldMap.html#adb382221b8f751522035674bbc15a340">phi_</a> &lt;&lt; <span class="stringliteral">&quot;, theta = &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipBFieldMap.html#a5b2d2824b14015b479bb7ff4dab0d2ae">theta_</a></div>
+<div class="line"><span class="lineno">  441</span>            &lt;&lt; <span class="stringliteral">&quot;, psi = &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipBFieldMap.html#a18a79ff151a25d3051a0beb0e398cb9a">psi_</a>;</div>
+<div class="line"><span class="lineno">  442</span> </div>
+<div class="line"><span class="lineno">  443</span>  LOG(info) &lt;&lt; <span class="stringliteral">&quot;Total number of bins = &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipBFieldMap.html#a3cba8a90fad19de37cd6589699f15256">N_</a> &lt;&lt; <span class="stringliteral">&quot;; Nx = &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipBFieldMap.html#a9d28380f1bd47c465a388a452419661c">Nx_</a></div>
+<div class="line"><span class="lineno">  444</span>            &lt;&lt; <span class="stringliteral">&quot;, Ny = &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipBFieldMap.html#a58c5500a5534268ac9fc5ff343b8d8ba">Ny_</a> &lt;&lt; <span class="stringliteral">&quot;, Nz = &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipBFieldMap.html#a376afd5b8219a75317a65976fa8e41b9">Nz_</a>;</div>
+<div class="line"><span class="lineno">  445</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -2845,24 +2843,23 @@ Private Attributes</h2></td></tr>
 <p>Trilinear interpolation of one field component from its eight corner values A..H and the fractional bin distances (with their complements)</p>
 <dl class="section return"><dt>Returns</dt><dd>the interpolated field component </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ShipBFieldMap_8cxx_source.html#l00517">517</a> of file <a class="el" href="ShipBFieldMap_8cxx_source.html">ShipBFieldMap.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  522</span>                                                       {</div>
-<div class="line"><span class="lineno">  523</span>  <span class="comment">// Trilinear interpolation of a single component from its eight corner values</span></div>
-<div class="line"><span class="lineno">  524</span>  <span class="comment">// A..H (bit-for-bit the arithmetic previously performed per axis by</span></div>
-<div class="line"><span class="lineno">  525</span>  <span class="comment">// BInterCalc).</span></div>
-<div class="line"><span class="lineno">  526</span>  <span class="comment">// Linear interpolation along x</span></div>
-<div class="line"><span class="lineno">  527</span>  <span class="keyword">const</span> Float_t F00 = <a class="code hl_variable" href="namespacerunPythia8.html#a527266378c7f0299bad9b3c32d02d15b">A</a> * xFrac1 + B * xFrac;</div>
-<div class="line"><span class="lineno">  528</span>  <span class="keyword">const</span> Float_t F10 = C * xFrac1 + D * xFrac;</div>
-<div class="line"><span class="lineno">  529</span>  <span class="keyword">const</span> Float_t F01 = <a class="code hl_variable" href="namespacemakeMuonEM.html#a2f541edec5da16cf64dcce3ea03d80c8">E</a> * xFrac1 + F * xFrac;</div>
-<div class="line"><span class="lineno">  530</span>  <span class="keyword">const</span> Float_t F11 = <a class="code hl_variable" href="namespacerun__fixedTarget.html#a049620ba28aeb292c74bb28518aa6c2f">G</a> * xFrac1 + <a class="code hl_function" href="namespaceproton__bremsstrahlung.html#aad8a33cd3d889bef7f25142f8489dbd4">H</a> * xFrac;</div>
-<div class="line"><span class="lineno">  531</span> </div>
-<div class="line"><span class="lineno">  532</span>  <span class="comment">// Linear interpolation along y</span></div>
-<div class="line"><span class="lineno">  533</span>  <span class="keyword">const</span> Float_t F0 = F00 * yFrac1 + F10 * yFrac;</div>
-<div class="line"><span class="lineno">  534</span>  <span class="keyword">const</span> Float_t F1 = F01 * yFrac1 + F11 * yFrac;</div>
-<div class="line"><span class="lineno">  535</span> </div>
-<div class="line"><span class="lineno">  536</span>  <span class="comment">// Linear interpolation along z</span></div>
-<div class="line"><span class="lineno">  537</span>  <span class="keywordflow">return</span> F0 * zFrac1 + F1 * zFrac;</div>
-<div class="line"><span class="lineno">  538</span>}</div>
+<p class="definition">Definition at line <a class="el" href="ShipBFieldMap_8cxx_source.html#l00515">515</a> of file <a class="el" href="ShipBFieldMap_8cxx_source.html">ShipBFieldMap.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  520</span>                                                       {</div>
+<div class="line"><span class="lineno">  521</span>  <span class="comment">// Trilinear interpolation of a single component from its eight corner</span></div>
+<div class="line"><span class="lineno">  522</span>  <span class="comment">// values A..H.</span></div>
+<div class="line"><span class="lineno">  523</span>  <span class="comment">// Linear interpolation along x</span></div>
+<div class="line"><span class="lineno">  524</span>  <span class="keyword">const</span> Float_t F00 = <a class="code hl_variable" href="namespacerunPythia8.html#a527266378c7f0299bad9b3c32d02d15b">A</a> * xFrac1 + B * xFrac;</div>
+<div class="line"><span class="lineno">  525</span>  <span class="keyword">const</span> Float_t F10 = C * xFrac1 + D * xFrac;</div>
+<div class="line"><span class="lineno">  526</span>  <span class="keyword">const</span> Float_t F01 = <a class="code hl_variable" href="namespacemakeMuonEM.html#a2f541edec5da16cf64dcce3ea03d80c8">E</a> * xFrac1 + F * xFrac;</div>
+<div class="line"><span class="lineno">  527</span>  <span class="keyword">const</span> Float_t F11 = <a class="code hl_variable" href="namespacerun__fixedTarget.html#a049620ba28aeb292c74bb28518aa6c2f">G</a> * xFrac1 + <a class="code hl_function" href="namespaceproton__bremsstrahlung.html#aad8a33cd3d889bef7f25142f8489dbd4">H</a> * xFrac;</div>
+<div class="line"><span class="lineno">  528</span> </div>
+<div class="line"><span class="lineno">  529</span>  <span class="comment">// Linear interpolation along y</span></div>
+<div class="line"><span class="lineno">  530</span>  <span class="keyword">const</span> Float_t F0 = F00 * yFrac1 + F10 * yFrac;</div>
+<div class="line"><span class="lineno">  531</span>  <span class="keyword">const</span> Float_t F1 = F01 * yFrac1 + F11 * yFrac;</div>
+<div class="line"><span class="lineno">  532</span> </div>
+<div class="line"><span class="lineno">  533</span>  <span class="comment">// Linear interpolation along z</span></div>
+<div class="line"><span class="lineno">  534</span>  <span class="keywordflow">return</span> F0 * zFrac1 + F1 * zFrac;</div>
+<div class="line"><span class="lineno">  535</span>}</div>
 <div class="ttc" id="anamespacemakeMuonEM_html_a2f541edec5da16cf64dcce3ea03d80c8"><div class="ttname"><a href="namespacemakeMuonEM.html#a2f541edec5da16cf64dcce3ea03d80c8">makeMuonEM.E</a></div><div class="ttdeci">E</div><div class="ttdef"><b>Definition</b> <a href="makeMuonEM_8py_source.html#l00051">makeMuonEM.py:51</a></div></div>
 <div class="ttc" id="anamespaceproton__bremsstrahlung_html_aad8a33cd3d889bef7f25142f8489dbd4"><div class="ttname"><a href="namespaceproton__bremsstrahlung.html#aad8a33cd3d889bef7f25142f8489dbd4">proton_bremsstrahlung.H</a></div><div class="ttdeci">H(p, theta, mDarkPhoton)</div><div class="ttdef"><b>Definition</b> <a href="proton__bremsstrahlung_8py_source.html#l00067">proton_bremsstrahlung.py:67</a></div></div>
 <div class="ttc" id="anamespacerunPythia8_html_a527266378c7f0299bad9b3c32d02d15b"><div class="ttname"><a href="namespacerunPythia8.html#a527266378c7f0299bad9b3c32d02d15b">runPythia8.A</a></div><div class="ttdeci">dict A</div><div class="ttdef"><b>Definition</b> <a href="runPythia8_8py_source.html#l00146">runPythia8.py:146</a></div></div>

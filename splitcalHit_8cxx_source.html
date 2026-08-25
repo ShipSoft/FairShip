@@ -174,8 +174,8 @@ $(document).ready(function(){initNavTree('splitcalHit_8cxx_source.html',''); ini
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
 <div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  <a class="code hl_function" href="classsplitcalHit.html#adfc11035f5b5ad171b5942e10b1185eb">SetIDs</a>(isPrec, nL, nMx, nMy, nS);</div>
 <div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  <span class="comment">// GetNode(name) is a linear scan over all strip nodes (up to O(10^5)); the</span></div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  <span class="comment">// geometry is fixed, so cache the node pointer per strip name.</span></div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  <span class="comment">// The geometry is fixed, so cache the node per strip name; GetNode(name)</span></div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  <span class="comment">// is a linear scan over all strip nodes.</span></div>
 <div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>  <span class="keyword">static</span> std::unordered_map&lt;std::string, TGeoNode*&gt; stripNodeCache;</div>
 <div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>  TGeoNode* strip = <span class="keyword">nullptr</span>;</div>
 <div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  <span class="keywordflow">if</span> (<span class="keyword">auto</span> it = stripNodeCache.find(stripName); it != stripNodeCache.end()) {</div>

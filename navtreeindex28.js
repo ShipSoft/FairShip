@@ -1,7 +1,5 @@
 var NAVTREEINDEX28 =
 {
-"run__reco_8py.html#abfa4660185e9030354d9c6817f975964":[8,0,8,13,1],
-"run__reco_8py.html#ad9ba5194ac9252fd33978eae413f84cd":[8,0,8,13,6],
 "run__reco_8py.html#aeb64b43ab3c678d2c1a20f6f427deb3b":[8,0,8,13,7],
 "run__reco_8py_source.html":[8,0,8,13],
 "run__simScript_8py.html":[8,0,6,21],
@@ -249,5 +247,7 @@ var NAVTREEINDEX28 =
 "shipDet__conf_8py.html#a7f232397871353ce80c1ea03eb15bd20":[8,0,10,30,0],
 "shipDet__conf_8py.html#a840ad4a7a2937c9e65146af686f32d6b":[8,0,10,30,3],
 "shipDet__conf_8py.html#aa4ac8d6cef9fc6657dedbd2090cf8f13":[8,0,10,30,1],
-"shipDet__conf_8py_source.html":[8,0,10,30]
+"shipDet__conf_8py_source.html":[8,0,10,30],
+"shipDigiReco_8py.html":[8,0,10,31],
+"shipDigiReco_8py.html#a0c278bbffd4fe9af5ba2582232f8ff77":[8,0,10,31,1]
 };

@@ -16,7 +16,7 @@ var searchData=
   ['width_5fquarks_5fneutrino_13',['Width_quarks_neutrino',['../classhnl_1_1HNLbranchings.html#a0dd1a2b4398c558e8567107c6e3fcb33',1,'hnl::HNLbranchings']]],
   ['wilson_5finterval_14',['wilson_interval',['../namespacetracking__benchmark.html#a13e5805f3b5b1b02502a4509caa350b1',1,'tracking_benchmark']]],
   ['withevtgen_15',['WithEvtGen',['../classFixedTargetGenerator.html#a5ac1d30be0d2c97f573ba4bba3d3a919',1,'FixedTargetGenerator']]],
-  ['witht0estimate_16',['withT0Estimate',['../classstrawtubesDetector_1_1strawtubesDetector.html#af526a9662b90f007e826bbe03be143cb',1,'strawtubesDetector::strawtubesDetector']]],
+  ['witht0estimate_16',['withT0Estimate',['../classstrawtubesDetector_1_1strawtubesDetector.html#a99ea6faaec18a280b42b8fb8ac32f591',1,'strawtubesDetector::strawtubesDetector']]],
   ['wl_17',['wL',['../classTrackInfo.html#ad12e8894f804966d79ef97df812f35a8',1,'TrackInfo']]],
   ['wr_18',['wR',['../classTrackInfo.html#a8f779eb4ac7406e66535a47d13c3230c',1,'TrackInfo']]],
   ['write_19',['write',['../classShipGeoCave.html#aab6ba8749ebf934ba56394fb656267a6',1,'ShipGeoCave']]],

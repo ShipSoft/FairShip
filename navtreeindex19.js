@@ -1,7 +1,5 @@
 var NAVTREEINDEX19 =
 {
-"namespaceTrackExtrapolateTool.html#aeb68a90b815acb1e2f1453cb90bf5b60":[6,0,103,5],
-"namespaceUpstreamTaggerDetector.html":[6,0,105],
 "namespaceadd__muonresponse.html":[6,0,1],
 "namespaceadd__muonresponse.html#a09495aade917e02ac0ebed7c98c142ca":[6,0,1,6],
 "namespaceadd__muonresponse.html#a15597a8e3100e6b4b24642d38c15295e":[6,0,1,2],
@@ -249,5 +247,7 @@ var NAVTREEINDEX19 =
 "namespaceeventDisplay.html#a2c250d055db9382e26ecb81658ce9eb1":[6,0,29,61],
 "namespaceeventDisplay.html#a2f0c7a90ed9aad319801864027ea3003":[6,0,29,43],
 "namespaceeventDisplay.html#a362e5157e1dcf1b106536f5a9cafba0b":[6,0,29,82],
-"namespaceeventDisplay.html#a37c858074cda5ceaa4e360389e712bc2":[6,0,29,48]
+"namespaceeventDisplay.html#a37c858074cda5ceaa4e360389e712bc2":[6,0,29,48],
+"namespaceeventDisplay.html#a39e3d0fb0e1e21e1589cb4024fa48f99":[6,0,29,28],
+"namespaceeventDisplay.html#a3bd4625287f44ad83178f3407787e3a6":[6,0,29,5]
 };

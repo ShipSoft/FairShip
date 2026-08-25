@@ -2,10 +2,10 @@ var classshipVertex_1_1Task =
 [
     [ "__init__", "classshipVertex_1_1Task.html#ad24035fffb7368e2c8b983c307f0f071", null ],
     [ "_stepwise_extrapolate_to_z", "classshipVertex_1_1Task.html#af6c661b95f8321a0f068c80235f048d2", null ],
-    [ "chi2", "classshipVertex_1_1Task.html#af4b5b45f380bba6037a12de48b94a0f2", null ],
+    [ "chi2", "classshipVertex_1_1Task.html#adf936ada1e16ba605c1ba78c50dd8c5a", null ],
     [ "execute", "classshipVertex_1_1Task.html#ad3b6ca33c6dbacdbd127c5dbf9026d32", null ],
     [ "fcn", "classshipVertex_1_1Task.html#a584a51495b0b99857f7c00d5157edd64", null ],
-    [ "residuals", "classshipVertex_1_1Task.html#acf58b39be9d62ad4e55ef955707b9c41", null ],
+    [ "residuals", "classshipVertex_1_1Task.html#a1f8838b98af91138b1763fa1afc82079", null ],
     [ "TwoTrackVertex", "classshipVertex_1_1Task.html#a05c9c6228be8c7358fed28db577e25d7", null ],
     [ "VertexError", "classshipVertex_1_1Task.html#aa67a3ef5247c7f98bdffc19c1de28248", null ],
     [ "fitTrackLoc", "classshipVertex_1_1Task.html#a8f47d281152a1520072deb2591b0fca0", null ],

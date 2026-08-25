@@ -39,7 +39,7 @@ var searchData=
   ['withntuple_36',['withntuple',['../classexitHadronAbsorber.html#a9b5c7cc13139842a3699ab3b23e6975f',1,'exitHadronAbsorber::withNtuple'],['../classFixedTargetGenerator.html#adbe0d15a750be256cc0dd5aa00a961cf',1,'FixedTargetGenerator::withNtuple']]],
   ['without_20cvmfs_37',['Without CVMFS',['../md_README.html#autotoc_md103',1,'']]],
   ['witht0_38',['withT0',['../namespaceShipReco.html#a273d50a8ed0a846b0a62a86bba9b1c20',1,'ShipReco']]],
-  ['witht0estimate_39',['withT0Estimate',['../classstrawtubesDetector_1_1strawtubesDetector.html#af526a9662b90f007e826bbe03be143cb',1,'strawtubesDetector::strawtubesDetector']]],
+  ['witht0estimate_39',['withT0Estimate',['../classstrawtubesDetector_1_1strawtubesDetector.html#a99ea6faaec18a280b42b8fb8ac32f591',1,'strawtubesDetector::strawtubesDetector']]],
   ['wl_40',['wL',['../classTrackInfo.html#ad12e8894f804966d79ef97df812f35a8',1,'TrackInfo']]],
   ['work_5fdir_41',['work_dir',['../namespacerun__fixedTarget.html#ae13a0ef257f9f8bc0985fd40a8b0bf79',1,'run_fixedTarget']]],
   ['world_42',['world',['../classShipCave.html#a8cbdea1cf52198304407f44a7a21e305',1,'ShipCave']]],

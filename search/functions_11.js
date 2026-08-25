@@ -28,7 +28,7 @@ var searchData=
   ['rename_25',['rename',['../namespaceeventDisplay.html#a02d796b1588b1728f5ea48bdd9fed8ca',1,'eventDisplay']]],
   ['reporterror_26',['reportError',['../namespacerootUtils.html#ab807114738eb9dfb5fef001e2fa9bc54',1,'rootUtils']]],
   ['reset_27',['reset',['../classVectorMCPointSource.html#a11f856e3d204b2c86ad8f053dad589b5',1,'VectorMCPointSource::Reset()'],['../classShipStack.html#a5bb6dccf7ca53edb0560b1152ec2b33c',1,'ShipStack::Reset()'],['../classSHiP_1_1Detector.html#a103ca9a2efe245ed360682958561bbf7',1,'SHiP::Detector::Reset()']]],
-  ['residuals_28',['residuals',['../classshipVertex_1_1Task.html#acf58b39be9d62ad4e55ef955707b9c41',1,'shipVertex::Task']]],
+  ['residuals_28',['residuals',['../classshipVertex_1_1Task.html#a1f8838b98af91138b1763fa1afc82079',1,'shipVertex::Task']]],
   ['resol_29',['Resol',['../classTimeDetHit.html#a6940b7d3e545c87bdd4d0c1f5981d350',1,'TimeDetHit']]],
   ['retina_5ffunc_30',['retina_func',['../namespaceshipPatRec.html#aed94e63e174368fe7f1966eeda42cd0b',1,'shipPatRec']]],
   ['retina_5fgrad_31',['retina_grad',['../namespaceshipPatRec.html#ac6b497d326be5e937e8965e4115a4b4d',1,'shipPatRec']]],

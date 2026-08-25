@@ -1,7 +1,5 @@
 var NAVTREEINDEX31 =
 {
-"vetoHitOnTrack_8cxx_source.html":[8,0,19,7],
-"vetoHitOnTrack_8h.html":[8,0,19,8],
 "vetoHitOnTrack_8h_source.html":[8,0,19,8],
 "vetoHit_8cxx.html":[8,0,19,5],
 "vetoHit_8cxx_source.html":[8,0,19,5],

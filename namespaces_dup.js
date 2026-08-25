@@ -1571,7 +1571,6 @@ var namespaces_dup =
       [ "outFile", "namespaceShipReco.html#a7b887bc3d291d74d04fcaae703a657b3", null ],
       [ "parser", "namespaceShipReco.html#a39051bd48768b533590ed2d94892ac2c", null ],
       [ "patRec", "namespaceShipReco.html#aef73bfe78732856662cc5bc1afd8b169", null ],
-      [ "pidProton", "namespaceShipReco.html#ad01b3bad514536d827ded35ad1161495", null ],
       [ "rc", "namespaceShipReco.html#ad65f7dc3b97b1adf05861f52855e59c1", null ],
       [ "required", "namespaceShipReco.html#a32e56e9a25dc0bc56652844ee7f9ee9b", null ],
       [ "rtdb", "namespaceShipReco.html#a44987cb8249b92984200ef8843b0fed1", null ],

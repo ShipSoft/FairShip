@@ -44,7 +44,7 @@ var searchData=
   ['checkrunningprocesses_41',['checkRunningProcesses',['../namespacerun__reco.html#abfa4660185e9030354d9c6817f975964',1,'run_reco']]],
   ['checkzpositions_42',['checkZpositions',['../namespacecheckZpositions.html',1,'']]],
   ['checkzpositions_2epy_43',['checkZpositions.py',['../checkZpositions_8py.html',1,'']]],
-  ['chi2_44',['chi2',['../classshipVertex_1_1Task.html#af4b5b45f380bba6037a12de48b94a0f2',1,'shipVertex::Task']]],
+  ['chi2_44',['chi2',['../classshipVertex_1_1Task.html#adf936ada1e16ba605c1ba78c50dd8c5a',1,'shipVertex::Task']]],
   ['chi2cutoff_45',['chi2CutOff',['../namespaceShipAna.html#ab9849a92f94b1776590ae98542810c63',1,'ShipAna']]],
   ['chi2ndof_46',['chi2nDOF',['../classexperimental_1_1analysis__toolkit_1_1selection__check.html#a32224ea2daa27bb7986b4ac0cc186854',1,'experimental::analysis_toolkit::selection_check']]],
   ['chibb_47',['chibb',['../classFixedTargetGenerator.html#a957553dffd10499470ea0db6d21aa3f9',1,'FixedTargetGenerator::chibb'],['../namespacemakeDecay.html#ada74f7220b43d6feba7e744a2ad1f7db',1,'makeDecay.chibb']]],

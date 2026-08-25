@@ -351,7 +351,7 @@ var searchData=
   ['skim_5fmuonback_5fsmoke_2epy_348',['skim_muonback_smoke.py',['../skim__muonback__smoke_8py.html',1,'']]],
   ['skipneutrinos_349',['SkipNeutrinos',['../classexitHadronAbsorber.html#aac6d18966f75cfab911e6e80e22346f3',1,'exitHadronAbsorber']]],
   ['smearedhits_350',['SmearedHits',['../classshipDigiReco_1_1ShipDigiReco.html#a3e5a53decbb82dbbb50af59e51d135f7',1,'shipDigiReco::ShipDigiReco']]],
-  ['smearhits_351',['smearHits',['../classstrawtubesDetector_1_1strawtubesDetector.html#a074db20c4040676b2df1568b1ed606a8',1,'strawtubesDetector::strawtubesDetector']]],
+  ['smearhits_351',['smearHits',['../classstrawtubesDetector_1_1strawtubesDetector.html#a97a5c17d4ec976383a2ec7c7cbbb9ae8',1,'strawtubesDetector::strawtubesDetector']]],
   ['snd_352',['MTC and SND',['../md_CHANGELOG.html#autotoc_md59',1,'']]],
   ['snd_20and_20mtc_353',['SND and MTC',['../md_CHANGELOG.html#autotoc_md50',1,'']]],
   ['snd_20detector_20system_354',['SND Detector System',['../md_CHANGELOG.html#autotoc_md35',1,'']]],
