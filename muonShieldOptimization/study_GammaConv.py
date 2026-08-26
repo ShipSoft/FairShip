@@ -5,6 +5,7 @@
 import os
 import sys
 import time
+from typing import NamedTuple
 
 import ROOT
 import shipRoot_conf
@@ -19,18 +20,26 @@ mcEngine = "TGeant4"
 runnr = 1
 nev = 10  # 000000
 
-setup = {}
-setup["10"] = {"thickness": 2 * u.cm, "material": "Aluminium", "momentum": 10 * u.GeV}
-setup["100"] = {"thickness": 2 * u.cm, "material": "Aluminium", "momentum": 100 * u.GeV}
-setup["200"] = {"thickness": 2 * u.cm, "material": "Aluminium", "momentum": 200 * u.GeV}
+
+class Setup(NamedTuple):
+    """Target block and beam configuration for one photon-conversion study point."""
+
+    thickness: float
+    material: str
+    momentum: float
+
+
+setup = {
+    "10": Setup(2 * u.cm, "Aluminium", 10 * u.GeV),
+    "100": Setup(2 * u.cm, "Aluminium", 100 * u.GeV),
+    "200": Setup(2 * u.cm, "Aluminium", 200 * u.GeV),
+}
 
 # 8cm = 0.9X0
 
 
 s = sys.argv[1]
-thickness = setup[s]["thickness"]
-material = setup[s]["material"]
-momentum = setup[s]["momentum"]
+thickness, material, momentum = setup[s]
 
 checkOverlap = True
 

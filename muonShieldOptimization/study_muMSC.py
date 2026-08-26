@@ -4,6 +4,7 @@
 
 import sys
 import time
+from typing import NamedTuple
 
 import ROOT
 import shipRoot_conf
@@ -18,19 +19,26 @@ mcEngine = "TGeant4"
 runnr = 1
 nev = 10000000
 
-setup = {}
-setup["Fig3"] = {"thickness": 0.1 * u.cm, "material": "lead", "momentum": 2 * u.GeV, "maxTheta": 0.2}
-setup["Fig4"] = {"thickness": 0.1 * u.cm, "material": "lead", "momentum": 8 * u.GeV, "maxTheta": 0.04}
-setup["Fig5"] = {"thickness": 0.1 * u.cm, "material": "lead", "momentum": 14 * u.GeV, "maxTheta": 0.02}
 
-setup["Fig6"] = {"thickness": 1.44 * u.cm, "material": "copper", "momentum": 11.7 * u.GeV, "maxTheta": 0.045}
-setup["Fig7"] = {"thickness": 1.44 * u.cm, "material": "copper", "momentum": 7.3 * u.GeV, "maxTheta": 0.045}
+class Setup(NamedTuple):
+    """Target block and beam configuration for one multiple-scattering study point."""
+
+    thickness: float
+    material: str
+    momentum: float
+    maxTheta: float
+
+
+setup = {
+    "Fig3": Setup(0.1 * u.cm, "lead", 2 * u.GeV, 0.2),
+    "Fig4": Setup(0.1 * u.cm, "lead", 8 * u.GeV, 0.04),
+    "Fig5": Setup(0.1 * u.cm, "lead", 14 * u.GeV, 0.02),
+    "Fig6": Setup(1.44 * u.cm, "copper", 11.7 * u.GeV, 0.045),
+    "Fig7": Setup(1.44 * u.cm, "copper", 7.3 * u.GeV, 0.045),
+}
 
 s = sys.argv[1]
-thickness = setup[s]["thickness"]
-material = setup[s]["material"]
-momentum = setup[s]["momentum"]
-maxTheta = setup[s]["maxTheta"]
+thickness, material, momentum, maxTheta = setup[s]
 
 checkOverlap = True
 storeOnlyMuons = True
