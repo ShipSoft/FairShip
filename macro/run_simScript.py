@@ -48,6 +48,18 @@ HNL = True
 inputFile = "$EOSSHIP/eos/experiment/ship/data/Charm/Cascade-parp16-MSTP82-1-MSEL4-978Bpot.root"
 defaultInputFile = True
 
+# Input files the generators actually read. Only these belong in the output
+# FileSummary: inputFile above is a placeholder that survives untouched for
+# generators which need no input at all (particle gun, cosmics).
+usedInputFiles: list[str] = []
+
+
+def useInputFile(paths):
+    """Check that the generator input exists and record it for the FileSummary."""
+    ut.checkFileExists(paths)
+    usedInputFiles.extend([paths] if isinstance(paths, str) else list(paths))
+
+
 parser = ArgumentParser()
 
 parser.add_argument("--evtcalc", help="Use EventCalc", action="store_true")
@@ -607,7 +619,7 @@ if options.pythia8:
             )
         P8gen.SetParameters("ProcessLevel:all = off")
         if inputFile:
-            ut.checkFileExists(inputFile)
+            useInputFile(inputFile)
             # read from external file
             P8gen.UseExternalFile(inputFile, options.firstEvent)
     if options.DarkPhoton:
@@ -639,7 +651,7 @@ if options.pythia8:
         P8gen.SetMaxTheta(max_theta_x, max_theta_y)  # slope bounds: |px/pz|, |py/pz|
     if charmonly:
         primGen.SetTarget(0.0, 0.0)  # vertex is set in pythia8Generator
-        ut.checkFileExists(inputFile)
+        useInputFile(inputFile)
         if ship_geo.Box.gausbeam:
             primGen.SetBeam(0.0, 0.0, 0.5, 0.5)  # more central beam, for hits in downstream detectors
             primGen.SmearGausVertexXY(True)  # sigma = x
@@ -686,7 +698,7 @@ if options.pythia6:
 if options.evtcalc:
     primGen.SetTarget(0.0, 0.0)
     print(f"Opening input file for EvtCalc generator: {inputFile}")
-    ut.checkFileExists(inputFile)
+    useInputFile(inputFile)
     EvtCalcGen = ROOT.EvtCalcGenerator()
     if not EvtCalcGen.Init(inputFile, options.firstEvent):
         raise RuntimeError(f"Failed to initialize EvtCalcGenerator from input: {inputFile}")
@@ -747,7 +759,7 @@ if options.command == "PG":
     ROOT.SetOwnership(myPgun, False)  # C++ FairPrimaryGenerator takes ownership
 # -----muon DIS Background------------------------
 if options.mudis:
-    ut.checkFileExists(inputFile)
+    useInputFile(inputFile)
     primGen.SetTarget(0.0, 0.0)
     DISgen = ROOT.MuDISGenerator()
     # from nu_tau detector to tracking station 2
@@ -766,7 +778,7 @@ if options.mudis:
 # -----Neutrino Background------------------------
 if options.command == "Genie":
     # Genie
-    ut.checkFileExists(inputFile)
+    useInputFile(inputFile)
     primGen.SetTarget(0.0, 0.0)  # do not interfere with GenieGenerator
     Geniegen = ROOT.GenieGenerator()
 
@@ -783,7 +795,7 @@ if options.command == "Genie":
     run.SetPythiaDecayer("DecayConfigNuAge.C")
     print("Generate ", options.nEvents, " with Genie input", " first event", options.firstEvent)
 if options.nuradio:
-    ut.checkFileExists(inputFile)
+    useInputFile(inputFile)
     primGen.SetTarget(0.0, 0.0)  # do not interfere with GenieGenerator
     Geniegen = ROOT.GenieGenerator()
     if not Geniegen.Init(inputFile, options.firstEvent):
@@ -803,7 +815,7 @@ if options.nuradio:
     # for i in [431,421,411,-431,-421,-411]:
     # ROOT.gMC.SetUserDecay(i) # Force the decay to be done w/external decayer
 if options.ttree:
-    ut.checkFileExists(inputFile)
+    useInputFile(inputFile)
     primGen.SetTarget(0.0, 0.0)
     generator = ROOT.SHiP.TTreeGenerator()
     generator.SetTreeName("converted_ntuple")
@@ -816,7 +828,7 @@ if options.ttree:
     print("Process ", options.nEvents, " from input file")
 if options.ntuple:
     # reading previously processed muon events, [-50m - 50m]
-    ut.checkFileExists(inputFile)
+    useInputFile(inputFile)
     primGen.SetTarget(ship_geo.target.z0 + 50 * u.m, 0.0)
     Ntuplegen = ROOT.NtupleGenerator()
     if not Ntuplegen.Init(inputFile, options.firstEvent):
@@ -828,6 +840,7 @@ if options.ntuple:
 #
 if options.muonback:
     # reading muon tracks from previous Pythia8/Geant4 simulation with charm replaced by cascade production
+    useInputFile(inputFile)
     isNew = ut.checkForBranch(
         inputFile, "PlaneHAPoint"
     )  # If there is a branch PlaneHAPoint this file is from the new production
@@ -1147,37 +1160,54 @@ if options.run_number is not None:
 print("[INFO]: Saving FileSummary")
 
 
-def mergeFileSummary(inFiles: list) -> dict:
+def mergeFileSummary(inFiles: list[str] | str) -> dict:
     """
     Make a file summary for the output.
-    Keeps a list of the input files so the the total
+    Keeps a list of the input files so that the total
     provenance of the events can be traced back to the sim files.
     """
     if isinstance(inFiles, str):
         inFiles = [inFiles]
 
-    mergedFSR = {"PoT": 0, "EnergyCut": [], "prodSite": [], "inputFiles": [], "PoTperFile": []}
+    energyCuts = []
+    prodSites = []
+    poTperFile = []
+    mergedFSR: dict = {
+        "PoT": 0,
+        "EnergyCut": [],
+        "prodSite": [],
+        "inputFiles": [],
+        "PoTperFile": [],
+        "date": datetime.today().strftime("%Y-%m-%d"),
+    }
     for _f in inFiles:
-        with ROOT.TFile.Open(_f, "READ") as _of:
-            key_names = [_k.GetName() for _k in _of.GetListOfKeys()]
-            mergedFSR["inputFiles"].append(_f)
-            if "FileSummary" in key_names:
-                fsr = json.loads(str(_of.Get("FileSummary")))
-                mergedFSR["PoT"] += fsr["PoT"]
-                mergedFSR["EnergyCut"].append(fsr["EnergyCut"])
-                mergedFSR["prodSite"].append(fsr["prodSite"])
-                mergedFSR["PoTperFile"].append(fsr["PoT"])
-            else:
-                print(f"[WARNING] No FileSummary in {_f}")
+        mergedFSR["inputFiles"].append(_f)
+        # The recorded path keeps any $EOSSHIP/$FAIRSHIP prefix for portability,
+        # but ROOT needs it expanded to open the file.
+        path = os.path.expandvars(_f)
+        try:
+            with ROOT.TFile.Open(path, "READ") as _of:
+                key_names = [_k.GetName() for _k in _of.GetListOfKeys()]
+                if "FileSummary" in key_names:
+                    fsr = json.loads(str(_of.Get("FileSummary")))
+                    mergedFSR["PoT"] += fsr["PoT"]
+                    energyCuts.append(fsr["EnergyCut"])
+                    prodSites.append(fsr["prodSite"])
+                    poTperFile.append(fsr["PoT"])
+                else:
+                    print(f"[WARNING] No FileSummary in {_f}")
+        except OSError:
+            # PyROOT raises instead of returning a null file. A summary is not
+            # worth losing a simulation that has already run to completion.
+            print(f"[WARNING] Could not open {path} to read its FileSummary")
 
-    mergedFSR["EnergyCut"] = list(set(mergedFSR["EnergyCut"]))  # Just get unique values
-    mergedFSR["prodSite"] = list(set(mergedFSR["prodSite"]))
-    mergedFSR["PoTperFile"] = list(set(mergedFSR["PoTperFile"]))
-    mergedFSR["date"] = datetime.today().strftime("%Y-%m-%d")
+    mergedFSR["EnergyCut"] = list(set(energyCuts))  # Just get unique values
+    mergedFSR["prodSite"] = list(set(prodSites))
+    mergedFSR["PoTperFile"] = list(set(poTperFile))
     return mergedFSR
 
 
-newFileSummary = mergeFileSummary(inputFile)
+newFileSummary = mergeFileSummary(usedInputFiles)
 with ROOT.TFile.Open(outFile, "UPDATE") as _of:
     _of.WriteObject(ROOT.TString(json.dumps(newFileSummary)), "FileSummary")
 
