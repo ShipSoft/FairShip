@@ -291,19 +291,14 @@ def print_simulation_output_summary(ROOT, output_filename, requested_events, fla
 
         scalar_stats = {}
         branch_stats = {}
-        track_stats = {
-            "total_tracks": 0,
-            "primary_tracks": 0,
-            "secondary_tracks": 0,
-            "weight_sum": 0.0,
-            "weight_sq_sum": 0.0,
-            "weight_min": None,
-            "weight_max": None,
+        track_counts = {"total": 0, "primary": 0, "secondary": 0}
+        track_numeric_stats = {
             "p": make_numeric_stats(),
             "energy": make_numeric_stats(),
             "start_z": make_numeric_stats(),
-            "pdg_counts": {},
+            "weight": make_numeric_stats(),
         }
+        pdg_counts: dict[int, int] = {}
 
         for branch_name in branch_names:
             branch_stats[branch_name] = {"total": 0, "nonzero": 0, "max": 0, "sum_sq": 0.0}
@@ -312,6 +307,8 @@ def print_simulation_output_summary(ROOT, output_filename, requested_events, fla
             tree.GetEntry(event_index)
             for branch_name in branch_names:
                 container = getattr(tree, branch_name, None)
+                if container is None:
+                    continue
                 count = container_size(container)
                 if count is None:
                     try:
@@ -333,41 +330,34 @@ def print_simulation_output_summary(ROOT, output_filename, requested_events, fla
 
                 if branch_name == "MCTrack" and count > 0:
                     for track in container:
-                        track_stats["total_tracks"] += 1
+                        track_counts["total"] += 1
                         if track.GetMotherId() < 0:
-                            track_stats["primary_tracks"] += 1
+                            track_counts["primary"] += 1
                         else:
-                            track_stats["secondary_tracks"] += 1
-                        weight = float(track.GetWeight())
-                        track_stats["weight_sum"] += weight
-                        track_stats["weight_sq_sum"] += weight * weight
-                        if track_stats["weight_min"] is None or weight < track_stats["weight_min"]:
-                            track_stats["weight_min"] = weight
-                        if track_stats["weight_max"] is None or weight > track_stats["weight_max"]:
-                            track_stats["weight_max"] = weight
-                        update_numeric_stat(track_stats["p"], float(track.GetP()))
-                        update_numeric_stat(track_stats["energy"], float(track.GetEnergy()))
-                        update_numeric_stat(track_stats["start_z"], float(track.GetStartZ()))
+                            track_counts["secondary"] += 1
+                        update_numeric_stat(track_numeric_stats["p"], float(track.GetP()))
+                        update_numeric_stat(track_numeric_stats["energy"], float(track.GetEnergy()))
+                        update_numeric_stat(track_numeric_stats["start_z"], float(track.GetStartZ()))
+                        update_numeric_stat(track_numeric_stats["weight"], float(track.GetWeight()))
                         pdg = int(track.GetPdgCode())
-                        track_stats["pdg_counts"][pdg] = track_stats["pdg_counts"].get(pdg, 0) + 1
+                        pdg_counts[pdg] = pdg_counts.get(pdg, 0) + 1
 
         countable_branches = [
             name for name, stats in branch_stats.items() if stats["total"] > 0 or stats["nonzero"] > 0
         ]
         print_kv("Countable branches", len(countable_branches))
 
-        if track_stats["total_tracks"] > 0:
+        if track_counts["total"] > 0:
             print_section("MCTrack Validation")
-            print_kv("Total tracks", track_stats["total_tracks"])
-            print_kv("Primary tracks", track_stats["primary_tracks"])
-            print_kv("Secondary tracks", track_stats["secondary_tracks"])
-            print_kv("Tracks per event", f"{track_stats['total_tracks'] / n_entries:.4g}")
-            print_kv("Track momentum", format_stat_summary(track_stats["p"]))
-            print_kv("Track energy", format_stat_summary(track_stats["energy"]))
-            print_kv("Track start Z", format_stat_summary(track_stats["start_z"]))
-            top_pdgs = sorted(track_stats["pdg_counts"].items(), key=lambda item: (-item[1], abs(item[0]), item[0]))[
-                :10
-            ]
+            print_kv("Total tracks", track_counts["total"])
+            print_kv("Primary tracks", track_counts["primary"])
+            print_kv("Secondary tracks", track_counts["secondary"])
+            print_kv("Tracks per event", f"{track_counts['total'] / n_entries:.4g}")
+            print_kv("Track momentum", format_stat_summary(track_numeric_stats["p"]))
+            print_kv("Track energy", format_stat_summary(track_numeric_stats["energy"]))
+            print_kv("Track start Z", format_stat_summary(track_numeric_stats["start_z"]))
+            print_kv("Track weight", format_stat_summary(track_numeric_stats["weight"]))
+            top_pdgs = sorted(pdg_counts.items(), key=lambda item: (-item[1], abs(item[0]), item[0]))[:10]
             print_kv("Top PDG counts", ", ".join(f"{pdg}:{count}" for pdg, count in top_pdgs))
 
         if scalar_stats:
