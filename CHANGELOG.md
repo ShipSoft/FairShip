@@ -16,6 +16,11 @@ it in future.
 
 * He Balloon added with configurable thickness and material.
 * 2026 BDF target design (33 pure tungsten disks with a larger rear block, steel core with serpentine He cooling grooves, jacket tube, flanges, upstream beam window and cover plate, and domed rear endcap), extracted from CATIA model ST1A07710_01_AB.02. Select with `--target-yaml geometry/target_config_2026.yaml`; the legacy design remains the default. Downstream elements are positioned using the nominal legacy target length so both designs can be compared directly.
+* Add converter of neutrino flux to the aegir-genie format
+
+* Add option to split kaons and pions right before they decay, to increase the number of muons
+
+* Added TRY_2026 MS version.
 
 ### Changed
 
@@ -50,8 +55,8 @@ it in future.
 
 ### Fixed
 
+* Remove duplicated 4232 pdg code in extractNeutrinosAndUpdateWeight and extractMuonsAndUpdateWeight
 * Update charm and beauty over mbias cross sections in run_fixedTarget
-
 * Fix pot branch in Decay tree from makeDecay
 * Fix check of existing particle pdg in makeCascade
 * Restore `tPythia6Generator` instantiation from Python — broken since 26.02 by the `SHiP::Generator` base-class refactor leaving the file-based `Init` overloads pure virtual without a stub override (#1272)
