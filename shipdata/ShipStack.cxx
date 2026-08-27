@@ -420,17 +420,10 @@ void ShipStack::SelectTracks() {
     }
     // --> Set storage flag
     fStoreFlags[i] = store;
-    // special case for Ship generators, want to keep all original particles
-    // with their mother daughter relationship independent if tracked or not.
-    // apply a dirty trick and use second mother to identify original generator
-    // particles. doesn't work, always true: Int_t iMother2 =
-    // GetParticle(i)->GetMother(1); maybe should set Mother2 to -1 in the
-    // generator if (iMother == iMother2) {fStoreMap[i] = kTRUE;}
   }
   // --> If flag is set, flag recursively mothers of selected tracks.
-  // A mother always has a smaller index than its daughters and every walk
-  // continues to the root, so an already-flagged mother implies its whole
-  // ancestor chain is flagged and the walk can stop early.
+  // An already-flagged mother implies its whole ancestor chain is flagged,
+  // so the walk can stop there.
   if (fStoreMothers) {
     for (Int_t i = 0; i < fNParticles; i++) {
       if (fStoreFlags[i]) {

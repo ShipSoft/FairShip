@@ -261,7 +261,7 @@ class ShipDigiReco:
                 self.validation_stats["candidate_stations_count"] += 1
             if nM < 13:
                 n_too_few_hits += 1
-                continue  # not enough hits to make a good trackfit
+                continue  # not enough hits for a good trackfit (threshold tuned to the 1-plane-per-view geometry, #552)
             if n_stations_crossed < 3:
                 n_too_few_stations += 1
                 continue  # not enough stations crossed to make a good trackfit
@@ -284,6 +284,8 @@ class ShipDigiReco:
                     resolution *= 1.4  # worse resolution due to t0 estimate
                 for i in range(3):
                     covM[i][i] = resolution * resolution
+                # x is only measured by the small-angle stereo views, so give
+                # the seed a ~10x larger x uncertainty than y
                 covM[0][0] = resolution * resolution * 100.0
                 for i in range(3, 6):
                     covM[i][i] = ROOT.TMath.Power(resolution / nM / ROOT.TMath.Sqrt(3), 2)

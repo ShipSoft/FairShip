@@ -550,6 +550,8 @@ def extrapolateToPlane(fT, z):
                 fstate = fstate1
             zs = z
             NewPosition = ROOT.TVector3(0.0, 0.0, zs)
+            # muon hypothesis (+-13), keeping the sign of the fitted PDG code
+            # (the PDG-code sign is opposite to the muon's charge sign)
             rep = ROOT.genfit.RKTrackRep(13 * cmp(fstate.getPDG(), 0))
             state = ROOT.genfit.StateOnPlane(rep)
             pos, mom = fstate.getPos(), fstate.getMom()
@@ -619,9 +621,9 @@ def getReconstructibleTracks(iEvent: int, sTree, sGeo, ShipGeo):
     ----------
     iEvent : int
         Event id.
-    stree : root file
+    sTree : ROOT.TTree or ROOT.TChain
         Events in raw format.
-    fGeo : object
+    sGeo : object
         Contains SHiP detector geometry.
     ShipGeo : object
         Contains SHiP detector geometry.
@@ -631,6 +633,9 @@ def getReconstructibleTracks(iEvent: int, sTree, sGeo, ShipGeo):
         List of reconstructible track ids.
     """
 
+    # z extent of the tracker: station z is the centre of its 4 views (2 layers
+    # each), so the first straw layer sits 1.5 view spacings + 0.5 layer
+    # spacings away, plus one straw radius to the straw edge
     TStationz = ShipGeo.TrackStation1.z
     Zpos = (
         TStationz - 3.0 / 2.0 * ShipGeo.strawtubes_geo.delta_z_view - 1.0 / 2.0 * ShipGeo.strawtubes_geo.delta_z_layer
@@ -801,7 +806,10 @@ def getReconstructibleTracks(iEvent: int, sTree, sGeo, ShipGeo):
     for item in MCTrackIDs:
         atrack = sTree.MCTrack.At(item)
         motherId = atrack.GetMotherId()
-        if motherId != 2:  #!!!!
+        # keep only daughters of the signal particle; assumes the standard HNL
+        # production chain (external charm file), where the signal is MCTrack 2.
+        # Other generator configurations are not supported here.
+        if motherId != 2:
             itemstoremove.append(item)
 
     for item in itemstoremove:

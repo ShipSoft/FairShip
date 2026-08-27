@@ -133,11 +133,10 @@ class HNLbranchings:
         self.U2 = couplings
         self.U = [math.sqrt(ui) for ui in self.U2]
         self.MN = mass * u.GeV
-        # Cached total decay width; constant for fixed mass/couplings, which are
-        # never mutated after construction.
+        # Cache the total width (constant for fixed mass/couplings) and a
+        # reusable TF1 whose parameters are set per integral() call; binding a
+        # Python callable into a TF1 is expensive.
         self._totalWidth = None
-        # Reused TF1 wrapping the (Python) integrand; rebuilding it per call is
-        # expensive because of the PyROOT callable binding.
         self._integrand_tf1 = None
         self.CKM = CKMmatrix()
         self.CKMelemSq = {
@@ -331,9 +330,8 @@ class HNLbranchings:
         xi = mi/MN
         """
         if self._integrand_tf1 is None:
-            # ROOT registers TF1s globally by name and WrappedTF1 resolves them
-            # by that name, so give each instance a unique name to avoid
-            # collisions when several HNLbranchings objects are alive at once.
+            # ROOT registers TF1s globally by name, so make it unique per
+            # instance to avoid collisions between HNLbranchings objects.
             self._integrand_tf1 = ROOT.TF1(f"hnl_integrand_{id(self):x}", self.Integrand, 0, 1, 3)
         func = self._integrand_tf1
         func.SetParameters(x1, x2, x3)

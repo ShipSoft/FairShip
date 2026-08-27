@@ -156,9 +156,9 @@ def configure_snd_siliconTarget(yaml_file: str, ship_geo) -> None:
     ship_geo.SiliconTarget_geo = AttrDict(config["SiliconTarget"])
     # Initialize detector
     if ship_geo.SiliconTarget_geo.zPosition == "auto":
-        # Get the the center of the next to last magnet (temporary placement)
-        # Offset placement of detector by 140 cm, magnet is 2* 212.54 cm,
-        # 120 layers at 132 cm will fit, with 140 cm offset final layer within 10 cm of MTC.
+        # auto: centre the target so its last layer ends one magnet Z-gap
+        # upstream of the last muon-shield magnet's entrance (where the MTC
+        # starts).
         SiliconTarget_total_length = ship_geo.SiliconTarget_geo.targetSpacing * ship_geo.SiliconTarget_geo.nLayers
         ship_geo.SiliconTarget_geo.zPosition = (
             ship_geo.muShield.Entrance[-1] - ship_geo.muShield.Zgap[-1] - SiliconTarget_total_length / 2

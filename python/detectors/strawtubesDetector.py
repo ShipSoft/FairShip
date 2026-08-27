@@ -30,7 +30,7 @@ class strawtubesDetector(BaseDetector):
                 else:
                     earliest_per_det_id[detector_id] = index
 
-    def withT0Estimate(self) -> list[dict[str, int]]:
+    def withT0Estimate(self) -> list[dict[str, float | int]]:
         # loop over all straw tdcs and make average, correct for ToF
         n = 0
         t0 = 0.0
@@ -39,6 +39,8 @@ class strawtubesDetector(BaseDetector):
         start = ROOT.TVector3()
         SmearedHits = []
         v_drift = global_variables.modules["strawtubes"].StrawVdrift()
+        # straw 1002001 (first straw of station 1) defines the z reference
+        # plane for the time-of-flight correction
         global_variables.modules["strawtubes"].StrawEndPoints(1002001, start, stop)
         z1 = stop.z()
         for aDigi in self.det:
@@ -63,20 +65,22 @@ class strawtubesDetector(BaseDetector):
             )
             n += 1
         if n > 0:
+            # 73.2 ns: empirical offset aligning the averaged, ToF-corrected
+            # TDC times with the event t0.
+            # TODO(olantwin, 2026-08-12): document its derivation
             t0 = t0 / n - 73.2 * u.ns
         for s in SmearedHits:
             delt1 = (s["z"] - z1) / u.speedOfLight
             s["dist"] = (s["dist"] - delt1 - t0) * v_drift
         return SmearedHits
 
-    def smearHits(self, no_amb=None) -> list[dict[str, int]]:
+    def smearHits(self, no_amb=None) -> list[dict[str, float | int]]:
         # smear strawtube points
         SmearedHits = []
         key = -1
         stop = ROOT.TVector3()
         start = ROOT.TVector3()
         v_drift = global_variables.modules["strawtubes"].StrawVdrift()
-        global_variables.modules["strawtubes"].StrawEndPoints(1002001, start, stop)
         for aDigi in self.det:
             key += 1
             if not aDigi.isValid():

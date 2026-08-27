@@ -53,17 +53,24 @@ class Task:
         self.TwoTrackVertex()
 
     # define global data and functions for vertex fit with TMinuit
+    # y_data packs the two 5D genfit track states (q/p, dx/dz, dy/dz, x, y)
+    # on the plane at z0; Vy is their joint 10x10 inverse covariance, flattened
     y_data = np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
     z0 = 0
     Vy = np.zeros(100)
 
-    def chi2(self, res, Vy) -> int:
+    def chi2(self, res, Vy) -> float:
+        # res^T V^-1 res, with the flat index i -> (row i//10, column i%10)
         s = 0
         for i in range(100):
             s += Vy[i] * res[i // 10] * res[i % 10]
         return s
 
-    def residuals(self, y_data, a, z0: int):
+    def residuals(self, y_data, a, z0: float):
+        # fit parameters a: 0-2 vertex (x, y, z), 3-5 track 1 (dx/dz, dy/dz,
+        # 1/|p|), 6-8 track 2; positions are propagated from the vertex to z0.
+        # The q/p state component is compared via abs(), which equals 1/|p|
+        # for unit-charge tracks.
         res = np.zeros(10)
         res[0] = abs(y_data[0]) - a[5]
         res[1] = y_data[1] - a[3]
@@ -105,10 +112,9 @@ class Task:
         for tr in goodTracks:
             fittedTracks[tr].getFitStatus()
             xx = fittedTracks[tr].getFittedState()
+            # shipDigiReco fits every track under the muon hypothesis (+-13)
             pid = xx.getPDG()
-            if not global_variables.pidProton and abs(pid) == 2212:
-                pid = int(math.copysign(211, pid))
-            rep = ROOT.genfit.RKTrackRep(xx.getPDG())
+            rep = ROOT.genfit.RKTrackRep(pid)
             state = ROOT.genfit.StateOnPlane(rep)
             rep.setPosMom(state, xx.getPos(), xx.getMom())
             PosDirCharge[tr] = {
@@ -222,11 +228,9 @@ class Task:
                 # print "DEBUG",HNLPos[0],HNLPos[1],HNLPos[2],dist,covX[0][0],covX[1][1],covX[2][2]
                 # print "     ",mctrack.GetStartX(),mctrack.GetStartY(),mctrack.GetStartZ()
 
-                # Copy the fitted states: getFittedState() returns a reference to
-                # the state cached in the track's KalmanFitterInfo, and the
-                # stepwise extrapolation below would otherwise mutate the stored
-                # genfit::Track in place (affecting later pairs / getFittedState
-                # calls, making results depend on pair-processing order).
+                # Copy the fitted states: getFittedState() returns a reference
+                # cached in the track, and extrapolating it in place would make
+                # results depend on the pair-processing order.
                 st1 = ROOT.genfit.MeasuredStateOnPlane(fittedTracks[t1].getFittedState())
                 st2 = ROOT.genfit.MeasuredStateOnPlane(fittedTracks[t2].getFittedState())
                 # Extrapolate to the vertex Z-plane stepwise to avoid
@@ -255,6 +259,9 @@ class Task:
                 covInv = ROOT.TMatrixDSym()
                 ROOT.genfit.tools.invertMatrix(cov, covInv)
 
+                # pack both 5D states (and their inverse covariance below) as
+                # expected by fcn/residuals; the covariance is block-diagonal,
+                # i.e. the fit treats the two track states as independent
                 self.y_data = np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
                 stVal1 = st1.getState()
                 stVal2 = st2.getState()
@@ -445,8 +452,10 @@ class Task:
                         for j in range(6):
                             MT_AtoP[j][i] = M_AtoP[i][j]
 
+                    # extract the 6x6 block of parameters 3-8 (slopes and
+                    # 1/|p|) from the flat, row-major 9x9 fit covariance
                     for i in range(36):
-                        covA[i // 6][i % 6] = cov[i // 6 + 3 + (i % 6 + 3) * 9]
+                        covA[i // 6][i % 6] = cov[(i // 6 + 3) * 9 + (i % 6 + 3)]
 
                     tmp = ROOT.TMatrixD(4, 6)
                     tmp.Mult(M_AtoP, covA)

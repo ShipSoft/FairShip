@@ -132,9 +132,8 @@ def printWF(vl, alreadyPrinted, onlyWithField: bool = True):
 
 
 def nextLevel(lv, magnetMass, onlyWithField, exclude, alreadyPrinted):
-    # Accumulate the magnet mass of every leaf volume in the subtree. A single
-    # running total is threaded through the recursion so that leaves at any
-    # depth (and direct leaf daughters of the top level) are all counted.
+    # Recursively accumulate the magnet mass over the subtree's leaf volumes;
+    # printWF counts only the first leaf per unique volume name.
     for da in range(lv.GetNoDaughters()):
         lvn = lv.GetDaughter(da)
         name = lvn.GetName().c_str()

@@ -231,7 +231,7 @@ parser.add_argument(
 parser.add_argument("--PaintBeam", dest="PaintBeam", help="Radius of beam painting [cm]", default=5, type=float)
 parser.add_argument(
     "--Cosmics", dest="cosmics", help="Use cosmic generator, argument switch for cosmic generator 0 or 1", default=None
-)  # TODO: Understand integer options, replace with store_true?
+)  # 0/1 selects CosmicsGenerator::Init(largeMom); not store_true, since "0" must enable cosmics with largeMom=False
 parser.add_argument("--MuDIS", dest="mudis", help="Use muon deep inelastic scattering generator", action="store_true")
 parser.add_argument("--RpvSusy", dest="RPVSUSY", help="Generate events based on RPV neutralino", action="store_true")
 parser.add_argument("--FixedTarget", dest="fixedTarget", help="Enable fixed target simulation", action="store_true")
