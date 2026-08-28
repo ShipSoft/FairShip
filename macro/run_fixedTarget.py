@@ -90,7 +90,13 @@ ap.add_argument(
     help="splitting factor for kaons and pions, in order to boost the number of muons stemming from their decays",
 )
 ap.add_argument(
-    "--multiple-kpi-splits", action="store_true", help="split kaons and pions multiple times along the track path"
+    "--multiple-kpi-splits",
+    action="store_true",
+    help="split kaons and pions multiple times along the track path. "
+    "WARNING: computationally unbounded — every step spawns N clones and clone "
+    "daughters are split recursively, which exhausts memory within a few "
+    "events now that buffered clones are reliably tracked; needs a cascade "
+    "guard before production use",
 )
 
 ap.add_argument("-C", "--charm", action=argparse.BooleanOptionalAction, default=False, help="generate charm decays")
