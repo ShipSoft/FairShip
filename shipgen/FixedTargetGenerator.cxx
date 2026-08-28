@@ -15,6 +15,7 @@
 #include "HNLPythia8Generator.h"
 #include "MeanMaterialBudget.h"
 #include "Pythia8Plugins/EvtGen.h"
+#include "PythiaSeed.h"
 #include "ShipUnit.h"
 #include "TGeoBBox.h"
 #include "TGeoNode.h"
@@ -34,7 +35,6 @@ constexpr Double_t mbarn = 1E-3 * 1E-24 * TMath::Na();  // cm^2 * Avogadro
 FixedTargetGenerator::FixedTargetGenerator() {
   fUseRandom1 = kFALSE;
   fUseRandom3 = kTRUE;
-  fSeed = 0;
   fMom = 400;  // proton
   fLogger = FairLogger::GetLogger();
   targetName = "cave_1/target_vacuum_box_1/TargetArea_1/HeVolume_1";
@@ -175,8 +175,10 @@ Bool_t FixedTargetGenerator::Init() {
     LOG(error) << "Option not known " << Option.Data() << ", abort";
     return kFALSE;
   }
-  if (fUseRandom1) fRandomEngine = std::make_shared<PyTr1Rng>();
-  if (fUseRandom3) fRandomEngine = std::make_shared<PyTr3Rng>();
+  const UInt_t seed = GetSeed();
+  const UInt_t pythiaSeed = SHiP::NormalizePythiaSeed(seed);
+  if (fUseRandom1) fRandomEngine = std::make_shared<PyTr1Rng>(seed);
+  if (fUseRandom3) fRandomEngine = std::make_shared<PyTr3Rng>(seed);
   std::vector<int> r = {221, 221, 223, 223, 113, 331, 333};
   std::vector<int> c = {6, 7, 5, 7, 5, 6, 9};  // decay channel mumu mumuX
 
@@ -194,7 +196,7 @@ Bool_t FixedTargetGenerator::Init() {
     }
     pcount += 1;
     fPythia->setRndmEnginePtr(fRandomEngine);
-    fPythia->settings.mode("Random:seed", fSeed);
+    fPythia->settings.mode("Random:seed", pythiaSeed);
     fPythia->settings.mode("Next:numberCount", heartbeat);
     if (Option == "Primary") {
       fPythia->settings.mode("Beams:idA", 2212);

@@ -4,6 +4,7 @@
 #
 #   pixi run install-hooks   # one-off: install the git hooks
 #   pixi run lint            # run all hooks on all files
+exclude: ^tests/fairship_tests/references/
 repos:
   # prek runs these as native Rust builtins (no environment, fully portable).
   - repo: https://github.com/pre-commit/pre-commit-hooks

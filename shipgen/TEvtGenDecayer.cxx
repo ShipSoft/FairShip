@@ -5,6 +5,7 @@
 #include "TEvtGenDecayer.h"
 
 #include "FairLogger.h"
+#include "PythiaSeed.h"
 #include "TClonesArray.h"
 #include "TLorentzVector.h"
 #include "TMCProcess.h"
@@ -64,15 +65,16 @@ void TEvtGenDecayer::Init() {
   // Initialize EvtGen if decay files are specified
   if (fDecayFile != "" && fParticleFile != "") {
     // Set up EvtGen random engine with ROOT's random number generator seed
-    UInt_t seed = gRandom->GetSeed();
+    const std::uint32_t seed = fSeed != 0 ? fSeed : gRandom->GetSeed();
+    const std::uint32_t pythiaSeed = SHiP::NormalizePythiaSeed(seed);
 
     // Also seed Pythia8 with the same seed for consistency
     TPythia8* pythia8 = TPythia8::Instance();
     if (pythia8) {
-      pythia8->Pythia8()->readString(Form("Random:seed = %u", seed));
+      pythia8->Pythia8()->readString(Form("Random:seed = %u", pythiaSeed));
       pythia8->Pythia8()->readString("Random:setSeed = on");
       pythia8->Pythia8()->init();  // Re-initialize with new seed
-      LOG(debug) << "TEvtGenDecayer: Pythia8 RNG seeded with " << seed;
+      LOG(debug) << "TEvtGenDecayer: Pythia8 RNG seeded with " << pythiaSeed;
     }
 
     EvtRandomEngine* randomEngine = new EvtMTRandomEngine(seed);

@@ -1,0 +1,13 @@
+# SPDX-License-Identifier: LGPL-3.0-or-later
+# SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
+tests:
+  - name: ci-sim
+  - name: evtgen-summary
+  - name: muonback-io
+  - name: muonback-summary
+  - name: particle-gun
+  - name: pythia8-summary
+  - name: reconstruction
+    depends_on:
+      - muonback-io
+  - name: tracking-benchmark

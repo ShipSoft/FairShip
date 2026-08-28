@@ -48,8 +48,9 @@ void DPPythia8Generator::Print() { fPythia->settings.listAll(); };
 
 // -----   Init   ----------------------------------------------------------
 Bool_t DPPythia8Generator::Init() {
-  if (fUseRandom1) fRandomEngine = std::make_shared<PyTr1Rng>();
-  if (fUseRandom3) fRandomEngine = std::make_shared<PyTr3Rng>();
+  const UInt_t seed = GetSeed();
+  if (fUseRandom1) fRandomEngine = std::make_shared<PyTr1Rng>(seed);
+  if (fUseRandom3) fRandomEngine = std::make_shared<PyTr3Rng>(seed);
   fPythia->setRndmEnginePtr(fRandomEngine);
   // fPythiaHadDecay->setRndmEnginePtr(fRandomEngine);
   fn = 0;
