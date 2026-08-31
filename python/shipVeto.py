@@ -120,13 +120,7 @@ class Task:
         aNode = nav.FindNode()
         if aNode:
             cNode = aNode.GetName()
-        if cNode not in (
-            "decay_medium_block4_0",
-            "decay_medium_block5_0",
-            "decay_medium_block3_0",
-            "decay_medium_block2_0",
-            "decay_medium_block1_0",
-        ):
+        if not cNode.startswith("decay_medium"):
             distmin = 0.0
         else:
             for n in range(nSteps):

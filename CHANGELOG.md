@@ -19,7 +19,7 @@ it in future.
 
 ### Changed
 
-* Fiducial volume "DecayVacuum_block{N}" renamed as "decay_medium_block{N}".
+* Decay volume rebuilt as nested solids: the decay medium sits inside the PVC balloon, which sits inside a solid support vessel (`decay_medium` ⊂ `HeBalloon` ⊂ `VetoInnerWall`). This replaces the previous per-block sibling volumes, which were placed at exactly coincident surfaces. The `HeBalloon` layer is created only when the balloon thickness is greater than zero; otherwise `decay_medium` is placed directly inside `VetoInnerWall`. The per-block `decay_medium_block{N}` volumes (previously the renamed `DecayVacuum_block{N}` fiducial volumes) are merged into a single `decay_medium`, so the old per-block name no longer exists. Dimensions and materials are unchanged; navigation is simpler and slightly faster.
 * SBT sensitive medium is now LAB-based liquid scintillator (`LiquidScintillator`) rather than the plastic `Scintillator`, which remains in use by SplitCal
 * Use dense vectors instead of `std::map` for ShipStack track selection and index remapping, roughly halving CPU time and reducing peak memory for high-multiplicity events (e.g. kaon/pion splitting)
 * Deduplicate the charm/beauty over min-bias cross-section scaling shared by `makeDecay` and `run_fixedTarget` into `python/heavyFlavourScaling.py`
