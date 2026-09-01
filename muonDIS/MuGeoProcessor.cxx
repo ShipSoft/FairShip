@@ -1,4 +1,5 @@
 #include "MuGeoProcessor.h"
+#include "TVirtualMagField.h"
 
 MuGeoProcessor::MuGeoProcessor() {
   fZmax = 14000;
@@ -10,6 +11,7 @@ MuGeoProcessor::MuGeoProcessor() {
   fStartpos = nulVec;
   fStartp = nulVec;
   fStartT = 0;
+  fPDG = 0;
   fUBTpos = nulVec;
   fUBTp = nulVec;
   fUBTT = 0;
@@ -35,6 +37,7 @@ void MuGeoProcessor::initialise(MuonBranches& aEvt) {
     aEvt.mcTrks[0].GetStartVertex(fStartpos);
     fStartT = aEvt.mcTrks[0].GetStartT();
     aEvt.mcTrks[0].GetMomentum(fStartp);
+    fPDG = aEvt.mcTrks[0].GetPdgCode();
   }
   if (aEvt.ubtPt.size() > 0) {
     fhasUBThit = true;
@@ -267,42 +270,50 @@ std::map<std::string, MuonPath>& MuGeoProcessor::FillMuonPath() {
   std::vector<TVector3> startVec;
   std::vector<TVector3> dirVec;
   std::vector<double> timeVec;
+  std::vector<int> pdgVec;
   vtxVec.push_back(fStartpos);
   timeVec.push_back(fStartT);
   startVec.push_back(fStartpos);
   dirVec.push_back(fStartp);
+  pdgVec.push_back(fPDG);
   if (fhasUBThit) {
     vtxVec.push_back(fVtx12);
     timeVec.push_back(fUBTT);
     startVec.push_back(fUBTpos);
     dirVec.push_back(fUBTp);
+    pdgVec.push_back(fPDG);
   } else if (fhasSBThit) {
     vtxVec.push_back(fVtx13);
     timeVec.push_back(fSBTT);
     startVec.push_back(fSBTpos);
     dirVec.push_back(fSBTp);
+    pdgVec.push_back(fPDG);
   } else if (fhasSSThit) {
     vtxVec.push_back(fVtx14);
     timeVec.push_back(fSSTT);
     startVec.push_back(fSSTpos);
     dirVec.push_back(fSSTp);
+    pdgVec.push_back(fPDG);
   }
   if (fhasUBThit && fhasSBThit) {
     vtxVec.push_back(fVtx23);
     timeVec.push_back(fSBTT);
     startVec.push_back(fSBTpos);
     dirVec.push_back(fSBTp);
+    pdgVec.push_back(fPDG);
   } else if (fhasUBThit && fhasSSThit) {
     vtxVec.push_back(fVtx24);
     timeVec.push_back(fSSTT);
     startVec.push_back(fSSTpos);
     dirVec.push_back(fSSTp);
+    pdgVec.push_back(fPDG);
   }
   if (fhasSBThit && fhasSSThit) {
     vtxVec.push_back(fVtx34);
     timeVec.push_back(fSSTT);
     startVec.push_back(fSSTpos);
     dirVec.push_back(fSSTp);
+    pdgVec.push_back(fPDG);
   }
 
   //Only want to fill DIS in the pre-decay volume material if muon trajectory does not go through SBT nor SST
@@ -392,9 +403,26 @@ std::map<std::string, MuonPath>& MuGeoProcessor::FillMuonPath() {
 
     // create new path object
     MuonPath lpath;
+
+    if (!fField) {
+      LOG(error) << "MuGeoProcessor: fField is NULL!";
+    } 
+ 
+    lpath.SetField(fField);    
     lpath.AddVolume(lvolName, material->GetName(), material->GetDensity());
+
+    int pdg = pdgVec[iV];
+
+    if (pdg != 13 && pdg != -13) {
+      LOG(error)
+        << "Invalid muon PDG at vertex " << iV
+        << ": " << pdg;
+      
+      continue;
+    }
+    
     // reset vertex info to closest measured point
-    lpath.SetVertexInfo(startVec[iV], dirVec[iV], timeVec[iV]);
+    lpath.SetVertexInfo(startVec[iV], dirVec[iV], timeVec[iV], pdgVec[iV]);
     lpath.SetLength(step, currentPos, znext);
     lpath.Print();
 
@@ -435,4 +463,13 @@ void MuGeoProcessor::PrintVolumes(){
       LOG(info) << "  " << volume;
     }
   }
+}
+
+void MuGeoProcessor::SetField(TVirtualMagField* field) {
+    if (!field) {
+        LOG(error) << "MuGeoProcessor::SetField received null pointer!";
+        return;
+    }
+
+    fField = field;
 }

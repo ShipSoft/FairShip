@@ -14,6 +14,7 @@
 #include "TGeoVolume.h"
 #include "TMath.h"
 #include "TVector3.h"
+#include "TVirtualMagField.h"
 
 using namespace ShipMuDIS;
 
@@ -53,8 +54,10 @@ class MuGeoProcessor {
   void FillZmaxVolumes();
   std::map<std::string, MuonPath>& FillMuonPath();
   void PrintVolumes();
+  void SetField(TVirtualMagField* field);
   
  private:
+  TVirtualMagField* fField = nullptr;
   double fZmax;
   double fZmin;
   // position
@@ -83,6 +86,8 @@ class MuGeoProcessor {
   bool fhasUBThit;
   bool fhasSBThit;
   bool fhasSSThit;
+
+  int fPDG;
 
   std::map<std::string, MuonPath> fPathMap;
   std::map<std::string, std::set<std::string>> fVolMap;

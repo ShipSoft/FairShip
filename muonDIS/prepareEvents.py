@@ -3,12 +3,30 @@
 
 """Created May 2026 A.-M. Magnan"""
 
+"""
+Begin of pythia block to avoid aliBuild error
+"""
+import cppyy
+# Load library
+#cppyy.load_library("/cvmfs/ship.cern.ch/26.05/sw/slc9_x86-64/ROOTEGPythia6/latest/lib/libPythia6.so")
+cppyy.load_library("/cvmfs/ship.cern.ch/26.05/sw/slc9_x86-64/pythia6/latest/lib/libPythia6.so")
+# Include header
+cppyy.include("/cvmfs/ship.cern.ch/26.05/sw/slc9_x86-64/ROOTEGPythia6/latest/include/TPythia6.h")
+# Create object
+myPythia = cppyy.gbl.TPythia6()
+print("Pythia6 created")
+"""
+End of pythia block to avoid aliBuild error
+"""
+
 import argparse
 import logging
 import time
 
 import ROOT as r
 from pathlib import Path
+
+import geomGeant4
 
 r.gSystem.Load("libShipMuDIS.so")
 pdg = r.TDatabasePDG.Instance()
@@ -72,7 +90,21 @@ logging.info("Geometry successfully loaded.")
 # Check
 r.gGeoManager.Print()  # Read geometry
 
+from ShipGeoConfig import load_from_root_file
+ShipGeo = load_from_root_file(args.geoFile, "ShipGeo")
+
+fieldMaker = geomGeant4.addVMCFields(ShipGeo,
+                                     "",
+                                     True,
+                                     withVirtualMC=False)
+
+globalField = fieldMaker.getGlobalField()
+
+if not globalField:
+    raise RuntimeError("ShipFieldMaker::getGlobalField() returned a null field")
+
 muDis = r.MuDISProcessor()
+muDis.SetField(globalField)
 muDis.init(args.n_events, args.start_event, 2.0, args.nDIS, theseed, args.z_max)
 p = Path(args.inputfile)
 

@@ -4,6 +4,7 @@
 #include <string>
 
 #include "TVector3.h"
+#include "TVirtualMagField.h"
 
 /*
 This class allows to consider a track with changes in directions between the
@@ -97,12 +98,12 @@ class MuonPath {
   };
 
   void SetVertexInfo(const TVector3& vecpos, const TVector3& vecp,
-                     const double& time);
+                     const double& time, int pdg);
   std::string GetLabel(const std::string& aVol, const std::string& aMat) const;
   void Print();
   double GetZ(const double& aZ, unsigned& idx) const;
   bool Add(const MuonPath& aEle);
-
+  
   inline double GetX(const double& aZ, const unsigned& idx) const {
     if (idx >= GetNSlices() || fpvec[idx].Z()==0) return 0;
     return fvtx[idx].X() +
@@ -128,10 +129,38 @@ class MuonPath {
     double v = c_light * P /
                TMath::Sqrt(TMath::Power(P, 2) + TMath::Power(muon_mass, 2));
     if (v==0) return 0;
+    
     return fvtxT[idx] + GetLength(aZ, idx) / v;
   };
 
+  inline double GetVertexTime(const unsigned& idx) const {
+    if (idx >= fvtxT.size()) return 0.;
+    return fvtxT[idx];
+  };
+
+  void SetField(TVirtualMagField* field);
+  TVector3 GetField(const TVector3& pos) const;
+
+  bool ExtrapolateField(const TVector3& start,
+                        const TVector3& momentum,
+                        double zTarget,
+                        int pdg,
+                        TVector3& outPosition,
+                        TVector3& outMomentum,
+                        double& outPathLength,
+                        double maxStepCm = 2.0) const;
+
+  bool ExtrapolateField(double zTarget,
+                        unsigned idx,
+                        TVector3& outPosition,
+                        TVector3& outMomentum,
+                        double& outPathLength,
+                        double maxStepCm = 2.0) const;
+
  private:
+  void RungeKuttaStep(TVector3& position, TVector3& momentum,
+                      double stepCm, int charge, double momentumMagnitude) const;
+  TVirtualMagField* fField = nullptr;
   std::string flabel;
   double fdensity;
   double fwdensity;
@@ -146,6 +175,7 @@ class MuonPath {
   std::vector<double> fstartT;
   std::vector<double> fendZ;
   std::vector<TVector3> fpvec;
+  std::vector<int> fpdg;
 };
 
 #endif

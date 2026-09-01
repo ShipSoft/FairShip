@@ -3,6 +3,7 @@
 #include <TFile.h>
 #include <TTree.h>
 
+#include <algorithm>
 #include <cmath>
 #include <iostream>
 
@@ -271,13 +272,10 @@ void MuDISProcessor::generateDISevents(const std::string& tType,
     }
 
     fPythia->GenerateEvent();
-    aDISBr.nDISevts++;
     // clean all but final stable particles
     fPythia->Pyedit(1);
 
     lastxs = fPythia->GetPARI(1);      // in mb
-    aDISBr.DISxsec.push_back(lastxs);  // in mb
-    aDISBr.DIStarget.push_back(isProton);
 
     // choose a random vertex position to set to all daughters
     // Take into account "broken" paths with different slices in z.
@@ -292,18 +290,43 @@ void MuDISProcessor::generateDISevents(const std::string& tType,
     // put back to real Z position for paths with different slices in z.
     unsigned slice = 0;
     double realz = aPath.GetZ(vtx_z, slice);
-    aDISBr.DISvz.push_back(realz);
-    aDISBr.DISvx.push_back(aPath.GetX(realz, slice));
-    aDISBr.DISvy.push_back(aPath.GetY(realz, slice));
-    aDISBr.DISvt.push_back(aPath.GetTimeNs(realz, slice));
-    double sliceP = aPath.GetMomentum(slice);
-    if (sliceP==0) {
-      LOG(error) << " --- Slice in z has momentum " << sliceP << ". Skipping DIS event " << ia;
+
+    // Magnetic field extrapolation
+    TVector3 disPosition;
+    TVector3 disMomentum;
+    double propagatedLength = 0.;
+    const bool propagated = aPath.ExtrapolateField(
+        realz, slice, disPosition, disMomentum, propagatedLength);
+
+    if (!propagated) {
+      LOG(error) << " --- Magnetic extrapolation failed for material "
+                 << aLabel << ", slice " << slice << ", target z="
+                 << realz << " cm. Skipping DIS event " << ia;
       continue;
     }
-    double theta = TMath::ACos(aPath.Getpz(slice) / sliceP);
-    // returns phi between -pi and pi
-    double phi = TMath::ATan2(aPath.Getpy(slice), aPath.Getpx(slice));
+
+    const double sliceP = disMomentum.Mag();
+    if (sliceP <= 0.) {
+      LOG(error) << " --- Propagated momentum is zero. Skipping DIS event "
+                 << ia;
+      continue;
+    }
+
+    aDISBr.nDISevts++;
+    aDISBr.DISxsec.push_back(lastxs);  // in mb
+    aDISBr.DIStarget.push_back(isProton);
+    aDISBr.DISvz.push_back(realz);
+    aDISBr.DISvx.push_back(disPosition.X());
+    aDISBr.DISvy.push_back(disPosition.Y());
+
+    const double velocity =
+        c_light * sliceP /
+        TMath::Sqrt(TMath::Power(sliceP, 2) + TMath::Power(muon_mass, 2));
+    aDISBr.DISvt.push_back(aPath.GetVertexTime(slice) + propagatedLength / velocity);
+
+    const double cosTheta = std::max(-1.0, std::min(1.0, disMomentum.Z() / sliceP));
+    double theta = TMath::ACos(cosTheta);
+    double phi = TMath::ATan2(disMomentum.Y(), disMomentum.X());
 
     unsigned ndaugh = fPythia->GetN();
     aDISBr.nDISdau.push_back(ndaugh);
@@ -487,4 +510,14 @@ void MuDISProcessor::ProcessMuons() {
 	    << "Skipped: " << skipEvt << " events and "
 	    << skipMu_pmin << " muons with too low p, "
 	    << skipMu_acc << " muons outside of acceptance.";
+}
+
+void MuDISProcessor::SetField(TVirtualMagField* field) {
+  if (!field) {
+    LOG(error) << "MuDISProcessor::SetField received null pointer!";
+    return;
+  }
+  
+  fField = field;
+  fGeoProcessor.SetField(field);
 }

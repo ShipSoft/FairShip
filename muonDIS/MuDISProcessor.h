@@ -13,6 +13,8 @@
 #include "TVector3.h"
 #include "vector"
 
+#include "TVirtualMagField.h"
+
 using namespace ShipMuDIS;
 
 class MuDISProcessor {
@@ -51,7 +53,11 @@ class MuDISProcessor {
 
   void ProcessMuons();
 
+  void SetField(TVirtualMagField* field);
+  void PrintField(double x, double y, double z);
  private:
+  TVirtualMagField* fField = nullptr;
+  
   TChain* ftree;
   CBMSimBranches finEv;
   
