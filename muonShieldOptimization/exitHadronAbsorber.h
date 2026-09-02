@@ -44,6 +44,7 @@ class exitHadronAbsorber : public SHiP::Detector<vetoPoint> {
   // void FinishEvent();
 
   void SetNSplits(Int_t n) { fNsplits = n; }
+  void SetIntermediateNSplits(Int_t n) { fIntermediateNsplits = n; }
   void SetSplitMultipleTimes() { fSplitOnce = kFALSE; }
 
   inline void SetEnergyCut(Float_t emax) { EMax = emax; }
@@ -68,6 +69,7 @@ class exitHadronAbsorber : public SHiP::Detector<vetoPoint> {
   Bool_t fUseCaveCoordinates = kFALSE;  //! set position from cave
 
   int32_t fNsplits;
+  int32_t fIntermediateNsplits;  // intermediate splits to use at each step before the particle decays
   Double_t fCurrentSurvivalFactor;  // survival factor at every step, if we
                                     // choose to split at every step
   Bool_t fSplitOnce =

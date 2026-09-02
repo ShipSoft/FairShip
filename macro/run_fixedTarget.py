@@ -87,16 +87,20 @@ ap.add_argument(
     "--kaon-pion-splits",
     type=int,
     default=0,
-    help="splitting factor for kaons and pions, in order to boost the number of muons stemming from their decays",
+    help="splitting factor for kaons and pions when they decay, in order to boost the number of muons stemming from their decays",
+)
+ap.add_argument(
+    "--intermediate-kaon-pion-splits",
+    type=int,
+    default=2,
+    help="EXPERTS ONLY: intermediate splitting factor for kaons and pions for each GEANT4 step before they decay, "
+          "in order to boost the number of muons stemming from forced decays. "
+          "EXPERTS ONLY: risk of very large memory usage if the number is set without proper testing",
 )
 ap.add_argument(
     "--multiple-kpi-splits",
     action="store_true",
-    help="split kaons and pions multiple times along the track path. "
-    "WARNING: computationally unbounded — every step spawns N clones and clone "
-    "daughters are split recursively, which exhausts memory within a few "
-    "events now that buffered clones are reliably tracked; needs a cascade "
-    "guard before production use",
+    help="split kaons and pions multiple times along the track path",
 )
 
 ap.add_argument("-C", "--charm", action=argparse.BooleanOptionalAction, default=False, help="generate charm decays")
@@ -231,8 +235,8 @@ if args.debug:
 
 if args.kaon_pion_splits < 0:
     ap.error("--kaon-pion-splits must be >= 0")
-if args.multiple_kpi_splits and args.kaon_pion_splits == 0:
-    ap.error("--multiple-kpi-splits requires --kaon-pion-splits > 0")
+if args.multiple_kpi_splits and args.intermediate_kaon_pion_splits <= 1:
+    ap.error("--multiple-kpi-splits requires --intermediate-kaon-pion-splits > 1")
 
 
 if args.G4only:
@@ -400,6 +404,7 @@ sensPlaneHA = ROOT.exitHadronAbsorber()
 sensPlaneHA.SetNSplits(args.kaon_pion_splits)  # type: ignore[missing-attribute]
 if args.multiple_kpi_splits:
     sensPlaneHA.SetSplitMultipleTimes()  # type: ignore[missing-attribute]
+    sensPlaneHA.SetIntermediateNSplits(args.intermediate_kaon_pion_splits)  # type: ignore[missing-attribute]
 sensPlaneHA.SetEnergyCut(args.ecut * u.GeV)
 sensPlaneHA.SetVetoPointName("PlaneHA")
 
