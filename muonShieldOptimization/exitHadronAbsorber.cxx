@@ -50,6 +50,7 @@ exitHadronAbsorber::exitHadronAbsorber(const char* Name, Bool_t Active)
       fCylindricalPlane(kFALSE),
       fUseCaveCoordinates(kFALSE),
       fNsplits(0),
+      fIntermediateNsplits(2),
       fCurrentSurvivalFactor(1) {}
 
 exitHadronAbsorber::exitHadronAbsorber()
@@ -63,6 +64,7 @@ exitHadronAbsorber::exitHadronAbsorber()
       fCylindricalPlane(kFALSE),
       fUseCaveCoordinates(kFALSE),
       fNsplits(0),
+      fIntermediateNsplits(2),
       fCurrentSurvivalFactor(1) {}
 
 Bool_t exitHadronAbsorber::ProcessHits(FairVolume* vol) {
@@ -100,7 +102,7 @@ Bool_t exitHadronAbsorber::ProcessHits(FairVolume* vol) {
     }
   }
 
-  if (fNsplits > 0 && (!fSplitOnce)) {
+  if (fIntermediateNsplits > 0 && (!fSplitOnce)) {
     Int_t currentTrackId = gMC->GetStack()->GetCurrentTrackNumber();
 
     if (fCloneTracks.count(currentTrackId) > 0 ||
@@ -141,8 +143,8 @@ Bool_t exitHadronAbsorber::ProcessHits(FairVolume* vol) {
           Int_t trueParentId = part->GetFirstMother();
 
           Double_t decayBranchWeight = fCurrentSurvivalFactor * P_decay;
-          Double_t cloneWeight = decayBranchWeight / fNsplits;
-          for (int i = 0; i < fNsplits; ++i) {
+          Double_t cloneWeight = decayBranchWeight / fIntermediateNsplits;
+          for (int i = 0; i < fIntermediateNsplits; ++i) {
             TrackBuffer clone;
             clone.pdg = track_pid;
             clone.px = mom.Px();
@@ -562,7 +564,7 @@ void exitHadronAbsorber::ConstructGeometry() {
                                                 new TGeoTranslation(0, 0, 0));
     AddSensitiveVolume(sensPlaneCyl);
   }
-  if ((fNsplits > 0) && (!fSplitOnce)) {
+  if ((fIntermediateNsplits > 0) && (!fSplitOnce)) {
     TString parentVolumeName = "/target_vacuum_box_1";
     nav->cd(parentVolumeName.Data());
     TGeoVolume* vol = nav->GetCurrentNode()->GetVolume();
