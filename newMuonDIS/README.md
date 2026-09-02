@@ -15,10 +15,10 @@ This folder contains the necessary processors to create DIS events from input mu
     - UBT detector "UBT" (now just a dummy plane)
     - SBT detector "SBTsens" for liquid scintillator and "SBTfr" for frame material
     - SST detector "SSTsens" for liquid scintillator and "SSTfr" for frame material
-    - Helium "He" and He frame (balloon) "HEfr"
+    - Helium "He" and to do: He frame (balloon) "HEfr"
     - Air "Air" from before and after UBT, after balloon, cavern, SST.
     - The rest "REST" anything not taken into account in the previous categories.
-    - to add material, edit top part of MuDISDefs.h file.
+    - to add material or change categories, edit top part of MuDISDefs.h file, and method GetLabel() in MuonPath.cxx
 
 ## Quick recipe
 
@@ -28,6 +28,7 @@ pixi run build
 pixi shell
 cd <your_workdir>
 python3 <relative_path_to_FairShip>/FairShip/muonDIS/prepareEvents.py -f <your_sim_input_root_file.root> -o <your_output_root_file_name>.root -n <number_of_initial_p.o.t./muon_events_to_process> -d <number_of_DIS_per_muon_per_volume> -g <your_geometry_file.root>
+python3 <path_to_FairShip>/newMuonDIS/run_simScript_newDIS.py -f <muonDis_output.root> --tag <your_tag> --MuDIS --debug 1 -n 10
 ```
 
 ## Overview of classes:
@@ -36,10 +37,10 @@ python3 <relative_path_to_FairShip>/FairShip/muonDIS/prepareEvents.py -f <your_s
 - prepareEvents.py: python macro with argument parameters to pass to the main processor.
 - class MuDISProcessor: main processor, reading input and creating output, and calling the others.
 - class MuGeoProcessor: class defining the interface with the geometry. A map of objects of type "MuonPath" is filled, for each input muons, with the specific volumes traversed by the muon. This info will be used to generate vertices for DIS in each specific material, separately, and associate a random vertex position within each of these volumes.
-- class MuonPath: to go along the input muon trajectory, with magnetic field extrapolation, and distribute the path along the list of separate materials defined in MuDISDefs.h
-- class DISparticle: to define the output tree branch with DIS particle information, i.e.
+- class MuonPath: to go along the input muon trajectory, with magnetic field extrapolation (to do), and distribute the path along the list of separate materials defined in MuDISDefs.h
+- class DISparticle: DIS particle pid and 4-vector momentum.
 - header file MuDISDefs.h: all helper classes and struct being used.
-
+- class NewMuDISGenerator: FairGenerator to read again the MuonDIS tree and process particles again through Geant4 to give cbmsim tree.
 
 
 ## Path to volumes
