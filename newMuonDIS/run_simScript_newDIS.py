@@ -1,0 +1,1157 @@
+#!/usr/bin/env python
+# SPDX-License-Identifier: LGPL-3.0-or-later
+# SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
+
+import glob
+import os
+import sys
+import uuid
+from argparse import ArgumentParser
+from array import array
+from typing import cast
+
+import geometry_config
+import ROOT
+import rootUtils as ut
+import shipRoot_conf
+import shipunit as u
+import validationTools as validation_tools
+
+
+def _fraction_0_1(value: str) -> float:
+    v = float(value)
+    if not 0.0 <= v <= 1.0:
+        raise ValueError("--chargeFraction must be between 0 and 1")
+    return v
+
+
+# Default HNL parameters
+theHNLMass = 1.0 * u.GeV
+theProductionCouplings = theDecayCouplings = None
+
+# Default dark photon parameters
+theDPmass = 0.2 * u.GeV
+
+mcEngine = "TGeant4"
+
+inclusive = "c"  # True = all processes if "c" only ccbar -> HNL, if "b" only bbar -> HNL, if "bc" only Bc+/Bc- -> HNL, and for darkphotons: if meson = production through meson decays, pbrem = proton bremstrahlung, qcd = ffbar -> DP.
+
+MCTracksWithHitsOnly = False  # copy particles which produced a hit and their history
+MCTracksWithEnergyCutOnly = True  # copy particles above a certain kin energy cut
+MCTracksWithHitsOrEnergyCut = False  # or of above, factor 2 file size increase compared to MCTracksWithEnergyCutOnly
+
+charmonly = False  # option to be set with -A to enable only charm decays, charm x-sec measurement
+HNL = True
+
+inputFile = "$EOSSHIP/eos/experiment/ship/data/Charm/Cascade-parp16-MSTP82-1-MSEL4-978Bpot.root"
+defaultInputFile = True
+
+parser = ArgumentParser()
+
+parser.add_argument("--evtcalc", help="Use EventCalc", action="store_true")
+parser.add_argument("--Pythia6", dest="pythia6", help="Use Pythia6", action="store_true")
+parser.add_argument("--Pythia8", dest="pythia8", help="Use Pythia8", action="store_true")
+parser.add_argument(
+    "--EvtGenDecayer",
+    dest="evtgen_decayer",
+    help="Use TEvtGenDecayer for J/psi and other quarkonium decays",
+    action="store_true",
+)
+subparsers = parser.add_subparsers(dest="command", help="Which mode to run")
+# === PG subcommand ===
+pg_parser = subparsers.add_parser("PG", help="Use Particle Gun")
+
+pg_parser.add_argument(
+    "--multiplePG", help="Multiple particle guns in a x-y plane at a fixed z or in a 3D volume", action="store_true"
+)
+pg_parser.add_argument("--pID", dest="pID", default=22, type=int, help="id of particle used by the gun (default=22)")
+pg_parser.add_argument(
+    "--thetamin", default=0, type=float, help="min theta range of particle gun in degrees (default=0 degrees)"
+)
+pg_parser.add_argument(
+    "--thetamax", default=90, type=float, help="max theta range of particle gun in degrees (default=90 degrees)"
+)
+pg_parser.add_argument(
+    "--Estart", default=10, type=float, help="start of energy range of particle gun (default=10 GeV)"
+)
+pg_parser.add_argument(
+    "--histoFile",
+    dest="histoFile",
+    default=None,
+    help="File with a histogram to generate from. Repeat for multiple files",
+    action="append",
+)
+pg_parser.add_argument(
+    "--histoName",
+    dest="histoName",
+    default=None,
+    help="Histogram name to generate from. Repeat for multiple files",
+    action="append",
+)
+pg_parser.add_argument(
+    "--histoX",
+    dest="histoX",
+    default=None,
+    help="The variable of the histogram X axis. Repeat for multiple files",
+    action="append",
+)
+pg_parser.add_argument(
+    "--histoY",
+    dest="histoY",
+    default=None,
+    help="The variable of the histogram Y axis. Repeat for multiple files",
+    action="append",
+)
+pg_parser.add_argument(
+    "--histoZ",
+    dest="histoZ",
+    default=None,
+    help="The variable of the histogram Z axis. Repeat for multiple files",
+    action="append",
+)
+
+pg_parser.add_argument(
+    "--bothCharges",
+    dest="bothCharges",
+    default=False,
+    action="store_true",
+    help="Generate both charges of given particle ID",
+)
+pg_parser.add_argument(
+    "--chargeFraction",
+    dest="chargeFraction",
+    type=_fraction_0_1,
+    default=0.5,
+    help="Fraction of chosen charge from pID to generate [0,1]",
+)
+pg_parser.add_argument("--Eend", default=10, type=float, help="end of energy range of particle gun (default=10 GeV)")
+pg_parser.add_argument("--Vx", dest="Vx", default=0, type=float, help="x position of particle gun (default=0 cm)")
+pg_parser.add_argument("--Vy", dest="Vy", default=0, type=float, help="y position of particle gun (default=0 cm)")
+pg_parser.add_argument("--Vz", dest="Vz", default=0, type=float, help="z position of particle gun (default=0 cm)")
+pg_parser.add_argument(
+    "--smearMode",
+    dest="smearMode",
+    default="uniform",
+    help="Form of the vertex smearing for the particle gun",
+    type=str,
+)
+pg_parser.add_argument(
+    "--multiplicity", dest="multiplicity", type=int, default=1, help="How many to generate per event"
+)
+pg_parser.add_argument(
+    "--Dx", dest="Dx", type=float, help="size of the full uniform spread of PG xpos: (Vx - Dx/2, Vx + Dx/2)"
+)
+pg_parser.add_argument(
+    "--Dy", dest="Dy", type=float, help="size of the full uniform spread of PG ypos: (Vy - Dy/2, Vy + Dy/2)"
+)
+pg_parser.add_argument(
+    "--momentumModel", dest="momentumModel", default=0, type=int, help="Select a model to generate the momentum with"
+)
+pg_parser.add_argument(
+    "--modelPar",
+    dest="modelPar",
+    action="append",
+    help="Momentum model parameters. You must specify them all in order",
+    type=float,
+)
+pg_parser.add_argument(
+    "--showPGModels",
+    dest="showPGModels",
+    action="store_true",
+    default=False,
+    help="Print out the PG models that are available",
+)
+pg_parser.add_argument("--thetaMin", type=float, default=0, help="Minimum polar angle [deg] (default: 0)")
+pg_parser.add_argument("--thetaMax", type=float, default=0, help="Maximum polar angle [deg] (default: 0)")
+# === End of PG commands ===
+# === Genie subcommand ===
+genie_parser = subparsers.add_parser("Genie", help="Genie for reading and processing neutrino interactions")
+genie_parser.add_argument(
+    "--GenieOption",
+    dest="GenieOption",
+    default="simple_gevgen",
+    choices=["simple_gevgen", "genie_geometry"],
+    help="Genie generation option: (simple_gevgen, genie_geometry)",
+)
+genie_parser.add_argument(
+    "--z_start_nu",
+    dest="z_start_nu",
+    default=2844.2850,
+    type=float,
+    help="Genie neutrino start z start position (default=2844.2850 cm)",
+)
+genie_parser.add_argument(
+    "--z_end_nu",
+    dest="z_end_nu",
+    default=3180.4350,
+    type=float,
+    help="Genie neutrino end z position (default=3180.4350 cm)",
+)
+# === End of Genie subcommand ===
+parser.add_argument(
+    "-A",
+    help="b: signal from b, c: from c (default), bc: from Bc, inclusive, or for dark photon: meson,pbrem,qcd",
+    default="c",
+)
+parser.add_argument(
+    "--NuRadio",
+    dest="nuradio",
+    help="misuse GenieGenerator for neutrino radiography and geometry timing test",
+    action="store_true",
+)
+parser.add_argument("--Ntuple", dest="ntuple", help="Use ntuple as input", action="store_true")
+parser.add_argument("--ttree", help="Use TTree as input", action="store_true")
+parser.add_argument(
+    "--MuonBack",
+    dest="muonback",
+    help="Generate events from muon background file, --Cosmics=0 for cosmic generator data",
+    action="store_true",
+)
+parser.add_argument(
+    "--FollowMuon", dest="followMuon", help="Make muonshield active to follow muons", action="store_true"
+)
+parser.add_argument(
+    "--FastMuon",
+    dest="fastMuon",
+    help="Only transport muons for a fast muon only background estimate",
+    action="store_true",
+)
+parser.add_argument("--phiRandom", help="only relevant for muon background generator, random phi", action="store_true")
+parser.add_argument(
+    "--SmearBeam", dest="SmearBeam", help="Standard deviation of beam smearing [cm]", default=0.8, type=float
+)
+parser.add_argument("--PaintBeam", dest="PaintBeam", help="Radius of beam painting [cm]", default=5, type=float)
+parser.add_argument(
+    "--Cosmics", dest="cosmics", help="Use cosmic generator, argument switch for cosmic generator 0 or 1", default=None
+)  # TODO: Understand integer options, replace with store_true?
+parser.add_argument("--MuDIS", dest="mudis", help="Use muon deep inelastic scattering generator", action="store_true")
+parser.add_argument("--RpvSusy", dest="RPVSUSY", help="Generate events based on RPV neutralino", action="store_true")
+parser.add_argument("--FixedTarget", dest="fixedTarget", help="Enable fixed target simulation", action="store_true")
+parser.add_argument("--DarkPhoton", help="Generate dark photons", action="store_true")
+parser.add_argument("--SusyBench", dest="RPVSUSYbench", help="Generate HP Susy", default=2)
+parser.add_argument(
+    "-m",
+    "--mass",
+    dest="theMass",
+    help=f"Mass of hidden particle, default {theHNLMass} GeV for HNL, {theDPmass} GeV for DP",
+    default=None,
+    type=float,
+)
+parser.add_argument(
+    "-c",
+    "--couplings",
+    "--coupling",
+    dest="thecouplings",
+    help="couplings 'U2e,U2mu,U2tau' or -c 'U2e,U2mu,U2tau' to set list of HNL couplings.\
+ TP default for HNL, ctau=53.3km",
+    default="0.447e-9,7.15e-9,1.88e-9",
+)
+parser.add_argument(
+    "-cp",
+    "--production-couplings",
+    dest="theprodcouplings",
+    help="production couplings 'U2e,U2mu,U2tau' to set the couplings for HNL production only",
+    default=None,
+)
+parser.add_argument(
+    "-cd",
+    "--decay-couplings",
+    dest="thedeccouplings",
+    help="decay couplings  'U2e,U2mu,U2tau' to set the couplings for HNL decay only",
+    default=None,
+)
+parser.add_argument(
+    "-e", "--epsilon", dest="theDPepsilon", help="to set mixing parameter epsilon", default=0.00000008, type=float
+)
+parser.add_argument("-n", "--nEvents", dest="nEvents", help="Number of events to generate", default=100, type=int)
+parser.add_argument("-i", "--firstEvent", help="First event of input file to use", default=0, type=int)
+parser.add_argument(
+    "-s",
+    "--seed",
+    dest="theSeed",
+    help="Seed for random number. Only for experts, see TRrandom::SetSeed documentation",
+    default=0,
+    type=int,
+)
+parser.add_argument(
+    "-S",
+    "--sameSeed",
+    dest="sameSeed",
+    help="can be set to an integer for the muonBackground simulation with specific seed for each muon, only for experts!",
+    default=False,
+    type=int,
+)
+parser.add_argument(
+    "-f",
+    dest="inputFile",
+    action="append",
+    help="Input file (repeat -f for multiple files)",
+    default=None,
+)
+parser.add_argument(
+    "--remote-input",
+    dest="remoteInput",
+    help="Treat -f/--inputFile values as remote ROOT paths/URLs and skip local glob expansion",
+    action="store_true",
+)
+parser.add_argument("--nFiles", dest="nFiles", help="Number of input files to process", default=-1, type=int)
+parser.add_argument("-g", dest="geofile", help="geofile for muon shield geometry, for experts only", default=None)
+parser.add_argument("-o", "--output", dest="outputDir", help="Output directory", default=".")
+parser.add_argument(
+    "-r",
+    "--run-number",
+    dest="run_number",
+    help="Numeric simulation ID to reuse instead of generating a new UUID",
+    default=None,
+    type=int,
+)
+parser.add_argument(
+    "--reproducible",
+    dest="reproducible",
+    help="Reduce nondeterministic log output for reproducibility/testing",
+    action="store_true",
+)
+parser.add_argument("-Y", dest="dy", help="max height of vacuum tank", default=6.0, type=float)
+parser.add_argument(
+    "--strawDesign",
+    help="Tracker station frame material: 4=Aluminium; 10=steel (default)",
+    default=10,
+    type=int,
+    choices=[4, 10],
+)
+parser.add_argument(
+    "-F",
+    dest="deepCopy",
+    help="default = False: copy only stable particles to stack, except for HNL events",
+    action="store_true",
+)
+parser.add_argument("-t", "--test", dest="testFlag", help="quick test", action="store_true")
+parser.add_argument("--dry-run", dest="dryrun", help="stop after initialize", action="store_true")
+parser.add_argument("-D", "--display", dest="eventDisplay", help="store trajectories", action="store_true")
+parser.add_argument(
+    "--shieldName",
+    help="The name of the muon shield in the database to use.",
+    default="TRY_2026",
+    choices=["TRY_2025", "TRY_2026"],
+)
+parser.add_argument(
+    "--MesonMother", dest="MM", help="Choose DP production meson source: pi0, eta, omega, eta1, eta11", default="pi0"
+)
+parser.add_argument(
+    "--debug",
+    help="Control FairLogger verbosity: 0=info (default), 1=+debug, 2=+debug1, 3=+debug2",
+    default=0,
+    type=int,
+    choices=range(0, 4),
+)
+parser.add_argument("--print-fields", help="Print VMC fields and weights information", action="store_true")
+parser.add_argument("--check-overlaps", help="Perform geometry overlap checking", action="store_true")
+parser.add_argument(
+    "--field_map",
+    default=None,
+    help="Specify spectrometer field map as files/<name>.root. Default set in geometry_config.py: files/2025_02_12_SHiP_SpectrometerField_ECN3_MgB2.root",
+)
+parser.add_argument(
+    "--z-offset", dest="z_offset", help="z-offset for the FixedTargetGenerator [mm]", default=-84.0, type=float
+)
+parser.add_argument(
+    "--helium",
+    dest="decayVolMed",
+    help="Set Decay Volume medium to helium. NOOP, as default is helium",
+    action="store_const",
+    const="helium",
+    default="helium",
+)
+parser.add_argument(
+    "--vacuums",
+    dest="decayVolMed",
+    help="Set Decay Volume medium to vacuum(vessel structure changes)",
+    action="store_const",
+    const="vacuums",
+    default="helium",
+)
+
+parser.add_argument("--SND", dest="SND", help="Activate SND.", action="store_true")
+parser.add_argument(
+    "--SND_design",
+    help="Choose SND design(s) among [1,2,...] or 'all' to enable all. 1: EmulsionTarget, 2: MTC + SiliconTarget",
+    nargs="+",
+    default=[2],
+)
+parser.add_argument(
+    "--noSND", dest="SND", help="Deactivate SND. NOOP, as it currently defaults to off.", action="store_false"
+)
+parser.add_argument(
+    "--target-yaml",
+    help="Path to the yaml target config file",
+    default=os.path.expandvars("$FAIRSHIP/geometry/target_config.yaml"),
+)
+parser.add_argument(
+    "--tag", dest="output_tag", help="Custom tag for output files instead of auto-generated UUID", default=None
+)
+parser.add_argument(
+    "--validation",
+    dest="validation",
+    help="Print an extended simulation validation summary after the run",
+    action="store_true",
+)
+
+
+options = parser.parse_args()
+# Handle SND_design: allow 'all' (case-insensitive) or list of ints
+available_snd_designs = [1, 2]  # Extend this list as new designs are added
+if any(str(x).lower() == "all" for x in options.SND_design):
+    options.SND_design = available_snd_designs
+else:
+    try:
+        options.SND_design = [int(x) for x in options.SND_design]
+    except Exception:
+        print("Invalid value for --SND_design. Use integers or 'all'.")
+        sys.exit(1)
+
+if options.A != "c":
+    inclusive = options.A
+    if options.A == "b":
+        inputFile = "$EOSSHIP/eos/experiment/ship/data/Beauty/Cascade-run0-19-parp16-MSTP82-1-MSEL5-5338Bpot.root"
+    if options.A.lower() == "charmonly":
+        charmonly = True
+        HNL = False
+    if options.A not in ["b", "c", "bc", "meson", "pbrem", "qcd"]:
+        inclusive = True
+motherMode = None
+if options.MM:
+    motherMode = options.MM
+Opt_high = None
+if options.cosmics:
+    Opt_high = int(options.cosmics)
+if options.inputFile:
+    if options.inputFile == ["none"]:
+        options.inputFile = None
+    inputFile = []
+    for _f in options.inputFile:
+        if options.remoteInput:
+            inputFile.append(os.path.expandvars(_f))
+        else:
+            inputFile.extend(glob.glob(_f))
+    inputFile = list(dict.fromkeys(inputFile))
+    if options.nFiles > 0:
+        inputFile = inputFile[: options.nFiles]
+    defaultInputFile = False
+if options.RPVSUSY:
+    HNL = False
+if options.DarkPhoton:
+    HNL = False
+    if inclusive not in {"meson", "pbrem", "qcd"}:
+        parser.error("For --DarkPhoton, -A must be one of: meson, pbrem, qcd")
+if not options.theMass:
+    if options.DarkPhoton:
+        options.theMass = theDPmass
+    else:
+        options.theMass = theHNLMass
+theCouplings = None
+if options.thecouplings:
+    theCouplings = [float(c) for c in options.thecouplings.split(",")]
+if options.theprodcouplings:
+    theProductionCouplings = [float(c) for c in options.theprodcouplings.split(",")]
+if options.thedeccouplings:
+    theDecayCouplings = [float(c) for c in options.thedeccouplings.split(",")]
+if options.testFlag:
+    inputFile = "$FAIRSHIP/files/Cascade-parp16-MSTP82-1-MSEL4-76Mpot_1_5000.root"
+
+
+# sanity check
+if (HNL and options.RPVSUSY) or (HNL and options.DarkPhoton) or (options.DarkPhoton and options.RPVSUSY):
+    print("cannot have HNL and SUSY or DP at the same time, abort")
+    sys.exit(2)
+
+if (options.command == "Genie" or options.nuradio) and defaultInputFile:
+    inputFile = "$EOSSHIP/eos/experiment/ship/data/GenieEvents/genie-nu_mu.root"
+if options.mudis and defaultInputFile:
+    print("input file required if simEngine = muonDIS")
+    print(" for example -f  $EOSSHIP/eos/experiment/ship/data/muonDIS/muonDis_1.root")
+    sys.exit()
+
+if (options.ntuple or options.muonback) and defaultInputFile:
+    print("input file required if simEngine = Ntuple or MuonBack")
+    print(" for example -f $EOSSHIP/eos/experiment/ship/data/Mbias/pythia8_Geant4-withCharm_onlyMuons_4magTarget.root")
+    sys.exit()
+# PYTHIA8 requires Random:seed to be in range [0, 900000000]
+# When theSeed=0, ROOT generates a seed from system time which can exceed this limit
+seed = options.theSeed
+if seed == 0:
+    ROOT.gRandom.SetSeed(0)  # Generate time-based seed
+    seed = ROOT.gRandom.GetSeed()
+    # Clamp to PYTHIA8's maximum allowed seed value
+if seed > 900000000:
+    seed = seed % 900000000
+ROOT.gRandom.SetSeed(seed)
+shipRoot_conf.configure(0)  # load basic libraries, prepare atexit for python
+if options.reproducible and options.debug == 0:
+    ROOT.gErrorIgnoreLevel = ROOT.kWarning
+
+# Configure FairLogger verbosity based on debug level
+ROOT.gInterpreter.ProcessLine('#include "FairLogger.h"')
+if options.debug == 0:
+    ROOT.gInterpreter.ProcessLine('fair::Logger::SetConsoleSeverity("warn");')
+elif options.debug == 1:
+    ROOT.gInterpreter.ProcessLine('fair::Logger::SetConsoleSeverity("info");')
+elif options.debug == 2:
+    ROOT.gInterpreter.ProcessLine('fair::Logger::SetConsoleSeverity("debug");')
+elif options.debug == 3:
+    ROOT.gInterpreter.ProcessLine('fair::Logger::SetConsoleSeverity("debug1");')
+ship_geo = geometry_config.create_config(
+    Yheight=options.dy,
+    strawDesign=options.strawDesign,
+    muShieldGeo=options.geofile,
+    shieldName=options.shieldName,
+    DecayVolumeMedium=options.decayVolMed,
+    SND=options.SND,
+    SND_design=options.SND_design,
+    TARGET_YAML=options.target_yaml,
+)
+
+if not options.command:
+    for g in [
+        "pythia8",
+        "ttree",
+        "evtcalc",
+        "pythia6",
+        "nuradio",
+        "ntuple",
+        "muonback",
+        "mudis",
+        "fixedTarget",
+        "cosmics",
+    ]:
+        if getattr(options, g):
+            break
+    else:
+        options.pythia8 = True  # Ensure Pythia8 is enabled by default
+
+# Output file name
+# Use custom tag if provided, otherwise reuse the requested run number or generate a UUID4
+run_identifier = (
+    options.output_tag
+    if options.output_tag
+    else str(options.run_number if options.run_number is not None else uuid.uuid4())
+)
+if not os.path.exists(options.outputDir):
+    os.makedirs(options.outputDir)
+outFile = f"{options.outputDir}/sim_{run_identifier}.root"
+
+# Parameter file name
+parFile = f"{options.outputDir}/params_{run_identifier}.root"
+
+# In general, the following parts need not be touched
+# ========================================================================
+
+# -----Timer--------------------------------------------------------
+timer = ROOT.TStopwatch()
+timer.Start()
+# ------------------------------------------------------------------------
+# -----Create simulation run----------------------------------------
+run = ROOT.FairRunSim()
+run.SetName(mcEngine)  # Transport engine
+if options.run_number is not None and hasattr(run, "SetRunId"):
+    run.SetRunId(options.run_number)
+sink = ROOT.FairRootFileSink(outFile)
+run.SetSink(sink)
+ROOT.SetOwnership(sink, False)  # C++ FairRun takes ownership
+run.SetUserConfig("g4Config.C")  # user configuration file default g4Config.C
+rtdb = run.GetRuntimeDb()
+# -----Create geometry----------------------------------------------
+# import shipMuShield_only as shipDet_conf # special use case for an attempt to convert active shielding geometry for use with FLUKA
+# import shipTarget_only as shipDet_conf
+import shipDet_conf
+
+modules = shipDet_conf.configure(run, ship_geo)
+# -----Create PrimaryGenerator--------------------------------------
+primGen = ROOT.FairPrimaryGenerator()
+P8gen = None  # populated below by the various generator branches
+if options.pythia8:
+    primGen.SetTarget(ship_geo.target.z0, 0.0)
+    # -----Pythia8--------------------------------------
+    if HNL or options.RPVSUSY:
+        P8gen = ROOT.HNLPythia8Generator()
+        import pythia8_conf
+
+        if HNL:
+            print("Generating HNL events of mass %.3f GeV" % options.theMass)
+            if theProductionCouplings is None and theDecayCouplings is None:
+                print("and with couplings=", theCouplings)
+                theProductionCouplings = theDecayCouplings = theCouplings
+            elif theProductionCouplings is not None and theDecayCouplings is not None:
+                print("and with couplings", theProductionCouplings, "at production")
+                print("and", theDecayCouplings, "at decay")
+            else:
+                raise ValueError("Either both production and decay couplings must be specified, or neither.")
+            pythia8_conf.configure(
+                P8gen, options.theMass, theProductionCouplings, theDecayCouplings, inclusive, options.deepCopy
+            )
+        if options.RPVSUSY:
+            assert theCouplings is not None, "options.thecouplings is required for --RPVSUSY"
+            print("Generating RPVSUSY events of mass %.3f GeV" % theHNLMass)
+            print(f"and with couplings=[{theCouplings[0]:.3f},{theCouplings[1]:.3f}]")
+            print("and with stop mass=%.3f GeV\n" % theCouplings[2])
+            pythia8_conf.configurerpvsusy(
+                P8gen,
+                options.theMass,
+                [theCouplings[0], theCouplings[1]],
+                theCouplings[2],
+                options.RPVSUSYbench,
+                inclusive,
+                options.deepCopy,
+            )
+        P8gen.SetParameters("ProcessLevel:all = off")
+        if inputFile:
+            ut.checkFileExists(inputFile)
+            # read from external file
+            P8gen.UseExternalFile(inputFile, options.firstEvent)
+    if options.DarkPhoton:
+        P8gen = ROOT.DPPythia8Generator()
+        if inclusive == "qcd":
+            P8gen.SetDPId(4900023)
+        else:
+            P8gen.SetDPId(9900015)
+        import pythia8darkphoton_conf
+
+        passDPconf = pythia8darkphoton_conf.configure(
+            P8gen, options.theMass, options.theDPepsilon, inclusive, motherMode, options.deepCopy
+        )
+        if passDPconf != 1:
+            sys.exit()
+    if HNL or options.RPVSUSY or options.DarkPhoton:
+        assert P8gen is not None  # guaranteed by the three branches above
+        P8gen.SetSmearBeam(options.SmearBeam * u.cm)  # Gaussian beam smearing
+        P8gen.SetPaintRadius(options.PaintBeam * u.cm)  # beam painting radius
+        P8gen.SetLmin(ship_geo.decayVolume.z0 - ship_geo.target.z0)
+        P8gen.SetLmax((ship_geo.decayVolume.z0 - ship_geo.target.z0) + ship_geo.decayVolume.length)
+        margin = 10 * u.cm  # covers beam smearing + non-projectivity of vessel
+        z_end = ship_geo.decayVolume.z0 + ship_geo.decayVolume.length  # vessel exit z from target
+        # xEndInner/yEndInner are full inner widths; divide by 2 for half-aperture.
+        # Assumes production vertex at target (z=0). Vessel is approximately
+        # projective, so a single angle cut at the exit (widest point) suffices.
+        max_theta_x = (ship_geo.decayVolume.xEndInner / 2 + margin) / z_end
+        max_theta_y = (ship_geo.decayVolume.yEndInner / 2 + margin) / z_end
+        P8gen.SetMaxTheta(max_theta_x, max_theta_y)  # slope bounds: |px/pz|, |py/pz|
+    if charmonly:
+        primGen.SetTarget(0.0, 0.0)  # vertex is set in pythia8Generator
+        ut.checkFileExists(inputFile)
+        if ship_geo.Box.gausbeam:
+            primGen.SetBeam(0.0, 0.0, 0.5, 0.5)  # more central beam, for hits in downstream detectors
+            primGen.SmearGausVertexXY(True)  # sigma = x
+        else:
+            primGen.SetBeam(
+                0.0, 0.0, ship_geo.Box.TX - 1.0, ship_geo.Box.TY - 1.0
+            )  # Uniform distribution in x/y on the target (0.5 cm of margin at both sides)
+            primGen.SmearVertexXY(True)
+        P8gen = ROOT.Pythia8Generator()
+        P8gen.UseExternalFile(inputFile, options.firstEvent)
+        # Use geometry constants instead of fragile TGeo navigation
+        P8gen.SetTargetCoordinates(ship_geo.target.z0, ship_geo.target.z0 + ship_geo.target.length)
+    # pion on proton 500GeV
+    # P8gen.SetMom(500.*u.GeV)
+    # P8gen.SetId(-211)
+    primGen.AddGenerator(P8gen)
+    ROOT.SetOwnership(P8gen, False)  # C++ FairPrimaryGenerator takes ownership
+if options.fixedTarget:
+    HNL = False
+    P8gen = ROOT.FixedTargetGenerator()
+    P8gen.SetZoffset(options.z_offset * u.mm)
+    # Use geometry constants instead of fragile TGeo navigation
+    P8gen.SetTargetCoordinates(ship_geo.target.z0, ship_geo.target.z0 + ship_geo.target.length)
+    P8gen.SetMom(400.0 * u.GeV)
+    P8gen.SetSmearBeam(options.SmearBeam * u.cm)  # Gaussian beam smearing
+    P8gen.SetPaintRadius(options.PaintBeam * u.cm)  # beam painting radius
+    P8gen.SetEnergyCut(0.0)
+    P8gen.SetHeartBeat(100000)
+    P8gen.SetG4only()
+    primGen.AddGenerator(P8gen)
+    ROOT.SetOwnership(P8gen, False)  # C++ FairPrimaryGenerator takes ownership
+if options.pythia6:
+    # set muon interaction close to decay volume
+    primGen.SetTarget(ship_geo.target.z0 + ship_geo.muShield.length, 0.0)
+    # -----Pythia6-------------------------
+    test = ROOT.TPythia6()  # don't know any other way of forcing to load lib
+    P6gen = ROOT.tPythia6Generator()
+    P6gen.SetMom(50.0 * u.GeV)
+    P6gen.SetTarget("gamma/mu+", "n0")  # default "gamma/mu-","p+"
+    primGen.AddGenerator(P6gen)
+    ROOT.SetOwnership(P6gen, False)  # C++ FairPrimaryGenerator takes ownership
+
+# -----EvtCalc--------------------------------------
+if options.evtcalc:
+    primGen.SetTarget(0.0, 0.0)
+    print(f"Opening input file for EvtCalc generator: {inputFile}")
+    ut.checkFileExists(inputFile)
+    EvtCalcGen = ROOT.EvtCalcGenerator()
+    if not EvtCalcGen.Init(inputFile, options.firstEvent):
+        raise RuntimeError(f"Failed to initialize EvtCalcGenerator from input: {inputFile}")
+    EvtCalcGen.SetPositions(zTa=ship_geo.target.z, zDV=ship_geo.decayVolume.z)
+    primGen.AddGenerator(EvtCalcGen)
+    ROOT.SetOwnership(EvtCalcGen, False)  # C++ FairPrimaryGenerator takes ownership
+    options.nEvents = (
+        EvtCalcGen.GetNevents() if options.nEvents == -1 else min(options.nEvents, EvtCalcGen.GetNevents())
+    )
+    print(f"Generate {options.nEvents} with EvtCalc input. First event: {options.firstEvent}")
+
+# -----Particle Gun-----------------------
+if options.command == "PG":
+    myPgun = ROOT.ParticleGunGenerator(options.pID, options.multiplicity)
+    if options.showPGModels:
+        myPgun.PrintVertexModels()
+        myPgun.PrintMomentumModels()
+        sys.exit(0)
+    myPgun.SetPRange(options.Estart, options.Eend)
+    myPgun.SetPhiRange(0, 360)  # // Azimuth angle range [degree]
+    if options.thetaMin > options.thetaMax:
+        sys.exit(f"thetaMin ({options.thetaMin}) must not exceed thetaMax ({options.thetaMax})")
+    myPgun.SetThetaRange(options.thetaMin, options.thetaMax)  # Polar angle in lab system [degree]
+    if options.bothCharges:
+        myPgun.SetBothCharges(True, options.chargeFraction)
+    if options.multiplePG:
+        # multiple PG sources in the x-y plane; z is always the same!
+        myPgun.SetVertexModel(
+            options.smearMode,
+            [options.Vx * u.cm, options.Dx * u.cm, options.Vy * u.cm, options.Dy * u.cm, options.Vz * u.cm],
+        )
+    else:
+        # point source
+        myPgun.SetVertexModel(options.smearMode, [options.Vx * u.cm, 0.0, options.Vy * u.cm, 0.0, options.Vz * u.cm])
+    if options.momentumModel > 0:
+        myPgun.SetMomentumModel(options.momentumModel, options.modelPar)
+    if options.histoFile:
+        histo_files = options.histoFile or []
+        histo_names = options.histoName or []
+        histo_x = options.histoX or []
+        histo_y = options.histoY or []
+        histo_z = options.histoZ or []
+
+        if len(histo_files) != len(histo_names):
+            raise ValueError("Must specify one --histoName per --histoFile")
+        if len(histo_x) != len(histo_files):
+            raise ValueError("Must specify one --histoX per --histoFile")
+
+        for idx, histo_file in enumerate(histo_files):
+            histo_vars = [histo_x[idx]]
+            if idx < len(histo_y):
+                histo_vars.append(histo_y[idx])
+            if idx < len(histo_z):
+                histo_vars.append(histo_z[idx])
+            myPgun.LoadHistoFromFile(histo_file, histo_names[idx], histo_vars)
+
+    primGen.AddGenerator(myPgun)
+    ROOT.SetOwnership(myPgun, False)  # C++ FairPrimaryGenerator takes ownership
+# -----muon DIS Background------------------------
+if options.mudis:
+    ut.checkFileExists(inputFile)
+    primGen.SetTarget(0.0, 0.0)
+    DISgen = ROOT.NewMuDISGenerator()
+    if not DISgen.Init(inputFile):
+        raise RuntimeError(f"Failed to initialize NewMuDISGenerator from input: {inputFile}")
+    primGen.AddGenerator(DISgen)
+    ROOT.SetOwnership(DISgen, False)  # C++ FairPrimaryGenerator takes ownership
+    options.nEvents = DISgen.GetNevents() if options.nEvents == -1 else min(options.nEvents, DISgen.GetNevents())
+    print("Generate ", options.nEvents, " events with DIS input")
+# -----Neutrino Background------------------------
+if options.command == "Genie":
+    # Genie
+    ut.checkFileExists(inputFile)
+    primGen.SetTarget(0.0, 0.0)  # do not interfere with GenieGenerator
+    Geniegen = ROOT.GenieGenerator()
+
+    GenieOptions = {"simple_gevgen": 0, "genie_geometry": 3}
+    genie_option = GenieOptions[options.GenieOption]  # 0 standard, 3 GENIE geometry driver
+    Geniegen.SetGenerationOption(genie_option)
+    if not Geniegen.Init(inputFile, options.firstEvent):
+        raise RuntimeError(f"Failed to initialize GenieGenerator from input: {inputFile}")
+    if genie_option == 0:
+        Geniegen.SetPositions(ship_geo.target.z0, options.z_start_nu, options.z_end_nu)
+    primGen.AddGenerator(Geniegen)
+    ROOT.SetOwnership(Geniegen, False)  # C++ FairPrimaryGenerator takes ownership
+    options.nEvents = Geniegen.GetNevents() if options.nEvents == -1 else min(options.nEvents, Geniegen.GetNevents())
+    run.SetPythiaDecayer("DecayConfigNuAge.C")
+    print("Generate ", options.nEvents, " with Genie input", " first event", options.firstEvent)
+if options.nuradio:
+    ut.checkFileExists(inputFile)
+    primGen.SetTarget(0.0, 0.0)  # do not interfere with GenieGenerator
+    Geniegen = ROOT.GenieGenerator()
+    if not Geniegen.Init(inputFile, options.firstEvent):
+        raise RuntimeError(f"Failed to initialize GenieGenerator from input: {inputFile}")
+    # Geniegen.SetPositions(ship_geo.target.z0, ship_geo.target.z0, ship_geo.MuonStation3.z)
+    Geniegen.SetPositions(ship_geo.target.z0, ship_geo.tauMudet.zMudetC, ship_geo.MuonStation3.z)
+    Geniegen.NuOnly()
+    primGen.AddGenerator(Geniegen)
+    ROOT.SetOwnership(Geniegen, False)  # C++ FairPrimaryGenerator takes ownership
+    print("Generate ", options.nEvents, " for nuRadiography", " first event", options.firstEvent)
+    #  add tungsten to PDG
+    pdg = ROOT.TDatabasePDG.Instance()
+    pdg.AddParticle("W", "Ion", 1.71350e02, True, 0.0, 74, "XXX", 1000741840)
+    #
+    run.SetPythiaDecayer("DecayConfigPy8.C")
+    # this requires writing a C macro, would have been easier to do directly in python!
+    # for i in [431,421,411,-431,-421,-411]:
+    # ROOT.gMC.SetUserDecay(i) # Force the decay to be done w/external decayer
+if options.ttree:
+    ut.checkFileExists(inputFile)
+    primGen.SetTarget(0.0, 0.0)
+    generator = ROOT.SHiP.TTreeGenerator()
+    generator.SetTreeName("converted_ntuple")
+    if not generator.Init(inputFile, options.firstEvent):
+        raise RuntimeError(f"Failed to initialize TTreeGenerator from input: {inputFile}")
+    primGen.AddGenerator(generator)
+    ROOT.SetOwnership(generator, False)  # C++ FairPrimaryGenerator takes ownership
+    available_events = max(0, generator.GetNEvents() - options.firstEvent)
+    options.nEvents = available_events if options.nEvents == -1 else min(options.nEvents, available_events)
+    print("Process ", options.nEvents, " from input file")
+if options.ntuple:
+    # reading previously processed muon events, [-50m - 50m]
+    ut.checkFileExists(inputFile)
+    primGen.SetTarget(ship_geo.target.z0 + 50 * u.m, 0.0)
+    Ntuplegen = ROOT.NtupleGenerator()
+    if not Ntuplegen.Init(inputFile, options.firstEvent):
+        raise RuntimeError(f"Failed to initialize NtupleGenerator from input: {inputFile}")
+    primGen.AddGenerator(Ntuplegen)
+    ROOT.SetOwnership(Ntuplegen, False)  # C++ FairPrimaryGenerator takes ownership
+    options.nEvents = Ntuplegen.GetNevents() if options.nEvents == -1 else min(options.nEvents, Ntuplegen.GetNevents())
+    print("Process ", options.nEvents, " from input file")
+#
+if options.muonback:
+    # reading muon tracks from previous Pythia8/Geant4 simulation with charm replaced by cascade production
+    isNew = ut.checkForBranch(
+        inputFile, "PlaneHAPoint"
+    )  # If there is a branch PlaneHAPoint this file is from the new production
+    if isNew:
+        print("INFO: Processing a file from the new production - setting target z offset at 0")
+        primGen.SetTarget(ship_geo.target.z0, 0.0)
+    else:
+        print("INFO: Processing a file from the old production - setting target z offset to 70.845m")
+        primGen.SetTarget(ship_geo.target.z0 + 70.845 * u.m, 0.0)
+    #
+    MuonBackgen = ROOT.MuonBackGenerator()
+    # MuonBackgen.FollowAllParticles() # will follow all particles after hadron absorber, not only muons
+    if not MuonBackgen.Init(inputFile, options.firstEvent):
+        raise RuntimeError(f"Failed to initialize MuonBackGenerator from input: {inputFile}")
+    MuonBackgen.SetPaintRadius(options.PaintBeam * u.cm)
+    MuonBackgen.SetSmearBeam(options.SmearBeam * u.cm)
+    MuonBackgen.SetPhiRandomize(options.phiRandom)
+    if options.sameSeed:
+        MuonBackgen.SetSameSeed(options.sameSeed)
+    primGen.AddGenerator(MuonBackgen)
+    ROOT.SetOwnership(MuonBackgen, False)  # C++ FairPrimaryGenerator takes ownership
+    options.nEvents = (
+        MuonBackgen.GetNevents() if options.nEvents == -1 else min(options.nEvents, MuonBackgen.GetNevents())
+    )
+    MCTracksWithHitsOnly = True  # otherwise, output file becomes too big
+    print(
+        "Process ",
+        options.nEvents,
+        " from input file, with 𝜎 = ",
+        options.PaintBeam,
+        ", with smear radius r = ",
+        options.SmearBeam * u.cm,
+        "with MCTracksWithHitsOnly",
+        MCTracksWithHitsOnly,
+    )
+    if options.followMuon:
+        options.fastMuon = True
+        modules["Veto"].SetFollowMuon()
+    if options.fastMuon:
+        modules["Veto"].SetFastMuon()
+
+    # optional, boost gamma2muon conversion
+    # ROOT.kShipMuonsCrossSectionFactor = 100.
+#
+if options.cosmics:
+    assert Opt_high is not None  # guaranteed by the same options.cosmics check above
+    primGen.SetTarget(0.0, 0.0)
+    Cosmicsgen = ROOT.CosmicsGenerator()
+    import CMBG_conf
+
+    CMBG_conf.configure(Cosmicsgen, ship_geo)
+    if not Cosmicsgen.Init(Opt_high):
+        print("initialization of cosmic background generator failed ", Opt_high)
+        sys.exit(0)
+    Cosmicsgen.n_EVENTS = options.nEvents
+    primGen.AddGenerator(Cosmicsgen)
+    ROOT.SetOwnership(Cosmicsgen, False)  # C++ FairPrimaryGenerator takes ownership
+    print("Process ", options.nEvents, " Cosmic events with option ", Opt_high)
+
+#
+run.SetGenerator(primGen)
+ROOT.SetOwnership(primGen, False)  # C++ FairRunSim takes ownership
+# ------------------------------------------------------------------------
+
+# ---Store the visualiztion info of the tracks, this make the output file very large!!
+# --- Use it only to display but not for production!
+if options.eventDisplay:
+    run.SetStoreTraj(ROOT.kTRUE)
+else:
+    run.SetStoreTraj(ROOT.kFALSE)
+
+# -----Configure external decayer globally------------------------------------
+# Override any previous SetPythiaDecayer calls if EvtGenDecayer is requested
+if options.evtgen_decayer:
+    run.SetPythiaDecayer("DecayConfigTEvtGen.C")
+    print("Using TEvtGenDecayer for J/psi and quarkonium decays with EvtGen")
+
+# -----Initialize simulation run------------------------------------
+run.Init()
+if options.dryrun:  # Early stop after setting up Pythia 8
+    sys.exit(0)
+gMC = ROOT.TVirtualMC.GetMC()
+fStack = gMC.GetStack()
+
+# -----J/psi external decayer configuration handled in g4config.in------------------------------------
+# VMC command /mcPhysics/setExtDecayerSelection J/psi forces external decayer usage
+EnergyCut = 10.0 * u.MeV if options.mudis else 100.0 * u.MeV
+
+if MCTracksWithHitsOnly:
+    fStack.SetMinPoints(1)
+    fStack.SetEnergyCut(-100.0 * u.MeV)
+elif MCTracksWithEnergyCutOnly:
+    fStack.SetMinPoints(-1)
+    fStack.SetEnergyCut(EnergyCut)
+elif MCTracksWithHitsOrEnergyCut:
+    fStack.SetMinPoints(1)
+    fStack.SetEnergyCut(EnergyCut)
+elif options.deepCopy:
+    fStack.SetMinPoints(0)
+    fStack.SetEnergyCut(0.0 * u.MeV)
+
+if options.eventDisplay:
+    # Set cuts for storing the trajectories, can only be done after initialization of run (?!)
+    trajFilter = ROOT.FairTrajFilter.Instance()
+    trajFilter.SetStepSizeCut(1 * u.mm)
+    trajFilter.SetVertexCut(-20 * u.m, -20 * u.m, ship_geo.target.z0 - 1 * u.m, 20 * u.m, 20 * u.m, 200.0 * u.m)
+    trajFilter.SetMomentumCutP(0.1 * u.GeV)
+    trajFilter.SetEnergyCut(0.0, 400.0 * u.GeV)
+    trajFilter.SetStorePrimaries(ROOT.kTRUE)
+    trajFilter.SetStoreSecondaries(ROOT.kTRUE)
+
+# The VMC sets the fields using the "/mcDet/setIsLocalMagField true" option in "gconfig/g4config.in"
+import geomGeant4
+
+# geomGeant4.setMagnetField() # replaced by VMC, only has effect if /mcDet/setIsLocalMagField  false
+
+# Define extra VMC B fields not already set by the geometry definitions, e.g. a global field,
+# any field maps, or defining if any volumes feel only the local or local+global field.
+# For now, just keep the fields already defined by the C++ code, i.e comment out the fieldMaker
+if hasattr(ship_geo.Bfield, "fieldMap"):
+    if options.field_map:
+        ship_geo.Bfield.fieldMap = options.field_map
+    fieldMaker = geomGeant4.addVMCFields(ship_geo, verbose=True)
+
+# Print VMC fields and associated geometry objects
+if options.print_fields:
+    geomGeant4.printVMCFields()
+    geomGeant4.printWeightsandFields(
+        onlyWithField=True, exclude=["DecayVolume", "Tr1", "Tr2", "Tr3", "Tr4", "Veto", "MuonDetector", "SplitCal"]
+    )
+# Plot the field example
+# fieldMaker.plotField(1, ROOT.TVector3(-9000.0, 6000.0, 50.0), ROOT.TVector3(-300.0, 300.0, 6.0), 'Bzx.png')
+# fieldMaker.plotField(2, ROOT.TVector3(-9000.0, 6000.0, 50.0), ROOT.TVector3(-400.0, 400.0, 6.0), 'Bzy.png')
+
+# -----Start run----------------------------------------------------
+run.Run(options.nEvents)
+# -----Runtime database---------------------------------------------
+kParameterMerged = ROOT.kTRUE
+parOut = ROOT.FairParRootFileIo(kParameterMerged)
+if os.path.exists(parFile):
+    os.remove(parFile)
+parOut.open(parFile)
+rtdb.setOutput(parOut)
+ROOT.SetOwnership(parOut, False)  # C++ FairRuntimeDb takes ownership
+rtdb.saveOutput()
+
+# ------------------------------------------------------------------------
+geofile_name = f"{options.outputDir}/geo_{run_identifier}.root"
+run.CreateGeometryFile(geofile_name)
+# save ShipGeo dictionary in geofile
+import saveBasicParameters
+
+saveBasicParameters.execute(geofile_name, ship_geo)
+
+# checking for overlaps
+if options.check_overlaps:
+    ROOT.gROOT.SetWebDisplay("off")  # Workaround for https://github.com/root-project/root/issues/18881
+    fGeo = ROOT.gGeoManager
+    fGeo.SetNmeshPoints(10000)
+    fGeo.CheckOverlaps(0.1)  # 1 micron takes 5minutes
+    fGeo.PrintOverlaps()
+    # check subsystems in more detail
+    for x in fGeo.GetTopNode().GetNodes():
+        x.CheckOverlaps(0.0001)
+        fGeo.PrintOverlaps()
+# -----Finish-------------------------------------------------------
+timer.Stop()
+rtime = timer.RealTime()
+ctime = timer.CpuTime()
+print(" ")
+print("Macro finished successfully.")
+if P8gen is not None:
+    if HNL:
+        print("number of retries (no HNL produced) ", P8gen.nrOfRetries())
+        print("number of geometric rejections (outside vessel acceptance) ", P8gen.nrOfGeoRejections())
+    elif options.DarkPhoton:
+        print("number of retries (no DP produced) ", P8gen.nrOfRetries())
+        print("number of geometric rejections (outside vessel acceptance) ", P8gen.nrOfGeoRejections())
+        print("total number of dark photons (including multiple meson decays per single collision) ", P8gen.nrOfDP())
+
+print("Output file is ", outFile)
+print("Parameter file is ", parFile)
+print("Geometry file is ", geofile_name)
+if not options.reproducible:
+    print("Real time ", rtime, " s, CPU time ", ctime, "s")
+
+
+# remove empty events
+if options.muonback:
+    tmpFile = outFile + "tmp"
+    target = os.path.normpath(outFile)
+    fin: ROOT.TFile | None = None
+    for ff in ROOT.gROOT.GetListOfFiles():
+        if os.path.normpath(ff.GetName()) == target:
+            fin = cast(ROOT.TFile, ff)
+            break
+    if fin is None:
+        fin = ROOT.TFile.Open(outFile)
+    t = fin["cbmsim"]
+    fout = ROOT.TFile(tmpFile, "recreate")
+    fSink = ROOT.FairRootFileSink(fout)
+    ROOT.SetOwnership(fout, False)  # FairRootFileSink's unique_ptr now owns fout
+
+    sTree = t.CloneTree(0)
+    nEvents = 0
+    # Collect branch names containing 'Point' - these are the sensitive detector hit containers
+    pointContainers = []
+    for branch in sTree.GetListOfBranches():
+        name = branch.GetName()
+        if "Point" in name:
+            pointContainers.append(name)
+
+    # Filter out empty events (events with no hits in any Point container)
+    for event in t:
+        empty = True
+        for containerName in pointContainers:
+            container = getattr(sTree, containerName)
+            if container.size() > 0:
+                empty = False
+                break
+
+        if not empty:
+            sTree.Fill()
+            nEvents += 1
+
+    branches = ROOT.TList()
+    branches.SetName("BranchList")
+    branches.SetOwner(True)
+    for name in (
+        "MCTrack",
+        "vetoPoint",
+        "ShipRpcPoint",
+        "TargetPoint",
+        "TTPoint",
+        "ScoringPoint",
+        "strawtubesPoint",
+        "TimeDetPoint",
+        "MCEventHeader",
+        "UpstreamTaggerPoint",
+        "MTCdetPoint",
+        "SiliconTargetPoint",
+        "sGeoTracks",
+    ):
+        obj = ROOT.TObjString(name)
+        ROOT.SetOwnership(obj, False)  # C++ TList takes ownership
+        branches.Add(obj)
+
+    sTree.AutoSave()
+    fSink.WriteObject(branches, "BranchList", ROOT.TObject.kSingleKey)
+    fSink.SetOutTree(sTree)
+
+    fout.Close()
+    print("removed empty events, left with:", nEvents)
+    rc1 = os.system("rm  " + outFile)
+    rc2 = os.system("mv " + tmpFile + " " + outFile)
+    fin.SetWritable(False)  # bpyass flush error
+
+if options.mudis:
+   # temp_filename = outFile.replace(".root", "_tmp.root")
+
+   # with (
+    #    ROOT.TFile.Open(outFile, "read") as f_outputfile,
+     #   ROOT.TFile.Open(temp_filename, "recreate") as f_temp,
+    #):
+    #    output_tree = f_outputfile["cbmsim"]
+    #    muondis_tree = ROOT.TChain("MuonDIS")
+    #    for _f in inputFile:
+    #        muondis_tree.Add(_f)
+
+    #os.replace(temp_filename, outFile)
+    print("New DIS code TODO! Need to add input muon to the output file:", outFile)
+
+if options.command == "Genie":
+    # breakpoint()
+    # Copy Genie (gst TTree) information to the output file
+    input_path = inputFile[0] if isinstance(inputFile, (list, tuple)) else inputFile
+    f_input = ROOT.TFile.Open(input_path, "READ")
+    gst = f_input["gst"]
+    if not gst:
+        raise KeyError("TTree 'gst' not found in GENIE input file")
+
+    selection_string = "(Entry$ >= " + str(options.firstEvent) + ")"
+    if (options.firstEvent + options.nEvents) < gst.GetEntries():
+        selection_string += "&&(Entry$ < " + str(options.firstEvent + options.nEvents) + ")"
+
+    # Reopen output file
+    f_output = ROOT.TFile.Open(outFile, "UPDATE")
+
+    # Copy only the events used in this run
+    gst_copy = gst.CopyTree(selection_string)
+    gst_copy.Write()
+
+    f_input.Close()
+    f_output.Close()
+
+if options.run_number is not None:
+    with ROOT.TFile.Open(outFile, "UPDATE") as f_output:
+        file_header = f_output.Get("FileHeader")
+        if file_header:
+            file_header.SetRunId(options.run_number)
+            file_header.Write("FileHeader", ROOT.TObject.kSingleKey)
+        else:
+            print("WARNING: FileHeader not found in simulation output; skipped FileHeader RunID update")
+
+print("=" * 72)
+print("Simulation finished successfully")
+print("=" * 72)
+
+if options.validation:
+    validation_tools.print_simulation_output_summary(
+        ROOT,
+        outFile,
+        options.nEvents,
+        {"HNL": HNL, "DarkPhoton": options.DarkPhoton, "fixedTarget": options.fixedTarget},
+        {
+            "P8gen": globals().get("P8gen"),
+            "MuonBackgen": globals().get("MuonBackgen"),
+            "Ntuplegen": globals().get("Ntuplegen"),
+            "DISgen": globals().get("DISgen"),
+            "Geniegen": globals().get("Geniegen"),
+        },
+    )
+
+# ------------------------------------------------------------------------
+import checkMagFields
+
+
+def visualizeMagFields() -> None:
+    checkMagFields.run()
+
+
+def checkOverlapsWithGeant4() -> None:
+    # after /run/initialize, but prints warning messages, problems with TGeo volume
+    mygMC = ROOT.TGeant4.GetMC()
+    mygMC.ProcessGeantCommand("/geometry/test/recursion_start 0")
+    mygMC.ProcessGeantCommand("/geometry/test/recursion_depth 2")
+    mygMC.ProcessGeantCommand("/geometry/test/run")
