@@ -392,10 +392,15 @@ class ShipDigiReco:
             # normalize direction
             n1 = np.linalg.norm(d1)
             n2 = np.linalg.norm(d2)
-            if n1 > 0:
-                d1 = d1 / n1
-            if n2 > 0:
-                d2 = d2 / n2
+            if not (n1 > 0 and n2 > 0):
+                # Without a direction for both daughters the DOCA below collapses
+                # to zero, i.e. a perfect vertex, which would sail through every
+                # signal selection. Drop the candidate instead, as the GenFit
+                # path does when the extrapolation to the fitted vertex fails.
+                logger.warning("Skipping ACTS vertex candidate: daughter track without momentum")
+                continue
+            d1 = d1 / n1
+            d2 = d2 / n2
 
             # target plane x in ACTS frame (mm)
             target_x = float(vtx.position()[0])
@@ -410,7 +415,9 @@ class ShipDigiReco:
             if n_norm > 1e-12:
                 doca_mm = abs(np.dot(delta, n)) / n_norm
             else:
-                doca_mm = np.linalg.norm(np.cross(delta, d1)) / max(1e-12, float(np.linalg.norm(d1)))
+                # Nearly parallel tracks: perpendicular component of delta
+                # (d1 is a unit vector, so no further normalisation is needed).
+                doca_mm = np.linalg.norm(np.cross(delta, d1))
             doca = float(doca_mm) / 10.0  # mm -> cm
 
             particle.SetCovP(covP_list)
@@ -656,7 +663,7 @@ class ShipDigiReco:
                 continue  # these are hits not assigned to MC track because low E cut
             # Determine charge sign from bending between stations 1-2 and 3-4.
             # The slope difference dk = k_y34 - k_y12 encodes the charge:
-            # dk > 0 → positive charge (mu+, pi+), dk < 0 → negative charge (mu-, pi-)
+            # dk > 0 → negative charge (mu-, pi-), dk <= 0 → positive charge (mu+, pi+)
             params = trackParams.get(atrack, {})
             k_y12 = params.get("k_y12")
             k_y34 = params.get("k_y34")
