@@ -15,13 +15,9 @@ from collections import defaultdict
 import acts
 import acts.examples
 import numpy as np
+from recoConstants import MIN_HITS_PER_TRACK
 
 logger = logging.getLogger(__name__)
-
-# Minimum straw layers for a fittable track. Must match
-# shipDigiReco.MIN_HITS_PER_TRACK, which applies the same cut when building
-# candidates from pattern recognition.
-MIN_HITS_PER_TRACK = 13
 
 # Track-quality cut for the tracks handed to the vertex fit.
 MAX_CHI2_NDF = 25.0
@@ -194,6 +190,19 @@ def calculateSBTDOCA(output_tracks, sbt_digis, trackingGeometry, fieldMap, selec
 
     selected = None if selected_indices is None else {int(i) for i in selected_indices}
 
+    # The target planes depend only on the SBT hits, so build them once and
+    # reuse them for every track. s_idx keeps indexing sbt_digis.
+    normal_arr = np.array([1.0, 0.0, 0.0])
+    target_surfaces = [
+        (
+            s_idx,
+            acts.createPlaneSurface(
+                np.array([sbt_hit.GetZ() * 10.0, sbt_hit.GetY() * 10.0, -sbt_hit.GetX() * 10.0]), normal_arr
+            ),
+        )
+        for s_idx, sbt_hit in enumerate(sbt_digis)
+    ]
+
     veto_results = []
     for _t_idx, track in enumerate(output_tracks):
         if selected is not None and _t_idx not in selected:
@@ -213,12 +222,7 @@ def calculateSBTDOCA(output_tracks, sbt_digis, trackingGeometry, fieldMap, selec
                 track.referenceSurface, track_params_numpy, track_covariance_numpy
             )
 
-            for s_idx, sbt_hit in enumerate(sbt_digis):
-                # Create surface
-                hit_pos = np.array([sbt_hit.GetZ() * 10.0, sbt_hit.GetY() * 10.0, -sbt_hit.GetX() * 10.0])
-                normal_arr = np.array([1.0, 0.0, 0.0])
-                target_surface = acts.createPlaneSurface(hit_pos, normal_arr)
-
+            for s_idx, target_surface in target_surfaces:
                 res_params = acts.extrapolateTrack(propagator, start_params, target_surface, geo_ctx, mag_ctx)
 
                 if res_params is not None:
