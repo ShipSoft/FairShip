@@ -768,7 +768,7 @@ def myEventLoop(n: int) -> None:
                 mom1, mom2 = st1.getMom(), st2.getMom()
             newPosDir[t1] = {"position": rep1.getPos(state1), "direction": rep1.getDir(state1), "momentum": mom1}
             newPosDir[t2] = {"position": rep2.getPos(state2), "direction": rep2.getDir(state2), "momentum": mom2}
-        if mom1 is None or mom2 is None:
+        if mom1 is None or mom2 is None or not (mom1.Mag() > 0 and mom2.Mag() > 0):
             continue
         oa = mom1.Dot(mom2) / (mom1.Mag() * mom2.Mag())
         h["oa"].Fill(oa)
