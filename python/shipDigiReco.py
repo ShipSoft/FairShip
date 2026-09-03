@@ -21,14 +21,10 @@ from detectors.splitcalDetector import splitcalDetector
 from detectors.strawtubesDetector import strawtubesDetector
 from detectors.timeDetector import timeDetector
 from detectors.UpstreamTaggerDetector import UpstreamTaggerDetector
+from recoConstants import MIN_HITS_PER_TRACK
 
 logger = logging.getLogger(__name__)
 
-
-# Minimum straw layers for a fittable track candidate; the threshold is tuned to
-# the 1-plane-per-view geometry (#552). Must match strawReco.MIN_HITS_PER_TRACK,
-# which applies the same cut on the ACTS side.
-MIN_HITS_PER_TRACK = 13
 
 # Minimum number of stations a candidate has to cross to be fittable.
 MIN_STATIONS_CROSSED = 3
