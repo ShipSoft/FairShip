@@ -57,6 +57,19 @@ class exitHadronAbsorber : public SHiP::Detector<vetoPoint> {
   inline void SetUseCaveCoordinates() { fUseCaveCoordinates = kTRUE; }
 
  private:
+  // Hand the buffered clones of a splitting decay to the stack popper. They
+  // can only be popped during a step, so the first track after the decay is
+  // designated as their carrier and must not be stopped before it steps.
+  // The designation is shared by all instances: run_fixedTarget can add
+  // several sensitive planes and whichever is polled first would otherwise
+  // stop the carrier before the splitting instance ever sees it.
+  static constexpr Int_t kNoCarrier = -1;
+  static constexpr Int_t kCarrierRequested = -2;
+  static Int_t fgCarrierTrackID;  //!
+
+  // Ask for the next track to carry the clones just added to the buffer.
+  static void RequestCloneCarrier() { fgCarrierTrackID = kCarrierRequested; }
+
   Int_t fUniqueID = 0;
   Bool_t fOnlyMuons;         //! flag if only muons should be stored
   Bool_t fSkipNeutrinos;     //! flag if neutrinos should be ignored
