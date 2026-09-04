@@ -94,8 +94,8 @@ ap.add_argument(
     type=int,
     default=2,
     help="EXPERTS ONLY: intermediate splitting factor for kaons and pions for each GEANT4 step before they decay, "
-          "in order to boost the number of muons stemming from forced decays. "
-          "EXPERTS ONLY: risk of very large memory usage if the number is set without proper testing",
+    "in order to boost the number of muons stemming from forced decays. "
+    "EXPERTS ONLY: risk of very large memory usage if the number is set without proper testing",
 )
 ap.add_argument(
     "--multiple-kpi-splits",
