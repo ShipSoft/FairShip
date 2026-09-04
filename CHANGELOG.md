@@ -29,6 +29,7 @@ it in future.
 ### Fixed
 
 * `veto` now registers the configured `sensitiveMed` instead of a hardcoded medium name; previously any other value resolved to a null `TGeoMedium`
+* Kaon/pion splitting no longer silently loses the whole clone set when the first track after the decay falls below the energy cut (the buffered clones were discarded by the stack popper's reset before being tracked). This removed ~17% of muons from charged-kaon decay in flight (−2.8% of the total muon rate) in split productions; pions were unaffected because their soft decay muons imply equally soft, unobservable clones. The clone buffer is now flushed only into tracks that survive the cut, and a warning is emitted if an event ends with clones still buffered. To avoid memory issues, a specific number is set for the splits per GEANT4 step, and the per-step clone buffer is capped: once the cap is reached, further per-step splitting is skipped for that track, which reduces the statistical boost but conserves weight
 
 ### Removed
 
