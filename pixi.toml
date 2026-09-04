@@ -52,6 +52,11 @@ ninja = "*"
 cxx-compiler = "*"
 
 # Static analysis
+# clang-tidy needs clang's builtin headers (lib/clang/<N>/include/stddef.h,
+# stdarg.h) to replay the GCC compile commands, but clang-tools does not depend
+# on the clang-<N> package that ships them. Without it every translation unit
+# fails to parse with "'stddef.h' file not found".
+clang = "*"
 clang-tools = "*"  # provides clang-tidy
 
 [pypi-dependencies]
