@@ -30,6 +30,9 @@ it in future.
 
 * `veto` now registers the configured `sensitiveMed` instead of a hardcoded medium name; previously any other value resolved to a null `TGeoMedium`
 * Kaon/pion splitting no longer silently loses the whole clone set when the first track after the decay falls below the energy cut (the buffered clones were discarded by the stack popper's reset before being tracked). This removed ~17% of muons from charged-kaon decay in flight (−2.8% of the total muon rate) in split productions; pions were unaffected because their soft decay muons imply equally soft, unobservable clones. The clone buffer is now flushed only into tracks that survive the cut, and a warning is emitted if an event ends with clones still buffered. To avoid memory issues, a specific number is set for the splits per GEANT4 step, and the per-step clone buffer is capped: once the cap is reached, further per-step splitting is skipped for that track, which reduces the statistical boost but conserves weight
+* Kaon/pion splitting no longer applies the transport energy cut to the clones themselves. A clone is the parent re-injected at its decay point so that the decay can be re-sampled; re-applying the cut there discarded the entire clone set whenever the parent had dropped below the cut before decaying, even though an unsplit run keeps such a decay and cuts the (possibly much harder) decay muon instead
+* Kaon/pion splitting now designates the first track after a splitting decay as the carrier which hands the buffered clones to the stack popper, and exempts it from the energy and neutrino cuts so that it does take a step. A clone set can no longer be stranded in the buffer until the end of the event
+* `exitHadronAbsorber` reports the split-clone balance (decays split, clones created, clones never tracked and their summed weight) at the end of the run, and inspects the buffer left over from the final event, which the per-event warning never saw
 
 ### Removed
 
