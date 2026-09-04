@@ -4,6 +4,7 @@
 
 #include "exitHadronAbsorber.h"
 
+#include <cstddef>
 #include <iostream>
 
 #include "FairGeoBuilder.h"
@@ -39,6 +40,13 @@ using std::endl;
 constexpr Double_t cm = 1;         // cm
 constexpr Double_t m = 100 * cm;   //  m
 constexpr Double_t mm = 0.1 * cm;  //  mm
+
+// Safety valve for the intermediate (per-step) splitting: the clone buffer
+// grows by fIntermediateNsplits on every qualifying step and is only drained in
+// PreTrack(), so a pathological split count could make it grow without bound
+// within a single track. ~10k TrackBuffer records is about 1.2 MB, far above
+// what any sane configuration reaches.
+constexpr std::size_t kMaxSecondaryBuffer = 10000;
 
 exitHadronAbsorber::exitHadronAbsorber(const char* Name, Bool_t Active)
     : Detector(Name, Active, kVETO),
@@ -141,6 +149,27 @@ Bool_t exitHadronAbsorber::ProcessHits(FairVolume* vol) {
           polY = polVector.Y();
           polZ = polVector.Z();
           Int_t trueParentId = part->GetFirstMother();
+
+          if (fSecondaryBuffer.size() +
+                  static_cast<std::size_t>(fIntermediateNsplits) >
+              kMaxSecondaryBuffer) {
+            // Skip the split for this step instead of truncating the buffer.
+            // fCurrentSurvivalFactor is the weight ledger: leaving it untouched
+            // means the weight we did not split off is still carried by the
+            // track and is handed to the natural-decay clones or the
+            // continuation track in PostTrack(). No weight is lost, only the
+            // statistical boost is reduced.
+            if (!fSplitBufferLimitWarned) {
+              LOG(warning) << "exitHadronAbsorber: intermediate split buffer "
+                              "reached "
+                           << kMaxSecondaryBuffer
+                           << " entries; skipping further per-step splitting "
+                              "for this track. Consider lowering "
+                              "--intermediate-kaon-pion-splits.";
+              fSplitBufferLimitWarned = kTRUE;
+            }
+            return kTRUE;
+          }
 
           Double_t decayBranchWeight = fCurrentSurvivalFactor * P_decay;
           Double_t cloneWeight = decayBranchWeight / fIntermediateNsplits;
@@ -256,6 +285,7 @@ void exitHadronAbsorber::BeginEvent() {
   fContinuationTracks.clear();
   fDecayedParentIDs.clear();
   fSecondaryBuffer.clear();
+  fSplitBufferLimitWarned = kFALSE;
 }
 
 void exitHadronAbsorber::PostTrack() {
