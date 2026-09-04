@@ -70,6 +70,10 @@ class exitHadronAbsorber : public SHiP::Detector<vetoPoint> {
   // Ask for the next track to carry the clones just added to the buffer.
   static void RequestCloneCarrier() { fgCarrierTrackID = kCarrierRequested; }
 
+  // Drop the clones still buffered at the end of an event or run, keeping
+  // track of how much weight was never simulated.
+  void DiscardBufferedClones();
+
   Int_t fUniqueID = 0;
   Bool_t fOnlyMuons;         //! flag if only muons should be stored
   Bool_t fSkipNeutrinos;     //! flag if neutrinos should be ignored
@@ -96,6 +100,12 @@ class exitHadronAbsorber : public SHiP::Detector<vetoPoint> {
   std::set<Int_t> fCloneTracks;
   std::set<Int_t> fContinuationTracks;
   std::set<Int_t> fDecayedParentIDs;
+
+  Int_t fSplitDecays = 0;          //! decays replaced by clones
+  Int_t fClonesBuffered = 0;       //! clones created for those decays
+  Int_t fLostBufferEvents = 0;     //! events ending with unflushed clones
+  Int_t fLostCloneTracks = 0;      //! clones which were never tracked
+  Double_t fLostCloneWeight = 0.;  //! summed weight of those clones
 
   TFile* fout;               //!
   TClonesArray* fElectrons;  //!
