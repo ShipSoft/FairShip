@@ -1,36 +1,35 @@
 #!/usr/bin/env python
 """Script to collect muons hitting either the UBT extended plane, or the SBT, including soft interaction products, and DIS events, to a ROOT file."""
 
-"""Created May 2026 A.-M. Magnan"""
-
 """
 Begin of pythia block to avoid aliBuild error
 Uncomment for running with aliBuild
 """
-#import cppyy
+# import cppyy
 ## Load library
-#cppyy.load_library("/cvmfs/ship.cern.ch/26.05/sw/slc9_x86-64/pythia6/latest/lib/libPythia6.so")
+# cppyy.load_library("/cvmfs/ship.cern.ch/26.05/sw/slc9_x86-64/pythia6/latest/lib/libPythia6.so")
 ## Include header
-#cppyy.include("/cvmfs/ship.cern.ch/26.05/sw/slc9_x86-64/ROOTEGPythia6/latest/include/TPythia6.h")
+# cppyy.include("/cvmfs/ship.cern.ch/26.05/sw/slc9_x86-64/ROOTEGPythia6/latest/include/TPythia6.h")
 ## Create object
-#myPythia = cppyy.gbl.TPythia6()
-#print("Pythia6 created")
+# myPythia = cppyy.gbl.TPythia6()
+# print("Pythia6 created")
 """
 End of pythia block to avoid aliBuild error
 """
 
 import argparse
 import logging
+import sys
 import time
+from pathlib import Path
 
 import ROOT as r
-from pathlib import Path
 
 r.gSystem.Load("libShipMuDIS.so")
 pdg = r.TDatabasePDG.Instance()
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-f", "--inputfile", help="full path to muon background files")
+parser.add_argument("-f", "--inputfile", help="full path to muon background files", required=True)
 parser.add_argument(
     "-o",
     "--outputfile",
@@ -89,25 +88,29 @@ logging.info("Geometry successfully loaded.")
 r.gGeoManager.Print()  # Read geometry
 
 muDis = r.MuDISProcessor()
-muDis.init(args.n_events, args.start_event, 2.0, args.nDIS, theseed, args.z_max)
+ok = muDis.init(args.n_events, args.start_event, 2.0, args.nDIS, theseed, args.z_max)
+if not ok:
+    print("Invalid initialisation. Doing nothing.")
+    sys.exit(1)
+
 p = Path(args.inputfile)
 
 if p.is_file():
     muDis.process_file(args.inputfile, args.outputfile)
-    
+
 elif p.is_dir():
     pattern = "sim_"
 
-    matching_files = [
-        str(path)
-        for path in p.rglob("*")
-        if path.is_file() and pattern in path.name
-    ]
-    
+    matching_files = [str(path) for path in p.rglob("*") if path.is_file() and pattern in path.name]
+
     print(f"Found {len(matching_files)} files:")
+    if len(matching_files) < 1:
+        print("No input file found in path.")
+        sys.exit(1)
     for f in matching_files:
         print(f)
-        
+
     muDis.process_file(matching_files, args.outputfile)
 else:
     print("Inputfile string does not exist")
+    sys.exit(1)

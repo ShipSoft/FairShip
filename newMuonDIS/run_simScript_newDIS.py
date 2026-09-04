@@ -7,7 +7,6 @@ import os
 import sys
 import uuid
 from argparse import ArgumentParser
-from array import array
 from typing import cast
 
 import geometry_config
@@ -1076,18 +1075,18 @@ if options.muonback:
     fin.SetWritable(False)  # bpyass flush error
 
 if options.mudis:
-   # temp_filename = outFile.replace(".root", "_tmp.root")
+    # temp_filename = outFile.replace(".root", "_tmp.root")
 
-   # with (
+    # with (
     #    ROOT.TFile.Open(outFile, "read") as f_outputfile,
-     #   ROOT.TFile.Open(temp_filename, "recreate") as f_temp,
-    #):
+    #   ROOT.TFile.Open(temp_filename, "recreate") as f_temp,
+    # ):
     #    output_tree = f_outputfile["cbmsim"]
     #    muondis_tree = ROOT.TChain("MuonDIS")
     #    for _f in inputFile:
     #        muondis_tree.Add(_f)
 
-    #os.replace(temp_filename, outFile)
+    # os.replace(temp_filename, outFile)
     print("New DIS code TODO! Need to add input muon to the output file:", outFile)
 
 if options.command == "Genie":

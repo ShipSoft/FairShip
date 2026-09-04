@@ -1,5 +1,7 @@
 #include "MuGeoProcessor.h"
 
+using namespace ShipMuDIS;
+
 MuGeoProcessor::MuGeoProcessor() {
   fZmax = 14000;
   fZmin = 2500;
@@ -113,17 +115,17 @@ TVector3 MuGeoProcessor::GetVertex(const TVector3& r1, const TVector3& p1,
   return vertex;
 }
 
-
 void MuGeoProcessor::FillZmaxVolumes() {
   fZmaxMap.clear();
   if (!gGeoManager) {
     LOG(error) << "gGeoManager does not exist!";
     return;
   }
-  double zStart = 400; //approx. end of HA
-  TGeoNode* startnode = gGeoManager->InitTrack(0,0,zStart,0,0,1);
+  double zStart = 400;  // approx. end of HA
+  TGeoNode* startnode = gGeoManager->InitTrack(0, 0, zStart, 0, 0, 1);
   if (!startnode) {
-    LOG(error) << "Muon start point out of geometry: (0,0," << zStart << "), going along z ";
+    LOG(error) << "Muon start point out of geometry: (0,0," << zStart
+               << "), going along z ";
     return;
   }
 
@@ -138,38 +140,49 @@ void MuGeoProcessor::FillZmaxVolumes() {
     if (volName.find("Magn") != volName.npos) foundMS = true;
     if (volName.find("Upstream") != volName.npos) foundUBT = true;
     currentnode = gGeoManager->FindNextBoundaryAndStep();
+
+    if (!currentnode) {
+      LOG(error) << "Next boundary out of geometry.";
+      break;
+    }
+
     snext += gGeoManager->GetStep();
-    LOG(info) << "Volume: " << volName << ", end z = " << snext; 
+    LOG(info) << "Volume: " << volName << ", end z = " << snext;
     volName = currentnode->GetVolume()->GetName();
     //@FIXME AMM-avoid hardcoding, pass by config ?
-    if (foundMS && volName.find("Magn") == volName.npos){
+    if (foundMS && volName.find("Magn") == volName.npos) {
       LOG(info) << " Found end of magnet at z = " << snext;
-      fZmaxMap.emplace("MS",snext);
+      fZmaxMap.emplace("MS", snext);
       foundMS = false;
     }
-    if (foundUBT && volName.find("Upstream") == volName.npos){
+    if (foundUBT && volName.find("Upstream") == volName.npos) {
       LOG(info) << " Found end of Upstream detector at z = " << snext;
-      fZmaxMap.emplace("UBT",snext);
+      fZmaxMap.emplace("UBT", snext);
       break;
     }
     // for safety...
     if (lcount > 1000) {
-      LOG(info) << "Reached 1000 iterations in checking all volumes, stopping there: z=" << snext;
+      LOG(info) << "Reached 1000 iterations in checking all volumes, stopping "
+                   "there: z="
+                << snext;
       break;
     }
     lcount++;
   }
 
-  if (fZmaxMap.size() != 2){
-    LOG(info) << " Warning, map size is : " << fZmaxMap.size() << ", did not find the maximum z position of MS and UBT, will be using Zmax= " << fZmax << " parameter.";
+  if (fZmaxMap.size() != 2) {
+    LOG(info) << " Warning, map size is : " << fZmaxMap.size()
+              << ", did not find the maximum z position of MS and UBT, will be "
+                 "using Zmax= "
+              << fZmax << " parameter.";
   }
-  
 }
 
 void MuGeoProcessor::CheckAllVolumes() {
   std::map<std::string, double> lMap;
   if (!gGeoManager) {
     LOG(error) << "gGeoManager does not exist!";
+    return;
   }
 
   double z = fZmin;
@@ -189,6 +202,7 @@ void MuGeoProcessor::CheckAllVolumes() {
             LOG(error) << "Muon start point out of geometry: " << ix * step
                        << " " << iy * step << " " << z << " " << idx * stepd
                        << " " << idy * stepd << " " << dz;
+            continue;
           }
           TGeoNode* currentnode = gGeoManager->GetCurrentNode();
           double snext = z;
@@ -207,12 +221,14 @@ void MuGeoProcessor::CheckAllVolumes() {
 
             // for safety...
             if (lcount > 1000) {
-	      LOG(info) << "Reached 1000 iterations in checking all volumes, stopping there: z=" << snext << " cm, x=" << ix * step
-                       << " y=" << iy * step << " z=" << z << " dir_x=" << idx * stepd
-                       << " dir_y=" << idy * stepd << " dir_z=" << dz;
-	      break;
-	    }
-	    lcount++;
+              LOG(info) << "Reached 1000 iterations in checking all volumes, "
+                           "stopping there: z="
+                        << snext << " cm, x=" << ix * step << " y=" << iy * step
+                        << " z=" << z << " dir_x=" << idx * stepd
+                        << " dir_y=" << idy * stepd << " dir_z=" << dz;
+              break;
+            }
+            lcount++;
           }
         }
       }
@@ -239,9 +255,11 @@ std::map<std::string, MuonPath>& MuGeoProcessor::FillMuonPath() {
     return fPathMap;
   }
 
-  if (fStartpos.Z()<fZmin){
-    LOG(error) << " This muon has a starting Z position of " << fStartpos.Z() << " before the minimum to be considered: " << fZmin
-	       << "==> not filling path, please adapt minimum position or muon input.";
+  if (fStartpos.Z() < fZmin) {
+    LOG(error)
+        << " This muon has a starting Z position of " << fStartpos.Z()
+        << " before the minimum to be considered: " << fZmin
+        << "==> not filling path, please adapt minimum position or muon input.";
     return fPathMap;
   }
 
@@ -305,14 +323,12 @@ std::map<std::string, MuonPath>& MuGeoProcessor::FillMuonPath() {
     dirVec.push_back(fSSTp);
   }
 
-  //Only want to fill DIS in the pre-decay volume material if muon trajectory does not go through SBT nor SST
-  //bool stopAtMS = false;
-  //bool stopAtUBT = false;
-  //if (!fhasSBThit && !fhasSSThit) {
-  //if (fhasUBThit) stopAtUBT = true;
-  //if (!fhasUBThit) stopAtMS = true;
-  //}
-  
+  // Only want to fill DIS in the pre-decay volume material if muon trajectory
+  // does not go through SBT nor SST bool stopAtMS = false; bool stopAtUBT =
+  // false; if (!fhasSBThit && !fhasSSThit) { if (fhasUBThit) stopAtUBT = true;
+  // if (!fhasUBThit) stopAtMS = true;
+  // }
+
   std::vector<bool> doInit;
   unsigned nVtx = vtxVec.size();
   for (unsigned iV(0); iV < nVtx; ++iV) {
@@ -324,13 +340,13 @@ std::map<std::string, MuonPath>& MuGeoProcessor::FillMuonPath() {
   unsigned iV = 0;
 
   while (currentnode) {
-    //stop early to not waste time propagating a muon that goes out of acceptance.
-    //if (stopAtUBT && zpos > FindZmax("UBT")) break;
-    //if (stopAtMS && zpos > FindZmax("MS")) break;
-    
+    // stop early to not waste time propagating a muon that goes out of
+    // acceptance. if (stopAtUBT && zpos > FindZmax("UBT")) break; if (stopAtMS
+    // && zpos > FindZmax("MS")) break;
+
     // stop when reaching input config zmax position
     if (zpos > fZmax) break;
-    
+
     TGeoMaterial* material =
         currentnode->GetVolume()->GetMedium()->GetMaterial();
     std::string lvolName = currentnode->GetVolume()->GetName();
@@ -349,6 +365,13 @@ std::map<std::string, MuonPath>& MuGeoProcessor::FillMuonPath() {
           gGeoManager->InitTrack(vtxVec[iV].X(), vtxVec[iV].Y(), vtxVec[iV].Z(),
                                  dirVec[iV].X() / muonp, dirVec[iV].Y() / muonp,
                                  dirVec[iV].Z() / muonp);
+      if (!currentnode) {
+        LOG(error) << "Muon point out of geometry: x " << vtxVec[iV].X()
+                   << ", y " << vtxVec[iV].Y() << ", z " << vtxVec[iV].Z()
+                   << ", direction: " << dirVec[iV].X() / muonp << ","
+                   << dirVec[iV].Y() / muonp << "," << dirVec[iV].Z() / muonp;
+        break;
+      }
       material = currentnode->GetVolume()->GetMedium()->GetMaterial();
       LOG(debug) << " ---> Update track direction at z=" << zpos;
       doInit[iV] = false;
@@ -398,9 +421,10 @@ std::map<std::string, MuonPath>& MuGeoProcessor::FillMuonPath() {
     lpath.SetLength(step, currentPos, znext);
     lpath.Print();
 
-    //Sanity check: fill a map to print at the end a unique list of volumes found for each label.
-    fVolMap[lpath.GetLabel()].insert(lvolName+"_"+material->GetName());
-    
+    // Sanity check: fill a map to print at the end a unique list of volumes
+    // found for each label.
+    fVolMap[lpath.GetLabel()].insert(lvolName + "_" + material->GetName());
+
     zpos += znext;
     auto lele = fPathMap.emplace(lpath.GetLabel(), lpath);
     if (!lele.second) {
@@ -412,22 +436,24 @@ std::map<std::string, MuonPath>& MuGeoProcessor::FillMuonPath() {
     if (iV < nVtx - 1 && switchVtx) iV++;
     // for safety...
     if (lcount > 1000) {
-      LOG(info) << "Reached 1000 iterations in filling path, stopping there: z=" << zpos << " cm";
+      LOG(info) << "Reached 1000 iterations in filling path, stopping there: z="
+                << zpos << " cm";
       break;
     }
     lcount++;
   }
 
-  LOG(debug) << " -- Map elements after " << lcount << "steps: n=" << fPathMap.size();
+  LOG(debug) << " -- Map elements after " << lcount
+             << "steps: n=" << fPathMap.size();
   for (auto lele = fPathMap.begin(); lele != fPathMap.end(); ++lele) {
     LOG(debug) << lele->first << ": ";
     lele->second.Print();
   }
-  
+
   return fPathMap;
 }
 
-void MuGeoProcessor::PrintVolumes(){ 
+void MuGeoProcessor::PrintVolumes() {
   LOG(info) << " -- Volume Map elements: size=" << fVolMap.size();
   for (const auto& [label, volumes] : fVolMap) {
     LOG(info) << label << ":";

@@ -7,15 +7,12 @@
 
 #include "FairLogger.h"  // for FairLogger, MESSAGE_ORIGIN
 #include "Generator.h"
+#include "MuDISDefs.h"
+#include "TChain.h"
 #include "TF1.h"
 #include "TROOT.h"
-#include "TChain.h"
 #include "TVector3.h"
 #include "vector"
-
-#include "MuDISDefs.h"
-
-using namespace ShipMuDIS;
 
 class FairPrimaryGenerator;
 
@@ -38,16 +35,14 @@ class NewMuDISGenerator : public SHiP::Generator {
   void SetNevents();
 
  protected:
-  FairLogger* fLogger;  //!   don't make it persistent, magic ROOT command
+  FairLogger* fLogger;
   TChain* fTree;
   int fNevents;
-  MuonInBranches finEv;
-  int fn;//counter of final output events
-  int fnmu;//counter of original input muons
-  unsigned fMat;//index of material
-  int fnmuDis;//counter of DIS event per input muon per material
-  int fnmuDisDau;//counter of daughter particles per input muon per material
-
-  
+  ShipMuDIS::MuonInBranches finEv;
+  int fn;          // counter of final output events
+  int fnmu;        // counter of original input muons
+  unsigned fMat;   // index of material
+  int fnmuDis;     // counter of DIS event per input muon per material
+  int fnmuDisDau;  // counter of daughter particles per input muon per material
 };
 #endif  // SHIPMuDIS_NEWMUDISGENERATOR_H_

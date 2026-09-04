@@ -33,18 +33,25 @@ MuDISProcessor::MuDISProcessor() {
   fGeoProcessor.CheckAllVolumes();
 }
 
-void MuDISProcessor::init(const int& aEvts, const int& aStart,
-			  const double& aMinPythiaP,
-			  const int& aDIS, const int& aSeed,
-                          const double& aZmax, const double& aZmin) {
+bool MuDISProcessor::init(const int& aEvts, const int& aStart,
+                          const double& aMinPythiaP, const int& aDIS,
+                          const int& aSeed, const double& aZmax,
+                          const double& aZmin) {
   fnEvts = aEvts;
   fstartEvt = aStart;
   fMinPythiaP = aMinPythiaP;
-  fnDIS = aDIS;
+  if (aDIS < 0) {
+    LOG(warn) << " -- Invalid value passed for nDIS: " << aDIS
+              << ", should be positive.";
+    return false;
+  } else {
+    fnDIS = aDIS;
+  }
   fP6seed = aSeed;
   fGeoProcessor.SetZmax(aZmax);
   fGeoProcessor.SetZmin(aZmin);
   fGeoProcessor.FillZmaxVolumes();
+  return true;
 }
 
 void MuDISProcessor::initPythia6() {
@@ -83,9 +90,8 @@ void MuDISProcessor::rotate(const TVector3& pvec, const double& theta,
   newp = rotation * pvec;
 }
 
-
 Bool_t MuDISProcessor::InitFile(const char* fileName) {
-  return InitFile(fileName,0);
+  return InitFile(fileName, 0);
 }
 
 Bool_t MuDISProcessor::InitFiles(const std::vector<std::string>& fileNames) {
@@ -99,8 +105,7 @@ Bool_t MuDISProcessor::InitFile(const char* fileName, const int startEvent) {
 }
 
 Bool_t MuDISProcessor::InitFiles(const std::vector<std::string>& fileNames,
-			    const int startEvent) {
-  
+                                 const int startEvent) {
   if (fileNames.empty()) {
     LOG(error) << "MuDISProcessor: no input files provided. "
                << "Check the -f/--inputFile argument or input file glob.";
@@ -113,20 +118,18 @@ Bool_t MuDISProcessor::InitFiles(const std::vector<std::string>& fileNames,
       return kFALSE;
     }
   }
-  
+
   LOG(info) << "Opening input file to find keys " << fileNames.at(0);
   TFile* testFile = TFile::Open(fileNames.at(0).c_str(), "READ");
   auto testKeys = testFile ? testFile->GetListOfKeys() : nullptr;
   if (testKeys == nullptr) {
     delete testFile;
-    LOG(error) << "MuDISProcessor: Error opening input file "
-               << fileNames.at(0)
+    LOG(error) << "MuDISProcessor: Error opening input file " << fileNames.at(0)
                << ". Check that the path is correct and the file is a readable "
                   "ROOT file.";
     return kFALSE;
-  }  
-  const bool hastree =
-    testKeys->FindObject("cbmsim") != nullptr;
+  }
+  const bool hastree = testKeys->FindObject("cbmsim") != nullptr;
   testFile->Close();
   delete testFile;
 
@@ -138,12 +141,12 @@ Bool_t MuDISProcessor::InitFiles(const std::vector<std::string>& fileNames,
     }
     int treeEvts = ftree->GetEntries();
     LOG(info) << "Reading " << treeEvts << " entries.";
-    
+
     bool ok = finEv.Setup(ftree);
-    
+
     if (!ok) {
       LOG(error)
-        << "MuDISProcessor: failed to bind one or more required branches";
+          << "MuDISProcessor: failed to bind one or more required branches";
       return kFALSE;
     }
     LOG(info) << "MuDISProcessor: Initialization successful.";
@@ -155,19 +158,19 @@ Bool_t MuDISProcessor::InitFiles(const std::vector<std::string>& fileNames,
 void MuDISProcessor::process_file(const std::string& input,
                                   const std::string& output) {
   std::vector<std::string> fileNames = {input};
-  return process_file(fileNames,output);
+  return process_file(fileNames, output);
 }
 
 void MuDISProcessor::process_file(const std::vector<std::string>& input,
                                   const std::string& output) {
-
   Bool_t treeOK = InitFiles(input);
 
   if (!treeOK) {
-    LOG(error) << " -- Error reading input files: " << input.size() << " first file: " << input[0];
+    LOG(error) << " -- Error reading input files: n=" << input.size();
+    if (input.size() > 0) LOG(error) << " first file: " << input[0];
     return;
   }
-  
+
   TFile* outfile = TFile::Open(output.c_str(), "RECREATE");
   if (!outfile) {
     LOG(error) << " -- Error creating outputfile: " << output;
@@ -190,14 +193,13 @@ void MuDISProcessor::process_file(const std::vector<std::string>& input,
   outfile->Close();
 
   fGeoProcessor.PrintVolumes();
-  
 }
 
 void MuDISProcessor::initEvent() {
   // soft particles + detector hits
   foutEv.initEvent(100);
   // Number of DIS events generated per volume.
-  for (unsigned i(0);i<nMats;++i) foutEv.br[i].initEvent(fnDIS);
+  for (unsigned i(0); i < nMats; ++i) foutEv.br[i].initEvent(fnDIS);
 }
 
 void MuDISProcessor::fillMCTracks(const Int_t aIdx) {
@@ -239,20 +241,23 @@ void MuDISProcessor::fillSSTHits(const Int_t aIdx) {
 }
 
 void MuDISProcessor::generateDISevents(const std::string& tType,
-				       const double& amuonW,
+                                       const double& amuonW,
                                        const std::string& aLabel,
                                        const MuonPath& aPath,
                                        MuonDISBranches& aDISBr) {
   // for Pythia beam, just use the initial muon momentum...
   //@FIXME AMM - is this OK ? Reinitialising each time will be too heavy...
-  if (aPath.GetNSlices()<1) {
-    LOG(error) << " --- calling generateDISevents on an empty path. Doing nothing.";
+  if (aPath.GetNSlices() < 1) {
+    LOG(error)
+        << " --- calling generateDISevents on an empty path. Doing nothing.";
     return;
   }
   double P = aPath.GetMomentum(0);
-  if (P<fMinPythiaP) {
-    LOG(info) << " --- calling Pythia initialise with momentum " << P << " in material " << aLabel
-	      << " , min value for Pythia is: " << fMinPythiaP << ". Doing nothing.";
+  if (P < fMinPythiaP) {
+    LOG(info) << " --- calling Pythia initialise with momentum " << P
+              << " in material " << aLabel
+              << " , min value for Pythia is: " << fMinPythiaP
+              << ". Doing nothing.";
     return;
   }
   fPythia->Initialize("FIXT", tType.c_str(), "p+", P);  // target = "p+"
@@ -281,14 +286,18 @@ void MuDISProcessor::generateDISevents(const std::string& tType,
 
     // choose a random vertex position to set to all daughters
     // Take into account "broken" paths with different slices in z.
-    
+
     double vtx_z = 0;
-    //restrict to last lambda for MS...
-    if (aLabel.find("MS")!=aLabel.npos) vtx_z = gRandom->Uniform(std::max(aPath.GetstartZ(),aPath.GetstartZ() + aPath.GetZLength() - 20),
-								 aPath.GetstartZ() + aPath.GetZLength());
-    else vtx_z = gRandom->Uniform(aPath.GetstartZ(),
-				  aPath.GetstartZ() + aPath.GetZLength());
-    
+    // restrict to last lambda for MS...
+    if (aLabel.find("MS") != aLabel.npos)
+      vtx_z = gRandom->Uniform(
+          std::max(aPath.GetstartZ(),
+                   aPath.GetstartZ() + aPath.GetZLength() - 20),
+          aPath.GetstartZ() + aPath.GetZLength());
+    else
+      vtx_z = gRandom->Uniform(aPath.GetstartZ(),
+                               aPath.GetstartZ() + aPath.GetZLength());
+
     // put back to real Z position for paths with different slices in z.
     unsigned slice = 0;
     double realz = aPath.GetZ(vtx_z, slice);
@@ -297,8 +306,9 @@ void MuDISProcessor::generateDISevents(const std::string& tType,
     aDISBr.DISvy.push_back(aPath.GetY(realz, slice));
     aDISBr.DISvt.push_back(aPath.GetTimeNs(realz, slice));
     double sliceP = aPath.GetMomentum(slice);
-    if (sliceP==0) {
-      LOG(error) << " --- Slice in z has momentum " << sliceP << ". Skipping DIS event " << ia;
+    if (sliceP == 0) {
+      LOG(error) << " --- Slice in z has momentum " << sliceP
+                 << ". Skipping DIS event " << ia;
       continue;
     }
     double theta = TMath::ACos(aPath.Getpz(slice) / sliceP);
@@ -330,7 +340,7 @@ void MuDISProcessor::generateDISevents(const std::string& tType,
 
   // calculate weight
   // times length divided by length, length cancels out...
-  if (fnDIS>0)
+  if (fnDIS > 0)
     aDISBr.wDIS = amuonW * lastxs / fnDIS * aPath.GetWeightedDensity();
 
   LOG(debug) << " -- path " << aLabel << " muonW " << amuonW
@@ -352,24 +362,28 @@ void MuDISProcessor::generateDISevents(const std::string& tType,
 void MuDISProcessor::ProcessMuons() {
   LOG(info) << " * Start of event loop" << std::endl;
 
-  if (static_cast<Long64_t>(fstartEvt) >= ftree->GetEntries()){
-    LOG(error) << " ** Trying to start from event " << fstartEvt << " which is greater than the tree entries: " << ftree->GetEntries()
-	       << ". Doing nothing...";
+  if (static_cast<Long64_t>(fstartEvt) >= ftree->GetEntries()) {
+    LOG(error) << " ** Trying to start from event " << fstartEvt
+               << " which is greater than the tree entries: "
+               << ftree->GetEntries() << ". Doing nothing...";
     return;
   }
 
   const Long64_t nEntries =
-      fnEvts > 0 ? std::min(static_cast<Long64_t>(fstartEvt+fnEvts), ftree->GetEntries())
+      fnEvts > 0 ? std::min(static_cast<Long64_t>(fstartEvt + fnEvts),
+                            ftree->GetEntries())
                  : ftree->GetEntries();
-  LOG(info) << " - Processing event " << fstartEvt << " to event " << nEntries-1 << std::endl;
-  
+  LOG(info) << " - Processing event " << fstartEvt << " to event "
+            << nEntries - 1 << std::endl;
+
   unsigned nplus = 0;
   unsigned nminus = 0;
   unsigned skipMu_pmin = 0;
   unsigned skipMu_acc = 0;
   unsigned skipEvt = 0;
-  
-  for (Long64_t iEvent = static_cast<Long64_t>(fstartEvt); iEvent < nEntries; ++iEvent) {
+
+  for (Long64_t iEvent = static_cast<Long64_t>(fstartEvt); iEvent < nEntries;
+       ++iEvent) {
     LOG(debug) << " --- Processing event " << iEvent << std::endl;
     if (iEvent % 100 == 0)
       LOG(info) << " --- Processing event " << iEvent << std::endl;
@@ -380,7 +394,7 @@ void MuDISProcessor::ProcessMuons() {
       skipEvt++;
       continue;
     }
-    
+
     if (finEv.MCTrack == nullptr) {
       skipEvt++;
       continue;
@@ -395,31 +409,28 @@ void MuDISProcessor::ProcessMuons() {
     //@FIXME AMM adapt also to MuonBack input, take all muons?
     // for now take MCTrack[0]
     Int_t muIdx = 0;
-    
+
     ShipMCTrack& track = (*finEv.MCTrack)[static_cast<unsigned>(muIdx)];
     int pid = track.GetPdgCode();
     double muW = track.GetWeight();
-    
-    double mup =  track.GetP();
 
-    if (mup < fMinPythiaP){
-      LOG(debug) << iEvent << " skipped: muon momentum "
-		 << mup << " below min value for Pythia:"
-		 << fMinPythiaP;
+    double mup = track.GetP();
+
+    if (mup < fMinPythiaP) {
+      LOG(debug) << iEvent << " skipped: muon momentum " << mup
+                 << " below min value for Pythia:" << fMinPythiaP;
       skipMu_pmin++;
       continue;
     }
 
     std::string targetType;
-    if (pid == -13){
+    if (pid == -13) {
       nplus++;
       targetType = "gamma/mu+";
-    }
-    else if (pid == 13){
+    } else if (pid == 13) {
       nminus++;
       targetType = "gamma/mu-";
-    }
-    else {
+    } else {
       LOG(warning) << iEvent << " skipped: "
                    << " nTracks= " << nTr
                    << " -- 1st track pid not a muon: " << pid << std::endl;
@@ -433,21 +444,22 @@ void MuDISProcessor::ProcessMuons() {
     fillSBTHits(muIdx);
     fillSSTHits(muIdx);
 
-    //Count events which have no hit in either UBT, SBT or SST, muon just flying out of vessel acceptance never bouncing back...
-    //For those, very numerous in the cudaMu files, skip to optimise processing.
-    //@FIXME AM to do: a study of whether the events created in the last lambda of MS could still contribute or would hit UBT...
-    if (foutEv.ubtPt.size()==0 && foutEv.sbtPt.size()==0 && foutEv.sstPt.size() == 0) {
+    // Count events which have no hit in either UBT, SBT or SST, muon just
+    // flying out of vessel acceptance never bouncing back... For those, very
+    // numerous in the cudaMu files, skip to optimise processing.
+    //@FIXME AM to do: a study of whether the events created in the last lambda
+    // of MS could still contribute or would hit UBT...
+    if (foutEv.ubtPt.size() == 0 && foutEv.sbtPt.size() == 0 &&
+        foutEv.sstPt.size() == 0) {
       LOG(debug) << " Skipping muon event " << iEvent
-		 << " UBT Hits: " << foutEv.ubtPt.size()
-		 << ", SBT Hits: " << foutEv.sbtPt.size()
-		 << ", SST Hits: " << foutEv.sstPt.size()
-		 << std::endl;
+                 << " UBT Hits: " << foutEv.ubtPt.size()
+                 << ", SBT Hits: " << foutEv.sbtPt.size()
+                 << ", SST Hits: " << foutEv.sstPt.size() << std::endl;
       skipMu_acc++;
-      //counting, but want to still fill DIS in MS (and UBT detector)...
+      // counting, but want to still fill DIS in MS (and UBT detector)...
       continue;
     }
 
-    
     LOG(debug) << " -- size of hits collections: " << std::endl
                << " ---- mcTracks: " << foutEv.mcTrks.size() << std::endl
                << " ---- UBT Hits: " << foutEv.ubtPt.size() << std::endl
@@ -469,22 +481,22 @@ void MuDISProcessor::ProcessMuons() {
     // length*density. That way, do only once the calculation of the path, and
     // plenty of DIS in each material. fill a branch with weight = path
     // length*density.
-    // Discarding REST: many muons go through CONCRETE,no need to record DIS there....
-    for (unsigned i(0);i<nMats-1;++i){
+    // Discarding REST: many muons go through CONCRETE,no need to record DIS
+    // there....
+    for (unsigned i(0); i < nMats - 1; ++i) {
       if (lPathMap.find(MatTypeStr[i].Data()) != lPathMap.end())
-	generateDISevents(targetType,muW,
-			  MatTypeStr[i].Data(),
-			  lPathMap.find(MatTypeStr[i].Data())->second,
-			  foutEv.br[i]);
+        generateDISevents(targetType, muW, MatTypeStr[i].Data(),
+                          lPathMap.find(MatTypeStr[i].Data())->second,
+                          foutEv.br[i]);
     }
 
     fouttree->Fill();
-    
+
   }  // loop on events
 
   LOG(info) << "Found " << nplus << " mu+ and " << nminus << " mu-."
             << std::endl
-	    << "Skipped: " << skipEvt << " events and "
-	    << skipMu_pmin << " muons with too low p, "
-	    << skipMu_acc << " muons outside of acceptance.";
+            << "Skipped: " << skipEvt << " events and " << skipMu_pmin
+            << " muons with too low p, " << skipMu_acc
+            << " muons outside of acceptance.";
 }

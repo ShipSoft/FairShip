@@ -1,7 +1,9 @@
 #ifndef SHIPMuDIS_MuonPath_H_
 #define SHIPMuDIS_MuonPath_H_
 
+#include <algorithm>
 #include <string>
+#include <vector>
 
 #include "TVector3.h"
 
@@ -74,12 +76,19 @@ class MuonPath {
     fstart.push_back(aStart);
     fendZ.push_back(aStart.Z() + aZ);
     fwdensity += aStep * fdensity;
-    fstartT.push_back(GetTimeNs(aStart.Z(), GetNSlices() - 1));
+    const unsigned idx = static_cast<unsigned>(fstart.size() - 1);
+    fstartT.push_back(GetTimeNs(aStart.Z(), idx));
   };
 
-  inline const unsigned GetNSlices() const { return fvolName.size(); };
+  inline unsigned GetNSlices() const {
+    return static_cast<unsigned>(
+        std::min({fvolName.size(), fmaterial.size(), fpvec.size(), fvtx.size(),
+                  fvtxT.size(), fstart.size(), fstartT.size(), fendZ.size()}));
+  };
 
-  inline double GetstartZ() const { return fstart[0].Z(); };
+  inline double GetstartZ() const {
+    return fstart.empty() ? 0. : fstart.front().Z();
+  };
 
   inline double GetstartX(const unsigned& idx) const {
     if (idx >= GetNSlices()) return 0;
@@ -104,13 +113,13 @@ class MuonPath {
   bool Add(const MuonPath& aEle);
 
   inline double GetX(const double& aZ, const unsigned& idx) const {
-    if (idx >= GetNSlices() || fpvec[idx].Z()==0) return 0;
+    if (idx >= GetNSlices() || fpvec[idx].Z() == 0) return 0;
     return fvtx[idx].X() +
            (aZ - fvtx[idx].Z()) * fpvec[idx].X() / fpvec[idx].Z();
   };
 
   inline double GetY(const double& aZ, const unsigned& idx) const {
-    if (idx >= GetNSlices() || fpvec[idx].Z()==0) return 0;
+    if (idx >= GetNSlices() || fpvec[idx].Z() == 0) return 0;
     return fvtx[idx].Y() +
            (aZ - fvtx[idx].Z()) * fpvec[idx].Y() / fpvec[idx].Z();
   };
@@ -125,9 +134,10 @@ class MuonPath {
   inline double GetTimeNs(const double& aZ, const unsigned& idx) const {
     if (idx >= GetNSlices()) return 0;
     double P = fpvec[idx].Mag();
+    if (P == 0.) return 0;
     double v = c_light * P /
                TMath::Sqrt(TMath::Power(P, 2) + TMath::Power(muon_mass, 2));
-    if (v==0) return 0;
+    if (v == 0.) return 0;
     return fvtxT[idx] + GetLength(aZ, idx) / v;
   };
 

@@ -11,12 +11,12 @@ This folder contains the necessary processors to create DIS events from input mu
   - Soft tracks are for all processes except destructive "Muon nuclear interaction". The first one is the initial input muon.
   - UBT, SBT and SST hits are all hits with a GetTrackID() equal to the input muon track ID.
   - The separate volumes are:
-    - muon shied "MS"
+    - muon shield "MS"
     - UBT detector "UBT" (now just a dummy plane)
     - SBT detector "SBTsens" for liquid scintillator and "SBTfr" for frame material
     - SST detector "SSTsens" for liquid scintillator and "SSTfr" for frame material
-    - Helium "He" and to do: He frame (balloon) "HEfr"
-    - Air "Air" from before and after UBT, after balloon, cavern, SST.
+    - Helium "HE"
+    - Air "AIR" from before and after UBT, after balloon, cavern, SST.
     - The rest "REST" anything not taken into account in the previous categories.
     - to add material or change categories, edit top part of MuDISDefs.h file, and method GetLabel() in MuonPath.cxx
 
@@ -27,7 +27,7 @@ cd FairShip
 pixi run build
 pixi shell
 cd <your_workdir>
-python3 <relative_path_to_FairShip>/FairShip/muonDIS/prepareEvents.py -f <your_sim_input_root_file.root> -o <your_output_root_file_name>.root -n <number_of_initial_p.o.t./muon_events_to_process> -d <number_of_DIS_per_muon_per_volume> -g <your_geometry_file.root>
+python3 <relative_path_to_FairShip>/FairShip/newMuonDIS/prepareEvents.py -f <your_sim_input_root_file.root> -o <your_output_root_file_name>.root -n <number_of_initial_p.o.t./muon_events_to_process> -d <number_of_DIS_per_muon_per_volume> -g <your_geometry_file.root>
 python3 <path_to_FairShip>/newMuonDIS/run_simScript_newDIS.py -f <muonDis_output.root> --tag <your_tag> --MuDIS --debug 1 -n 10
 ```
 
@@ -64,6 +64,6 @@ To do: to be improved by config instead of hardcoded.
 ## Structure of output tree:
 
 - branches muon_* : input muon information. Size: number of entries processed.
-- branches muon_nDISevt_* : number of DIS interactions generated for each volume. SHould be input parameter nDIS, but real number generated (in case some Pythia6 evt fail). Size: number of entries processed.
-- branches mudis_*: DIS events information for each material. Size: nDIS*nEntries.
-- branches mudis_DISproducts_* : all DIS daughters in each material <VOL>, DIS events put all together. Size = nEntries*nDIS*mudis_nDISdaughters_VOL.
+- branches muon_nDISevt_* : number of DIS interactions generated for each volume. Should be input parameter nDIS, but real number generated (in case some Pythia6 evt fail). Size: number of entries processed.
+- branches mudis_*: DIS events information for each material. The vector size is variable and is determined by the actual per-entry `muon_nDISevt_<VOL>` count.
+- branches mudis_DISproducts_* : all DIS daughters in each material <VOL>, with all DIS events stored together. Use `mudis_nDISdaughters_<VOL>` to determine the actual daughter ranges per DIS event.

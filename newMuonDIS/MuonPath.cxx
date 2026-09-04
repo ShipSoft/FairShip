@@ -21,12 +21,18 @@ void MuonPath::SetVertexInfo(const TVector3& vecpos, const TVector3& vecp,
 
 double MuonPath::GetZ(const double& aZ, unsigned& idx) const {
   //@FIXME AMM- is this efficient enough??
+  const unsigned nSlices = GetNSlices();
+  if (nSlices == 0) {
+    idx = 0;
+    return aZ;
+  }
+
   if (aZ < fendZ[0]) {
     idx = 0;
     return aZ;
   }
   double prevz = fendZ[0];
-  for (unsigned iz(1); iz < fendZ.size(); ++iz) {
+  for (unsigned iz(1); iz < nSlices; ++iz) {
     double extraz = aZ - prevz;
     double stepz = fendZ[iz] - fstart[iz].Z();
     if (extraz < stepz) {
@@ -36,7 +42,8 @@ double MuonPath::GetZ(const double& aZ, unsigned& idx) const {
     prevz += stepz;
   }
   // set a default to the last value
-  return fendZ[fendZ.size()-1];
+  idx = nSlices - 1;
+  return fendZ[idx];
 }
 
 std::string MuonPath::GetLabel(const std::string& aVol,
@@ -57,9 +64,9 @@ std::string MuonPath::GetLabel(const std::string& aVol,
   else if (aVol.find("wire") != aVol.npos && aMat.find("tungsten") != aMat.npos)
     return "SSTsens";
   else if ((aVol.find("Tr1_frame") != aVol.npos ||
-	    aVol.find("Tr2_frame") != aVol.npos ||
-	    aVol.find("Tr3_frame") != aVol.npos ||
-	    aVol.find("Tr4_frame") != aVol.npos))
+            aVol.find("Tr2_frame") != aVol.npos ||
+            aVol.find("Tr3_frame") != aVol.npos ||
+            aVol.find("Tr4_frame") != aVol.npos))
     return "SSTfr";
   else if ((aVol.find("Veto") != aVol.npos ||
             aVol.find("vLongitRib") != aVol.npos))
@@ -73,16 +80,23 @@ std::string MuonPath::GetLabel(const std::string& aVol,
 }
 
 void MuonPath::Print() {
+  const unsigned nSlices = GetNSlices();
+
   std::ostringstream ldebug;
   ldebug << flabel << " "
-         << " d=" << fdensity
-         << " l=" << flength << " l_in_z=" << fzlength;
-  if (flength > 0) ldebug << " <d>=" << fwdensity / flength;
-  ldebug << std::endl
-         << " zIn=" << fstart[0].Z() << " zOut=" << fendZ[GetNSlices() - 1]
+         << " d=" << fdensity << " l=" << flength << " l_in_z=" << fzlength;
+  if (flength > 0) ldebug << " <d>=" << fwdensity / flength << std::endl;
+
+  if (nSlices == 0) {
+    ldebug << "z-slices n=0" << std::endl;
+    LOG(debug) << ldebug.str();
+    return;
+  }
+
+  ldebug << " zIn=" << fstart[0].Z() << " zOut=" << fendZ[nSlices - 1]
          << std::endl;
-  ldebug << "z-slices n=" << GetNSlices() << ": " << std::endl;
-  for (unsigned iz(0); iz < GetNSlices(); ++iz) {
+  ldebug << "z-slices n=" << nSlices << ": " << std::endl;
+  for (unsigned iz(0); iz < nSlices; ++iz) {
     ldebug << fvolName[iz] << " " << fmaterial[iz] << " vtxz=" << fvtx[iz].Z()
            << " slice [" << fstart[iz].Z() << "-" << fendZ[iz] << "] "
            << std::endl;
@@ -94,7 +108,8 @@ void MuonPath::Print() {
 bool MuonPath::Add(const MuonPath& aEle) {
   // path added should always have only one element...
   if (aEle.GetNSlices() != 1) {
-    LOG(error) << " -- incorrect number of elements in path: " << GetNSlices();
+    LOG(error) << " -- incorrect number of elements in path: "
+               << aEle.GetNSlices();
     return false;
   }
   fvolName.push_back(aEle.fvolName[0]);
