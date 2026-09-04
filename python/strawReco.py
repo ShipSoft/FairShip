@@ -27,7 +27,7 @@ MIN_VERTEX_TRACKS = 2
 MAX_VERTEX_TRACKS = 4
 
 
-def make_seed(pos, mom, charge, surface, geo_ctx, nM):
+def make_seed(pos, mom, charge, surface, geo_ctx):
     sigma_drift = 5.0  # 5mm uncertainty
     sigma_long = 50.0  # 50mm uncertainty
     sigma_phi = 0.05  # 50 mrad
@@ -122,7 +122,7 @@ def runTracking(candidates, trackingGeometry, fieldMap, strawHits, fit_vertex=Tr
             logger.warning("Could not find surface for GeoID: %s", geo_id)
             continue
 
-        initial_params = make_seed(cand["pos"], cand["mom"], cand["charge"], target_surface, geo_ctx, len(strawHits))
+        initial_params = make_seed(cand["pos"], cand["mom"], cand["charge"], target_surface, geo_ctx)
 
         tracks_before_fit = len(output_tracks)
 
