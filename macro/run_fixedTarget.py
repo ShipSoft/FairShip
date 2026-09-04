@@ -235,8 +235,8 @@ if args.debug:
 
 if args.kaon_pion_splits < 0:
     ap.error("--kaon-pion-splits must be >= 0")
-if args.multiple_kpi_splits and args.intermediate_kaon_pion_splits <= 1:
-    ap.error("--multiple-kpi-splits requires --intermediate-kaon-pion-splits > 1")
+if args.multiple_kpi_splits and (args.kaon_pion_splits <= 0 or args.intermediate_kaon_pion_splits <= 1):
+    ap.error("--multiple-kpi-splits requires --kaon-pion-splits > 0 and --intermediate-kaon-pion-splits > 1")
 
 
 if args.G4only:
