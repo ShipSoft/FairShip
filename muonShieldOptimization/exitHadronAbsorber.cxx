@@ -48,6 +48,8 @@ constexpr Double_t mm = 0.1 * cm;  //  mm
 // what any sane configuration reaches.
 constexpr std::size_t kMaxSecondaryBuffer = 10000;
 
+Int_t exitHadronAbsorber::fgCarrierTrackID = exitHadronAbsorber::kNoCarrier;
+
 exitHadronAbsorber::exitHadronAbsorber(const char* Name, Bool_t Active)
     : Detector(Name, Active, kVETO),
       fOnlyMuons(kFALSE),
@@ -192,6 +194,9 @@ Bool_t exitHadronAbsorber::ProcessHits(FairVolume* vol) {
             fSecondaryBuffer.push_back(clone);
           }
           fCurrentSurvivalFactor *= (1.0 - P_decay);
+          fSplitDecays++;
+          fClonesBuffered += fIntermediateNsplits;
+          RequestCloneCarrier();
         }
       }
     }
@@ -269,23 +274,32 @@ void exitHadronAbsorber::Initialize() {
 }
 
 void exitHadronAbsorber::BeginEvent() {
-  if (!fSecondaryBuffer.empty()) {
-    // No track surviving the energy cut followed the last splitting decay of
-    // the previous event, so its clones could not be handed to the stack
-    // popper and their weight is lost.
-    Double_t lostWeight = 0;
-    for (const auto& trk : fSecondaryBuffer) {
-      lostWeight += trk.weight;
-    }
-    LOG(warning) << "exitHadronAbsorber: discarding " << fSecondaryBuffer.size()
-                 << " buffered split clones (summed weight " << lostWeight
-                 << ") left over from the previous event";
-  }
+  DiscardBufferedClones();
   fCloneTracks.clear();
   fContinuationTracks.clear();
   fDecayedParentIDs.clear();
   fSecondaryBuffer.clear();
   fSplitBufferLimitWarned = kFALSE;
+  fgCarrierTrackID = kNoCarrier;
+}
+
+void exitHadronAbsorber::DiscardBufferedClones() {
+  if (fSecondaryBuffer.empty()) {
+    return;
+  }
+  // No track carried these clones to the stack popper before the event
+  // ended, so their weight never made it into the simulation.
+  Double_t lostWeight = 0;
+  for (const auto& trk : fSecondaryBuffer) {
+    lostWeight += trk.weight;
+  }
+  fLostBufferEvents++;
+  fLostCloneTracks += static_cast<Int_t>(fSecondaryBuffer.size());
+  fLostCloneWeight += lostWeight;
+  LOG(warning) << "exitHadronAbsorber: discarding " << fSecondaryBuffer.size()
+               << " buffered split clones (summed weight " << lostWeight
+               << ") which no track handed to the stack popper";
+  fSecondaryBuffer.clear();
 }
 
 void exitHadronAbsorber::PostTrack() {
@@ -353,6 +367,9 @@ void exitHadronAbsorber::PostTrack() {
       }
       fCurrentSurvivalFactor = 0.0;
       fDecayedParentIDs.insert(currentTrackId);
+      fSplitDecays++;
+      fClonesBuffered += fNsplits;
+      RequestCloneCarrier();
     }
 
     // tracks which do not decay are stopped with stoptrack and added back with
@@ -375,11 +392,35 @@ void exitHadronAbsorber::PreTrack() {
   fCurrentSurvivalFactor = 1.0;
 
   gMC->TrackMomentum(fMom);
-  if ((fMom.E() - fMom.M()) < EMax) {
+  TParticle* p = gMC->GetStack()->GetCurrentTrack();
+  Int_t currentID = gMC->GetStack()->GetCurrentTrackNumber();
+  Bool_t isClone = (fCloneTracks.find(currentID) != fCloneTracks.end());
+
+  // Claim the carrier for the clones buffered by the last splitting decay. A
+  // decay always puts its daughters on the stack, so some track always follows
+  // it; only the cuts below can strand the buffer until the event ends.
+  Bool_t isCarrier =
+      (fgCarrierTrackID == kCarrierRequested || fgCarrierTrackID == currentID);
+  if (fgCarrierTrackID == kCarrierRequested) {
+    fgCarrierTrackID = currentID;
+  }
+
+  if (!isClone && !isCarrier && (fMom.E() - fMom.M()) < EMax) {
     // Do NOT flush the clone buffer into this track: it is stopped before its
     // first step, so the stack popper would never run for it and the pending
     // clones would be silently discarded at the next track's popper reset.
-    // Keep the buffer for the next track that survives the cut.
+    // The designated carrier is exempt so that it does step; transporting it
+    // costs one sub-threshold track per splitting decay and cannot change the
+    // output, since ProcessHits only scores crossings above the same cut and
+    // no secondary of a sub-threshold track exceeds it.
+    //
+    // Clones are exempt from the cut. They are a bookkeeping device that has
+    // to decay immediately (ForceDecayTime(0)) so that the decay can be
+    // re-sampled, and their parent already passed the cut at the start of its
+    // own track. Applying the cut again at the decay point would drop decay
+    // products which an unsplit run keeps, because there the cut acts on the
+    // (possibly much harder) decay muon rather than on the parent. The decay
+    // products of the clones are cut as usual.
     gMC->StopTrack();
     return;
   }
@@ -396,10 +437,8 @@ void exitHadronAbsorber::PreTrack() {
     // Clear the buffer so we don't duplicate them for the next track
     fSecondaryBuffer.clear();
   }
-  TParticle* p = gMC->GetStack()->GetCurrentTrack();
-  Int_t currentID = gMC->GetStack()->GetCurrentTrackNumber();
 
-  if (fCloneTracks.find(currentID) != fCloneTracks.end()) {
+  if (isClone) {
     //  Force the decay time to 0
     gMC->ForceDecayTime(0);
   }
@@ -443,13 +482,29 @@ void exitHadronAbsorber::PreTrack() {
       fNtuple->Fill(pdgCode, fMom.Px(), fMom.Py(), fMom.Pz(), fPos.X(),
                     fPos.Y(), fPos.Z());
     }
-    if (fSkipNeutrinos && (idabs == 12 || idabs == 14 || idabs == 16)) {
+    if (fSkipNeutrinos && !isCarrier &&
+        (idabs == 12 || idabs == 14 || idabs == 16)) {
       gMC->StopTrack();
     }
   }
 }
 
 void exitHadronAbsorber::FinishRun() {
+  // BeginEvent only sees the buffer of the previous event, so the last event
+  // of the run has to be checked here.
+  DiscardBufferedClones();
+  if (fNsplits > 0) {
+    LOG(info) << "exitHadronAbsorber: split " << fSplitDecays
+              << " times, creating " << fClonesBuffered << " clones";
+    if (fLostBufferEvents > 0) {
+      LOG(warning) << "exitHadronAbsorber: " << fLostBufferEvents
+                   << " event(s) ended with buffered split clones, losing "
+                   << fLostCloneTracks << " clones of summed weight "
+                   << fLostCloneWeight;
+    } else {
+      LOG(info) << "exitHadronAbsorber: every buffered split clone was tracked";
+    }
+  }
   for (Int_t idnu = 11; idnu < 23; idnu += 1) {
     // nu or anti-nu
     for (Int_t idadd = -1; idadd < 3; idadd += 2) {
