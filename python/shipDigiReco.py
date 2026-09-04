@@ -375,7 +375,10 @@ class ShipDigiReco:
             particle = ROOT.ShipParticle(9900015, 0, -1, -1, t1, t2, P, vertex_position_4d)
             covV_list = [covV[0][0], covV[0][1], covV[0][2], covV[1][1], covV[1][2], covV[2][2]]
 
-            # Extract 6 upper-triangular elements for momentum covariance
+            # ShipParticle::SetCovP takes the upper triangle of the 4x4 (px, py,
+            # pz, E) covariance, in the order (0,0), (0,1), (0,2), (0,3), (1,1),
+            # (1,2), (1,3), (2,2), (2,3), (3,3). The ACTS vertex fit gives only
+            # the 3x3 momentum block, so the four energy entries stay zero.
             covP_list = [covP[0][0], covP[0][1], covP[0][2], 0.0, covP[1][1], covP[1][2], 0.0, covP[2][2], 0.0, 0.0]
 
             # Track extrapolation and DOCA calculation, preferring the
@@ -560,6 +563,12 @@ class ShipDigiReco:
                 logger.warning("Skipping MCTrack %d with unknown PDG code %d", trID, tr.GetPdgCode())
                 continue
             charge = particle.Charge() / 3.0
+            # A neutral seed has q/p = 0, and strawReco.make_seed divides by the
+            # momentum magnitude to get its q/p uncertainty. Neither case can be
+            # seeded; neutrals only reach here via the odd stray straw hit.
+            if charge == 0.0 or mom.Mag() <= 0:
+                logger.debug("Skipping unseedable MCTrack %d (pdg %d)", trID, tr.GetPdgCode())
+                continue
 
             candidates.append({"pos": pos, "mom": mom, "indices": unique_indices, "charge": charge})
         return candidates
