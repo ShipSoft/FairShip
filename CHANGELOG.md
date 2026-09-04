@@ -14,6 +14,8 @@ it in future.
 
 ### Added
 
+* ACTS is available as an alternative track fitter in the main reconstruction chain: `ShipReco.py --trackFitter acts` writes `RecoTracks`/`RecoVertices`/`Particles` branches instead of the GenFit `FitTracks` (which remains the default). Both fitters write `goodTracks`, and one `VetoHitOnTrack` entry per good track with the distance in cm. Analysis tools (`ShipAna`, `shipVeto`, `analysis_toolkit`, `tracking_benchmark`) detect either output format automatically.
+* New `--patRec Truth` option for MC-truth track seeding (requires `--trackFitter acts`).
 * He Balloon added with configurable thickness and material.
 * 2026 BDF target design (33 pure tungsten disks with a larger rear block, steel core with serpentine He cooling grooves, jacket tube, flanges, upstream beam window and cover plate, and domed rear endcap), extracted from CATIA model ST1A07710_01_AB.02. Select with `--target-yaml geometry/target_config_2026.yaml`; the legacy design remains the default. Downstream elements are positioned using the nominal legacy target length so both designs can be compared directly.
 
@@ -28,6 +30,8 @@ it in future.
 
 ### Fixed
 
+* ACTS vertex positions were scaled by the covariance conversion factor rather than the length one, placing every reconstructed vertex ten times too close to the target
+* Track candidates were built with a charge that contradicted their PDG code. The charge is the one the bending actually supports, so the PDG code was corrected to match it; GenFit results are unaffected (it does not use the seed charge) and ACTS results are unchanged
 * `veto` now registers the configured `sensitiveMed` instead of a hardcoded medium name; previously any other value resolved to a null `TGeoMedium`
 
 ### Removed

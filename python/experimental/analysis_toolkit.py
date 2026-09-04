@@ -10,6 +10,7 @@ import ROOT
 import shipunit as u
 import yaml
 from ShipGeoConfig import AttrDict, load_from_root_file
+from shipTrackAccess import get_tracks, track_info, uses_acts
 from tabulate import tabulate
 
 
@@ -40,6 +41,7 @@ class selection_check:
     def access_event(self, tree) -> None:
         """Access event data."""
         self.tree = tree
+        self.acts_tracks = uses_acts(tree)
 
     def define_candidate_time(self, candidate):
         """Calculate time associated with the candidate decay vertex using strawtubes MCPoint info."""
@@ -148,20 +150,27 @@ class selection_check:
         nmeas = []
         t1, t2 = candidate.GetDaughter(0), candidate.GetDaughter(1)
 
+        tracks = get_tracks(self.tree)
         for tr in [t1, t2]:
-            fit_status = self.tree.FitTracks[tr].getFitStatus()
-            nmeas.append(round(fit_status.getNdf()))  # nmeas.append(fit_status.getNdf())
+            nmeas.append(round(track_info(tracks[tr], self.acts_tracks).ndf))
 
         return np.array(nmeas)
 
     def daughtermomentum(self, candidate):
-        """Return the momentum(Mag) of the particle's daughter tracks."""
+        """Return the momentum(Mag) of the particle's daughter tracks.
+
+        Tracks without a usable fit yield -1, which fails the preselection
+        momentum cut.
+        """
         daughter_mom = []
         t1, t2 = candidate.GetDaughter(0), candidate.GetDaughter(1)
+        tracks = get_tracks(self.tree)
         for trD in [t1, t2]:
-            x = self.tree.FitTracks[trD]
-            xx = x.getFittedState()
-            daughter_mom.append(xx.getMom().Mag())
+            info = track_info(tracks[trD], self.acts_tracks)
+            if not info.converged or info.mom is None or info.ndf <= 0:
+                daughter_mom.append(-1.0)
+                continue
+            daughter_mom.append(info.mom.Mag())
 
         return np.array(daughter_mom)
 
@@ -190,13 +199,21 @@ class selection_check:
         return vertex_elem.startswith("decay_medium_")
 
     def chi2nDOF(self, candidate):
-        """Return the reduced chi^2 of the particle's daughter tracks."""
+        """Return the reduced chi^2 of the particle's daughter tracks.
+
+        Tracks without a usable fit yield infinity, which fails the
+        preselection chi^2 cut.
+        """
         t1, t2 = candidate.GetDaughter(0), candidate.GetDaughter(1)
 
         chi2ndf = []
+        tracks = get_tracks(self.tree)
         for tr in [t1, t2]:
-            fit_status = self.tree.FitTracks[tr].getFitStatus()
-            chi2ndf.append(fit_status.getChi2() / fit_status.getNdf())
+            info = track_info(tracks[tr], self.acts_tracks)
+            if not info.converged or info.ndf <= 0:
+                chi2ndf.append(float("inf"))
+                continue
+            chi2ndf.append(info.chi2 / info.ndf)
 
         return np.array(chi2ndf)
 
