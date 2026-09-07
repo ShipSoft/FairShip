@@ -151,8 +151,11 @@ cmd = "ship-metrics-compare {{ reference }} {{ new }} --config .github/scripts/m
 # so the workflow can pass them in without fighting pixi's positional-args
 # expansion.
 
+# CMake leaves -I$CONDA_PREFIX/include out of compile_commands.json because it
+# is already in the conda gcc's implicit include path. It is not in clang's, so
+# clang-tidy fails to find the FairRoot headers when it replays those commands.
 [tasks.ci-clang-tidy]
-cmd = "bash -c 'set -o pipefail; echo $CPP_FILES | xargs -P $(nproc) -n 4 clang-tidy -p build/ 2>&1 | python .github/scripts/annotate_build.py'"
+cmd = "bash -c 'set -o pipefail; echo $CPP_FILES | xargs -P $(nproc) -n 4 clang-tidy -p build/ --extra-arg=-isystem$CONDA_PREFIX/include 2>&1 | python .github/scripts/annotate_build.py'"
 
 [tasks.ci-pyrefly]
 cmd = "pyrefly check --output-format=github $PY_FILES"
