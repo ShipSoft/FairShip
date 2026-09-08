@@ -2,12 +2,22 @@
 // SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP
 // Collaboration
 
+#include <cstdint>
+
 void DecayConfig() {
   // This script uses TEvtGenDecayer that handles J/psi with EvtGen
   // and other particles with TPythia8Decayer
 
   // Create the custom EvtGen decayer
   TEvtGenDecayer* decayer = new TEvtGenDecayer();
+
+  // run_simScript exports the resolved command-line seed before VMC loads this
+  // macro. Pass it explicitly so initialization cannot advance the ROOT RNG
+  // and silently change the EvtGen/Pythia8-decayer seed.
+  TString RandomSeed = gSystem->Getenv("FAIRSHIP_RANDOM_SEED");
+  if (!RandomSeed.IsNull()) {
+    decayer->SetSeed(static_cast<std::uint32_t>(RandomSeed.Atoi()));
+  }
 
   // Configure EvtGen files using EVTGENDATA
   TString DecayFile = TString(gSystem->Getenv("EVTGENDATA")) + "/DECAY.DEC";

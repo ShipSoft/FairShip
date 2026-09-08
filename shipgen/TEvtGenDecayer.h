@@ -8,6 +8,7 @@
 // Custom external decayer that uses EvtGen for specific particles (like J/psi)
 // and falls back to TPythia8Decayer for others
 
+#include <cstdint>
 #include <vector>
 
 #include "TPythia8Decayer.h"
@@ -36,6 +37,7 @@ class TEvtGenDecayer : public TVirtualMCDecayer {
   // EvtGen-specific methods
   void SetEvtGenDecayFile(const char* decayFile);
   void SetEvtGenParticleFile(const char* particleFile);
+  void SetSeed(std::uint32_t seed) { fSeed = seed; }
   void AddEvtGenParticle(Int_t pdg);  // Add particle to be handled by EvtGen
 
   // Access methods
@@ -59,6 +61,7 @@ class TEvtGenDecayer : public TVirtualMCDecayer {
   // Storage for EvtGen decay products
   TClonesArray* fEvtGenProducts;  // Array to store converted EvtGen particles
   Bool_t fHasEvtGenDecay;  // Flag indicating if last decay was from EvtGen
+  std::uint32_t fSeed{0};  // explicit RNG seed; 0 uses gRandom's seed
 };
 
 #endif  // SHIPGEN_TEVTGENDECAYER_H_

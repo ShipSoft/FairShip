@@ -90,7 +90,6 @@ class FixedTargetGenerator : public SHiP::Generator {
   void SetChicc(Double_t x) {
     chicc = x;
   }  // chicc = ccbar over mbias cross section
-  inline void SetSeed(Double_t seed) { fSeed = seed; }
   inline void SetHeartBeat(Int_t x) { heartbeat = x; }
   inline void SetEnergyCut(Float_t emax) {
     EMax = emax;
@@ -111,7 +110,7 @@ class FixedTargetGenerator : public SHiP::Generator {
   Double_t fMom;       // proton momentum
   Bool_t fUseRandom1;  // flag to use TRandom1
   Bool_t fUseRandom3;  // flag to use TRandom3 (default)
-  Double_t fSeed, EMax, fBoost, chicc, chibb, wspill, nrpotspill;
+  Double_t EMax, fBoost, chicc, chibb, wspill, nrpotspill;
   Double_t pot;  // proton-on-target counter, incremented by 0.5 per signal
   Int_t nEvents, nEntry, nDsprim, ntotprim;
   Bool_t tauOnly, JpsiMainly, DrellYan, PhotonCollision, G4only, setByHand,
