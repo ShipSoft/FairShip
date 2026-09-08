@@ -59,10 +59,12 @@ var NAVTREEINDEX13 =
 "classstudy__GammaConv_1_1Block.html#a5f76285eb7f2d79df84a7936bac09847":[6,0,98,0,2],
 "classstudy__GammaConv_1_1Block.html#a9bb0a63d2b184a328fa73f9c88a37a94":[7,0,19,0,3],
 "classstudy__GammaConv_1_1Block.html#a9bb0a63d2b184a328fa73f9c88a37a94":[6,0,98,0,3],
-"classstudy__GammaConv_1_1Block.html#a9c1beb413567783473b88864317f36e7":[7,0,19,0,1],
 "classstudy__GammaConv_1_1Block.html#a9c1beb413567783473b88864317f36e7":[6,0,98,0,1],
+"classstudy__GammaConv_1_1Block.html#a9c1beb413567783473b88864317f36e7":[7,0,19,0,1],
 "classstudy__GammaConv_1_1Block.html#abb06a01ab50112e87a317114aec5ccc9":[6,0,98,0,4],
 "classstudy__GammaConv_1_1Block.html#abb06a01ab50112e87a317114aec5ccc9":[7,0,19,0,4],
+"classstudy__GammaConv_1_1Setup.html":[6,0,98,1],
+"classstudy__GammaConv_1_1Setup.html":[7,0,19,1],
 "classstudy__muMSC_1_1Block.html":[6,0,99,0],
 "classstudy__muMSC_1_1Block.html":[7,0,20,0],
 "classstudy__muMSC_1_1Block.html#a1d14172e7128612ca862ab4109f444b1":[6,0,99,0,1],
@@ -71,6 +73,8 @@ var NAVTREEINDEX13 =
 "classstudy__muMSC_1_1Block.html#adc7fa25fdf06e4f920be3b4df04ba429":[7,0,20,0,0],
 "classstudy__muMSC_1_1Block.html#afa4e5755c3000c619d19184ace7824fd":[7,0,20,0,2],
 "classstudy__muMSC_1_1Block.html#afa4e5755c3000c619d19184ace7824fd":[6,0,99,0,2],
+"classstudy__muMSC_1_1Setup.html":[7,0,20,1],
+"classstudy__muMSC_1_1Setup.html":[6,0,99,1],
 "classstudy__thinTarget_1_1Block.html":[6,0,100,0],
 "classstudy__thinTarget_1_1Block.html":[7,0,21,0],
 "classstudy__thinTarget_1_1Block.html#a034c2eaa2420933204eebc0a7842bc87":[6,0,100,0,1],
@@ -245,9 +249,5 @@ var NAVTREEINDEX13 =
 "classvetoHitOnTrack.html#a907d5e8db4a2750e8da70c658c52f0cb":[7,0,96,9],
 "classvetoHitOnTrack.html#a92d33831d3c62dd579fcf5a25e6c1b70":[7,0,96,8],
 "classvetoHitOnTrack.html#ae5e83607bd7942db08c7442b9346c1d2":[7,0,96,5],
-"classvetoHitOnTrack.html#ae9b91aeb8b18cc3ac20a34b3cf7e2cfd":[7,0,96,3],
-"classvetoPoint.html":[7,0,97],
-"classvetoPoint.html#a459c3518715febac7e00298ed886f50c":[7,0,97,1],
-"classvetoPoint.html#a920a343d68328af1a176e8d1f3b1547b":[7,0,97,2],
-"classvetoPoint.html#aead4d18523559cd3e9cd89454f10572d":[7,0,97,0]
+"classvetoHitOnTrack.html#ae9b91aeb8b18cc3ac20a34b3cf7e2cfd":[7,0,96,3]
 };

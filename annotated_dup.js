@@ -75,10 +75,12 @@ var annotated_dup =
       [ "strawtubesDetector", "classstrawtubesDetector_1_1strawtubesDetector.html", "classstrawtubesDetector_1_1strawtubesDetector" ]
     ] ],
     [ "study_GammaConv", "namespacestudy__GammaConv.html", [
-      [ "Block", "classstudy__GammaConv_1_1Block.html", "classstudy__GammaConv_1_1Block" ]
+      [ "Block", "classstudy__GammaConv_1_1Block.html", "classstudy__GammaConv_1_1Block" ],
+      [ "Setup", "classstudy__GammaConv_1_1Setup.html", null ]
     ] ],
     [ "study_muMSC", "namespacestudy__muMSC.html", [
-      [ "Block", "classstudy__muMSC_1_1Block.html", "classstudy__muMSC_1_1Block" ]
+      [ "Block", "classstudy__muMSC_1_1Block.html", "classstudy__muMSC_1_1Block" ],
+      [ "Setup", "classstudy__muMSC_1_1Setup.html", null ]
     ] ],
     [ "study_thinTarget", "namespacestudy__thinTarget.html", [
       [ "Block", "classstudy__thinTarget_1_1Block.html", "classstudy__thinTarget_1_1Block" ]

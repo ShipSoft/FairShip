@@ -1,6 +1,7 @@
 var namespacestudy__GammaConv =
 [
     [ "Block", "classstudy__GammaConv_1_1Block.html", "classstudy__GammaConv_1_1Block" ],
+    [ "Setup", "classstudy__GammaConv_1_1Setup.html", null ],
     [ "boostFactor", "namespacestudy__GammaConv.html#a87e1fbd736ef46b9a49a67ee3e340c9c", null ],
     [ "cave", "namespacestudy__GammaConv.html#adaf59a7b3e9ae10bf858a1fc94a9fbb9", null ],
     [ "checkOverlap", "namespacestudy__GammaConv.html#a6d4855531bd591ee5f7b60226b127b43", null ],
@@ -12,9 +13,9 @@ var namespacestudy__GammaConv =
     [ "gMC", "namespacestudy__GammaConv.html#ade4e48b9a86cfadba1da8efe7fe47452", null ],
     [ "gProcessTable", "namespacestudy__GammaConv.html#ae9f62388c418118cb93b9514b1cf9c0d", null ],
     [ "h", "namespacestudy__GammaConv.html#ae5ea996dca81cea56362bb1e3000a3da", null ],
-    [ "material", "namespacestudy__GammaConv.html#afc85c748ac6d5eca2175c005a7b66d32", null ],
+    [ "material", "namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59", null ],
     [ "mcEngine", "namespacestudy__GammaConv.html#a8887cd40f4ca6d25bb7006bb8a3fd140", null ],
-    [ "momentum", "namespacestudy__GammaConv.html#aab8cdf7e5072c55e440f32b0377eab32", null ],
+    [ "momentum", "namespacestudy__GammaConv.html#ae7cafac6179ebc8cb6564e8cfc465345", null ],
     [ "myPgun", "namespacestudy__GammaConv.html#a93a08957aca4b22c1589883b81af773d", null ],
     [ "nEl", "namespacestudy__GammaConv.html#a3c26c243703135de75534de37178e554", null ],
     [ "nev", "namespacestudy__GammaConv.html#a887fe9db66201abe1eba740343200efa", null ],
@@ -36,6 +37,6 @@ var namespacestudy__GammaConv =
     [ "sTree", "namespacestudy__GammaConv.html#aab74fbaeb036251f4214e8418b60f7ea", null ],
     [ "target", "namespacestudy__GammaConv.html#a815b73364618f833b7caf3a1dc44ea68", null ],
     [ "theSeed", "namespacestudy__GammaConv.html#a33f4f04fbb1ded78516a43928bc2e25d", null ],
-    [ "thickness", "namespacestudy__GammaConv.html#aaa9e1a6c47e55c6a638ffd566ee5f0ff", null ],
+    [ "thickness", "namespacestudy__GammaConv.html#a07854bb8bfaae44603d03642d1e042ad", null ],
     [ "timer", "namespacestudy__GammaConv.html#a44a01e2df41768e0929bf937753d45d7", null ]
 ];

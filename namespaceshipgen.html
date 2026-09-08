@@ -206,20 +206,20 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   87</span>               &lt;&lt; start[0] &lt;&lt; <span class="stringliteral">&quot;, y &quot;</span> &lt;&lt; start[1] &lt;&lt; <span class="stringliteral">&quot;, z &quot;</span> &lt;&lt; start[2];</div>
 <div class="line"><span class="lineno">   88</span>    <span class="keywordflow">return</span> 0.0;</div>
 <div class="line"><span class="lineno">   89</span>  }</div>
-<div class="line"><span class="lineno">   90</span>  TGeoMaterial* <a class="code hl_variable" href="namespacestudy__GammaConv.html#afc85c748ac6d5eca2175c005a7b66d32">material</a> = startnode-&gt;GetVolume()-&gt;GetMedium()-&gt;GetMaterial();</div>
-<div class="line"><span class="lineno">   91</span>  lparam[0] = <a class="code hl_variable" href="namespacestudy__GammaConv.html#afc85c748ac6d5eca2175c005a7b66d32">material</a>-&gt;GetDensity();</div>
+<div class="line"><span class="lineno">   90</span>  TGeoMaterial* <a class="code hl_variable" href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">material</a> = startnode-&gt;GetVolume()-&gt;GetMedium()-&gt;GetMaterial();</div>
+<div class="line"><span class="lineno">   91</span>  lparam[0] = <a class="code hl_variable" href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">material</a>-&gt;GetDensity();</div>
 <div class="line"><span class="lineno">   92</span>  <span class="keywordflow">if</span> (lparam[0] &gt; mparam[7]) mparam[7] = lparam[0];</div>
-<div class="line"><span class="lineno">   93</span>  lparam[1] = <a class="code hl_variable" href="namespacestudy__GammaConv.html#afc85c748ac6d5eca2175c005a7b66d32">material</a>-&gt;GetRadLen();</div>
-<div class="line"><span class="lineno">   94</span>  lparam[2] = <a class="code hl_variable" href="namespacestudy__GammaConv.html#afc85c748ac6d5eca2175c005a7b66d32">material</a>-&gt;GetA();</div>
-<div class="line"><span class="lineno">   95</span>  lparam[3] = <a class="code hl_variable" href="namespacestudy__GammaConv.html#afc85c748ac6d5eca2175c005a7b66d32">material</a>-&gt;GetZ();</div>
+<div class="line"><span class="lineno">   93</span>  lparam[1] = <a class="code hl_variable" href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">material</a>-&gt;GetRadLen();</div>
+<div class="line"><span class="lineno">   94</span>  lparam[2] = <a class="code hl_variable" href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">material</a>-&gt;GetA();</div>
+<div class="line"><span class="lineno">   95</span>  lparam[3] = <a class="code hl_variable" href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">material</a>-&gt;GetZ();</div>
 <div class="line"><span class="lineno">   96</span>  lparam[4] = length;</div>
 <div class="line"><span class="lineno">   97</span>  lparam[5] = lparam[3] / lparam[2];</div>
-<div class="line"><span class="lineno">   98</span>  lparam[6] = <a class="code hl_variable" href="namespacestudy__GammaConv.html#afc85c748ac6d5eca2175c005a7b66d32">material</a>-&gt;GetIntLen();</div>
+<div class="line"><span class="lineno">   98</span>  lparam[6] = <a class="code hl_variable" href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">material</a>-&gt;GetIntLen();</div>
 <div class="line"><span class="lineno">   99</span>  <span class="keywordtype">double</span> <a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a> = lparam[0] / lparam[2];</div>
 <div class="line"><span class="lineno">  100</span>  <span class="keywordtype">double</span> <a class="code hl_variable" href="namespacerunPythia8.html#aa6ccf15df5382fe526735a07d97d3cd4">sigma</a> = 1. / (<a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a> * lparam[6]) / <a class="code hl_variable" href="FixedTargetGenerator_8cxx.html#a357b34ec460558c0942628e20a171eef">mbarn</a>;</div>
 <div class="line"><span class="lineno">  101</span>  <span class="keywordflow">if</span> (sigma &gt; mparam[9]) mparam[9] = <a class="code hl_variable" href="namespacerunPythia8.html#aa6ccf15df5382fe526735a07d97d3cd4">sigma</a>;</div>
-<div class="line"><span class="lineno">  102</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacestudy__GammaConv.html#afc85c748ac6d5eca2175c005a7b66d32">material</a>-&gt;IsMixture()) {</div>
-<div class="line"><span class="lineno">  103</span>    TGeoMixture* mixture = <span class="keyword">dynamic_cast&lt;</span>TGeoMixture*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespacestudy__GammaConv.html#afc85c748ac6d5eca2175c005a7b66d32">material</a>);</div>
+<div class="line"><span class="lineno">  102</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">material</a>-&gt;IsMixture()) {</div>
+<div class="line"><span class="lineno">  103</span>    TGeoMixture* mixture = <span class="keyword">dynamic_cast&lt;</span>TGeoMixture*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">material</a>);</div>
 <div class="line"><span class="lineno">  104</span>    lparam[5] = 0;</div>
 <div class="line"><span class="lineno">  105</span>    <span class="keywordtype">double</span> sum = 0;</div>
 <div class="line"><span class="lineno">  106</span>    <span class="keywordflow">for</span> (Int_t iel = 0; iel &lt; mixture-&gt;GetNelements(); iel++) {</div>
@@ -279,19 +279,19 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  160</span>    <span class="keywordflow">if</span> (snext &gt;= length) <span class="keywordflow">break</span>;</div>
 <div class="line"><span class="lineno">  161</span>    <span class="keywordflow">if</span> (!currentnode) <span class="keywordflow">break</span>;</div>
 <div class="line"><span class="lineno">  162</span>    length -= snext;</div>
-<div class="line"><span class="lineno">  163</span>    <a class="code hl_variable" href="namespacestudy__GammaConv.html#afc85c748ac6d5eca2175c005a7b66d32">material</a> = currentnode-&gt;GetVolume()-&gt;GetMedium()-&gt;GetMaterial();</div>
-<div class="line"><span class="lineno">  164</span>    lparam[0] = <a class="code hl_variable" href="namespacestudy__GammaConv.html#afc85c748ac6d5eca2175c005a7b66d32">material</a>-&gt;GetDensity();</div>
+<div class="line"><span class="lineno">  163</span>    <a class="code hl_variable" href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">material</a> = currentnode-&gt;GetVolume()-&gt;GetMedium()-&gt;GetMaterial();</div>
+<div class="line"><span class="lineno">  164</span>    lparam[0] = <a class="code hl_variable" href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">material</a>-&gt;GetDensity();</div>
 <div class="line"><span class="lineno">  165</span>    <span class="keywordflow">if</span> (lparam[0] &gt; mparam[7]) mparam[7] = lparam[0];</div>
-<div class="line"><span class="lineno">  166</span>    lparam[1] = <a class="code hl_variable" href="namespacestudy__GammaConv.html#afc85c748ac6d5eca2175c005a7b66d32">material</a>-&gt;GetRadLen();</div>
-<div class="line"><span class="lineno">  167</span>    lparam[2] = <a class="code hl_variable" href="namespacestudy__GammaConv.html#afc85c748ac6d5eca2175c005a7b66d32">material</a>-&gt;GetA();</div>
-<div class="line"><span class="lineno">  168</span>    lparam[3] = <a class="code hl_variable" href="namespacestudy__GammaConv.html#afc85c748ac6d5eca2175c005a7b66d32">material</a>-&gt;GetZ();</div>
+<div class="line"><span class="lineno">  166</span>    lparam[1] = <a class="code hl_variable" href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">material</a>-&gt;GetRadLen();</div>
+<div class="line"><span class="lineno">  167</span>    lparam[2] = <a class="code hl_variable" href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">material</a>-&gt;GetA();</div>
+<div class="line"><span class="lineno">  168</span>    lparam[3] = <a class="code hl_variable" href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">material</a>-&gt;GetZ();</div>
 <div class="line"><span class="lineno">  169</span>    lparam[5] = lparam[3] / lparam[2];</div>
-<div class="line"><span class="lineno">  170</span>    lparam[6] = <a class="code hl_variable" href="namespacestudy__GammaConv.html#afc85c748ac6d5eca2175c005a7b66d32">material</a>-&gt;GetIntLen();</div>
+<div class="line"><span class="lineno">  170</span>    lparam[6] = <a class="code hl_variable" href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">material</a>-&gt;GetIntLen();</div>
 <div class="line"><span class="lineno">  171</span>    <a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a> = lparam[0] / lparam[2];</div>
 <div class="line"><span class="lineno">  172</span>    <a class="code hl_variable" href="namespacerunPythia8.html#aa6ccf15df5382fe526735a07d97d3cd4">sigma</a> = 1. / (<a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a> * lparam[6]) / <a class="code hl_variable" href="FixedTargetGenerator_8cxx.html#a357b34ec460558c0942628e20a171eef">mbarn</a>;</div>
 <div class="line"><span class="lineno">  173</span>    <span class="keywordflow">if</span> (sigma &gt; mparam[9]) mparam[9] = <a class="code hl_variable" href="namespacerunPythia8.html#aa6ccf15df5382fe526735a07d97d3cd4">sigma</a>;</div>
-<div class="line"><span class="lineno">  174</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacestudy__GammaConv.html#afc85c748ac6d5eca2175c005a7b66d32">material</a>-&gt;IsMixture()) {</div>
-<div class="line"><span class="lineno">  175</span>      TGeoMixture* mixture = <span class="keyword">dynamic_cast&lt;</span>TGeoMixture*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespacestudy__GammaConv.html#afc85c748ac6d5eca2175c005a7b66d32">material</a>);</div>
+<div class="line"><span class="lineno">  174</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">material</a>-&gt;IsMixture()) {</div>
+<div class="line"><span class="lineno">  175</span>      TGeoMixture* mixture = <span class="keyword">dynamic_cast&lt;</span>TGeoMixture*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">material</a>);</div>
 <div class="line"><span class="lineno">  176</span>      lparam[5] = 0;</div>
 <div class="line"><span class="lineno">  177</span>      <span class="keywordtype">double</span> sum = 0;</div>
 <div class="line"><span class="lineno">  178</span>      <span class="keywordflow">for</span> (Int_t iel = 0; iel &lt; mixture-&gt;GetNelements(); iel++) {</div>
@@ -316,7 +316,7 @@ Functions</h2></td></tr>
 <div class="ttc" id="anamespaceadd__noise__to__field_html_a96cf5cc2cc008d7422009cb2ad93cb51"><div class="ttname"><a href="namespaceadd__noise__to__field.html#a96cf5cc2cc008d7422009cb2ad93cb51">add_noise_to_field.step</a></div><div class="ttdeci">step</div><div class="ttdef"><b>Definition</b> <a href="add__noise__to__field_8py_source.html#l00082">add_noise_to_field.py:82</a></div></div>
 <div class="ttc" id="anamespacemakeDecay_html_af2fe9da99a6c13f5bdd6d42663620c39"><div class="ttname"><a href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">makeDecay.n</a></div><div class="ttdeci">int n</div><div class="ttdef"><b>Definition</b> <a href="makeDecay_8py_source.html#l00089">makeDecay.py:89</a></div></div>
 <div class="ttc" id="anamespacerunPythia8_html_aa6ccf15df5382fe526735a07d97d3cd4"><div class="ttname"><a href="namespacerunPythia8.html#aa6ccf15df5382fe526735a07d97d3cd4">runPythia8.sigma</a></div><div class="ttdeci">dict sigma</div><div class="ttdef"><b>Definition</b> <a href="runPythia8_8py_source.html#l00187">runPythia8.py:187</a></div></div>
-<div class="ttc" id="anamespacestudy__GammaConv_html_afc85c748ac6d5eca2175c005a7b66d32"><div class="ttname"><a href="namespacestudy__GammaConv.html#afc85c748ac6d5eca2175c005a7b66d32">study_GammaConv.material</a></div><div class="ttdeci">dict material</div><div class="ttdef"><b>Definition</b> <a href="study__GammaConv_8py_source.html#l00032">study_GammaConv.py:32</a></div></div>
+<div class="ttc" id="anamespacestudy__GammaConv_html_abbc8036b3a71074383fbd57fa32aad59"><div class="ttname"><a href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">study_GammaConv.material</a></div><div class="ttdeci">material</div><div class="ttdef"><b>Definition</b> <a href="study__GammaConv_8py_source.html#l00042">study_GammaConv.py:42</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

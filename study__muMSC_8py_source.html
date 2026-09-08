@@ -103,174 +103,185 @@ $(document).ready(function(){initNavTree('study__muMSC_8py_source.html',''); ini
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="keyword">import</span> sys</div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="keyword">import</span> time</div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="keyword">import</span> ROOT</div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="keyword">import</span> shipRoot_conf</div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>ROOT.gROOT.ProcessLine(<span class="stringliteral">&#39;#include &quot;FairModule.h&quot;&#39;</span>)</div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>time.sleep(20)</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="keyword">import</span> geometry_config</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="keyword">import</span> shipunit <span class="keyword">as</span> u</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno"><a class="line" href="namespacestudy__muMSC.html#a04613d86a219f5aeb04cb1e36481376f">   17</a></span>mcEngine = <span class="stringliteral">&quot;TGeant4&quot;</span></div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="namespacestudy__muMSC.html#af40bec1213f786d13938aea4817b82c4">   18</a></span>runnr = 1</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno"><a class="line" href="namespacestudy__muMSC.html#ad4018d77a77726c66a85137dcbc05693">   19</a></span>nev = 10000000</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno"><a class="line" href="namespacestudy__muMSC.html#a77cbcf86b14e327d2a99157a38e82781">   21</a></span>setup = {}</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>setup[<span class="stringliteral">&quot;Fig3&quot;</span>] = {<span class="stringliteral">&quot;thickness&quot;</span>: 0.1 * u.cm, <span class="stringliteral">&quot;material&quot;</span>: <span class="stringliteral">&quot;lead&quot;</span>, <span class="stringliteral">&quot;momentum&quot;</span>: 2 * u.GeV, <span class="stringliteral">&quot;maxTheta&quot;</span>: 0.2}</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>setup[<span class="stringliteral">&quot;Fig4&quot;</span>] = {<span class="stringliteral">&quot;thickness&quot;</span>: 0.1 * u.cm, <span class="stringliteral">&quot;material&quot;</span>: <span class="stringliteral">&quot;lead&quot;</span>, <span class="stringliteral">&quot;momentum&quot;</span>: 8 * u.GeV, <span class="stringliteral">&quot;maxTheta&quot;</span>: 0.04}</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>setup[<span class="stringliteral">&quot;Fig5&quot;</span>] = {<span class="stringliteral">&quot;thickness&quot;</span>: 0.1 * u.cm, <span class="stringliteral">&quot;material&quot;</span>: <span class="stringliteral">&quot;lead&quot;</span>, <span class="stringliteral">&quot;momentum&quot;</span>: 14 * u.GeV, <span class="stringliteral">&quot;maxTheta&quot;</span>: 0.02}</div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="keyword">from</span> typing <span class="keyword">import</span> NamedTuple</div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="keyword">import</span> ROOT</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="keyword">import</span> shipRoot_conf</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>ROOT.gROOT.ProcessLine(<span class="stringliteral">&#39;#include &quot;FairModule.h&quot;&#39;</span>)</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>time.sleep(20)</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="keyword">import</span> geometry_config</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="keyword">import</span> shipunit <span class="keyword">as</span> u</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="namespacestudy__muMSC.html#a04613d86a219f5aeb04cb1e36481376f">   18</a></span>mcEngine = <span class="stringliteral">&quot;TGeant4&quot;</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno"><a class="line" href="namespacestudy__muMSC.html#af40bec1213f786d13938aea4817b82c4">   19</a></span>runnr = 1</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno"><a class="line" href="namespacestudy__muMSC.html#ad4018d77a77726c66a85137dcbc05693">   20</a></span>nev = 10000000</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
+<div class="foldopen" id="foldopen00023" data-start="" data-end="">
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno"><a class="line" href="classstudy__muMSC_1_1Setup.html">   23</a></span><span class="keyword">class </span><a class="code hl_class" href="classstudy__muMSC_1_1Setup.html">Setup</a>(NamedTuple):</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    <span class="stringliteral">&quot;&quot;&quot;Target block and beam configuration for one multiple-scattering study point.&quot;&quot;&quot;</span></div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>setup[<span class="stringliteral">&quot;Fig6&quot;</span>] = {<span class="stringliteral">&quot;thickness&quot;</span>: 1.44 * u.cm, <span class="stringliteral">&quot;material&quot;</span>: <span class="stringliteral">&quot;copper&quot;</span>, <span class="stringliteral">&quot;momentum&quot;</span>: 11.7 * u.GeV, <span class="stringliteral">&quot;maxTheta&quot;</span>: 0.045}</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>setup[<span class="stringliteral">&quot;Fig7&quot;</span>] = {<span class="stringliteral">&quot;thickness&quot;</span>: 1.44 * u.cm, <span class="stringliteral">&quot;material&quot;</span>: <span class="stringliteral">&quot;copper&quot;</span>, <span class="stringliteral">&quot;momentum&quot;</span>: 7.3 * u.GeV, <span class="stringliteral">&quot;maxTheta&quot;</span>: 0.045}</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="namespacestudy__muMSC.html#aba7e32141044f4814a1fb6712863e98b">   29</a></span>s = sys.argv[1]</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="namespacestudy__muMSC.html#aab2ba86175905624f247b64deb3c9426">   30</a></span>thickness = setup[s][<span class="stringliteral">&quot;thickness&quot;</span>]</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="namespacestudy__muMSC.html#ac693ac2e93b4441c5740026e89afe666">   31</a></span>material = setup[s][<span class="stringliteral">&quot;material&quot;</span>]</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="namespacestudy__muMSC.html#a5c27691d46c8201ce1331da1d33985d2">   32</a></span>momentum = setup[s][<span class="stringliteral">&quot;momentum&quot;</span>]</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="namespacestudy__muMSC.html#a83610238e23df3d8a538408c1c7c5b48">   33</a></span>maxTheta = setup[s][<span class="stringliteral">&quot;maxTheta&quot;</span>]</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="namespacestudy__muMSC.html#ac71a73908baa13e86e62b71399621a21">   35</a></span>checkOverlap = <span class="keyword">True</span></div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="namespacestudy__muMSC.html#a3f170ac334e8290592953deb3f124812">   36</a></span>storeOnlyMuons = <span class="keyword">True</span></div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="namespacestudy__muMSC.html#a095debddfe44389671ec77620720ace7">   38</a></span>outFile = <span class="stringliteral">&quot;msc&quot;</span> + s + <span class="stringliteral">&quot;.root&quot;</span></div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="namespacestudy__muMSC.html#ac983624e260a9dc5430659252a084b1a">   39</a></span>theSeed = int(10000 * time.time() % 10000000)</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno"><a class="line" href="namespacestudy__muMSC.html#ae0e2151c318c7666057adb54d84926f0">   40</a></span>ecut = 0.0</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="comment"># -------------------------------------------------------------------</span></div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>ROOT.gRandom.SetSeed(theSeed)  <span class="comment"># this should be propagated via ROOT to Pythia8 and Geant4VMC</span></div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><a class="code hl_function" href="namespaceshipRoot__conf.html#a59bfc0b1b7bf8bc3e1a1270881622da6">shipRoot_conf.configure</a>()  <span class="comment"># load basic libraries, prepare atexit for python</span></div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno"><a class="line" href="namespacestudy__muMSC.html#af0df7e72c2ff14a27f8bc691a412c5d2">   45</a></span>ship_geo = <a class="code hl_function" href="namespacegeometry__config.html#afb514e222a0f704f678c3b3f465ee7e7">geometry_config.create_config</a>(Yheight=10, shieldName=<span class="stringliteral">&quot;TRY_2025&quot;</span>)</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="comment"># -----Timer--------------------------------------------------------</span></div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno"><a class="line" href="namespacestudy__muMSC.html#abe69cee9db6f0efc503957ec02523ecf">   48</a></span>timer = ROOT.TStopwatch()</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>timer.Start()</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="comment"># -----Create simulation run----------------------------------------</span></div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno"><a class="line" href="namespacestudy__muMSC.html#ac9aa76a1bc450cd56346e645ad570867">   52</a></span>run = ROOT.FairRunSim()</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>run.SetName(mcEngine)  <span class="comment"># Transport engine</span></div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno"><a class="line" href="namespacestudy__muMSC.html#a535f7fbb11079adb194c20c44dea6507">   54</a></span>sink = ROOT.FairRootFileSink(outFile)</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>run.SetSink(sink)</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>ROOT.SetOwnership(sink, <span class="keyword">False</span>)  <span class="comment"># C++ FairRun takes ownership</span></div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>run.SetUserConfig(<span class="stringliteral">&quot;g4Config.C&quot;</span>)  <span class="comment"># user configuration file default g4Config.C</span></div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno"><a class="line" href="namespacestudy__muMSC.html#ad2940d32982ebfb35486ed68163021d1">   58</a></span>rtdb = run.GetRuntimeDb()</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="comment"># -----Materials----------------------------------------------</span></div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>run.SetMaterials(<span class="stringliteral">&quot;media.geo&quot;</span>)</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span><span class="comment"># -----Create geometry----------------------------------------------</span></div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno"><a class="line" href="namespacestudy__muMSC.html#a250f6f8936dd0f6c85cc30a085041f11">   63</a></span>cave = ROOT.ShipCave(<span class="stringliteral">&quot;CAVE&quot;</span>)</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>cave.SetGeometryFileName(<span class="stringliteral">&quot;cave.geo&quot;</span>)</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>run.AddModule(cave)</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="classstudy__muMSC_1_1Setup.html#a25f6cc1c81a932105e866f5767d607ee">   26</a></span>    thickness: float</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="classstudy__muMSC_1_1Setup.html#aa5548289614f68aa0af0784813fbf2c3">   27</a></span>    material: str</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="classstudy__muMSC_1_1Setup.html#a737a257286c89c8e40986dff9d33ecba">   28</a></span>    momentum: float</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="classstudy__muMSC_1_1Setup.html#a9e0055b0c8d9a8f7ee70f13d157bc9c5">   29</a></span>    maxTheta: float</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
+</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="namespacestudy__muMSC.html#a77cbcf86b14e327d2a99157a38e82781">   32</a></span>setup = {</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    <span class="stringliteral">&quot;Fig3&quot;</span>: <a class="code hl_class" href="classstudy__muMSC_1_1Setup.html">Setup</a>(0.1 * u.cm, <span class="stringliteral">&quot;lead&quot;</span>, 2 * u.GeV, 0.2),</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    <span class="stringliteral">&quot;Fig4&quot;</span>: <a class="code hl_class" href="classstudy__muMSC_1_1Setup.html">Setup</a>(0.1 * u.cm, <span class="stringliteral">&quot;lead&quot;</span>, 8 * u.GeV, 0.04),</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    <span class="stringliteral">&quot;Fig5&quot;</span>: <a class="code hl_class" href="classstudy__muMSC_1_1Setup.html">Setup</a>(0.1 * u.cm, <span class="stringliteral">&quot;lead&quot;</span>, 14 * u.GeV, 0.02),</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <span class="stringliteral">&quot;Fig6&quot;</span>: <a class="code hl_class" href="classstudy__muMSC_1_1Setup.html">Setup</a>(1.44 * u.cm, <span class="stringliteral">&quot;copper&quot;</span>, 11.7 * u.GeV, 0.045),</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    <span class="stringliteral">&quot;Fig7&quot;</span>: <a class="code hl_class" href="classstudy__muMSC_1_1Setup.html">Setup</a>(1.44 * u.cm, <span class="stringliteral">&quot;copper&quot;</span>, 7.3 * u.GeV, 0.045),</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>}</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno"><a class="line" href="namespacestudy__muMSC.html#aba7e32141044f4814a1fb6712863e98b">   40</a></span>s = sys.argv[1]</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno"><a class="line" href="namespacestudy__muMSC.html#afc5919071617771c197778b0c36d8a79">   41</a></span>thickness, material, momentum, maxTheta = setup[s]</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno"><a class="line" href="namespacestudy__muMSC.html#ac71a73908baa13e86e62b71399621a21">   43</a></span>checkOverlap = <span class="keyword">True</span></div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="namespacestudy__muMSC.html#a3f170ac334e8290592953deb3f124812">   44</a></span>storeOnlyMuons = <span class="keyword">True</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="namespacestudy__muMSC.html#a095debddfe44389671ec77620720ace7">   46</a></span>outFile = <span class="stringliteral">&quot;msc&quot;</span> + s + <span class="stringliteral">&quot;.root&quot;</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno"><a class="line" href="namespacestudy__muMSC.html#ac983624e260a9dc5430659252a084b1a">   47</a></span>theSeed = int(10000 * time.time() % 10000000)</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno"><a class="line" href="namespacestudy__muMSC.html#ae0e2151c318c7666057adb54d84926f0">   48</a></span>ecut = 0.0</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="comment"># -------------------------------------------------------------------</span></div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>ROOT.gRandom.SetSeed(theSeed)  <span class="comment"># this should be propagated via ROOT to Pythia8 and Geant4VMC</span></div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><a class="code hl_function" href="namespaceshipRoot__conf.html#a59bfc0b1b7bf8bc3e1a1270881622da6">shipRoot_conf.configure</a>()  <span class="comment"># load basic libraries, prepare atexit for python</span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno"><a class="line" href="namespacestudy__muMSC.html#af0df7e72c2ff14a27f8bc691a412c5d2">   53</a></span>ship_geo = <a class="code hl_function" href="namespacegeometry__config.html#afb514e222a0f704f678c3b3f465ee7e7">geometry_config.create_config</a>(Yheight=10, shieldName=<span class="stringliteral">&quot;TRY_2025&quot;</span>)</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="comment"># -----Timer--------------------------------------------------------</span></div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno"><a class="line" href="namespacestudy__muMSC.html#abe69cee9db6f0efc503957ec02523ecf">   56</a></span>timer = ROOT.TStopwatch()</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>timer.Start()</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="comment"># -----Create simulation run----------------------------------------</span></div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno"><a class="line" href="namespacestudy__muMSC.html#ac9aa76a1bc450cd56346e645ad570867">   60</a></span>run = ROOT.FairRunSim()</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>run.SetName(mcEngine)  <span class="comment"># Transport engine</span></div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno"><a class="line" href="namespacestudy__muMSC.html#a535f7fbb11079adb194c20c44dea6507">   62</a></span>sink = ROOT.FairRootFileSink(outFile)</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>run.SetSink(sink)</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>ROOT.SetOwnership(sink, <span class="keyword">False</span>)  <span class="comment"># C++ FairRun takes ownership</span></div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>run.SetUserConfig(<span class="stringliteral">&quot;g4Config.C&quot;</span>)  <span class="comment"># user configuration file default g4Config.C</span></div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno"><a class="line" href="namespacestudy__muMSC.html#ad2940d32982ebfb35486ed68163021d1">   66</a></span>rtdb = run.GetRuntimeDb()</div>
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
-<div class="foldopen" id="foldopen00068" data-start="" data-end="">
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno"><a class="line" href="classstudy__muMSC_1_1Block.html">   68</a></span><span class="keyword">class </span><a class="code hl_class" href="classstudy__muMSC_1_1Block.html">Block</a>(ROOT.pyFairModule):</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    <span class="stringliteral">&quot;block of material&quot;</span></div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
-<div class="foldopen" id="foldopen00071" data-start="" data-end="">
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno"><a class="line" href="classstudy__muMSC_1_1Block.html#adc7fa25fdf06e4f920be3b4df04ba429">   71</a></span>    <span class="keyword">def </span><a class="code hl_function" href="classstudy__muMSC_1_1Block.html#adc7fa25fdf06e4f920be3b4df04ba429">__init__</a>(self) -&gt; None:</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>        ROOT.pyFairModule.__init__(self, self)</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span> </div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="comment"># -----Materials----------------------------------------------</span></div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>run.SetMaterials(<span class="stringliteral">&quot;media.geo&quot;</span>)</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span><span class="comment"># -----Create geometry----------------------------------------------</span></div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno"><a class="line" href="namespacestudy__muMSC.html#a250f6f8936dd0f6c85cc30a085041f11">   71</a></span>cave = ROOT.ShipCave(<span class="stringliteral">&quot;CAVE&quot;</span>)</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>cave.SetGeometryFileName(<span class="stringliteral">&quot;cave.geo&quot;</span>)</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>run.AddModule(cave)</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> </div>
+<div class="foldopen" id="foldopen00076" data-start="" data-end="">
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno"><a class="line" href="classstudy__muMSC_1_1Block.html">   76</a></span><span class="keyword">class </span><a class="code hl_class" href="classstudy__muMSC_1_1Block.html">Block</a>(ROOT.pyFairModule):</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    <span class="stringliteral">&quot;block of material&quot;</span></div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>
+<div class="foldopen" id="foldopen00079" data-start="" data-end="">
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno"><a class="line" href="classstudy__muMSC_1_1Block.html#adc7fa25fdf06e4f920be3b4df04ba429">   79</a></span>    <span class="keyword">def </span><a class="code hl_function" href="classstudy__muMSC_1_1Block.html#adc7fa25fdf06e4f920be3b4df04ba429">__init__</a>(self) -&gt; None:</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>        ROOT.pyFairModule.__init__(self, self)</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> </div>
 </div>
-<div class="foldopen" id="foldopen00074" data-start="" data-end="">
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno"><a class="line" href="classstudy__muMSC_1_1Block.html#a1d14172e7128612ca862ab4109f444b1">   74</a></span>    <span class="keyword">def </span><a class="code hl_function" href="classstudy__muMSC_1_1Block.html#a1d14172e7128612ca862ab4109f444b1">ConstructGeometry</a>(self) -&gt; None:</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>        print(<span class="stringliteral">&quot;Construct Block&quot;</span>)</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>        top = ROOT.gGeoManager.GetTopVolume()</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>        geoLoad = ROOT.FairGeoLoader.Instance()</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>        geoFace = geoLoad.getGeoInterface()</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>        media = geoFace.getMedia()</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>        geoBuild = geoLoad.getGeoBuilder()</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>        ShipMedium = media.getMedium(material)</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>        W = ROOT.gGeoManager.GetMedium(material)</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> W:</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>            geoBuild.createMedium(ShipMedium)</div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>            W = ROOT.gGeoManager.GetMedium(material)</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>        aBox = ROOT.gGeoManager.MakeBox(<span class="stringliteral">&quot;target&quot;</span>, W, 100.0 * u.cm, 100.0 * u.cm, thickness)</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>        top.AddNode(aBox, 1, ROOT.TGeoTranslation(0, 0, 0))</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span> </div>
+<div class="foldopen" id="foldopen00082" data-start="" data-end="">
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno"><a class="line" href="classstudy__muMSC_1_1Block.html#a1d14172e7128612ca862ab4109f444b1">   82</a></span>    <span class="keyword">def </span><a class="code hl_function" href="classstudy__muMSC_1_1Block.html#a1d14172e7128612ca862ab4109f444b1">ConstructGeometry</a>(self) -&gt; None:</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>        print(<span class="stringliteral">&quot;Construct Block&quot;</span>)</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>        top = ROOT.gGeoManager.GetTopVolume()</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>        geoLoad = ROOT.FairGeoLoader.Instance()</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>        geoFace = geoLoad.getGeoInterface()</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>        media = geoFace.getMedia()</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>        geoBuild = geoLoad.getGeoBuilder()</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>        ShipMedium = media.getMedium(material)</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>        W = ROOT.gGeoManager.GetMedium(material)</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> W:</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>            geoBuild.createMedium(ShipMedium)</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>            W = ROOT.gGeoManager.GetMedium(material)</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>        aBox = ROOT.gGeoManager.MakeBox(<span class="stringliteral">&quot;target&quot;</span>, W, 100.0 * u.cm, 100.0 * u.cm, thickness)</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>        top.AddNode(aBox, 1, ROOT.TGeoTranslation(0, 0, 0))</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span> </div>
 </div>
-<div class="foldopen" id="foldopen00089" data-start="" data-end="">
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno"><a class="line" href="classstudy__muMSC_1_1Block.html#afa4e5755c3000c619d19184ace7824fd">   89</a></span>    <span class="keyword">def </span><a class="code hl_function" href="classstudy__muMSC_1_1Block.html#afa4e5755c3000c619d19184ace7824fd">InitParContainers</a>() -&gt; None:</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>        print(<span class="stringliteral">&quot;not implemented!&quot;</span>)</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span> </div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span> </div>
+<div class="foldopen" id="foldopen00097" data-start="" data-end="">
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno"><a class="line" href="classstudy__muMSC_1_1Block.html#afa4e5755c3000c619d19184ace7824fd">   97</a></span>    <span class="keyword">def </span><a class="code hl_function" href="classstudy__muMSC_1_1Block.html#afa4e5755c3000c619d19184ace7824fd">InitParContainers</a>() -&gt; None:</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>        print(<span class="stringliteral">&quot;not implemented!&quot;</span>)</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span> </div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
 </div>
 </div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno"><a class="line" href="namespacestudy__muMSC.html#a4edc64763c72d83f106ebe374b13ad87">   93</a></span>sensPlane = ROOT.exitHadronAbsorber()</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>sensPlane.SetEnergyCut(ecut * u.GeV)</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span><span class="keywordflow">if</span> storeOnlyMuons:</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    sensPlane.SetOnlyMuons()</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>sensPlane.SetZposition(thickness + 10 * u.cm)</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>run.AddModule(sensPlane)</div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno"><a class="line" href="namespacestudy__muMSC.html#a2af1a2254649d30dec2bb025fed9360e">   99</a></span>target = <a class="code hl_class" href="classstudy__muMSC_1_1Block.html">Block</a>()</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>run.AddModule(target)</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span> </div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno"><a class="line" href="namespacestudy__muMSC.html#a4e7c6632d93810a50d1b8b89ddb5f24d">  102</a></span>primGen = ROOT.FairPrimaryGenerator()</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno"><a class="line" href="namespacestudy__muMSC.html#a2d1fc976d3a121d530f3039ce4fa5b5f">  103</a></span>myPgun = ROOT.FairBoxGenerator(13, 1)  <span class="comment"># pdg id  and multiplicity</span></div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>myPgun.SetPRange(momentum - 0.01, momentum + 0.01)</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>myPgun.SetPhiRange(0, 0)  <span class="comment"># // Azimuth angle range [degree]</span></div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>myPgun.SetThetaRange(0, 0)  <span class="comment"># // Polar angle in lab system range [degree]</span></div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>myPgun.SetXYZ(0.0 * u.cm, 0.0 * u.cm, -10.0 * u.cm - (thickness))</div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>primGen.AddGenerator(myPgun)</div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>run.SetGenerator(primGen)</div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span><span class="comment">#</span></div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>run.SetGenerator(primGen)</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span><span class="comment"># -----Initialize simulation run------------------------------------</span></div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>run.Init()</div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno"><a class="line" href="namespacestudy__muMSC.html#a1b0a87a3b4e2a340e26073b1f81df6f3">  114</a></span>gMC = ROOT.TVirtualMC.GetMC()</div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span> </div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno"><a class="line" href="namespacestudy__muMSC.html#af4c81b6e072a548faea9b0fd760732b7">  116</a></span>fStack = gMC.GetStack()</div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>fStack.SetMinPoints(1)</div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>fStack.SetEnergyCut(-1.0)</div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span> </div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span><span class="comment"># -----Start run----------------------------------------------------</span></div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>run.Run(nev)</div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span> </div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span><span class="comment"># -----Start Analysis---------------</span></div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>ROOT.gROOT.ProcessLine(<span class="stringliteral">&#39;#include &quot;Geant4/G4EmParameters.hh&quot;&#39;</span>)</div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno"><a class="line" href="namespacestudy__muMSC.html#a5c13fb2f4d3d920a9cd1ea5a775bf8fc">  125</a></span>emP = ROOT.G4EmParameters.Instance()</div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>emP.Dump()</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno"><a class="line" href="namespacestudy__muMSC.html#a4edc64763c72d83f106ebe374b13ad87">  101</a></span>sensPlane = ROOT.exitHadronAbsorber()</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>sensPlane.SetEnergyCut(ecut * u.GeV)</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span><span class="keywordflow">if</span> storeOnlyMuons:</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    sensPlane.SetOnlyMuons()</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>sensPlane.SetZposition(thickness + 10 * u.cm)</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>run.AddModule(sensPlane)</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno"><a class="line" href="namespacestudy__muMSC.html#a2af1a2254649d30dec2bb025fed9360e">  107</a></span>target = <a class="code hl_class" href="classstudy__muMSC_1_1Block.html">Block</a>()</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>run.AddModule(target)</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span> </div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno"><a class="line" href="namespacestudy__muMSC.html#a4e7c6632d93810a50d1b8b89ddb5f24d">  110</a></span>primGen = ROOT.FairPrimaryGenerator()</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno"><a class="line" href="namespacestudy__muMSC.html#a2d1fc976d3a121d530f3039ce4fa5b5f">  111</a></span>myPgun = ROOT.FairBoxGenerator(13, 1)  <span class="comment"># pdg id  and multiplicity</span></div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>myPgun.SetPRange(momentum - 0.01, momentum + 0.01)</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>myPgun.SetPhiRange(0, 0)  <span class="comment"># // Azimuth angle range [degree]</span></div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>myPgun.SetThetaRange(0, 0)  <span class="comment"># // Polar angle in lab system range [degree]</span></div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>myPgun.SetXYZ(0.0 * u.cm, 0.0 * u.cm, -10.0 * u.cm - (thickness))</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>primGen.AddGenerator(myPgun)</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>run.SetGenerator(primGen)</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span><span class="comment">#</span></div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>run.SetGenerator(primGen)</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span><span class="comment"># -----Initialize simulation run------------------------------------</span></div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>run.Init()</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno"><a class="line" href="namespacestudy__muMSC.html#a1b0a87a3b4e2a340e26073b1f81df6f3">  122</a></span>gMC = ROOT.TVirtualMC.GetMC()</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span> </div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno"><a class="line" href="namespacestudy__muMSC.html#af4c81b6e072a548faea9b0fd760732b7">  124</a></span>fStack = gMC.GetStack()</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>fStack.SetMinPoints(1)</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>fStack.SetEnergyCut(-1.0)</div>
 <div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span> </div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span><span class="keyword">import</span> rootUtils <span class="keyword">as</span> ut</div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span> </div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno"><a class="line" href="namespacestudy__muMSC.html#ae8cd0d54ed312248d75232c854783e1e">  130</a></span>f = ROOT.gROOT.GetListOfFiles()[0]</div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno"><a class="line" href="namespacestudy__muMSC.html#a5d79158ac5e9fac73e754f02ddd23c14">  131</a></span>h = {}</div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>ut.bookHist(h, <span class="stringliteral">&quot;theta&quot;</span>, <span class="stringliteral">&quot;scattering angle &quot;</span> + str(momentum) + <span class="stringliteral">&quot;GeV/c;{Theta}(rad)&quot;</span>, 500, 0, maxTheta)</div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno"><a class="line" href="namespacestudy__muMSC.html#ab875895aaac12abebdb76811de0cbbf6">  133</a></span>sTree = f.Get(<span class="stringliteral">&quot;cbmsim&quot;</span>)</div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span><span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(sTree.GetEntries()):</div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno"><a class="line" href="namespacestudy__muMSC.html#a12ed239a556befefc248d387fa2109b2">  135</a></span>    rc = sTree.GetEvent(n)</div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>    <span class="keywordflow">for</span> aHit <span class="keywordflow">in</span> sTree.vetoPoint:</div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>        <span class="keywordflow">if</span> aHit.GetTrackID() != 0:</div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>            <span class="keywordflow">continue</span></div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno"><a class="line" href="namespacestudy__muMSC.html#a1316fb365e15ab71f542f159d28327df">  139</a></span>        pt = ROOT.TMath.Sqrt(aHit.GetPx() ** 2 + aHit.GetPy() ** 2)</div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno"><a class="line" href="namespacestudy__muMSC.html#a8646d6a9906c5a607f70d3f3a31261ea">  140</a></span>        scat = ROOT.TMath.ATan2(pt, aHit.GetPz())</div>
-<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>        rc = h[<span class="stringliteral">&quot;theta&quot;</span>].Fill(scat)</div>
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno"><a class="line" href="namespacestudy__muMSC.html#a257d0c9a808d31e9e46250b231ebd696">  142</a></span>ut.bookCanvas(h, key=s, title=s, nx=900, ny=600, cx=1, cy=1)</div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno"><a class="line" href="namespacestudy__muMSC.html#a52fd7062dc55452254001843cfe34d07">  143</a></span>tc = h[s].cd(1)</div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>tc.SetLogy(1)</div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>h[<span class="stringliteral">&quot;theta_100&quot;</span>] = h[<span class="stringliteral">&quot;theta&quot;</span>].Clone(<span class="stringliteral">&quot;theta_100&quot;</span>)</div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>h[<span class="stringliteral">&quot;theta_100&quot;</span>] = h[<span class="stringliteral">&quot;theta&quot;</span>].Rebin(5)</div>
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>h[<span class="stringliteral">&quot;theta_100&quot;</span>].Scale(1.0 / h[<span class="stringliteral">&quot;theta_100&quot;</span>].GetMaximum())</div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>h[<span class="stringliteral">&quot;theta_100&quot;</span>].Draw()</div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>h[s].Print(s + <span class="stringliteral">&quot;.png&quot;</span>)</div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>h[s].Print(s + <span class="stringliteral">&quot;.root&quot;</span>)</div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span> </div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>f.Write(h[<span class="stringliteral">&quot;theta&quot;</span>].GetName())</div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>f.Write(h[<span class="stringliteral">&quot;theta_100&quot;</span>].GetName())</div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span> </div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span><span class="comment"># -----Finish-------------------------------------------------------</span></div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>timer.Stop()</div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno"><a class="line" href="namespacestudy__muMSC.html#a8ec04a002fcb4efffbe30733b7f7b27e">  157</a></span>rtime = timer.RealTime()</div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno"><a class="line" href="namespacestudy__muMSC.html#a534fd692f34916fdf187283c2af77736">  158</a></span>ctime = timer.CpuTime()</div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>print(<span class="stringliteral">&quot; &quot;</span>)</div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>print(<span class="stringliteral">&quot;Macro finished successfully.&quot;</span>)</div>
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>print(<span class="stringliteral">&quot;Output file is &quot;</span>, outFile)</div>
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>print(<span class="stringliteral">&quot;Real time &quot;</span>, rtime, <span class="stringliteral">&quot; s, CPU time &quot;</span>, ctime, <span class="stringliteral">&quot;s&quot;</span>)</div>
-<div class="ttc" id="aclassstudy__muMSC_1_1Block_html"><div class="ttname"><a href="classstudy__muMSC_1_1Block.html">study_muMSC.Block</a></div><div class="ttdef"><b>Definition</b> <a href="study__muMSC_8py_source.html#l00068">study_muMSC.py:68</a></div></div>
-<div class="ttc" id="aclassstudy__muMSC_1_1Block_html_a1d14172e7128612ca862ab4109f444b1"><div class="ttname"><a href="classstudy__muMSC_1_1Block.html#a1d14172e7128612ca862ab4109f444b1">study_muMSC.Block.ConstructGeometry</a></div><div class="ttdeci">None ConstructGeometry(self)</div><div class="ttdef"><b>Definition</b> <a href="study__muMSC_8py_source.html#l00074">study_muMSC.py:74</a></div></div>
-<div class="ttc" id="aclassstudy__muMSC_1_1Block_html_adc7fa25fdf06e4f920be3b4df04ba429"><div class="ttname"><a href="classstudy__muMSC_1_1Block.html#adc7fa25fdf06e4f920be3b4df04ba429">study_muMSC.Block.__init__</a></div><div class="ttdeci">None __init__(self)</div><div class="ttdef"><b>Definition</b> <a href="study__muMSC_8py_source.html#l00071">study_muMSC.py:71</a></div></div>
-<div class="ttc" id="aclassstudy__muMSC_1_1Block_html_afa4e5755c3000c619d19184ace7824fd"><div class="ttname"><a href="classstudy__muMSC_1_1Block.html#afa4e5755c3000c619d19184ace7824fd">study_muMSC.Block.InitParContainers</a></div><div class="ttdeci">None InitParContainers()</div><div class="ttdef"><b>Definition</b> <a href="study__muMSC_8py_source.html#l00089">study_muMSC.py:89</a></div></div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span><span class="comment"># -----Start run----------------------------------------------------</span></div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>run.Run(nev)</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span> </div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span><span class="comment"># -----Start Analysis---------------</span></div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>ROOT.gROOT.ProcessLine(<span class="stringliteral">&#39;#include &quot;Geant4/G4EmParameters.hh&quot;&#39;</span>)</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno"><a class="line" href="namespacestudy__muMSC.html#a5c13fb2f4d3d920a9cd1ea5a775bf8fc">  133</a></span>emP = ROOT.G4EmParameters.Instance()</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>emP.Dump()</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span> </div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span><span class="keyword">import</span> rootUtils <span class="keyword">as</span> ut</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span> </div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno"><a class="line" href="namespacestudy__muMSC.html#ae8cd0d54ed312248d75232c854783e1e">  138</a></span>f = ROOT.gROOT.GetListOfFiles()[0]</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno"><a class="line" href="namespacestudy__muMSC.html#a5d79158ac5e9fac73e754f02ddd23c14">  139</a></span>h = {}</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>ut.bookHist(h, <span class="stringliteral">&quot;theta&quot;</span>, <span class="stringliteral">&quot;scattering angle &quot;</span> + str(momentum) + <span class="stringliteral">&quot;GeV/c;{Theta}(rad)&quot;</span>, 500, 0, maxTheta)</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno"><a class="line" href="namespacestudy__muMSC.html#ab875895aaac12abebdb76811de0cbbf6">  141</a></span>sTree = f.Get(<span class="stringliteral">&quot;cbmsim&quot;</span>)</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span><span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(sTree.GetEntries()):</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno"><a class="line" href="namespacestudy__muMSC.html#a12ed239a556befefc248d387fa2109b2">  143</a></span>    rc = sTree.GetEvent(n)</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>    <span class="keywordflow">for</span> aHit <span class="keywordflow">in</span> sTree.vetoPoint:</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>        <span class="keywordflow">if</span> aHit.GetTrackID() != 0:</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>            <span class="keywordflow">continue</span></div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno"><a class="line" href="namespacestudy__muMSC.html#a1316fb365e15ab71f542f159d28327df">  147</a></span>        pt = ROOT.TMath.Sqrt(aHit.GetPx() ** 2 + aHit.GetPy() ** 2)</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno"><a class="line" href="namespacestudy__muMSC.html#a8646d6a9906c5a607f70d3f3a31261ea">  148</a></span>        scat = ROOT.TMath.ATan2(pt, aHit.GetPz())</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>        rc = h[<span class="stringliteral">&quot;theta&quot;</span>].Fill(scat)</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno"><a class="line" href="namespacestudy__muMSC.html#a257d0c9a808d31e9e46250b231ebd696">  150</a></span>ut.bookCanvas(h, key=s, title=s, nx=900, ny=600, cx=1, cy=1)</div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno"><a class="line" href="namespacestudy__muMSC.html#a52fd7062dc55452254001843cfe34d07">  151</a></span>tc = h[s].cd(1)</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>tc.SetLogy(1)</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>h[<span class="stringliteral">&quot;theta_100&quot;</span>] = h[<span class="stringliteral">&quot;theta&quot;</span>].Clone(<span class="stringliteral">&quot;theta_100&quot;</span>)</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>h[<span class="stringliteral">&quot;theta_100&quot;</span>] = h[<span class="stringliteral">&quot;theta&quot;</span>].Rebin(5)</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>h[<span class="stringliteral">&quot;theta_100&quot;</span>].Scale(1.0 / h[<span class="stringliteral">&quot;theta_100&quot;</span>].GetMaximum())</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>h[<span class="stringliteral">&quot;theta_100&quot;</span>].Draw()</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>h[s].Print(s + <span class="stringliteral">&quot;.png&quot;</span>)</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>h[s].Print(s + <span class="stringliteral">&quot;.root&quot;</span>)</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span> </div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>f.Write(h[<span class="stringliteral">&quot;theta&quot;</span>].GetName())</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>f.Write(h[<span class="stringliteral">&quot;theta_100&quot;</span>].GetName())</div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span> </div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span><span class="comment"># -----Finish-------------------------------------------------------</span></div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>timer.Stop()</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno"><a class="line" href="namespacestudy__muMSC.html#a8ec04a002fcb4efffbe30733b7f7b27e">  165</a></span>rtime = timer.RealTime()</div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno"><a class="line" href="namespacestudy__muMSC.html#a534fd692f34916fdf187283c2af77736">  166</a></span>ctime = timer.CpuTime()</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>print(<span class="stringliteral">&quot; &quot;</span>)</div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>print(<span class="stringliteral">&quot;Macro finished successfully.&quot;</span>)</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>print(<span class="stringliteral">&quot;Output file is &quot;</span>, outFile)</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>print(<span class="stringliteral">&quot;Real time &quot;</span>, rtime, <span class="stringliteral">&quot; s, CPU time &quot;</span>, ctime, <span class="stringliteral">&quot;s&quot;</span>)</div>
+<div class="ttc" id="aclassstudy__muMSC_1_1Block_html"><div class="ttname"><a href="classstudy__muMSC_1_1Block.html">study_muMSC.Block</a></div><div class="ttdef"><b>Definition</b> <a href="study__muMSC_8py_source.html#l00076">study_muMSC.py:76</a></div></div>
+<div class="ttc" id="aclassstudy__muMSC_1_1Block_html_a1d14172e7128612ca862ab4109f444b1"><div class="ttname"><a href="classstudy__muMSC_1_1Block.html#a1d14172e7128612ca862ab4109f444b1">study_muMSC.Block.ConstructGeometry</a></div><div class="ttdeci">None ConstructGeometry(self)</div><div class="ttdef"><b>Definition</b> <a href="study__muMSC_8py_source.html#l00082">study_muMSC.py:82</a></div></div>
+<div class="ttc" id="aclassstudy__muMSC_1_1Block_html_adc7fa25fdf06e4f920be3b4df04ba429"><div class="ttname"><a href="classstudy__muMSC_1_1Block.html#adc7fa25fdf06e4f920be3b4df04ba429">study_muMSC.Block.__init__</a></div><div class="ttdeci">None __init__(self)</div><div class="ttdef"><b>Definition</b> <a href="study__muMSC_8py_source.html#l00079">study_muMSC.py:79</a></div></div>
+<div class="ttc" id="aclassstudy__muMSC_1_1Block_html_afa4e5755c3000c619d19184ace7824fd"><div class="ttname"><a href="classstudy__muMSC_1_1Block.html#afa4e5755c3000c619d19184ace7824fd">study_muMSC.Block.InitParContainers</a></div><div class="ttdeci">None InitParContainers()</div><div class="ttdef"><b>Definition</b> <a href="study__muMSC_8py_source.html#l00097">study_muMSC.py:97</a></div></div>
+<div class="ttc" id="aclassstudy__muMSC_1_1Setup_html"><div class="ttname"><a href="classstudy__muMSC_1_1Setup.html">study_muMSC.Setup</a></div><div class="ttdef"><b>Definition</b> <a href="study__muMSC_8py_source.html#l00023">study_muMSC.py:23</a></div></div>
 <div class="ttc" id="anamespacegeometry__config_html_afb514e222a0f704f678c3b3f465ee7e7"><div class="ttname"><a href="namespacegeometry__config.html#afb514e222a0f704f678c3b3f465ee7e7">geometry_config.create_config</a></div><div class="ttdeci">create_config(str DecayVolumeMedium=&quot;helium&quot;, float Yheight=6.0, int strawDesign=10, muShieldGeo=None, str shieldName=&quot;TRY_2025&quot;, int nuTargetPassive=1, bool SND=True, SND_design=None, TARGET_YAML=None)</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00145">geometry_config.py:155</a></div></div>
 <div class="ttc" id="anamespaceshipRoot__conf_html_a59bfc0b1b7bf8bc3e1a1270881622da6"><div class="ttname"><a href="namespaceshipRoot__conf.html#a59bfc0b1b7bf8bc3e1a1270881622da6">shipRoot_conf.configure</a></div><div class="ttdeci">None configure(darkphoton=None)</div><div class="ttdef"><b>Definition</b> <a href="shipRoot__conf_8py_source.html#l00049">shipRoot_conf.py:49</a></div></div>
 </div><!-- fragment --></div><!-- contents -->

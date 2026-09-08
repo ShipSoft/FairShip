@@ -1,6 +1,7 @@
 var namespacestudy__muMSC =
 [
     [ "Block", "classstudy__muMSC_1_1Block.html", "classstudy__muMSC_1_1Block" ],
+    [ "Setup", "classstudy__muMSC_1_1Setup.html", null ],
     [ "cave", "namespacestudy__muMSC.html#a250f6f8936dd0f6c85cc30a085041f11", null ],
     [ "checkOverlap", "namespacestudy__muMSC.html#ac71a73908baa13e86e62b71399621a21", null ],
     [ "ctime", "namespacestudy__muMSC.html#a534fd692f34916fdf187283c2af77736", null ],
@@ -13,10 +14,10 @@ var namespacestudy__muMSC =
     [ "gMC", "namespacestudy__muMSC.html#a1b0a87a3b4e2a340e26073b1f81df6f3", null ],
     [ "h", "namespacestudy__muMSC.html#a5d79158ac5e9fac73e754f02ddd23c14", null ],
     [ "key", "namespacestudy__muMSC.html#a4c914249f916700584a39d0bd5c4a4de", null ],
-    [ "material", "namespacestudy__muMSC.html#ac693ac2e93b4441c5740026e89afe666", null ],
-    [ "maxTheta", "namespacestudy__muMSC.html#a83610238e23df3d8a538408c1c7c5b48", null ],
+    [ "material", "namespacestudy__muMSC.html#afc5919071617771c197778b0c36d8a79", null ],
+    [ "maxTheta", "namespacestudy__muMSC.html#a5e4857fd9200876c2386a802a03bd669", null ],
     [ "mcEngine", "namespacestudy__muMSC.html#a04613d86a219f5aeb04cb1e36481376f", null ],
-    [ "momentum", "namespacestudy__muMSC.html#a5c27691d46c8201ce1331da1d33985d2", null ],
+    [ "momentum", "namespacestudy__muMSC.html#a3d7709824b49b6c34e427e68e69344b9", null ],
     [ "myPgun", "namespacestudy__muMSC.html#a2d1fc976d3a121d530f3039ce4fa5b5f", null ],
     [ "nev", "namespacestudy__muMSC.html#ad4018d77a77726c66a85137dcbc05693", null ],
     [ "nx", "namespacestudy__muMSC.html#a235aad16d3c1f1d4e8af0c3f536aa482", null ],
@@ -40,7 +41,7 @@ var namespacestudy__muMSC =
     [ "target", "namespacestudy__muMSC.html#a2af1a2254649d30dec2bb025fed9360e", null ],
     [ "tc", "namespacestudy__muMSC.html#a52fd7062dc55452254001843cfe34d07", null ],
     [ "theSeed", "namespacestudy__muMSC.html#ac983624e260a9dc5430659252a084b1a", null ],
-    [ "thickness", "namespacestudy__muMSC.html#aab2ba86175905624f247b64deb3c9426", null ],
+    [ "thickness", "namespacestudy__muMSC.html#a35c68dc9e9f72bfbc034f8915eec3db5", null ],
     [ "timer", "namespacestudy__muMSC.html#abe69cee9db6f0efc503957ec02523ecf", null ],
     [ "title", "namespacestudy__muMSC.html#a5951c873929539a073136d680ee1a454", null ]
 ];

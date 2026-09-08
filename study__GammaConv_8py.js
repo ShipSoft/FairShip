@@ -1,5 +1,6 @@
 var study__GammaConv_8py =
 [
+    [ "study_GammaConv.Setup", "classstudy__GammaConv_1_1Setup.html", null ],
     [ "study_GammaConv.Block", "classstudy__GammaConv_1_1Block.html", "classstudy__GammaConv_1_1Block" ],
     [ "boostFactor", "study__GammaConv_8py.html#a87e1fbd736ef46b9a49a67ee3e340c9c", null ],
     [ "cave", "study__GammaConv_8py.html#adaf59a7b3e9ae10bf858a1fc94a9fbb9", null ],
@@ -12,9 +13,9 @@ var study__GammaConv_8py =
     [ "gMC", "study__GammaConv_8py.html#ade4e48b9a86cfadba1da8efe7fe47452", null ],
     [ "gProcessTable", "study__GammaConv_8py.html#ae9f62388c418118cb93b9514b1cf9c0d", null ],
     [ "h", "study__GammaConv_8py.html#ae5ea996dca81cea56362bb1e3000a3da", null ],
-    [ "material", "study__GammaConv_8py.html#afc85c748ac6d5eca2175c005a7b66d32", null ],
+    [ "material", "study__GammaConv_8py.html#abbc8036b3a71074383fbd57fa32aad59", null ],
     [ "mcEngine", "study__GammaConv_8py.html#a8887cd40f4ca6d25bb7006bb8a3fd140", null ],
-    [ "momentum", "study__GammaConv_8py.html#aab8cdf7e5072c55e440f32b0377eab32", null ],
+    [ "momentum", "study__GammaConv_8py.html#ae7cafac6179ebc8cb6564e8cfc465345", null ],
     [ "myPgun", "study__GammaConv_8py.html#a93a08957aca4b22c1589883b81af773d", null ],
     [ "nEl", "study__GammaConv_8py.html#a3c26c243703135de75534de37178e554", null ],
     [ "nev", "study__GammaConv_8py.html#a887fe9db66201abe1eba740343200efa", null ],
@@ -36,6 +37,6 @@ var study__GammaConv_8py =
     [ "sTree", "study__GammaConv_8py.html#aab74fbaeb036251f4214e8418b60f7ea", null ],
     [ "target", "study__GammaConv_8py.html#a815b73364618f833b7caf3a1dc44ea68", null ],
     [ "theSeed", "study__GammaConv_8py.html#a33f4f04fbb1ded78516a43928bc2e25d", null ],
-    [ "thickness", "study__GammaConv_8py.html#aaa9e1a6c47e55c6a638ffd566ee5f0ff", null ],
+    [ "thickness", "study__GammaConv_8py.html#a07854bb8bfaae44603d03642d1e042ad", null ],
     [ "timer", "study__GammaConv_8py.html#a44a01e2df41768e0929bf937753d45d7", null ]
 ];

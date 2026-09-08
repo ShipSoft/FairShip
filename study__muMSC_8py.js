@@ -1,5 +1,6 @@
 var study__muMSC_8py =
 [
+    [ "study_muMSC.Setup", "classstudy__muMSC_1_1Setup.html", null ],
     [ "study_muMSC.Block", "classstudy__muMSC_1_1Block.html", "classstudy__muMSC_1_1Block" ],
     [ "cave", "study__muMSC_8py.html#a250f6f8936dd0f6c85cc30a085041f11", null ],
     [ "checkOverlap", "study__muMSC_8py.html#ac71a73908baa13e86e62b71399621a21", null ],
@@ -13,10 +14,10 @@ var study__muMSC_8py =
     [ "gMC", "study__muMSC_8py.html#a1b0a87a3b4e2a340e26073b1f81df6f3", null ],
     [ "h", "study__muMSC_8py.html#a5d79158ac5e9fac73e754f02ddd23c14", null ],
     [ "key", "study__muMSC_8py.html#a4c914249f916700584a39d0bd5c4a4de", null ],
-    [ "material", "study__muMSC_8py.html#ac693ac2e93b4441c5740026e89afe666", null ],
-    [ "maxTheta", "study__muMSC_8py.html#a83610238e23df3d8a538408c1c7c5b48", null ],
+    [ "material", "study__muMSC_8py.html#afc5919071617771c197778b0c36d8a79", null ],
+    [ "maxTheta", "study__muMSC_8py.html#a5e4857fd9200876c2386a802a03bd669", null ],
     [ "mcEngine", "study__muMSC_8py.html#a04613d86a219f5aeb04cb1e36481376f", null ],
-    [ "momentum", "study__muMSC_8py.html#a5c27691d46c8201ce1331da1d33985d2", null ],
+    [ "momentum", "study__muMSC_8py.html#a3d7709824b49b6c34e427e68e69344b9", null ],
     [ "myPgun", "study__muMSC_8py.html#a2d1fc976d3a121d530f3039ce4fa5b5f", null ],
     [ "nev", "study__muMSC_8py.html#ad4018d77a77726c66a85137dcbc05693", null ],
     [ "nx", "study__muMSC_8py.html#a235aad16d3c1f1d4e8af0c3f536aa482", null ],
@@ -40,7 +41,7 @@ var study__muMSC_8py =
     [ "target", "study__muMSC_8py.html#a2af1a2254649d30dec2bb025fed9360e", null ],
     [ "tc", "study__muMSC_8py.html#a52fd7062dc55452254001843cfe34d07", null ],
     [ "theSeed", "study__muMSC_8py.html#ac983624e260a9dc5430659252a084b1a", null ],
-    [ "thickness", "study__muMSC_8py.html#aab2ba86175905624f247b64deb3c9426", null ],
+    [ "thickness", "study__muMSC_8py.html#a35c68dc9e9f72bfbc034f8915eec3db5", null ],
     [ "timer", "study__muMSC_8py.html#abe69cee9db6f0efc503957ec02523ecf", null ],
     [ "title", "study__muMSC_8py.html#a5951c873929539a073136d680ee1a454", null ]
 ];

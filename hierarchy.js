@@ -193,5 +193,9 @@ var hierarchy =
         [ "strawtubesDetector.strawtubesDetector", "classstrawtubesDetector_1_1strawtubesDetector.html", null ],
         [ "timeDetector.timeDetector", "classtimeDetector_1_1timeDetector.html", null ]
       ] ]
+    ] ],
+    [ "NamedTuple", null, [
+      [ "study_GammaConv.Setup", "classstudy__GammaConv_1_1Setup.html", null ],
+      [ "study_muMSC.Setup", "classstudy__muMSC_1_1Setup.html", null ]
     ] ]
 ];
