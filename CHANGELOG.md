@@ -34,6 +34,7 @@ it in future.
 * `veto` now registers the configured `sensitiveMed` instead of a hardcoded medium name; previously any other value resolved to a null `TGeoMedium`
 * Kaon/pion splitting no longer discards the whole clone set when the first track after the decay falls below the energy cut. This cost ~17% of the muons from charged-kaon decay in flight (−2.8% of the total muon rate) in split productions; pions were unaffected. Clones are now flushed only into tracks that survive the cut, and a warning is emitted if an event ends with clones still buffered
 * Split clones are no longer subject to the transport energy cut. A clone is the parent re-injected at its decay point, so re-applying the cut there discarded clone sets that an unsplit run keeps
+* The first track after a splitting decay now carries the buffered clones to the stack popper and is exempt from the energy and neutrino cuts, so a clone set can no longer be stranded in the buffer
 
 ### Removed
 
