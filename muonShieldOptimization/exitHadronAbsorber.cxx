@@ -4,6 +4,7 @@
 
 #include "exitHadronAbsorber.h"
 
+#include <cstddef>
 #include <iostream>
 
 #include "FairGeoBuilder.h"
@@ -66,6 +67,17 @@ exitHadronAbsorber::exitHadronAbsorber()
       fNsplits(0),
       fIntermediateNsplits(2),
       fCurrentSurvivalFactor(1) {}
+
+void exitHadronAbsorber::SetMaxSplitBuffer(Int_t n) {
+  // Guard the conversion: a negative value would become a huge std::size_t and
+  // silently disable the safety valve.
+  if (n < 1) {
+    LOG(error) << "exitHadronAbsorber: max split buffer must be >= 1, ignoring "
+               << n;
+    return;
+  }
+  fMaxSplitBuffer = static_cast<std::size_t>(n);
+}
 
 Bool_t exitHadronAbsorber::ProcessHits(FairVolume* vol) {
   /** This method is called from the MC stepping */
@@ -146,6 +158,33 @@ Bool_t exitHadronAbsorber::ProcessHits(FairVolume* vol) {
           polZ = polVector.Z();
           Int_t trueParentId = part->GetFirstMother();
 
+          // Reserve room for the fNsplits endpoint clones PostTrack() appends
+          // when the parent finally decays, so the buffer never exceeds
+          // fMaxSplitBuffer. All terms are on the left to keep the unsigned
+          // arithmetic from wrapping.
+          if (fSecondaryBuffer.size() +
+                  static_cast<std::size_t>(fIntermediateNsplits) +
+                  static_cast<std::size_t>(fNsplits) >
+              fMaxSplitBuffer) {
+            // Skip the split for this step instead of truncating the buffer.
+            // fCurrentSurvivalFactor is the weight ledger: leaving it untouched
+            // means the weight we did not split off is still carried by the
+            // track and is handed to the natural-decay clones or the
+            // continuation track in PostTrack(). No weight is lost, only the
+            // statistical boost is reduced.
+            if (!fSplitBufferLimitWarned) {
+              LOG(warning) << "exitHadronAbsorber: intermediate split buffer "
+                              "reached "
+                           << fMaxSplitBuffer
+                           << " entries; skipping further per-step splitting "
+                              "for this track. Consider lowering "
+                              "--intermediate-kaon-pion-splits or raising "
+                              "--max-split-buffer.";
+              fSplitBufferLimitWarned = kTRUE;
+            }
+            return kTRUE;
+          }
+
           Double_t decayBranchWeight = fCurrentSurvivalFactor * P_decay;
           Double_t cloneWeight = decayBranchWeight / fIntermediateNsplits;
           for (int i = 0; i < fIntermediateNsplits; ++i) {
@@ -176,6 +215,15 @@ Bool_t exitHadronAbsorber::ProcessHits(FairVolume* vol) {
 
 void exitHadronAbsorber::Initialize() {
   SHiP::Detector<vetoPoint>::Initialize();
+  // PostTrack() buffers fNsplits endpoint clones for every splitting decay in
+  // both modes, without consulting the cap, so a cap below fNsplits breaks the
+  // hard bound. With per-step splitting it also makes the ProcessHits()
+  // reservation permanently unsatisfiable, disabling per-step splitting.
+  if (fNsplits > 0 && static_cast<std::size_t>(fNsplits) > fMaxSplitBuffer) {
+    LOG(fatal) << "exitHadronAbsorber: max split buffer (" << fMaxSplitBuffer
+               << ") must be at least the endpoint split count (" << fNsplits
+               << ")";
+  }
   TSeqCollection* fileList = gROOT->GetListOfFiles();
   fout = dynamic_cast<TFile*>(fileList->At(0));
   // book hists for Genie neutrino momentum distribution
@@ -260,6 +308,7 @@ void exitHadronAbsorber::BeginEvent() {
   fContinuationTracks.clear();
   fDecayedParentIDs.clear();
   fSecondaryBuffer.clear();
+  fSplitBufferLimitWarned = kFALSE;
 }
 
 void exitHadronAbsorber::PostTrack() {
