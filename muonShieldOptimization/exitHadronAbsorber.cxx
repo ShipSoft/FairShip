@@ -58,6 +58,8 @@ Double_t PushedWeightScale(Int_t parentId) {
 }
 }  // namespace
 
+Int_t exitHadronAbsorber::fgCarrierTrackID = exitHadronAbsorber::kNoCarrier;
+
 exitHadronAbsorber::exitHadronAbsorber(const char* Name, Bool_t Active)
     : Detector(Name, Active, kVETO),
       fOnlyMuons(kFALSE),
@@ -271,6 +273,7 @@ Bool_t exitHadronAbsorber::ProcessHits(FairVolume* vol) {
             fSecondaryBuffer.push_back(clone);
           }
           part->SetWeight(trackWeight * (1.0 - P_decay));
+          RequestCloneCarrier();
         }
       }
     }
@@ -357,6 +360,7 @@ void exitHadronAbsorber::Initialize() {
 }
 
 void exitHadronAbsorber::BeginEvent() {
+  fgCarrierTrackID = kNoCarrier;
   fCloneTracks.clear();
   fDecayedParentIDs.clear();
   fSplitBufferLimitWarned = kFALSE;
@@ -443,6 +447,7 @@ void exitHadronAbsorber::PostTrack() {
         fSecondaryBuffer.push_back(clone);
       }
       fDecayedParentIDs.insert(currentTrackId);
+      RequestCloneCarrier();
     }
 
     // A track that ends any other way keeps the remaining weight itself, so
@@ -468,11 +473,27 @@ void exitHadronAbsorber::PreTrack() {
   Int_t currentID = gMC->GetStack()->GetCurrentTrackNumber();
   Bool_t isClone = (fCloneTracks.find(currentID) != fCloneTracks.end());
 
-  if (!isClone && (fMom.E() - fMom.M()) < EMax) {
+  // Claim the carrier for the clones buffered by the last splitting decay. A
+  // decay always puts its daughters on the stack, so some track always follows
+  // it; only the cuts below can strand the buffer until the event ends.
+  Bool_t isCarrier =
+      (fgCarrierTrackID == kCarrierRequested || fgCarrierTrackID == currentID);
+  if (fgCarrierTrackID == kCarrierRequested) {
+    fgCarrierTrackID = currentID;
+  }
+
+  Bool_t belowCut = (fMom.E() - fMom.M()) < EMax;
+
+  if (!isClone && !isCarrier && belowCut) {
     // Do NOT flush the clone buffer into this track: it is stopped before its
     // first step, so the stack popper would never run for it and the pending
     // clones would be silently discarded at the next track's popper reset.
-    // Keep the buffer for the next track that survives the cut.
+    // The designated carrier is exempt so that it does step, and is dropped
+    // from the scoring below instead. ProcessHits does not score it either: it
+    // is a daughter of a split decay, which fDecayedParentIDs excludes. Its
+    // secondaries are still transported and can be scored if they pass the
+    // cut, which costs one sub-threshold track's worth of extra physics per
+    // splitting decay.
     //
     // Clones are exempt from the cut. They are a bookkeeping device that has
     // to decay immediately (ForceDecayTime(0)) so that the decay can be
@@ -485,14 +506,19 @@ void exitHadronAbsorber::PreTrack() {
     return;
   }
 
+  // A carrier below the cut only has to step so that the stack popper hands
+  // the clones over. An unsplit run would have stopped it above, so it must
+  // not reach the histograms or the ntuple.
+  const Bool_t recordStatistics = !(isCarrier && !isClone && belowCut);
+
   Int_t pdgCode = p->GetPdgCode();
 
   // record statistics for neutrinos, electrons and photons
   // add pi0 111 eta 221 eta' 331  omega 223
   Int_t idabs = TMath::Abs(pdgCode);
-  if (idabs < 18 || idabs == 22 || idabs == 111 || idabs == 221 ||
-      idabs == 223 || idabs == 331 || idabs == 211 || idabs == 321 ||
-      idabs == 2212) {
+  if (recordStatistics && (idabs < 18 || idabs == 22 || idabs == 111 ||
+                           idabs == 221 || idabs == 223 || idabs == 331 ||
+                           idabs == 211 || idabs == 321 || idabs == 2212)) {
     Double_t wspill = p->GetWeight();
     Int_t idhnu = idabs + 10000;
     if (pdgCode < 0) {
@@ -524,7 +550,8 @@ void exitHadronAbsorber::PreTrack() {
       fNtuple->Fill(pdgCode, fMom.Px(), fMom.Py(), fMom.Pz(), fPos.X(),
                     fPos.Y(), fPos.Z());
     }
-    if (fSkipNeutrinos && (idabs == 12 || idabs == 14 || idabs == 16)) {
+    if (fSkipNeutrinos && !isCarrier &&
+        (idabs == 12 || idabs == 14 || idabs == 16)) {
       // The statistics above are still recorded, but the track is stopped
       // before its first step, so it must not receive the clone buffer.
       gMC->StopTrack();
