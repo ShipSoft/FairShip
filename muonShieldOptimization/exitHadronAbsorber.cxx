@@ -238,6 +238,18 @@ void exitHadronAbsorber::Initialize() {
 }
 
 void exitHadronAbsorber::BeginEvent() {
+  if (!fSecondaryBuffer.empty()) {
+    // No track surviving the energy cut followed the last splitting decay of
+    // the previous event, so its clones could not be handed to the stack
+    // popper and their weight is lost.
+    Double_t lostWeight = 0;
+    for (const auto& trk : fSecondaryBuffer) {
+      lostWeight += trk.weight;
+    }
+    LOG(warning) << "exitHadronAbsorber: discarding " << fSecondaryBuffer.size()
+                 << " buffered split clones (summed weight " << lostWeight
+                 << ") left over from the previous event";
+  }
   fCloneTracks.clear();
   fContinuationTracks.clear();
   fDecayedParentIDs.clear();
@@ -327,8 +339,20 @@ void exitHadronAbsorber::PostTrack() {
 }
 
 void exitHadronAbsorber::PreTrack() {
-  bool stackbufferisnotempty = !fSecondaryBuffer.empty();
-  if (stackbufferisnotempty) {
+  // Reset relative survival factor to 1.0
+  fCurrentSurvivalFactor = 1.0;
+
+  gMC->TrackMomentum(fMom);
+  if ((fMom.E() - fMom.M()) < EMax) {
+    // Do NOT flush the clone buffer into this track: it is stopped before its
+    // first step, so the stack popper would never run for it and the pending
+    // clones would be silently discarded at the next track's popper reset.
+    // Keep the buffer for the next track that survives the cut.
+    gMC->StopTrack();
+    return;
+  }
+
+  if (!fSecondaryBuffer.empty()) {
     auto* stack = dynamic_cast<ShipStack*>(gMC->GetStack());
     Int_t ntr;
     for (const auto& trk : fSecondaryBuffer) {
@@ -339,15 +363,6 @@ void exitHadronAbsorber::PreTrack() {
     }
     // Clear the buffer so we don't duplicate them for the next track
     fSecondaryBuffer.clear();
-  }
-
-  // Reset relative survival factor to 1.0
-  fCurrentSurvivalFactor = 1.0;
-
-  gMC->TrackMomentum(fMom);
-  if ((fMom.E() - fMom.M()) < EMax) {
-    gMC->StopTrack();
-    return;
   }
   TParticle* p = gMC->GetStack()->GetCurrentTrack();
   Int_t currentID = gMC->GetStack()->GetCurrentTrackNumber();
