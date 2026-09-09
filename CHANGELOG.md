@@ -16,6 +16,7 @@ it in future.
 
 * He Balloon added with configurable thickness and material.
 * 2026 BDF target design (33 pure tungsten disks with a larger rear block, steel core with serpentine He cooling grooves, jacket tube, flanges, upstream beam window and cover plate, and domed rear endcap), extracted from CATIA model ST1A07710_01_AB.02. Select with `--target-yaml geometry/target_config_2026.yaml`; the legacy design remains the default. Downstream elements are positioned using the nominal legacy target length so both designs can be compared directly.
+* `--intermediate-kaon-pion-splits` (default 2): splitting factor applied to kaons and pions at each GEANT4 step before they decay, separate from the `--kaon-pion-splits` factor applied at the decay itself
 
 ### Changed
 
@@ -25,6 +26,7 @@ it in future.
 * Deduplicate the charm/beauty over min-bias cross-section scaling shared by `makeDecay` and `run_fixedTarget` into `python/heavyFlavourScaling.py`
 * Make `--chicc` and `--chibb` mutually exclusive in `makeDecay` and `run_fixedTarget`, and raise a clear error when the override does not match the run type (e.g. `--chicc` for a beauty run) instead of silently ignoring it
 * Count ShipStack MC points per track instead of per (track, detector) and stop the mother-flagging walk at already-flagged ancestors, further reducing track-selection CPU time for high-multiplicity events
+* `--multiple-kpi-splits` now splits with `--intermediate-kaon-pion-splits` at each step instead of reusing `--kaon-pion-splits`, and requires both to be positive
 
 ### Fixed
 
