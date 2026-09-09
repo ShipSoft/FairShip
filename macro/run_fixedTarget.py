@@ -108,6 +108,14 @@ ap.add_argument(
     "EXPERTS ONLY: risk of very large memory usage if the number is set without proper testing",
 )
 ap.add_argument(
+    "--max-split-buffer",
+    type=int,
+    default=25000,
+    help="EXPERTS ONLY: maximum number of split clones buffered per track before further per-step splitting is "
+    "skipped. Memory safety valve for --multiple-kpi-splits; lowering it reduces the statistical boost but "
+    "conserves weight",
+)
+ap.add_argument(
     "--multiple-kpi-splits",
     action="store_true",
     help="split kaons and pions multiple times along the track path",
@@ -249,6 +257,13 @@ if args.pythia8_tune != "default" and (args.charm or args.beauty or args.G4only)
     ap.error("--pythia8-tune only affects the Pythia8 primary interaction, which --charm/--beauty/--G4only do not run")
 if args.multiple_kpi_splits and (args.kaon_pion_splits <= 0 or args.intermediate_kaon_pion_splits <= 1):
     ap.error("--multiple-kpi-splits requires --kaon-pion-splits > 0 and --intermediate-kaon-pion-splits > 1")
+if args.max_split_buffer < 1:
+    ap.error("--max-split-buffer must be >= 1")
+if args.max_split_buffer < args.kaon_pion_splits:
+    ap.error(
+        "--max-split-buffer must be >= --kaon-pion-splits: the clones buffered when the parent "
+        "decays have to fit under the cap"
+    )
 
 
 if args.G4only:
@@ -416,6 +431,7 @@ if args.AddMuonShield or args.AddHadronAbsorberOnly:
 
 sensPlaneHA = ROOT.exitHadronAbsorber()
 sensPlaneHA.SetNSplits(args.kaon_pion_splits)
+sensPlaneHA.SetMaxSplitBuffer(args.max_split_buffer)
 if args.multiple_kpi_splits:
     sensPlaneHA.SetSplitMultipleTimes()
     sensPlaneHA.SetIntermediateNSplits(args.intermediate_kaon_pion_splits)
