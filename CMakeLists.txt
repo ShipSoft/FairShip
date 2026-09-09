@@ -208,6 +208,7 @@ add_subdirectory(UpstreamTagger)
 add_subdirectory(strawtubes)
 add_subdirectory(shipgen)
 add_subdirectory(field)
+add_subdirectory(newMuonDIS)
 add_subdirectory(muonShieldOptimization)
 add_subdirectory(tests)
 
