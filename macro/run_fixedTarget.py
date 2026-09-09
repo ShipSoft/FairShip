@@ -87,10 +87,28 @@ ap.add_argument(
     "--kaon-pion-splits",
     type=int,
     default=0,
-    help="splitting factor for kaons and pions, in order to boost the number of muons stemming from their decays",
+    help="splitting factor for kaons and pions when they decay, in order to boost the number of muons stemming from their decays",
 )
 ap.add_argument(
-    "--multiple-kpi-splits", action="store_true", help="split kaons and pions multiple times along the track path"
+    "--intermediate-kaon-pion-splits",
+    type=int,
+    default=2,
+    help="EXPERTS ONLY: intermediate splitting factor for kaons and pions for each GEANT4 step before they decay, "
+    "in order to boost the number of muons stemming from forced decays. "
+    "EXPERTS ONLY: risk of very large memory usage if the number is set without proper testing",
+)
+ap.add_argument(
+    "--max-split-buffer",
+    type=int,
+    default=25000,
+    help="EXPERTS ONLY: maximum number of split clones buffered per track before further per-step splitting is "
+    "skipped. Memory safety valve for --multiple-kpi-splits; lowering it reduces the statistical boost but "
+    "conserves weight",
+)
+ap.add_argument(
+    "--multiple-kpi-splits",
+    action="store_true",
+    help="split kaons and pions multiple times along the track path",
 )
 
 ap.add_argument("-C", "--charm", action=argparse.BooleanOptionalAction, default=False, help="generate charm decays")
@@ -225,8 +243,15 @@ if args.debug:
 
 if args.kaon_pion_splits < 0:
     ap.error("--kaon-pion-splits must be >= 0")
-if args.multiple_kpi_splits and args.kaon_pion_splits == 0:
-    ap.error("--multiple-kpi-splits requires --kaon-pion-splits > 0")
+if args.multiple_kpi_splits and (args.kaon_pion_splits <= 0 or args.intermediate_kaon_pion_splits <= 1):
+    ap.error("--multiple-kpi-splits requires --kaon-pion-splits > 0 and --intermediate-kaon-pion-splits > 1")
+if args.max_split_buffer < 1:
+    ap.error("--max-split-buffer must be >= 1")
+if args.max_split_buffer < args.kaon_pion_splits:
+    ap.error(
+        "--max-split-buffer must be >= --kaon-pion-splits: the clones buffered when the parent "
+        "decays have to fit under the cap"
+    )
 
 
 if args.G4only:
@@ -391,9 +416,11 @@ if args.AddMuonShield or args.AddHadronAbsorberOnly:
 
 
 sensPlaneHA = ROOT.exitHadronAbsorber()
-sensPlaneHA.SetNSplits(args.kaon_pion_splits)  # type: ignore[missing-attribute]
+sensPlaneHA.SetNSplits(args.kaon_pion_splits)
+sensPlaneHA.SetMaxSplitBuffer(args.max_split_buffer)
 if args.multiple_kpi_splits:
-    sensPlaneHA.SetSplitMultipleTimes()  # type: ignore[missing-attribute]
+    sensPlaneHA.SetSplitMultipleTimes()
+    sensPlaneHA.SetIntermediateNSplits(args.intermediate_kaon_pion_splits)
 sensPlaneHA.SetEnergyCut(args.ecut * u.GeV)
 sensPlaneHA.SetVetoPointName("PlaneHA")
 
