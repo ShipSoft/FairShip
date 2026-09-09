@@ -464,13 +464,26 @@ void exitHadronAbsorber::PreTrack() {
   // stopped before its first step swallows the entire set. Every reason to stop
   // this track is therefore settled before the flush at the end.
   gMC->TrackMomentum(fMom);
-  if ((fMom.E() - fMom.M()) < EMax) {
+  TParticle* p = gMC->GetStack()->GetCurrentTrack();
+  Int_t currentID = gMC->GetStack()->GetCurrentTrackNumber();
+  Bool_t isClone = (fCloneTracks.find(currentID) != fCloneTracks.end());
+
+  if (!isClone && (fMom.E() - fMom.M()) < EMax) {
+    // Do NOT flush the clone buffer into this track: it is stopped before its
+    // first step, so the stack popper would never run for it and the pending
+    // clones would be silently discarded at the next track's popper reset.
+    // Keep the buffer for the next track that survives the cut.
+    //
+    // Clones are exempt from the cut. They are a bookkeeping device that has
+    // to decay immediately (ForceDecayTime(0)) so that the decay can be
+    // re-sampled, and their parent already passed the cut at the start of its
+    // own track. Applying the cut again at the decay point would drop decay
+    // products which an unsplit run keeps, because there the cut acts on the
+    // (possibly much harder) decay muon rather than on the parent. The decay
+    // products of the clones are cut as usual.
     gMC->StopTrack();
     return;
   }
-
-  TParticle* p = gMC->GetStack()->GetCurrentTrack();
-  Int_t currentID = gMC->GetStack()->GetCurrentTrackNumber();
 
   Int_t pdgCode = p->GetPdgCode();
 
@@ -541,7 +554,7 @@ void exitHadronAbsorber::PreTrack() {
     fSecondaryBuffer.clear();
   }
 
-  if (fCloneTracks.find(currentID) != fCloneTracks.end()) {
+  if (isClone) {
     //  Force the decay time to 0
     gMC->ForceDecayTime(0);
   }
