@@ -22,6 +22,7 @@ it in future.
 * `--intermediate-kaon-pion-splits` (default 2): splitting factor applied to kaons and pions at each GEANT4 step before they decay, separate from the `--kaon-pion-splits` factor applied at the decay itself
 * `--max-split-buffer` (default 25000): hard bound on the split clones buffered per track. Per-step splitting stops once the cap is reached, reducing the statistical boost but conserving weight. With the default `--max-event-size`, that cap is reached first, at about 10k pending clones
 * `--max-event-size` (default 5000000): cap on the projected number of particles per event, counting the particles already on the stack plus 500 for each pending split clone. Per-step splitting stops once the cap would be exceeded; weight is conserved. `run_fixedTarget.py` rejects values of this or `--max-split-buffer` that are too small for even one per-step split
+* `exitHadronAbsorber` reports the split-clone balance (decays split, clones created, clones never tracked and their weight) at the end of the run, including the final event's leftover buffer
 
 ### Changed
 
