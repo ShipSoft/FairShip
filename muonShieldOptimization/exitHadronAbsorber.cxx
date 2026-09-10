@@ -397,35 +397,20 @@ void exitHadronAbsorber::PreTrack() {
   // Reset relative survival factor to 1.0
   fCurrentSurvivalFactor = 1.0;
 
+  // Invariant for this whole method: the clone buffer may only be handed to a
+  // carrier that is guaranteed to step. TG4StackPopper converts pushed tracks
+  // into Geant4 secondaries from PostStepDoIt only, and its Reset() at the
+  // start of the next track writes off everything still pending, so a carrier
+  // stopped before its first step swallows the entire set. Every reason to stop
+  // this track is therefore settled before the flush at the end.
   gMC->TrackMomentum(fMom);
   if ((fMom.E() - fMom.M()) < EMax) {
-    // Do NOT flush the clone buffer into this track: it is stopped before its
-    // first step, so the stack popper would never run for it and the pending
-    // clones would be silently discarded at the next track's popper reset.
-    // Keep the buffer for the next track that survives the cut.
     gMC->StopTrack();
     return;
   }
 
-  if (!fSecondaryBuffer.empty()) {
-    auto* stack = dynamic_cast<ShipStack*>(gMC->GetStack());
-    Int_t ntr;
-    for (const auto& trk : fSecondaryBuffer) {
-      stack->PushTrack(1, trk.parentID, trk.pdg, trk.px, trk.py, trk.pz, trk.e,
-                       trk.x, trk.y, trk.z, trk.t, trk.polx, trk.poly, trk.polz,
-                       kPNoProcess, ntr, trk.weight, 999);
-      fCloneTracks.insert(ntr);
-    }
-    // Clear the buffer so we don't duplicate them for the next track
-    fSecondaryBuffer.clear();
-  }
   TParticle* p = gMC->GetStack()->GetCurrentTrack();
   Int_t currentID = gMC->GetStack()->GetCurrentTrackNumber();
-
-  if (fCloneTracks.find(currentID) != fCloneTracks.end()) {
-    //  Force the decay time to 0
-    gMC->ForceDecayTime(0);
-  }
 
   Int_t pdgCode = p->GetPdgCode();
 
@@ -467,8 +452,37 @@ void exitHadronAbsorber::PreTrack() {
                     fPos.Y(), fPos.Z());
     }
     if (fSkipNeutrinos && (idabs == 12 || idabs == 14 || idabs == 16)) {
+      // The statistics above are still recorded, but the track is stopped
+      // before its first step, so it must not receive the clone buffer.
       gMC->StopTrack();
+      return;
     }
+  }
+
+  // A module whose PreTrack() ran before ours may already have stopped the
+  // track: FairMCApplication calls the detectors in registration order, and
+  // run_fixedTarget.py can register a second exitHadronAbsorber ahead of the
+  // one that owns the split buffer.
+  if (!gMC->IsTrackAlive()) {
+    return;
+  }
+
+  if (!fSecondaryBuffer.empty()) {
+    auto* stack = dynamic_cast<ShipStack*>(gMC->GetStack());
+    Int_t ntr;
+    for (const auto& trk : fSecondaryBuffer) {
+      stack->PushTrack(1, trk.parentID, trk.pdg, trk.px, trk.py, trk.pz, trk.e,
+                       trk.x, trk.y, trk.z, trk.t, trk.polx, trk.poly, trk.polz,
+                       kPNoProcess, ntr, trk.weight, 999);
+      fCloneTracks.insert(ntr);
+    }
+    // Clear the buffer so we don't duplicate them for the next track
+    fSecondaryBuffer.clear();
+  }
+
+  if (fCloneTracks.find(currentID) != fCloneTracks.end()) {
+    //  Force the decay time to 0
+    gMC->ForceDecayTime(0);
   }
 }
 
