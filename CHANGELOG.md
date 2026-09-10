@@ -42,7 +42,7 @@ it in future.
 * Read the normalisation histogram of charm and beauty input files as `TH1`, not `TH1F`, so that files written by `makeCascade.py` (`rootUtils` books a `TH1D`) are accepted instead of failing with "histogram '2' not found".
 * Post-process the simulation output of `run_fixedTarget.py`, not the first open ROOT file, which for charm and beauty is the cascade input file kept open by the generator, so that charm and beauty runs no longer end with `KeyError: 'cbmsim'`.
 * Added `ROOT::EGPythia8` in `shipgen/CMakeLists.txt` to avoid symbol lookup errors when using EvtGen
-* Kaon/pion splitting no longer discards the whole clone set when the first track after the decay falls below the energy cut. This cost ~17% of the muons from charged-kaon decay in flight (−2.8% of the total muon rate) in split productions; pions were unaffected. Clones are now flushed only into tracks that survive the cut, and a warning is emitted if an event ends with clones still buffered
+* Kaon/pion splitting no longer discards the whole clone set when the track that follows the decay is stopped before it takes a step. The energy cut cost ~17% of the muons from charged-kaon decay in flight (−2.8% of the total muon rate) in split productions; pions were unaffected. `--skipNeutrinos` was a second route into the same loss, and left nothing in the log. Clones are now handed only to tracks that are still alive at the end of `PreTrack`, and a warning is emitted if an event ends with clones still buffered
 
 ### Removed
 
