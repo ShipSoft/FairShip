@@ -79,6 +79,16 @@ void exitHadronAbsorber::SetMaxSplitBuffer(Int_t n) {
   fMaxSplitBuffer = static_cast<std::size_t>(n);
 }
 
+void exitHadronAbsorber::SetMaxEventSize(Int_t n) {
+  if (n < 1) {
+    LOG(error) << "exitHadronAbsorber: max event size must be >= 1, ignoring "
+               << n;
+    return;
+  }
+  fMaxEventSize = static_cast<std::size_t>(n);
+}
+
+
 Bool_t exitHadronAbsorber::ProcessHits(FairVolume* vol) {
   /** This method is called from the MC stepping */
   TString volName = gMC->CurrentVolName();
@@ -162,10 +172,18 @@ Bool_t exitHadronAbsorber::ProcessHits(FairVolume* vol) {
           // when the parent finally decays, so the buffer never exceeds
           // fMaxSplitBuffer. All terms are on the left to keep the unsigned
           // arithmetic from wrapping.
-          if (fSecondaryBuffer.size() +
-                  static_cast<std::size_t>(fIntermediateNsplits) +
-                  static_cast<std::size_t>(fNsplits) >
-              fMaxSplitBuffer) {
+          std::size_t secondaryBufferSize = fSecondaryBuffer.size();
+          std::size_t event_size = gMC->GetStack()->GetNtrack();
+
+          const std::size_t pending = secondaryBufferSize +
+                             static_cast<std::size_t>(fIntermediateNsplits) +
+                             static_cast<std::size_t>(fNsplits);
+          const bool bufferFull = pending > fMaxSplitBuffer;
+
+          // multiplying pending tracks by factor to account for showers
+          const int32_t shower_safety_factor = 500;
+          const bool eventFull  = event_size + pending * shower_safety_factor > fMaxEventSize;
+          if (bufferFull || eventFull) {
             // Skip the split for this step instead of truncating the buffer.
             // fCurrentSurvivalFactor is the weight ledger: leaving it untouched
             // means the weight we did not split off is still carried by the
@@ -173,16 +191,25 @@ Bool_t exitHadronAbsorber::ProcessHits(FairVolume* vol) {
             // continuation track in PostTrack(). No weight is lost, only the
             // statistical boost is reduced.
             if (!fSplitBufferLimitWarned) {
-              LOG(warning) << "exitHadronAbsorber: intermediate split buffer "
-                              "reached "
-                           << fMaxSplitBuffer
-                           << " entries; skipping further per-step splitting "
-                              "for this track. Consider lowering "
-                              "--intermediate-kaon-pion-splits or raising "
-                              "--max-split-buffer.";
-              fSplitBufferLimitWarned = kTRUE;
+              if (bufferFull) {
+                 LOG(warning) << "exitHadronAbsorber: intermediate split buffer "
+                                 "reached "
+                              << secondaryBufferSize
+                              << " entries; skipping further per-step splitting "
+                                 "for this track. Consider lowering "
+                                 "--intermediate-kaon-pion-splits or raising "
+                                 "--max-split-buffer.";
+              } else {  // that means the event is full
+                 LOG(warning) << "exitHadronAbsorber: event size reached "
+                              << event_size
+                              << " entries; skipping further per-step splitting "
+                                 "for this track. Consider lowering "
+                                 "--intermediate-kaon-pion-splits or raising "
+                                 " --max-event-size.";
+              }
+            fSplitBufferLimitWarned = kTRUE;
             }
-            return kTRUE;
+          return kTRUE;
           }
 
           Double_t decayBranchWeight = fCurrentSurvivalFactor * P_decay;
