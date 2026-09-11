@@ -114,10 +114,9 @@ Bool_t exitHadronAbsorber::ProcessHits(FairVolume* vol) {
     }
   }
 
-  // Both counts have to be positive: PostTrack() only stops the parent and
-  // hands on the remaining weight when fNsplits > 0, so buffering per-step
-  // clones with fNsplits == 0 would leave the parent carrying its full weight
-  // alongside the clones.
+  // Both counts have to be positive: PostTrack() only terminates the ledger,
+  // handing what is left of it to the endpoint clones, when fNsplits > 0.
+  // run_fixedTarget.py pairs the two options for the same reason.
   if (fNsplits > 0 && fIntermediateNsplits > 0 && (!fSplitOnce)) {
     Int_t currentTrackId = gMC->GetStack()->GetCurrentTrackNumber();
 
@@ -204,7 +203,20 @@ Bool_t exitHadronAbsorber::ProcessHits(FairVolume* vol) {
             clone.parentID = trueParentId;
             fSecondaryBuffer.push_back(clone);
           }
+          // The clone weights above are relative to trueParentId, because
+          // ShipStack::PushTrack multiplies a pushed weight by the weight of
+          // the track it names as parent. The parent's own weight, relative
+          // to that same track, has to follow the ledger down from 1 to
+          // fCurrentSurvivalFactor, otherwise everything it goes on to do
+          // still counts at full weight: its hit at the sensitive plane, and
+          // the secondaries it makes if it ends by interacting rather than
+          // decaying. Scaling it here keeps parent + clones equal to the
+          // weight the parent started with at every step. Geant4 pushes a
+          // secondary onto the VMC stack when that secondary starts tracking,
+          // which is after the parent is done, so the secondaries pick this
+          // up on their own.
           fCurrentSurvivalFactor *= (1.0 - P_decay);
+          part->SetWeight(part->GetWeight() * (1.0 - P_decay));
         }
       }
     }
