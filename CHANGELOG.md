@@ -16,6 +16,7 @@ it in future.
 
 * He Balloon added with configurable thickness and material.
 * 2026 BDF target design (33 pure tungsten disks with a larger rear block, steel core with serpentine He cooling grooves, jacket tube, flanges, upstream beam window and cover plate, and domed rear endcap), extracted from CATIA model ST1A07710_01_AB.02. Select with `--target-yaml geometry/target_config_2026.yaml`; the legacy design remains the default. Downstream elements are positioned using the nominal legacy target length so both designs can be compared directly.
+* Added option to use EvtGen decayer for heavy hadrons in run_simScript, extending previous support for J/psi.
 
 ### Changed
 
@@ -29,8 +30,10 @@ it in future.
 ### Fixed
 
 * `veto` now registers the configured `sensitiveMed` instead of a hardcoded medium name; previously any other value resolved to a null `TGeoMedium`
+* Added `ROOT::EGPythia8` in `shipgen/CMakeLists.txt` to avoid symbol lookup errors when using EvtGen
 
 ### Removed
+* Removed DecayConfigTEvtGen.C after updates to g4Config.C give option to use EvtGen decayer for heavy hadrons
 
 ## 26.07 - 2026-07-21
 

@@ -11,7 +11,7 @@ ship_add_library(
           ParticleGunGenerator.cxx
   LINKDEF LinkDef.h
   DEPENDENCIES Base ShipData veto EvtGen::EvtGen EvtGen::EvtGenExternal
-               FairLogger::FairLogger ROOT::EGPythia6
+               FairLogger::FairLogger ROOT::EGPythia6 ROOT::EGPythia8
   INCLUDE_DIRECTORIES ${ROOTEGPythia6_INCLUDE_DIR}
   SYSTEM_INCLUDE_DIRECTORIES ${PYTHIA8_INCLUDE_DIR} ${PYTHIA8_INCLUDE_DIR}/..
                              ${EVTGEN_INCLUDE_DIR} ${EVTGEN_INCLUDE_DIR}/..
