@@ -44,6 +44,7 @@ it in future.
 * Post-process the simulation output of `run_fixedTarget.py`, not the first open ROOT file, which for charm and beauty is the cascade input file kept open by the generator, so that charm and beauty runs no longer end with `KeyError: 'cbmsim'`.
 * Added `ROOT::EGPythia8` in `shipgen/CMakeLists.txt` to avoid symbol lookup errors when using EvtGen
 * Kaon/pion splitting no longer discards the whole clone set when the track that follows the decay is stopped before it takes a step. The energy cut cost ~17% of the muons from charged-kaon decay in flight (−2.8% of the total muon rate) in split productions; pions were unaffected. `--skipNeutrinos` was a second route into the same loss, and left nothing in the log. Clones are now handed only to tracks that are still alive at the end of `PreTrack`, and a warning is emitted if an event ends with clones still buffered
+* Per-step kaon/pion splitting now lowers the weight of the parent kaon or pion as weight is split off into clones. The survival factor was only kept internally before, so a parent that ended by interacting rather than decaying still contributed its own hit at the sensitive plane, and the secondaries of that interaction, at full weight. Only `--multiple-kpi-splits` runs are affected; with `--kaon-pion-splits` alone no weight is split off before the decay
 
 ### Removed
 
