@@ -30,6 +30,7 @@ it in future.
 ### Fixed
 
 * `veto` now registers the configured `sensitiveMed` instead of a hardcoded medium name; previously any other value resolved to a null `TGeoMedium`
+* Added `ROOT::EGPythia8` in `shipgen/CMakeLists.txt` to avoid symbol lookup errors when using EvtGen
 
 ### Removed
 * Removed DecayConfigTEvtGen.C after updates to g4Config.C give option to use EvtGen decayer for heavy hadrons
