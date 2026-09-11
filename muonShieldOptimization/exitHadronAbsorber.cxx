@@ -114,15 +114,13 @@ Bool_t exitHadronAbsorber::ProcessHits(FairVolume* vol) {
     }
   }
 
-  // Both counts have to be positive: PostTrack() only stops the parent and
-  // hands on the remaining weight when fNsplits > 0, so buffering per-step
-  // clones with fNsplits == 0 would leave the parent carrying its full weight
-  // alongside the clones.
+  // Both counts have to be positive: PostTrack() only terminates the ledger,
+  // handing what is left of it to the endpoint clones, when fNsplits > 0.
+  // run_fixedTarget.py pairs the two options for the same reason.
   if (fNsplits > 0 && fIntermediateNsplits > 0 && (!fSplitOnce)) {
     Int_t currentTrackId = gMC->GetStack()->GetCurrentTrackNumber();
 
-    if (fCloneTracks.count(currentTrackId) > 0 ||
-        fContinuationTracks.count(currentTrackId) > 0) {
+    if (fCloneTracks.count(currentTrackId) > 0) {
       return kTRUE;
     }
 
@@ -169,9 +167,9 @@ Bool_t exitHadronAbsorber::ProcessHits(FairVolume* vol) {
             // Skip the split for this step instead of truncating the buffer.
             // fCurrentSurvivalFactor is the weight ledger: leaving it untouched
             // means the weight we did not split off is still carried by the
-            // track and is handed to the natural-decay clones or the
-            // continuation track in PostTrack(). No weight is lost, only the
-            // statistical boost is reduced.
+            // track, and reaches the natural-decay clones in PostTrack() if
+            // the track ends in a decay. The total weight the track
+            // contributes is unchanged, only the statistical boost is reduced.
             if (!fSplitBufferLimitWarned) {
               LOG(warning) << "exitHadronAbsorber: intermediate split buffer "
                               "reached "
@@ -205,7 +203,20 @@ Bool_t exitHadronAbsorber::ProcessHits(FairVolume* vol) {
             clone.parentID = trueParentId;
             fSecondaryBuffer.push_back(clone);
           }
+          // The clone weights above are relative to trueParentId, because
+          // ShipStack::PushTrack multiplies a pushed weight by the weight of
+          // the track it names as parent. The parent's own weight, relative
+          // to that same track, has to follow the ledger down from 1 to
+          // fCurrentSurvivalFactor, otherwise everything it goes on to do
+          // still counts at full weight: its hit at the sensitive plane, and
+          // the secondaries it makes if it ends by interacting rather than
+          // decaying. Scaling it here keeps parent + clones equal to the
+          // weight the parent started with at every step. Geant4 pushes a
+          // secondary onto the VMC stack when that secondary starts tracking,
+          // which is after the parent is done, so the secondaries pick this
+          // up on their own.
           fCurrentSurvivalFactor *= (1.0 - P_decay);
+          part->SetWeight(part->GetWeight() * (1.0 - P_decay));
         }
       }
     }
@@ -305,7 +316,6 @@ void exitHadronAbsorber::BeginEvent() {
                  << ") left over from the previous event";
   }
   fCloneTracks.clear();
-  fContinuationTracks.clear();
   fDecayedParentIDs.clear();
   fSecondaryBuffer.clear();
   fSplitBufferLimitWarned = kFALSE;
@@ -314,8 +324,7 @@ void exitHadronAbsorber::BeginEvent() {
 void exitHadronAbsorber::PostTrack() {
   Int_t currentTrackId = gMC->GetStack()->GetCurrentTrackNumber();
 
-  if (fCloneTracks.count(currentTrackId) > 0 ||
-      fContinuationTracks.count(currentTrackId) > 0) {
+  if (fCloneTracks.count(currentTrackId) > 0) {
     return;
   }
 
@@ -325,7 +334,6 @@ void exitHadronAbsorber::PostTrack() {
 
   if (fNsplits > 0 && kaon_or_pion) {
     bool isNaturalDecay = false;
-    bool isParticleDestroyed = gMC->IsTrackStop() || gMC->IsTrackDisappeared();
     TArrayI processes;
     gMC->StepProcesses(processes);
     for (int i = 0; i < processes.GetSize(); i++) {
@@ -349,8 +357,6 @@ void exitHadronAbsorber::PostTrack() {
     polY = polVector.Y();
     polZ = polVector.Z();
     Int_t trueParentId = part->GetFirstMother();
-
-    auto* stack = dynamic_cast<ShipStack*>(gMC->GetStack());
 
     // All remaining weight used if cloning happens at point where original
     // particle decays
@@ -378,17 +384,13 @@ void exitHadronAbsorber::PostTrack() {
       fDecayedParentIDs.insert(currentTrackId);
     }
 
-    // tracks which do not decay are stopped with stoptrack and added back with
-    // a given weight
-    if (!isNaturalDecay && !isParticleDestroyed && stack) {
-      Int_t ntr;
-      stack->PushTrack(1, trueParentId, track_pid, finalMom.Px(), finalMom.Py(),
-                       finalMom.Pz(), finalMom.E(), finalPos.X(), finalPos.Y(),
-                       finalPos.Z(), finalPos.T(), polX, polY, polZ,
-                       kPNoProcess, ntr, fCurrentSurvivalFactor, 999);
-      fContinuationTracks.insert(ntr);
-    }
-
+    // A track that ends any other way keeps the remaining weight itself, so
+    // there is nothing to hand on. Geant4 never gives us a track that is
+    // still going: G4TrackingManager steps while the status is fAlive or
+    // fStopButAlive, TG4TrackingAction::PostUserTrackingAction skips
+    // PostTrack for fSuspend, and IsTrackStop() covers every status that is
+    // left. StopTrack() stays because it is the one call here that can still
+    // matter for a status other than fStopAndKill.
     gMC->StopTrack();
   }
 }

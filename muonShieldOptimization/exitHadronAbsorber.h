@@ -93,7 +93,6 @@ class exitHadronAbsorber : public SHiP::Detector<vetoPoint> {
 
   std::vector<TrackBuffer> fSecondaryBuffer;
   std::set<Int_t> fCloneTracks;
-  std::set<Int_t> fContinuationTracks;
   std::set<Int_t> fDecayedParentIDs;
 
   TFile* fout;               //!
