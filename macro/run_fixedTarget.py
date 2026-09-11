@@ -106,6 +106,15 @@ ap.add_argument(
     "conserves weight",
 )
 ap.add_argument(
+    "--max-event-size",
+    type=int,
+    default=5_000_000,
+    help="EXPERTS ONLY: maximum size of the event (accounting for an extra safety factor  before further"
+         " per-step splitting is skipped. Memory safety valve for --multiple-kpi-splits;"
+         "lowering it reduces the statistical boost but conserves weight",
+)
+
+ap.add_argument(
     "--multiple-kpi-splits",
     action="store_true",
     help="split kaons and pions multiple times along the track path",
@@ -247,11 +256,19 @@ if args.multiple_kpi_splits and (args.kaon_pion_splits <= 0 or args.intermediate
     ap.error("--multiple-kpi-splits requires --kaon-pion-splits > 0 and --intermediate-kaon-pion-splits > 1")
 if args.max_split_buffer < 1:
     ap.error("--max-split-buffer must be >= 1")
+if args.max_event_size < 1:
+    ap.error("--max-event-size must be >= 1")
+
 if args.max_split_buffer < args.kaon_pion_splits:
     ap.error(
         "--max-split-buffer must be >= --kaon-pion-splits: the clones buffered when the parent "
         "decays have to fit under the cap"
     )
+if args.max_event_size < args.kaon_pion_splits:
+    ap.error(
+        "--max-event-size must be >= --kaon-pion-splits: the event size has to fit under the cap"
+    )
+
 
 
 if args.G4only:
@@ -418,6 +435,7 @@ if args.AddMuonShield or args.AddHadronAbsorberOnly:
 sensPlaneHA = ROOT.exitHadronAbsorber()
 sensPlaneHA.SetNSplits(args.kaon_pion_splits)
 sensPlaneHA.SetMaxSplitBuffer(args.max_split_buffer)
+sensPlaneHA.SetMaxEventSize(args.max_event_size)
 if args.multiple_kpi_splits:
     sensPlaneHA.SetSplitMultipleTimes()
     sensPlaneHA.SetIntermediateNSplits(args.intermediate_kaon_pion_splits)

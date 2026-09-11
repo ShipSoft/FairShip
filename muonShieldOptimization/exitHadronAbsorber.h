@@ -47,6 +47,7 @@ class exitHadronAbsorber : public SHiP::Detector<vetoPoint> {
   void SetNSplits(Int_t n) { fNsplits = n; }
   void SetIntermediateNSplits(Int_t n) { fIntermediateNsplits = n; }
   void SetMaxSplitBuffer(Int_t n);
+  void SetMaxEventSize(Int_t n);
   void SetSplitMultipleTimes() { fSplitOnce = kFALSE; }
 
   inline void SetEnergyCut(Float_t emax) { EMax = emax; }
@@ -83,6 +84,7 @@ class exitHadronAbsorber : public SHiP::Detector<vetoPoint> {
   // enough to leave room for the fNsplits endpoint clones PostTrack() appends,
   // and Initialize() rejects a cap that fNsplits alone would exceed.
   std::size_t fMaxSplitBuffer = 25000;
+  std::size_t fMaxEventSize = 5000000;
   // latch so the split-buffer cap is reported at most once per event
   Bool_t fSplitBufferLimitWarned = kFALSE;  //!
   Double_t fCurrentSurvivalFactor;  // survival factor at every step, if we
