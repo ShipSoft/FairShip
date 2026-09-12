@@ -5,6 +5,7 @@
 #ifndef MUONSHIELDOPTIMIZATION_EXITHADRONABSORBER_H_
 #define MUONSHIELDOPTIMIZATION_EXITHADRONABSORBER_H_
 
+#include <cstddef>
 #include <set>
 #include <utility>
 
@@ -44,6 +45,8 @@ class exitHadronAbsorber : public SHiP::Detector<vetoPoint> {
   // void FinishEvent();
 
   void SetNSplits(Int_t n) { fNsplits = n; }
+  void SetIntermediateNSplits(Int_t n) { fIntermediateNsplits = n; }
+  void SetMaxSplitBuffer(Int_t n);
   void SetSplitMultipleTimes() { fSplitOnce = kFALSE; }
 
   inline void SetEnergyCut(Float_t emax) { EMax = emax; }
@@ -68,6 +71,20 @@ class exitHadronAbsorber : public SHiP::Detector<vetoPoint> {
   Bool_t fUseCaveCoordinates = kFALSE;  //! set position from cave
 
   int32_t fNsplits;
+  // intermediate splits to use at each step before the particle decays
+  int32_t fIntermediateNsplits;
+  // Upper bound on the clone buffer, in both splitting modes. Per-step
+  // splitting is the pathological case: the buffer grows by
+  // fIntermediateNsplits on every qualifying step and is only drained in
+  // PreTrack(), so a bad split count could make it grow without bound within a
+  // single track. ~25k TrackBuffer records is about 2.5 MB, far above what any
+  // sane configuration reaches. Set via --max-split-buffer.
+  // This is a hard bound: ProcessHits() stops accepting per-step clones early
+  // enough to leave room for the fNsplits endpoint clones PostTrack() appends,
+  // and Initialize() rejects a cap that fNsplits alone would exceed.
+  std::size_t fMaxSplitBuffer = 25000;
+  // latch so the split-buffer cap is reported at most once per event
+  Bool_t fSplitBufferLimitWarned = kFALSE;  //!
   Double_t fCurrentSurvivalFactor;  // survival factor at every step, if we
                                     // choose to split at every step
   Bool_t fSplitOnce =
