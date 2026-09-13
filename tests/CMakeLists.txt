@@ -50,3 +50,7 @@ target_link_libraries(
     FairLogger::FairLogger
 )
 add_test(NAME RNtupleIO COMMAND testRNtupleIO)
+
+add_executable(testTimeDetGeometry test_timedet_geometry.cxx)
+target_link_libraries(testTimeDetGeometry TimeDet ROOT::Core FairRoot::Base)
+add_test(NAME TimeDetGeometry COMMAND testTimeDetGeometry)
