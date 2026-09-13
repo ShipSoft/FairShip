@@ -30,8 +30,5 @@
 # Enable local magnetic fields
 /mcDet/setIsLocalMagField true
 
-# Force J/psi to use external decayer instead of GEANT4 internal decay table
-/mcPhysics/setExtDecayerSelection J/psi
-
 # Enable verbosity for VMC geometry manager
 #/mcVerbose/geometryManager 2

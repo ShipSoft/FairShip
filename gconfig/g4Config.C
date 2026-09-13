@@ -80,4 +80,52 @@ void Config() {
     G4UImanager::GetUIpointer()->ApplyCommand(
         "/process/em/UseGeneralProcess false");
   }
+
+  const std::string use_heavy_decayer = getenv("EXTDECAYER_HEAVY_HADRONS")
+                                            ? getenv("EXTDECAYER_HEAVY_HADRONS")
+                                            : "";
+
+  if (use_heavy_decayer == "1") {
+    std::cout << "Configuring external decayer selection for heavy hadrons"
+              << std::endl;
+
+    // clang-format off
+    std::vector<int> heavyHadronsPDG = {
+      // charm mesons
+      411, -411, 421, -421, 431, -431, 413, -413, 423, -423, 433, -433,
+      // beauty mesons
+      511, -511, 521, -521, 531, -531, 541, -541, 513, -513, 523, -523, 533, -533,
+      // ccbar and bbbar
+      443, 553, 10441, 20443, 445, 10551, 20553, 555,
+      // charm baryons
+      4122, -4122, 4222, -4222, 4212, -4212, 4112, -4112, 4232, -4232, 4132, -4132, 4332, -4332,
+      // beauty baryons
+      5122, -5122, 5112, -5112, 5212, -5212, 5222, -5222, 5132, -5132, 5232, -5232, 5332, -5332,
+      // taus
+      15, -15
+    };
+    // clang-format on
+
+    const char* evtgendata = gSystem->Getenv("EVTGENDATA");
+    if (!evtgendata || *evtgendata == '\0') {
+      LOG(fatal) << "EVTGENDATA environment variable not set";
+    }
+    TEvtGenDecayer* decayer = new TEvtGenDecayer();
+    decayer->SetEvtGenDecayFile(
+        (std::string(evtgendata) + "/DECAY.DEC").c_str());
+    decayer->SetEvtGenParticleFile(
+        (std::string(evtgendata) + "/evt.pdl").c_str());
+
+    std::string heavyHadronsString = "";
+    for (int pdg : heavyHadronsPDG) {
+      decayer->AddEvtGenParticle(pdg);
+      TParticlePDG* p = TDatabasePDG::Instance()->GetParticle(pdg);
+      if (p) heavyHadronsString += std::string(p->GetName()) + " ";
+    }
+
+    decayer->Init();
+    geant4->SetExternalDecayer(decayer);
+    G4UImanager::GetUIpointer()->ApplyCommand(
+        "/mcPhysics/setExtDecayerSelection " + heavyHadronsString);
+  }
 }
