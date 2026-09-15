@@ -1,9 +1,9 @@
 /**
- * Test script to verify data classes work with ROOT RNtuple I/O
- * This test performs actual write/read operations to validate:
- * - Classes can be written to RNtuple
- * - Data can be read back correctly
- * - Round-trip serialization preserves values
+ * Test executable to verify selected data classes work with ROOT RNTuple I/O.
+ * This test performs write/read operations to validate:
+ * - Vectors of the classes can be written to an RNTuple
+ * - The entries and vectors can be read back
+ * - Round-trip vector sizes are preserved
  */
 
 #include <algorithm>
@@ -71,7 +71,7 @@ using ROOT::RNTupleWriter;
 // Test helper: write and read a vector of objects
 template <typename T>
 bool test_rntuple_io(const char* class_name, std::vector<T>& test_objects) {
-  std::cout << "Testing " << class_name << " RNtuple I/O... " << std::flush;
+  std::cout << "Testing " << class_name << " RNTuple I/O... " << std::flush;
 
   std::string sanitised_name{class_name};
   std::replace(sanitised_name.begin(), sanitised_name.end(), ':', '_');
@@ -159,7 +159,7 @@ bool test_rntuple_io(const char* class_name, std::vector<T>& test_objects) {
 }
 
 int main(int argc, char** argv) {
-  std::cout << "\n=== Testing Data Classes with actual RNtuple I/O ===\n"
+  std::cout << "\n=== Testing Data Classes with actual RNTuple I/O ===\n"
             << std::endl;
 
   int passed = 0;
@@ -414,15 +414,15 @@ int main(int argc, char** argv) {
   std::cout << "Failed: " << (total - passed) << " / " << total << std::endl;
 
   if (passed == total) {
-    std::cout << "\n✓ All RNtuple I/O tests PASSED!" << std::endl;
-    std::cout
-        << "All data classes successfully write to and read from RNtuple\n"
-        << std::endl;
+    std::cout << "\n✓ All RNTuple I/O tests PASSED!" << std::endl;
+    std::cout << "All selected data classes successfully write to and read "
+                 "from RNTuple\n"
+              << std::endl;
     return 0;
   } else {
-    std::cout << "\n✗ Some RNtuple I/O tests FAILED!" << std::endl;
+    std::cout << "\n✗ Some RNTuple I/O tests FAILED!" << std::endl;
     std::cout
-        << "Fix the failing classes before using with RNtuple in production\n"
+        << "Fix the failing classes before using with RNTuple in production\n"
         << std::endl;
     return 1;
   }

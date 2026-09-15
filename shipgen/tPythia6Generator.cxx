@@ -7,6 +7,7 @@
 #include <cmath>
 
 #include "FairPrimaryGenerator.h"
+#include "PythiaSeed.h"
 #include "TPythia6.h"
 #include "TROOT.h"
 #include "TRandom1.h"
@@ -25,7 +26,7 @@ tPythia6Generator::tPythia6Generator() {
 
 // -----   Default constructor   -------------------------------------------
 Bool_t tPythia6Generator::Init() {
-  fPythia->SetMRPY(1, gRandom->GetSeed());
+  fPythia->SetMRPY(1, SHiP::NormalizePythiaSeed(GetSeed()));
 
   cout << "Muon Momentum " << fMom << endl;
 

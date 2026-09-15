@@ -23,8 +23,8 @@ class FairPrimaryGenerator;
 
 class Co3Rng {
  public:
-  Co3Rng() {
-    rng = new TRandom3(gRandom->GetSeed());
+  explicit Co3Rng(UInt_t seed) {
+    rng = new TRandom3(seed);
     fTheta = new TF1("f2", "cos(x)*cos(x)", 0, TMath::Pi() / 2);
     fTheta->SetNpx(10);
     fSpectrumH =
