@@ -271,6 +271,7 @@ random sequence.
 * Add CI workflow to publish plots to GitHub Pages and embed in PR comments
 
 ### Changed
+
 * Make artificial retina the baseline option for pattern recognition
 * `nrOfRetries()` in HNL and DP generators now counts only production failures; geometric acceptance rejections are tracked separately via `nrOfGeoRejections()`
 * Read vessel end dimensions from veto YAML config instead of hardcoding in `geometry_config.py`
@@ -745,32 +746,32 @@ random sequence.
 
 ### Added
 
-- Add prototype of a new analysis toolkit in the `experimental` package.
-- Add a simple analysis example script in the `examples/` directory.
-
-### Fixed
-
-- Use `ConstructedAt` and `std::swap` to replace removed pythonization for `TClonesArray`.
-- Correct B_z octant symmetry for field maps.
-- Correct time-of-flight calculation in `GenieGenerator.cxx` by using correct units.
-- Ensure Genfit measurements provide the correct detector ID.
-- Fix `TEvePointSetPrintOut`.
-- Fix drawing of Monte Carlo and geometry tracks in the event display.
-- Replace outdated `AddressOf` ROOT function with `addressof` in the `field/` directory.
+* Add prototype of a new analysis toolkit in the `experimental` package.
+* Add a simple analysis example script in the `examples/` directory.
 
 ### Changed
 
-- Update cavern dimensions, including TCC8 and ECN3, and add a step in ECN3. The absorber coat has been removed, and the dimensions of the HA and absorber have been modified. For further details, see the presentation [here](https://indico.cern.ch/event/1507466/contributions/6345273/attachments/3003438/5293503/Quick%20Update%20on%20FAIRSHIP%20geometry-1.pdf).
-- Set the decay volume medium to helium by default, with an option to switch to vacuum using the `--vacuums` flag.
-- The medium of the SST boxes now matches the decay volume medium.
-- Disable track pruning (see #533).
-- Accommodate generic N-body LLP decays in the EventCalc interface.
+* Update cavern dimensions, including TCC8 and ECN3, and add a step in ECN3. The absorber coat has been removed, and the dimensions of the HA and absorber have been modified. For further details, see the presentation [here](https://indico.cern.ch/event/1507466/contributions/6345273/attachments/3003438/5293503/Quick%20Update%20on%20FAIRSHIP%20geometry-1.pdf).
+* Set the decay volume medium to helium by default, with an option to switch to vacuum using the `--vacuums` flag.
+* The medium of the SST boxes now matches the decay volume medium.
+* Disable track pruning (see #533).
+* Accommodate generic N-body LLP decays in the EventCalc interface.
+
+### Fixed
+
+* Use `ConstructedAt` and `std::swap` to replace removed pythonization for `TClonesArray`.
+* Correct B_z octant symmetry for field maps.
+* Correct time-of-flight calculation in `GenieGenerator.cxx` by using correct units.
+* Ensure Genfit measurements provide the correct detector ID.
+* Fix `TEvePointSetPrintOut`.
+* Fix drawing of Monte Carlo and geometry tracks in the event display.
+* Replace outdated `AddressOf` ROOT function with `addressof` in the `field/` directory.
 
 ### Removed
 
-- Remove Millepede.
-- Remove the outdated `shipEvent_ex.py` example.
-- Remove the ALPACA generator.
+* Remove Millepede.
+* Remove the outdated `shipEvent_ex.py` example.
+* Remove the ALPACA generator.
 
 ## 24.11
 
@@ -778,28 +779,28 @@ This release follows the first round of breaking changes and is tagged for the l
 
 ### Added
 
-- Introduce the EventCalc LLP event generator, a decay event sampler for inclusive final states. For further details, consult the dedicated presentation at the 30th SHiP CM [here](https://indico.cern.ch/event/1448055/contributions/6142341/attachments/2939894/5165450/SHiP_collaboration_meeting_talk_MFerrillo.pdf). See also #528.
-- Add a conversion script, `FairShip/macro/convertEvtCalc.py`, to convert EventCalc's output kinematics to a format compatible with the simulation script.
-
-### Fixed
-
-- Add missing includes in `ecalMatch` and `ecalReco`.
-- Fix compilation warnings for unused or uninitialized variables (see #481).
+* Introduce the EventCalc LLP event generator, a decay event sampler for inclusive final states. For further details, consult the dedicated presentation at the 30th SHiP CM [here](https://indico.cern.ch/event/1448055/contributions/6142341/attachments/2939894/5165450/SHiP_collaboration_meeting_talk_MFerrillo.pdf). See also #528.
+* Add a conversion script, `FairShip/macro/convertEvtCalc.py`, to convert EventCalc's output kinematics to a format compatible with the simulation script.
 
 ### Changed
 
-- Migrate `shipStrawTracking` to use `argparse`.
-- Update CMake to use an external `genfit2`.
-- Ensure `shipStrawTracking`, `shipDigiReco`, and `shipVertex` are compatible with the current version of `genfit`.
+* Migrate `shipStrawTracking` to use `argparse`.
+* Update CMake to use an external `genfit2`.
+* Ensure `shipStrawTracking`, `shipDigiReco`, and `shipVertex` are compatible with the current version of `genfit`.
+
+### Fixed
+
+* Add missing includes in `ecalMatch` and `ecalReco`.
+* Fix compilation warnings for unused or uninitialized variables (see #481).
 
 ### Removed
 
-- Remove obsolete renaming scripts.
-- Remove the `online` directory. For respective versions, see the `charmdet` and `muflux` branches.
-- Remove the `charmdet` directory. For the latest version, see the `charmdet` branch.
-- Remove the preshower and CaloDesign 1 (TP+Preshower).
-- Remove the bundled `genfit`.
-- Remove the conditions database.
+* Remove obsolete renaming scripts.
+* Remove the `online` directory. For respective versions, see the `charmdet` and `muflux` branches.
+* Remove the `charmdet` directory. For the latest version, see the `charmdet` branch.
+* Remove the preshower and CaloDesign 1 (TP+Preshower).
+* Remove the bundled `genfit`.
+* Remove the conditions database.
 
 ## 24.10 - Freiburg
 
@@ -807,45 +808,45 @@ This release prepares for breaking changes and is the last to include charm cros
 
 ### Added
 
-- Add an option for a helium-filled decay volume.
-- Add a pre-commit configuration to improve code quality and identify issues early.
-- Add a `CHANGELOG.md` file.
-- Add a `.git-blame-ignore-revs` file to ignore automatic reformatting in git blame.
-- Add automatically built documentation using Doxygen.
-- Add a `CODEOWNERS` file to automate review requests.
-- Add separate configuration files for vacuum and helium in the decay vessel.
-- Add an option to enable or disable the SND.
-
-### Fixed
-
-- Remove trailing whitespace and fix line endings.
-- Fix compilation warnings from deprecations (see #469).
-- Fix an issue with SST parameters (see #489).
-- Clean up the Veto implementation.
-- Fix a crash in the event display and PID when the entrance lid is missing.
-- Ensure the `ShipReco.py` output file is closed correctly.
-- Remove an unused argument for `MuDISGenerator::SetPositions`.
+* Add an option for a helium-filled decay volume.
+* Add a pre-commit configuration to improve code quality and identify issues early.
+* Add a `CHANGELOG.md` file.
+* Add a `.git-blame-ignore-revs` file to ignore automatic reformatting in git blame.
+* Add automatically built documentation using Doxygen.
+* Add a `CODEOWNERS` file to automate review requests.
+* Add separate configuration files for vacuum and helium in the decay vessel.
+* Add an option to enable or disable the SND.
 
 ### Changed
 
-- Update the `getGeoInformation` command-line interface.
-- Update SST geometry constants (see #483).
-- Use the same `clang-format` and `clang-tidy` configurations as FairRoot.
-- Import the decay vessel configuration from a YAML file.
-- Update the decay vessel geometry to the new design.
-- Increase the minimum required CMake version to 3.12.
-- Use FairRoot's `find_package2` to find ROOT, VMC, and fmt.
-- Increase the minimum required ROOT version to 6.26.
-- Use `find_package` to find Boost.
-- Set the FairLogger dependency instead of using manual includes.
+* Update the `getGeoInformation` command-line interface.
+* Update SST geometry constants (see #483).
+* Use the same `clang-format` and `clang-tidy` configurations as FairRoot.
+* Import the decay vessel configuration from a YAML file.
+* Update the decay vessel geometry to the new design.
+* Increase the minimum required CMake version to 3.12.
+* Use FairRoot's `find_package2` to find ROOT, VMC, and fmt.
+* Increase the minimum required ROOT version to 6.26.
+* Use `find_package` to find Boost.
+* Set the FairLogger dependency instead of using manual includes.
+
+### Fixed
+
+* Remove trailing whitespace and fix line endings.
+* Fix compilation warnings from deprecations (see #469).
+* Fix an issue with SST parameters (see #489).
+* Clean up the Veto implementation.
+* Fix a crash in the event display and PID when the entrance lid is missing.
+* Ensure the `ShipReco.py` output file is closed correctly.
+* Remove an unused argument for `MuDISGenerator::SetPositions`.
 
 ### Removed
 
-- Remove obsolete installation and testing files.
-- Remove uses of `future` and `past` modules (see #473).
-- Remove the Geant3 dependency.
-- Remove unimplemented event display functions (see #497).
-- Disable the SND by default.
-- Remove CMake commands no longer provided by FairRoot 19.
-- Remove old CMake files for ROOT 5.
-- Remove an old, outdated tracking script.
+* Remove obsolete installation and testing files.
+* Remove uses of `future` and `past` modules (see #473).
+* Remove the Geant3 dependency.
+* Remove unimplemented event display functions (see #497).
+* Disable the SND by default.
+* Remove CMake commands no longer provided by FairRoot 19.
+* Remove old CMake files for ROOT 5.
+* Remove an old, outdated tracking script.
