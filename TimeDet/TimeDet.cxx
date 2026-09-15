@@ -39,55 +39,48 @@
 using std::cout;
 using std::endl;
 
+namespace {
+constexpr Double_t kDefaultBarOverlapX = 10.0;  // 100 mm
+constexpr Double_t kDefaultBarOverlapY = 0.55;  // 5.5 mm
+}  // namespace
+
 TimeDet::TimeDet()
     : Detector("TimeDet", kTRUE, kTimeDet),
       fzPos(0),
-      fxSize(450),
+      fxSize(550),
       fySize(650),
-      fxBar(168),
+      fxBar(140),
       fyBar(6),
       fzBar(1),
-      fdzBarCol(2.4),
+      fdzBarCol(9.0),
       fdzBarRow(1.2),
       fNCol(3),
-      fNRow(148),
+      fNRow(110),
       fxCenter(0),
       fyCenter(0) {
   fNBars = fNCol * fNRow;
-  if (fNCol > 1)
-    fxOv = (fxBar * fNCol - fxSize) / static_cast<double>(fNCol - 1);
-  else
-    fxOv = 0;
-  if (fNRow > 1)
-    fyOv = (fyBar * fNRow - fySize) / static_cast<double>(fNRow - 1);
-  else
-    fyOv = 0;
+  fxOv = kDefaultBarOverlapX;
+  fyOv = kDefaultBarOverlapY;
 }
 
 TimeDet::TimeDet(const char* name, Bool_t active)
     : Detector(name, active, kTimeDet),
       //
       fzPos(0),
-      fxSize(450),
+      fxSize(550),
       fySize(650),
-      fxBar(168),
+      fxBar(140),
       fyBar(6),
       fzBar(1),
-      fdzBarCol(2.4),
+      fdzBarCol(9.0),
       fdzBarRow(1.2),
       fNCol(3),
-      fNRow(148),
+      fNRow(110),
       fxCenter(0),
       fyCenter(0) {
   fNBars = fNCol * fNRow;
-  if (fNCol > 1)
-    fxOv = (fxBar * fNCol - fxSize) / static_cast<double>(fNCol - 1);
-  else
-    fxOv = 0;
-  if (fNRow > 1)
-    fyOv = (fyBar * fNRow - fySize) / static_cast<double>(fNRow - 1);
-  else
-    fyOv = 0;
+  fxOv = kDefaultBarOverlapX;
+  fyOv = kDefaultBarOverlapY;
 }
 
 Bool_t TimeDet::ProcessHits(FairVolume* vol) {
@@ -192,15 +185,11 @@ void TimeDet::GetBarRowCol(int ib, int& irow, int& icol) const {
 }
 
 double TimeDet::GetXCol(int ic) const {
-  ic += 1;
-  double x = fxBar * ic - fxOv * (ic - 1) - fxBar / 2;
-  return x - fxSize / 2 + fxCenter;
+  return (ic - 0.5 * (fNCol - 1)) * (fxBar - fxOv) + fxCenter;
 }
 
 double TimeDet::GetYRow(int ir) const {
-  ir += 1;
-  double y = fyBar * ir - fyOv * (ir - 1) - fyBar / 2;
-  return y - fySize / 2 + fyCenter;
+  return (ir - 0.5 * (fNRow - 1)) * (fyBar - fyOv) + fyCenter;
 }
 
 double TimeDet::GetZBar(int ir, int ic) const {

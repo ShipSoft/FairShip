@@ -360,10 +360,10 @@ def create_config(
     # TimeDet
     c.TimeDet = AttrDict()
     c.TimeDet.dzBarRow = 1.2 * u.cm
-    c.TimeDet.dzBarCol = 2.4 * u.cm
+    c.TimeDet.dzBarCol = 9.0 * u.cm
     c.TimeDet.zBar = 1 * u.cm
     c.TimeDet.DZ = (c.TimeDet.dzBarRow + c.TimeDet.dzBarCol + c.TimeDet.zBar) / 2
-    c.TimeDet.DX = 225 * u.cm
+    c.TimeDet.DX = 275 * u.cm
     c.TimeDet.DY = 325 * u.cm
     c.TimeDet.z = (
         37.800 * u.m - c.TimeDet.dzBarRow * 3 / 2 + c.decayVolume.z
