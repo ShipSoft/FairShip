@@ -5,6 +5,13 @@
 #include <cmath>
 #include <iostream>
 
+#include "FairGeoInterface.h"
+#include "FairGeoLoader.h"
+#include "TGeoManager.h"
+#include "TGeoMaterial.h"
+#include "TGeoMedium.h"
+#include "TGeoNode.h"
+#include "TGeoVolume.h"
 #include "TimeDet.h"
 #include "TimeDetPoint.h"
 
@@ -69,10 +76,48 @@ int main() {
   ok &= row == 109;
   ok &= col == 2;
 
+  FairGeoLoader geo_loader("TGeo", "FairGeoLoader");
+  auto* geo_interface = geo_loader.getGeoInterface();
+  geo_interface->setMediaFile("geometry/media.geo");
+  if (!geo_interface->readMedia()) {
+    std::cerr << "Could not load geometry/media.geo" << std::endl;
+    return 1;
+  }
+
+  TGeoManager* geometry = gGeoManager;
+  auto* material = new TGeoMaterial("WorldMaterial", 14.7, 7.3, 0.0012);
+  auto* medium = new TGeoMedium("WorldMedium", 1, material);
+  auto* top = geometry->MakeBox("World", medium, 1000.0, 1000.0, 1000.0);
+  geometry->SetTopVolume(top);
+
+  time_det.ConstructGeometry();
+
+  TGeoNode* detector_node = top->GetNode(0);
+  if (detector_node == nullptr) {
+    std::cerr << "Timing Detector assembly was not placed in the world"
+              << std::endl;
+    return 1;
+  }
+
+  TGeoVolume* detector_volume = detector_node->GetVolume();
+  if (detector_volume == nullptr || detector_volume->GetNodes() == nullptr) {
+    std::cerr << "Timing Detector assembly has no bar placements" << std::endl;
+    return 1;
+  }
+
+  const int number_of_placements =
+      detector_volume->GetNodes()->GetEntriesFast();
+  if (number_of_placements != time_det.GetNBars()) {
+    std::cerr << "Expected " << time_det.GetNBars() << " bars, got "
+              << number_of_placements << std::endl;
+    return 1;
+  }
+
   if (!ok) return 1;
 
   std::cout << "Timing detector geometry matches ShipSoft/Geometry: "
             << "3 columns x 110 rows, 1400 x 60 x 10 mm bars, "
-            << "5.5 mm vertical overlap" << std::endl;
+            << "5.5 mm vertical overlap, and " << number_of_placements
+            << " placements" << std::endl;
   return 0;
 }
