@@ -14,7 +14,7 @@ it in future.
 
 ### Added
 
-* Add `--pythia8-tune` (`default`, `FTFT`) to `run_fixedTarget.py` and `FixedTargetGenerator::SetPythiaTune` to select the FTFT Pythia8 tune for open charm and beauty production in fixed-target collisions (arXiv:2608.29076) in the Pythia8 primary interaction. The Pythia8 default (Monash 2013) remains the default. Charm and beauty read from cascade input files are unaffected. `SetPythiaTune` takes the same tune names as the command line, with `default` and the empty string both selecting the Pythia8 default.
+* Add `--pythia8-tune` (`default`, `FTFT`) to `run_fixedTarget.py` and `FixedTargetGenerator::SetPythiaTune` to select the FTFT Pythia8 tune for open charm and beauty production in fixed-target collisions (arXiv:2608.29076) in the Pythia8 primary interaction. The Pythia8 default (Monash 2013) remains the default. Charm and beauty read from cascade input files are unaffected. `SetPythiaTune` takes the same tune names as the command line, with `default` and the empty string both selecting the Pythia8 default. `run_fixedTarget.py` rejects the flag up front when combined with `--charm`, `--beauty` or `--G4only`, where the tune would have no effect.
 
 ### Changed
 
