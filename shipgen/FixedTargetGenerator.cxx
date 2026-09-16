@@ -8,6 +8,8 @@
 
 #include <array>
 #include <cmath>
+#include <string>
+#include <vector>
 
 #include "BeamSmearingUtils.h"
 #include "FairMCEventHeader.h"
@@ -180,6 +182,26 @@ Bool_t FixedTargetGenerator::Init() {
   std::vector<int> r = {221, 221, 223, 223, 113, 331, 333};
   std::vector<int> c = {6, 7, 5, 7, 5, 6, 9};  // decay channel mumu mumuX
 
+  // FTFT tune: parameters differing from Monash 2013, arXiv:2608.29076
+  const std::vector<std::string> ftftTune = {
+      "Tune:pp = 14",  // Monash 2013 baseline, must come first
+      "StringZ:aLund = 2.0",
+      "StringZ:bLund = 0.2",
+      "StringZ:rFactC = 2.0",
+      "MultipartonInteractions:ecmRef = 30.",
+      "MultipartonInteractions:pT0Ref = 0.69",
+      "MultipartonInteractions:ecmPow = 0.266",
+      "BeamRemnants:halfMassForKT = 1.21",
+      "PDF:piSet = 1"};  // GRV 92 LO, only relevant for pion beams
+  if (!fTune.IsNull() && fTune != "FTFT") {
+    LOG(fatal) << "FixedTargetGenerator: unknown Pythia8 tune " << fTune.Data()
+               << ", choices are FTFT or empty for the Pythia8 default";
+  }
+  if (fTune == "FTFT" && (Option != "Primary" || G4only)) {
+    LOG(warning) << "FixedTargetGenerator: Pythia8 tune " << fTune.Data()
+                 << " has no effect without Pythia8 primary interactions";
+  }
+
   if (Option == "Primary" && !G4only) {
     fPythiaP->settings.mode("Beams:idB", 2212);
     fPythiaN->settings.mode("Beams:idB", 2112);
@@ -201,6 +223,18 @@ Bool_t FixedTargetGenerator::Init() {
       fPythia->settings.mode("Beams:frameType", 2);
       fPythia->settings.parm("Beams:eA", fMom);  // codespell:ignore parm
       fPythia->settings.parm("Beams:eB", 0.);    // codespell:ignore parm
+      // apply the tune before the process settings below, which Tune:pp
+      // would otherwise reset
+      if (fTune == "FTFT" && !G4only) {
+        for (const auto& setting : ftftTune) {
+          if (!fPythia->readString(setting)) {
+            LOG(fatal) << "FixedTargetGenerator: Pythia8 rejected tune setting "
+                       << setting;
+          }
+        }
+        LOG(info) << "FixedTargetGenerator: using Pythia8 tune "
+                  << fTune.Data();
+      }
     }
     if (JpsiMainly) {
       // use this for all onia productions
