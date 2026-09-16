@@ -1,5 +1,13 @@
 var NAVTREEINDEX18 =
 {
+"md_CHANGELOG.html#autotoc_md37":[2,5,1],
+"md_CHANGELOG.html#autotoc_md38":[2,5,2],
+"md_CHANGELOG.html#autotoc_md39":[2,5,3],
+"md_CHANGELOG.html#autotoc_md4":[2,0,1],
+"md_CHANGELOG.html#autotoc_md40":[2,6],
+"md_CHANGELOG.html#autotoc_md41":[2,6,0],
+"md_CHANGELOG.html#autotoc_md42":[2,6,1],
+"md_CHANGELOG.html#autotoc_md43":[2,6,2],
 "md_CHANGELOG.html#autotoc_md44":[2,6,3],
 "md_CHANGELOG.html#autotoc_md45":[2,7],
 "md_CHANGELOG.html#autotoc_md46":[2,7,0],
@@ -241,13 +249,5 @@ var NAVTREEINDEX18 =
 "namespaceShipReco.html#a57399f382942ed9788d85f3c9951cdeb":[6,0,87,29],
 "namespaceShipReco.html#a6425d90b37c7ae2428f3b732fc2d03a4":[6,0,87,13],
 "namespaceShipReco.html#a646b2a8b1509b520851460b3d587bedd":[6,0,87,11],
-"namespaceShipReco.html#a663c66d4a22374970fa11dd2a5012dec":[6,0,87,5],
-"namespaceShipReco.html#a7adf1c90f5639c5887ba1d602f4b2f81":[6,0,87,30],
-"namespaceShipReco.html#a7b887bc3d291d74d04fcaae703a657b3":[6,0,87,20],
-"namespaceShipReco.html#a8bcffac552effb5fb9c0c24150272cb9":[6,0,87,7],
-"namespaceShipReco.html#a97c2832f133076ecaa42bca6b50069b1":[6,0,87,26],
-"namespaceShipReco.html#a9a338a5daf2d5cc378b238f64e270e9a":[6,0,87,32],
-"namespaceShipReco.html#ab3f350587696737c07f798e0c105cde7":[6,0,87,14],
-"namespaceShipReco.html#aba8d4b220fb878568c7c6e33987a2186":[6,0,87,3],
-"namespaceShipReco.html#abef5d8b1901b0297e8a03041a63b8d7d":[6,0,87,0]
+"namespaceShipReco.html#a663c66d4a22374970fa11dd2a5012dec":[6,0,87,5]
 };
