@@ -261,6 +261,8 @@ if args.work_dir is None:
         tag = "charm"
     elif args.beauty:
         tag = "beauty"
+    elif args.pythia8_tune != "default":
+        tag = args.pythia8_tune
     else:
         tag = None
     args.work_dir = get_work_dir(args.runnr, tag)
