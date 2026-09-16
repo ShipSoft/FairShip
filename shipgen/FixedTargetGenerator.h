@@ -96,6 +96,9 @@ class FixedTargetGenerator : public SHiP::Generator {
     EMax = emax;
   }  // min energy to be copied to Geant4
   inline void SetDebug(Bool_t x) { Debug = x; }
+  // Pythia8 tune for the primary interaction: "" (default, Monash 2013) or
+  // "FTFT" (fixed-target open charm and beauty tune, arXiv:2608.29076)
+  inline void SetPythiaTune(const TString& tune) { fTune = tune; }
   inline void SetOpt4DP(TNtuple* t) {
     withNtuple = kTRUE;
     fNtuple = t;
@@ -124,6 +127,7 @@ class FixedTargetGenerator : public SHiP::Generator {
   Bool_t withNtuple;  //! special option for Dark Photon physics studies
   TNtuple* fNtuple;   //!
   TString targetName, Option;
+  TString fTune;  // Pythia8 tune name, empty for the Pythia8 default
   Double_t xOff;
   Double_t yOff;
   Double_t zOff;

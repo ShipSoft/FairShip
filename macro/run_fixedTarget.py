@@ -79,6 +79,14 @@ ap.add_argument(
     default=False,
     help="Whether or not to use Pythia8 for decays (--no-PythiaDecay or --PythiaDecay). Default set to False.",
 )
+ap.add_argument(
+    "--pythia8-tune",
+    dest="pythia8_tune",
+    default="default",
+    choices=["default", "FTFT"],
+    help="Pythia8 tune for the primary interaction: default (Monash 2013) or FTFT "
+    "(fixed-target open charm and beauty tune, arXiv:2608.29076).",
+)
 ap.add_argument("-t", "--tau-only", action=argparse.BooleanOptionalAction, dest="tauOnly", default=False)
 ap.add_argument("-J", "--Jpsi-mainly", action=argparse.BooleanOptionalAction, dest="JpsiMainly", default=False)
 ap.add_argument("-b", "--boostDiMuon", type=float, default=1.0, help="boost Di-muon branching ratios")
@@ -443,6 +451,8 @@ P8gen.SetDebug(args.debug)
 P8gen.SetHeartBeat(100000)
 if args.G4only:
     P8gen.SetG4only()
+if args.pythia8_tune != "default":
+    P8gen.SetPythiaTune(args.pythia8_tune)
 if args.JpsiMainly:
     P8gen.SetJpsiMainly()
 if args.tauOnly:
@@ -528,6 +538,8 @@ else:
     info = f"POT = {args.nev}"
 
 conditions = " with ecut=" + str(args.ecut)
+if args.pythia8_tune != "default":
+    conditions += " " + args.pythia8_tune
 if args.JpsiMainly:
     conditions += " J"
 if args.tauOnly:
