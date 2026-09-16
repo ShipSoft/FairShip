@@ -1,5 +1,7 @@
 var NAVTREEINDEX19 =
 {
+"namespaceShipReco.html#ac8b44ebebde083d26d062978f205ead9":[6,0,87,31],
+"namespaceShipReco.html#acc64c7017469a0c560aa3810436b49f9":[6,0,87,1],
 "namespaceShipReco.html#acfee5ea8a044017a72eaf414bf4eb99c":[6,0,87,27],
 "namespaceShipReco.html#ad65f7dc3b97b1adf05861f52855e59c1":[6,0,87,23],
 "namespaceShipReco.html#ad7b580ede28eace1716a1ad48fbd236d":[6,0,87,17],
@@ -247,7 +249,5 @@ var NAVTREEINDEX19 =
 "namespaceevd__nextEvent.html#a4a4c43d9d75596b775ce23d0b7e7796f":[6,0,26,0],
 "namespaceevd__transparentMode.html":[6,0,27],
 "namespaceevd__transparentMode.html#afeac3b4d7cb3334678bf667700bc0b20":[6,0,27,0],
-"namespaceeveGlobal.html":[6,0,28],
-"namespaceeveGlobal.html#af384e4f875e85dd37b0398e54a393298":[6,0,28,0],
-"namespaceeventDisplay.html":[6,0,29]
+"namespaceeveGlobal.html":[6,0,28]
 };

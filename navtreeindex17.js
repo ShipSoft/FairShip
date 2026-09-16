@@ -1,5 +1,7 @@
 var NAVTREEINDEX17 =
 {
+"makeDecay_8py.html#add06ac2e6371819c0cf24dca326d4964":[8,0,6,16,23],
+"makeDecay_8py.html#ae036a600a0fe461ba6d63d7c5a7d1eb0":[8,0,6,16,10],
 "makeDecay_8py.html#ae12e7ac24f8d7ac07035cdaa544c73e0":[8,0,6,16,6],
 "makeDecay_8py.html#ae5a856c0860587c503dfd928d8708053":[8,0,6,16,49],
 "makeDecay_8py.html#aebd1b561b67e3d8f8c27553c69912b02":[8,0,6,16,18],
@@ -247,7 +249,5 @@ var NAVTREEINDEX17 =
 "md_CHANGELOG.html#autotoc_md40":[2,6],
 "md_CHANGELOG.html#autotoc_md41":[2,6,0],
 "md_CHANGELOG.html#autotoc_md42":[2,6,1],
-"md_CHANGELOG.html#autotoc_md43":[2,6,2],
-"md_CHANGELOG.html#autotoc_md44":[2,6,3],
-"md_CHANGELOG.html#autotoc_md45":[2,7]
+"md_CHANGELOG.html#autotoc_md43":[2,6,2]
 };
