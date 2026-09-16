@@ -194,8 +194,9 @@ Bool_t FixedTargetGenerator::Init() {
       "BeamRemnants:halfMassForKT = 1.21",
       "PDF:piSet = 1"};  // GRV 92 LO, only relevant for pion beams
   if (!fTune.IsNull() && fTune != "FTFT") {
-    LOG(fatal) << "FixedTargetGenerator: unknown Pythia8 tune " << fTune.Data()
-               << ", choices are FTFT or empty for the Pythia8 default";
+    LOG(fatal)
+        << "FixedTargetGenerator: unknown Pythia8 tune " << fTune.Data()
+        << ", choices are FTFT, default or empty for the Pythia8 default";
   }
   if (fTune == "FTFT" && (Option != "Primary" || G4only)) {
     LOG(warning) << "FixedTargetGenerator: Pythia8 tune " << fTune.Data()
