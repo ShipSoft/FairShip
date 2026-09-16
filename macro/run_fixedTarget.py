@@ -256,11 +256,12 @@ charmInputFile = args.charmInputFile
 
 if args.work_dir is None:
     if args.charm:
-        args.work_dir = get_work_dir(args.runnr, "charm")
-    if args.beauty:
-        args.work_dir = get_work_dir(args.runnr, "beauty")
+        tag = "charm"
+    elif args.beauty:
+        tag = "beauty"
     else:
-        args.work_dir = get_work_dir(args.runnr)
+        tag = None
+    args.work_dir = get_work_dir(args.runnr, tag)
 
 logger.debug("work_dir: %s" % args.work_dir)
 logger.debug("command line arguments: %s", args)

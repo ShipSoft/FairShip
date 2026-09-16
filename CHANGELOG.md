@@ -20,6 +20,8 @@ it in future.
 
 ### Fixed
 
+* Charm runs of `run_fixedTarget.py` no longer drop the `charm` work-directory tag: a missing `elif` meant the tag was assigned and then immediately overwritten, so charm output landed in the same untagged directory as a min-bias run of the same run number.
+
 ### Removed
 
 ## 26.09 - 2026-09-15
