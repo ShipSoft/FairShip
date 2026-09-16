@@ -235,6 +235,8 @@ if args.kaon_pion_splits < 0:
     ap.error("--kaon-pion-splits must be >= 0")
 if args.multiple_kpi_splits and args.kaon_pion_splits == 0:
     ap.error("--multiple-kpi-splits requires --kaon-pion-splits > 0")
+if args.pythia8_tune != "default" and (args.charm or args.beauty or args.G4only):
+    ap.error("--pythia8-tune only affects the Pythia8 primary interaction, which --charm/--beauty/--G4only do not run")
 
 
 if args.G4only:
