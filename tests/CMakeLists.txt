@@ -52,5 +52,15 @@ target_link_libraries(
 add_test(NAME RNtupleIO COMMAND testRNtupleIO)
 
 add_executable(testTimeDetGeometry test_timedet_geometry.cxx)
-target_link_libraries(testTimeDetGeometry TimeDet ROOT::Core FairRoot::Base)
+target_link_libraries(
+    testTimeDetGeometry
+    TimeDet
+    ROOT::Core
+    ROOT::Geom
+    FairRoot::Base
+)
 add_test(NAME TimeDetGeometry COMMAND testTimeDetGeometry)
+set_tests_properties(
+    TimeDetGeometry
+    PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
+)
