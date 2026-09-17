@@ -71,6 +71,8 @@ else:
     idsig |= {5442, 5444, 5512, 5514, 5522, 5524, 5532, 5534, 5542, 5544, 5554}
     process = "HardQCD:hardbbbar = on"
     kfactor = (1.04, 1.19)
+if args.nev < 1 or args.nrpoints < 2 or args.pbeamh <= pbeaml:
+    ap.error(f"need --nev >= 1, --nrpoints >= 2 and a beam energy above {pbeaml} GeV")
 
 # FTFT tune: parameters differing from Monash 2013, as in FixedTargetGenerator.cxx
 tune = []
@@ -109,8 +111,24 @@ def new_pythia(settings):
     return py
 
 
+def next_event(py):
+    """Generate the next event, giving up after 100 failed attempts."""
+    for _ in range(100):
+        if py.next():
+            return
+    raise RuntimeError(
+        f"Pythia8 failed to generate an event for beams {py.infoPython().idA()} on {py.infoPython().idB()}"
+    )
+
+
+def mass(pid):
+    particle = PDG.GetParticle(pid)
+    assert particle is not None, f"Unknown PDG: {pid}"
+    return particle.Mass()
+
+
 def ecm(pid, idpn, p):
-    ma, mt = PDG.GetParticle(pid).Mass(), PDG.GetParticle(target[idpn]).Mass()
+    ma, mt = mass(pid), mass(target[idpn])
     return math.sqrt(ma**2 + mt**2 + 2.0 * mt * math.sqrt(p**2 + ma**2))
 
 
@@ -149,7 +167,7 @@ for kf in idbeam:
                 sigtot = mbias[idpn].getSigmaTotal(pid, target[idpn], ecm(pid, idpn, p))
                 chi[pid, idpn].append(k * py.infoPython().sigmaGen() / sigtot)
             print(f"chi at {args.pbeamh} GeV for {pid} on {target[idpn]}: {chi[pid, idpn][-1]}")
-chimx = max(c[-1] for c in chi.values())
+chimx = max(max(c) for c in chi.values())
 
 # signal events at bin momenta pbeamh/1.1^i, generated in batches of increasing size
 buffers = {}
@@ -164,8 +182,7 @@ def signal_event(pid, idpn, p):
         buffers[pid, idpn, ibin] = (buf, nfill)
         py = new_pythia([process, *beams(pid, idpn, args.pbeamh / 1.1**ibin)])
         for _ in range(nfill):
-            while not py.next():
-                pass
+            next_event(py)
             ev = py.event
             hadrons = [ev[i] for i in range(ev.size()) if ev[i].idAbs() in idsig and ev[i].isFinal()]
             buf.append((py.infoPython().code(), [(h.id(), h.px(), h.py(), h.pz(), h.e(), h.m()) for h in hadrons]))
@@ -187,31 +204,31 @@ for iev in range(args.nevgen):
     if iev % 1000 == 0:
         print("Generate event ", iev)
     # stack: PID, px, py, pz, cascade depth, ancestors, interaction processes
-    stack = [[2212, 0.0, 0.0, args.pbeamh, 1, [2212] + 99 * [0], 100 * [0]]]
+    stack: list[tuple[int, float, float, float, int, list[int], list[int]]] = []
+    stack.append((2212, 0.0, 0.0, args.pbeamh, 1, [2212] + 99 * [0], 100 * [0]))
     while stack:
-        pid, px, py, pz, depth, anc, sub = stack.pop()
+        pid, px, py, pz, depth, ancestors, sub = stack.pop()
         p = math.sqrt(px**2 + py**2 + pz**2)
         idpn = 0 if random.random() < fracp else 1
         if np.interp(p, pgrid, chi[pid, idpn]) / chimx > random.random():
             code, hadrons = signal_event(pid, idpn, p)
-            m = PDG.GetParticle(pid).Mass()
+            m = mass(pid)
             beam = ROOT.TLorentzVector(px, py, pz, math.sqrt(p**2 + m**2))
-            boost = (beam + ROOT.TLorentzVector(0, 0, 0, PDG.GetParticle(target[idpn]).Mass())).BoostVector()
+            boost = (beam + ROOT.TLorentzVector(0, 0, 0, mass(target[idpn]))).BoostVector()  # type: ignore[missing-attribute]
             nsub = min(depth - 1, 15)
             for hid, *p4, hm in hadrons:
                 v = ROOT.TLorentzVector(*p4)
-                v.RotateUz(beam.Vect().Unit())
-                v.Boost(boost)
+                v.RotateUz(beam.Vect().Unit())  # type: ignore[missing-attribute]
+                v.Boost(boost)  # type: ignore[missing-attribute]
                 vl = [hid, v.Px(), v.Py(), v.Pz(), v.E(), hm, pid, px, py, pz, beam.E(), m, depth]
-                Ntup.Fill(array("f", vl + anc[:16] + sub[:nsub] + [code] + (15 - nsub) * [0]))
+                Ntup.Fill(array("f", vl + ancestors[:16] + sub[:nsub] + [code] + (15 - nsub) * [0]))
                 hdepth.Fill(depth)
         # minimum-bias event to add new cascade particles to the stack
         idpn = 0 if random.random() < fracp else 1
         mb = mbias[idpn]
         mb.setBeamIDs(pid, target[idpn])
         mb.setKinematics(px, py, pz, 0.0, 0.0, 0.0)
-        while not mb.next():
-            pass
+        next_event(mb)
         code = mb.infoPython().code()
         icas = min(depth + 1, 98)
         if depth == 1:  # interaction process of the first proton
@@ -219,9 +236,9 @@ for iev in range(args.nevgen):
         for i in range(mb.event.size()):
             part = mb.event[i]
             if part.idAbs() in idbeam and part.isFinal() and part.pAbs() > pbeaml and len(stack) < 999:
-                tmp = anc[: icas - 1] + [part.id()] + anc[icas:]
+                tmp = ancestors[: icas - 1] + [part.id()] + ancestors[icas:]
                 stmp = sub[: icas - 1] + [code] + sub[icas:]
-                stack.append([part.id(), part.px(), part.py(), part.pz(), icas, tmp, stmp])
+                stack.append((part.id(), part.px(), part.py(), part.pz(), icas, tmp, stmp))
 
 print(f"Generated {args.nevgen} p.o.t. in {time.time() - t0} s with {nseed} Pythia8 instances")
 ftup.Write()
