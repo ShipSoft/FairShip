@@ -474,7 +474,12 @@ P8gen.SetSeed(seed)
 #        print '            : c chicc= ccbar over mbias cross section'
 if args.charm or args.beauty:
     check_run_type_override(args.beauty, args.chicc, args.chibb)
-    cs = derive_cross_sections(args.target_composition, args.A, args.chicc, args.chibb)
+    # cascade files written by makeCascadePythia8.py carry the cross section they were made with
+    with ROOT.TFile.Open(charmInputFile) as _fin:
+        sigma_QQ = _fin.Get("sigma_QQ").GetVal() if _fin.Get("sigma_QQ") else None
+    if sigma_QQ:
+        print(f"Input file cross section per nucleon: {1e3 * sigma_QQ:.3g} ub, used to scale the input flavour")
+    cs = derive_cross_sections(args.target_composition, args.A, args.chicc, args.chibb, sigma_QQ, args.beauty)
     P8gen.SetChicc(cs.chicc)
     P8gen.SetChibb(cs.chibb)
     print(format_summary(cs, None if args.A is not None else args.target_composition))
