@@ -21,6 +21,7 @@ it in future.
 ### Changed
 
 * Update default He balloon liner to be made with polyester like Mylar, named mylar_linerHe with density/thickness matching material #5
+* Scale `chicc`/`chibb` in `run_fixedTarget.py` by the heavy-flavour cross section per nucleon stored in the cascade input file, so that the normalisation follows the beam energy, tune and target composition the file was generated with. Files without it, such as the existing ones on EOS, keep the previous values.
 
 ### Fixed
 * `FixedTargetGenerator` places charm and beauty from cascade input at the depth of their cascade generation: a hadron from depth k is produced in the k-th interaction, each sampled from the material after the previous one. Before, every event was placed where a first interaction would be, and the depth was taken from the previous pair.

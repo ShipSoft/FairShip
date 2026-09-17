@@ -5,6 +5,8 @@ import pytest
 from heavyFlavourScaling import (
     CHIBB_REF,
     CHICC_REF,
+    SIGMA_BB_REF,
+    SIGMA_CC_REF,
     check_run_type_override,
     derive_cross_sections,
 )
@@ -76,3 +78,28 @@ def test_override_wrong_run_type_raises():
 def test_both_overrides_raise():
     with pytest.raises(ValueError, match="only one"):
         check_run_type_override(is_beauty=False, chicc=1e-3, chibb=1e-7)
+
+
+def test_sigma_QQ_scales_the_charm_reference_only():
+    cs = derive_cross_sections("Mo", sigma_QQ=2 * SIGMA_CC_REF)
+    assert cs.chicc == pytest.approx(2 * CHICC_REF)
+    assert cs.chibb == pytest.approx(CHIBB_REF)
+
+
+def test_sigma_QQ_scales_the_beauty_reference_for_a_beauty_file():
+    cs = derive_cross_sections("Mo", sigma_QQ=2 * SIGMA_BB_REF, is_beauty=True)
+    assert cs.chibb == pytest.approx(2 * CHIBB_REF)
+    assert cs.chicc == pytest.approx(CHICC_REF)
+
+
+def test_sigma_QQ_reference_value_reproduces_default():
+    assert derive_cross_sections("W", sigma_QQ=SIGMA_CC_REF).chicc == pytest.approx(derive_cross_sections("W").chicc)
+
+
+def test_sigma_QQ_does_not_override_explicit_chicc():
+    assert derive_cross_sections("Mo", chicc=1e-3, sigma_QQ=2 * SIGMA_CC_REF).chicc == pytest.approx(1e-3)
+
+
+def test_invalid_sigma_QQ():
+    with pytest.raises(ValueError, match="sigma_QQ"):
+        derive_cross_sections("W", sigma_QQ=0.0)
