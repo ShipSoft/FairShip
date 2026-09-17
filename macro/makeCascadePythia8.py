@@ -48,7 +48,7 @@ ap.add_argument(
     help="Pythia8 tune: default (Monash 2013) or FTFT (arXiv:2608.29076, with its K-factors)",
 )
 ap.add_argument("--nev", type=int, default=2000, help="Events / momentum")
-ap.add_argument("--nrpoints", type=int, default=20, help="Number of momentum points taken to calculate sig/sigtot")
+ap.add_argument("--nrpoints", type=int, default=40, help="Number of momentum points taken to calculate sig/sigtot")
 args = ap.parse_args()
 if args.Fntuple == "":
     args.Fntuple = f"Cascade{int(args.nevgen / 1000)}k-pythia8-{args.pythia8_tune}-MSEL{args.mselcb}-ntuple.root"
@@ -64,7 +64,9 @@ if args.mselcb == 4:
     pbeaml = 34.0
     idsig = {411, 421, 431, 4122, 4132, 4232, 4332, 4412, 4414, 4422, 4424, 4432, 4434, 4444}
     process = "HardQCD:hardccbar = on"
-    kfactor = (2.48, 2.02)
+    # K-factors of the FTFT fit for forced production, which is what the cascade uses, for nucleon
+    # and meson beams; the pion value is rescaled to the GRV92 pion PDF of the tune (5.49 * 0.949).
+    kfactor = (7.33, 5.21)
 else:
     pbeaml = 130.0
     idsig = {511, 521, 531, 541, 5122, 5132, 5142, 5232, 5242, 5332, 5342, 5412, 5414, 5422, 5424, 5432, 5434}
@@ -150,24 +152,34 @@ mbias = [
     for tid in target
 ]
 
-# chi = K * sigma(signal) / sigma(total) vs momentum for all beam and target particles
-pgrid = np.linspace(pbeaml, args.pbeamh, args.nrpoints)
-chi = {}
+# chi = K * sigma(signal) / sigma(total) vs momentum for all beam and target particles.
+# The grid is logarithmic and chi is interpolated in log(chi) vs log(p): chi varies by orders of
+# magnitude over the range and most of that variation sits close to the threshold.
+pgrid = np.geomspace(pbeaml, args.pbeamh, args.nrpoints)
+logp = np.log(pgrid)
+chi, sigma = {}, {}
 for kf in idbeam:
     for pid in sorted({kf, -kf}):
         if not PDG.GetParticle(pid):
             continue
         k = kfactor[0] if abs(pid) in (2212, 2112) else kfactor[1]
         for idpn in range(2):
-            chi[pid, idpn] = []
+            sigma[pid, idpn] = []
             for p in pgrid:
                 py = new_pythia([process, "PartonLevel:all = off", "HadronLevel:all = off", *beams(pid, idpn, p)])
                 for _ in range(args.nev):
                     py.next()
-                sigtot = mbias[idpn].getSigmaTotal(pid, target[idpn], ecm(pid, idpn, p))
-                chi[pid, idpn].append(k * py.infoPython().sigmaGen() / sigtot)
-            print(f"chi at {args.pbeamh} GeV for {pid} on {target[idpn]}: {chi[pid, idpn][-1]}")
-chimx = max(max(c) for c in chi.values())
+                sigma[pid, idpn].append(k * py.infoPython().sigmaGen())
+            sigtot = [mbias[idpn].getSigmaTotal(pid, target[idpn], ecm(pid, idpn, p)) for p in pgrid]
+            chi[pid, idpn] = np.log([s / t for s, t in zip(sigma[pid, idpn], sigtot)])
+            print(
+                f"K*sigma and chi at {args.pbeamh} GeV for {pid} on {target[idpn]}: "
+                f"{sigma[pid, idpn][-1]:.3e} mb, {math.exp(chi[pid, idpn][-1]):.3e}"
+            )
+chimx = max(np.exp(c).max() for c in chi.values())
+# cross section per nucleon of the target composition, at the beam energy, for the normalisation
+sigma_QQ = fracp * sigma[2212, 0][-1] + (1.0 - fracp) * sigma[2212, 1][-1]
+print(f"K*sigma per nucleon at {args.pbeamh} GeV: {1e3 * sigma_QQ:.2f} ub")
 
 # signal events at bin momenta pbeamh/1.1^i, generated in batches of increasing size
 buffers = {}
@@ -198,6 +210,9 @@ s0:s1:s2:s3:s4:s5:s6:s7:s8:s9:s10:s11:s12:s13:s14:s15",
 )
 # number of signal particles per cascade depth, used by FixedTargetGenerator for the normalisation
 hdepth = ROOT.TH1F("2", "nr signal per cascade depth", 50, 0.5, 50.5)
+# cross section per nucleon [mb] this file was generated with, read back by run_fixedTarget.py to
+# scale chicc/chibb, so that the normalisation follows the beam energy, tune and target of the file
+ROOT.TParameter("double")("sigma_QQ", sigma_QQ).Write()
 
 t0 = time.time()
 for iev in range(args.nevgen):
@@ -210,7 +225,7 @@ for iev in range(args.nevgen):
         pid, px, py, pz, depth, ancestors, sub = stack.pop()
         p = math.sqrt(px**2 + py**2 + pz**2)
         idpn = 0 if random.random() < fracp else 1
-        if np.interp(p, pgrid, chi[pid, idpn]) / chimx > random.random():
+        if math.exp(np.interp(math.log(p), logp, chi[pid, idpn])) / chimx > random.random():
             code, hadrons = signal_event(pid, idpn, p)
             m = mass(pid)
             beam = ROOT.TLorentzVector(px, py, pz, math.sqrt(p**2 + m**2))
