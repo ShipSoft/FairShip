@@ -17,17 +17,24 @@ mbias_Ascale = 0.71
 A_REF = 98.0
 CHICC_REF = 1.7e-3  # prob to produce primary ccbar pair/pot on Mo
 CHIBB_REF = 1.6e-7  # prob to produce primary bbbar pair/pot on Mo
+# cross sections per nucleon [mb] the reference probabilities above were derived with, so that a
+# cascade file generated with a different one (energy, tune, target) can rescale them
+SIGMA_CC_REF = 18.1e-3
+SIGMA_BB_REF = SIGMA_CC_REF * CHIBB_REF / CHICC_REF
 TARGET_A = {"W": 184.0, "Mo": 98.0}
 
 CrossSections = namedtuple("CrossSections", ["chicc", "chibb", "A", "scale"])
 
 
-def derive_cross_sections(target_composition=None, A=None, chicc=None, chibb=None):
+def derive_cross_sections(target_composition=None, A=None, chicc=None, chibb=None, sigma_QQ=None, is_beauty=False):
     """Return default-scaled chicc/chibb, honouring explicit overrides.
 
     ``A`` overrides the ``target_composition`` preset; ``chicc``/``chibb``
     override the target-derived value when not ``None``. Supply either
     ``target_composition`` (a known preset) or an explicit ``A``.
+    ``sigma_QQ`` is the cross section per nucleon [mb] of the cascade input
+    file, and rescales the reference probability of the flavour that file
+    holds: beauty for ``is_beauty``, charm otherwise.
     """
     if A is None:
         if target_composition is None:
@@ -35,9 +42,13 @@ def derive_cross_sections(target_composition=None, A=None, chicc=None, chibb=Non
         A = TARGET_A[target_composition]
     if A <= 0:
         raise ValueError(f"Invalid target mass number A={A}. Must be > 0.")
+    if sigma_QQ is not None and sigma_QQ <= 0:
+        raise ValueError(f"Invalid cross section sigma_QQ={sigma_QQ}. Must be > 0.")
     scale = (A / A_REF) ** (heavyflavour_Ascale - mbias_Ascale)
-    chicc = chicc if chicc is not None else CHICC_REF * scale
-    chibb = chibb if chibb is not None else CHIBB_REF * scale
+    cc_ref = CHICC_REF if sigma_QQ is None or is_beauty else CHICC_REF * sigma_QQ / SIGMA_CC_REF
+    bb_ref = CHIBB_REF * sigma_QQ / SIGMA_BB_REF if sigma_QQ is not None and is_beauty else CHIBB_REF
+    chicc = chicc if chicc is not None else cc_ref * scale
+    chibb = chibb if chibb is not None else bb_ref * scale
     return CrossSections(chicc, chibb, A, scale)
 
 
