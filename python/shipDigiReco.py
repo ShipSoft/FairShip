@@ -14,7 +14,6 @@ import validationTools as validation_tools
 from detectors.MTCDetector import MTCDetector
 from detectors.SBTDetector import SBTDetector
 from detectors.SiliconTargetDetector import SiliconTargetDetector
-from detectors.splitcalDetector import splitcalDetector
 from detectors.strawtubesDetector import strawtubesDetector
 from detectors.timeDetector import timeDetector
 from detectors.UpstreamTaggerDetector import UpstreamTaggerDetector
@@ -80,12 +79,6 @@ class ShipDigiReco:
         if hasattr(self, "strawtubes"):
             self.v_drift = global_variables.modules["strawtubes"].StrawVdrift()
             self.sigma_spatial = global_variables.modules["strawtubes"].StrawSigmaSpatial()
-        # optional if present, splitcalCluster
-        if self.sTree.GetBranch("splitcalPoint"):
-            self.splitcalDetector = splitcalDetector("splitcal", self.sTree, outtree=self.recoTree)
-            # Keep references for backward compatibility
-            self.digiSplitcal = self.splitcalDetector.det
-            self.recoSplitcal = self.splitcalDetector.reco
 
         # prepare vertexing
         self.Vertexing = shipVertex.Task(global_variables.h, self.recoTree, self.sTree)
@@ -163,8 +156,6 @@ class ShipDigiReco:
             self.digiMTC.process()
         if hasattr(self, "digiSiliconTarget"):
             self.digiSiliconTarget.process()
-        if self.sTree.GetBranch("splitcalPoint"):
-            self.splitcalDetector.process()
         if self.validation:
             self.validation_stats["events_digitized"] += 1
 

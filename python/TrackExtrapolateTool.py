@@ -14,10 +14,12 @@ def cmp(a, b):
 minNdf = 20
 parallelToZ = ROOT.TVector3(0.0, 0.0, 1.0)
 top = ROOT.gGeoManager.GetTopVolume()
-if top.GetNode("SplitCalDetector_1"):
-    z_ecal = top.GetNode("SplitCalDetector_1").GetMatrix().GetTranslation()[2]
+# Runge-Kutta extrapolation is done up to the scoring plane (former SplitCal
+# position); beyond it, tracks are extrapolated linearly.
+if top.GetNode("CaloScoringPlane_1"):
+    z_ecal = top.GetNode("CaloScoringPlane_1").GetMatrix().GetTranslation()[2]
 else:
-    print("TrackExtraploate tool: Error, no calo present")
+    print("TrackExtrapolate tool: Error, no scoring plane present")
     z_ecal = 100 * u.m
 
 
