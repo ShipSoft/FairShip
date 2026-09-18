@@ -206,6 +206,12 @@ def create_config(
     if strawDesign == 10:
         c.cave.floorHeightMuonShield = c.cave.floorHeightTankA  # avoid the gap, for 2018 geometry
     c.cave.floorHeightTankB = 2 * u.m
+    # ECN3 cavern, see passive/ShipCave.cxx
+    c.cave.TCC8_length = 170 * u.m
+    c.cave.ECN3_length = 100 * u.m
+    c.cave.stair_step_length = 0.82 * u.m
+    c.cave.z_transition = 20.52 * u.m
+    c.cave.zEnd = c.cave.z_transition + c.cave.ECN3_length  # downstream ECN3 wall
 
     with open(c.target_yaml) as file:
         targetconfig = yaml.safe_load(file)
@@ -370,59 +376,21 @@ def create_config(
     )  # Relative position of first layer of timing detector to decay vessel centre
 
     c.HcalOption = -1
-    c.EcalOption = 2
 
-    c.SplitCal = AttrDict()
-    c.SplitCal.ZStart = 38.450 * u.m + c.decayVolume.z  # Relative start z of split cal to decay vessel centre
-    c.SplitCal.XMax = 4 * u.m / 2  # half length
-    c.SplitCal.YMax = 6 * u.m / 2  # half length
-    c.SplitCal.Empty = 0 * u.cm
-    c.SplitCal.BigGap = 100 * u.cm
-    c.SplitCal.ActiveECALThickness = 0.56 * u.cm
-    c.SplitCal.FilterECALThickness = 0.28 * u.cm  #  0.56*u.cm   1.757*u.cm
-    c.SplitCal.FilterECALThickness_first = 0.28 * u.cm
-    c.SplitCal.ActiveHCALThickness = 90 * u.cm
-    c.SplitCal.FilterHCALThickness = 90 * u.cm
-    c.SplitCal.nECALSamplings = 50
-    c.SplitCal.nHCALSamplings = 0
-    c.SplitCal.ActiveHCAL = 0
-    c.SplitCal.FilterECALMaterial = 3  # 1=scintillator 2=Iron 3 = lead  4 =Argon
-    c.SplitCal.FilterHCALMaterial = 2
-    c.SplitCal.ActiveECALMaterial = 1
-    c.SplitCal.ActiveHCALMaterial = 1
-    c.SplitCal.ActiveECAL_gas_Thickness = 1.12 * u.cm
-    c.SplitCal.num_precision_layers = 1
-    c.SplitCal.first_precision_layer = 6
-    c.SplitCal.second_precision_layer = 10
-    c.SplitCal.third_precision_layer = 13
-    c.SplitCal.ActiveECAL_gas_gap = 10 * u.cm
-    c.SplitCal.NModulesInX = 2
-    c.SplitCal.NModulesInY = 3
-    c.SplitCal.NStripsPerModule = 50
-    c.SplitCal.StripHalfWidth = c.SplitCal.XMax / (c.SplitCal.NStripsPerModule * c.SplitCal.NModulesInX)
-    c.SplitCal.StripHalfLength = c.SplitCal.YMax / c.SplitCal.NModulesInY
-    c.SplitCal.SplitCalThickness = (
-        (c.SplitCal.FilterECALThickness_first - c.SplitCal.FilterECALThickness)
-        + (c.SplitCal.FilterECALThickness + c.SplitCal.ActiveECALThickness) * c.SplitCal.nECALSamplings
-        + c.SplitCal.BigGap
+    # CaloScoringPlane: ideal (vacuum) plane where the calorimeter entrance window sits,
+    # i.e. just downstream of the timing detector. Every track entering it is scored.
+    c.CaloScoringPlane = AttrDict()
+    c.CaloScoringPlane.gapToTimeDet = 56.1 * u.cm  # ECAL entrance window, z = 96.570 m (former SplitCal front face)
+    c.CaloScoringPlane.DX = 4 * u.m  # full width  (former SplitCal 2*XMax)
+    c.CaloScoringPlane.DY = 6 * u.m  # full height (former SplitCal 2*YMax)
+    c.CaloScoringPlane.DZ = 1 * u.mm  # full thickness
+    # Downstream face of the timing detector (bars are staggered downstream of TimeDet.z).
+    c.TimeDet.zEnd = c.TimeDet.z + c.TimeDet.dzBarRow + c.TimeDet.dzBarCol + c.TimeDet.zBar / 2
+    # Centre of the plane; its upstream face is the calorimeter entrance window.
+    c.CaloScoringPlane.z = c.TimeDet.zEnd + c.CaloScoringPlane.gapToTimeDet + c.CaloScoringPlane.DZ / 2
+    assert c.CaloScoringPlane.z + c.CaloScoringPlane.DZ / 2 < c.cave.zEnd, (
+        "CaloScoringPlane does not fit inside the ECN3 cavern"
     )
-
-    c.MuonStation0 = AttrDict(z=c.SplitCal.ZStart + 10 * u.cm + c.SplitCal.SplitCalThickness)
-
-    c.MuonStation1 = AttrDict(z=c.MuonStation0.z + 1 * u.m)
-    c.MuonStation2 = AttrDict(z=c.MuonStation0.z + 2 * u.m)
-    c.MuonStation3 = AttrDict(z=c.MuonStation0.z + 3 * u.m)
-
-    c.MuonFilter0 = AttrDict(z=c.MuonStation0.z + 50.0 * u.cm)
-    c.MuonFilter1 = AttrDict(z=c.MuonStation0.z + 150.0 * u.cm)
-    c.MuonFilter2 = AttrDict(z=c.MuonStation0.z + 250.0 * u.cm)
-
-    c.Muon = AttrDict()
-    c.Muon.XMax = 250.0 * u.cm
-    c.Muon.YMax = 325.0 * u.cm
-
-    c.Muon.ActiveThickness = 0.5 * u.cm
-    c.Muon.FilterThickness = 30.0 * u.cm
 
     c.hadronAbsorber.WithConstField = shield_db[shieldName]["WithConstField"]
     c.muShield.WithConstField = shield_db[shieldName]["WithConstField"]

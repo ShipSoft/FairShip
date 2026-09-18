@@ -15,6 +15,7 @@ it in future.
 ### Added
 
 * Add `--pythia8-tune` (`default`, `FTFT`) to `run_fixedTarget.py` and `FixedTargetGenerator::SetPythiaTune` to select the FTFT Pythia8 tune for open charm and beauty production in fixed-target collisions (arXiv:2608.29076) in the Pythia8 primary interaction. The Pythia8 default (Monash 2013) remains the default. Charm and beauty read from cascade input files are unaffected. `SetPythiaTune` takes the same tune names as the command line, with `default` and the empty string both selecting the Pythia8 default. `run_fixedTarget.py` rejects the flag up front when combined with `--charm`, `--beauty` or `--G4only`, where the tune would have no effect. A non-default tune also tags the work directory (e.g. `<host>_run_fixedTarget_1_FTFT`), so runs that differ only by tune no longer overwrite each other.
+* Add `CaloScoringPlane` detector: an ideal thin vacuum plane at the calorimeter entrance window, anchored to the timing detector (z = 96.570 m, the former SplitCal front face) (`ship_geo.CaloScoringPlane`). Every track entering it is stored as a `CaloScoringPlanePoint` (MC-truth position, momentum, time and PDG code at the exit face), without an energy-deposit requirement. Secondaries are only kept in `MCTrack` because of these points if the stack is configured with a minimum number of points; otherwise such points carry track ID -2.
 
 ### Changed
 
@@ -23,6 +24,8 @@ it in future.
 * Charm runs of `run_fixedTarget.py` no longer drop the `charm` work-directory tag: a missing `elif` meant the tag was assigned and then immediately overwritten, so charm output landed in the same untagged directory as a min-bias run of the same run number.
 
 ### Removed
+
+* Remove the SplitCal calorimeter (`splitcal`, `splitcalPoint`, `splitcalHit`, `splitcalCluster`, `splitcalDetector.py`, `ship_geo.SplitCal`, `ship_geo.EcalOption`). The `kSplitCal` detector ID slot is reused by `kCaloScoringPlane`. Muon station positions are unchanged. `TrackExtrapolateTool` now switches from Runge-Kutta to linear extrapolation at the scoring plane. Code that needs the particles arriving at the former SplitCal position should use `ship_geo.CaloScoringPlane` and its `CaloScoringPlanePoint` (MC truth) instead; the calorimeter hits, clustering and digitisation (`splitcalHit`, `splitcalCluster`) have no direct replacement.
 
 ## 26.09 - 2026-09-15
 
