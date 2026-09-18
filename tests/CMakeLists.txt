@@ -7,7 +7,7 @@ target_link_libraries(
     ShipData
     veto
     strawtubes
-    splitcal
+    CaloScoringPlane
     MTCDetector
     SiliconTarget
     TimeDet
@@ -32,7 +32,7 @@ target_link_libraries(
     ShipData
     veto
     strawtubes
-    splitcal
+    CaloScoringPlane
     MTCDetector
     SiliconTarget
     TimeDet
