@@ -19,6 +19,7 @@ it in future.
 * Add `macro/makeCascadePythia8.py`, a Pythia8 version of `makeCascade.py` that writes charm or beauty cascade files in the same format, with `--pythia8-tune` (`default`, `FTFT`). With `FTFT`, charm is normalised to the tune's inclusive charm cross section through forced-production K-factors that depend on the beam particle, the target nucleon and the momentum; beauty uses the tune's K-factors. Elastic scattering does not increase the cascade depth, so the depth-1 normalisation used by `run_fixedTarget.py` covers the beam proton up to its first inelastic interaction and its elastic re-interactions are not counted twice. `makeCascade.py` is unchanged. `FixedTargetGenerator` tags hadrons from depth 1 as primary when the input file has the depth branch, so beam protons that scattered elastically before are included; files without it keep the zero-transverse-momentum test.
 * Add `--charm-production` (`forced`, `inclusive`) to `macro/makeCascadePythia8.py`. With `inclusive`, charm signal events are inclusive inelastic events (`SoftQCD:inelastic`) generated at the exact momentum and direction of the projectile and kept if they contain charm, as in the FTFT tune, instead of forced `HardQCD:hardccbar` events. The normalisation is unchanged. Inclusive generation is about 20 times slower; `forced` remains the default.
 * Add the V21_2455 spectrometer field map (`files/2026_07_02_MainSpectrometerField_V21_2455.root`). The map was delivered with its x and y coordinate columns transposed, like the `2026_05_07_*` maps, and is shipped with the coordinates regenerated. The field values are unchanged.
+* Add `CaloScoringPlane` detector: an ideal thin vacuum plane at the calorimeter entrance window, anchored to the timing detector (z = 96.570 m, the former SplitCal front face) (`ship_geo.CaloScoringPlane`). Every track entering it is stored as a `CaloScoringPlanePoint` (MC-truth position, momentum, time and PDG code at the exit face), without an energy-deposit requirement. Secondaries are only kept in `MCTrack` because of these points if the stack is configured with a minimum number of points; otherwise such points carry track ID -2.
 
 ### Changed
 
@@ -46,6 +47,8 @@ it in future.
 * Added `ROOT::EGPythia8` in `shipgen/CMakeLists.txt` to avoid symbol lookup errors when using EvtGen
 
 ### Removed
+
+* Remove the SplitCal calorimeter (`splitcal`, `splitcalPoint`, `splitcalHit`, `splitcalCluster`, `splitcalDetector.py`, `ship_geo.SplitCal`, `ship_geo.EcalOption`). The `kSplitCal` detector ID slot is reused by `kCaloScoringPlane`. The muon stations and filters (`ship_geo.MuonStation*`, `ship_geo.MuonFilter*`, `ship_geo.Muon`), which had no geometry, are removed as well, and `ship_geo.HcalOption` (unused) with them; the scoring plane is now the downstream reference for the Genie generation window, the event display and `CMBG_conf`. `TrackExtrapolateTool` now switches from Runge-Kutta to linear extrapolation at the scoring plane. Code that needs the particles arriving at the former SplitCal position should use `ship_geo.CaloScoringPlane` and its `CaloScoringPlanePoint` (MC truth) instead; the calorimeter hits, clustering and digitisation (`splitcalHit`, `splitcalCluster`) have no direct replacement.
 
 ## 26.09 - 2026-09-15
 
