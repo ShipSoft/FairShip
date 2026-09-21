@@ -8,6 +8,14 @@ platforms = ["linux-64"]
 # Core HEP packages (conda-forge)
 root = ">=6.38"
 geant4 = ">=11.3"
+# Geant4Config.cmake calls find_dependency() on EXPAT, ZLIB and Freetype, each of
+# which needs headers and a CMake config. Since the v1-recipe modernisation
+# (conda-forge/geant4-feedstock#104) the conda-forge geant4 package brings in only
+# the runtime libexpat / libzlib / libfreetype, so find_package(Geant4) fails
+# unless the environment supplies these itself.
+expat = "*"
+zlib = "*"
+freetype = "*"
 pythia8 = ">=8.312"
 evtgen = ">=2.2"
 fmt = "*"
