@@ -1,0 +1,1535 @@
+diff --git a/macro/run_fixedTarget.py b/macro/run_fixedTarget.py
+index 14a27cd..391a3bb 100644
+--- a/macro/run_fixedTarget.py
++++ b/macro/run_fixedTarget.py
+@@ -101,6 +101,24 @@ ap.add_argument(
+     "--multiple-kpi-splits", action="store_true", help="split kaons and pions multiple times along the track path"
+ )
+ 
++jpsi_group = ap.add_argument_group(
++    "data-driven J/psi", "JpsiGenerator: NA50-normalised, SHiP-shaped J/psi source replacing Pythia8"
++)
++jpsi_group.add_argument(
++    "--jpsi-data", action="store_true", help="generate J/psi from the data-driven model instead of Pythia8"
++)
++jpsi_group.add_argument(
++    "--jpsi-enhancement",
++    type=float,
++    default=None,
++    help="enhancement over the physical rate (1 = realistic); sets the number of events, overriding -n",
++)
++jpsi_group.add_argument("--jpsi-shape", choices=["data", "hybrid", "gauss"], default="data")
++jpsi_group.add_argument("--jpsi-tail", type=float, default=6.0, help="exponent n of (1-|xF|)^n")
++jpsi_group.add_argument("--jpsi-ptsq", type=float, default=1.9, help="<pT^2> in GeV^2")
++jpsi_group.add_argument("--jpsi-lambda", type=float, default=0.0, help="Collins-Soper polar coefficient")
++jpsi_group.add_argument("--jpsi-output", choices=["mumu", "jpsi", "both"], default="mumu")
++
+ ap.add_argument("-C", "--charm", action=argparse.BooleanOptionalAction, default=False, help="generate charm decays")
+ ap.add_argument("-B", "--beauty", action=argparse.BooleanOptionalAction, default=False, help="generate beauty decays")
+ ap.add_argument(
+@@ -235,6 +253,8 @@ if args.kaon_pion_splits < 0:
+     ap.error("--kaon-pion-splits must be >= 0")
+ if args.multiple_kpi_splits and args.kaon_pion_splits == 0:
+     ap.error("--multiple-kpi-splits requires --kaon-pion-splits > 0")
++if args.jpsi_data and (args.charm or args.beauty or args.JpsiMainly or args.G4only):
++    ap.error("--jpsi-data cannot be combined with --charm, --beauty, --Jpsi-mainly or --G4only")
+ 
+ 
+ if args.G4only:
+@@ -261,6 +281,8 @@ if args.work_dir is None:
+         args.work_dir = get_work_dir(args.runnr, "beauty")
+     else:
+         args.work_dir = get_work_dir(args.runnr)
++    if args.jpsi_data:
++        args.work_dir = get_work_dir(args.runnr, "jpsi")
+ 
+ logger.debug("work_dir: %s" % args.work_dir)
+ logger.debug("command line arguments: %s", args)
+@@ -437,47 +459,75 @@ if args.AddCylindricalSensPlane:
+ 
+ # -----Create PrimaryGenerator--------------------------------------
+ primGen = ROOT.FairPrimaryGenerator()
+-P8gen = ROOT.FixedTargetGenerator()
+-P8gen.SetZoffset(args.z_offset * u.mm)
+-P8gen.SetXoffset(args.x_offset * u.mm)
+-P8gen.SetYoffset(args.y_offset * u.mm)
+-P8gen.SetSmearBeam(args.beam_smear * u.mm)
+-P8gen.SetPaintRadius(args.beam_paint * u.mm)
+-# Use geometry constants instead of fragile TGeo navigation
+-P8gen.SetTargetCoordinates(ship_geo.target.z0, ship_geo.target.z0 + ship_geo.target.length)
+-P8gen.SetMom(400.0 * u.GeV)
+-P8gen.SetEnergyCut(args.ecut * u.GeV)
+-P8gen.SetDebug(args.debug)
+-P8gen.SetHeartBeat(100000)
+-if args.G4only:
+-    P8gen.SetG4only()
+-if args.pythia8_tune != "default":
+-    P8gen.SetPythiaTune(args.pythia8_tune)
+-if args.JpsiMainly:
+-    P8gen.SetJpsiMainly()
+-if args.tauOnly:
+-    P8gen.SetTauOnly()
+-if withEvtGen:
+-    P8gen.WithEvtGen()
+-if args.boostDiMuon > 1:
+-    P8gen.SetBoost(
+-        args.boostDiMuon
+-    )  # will increase BR for rare eta,omega,rho ... mesons decaying to 2 muons in Pythia8
+-    # and later copied to Geant4
+-P8gen.SetSeed(seed)
+-# for charm/beauty
+-#        print ' for experts: p pot= number of protons on target per spill to normalize on'
+-#        print '            : c chicc= ccbar over mbias cross section'
+-if args.charm or args.beauty:
+-    check_run_type_override(args.beauty, args.chicc, args.chibb)
+-    cs = derive_cross_sections(args.target_composition, args.A, args.chicc, args.chibb)
+-    P8gen.SetChicc(cs.chicc)
+-    P8gen.SetChibb(cs.chibb)
+-    print(format_summary(cs, None if args.A is not None else args.target_composition))
+-    print("--- process heavy flavours ---")
+-    P8gen.InitForCharmOrBeauty(charmInputFile, args.nev, args.pot, args.nStart)
+-primGen.AddGenerator(P8gen)
+-ROOT.SetOwnership(P8gen, False)  # C++ FairPrimaryGenerator takes ownership
++if args.jpsi_data:
++    # Data-driven J/psi source. Init() is called by FairPrimaryGenerator during
++    # run.Init(), after the geometry exists: that is when the target scan fixes
++    # the vertex distribution, the rate per POT and hence the event weight.
++    P8gen = None
++    gen = ROOT.JpsiGenerator()
++    gen.SetMom(400.0 * u.GeV)
++    gen.SetPot(float(args.pot))
++    if args.jpsi_enhancement is not None:
++        gen.SetEnhancement(args.jpsi_enhancement)
++    else:
++        gen.SetNEvents(args.nev)
++    gen.SetRapidityShape(args.jpsi_shape)
++    gen.SetForwardTail(args.jpsi_tail)
++    gen.SetPtSq(args.jpsi_ptsq)
++    gen.SetPolarisation(args.jpsi_lambda)
++    gen.SetOutputMode(args.jpsi_output)
++    gen.SetTargetCoordinates(
++        ship_geo.target.z0 + args.z_offset * u.mm,
++        ship_geo.target.z0 + ship_geo.target.length,
++        args.x_offset * u.mm,
++        args.y_offset * u.mm,
++    )
++    gen.SetSmearBeam(args.beam_smear * u.mm)
++    gen.SetPaintRadius(args.beam_paint * u.mm)
++    gen.SetSeed(seed)
++else:
++    P8gen = ROOT.FixedTargetGenerator()
++    P8gen.SetZoffset(args.z_offset * u.mm)
++    P8gen.SetXoffset(args.x_offset * u.mm)
++    P8gen.SetYoffset(args.y_offset * u.mm)
++    P8gen.SetSmearBeam(args.beam_smear * u.mm)
++    P8gen.SetPaintRadius(args.beam_paint * u.mm)
++    # Use geometry constants instead of fragile TGeo navigation
++    P8gen.SetTargetCoordinates(ship_geo.target.z0, ship_geo.target.z0 + ship_geo.target.length)
++    P8gen.SetMom(400.0 * u.GeV)
++    P8gen.SetEnergyCut(args.ecut * u.GeV)
++    P8gen.SetDebug(args.debug)
++    P8gen.SetHeartBeat(100000)
++    if args.G4only:
++        P8gen.SetG4only()
++    if args.pythia8_tune != "default":
++        P8gen.SetPythiaTune(args.pythia8_tune)
++    if args.JpsiMainly:
++        P8gen.SetJpsiMainly()
++    if args.tauOnly:
++        P8gen.SetTauOnly()
++    if withEvtGen:
++        P8gen.WithEvtGen()
++    if args.boostDiMuon > 1:
++        P8gen.SetBoost(
++            args.boostDiMuon
++        )  # will increase BR for rare eta,omega,rho ... mesons decaying to 2 muons in Pythia8
++        # and later copied to Geant4
++    P8gen.SetSeed(seed)
++    # for charm/beauty
++    #        print ' for experts: p pot= number of protons on target per spill to normalize on'
++    #        print '            : c chicc= ccbar over mbias cross section'
++    if args.charm or args.beauty:
++        check_run_type_override(args.beauty, args.chicc, args.chibb)
++        cs = derive_cross_sections(args.target_composition, args.A, args.chicc, args.chibb)
++        P8gen.SetChicc(cs.chicc)
++        P8gen.SetChibb(cs.chibb)
++        print(format_summary(cs, None if args.A is not None else args.target_composition))
++        print("--- process heavy flavours ---")
++        P8gen.InitForCharmOrBeauty(charmInputFile, args.nev, args.pot, args.nStart)
++    gen = P8gen
++primGen.AddGenerator(gen)
++ROOT.SetOwnership(gen, False)  # C++ FairPrimaryGenerator takes ownership
+ #
+ run.SetGenerator(primGen)
+ ROOT.SetOwnership(primGen, False)  # C++ FairRunSim takes ownership
+@@ -494,7 +544,8 @@ if args.kaon_pion_splits > 0:
+ #
+ import AddDiMuonDecayChannelsToG4
+ 
+-AddDiMuonDecayChannelsToG4.Initialize(P8gen.GetPythia())
++if not args.jpsi_data:  # no Pythia instance in the data-driven J/psi mode
++    AddDiMuonDecayChannelsToG4.Initialize(P8gen.GetPythia())
+ 
+ # boost gamma2muon conversion
+ if args.boostFactor > 1:
+@@ -508,7 +559,11 @@ if args.boostFactor > 1:
+     procGMuPair.SetCrossSecFactor(args.boostFactor)
+ 
+ # -----Start run----------------------------------------------------
+-run.Run(args.nev)
++nev = args.nev
++if args.jpsi_data:
++    print(gen.Summary())
++    nev = gen.NEventsToGenerate()  # fixed by the enhancement, known only after run.Init()
++run.Run(nev)
+ 
+ # -----Finish-------------------------------------------------------
+ timer.Stop()
+@@ -534,6 +589,16 @@ if args.charm or args.beauty:
+     # normalization for charm
+     poteq = P8gen.GetPotForCharm()
+     info = "POT equivalent = %7.3G" % (poteq)
++elif args.jpsi_data:
++    info = "JpsiGenerator: POT = %7.3G, weight = %.6G, chi_mumu/POT = %.4G, shape %s n=%g" % (
++        float(args.pot),
++        gen.EventWeight(),
++        gen.ProbMuMuPerPot(),
++        args.jpsi_shape,
++        args.jpsi_tail,
++    )
++    with open(os.path.join(outputDir, "jpsi_generator_metadata.json"), "w") as fmeta:
++        json.dump({k: v for k, v in gen.Metadata()}, fmeta, indent=1)
+ else:
+     info = f"POT = {args.nev}"
+ 
+diff --git a/macro/run_simScript.py b/macro/run_simScript.py
+index f28c1ab..469f971 100755
+--- a/macro/run_simScript.py
++++ b/macro/run_simScript.py
+@@ -235,6 +235,29 @@ parser.add_argument(
+ parser.add_argument("--MuDIS", dest="mudis", help="Use muon deep inelastic scattering generator", action="store_true")
+ parser.add_argument("--RpvSusy", dest="RPVSUSY", help="Generate events based on RPV neutralino", action="store_true")
+ parser.add_argument("--FixedTarget", dest="fixedTarget", help="Enable fixed target simulation", action="store_true")
++jpsi_group = parser.add_argument_group(
++    "data-driven J/psi", "JpsiGenerator: NA50-normalised, SHiP-shaped J/psi source replacing Pythia8"
++)
++jpsi_group.add_argument(
++    "--JpsiData", dest="jpsiData", help="Generate J/psi from the data-driven model", action="store_true"
++)
++jpsi_group.add_argument(
++    "--jpsi-pot", dest="jpsiPot", type=float, default=4e13, help="protons on target the sample stands for"
++)
++jpsi_group.add_argument(
++    "--jpsi-enhancement",
++    dest="jpsiEnhancement",
++    type=float,
++    default=None,
++    help="enhancement over the physical rate (1 = realistic); sets the number of events, overriding -n",
++)
++jpsi_group.add_argument("--jpsi-shape", dest="jpsiShape", choices=["data", "hybrid", "gauss"], default="data")
++jpsi_group.add_argument("--jpsi-tail", dest="jpsiTail", type=float, default=6.0, help="exponent n of (1-|xF|)^n")
++jpsi_group.add_argument("--jpsi-ptsq", dest="jpsiPtSq", type=float, default=1.9, help="<pT^2> in GeV^2")
++jpsi_group.add_argument(
++    "--jpsi-lambda", dest="jpsiLambda", type=float, default=0.0, help="Collins-Soper polar coefficient"
++)
++jpsi_group.add_argument("--jpsi-output", dest="jpsiOutput", choices=["mumu", "jpsi", "both"], default="mumu")
+ parser.add_argument("--DarkPhoton", help="Generate dark photons", action="store_true")
+ parser.add_argument("--SusyBench", dest="RPVSUSYbench", help="Generate HP Susy", type=int, default=2)
+ parser.add_argument(
+@@ -406,6 +429,9 @@ parser.add_argument(
+ 
+ 
+ options = parser.parse_args()
++if options.jpsiData and (options.fixedTarget or options.command or options.pythia8 or options.muonback):
++    parser.error("--JpsiData replaces the other generators; do not combine it with --FixedTarget, --Pythia8, "
++                 "--MuonBack or a subcommand")
+ # Handle SND_design: allow 'all' (case-insensitive) or list of ints
+ available_snd_designs = [1, 2]  # Extend this list as new designs are added
+ if any(str(x).lower() == "all" for x in options.SND_design):
+@@ -536,6 +562,7 @@ if not options.command:
+         "muonback",
+         "mudis",
+         "fixedTarget",
++        "jpsiData",
+         "cosmics",
+     ]:
+         if getattr(options, g):
+@@ -683,6 +710,32 @@ if options.fixedTarget:
+     P8gen.SetG4only()
+     primGen.AddGenerator(P8gen)
+     ROOT.SetOwnership(P8gen, False)  # C++ FairPrimaryGenerator takes ownership
++if options.jpsiData:
++    # Data-driven J/psi source. Its Init() runs inside run.Init(), once the
++    # geometry exists: the target scan then fixes the vertex distribution, the
++    # rate per POT and the event weight.
++    HNL = False
++    JpsiGen = ROOT.JpsiGenerator()
++    JpsiGen.SetMom(400.0 * u.GeV)
++    JpsiGen.SetPot(options.jpsiPot)
++    if options.jpsiEnhancement is not None:
++        JpsiGen.SetEnhancement(options.jpsiEnhancement)
++    else:
++        JpsiGen.SetNEvents(options.nEvents)
++    JpsiGen.SetRapidityShape(options.jpsiShape)
++    JpsiGen.SetForwardTail(options.jpsiTail)
++    JpsiGen.SetPtSq(options.jpsiPtSq)
++    JpsiGen.SetPolarisation(options.jpsiLambda)
++    JpsiGen.SetOutputMode(options.jpsiOutput)
++    # same target interval, z offset and beam profile as the FixedTarget branch
++    JpsiGen.SetTargetCoordinates(
++        ship_geo.target.z0 + options.z_offset * u.mm, ship_geo.target.z0 + ship_geo.target.length
++    )
++    JpsiGen.SetSmearBeam(options.SmearBeam * u.cm)
++    JpsiGen.SetPaintRadius(options.PaintBeam * u.cm)
++    JpsiGen.SetSeed(seed)
++    primGen.AddGenerator(JpsiGen)
++    ROOT.SetOwnership(JpsiGen, False)  # C++ FairPrimaryGenerator takes ownership
+ if options.pythia6:
+     # set muon interaction close to decay volume
+     primGen.SetTarget(ship_geo.target.z0 + ship_geo.muShield.length, 0.0)
+@@ -976,6 +1029,9 @@ if options.print_fields:
+ # fieldMaker.plotField(2, ROOT.TVector3(-9000.0, 6000.0, 50.0), ROOT.TVector3(-400.0, 400.0, 6.0), 'Bzy.png')
+ 
+ # -----Start run----------------------------------------------------
++if options.jpsiData:
++    print(JpsiGen.Summary())
++    options.nEvents = JpsiGen.NEventsToGenerate()  # fixed in run.Init() by the target scan
+ run.Run(options.nEvents)
+ # -----Runtime database---------------------------------------------
+ kParameterMerged = ROOT.kTRUE
+@@ -1208,6 +1264,9 @@ def mergeFileSummary(inFiles: list[str] | str) -> dict:
+ 
+ 
+ newFileSummary = mergeFileSummary(usedInputFiles)
++if options.jpsiData:
++    newFileSummary["PoT"] = options.jpsiPot
++    newFileSummary["JpsiGenerator"] = {k: v for k, v in JpsiGen.Metadata()}
+ with ROOT.TFile.Open(outFile, "UPDATE") as _of:
+     _of.WriteObject(ROOT.TString(json.dumps(newFileSummary)), "FileSummary")
+ 
+diff --git a/shipgen/CMakeLists.txt b/shipgen/CMakeLists.txt
+index fa03380..3ada4a5 100644
+--- a/shipgen/CMakeLists.txt
++++ b/shipgen/CMakeLists.txt
+@@ -6,7 +6,8 @@ ship_add_library(
+   SOURCES Generator.cxx Pythia8Generator.cxx tPythia6Generator.cxx
+           HNLPythia8Generator.cxx DPPythia8Generator.cxx GenieGenerator.cxx
+           NtupleGenerator.cxx MuonBackGenerator.cxx CosmicsGenerator.cxx
+-          MuDISGenerator.cxx FixedTargetGenerator.cxx EvtCalcGenerator.cxx TTreeGenerator.cxx
++          MuDISGenerator.cxx FixedTargetGenerator.cxx JpsiGenerator.cxx JpsiSampler.cxx
++          EvtCalcGenerator.cxx TTreeGenerator.cxx
+           TEvtGenDecayer.cxx BeamSmearingUtils.cxx MeanMaterialBudget.cxx
+           ParticleGunGenerator.cxx
+   LINKDEF LinkDef.h
+diff --git a/shipgen/JpsiGenerator.cxx b/shipgen/JpsiGenerator.cxx
+new file mode 100644
+index 0000000..45e8fdd
+--- /dev/null
++++ b/shipgen/JpsiGenerator.cxx
+@@ -0,0 +1,236 @@
++// SPDX-License-Identifier: LGPL-3.0-or-later
++
++#include "JpsiGenerator.h"
++
++#include <algorithm>
++#include <cmath>
++
++#include "BeamSmearingUtils.h"
++#include "FairLogger.h"
++#include "FairPrimaryGenerator.h"
++#include "TGeoManager.h"
++#include "TGeoMaterial.h"
++#include "TGeoNode.h"
++#include "TGeoVolume.h"
++#include "TMCProcess.h"
++
++JpsiGenerator::~JpsiGenerator() = default;
++
++// ---------------------------------------------------------------- setters
++
++void JpsiGenerator::SetTargetMaterial(const TString& name) {
++  if (name == "W" || name == "tungsten") {
++    fCfg.target = jpsi::TungstenNA50();
++  } else if (name == "Mo" || name == "molybdenum") {
++    fCfg.target = jpsi::MolybdenumScaled();
++  } else {
++    LOG(fatal) << "JpsiGenerator: unknown target material " << name;
++  }
++}
++
++void JpsiGenerator::SetTargetMaterial(Double_t A, Double_t density_gcm3,
++                                      const TString& name) {
++  fCfg.target = jpsi::TargetFromA(A, density_gcm3, name.Data());
++}
++
++void JpsiGenerator::SetRapidityShape(const TString& shape) {
++  if (shape == "data") {
++    fCfg.yShape = jpsi::YShape::Data;
++  } else if (shape == "hybrid") {
++    fCfg.yShape = jpsi::YShape::Hybrid;
++  } else if (shape == "gauss") {
++    fCfg.yShape = jpsi::YShape::Gauss;
++  } else {
++    LOG(fatal) << "JpsiGenerator: unknown rapidity shape " << shape;
++  }
++}
++
++void JpsiGenerator::SetOutputMode(const TString& mode) {
++  if (mode == "mumu") {
++    fCfg.output = jpsi::Output::MuMu;
++  } else if (mode == "jpsi") {
++    fCfg.output = jpsi::Output::Jpsi;
++  } else if (mode == "both") {
++    fCfg.output = jpsi::Output::Both;
++  } else {
++    LOG(fatal) << "JpsiGenerator: unknown output mode " << mode;
++  }
++}
++
++void JpsiGenerator::AddLayer(const TString& material, Double_t length_cm) {
++  jpsi::Layer l;
++  if (material == "W") {
++    l.material = jpsi::TungstenNA50();
++  } else if (material == "Mo") {
++    l.material = jpsi::MolybdenumScaled();
++  } else {
++    LOG(fatal) << "JpsiGenerator: unknown layer material " << material;
++  }
++  l.length_cm = length_cm;
++  fCfg.layers.push_back(l);
++}
++
++void JpsiGenerator::SetTargetCoordinates(Double_t z0_cm, Double_t z1_cm,
++                                         Double_t x_cm, Double_t y_cm) {
++  fUseGeometry = kTRUE;
++  fZ0 = z0_cm;
++  fZ1 = z1_cm;
++  fXoff = x_cm;
++  fYoff = y_cm;
++  fCfg.layers.clear();
++}
++
++Double_t JpsiGenerator::ChiMuMu() const {
++  return fSampler ? fSampler->GetNormalisation().chiMuMu : 0.;
++}
++Double_t JpsiGenerator::ProbMuMuPerPot() const {
++  return fSampler ? fSampler->GetNormalisation().probMuMuPerPot : 0.;
++}
++Double_t JpsiGenerator::EventWeight() const {
++  return fSampler ? fSampler->GetNormalisation().weight : 0.;
++}
++Long_t JpsiGenerator::NEventsToGenerate() const {
++  return fSampler ? fSampler->NEvents() : 0;
++}
++std::string JpsiGenerator::Summary() const {
++  return fSampler ? fSampler->Summary()
++                  : std::string("JpsiGenerator: not initialised");
++}
++std::vector<std::pair<std::string, double>> JpsiGenerator::Metadata() const {
++  return fSampler ? fSampler->Metadata()
++                  : std::vector<std::pair<std::string, double>>{};
++}
++
++// ---------------------------------------------------------------- geometry
++
++Bool_t JpsiGenerator::ScanGeometry() {
++  // One scan gives both the vertex CDF and the absolute rate:
++  //   dP/dz = exp(-tau(z)) * n_A(z) * B_mumu sigma_Jpsi(A(z))
++  // with sigma_Jpsi ~ A^alpha, which is NOT proportional to the inelastic
++  // density once the target mixes materials.
++  if (!gGeoManager) {
++    LOG(fatal) << "JpsiGenerator: no geometry loaded";
++    return kFALSE;
++  }
++  if (fZ1 <= fZ0) {
++    LOG(fatal) << "JpsiGenerator: empty target interval";
++    return kFALSE;
++  }
++
++  const Int_t n = std::max(100, fScanSteps);
++  const Double_t dz = (fZ1 - fZ0) / n;
++  fZGrid.assign(n + 1, 0.);
++  std::vector<Double_t> dens(n + 1, 0.);
++  Double_t tau = 0.;
++  Double_t rate = 0.;  // J/psi -> mu mu per POT
++
++  for (Int_t i = 0; i <= n; ++i) {
++    const Double_t z = fZ0 + i * dz;
++    fZGrid[i] = z;
++    TGeoNode* node = gGeoManager->FindNode(fXoff, fYoff, z);
++    if (!node || gGeoManager->IsOutside()) continue;
++    TGeoMaterial* mat = node->GetVolume()->GetMaterial();
++    if (!mat || mat->GetA() <= 0 || mat->GetDensity() <= 0) continue;
++    const Double_t intLen_cm = mat->GetIntLen();  // cm
++    if (i > 0 && intLen_cm > 0) tau += dz / intLen_cm;
++    const Double_t nA_cm3 =
++        mat->GetDensity() * jpsi::kAvogadro / mat->GetA();
++    const Double_t bSigma_cm2 = fSampler->BSigmaFullForA(mat->GetA());
++    dens[i] = std::exp(-tau) * nA_cm3 * bSigma_cm2;
++  }
++  for (Int_t i = 1; i <= n; ++i) rate += 0.5 * (dens[i] + dens[i - 1]) * dz;
++  if (rate <= 0) {
++    LOG(fatal) << "JpsiGenerator: no material found along the target axis";
++    return kFALSE;
++  }
++
++  fZCdf.assign(n + 1, 0.);
++  for (Int_t i = 1; i <= n; ++i) {
++    fZCdf[i] = fZCdf[i - 1] + 0.5 * (dens[i] + dens[i - 1]) * dz;
++  }
++  for (auto& c : fZCdf) c /= fZCdf.back();
++
++  fSampler->SetProbMuMuPerPot(rate);
++  LOG(info) << "JpsiGenerator: geometry scan gives P(J/psi->mumu)/POT = " << rate;
++  return kTRUE;
++}
++
++// ---------------------------------------------------------------- Init
++
++Bool_t JpsiGenerator::Init() {
++  try {
++    fSampler = std::make_unique<jpsi::Sampler>(fCfg);
++  } catch (const std::exception& e) {
++    LOG(fatal) << "JpsiGenerator: " << e.what();
++    return kFALSE;
++  }
++  if (fUseGeometry && !ScanGeometry()) return kFALSE;
++  LOG(info) << fSampler->Summary();
++  return kTRUE;
++}
++
++// ---------------------------------------------------------------- event
++
++Bool_t JpsiGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
++  if (!fSampler) {
++    LOG(fatal) << "JpsiGenerator: ReadEvent before Init";
++    return kFALSE;
++  }
++  IncrementCounter("generated_events");
++
++  jpsi::Event ev = fSampler->Next();
++  const Double_t w = ev.weight;
++
++  // vertex: geometry CDF, slab model, or the fixed start plane
++  Double_t z = fCfg.zStart_cm;
++  if (!fZCdf.empty()) {
++    const double u = fSampler->Uniform();
++    const auto it = std::lower_bound(fZCdf.begin(), fZCdf.end(), u);
++    const std::size_t i =
++        std::min<std::size_t>(std::distance(fZCdf.begin(), it), fZCdf.size() - 1);
++    if (i == 0) {
++      z = fZGrid.front();
++    } else {
++      const double den = fZCdf[i] - fZCdf[i - 1];
++      const double f = den > 0 ? (u - fZCdf[i - 1]) / den : 0.;
++      z = fZGrid[i - 1] + f * (fZGrid[i] - fZGrid[i - 1]);
++    }
++  } else {
++    z = ev.z_cm;
++  }
++
++  // Same beam profile as FixedTargetGenerator (Gaussian smearing + painting).
++  const auto [dx, dy] = CalculateBeamOffset(fSmearBeam, fPaintBeam);
++  const Double_t x = fXoff + dx;
++  const Double_t y = fYoff + dy;
++
++  if (fCfg.output == jpsi::Output::Jpsi) {
++    // inclusive, transported J/psi: it carries the physical weight itself
++    cpg->AddTrack(443, ev.jpsi.px, ev.jpsi.py, ev.jpsi.pz, x, y, z, -1, kTRUE,
++                  ev.jpsi.E, 0., w, kPPrimary);
++    IncrementCounter("stored_tracks");
++    IncrementCounter("tracked_final_state_particles");
++    return kTRUE;
++  }
++
++  // Truth-level mother with weight 1: ShipStack multiplies daughter weights by
++  // the parent's when splitting is on, so this must not be w.
++  cpg->AddTrack(443, ev.jpsi.px, ev.jpsi.py, ev.jpsi.pz, x, y, z, -1, kFALSE,
++                ev.jpsi.E, 0., 1.0, kPPrimary);
++  IncrementCounter("stored_tracks");
++
++  if (!IsInVesselAcceptance(ev.mup.px, ev.mup.py, ev.mup.pz) &&
++      !IsInVesselAcceptance(ev.mum.px, ev.mum.py, ev.mum.pz)) {
++    IncrementCounter("geometry_rejected_events");
++    return kTRUE;
++  }
++  cpg->AddTrack(-13, ev.mup.px, ev.mup.py, ev.mup.pz, x, y, z, 0, kTRUE,
++                ev.mup.E, 0., w, kPDecay);
++  cpg->AddTrack(13, ev.mum.px, ev.mum.py, ev.mum.pz, x, y, z, 0, kTRUE,
++                ev.mum.E, 0., w, kPDecay);
++  IncrementCounter("stored_tracks", 2);
++  IncrementCounter("tracked_final_state_particles", 2);
++  return kTRUE;
++}
++
++ClassImp(JpsiGenerator);
+diff --git a/shipgen/JpsiGenerator.h b/shipgen/JpsiGenerator.h
+new file mode 100644
+index 0000000..a153a26
+--- /dev/null
++++ b/shipgen/JpsiGenerator.h
+@@ -0,0 +1,125 @@
++// SPDX-License-Identifier: LGPL-3.0-or-later
++//
++// FairShip front end for the data-driven J/psi source. All physics lives in
++// JpsiSampler; this class handles the geometry scan (vertex distribution and
++// absolute rate), the AddTrack calls and the configuration setters.
++//
++// Weight convention, important with FairShip splitting enabled:
++// ShipStack::PushTrack multiplies a daughter weight by its parent's, so the
++// truth-level J/psi mother is pushed with weight 1 and the transported muons
++// carry the physical event weight. In Output::Jpsi the J/psi itself is the
++// transported particle and carries the inclusive weight.
++
++#ifndef SHIPGEN_JPSIGENERATOR_H_
++#define SHIPGEN_JPSIGENERATOR_H_
++
++#include <memory>
++#include <string>
++#include <vector>
++
++#include "Generator.h"
++#include "JpsiSampler.h"
++#include "TString.h"
++
++class FairPrimaryGenerator;
++
++class JpsiGenerator : public SHiP::Generator {
++ public:
++  JpsiGenerator() = default;
++  ~JpsiGenerator() override;
++
++  Bool_t Init() override;
++  Bool_t Init(const char*) override { return Init(); }
++  Bool_t Init(const char*, int) override { return Init(); }
++  using SHiP::Generator::Init;
++
++  Bool_t ReadEvent(FairPrimaryGenerator*) override;
++
++  // ---- beam, target, normalisation ----------------------------------------
++  void SetMom(Double_t p) { fCfg.pBeam = p; }
++  /// Per-nucleon anchor when no geometry scan is used: "W" or "Mo", or (A, rho).
++  void SetTargetMaterial(const TString& name);
++  void SetTargetMaterial(Double_t A, Double_t density_gcm3,
++                         const TString& name = "custom");
++  void SetPot(Double_t nPot) { fCfg.nPot = nPot; }
++  void SetNEvents(Long_t n) {
++    fCfg.nEvents = n;
++    fCfg.enhancement = -1;
++  }
++  /// Enhancement over the physical rate: 1 = realistic (weight 1 per event),
++  /// 1e3 = a thousand times more J/psi at weight 1e-3. Overrides SetNEvents;
++  /// read back the count with NEventsToGenerate().
++  void SetEnhancement(Double_t e) { fCfg.enhancement = e; }
++
++  // ---- kinematics knobs ----------------------------------------------------
++  void SetRapidityShape(const TString& shape);  ///< "data", "hybrid", "gauss"
++  void SetForwardTail(Double_t n) { fCfg.tailN = n; }
++  void SetYMatch(Double_t y) { fCfg.yMatch = y; }
++  void SetDataRange(Double_t lo, Double_t hi) {
++    fCfg.dataLo = lo;
++    fCfg.dataHi = hi;
++  }
++  void SetGaussian(Double_t mean, Double_t sigma) {
++    fCfg.yGauss0 = mean;
++    fCfg.yGaussSigma = sigma;
++  }
++  void SetPtSq(Double_t ptSq) { fCfg.ptSq = ptSq; }
++  void SetFHard(Double_t f) {
++    fCfg.fHard = f;
++    fCfg.ptSq = -1;
++  }
++  void SetThermalSlope(Double_t T) { fCfg.T = T; }
++  void SetThermalJacobian(Bool_t on) { fCfg.thermalJacobian = on; }
++  /// Collins-Soper polar coefficient. Feeds both the decay angles and the
++  /// acceptance factor in the normalisation.
++  void SetPolarisation(Double_t lambda) { fCfg.lambdaPol = lambda; }
++  /// Seeds the sampler (kinematics, decay, vertex). The beam offset uses the
++  /// FairShip beam utility and hence gRandom, which the run macro seeds with
++  /// the same --seed.
++  void SetSeed(ULong64_t s) { fCfg.seed = s; }
++
++  // ---- output --------------------------------------------------------------
++  /// "mumu" (default), "jpsi" (inclusive, undecayed) or "both".
++  void SetOutputMode(const TString& mode);
++
++  // ---- vertex and absolute rate over the geometry --------------------------
++  /// Scan the FairShip geometry between two z positions along (x, y) and use it
++  /// for both the vertex distribution and the J/psi -> mu mu rate per POT.
++  /// Typically z0 = ship_geo.target.z0, z1 = z0 + ship_geo.target.length.
++  void SetTargetCoordinates(Double_t z0_cm, Double_t z1_cm, Double_t x_cm = 0,
++                            Double_t y_cm = 0);
++  void SetScanSteps(Int_t n) { fScanSteps = n; }
++  /// Alternative to the geometry scan: an explicit slab stack.
++  void AddLayer(const TString& material, Double_t length_cm);
++  void SetZStart(Double_t z_cm) { fCfg.zStart_cm = z_cm; }
++  /// Beam profile, same convention and defaults as FixedTargetGenerator:
++  /// Gaussian sigma plus uniform painting radius, via CalculateBeamOffset.
++  void SetSmearBeam(Double_t sigma_cm) { fSmearBeam = sigma_cm; }
++  void SetPaintRadius(Double_t r_cm) { fPaintBeam = r_cm; }
++
++  // ---- results and metadata ------------------------------------------------
++  Double_t ChiMuMu() const;
++  Double_t ProbMuMuPerPot() const;
++  Double_t EventWeight() const;
++  Long_t NEventsToGenerate() const;
++  std::string Summary() const;
++  std::vector<std::pair<std::string, double>> Metadata() const;
++
++ private:
++  Bool_t ScanGeometry();
++
++  jpsi::Config fCfg;
++  std::unique_ptr<jpsi::Sampler> fSampler;  //!
++
++  Bool_t fUseGeometry = kFALSE;
++  Double_t fZ0 = 0, fZ1 = 0, fXoff = 0, fYoff = 0;
++  Int_t fScanSteps = 4000;
++  Double_t fSmearBeam = 0.8;  // cm, FixedTargetGenerator default
++  Double_t fPaintBeam = 5.0;  // cm, FixedTargetGenerator default
++  std::vector<Double_t> fZGrid;  //!
++  std::vector<Double_t> fZCdf;   //!
++
++  ClassDefOverride(JpsiGenerator, 1);
++};
++
++#endif  // SHIPGEN_JPSIGENERATOR_H_
+diff --git a/shipgen/JpsiSampler.cxx b/shipgen/JpsiSampler.cxx
+new file mode 100644
+index 0000000..21df670
+--- /dev/null
++++ b/shipgen/JpsiSampler.cxx
+@@ -0,0 +1,605 @@
++// SPDX-License-Identifier: LGPL-3.0-or-later
++
++#include "JpsiSampler.h"
++
++#include <algorithm>
++#include <cstdlib>
++#include <cmath>
++#include <sstream>
++#include <stdexcept>
++
++namespace jpsi {
++
++namespace {
++
++/// SHiP CERN-SHiP-ANA-2019-002 Table 2: y_low, B*sigma/A [pb/nucleon].
++struct ShipBin {
++  double yLow, value_pb;
++};
++constexpr ShipBin kShipTable[] = {
++    {0.2, 660.34}, {0.3, 473.61}, {0.4, 375.56}, {0.5, 329.45}, {0.6, 291.41},
++    {0.7, 240.60}, {0.8, 205.21}, {0.9, 166.79}, {1.0, 135.93}, {1.1, 104.79},
++    {1.2, 75.83},  {1.3, 53.78},  {1.4, 30.94},  {1.5, 22.45},  {1.6, 12.84},
++    {1.7, 6.25},   {1.8, 0.94},   {1.9, 0.02}};
++constexpr double kShipBinWidth = 0.1;
++
++constexpr double kYWindowLo = -0.425;  // NA50 acceptance window
++constexpr double kYWindowHi = 0.575;
++
++/// Asymptotic K1: argument is mT/T >= M/T ~ 10.8, accuracy better than 1e-5.
++double BesselK1(double x) {
++  return std::exp(-x) * std::sqrt(M_PI / (2 * x)) *
++         (1 + 3 / (8 * x) - 15 / (128 * x * x) + 315 / (3072 * x * x * x));
++}
++
++double GaussPdf(double y, double mu, double sigma) {
++  const double t = (y - mu) / sigma;
++  return std::exp(-0.5 * t * t) / (sigma * std::sqrt(2 * M_PI));
++}
++
++void MakeCdf(const std::vector<double>& x, const std::vector<double>& pdf,
++             std::vector<double>& cdf) {
++  cdf.assign(x.size(), 0.);
++  for (std::size_t i = 1; i < x.size(); ++i) {
++    cdf[i] = cdf[i - 1] + 0.5 * (pdf[i] + pdf[i - 1]) * (x[i] - x[i - 1]);
++  }
++  if (cdf.back() <= 0.) throw std::runtime_error("JpsiSampler: empty density");
++  for (auto& c : cdf) c /= cdf.back();
++}
++
++double InvertCdf(const std::vector<double>& x, const std::vector<double>& cdf,
++                 double u) {
++  const auto it = std::lower_bound(cdf.begin(), cdf.end(), u);
++  if (it == cdf.begin()) return x.front();
++  if (it == cdf.end()) return x.back();
++  const std::size_t i = std::distance(cdf.begin(), it);
++  const double den = cdf[i] - cdf[i - 1];
++  const double f = den > 0 ? (u - cdf[i - 1]) / den : 0.;
++  return x[i - 1] + f * (x[i] - x[i - 1]);
++}
++
++double Interpolate(const std::vector<double>& x, const std::vector<double>& y,
++                   double xv) {
++  if (xv <= x.front()) return y.front();
++  if (xv >= x.back()) return y.back();
++  const auto it = std::lower_bound(x.begin(), x.end(), xv);
++  const std::size_t i = std::distance(x.begin(), it);
++  const double f = (xv - x[i - 1]) / (x[i] - x[i - 1]);
++  return y[i - 1] + f * (y[i] - y[i - 1]);
++}
++
++double Trapezoid(const std::vector<double>& x, const std::vector<double>& f) {
++  double sum = 0.;
++  for (std::size_t i = 1; i < x.size(); ++i) {
++    sum += 0.5 * (f[i] + f[i - 1]) * (x[i] - x[i - 1]);
++  }
++  return sum;
++}
++
++}  // namespace
++
++// ---------------------------------------------------------------- targets
++
++TargetSpec TungstenNA50() { return TargetSpec{}; }
++
++TargetSpec TargetFromA(double A, double density_gcm3, const std::string& name) {
++  // Anchored on NA50 tungsten:
++  //   B*sigma/A  ~ A^(alpha-1),   sigma_inel ~ A^0.71
++  const TargetSpec w = TungstenNA50();
++  TargetSpec t;
++  t.A = A;
++  t.alphaA = w.alphaA;
++  t.density_gcm3 = density_gcm3;
++  t.name = name;
++  t.bSigmaWindow_nb = w.bSigmaWindow_nb * std::pow(A / w.A, w.alphaA - 1.0);
++  const double sigmaW_cm2 = w.A / (kAvogadro * w.lambdaInt_gcm2);
++  const double sigma_cm2 = sigmaW_cm2 * std::pow(A / w.A, 0.71);
++  t.lambdaInt_gcm2 = A / (kAvogadro * sigma_cm2);
++  return t;
++}
++
++TargetSpec MolybdenumScaled() { return TargetFromA(95.95, 10.22, "Mo"); }
++
++// ---------------------------------------------------------------- helpers
++
++double Vec4::P() const { return std::sqrt(px * px + py * py + pz * pz); }
++double Vec4::Pt() const { return std::sqrt(px * px + py * py); }
++double Vec4::Rapidity() const { return 0.5 * std::log((E + pz) / (E - pz)); }
++
++double CosAcceptance(double lambda, double cut) {
++  const double num = cut + lambda * cut * cut * cut / 3.0;
++  const double den = 1.0 + lambda / 3.0;
++  return num / den;
++}
++
++// ---------------------------------------------------------------- Sampler
++
++Sampler::Sampler(const Config& cfg) : fCfg(cfg), fRng(cfg.seed) {
++  Validate();
++  const double eBeam = std::hypot(fCfg.pBeam, kMProton);
++  fSqrtS = std::sqrt(2 * kMProton * eBeam + 2 * kMProton * kMProton);
++  fYShift = std::atanh(fCfg.pBeam / (eBeam + kMProton));
++
++  BuildPtGrid();
++  BuildYGrid();
++  BuildTargetModel();
++  Normalise();
++}
++
++void Sampler::Validate() const {
++  auto fail = [](const std::string& m) {
++    throw std::runtime_error("JpsiSampler: " + m);
++  };
++  if (fCfg.pBeam <= kMProton) fail("beam momentum must be positive");
++  if (fCfg.T <= 0) fail("thermal slope T must be positive");
++  if (fCfg.p0 <= 0) fail("power-law scale p0 must be positive");
++  if (fCfg.nPow <= 1) fail("power-law exponent must exceed 1");
++  if (fCfg.ptMax <= 0) fail("ptMax must be positive");
++  if (fCfg.ptSq <= 0 && (fCfg.fHard < 0 || fCfg.fHard > 1)) {
++    fail("fHard must lie in [0,1]");
++  }
++  if (fCfg.yGaussSigma <= 0) fail("Gaussian width must be positive");
++  if (fCfg.tailN <= 0) fail("forward tail exponent must be positive");
++  if (fCfg.dataHi <= fCfg.dataLo) fail("empty data range");
++  if (fCfg.lambdaPol < -1) fail("lambda < -1 makes the decay density negative");
++  if (fCfg.nPot <= 0) fail("nPot must be positive");
++  if (fCfg.enhancement <= 0 && fCfg.nEvents <= 0) fail("nEvents must be > 0");
++  if (fCfg.enhancement > 0 && fCfg.enhancement <= 0) fail("bad enhancement");
++  for (const auto& l : fCfg.layers) {
++    if (l.length_cm <= 0) fail("layer length must be positive");
++    if (l.material.A <= 0 || l.material.density_gcm3 <= 0) {
++      fail("layer material is not physical");
++    }
++  }
++}
++
++void Sampler::BuildPtGrid() {
++  constexpr int kN = 20001;
++  fPtGrid.resize(kN);
++  fPtThermal.resize(kN);
++  fPtHard.resize(kN);
++  for (int i = 0; i < kN; ++i) {
++    const double pt = fCfg.ptMax * i / (kN - 1);
++    fPtGrid[i] = pt;
++    const double mt = std::hypot(kMJpsi, pt);
++    const double jac = fCfg.thermalJacobian ? pt : 1.0;
++    fPtThermal[i] = jac * mt * BesselK1(mt / fCfg.T);
++    fPtHard[i] = pt * std::pow(1 + (pt / fCfg.p0) * (pt / fCfg.p0), -fCfg.nPow);
++  }
++  auto normalise = [this](std::vector<double>& f) {
++    const double integral = Trapezoid(fPtGrid, f);
++    for (auto& v : f) v /= integral;
++  };
++  normalise(fPtThermal);
++  normalise(fPtHard);
++
++  const double fHard = fCfg.ptSq > 0 ? SolveFHard(fCfg.ptSq) : fCfg.fHard;
++  fNorm.fHard = fHard;
++  fPtPdf.resize(kN);
++  for (int i = 0; i < kN; ++i) {
++    fPtPdf[i] = (1 - fHard) * fPtThermal[i] + fHard * fPtHard[i];
++  }
++  MakeCdf(fPtGrid, fPtPdf, fPtCdf);
++  fNorm.meanPt = PtMoment(fPtPdf, 1);
++  fNorm.meanPtSq = PtMoment(fPtPdf, 2);
++}
++
++double Sampler::PtMoment(const std::vector<double>& pdf, int k) const {
++  std::vector<double> f(pdf.size());
++  for (std::size_t i = 0; i < pdf.size(); ++i) {
++    f[i] = std::pow(fPtGrid[i], k) * pdf[i];
++  }
++  return Trapezoid(fPtGrid, f);
++}
++
++double Sampler::SolveFHard(double ptSq) const {
++  const double a = PtMoment(fPtThermal, 2);
++  const double b = PtMoment(fPtHard, 2);
++  const double f = (ptSq - a) / (b - a);
++  if (f < 0 || f > 1) {
++    std::ostringstream os;
++    os << "JpsiSampler: <pT^2> = " << ptSq << " not reachable, range ["
++       << std::min(a, b) << ", " << std::max(a, b) << "]";
++    throw std::runtime_error(os.str());
++  }
++  return f;
++}
++
++double Sampler::PtCdfAt(double pt) const {
++  return Interpolate(fPtGrid, fPtCdf, pt);
++}
++
++double Sampler::PtMaxAt(double y) const {
++  // |x_F| < 1  <=>  2 mT sinh|y| < sqrt(s)
++  const double sh = std::abs(std::sinh(y));
++  if (sh < 1e-12) return fCfg.ptMax;
++  const double mtMax = fSqrtS / (2 * sh);
++  if (mtMax <= kMJpsi) return 0.;
++  return std::min(fCfg.ptMax, std::sqrt(mtMax * mtMax - kMJpsi * kMJpsi));
++}
++
++double Sampler::TailDensity(double y) const {
++  // dsigma/dy for dsigma/dxF ~ (1-|xF|)^n, integrated over the pT spectrum
++  // rather than evaluated at a reference transverse mass.
++  constexpr int kNpt = 400;
++  double sum = 0.;
++  const double ptMax = PtMaxAt(y);
++  if (ptMax <= 0) return 0.;
++  for (int i = 0; i <= kNpt; ++i) {
++    const double pt = ptMax * i / kNpt;
++    const double w = (i == 0 || i == kNpt) ? 0.5 : 1.0;
++    const double mt = std::hypot(kMJpsi, pt);
++    const double xf = 2 * mt * std::sinh(y) / fSqrtS;
++    const double base = std::max(0.0, 1.0 - std::abs(xf));
++    const double jac = 2 * mt * std::cosh(y) / fSqrtS;
++    sum += w * Interpolate(fPtGrid, fPtPdf, pt) * std::pow(base, fCfg.tailN) *
++           jac * (ptMax / kNpt);
++  }
++  return sum;
++}
++
++void Sampler::BuildYGrid() {
++  // Grid limit: the largest rapidity still allowed for pT -> 0.
++  const double yKin = std::asinh(fSqrtS / (2 * kMJpsi));
++  constexpr int kN = 20001;
++  fYGrid.resize(kN);
++  fYPdf.assign(kN, 0.);
++  fYValid.assign(kN, 0.);
++  for (int i = 0; i < kN; ++i) fYGrid[i] = -yKin + 2 * yKin * i / (kN - 1);
++
++  auto gauss = [this](double y) {
++    return GaussPdf(y, fCfg.yGauss0, fCfg.yGaussSigma);
++  };
++
++  if (fCfg.yShape == YShape::Gauss) {
++    for (int i = 0; i < kN; ++i) fYPdf[i] = gauss(fYGrid[i]);
++  } else if (fCfg.yShape == YShape::Hybrid) {
++    // joined exactly at yMatch
++    const double tailAtMatch = TailDensity(fCfg.yMatch);
++    const double scale = tailAtMatch > 0 ? gauss(fCfg.yMatch) / tailAtMatch : 0.;
++    for (int i = 0; i < kN; ++i) {
++      const double y = fYGrid[i];
++      fYPdf[i] = (y <= fCfg.yMatch) ? gauss(y) : scale * TailDensity(y);
++    }
++  } else {  // Data
++    double firstVal = -1., lastVal = -1.;
++    for (const auto& b : kShipTable) {
++      if (b.yLow >= fCfg.dataLo - 1e-9 && b.yLow < fCfg.dataHi - 1e-9) {
++        if (firstVal < 0) firstVal = b.value_pb / kShipBinWidth;
++        lastVal = b.value_pb / kShipBinWidth;
++      }
++    }
++    if (firstVal <= 0) throw std::runtime_error("JpsiSampler: empty data range");
++    // Continuations are matched at the boundaries themselves, not at bin
++    // centres, so the density is continuous at dataLo and dataHi.
++    const double gScale = firstVal / gauss(fCfg.dataLo);
++    const double tailAtHi = TailDensity(fCfg.dataHi);
++    const double tScale = tailAtHi > 0 ? lastVal / tailAtHi : 0.;
++    for (int i = 0; i < kN; ++i) {
++      const double y = fYGrid[i];
++      if (y < fCfg.dataLo) {
++        fYPdf[i] = gScale * gauss(y);
++      } else if (y >= fCfg.dataHi) {
++        fYPdf[i] = tScale * TailDensity(y);
++      } else {
++        for (const auto& b : kShipTable) {
++          if (y >= b.yLow && y < b.yLow + kShipBinWidth) {
++            fYPdf[i] = b.value_pb / kShipBinWidth;
++            break;
++          }
++        }
++      }
++    }
++  }
++
++  // Fold in the exact kinematic limit: at each y only pT < ptMax(y) is allowed.
++  // The same factor is used for generation and for f_y, so the normalised
++  // density and the generated sample are identical by construction.
++  for (int i = 0; i < kN; ++i) {
++    fYValid[i] = PtCdfAt(PtMaxAt(fYGrid[i]));
++    fYPdf[i] *= fYValid[i];
++  }
++  MakeCdf(fYGrid, fYPdf, fYCdf);
++}
++
++void Sampler::BuildTargetModel() {
++  if (fCfg.layers.empty()) return;
++  constexpr int kNz = 8001;
++  double total = 0.;
++  for (const auto& l : fCfg.layers) total += l.length_cm;
++
++  fZGrid.resize(kNz);
++  std::vector<double> dens(kNz, 0.);   // vertex density (arbitrary scale)
++  std::vector<double> rate(kNz, 0.);   // d(P_mumu/POT)/dz, absolute
++  const TargetSpec w = TungstenNA50();
++  // B*sigma_Jpsi(A) = c A^alpha with c fixed by the NA50 tungsten point.
++  const double cJpsi_nb =
++      w.bSigmaWindow_nb / std::pow(w.A, w.alphaA - 1.0);  // nb, per nucleus /A^a
++
++  double tau = 0.;  // interaction lengths traversed
++  const double dz = total / (kNz - 1);
++  for (int i = 0; i < kNz; ++i) {
++    const double z = dz * i;
++    fZGrid[i] = fCfg.zStart_cm + z;
++    double acc = 0.;
++    const Layer* here = &fCfg.layers.back();
++    for (const auto& l : fCfg.layers) {
++      if (z <= acc + l.length_cm) {
++        here = &l;
++        break;
++      }
++      acc += l.length_cm;
++    }
++    const double invLambda_cm =
++        here->material.density_gcm3 / here->material.lambdaInt_gcm2;
++    if (i > 0) tau += invLambda_cm * dz;
++    const double nA_cm3 =
++        here->material.density_gcm3 * kAvogadro / here->material.A;
++    // B*sigma(J/psi) for this nucleus, full phase space, in cm^2
++    const double bSigma_cm2 =
++        cJpsi_nb * std::pow(here->material.A, w.alphaA) * 1e-33;
++    dens[i] = std::exp(-tau) * nA_cm3 * bSigma_cm2;
++    rate[i] = dens[i];
++  }
++  MakeCdf(fZGrid, dens, fZCdf);
++  // The acceptance division is applied in Normalise(), where f_y and f_cos are
++  // known; here we only integrate the window-restricted rate.
++  fNorm.probMuMuPerPot = Trapezoid(fZGrid, rate);
++}
++
++void Sampler::Normalise() {
++  // Deterministic f_y: the rapidity density already contains the kinematic
++  // validity factor, so integrating it over the NA50 window is exact.
++  const double inWindow =
++      Interpolate(fYGrid, fYCdf, kYWindowHi) - Interpolate(fYGrid, fYCdf, kYWindowLo);
++  fNorm.fY = inWindow;
++  fNorm.fCos = CosAcceptance(fCfg.lambdaPol, 0.5);
++
++  const double acceptance = fNorm.fY * fNorm.fCos;
++  fNorm.bSigmaFull_nb = fCfg.target.bSigmaWindow_nb / acceptance;
++  const double sigmaInel_cm2 =
++      fCfg.target.A / (kAvogadro * fCfg.target.lambdaInt_gcm2);
++  fNorm.sigmaInel_mb = sigmaInel_cm2 * 1e27;
++  fNorm.chiMuMu = fCfg.target.A * fNorm.bSigmaFull_nb * 1e-6 / fNorm.sigmaInel_mb;
++  fNorm.chiJpsi = fNorm.chiMuMu / kBrMuMu;
++  fNorm.chiMuMuFullCosDiagnostic = fNorm.chiMuMu * fNorm.fCos;  // f_cos -> 1
++
++  if (fCfg.probMuMuPerPotOverride > 0) {
++    fNorm.probMuMuPerPot = fCfg.probMuMuPerPotOverride;
++  } else if (fNorm.probMuMuPerPot > 0) {
++    fNorm.probMuMuPerPot /= acceptance;  // window -> full phase space
++  }
++
++  RecomputeRate();
++}
++
++void Sampler::RecomputeRate() {
++  // Rate the weight is built from:
++  //   per POT when the target was modelled (slab stack or geometry scan),
++  //   otherwise per interacting proton.
++  //   Output::Jpsi is an inclusive sample, so it divides by the branching ratio.
++  const bool inclusive = (fCfg.output == Output::Jpsi);
++  const double rateMuMu =
++      fNorm.probMuMuPerPot > 0 ? fNorm.probMuMuPerPot : fNorm.chiMuMu;
++  fNorm.rate = inclusive ? rateMuMu / kBrMuMu : rateMuMu;
++
++  fNEvents = fCfg.nEvents;
++  if (fCfg.enhancement > 0) {
++    fNEvents = std::max<long>(
++        1, std::lround(fCfg.enhancement * fCfg.nPot * fNorm.rate));
++  }
++  fNorm.weight = fCfg.nPot * fNorm.rate / static_cast<double>(fNEvents);
++  fNorm.enhancement = fNorm.weight > 0 ? 1.0 / fNorm.weight : 0.;
++}
++
++void Sampler::SetProbMuMuPerPot(double p) {
++  if (p <= 0) throw std::runtime_error("JpsiSampler: rate per POT must be > 0");
++  fNorm.probMuMuPerPot = p;
++  RecomputeRate();
++}
++
++double Sampler::BSigmaFullForA(double A) const {
++  // B*sigma(J/psi) for one nucleus, full phase space, cm^2.
++  const TargetSpec w = TungstenNA50();
++  const double c_nb = w.bSigmaWindow_nb / std::pow(w.A, w.alphaA - 1.0);
++  const double window_cm2 = c_nb * std::pow(A, w.alphaA) * 1e-33;
++  return window_cm2 / (fNorm.fY * fNorm.fCos);
++}
++
++double Sampler::YDensity(double y) const {
++  return Interpolate(fYGrid, fYPdf, y);
++}
++
++double Sampler::SamplePt() { return InvertCdf(fPtGrid, fPtCdf, fFlat(fRng)); }
++double Sampler::SampleY() { return InvertCdf(fYGrid, fYCdf, fFlat(fRng)); }
++
++void Sampler::DrawKinematics(double& y, double& pt) {
++  // y is drawn from the density that already includes P(pT < ptMax(y)); pT is
++  // then drawn from the pT spectrum truncated at that same limit. No rejection,
++  // so the generated joint density matches the one used for the normalisation.
++  y = SampleY();
++  const double ptMax = PtMaxAt(y);
++  const double uMax = PtCdfAt(ptMax);
++  pt = InvertCdf(fPtGrid, fPtCdf, fFlat(fRng) * uMax);
++}
++
++double Sampler::SampleCosTheta() {
++  const double lambda = fCfg.lambdaPol;
++  if (std::abs(lambda) < 1e-12) return 2 * fFlat(fRng) - 1;
++  const double maxVal = 1.0 + std::max(0.0, lambda);
++  for (int i = 0; i < 1000; ++i) {
++    const double c = 2 * fFlat(fRng) - 1;
++    if (fFlat(fRng) * maxVal <= 1.0 + lambda * c * c) return c;
++  }
++  return 2 * fFlat(fRng) - 1;
++}
++
++namespace {
++
++Vec4 Boost(const Vec4& v, double bx, double by, double bz) {
++  const double b2 = bx * bx + by * by + bz * bz;
++  if (b2 <= 0) return v;
++  const double gamma = 1.0 / std::sqrt(1 - b2);
++  const double bp = bx * v.px + by * v.py + bz * v.pz;
++  const double g2 = (gamma - 1.0) / b2;
++  Vec4 out;
++  out.px = v.px + g2 * bp * bx + gamma * bx * v.E;
++  out.py = v.py + g2 * bp * by + gamma * by * v.E;
++  out.pz = v.pz + g2 * bp * bz + gamma * bz * v.E;
++  out.E = gamma * (v.E + bp);
++  return out;
++}
++
++void Normalise3(double v[3]) {
++  const double n = std::sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
++  for (int i = 0; i < 3; ++i) v[i] /= n;
++}
++
++}  // namespace
++
++void Sampler::Decay(const Vec4& jpsi, double cosTheta, Vec4& mup, Vec4& mum) {
++  // Collins-Soper axes: in the J/psi rest frame, z bisects the beam direction
++  // and the reverse of the target direction.
++  const double bx = -jpsi.px / jpsi.E, by = -jpsi.py / jpsi.E,
++               bz = -jpsi.pz / jpsi.E;
++  const double eBeam = std::hypot(fCfg.pBeam, kMProton);
++  Vec4 beam = Boost(Vec4{0., 0., fCfg.pBeam, eBeam}, bx, by, bz);
++  Vec4 targ = Boost(Vec4{0., 0., 0., kMProton}, bx, by, bz);
++
++  double p1[3] = {beam.px, beam.py, beam.pz};
++  double p2[3] = {targ.px, targ.py, targ.pz};
++  Normalise3(p1);
++  Normalise3(p2);
++  double zAxis[3] = {p1[0] - p2[0], p1[1] - p2[1], p1[2] - p2[2]};
++  Normalise3(zAxis);
++  double yAxis[3] = {p1[1] * p2[2] - p1[2] * p2[1], p1[2] * p2[0] - p1[0] * p2[2],
++                     p1[0] * p2[1] - p1[1] * p2[0]};
++  const double yNorm =
++      std::sqrt(yAxis[0] * yAxis[0] + yAxis[1] * yAxis[1] + yAxis[2] * yAxis[2]);
++  if (yNorm < 1e-9) {
++    yAxis[0] = 0;
++    yAxis[1] = 1;
++    yAxis[2] = 0;
++  } else {
++    for (auto& v : yAxis) v /= yNorm;
++  }
++  double xAxis[3] = {yAxis[1] * zAxis[2] - yAxis[2] * zAxis[1],
++                     yAxis[2] * zAxis[0] - yAxis[0] * zAxis[2],
++                     yAxis[0] * zAxis[1] - yAxis[1] * zAxis[0]};
++  Normalise3(xAxis);
++
++  const double pStar = std::sqrt(0.25 * kMJpsi * kMJpsi - kMMu * kMMu);
++  const double sinTheta = std::sqrt(std::max(0.0, 1 - cosTheta * cosTheta));
++  const double phi = 2 * M_PI * fFlat(fRng);
++  double dir[3];
++  for (int i = 0; i < 3; ++i) {
++    dir[i] = pStar * (sinTheta * std::cos(phi) * xAxis[i] +
++                      sinTheta * std::sin(phi) * yAxis[i] + cosTheta * zAxis[i]);
++  }
++  const double eMu = 0.5 * kMJpsi;
++  const double bxl = jpsi.px / jpsi.E, byl = jpsi.py / jpsi.E,
++               bzl = jpsi.pz / jpsi.E;
++  mup = Boost(Vec4{dir[0], dir[1], dir[2], eMu}, bxl, byl, bzl);
++  mum = Boost(Vec4{-dir[0], -dir[1], -dir[2], eMu}, bxl, byl, bzl);
++}
++
++double Sampler::SampleVertex() {
++  if (fZCdf.empty()) return fCfg.zStart_cm;
++  return InvertCdf(fZGrid, fZCdf, fFlat(fRng));
++}
++
++Event Sampler::Next() {
++  Event ev;
++  double y = 0., pt = 0.;
++  DrawKinematics(y, pt);
++
++  const double phi = 2 * M_PI * fFlat(fRng);
++  const double mt = std::hypot(kMJpsi, pt);
++  const double yLab = y + fYShift;
++  ev.jpsi.px = pt * std::cos(phi);
++  ev.jpsi.py = pt * std::sin(phi);
++  ev.jpsi.pz = mt * std::sinh(yLab);
++  ev.jpsi.E = mt * std::cosh(yLab);
++  ev.yCM = y;
++  ev.xF = 2 * mt * std::sinh(y) / fSqrtS;
++  ev.z_cm = SampleVertex();
++  ev.weight = fNorm.weight;
++
++  if (fCfg.output != Output::Jpsi) {
++    ev.cosThetaCS = SampleCosTheta();
++    Decay(ev.jpsi, ev.cosThetaCS, ev.mup, ev.mum);
++    ev.hasDimuon = true;
++  }
++  return ev;
++}
++
++std::string Sampler::Summary() const {
++  std::ostringstream os;
++  os.setf(std::ios::fixed);
++  os.precision(4);
++  os << "JpsiSampler v" << kVersion << " [" << fCfg.target.name
++     << "] p_beam = " << fCfg.pBeam << " GeV/c, sqrt(s) = " << fSqrtS
++     << " GeV, y_lab = y_cm + " << fYShift << "\n  pT: T = " << fCfg.T
++     << " GeV, fHard = " << fNorm.fHard << ", <pT> = " << fNorm.meanPt
++     << ", <pT^2> = " << fNorm.meanPtSq << " GeV^2\n  y : shape = "
++     << (fCfg.yShape == YShape::Gauss
++             ? "Gauss"
++             : (fCfg.yShape == YShape::Hybrid ? "Hybrid" : "Data"))
++     << ", tail n = " << fCfg.tailN << "\n  lambda = " << fCfg.lambdaPol
++     << ", f_cos = " << fNorm.fCos << ", f_y = " << fNorm.fY
++     << "\n  B*sigma/A = " << fNorm.bSigmaFull_nb
++     << " nb/nucleon (full phase space), sigma_inel = " << fNorm.sigmaInel_mb
++     << " mb";
++  os.unsetf(std::ios::fixed);
++  os.precision(6);
++  os << "\n  chi_mumu = " << fNorm.chiMuMu << " / interacting proton, chi_Jpsi = "
++     << fNorm.chiJpsi;
++  if (fNorm.probMuMuPerPot > 0) {
++    os << "\n  P(J/psi->mumu) per POT = " << fNorm.probMuMuPerPot
++       << " (integrated over the target model)";
++  }
++  os << "\n  output = "
++     << (fCfg.output == Output::Jpsi
++             ? "Jpsi (inclusive normalisation)"
++             : (fCfg.output == Output::Both ? "Both" : "MuMu"))
++     << ", rate used = " << fNorm.rate << "\n  nPot = " << fCfg.nPot
++     << ", nEvents = " << fNEvents << ", weight = " << fNorm.weight
++     << " (enhancement " << fNorm.enhancement << "x)";
++  return os.str();
++}
++
++std::vector<std::pair<std::string, double>> Sampler::Metadata() const {
++  return {
++      {"version", std::atof(kVersion)},
++      {"p_beam", fCfg.pBeam},
++      {"target_A", fCfg.target.A},
++      {"y_shape", static_cast<double>(static_cast<int>(fCfg.yShape))},
++      {"tail_n", fCfg.tailN},
++      {"data_lo", fCfg.dataLo},
++      {"data_hi", fCfg.dataHi},
++      {"y_gauss_mean", fCfg.yGauss0},
++      {"y_gauss_sigma", fCfg.yGaussSigma},
++      {"T", fCfg.T},
++      {"p0", fCfg.p0},
++      {"pt_pow_n", fCfg.nPow},
++      {"f_hard", fNorm.fHard},
++      {"mean_pt_sq", fNorm.meanPtSq},
++      {"thermal_jacobian", fCfg.thermalJacobian ? 1.0 : 0.0},
++      {"lambda_pol", fCfg.lambdaPol},
++      {"f_y", fNorm.fY},
++      {"f_cos", fNorm.fCos},
++      {"chi_mumu", fNorm.chiMuMu},
++      {"chi_jpsi", fNorm.chiJpsi},
++      {"prob_mumu_per_pot", fNorm.probMuMuPerPot},
++      {"chi_mumu_fullcos_diagnostic", fNorm.chiMuMuFullCosDiagnostic},
++      {"rate_used", fNorm.rate},
++      {"n_pot", fCfg.nPot},
++      {"n_events", static_cast<double>(fNEvents)},
++      {"weight", fNorm.weight},
++      {"enhancement", fNorm.enhancement},
++      {"output_mode", static_cast<double>(static_cast<int>(fCfg.output))},
++      {"seed", static_cast<double>(fCfg.seed)},
++  };
++}
++
++}  // namespace jpsi
+diff --git a/shipgen/JpsiSampler.h b/shipgen/JpsiSampler.h
+new file mode 100644
+index 0000000..cb9626d
+--- /dev/null
++++ b/shipgen/JpsiSampler.h
+@@ -0,0 +1,210 @@
++// SPDX-License-Identifier: LGPL-3.0-or-later
++//
++// Data-driven J/psi -> mu+ mu- source for 400 GeV/c protons on a thick target.
++//
++//   production shape : NA50 (Eur. Phys. J. C48 (2006) 329) + SHiP 2018 testbeam
++//                      (CERN-SHiP-ANA-2019-002, Table 2)
++//   absolute scale   : NA50 B_mumu * sigma(J/psi)/A, scaled with A^alpha
++//   decay            : two-body, Collins-Soper polar angle 1 + lambda cos^2
++//
++// No ROOT or FairRoot dependency, so the core can be unit tested and reused
++// standalone; JpsiGenerator wraps it for FairShip.
++//
++// Normalisation is deterministic: no Monte Carlo enters f_y or the weight.
++
++#ifndef JPSI_JPSISAMPLER_H_
++#define JPSI_JPSISAMPLER_H_
++
++#include <cstdint>
++#include <random>
++#include <string>
++#include <vector>
++
++namespace jpsi {
++
++constexpr const char* kVersion = "1.0";
++
++constexpr double kMJpsi = 3.0969;      // GeV
++constexpr double kMMu = 0.1056584;     // GeV
++constexpr double kMProton = 0.938272;  // GeV
++constexpr double kBrMuMu = 0.05961;    // PDG BR(J/psi -> mu+ mu-)
++constexpr double kAvogadro = 6.02214076e23;
++
++/// Rapidity model.
++///   Gauss  : NA50 Gaussian everywhere (hard forward, kept for comparison)
++///   Hybrid : Gaussian below yMatch, (1-|xF|)^tailN above
++///   Data   : SHiP Table 2 in [dataLo, dataHi], Gaussian below, tail above
++enum class YShape { Gauss, Hybrid, Data };
++
++/// What the sample represents, which also fixes the normalisation:
++///   MuMu / Both : every J/psi is decayed, weight uses B_mumu * sigma
++///   Jpsi        : inclusive undecayed J/psi, weight uses sigma (1/BR larger)
++enum class Output { MuMu, Jpsi, Both };
++
++/// Per-nucleon anchor for one target material.
++struct TargetSpec {
++  double A = 183.84;               ///< mass number
++  double lambdaInt_gcm2 = 186.9;   ///< interaction length (NA50 convention)
++  double bSigmaWindow_nb = 3.791;  ///< B_mumu*sigma/A inside BOTH NA50 windows
++  double alphaA = 0.925;           ///< sigma_Jpsi ~ A^alpha
++  double density_gcm3 = 19.3;
++  std::string name = "W";
++};
++
++TargetSpec TungstenNA50();
++TargetSpec MolybdenumScaled();
++TargetSpec TargetFromA(double A, double density_gcm3, const std::string& name);
++
++/// One slab of the target for the built-in vertex and rate integral.
++struct Layer {
++  TargetSpec material;
++  double length_cm = 0.;
++};
++
++struct Config {
++  // ---- beam and target -----------------------------------------------------
++  double pBeam = 400.0;  ///< GeV/c
++  TargetSpec target = TungstenNA50();
++  /// Optional slab model. When given, both the vertex distribution AND the
++  /// absolute rate per POT are integrated over it, so mixed Mo/W is consistent.
++  std::vector<Layer> layers;
++  double zStart_cm = 0.;
++  /// Set by JpsiGenerator when the rate integral is done over the FairShip
++  /// geometry instead of the slab model. Negative means "not supplied".
++  double probMuMuPerPotOverride = -1.0;
++
++  // ---- transverse momentum -------------------------------------------------
++  double T = 0.2867;            ///< thermal slope [GeV]
++  double p0 = 2.349;            ///< power-law scale [GeV]
++  double nPow = 6.0;            ///< power-law exponent
++  double fHard = 0.5;           ///< weight of the power-law term, [0,1]
++  double ptSq = -1.0;           ///< if > 0, fHard is solved for this <pT^2>
++  bool thermalJacobian = true;  ///< dN/dpT ~ pT mT K1 (false: mT K1)
++  double ptMax = 10.0;
++
++  // ---- rapidity ------------------------------------------------------------
++  YShape yShape = YShape::Data;
++  double tailN = 6.0;
++  double yMatch = 0.5;
++  double dataLo = 0.4;
++  double dataHi = 1.8;
++  double yGauss0 = -0.2;
++  double yGaussSigma = 0.85;
++
++  // ---- decay ---------------------------------------------------------------
++  double lambdaPol = 0.0;  ///< CS polar coefficient; also enters f_cos
++
++  // ---- normalisation -------------------------------------------------------
++  double nPot = 5e13;         ///< protons this sample stands for
++  long nEvents = 1000000;     ///< J/psi to generate
++  double enhancement = -1.0;  ///< if > 0, sets nEvents = E * nPot * rate
++
++  // ---- bookkeeping ---------------------------------------------------------
++  Output output = Output::MuMu;
++  std::uint64_t seed = 12345;
++};
++
++struct Vec4 {
++  double px = 0, py = 0, pz = 0, E = 0;
++  double P() const;
++  double Pt() const;
++  double Rapidity() const;
++};
++
++struct Event {
++  double weight = 0.;  ///< nominal weight, identical for every event
++  Vec4 jpsi;
++  Vec4 mup, mum;       ///< filled unless Output::Jpsi
++  bool hasDimuon = false;
++  double cosThetaCS = 0.;
++  double yCM = 0.;
++  double xF = 0.;
++  double z_cm = 0.;
++};
++
++/// Normalisation actually used; store this alongside any sample.
++struct Normalisation {
++  double fY = 0.;             ///< fraction inside the NA50 rapidity window
++  double fCos = 0.5;          ///< fraction inside |cos Theta_CS| < 0.5
++  double bSigmaFull_nb = 0.;  ///< B*sigma/A extrapolated to full phase space
++  double sigmaInel_mb = 0.;
++  double chiMuMu = 0.;    ///< J/psi -> mu mu per interacting proton
++  double chiJpsi = 0.;    ///< inclusive J/psi per interacting proton
++  double probMuMuPerPot = 0.;  ///< integrated over the target, if modelled
++  double rate = 0.;       ///< what the weight actually uses (see Output)
++  double weight = 0.;     ///< nominal weight per generated event
++  double enhancement = 0.;
++  double meanPt = 0., meanPtSq = 0., fHard = 0.;
++  /// Diagnostic only: what chi_mumu would be if the NA50 anchor were quoted
++  /// over the full cos Theta_CS range. Never used in the weight.
++  double chiMuMuFullCosDiagnostic = 0.;
++};
++
++/// Fraction of 1 + lambda cos^2 inside |cos| < cut.
++double CosAcceptance(double lambda, double cut = 0.5);
++
++class Sampler {
++ public:
++  explicit Sampler(const Config& cfg);
++
++  Event Next();
++
++  const Config& GetConfig() const { return fCfg; }
++  const Normalisation& GetNormalisation() const { return fNorm; }
++  long NEvents() const { return fNEvents; }
++  std::string Summary() const;
++  /// key = value lines, for storage as run metadata.
++  std::vector<std::pair<std::string, double>> Metadata() const;
++
++  /// Uniform deviate from the sampler's own stream. JpsiGenerator uses it for
++  /// vertex and beam smearing so that one seed controls the whole generator.
++  double Uniform() { return fFlat(fRng); }
++
++  /// Supply the J/psi -> mu mu probability per POT integrated over the real
++  /// geometry (JpsiGenerator does this after its material scan). The weight,
++  /// the enhancement and nEvents are recomputed consistently.
++  void SetProbMuMuPerPot(double p);
++  /// Full-phase-space B*sigma(J/psi) for one nucleus, in cm^2, with the NA50
++  /// tungsten anchor and A^alpha scaling. Used by external geometry scans.
++  double BSigmaFullForA(double A) const;
++
++  double YDensity(double y) const;   ///< unnormalised, for tests
++  double PtMaxAt(double y) const;    ///< kinematic limit |x_F| < 1
++  double SqrtS() const { return fSqrtS; }
++  double YBeam() const { return fYShift; }
++
++ private:
++  void Validate() const;
++  void BuildPtGrid();
++  void BuildYGrid();
++  void Normalise();
++  void RecomputeRate();
++  double SolveFHard(double ptSq) const;
++  double PtMoment(const std::vector<double>& pdf, int k) const;
++  double PtCdfAt(double pt) const;
++  double TailDensity(double y) const;  ///< integrated over the pT spectrum
++  double SamplePt();
++  double SampleY();
++  void DrawKinematics(double& y, double& pt);
++  double SampleCosTheta();
++  void Decay(const Vec4& jpsi, double cosTheta, Vec4& mup, Vec4& mum);
++  double SampleVertex();
++  void BuildTargetModel();
++
++  Config fCfg;
++  Normalisation fNorm;
++  long fNEvents = 0;
++
++  std::mt19937_64 fRng;
++  std::uniform_real_distribution<double> fFlat{0., 1.};
++
++  std::vector<double> fPtGrid, fPtPdf, fPtCdf, fPtThermal, fPtHard;
++  std::vector<double> fYGrid, fYPdf, fYCdf, fYValid;
++  std::vector<double> fZGrid, fZCdf;
++
++  double fSqrtS = 0., fYShift = 0.;
++};
++
++}  // namespace jpsi
++
++#endif  // JPSI_JPSISAMPLER_H_
+diff --git a/shipgen/LinkDef.h b/shipgen/LinkDef.h
+index 641bff5..ce3222c 100644
+--- a/shipgen/LinkDef.h
++++ b/shipgen/LinkDef.h
+@@ -21,6 +21,7 @@
+ #pragma link C++ class CosmicsGenerator - ;
+ #pragma link C++ class MuDISGenerator - ;
+ #pragma link C++ class FixedTargetGenerator - ;
++#pragma link C++ class JpsiGenerator - ;
+ #pragma link C++ class ParticleGunGenerator - ;
+ #pragma link C++ class EvtCalcGenerator - ;
+ #pragma link C++ class SHiP::TTreeGenerator - ;
