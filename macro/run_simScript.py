@@ -235,6 +235,43 @@ parser.add_argument(
 parser.add_argument("--MuDIS", dest="mudis", help="Use muon deep inelastic scattering generator", action="store_true")
 parser.add_argument("--RpvSusy", dest="RPVSUSY", help="Generate events based on RPV neutralino", action="store_true")
 parser.add_argument("--FixedTarget", dest="fixedTarget", help="Enable fixed target simulation", action="store_true")
+jpsi_group = parser.add_argument_group(
+    "data-driven J/psi", "JpsiGenerator: NA50-normalised, SHiP-shaped J/psi source replacing Pythia8"
+)
+jpsi_group.add_argument(
+    "--JpsiData", dest="jpsiData", help="J/psi-only sample from the data-driven model", action="store_true"
+)
+jpsi_group.add_argument(
+    "--JpsiInject",
+    dest="jpsiInject",
+    help="with --FixedTarget: inject data-driven J/psi into the fixed-target production",
+    action="store_true",
+)
+jpsi_group.add_argument(
+    "--jpsi-per-event",
+    dest="jpsiPerEvent",
+    type=float,
+    default=None,
+    help="with --JpsiInject: mean number of J/psi added per event (alternative to --jpsi-enhancement)",
+)
+jpsi_group.add_argument(
+    "--jpsi-pot", dest="jpsiPot", type=float, default=4e13, help="protons on target the sample stands for"
+)
+jpsi_group.add_argument(
+    "--jpsi-enhancement",
+    dest="jpsiEnhancement",
+    type=float,
+    default=None,
+    help="enhancement over the physical rate, weight 1/E per J/psi (1 = realistic). With --JpsiData it sets "
+    "the number of events, overriding -n; with --JpsiInject it sets the J/psi content (default 1)",
+)
+jpsi_group.add_argument("--jpsi-shape", dest="jpsiShape", choices=["data", "hybrid", "gauss"], default="data")
+jpsi_group.add_argument("--jpsi-tail", dest="jpsiTail", type=float, default=6.0, help="exponent n of (1-|xF|)^n")
+jpsi_group.add_argument("--jpsi-ptsq", dest="jpsiPtSq", type=float, default=1.9, help="<pT^2> in GeV^2")
+jpsi_group.add_argument(
+    "--jpsi-lambda", dest="jpsiLambda", type=float, default=0.0, help="Collins-Soper polar coefficient"
+)
+jpsi_group.add_argument("--jpsi-output", dest="jpsiOutput", choices=["mumu", "jpsi", "both"], default="mumu")
 parser.add_argument("--DarkPhoton", help="Generate dark photons", action="store_true")
 parser.add_argument("--SusyBench", dest="RPVSUSYbench", help="Generate HP Susy", type=int, default=2)
 parser.add_argument(
@@ -406,6 +443,15 @@ parser.add_argument(
 
 
 options = parser.parse_args()
+if options.jpsiData and (options.fixedTarget or options.command or options.pythia8 or options.muonback):
+    parser.error("--JpsiData replaces the other generators; do not combine it with --FixedTarget, --Pythia8, "
+                 "--MuonBack or a subcommand")
+if options.jpsiInject and (not options.fixedTarget or options.jpsiData):
+    parser.error("--JpsiInject adds J/psi to the fixed-target production: use it with --FixedTarget only")
+if options.jpsiPerEvent is not None and not options.jpsiInject:
+    parser.error("--jpsi-per-event only applies to --JpsiInject")
+if options.jpsiInject and options.jpsiPerEvent is not None and options.jpsiEnhancement is not None:
+    parser.error("give either --jpsi-enhancement or --jpsi-per-event, not both")
 # Handle SND_design: allow 'all' (case-insensitive) or list of ints
 available_snd_designs = [1, 2]  # Extend this list as new designs are added
 if any(str(x).lower() == "all" for x in options.SND_design):
@@ -536,6 +582,7 @@ if not options.command:
         "muonback",
         "mudis",
         "fixedTarget",
+        "jpsiData",
         "cosmics",
     ]:
         if getattr(options, g):
@@ -683,6 +730,52 @@ if options.fixedTarget:
     P8gen.SetG4only()
     primGen.AddGenerator(P8gen)
     ROOT.SetOwnership(P8gen, False)  # C++ FairPrimaryGenerator takes ownership
+def make_jpsi_generator():
+    """Data-driven J/psi source with the settings shared by both J/psi modes.
+
+    Its Init() runs inside run.Init(), once the geometry exists: the target
+    scan then fixes the vertex distribution, the rate per POT and the weight.
+    Same target interval, z offset and beam profile as the FixedTarget branch.
+    """
+    g = ROOT.JpsiGenerator()
+    g.SetMom(400.0 * u.GeV)
+    g.SetRapidityShape(options.jpsiShape)
+    g.SetForwardTail(options.jpsiTail)
+    g.SetPtSq(options.jpsiPtSq)
+    g.SetPolarisation(options.jpsiLambda)
+    g.SetOutputMode(options.jpsiOutput)
+    g.SetTargetCoordinates(ship_geo.target.z0 + options.z_offset * u.mm, ship_geo.target.z0 + ship_geo.target.length)
+    g.SetSmearBeam(options.SmearBeam * u.cm)
+    g.SetPaintRadius(options.PaintBeam * u.cm)
+    g.SetSeed(seed)
+    return g
+
+
+JpsiGen = None
+if options.jpsiData:
+    # J/psi-only sample: every event is one data-driven J/psi
+    HNL = False
+    JpsiGen = make_jpsi_generator()
+    JpsiGen.SetPot(options.jpsiPot)
+    if options.jpsiEnhancement is not None:
+        JpsiGen.SetEnhancement(options.jpsiEnhancement)
+    else:
+        JpsiGen.SetNEvents(options.nEvents)
+    primGen.AddGenerator(JpsiGen)
+    ROOT.SetOwnership(JpsiGen, False)  # C++ FairPrimaryGenerator takes ownership
+if options.jpsiInject:
+    # Added to the FixedTarget events, one POT each. In this branch the primary
+    # interaction is done by Geant4 (G4only), whose hadronic models produce
+    # essentially no J/psi, so there is nothing to veto on the host side.
+    JpsiGen = make_jpsi_generator()
+    JpsiGen.SetInjection(True)
+    JpsiGen.SetPotPerEvent(1.0)
+    if options.jpsiPerEvent is not None:
+        JpsiGen.SetMeanPerEvent(options.jpsiPerEvent)
+    else:
+        JpsiGen.SetEnhancement(options.jpsiEnhancement if options.jpsiEnhancement is not None else 1.0)
+    primGen.AddGenerator(JpsiGen)
+    ROOT.SetOwnership(JpsiGen, False)  # C++ FairPrimaryGenerator takes ownership
 if options.pythia6:
     # set muon interaction close to decay volume
     primGen.SetTarget(ship_geo.target.z0 + ship_geo.muShield.length, 0.0)
@@ -976,6 +1069,10 @@ if options.print_fields:
 # fieldMaker.plotField(2, ROOT.TVector3(-9000.0, 6000.0, 50.0), ROOT.TVector3(-400.0, 400.0, 6.0), 'Bzy.png')
 
 # -----Start run----------------------------------------------------
+if JpsiGen is not None:
+    print(JpsiGen.Summary())
+if options.jpsiData:
+    options.nEvents = JpsiGen.NEventsToGenerate()  # fixed in run.Init() by the target scan
 run.Run(options.nEvents)
 # -----Runtime database---------------------------------------------
 kParameterMerged = ROOT.kTRUE
@@ -1208,6 +1305,10 @@ def mergeFileSummary(inFiles: list[str] | str) -> dict:
 
 
 newFileSummary = mergeFileSummary(usedInputFiles)
+if JpsiGen is not None:
+    # J/psi-only: the POT the sample stands for; injected: one POT per event
+    newFileSummary["PoT"] = options.jpsiPot if options.jpsiData else float(options.nEvents)
+    newFileSummary["JpsiGenerator"] = {str(k): float(v) for k, v in JpsiGen.Metadata()}
 with ROOT.TFile.Open(outFile, "UPDATE") as _of:
     _of.WriteObject(ROOT.TString(json.dumps(newFileSummary)), "FileSummary")
 

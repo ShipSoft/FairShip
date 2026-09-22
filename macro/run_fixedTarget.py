@@ -101,6 +101,36 @@ ap.add_argument(
     "--multiple-kpi-splits", action="store_true", help="split kaons and pions multiple times along the track path"
 )
 
+jpsi_group = ap.add_argument_group(
+    "data-driven J/psi", "JpsiGenerator: NA50-normalised, SHiP-shaped J/psi source replacing Pythia8"
+)
+jpsi_group.add_argument(
+    "--jpsi-data", action="store_true", help="J/psi-only sample from the data-driven model (no Pythia8)"
+)
+jpsi_group.add_argument(
+    "--jpsi-inject",
+    action="store_true",
+    help="normal Pythia8 production with its J/psi vetoed and data-driven J/psi injected instead",
+)
+jpsi_group.add_argument(
+    "--jpsi-per-event",
+    type=float,
+    default=None,
+    help="with --jpsi-inject: mean number of J/psi added per event (alternative to --jpsi-enhancement)",
+)
+jpsi_group.add_argument(
+    "--jpsi-enhancement",
+    type=float,
+    default=None,
+    help="enhancement over the physical rate, weight 1/E per J/psi (1 = realistic). With --jpsi-data it sets "
+    "the number of events, overriding -n; with --jpsi-inject it sets the J/psi content (default 1)",
+)
+jpsi_group.add_argument("--jpsi-shape", choices=["data", "hybrid", "gauss"], default="data")
+jpsi_group.add_argument("--jpsi-tail", type=float, default=6.0, help="exponent n of (1-|xF|)^n")
+jpsi_group.add_argument("--jpsi-ptsq", type=float, default=1.9, help="<pT^2> in GeV^2")
+jpsi_group.add_argument("--jpsi-lambda", type=float, default=0.0, help="Collins-Soper polar coefficient")
+jpsi_group.add_argument("--jpsi-output", choices=["mumu", "jpsi", "both"], default="mumu")
+
 ap.add_argument("-C", "--charm", action=argparse.BooleanOptionalAction, default=False, help="generate charm decays")
 ap.add_argument("-B", "--beauty", action=argparse.BooleanOptionalAction, default=False, help="generate beauty decays")
 ap.add_argument(
@@ -235,6 +265,14 @@ if args.kaon_pion_splits < 0:
     ap.error("--kaon-pion-splits must be >= 0")
 if args.multiple_kpi_splits and args.kaon_pion_splits == 0:
     ap.error("--multiple-kpi-splits requires --kaon-pion-splits > 0")
+if args.jpsi_data and (args.charm or args.beauty or args.JpsiMainly or args.G4only):
+    ap.error("--jpsi-data cannot be combined with --charm, --beauty, --Jpsi-mainly or --G4only")
+if args.jpsi_inject and (args.jpsi_data or args.charm or args.beauty or args.JpsiMainly):
+    ap.error("--jpsi-inject needs the minimum-bias production: not with --jpsi-data, --charm, --beauty or -J")
+if args.jpsi_per_event is not None and not args.jpsi_inject:
+    ap.error("--jpsi-per-event only applies to --jpsi-inject")
+if args.jpsi_inject and args.jpsi_per_event is not None and args.jpsi_enhancement is not None:
+    ap.error("give either --jpsi-enhancement or --jpsi-per-event, not both")
 
 
 if args.G4only:
@@ -261,6 +299,10 @@ if args.work_dir is None:
         args.work_dir = get_work_dir(args.runnr, "beauty")
     else:
         args.work_dir = get_work_dir(args.runnr)
+    if args.jpsi_data:
+        args.work_dir = get_work_dir(args.runnr, "jpsi")
+    elif args.jpsi_inject:
+        args.work_dir = get_work_dir(args.runnr, "jpsi_inject")
 
 logger.debug("work_dir: %s" % args.work_dir)
 logger.debug("command line arguments: %s", args)
@@ -437,47 +479,101 @@ if args.AddCylindricalSensPlane:
 
 # -----Create PrimaryGenerator--------------------------------------
 primGen = ROOT.FairPrimaryGenerator()
-P8gen = ROOT.FixedTargetGenerator()
-P8gen.SetZoffset(args.z_offset * u.mm)
-P8gen.SetXoffset(args.x_offset * u.mm)
-P8gen.SetYoffset(args.y_offset * u.mm)
-P8gen.SetSmearBeam(args.beam_smear * u.mm)
-P8gen.SetPaintRadius(args.beam_paint * u.mm)
-# Use geometry constants instead of fragile TGeo navigation
-P8gen.SetTargetCoordinates(ship_geo.target.z0, ship_geo.target.z0 + ship_geo.target.length)
-P8gen.SetMom(400.0 * u.GeV)
-P8gen.SetEnergyCut(args.ecut * u.GeV)
-P8gen.SetDebug(args.debug)
-P8gen.SetHeartBeat(100000)
-if args.G4only:
-    P8gen.SetG4only()
-if args.pythia8_tune != "default":
-    P8gen.SetPythiaTune(args.pythia8_tune)
-if args.JpsiMainly:
-    P8gen.SetJpsiMainly()
-if args.tauOnly:
-    P8gen.SetTauOnly()
-if withEvtGen:
-    P8gen.WithEvtGen()
-if args.boostDiMuon > 1:
-    P8gen.SetBoost(
-        args.boostDiMuon
-    )  # will increase BR for rare eta,omega,rho ... mesons decaying to 2 muons in Pythia8
-    # and later copied to Geant4
-P8gen.SetSeed(seed)
-# for charm/beauty
-#        print ' for experts: p pot= number of protons on target per spill to normalize on'
-#        print '            : c chicc= ccbar over mbias cross section'
-if args.charm or args.beauty:
-    check_run_type_override(args.beauty, args.chicc, args.chibb)
-    cs = derive_cross_sections(args.target_composition, args.A, args.chicc, args.chibb)
-    P8gen.SetChicc(cs.chicc)
-    P8gen.SetChibb(cs.chibb)
-    print(format_summary(cs, None if args.A is not None else args.target_composition))
-    print("--- process heavy flavours ---")
-    P8gen.InitForCharmOrBeauty(charmInputFile, args.nev, args.pot, args.nStart)
-primGen.AddGenerator(P8gen)
-ROOT.SetOwnership(P8gen, False)  # C++ FairPrimaryGenerator takes ownership
+
+
+def make_jpsi_generator():
+    """Data-driven J/psi source with the settings shared by both J/psi modes.
+
+    Its Init() is called by FairPrimaryGenerator during run.Init(), after the
+    geometry exists: that is when the target scan fixes the vertex
+    distribution, the rate per POT and hence the weight.
+    """
+    g = ROOT.JpsiGenerator()
+    g.SetMom(400.0 * u.GeV)
+    g.SetRapidityShape(args.jpsi_shape)
+    g.SetForwardTail(args.jpsi_tail)
+    g.SetPtSq(args.jpsi_ptsq)
+    g.SetPolarisation(args.jpsi_lambda)
+    g.SetOutputMode(args.jpsi_output)
+    g.SetTargetCoordinates(
+        ship_geo.target.z0 + args.z_offset * u.mm,
+        ship_geo.target.z0 + ship_geo.target.length,
+        args.x_offset * u.mm,
+        args.y_offset * u.mm,
+    )
+    g.SetSmearBeam(args.beam_smear * u.mm)
+    g.SetPaintRadius(args.beam_paint * u.mm)
+    g.SetSeed(seed)
+    return g
+
+
+jpsiGen = None
+if args.jpsi_data:
+    # J/psi-only sample: every event is one data-driven J/psi
+    P8gen = None
+    gen = jpsiGen = make_jpsi_generator()
+    gen.SetPot(float(args.pot))
+    if args.jpsi_enhancement is not None:
+        gen.SetEnhancement(args.jpsi_enhancement)
+    else:
+        gen.SetNEvents(args.nev)
+else:
+    P8gen = ROOT.FixedTargetGenerator()
+    P8gen.SetZoffset(args.z_offset * u.mm)
+    P8gen.SetXoffset(args.x_offset * u.mm)
+    P8gen.SetYoffset(args.y_offset * u.mm)
+    P8gen.SetSmearBeam(args.beam_smear * u.mm)
+    P8gen.SetPaintRadius(args.beam_paint * u.mm)
+    # Use geometry constants instead of fragile TGeo navigation
+    P8gen.SetTargetCoordinates(ship_geo.target.z0, ship_geo.target.z0 + ship_geo.target.length)
+    P8gen.SetMom(400.0 * u.GeV)
+    P8gen.SetEnergyCut(args.ecut * u.GeV)
+    P8gen.SetDebug(args.debug)
+    P8gen.SetHeartBeat(100000)
+    if args.G4only:
+        P8gen.SetG4only()
+    if args.pythia8_tune != "default":
+        P8gen.SetPythiaTune(args.pythia8_tune)
+    if args.JpsiMainly:
+        P8gen.SetJpsiMainly()
+    if args.tauOnly:
+        P8gen.SetTauOnly()
+    if withEvtGen:
+        P8gen.WithEvtGen()
+    if args.boostDiMuon > 1:
+        P8gen.SetBoost(
+            args.boostDiMuon
+        )  # will increase BR for rare eta,omega,rho ... mesons decaying to 2 muons in Pythia8
+        # and later copied to Geant4
+    P8gen.SetSeed(seed)
+    # for charm/beauty
+    #        print ' for experts: p pot= number of protons on target per spill to normalize on'
+    #        print '            : c chicc= ccbar over mbias cross section'
+    if args.charm or args.beauty:
+        check_run_type_override(args.beauty, args.chicc, args.chibb)
+        cs = derive_cross_sections(args.target_composition, args.A, args.chicc, args.chibb)
+        P8gen.SetChicc(cs.chicc)
+        P8gen.SetChibb(cs.chibb)
+        print(format_summary(cs, None if args.A is not None else args.target_composition))
+        print("--- process heavy flavours ---")
+        P8gen.InitForCharmOrBeauty(charmInputFile, args.nev, args.pot, args.nStart)
+    gen = P8gen
+primGen.AddGenerator(gen)
+ROOT.SetOwnership(gen, False)  # C++ FairPrimaryGenerator takes ownership
+if args.jpsi_inject:
+    # Pythia8 keeps producing everything else; its J/psi (and their decay
+    # products) are not transported, and data-driven J/psi are added to the
+    # same events instead. Each minimum-bias event stands for one POT.
+    P8gen.SetVetoJpsi()
+    jpsiGen = make_jpsi_generator()
+    jpsiGen.SetInjection(True)
+    jpsiGen.SetPotPerEvent(1.0)
+    if args.jpsi_per_event is not None:
+        jpsiGen.SetMeanPerEvent(args.jpsi_per_event)
+    else:
+        jpsiGen.SetEnhancement(args.jpsi_enhancement if args.jpsi_enhancement is not None else 1.0)
+    primGen.AddGenerator(jpsiGen)
+    ROOT.SetOwnership(jpsiGen, False)  # C++ FairPrimaryGenerator takes ownership
 #
 run.SetGenerator(primGen)
 ROOT.SetOwnership(primGen, False)  # C++ FairRunSim takes ownership
@@ -494,7 +590,8 @@ if args.kaon_pion_splits > 0:
 #
 import AddDiMuonDecayChannelsToG4
 
-AddDiMuonDecayChannelsToG4.Initialize(P8gen.GetPythia())
+if not args.jpsi_data:  # no Pythia instance in the data-driven J/psi mode
+    AddDiMuonDecayChannelsToG4.Initialize(P8gen.GetPythia())
 
 # boost gamma2muon conversion
 if args.boostFactor > 1:
@@ -508,7 +605,12 @@ if args.boostFactor > 1:
     procGMuPair.SetCrossSecFactor(args.boostFactor)
 
 # -----Start run----------------------------------------------------
-run.Run(args.nev)
+nev = args.nev
+if jpsiGen is not None:
+    print(jpsiGen.Summary())
+if args.jpsi_data:
+    nev = jpsiGen.NEventsToGenerate()  # fixed by the enhancement, known only after run.Init()
+run.Run(nev)
 
 # -----Finish-------------------------------------------------------
 timer.Stop()
@@ -534,6 +636,18 @@ if args.charm or args.beauty:
     # normalization for charm
     poteq = P8gen.GetPotForCharm()
     info = "POT equivalent = %7.3G" % (poteq)
+elif jpsiGen is not None:
+    pot_sample = float(args.pot) if args.jpsi_data else float(nev)
+    info = "POT = %7.3G, J/psi %s: weight = %.6G, J/psi->mumu/POT = %.4G, shape %s n=%g" % (
+        pot_sample,
+        "only" if args.jpsi_data else "injected (%.4G per event)" % jpsiGen.MeanPerEvent(),
+        jpsiGen.EventWeight(),
+        jpsiGen.ProbMuMuPerPot(),
+        args.jpsi_shape,
+        args.jpsi_tail,
+    )
+    with open(os.path.join(outputDir, "jpsi_generator_metadata.json"), "w") as fmeta:
+        json.dump({str(k): float(v) for k, v in jpsiGen.Metadata()}, fmeta, indent=1)
 else:
     info = f"POT = {args.nev}"
 

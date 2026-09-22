@@ -542,6 +542,15 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
     fPythia->event.list();
   }
   TMCProcess procID;
+  // J/psi replaced by a data-driven source: find them once per event
+  std::vector<int> jpsiIndices;
+  if (fVetoJpsi) {
+    for (Int_t ii = 1; ii < fPythia->event.size(); ii++) {
+      if (std::abs(fPythia->event[ii].id()) == 443) {
+        jpsiIndices.push_back(ii);
+      }
+    }
+  }
   for (Int_t ii = 1; ii < fPythia->event.size(); ii++) {
     Double_t e = fPythia->event[ii].e();
     Double_t m = fPythia->event[ii].m();
@@ -555,6 +564,19 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
       // don't track underlying event
       if (fabs(id) != 13) {
         wanttracking = kFALSE;
+      }
+    }
+    if (!jpsiIndices.empty()) {
+      bool fromJpsi = std::abs(id) == 443;
+      for (int j : jpsiIndices) {
+        if (fromJpsi) {
+          break;
+        }
+        fromJpsi = fPythia->event[ii].isAncestor(j);
+      }
+      if (fromJpsi) {
+        wanttracking = kFALSE;
+        IncrementCounter("vetoed_jpsi_tracks");
       }
     }
     Double_t z = fPythia->event[ii].zProd() * mm + zinter * cm;

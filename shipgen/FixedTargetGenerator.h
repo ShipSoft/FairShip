@@ -73,6 +73,11 @@ class FixedTargetGenerator : public SHiP::Generator {
   void SetG4only() {
     G4only = true;
   }  // only run Geant4, no pythia primary interaction
+  /// Do not transport J/psi produced by Pythia8, nor anything descending from
+  /// them (feed-down included), so that a data-driven J/psi source can replace
+  /// them (JpsiGenerator in injection mode). The rest of the event is kept;
+  /// vetoed particles stay in the MC truth as untracked entries.
+  void SetVetoJpsi() { fVetoJpsi = true; }
   void SetTauOnly() { tauOnly = true; }        // only have Ds decay to tau
   void SetJpsiMainly() { JpsiMainly = true; }  // let all Jpsi decay to mumu
   void SetOnlyMuons() { OnlyMuons = true; }    // only transport muons
@@ -140,6 +145,7 @@ class FixedTargetGenerator : public SHiP::Generator {
   Double_t startZ;
   Double_t endZ;
   Bool_t targetFromGeometry;  // flag to indicate coordinates set from geometry
+  Bool_t fVetoJpsi = false;   // drop Pythia8 J/psi and their descendants
   Double_t maxCrossSection;
   TFile* fin;      //!
   TNtuple* nTree;  //!

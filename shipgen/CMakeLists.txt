@@ -6,7 +6,8 @@ ship_add_library(
   SOURCES Generator.cxx Pythia8Generator.cxx tPythia6Generator.cxx
           HNLPythia8Generator.cxx DPPythia8Generator.cxx GenieGenerator.cxx
           NtupleGenerator.cxx MuonBackGenerator.cxx CosmicsGenerator.cxx
-          MuDISGenerator.cxx FixedTargetGenerator.cxx EvtCalcGenerator.cxx TTreeGenerator.cxx
+          MuDISGenerator.cxx FixedTargetGenerator.cxx JpsiGenerator.cxx JpsiSampler.cxx
+          EvtCalcGenerator.cxx TTreeGenerator.cxx
           TEvtGenDecayer.cxx BeamSmearingUtils.cxx MeanMaterialBudget.cxx
           ParticleGunGenerator.cxx
   LINKDEF LinkDef.h
