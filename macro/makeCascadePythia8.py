@@ -29,7 +29,12 @@ ap.add_argument(
     default=int(time.time() * 100000000 % 900000000),
     help="Random number seed, integer. If not given, current time will be used",
 )
-ap.add_argument("-t", "--Fntuple", default="", help="Name of ntuple output file")
+ap.add_argument(
+    "-t",
+    "--Fntuple",
+    default="",
+    help="Name of ntuple output file, default: Cascade{nevgen/1000}k-pythia8-{pythia8_tune}-MSEL{mselcb}-ntuple.root",
+)
 ap.add_argument("-n", "--nevgen", type=int, default=100000, help="Number of events to produce, default 100000")
 ap.add_argument("-E", "--pbeamh", type=float, default=400.0, help="Energy of beam in GeV, default 400 GeV")
 ap.add_argument(
