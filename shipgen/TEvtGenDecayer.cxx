@@ -13,12 +13,6 @@
 #include "TRandom.h"
 #include "TSystem.h"
 
-// Define EVTGEN_CPP11 for older EvtGen versions to enable MT random generator
-// This will become obsolete with newer EvtGen versions
-#ifndef EVTGEN_CPP11
-#define EVTGEN_CPP11
-#endif
-
 // EvtGen includes
 #include "EvtGen/EvtGen.hh"
 #include "EvtGenBase/EvtAbsRadCorr.hh"
