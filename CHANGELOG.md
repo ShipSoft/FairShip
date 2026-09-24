@@ -15,12 +15,16 @@ it in future.
 ### Added
 
 * Add `--pythia8-tune` (`default`, `FTFT`) to `run_fixedTarget.py` and `FixedTargetGenerator::SetPythiaTune` to select the FTFT Pythia8 tune for open charm and beauty production in fixed-target collisions (arXiv:2608.29076) in the Pythia8 primary interaction. The Pythia8 default (Monash 2013) remains the default. Charm and beauty read from cascade input files are unaffected. `SetPythiaTune` takes the same tune names as the command line, with `default` and the empty string both selecting the Pythia8 default. `run_fixedTarget.py` rejects the flag up front when combined with `--charm`, `--beauty` or `--G4only`, where the tune would have no effect. A non-default tune also tags the work directory (e.g. `<host>_run_fixedTarget_1_FTFT`), so runs that differ only by tune no longer overwrite each other.
+* ACTS is available as an alternative track fitter in the main reconstruction chain: `ShipReco.py --trackFitter acts` writes `RecoTracks`/`RecoVertices`/`Particles` branches instead of the GenFit `FitTracks` (which remains the default). Both fitters write `goodTracks`, and one `VetoHitOnTrack` entry per good track with the distance in cm. Analysis tools (`ShipAna`, `shipVeto`, `analysis_toolkit`, `tracking_benchmark`) detect either output format automatically.
+* New `--patRec Truth` option for MC-truth track seeding (requires `--trackFitter acts`).
 
 ### Changed
 
 ### Fixed
 
 * Charm runs of `run_fixedTarget.py` no longer drop the `charm` work-directory tag: a missing `elif` meant the tag was assigned and then immediately overwritten, so charm output landed in the same untagged directory as a min-bias run of the same run number.
+* ACTS vertex positions were scaled by the covariance conversion factor rather than the length one, placing every reconstructed vertex ten times too close to the target
+* Track candidates were built with a charge that contradicted their PDG code. The charge is the one the bending actually supports, so the PDG code was corrected to match it; GenFit results are unaffected (it does not use the seed charge) and ACTS results are unchanged
 
 ### Removed
 

@@ -5,6 +5,7 @@
 from array import array
 
 import ROOT
+from shipTrackAccess import get_tracks, track_info, uses_acts
 
 
 class Task:
@@ -84,17 +85,18 @@ class Task:
     def Track_decision(self, mcParticle=None) -> tuple[bool, int | float, int]:
         nMultCon = 0
         k = -1
-        for aTrack in self.sTree.FitTracks:
+        acts_tracks = uses_acts(self.sTree)
+        for aTrack in get_tracks(self.sTree):
             k += 1
             if mcParticle:
                 if mcParticle > 0 and mcParticle != self.sTree.fitTrack2MC[k]:
                     continue
                 if mcParticle < 0 and abs(mcParticle) == self.sTree.fitTrack2MC[k]:
                     continue
-            fstatus = aTrack.getFitStatus()
-            if not fstatus.isFitConverged():
+            info = track_info(aTrack, acts_tracks)
+            if not info.converged:
                 continue
-            if fstatus.getNdf() < 25:
+            if info.ndf < 25:
                 continue
             nMultCon += 1
         w = 1.0
