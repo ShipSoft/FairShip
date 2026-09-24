@@ -1,5 +1,7 @@
 var NAVTREEINDEX30 =
 {
+"splitcalContFact_8cxx.html":[8,0,14,5],
+"splitcalContFact_8cxx_source.html":[8,0,14,5],
 "splitcalContFact_8h.html":[8,0,14,6],
 "splitcalContFact_8h_source.html":[8,0,14,6],
 "splitcalDetector_8py.html":[8,0,10,0,3],
@@ -247,7 +249,5 @@ var NAVTREEINDEX30 =
 "test__heavyFlavourScaling_8py.html#a9f6b6f052a9005f5a52e098da3dc7a81":[8,0,16,2,1],
 "test__heavyFlavourScaling_8py.html#aaaa40b06ad3b57660f0b5b4f6364cb9e":[8,0,16,2,2],
 "test__heavyFlavourScaling_8py.html#aaad846759d9767bfbf4ab22dd30520b6":[8,0,16,2,3],
-"test__heavyFlavourScaling_8py.html#ac02ea77ca560496416857f546def4103":[8,0,16,2,0],
-"test__heavyFlavourScaling_8py.html#adff1646bf67454db33f1f66ff22587db":[8,0,16,2,6],
-"test__heavyFlavourScaling_8py.html#ae354281815c07143ad58ce604b009edd":[8,0,16,2,7]
+"test__heavyFlavourScaling_8py.html#ac02ea77ca560496416857f546def4103":[8,0,16,2,0]
 };

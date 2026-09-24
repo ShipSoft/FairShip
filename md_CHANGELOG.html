@@ -100,12 +100,15 @@ Unreleased</h1>
 <h2><a class="anchor" id="autotoc_md3"></a>
 Added</h2>
 <ul>
-<li>Add <code>--pythia8-tune</code> (<code>default</code>, <code>FTFT</code>) to <code><a class="el" href="run__fixedTarget_8py.html">run_fixedTarget.py</a></code> and <code><a class="el" href="classFixedTargetGenerator.html#a63ef737494ada6220c96998b76477c6e">FixedTargetGenerator::SetPythiaTune</a></code> to select the FTFT <a class="el" href="namespacePythia8.html">Pythia8</a> tune for open charm and beauty production in fixed-target collisions (arXiv:2608.29076) in the <a class="el" href="namespacePythia8.html">Pythia8</a> primary interaction. The <a class="el" href="namespacePythia8.html">Pythia8</a> default (Monash 2013) remains the default. Charm and beauty read from cascade input files are unaffected.</li>
+<li>Add <code>--pythia8-tune</code> (<code>default</code>, <code>FTFT</code>) to <code><a class="el" href="run__fixedTarget_8py.html">run_fixedTarget.py</a></code> and <code><a class="el" href="classFixedTargetGenerator.html#a63ef737494ada6220c96998b76477c6e">FixedTargetGenerator::SetPythiaTune</a></code> to select the FTFT <a class="el" href="namespacePythia8.html">Pythia8</a> tune for open charm and beauty production in fixed-target collisions (arXiv:2608.29076) in the <a class="el" href="namespacePythia8.html">Pythia8</a> primary interaction. The <a class="el" href="namespacePythia8.html">Pythia8</a> default (Monash 2013) remains the default. Charm and beauty read from cascade input files are unaffected. <code>SetPythiaTune</code> takes the same tune names as the command line, with <code>default</code> and the empty string both selecting the <a class="el" href="namespacePythia8.html">Pythia8</a> default. <code><a class="el" href="run__fixedTarget_8py.html">run_fixedTarget.py</a></code> rejects the flag up front when combined with <code>--charm</code>, <code>--beauty</code> or <code>--G4only</code>, where the tune would have no effect. A non-default tune also tags the work directory (e.g. <code>&lt;host&gt;_run_fixedTarget_1_FTFT</code>), so runs that differ only by tune no longer overwrite each other.</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md4"></a>
 Changed</h2>
 <h2><a class="anchor" id="autotoc_md5"></a>
 Fixed</h2>
+<ul>
+<li>Charm runs of <code><a class="el" href="run__fixedTarget_8py.html">run_fixedTarget.py</a></code> no longer drop the <code>charm</code> work-directory tag: a missing <code>elif</code> meant the tag was assigned and then immediately overwritten, so charm output landed in the same untagged directory as a min-bias run of the same run number.</li>
+</ul>
 <h2><a class="anchor" id="autotoc_md6"></a>
 Removed</h2>
 <h1><a class="anchor" id="autotoc_md7"></a>

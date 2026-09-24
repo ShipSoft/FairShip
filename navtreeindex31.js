@@ -1,5 +1,7 @@
 var NAVTREEINDEX31 =
 {
+"test__heavyFlavourScaling_8py.html#adff1646bf67454db33f1f66ff22587db":[8,0,16,2,6],
+"test__heavyFlavourScaling_8py.html#ae354281815c07143ad58ce604b009edd":[8,0,16,2,7],
 "test__heavyFlavourScaling_8py_source.html":[8,0,16,2],
 "test__rntuple__io_8cxx.html":[8,0,16,3],
 "test__rntuple__io_8cxx.html#a08a365ee8364cd02e98159ee1a6d64b6":[8,0,16,3,2],
