@@ -4,6 +4,10 @@
 // JpsiSampler; this class handles the geometry scan (vertex distribution and
 // absolute rate), the AddTrack calls and the configuration setters.
 //
+// Like the other shipgen generators, the class has no ClassDef: the LinkDef
+// entry (with "-") provides interpreter and Python access, and a generator is
+// never written to file, so no streamer is needed.
+//
 // Weight convention, important with FairShip splitting enabled:
 // ShipStack::PushTrack multiplies a daughter weight by its parent's, so the
 // truth-level J/psi mother is pushed with weight 1 and the transported muons
@@ -51,6 +55,16 @@ class JpsiGenerator : public SHiP::Generator {
   /// read back the count with NEventsToGenerate().
   void SetEnhancement(Double_t e) { fCfg.enhancement = e; }
 
+  // ---- injection into a host production -----------------------------------
+  /// Add J/psi to the events of another generator (e.g. FixedTargetGenerator)
+  /// instead of producing a standalone sample. The host run's event count sets
+  /// the statistics; SetEnhancement(E) or SetMeanPerEvent(mu) sets the J/psi
+  /// content, with weight 1/E per J/psi. E = 1 is the physical rate.
+  void SetInjection(Bool_t on = kTRUE) { fCfg.injection = on; }
+  void SetMeanPerEvent(Double_t mu) { fCfg.meanPerEvent = mu; }
+  /// Protons each host event stands for; 1 for FixedTargetGenerator minbias.
+  void SetPotPerEvent(Double_t p) { fCfg.potPerEvent = p; }
+
   // ---- kinematics knobs ----------------------------------------------------
   void SetRapidityShape(const TString& shape);  ///< "data", "hybrid", "gauss"
   void SetForwardTail(Double_t n) { fCfg.tailN = n; }
@@ -64,6 +78,11 @@ class JpsiGenerator : public SHiP::Generator {
     fCfg.yGaussSigma = sigma;
   }
   void SetPtSq(Double_t ptSq) { fCfg.ptSq = ptSq; }
+  /// Rapidity dependence of the transverse momentum: <pT^2>(y) = ptSq + slope*|y_cm|.
+  /// Default -0.36 GeV^2 per unit rapidity, from the 2018 SHiP dimuon data
+  /// (reconstruction level); 0 keeps the NA50 factorisation, -0.5 is the other
+  /// end of the systematic band.
+  void SetPtSqSlope(Double_t slope) { fCfg.ptSqSlope = slope; }
   void SetFHard(Double_t f) {
     fCfg.fHard = f;
     fCfg.ptSq = -1;
@@ -101,25 +120,28 @@ class JpsiGenerator : public SHiP::Generator {
   Double_t ChiMuMu() const;
   Double_t ProbMuMuPerPot() const;
   Double_t EventWeight() const;
+  Double_t MeanPerEvent() const;
   Long_t NEventsToGenerate() const;
   std::string Summary() const;
   std::vector<std::pair<std::string, double>> Metadata() const;
 
  private:
   Bool_t ScanGeometry();
+  Double_t SampleZ();
+  /// Push one J/psi (and its muons); returns the number of tracks added.
+  Int_t PushJpsi(FairPrimaryGenerator* cpg, const jpsi::Event& ev,
+                 Int_t firstIndex);
 
   jpsi::Config fCfg;
-  std::unique_ptr<jpsi::Sampler> fSampler;  //!
+  std::unique_ptr<jpsi::Sampler> fSampler;
 
   Bool_t fUseGeometry = kFALSE;
   Double_t fZ0 = 0, fZ1 = 0, fXoff = 0, fYoff = 0;
   Int_t fScanSteps = 4000;
   Double_t fSmearBeam = 0.8;  // cm, FixedTargetGenerator default
   Double_t fPaintBeam = 5.0;  // cm, FixedTargetGenerator default
-  std::vector<Double_t> fZGrid;  //!
-  std::vector<Double_t> fZCdf;   //!
-
-  ClassDefOverride(JpsiGenerator, 1);
+  std::vector<Double_t> fZGrid;
+  std::vector<Double_t> fZCdf;
 };
 
 #endif  // SHIPGEN_JPSIGENERATOR_H_

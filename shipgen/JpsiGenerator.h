@@ -78,6 +78,11 @@ class JpsiGenerator : public SHiP::Generator {
     fCfg.yGaussSigma = sigma;
   }
   void SetPtSq(Double_t ptSq) { fCfg.ptSq = ptSq; }
+  /// Rapidity dependence of the transverse momentum: <pT^2>(y) = ptSq + slope*|y_cm|.
+  /// Default -0.36 GeV^2 per unit rapidity, from the 2018 SHiP dimuon data
+  /// (reconstruction level); 0 keeps the NA50 factorisation, -0.5 is the other
+  /// end of the systematic band.
+  void SetPtSqSlope(Double_t slope) { fCfg.ptSqSlope = slope; }
   void SetFHard(Double_t f) {
     fCfg.fHard = f;
     fCfg.ptSq = -1;

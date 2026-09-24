@@ -126,7 +126,7 @@ jpsi_group.add_argument(
     "the number of events, overriding -n; with --jpsi-inject it sets the J/psi content (default 1)",
 )
 jpsi_group.add_argument("--jpsi-shape", choices=["data", "hybrid", "gauss"], default="data")
-jpsi_group.add_argument("--jpsi-tail", type=float, default=6.0, help="exponent n of (1-|xF|)^n")
+jpsi_group.add_argument("--jpsi-tail", type=float, default=5.5, help="exponent n of (1-|xF|)^n (SHiP 2018 refit)")
 jpsi_group.add_argument("--jpsi-ptsq", type=float, default=1.9, help="<pT^2> in GeV^2")
 jpsi_group.add_argument("--jpsi-lambda", type=float, default=0.0, help="Collins-Soper polar coefficient")
 jpsi_group.add_argument("--jpsi-output", choices=["mumu", "jpsi", "both"], default="mumu")

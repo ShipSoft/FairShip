@@ -79,12 +79,20 @@ struct Config {
   double nPow = 6.0;            ///< power-law exponent
   double fHard = 0.5;           ///< weight of the power-law term, [0,1]
   double ptSq = -1.0;           ///< if > 0, fHard is solved for this <pT^2>
+  /// Rapidity dependence of the transverse momentum: <pT^2>(y_cm) = ptSq + ptSqSlope * |y_cm|.
+  /// Default from our analysis of the 2018 SHiP dimuon data: -0.36 +- 0.10 GeV^2 per unit
+  /// rapidity, stable across selections differing by 40% in yield, and of the sign expected
+  /// from the kinematic limit (NA3, E866 see the same in x_F). It is a reconstruction-level
+  /// value: the pT acceptance within a rapidity bin is not corrected, which is expected to
+  /// steepen it rather than flatten it. Systematic band: 0 (factorised, the NA50 assumption)
+  /// to -0.5.
+  double ptSqSlope = -0.36;
   bool thermalJacobian = true;  ///< dN/dpT ~ pT mT K1 (false: mT K1)
   double ptMax = 10.0;
 
   // ---- rapidity ------------------------------------------------------------
   YShape yShape = YShape::Data;
-  double tailN = 6.0;
+  double tailN = 5.5;  ///< refitted to SHiP 2018 with the generated p_T spectrum
   double yMatch = 0.5;
   double dataLo = 0.4;
   double dataHi = 1.8;
@@ -98,6 +106,16 @@ struct Config {
   double nPot = 5e13;         ///< protons this sample stands for
   long nEvents = 1000000;     ///< J/psi to generate
   double enhancement = -1.0;  ///< if > 0, sets nEvents = E * nPot * rate
+
+  // ---- injection into a host production (e.g. Pythia8 minimum bias) --------
+  /// When true, J/psi are added to the events of another generator instead of
+  /// forming their own sample. Each host event stands for potPerEvent protons;
+  /// on average meanPerEvent J/psi are injected per event, each with weight
+  ///   w = rate * potPerEvent / meanPerEvent = 1 / enhancement.
+  /// Set either enhancement (E = 1: physical rate, weight 1) or meanPerEvent.
+  bool injection = false;
+  double meanPerEvent = -1.0;
+  double potPerEvent = 1.0;
 
   // ---- bookkeeping ---------------------------------------------------------
   Output output = Output::MuMu;
@@ -134,7 +152,9 @@ struct Normalisation {
   double rate = 0.;       ///< what the weight actually uses (see Output)
   double weight = 0.;     ///< nominal weight per generated event
   double enhancement = 0.;
-  double meanPt = 0., meanPtSq = 0., fHard = 0.;
+  double meanPt = 0., meanPtSq = 0., fHard = 0.;  ///< at y_cm = 0 when the slope is non-zero
+  double ptSqSlope = 0.;
+  double meanPerEvent = 0.;  ///< injection mode only
   /// Diagnostic only: what chi_mumu would be if the NA50 anchor were quoted
   /// over the full cos Theta_CS range. Never used in the weight.
   double chiMuMuFullCosDiagnostic = 0.;
@@ -148,6 +168,9 @@ class Sampler {
   explicit Sampler(const Config& cfg);
 
   Event Next();
+  /// Injection mode: how many J/psi to add to the current host event,
+  /// floor(mu) plus one more with probability frac(mu).
+  int NumberToInject();
 
   const Config& GetConfig() const { return fCfg; }
   const Normalisation& GetNormalisation() const { return fNorm; }
@@ -175,15 +198,17 @@ class Sampler {
 
  private:
   void Validate() const;
-  void BuildPtGrid();
+  void BuildPtGrids();
+  double PtSqAt(double y) const;
   void BuildYGrid();
   void Normalise();
   void RecomputeRate();
   double SolveFHard(double ptSq) const;
   double PtMoment(const std::vector<double>& pdf, int k) const;
-  double PtCdfAt(double pt) const;
-  double TailDensity(double y) const;  ///< integrated over the pT spectrum
-  double SamplePt();
+  double PtCdfAt(double pt, double y) const;
+  double TailDensity(double y) const;  ///< integrated over the local pT spectrum
+  double SamplePt(double y);
+  int PtNode(double y) const;
   double SampleY();
   void DrawKinematics(double& y, double& pt);
   double SampleCosTheta();
@@ -198,7 +223,10 @@ class Sampler {
   std::mt19937_64 fRng;
   std::uniform_real_distribution<double> fFlat{0., 1.};
 
-  std::vector<double> fPtGrid, fPtPdf, fPtCdf, fPtThermal, fPtHard;
+  std::vector<double> fPtGrid, fPtThermal, fPtHard;
+  // one pT spectrum per rapidity node, so <pT^2> can depend on y
+  std::vector<double> fPtNodeY;
+  std::vector<std::vector<double>> fPtPdfN, fPtCdfN;
   std::vector<double> fYGrid, fYPdf, fYCdf, fYValid;
   std::vector<double> fZGrid, fZCdf;
 

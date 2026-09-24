@@ -6,6 +6,7 @@
 
 #include <cmath>
 #include <cstdio>
+#include <algorithm>
 #include <map>
 #include <string>
 #include <vector>
@@ -33,6 +34,7 @@ bool Close(double a, double b, double relTol) {
 int main() {
   Config cfg;
   cfg.ptSq = 1.9;
+  cfg.ptSqSlope = 0.;  // baseline: the factorised case; the measured slope has its own test
   cfg.nEvents = 1000000;
   Sampler s(cfg);
   std::printf("%s\n\n", s.Summary().c_str());
@@ -172,6 +174,108 @@ int main() {
   Sampler sEnh1k(enh);
   Check("enhancement 1000 gives weight 1e-3",
         Close(sEnh1k.GetNormalisation().weight, 1e-3, 1e-3));
+
+  // ---------------------------------------- rapidity-dependent pT (SHiP 2018)
+  std::printf("\nRapidity-dependent transverse momentum\n");
+  {
+    Config c = cfg;
+    c.ptSq = 2.1;
+    c.ptSqSlope = -0.36;  // reconstruction-level slope from the 2018 data
+    Sampler sp(c);
+    // <pT^2> in rapidity slices must follow the requested straight line
+    const double edges[5] = {0.2, 0.6, 1.0, 1.4, 1.8};
+    double sum[4] = {0, 0, 0, 0}, sum2[4] = {0, 0, 0, 0};
+    long cnt[4] = {0, 0, 0, 0};
+    for (long i = 0; i < 2000000; ++i) {
+      const Event e = sp.Next();
+      for (int b = 0; b < 4; ++b)
+        if (e.yCM > edges[b] && e.yCM < edges[b + 1]) {
+          const double pt2 = e.jpsi.Pt() * e.jpsi.Pt();
+          sum[b] += pt2;
+          sum2[b] += pt2 * pt2;
+          ++cnt[b];
+        }
+    }
+    bool follows = true;
+    for (int b = 0; b < 4; ++b) {
+      if (cnt[b] < 1000) continue;
+      const double yc = 0.5 * (edges[b] + edges[b + 1]);
+      const double want = c.ptSq + c.ptSqSlope * yc;
+      const double got = sum[b] / cnt[b];
+      const double err = std::sqrt(std::max(0.0, sum2[b] / cnt[b] - got * got) / cnt[b]);
+      std::printf("    %.1f < y < %.1f : <pT^2> = %.3f +- %.3f, requested %.3f\n", edges[b], edges[b + 1], got,
+                  err, want);
+      if (std::abs(got - want) > std::max(0.03, 5 * err)) follows = false;
+    }
+    Check("sampled <pT^2> follows the requested slope", follows);
+    Config flat = cfg;
+    flat.ptSq = 2.1;
+    Sampler sf(flat);
+    Check("slope 0 reproduces the flat case",
+          Close(sf.GetNormalisation().meanPtSq, 2.1, 1e-3) &&
+              Close(sp.GetNormalisation().meanPtSq, 2.1, 1e-3),  // both quoted at y = 0
+          "flat " + std::to_string(sf.GetNormalisation().meanPtSq) + ", sloped at y=0 " +
+              std::to_string(sp.GetNormalisation().meanPtSq));
+    // the normalisation must stay consistent: weights identical, f_y sane
+    Check("f_y still near 0.45 with a pT slope", std::abs(sp.GetNormalisation().fY - 0.45) < 0.03,
+          "f_y = " + std::to_string(sp.GetNormalisation().fY));
+  }
+
+  // ---------------------------------------- injection into a host production
+  std::printf("\nInjection mode\n");
+  {
+    Config inj = cfg;
+    inj.injection = true;
+    inj.enhancement = 1.0;
+    Sampler sInj(inj);
+    const auto& nj = sInj.GetNormalisation();
+    Check("E = 1: physical rate per host event, weight 1",
+          Close(nj.weight, 1.0, 1e-12) && Close(nj.meanPerEvent, n.chiMuMu, 1e-12),
+          "mu = " + std::to_string(nj.meanPerEvent));
+
+    inj.enhancement = 3.0e5;  // mu = 0.57 per event
+    Sampler sInj2(inj);
+    const auto& n2 = sInj2.GetNormalisation();
+    long total = 0;
+    const long nHost = 400000;
+    for (long i = 0; i < nHost; ++i) total += sInj2.NumberToInject();
+    const double muObs = total / double(nHost);
+    Check("mean J/psi per host event = mu",
+          std::abs(muObs - n2.meanPerEvent) < 5 * std::sqrt(n2.meanPerEvent / nHost),
+          "observed " + std::to_string(muObs) + ", expected " +
+              std::to_string(n2.meanPerEvent));
+    Check("weight = 1/E", Close(n2.weight, 1.0 / 3.0e5, 1e-12));
+    Check("expectation preserved: mu * w = rate per POT",
+          Close(n2.meanPerEvent * n2.weight, n.chiMuMu, 1e-12));
+
+    Config inj3 = cfg;
+    inj3.injection = true;
+    inj3.meanPerEvent = 2.5;  // more than one per event
+    Sampler sInj3(inj3);
+    total = 0;
+    int maxK = 0;
+    for (long i = 0; i < 100000; ++i) {
+      const int k = sInj3.NumberToInject();
+      total += k;
+      maxK = std::max(maxK, k);
+    }
+    Check("mu = 2.5 gives 2 or 3 per event, mean 2.5",
+          maxK == 3 && std::abs(total / 1e5 - 2.5) < 0.01);
+    Check("mu = 2.5 weight = rate/2.5",
+          Close(sInj3.GetNormalisation().weight, n.chiMuMu / 2.5, 1e-12));
+
+    Config bad2 = cfg;
+    bad2.injection = true;
+    bad2.enhancement = -1;
+    bad2.meanPerEvent = -1;
+    bool threw = false;
+    try {
+      Sampler probe(bad2);
+    } catch (const std::exception&) {
+      threw = true;
+    }
+    Check("injection without a rate knob is rejected", threw);
+  }
 
   // ---------------------------------------- shapes
   std::printf("\nRapidity models\n");

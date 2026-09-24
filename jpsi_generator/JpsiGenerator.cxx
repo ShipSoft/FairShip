@@ -89,6 +89,9 @@ Double_t JpsiGenerator::ProbMuMuPerPot() const {
 Double_t JpsiGenerator::EventWeight() const {
   return fSampler ? fSampler->GetNormalisation().weight : 0.;
 }
+Double_t JpsiGenerator::MeanPerEvent() const {
+  return fSampler ? fSampler->GetNormalisation().meanPerEvent : 0.;
+}
 Long_t JpsiGenerator::NEventsToGenerate() const {
   return fSampler ? fSampler->NEvents() : 0;
 }
@@ -171,34 +174,22 @@ Bool_t JpsiGenerator::Init() {
 
 // ---------------------------------------------------------------- event
 
-Bool_t JpsiGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
-  if (!fSampler) {
-    LOG(fatal) << "JpsiGenerator: ReadEvent before Init";
-    return kFALSE;
-  }
-  IncrementCounter("generated_events");
+Double_t JpsiGenerator::SampleZ() {
+  if (fZCdf.empty()) return fCfg.zStart_cm;
+  const double u = fSampler->Uniform();
+  const auto it = std::lower_bound(fZCdf.begin(), fZCdf.end(), u);
+  const std::size_t i =
+      std::min<std::size_t>(std::distance(fZCdf.begin(), it), fZCdf.size() - 1);
+  if (i == 0) return fZGrid.front();
+  const double den = fZCdf[i] - fZCdf[i - 1];
+  const double f = den > 0 ? (u - fZCdf[i - 1]) / den : 0.;
+  return fZGrid[i - 1] + f * (fZGrid[i] - fZGrid[i - 1]);
+}
 
-  jpsi::Event ev = fSampler->Next();
+Int_t JpsiGenerator::PushJpsi(FairPrimaryGenerator* cpg, const jpsi::Event& ev,
+                              Int_t firstIndex) {
   const Double_t w = ev.weight;
-
-  // vertex: geometry CDF, slab model, or the fixed start plane
-  Double_t z = fCfg.zStart_cm;
-  if (!fZCdf.empty()) {
-    const double u = fSampler->Uniform();
-    const auto it = std::lower_bound(fZCdf.begin(), fZCdf.end(), u);
-    const std::size_t i =
-        std::min<std::size_t>(std::distance(fZCdf.begin(), it), fZCdf.size() - 1);
-    if (i == 0) {
-      z = fZGrid.front();
-    } else {
-      const double den = fZCdf[i] - fZCdf[i - 1];
-      const double f = den > 0 ? (u - fZCdf[i - 1]) / den : 0.;
-      z = fZGrid[i - 1] + f * (fZGrid[i] - fZGrid[i - 1]);
-    }
-  } else {
-    z = ev.z_cm;
-  }
-
+  const Double_t z = fZCdf.empty() ? ev.z_cm : SampleZ();
   // Same beam profile as FixedTargetGenerator (Gaussian smearing + painting).
   const auto [dx, dy] = CalculateBeamOffset(fSmearBeam, fPaintBeam);
   const Double_t x = fXoff + dx;
@@ -210,27 +201,44 @@ Bool_t JpsiGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
                   ev.jpsi.E, 0., w, kPPrimary);
     IncrementCounter("stored_tracks");
     IncrementCounter("tracked_final_state_particles");
-    return kTRUE;
+    return 1;
   }
 
   // Truth-level mother with weight 1: ShipStack multiplies daughter weights by
-  // the parent's when splitting is on, so this must not be w.
+  // the parent's when splitting is on, so this must not be w. Mother indices
+  // are local to this generator; FairPrimaryGenerator adds the offset of any
+  // tracks another generator (the host) already pushed in this event.
   cpg->AddTrack(443, ev.jpsi.px, ev.jpsi.py, ev.jpsi.pz, x, y, z, -1, kFALSE,
                 ev.jpsi.E, 0., 1.0, kPPrimary);
   IncrementCounter("stored_tracks");
-
   if (!IsInVesselAcceptance(ev.mup.px, ev.mup.py, ev.mup.pz) &&
       !IsInVesselAcceptance(ev.mum.px, ev.mum.py, ev.mum.pz)) {
     IncrementCounter("geometry_rejected_events");
-    return kTRUE;
+    return 1;
   }
-  cpg->AddTrack(-13, ev.mup.px, ev.mup.py, ev.mup.pz, x, y, z, 0, kTRUE,
+  cpg->AddTrack(-13, ev.mup.px, ev.mup.py, ev.mup.pz, x, y, z, firstIndex, kTRUE,
                 ev.mup.E, 0., w, kPDecay);
-  cpg->AddTrack(13, ev.mum.px, ev.mum.py, ev.mum.pz, x, y, z, 0, kTRUE,
+  cpg->AddTrack(13, ev.mum.px, ev.mum.py, ev.mum.pz, x, y, z, firstIndex, kTRUE,
                 ev.mum.E, 0., w, kPDecay);
   IncrementCounter("stored_tracks", 2);
   IncrementCounter("tracked_final_state_particles", 2);
-  return kTRUE;
+  return 3;
 }
 
-ClassImp(JpsiGenerator);
+Bool_t JpsiGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
+  if (!fSampler) {
+    LOG(fatal) << "JpsiGenerator: ReadEvent before Init";
+    return kFALSE;
+  }
+  IncrementCounter("generated_events");
+
+  // standalone: exactly one J/psi per event; injection: a tunable number
+  const Int_t nJpsi = fCfg.injection ? fSampler->NumberToInject() : 1;
+  Int_t index = 0;
+  for (Int_t k = 0; k < nJpsi; ++k) {
+    jpsi::Event ev = fSampler->Next();
+    index += PushJpsi(cpg, ev, index);
+    IncrementCounter("injected_jpsi");
+  }
+  return kTRUE;
+}

@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <cstdlib>
 #include <cmath>
+#include <iostream>
 #include <sstream>
 #include <stdexcept>
 
@@ -120,7 +121,7 @@ Sampler::Sampler(const Config& cfg) : fCfg(cfg), fRng(cfg.seed) {
   fSqrtS = std::sqrt(2 * kMProton * eBeam + 2 * kMProton * kMProton);
   fYShift = std::atanh(fCfg.pBeam / (eBeam + kMProton));
 
-  BuildPtGrid();
+  BuildPtGrids();
   BuildYGrid();
   BuildTargetModel();
   Normalise();
@@ -142,9 +143,15 @@ void Sampler::Validate() const {
   if (fCfg.tailN <= 0) fail("forward tail exponent must be positive");
   if (fCfg.dataHi <= fCfg.dataLo) fail("empty data range");
   if (fCfg.lambdaPol < -1) fail("lambda < -1 makes the decay density negative");
-  if (fCfg.nPot <= 0) fail("nPot must be positive");
-  if (fCfg.enhancement <= 0 && fCfg.nEvents <= 0) fail("nEvents must be > 0");
-  if (fCfg.enhancement > 0 && fCfg.enhancement <= 0) fail("bad enhancement");
+  if (fCfg.injection) {
+    if (fCfg.potPerEvent <= 0) fail("potPerEvent must be positive");
+    if (fCfg.enhancement <= 0 && fCfg.meanPerEvent <= 0) {
+      fail("injection needs an enhancement or a mean number per event");
+    }
+  } else {
+    if (fCfg.nPot <= 0) fail("nPot must be positive");
+    if (fCfg.enhancement <= 0 && fCfg.nEvents <= 0) fail("nEvents must be > 0");
+  }
   for (const auto& l : fCfg.layers) {
     if (l.length_cm <= 0) fail("layer length must be positive");
     if (l.material.A <= 0 || l.material.density_gcm3 <= 0) {
@@ -153,8 +160,15 @@ void Sampler::Validate() const {
   }
 }
 
-void Sampler::BuildPtGrid() {
-  constexpr int kN = 20001;
+double Sampler::PtSqAt(double y) const {
+  // <pT^2> depends on |x_F|, so the rapidity dependence is symmetric in y_cm:
+  // <pT^2>(y) = ptSq + slope * |y|. The data constrain 0.2 < y < 1.8; beyond
+  // that this is an extrapolation, clipped in BuildPtGrids to what is reachable.
+  return fCfg.ptSq + fCfg.ptSqSlope * std::fabs(y);
+}
+
+void Sampler::BuildPtGrids() {
+  constexpr int kN = 4001;
   fPtGrid.resize(kN);
   fPtThermal.resize(kN);
   fPtHard.resize(kN);
@@ -173,15 +187,75 @@ void Sampler::BuildPtGrid() {
   normalise(fPtThermal);
   normalise(fPtHard);
 
-  const double fHard = fCfg.ptSq > 0 ? SolveFHard(fCfg.ptSq) : fCfg.fHard;
-  fNorm.fHard = fHard;
-  fPtPdf.resize(kN);
-  for (int i = 0; i < kN; ++i) {
-    fPtPdf[i] = (1 - fHard) * fPtThermal[i] + fHard * fPtHard[i];
+  // rapidity nodes covering the kinematically allowed range
+  const double yKin = std::asinh(fSqrtS / (2 * kMJpsi));
+  constexpr int kNodes = 81;
+  fPtNodeY.resize(kNodes);
+  fPtPdfN.assign(kNodes, std::vector<double>(kN, 0.));
+  fPtCdfN.assign(kNodes, std::vector<double>(kN, 0.));
+  const double a = PtMoment(fPtThermal, 2), b = PtMoment(fPtHard, 2);
+  int nClipped = 0, nSoft = 0;
+  // Below the thermal-only value the two-component mixture cannot reach: soften the
+  // thermal slope T instead, which is what a lower effective energy near the kinematic
+  // limit implies. T is solved for the requested <pT^2> by bisection.
+  auto thermalWithT = [this](double T) {
+    std::vector<double> f(fPtGrid.size());
+    for (std::size_t i = 0; i < fPtGrid.size(); ++i) {
+      const double mt = std::hypot(kMJpsi, fPtGrid[i]);
+      f[i] = (fCfg.thermalJacobian ? fPtGrid[i] : 1.0) * mt * BesselK1(mt / T);
+    }
+    const double integral = Trapezoid(fPtGrid, f);
+    for (auto& v : f) v /= integral;
+    return f;
+  };
+  for (int n = 0; n < kNodes; ++n) {
+    const double y = -yKin + 2 * yKin * n / (kNodes - 1);
+    fPtNodeY[n] = y;
+    double fHard = fCfg.fHard;
+    bool soft = false;
+    std::vector<double> softPdf;
+    if (fCfg.ptSq > 0) {
+      const double want = PtSqAt(y);
+      // the mixture spans [min(a,b), max(a,b)]; below that, soften the thermal slope
+      if (want < std::min(a, b) && want > 0.2) {
+        double lo = 0.05, hi = fCfg.T;
+        for (int it = 0; it < 40; ++it) {
+          const double mid = 0.5 * (lo + hi);
+          (PtMoment(thermalWithT(mid), 2) < want ? lo : hi) = mid;
+        }
+        softPdf = thermalWithT(0.5 * (lo + hi));
+        soft = true;
+        ++nSoft;
+      }
+      fHard = (want - a) / (b - a);
+      if (!soft && !(fHard >= 0 && fHard <= 1)) {
+        if (std::fabs(y) < 1.8) {  // the region the data constrain: this is a real error
+          std::ostringstream os;
+          os << "JpsiSampler: <pT^2>(y=" << y << ") = " << want << " not reachable, range ["
+             << std::min(a, b) << ", " << std::max(a, b) << "]";
+          throw std::runtime_error(os.str());
+        }
+        fHard = std::min(1.0, std::max(0.0, fHard));  // extrapolation beyond the data: clip
+        ++nClipped;
+      }
+    }
+    for (int i = 0; i < kN; ++i)
+      fPtPdfN[n][i] = soft ? softPdf[i] : (1 - fHard) * fPtThermal[i] + fHard * fPtHard[i];
+    MakeCdf(fPtGrid, fPtPdfN[n], fPtCdfN[n]);
+    if (n == (kNodes - 1) / 2) {  // y = 0: the numbers quoted in the summary
+      fNorm.fHard = fHard;
+      fNorm.meanPt = PtMoment(fPtPdfN[n], 1);
+      fNorm.meanPtSq = PtMoment(fPtPdfN[n], 2);
+    }
   }
-  MakeCdf(fPtGrid, fPtPdf, fPtCdf);
-  fNorm.meanPt = PtMoment(fPtPdf, 1);
-  fNorm.meanPtSq = PtMoment(fPtPdf, 2);
+  fNorm.ptSqSlope = fCfg.ptSqSlope;
+  if (nClipped)
+    std::cerr << "JpsiSampler: <pT^2>(y) clipped to the reachable range at " << nClipped
+              << " of " << kNodes << " rapidity nodes (|y| > 1.8, outside the measured region)" << std::endl;
+  if (nSoft)
+    std::cout << "JpsiSampler: thermal slope softened to reach <pT^2>(y) at " << nSoft << " of " << kNodes
+              << " rapidity nodes (the two-component mixture bottoms out at " << std::min(a, b) << " GeV^2)"
+              << std::endl;
 }
 
 double Sampler::PtMoment(const std::vector<double>& pdf, int k) const {
@@ -205,8 +279,16 @@ double Sampler::SolveFHard(double ptSq) const {
   return f;
 }
 
-double Sampler::PtCdfAt(double pt) const {
-  return Interpolate(fPtGrid, fPtCdf, pt);
+int Sampler::PtNode(double y) const {
+  if (fPtNodeY.empty()) return 0;
+  const double lo = fPtNodeY.front(), hi = fPtNodeY.back();
+  const int n = static_cast<int>(fPtNodeY.size());
+  const int k = static_cast<int>(std::lround((y - lo) / (hi - lo) * (n - 1)));
+  return std::min(n - 1, std::max(0, k));
+}
+
+double Sampler::PtCdfAt(double pt, double y) const {
+  return Interpolate(fPtGrid, fPtCdfN[PtNode(y)], pt);
 }
 
 double Sampler::PtMaxAt(double y) const {
@@ -232,7 +314,7 @@ double Sampler::TailDensity(double y) const {
     const double xf = 2 * mt * std::sinh(y) / fSqrtS;
     const double base = std::max(0.0, 1.0 - std::abs(xf));
     const double jac = 2 * mt * std::cosh(y) / fSqrtS;
-    sum += w * Interpolate(fPtGrid, fPtPdf, pt) * std::pow(base, fCfg.tailN) *
+    sum += w * Interpolate(fPtGrid, fPtPdfN[PtNode(y)], pt) * std::pow(base, fCfg.tailN) *
            jac * (ptMax / kNpt);
   }
   return sum;
@@ -296,7 +378,7 @@ void Sampler::BuildYGrid() {
   // The same factor is used for generation and for f_y, so the normalised
   // density and the generated sample are identical by construction.
   for (int i = 0; i < kN; ++i) {
-    fYValid[i] = PtCdfAt(PtMaxAt(fYGrid[i]));
+    fYValid[i] = PtCdfAt(PtMaxAt(fYGrid[i]), fYGrid[i]);
     fYPdf[i] *= fYValid[i];
   }
   MakeCdf(fYGrid, fYPdf, fYCdf);
@@ -383,6 +465,18 @@ void Sampler::RecomputeRate() {
       fNorm.probMuMuPerPot > 0 ? fNorm.probMuMuPerPot : fNorm.chiMuMu;
   fNorm.rate = inclusive ? rateMuMu / kBrMuMu : rateMuMu;
 
+  if (fCfg.injection) {
+    // Expected real J/psi per host event: rate * potPerEvent. Generating mu of
+    // them per event keeps the expectation with weight rate*potPerEvent/mu.
+    const double physical = fNorm.rate * fCfg.potPerEvent;
+    fNorm.meanPerEvent =
+        fCfg.meanPerEvent > 0 ? fCfg.meanPerEvent : fCfg.enhancement * physical;
+    fNorm.weight = physical / fNorm.meanPerEvent;
+    fNorm.enhancement = 1.0 / fNorm.weight;
+    fNEvents = -1;  // set by the host run
+    return;
+  }
+
   fNEvents = fCfg.nEvents;
   if (fCfg.enhancement > 0) {
     fNEvents = std::max<long>(
@@ -406,11 +500,17 @@ double Sampler::BSigmaFullForA(double A) const {
   return window_cm2 / (fNorm.fY * fNorm.fCos);
 }
 
+int Sampler::NumberToInject() {
+  const double mu = fNorm.meanPerEvent;
+  const int base = static_cast<int>(std::floor(mu));
+  return base + (fFlat(fRng) < mu - base ? 1 : 0);
+}
+
 double Sampler::YDensity(double y) const {
   return Interpolate(fYGrid, fYPdf, y);
 }
 
-double Sampler::SamplePt() { return InvertCdf(fPtGrid, fPtCdf, fFlat(fRng)); }
+double Sampler::SamplePt(double y) { return InvertCdf(fPtGrid, fPtCdfN[PtNode(y)], fFlat(fRng)); }
 double Sampler::SampleY() { return InvertCdf(fYGrid, fYCdf, fFlat(fRng)); }
 
 void Sampler::DrawKinematics(double& y, double& pt) {
@@ -418,9 +518,10 @@ void Sampler::DrawKinematics(double& y, double& pt) {
   // then drawn from the pT spectrum truncated at that same limit. No rejection,
   // so the generated joint density matches the one used for the normalisation.
   y = SampleY();
+  const int node = PtNode(y);  // <pT^2> may depend on y
   const double ptMax = PtMaxAt(y);
-  const double uMax = PtCdfAt(ptMax);
-  pt = InvertCdf(fPtGrid, fPtCdf, fFlat(fRng) * uMax);
+  const double uMax = Interpolate(fPtGrid, fPtCdfN[node], ptMax);
+  pt = InvertCdf(fPtGrid, fPtCdfN[node], fFlat(fRng) * uMax);
 }
 
 double Sampler::SampleCosTheta() {
@@ -541,7 +642,8 @@ std::string Sampler::Summary() const {
      << "] p_beam = " << fCfg.pBeam << " GeV/c, sqrt(s) = " << fSqrtS
      << " GeV, y_lab = y_cm + " << fYShift << "\n  pT: T = " << fCfg.T
      << " GeV, fHard = " << fNorm.fHard << ", <pT> = " << fNorm.meanPt
-     << ", <pT^2> = " << fNorm.meanPtSq << " GeV^2\n  y : shape = "
+     << ", <pT^2>(y=0) = " << fNorm.meanPtSq << " GeV^2, d<pT^2>/dy = " << fCfg.ptSqSlope
+     << "\n  y : shape = "
      << (fCfg.yShape == YShape::Gauss
              ? "Gauss"
              : (fCfg.yShape == YShape::Hybrid ? "Hybrid" : "Data"))
@@ -557,6 +659,10 @@ std::string Sampler::Summary() const {
   if (fNorm.probMuMuPerPot > 0) {
     os << "\n  P(J/psi->mumu) per POT = " << fNorm.probMuMuPerPot
        << " (integrated over the target model)";
+  }
+  if (fCfg.injection) {
+    os << "\n  injection: " << fNorm.meanPerEvent << " J/psi per host event ("
+       << fCfg.potPerEvent << " POT each)";
   }
   os << "\n  output = "
      << (fCfg.output == Output::Jpsi
@@ -584,6 +690,7 @@ std::vector<std::pair<std::string, double>> Sampler::Metadata() const {
       {"pt_pow_n", fCfg.nPow},
       {"f_hard", fNorm.fHard},
       {"mean_pt_sq", fNorm.meanPtSq},
+      {"pt_sq_slope", fCfg.ptSqSlope},
       {"thermal_jacobian", fCfg.thermalJacobian ? 1.0 : 0.0},
       {"lambda_pol", fCfg.lambdaPol},
       {"f_y", fNorm.fY},
@@ -598,6 +705,9 @@ std::vector<std::pair<std::string, double>> Sampler::Metadata() const {
       {"weight", fNorm.weight},
       {"enhancement", fNorm.enhancement},
       {"output_mode", static_cast<double>(static_cast<int>(fCfg.output))},
+      {"injection", fCfg.injection ? 1.0 : 0.0},
+      {"mean_per_event", fNorm.meanPerEvent},
+      {"pot_per_event", fCfg.potPerEvent},
       {"seed", static_cast<double>(fCfg.seed)},
   };
 }

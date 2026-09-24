@@ -48,14 +48,40 @@ SHiP table cancels in the shape, which is all the SHiP data are used for. The
 alternative convention is stored as `chi_mumu_fullcos_diagnostic` in the
 metadata for comparison work only.
 
-## Composition knob
+## Two ways to use it
 
-`SetEnhancement(E)` or `SetNEvents(N)`. `E = 1` reproduces the physical rate for
-the requested POT (weight 1 per event, about 9.5×10⁷ events for a 5×10¹³ spill);
-`E = 10³` gives a thousand times more J/psi, each with weight 10⁻³. Weights stay
-identical, so nothing is distorted; combining with a minimum-bias sample only
-requires vetoing J/psi-descendant tracks there. `NEventsToGenerate()` returns
-the count when the enhancement form is used.
+**J/psi-only sample** (`--JpsiData` / `--jpsi-data`). Every event is one
+data-driven J/psi. `SetEnhancement(E)` or `SetNEvents(N)`: `E = 1` reproduces
+the physical rate for the requested POT (weight 1, about 7.6×10⁷ events for
+4×10¹³ POT); `E = 10³` gives a thousand times more J/psi at weight 10⁻³.
+`NEventsToGenerate()` returns the count.
+
+**Injection into a fixed-target production** (`--FixedTarget --JpsiInject` /
+`--jpsi-inject`). The host generator produces the normal events, one POT each;
+the J/psi generator adds J/psi to them:
+
+```
+mean J/psi per event   mu = E * rate * potPerEvent
+weight per J/psi       w  = 1 / E        (minimum-bias tracks keep weight 1)
+```
+
+`E = 1` gives the physical J/psi content (about 2×10⁻⁶ per event, weight 1,
+i.e. a realistic sample); `E = 10⁶` gives about two J/psi per event at weight
+10⁻⁶. `SetMeanPerEvent(mu)` sets the content directly instead. Several J/psi
+per event are allowed (floor(mu) plus one more with probability frac(mu)), so
+the whole range from realistic to J/psi-dominated is one knob, and every
+J/psi keeps the same weight.
+
+With the Pythia8 host (`run_fixedTarget.py`), `FixedTargetGenerator::SetVetoJpsi()`
+stops Pythia's own J/psi and everything descending from them from being
+transported, so the data-driven J/psi *replace* them rather than add to them.
+They stay in the MC truth as untracked entries. With the G4-only host of
+`run_simScript.py --FixedTarget` there is nothing to veto: Geant4's hadronic
+models produce essentially no J/psi.
+
+Injected J/psi share the event with an unrelated proton interaction, which is
+physical for a beam dump where many interactions overlap in time; the weights
+are per track, so single-muon rates are unaffected.
 
 ## Physics knobs
 
@@ -64,11 +90,12 @@ the count when the enhancement form is used.
 | `SetMom(p)` | 400 | beam momentum, GeV/c |
 | `SetTargetMaterial("W"\|"Mo")` or `(A, rho)` | W | per-nucleon anchor when no geometry scan is used |
 | `SetRapidityShape("data"\|"hybrid"\|"gauss")` | data | SHiP bins / power-law join / pure NA50 |
-| `SetForwardTail(n)` | 6.0 | exponent of (1−\|x_F\|)^n above the data range |
+| `SetForwardTail(n)` | 5.5 | exponent of (1−\|x_F\|)^n above the data range |
 | `SetDataRange(lo, hi)` | 0.4, 1.8 | SHiP bins used |
 | `SetYMatch(y)` | 0.5 | Gaussian/tail join for the hybrid shape |
 | `SetGaussian(mean, sigma)` | −0.2, 0.85 | NA50 Gaussian, e.g. 0.81 for the NA60 value |
 | `SetPtSq(v)` | 1.9 | solves the NA50 mixture for this ⟨p_T²⟩ |
+| `SetPtSqSlope(b)` | −0.36 | ⟨p_T²⟩(y) = ptSq + b·\|y_cm\|, from our analysis of the 2018 SHiP dimuon data (reconstruction level); 0 restores the NA50 factorisation |
 | `SetFHard(f)` | — | sets the mixture directly instead |
 | `SetThermalSlope(T)` | 0.2867 | thermal slope, GeV |
 | `SetThermalJacobian(bool)` | true | dN/dp_T ∝ p_T m_T K₁ or m_T K₁ |
@@ -158,11 +185,19 @@ This still deserves a FairShip-level regression test with
 
 ## Systematic variations
 
-- forward tail: `SetForwardTail(5)` … `SetForwardTail(7)`
+- forward tail: `SetForwardTail(5.3)` … `SetForwardTail(5.7)` (±1σ band of the SHiP refit, see jpsi_validation)
 - rapidity model: `"gauss"` as the deliberately hard-forward extreme, `"hybrid"`
   as the smooth one
 - NA60 width: `SetGaussian(-0.2, 0.81)`
 - p_T: `SetPtSq(1.4)` … `SetPtSq(2.2)`, or `SetThermalJacobian(false)`
+- p_T versus rapidity: `SetPtSqSlope(0)` (factorised) and `SetPtSqSlope(-0.5)` against the
+  default −0.36; the band covers both the measurement error and the uncorrected p_T acceptance
+
+Note on the p_T model beyond |y| ≈ 1.45: the requested ⟨p_T²⟩ falls below 1.38 GeV², which the
+NA50 two-component mixture cannot produce at the tungsten slope, so the thermal slope T is
+solved for the requested value there instead. The sampler reports how many rapidity nodes this
+affects. It is an extrapolation of the p_T model into a region the data do not constrain;
+the slope systematic covers it.
 - polarisation: `SetPolarisation(±0.14)`, with the normalisation following
   automatically
 
