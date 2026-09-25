@@ -14,6 +14,7 @@ import shipPatRec
 import shipunit as u
 import shipVertex
 import validationTools as validation_tools
+from detectors.CaloScoringPlaneDetector import CaloScoringPlaneDetector
 from detectors.MTCDetector import MTCDetector
 from detectors.SBTDetector import SBTDetector
 from detectors.SiliconTargetDetector import SiliconTargetDetector
@@ -109,6 +110,10 @@ class ShipDigiReco:
                 )
             except UBTGeometryMismatch as error:
                 logger.warning("%s: %s; the UBT is not digitized.", fgeo.GetName(), error)
+        if self.sTree.GetBranch("CaloScoringPlanePoint"):
+            self.caloScoringPlaneDetector = CaloScoringPlaneDetector(
+                "CaloScoringPlane", self.sTree, outtree=self.recoTree
+            )
 
         # for the digitizing step
         if hasattr(self, "strawtubes"):
@@ -366,6 +371,8 @@ class ShipDigiReco:
             self.timeDetector.process()
         if hasattr(self, "upstreamTaggerDetector"):
             self.upstreamTaggerDetector.process()
+        if hasattr(self, "caloScoringPlaneDetector"):
+            self.caloScoringPlaneDetector.process()
         if hasattr(self, "digiMTC"):
             self.digiMTC.process()
         if hasattr(self, "digiSiliconTarget"):

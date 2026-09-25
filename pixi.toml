@@ -32,6 +32,9 @@ eigen = "==5.0.1"
 # Upstream ACTS (Core only) for the ACTS track fitter in ActsTracking/. CMake
 # requires the 48 major version.
 acts-core = "48.*"
+# yaml-cpp comes with fairroot, but CaloScoringPlane links it directly (reads the
+# PID configuration), so keep it explicit for CMake's find_package(yaml-cpp).
+yaml-cpp = ">=0.7"
 
 # Python (conda-forge)
 # Pinned to 3.13 for acts-ship, which is no longer used; relaxing the pin is a

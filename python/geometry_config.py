@@ -467,6 +467,12 @@ def create_config(
     c.CaloScoringPlane.DX = 4 * u.m  # full width  (former SplitCal 2*XMax)
     c.CaloScoringPlane.DY = 6 * u.m  # full height (former SplitCal 2*YMax)
     c.CaloScoringPlane.DZ = 1 * u.mm  # full thickness
+    # Digitisation (python/detectors/CaloScoringPlaneDetector.py). Particle identification is
+    # configured at reconstruction time: ShipReco.py --caloScoringPlanePID file.yaml
+    c.CaloScoringPlane.PositionResolution = 0.0 * u.cm  # Gaussian x/y smearing, 0 = none
+    c.CaloScoringPlane.TimeResolution = 0.0  # Gaussian time smearing in ns, 0 = none
+    c.CaloScoringPlane.ForwardOnly = True  # digitise only crossings with pz > 0
+    c.CaloScoringPlane.IgnoredPdg = [12, 14, 16]  # never produce a hit (neutrinos)
     # Centre of the plane; its upstream face is the ECAL front face, 38.90 m downstream of the
     # decay vessel centre, i.e. at 97.17 m (integration layout 2026-0.1)
     c.CaloScoringPlane.z = 38.900 * u.m + c.decayVolume.z + c.CaloScoringPlane.DZ / 2
