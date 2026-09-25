@@ -73,6 +73,14 @@ parser.add_argument(
 parser.add_argument("-dy", dest="dy", help="Max height of tank", required=False, default=None, type=int)
 parser.add_argument("--Debug", dest="Debug", help="Switch on debugging", required=False, action="store_true")
 parser.add_argument(
+    "--caloScoringPlanePID",
+    dest="caloScoringPlanePID",
+    help="YAML file with energy-dependent electron/hadron/muon confusion matrices for the scoring plane "
+    "(format: CaloScoringPlane/README.md, provided: geometry/caloScoringPlane_pid_provided.yaml); default: perfect PID",
+    required=False,
+    default=None,
+)
+parser.add_argument(
     "--validation",
     dest="validation",
     help="Print reconstruction validation summary after finishing",
@@ -169,6 +177,7 @@ global_variables.modules = modules
 global_variables.withNoStrawSmearing = options.withNoStrawSmearing
 global_variables.h = h
 global_variables.iEvent = 0
+global_variables.caloScoringPlanePIDFile = options.caloScoringPlanePID
 
 # import reco tasks
 import shipDigiReco

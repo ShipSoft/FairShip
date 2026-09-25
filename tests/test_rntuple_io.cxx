@@ -40,6 +40,7 @@ bool objects_equal(const T& a, const T& b) {
 }
 
 // Include data class headers
+#include "CaloScoringPlaneHit.h"
 #include "CaloScoringPlanePoint.h"
 #include "DetectorHit.h"
 #include "MTCDetHit.h"
@@ -269,6 +270,15 @@ int main(int argc, char** argv) {
     objects.emplace_back();
     total++;
     if (test_rntuple_io("UpstreamTaggerHit", objects)) passed++;
+  }
+
+  {
+    std::vector<CaloScoringPlaneHit> objects;
+    objects.emplace_back();
+    objects.emplace_back();
+    objects.back().SetPid(CaloScoringPlanePID::kMuon);
+    total++;
+    if (test_rntuple_io("CaloScoringPlaneHit", objects)) passed++;
   }
 
   // Test Point classes
