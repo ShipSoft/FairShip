@@ -28,6 +28,7 @@ it in future.
 * Add `--cascade-model` (`nucleus`, `nucleon`) to `macro/makeCascadePythia8.py`. With `nucleus`, the default, every interaction of a cascade hadron is a hadron-nucleus collision built from hadron-nucleon subcollisions as in Pythia's PythiaCascade, with the heavy-flavour probability per hadron-nucleus collision, A sigma(signal)/sigma(hA). This matches the normalisation of `run_fixedTarget.py`, which is per proton-nucleus interaction and already contains the subcollisions inside the nucleus; single collisions on free nucleons (`nucleon`, as in `makeCascade.py`) count them twice and overestimate the cascade. The tables of the average number of subcollisions and the process of the later subcollisions follow the installed Pythia version (8.312 to 8.316, or 8.317 and later), and hadrons decay only once the collision is complete, so that a leading resonance collides again itself, as in PythiaCascade.
 * `--intermediate-kaon-pion-splits` (default 2): splitting factor applied to kaons and pions at each GEANT4 step before they decay, separate from the `--kaon-pion-splits` factor applied at the decay itself
 * `--max-split-buffer` (default 25000): hard bound on the split clones buffered per track. Per-step splitting stops once the cap is reached, reducing the statistical boost but conserving weight
+* `--max-event-size` (default 5000000): threshold on the estimated event size taking into account a safety factor depending on per-step splitting, with the per-step splitting stopping once the cap is reached
 
 ### Changed
 
