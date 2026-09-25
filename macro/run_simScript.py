@@ -800,8 +800,8 @@ if options.nuradio:
     Geniegen = ROOT.GenieGenerator()
     if not Geniegen.Init(inputFile, options.firstEvent):
         raise RuntimeError(f"Failed to initialize GenieGenerator from input: {inputFile}")
-    # Geniegen.SetPositions(ship_geo.target.z0, ship_geo.target.z0, ship_geo.MuonStation3.z)
-    Geniegen.SetPositions(ship_geo.target.z0, ship_geo.tauMudet.zMudetC, ship_geo.MuonStation3.z)
+    # Geniegen.SetPositions(ship_geo.target.z0, ship_geo.target.z0, ship_geo.CaloScoringPlane.z)
+    Geniegen.SetPositions(ship_geo.target.z0, ship_geo.tauMudet.zMudetC, ship_geo.CaloScoringPlane.z)
     Geniegen.NuOnly()
     primGen.AddGenerator(Geniegen)
     ROOT.SetOwnership(Geniegen, False)  # C++ FairPrimaryGenerator takes ownership
@@ -969,7 +969,8 @@ if hasattr(ship_geo.Bfield, "fieldMap"):
 if options.print_fields:
     geomGeant4.printVMCFields()
     geomGeant4.printWeightsandFields(
-        onlyWithField=True, exclude=["DecayVolume", "Tr1", "Tr2", "Tr3", "Tr4", "Veto", "MuonDetector", "SplitCal"]
+        onlyWithField=True,
+        exclude=["DecayVolume", "Tr1", "Tr2", "Tr3", "Tr4", "Veto", "MuonDetector", "CaloScoringPlane"],
     )
 # Plot the field example
 # fieldMaker.plotField(1, ROOT.TVector3(-9000.0, 6000.0, 50.0), ROOT.TVector3(-300.0, 300.0, 6.0), 'Bzx.png')
@@ -1078,6 +1079,7 @@ if options.muonback:
         "ScoringPoint",
         "strawtubesPoint",
         "TimeDetPoint",
+        "CaloScoringPlanePoint",
         "MCEventHeader",
         "UpstreamTaggerPoint",
         "MTCdetPoint",
