@@ -157,6 +157,15 @@ find_package2(PUBLIC FairRoot REQUIRED)
 find_package2(PUBLIC FairLogger REQUIRED)
 find_package2(PUBLIC VMC REQUIRED)
 find_package(genfit2 REQUIRED)
+# yaml-cpp (a FairRoot dependency) is used to read YAML configuration files in
+# C++. aliBuild exports YAML_CPP_ROOT; yaml-cpp >= 0.8 names its target
+# yaml-cpp::yaml-cpp, older versions yaml-cpp.
+find_package(yaml-cpp REQUIRED HINTS $ENV{YAML_CPP_ROOT})
+if(TARGET yaml-cpp::yaml-cpp)
+    set(SHIP_YAML_CPP_TARGET yaml-cpp::yaml-cpp)
+else()
+    set(SHIP_YAML_CPP_TARGET yaml-cpp)
+endif()
 
 # TPythia6 was removed from ROOT in 6.32, use external EGPythia6 package
 find_package(ROOTEGPythia6 REQUIRED)
@@ -201,7 +210,7 @@ add_subdirectory(passive)
 add_subdirectory(SND/EmulsionTarget)
 add_subdirectory(SND/MTC)
 add_subdirectory(SND/SiliconTarget)
-add_subdirectory(splitcal)
+add_subdirectory(CaloScoringPlane)
 add_subdirectory(veto)
 add_subdirectory(TimeDet)
 add_subdirectory(UpstreamTagger)

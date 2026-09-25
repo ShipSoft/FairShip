@@ -301,8 +301,8 @@ class DrawTracks(ROOT.FairTask):
         muonDet = top.GetNode("MuonDetector_1")
         if muonDet:
             self.z_end = muonDet.GetMatrix().GetTranslation()[2] + muonDet.GetVolume().GetShape().GetDZ()
-        elif hasattr(ShipGeo, "MuonStation3"):
-            self.z_end = ShipGeo["MuonStation3"].z
+        elif hasattr(ShipGeo, "CaloScoringPlane"):
+            self.z_end = ShipGeo["CaloScoringPlane"].z
         elif top.GetNode("VMuonBox_1"):
             xx = top.GetNode("VMuonBox_1")
             self.z_end = xx.GetMatrix().GetTranslation()[2] + xx.GetVolume().GetShape().GetDZ()
@@ -410,6 +410,7 @@ class DrawTracks(ROOT.FairTask):
             "MTCDetPoint",
             "SiliconTargetPoint",
             "TimeDetPoint",
+            "CaloScoringPlanePoint",
         ]:
             if not sTree.GetBranch(P):
                 continue
@@ -1015,7 +1016,7 @@ class Rulers(ROOT.FairTask):
         self.ruler.OpenCompound()
         xpos, ypos = -500.0, -1500.0
         zstart = ShipGeo.target.z0
-        zlength = ShipGeo.MuonStation3.z - zstart + 10 * u.m
+        zlength = ShipGeo.CaloScoringPlane.z - zstart + 10 * u.m
         a1 = ROOT.TEveLine()
         a1.SetNextPoint(xpos, ypos, zstart)
         a1.SetNextPoint(xpos, ypos, zstart + zlength)
@@ -1038,7 +1039,7 @@ class Rulers(ROOT.FairTask):
             z += ticks * u.m
         xpos, ypos = 0.0, 0.0
         if xy == 0:
-            z = ShipGeo.MuonStation3.z + 6 * u.m
+            z = ShipGeo.CaloScoringPlane.z + 6 * u.m
         else:
             z = xy
         ylength = 7 * u.m
@@ -1069,7 +1070,7 @@ class Rulers(ROOT.FairTask):
         self.ruler.AddElement(ty)
         xpos, ypos = 0.0, 0.0
         if xy == 0:
-            z = ShipGeo.MuonStation3.z + 10 * u.m
+            z = ShipGeo.CaloScoringPlane.z + 10 * u.m
         xlength = 3 * u.m
         a3 = ROOT.TEveLine()
         a3.SetNextPoint(-xlength, 0, z)
@@ -1225,6 +1226,7 @@ mcHits = {}
 _candidates = {
     "VetoPoints": ("vetoPoint", ROOT.kBlue, ROOT.kFullDiamond),
     "TimeDetPoints": ("TimeDetPoint", ROOT.kBlue, ROOT.kFullDiamond),
+    "CaloScoringPlanePoints": ("CaloScoringPlanePoint", ROOT.kMagenta, ROOT.kFullCircle),
     "StrawPoints": ("strawtubesPoint", ROOT.kGreen, ROOT.kFullCircle),
     "TargetPoints": ("TargetPoint", ROOT.kRed, ROOT.kFullSquare),
     "MTCDetPoint": ("MTCDetPoint", ROOT.kGreen, ROOT.kFullSquare),
@@ -1403,7 +1405,7 @@ def PRVersion() -> None:
     r.OpenCompound()
     xpos, ypos = -500.0, -1500.0
     zstart = ShipGeo.target.z0
-    zlength = ShipGeo.MuonStation3.z - zstart + 10 * u.m
+    zlength = ShipGeo.CaloScoringPlane.z - zstart + 10 * u.m
     z = zstart
     for i in range(int(zlength / 100 / ticks)):
         m = ROOT.TEveLine()
@@ -1419,7 +1421,7 @@ def PRVersion() -> None:
         r.AddElement(t1)
         z += ticks * u.m
     xpos, ypos = 0.0, 0.0
-    z = ShipGeo.MuonStation3.z + 6 * u.m
+    z = ShipGeo.CaloScoringPlane.z + 6 * u.m
     ylength = 7 * u.m
     ypos = -ylength
     for i in range(-int(ylength / 100), int(ylength / 100), 1):
@@ -1441,7 +1443,7 @@ def PRVersion() -> None:
     ty.SetMainColor(ROOT.kRed - 2)
     r.AddElement(ty)
     xpos, ypos = 0.0, 0.0
-    z = ShipGeo.MuonStation3.z + 10 * u.m
+    z = ShipGeo.CaloScoringPlane.z + 10 * u.m
     xlength = 3 * u.m
     xpos = -xlength
     for i in range(-int(xlength / 100), int(xlength / 100), 1):
@@ -1524,7 +1526,6 @@ def PRVersion() -> None:
         200,
         ROOT.kRed + 2,
     )
-    positionText(r, 0.0, 700.0, ShipGeo.MuonFilter2.z, rotAngle, "Muon", 200, ROOT.kGreen + 2)
     r.CloseCompound()
     sc = gEve.GetScenes()
     geoscene = sc.FindChild("Geometry scene")

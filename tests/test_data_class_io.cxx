@@ -13,6 +13,8 @@
 #include <vector>
 
 // Include all data class headers
+#include "CaloScoringPlaneHit.h"
+#include "CaloScoringPlanePoint.h"
 #include "DetectorHit.h"
 #include "MTCDetHit.h"
 #include "MTCDetPoint.h"
@@ -25,8 +27,6 @@
 #include "TimeDetPoint.h"
 #include "UpstreamTaggerHit.h"
 #include "UpstreamTaggerPoint.h"
-#include "splitcalHit.h"
-#include "splitcalPoint.h"
 #include "strawtubesHit.h"
 #include "strawtubesPoint.h"
 #include "vetoHit.h"
@@ -89,16 +89,16 @@ void test_const_access(const strawtubesPoint& obj) {
   [[maybe_unused]] auto dist = obj.dist2Wire();
 }
 
-void test_const_access(const splitcalHit& obj) {
-  [[maybe_unused]] auto x = obj.GetX();
-  [[maybe_unused]] auto y = obj.GetY();
-  [[maybe_unused]] auto z = obj.GetZ();
-  [[maybe_unused]] auto energy = obj.GetEnergy();
-  [[maybe_unused]] auto precision = obj.GetIsPrecisionLayer();
-  [[maybe_unused]] auto layer = obj.GetLayerNumber();
+void test_const_access(const CaloScoringPlaneHit& obj) {
+  [[maybe_unused]] auto pos = obj.GetXYZ();
+  [[maybe_unused]] auto mom = obj.GetMom();
+  [[maybe_unused]] auto time = obj.GetTime();
+  [[maybe_unused]] auto pid = obj.GetPid();
+  [[maybe_unused]] auto muon = obj.IsMuon();
+  [[maybe_unused]] auto identified = obj.IsIdentified();
 }
 
-void test_const_access(const splitcalPoint& obj) {
+void test_const_access(const CaloScoringPlanePoint& obj) {
   [[maybe_unused]] auto pdg = obj.PdgCode();
 }
 
@@ -219,8 +219,6 @@ int main(int argc, char** argv) {
   total++;
   if (test_vector_operations<strawtubesHit>("strawtubesHit")) passed++;
   total++;
-  if (test_vector_operations<splitcalHit>("splitcalHit")) passed++;
-  total++;
   if (test_vector_operations<MTCDetHit>("MTCDetHit")) passed++;
   total++;
   if (test_vector_operations<SiliconTargetHit>("SiliconTargetHit")) passed++;
@@ -228,6 +226,9 @@ int main(int argc, char** argv) {
   if (test_vector_operations<TimeDetHit>("TimeDetHit")) passed++;
   total++;
   if (test_vector_operations<UpstreamTaggerHit>("UpstreamTaggerHit")) passed++;
+  total++;
+  if (test_vector_operations<CaloScoringPlaneHit>("CaloScoringPlaneHit"))
+    passed++;
 
   // Test Point classes
   std::cout << "\n--- Point Classes ---" << std::endl;
@@ -236,7 +237,8 @@ int main(int argc, char** argv) {
   total++;
   if (test_vector_operations<strawtubesPoint>("strawtubesPoint")) passed++;
   total++;
-  if (test_vector_operations<splitcalPoint>("splitcalPoint")) passed++;
+  if (test_vector_operations<CaloScoringPlanePoint>("CaloScoringPlanePoint"))
+    passed++;
   total++;
   if (test_vector_operations<MTCDetPoint>("MTCDetPoint")) passed++;
   total++;

@@ -7,7 +7,7 @@ target_link_libraries(
     ShipData
     veto
     strawtubes
-    splitcal
+    CaloScoringPlane
     MTCDetector
     SiliconTarget
     TimeDet
@@ -32,7 +32,7 @@ target_link_libraries(
     ShipData
     veto
     strawtubes
-    splitcal
+    CaloScoringPlane
     MTCDetector
     SiliconTarget
     TimeDet
@@ -62,5 +62,21 @@ target_link_libraries(
 add_test(NAME TimeDetGeometry COMMAND testTimeDetGeometry)
 set_tests_properties(
     TimeDetGeometry
+    PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
+)
+
+add_executable(testCaloScoringPlanePID test_calo_scoring_plane_pid.cxx)
+target_link_libraries(
+    testCaloScoringPlanePID
+    CaloScoringPlane
+    ROOT::Core
+    ROOT::MathCore
+    ROOT::EG
+    FairRoot::Base
+    FairLogger::FairLogger
+)
+add_test(NAME CaloScoringPlanePID COMMAND testCaloScoringPlanePID)
+set_tests_properties(
+    CaloScoringPlanePID
     PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
 )

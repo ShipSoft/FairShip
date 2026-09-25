@@ -40,6 +40,8 @@ bool objects_equal(const T& a, const T& b) {
 }
 
 // Include data class headers
+#include "CaloScoringPlaneHit.h"
+#include "CaloScoringPlanePoint.h"
 #include "DetectorHit.h"
 #include "MTCDetHit.h"
 #include "MTCDetPoint.h"
@@ -55,9 +57,6 @@ bool objects_equal(const T& a, const T& b) {
 #include "Tracklet.h"
 #include "UpstreamTaggerHit.h"
 #include "UpstreamTaggerPoint.h"
-#include "splitcalCluster.h"
-#include "splitcalHit.h"
-#include "splitcalPoint.h"
 #include "strawtubesHit.h"
 #include "strawtubesPoint.h"
 #include "vetoHit.h"
@@ -242,35 +241,6 @@ int main(int argc, char** argv) {
   }
 
   {
-    std::vector<splitcalHit> objects;
-    objects.emplace_back(1001, 123.45f);
-    objects.emplace_back(2002, 234.56f);
-    total++;
-    if (test_rntuple_io("splitcalHit", objects)) passed++;
-  }
-
-  {
-    std::vector<splitcalCluster> objects;
-    splitcalCluster cluster1;
-    cluster1.SetIndex(0);
-    cluster1.AddHit(0, 0.5);
-    cluster1.AddHit(1, 0.3);
-    cluster1.SetStartPoint(1.0, 2.0, 100.0);
-    cluster1.SetEndPoint(1.5, 2.5, 150.0);
-    objects.push_back(cluster1);
-
-    splitcalCluster cluster2;
-    cluster2.SetIndex(1);
-    cluster2.AddHit(2, 0.8);
-    cluster2.SetStartPoint(3.0, 4.0, 200.0);
-    cluster2.SetEndPoint(3.5, 4.5, 250.0);
-    objects.push_back(cluster2);
-
-    total++;
-    if (test_rntuple_io("splitcalCluster", objects)) passed++;
-  }
-
-  {
     std::vector<MTCDetHit> objects;
     objects.emplace_back();
     objects.emplace_back();
@@ -300,6 +270,15 @@ int main(int argc, char** argv) {
     objects.emplace_back();
     total++;
     if (test_rntuple_io("UpstreamTaggerHit", objects)) passed++;
+  }
+
+  {
+    std::vector<CaloScoringPlaneHit> objects;
+    objects.emplace_back();
+    objects.emplace_back();
+    objects.back().SetPid(CaloScoringPlanePID::kMuon);
+    total++;
+    if (test_rntuple_io("CaloScoringPlaneHit", objects)) passed++;
   }
 
   // Test Point classes
@@ -332,13 +311,13 @@ int main(int argc, char** argv) {
   }
 
   {
-    std::vector<splitcalPoint> objects;
+    std::vector<CaloScoringPlanePoint> objects;
     TVector3 pos(1.0, 2.0, 3.0);
     TVector3 mom(0.1, 0.2, 0.3);
     objects.emplace_back(0, 1, 1001, pos, mom, 123.45, 234.56, 0.001, 2212);
     objects.emplace_back(1, 2, 2002, pos, mom, 345.67, 456.78, 0.002, 211);
     total++;
-    if (test_rntuple_io("splitcalPoint", objects)) passed++;
+    if (test_rntuple_io("CaloScoringPlanePoint", objects)) passed++;
   }
 
   {

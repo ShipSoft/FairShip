@@ -39,14 +39,14 @@ void ShipCave::ConstructGeometry() {
   ShipGeo::InitMedium("Concrete");
   TGeoMedium* concrete = gGeoManager->GetMedium("Concrete");
 
-  Double_t TCC8_length = 170 * m;
+  Double_t TCC8_length = fTCC8Length;
   // Add small stair step at the beginning of ECN3
-  Double_t stair_step_length = 0.82 * m;
-  Double_t ECN3_length = 100 * m;
+  Double_t stair_step_length = fStairStepLength;
+  Double_t ECN3_length = fECN3Length;
   Double_t Proximity_shield_half_length = 55.36 / 2 * cm;
   Double_t zEndOfTarget =
       z_end_of_proximity_shielding - 2 * Proximity_shield_half_length;
-  Double_t z_transition = 20.52 * m;
+  Double_t z_transition = fZTransition;
   [[maybe_unused]] auto* rock = new TGeoBBox(
       "rock", 20 * m, 20 * m, TCC8_length / 2. + ECN3_length / 2. + 5 * m);
   [[maybe_unused]] auto* muon_shield_cavern =
