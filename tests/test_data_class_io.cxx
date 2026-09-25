@@ -13,6 +13,7 @@
 #include <vector>
 
 // Include all data class headers
+#include "CaloScoringPlaneHit.h"
 #include "CaloScoringPlanePoint.h"
 #include "DetectorHit.h"
 #include "MTCDetHit.h"
@@ -86,6 +87,15 @@ void test_const_access(const strawtubesHit& obj) {
 void test_const_access(const strawtubesPoint& obj) {
   [[maybe_unused]] auto pdg = obj.PdgCode();
   [[maybe_unused]] auto dist = obj.dist2Wire();
+}
+
+void test_const_access(const CaloScoringPlaneHit& obj) {
+  [[maybe_unused]] auto pos = obj.GetXYZ();
+  [[maybe_unused]] auto mom = obj.GetMom();
+  [[maybe_unused]] auto time = obj.GetTime();
+  [[maybe_unused]] auto pid = obj.GetPid();
+  [[maybe_unused]] auto muon = obj.IsMuon();
+  [[maybe_unused]] auto identified = obj.IsIdentified();
 }
 
 void test_const_access(const CaloScoringPlanePoint& obj) {
@@ -216,6 +226,9 @@ int main(int argc, char** argv) {
   if (test_vector_operations<TimeDetHit>("TimeDetHit")) passed++;
   total++;
   if (test_vector_operations<UpstreamTaggerHit>("UpstreamTaggerHit")) passed++;
+  total++;
+  if (test_vector_operations<CaloScoringPlaneHit>("CaloScoringPlaneHit"))
+    passed++;
 
   // Test Point classes
   std::cout << "\n--- Point Classes ---" << std::endl;
