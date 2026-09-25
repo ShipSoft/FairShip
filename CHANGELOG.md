@@ -21,6 +21,7 @@ it in future.
 * Add the V21_2455 spectrometer field map (`files/2026_07_02_MainSpectrometerField_V21_2455.root`). The map was delivered with its x and y coordinate columns transposed, like the `2026_05_07_*` maps, and is shipped with the coordinates regenerated. The field values are unchanged.
 * `--intermediate-kaon-pion-splits` (default 2): splitting factor applied to kaons and pions at each GEANT4 step before they decay, separate from the `--kaon-pion-splits` factor applied at the decay itself
 * `--max-split-buffer` (default 25000): hard bound on the split clones buffered per track. Per-step splitting stops once the cap is reached, reducing the statistical boost but conserving weight
+* `--max-event-size` (default 5000000): threshold on the estimated event size taking into account a safety factor depending on per-step splitting, with the per-step splitting stopping once the cap is reached
 
 ### Changed
 
