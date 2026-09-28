@@ -51,7 +51,7 @@ ROOT.gROOT.ProcessLine(
 
 
 def run(
-    inFileName="FieldTest.txt", rootFileName="BFieldTest.root", cmScale: float | int = 1.0, storeCoords: bool = False
+    inFileName="FieldTest.txt", rootFileName="BFieldTest.root", cmScale: float | int = 1.0, storeCoords: bool = True
 ) -> None:
     createRootMap(inFileName, rootFileName, cmScale, storeCoords)
 
