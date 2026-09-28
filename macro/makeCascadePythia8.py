@@ -69,9 +69,9 @@ if args.mselcb == 4:
     pbeaml = 34.0
     idsig = {411, 421, 431, 4122, 4132, 4232, 4332, 4412, 4414, 4422, 4424, 4432, 4434, 4444}
     process = "HardQCD:hardccbar = on"
-    # K-factors of the FTFT fit for forced production, which is what the cascade uses, for nucleon
-    # and meson beams; the pion value is rescaled to the GRV92 pion PDF of the tune (5.49 * 0.949).
-    kfactor = (7.33, 5.21)
+    # the FTFT charm K-factors normalise inclusive charm production (SoftQCD:inelastic), the cascade
+    # forces it (HardQCD:hardccbar), see KFORCED_CHARM below
+    kfactor = None
 else:
     pbeaml = 130.0
     idsig = {511, 521, 531, 541, 5122, 5132, 5142, 5232, 5242, 5332, 5342, 5412, 5414, 5422, 5424, 5432, 5434}
@@ -97,6 +97,47 @@ if args.pythia8_tune == "FTFT":
     ]
 else:
     kfactor = (1.0, 1.0)
+
+# Forced-production charm K-factors equivalent to the FTFT inclusive normalisation (K = 2.48 for
+# nucleon and 2.02 for meson beams), K_incl * sigma_incl / sigma_forced, from Pythia 8.312 runs with
+# the FTFT tune. The ratio of inclusive to forced charm grows towards threshold, so the K-factor
+# depends on the beam momentum (GeV); values are interpolated in log(p) and kept flat outside the grid.
+# Measured for p p, p n, pi+ p and pi- p from 34 GeV, the charm threshold of the cascade, to 400 GeV
+# (statistical precision 1-2% above 60 GeV, 2-5% below); other beams use isospin
+# (n p = p n, n n = p p, pi+ n = pi- p, pi- n = pi+ p), antinucleons the nucleon and kaons the mean
+# pion values.
+KFORCED_CHARM_P = [34.0, 40.0, 47.0, 60.0, 100.0, 160.0, 250.0, 400.0]
+KFORCED_CHARM = {
+    (2212, 2212): [35.52, 25.24, 17.48, 13.99, 10.06, 9.11, 8.10, 7.30],
+    (2212, 2112): [38.08, 24.22, 18.93, 13.90, 10.56, 8.94, 8.25, 7.06],
+    (211, 2212): [12.93, 10.76, 9.92, 8.30, 6.49, 5.87, 5.33, 5.16],
+    (-211, 2212): [10.89, 9.22, 7.66, 7.03, 5.79, 5.30, 5.12, 5.12],
+}
+
+
+def kforced_charm(pid, tid, p):
+    """Forced-production charm K-factor for beam pid on target nucleon tid at momentum p."""
+    apid = abs(pid)
+    if apid in (2212, 2112):
+        # n on p behaves as p on n, and n on n as p on p
+        key = (2212, tid) if apid == 2212 else (2212, 2112 if tid == 2212 else 2212)
+        k = KFORCED_CHARM[key]
+    elif apid == 211:
+        # pi+ n behaves as pi- p, and pi- n as pi+ p
+        sign = 1 if pid > 0 else -1
+        key = (sign * 211 if tid == 2212 else -sign * 211, 2212)
+        k = KFORCED_CHARM[key]
+    else:
+        k = [0.5 * (a + b) for a, b in zip(KFORCED_CHARM[211, 2212], KFORCED_CHARM[-211, 2212])]
+    return float(np.interp(math.log(p), np.log(KFORCED_CHARM_P), k))
+
+
+def kfactor_for(pid, idpn, p):
+    """K-factor applied to the forced signal cross section of beam pid on target[idpn] at momentum p."""
+    if kfactor is None:
+        return kforced_charm(pid, target[idpn], p)
+    return kfactor[0] if abs(pid) in (2212, 2112) else kfactor[1]
+
 
 PDG = ROOT.TDatabasePDG.Instance()
 random.seed(args.seed)
@@ -167,14 +208,13 @@ for kf in idbeam:
     for pid in sorted({kf, -kf}):
         if not PDG.GetParticle(pid):
             continue
-        k = kfactor[0] if abs(pid) in (2212, 2112) else kfactor[1]
         for idpn in range(2):
             sigma[pid, idpn] = []
             for p in pgrid:
                 py = new_pythia([process, "PartonLevel:all = off", "HadronLevel:all = off", *beams(pid, idpn, p)])
                 for _ in range(args.nev):
                     py.next()
-                sigma[pid, idpn].append(k * py.infoPython().sigmaGen())
+                sigma[pid, idpn].append(kfactor_for(pid, idpn, p) * py.infoPython().sigmaGen())
             sigtot = [mbias[idpn].getSigmaTotal(pid, target[idpn], ecm(pid, idpn, p)) for p in pgrid]
             chi[pid, idpn] = np.log([s / t for s, t in zip(sigma[pid, idpn], sigtot)])
             print(
