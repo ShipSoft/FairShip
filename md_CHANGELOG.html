@@ -108,6 +108,7 @@ Changed</h2>
 Fixed</h2>
 <ul>
 <li>Charm runs of <code><a class="el" href="run__fixedTarget_8py.html">run_fixedTarget.py</a></code> no longer drop the <code>charm</code> work-directory tag: a missing <code>elif</code> meant the tag was assigned and then immediately overwritten, so charm output landed in the same untagged directory as a min-bias run of the same run number.</li>
+<li>Update location of post-target sensitive plane in <code><a class="el" href="namespacerun__fixedTarget.html">run_fixedTarget</a></code> to use nominal target length, in order to avoid overlaps</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md6"></a>
 Removed</h2>
