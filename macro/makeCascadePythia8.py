@@ -9,6 +9,9 @@ chi/chi_max, chi = K * sigma(signal) / sigma(total), and a minimum-bias event wh
 threshold are added to the stack. Pythia8 changes the beam energy event by event only for soft QCD,
 so signal events are generated in batches in 10% momentum bins, in the centre-of-mass frame, and
 boosted to the lab along the projectile.
+
+Unlike makeCascade.py, elastic scattering does not increase the cascade depth, so depth 1 (the
+normalisation of run_fixedTarget.py) covers the beam proton up to its first inelastic interaction.
 """
 
 import argparse
@@ -290,8 +293,17 @@ for iev in range(args.nevgen):
         mb.setKinematics(px, py, pz, 0.0, 0.0, 0.0)
         next_event(mb)
         code = mb.infoPython().code()
+        if code == 102:
+            # Elastic scattering does not start a new cascade generation: the scattered hadron keeps
+            # its depth. Depth 1 is then everything the beam proton produces up to and including its
+            # first inelastic interaction, which is what chicc/chibb in run_fixedTarget.py normalise.
+            final = [mb.event[i] for i in range(mb.event.size()) if mb.event[i].isFinal()]
+            lead = max(final, key=lambda part: part.pAbs())
+            if lead.pAbs() > pbeaml and len(stack) < 999:
+                stack.append((pid, lead.px(), lead.py(), lead.pz(), depth, ancestors, sub))
+            continue
         icas = min(depth + 1, 98)
-        if depth == 1:  # interaction process of the first proton
+        if depth == 1:  # first inelastic interaction process of the beam proton
             sub = [code] + sub[1:]
         for i in range(mb.event.size()):
             part = mb.event[i]
