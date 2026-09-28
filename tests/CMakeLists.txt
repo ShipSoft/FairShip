@@ -79,3 +79,18 @@ target_link_libraries(
     FairLogger::FairLogger
 )
 add_test(NAME FixedTargetCascadeWeight COMMAND testFixedTargetCascadeWeight)
+
+# Python unit tests. Run with the interpreter of the active environment so the
+# ROOT, numpy and pytest it provides are the ones used. activate.sh already
+# puts <source>/python on PYTHONPATH; set it here too so a bare ctest works.
+find_package(Python3 COMPONENTS Interpreter REQUIRED)
+add_test(
+    NAME PythonUnitTests
+    COMMAND ${Python3_EXECUTABLE} -m pytest -q ${CMAKE_CURRENT_SOURCE_DIR}
+)
+set_tests_properties(
+    PythonUnitTests
+    PROPERTIES
+        WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
+        ENVIRONMENT "PYTHONPATH=${CMAKE_SOURCE_DIR}/python:$ENV{PYTHONPATH}"
+)
