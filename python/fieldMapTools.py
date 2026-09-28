@@ -17,6 +17,7 @@ silent. The functions here make the ordering checkable, from both the stored
 coordinates and from the field itself.
 """
 
+import os
 from dataclasses import dataclass
 
 import numpy as np
@@ -83,14 +84,15 @@ class MapRange:
             self.zMin + self.dz * np.arange(self.Nz),
         )
 
-    def node_indices(self, entries):
-        """Grid indices (iX, iY, iZ) of the given canonical entry numbers."""
+    def node_indices(self, entries, order="xslow"):
+        """Grid indices (iX, iY, iZ) of the given entry numbers."""
         entries = np.asarray(entries)
-        return (
-            entries // (self.Ny * self.Nz),
-            (entries // self.Nz) % self.Ny,
-            entries % self.Nz,
-        )
+        iZ = entries % self.Nz
+        if order == "xslow":
+            return entries // (self.Ny * self.Nz), (entries // self.Nz) % self.Ny, iZ
+        if order == "yslow":
+            return (entries // self.Nz) % self.Nx, entries // (self.Nx * self.Nz), iZ
+        raise ValueError(f"Unknown data order {order!r}, expected one of {ORDERS}")
 
     def extent_mismatch(self):
         """Deviation of each axis extent from a whole number of bins, in bins.
@@ -118,10 +120,20 @@ def read_range(path):
 
 
 def is_field_map(path):
-    """Whether the file holds both trees a FairShip field map needs."""
-    handle = ROOT.TFile.Open(str(path))
-    trees = {key.GetName() for key in handle.GetListOfKeys()}
-    handle.Close()
+    """Whether the file holds both trees a FairShip field map needs.
+
+    False for anything ROOT cannot open, an unfetched git-lfs pointer
+    included. PyROOT raises OSError there rather than handing back a null
+    file, so checking the returned handle would never catch it.
+    """
+    try:
+        handle = ROOT.TFile.Open(str(path))
+    except OSError:
+        return False
+    try:
+        trees = {key.GetName() for key in handle.GetListOfKeys()}
+    finally:
+        handle.Close()
     return {"Range", "Data"} <= trees
 
 
@@ -174,12 +186,21 @@ def read_coords(path):
     return _columns(path, COORD_BRANCHES)
 
 
-def coord_residuals(path, rng=None):
-    """Largest deviation of a stored coordinate from its canonical node.
+def _residuals(coords, rng, order):
+    """Per-axis deviation of the stored coordinates from ``order``, in bins."""
+    nodes = rng.node_indices(np.arange(rng.N), order)
+    limits = ((rng.xMin, rng.dx), (rng.yMin, rng.dy), (rng.zMin, rng.dz))
+    return tuple(
+        np.abs(stored - (lo + node * step)).max() / step for stored, node, (lo, step) in zip(coords, nodes, limits)
+    )
 
-    Returned per axis, in bin widths. A map in canonical order sits within a
-    fraction of a bin; a permuted one is off by tens of bins. ``None`` if the
-    map stores no coordinates.
+
+def coord_residuals(path, rng=None, order="xslow"):
+    """Largest deviation of a stored coordinate from the node ``order`` puts it at.
+
+    Returned per axis, in bin widths, over every entry. A map in the given
+    order sits within a fraction of a bin; a permuted one is off by tens of
+    bins. ``None`` if the map stores no coordinates.
     """
     coords = read_coords(path)
     if coords is None:
@@ -187,11 +208,7 @@ def coord_residuals(path, rng=None):
     rng = rng or read_range(path)
     if len(coords[0]) != rng.N:
         raise ValueError(f"{path}: expected {rng.N} entries but found {len(coords[0])}")
-    nodes = rng.node_indices(np.arange(rng.N))
-    limits = ((rng.xMin, rng.dx), (rng.yMin, rng.dy), (rng.zMin, rng.dz))
-    return tuple(
-        np.abs(stored - (lo + node * step)).max() / step for stored, node, (lo, step) in zip(coords, nodes, limits)
-    )
+    return _residuals(coords, rng, order)
 
 
 def infer_data_order(path, rng=None):
@@ -204,18 +221,13 @@ def infer_data_order(path, rng=None):
     if coords is None:
         return None
     rng = rng or read_range(path)
-    x, y, _ = coords
-    # Entry Nz is the first node of the second row. Which coordinate advanced
-    # there says which of x and y runs faster.
-    if rng.Nz >= len(x):
+    if len(coords[0]) != rng.N:
         return None
-    advanced_x = abs(x[rng.Nz] - x[0]) > 0.5 * rng.dx
-    advanced_y = abs(y[rng.Nz] - y[0]) > 0.5 * rng.dy
-    if advanced_y and not advanced_x:
-        return "xslow"
-    if advanced_x and not advanced_y:
-        return "yslow"
-    return None
+    # Check every node against both candidates rather than watch a single
+    # transition: a layout that is neither has to come back unknown, or
+    # canonicalise() would reorder from a premise that does not hold.
+    matching = [order for order in ORDERS if max(_residuals(coords, rng, order)) < 0.5]
+    return matching[0] if len(matching) == 1 else None
 
 
 def core_slices(rng, xy_fraction=0.3, z_fraction=0.25):
@@ -226,6 +238,12 @@ def core_slices(rng, xy_fraction=0.3, z_fraction=0.25):
         centre = 0.5 * (values[0] + values[-1])
         half = fraction * 0.5 * (values[-1] - values[0])
         (inside,) = np.nonzero(np.abs(values - centre) <= half)
+        if not inside.size:
+            # Too few nodes for the fraction to reach one of them. Take the
+            # node nearest the centre so the caller gets a region, not an
+            # IndexError.
+            nearest = int(np.abs(values - centre).argmin())
+            return slice(nearest, nearest + 1)
         return slice(inside[0], inside[-1] + 1)
 
     return (
@@ -264,6 +282,11 @@ def canonicalise(in_path, out_path, order="xslow", rng=None):
     ``(iX*Ny + iY)*Nz + iZ`` with freshly generated ``x``, ``y`` and ``z``
     branches, so ``ShipBFieldMap`` can verify it.
     """
+    # Snapshot recreates the output, and the Range tree is copied out of the
+    # input afterwards, so writing over the input would lose it.
+    if os.path.exists(out_path) and os.path.samefile(in_path, out_path):
+        raise ValueError(f"{out_path} is the input; write the repacked map somewhere else")
+
     rng = rng or read_range(in_path)
     field = read_field(in_path, order=order, rng=rng).reshape(rng.N, 3)
 

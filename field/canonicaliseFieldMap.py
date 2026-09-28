@@ -34,11 +34,25 @@ def checksum(path):
     return hashlib.sha256(field.tobytes()).hexdigest()[:16]
 
 
+#: How much cleaner one reading's divergence has to be before it counts as
+#: the answer. A field symmetric about the x = y plane scores the same either
+#: way up to rounding, and the weakest real map here separates by 1.6.
+DIVERGENCE_MARGIN = 1.1
+
+
 def divergence_order(field, rng):
-    """The ordering whose div B is smaller, with both values and the scale."""
+    """The ordering whose div B is smaller, with both values and the scale.
+
+    The order is None when the two are too close to choose between, so a
+    symmetric map is reported as undecided instead of arbitrarily transposed.
+    """
     as_read, scale = fmt.div_b_rms(field, rng)
     transposed, _ = fmt.div_b_rms(fmt.transpose_xy(field), rng)
-    order = "xslow" if as_read < transposed else "yslow"
+    lower, upper = sorted((as_read, transposed))
+    if upper <= lower * DIVERGENCE_MARGIN:
+        order = None
+    else:
+        order = "xslow" if as_read < transposed else "yslow"
     return order, as_read, transposed, scale
 
 
@@ -55,7 +69,10 @@ def describe(path, rng, field):
             f"from canonical order -> {fmt.infer_data_order(path, rng) or 'neither'}"
         )
     order, as_read, transposed, scale = divergence_order(field, rng)
-    print(f"  RMS(div B)      xslow {as_read:.3e}, yslow {transposed:.3e} (gradient scale {scale:.3e}) -> {order}")
+    print(
+        f"  RMS(div B)      xslow {as_read:.3e}, yslow {transposed:.3e} "
+        f"(gradient scale {scale:.3e}) -> {order or 'too close to call'}"
+    )
     on_axis = fmt.on_axis(field, rng)
     peaks = [float(np.abs(on_axis[:, i]).max()) for i in range(3)]
     print(f"  peak on axis    Bx {peaks[0]:.4f}, By {peaks[1]:.4f}, Bz {peaks[2]:.4f} T")
@@ -65,8 +82,10 @@ def describe(path, rng, field):
 def resolve_order(path, rng, field, requested):
     """Settle on the input ordering, or explain why it cannot be settled."""
     from_field = divergence_order(field, rng)[0]
+    from_coords = fmt.infer_data_order(path, rng)
+
     if requested != "auto":
-        if requested != from_field:
+        if from_field is not None and requested != from_field:
             print(
                 f"Warning: --data-order {requested} disagrees with the divergence "
                 f"of the field, which points at {from_field}.",
@@ -74,18 +93,23 @@ def resolve_order(path, rng, field, requested):
             )
         return requested
 
-    from_coords = fmt.infer_data_order(path, rng)
-    if from_coords is None:
-        print(f"Using {from_field} from the divergence of the field; the map stores no usable coordinates.")
-        return from_field
-    if from_coords != from_field:
+    if from_field is not None and from_coords is not None and from_coords != from_field:
         raise SystemExit(
             f"{path} is internally inconsistent: its coordinates are written in "
             f"{from_coords} order but its field is only divergence-free read as "
             f"{from_field}. Pass --data-order explicitly once you know which is "
             "right; the coordinates are regenerated either way."
         )
-    return from_coords
+    if from_coords is not None:
+        return from_coords
+    if from_field is not None:
+        print(f"Using {from_field} from the divergence of the field; the map stores no usable coordinates.")
+        return from_field
+    raise SystemExit(
+        f"{path} does not say what order it is in: its coordinates match neither "
+        "layout, and its divergence is the same read either way. Pass "
+        "--data-order explicitly."
+    )
 
 
 def main():
@@ -113,7 +137,8 @@ def main():
 
     if args.check_only:
         residuals = fmt.coord_residuals(args.input, rng)
-        canonical = from_field == "xslow" and residuals is not None and max(residuals) < 0.5
+        # An undecided divergence leaves the coordinates as the authority.
+        canonical = from_field != "yslow" and residuals is not None and max(residuals) < 0.5
         print("  verdict         " + ("canonical" if canonical else "NEEDS REPACKING"))
         return 0 if canonical else 1
 

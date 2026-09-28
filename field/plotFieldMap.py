@@ -29,8 +29,12 @@ APERTURE = (200.0, 300.0)
 
 
 def bending_power(field, rng):
-    """Integral of Bx along z at every (x, y), in T cm."""
-    return field[..., 0].sum(axis=2) * rng.dz
+    """Integral of Bx along z at every (x, y), in T cm.
+
+    Trapezoidal, so the integral covers the intervals between nodes rather
+    than counting the two end nodes as whole steps.
+    """
+    return np.trapezoid(field[..., 0], dx=rng.dz, axis=2)
 
 
 def draw(axes, rng, field, label, aperture):
