@@ -48,12 +48,16 @@ def _is_lfs_pointer(path):
 
 
 def _discover():
+    """Every readable field map in files/.
+
+    Unfetched git-lfs pointers are dropped one by one rather than taken as a
+    reason to skip the lot, so a partly fetched checkout still checks the maps
+    it does have.
+    """
     if not MAP_DIRECTORY.is_dir():
         return []
     candidates = sorted(MAP_DIRECTORY.glob("*.root"))
-    if any(_is_lfs_pointer(path) for path in candidates):
-        return []
-    return [path for path in candidates if fmt.is_field_map(path)]
+    return [path for path in candidates if not _is_lfs_pointer(path) and fmt.is_field_map(path)]
 
 
 MAPS = _discover()
