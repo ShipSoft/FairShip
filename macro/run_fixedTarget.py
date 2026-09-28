@@ -369,9 +369,8 @@ if args.AddPostTargetSensPlane:
     sensPlanePostT.SetVetoPointName("PlanePostT")
     # by default, if the z-position is not set, the positioning is behind the hadron abosorber and the tracks are stopped when they hit the sens plane
     # if the z-position is set and has a reasonable value (below 1E8), then the tracks are not stopped and continue to the last plane after the hadron absorber
-    sensPlanePostT.SetZposition(
-        ship_geo.target.length + 7.6 * u.cm + 300 * u.mm
-    )  # target length + vessel shift + shielding length
+    sensPlanePostT.SetZposition(158.64 * u.cm + 300 * u.mm + 6.2 * u.cm)
+    # NOMINAL target length + vessel shift + shielding length
     sensPlanePostT.SetUseCaveCoordinates()  # position set from the cave to avoid extrusions since the plane is larger than the target vacuum box
 
     if args.storeOnlyMuons:
