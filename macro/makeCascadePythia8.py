@@ -78,8 +78,8 @@ else:
     idsig |= {5442, 5444, 5512, 5514, 5522, 5524, 5532, 5534, 5542, 5544, 5554}
     process = "HardQCD:hardbbbar = on"
     kfactor = (1.04, 1.19)
-if args.nev < 1 or args.nrpoints < 2 or args.pbeamh <= pbeaml:
-    ap.error(f"need --nev >= 1, --nrpoints >= 2 and a beam energy above {pbeaml} GeV")
+if args.nevgen < 1 or args.nev < 1 or args.nrpoints < 2 or args.pbeamh <= pbeaml:
+    ap.error(f"need --nevgen >= 1, --nev >= 1, --nrpoints >= 2 and a beam energy above {pbeaml} GeV")
 
 # FTFT tune: parameters differing from Monash 2013, as in FixedTargetGenerator.cxx
 tune = []
