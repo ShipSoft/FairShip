@@ -154,7 +154,9 @@ Bool_t FixedTargetGenerator::InitForCharmOrBeauty(const TString& fInName,
   }
   Int_t nrcpot =
       potHist->GetBinContent(1) / 2.;  // number of primary interactions
-  wspill = nrpotspill * chicc / nrcpot * nEvents / nev;
+  // every event reads two entries, the two heavy-flavour hadrons of a pair,
+  // so the file holds nEvents / 2 events
+  wspill = nrpotspill * chicc / nrcpot * (nEvents / 2.) / nev;
   LOG(info) << "Input file: " << fInName.Data() << " with " << nEvents
             << " entries, corresponding to nr-pot=" << (nrcpot / chicc);
   LOG(info) << "weight " << wspill << " corresponding to " << nrpotspill
