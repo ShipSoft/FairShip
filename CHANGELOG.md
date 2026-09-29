@@ -22,6 +22,7 @@ it in future.
 
 ### Fixed
 
+* Set B(D_s -> tau nu_tau) to the world average, 5.36%, in the Pythia8 instances of `FixedTargetGenerator`, rescaling the other D_s channels. Charm and beauty from cascade files are decayed by Pythia8, whose default of 6.4% overestimated the tau neutrino yield by 19%.
 * Fix the event weight of `run_fixedTarget.py --charm/--beauty`, which was twice too large. Since the correlated charm events of 2020, every event reads the two heavy-flavour hadrons of a pair, two entries of the cascade file, but the weight still divided the file's p.o.t. by the number of events as if each read one entry. The p.o.t. equivalent in the output file header, `nrpotspill / wspill`, was half the true value for the same reason. Fluxes from cascade files produced with the uncorrected weight are too large by a factor two.
 * Charm runs of `run_fixedTarget.py` no longer drop the `charm` work-directory tag: a missing `elif` meant the tag was assigned and then immediately overwritten, so charm output landed in the same untagged directory as a min-bias run of the same run number.
 * Update location of post-target sensitive plane in `run_fixedTarget` to use nominal target length, in order to avoid overlaps

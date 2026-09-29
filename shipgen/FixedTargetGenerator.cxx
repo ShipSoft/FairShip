@@ -8,6 +8,7 @@
 
 #include <array>
 #include <cmath>
+#include <cstdlib>
 #include <string>
 #include <vector>
 
@@ -25,6 +26,36 @@
 #include "TMCProcess.h"
 #include "TMath.h"
 #include "TROOT.h"
+
+namespace {
+// B(D_s+ -> tau+ nu_tau), world average (PDG 2024)
+constexpr double kDsToTauNuBR = 0.0536;
+
+// Set the D_s -> tau nu branching fraction and rescale the other D_s decay
+// channels so that the branching fractions still add up to one.
+void SetDsToTauNuBR(Pythia8::Pythia* pythia, double br) {
+  auto entry = pythia->particleData.particleDataEntryPtr(431);
+  if (!entry) {
+    return;
+  }
+  int iTauNu = -1;
+  for (int i = 0; i < entry->sizeChannels(); ++i) {
+    const auto& ch = entry->channel(i);
+    if (ch.multiplicity() == 2 && std::abs(ch.product(0)) == 15 &&
+        std::abs(ch.product(1)) == 16) {
+      iTauNu = i;
+    }
+  }
+  if (iTauNu < 0) {
+    return;
+  }
+  const double scale = (1. - br) / (1. - entry->channel(iTauNu).bRatio());
+  for (int i = 0; i < entry->sizeChannels(); ++i) {
+    auto& ch = entry->channel(i);
+    ch.bRatio(i == iTauNu ? br : ch.bRatio() * scale);
+  }
+}
+}  // namespace
 
 using ShipUnit::cm;
 using ShipUnit::mm;
@@ -279,6 +310,9 @@ Bool_t FixedTargetGenerator::Init() {
           "431:addChannel = 1   0.0640000    0      -15       16");
     }
 
+    // D_s -> tau nu_tau: Pythia8 has 6.4%, set the world average and rescale
+    // the other channels, since it sets the tau neutrino yield
+    SetDsToTauNuBR(fPythia, kDsToTauNuBR);
     // find all long lived particles in pythia
     Int_t n = 1;
     while (n != 0) {
