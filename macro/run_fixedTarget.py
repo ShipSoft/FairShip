@@ -525,7 +525,9 @@ if not args.reproducible:
 # ---post processing--- remove empty events --- save histograms
 tmpFile = outFile + "tmp"
 # not simply the first open file: for charm and beauty the generator keeps the input file open
-fin = ROOT.gROOT.GetListOfFiles().FindObject(outFile) or ROOT.TFile.Open(outFile)
+fin = ROOT.gROOT.GetListOfFiles().FindObject(outFile)
+if not fin:
+    fin = ROOT.TFile.Open(outFile)
 fHeader = fin.Get("FileHeader")
 if fHeader:
     fHeader.SetRunId(args.runnr)
