@@ -84,7 +84,7 @@ else:
 if args.nevgen < 1 or args.nev < 1 or args.nrpoints < 2 or args.pbeamh <= pbeaml:
     ap.error(f"need --nevgen >= 1, --nev >= 1, --nrpoints >= 2 and a beam energy above {pbeaml} GeV")
 
-# FTFT tune: parameters differing from Monash 2013, as in FixedTargetGenerator.cxx
+# FTFT tune (arXiv:2608.29076): parameters differing from Monash 2013, as in FixedTargetGenerator.cxx
 tune = []
 if args.pythia8_tune == "FTFT":
     tune = [
@@ -190,6 +190,8 @@ def beams(pid, idpn, p):
     return [
         f"Beams:idA = {pid}",
         f"Beams:idB = {target[idpn]}",
+        # centre-of-mass frame: events generated at the nearest grid momentum are boosted with the
+        # momentum and direction of the actual projectile
         "Beams:frameType = 1",
         f"Beams:eCM = {ecm(pid, idpn, p)}",
     ]
