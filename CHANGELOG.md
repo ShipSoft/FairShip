@@ -18,6 +18,8 @@ it in future.
 
 ### Changed
 
+* Update default He balloon liner to be made with polyester like Mylar, named mylar_linerHe with density/thickness matching material #5
+
 ### Fixed
 
 * Charm runs of `run_fixedTarget.py` no longer drop the `charm` work-directory tag: a missing `elif` meant the tag was assigned and then immediately overwritten, so charm output landed in the same untagged directory as a min-bias run of the same run number.
