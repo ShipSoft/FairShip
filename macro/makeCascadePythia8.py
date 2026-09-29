@@ -144,6 +144,9 @@ def kfactor_for(pid, idpn, p):
 
 PDG = ROOT.TDatabasePDG.Instance()
 random.seed(args.seed)
+# every Pythia8 instance gets its own seed, drawn from a generator of its own so that the seeds do not
+# follow the draws of the cascade; Pythia8 accepts seeds up to 900000000
+pythia_seeds = random.Random(f"pythia8-{args.seed}")
 nseed = 0
 
 
@@ -154,7 +157,7 @@ def new_pythia(settings):
     py = pythia8.Pythia("", False)
     for s in [*tune, *settings, "Print:quiet = on", "Random:setSeed = on"]:
         py.readString(s)
-    py.readString(f"Random:seed = {(args.seed + 7919 * nseed) % 900000000}")
+    py.readString(f"Random:seed = {pythia_seeds.randint(1, 900000000)}")
     for kf in [*idbeam, *idsig]:
         py.readString(f"{kf}:mayDecay = off")
     if not py.init():
