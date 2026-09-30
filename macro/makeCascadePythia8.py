@@ -24,82 +24,44 @@ import numpy as np
 import pythia8
 import ROOT
 
-ap = argparse.ArgumentParser(description="Run SHiP makeCascade with Pythia8: generate ccbar or bbbar")
-ap.add_argument(
-    "-s",
-    "--seed",
-    type=int,
-    default=int(time.time() * 100000000 % 900000000),
-    help="Random number seed, integer. If not given, current time will be used",
-)
-ap.add_argument(
-    "-t",
-    "--Fntuple",
-    default="",
-    help="Name of ntuple output file, default: Cascade{nevgen/1000}k-pythia8-{pythia8_tune}-MSEL{mselcb}-ntuple.root",
-)
-ap.add_argument("-n", "--nevgen", type=int, default=100000, help="Number of events to produce, default 100000")
-ap.add_argument("-E", "--pbeamh", type=float, default=400.0, help="Energy of beam in GeV, default 400 GeV")
-ap.add_argument(
-    "-m", "--mselcb", type=int, default=4, help="4 (5): charm (beauty) production, default charm", choices=[4, 5]
-)
-ap.add_argument(
-    "--target-composition",
-    default="W",
-    help="Target composition (to determine the ratio of protons in the material). Default is Tungsten (W). Only other choice is Molybdenum (Mo)",
-    choices=["W", "Mo"],
-)
-ap.add_argument(
-    "--pythia8-tune",
-    default="default",
-    choices=["default", "FTFT"],
-    help="Pythia8 tune: default (Monash 2013) or FTFT (arXiv:2608.29076, with its K-factors)",
-)
-ap.add_argument("--nev", type=int, default=2000, help="Events / momentum")
-ap.add_argument("--nrpoints", type=int, default=40, help="Number of momentum points taken to calculate sig/sigtot")
-args = ap.parse_args()
-if args.Fntuple == "":
-    args.Fntuple = f"Cascade{int(args.nevgen / 1000)}k-pythia8-{args.pythia8_tune}-MSEL{args.mselcb}-ntuple.root"
-
 # cascade beam particles, anti-particles are generated automatically if they exist.
-idbeam = [2212, 211, 2112, 321, 130, 310]
-target = [2212, 2112]
+CASCADE_IDS = [2212, 211, 2112, 321, 130, 310]
+TARGET_NUCLEONS = [2212, 2112]
 # fraction of protons in the nucleus, 74/184 for W, 42/98 for Mo
-fracp = 0.40 if args.target_composition == "W" else 0.43
+PROTON_FRACTION = {"W": 0.40, "Mo": 0.43}
 
-# lower momentum limit for beam and signal particles (and their antis), K-factors for nucleon and meson beams
-if args.mselcb == 4:
-    pbeaml = 34.0
-    idsig = {411, 421, 431, 4122, 4132, 4232, 4332, 4412, 4414, 4422, 4424, 4432, 4434, 4444}
-    process = "HardQCD:hardccbar = on"
-    # the FTFT charm K-factors normalise inclusive charm production (SoftQCD:inelastic), the cascade
-    # forces it (HardQCD:hardccbar), see KFORCED_CHARM below
-    kfactor = None
-else:
-    pbeaml = 130.0
-    idsig = {511, 521, 531, 541, 5122, 5132, 5142, 5232, 5242, 5332, 5342, 5412, 5414, 5422, 5424, 5432, 5434}
-    idsig |= {5442, 5444, 5512, 5514, 5522, 5524, 5532, 5534, 5542, 5544, 5554}
-    process = "HardQCD:hardbbbar = on"
-    kfactor = (1.04, 1.19)
-if args.nevgen < 1 or args.nev < 1 or args.nrpoints < 2 or args.pbeamh <= pbeaml:
-    ap.error(f"need --nevgen >= 1, --nev >= 1, --nrpoints >= 2 and a beam energy above {pbeaml} GeV")
+# per heavy quark (4: charm, 5: beauty): lower momentum limit [GeV] for cascade and signal particles
+# (and their antis), signal hadrons, forced production process and K-factors for nucleon and meson
+# beams. The FTFT charm K-factors normalise inclusive charm production (SoftQCD:inelastic), the
+# cascade forces it (HardQCD:hardccbar), see KFORCED_CHARM below.
+SIGNAL = {
+    4: {
+        "p_threshold": 34.0,
+        "ids": {411, 421, 431, 4122, 4132, 4232, 4332, 4412, 4414, 4422, 4424, 4432, 4434, 4444},
+        "process": "HardQCD:hardccbar = on",
+        "kfactors": None,
+    },
+    5: {
+        "p_threshold": 130.0,
+        "ids": {511, 521, 531, 541, 5122, 5132, 5142, 5232, 5242, 5332, 5342, 5412, 5414, 5422, 5424, 5432, 5434}
+        | {5442, 5444, 5512, 5514, 5522, 5524, 5532, 5534, 5542, 5544, 5554},
+        "process": "HardQCD:hardbbbar = on",
+        "kfactors": (1.04, 1.19),
+    },
+}
 
 # FTFT tune (arXiv:2608.29076): parameters differing from Monash 2013, as in FixedTargetGenerator.cxx
-tune = []
-if args.pythia8_tune == "FTFT":
-    tune = [
-        "Tune:pp = 14",
-        "StringZ:aLund = 2.0",
-        "StringZ:bLund = 0.2",
-        "StringZ:rFactC = 2.0",
-        "MultipartonInteractions:ecmRef = 30.",
-        "MultipartonInteractions:pT0Ref = 0.69",
-        "MultipartonInteractions:ecmPow = 0.266",
-        "BeamRemnants:halfMassForKT = 1.21",
-        "PDF:piSet = 1",
-    ]
-else:
-    kfactor = (1.0, 1.0)
+FTFT_SETTINGS = [
+    "Tune:pp = 14",
+    "StringZ:aLund = 2.0",
+    "StringZ:bLund = 0.2",
+    "StringZ:rFactC = 2.0",
+    "MultipartonInteractions:ecmRef = 30.",
+    "MultipartonInteractions:pT0Ref = 0.69",
+    "MultipartonInteractions:ecmPow = 0.266",
+    "BeamRemnants:halfMassForKT = 1.21",
+    "PDF:piSet = 1",
+]
 
 # Forced-production charm K-factors equivalent to the FTFT inclusive normalisation (K = 2.48 for
 # nucleon and 2.02 for meson beams), K_incl * sigma_incl / sigma_forced, from Pythia 8.312 runs with
@@ -117,207 +79,323 @@ KFORCED_CHARM = {
     (-211, 2212): [10.89, 9.22, 7.66, 7.03, 5.79, 5.30, 5.12, 5.12],
 }
 
-
-def kforced_charm(pid, tid, p):
-    """Forced-production charm K-factor for beam pid on target nucleon tid at momentum p."""
-    apid = abs(pid)
-    if apid in (2212, 2112):
-        # n on p behaves as p on n, and n on n as p on p
-        key = (2212, tid) if apid == 2212 else (2212, 2112 if tid == 2212 else 2212)
-        k = KFORCED_CHARM[key]
-    elif apid == 211:
-        # pi+ n behaves as pi- p, and pi- n as pi+ p
-        sign = 1 if pid > 0 else -1
-        key = (sign * 211 if tid == 2212 else -sign * 211, 2212)
-        k = KFORCED_CHARM[key]
-    else:
-        k = [0.5 * (a + b) for a, b in zip(KFORCED_CHARM[211, 2212], KFORCED_CHARM[-211, 2212])]
-    return float(np.interp(math.log(p), np.log(KFORCED_CHARM_P), k))
-
-
-def kfactor_for(pid, idpn, p):
-    """K-factor applied to the forced signal cross section of beam pid on target[idpn] at momentum p."""
-    if kfactor is None:
-        return kforced_charm(pid, target[idpn], p)
-    return kfactor[0] if abs(pid) in (2212, 2112) else kfactor[1]
-
+# momentum bins of the signal events: p_beam / SIGNAL_BIN_RATIO^i
+SIGNAL_BIN_RATIO = 1.1
 
 PDG = ROOT.TDatabasePDG.Instance()
-random.seed(args.seed)
-# every Pythia8 instance gets its own seed, drawn from a generator of its own so that the seeds do not
-# follow the draws of the cascade; Pythia8 accepts seeds up to 900000000
-pythia_seeds = random.Random(f"pythia8-{args.seed}")
-nseed = 0
 
 
-def new_pythia(settings):
-    """Return an initialised Pythia8 with the tune, its own seed and stable cascade and signal particles."""
-    global nseed
-    nseed += 1
-    py = pythia8.Pythia("", False)
-    for s in [*tune, *settings, "Print:quiet = on", "Random:setSeed = on"]:
-        py.readString(s)
-    py.readString(f"Random:seed = {pythia_seeds.randint(1, 900000000)}")
-    for kf in [*idbeam, *idsig]:
-        py.readString(f"{kf}:mayDecay = off")
-    if not py.init():
-        raise RuntimeError(f"Pythia8 initialisation failed for {settings}")
-    return py
+def kforced_charm(beam_id, nucleon_id, p):
+    """Forced-production charm K-factor for beam_id on target nucleon nucleon_id at momentum p."""
+    abs_id = abs(beam_id)
+    if abs_id in (2212, 2112):
+        # n on p behaves as p on n, and n on n as p on p
+        key = (2212, nucleon_id) if abs_id == 2212 else (2212, 2112 if nucleon_id == 2212 else 2212)
+        kfactors = KFORCED_CHARM[key]
+    elif abs_id == 211:
+        # pi+ n behaves as pi- p, and pi- n as pi+ p
+        sign = 1 if beam_id > 0 else -1
+        key = (sign * 211 if nucleon_id == 2212 else -sign * 211, 2212)
+        kfactors = KFORCED_CHARM[key]
+    else:
+        kfactors = [0.5 * (a + b) for a, b in zip(KFORCED_CHARM[211, 2212], KFORCED_CHARM[-211, 2212])]
+    return float(np.interp(math.log(p), np.log(KFORCED_CHARM_P), kfactors))
 
 
-def next_event(py):
-    """Generate the next event, giving up after 100 failed attempts."""
-    for _ in range(100):
-        if py.next():
-            return
-    raise RuntimeError(
-        f"Pythia8 failed to generate an event for beams {py.infoPython().idA()} on {py.infoPython().idB()}"
-    )
+def signal_kfactor(kfactors, beam_id, nucleon_id, p):
+    """K-factor applied to the forced signal cross section of beam_id on nucleon_id at momentum p.
+
+    kfactors: (nucleon beams, meson beams), or None for the momentum-dependent charm K-factors.
+    """
+    if kfactors is None:
+        return kforced_charm(beam_id, nucleon_id, p)
+    return kfactors[0] if abs(beam_id) in (2212, 2112) else kfactors[1]
 
 
-def mass(pid):
-    particle = PDG.GetParticle(pid)
-    assert particle is not None, f"Unknown PDG: {pid}"
+def mass(pdg_id):
+    particle = PDG.GetParticle(pdg_id)
+    assert particle is not None, f"Unknown PDG: {pdg_id}"
     return particle.Mass()
 
 
-def ecm(pid, idpn, p):
-    ma, mt = mass(pid), mass(target[idpn])
-    return math.sqrt(ma**2 + mt**2 + 2.0 * mt * math.sqrt(p**2 + ma**2))
+def ecm(beam_id, nucleon_id, p):
+    """Centre-of-mass energy of beam_id with momentum p on nucleon_id at rest."""
+    m_beam, m_target = mass(beam_id), mass(nucleon_id)
+    return math.sqrt(m_beam**2 + m_target**2 + 2.0 * m_target * math.sqrt(p**2 + m_beam**2))
 
 
-def beams(pid, idpn, p):
+def cm_beam_settings(beam_id, nucleon_id, p):
     return [
-        f"Beams:idA = {pid}",
-        f"Beams:idB = {target[idpn]}",
+        f"Beams:idA = {beam_id}",
+        f"Beams:idB = {nucleon_id}",
         # centre-of-mass frame: events generated at the nearest grid momentum are boosted with the
         # momentum and direction of the actual projectile
         "Beams:frameType = 1",
-        f"Beams:eCM = {ecm(pid, idpn, p)}",
+        f"Beams:eCM = {ecm(beam_id, nucleon_id, p)}",
     ]
 
 
-# minimum-bias events with variable beam particle and energy, one instance per target nucleon
-mbias = [
-    new_pythia(
-        ["SoftQCD:all = on", "Beams:frameType = 3", "Beams:allowVariableEnergy = on", "Beams:allowIDAswitch = on"]
-        + [f"Beams:idB = {tid}", f"Beams:pzA = {args.pbeamh}", "Beams:pzB = 0."]
+class PythiaFactory:
+    """Create initialised Pythia8 instances with the tune, their own seed and stable cascade and signal
+    particles. The seeds are drawn from a generator of their own, so that they do not follow the draws
+    of the cascade; Pythia8 accepts seeds up to 900000000."""
+
+    def __init__(self, seed, tune_settings, stable_ids):
+        self.seeds = random.Random(f"pythia8-{seed}")
+        self.tune_settings = tune_settings
+        self.stable_ids = stable_ids
+        self.n_instances = 0
+
+    def __call__(self, settings):
+        self.n_instances += 1
+        pythia = pythia8.Pythia("", False)
+        for setting in [*self.tune_settings, *settings, "Print:quiet = on", "Random:setSeed = on"]:
+            pythia.readString(setting)
+        pythia.readString(f"Random:seed = {self.seeds.randint(1, 900000000)}")
+        for pdg_id in self.stable_ids:
+            pythia.readString(f"{pdg_id}:mayDecay = off")
+        if not pythia.init():
+            raise RuntimeError(f"Pythia8 initialisation failed for {settings}")
+        return pythia
+
+
+def next_event(pythia):
+    """Generate the next event, giving up after 100 failed attempts."""
+    for _ in range(100):
+        if pythia.next():
+            return
+    raise RuntimeError(
+        f"Pythia8 failed to generate an event for beams {pythia.infoPython().idA()} on {pythia.infoPython().idB()}"
     )
-    for tid in target
-]
 
-# chi = K * sigma(signal) / sigma(total) vs momentum for all beam and target particles.
-# The grid is logarithmic and chi is interpolated in log(chi) vs log(p): chi varies by orders of
-# magnitude over the range and most of that variation sits close to the threshold.
-pgrid = np.geomspace(pbeaml, args.pbeamh, args.nrpoints)
-logp = np.log(pgrid)
-chi, sigma = {}, {}
-for kf in idbeam:
-    for pid in sorted({kf, -kf}):
-        if not PDG.GetParticle(pid):
-            continue
-        for idpn in range(2):
-            sigma[pid, idpn] = []
-            for p in pgrid:
-                py = new_pythia([process, "PartonLevel:all = off", "HadronLevel:all = off", *beams(pid, idpn, p)])
-                for _ in range(args.nev):
-                    py.next()
-                sigma[pid, idpn].append(kfactor_for(pid, idpn, p) * py.infoPython().sigmaGen())
-            sigtot = [mbias[idpn].getSigmaTotal(pid, target[idpn], ecm(pid, idpn, p)) for p in pgrid]
-            chi[pid, idpn] = np.log([s / t for s, t in zip(sigma[pid, idpn], sigtot)])
-            print(
-                f"K*sigma and chi at {args.pbeamh} GeV for {pid} on {target[idpn]}: "
-                f"{sigma[pid, idpn][-1]:.3e} mb, {math.exp(chi[pid, idpn][-1]):.3e}"
+
+class SignalEvents:
+    """Signal events in momentum bins p_beam / SIGNAL_BIN_RATIO^i, generated in batches of increasing
+    size, one Pythia8 instance per batch."""
+
+    def __init__(self, new_pythia, process, signal_ids, p_beam):
+        self.new_pythia = new_pythia
+        self.process = process
+        self.signal_ids = signal_ids
+        self.p_beam = p_beam
+        self.buffers = {}
+
+    def next(self, beam_id, nucleon_id, p):
+        """Return process code and signal hadrons (id, px, py, pz, E, m) in the CM frame of an event at
+        momentum p."""
+        p_bin = round(math.log(self.p_beam / p) / math.log(SIGNAL_BIN_RATIO))
+        buffer, n_fill = self.buffers.setdefault((beam_id, nucleon_id, p_bin), ([], 5))
+        if not buffer:
+            n_fill = min(2 * n_fill, 1000)
+            self.buffers[beam_id, nucleon_id, p_bin] = (buffer, n_fill)
+            pythia = self.new_pythia(
+                [self.process, *cm_beam_settings(beam_id, nucleon_id, self.p_beam / SIGNAL_BIN_RATIO**p_bin)]
             )
-chimx = max(np.exp(c).max() for c in chi.values())
-# cross section per nucleon of the target composition, at the beam energy, for the normalisation
-sigma_QQ = fracp * sigma[2212, 0][-1] + (1.0 - fracp) * sigma[2212, 1][-1]
-print(f"K*sigma per nucleon at {args.pbeamh} GeV: {1e3 * sigma_QQ:.2f} ub")
-
-# signal events at bin momenta pbeamh/1.1^i, generated in batches of increasing size
-buffers = {}
-
-
-def signal_event(pid, idpn, p):
-    """Return process code and signal hadrons (id, px, py, pz, E, m) in the CM frame of an event at momentum p."""
-    ibin = round(math.log(args.pbeamh / p) / math.log(1.1))
-    buf, nfill = buffers.setdefault((pid, idpn, ibin), ([], 5))
-    if not buf:
-        nfill = min(2 * nfill, 1000)
-        buffers[pid, idpn, ibin] = (buf, nfill)
-        py = new_pythia([process, *beams(pid, idpn, args.pbeamh / 1.1**ibin)])
-        for _ in range(nfill):
-            next_event(py)
-            ev = py.event
-            hadrons = [ev[i] for i in range(ev.size()) if ev[i].idAbs() in idsig and ev[i].isFinal()]
-            buf.append((py.infoPython().code(), [(h.id(), h.px(), h.py(), h.pz(), h.e(), h.m()) for h in hadrons]))
-    return buf.pop()
+            for _ in range(n_fill):
+                next_event(pythia)
+                event = pythia.event
+                hadrons = [
+                    event[i] for i in range(event.size()) if event[i].idAbs() in self.signal_ids and event[i].isFinal()
+                ]
+                buffer.append(
+                    (pythia.infoPython().code(), [(h.id(), h.px(), h.py(), h.pz(), h.e(), h.m()) for h in hadrons])
+                )
+        return buffer.pop()
 
 
-ftup = ROOT.TFile.Open(args.Fntuple, "RECREATE")
-Ntup = ROOT.TNtuple(
-    "pythia6",
-    "pythia8 heavy flavour",
-    "id:px:py:pz:E:M:mid:mpx:mpy:mpz:mE:mM:k:a0:a1:a2:a3:a4:a5:a6:a7:a8:a9:a10:a11:a12:a13:a14:a15:\
+def parse_args():
+    ap = argparse.ArgumentParser(description="Run SHiP makeCascade with Pythia8: generate ccbar or bbbar")
+    ap.add_argument(
+        "-s",
+        "--seed",
+        type=int,
+        default=int(time.time() * 100000000 % 900000000),
+        help="Random number seed, integer. If not given, current time will be used",
+    )
+    ap.add_argument(
+        "-t",
+        "--Fntuple",
+        dest="output",
+        default="",
+        help="Name of ntuple output file, default: Cascade{nevgen/1000}k-pythia8-{pythia8_tune}-MSEL{mselcb}-ntuple.root",
+    )
+    ap.add_argument(
+        "-n", "--nevgen", dest="n_pot", type=int, default=100000, help="Number of events to produce, default 100000"
+    )
+    ap.add_argument(
+        "-E", "--pbeamh", dest="p_beam", type=float, default=400.0, help="Energy of beam in GeV, default 400 GeV"
+    )
+    ap.add_argument(
+        "-m",
+        "--mselcb",
+        dest="heavy_quark",
+        type=int,
+        default=4,
+        help="4 (5): charm (beauty) production, default charm",
+        choices=[4, 5],
+    )
+    ap.add_argument(
+        "--target-composition",
+        default="W",
+        help="Target composition (to determine the ratio of protons in the material). Default is Tungsten (W). Only other choice is Molybdenum (Mo)",
+        choices=["W", "Mo"],
+    )
+    ap.add_argument(
+        "--pythia8-tune",
+        default="default",
+        choices=["default", "FTFT"],
+        help="Pythia8 tune: default (Monash 2013) or FTFT (arXiv:2608.29076, with its K-factors)",
+    )
+    ap.add_argument(
+        "--nev", dest="n_sigma_events", type=int, default=2000, help="Events per momentum point for sig/sigtot"
+    )
+    ap.add_argument(
+        "--nrpoints",
+        dest="n_momentum_points",
+        type=int,
+        default=40,
+        help="Number of momentum points taken to calculate sig/sigtot",
+    )
+    args = ap.parse_args()
+    p_threshold = SIGNAL[args.heavy_quark]["p_threshold"]
+    if args.n_pot < 1 or args.n_sigma_events < 1 or args.n_momentum_points < 2 or args.p_beam <= p_threshold:
+        ap.error(f"need --nevgen >= 1, --nev >= 1, --nrpoints >= 2 and a beam energy above {p_threshold} GeV")
+    if args.output == "":
+        args.output = f"Cascade{int(args.n_pot / 1000)}k-pythia8-{args.pythia8_tune}-MSEL{args.heavy_quark}-ntuple.root"
+    return args
+
+
+def main():
+    args = parse_args()
+    signal = SIGNAL[args.heavy_quark]
+    p_threshold, signal_ids, signal_process = signal["p_threshold"], signal["ids"], signal["process"]
+    proton_fraction = PROTON_FRACTION[args.target_composition]
+    if args.pythia8_tune == "FTFT":
+        tune_settings, kfactors = FTFT_SETTINGS, signal["kfactors"]
+    else:
+        tune_settings, kfactors = [], (1.0, 1.0)
+
+    random.seed(args.seed)
+    new_pythia = PythiaFactory(args.seed, tune_settings, [*CASCADE_IDS, *signal_ids])
+
+    # minimum-bias events with variable beam particle and energy, one instance per target nucleon
+    mbias_pythia = [
+        new_pythia(
+            ["SoftQCD:all = on", "Beams:frameType = 3", "Beams:allowVariableEnergy = on", "Beams:allowIDAswitch = on"]
+            + [f"Beams:idB = {nucleon_id}", f"Beams:pzA = {args.p_beam}", "Beams:pzB = 0."]
+        )
+        for nucleon_id in TARGET_NUCLEONS
+    ]
+
+    # chi = K * sigma(signal) / sigma(total) vs momentum for all beam and target particles.
+    # The grid is logarithmic and chi is interpolated in log(chi) vs log(p): chi varies by orders of
+    # magnitude over the range and most of that variation sits close to the threshold.
+    p_grid = np.geomspace(p_threshold, args.p_beam, args.n_momentum_points)
+    log_p_grid = np.log(p_grid)
+    log_chi, sigma = {}, {}
+    for pdg_id in CASCADE_IDS:
+        for beam_id in sorted({pdg_id, -pdg_id}):
+            if not PDG.GetParticle(beam_id):
+                continue
+            for i_nucleon, nucleon_id in enumerate(TARGET_NUCLEONS):
+                sigma[beam_id, i_nucleon] = []
+                for p in p_grid:
+                    pythia = new_pythia(
+                        [signal_process, "PartonLevel:all = off", "HadronLevel:all = off"]
+                        + cm_beam_settings(beam_id, nucleon_id, p)
+                    )
+                    for _ in range(args.n_sigma_events):
+                        pythia.next()
+                    sigma[beam_id, i_nucleon].append(
+                        signal_kfactor(kfactors, beam_id, nucleon_id, p) * pythia.infoPython().sigmaGen()
+                    )
+                sigma_total = [
+                    mbias_pythia[i_nucleon].getSigmaTotal(beam_id, nucleon_id, ecm(beam_id, nucleon_id, p))
+                    for p in p_grid
+                ]
+                log_chi[beam_id, i_nucleon] = np.log([s / t for s, t in zip(sigma[beam_id, i_nucleon], sigma_total)])
+                print(
+                    f"K*sigma and chi at {args.p_beam} GeV for {beam_id} on {nucleon_id}: "
+                    f"{sigma[beam_id, i_nucleon][-1]:.3e} mb, {math.exp(log_chi[beam_id, i_nucleon][-1]):.3e}"
+                )
+    chi_max = max(np.exp(c).max() for c in log_chi.values())
+    # cross section per nucleon of the target composition, at the beam energy, for the normalisation
+    sigma_QQ = proton_fraction * sigma[2212, 0][-1] + (1.0 - proton_fraction) * sigma[2212, 1][-1]
+    print(f"K*sigma per nucleon at {args.p_beam} GeV: {1e3 * sigma_QQ:.2f} ub")
+
+    signal_events = SignalEvents(new_pythia, signal_process, signal_ids, args.p_beam)
+
+    output_file = ROOT.TFile.Open(args.output, "RECREATE")
+    ntuple = ROOT.TNtuple(
+        "pythia6",
+        "pythia8 heavy flavour",
+        "id:px:py:pz:E:M:mid:mpx:mpy:mpz:mE:mM:k:a0:a1:a2:a3:a4:a5:a6:a7:a8:a9:a10:a11:a12:a13:a14:a15:\
 s0:s1:s2:s3:s4:s5:s6:s7:s8:s9:s10:s11:s12:s13:s14:s15",
-)
-# number of signal particles per cascade depth, used by FixedTargetGenerator for the normalisation
-hdepth = ROOT.TH1F("2", "nr signal per cascade depth", 50, 0.5, 50.5)
-# cross section per nucleon [mb] this file was generated with, read back by run_fixedTarget.py to
-# scale chicc/chibb, so that the normalisation follows the beam energy, tune and target of the file
-ROOT.TParameter("double")("sigma_QQ", sigma_QQ).Write()  # type: ignore[missing-attribute]
+    )
+    # number of signal particles per cascade depth, used by FixedTargetGenerator for the normalisation
+    depth_hist = ROOT.TH1F("2", "nr signal per cascade depth", 50, 0.5, 50.5)
+    # cross section per nucleon [mb] this file was generated with, read back by run_fixedTarget.py to
+    # scale chicc/chibb, so that the normalisation follows the beam energy, tune and target of the file
+    ROOT.TParameter("double")("sigma_QQ", sigma_QQ).Write()  # type: ignore[missing-attribute]
 
-t0 = time.time()
-for iev in range(args.nevgen):
-    if iev % 1000 == 0:
-        print("Generate event ", iev)
-    # stack: PID, px, py, pz, cascade depth, ancestors, interaction processes
-    stack: list[tuple[int, float, float, float, int, list[int], list[int]]] = []
-    stack.append((2212, 0.0, 0.0, args.pbeamh, 1, [2212] + 99 * [0], 100 * [0]))
-    while stack:
-        pid, px, py, pz, depth, ancestors, sub = stack.pop()
-        p = math.sqrt(px**2 + py**2 + pz**2)
-        idpn = 0 if random.random() < fracp else 1
-        if math.exp(np.interp(math.log(p), logp, chi[pid, idpn])) / chimx > random.random():
-            code, hadrons = signal_event(pid, idpn, p)
-            m = mass(pid)
-            beam = ROOT.TLorentzVector(px, py, pz, math.sqrt(p**2 + m**2))
-            boost = (beam + ROOT.TLorentzVector(0, 0, 0, mass(target[idpn]))).BoostVector()  # type: ignore[missing-attribute]
-            nsub = min(depth - 1, 15)
-            for hid, *p4, hm in hadrons:
-                v = ROOT.TLorentzVector(*p4)
-                v.RotateUz(beam.Vect().Unit())  # type: ignore[missing-attribute]
-                v.Boost(boost)  # type: ignore[missing-attribute]
-                vl = [hid, v.Px(), v.Py(), v.Pz(), v.E(), hm, pid, px, py, pz, beam.E(), m, depth]
-                Ntup.Fill(array("f", vl + ancestors[:16] + sub[:nsub] + [code] + (15 - nsub) * [0]))
-                hdepth.Fill(depth)
-        # minimum-bias event to add new cascade particles to the stack
-        idpn = 0 if random.random() < fracp else 1
-        mb = mbias[idpn]
-        mb.setBeamIDs(pid, target[idpn])
-        mb.setKinematics(px, py, pz, 0.0, 0.0, 0.0)
-        next_event(mb)
-        code = mb.infoPython().code()
-        if code == 102:
-            # Elastic scattering does not start a new cascade generation: the scattered hadron keeps
-            # its depth. Depth 1 is then everything the beam proton produces up to and including its
-            # first inelastic interaction, which is what chicc/chibb in run_fixedTarget.py normalise.
-            final = [mb.event[i] for i in range(mb.event.size()) if mb.event[i].isFinal()]
-            lead = max(final, key=lambda part: part.pAbs())
-            if lead.pAbs() > pbeaml and len(stack) < 999:
-                stack.append((pid, lead.px(), lead.py(), lead.pz(), depth, ancestors, sub))
-            continue
-        icas = min(depth + 1, 98)
-        if depth == 1:  # first inelastic interaction process of the beam proton
-            sub = [code] + sub[1:]
-        for i in range(mb.event.size()):
-            part = mb.event[i]
-            if part.idAbs() in idbeam and part.isFinal() and part.pAbs() > pbeaml and len(stack) < 999:
-                tmp = ancestors[: icas - 1] + [part.id()] + ancestors[icas:]
-                stmp = sub[: icas - 1] + [code] + sub[icas:]
-                stack.append((part.id(), part.px(), part.py(), part.pz(), icas, tmp, stmp))
+    t0 = time.time()
+    for i_pot in range(args.n_pot):
+        if i_pot % 1000 == 0:
+            print("Generate event ", i_pot)
+        # stack: PID, px, py, pz, cascade depth, ancestors, interaction processes
+        stack: list[tuple[int, float, float, float, int, list[int], list[int]]] = []
+        stack.append((2212, 0.0, 0.0, args.p_beam, 1, [2212] + 99 * [0], 100 * [0]))
+        while stack:
+            beam_id, px, py, pz, depth, ancestors, processes = stack.pop()
+            p = math.sqrt(px**2 + py**2 + pz**2)
+            i_nucleon = 0 if random.random() < proton_fraction else 1
+            nucleon_id = TARGET_NUCLEONS[i_nucleon]
+            if math.exp(np.interp(math.log(p), log_p_grid, log_chi[beam_id, i_nucleon])) / chi_max > random.random():
+                code, hadrons = signal_events.next(beam_id, nucleon_id, p)
+                beam_mass = mass(beam_id)
+                beam = ROOT.TLorentzVector(px, py, pz, math.sqrt(p**2 + beam_mass**2))
+                boost = (beam + ROOT.TLorentzVector(0, 0, 0, mass(nucleon_id))).BoostVector()  # type: ignore[missing-attribute]
+                n_processes = min(depth - 1, 15)
+                for hadron_id, *p4, hadron_mass in hadrons:
+                    hadron = ROOT.TLorentzVector(*p4)
+                    hadron.RotateUz(beam.Vect().Unit())  # type: ignore[missing-attribute]
+                    hadron.Boost(boost)  # type: ignore[missing-attribute]
+                    row = [hadron_id, hadron.Px(), hadron.Py(), hadron.Pz(), hadron.E(), hadron_mass]
+                    row += [beam_id, px, py, pz, beam.E(), beam_mass, depth]
+                    row += ancestors[:16] + processes[:n_processes] + [code] + (15 - n_processes) * [0]
+                    ntuple.Fill(array("f", row))
+                    depth_hist.Fill(depth)
+            # minimum-bias event to add new cascade particles to the stack
+            i_nucleon = 0 if random.random() < proton_fraction else 1
+            pythia = mbias_pythia[i_nucleon]
+            pythia.setBeamIDs(beam_id, TARGET_NUCLEONS[i_nucleon])
+            pythia.setKinematics(px, py, pz, 0.0, 0.0, 0.0)
+            next_event(pythia)
+            code = pythia.infoPython().code()
+            if code == 102:
+                # Elastic scattering does not start a new cascade generation: the scattered hadron keeps
+                # its depth. Depth 1 is then everything the beam proton produces up to and including its
+                # first inelastic interaction, which is what chicc/chibb in run_fixedTarget.py normalise.
+                final = [pythia.event[i] for i in range(pythia.event.size()) if pythia.event[i].isFinal()]
+                leading = max(final, key=lambda part: part.pAbs())
+                if leading.pAbs() > p_threshold and len(stack) < 999:
+                    stack.append((beam_id, leading.px(), leading.py(), leading.pz(), depth, ancestors, processes))
+                continue
+            new_depth = min(depth + 1, 98)
+            if depth == 1:  # first inelastic interaction process of the beam proton
+                processes = [code] + processes[1:]
+            for i in range(pythia.event.size()):
+                part = pythia.event[i]
+                if part.idAbs() in CASCADE_IDS and part.isFinal() and part.pAbs() > p_threshold and len(stack) < 999:
+                    new_ancestors = ancestors[: new_depth - 1] + [part.id()] + ancestors[new_depth:]
+                    new_processes = processes[: new_depth - 1] + [code] + processes[new_depth:]
+                    stack.append((part.id(), part.px(), part.py(), part.pz(), new_depth, new_ancestors, new_processes))
 
-print(f"Generated {args.nevgen} p.o.t. in {time.time() - t0} s with {nseed} Pythia8 instances")
-ftup.Write()
-ftup.Close()
-print(f"Output file is {args.Fntuple}")
+    print(f"Generated {args.n_pot} p.o.t. in {time.time() - t0} s with {new_pythia.n_instances} Pythia8 instances")
+    output_file.Write()
+    output_file.Close()
+    print(f"Output file is {args.output}")
+
+
+if __name__ == "__main__":
+    main()
