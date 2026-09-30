@@ -305,7 +305,7 @@ def main():
                         + cm_beam_settings(beam_id, nucleon_id, p)
                     )
                     for _ in range(args.n_sigma_events):
-                        pythia.next()
+                        next_event(pythia)
                     sigma[beam_id, i_nucleon].append(
                         signal_kfactor(kfactors, beam_id, nucleon_id, p) * pythia.infoPython().sigmaGen()
                     )
