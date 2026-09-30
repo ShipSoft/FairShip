@@ -70,6 +70,7 @@ add_executable(testFixedTargetCascadeWeight test_fixedtarget_cascade_weight.cxx)
 target_link_libraries(
     testFixedTargetCascadeWeight
     ShipGen
+    ROOT::EGPythia8
     ROOT::Core
     ROOT::RIO
     ROOT::Hist
