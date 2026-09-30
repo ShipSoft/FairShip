@@ -502,10 +502,16 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
     nTree->GetEvent(nEntry);
     nEntry += 1;
     IncrementCounter("charm_input_pairs");
+    // primary: produced by the beam proton, cascade depth 1. Files without
+    // the depth branch tag the beam proton by its zero transverse momentum,
+    // which misses beam protons that scattered elastically before.
+    const Bool_t isPrimary =
+        nTree->GetBranch("k")
+            ? ck < 1.5
+            : n_mid == 2212 && (n_mpx * n_mpx + n_mpy * n_mpy) < 1E-5;
     // sanity check, count number of p.o.t. on input file.
-    Double_t pt = TMath::Sqrt((n_mpx * n_mpx) + (n_mpy * n_mpy));
     // every event appears twice, i.e.
-    if (pt < 1.e-5 && n_mid == 2212) {
+    if (isPrimary) {
       pot += 0.5;
       ntotprim += 1;
     }
@@ -518,9 +524,9 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
     fPythiaP->event.append(static_cast<int>(n_id), 1, 0, 0, n_px, n_py, n_pz,
                            n_E, n_M, 0., 9.);
     TMCProcess procID = kPTransportation;
-    if (n_mid == 2212 && (n_mpx * n_mpx + n_mpy * n_mpy) < 1E-5) {
+    if (isPrimary) {
       procID = kPPrimary;
-    }  // probably primary and not from cascade
+    }
     cpg->AddTrack(static_cast<int>(n_mid), n_mpx, n_mpy, n_mpz,
                   (xOff + dx) * cm, (yOff + dy) * cm, zinter * cm, -1, kFALSE,
                   n_mE, 0., wspill, procID);
