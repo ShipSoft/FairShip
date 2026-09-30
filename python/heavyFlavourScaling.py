@@ -24,6 +24,24 @@ SIGMA_BB_REF = SIGMA_CC_REF * CHIBB_REF / CHICC_REF
 TARGET_A = {"W": 184.0, "Mo": 98.0}
 
 CrossSections = namedtuple("CrossSections", ["chicc", "chibb", "A", "scale"])
+# FixedTargetGenerator::InitForCharmOrBeauty treats an input file as beauty if its first hadron is heavier
+BEAUTY_MASS_MIN = 5.0  # GeV
+
+
+def file_is_beauty(first_hadron_mass):
+    """Flavour of a cascade input file as FixedTargetGenerator sees it, from the mass [GeV] of its first hadron."""
+    return first_hadron_mass > BEAUTY_MASS_MIN
+
+
+def check_input_flavour(is_beauty, file_beauty):
+    """Reject a run type (``--charm``/``--beauty``) that disagrees with the flavour of the cascade input file.
+
+    The generator takes the flavour from the file, so a mismatch would scale the wrong cross section.
+    """
+    if is_beauty != file_beauty:
+        requested = "beauty" if is_beauty else "charm"
+        found = "beauty" if file_beauty else "charm"
+        raise ValueError(f"--{requested} was requested, but the cascade input file holds {found}")
 
 
 def derive_cross_sections(target_composition=None, A=None, chicc=None, chibb=None, sigma_QQ=None, is_beauty=False):
