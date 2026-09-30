@@ -112,6 +112,8 @@ Fixed</h2>
 <ul>
 <li>Charm runs of <code><a class="el" href="run__fixedTarget_8py.html">run_fixedTarget.py</a></code> no longer drop the <code>charm</code> work-directory tag: a missing <code>elif</code> meant the tag was assigned and then immediately overwritten, so charm output landed in the same untagged directory as a min-bias run of the same run number.</li>
 <li>Update location of post-target sensitive plane in <code><a class="el" href="namespacerun__fixedTarget.html">run_fixedTarget</a></code> to use nominal target length, in order to avoid overlaps</li>
+<li>Read the normalisation histogram of charm and beauty input files as <code>TH1</code>, not <code>TH1F</code>, so that files written by <code><a class="el" href="makeCascade_8py.html">makeCascade.py</a></code> (<code><a class="el" href="namespacerootUtils.html">rootUtils</a></code> books a <code>TH1D</code>) are accepted instead of failing with "histogram '2' not found".</li>
+<li>Post-process the simulation output of <code><a class="el" href="run__fixedTarget_8py.html">run_fixedTarget.py</a></code>, not the first open ROOT file, which for charm and beauty is the cascade input file kept open by the generator, so that charm and beauty runs no longer end with &lsquo;KeyError: 'cbmsim&rsquo;`.</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md6"></a>
 Removed</h2>

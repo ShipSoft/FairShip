@@ -625,9 +625,9 @@ $(document).ready(function(){initNavTree('run__fixedTarget_8py_source.html','');
 <div class="line"><a id="l00524" name="l00524"></a><span class="lineno">  524</span>    print(f<span class="stringliteral">&quot;Real time {rtime} s, CPU time {ctime} s&quot;</span>)</div>
 <div class="line"><a id="l00525" name="l00525"></a><span class="lineno">  525</span><span class="comment"># ---post processing--- remove empty events --- save histograms</span></div>
 <div class="line"><a id="l00526" name="l00526"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a4bae912e73b74a6d75fa0ff9f485e1c1">  526</a></span>tmpFile = outFile + <span class="stringliteral">&quot;tmp&quot;</span></div>
-<div class="line"><a id="l00527" name="l00527"></a><span class="lineno">  527</span><span class="keywordflow">if</span> ROOT.gROOT.GetListOfFiles().GetEntries() &gt; 0:</div>
-<div class="line"><a id="l00528" name="l00528"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a44a2f398422c952305b4ee8df6ee9da0">  528</a></span>    fin = ROOT.gROOT.GetListOfFiles()[0]</div>
-<div class="line"><a id="l00529" name="l00529"></a><span class="lineno">  529</span><span class="keywordflow">else</span>:</div>
+<div class="line"><a id="l00527" name="l00527"></a><span class="lineno">  527</span><span class="comment"># not simply the first open file: for charm and beauty the generator keeps the input file open</span></div>
+<div class="line"><a id="l00528" name="l00528"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a44a2f398422c952305b4ee8df6ee9da0">  528</a></span>fin = ROOT.gROOT.GetListOfFiles().FindObject(outFile)</div>
+<div class="line"><a id="l00529" name="l00529"></a><span class="lineno">  529</span><span class="keywordflow">if</span> <span class="keywordflow">not</span> fin:</div>
 <div class="line"><a id="l00530" name="l00530"></a><span class="lineno">  530</span>    fin = ROOT.TFile.Open(outFile)</div>
 <div class="line"><a id="l00531" name="l00531"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#abb198cfaf268451c0899cebf70da5dc4">  531</a></span>fHeader = fin.Get(<span class="stringliteral">&quot;FileHeader&quot;</span>)</div>
 <div class="line"><a id="l00532" name="l00532"></a><span class="lineno">  532</span><span class="keywordflow">if</span> fHeader:</div>
