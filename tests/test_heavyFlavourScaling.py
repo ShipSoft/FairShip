@@ -7,8 +7,10 @@ from heavyFlavourScaling import (
     CHICC_REF,
     SIGMA_BB_REF,
     SIGMA_CC_REF,
+    check_input_flavour,
     check_run_type_override,
     derive_cross_sections,
+    file_is_beauty,
 )
 
 
@@ -103,3 +105,23 @@ def test_sigma_QQ_does_not_override_explicit_chicc():
 def test_invalid_sigma_QQ():
     with pytest.raises(ValueError, match="sigma_QQ"):
         derive_cross_sections("W", sigma_QQ=0.0)
+
+
+def test_file_flavour_from_first_hadron_mass():
+    assert file_is_beauty(5.28)  # B0
+    assert not file_is_beauty(1.865)  # D0
+
+
+def test_matching_input_flavour_is_accepted():
+    check_input_flavour(False, file_is_beauty(1.865))
+    check_input_flavour(True, file_is_beauty(5.28))
+
+
+def test_charm_run_on_beauty_file_raises():
+    with pytest.raises(ValueError, match="--charm was requested, but the cascade input file holds beauty"):
+        check_input_flavour(False, file_is_beauty(5.28))
+
+
+def test_beauty_run_on_charm_file_raises():
+    with pytest.raises(ValueError, match="--beauty was requested, but the cascade input file holds charm"):
+        check_input_flavour(True, file_is_beauty(1.865))
