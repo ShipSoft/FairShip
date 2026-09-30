@@ -2,7 +2,7 @@ var searchData=
 [
   ['badboys_0',['badBoys',['../namespacecheckZpositions.html#a4040402d5b3f2b28414152756c21d1dc',1,'checkZpositions']]],
   ['bar_1',['bar',['../namespaceshipunit.html#ae70120918571e0920b20781286b381df',1,'shipunit.bar'],['../namespacehepunit.html#aac12670fd4d52f33e719f23d97a21e14',1,'hepunit.bar']]],
-  ['barn_2',['barn',['../namespaceshipunit.html#aa14a1f6d2db0d695fd9816fdec0687ab',1,'shipunit.barn'],['../namespacehepunit.html#a672450d6afa797f5a6eecd5c48b6139b',1,'hepunit.barn']]],
+  ['barn_2',['barn',['../namespacehepunit.html#a672450d6afa797f5a6eecd5c48b6139b',1,'hepunit.barn'],['../namespaceshipunit.html#aa14a1f6d2db0d695fd9816fdec0687ab',1,'shipunit.barn']]],
   ['beauty_3',['beauty',['../namespacerun__fixedTarget.html#a0c85c49a7d2a826a1546503659f48708',1,'run_fixedTarget']]],
   ['becquerel_4',['becquerel',['../namespacehepunit.html#a601d8d21f63cda02d44f1a1bc5660b8b',1,'hepunit.becquerel'],['../namespaceshipunit.html#a7d8a0ed9064f50a2068792457bb3439b',1,'shipunit.becquerel']]],
   ['bellfield_5',['bellField',['../namespaceeventDisplay.html#a444b203528b7d4ad2f14e14d9e9fcfaf',1,'eventDisplay']]],
@@ -11,11 +11,11 @@ var searchData=
   ['benchmark_5fscript_8',['benchmark_script',['../namespacerun__tracking__scan.html#aad9342c0eac814f8f929f520cfbb309b',1,'run_tracking_scan']]],
   ['beta_9',['beta',['../namespacemakeCascade.html#aa27c1c99785df8bad2319ff9aafec366',1,'makeCascade']]],
   ['bfield_10',['bfield',['../classshipDigiReco_1_1ShipDigiReco.html#a97271c1be5a7dca5054299973c3e2ec3',1,'shipDigiReco.ShipDigiReco.bfield'],['../namespaceeventDisplay.html#adc7da68718bf676633fa343550991e61',1,'eventDisplay.bfield'],['../namespaceShipAna.html#a1f85359f38d72674b0a60c4e12683bfe',1,'ShipAna.bfield']]],
-  ['bohr_5fradius_11',['bohr_radius',['../namespacehepunit.html#a770736be7b28c7b0cc7b20f3905f0f06',1,'hepunit.Bohr_radius'],['../namespaceshipunit.html#aee1dd57a167e5be049cbcdf68e136711',1,'shipunit.Bohr_radius']]],
+  ['bohr_5fradius_11',['bohr_radius',['../namespaceshipunit.html#aee1dd57a167e5be049cbcdf68e136711',1,'shipunit.Bohr_radius'],['../namespacehepunit.html#a770736be7b28c7b0cc7b20f3905f0f06',1,'hepunit.Bohr_radius']]],
   ['booleanoptionalaction_12',['BooleanOptionalAction',['../namespacerun__fixedTarget.html#af456af4c4bac33f8b8ba95ab99319708',1,'run_fixedTarget']]],
   ['boostfactor_13',['boostFactor',['../namespacestudy__GammaConv.html#a87e1fbd736ef46b9a49a67ee3e340c9c',1,'study_GammaConv']]],
   ['bottom_14',['bottom',['../namespacerun__tracking__scan.html#a35c0942b16a20bd983dab999e6122174',1,'run_tracking_scan']]],
-  ['bparam_15',['bparam',['../classPythia8Generator.html#a6cccef60f9c11c8de3e613df19421a71',1,'Pythia8Generator::bparam'],['../classFixedTargetGenerator.html#a56e1bbca0149a15f64ea79646b813823',1,'FixedTargetGenerator::bparam']]],
+  ['bparam_15',['bparam',['../classFixedTargetGenerator.html#a56e1bbca0149a15f64ea79646b813823',1,'FixedTargetGenerator::bparam'],['../classPythia8Generator.html#a6cccef60f9c11c8de3e613df19421a71',1,'Pythia8Generator::bparam']]],
   ['br_16',['br',['../namespaceeventDisplay.html#abe023ea1e3a4a6a7eac9907e09ed4ecc',1,'eventDisplay']]],
   ['branch_17',['branch',['../classBaseDetector_1_1BaseDetector.html#ae5c0b9a7c057d0bdd36cc98786554c46',1,'BaseDetector::BaseDetector']]],
   ['branches_18',['branches',['../namespacerun__simScript.html#aab4426f598376be65d04e68a577d8ae8',1,'run_simScript']]],
@@ -26,6 +26,7 @@ var searchData=
   ['brickx_23',['BrickX',['../classTarget.html#a1af9e578d3fbd2e6c1faf9fa7bb453ad',1,'Target']]],
   ['bricky_24',['BrickY',['../classTarget.html#a10300065b8275b5fb309f97c56797aa5',1,'Target']]],
   ['brickz_25',['BrickZ',['../classTarget.html#acb46fe7bb033e087857ba6316c45e016',1,'Target']]],
-  ['by_5fntracks_26',['by_nTracks',['../namespacerun__tracking__scan.html#a7dae627e651fe3403db67ef0b7fafb6d',1,'run_tracking_scan']]],
-  ['by_5ftheta_27',['by_theta',['../namespacerun__tracking__scan.html#a6e4c94ffbbf35a49bcd16198b68facbe',1,'run_tracking_scan']]]
+  ['buffers_26',['buffers',['../classmakeCascadePythia8_1_1SignalEvents.html#a95511313167cdac2860ba84cfc0c97ec',1,'makeCascadePythia8::SignalEvents']]],
+  ['by_5fntracks_27',['by_nTracks',['../namespacerun__tracking__scan.html#a7dae627e651fe3403db67ef0b7fafb6d',1,'run_tracking_scan']]],
+  ['by_5ftheta_28',['by_theta',['../namespacerun__tracking__scan.html#a6e4c94ffbbf35a49bcd16198b68facbe',1,'run_tracking_scan']]]
 ];

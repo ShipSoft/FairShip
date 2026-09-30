@@ -20,8 +20,8 @@ var searchData=
   ['bfield_17',['bfield',['../namespaceeventDisplay.html#adc7da68718bf676633fa343550991e61',1,'eventDisplay.bfield'],['../classshipDigiReco_1_1ShipDigiReco.html#a97271c1be5a7dca5054299973c3e2ec3',1,'shipDigiReco.ShipDigiReco.bfield'],['../namespaceShipAna.html#a1f85359f38d72674b0a60c4e12683bfe',1,'ShipAna.bfield']]],
   ['bigeventloop_18',['BigEventLoop',['../namespaceana__ShipMuon.html#a7261d9119dc8f042df0977eaee773b8d',1,'ana_ShipMuon']]],
   ['binpair_19',['binPair',['../classShipBFieldMap.html#a1f037b96866ce64297220a5065b24aa6',1,'ShipBFieldMap']]],
-  ['block_20',['block',['../classstudy__GammaConv_1_1Block.html',1,'study_GammaConv.Block'],['../classstudy__thinTarget_1_1Block.html',1,'study_thinTarget.Block'],['../classstudy__muMSC_1_1Block.html',1,'study_muMSC.Block']]],
-  ['bohr_5fradius_21',['bohr_radius',['../namespaceshipunit.html#aee1dd57a167e5be049cbcdf68e136711',1,'shipunit.Bohr_radius'],['../namespacehepunit.html#a770736be7b28c7b0cc7b20f3905f0f06',1,'hepunit.Bohr_radius']]],
+  ['block_20',['block',['../classstudy__GammaConv_1_1Block.html',1,'study_GammaConv.Block'],['../classstudy__muMSC_1_1Block.html',1,'study_muMSC.Block'],['../classstudy__thinTarget_1_1Block.html',1,'study_thinTarget.Block']]],
+  ['bohr_5fradius_21',['bohr_radius',['../namespacehepunit.html#a770736be7b28c7b0cc7b20f3905f0f06',1,'hepunit.Bohr_radius'],['../namespaceshipunit.html#aee1dd57a167e5be049cbcdf68e136711',1,'shipunit.Bohr_radius']]],
   ['bookcanvas_22',['bookCanvas',['../namespacerootUtils.html#aea2713c1fd3249a6dd7ea82c6ccc8ef5',1,'rootUtils']]],
   ['bookhist_23',['bookhist',['../namespacerootUtils.html#a6558e8446659e2fe282f24dff579b11d',1,'rootUtils.bookHist()'],['../namespaceana__ShipMuon.html#a4a3714254df2980602fbc03161dde57f',1,'ana_ShipMuon.bookHist()']]],
   ['bookprof_24',['bookProf',['../namespacerootUtils.html#ae7d21aa6d2c4142e2b2c17659540b018',1,'rootUtils']]],
@@ -45,10 +45,11 @@ var searchData=
   ['brmesontogammadp_42',['brMesonToGammaDP',['../namespacedpProductionRates.html#adec3f55d66baf8956b5bd0e43b950888',1,'dpProductionRates']]],
   ['brmesontomesondp_43',['brMesonToMesonDP',['../namespacedpProductionRates.html#a9edcc507e84f413f91c151573d2f2218',1,'dpProductionRates']]],
   ['bsd_2d3_2dclause_2etxt_44',['BSD-3-Clause.txt',['../BSD-3-Clause_8txt.html',1,'']]],
-  ['build_20from_20source_20recommended_45',['Build from source (recommended)',['../md_README.html#autotoc_md106',1,'']]],
-  ['build_20system_46',['build system',['../md_CHANGELOG.html#autotoc_md76',1,'Build System'],['../md_CHANGELOG.html#autotoc_md80',1,'Build System'],['../md_CHANGELOG.html#autotoc_md85',1,'Build System']]],
-  ['build_20system_20and_20dependencies_47',['Build System and Dependencies',['../md_CHANGELOG.html#autotoc_md67',1,'']]],
-  ['built_20package_48',['Using the pre-built package',['../md_README.html#autotoc_md107',1,'']]],
-  ['by_5fntracks_49',['by_nTracks',['../namespacerun__tracking__scan.html#a7dae627e651fe3403db67ef0b7fafb6d',1,'run_tracking_scan']]],
-  ['by_5ftheta_50',['by_theta',['../namespacerun__tracking__scan.html#a6e4c94ffbbf35a49bcd16198b68facbe',1,'run_tracking_scan']]]
+  ['buffers_45',['buffers',['../classmakeCascadePythia8_1_1SignalEvents.html#a95511313167cdac2860ba84cfc0c97ec',1,'makeCascadePythia8::SignalEvents']]],
+  ['build_20from_20source_20recommended_46',['Build from source (recommended)',['../md_README.html#autotoc_md106',1,'']]],
+  ['build_20system_47',['build system',['../md_CHANGELOG.html#autotoc_md76',1,'Build System'],['../md_CHANGELOG.html#autotoc_md80',1,'Build System'],['../md_CHANGELOG.html#autotoc_md85',1,'Build System']]],
+  ['build_20system_20and_20dependencies_48',['Build System and Dependencies',['../md_CHANGELOG.html#autotoc_md67',1,'']]],
+  ['built_20package_49',['Using the pre-built package',['../md_README.html#autotoc_md107',1,'']]],
+  ['by_5fntracks_50',['by_nTracks',['../namespacerun__tracking__scan.html#a7dae627e651fe3403db67ef0b7fafb6d',1,'run_tracking_scan']]],
+  ['by_5ftheta_51',['by_theta',['../namespacerun__tracking__scan.html#a6e4c94ffbbf35a49bcd16198b68facbe',1,'run_tracking_scan']]]
 ];

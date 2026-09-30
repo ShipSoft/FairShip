@@ -730,6 +730,7 @@ var namespaces_dup =
       [ "vl", "namespacemakeCascade.html#a59464c43d4bb7e8f058da677de563c2c", null ],
       [ "xf", "namespacemakeCascade.html#a70c92707038e355071f4b1a753e1055e", null ]
     ] ],
+    [ "makeCascadePythia8", "namespacemakeCascadePythia8.html", "namespacemakeCascadePythia8" ],
     [ "makeDecay", "namespacemakeDecay.html", [
       [ "_p", "namespacemakeDecay.html#abedc5f025804cceb779464a42daaac34", null ],
       [ "ap", "namespacemakeDecay.html#a410a018b455995e7a2c750b737b2a3d5", null ],
