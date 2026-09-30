@@ -19,6 +19,7 @@ import math
 import random
 import time
 from array import array
+from typing import NamedTuple
 
 import numpy as np
 import pythia8
@@ -30,24 +31,34 @@ TARGET_NUCLEONS = [2212, 2112]
 # fraction of protons in the nucleus, 74/184 for W, 42/98 for Mo
 PROTON_FRACTION = {"W": 0.40, "Mo": 0.43}
 
+
+class SignalConfig(NamedTuple):
+    """Settings of the heavy-flavour signal."""
+
+    p_threshold: float
+    ids: set[int]
+    process: str
+    kfactors: tuple[float, float] | None
+
+
 # per heavy quark (4: charm, 5: beauty): lower momentum limit [GeV] for cascade and signal particles
 # (and their antis), signal hadrons, forced production process and K-factors for nucleon and meson
 # beams. The FTFT charm K-factors normalise inclusive charm production (SoftQCD:inelastic), the
 # cascade forces it (HardQCD:hardccbar), see KFORCED_CHARM below.
 SIGNAL = {
-    4: {
-        "p_threshold": 34.0,
-        "ids": {411, 421, 431, 4122, 4132, 4232, 4332, 4412, 4414, 4422, 4424, 4432, 4434, 4444},
-        "process": "HardQCD:hardccbar = on",
-        "kfactors": None,
-    },
-    5: {
-        "p_threshold": 130.0,
-        "ids": {511, 521, 531, 541, 5122, 5132, 5142, 5232, 5242, 5332, 5342, 5412, 5414, 5422, 5424, 5432, 5434}
+    4: SignalConfig(
+        p_threshold=34.0,
+        ids={411, 421, 431, 4122, 4132, 4232, 4332, 4412, 4414, 4422, 4424, 4432, 4434, 4444},
+        process="HardQCD:hardccbar = on",
+        kfactors=None,
+    ),
+    5: SignalConfig(
+        p_threshold=130.0,
+        ids={511, 521, 531, 541, 5122, 5132, 5142, 5232, 5242, 5332, 5342, 5412, 5414, 5422, 5424, 5432, 5434}
         | {5442, 5444, 5512, 5514, 5522, 5524, 5532, 5534, 5542, 5544, 5554},
-        "process": "HardQCD:hardbbbar = on",
-        "kfactors": (1.04, 1.19),
-    },
+        process="HardQCD:hardbbbar = on",
+        kfactors=(1.04, 1.19),
+    ),
 }
 
 # FTFT tune (arXiv:2608.29076): parameters differing from Monash 2013, as in FixedTargetGenerator.cxx
@@ -257,7 +268,7 @@ def parse_args():
         help="Number of momentum points taken to calculate sig/sigtot",
     )
     args = ap.parse_args()
-    p_threshold = SIGNAL[args.heavy_quark]["p_threshold"]
+    p_threshold = SIGNAL[args.heavy_quark].p_threshold
     if args.n_pot < 1 or args.n_sigma_events < 1 or args.n_momentum_points < 2 or args.p_beam <= p_threshold:
         ap.error(f"need --nevgen >= 1, --nev >= 1, --nrpoints >= 2 and a beam energy above {p_threshold} GeV")
     if args.output == "":
@@ -268,10 +279,10 @@ def parse_args():
 def main():
     args = parse_args()
     signal = SIGNAL[args.heavy_quark]
-    p_threshold, signal_ids, signal_process = signal["p_threshold"], signal["ids"], signal["process"]
+    p_threshold, signal_ids, signal_process = signal.p_threshold, signal.ids, signal.process
     proton_fraction = PROTON_FRACTION[args.target_composition]
     if args.pythia8_tune == "FTFT":
-        tune_settings, kfactors = FTFT_SETTINGS, signal["kfactors"]
+        tune_settings, kfactors = FTFT_SETTINGS, signal.kfactors
     else:
         tune_settings, kfactors = [], (1.0, 1.0)
 
