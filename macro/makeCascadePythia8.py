@@ -12,6 +12,11 @@ boosted to the lab along the projectile.
 
 Unlike makeCascade.py, elastic scattering does not increase the cascade depth, so depth 1 (the
 normalisation of run_fixedTarget.py) covers the beam proton up to its first inelastic interaction.
+
+With --charm-production inclusive, charm signal events are inclusive inelastic events (SoftQCD:inelastic)
+generated at the exact momentum and direction of the projectile and kept if they contain charm, instead
+of forced HardQCD:hardccbar events. The FTFT tune describes charm production data with inclusive events;
+forced production has somewhat different x_F and pT^2 distributions. The normalisation (chi) is the same.
 """
 
 import argparse
@@ -214,6 +219,45 @@ class SignalEvents:
         return buffer.pop()
 
 
+class InclusiveSignalEvents:
+    """Inclusive inelastic events with signal hadrons, at the exact projectile momentum, one Pythia8 instance
+    per target nucleon. Events are hadronised only if they contain a heavy quark, which saves most of the
+    time spent on events without one."""
+
+    def __init__(self, new_pythia, signal_ids, heavy_quark, p_beam):
+        self.signal_ids = signal_ids
+        self.heavy_quark = heavy_quark
+        self.pythia = [
+            new_pythia(
+                ["SoftQCD:inelastic = on", "HadronLevel:all = off"]
+                + ["Beams:frameType = 3", "Beams:allowVariableEnergy = on", "Beams:allowIDAswitch = on"]
+                + [f"Beams:idB = {nucleon_id}", f"Beams:pzA = {p_beam}", "Beams:pzB = 0."]
+            )
+            for nucleon_id in TARGET_NUCLEONS
+        ]
+        self.n_tried = 0
+
+    def next(self, beam_id, i_nucleon, px, py, pz):
+        """Return process code and signal hadrons (id, px, py, pz, E, m) in the lab frame."""
+        pythia = self.pythia[i_nucleon]
+        pythia.setBeamIDs(beam_id, TARGET_NUCLEONS[i_nucleon])
+        pythia.setKinematics(px, py, pz, 0.0, 0.0, 0.0)
+        while True:
+            next_event(pythia)
+            self.n_tried += 1
+            event = pythia.event
+            if not any(event[i].idAbs() == self.heavy_quark for i in range(event.size())):
+                continue
+            if not pythia.forceHadronLevel():
+                continue
+            event = pythia.event
+            hadrons = [
+                event[i] for i in range(event.size()) if event[i].idAbs() in self.signal_ids and event[i].isFinal()
+            ]
+            if hadrons:
+                return pythia.infoPython().code(), [(h.id(), h.px(), h.py(), h.pz(), h.e(), h.m()) for h in hadrons]
+
+
 def parse_args():
     ap = argparse.ArgumentParser(description="Run SHiP makeCascade with Pythia8: generate ccbar or bbbar")
     ap.add_argument(
@@ -256,6 +300,12 @@ def parse_args():
         default="default",
         choices=["default", "FTFT"],
         help="Pythia8 tune: default (Monash 2013) or FTFT (arXiv:2608.29076, with its K-factors)",
+    )
+    ap.add_argument(
+        "--charm-production",
+        default="forced",
+        choices=["forced", "inclusive"],
+        help="Charm signal events from forced (HardQCD:hardccbar) or inclusive (SoftQCD:inelastic) production",
     )
     ap.add_argument(
         "--nev", dest="n_sigma_events", type=int, default=2000, help="Events per momentum point for sig/sigtot"
@@ -335,6 +385,11 @@ def main():
     print(f"K*sigma per nucleon at {args.p_beam} GeV: {1e3 * sigma_QQ:.2f} ub")
 
     signal_events = SignalEvents(new_pythia, signal_process, signal_ids, args.p_beam)
+    inclusive_events = (
+        InclusiveSignalEvents(new_pythia, signal_ids, args.heavy_quark, args.p_beam)
+        if args.charm_production == "inclusive" and args.heavy_quark == 4
+        else None
+    )
 
     output_file = ROOT.TFile.Open(args.output, "RECREATE")
     ntuple = ROOT.TNtuple(
@@ -362,15 +417,19 @@ s0:s1:s2:s3:s4:s5:s6:s7:s8:s9:s10:s11:s12:s13:s14:s15",
             i_nucleon = 0 if random.random() < proton_fraction else 1
             nucleon_id = TARGET_NUCLEONS[i_nucleon]
             if math.exp(np.interp(math.log(p), log_p_grid, log_chi[beam_id, i_nucleon])) / chi_max > random.random():
-                code, hadrons = signal_events.next(beam_id, nucleon_id, p)
                 beam_mass = mass(beam_id)
                 beam = ROOT.TLorentzVector(px, py, pz, math.sqrt(p**2 + beam_mass**2))
+                if inclusive_events is not None:
+                    code, hadrons = inclusive_events.next(beam_id, i_nucleon, px, py, pz)
+                else:
+                    code, hadrons = signal_events.next(beam_id, nucleon_id, p)
                 boost = (beam + ROOT.TLorentzVector(0, 0, 0, mass(nucleon_id))).BoostVector()  # type: ignore[missing-attribute]
                 n_processes = min(depth - 1, 15)
                 for hadron_id, *p4, hadron_mass in hadrons:
                     hadron = ROOT.TLorentzVector(*p4)
-                    hadron.RotateUz(beam.Vect().Unit())  # type: ignore[missing-attribute]
-                    hadron.Boost(boost)  # type: ignore[missing-attribute]
+                    if inclusive_events is None:  # forced events are generated in the CM frame
+                        hadron.RotateUz(beam.Vect().Unit())  # type: ignore[missing-attribute]
+                        hadron.Boost(boost)  # type: ignore[missing-attribute]
                     row = [hadron_id, hadron.Px(), hadron.Py(), hadron.Pz(), hadron.E(), hadron_mass]
                     row += [beam_id, px, py, pz, beam.E(), beam_mass, depth]
                     row += ancestors[:16] + processes[:n_processes] + [code] + (15 - n_processes) * [0]
@@ -403,6 +462,8 @@ s0:s1:s2:s3:s4:s5:s6:s7:s8:s9:s10:s11:s12:s13:s14:s15",
                     stack.append((part.id(), part.px(), part.py(), part.pz(), new_depth, new_ancestors, new_processes))
 
     print(f"Generated {args.n_pot} p.o.t. in {time.time() - t0} s with {new_pythia.n_instances} Pythia8 instances")
+    if inclusive_events is not None:
+        print(f"{inclusive_events.n_tried} inclusive events generated for the charm signal")
     output_file.Write()
     output_file.Close()
     print(f"Output file is {args.output}")
