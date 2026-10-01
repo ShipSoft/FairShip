@@ -10,8 +10,10 @@ import ROOT
 import shipRoot_conf
 import shipunit as u
 from heavyFlavourScaling import (
+    check_input_flavour,
     check_run_type_override,
     derive_cross_sections,
+    file_is_beauty,
     format_summary,
 )
 
@@ -473,7 +475,21 @@ P8gen.SetSeed(seed)
 #        print '            : c chicc= ccbar over mbias cross section'
 if args.charm or args.beauty:
     check_run_type_override(args.beauty, args.chicc, args.chibb)
-    cs = derive_cross_sections(args.target_composition, args.A, args.chicc, args.chibb)
+    # cascade files written by makeCascadePythia8.py carry the cross section they were made with;
+    # the flavour is taken from the file, as FixedTargetGenerator does
+    with ROOT.TFile.Open(charmInputFile) as _fin:
+        sigma_QQ = _fin.Get("sigma_QQ").GetVal() if _fin.Get("sigma_QQ") else None
+        _ntuple = _fin.Get("pythia6")
+        _ntuple.GetEntry(0)
+        input_is_beauty = file_is_beauty(_ntuple.M)
+        del _ntuple  # owned by the file, which is closed below
+    check_input_flavour(args.beauty, input_is_beauty)
+    if sigma_QQ:
+        flavour = "beauty" if input_is_beauty else "charm"
+        print(
+            f"Input file {flavour} cross section per nucleon: {1e3 * sigma_QQ:.3g} ub, used to scale chi{flavour[0] * 2}"
+        )
+    cs = derive_cross_sections(args.target_composition, args.A, args.chicc, args.chibb, sigma_QQ, args.beauty)
     P8gen.SetChicc(cs.chicc)
     P8gen.SetChibb(cs.chibb)
     print(format_summary(cs, None if args.A is not None else args.target_composition))
