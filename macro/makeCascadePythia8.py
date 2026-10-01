@@ -412,7 +412,10 @@ s0:s1:s2:s3:s4:s5:s6:s7:s8:s9:s10:s11:s12:s13:s14:s15",
     depth_hist = ROOT.TH1F("2", "nr signal per cascade depth", 50, 0.5, 50.5)
     # cross section per nucleon [mb] this file was generated with, read back by run_fixedTarget.py to
     # scale chicc/chibb, so that the normalisation follows the beam energy, tune and target of the file
-    ROOT.TParameter("double")("sigma_QQ", sigma_QQ).Write()  # type: ignore[missing-attribute]
+    # hadd adds TParameters by default; keep the value of the first file when cascade files are merged
+    sigma_parameter = ROOT.TParameter("double")("sigma_QQ", sigma_QQ)  # type: ignore[missing-attribute]
+    sigma_parameter.SetMergeMode("f")
+    sigma_parameter.Write()
 
     t0 = time.time()
     for i_pot in range(args.n_pot):
