@@ -360,7 +360,7 @@ parser.add_argument("--check-overlaps", help="Perform geometry overlap checking"
 parser.add_argument(
     "--field_map",
     default=None,
-    help="Specify spectrometer field map as files/<name>.root. Default set in geometry_config.py: files/2026_09_28_SHiP_SpectrometerField_ECN3_MgB2.root",
+    help="Specify spectrometer field map as files/<name>.root. Default set in geometry_config.py: files/2026_07_02_MainSpectrometerField_V21_2455.root",
 )
 parser.add_argument(
     "--z-offset", dest="z_offset", help="z-offset for the FixedTargetGenerator [mm]", default=-84.0, type=float
