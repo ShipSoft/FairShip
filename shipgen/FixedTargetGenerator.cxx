@@ -6,6 +6,7 @@
 
 #include <TGeoManager.h>
 
+#include <algorithm>
 #include <array>
 #include <cmath>
 #include <cstdlib>
@@ -454,31 +455,44 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
     return kTRUE;
   }
 
+  // Cascade input: read the first hadron of the pair before placing the event,
+  // since its cascade depth sets how far into the target it is produced.
+  Int_t nInteractions = 1;
+  if (Option != "Primary") {
+    if (nEntry == nEvents) {
+      LOG(info) << "Rewind input file: " << nEntry;
+      nEntry = 0;
+    }
+    nTree->GetEvent(nEntry);
+    nEntry += 1;
+    if (nTree->GetBranch("k")) {
+      nInteractions = std::max(1, static_cast<Int_t>(TMath::Nint(ck)));
+    }
+  }
+
   Double_t zinter = 0;
   Double_t ZoverA = 1.;
   if (!targetName.IsNull()) {
-    // calculate primary proton interaction point:
-    // loop over trajectory between start and end to pick an interaction point,
-    // copied from GenieGenerator and adapted to hadrons
-    Double_t prob2int = -1.;
-    Double_t rndm = 0.;
+    // Interaction point, sampled along the beam line from the interaction
+    // probability in the material (copied from GenieGenerator and adapted to
+    // hadrons). A hadron from cascade depth k is produced in the k-th
+    // interaction: each further interaction point is sampled from the material
+    // after the previous one.
+    constexpr int kMaxTries = 100000;
     Double_t sigma;
     Double_t zinterStart = start[2];
-    if (Option == "charm" || Option == "beauty") {
-      // simulate more downstream interaction points for interactions down in
-      // the cascade
-      if (!(nTree->GetBranch("k"))) {
-        ck = 1;
-      }
-    } else {
-      ck = 1;
-    }
-    while (ck > 0.5) {
-      while (prob2int < rndm) {
+    for (Int_t iInter = 0; iInter < nInteractions; ++iInter) {
+      const Double_t from[3] = {start[0], start[1], zinterStart};
+      Double_t prob2int = -1.;
+      Double_t rndm = 0.;
+      Double_t zTry = zinterStart;
+      int tries = 0;
+      while (prob2int < rndm && tries < kMaxTries) {
+        ++tries;
         // place x,y,z uniform along path
-        zinter = gRandom->Uniform(zinterStart, end[2]);
-        Double_t point[3] = {xOff, yOff, zinter};
-        bparam = shipgen::MeanMaterialBudget(start, point, mparam);
+        zTry = gRandom->Uniform(zinterStart, end[2]);
+        Double_t point[3] = {xOff, yOff, zTry};
+        bparam = shipgen::MeanMaterialBudget(from, point, mparam);
         Double_t interLength = mparam[8];
         TGeoNode* node = gGeoManager->FindNode(point[0], point[1], point[2]);
         TGeoMaterial* mat = nullptr;
@@ -493,8 +507,12 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
         }
         rndm = gRandom->Uniform(0., 1.);
       }
+      if (prob2int < rndm) {
+        // no material left downstream: keep the previous interaction point
+        break;
+      }
+      zinter = zTry;
       zinterStart = zinter;
-      ck -= 1;
     }
     zinter = zinter * cm;
   }
@@ -531,12 +549,7 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
       fPythia = fPythiaN;
     }
   } else {
-    if (nEntry == nEvents) {
-      LOG(info) << "Rewind input file: " << nEntry;
-      nEntry = 0;
-    }
-    nTree->GetEvent(nEntry);
-    nEntry += 1;
+    // the first hadron of the pair was read above
     IncrementCounter("charm_input_pairs");
     // primary: produced by the beam proton, cascade depth 1. Files without
     // the depth branch tag the beam proton by its zero transverse momentum,
