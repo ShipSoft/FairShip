@@ -102,7 +102,6 @@ class UpstreamTagger : public SHiP::Detector<UpstreamTaggerPoint> {
   Double_t zbox_fulldet =
       16.0 * ShipUnit::cm;  //!  Z dimension/thickness (default: 16 cm)
 
-  TGeoVolume* UpstreamTagger_fulldet;  // Timing_detector_1 object
   /** container for data points */
 
   TGeoVolume* UpstreamTagger_plastic;
