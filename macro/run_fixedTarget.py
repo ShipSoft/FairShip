@@ -524,9 +524,9 @@ if not args.reproducible:
     print(f"Real time {rtime} s, CPU time {ctime} s")
 # ---post processing--- remove empty events --- save histograms
 tmpFile = outFile + "tmp"
-if ROOT.gROOT.GetListOfFiles().GetEntries() > 0:
-    fin = ROOT.gROOT.GetListOfFiles()[0]
-else:
+# not simply the first open file: for charm and beauty the generator keeps the input file open
+fin = ROOT.gROOT.GetListOfFiles().FindObject(outFile)
+if not fin:
     fin = ROOT.TFile.Open(outFile)
 fHeader = fin.Get("FileHeader")
 if fHeader:

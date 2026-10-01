@@ -15,6 +15,7 @@ it in future.
 ### Added
 
 * Add `--pythia8-tune` (`default`, `FTFT`) to `run_fixedTarget.py` and `FixedTargetGenerator::SetPythiaTune` to select the FTFT Pythia8 tune for open charm and beauty production in fixed-target collisions (arXiv:2608.29076) in the Pythia8 primary interaction. The Pythia8 default (Monash 2013) remains the default. Charm and beauty read from cascade input files are unaffected. `SetPythiaTune` takes the same tune names as the command line, with `default` and the empty string both selecting the Pythia8 default. `run_fixedTarget.py` rejects the flag up front when combined with `--charm`, `--beauty` or `--G4only`, where the tune would have no effect. A non-default tune also tags the work directory (e.g. `<host>_run_fixedTarget_1_FTFT`), so runs that differ only by tune no longer overwrite each other.
+* Add `macro/makeCascadePythia8.py`, a Pythia8 version of `makeCascade.py` that writes charm or beauty cascade files in the same format, with `--pythia8-tune` (`default`, `FTFT`). With `FTFT`, charm is normalised to the tune's inclusive charm cross section through forced-production K-factors that depend on the beam particle, the target nucleon and the momentum; beauty uses the tune's K-factors. Elastic scattering does not increase the cascade depth, so the depth-1 normalisation used by `run_fixedTarget.py` covers the beam proton up to its first inelastic interaction and its elastic re-interactions are not counted twice. `makeCascade.py` is unchanged. `FixedTargetGenerator` tags hadrons from depth 1 as primary when the input file has the depth branch, so beam protons that scattered elastically before are included; files without it keep the zero-transverse-momentum test.
 
 ### Changed
 
@@ -22,8 +23,12 @@ it in future.
 
 ### Fixed
 
+* Set B(D_s -> tau nu_tau) to the world average, 5.36%, in the Pythia8 instances of `FixedTargetGenerator`, rescaling the other D_s channels. Charm and beauty from cascade files are decayed by Pythia8, whose default of 6.4% overestimated the tau neutrino yield by 19%.
+* Fix the event weight of `run_fixedTarget.py --charm/--beauty`, which was twice too large. Since the correlated charm events of 2020, every event reads the two heavy-flavour hadrons of a pair, two entries of the cascade file, but the weight still divided the file's p.o.t. by the number of events as if each read one entry. The p.o.t. equivalent in the output file header, `nrpotspill / wspill`, was half the true value for the same reason. Fluxes from cascade files produced with the uncorrected weight are too large by a factor two.
 * Charm runs of `run_fixedTarget.py` no longer drop the `charm` work-directory tag: a missing `elif` meant the tag was assigned and then immediately overwritten, so charm output landed in the same untagged directory as a min-bias run of the same run number.
 * Update location of post-target sensitive plane in `run_fixedTarget` to use nominal target length, in order to avoid overlaps
+* Read the normalisation histogram of charm and beauty input files as `TH1`, not `TH1F`, so that files written by `makeCascade.py` (`rootUtils` books a `TH1D`) are accepted instead of failing with "histogram '2' not found".
+* Post-process the simulation output of `run_fixedTarget.py`, not the first open ROOT file, which for charm and beauty is the cascade input file kept open by the generator, so that charm and beauty runs no longer end with `KeyError: 'cbmsim'`.
 
 ### Removed
 
