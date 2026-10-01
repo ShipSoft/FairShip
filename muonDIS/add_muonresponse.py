@@ -9,6 +9,7 @@ import logging
 import os
 
 import ROOT as r
+import rootUtils as ut
 from tabulate import tabulate
 
 logging.basicConfig(level=logging.DEBUG)
@@ -43,10 +44,10 @@ headers = [
 def inspect_file(inputfile, muonfile, print_table=False) -> bool:
     """Inspecting the produced file for successfully added muon veto points."""
     input_file = r.TFile.Open(inputfile, "read")
-    input_tree = input_file.cbmsim
+    input_tree = input_file["cbmsim"]
 
     muon_file = r.TFile.Open(muonfile, "read")
-    muon_tree = muon_file.DIS
+    muon_tree = muon_file["DIS"]
 
     muons_found = False
 
@@ -99,7 +100,7 @@ def modify_file(inputfile, muonfile) -> None:
 
     input_file = r.TFile.Open(inputfile, "read")
     try:
-        input_tree = input_file.cbmsim
+        input_tree = input_file["cbmsim"]
     except Exception as e:
         print(f"Error: {e}")
         input_file.Close()
@@ -108,7 +109,7 @@ def modify_file(inputfile, muonfile) -> None:
     # Open the external file with additional vetoPoints
     muon_file = r.TFile.Open(muonfile, "read")
     try:
-        muon_tree = muon_file.DIS
+        muon_tree = muon_file["DIS"]
     except Exception as e:
         print(f"Error: {e}")
         muon_file.Close()
@@ -135,17 +136,13 @@ def modify_file(inputfile, muonfile) -> None:
         index = 0
 
         for hit in input_event.vetoPoint:
-            if combined_vetoPoint.GetSize() == index:
-                combined_vetoPoint.Expand(index + 1)
-            combined_vetoPoint[index] = hit  # pending fix to support ROOT 6.32+
+            ut.assignClonesArrayItem(combined_vetoPoint, index, hit)
             index += 1
 
         muoncount = 0
         for hit in muon_event.muon_vetoPoints:
             if hit.GetZ() < interaction_point.Z():
-                if combined_vetoPoint.GetSize() == index:
-                    combined_vetoPoint.Expand(index + 1)
-                combined_vetoPoint[index] = hit  # pending fix to support ROOT 6.32+
+                ut.assignClonesArrayItem(combined_vetoPoint, index, hit)
                 index += 1
                 muoncount += 1
 
@@ -154,17 +151,13 @@ def modify_file(inputfile, muonfile) -> None:
         ubt_index = 0
 
         for hit in input_event.UpstreamTaggerPoint:
-            if combined_UpstreamTaggerPoint.GetSize() == ubt_index:
-                combined_UpstreamTaggerPoint.Expand(ubt_index + 1)
-            combined_UpstreamTaggerPoint[ubt_index] = hit  # pending fix to support ROOT 6.32+
+            ut.assignClonesArrayItem(combined_UpstreamTaggerPoint, ubt_index, hit)
             ubt_index += 1
 
         muon_ubtcount = 0
         for hit in muon_event.muon_UpstreamTaggerPoints:
             if hit.GetZ() < interaction_point.Z():
-                if combined_UpstreamTaggerPoint.GetSize() == ubt_index:
-                    combined_UpstreamTaggerPoint.Expand(ubt_index + 1)
-                combined_UpstreamTaggerPoint[ubt_index] = hit  # pending fix to support ROOT 6.32+
+                ut.assignClonesArrayItem(combined_UpstreamTaggerPoint, ubt_index, hit)
                 ubt_index += 1
                 muon_ubtcount += 1
 

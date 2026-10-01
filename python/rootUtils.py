@@ -53,6 +53,7 @@ def readHists(h, fname, wanted=None) -> None:
                     h[projname] = h[hname].ProjectionY()
                 h[projname].SetName(name + p)
                 h[projname].SetDirectory(ROOT.gROOT)
+    f.Close()
     return
 
 
@@ -102,7 +103,7 @@ def bookProf(
     rkey = str(key)  # in case somebody wants to use integers, or floats as keys
     if key in h:
         h[key].Reset()
-    if ymin is None or ymax is None:
+    elif ymin is None or ymax is None:
         h[key] = ROOT.TProfile(rkey, title, nbinsx, xmin, xmax, option)
     else:
         h[key] = ROOT.TProfile(rkey, title, nbinsx, xmin, xmax, ymin, ymax, option)
@@ -129,6 +130,21 @@ def bookCanvas(h, key=None, title: str = "", nx: int = 900, ny: int = 600, cx: i
     if key not in h:
         h[key] = ROOT.TCanvas(key, title, nx, ny)
         h[key].Divide(cx, cy)
+
+
+def assignClonesArrayItem(arr, index, obj) -> None:
+    """Copy obj into slot `index` of a TClonesArray, expanding it as needed.
+
+    Item assignment (arr[i] = obj) raises in ROOT >= 6.32; construct the slot
+    and copy-assign into it instead. TVectorD slots are resized to match obj
+    first (TVectorD::operator= requires matching sizes).
+    """
+    if arr.GetSize() <= index:
+        arr.Expand(index + 10)
+    slot = arr.ConstructedAt(index)
+    if hasattr(slot, "ResizeTo"):
+        slot.ResizeTo(obj)
+    slot.__assign__(obj)
 
 
 def reportError(s) -> None:
@@ -159,12 +175,13 @@ def checkFileExists(x) -> str:
             if not test:
                 print("ERROR FileCheck: input file", f, " does not exist. Missing authentication?")
                 sys.exit(1)
-            if test.FindObjectAny("cbmsim") and fileType in ["tree", ""]:
-                fileType = "tree"
-            elif fileType in ["ntuple", ""]:
-                fileType = "ntuple"
-            else:
+            thisType = "tree" if test.FindObjectAny("cbmsim") else "ntuple"
+            test.Close()
+            if fileType == "":
+                fileType = thisType
+            elif fileType != thisType:
                 print("ERROR FileCheck: Supplied list of files not all of tree or ntuple type")
+                sys.exit(1)
         return fileType
     else:
         print("ERROR FileCheck: File must be either a string or list of files")

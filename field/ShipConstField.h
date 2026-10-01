@@ -64,6 +64,14 @@ class ShipConstField : public FairField {
   Double_t GetBy(Double_t x, Double_t y, Double_t z) override;
   Double_t GetBz(Double_t x, Double_t y, Double_t z) override;
 
+  /** Get all three field components at once, performing the in-region test a
+   ** single time (the default implementation calls GetBx/GetBy/GetBz, each of
+   ** which repeats the same six boundary comparisons).
+   ** @param point   Point coordinates [cm]
+   ** @param bField  (return) Field components [kG]
+   **/
+  void GetFieldValue(const Double_t point[3], Double_t* bField) override;
+
   /** Accessors to field region **/
   Double_t GetXmin() const { return fXmin; }
   Double_t GetXmax() const { return fXmax; }

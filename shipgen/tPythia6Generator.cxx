@@ -76,7 +76,7 @@ Bool_t tPythia6Generator::ReadEvent(FairPrimaryGenerator* cpg) {
     Double_t pz = fPythia->GetP(ii, 3);
     Double_t px = fPythia->GetP(ii, 1);
     Double_t py = fPythia->GetP(ii, 2);
-    Int_t im = fPythia->GetV(ii, 4);
+    Int_t im = fPythia->GetK(ii, 3);  // parent line number (K(I,3))
     // cout << "debug p6 "<<id<<" "<< pz << endl;
     // copy blind complete pythia event
     if (fDeepCopy || wanttracking) {

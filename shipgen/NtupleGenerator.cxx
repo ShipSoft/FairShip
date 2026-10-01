@@ -34,7 +34,7 @@ Bool_t NtupleGenerator::Init(const char* fileName, const int startEvent) {
 
   LOG(info) << "NtupleGenerator: Opening input file " << fileName;
   fInputFile = TFile::Open(fileName, "READ");
-  if (!fInputFile || fInputFile->IsZombie()) {
+  if (!fInputFile) {
     LOG(error) << "NtupleGenerator: Error opening input file " << fileName;
     delete fInputFile;
     fInputFile = nullptr;

@@ -44,6 +44,15 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method, dy=
         Name of a track pattern recognition method.
     """
 
+    # This quality-plot step analyses the already-reconstructed Tracklets/
+    # FitTracks branches, so the method argument does not influence the result.
+    # Warn rather than silently ignore a non-default selection.
+    if method != "Baseline":
+        print(
+            f"Warning: pattern-recognition method '{method}' has no effect here; "
+            "this script only produces quality plots from existing reconstruction."
+        )
+
     ############################################# Load SHiP geometry ###################################################
 
     # Check geo file
@@ -71,8 +80,8 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method, dy=
 
     run = ROOT.FairRunSim()
     run.SetName("TGeant4")  # Transport engine
-    # Create dummy output file as the  input file is updated directly and
-    # histograms are written to output file (hists.root by default)
+    # Create dummy output file for FairRunSim; the quality-plot histograms are
+    # written to the separate output file (hists.root by default).
     import tempfile
 
     sink = ROOT.FairRootFileSink(tempfile.mktemp(suffix=".root"))
@@ -106,15 +115,17 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method, dy=
 
     ############################################# Load inpur data file #################################################
 
-    # Check input file
+    # Check input file. This is a read-only QA step: it reads the existing
+    # branches and writes quality plots to the separate output file, so open the
+    # input read-only rather than "update" (which rewrote a duplicate key cycle
+    # of the unmodified tree into the user's file on every invocation).
     try:
-        fn = ROOT.TFile(input_file, "update")
+        fn = ROOT.TFile(input_file, "read")
     except Exception:
         print("An error with opening the input data file.")
         raise
 
     sTree = fn.Get("cbmsim")
-    sTree.Write()
 
     ############################################# Create hists #########################################################
 
@@ -233,8 +244,7 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method, dy=
                 hits["Pdg"] += [ahit.PdgCode()]
 
             # List to numpy arrays
-            for key in hits:
-                hits[key] = numpy.array(hits[key])
+            hits = {key: numpy.array(values) for key, values in hits.items()}
 
             # Decoding
             decode = global_variables.modules["strawtubes"].StrawDecode(hits["DetID"])
@@ -476,25 +486,36 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method, dy=
                 Z_fit = []
                 X_fit = []
                 Y_fit = []
-                for az in Z_true:
+                X_true_matched = []
+                Y_true_matched = []
+                for az, ax_true, ay_true in zip(Z_true, X_true, Y_true):
                     _rc, pos, _mom = extrapolateToPlane(thetrack, az)
+                    if pos is None:
+                        continue
                     Z_fit.append(pos.Z())
                     X_fit.append(pos.X())
                     Y_fit.append(pos.Y())
+                    X_true_matched.append(ax_true)
+                    Y_true_matched.append(ay_true)
 
-                for i in range(len(Z_true)):
-                    xerr = abs(X_fit[i] - X_true[i])
-                    yerr = abs(Y_fit[i] - Y_true[i])
+                for i in range(len(Z_fit)):
+                    xerr = abs(X_fit[i] - X_true_matched[i])
+                    yerr = abs(Y_fit[i] - Y_true_matched[i])
                     h["abs(x - x-true)"].Fill(xerr)
                     h["abs(y - y-true)"].Fill(yerr)
 
-                rmse_x = numpy.sqrt(numpy.mean((numpy.array(X_fit) - numpy.array(X_true)) ** 2))
-                rmse_y = numpy.sqrt(numpy.mean((numpy.array(Y_fit) - numpy.array(Y_true)) ** 2))
-                h["rmse_x"].Fill(rmse_x)
-                h["rmse_y"].Fill(rmse_y)
+                if Z_fit:
+                    rmse_x = numpy.sqrt(numpy.mean((numpy.array(X_fit) - numpy.array(X_true_matched)) ** 2))
+                    rmse_y = numpy.sqrt(numpy.mean((numpy.array(Y_fit) - numpy.array(Y_true_matched)) ** 2))
+                    h["rmse_x"].Fill(rmse_x)
+                    h["rmse_y"].Fill(rmse_y)
 
-            except Exception:
-                print("Problem with fitted state.")
+            except ROOT.genfit.Exception as e:
+                # A track without a fitted state is expected; skip it. Momentum
+                # divisions (ZeroDivisionError), histogram lookups/fills
+                # (KeyError) and extrapolation errors are real bugs and must not
+                # be masked here, so only the genfit fitted-state failure is caught.
+                print(f"Problem with fitted state: {e!r}")
 
         h["Reco_tracks"].Fill("N total", n_tracks)
         h["Reco_tracks"].Fill("N recognized tracks", n_recognized)
@@ -529,6 +550,8 @@ def extrapolateToPlane(fT, z):
                 fstate = fstate1
             zs = z
             NewPosition = ROOT.TVector3(0.0, 0.0, zs)
+            # muon hypothesis (+-13), keeping the sign of the fitted PDG code
+            # (the PDG-code sign is opposite to the muon's charge sign)
             rep = ROOT.genfit.RKTrackRep(13 * cmp(fstate.getPDG(), 0))
             state = ROOT.genfit.StateOnPlane(rep)
             pos, mom = fstate.getPos(), fstate.getMom()
@@ -576,7 +599,7 @@ def fracMCsame(trackids):
 
     # now get track with largest number of hits
     if track != {}:
-        tmax = max(track, key=track.get)
+        tmax = max(track, key=lambda k: track[k])
     else:
         track = {-999: 0}
         tmax = -999
@@ -598,9 +621,9 @@ def getReconstructibleTracks(iEvent: int, sTree, sGeo, ShipGeo):
     ----------
     iEvent : int
         Event id.
-    stree : root file
+    sTree : ROOT.TTree or ROOT.TChain
         Events in raw format.
-    fGeo : object
+    sGeo : object
         Contains SHiP detector geometry.
     ShipGeo : object
         Contains SHiP detector geometry.
@@ -610,6 +633,9 @@ def getReconstructibleTracks(iEvent: int, sTree, sGeo, ShipGeo):
         List of reconstructible track ids.
     """
 
+    # z extent of the tracker: station z is the centre of its 4 views (2 layers
+    # each), so the first straw layer sits 1.5 view spacings + 0.5 layer
+    # spacings away, plus one straw radius to the straw edge
     TStationz = ShipGeo.TrackStation1.z
     Zpos = (
         TStationz - 3.0 / 2.0 * ShipGeo.strawtubes_geo.delta_z_view - 1.0 / 2.0 * ShipGeo.strawtubes_geo.delta_z_layer
@@ -671,7 +697,7 @@ def getReconstructibleTracks(iEvent: int, sTree, sGeo, ShipGeo):
     # 4. Find straws that have multiple hits
     nHits = sTree.strawtubesPoint.GetEntriesFast()
     hitstraws = {}
-    duplicatestrawhit = []
+    duplicatestrawhit = set()
 
     for i in range(nHits):
         ahit = sTree.strawtubesPoint[i]
@@ -681,10 +707,10 @@ def getReconstructibleTracks(iEvent: int, sTree, sGeo, ShipGeo):
             # straw was already hit
             if ahit.GetX() > hitstraws[strawname][1]:
                 # this hit has higher x, discard it
-                duplicatestrawhit.append(i)
+                duplicatestrawhit.add(i)
             else:
                 # del hitstraws[strawname]
-                duplicatestrawhit.append(hitstraws[strawname][0])
+                duplicatestrawhit.add(hitstraws[strawname][0])
                 hitstraws[strawname] = [i, ahit.GetX()]
         else:
             hitstraws[strawname] = [i, ahit.GetX()]
@@ -694,7 +720,7 @@ def getReconstructibleTracks(iEvent: int, sTree, sGeo, ShipGeo):
     hits2 = {}
     hits3 = {}
     hits4 = {}
-    trackoutsidestations = []
+    trackoutsidestations = set()
 
     margin = 5.0 * u.cm
     x_bound = ShipGeo.strawtubes_geo.width - margin
@@ -708,8 +734,7 @@ def getReconstructibleTracks(iEvent: int, sTree, sGeo, ShipGeo):
 
         # is hit inside acceptance (width/height minus margin)?
         if abs(ahit.GetX()) >= x_bound or abs(ahit.GetY()) >= y_bound:
-            if ahit.GetTrackID() not in trackoutsidestations:
-                trackoutsidestations.append(ahit.GetTrackID())
+            trackoutsidestations.add(ahit.GetTrackID())
 
         if ahit.GetTrackID() not in MCTrackIDs:
             # hit on not reconstructible track
@@ -781,7 +806,10 @@ def getReconstructibleTracks(iEvent: int, sTree, sGeo, ShipGeo):
     for item in MCTrackIDs:
         atrack = sTree.MCTrack.At(item)
         motherId = atrack.GetMotherId()
-        if motherId != 2:  #!!!!
+        # keep only daughters of the signal particle; assumes the standard HNL
+        # production chain (external charm file), where the signal is MCTrack 2.
+        # Other generator configurations are not supported here.
+        if motherId != 2:
             itemstoremove.append(item)
 
     for item in itemstoremove:

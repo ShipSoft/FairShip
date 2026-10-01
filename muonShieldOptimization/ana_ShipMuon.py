@@ -18,7 +18,8 @@ parallel = True
 if parallel:
     # Define an output queue
     output = mp.Queue()
-    processes = []
+# Process objects when parallel, plain filenames otherwise
+processes: list[mp.Process | str] = []
 
 
 # 11-19 with QGSP_BERT_EMV instead of QGSP_BERT_HP_PEN
@@ -341,12 +342,17 @@ path = ""
 if prefixes[0] != "":
     testdir = path + prefixes[0] + "1"
 # figure out which setup
+fgeo = None
+sGeo = None
+inputFile = None
 for f in os.listdir(testdir):
     if not f.find("geofile_full") < 0:
         fgeo = ROOT.TFile(testdir + "/" + f)
         sGeo = fgeo.Get("FAIRGeom")
         inputFile = f.replace("geofile_full", "ship")
         break
+if fgeo is None or sGeo is None or inputFile is None:
+    raise RuntimeError("No geofile_full found in " + testdir)
 # try to extract from input file name
 tmp = inputFile.split(".")
 try:
@@ -383,20 +389,20 @@ run = ROOT.FairRunSim()
 modules = shipDet_conf.configure(run, ShipGeo)
 
 
-rz_inter = -1.0, 0.0
+def origin(sTree, it):
+    """Return (r, z) of the ancestor track produced by the primary muon.
 
-
-def origin(sTree, it) -> None:
+    Returns the sentinel (-1.0, 0.0) if the mother chain does not end at the
+    primary muon (track 0).
+    """
     at = sTree.MCTrack[it]
     im = at.GetMotherId()
     if im > 0:
-        origin(sTree, im)
-    if im < 0:
-        # print 'does not come from muon'
-        pass
+        return origin(sTree, im)
     if im == 0:
-        # print 'origin z',at.GetStartZ()
-        ROOT.TMath.Sqrt(at.GetStartX() ** 2 + at.GetStartY() ** 2), at.GetStartZ()
+        return ROOT.TMath.Sqrt(at.GetStartX() ** 2 + at.GetStartY() ** 2), at.GetStartZ()
+    # does not come from muon
+    return -1.0, 0.0
 
 
 otherPhysList = False
@@ -599,7 +605,7 @@ def BigEventLoop() -> None:
     # Run processes
     n = 0
     for p in processes:
-        if parallel:
+        if isinstance(p, mp.Process):
             p.start()
             n += 1
         else:
@@ -607,7 +613,8 @@ def BigEventLoop() -> None:
     if parallel:
         # Exit the completed processes
         for p in processes:
-            p.join()
+            if isinstance(p, mp.Process):
+                p.join()
             # clean histos before reading in the new ones
         for x in h:
             h[x].Reset()
@@ -738,6 +745,7 @@ def executeOneFile(fn, output=None, pid=None) -> None:
                 trackID = ahit.GetTrackID()
                 phit = -100.0
                 mom = ROOT.TVector3()
+                aTrack = None
                 if not trackID < 0:
                     aTrack = sTree.MCTrack[trackID]
                     pdgID = aTrack.GetPdgCode()
@@ -762,7 +770,7 @@ def executeOneFile(fn, output=None, pid=None) -> None:
                 h[detName + "_id"].Fill(pdgID, w)
                 h[detName + "_P"].Fill(phit, w)
                 h[detName + "_LP"].Fill(phit, w)
-                if not trackID < 0:
+                if aTrack is not None:
                     r = ROOT.TMath.Sqrt(aTrack.GetStartX() ** 2 + aTrack.GetStartY() ** 2) / u.m
                     h["origin"].Fill(aTrack.GetStartZ() / u.m, r, w)
                     h[detName + "_origin"].Fill(aTrack.GetStartZ() / u.m, r, w)
@@ -771,8 +779,9 @@ def executeOneFile(fn, output=None, pid=None) -> None:
                     h["borigin"].Fill(aTrack.GetStartZ() / u.m, r, w)
                     aTrack.GetMomentum(mom)
                     h[detName + "_OP"].Fill(mom.Mag() / u.GeV, w)
+                    rz_inter = -1.0, 0.0
                     if trackID > 0:
-                        origin(sTree, trackID)
+                        rz_inter = origin(sTree, trackID)
                         h["porigin"].Fill(
                             aTrack.GetStartZ() / u.m,
                             ROOT.TMath.Sqrt(aTrack.GetStartX() ** 2 + aTrack.GetStartY() ** 2) / u.m,
@@ -1313,7 +1322,8 @@ def debugGeoTracks(sTree) -> None:
 
 
 def eventsWithStrawPoints(i) -> None:
-    sTree = fchain[i].Get("cbmsim")
+    f = ROOT.TFile.Open(fchain[i])
+    sTree = f.Get("cbmsim")
     mom = ROOT.TVector3()
     for i in range(sTree.GetEntries()):
         sTree.GetEntry(i)
@@ -1327,10 +1337,12 @@ def eventsWithStrawPoints(i) -> None:
             sp.Momentum(mom)
             mom.Print()
             print("-----------------------")
+    f.Close()
 
 
 def eventsWithEntryPoints(i) -> None:
-    sTree = fchain[i].Get("cbmsim")
+    f = ROOT.TFile.Open(fchain[i])
+    sTree = f.Get("cbmsim")
     mom = ROOT.TVector3()
     for i in range(sTree.GetEntries()):
         sTree.GetEntry(i)
@@ -1343,6 +1355,7 @@ def eventsWithEntryPoints(i) -> None:
             print(i, detName, vp.PdgCode())
             mom.Print()
             print("-----------------------")
+    f.Close()
 
 
 def depEnergy(sTree) -> None:
@@ -1411,11 +1424,11 @@ from operator import itemgetter
 def makeNicePrintout(x: list[str] | None = None):
     if x is None:
         x = ["rareEvents_61-62.txt", "rareEvents_71-72.txt"]
-    result = []
+    result: list[dict[str, str | float]] = []
     cor = 1.0
     for fn in x:
         with open(fn) as f:
-            recTrack = None
+            recTrack: dict[str, str | float] | None = None
             if fn == "rareEvents_81-102.txt":
                 cor = 30.0
             for lx in f.readlines():
@@ -1427,6 +1440,9 @@ def makeNicePrintout(x: list[str] | None = None):
                     w = tmp[2].replace(" ", "")
                     ff = tmp[1].split("/")[0].replace(" ", "")
                     recTrack = {"w": w, "file": ff}
+                elif recTrack is None:
+                    # skip anything before the first "rare event" marker
+                    continue
                 elif not line.find("original") < 0:
                     tmp = line.split(",")
                     recTrack["origin"] = tmp[0].split(" ")[2]
@@ -1444,6 +1460,9 @@ def makeNicePrintout(x: list[str] | None = None):
                 elif not line.find("Ptruth") < 0:
                     tmp = line.split(" ")
                     recTrack["id_hit"] = tmp[1].replace(" ", "")
+            # flush the record still being assembled when the file ends
+            if recTrack:
+                result.append(recTrack)
     # print a table
     print(
         "%4s %8s %8s %4s %8s %8s %8s %8s %8s  %8s "

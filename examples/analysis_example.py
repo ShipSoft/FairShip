@@ -21,14 +21,6 @@ def main() -> None:
 
     # Open MC simulation file
     f = ROOT.TFile.Open(options.simfile, "read")
-    if not f or f.IsZombie():
-        import os
-
-        print(f"ERROR: Cannot open MC simulation file: {options.simfile}")
-        print(f"Current working directory: {os.getcwd()}")
-        print("Files in current directory:")
-        os.system("ls -lh *.root")
-        raise RuntimeError(f"Cannot open MC simulation file: {options.simfile}")
 
     # Check what trees are in the file
     keys = [k.GetName() for k in f.GetListOfKeys()]
@@ -43,8 +35,6 @@ def main() -> None:
 
     # Add reconstruction data as friend tree
     reco_f = ROOT.TFile.Open(options.recofile, "read")
-    if not reco_f or reco_f.IsZombie():
-        raise RuntimeError(f"Cannot open reconstruction file: {options.recofile}")
 
     reco_keys = [k.GetName() for k in reco_f.GetListOfKeys()]
     print(f"Keys in {options.recofile}: {reco_keys}")
@@ -52,8 +42,6 @@ def main() -> None:
     tree.AddFriend("ship_reco_sim", options.recofile)
 
     geo_file = ROOT.TFile.Open(options.geofile, "read")
-    if not geo_file or geo_file.IsZombie():
-        raise RuntimeError(f"Cannot open geometry file: {options.geofile}")
 
     selection = analysis_toolkit.selection_check(geo_file)
     inspector = analysis_toolkit.event_inspector()

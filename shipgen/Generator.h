@@ -9,6 +9,7 @@
 #include <optional>
 #include <string>
 #include <unordered_map>
+#include <utility>
 #include <vector>
 
 #include "FairGenerator.h"
@@ -36,7 +37,7 @@ class Generator : public FairGenerator {
   };
 
   virtual void UseExternalFile(std::string x, Int_t i) {
-    fextFile = x;
+    fextFile = std::move(x);
     firstEvent = i;
   };
 

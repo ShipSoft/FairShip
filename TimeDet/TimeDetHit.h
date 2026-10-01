@@ -56,8 +56,8 @@ class TimeDetHit : public SHiP::DetectorHit {
   static constexpr Double_t v_drift = 15.;  // cm/ns
   static constexpr Double_t par[4] = {0.0272814, 109.303, 0, 0.0539487};
 
-  Bool_t flag{true};  ///< flag
-  Float_t t_1, t_2;   ///< TDC on both sides
+  Bool_t flag{true};       ///< flag
+  Float_t t_1{0}, t_2{0};  ///< TDC on both sides
 
   ClassDefOverride(TimeDetHit, 4);
 };

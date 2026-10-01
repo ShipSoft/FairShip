@@ -9,6 +9,11 @@ import geometry_config
 import ROOT
 import shipRoot_conf
 import shipunit as u
+from heavyFlavourScaling import (
+    check_run_type_override,
+    derive_cross_sections,
+    format_summary,
+)
 
 mcEngine = "TGeant4"
 simEngine = "Pythia8"
@@ -74,10 +79,28 @@ ap.add_argument(
     default=False,
     help="Whether or not to use Pythia8 for decays (--no-PythiaDecay or --PythiaDecay). Default set to False.",
 )
+ap.add_argument(
+    "--pythia8-tune",
+    dest="pythia8_tune",
+    default="default",
+    choices=["default", "FTFT"],
+    help="Pythia8 tune for the primary interaction: default (Monash 2013) or FTFT "
+    "(fixed-target open charm and beauty tune, arXiv:2608.29076).",
+)
 ap.add_argument("-t", "--tau-only", action=argparse.BooleanOptionalAction, dest="tauOnly", default=False)
 ap.add_argument("-J", "--Jpsi-mainly", action=argparse.BooleanOptionalAction, dest="JpsiMainly", default=False)
 ap.add_argument("-b", "--boostDiMuon", type=float, default=1.0, help="boost Di-muon branching ratios")
 ap.add_argument("-X", "--boostFactor", type=float, default=1.0, help="boost Di-muon prod cross sections")
+ap.add_argument(
+    "--kaon-pion-splits",
+    type=int,
+    default=0,
+    help="splitting factor for kaons and pions, in order to boost the number of muons stemming from their decays",
+)
+ap.add_argument(
+    "--multiple-kpi-splits", action="store_true", help="split kaons and pions multiple times along the track path"
+)
+
 ap.add_argument("-C", "--charm", action=argparse.BooleanOptionalAction, default=False, help="generate charm decays")
 ap.add_argument("-B", "--beauty", action=argparse.BooleanOptionalAction, default=False, help="generate beauty decays")
 ap.add_argument(
@@ -97,8 +120,30 @@ ap.add_argument(
     help="enable ntuple production",
 )
 # for charm production
-ap.add_argument("-cc", "--chicc", default=1.7e-3, help="ccbar over mbias cross section")
-ap.add_argument("-bb", "--chibb", default=1.6e-7, help="bbbar over mbias cross section")
+# A run is either charm or beauty, so only one ratio override is ever meaningful.
+cross_section = ap.add_mutually_exclusive_group()
+cross_section.add_argument(
+    "-cc", "--chicc", type=float, default=None, help="ccbar over mbias cross section (overrides target-derived value)"
+)
+cross_section.add_argument(
+    "-bb", "--chibb", type=float, default=None, help="bbbar over mbias cross section (overrides target-derived value)"
+)
+ap.add_argument(
+    "--target-composition",
+    default="W",
+    choices=["W", "Mo"],
+    help="Target composition. Default is Tungsten (W); Molybdenum (Mo) is the other preset.",
+)
+ap.add_argument(
+    "-A",
+    type=float,
+    default=None,
+    help=(
+        "Target mass number; overrides --target-composition preset. "
+        "Used to scale chicc/chibb as (A/A_Mo)^(heavyflavour_Ascale-mbias_Ascale) "
+        "(default exponent: 0.29)."
+    ),
+)
 ap.add_argument("-p", "--pot", default=4e13, help="number of protons on target per spill to normalize on")
 ap.add_argument("-S", "--nStart", type=int, help="first event of input file to start", dest="nStart", default=0)
 ap.add_argument(
@@ -123,8 +168,8 @@ ap.add_argument(
 ap.add_argument(
     "--shieldName",
     help="Name of the shield in the database.",
-    default="TRY_2025",
-    choices=["TRY_2025"],
+    default="TRY_2026",
+    choices=["TRY_2025", "TRY_2026"],
 )
 ap.add_argument(
     "--AddMuonShield",
@@ -185,6 +230,11 @@ ap.add_argument(
 args = ap.parse_args()
 if args.debug:
     logger.setLevel(logging.DEBUG)
+
+if args.kaon_pion_splits < 0:
+    ap.error("--kaon-pion-splits must be >= 0")
+if args.multiple_kpi_splits and args.kaon_pion_splits == 0:
+    ap.error("--multiple-kpi-splits requires --kaon-pion-splits > 0")
 
 
 if args.G4only:
@@ -272,6 +322,8 @@ ROOT.SetOwnership(sink, False)  # C++ FairRun takes ownership
 if args.boostFactor > 1:
     # Turn off UseGeneralProcess to access GammaToMuons directly when cross-sections need to be changed
     os.environ["SET_GENERAL_PROCESS_TO_FALSE"] = "1"
+if args.kaon_pion_splits > 0:
+    os.environ["KAON_PION_SPLITS"] = str(args.kaon_pion_splits)
 run.SetUserConfig("g4Config.C")  # user configuration file default g4Config.C
 rtdb = run.GetRuntimeDb()
 
@@ -297,6 +349,11 @@ TargetStation.SetLayerPosMat(
     G=ship_geo.target.slices_gap,
     M=ship_geo.target.slices_material,
 )
+target_version = getattr(ship_geo.target, "version", 1)
+TargetStation.SetDesign(target_version)
+if target_version >= 2:
+    TargetStation.SetLastDiskDiameter(ship_geo.target.xy2)
+TargetStation.SetShieldingReferenceLength(ship_geo.target.length_fixed)
 run.AddModule(TargetStation)
 ROOT.SetOwnership(TargetStation, False)  # C++ FairRunSim takes ownership
 
@@ -342,6 +399,9 @@ if args.AddMuonShield or args.AddHadronAbsorberOnly:
 
 
 sensPlaneHA = ROOT.exitHadronAbsorber()
+sensPlaneHA.SetNSplits(args.kaon_pion_splits)  # type: ignore[missing-attribute]
+if args.multiple_kpi_splits:
+    sensPlaneHA.SetSplitMultipleTimes()  # type: ignore[missing-attribute]
 sensPlaneHA.SetEnergyCut(args.ecut * u.GeV)
 sensPlaneHA.SetVetoPointName("PlaneHA")
 
@@ -391,6 +451,8 @@ P8gen.SetDebug(args.debug)
 P8gen.SetHeartBeat(100000)
 if args.G4only:
     P8gen.SetG4only()
+if args.pythia8_tune != "default":
+    P8gen.SetPythiaTune(args.pythia8_tune)
 if args.JpsiMainly:
     P8gen.SetJpsiMainly()
 if args.tauOnly:
@@ -407,6 +469,11 @@ P8gen.SetSeed(seed)
 #        print ' for experts: p pot= number of protons on target per spill to normalize on'
 #        print '            : c chicc= ccbar over mbias cross section'
 if args.charm or args.beauty:
+    check_run_type_override(args.beauty, args.chicc, args.chibb)
+    cs = derive_cross_sections(args.target_composition, args.A, args.chicc, args.chibb)
+    P8gen.SetChicc(cs.chicc)
+    P8gen.SetChibb(cs.chibb)
+    print(format_summary(cs, None if args.A is not None else args.target_composition))
     print("--- process heavy flavours ---")
     P8gen.InitForCharmOrBeauty(charmInputFile, args.nev, args.pot, args.nStart)
 primGen.AddGenerator(P8gen)
@@ -422,6 +489,8 @@ gMC = ROOT.TVirtualMC.GetMC()
 fStack = gMC.GetStack()
 fStack.SetMinPoints(1)
 fStack.SetEnergyCut(-1.0)
+if args.kaon_pion_splits > 0:
+    fStack.SetSplitting()
 #
 import AddDiMuonDecayChannelsToG4
 
@@ -469,6 +538,8 @@ else:
     info = f"POT = {args.nev}"
 
 conditions = " with ecut=" + str(args.ecut)
+if args.pythia8_tune != "default":
+    conditions += " " + args.pythia8_tune
 if args.JpsiMainly:
     conditions += " J"
 if args.tauOnly:

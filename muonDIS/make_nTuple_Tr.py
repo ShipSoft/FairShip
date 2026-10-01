@@ -10,6 +10,7 @@ import logging
 import os
 
 import ROOT as r
+import rootUtils as ut
 import shipunit as u
 from tabulate import tabulate
 
@@ -63,7 +64,7 @@ output_tree.Branch("muon_vetoPoints", muon_vetoPoints)
 muon_UpstreamTaggerPoints = r.TClonesArray("UpstreamTaggerPoint")
 output_tree.Branch("muon_UpstreamTaggerPoints", muon_UpstreamTaggerPoints)
 
-h = {}
+h: dict[str, r.TH1] = {}
 h["PvPt_muon"] = r.TH2F(
     "PvPt_muon",
     "The momentum of the muons hitting Tracking Station 1 (unweighted);P(GeV/c);Pt(GeV/c)",
@@ -222,7 +223,7 @@ for inputFolder in os.listdir(path):
             os.path.join(path, inputFolder, "ship.conical.MuonBack-TGeant4.root"),
             "read",
         )
-        tree = f.cbmsim
+        tree = f["cbmsim"]
     except Exception as e:
         print(f"Error :{e}")
 
@@ -294,9 +295,7 @@ for inputFolder in os.listdir(path):
                 if track_id != muon_:
                     continue
 
-                if muon_UpstreamTaggerPoints.GetSize() == ubt_index:
-                    muon_UpstreamTaggerPoints.Expand(ubt_index + 1)
-                muon_UpstreamTaggerPoints[ubt_index] = hit
+                ut.assignClonesArrayItem(muon_UpstreamTaggerPoints, ubt_index, hit)
 
                 ubt_index += 1
 
@@ -309,7 +308,12 @@ for inputFolder in os.listdir(path):
 
                 trackingstation_id = hit.GetStationNumber()
 
-                if abs(hit.PdgCode()) == 13 and trackingstation_id == 1 and P_threshold / u.GeV < P:
+                if (
+                    abs(hit.PdgCode()) == 13
+                    and track_id == muon_
+                    and trackingstation_id == 1
+                    and P_threshold / u.GeV < P
+                ):
                     if global_event_nr not in events_["Tr_noSBT"]:
                         events_["Tr_noSBT"][global_event_nr] = set()
 
@@ -387,7 +391,7 @@ print(
 event_data = []
 with r.TFile.Open(args.outputfile, "read") as file:
     try:
-        tree = file.MuonAndSoftInteractions
+        tree = file["MuonAndSoftInteractions"]
     except Exception as e:
         print(f"Error: {e}")
         exit(1)

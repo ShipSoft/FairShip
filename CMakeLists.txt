@@ -7,13 +7,13 @@
 # ${ShipRoot_BINARY_DIR} or ${CMAKE_BINARY_DIR}. This difference is important
 # for the base classes which are in FAIRROOT and ShipRoot.
 
-# CMake minimum version driven by ROOT 6.36.06
-cmake_minimum_required(VERSION 3.20.0 FATAL_ERROR)
+# Minimum CMake tracks the oldest still-tested build stack. cmake is provided by
+# shipdist/aliBuild: in release 26.02 it was aligned with AlmaLinux 9's 3.26.5;
+# 26.06+ (and the pixi build, cmake >=3.27) ship newer versions.
+cmake_minimum_required(VERSION 3.26 FATAL_ERROR)
 
-# CMP0028 and CMP0074 are already NEW at cmake_minimum_required 3.20.
-# CMP0118 (3.20): GENERATED sources visible across directories.
-cmake_policy(SET CMP0118 NEW)
-# CMP0144 (3.27): use <PACKAGENAME>_ROOT variables in find_package.
+# CMP0144 (3.27): use <PACKAGENAME>_ROOT variables in find_package. Still guarded
+# because 3.27 is one minor above our 3.26 minimum, so the policy may not exist.
 if(POLICY CMP0144)
     cmake_policy(SET CMP0144 NEW)
 endif()
@@ -59,8 +59,6 @@ endif()
 message(STATUS "FairShip version: ${PROJECT_VERSION}")
 
 include(GNUInstallDirs)
-
-include(GNUInstallDirs)
 # aliBuild modulefile expects libraries in lib/, not lib64/
 set(CMAKE_INSTALL_LIBDIR lib)
 
@@ -69,26 +67,15 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-find_path(
-    FAIRBASE
-    NAMES FairRun.h
-    PATHS ${CMAKE_SOURCE_DIR}/base/steer ${FAIRBASE}
-    NO_DEFAULT_PATH
-)
-
-if(FAIRBASE)
-    message(STATUS "Found FAIRBASE")
-    set(FAIRBASE ${FAIRBASE})
-else()
-    message(STATUS "NOT Found FAIRBASE")
-    if(NOT DEFINED ENV{FAIRROOTPATH})
-        message(
-            FATAL_ERROR
-            "You did not define the environment variable FAIRROOTPATH which is needed to find FairRoot. Please set this variable and execute cmake again."
-        )
-    endif()
-    set(FAIRROOTPATH $ENV{FAIRROOTPATH})
+# FairRoot is always provided externally (there is no in-tree base/steer), so
+# FairRoot is located solely via the FAIRROOTPATH environment variable.
+if(NOT DEFINED ENV{FAIRROOTPATH} OR "$ENV{FAIRROOTPATH}" STREQUAL "")
+    message(
+        FATAL_ERROR
+        "You did not define the environment variable FAIRROOTPATH which is needed to find FairRoot. Please set this variable and execute cmake again."
+    )
 endif()
+set(FAIRROOTPATH $ENV{FAIRROOTPATH})
 
 # Where to look first for cmake modules, before ${CMAKE_ROOT}/Modules/
 list(
@@ -98,11 +85,7 @@ list(
     "${CMAKE_SOURCE_DIR}/cmake/modules"
 )
 
-if(FAIRROOTPATH)
-    set(CheckSrcDir "${FAIRROOTPATH}/share/fairbase/cmake/checks")
-else()
-    set(CheckSrcDir "${CMAKE_SOURCE_DIR}/cmake/checks")
-endif()
+set(CheckSrcDir "${FAIRROOTPATH}/share/fairbase/cmake/checks")
 
 # Load some basic macros which are needed later on
 include(FairMacros)
@@ -177,10 +160,6 @@ find_package(genfit2 REQUIRED)
 
 # TPythia6 was removed from ROOT in 6.32, use external EGPythia6 package
 find_package(ROOTEGPythia6 REQUIRED)
-
-if(DEFINED $ENV{GSL_ROOT})
-    set(GSL_DIR $ENV{GSL_ROOT})
-endif()
 
 # set a variable which should be used in all CMakeLists.txt Defines all basic
 # include directories from fairbase

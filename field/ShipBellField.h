@@ -60,7 +60,7 @@ class ShipBellField : public FairField {
   Double_t fPeak;
   Double_t fMiddle;
   Double_t fBtube;
-  Int_t fOrient;
+  Int_t fOrient{1};
   Bool_t fInclTarget;
   Double_t targetXY;
   Double_t targetZ0;

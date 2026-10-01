@@ -227,7 +227,7 @@ def dist2InnerWall(X, Y, Z):
     dist = 0
     # return distance to inner wall perpendicular to z-axis, if outside decayVolume return 0.
     node = sGeo.FindNode(X, Y, Z)
-    if "DecayVacuum" not in node.GetName():
+    if "decay_medium" not in node.GetName():
         return dist
     start = array("d", [X, Y, Z])
     nsteps = 8
@@ -397,9 +397,8 @@ def RedoVertexing(t1, t2):
     LV = {}
     for tr in [t1, t2]:
         mom = reps[tr].getMom(states[tr])
+        # tracks are always fitted under the muon hypothesis (+-13)
         pid = abs(states[tr].getPDG())
-        if pid == 2212:
-            pid = 211
         _pdg_particle = PDG.GetParticle(pid)
         assert _pdg_particle is not None, f"Unknown PDG: {pid}"
         mass = _pdg_particle.Mass()
@@ -648,6 +647,11 @@ def myEventLoop(n: int) -> None:
         dist = ROOT.TMath.Sqrt(dist)
         h["IP"].Fill(dist)
     # ---
+    # per-event veto detector decisions (independent of the reconstructed candidate)
+    vetoDets["SBT"] = veto.SBT_decision()
+    vetoDets["UBT"] = veto.UBT_decision()
+    vetoDets["TRA"] = veto.Track_decision()
+    signal_selected = False
     # loop over particles, 2-track combinations
     for HNL in sTree.Particles:
         t1, t2 = HNL.GetDaughter(0), HNL.GetDaughter(1)
@@ -702,12 +706,8 @@ def myEventLoop(n: int) -> None:
         h["IP0/mass"].Fill(mass, dist)
         h["HNL"].Fill(mass)
         h["HNLw"].Fill(mass, wg)
+        signal_selected = True
         #
-        vetoDets["SBT"] = veto.SBT_decision()
-        vetoDets["UBT"] = veto.UBT_decision()
-        vetoDets["TRA"] = veto.Track_decision()
-        h["nrtracks"].Fill(vetoDets["TRA"][2])
-        h["nrSBT"].Fill(vetoDets["SBT"][2])
         #   HNL true
         mcTrackIdx = sTree.fitTrack2MC[t1]
         if mcTrackIdx < 0 or mcTrackIdx >= len(sTree.MCTrack):
@@ -744,6 +744,11 @@ def myEventLoop(n: int) -> None:
         h["Vzpull"].Fill((mctrack.GetStartZ() - HNLPos.Z()) / ROOT.TMath.Sqrt(covX[5]))
         h["Vxpull"].Fill((mctrack.GetStartX() - HNLPos.X()) / ROOT.TMath.Sqrt(covX[0]))
         h["Vypull"].Fill((mctrack.GetStartY() - HNLPos.Y()) / ROOT.TMath.Sqrt(covX[3]))
+
+    # fill veto histograms once per event with at least one selected candidate
+    if signal_selected:
+        h["nrtracks"].Fill(vetoDets["TRA"][2])
+        h["nrSBT"].Fill(vetoDets["SBT"][2])
 
     # check extrapolation to TimeDet if exists
     if hasattr(ShipGeo, "TimeDet"):

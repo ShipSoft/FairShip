@@ -8,9 +8,10 @@
 #pragma link off all functions;
 
 #pragma link C++ namespace SHiP;
+#pragma link C++ namespace shipgen;
+#pragma link C++ function shipgen::MeanMaterialBudget;
 #pragma link C++ class SHiP::Generator - ;
 #pragma link C++ class tPythia6Generator - ;
-#pragma link C++ class Pythia6Generator - ;
 #pragma link C++ class Pythia8Generator - ;
 #pragma link C++ class HNLPythia8Generator - ;
 #pragma link C++ class DPPythia8Generator - ;

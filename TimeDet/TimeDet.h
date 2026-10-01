@@ -42,6 +42,15 @@ class TimeDet : public SHiP::Detector<TimeDetPoint> {
   void SetSizeX(Double_t x) { fxSize = x; }
   void SetSizeY(Double_t y) { fySize = y; }
 
+  Int_t GetNColumns() const { return fNCol; }
+  Int_t GetNRows() const { return fNRow; }
+  Int_t GetNBars() const { return fNBars; }
+  Double_t GetBarSizeX() const { return fxBar; }
+  Double_t GetBarSizeY() const { return fyBar; }
+  Double_t GetBarSizeZ() const { return fzBar; }
+  Double_t GetBarOverlapX() const { return fxOv; }
+  Double_t GetBarOverlapY() const { return fyOv; }
+
   double GetXCol(int ic) const;
   double GetYRow(int ir) const;
   void GetBarRowCol(int ib, int& irow, int& icol) const;

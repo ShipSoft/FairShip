@@ -14,14 +14,214 @@ it in future.
 
 ### Added
 
-* Add experimental script to import Muons and Matter pkl files
-* Add TTreeGenerator to read M&M ntuples
+* Add `--pythia8-tune` (`default`, `FTFT`) to `run_fixedTarget.py` and `FixedTargetGenerator::SetPythiaTune` to select the FTFT Pythia8 tune for open charm and beauty production in fixed-target collisions (arXiv:2608.29076) in the Pythia8 primary interaction. The Pythia8 default (Monash 2013) remains the default. Charm and beauty read from cascade input files are unaffected.
 
 ### Changed
 
 ### Fixed
 
 ### Removed
+
+## 26.09 - 2026-09-15
+
+This release fixes bugs that change simulation output. Samples produced with
+26.07 or earlier are not directly comparable where magnetic field maps,
+strawtube hit recording, SBT veto decisions, or HNL, dark photon and RPV-SUSY
+production rates are involved. `G4only` FixedTarget runs also draw a different
+random sequence.
+
+### Added
+
+* He Balloon added with configurable thickness and material.
+* 2026 BDF target design (33 pure tungsten disks with a larger rear block, steel core with serpentine He cooling grooves, jacket tube, flanges, upstream beam window and cover plate, and domed rear endcap), extracted from CATIA model ST1A07710_01_AB.02. Select with `--target-yaml geometry/target_config_2026.yaml`; the legacy design remains the default. Downstream elements are positioned using the nominal legacy target length so both designs can be compared directly.
+* Write a `FileSummary` record into the `run_simScript.py` output, merging the `PoT`, `EnergyCut` and `prodSite` entries of the generator input files and listing the inputs with their individual PoT, so event provenance can be traced back through the simulation chain. Only files the generators actually read are recorded, and a missing or unreadable input summary warns instead of failing a completed simulation. This is a different record from the `run_fixedTarget.py` `FileSummary` added in 26.04, which stores the run options.
+* Add `--target-composition` (`W` default, `Mo`) and `-A` to `run_fixedTarget`, deriving the charm and beauty over min-bias cross-section ratios from the target mass number by scaling the Molybdenum reference values as `(A/A_Mo)^(1 - 0.71)`
+* Add `AI_POLICY.md` at the repository root, kept in sync through the shared config-sync workflow
+
+### Changed
+
+* Decay volume rebuilt as nested solids: the decay medium sits inside the PVC balloon, which sits inside a solid support vessel (`decay_medium` ⊂ `HeBalloon` ⊂ `VetoInnerWall`). This replaces the previous per-block sibling volumes, which were placed at exactly coincident surfaces. The `HeBalloon` layer is created only when the balloon thickness is greater than zero; otherwise `decay_medium` is placed directly inside `VetoInnerWall`. The per-block `decay_medium_block{N}` volumes (previously the renamed `DecayVacuum_block{N}` fiducial volumes) are merged into a single `decay_medium`, so the old per-block name no longer exists. Dimensions and materials are unchanged; navigation is simpler and slightly faster.
+* SBT sensitive medium is now LAB-based liquid scintillator (`LiquidScintillator`) rather than the plastic `Scintillator`, which remains in use by SplitCal
+* Unify the two identical aluminium entries in `media.geo` (`aluminium` and `Aluminum`) into a single `Aluminium` material and update all references, including `geometry/veto_config_helium.yaml`. Configuration files using the old spellings need updating.
+* Changed option name from `--target_composition` to `--target-composition` in `makeCascade` and `makeDecay`
+* `--chicc` and `--chibb` become explicit `float` overrides in `run_fixedTarget`, defaulting to the value derived from the target mass number
+* Make `--chicc` and `--chibb` mutually exclusive in `makeDecay` and `run_fixedTarget`, and raise a clear error when the override does not match the run type (e.g. `--chicc` for a beauty run) instead of silently ignoring it
+* Deduplicate the charm/beauty over min-bias cross-section scaling shared by `makeDecay` and `run_fixedTarget` into `python/heavyFlavourScaling.py`
+* Take the proximity shielding reference length from the geometry configuration (`target.length_fixed`) and pass it to `ShipTargetStation` through `SetShieldingReferenceLength`, instead of hardcoding it as 158.64 cm in Python and 1586.4 mm in C++; the C++ side now aborts if it is left unset. The `hadronAbsorber.z` placement is unchanged.
+* Centralise the ROOT ≥ 6.32 `TClonesArray` element-assignment workaround as `rootUtils.assignClonesArrayItem` and migrate the six scripts carrying hand-copied variants of it, removing the remaining `ROOT.std.swap` uses in `makeMuonEM` and `muDIS_mergeFiles` that corrupted the source object
+* Split `--validation`'s `track_stats` into separate `track_counts`, `track_numeric_stats` and `pdg_counts` accumulators, skip missing branches explicitly, and report the accumulated track weight as a `Track weight` line in the MCTrack validation section
+* Raise the minimum CMake version to 3.26 and drop the redundant `cmake_policy(SET CMP0118 NEW)`, which is NEW by default at that floor
+* Use dense vectors instead of `std::map` for ShipStack track selection and index remapping, roughly halving CPU time and reducing peak memory for high-multiplicity events (e.g. kaon/pion splitting)
+* Count ShipStack MC points per track instead of per (track, detector) and stop the mother-flagging walk at already-flagged ancestors, further reducing track-selection CPU time for high-multiplicity events
+* Cache geometry lookups in the digitisation hot paths: `strawtubes::StrawEndPoints` caches endpoints per `detID` instead of rebuilding the volume path and re-navigating on every hit, and `splitcalHit` caches the strip `TGeoNode` per name instead of scanning all strip nodes for every digitised hit. Both caches are keyed by geometry-derived identifiers, so results are unchanged.
+* Memoise the HNL total decay width and reuse the integrand `TF1` across `integral()` calls. `NDecayWidth()` was recomputed for each of the roughly 40 `findBranchingRatio()` calls during generator setup, each triggering up to 33 numerical integrals. Widths and branching ratios are bit-identical.
+* Reduce repeated scans in pattern recognition and tracking QA: use sets for the used-hit, duplicate-hit and outside-station membership tests in the nested seed loops of `shipPatRec`/`shipStrawTracking`, and build one `strawtubesPoint` index per event in `tracking_benchmark` instead of rescanning the branch in each of the four truth helpers
+* Build a per-event trackID to hits map in `eventDisplay.DrawMCTracks` instead of re-iterating every hit collection for every MC track, and resolve branches with `getattr` instead of `eval`. Branch and in-branch ordering are preserved.
+* Avoid wasted work in the generator hot paths: take the `G4only` early return in `FixedTargetGenerator` before the interaction-point rejection sampling whose result that mode discards, look up `muList` with `find()` instead of a linear scan in `MuonBackGenerator`, and demote the per-decay "not in EvtGen list" warning in `TEvtGenDecayer` to debug. The `G4only` `gRandom` draw sequence changes as a result, and is statistically equivalent.
+
+### Fixed
+
+#### Magnetic field
+
+* Fix the field-map reader: clamp off-grid reads so trilinear interpolation's `iBin+1` neighbour no longer wraps onto the opposite corner of the next slice (weight 1 at the upper edge), reject maps with fewer than two bins per axis instead of silently zeroing the field everywhere, declare the bin count `Nu` as `Int_t` rather than `Float_t`, and correct the x-y quadrant-symmetry comment, which omitted the `Bz` sign flip for `y < 0`
+* Zero the `FairShipFields::get` outputs before use and null-check `gMC->GetMagField()`. The work array was seeded from the caller's uninitialised outputs, and the early-return paths never wrote `Bx`/`By`/`Bz`, handing genfit garbage.
+* Persist and reload field-map parameters again in `ShipFieldPar`, where the Bell branch was gated on `fType in [1, kMaxFieldMapType]` and shadowed the field-map branch; initialise `ShipBellField::fOrient` and `ShipFieldPar::fBtube`, and make `ShipBellField::Print()` report the Bell parameters instead of the constant-field message copied from `ShipConstField`
+* Build the composite field once in `ShipFieldMaker::defineComposite` after all members are collected. It was constructed inside the loop over field names, so N composites were built from progressively incomplete field lists, and N-1 of them leaked.
+* Draw an independent noise value per core in `add_noise_to_field` and drop the self-normalisation, so `--peak` sets the amplitude rather than only the sign; remove the dead `dStruct.x/y/z` writes in `convertMisisMap`, which PyROOT silently attached as Python attributes and no branch stored
+
+#### Generators and decays
+
+* Read the final row of every branching-ratio histogram in `pythia8_conf_utils.parse_histograms`. An off-by-one slice dropped the last bin, so production branching ratios interpolated to 0 at the highest mass point. The data-row regex now also accepts a leading minus sign, which is needed to parse the terminating rows and recovers the nonzero final values in the `lambdab`, `Xib` and `Omega_b` histograms.
+* Correct the dark photon production rates: test `pbrem1` before the `pbrem` substring so the dipole mode is reachable, return rate 0 instead of 1 for an unknown mother PDG or production mode, and match `proton_bremsstrahlung.hProdPDF` bin widths to the sample grids, where the theta step was twice too large and shifted and the momentum step divided by `binsp-1` on an endpoint-excluded grid, double-filling and skipping bins
+* Fix RPV-SUSY production and decay: accumulate `sumBR` in the B0 block of `pythia8_conf.configurerpvsusy` so the `22 22` filler that normalises each meson's BR table is added (its absence distorted the B0 against B+ neutralino production ratio), honour a boolean `inclusive` argument, and rewrite the dimensionally inconsistent K\*/D\*/phi vector-meson factor in `rpvsusy.Width_N_L` to match the sibling `Width_H_L` form
+* Disable Lambda_c decays inside Pythia8 in `DecayConfigNuAge`. The line read `15:mayDecay = off`, a copy of the tau line, so Lambda_c was decayed by Pythia8 instead of being returned to transport. Also initialise `AlphaPDG`/`He5PDG` in `UserDecay` and skip on a failed `TDatabasePDG` lookup, rather than configuring a decay for an arbitrary PDG code.
+* Give each `HNLbranchings` instance its own integrand `TF1` name, so live instances cannot collide in ROOT's global function list
+
+#### Geometry and digitisation
+
+* Fix out-of-bounds writes in detector geometry construction. `ShipMuonShield::Initialize` wrote 16 magnet-parameter vectors through `operator[]` after only `reserve()`-ing capacity, and now also guards against configuring more magnets than the hardcoded `fieldDirection` list provides; `splitcal::ConstructGeometry` created only `newHCALfilter[0]`/`newHCALdet[0]` but placed `fnHCALSamplings` of them, dereferencing uninitialised volume pointers.
+* Size the splitcal HCAL volume arrays to `fnHCALSamplings` with `std::vector` instead of fixed `[100]` arrays, which could overflow now that the construction loop is driven by the configurable sampling count
+* Record every straw-tube traversal in `strawtubes::ProcessHits`. A never-cleared `fVolumeID` marker made the code skip any hit whose exited straw matched it, so after the first hit in a straw every later traversal — curling track, delta ray, next track, next event — was dropped along with its energy loss.
+* Use the Y-layer z-map when computing the splitcal cluster start and end Z from the Y projection. Indexing the X-layer map with Y-layer keys silently inserted 0 through `operator[]` and roughly halved the reported z. Clusters with no X or no Y hits now return early with only the energy set, instead of dereferencing empty weighted maps.
+* Initialise `TimeDetHit` `t_1`/`t_2` and `MTCDetHit` time in-class so they are no longer indeterminate on the default-constructor and null-track paths, guard the `MTCDetHit` scintillator branch against an empty points vector (NaN coordinates, `FLT_MAX` time), assign `fDetList` in `ShipStack::UpdateTrackIndex` so it stops leaking a detector iterator every event, and correct the `strawtubes::StrawEndPoints` declaration to match the definition's `(bot, top)` argument order
+* Reject unknown target design versions with a fatal error naming the value, instead of falling through a bare `else` and silently building the 2026 target
+* Thread a single accumulator through `geomGeant4.nextLevel` so the printed total magnet mass includes depth ≥ 3 and the top-level leaves, apply `fieldsList[0]` instead of a hardcoded `MainSpecMap` in the single-field fallback, and pass the global detector id rather than the local fibre id to `GetLocalPos` in `SciFiMapping`, which had dropped the plane tilt
+
+#### Reconstruction and analysis
+
+* Apply tesla units to both components of the MTC constant field in `ACTSReco`. `acts.Vector3(0.0, -1.2, 0.0 * u.T)` left the y component in ACTS natural units (about -4000 T), so every Kalman fit through the MTC used a field roughly 4000 times too strong.
+* Correct the two-track vertex fit in `shipVertex`. The transverse residual model used `a[0] + a[3]*(a[2] - z0)` while the genfit states are extrapolated to `z = z0`, flipping the slope term's sign, mirroring the chi2 landscape about `a[2] = z0` and producing wrong-sign z-slope covariance terms. The stepwise extrapolation also mutated the reference returned by `getFittedState()` in place, so a track reused in a later pair carried a state left at a previous candidate vertex.
+* Accumulate the fractional MC-truth votes in `Tracklet::link2MCTrack` as `double`. An `unordered_map<int, int>` truncated every `1./nTot` increment to 0, so the minimum-fraction threshold never fired and the function returned the last point's track ID rather than the dominant track.
+* Fix `convertToACTS`: seed `gRandom` once before the event loop, where it was reseeded every event so strawtube digitisation drew an identical random sequence each time, and draw `t0` from `gRandom` instead of a fresh default-seeded `TRandom`; create the vertex-tree vectors empty so event 0 no longer carries a spurious all-zero vertex; encode the per-event vertex index in the barcode instead of a constant; and preserve the SND `SiliconTarget` per-track hit counts, which were cleared before the MTC block
+* Open the input file read-only in the `shipStrawTracking` QA step, where it was opened for update and wrote a duplicate key cycle of the unmodified tree into the user's file. The dead `--method` option now warns, and the fitted-state handler reports the actual exception instead of mislabelling `ZeroDivisionError`/`KeyError` as a fitted-state problem.
+* Treat `-n` as an event count in `ShipReco` (`min(entries, firstEvent + nEvents)`) rather than an end index, and move the per-event SBT/UBT/track decisions and the `nrtracks`/`nrSBT` fills out of the per-candidate loop in `ShipAna`, which double-filled them for multi-candidate events
+
+#### Veto and decay vessel
+
+* `veto` now registers the configured `sensitiveMed` instead of a hardcoded medium name; previously any other value resolved to a null `TGeoMedium`
+* Repair the SBT veto decisions in `shipVeto`: for `mcParticle > 0` test whether the particle is absent from a digi, instead of excluding any digi with a differing contributor, which wrongly dropped mixed-contributor digis that do contain the particle; compare the straw-veto distance against `distmin` in `fiducialCheck`, where the computed distance was previously unused; seed `self.random` (now a `TRandom3`), the generator the class actually draws from, instead of `ROOT.gRandom`; and return the `SBT_decision` result from `SBT_plastic_decision`/`SBT_liquid_decision`, which discarded the tuple and returned `None`
+* Match the fiducial-volume checks in `shipVeto` and `analysis_toolkit` on the `decay_medium` name prefix. The explicit volume list they used had also gone stale, still naming `decay_medium_block3` to `decay_medium_block5`.
+
+#### Muon DIS and muon-shield studies
+
+* Fix `makeMuonDIS` under ROOT ≥ 6.32, where `TClonesArray` item assignment raises and the script did not run at all: use `ConstructedAt(i)` plus copy-assign for the muon, DIS and soft-daughter vectors. Set the DIS cross section (event weight) in the muon vector before it is copied to the output, so entries no longer store the previous event's value, and track the converged proton and neutron cross sections separately so `update_file()` applies the one matching each entry's target flag instead of overwriting every entry with the last (neutron) value.
+* Fix the muon-DIS ntuple makers: replace `TClonesArray` item assignment in `make_nTuple_SBT`, `make_nTuple_Tr` and `add_muonresponse`; write the final SBT-hit count into the SBT column (`-3`) rather than the UBT column (`-2`); and apply the missing `track_id == muon_` filter to the strawtube loop in `make_nTuple_Tr`, which in multi-muon events processed every muon's hits once per muon
+* Replace the removed `TDirectory` attribute access (`file.DIS`, `file.cbmsim`) with item access throughout the `muonDIS` scripts
+* Validate `--nDIS` immediately after argument parsing in `makeMuonDIS`. Zero divides by zero in the cross-section index calculation, and an odd value splits the proton and neutron DIS phases unequally at the `a == nDIS // 2` target switch.
+* Fix a batch of muon-shield optimisation script and detector bugs: initialise `exitHadronAbsorber`'s `EMax`, `fUniqueID` and `fUseCaveCoordinates` in-class, where a garbage `EMax` could stop every track and a garbage flag selected the wrong geometry branch; pass the now-required `-g` geometry argument and split single-token option strings in `run_reco`; build the `hadd` file list as a string and wire the CLI run range and charm flag through to `compactify` in `compactingBackgroundProduction`; drop the per-branch `Fill()` that doubled entries in `muDIS_mergeFiles`; copy rather than `std::swap` the muon vector in `makeMuonEM`; correct `int(prod/10)` in `run_prod` and the run range in `runCharmHadProd`; assign the `origin()` result and open files before `Get()` in `ana_ShipMuon`; and fix the duplicated PDG 4232 in `extractNeutrinosAndUpdateWeight`
+* Initialise loop-dependent variables before use in the muon-shield optimisation scripts. `ana_ShipMuon` now fails fast when no geofile is found, guards MC-track access on the track actually fetched, skips rare-event lines preceding the first record, and dispatches on the process type for mixed work lists; `runCharmHadProd` hoists the loop-invariant `orun` so `merge()` no longer depends on the last iteration having run; and `run_reco` tracks `(inputfile, geofile)` per job instead of reusing variables leaked from the launch loop, binds the `Popen` handle before the `None` check, and skips prefixes without a geofile when merging ntuples.
+* Flush the last rare-event record in `ana_ShipMuon.makeNicePrintout`. A record was appended only when the next header was parsed, so the final record of every input file was dropped from the printed table and from the weighted muon rates.
+* Close the event files opened by `ana_ShipMuon.eventsWithStrawPoints` and `eventsWithEntryPoints`
+* Replace the untyped setup dictionaries in `study_muMSC.py` and `study_GammaConv.py` with a `NamedTuple` per script, so the material string no longer shares a type with the numeric thickness and momentum. Values are unchanged.
+
+#### Macros and simulation driver
+
+* Fail with a clear error when an explicit `--inputFile` matches no files. The empty result still disabled the default-input fallback, and `ut.checkFileExists` accepts an empty list, so setup proceeded with no input at all.
+* Fix `run_simScript` argument handling: `-f none` set `inputFile` to `None` and then iterated it (`TypeError`); `--SusyBench` lacked `type=int`, so any supplied value indexed int-keyed dictionaries as a string; and three error paths (missing muon-DIS or ntuple input, cosmics init failure) exited with status 0, reporting success to batch systems
+* Fix macro import-time crashes and stale API calls: `mergeMbias` referenced the nonexistent `hadronAbsorber.length` at import and drew a stale loop variable into every pad; `dumpEvent` called the nonexistent `Config.loadpy`; `getInteractionAndRadiationLength` now calls the free `shipgen::MeanMaterialBudget` with a 10-element parameter array instead of the removed `GenieGenerator` member; and `run_ACTSTracking` joins its output path with a separator and takes an integer `--nEvents`
+* Fix `eventDisplay`, `makeCascade`, `makeDecay` and `runPythia8`: `-i/--HiddenParticleID` takes `type=int`, and the HNL end-vertex daughter search uses a found flag so the last MC track is not silently used; `makeCascade`'s interpolation-anchor update is dedented out of the inner gap-fill loop so the anchor advances; `makeDecay` opens the EOS histogram fallback through the `$EOSSHIP` prefix and fixes a printf placeholder passed to `print()`; and the `runPythia8` analysis functions guard against empty histograms so the non-Drell-Yan modes do not divide by zero
+* Advance the pad counter for empty species in `mergeMbias.TplotP`. An empty first species made the next species draw over the previous pad and left the last pad blank on both the P and >P canvases.
+* Open `makeDecay` input paths directly rather than routing any path containing the substring `eos` through XRootD; ROOT resolves `/eos` paths itself through FUSE or XRootD
+* Accept an explicit `-A` without `--target-composition` in `heavyFlavourScaling.derive_cross_sections`, where calls such as `derive_cross_sections(A=181)` were rejected, and omit the target label from the printed summary when `-A` overrides the preset, so a stale preset name no longer appears beside the overriding value
+
+#### Python helpers and type checking
+
+* Harden miscellaneous Python helpers: `global_variables.__getattr__` raises `AttributeError` for missing attributes instead of returning `None`, which also made `hasattr` always true and masked typos; `saveBasicParameters` uses `Config` in the string branch, where it built an `AttrDict` and then called `dumps_json`, which only `Config` provides, and guards the `FAIRROOT_HASH` environment lookup; `shipDet_conf` applies the missing `* u.cm` to `snd_nuTauTT_TTY`; `TrackExtrapolateTool` honours its documented None-on-failure contract and guards against division by `pz == 0`; `analysis_toolkit` always defines `veto_geo`, guards the empty-average NaN and aligns the fiducial threshold with its 100 cm docstring; and `eminem_importer` applies the column unit when an offset is given without an offset unit
+* Harden the ROOT and histogram-comparison helpers: `rootUtils.checkFileExists` now classifies tree and ntuple files correctly, closes the files it opens and exits non-zero on a genuine type mismatch; `bookProf` reuses an existing profile instead of resetting and discarding it; `readHists` no longer leaks its file; `checkMagFields` tests `InheritsFrom('TH3')` rather than `ClassName() == 'TH3F'`, so the projections are actually made because `bookHist` creates `TH3D`, and iterates a snapshot instead of mutating the histogram dictionary while looping over it; and `compare_histograms` compares bin contents and errors instead of `TH1::IsEqual`, which compares `TObject` addresses and so always reported identical histograms as different, and propagates a non-zero exit
+* Correct type annotations and ROOT stubs flagged by `pyrefly`: the smeared-hit helpers' `digiHit`/`detID` are ints, the vertex-fit chi2 returns a float and `z0` is a float z coordinate in cm; the histogram dictionary holds `TH1`/`TH2` subtypes and the run database holds both string and int lists, and `compactify`'s charm flag is passed as `bool`; `generate_file` requires the parsed `args` and passes `header`/`index` to `to_csv` as bools; and the stubs gain the `shipgen` namespace with `MeanMaterialBudget` plus the `SetDesign`, `SetLastDiskDiameter` and `SetShieldingReferenceLength` setters on `ShipTargetStation`
+
+### Removed
+
+* Remove the unreachable proton-PID downgrade (`2212` to `+-211`) and the hardcoded `pidProton` flag from `shipVertex` and `ShipReco`, together with the divergent unconditional copy of the same rule in `ShipAna.RedoVertexing`. Every track in `FitTracks` is fitted under the muon hypothesis, so the branch could never fire.
+
+## 26.07 - 2026-07-21
+
+### Added
+
+* Add option to split kaons and pions right before they decay, to increase the number of muons
+* Added TRY_2026 MS version.
+* Make particle gun polar angle configurable via `--thetaMin`/`--thetaMax`
+* Add `run_tracking_scan.py` to sweep the tracking benchmark over angle and multiplicity grids
+* Add charge-ID efficiency metric to the tracking benchmark
+* Add iron material definition and simplified SiTarget digitization in the MTC, with strawtubes gating in the reconstruction flow
+
+### Changed
+
+* Flatten field-map storage and make the field evaluator reentrant
+
+### Fixed
+
+* Fix pot branch in Decay tree from makeDecay
+* Fix check of existing particle pdg in makeCascade
+* Restore `tPythia6Generator` instantiation from Python — broken since 26.02 by the `SHiP::Generator` base-class refactor leaving the file-based `Init` overloads pure virtual without a stub override (#1272)
+* Fix call to next Pythia event generation
+* Eliminate redundant hadron absorber field map
+* Fix Magnet MS5 and MS6 to store new SND conceptual design
+* Fix a batch of generator bugs: null-pointer dereferences and vertex fallback, mother/vertex/energy bookkeeping, RNG-selection and engine member initialisation, charm interaction-point sampling in geometry-coordinates mode, and assorted low-severity issues
+* Plug `HNLPythia8Generator` memory leaks
+* Fix scintillator tile hit processing
+* Exclude clone tracks from tracking metrics and guard the scan sort, and improve error handling in the tracking scan
+* Skip RMSE fill when there are no matched extrapolations
+* Correct MC-track checkbox state and truth/fit pairing in the event display
+* Give `shipVertex` `VertexError` a uniform 3-tuple return
+* Don't crash on unreadable ROOT files where a skip was intended
+* Match `run_simScript` output `TFile` by full path
+* Correct return types in `compute_total_br` and `compute_max_total_br`
+
+### Removed
+
+* Remove unused legacy `Pythia6Generator` (custom text-format event-record reader from 2008, zero callsites anywhere in the tree). `tPythia6Generator` is unaffected.
+
+## 26.06 - 2026-06-18
+
+### Added
+
+* Add experimental script to import Muons and Matter pkl files
+* Added GenieOption to read simulations with the GENIE Geometry Driver (i.e. gevgen_fnal)
+* Add `TTreeGenerator` to read events from ROOT TTrees (including the converted M&M ntuples)
+* Add `--ttree` option to `run_simScript.py` for ROOT TTree input
+* Add `--target_composition` option to `makeDecay`, defaulting to Tungsten and mirroring the `makeCascade.py` flag
+* Add `--validation` flag to `run_simScript.py` and `ShipReco.py` that prints generator, output, pattern-recognition, and fit counters
+* Add `--remote-input` flag to `run_simScript.py` for direct `root://…` input without local download
+* Add `--reproducible` mode and explicit, reusable run IDs in `run_simScript.py` / `run_fixedTarget.py`, with consistent metadata written into output headers
+* Add pixi environment (`pixi.toml`) and pixi-based CI build workflow as the new primary build path
+* Add CI sim-chain tasks driven by pixi
+* Add CI workflow to build and publish pixi-based container images on release
+* Add REUSE compliance badge to README
+* Add pixi installation instructions to README
+
+### Changed
+
+* Change A scaling in makeDecay
+* Rewrite README to be pixi-first
+* Derive project version from git tags via `git describe` instead of hardcoded `0.0.0`
+* Migrate CI to shared `ShipSoft/.github` reusable workflows
+
+### Fixed
+
+* Validate `-A` choice for `--DarkPhoton` runs; previously silently misconfigured (#1166)
+* Always allocate `validation_stats` dict and fix `GetHitID` typo in `shipDigiReco`
+* Harden generator input handling: fail-fast on missing files, trees, branches, and out-of-range start events, and switch to `TFile::Open` for remote-input compatibility
+* Prevent MuonBack post-processing double-free of output `TFile` at interpreter shutdown (#1226)
+* Null-init `MuonBackGenerator` pointers and drop dead `CloseFile` path
+* Keep `BranchList` `TObjStrings` alive under ROOT 6.40 PyROOT ownership changes
+* Load `libEGPythia6` in `shipRoot_conf`
+* Remove unnecessary `libG4clhep` loads
+* Chain `Initialize` through immediate parent in `exitHadronAbsorber`
+* Address real bugs surfaced by `pyrefly` static type-checking
+* Remove throwing static initializers
+* Initialise variables before conditional branches
+* Replace `atof`/`atoi` with `std::stod`/`std::stoi` for proper error handling
+* Replace floating-point loop counters with integers
+* Use `size_t` for `ShipMuonShield` corner-index loop
+* Use `git rev-parse` in `retrieveGitTags` for Python 3 compatibility
+* Correct DOI badge link in README
+* Fix help-message text in `makeDecay`
+
+### Removed
+
+* Drop unused HepMC dependency
+* Retire aliBuild-driven `build-run.yml`; replaced by `pixi-build.yml`
 
 ## 26.05 - 2026-05-25
 
@@ -73,6 +273,7 @@ it in future.
 * Add CI workflow to publish plots to GitHub Pages and embed in PR comments
 
 ### Changed
+
 * Make artificial retina the baseline option for pattern recognition
 * `nrOfRetries()` in HNL and DP generators now counts only production failures; geometric acceptance rejections are tracked separately via `nrOfGeoRejections()`
 * Read vessel end dimensions from veto YAML config instead of hardcoding in `geometry_config.py`
@@ -261,7 +462,7 @@ it in future.
 
 * Add access to decoded numbers (stations, views etc.) of strawtubes hits
 * Add enough straws to cover aperture entirely
-* Add SST frame option (4 = aluminium, 10 = steel [default])
+* Add SST frame option (4 = Aluminium, 10 = steel [default])
 * Add z-offset to FixedTargetGenerator
 * Add missing --FixedTarget option to run_simScript.py
 
@@ -547,32 +748,32 @@ it in future.
 
 ### Added
 
-- Add prototype of a new analysis toolkit in the `experimental` package.
-- Add a simple analysis example script in the `examples/` directory.
-
-### Fixed
-
-- Use `ConstructedAt` and `std::swap` to replace removed pythonization for `TClonesArray`.
-- Correct B_z octant symmetry for field maps.
-- Correct time-of-flight calculation in `GenieGenerator.cxx` by using correct units.
-- Ensure Genfit measurements provide the correct detector ID.
-- Fix `TEvePointSetPrintOut`.
-- Fix drawing of Monte Carlo and geometry tracks in the event display.
-- Replace outdated `AddressOf` ROOT function with `addressof` in the `field/` directory.
+* Add prototype of a new analysis toolkit in the `experimental` package.
+* Add a simple analysis example script in the `examples/` directory.
 
 ### Changed
 
-- Update cavern dimensions, including TCC8 and ECN3, and add a step in ECN3. The absorber coat has been removed, and the dimensions of the HA and absorber have been modified. For further details, see the presentation [here](https://indico.cern.ch/event/1507466/contributions/6345273/attachments/3003438/5293503/Quick%20Update%20on%20FAIRSHIP%20geometry-1.pdf).
-- Set the decay volume medium to helium by default, with an option to switch to vacuum using the `--vacuums` flag.
-- The medium of the SST boxes now matches the decay volume medium.
-- Disable track pruning (see #533).
-- Accommodate generic N-body LLP decays in the EventCalc interface.
+* Update cavern dimensions, including TCC8 and ECN3, and add a step in ECN3. The absorber coat has been removed, and the dimensions of the HA and absorber have been modified. For further details, see the presentation [here](https://indico.cern.ch/event/1507466/contributions/6345273/attachments/3003438/5293503/Quick%20Update%20on%20FAIRSHIP%20geometry-1.pdf).
+* Set the decay volume medium to helium by default, with an option to switch to vacuum using the `--vacuums` flag.
+* The medium of the SST boxes now matches the decay volume medium.
+* Disable track pruning (see #533).
+* Accommodate generic N-body LLP decays in the EventCalc interface.
+
+### Fixed
+
+* Use `ConstructedAt` and `std::swap` to replace removed pythonization for `TClonesArray`.
+* Correct B_z octant symmetry for field maps.
+* Correct time-of-flight calculation in `GenieGenerator.cxx` by using correct units.
+* Ensure Genfit measurements provide the correct detector ID.
+* Fix `TEvePointSetPrintOut`.
+* Fix drawing of Monte Carlo and geometry tracks in the event display.
+* Replace outdated `AddressOf` ROOT function with `addressof` in the `field/` directory.
 
 ### Removed
 
-- Remove Millepede.
-- Remove the outdated `shipEvent_ex.py` example.
-- Remove the ALPACA generator.
+* Remove Millepede.
+* Remove the outdated `shipEvent_ex.py` example.
+* Remove the ALPACA generator.
 
 ## 24.11
 
@@ -580,28 +781,28 @@ This release follows the first round of breaking changes and is tagged for the l
 
 ### Added
 
-- Introduce the EventCalc LLP event generator, a decay event sampler for inclusive final states. For further details, consult the dedicated presentation at the 30th SHiP CM [here](https://indico.cern.ch/event/1448055/contributions/6142341/attachments/2939894/5165450/SHiP_collaboration_meeting_talk_MFerrillo.pdf). See also #528.
-- Add a conversion script, `FairShip/macro/convertEvtCalc.py`, to convert EventCalc's output kinematics to a format compatible with the simulation script.
-
-### Fixed
-
-- Add missing includes in `ecalMatch` and `ecalReco`.
-- Fix compilation warnings for unused or uninitialized variables (see #481).
+* Introduce the EventCalc LLP event generator, a decay event sampler for inclusive final states. For further details, consult the dedicated presentation at the 30th SHiP CM [here](https://indico.cern.ch/event/1448055/contributions/6142341/attachments/2939894/5165450/SHiP_collaboration_meeting_talk_MFerrillo.pdf). See also #528.
+* Add a conversion script, `FairShip/macro/convertEvtCalc.py`, to convert EventCalc's output kinematics to a format compatible with the simulation script.
 
 ### Changed
 
-- Migrate `shipStrawTracking` to use `argparse`.
-- Update CMake to use an external `genfit2`.
-- Ensure `shipStrawTracking`, `shipDigiReco`, and `shipVertex` are compatible with the current version of `genfit`.
+* Migrate `shipStrawTracking` to use `argparse`.
+* Update CMake to use an external `genfit2`.
+* Ensure `shipStrawTracking`, `shipDigiReco`, and `shipVertex` are compatible with the current version of `genfit`.
+
+### Fixed
+
+* Add missing includes in `ecalMatch` and `ecalReco`.
+* Fix compilation warnings for unused or uninitialized variables (see #481).
 
 ### Removed
 
-- Remove obsolete renaming scripts.
-- Remove the `online` directory. For respective versions, see the `charmdet` and `muflux` branches.
-- Remove the `charmdet` directory. For the latest version, see the `charmdet` branch.
-- Remove the preshower and CaloDesign 1 (TP+Preshower).
-- Remove the bundled `genfit`.
-- Remove the conditions database.
+* Remove obsolete renaming scripts.
+* Remove the `online` directory. For respective versions, see the `charmdet` and `muflux` branches.
+* Remove the `charmdet` directory. For the latest version, see the `charmdet` branch.
+* Remove the preshower and CaloDesign 1 (TP+Preshower).
+* Remove the bundled `genfit`.
+* Remove the conditions database.
 
 ## 24.10 - Freiburg
 
@@ -609,45 +810,45 @@ This release prepares for breaking changes and is the last to include charm cros
 
 ### Added
 
-- Add an option for a helium-filled decay volume.
-- Add a pre-commit configuration to improve code quality and identify issues early.
-- Add a `CHANGELOG.md` file.
-- Add a `.git-blame-ignore-revs` file to ignore automatic reformatting in git blame.
-- Add automatically built documentation using Doxygen.
-- Add a `CODEOWNERS` file to automate review requests.
-- Add separate configuration files for vacuum and helium in the decay vessel.
-- Add an option to enable or disable the SND.
-
-### Fixed
-
-- Remove trailing whitespace and fix line endings.
-- Fix compilation warnings from deprecations (see #469).
-- Fix an issue with SST parameters (see #489).
-- Clean up the Veto implementation.
-- Fix a crash in the event display and PID when the entrance lid is missing.
-- Ensure the `ShipReco.py` output file is closed correctly.
-- Remove an unused argument for `MuDISGenerator::SetPositions`.
+* Add an option for a helium-filled decay volume.
+* Add a pre-commit configuration to improve code quality and identify issues early.
+* Add a `CHANGELOG.md` file.
+* Add a `.git-blame-ignore-revs` file to ignore automatic reformatting in git blame.
+* Add automatically built documentation using Doxygen.
+* Add a `CODEOWNERS` file to automate review requests.
+* Add separate configuration files for vacuum and helium in the decay vessel.
+* Add an option to enable or disable the SND.
 
 ### Changed
 
-- Update the `getGeoInformation` command-line interface.
-- Update SST geometry constants (see #483).
-- Use the same `clang-format` and `clang-tidy` configurations as FairRoot.
-- Import the decay vessel configuration from a YAML file.
-- Update the decay vessel geometry to the new design.
-- Increase the minimum required CMake version to 3.12.
-- Use FairRoot's `find_package2` to find ROOT, VMC, and fmt.
-- Increase the minimum required ROOT version to 6.26.
-- Use `find_package` to find Boost.
-- Set the FairLogger dependency instead of using manual includes.
+* Update the `getGeoInformation` command-line interface.
+* Update SST geometry constants (see #483).
+* Use the same `clang-format` and `clang-tidy` configurations as FairRoot.
+* Import the decay vessel configuration from a YAML file.
+* Update the decay vessel geometry to the new design.
+* Increase the minimum required CMake version to 3.12.
+* Use FairRoot's `find_package2` to find ROOT, VMC, and fmt.
+* Increase the minimum required ROOT version to 6.26.
+* Use `find_package` to find Boost.
+* Set the FairLogger dependency instead of using manual includes.
+
+### Fixed
+
+* Remove trailing whitespace and fix line endings.
+* Fix compilation warnings from deprecations (see #469).
+* Fix an issue with SST parameters (see #489).
+* Clean up the Veto implementation.
+* Fix a crash in the event display and PID when the entrance lid is missing.
+* Ensure the `ShipReco.py` output file is closed correctly.
+* Remove an unused argument for `MuDISGenerator::SetPositions`.
 
 ### Removed
 
-- Remove obsolete installation and testing files.
-- Remove uses of `future` and `past` modules (see #473).
-- Remove the Geant3 dependency.
-- Remove unimplemented event display functions (see #497).
-- Disable the SND by default.
-- Remove CMake commands no longer provided by FairRoot 19.
-- Remove old CMake files for ROOT 5.
-- Remove an old, outdated tracking script.
+* Remove obsolete installation and testing files.
+* Remove uses of `future` and `past` modules (see #473).
+* Remove the Geant3 dependency.
+* Remove unimplemented event display functions (see #497).
+* Disable the SND by default.
+* Remove CMake commands no longer provided by FairRoot 19.
+* Remove old CMake files for ROOT 5.
+* Remove an old, outdated tracking script.

@@ -78,7 +78,7 @@ class CosmicsGenerator : public SHiP::Generator {
   int n_EVENTS;
 
  private:
-  Co3Rng* fRandomEngine;  //!
+  Co3Rng* fRandomEngine = nullptr;  //!
 
  protected:
   double P, px, py, pz, x, y, z, weighttest, weight, mass, FluxIntegral, theta;

@@ -343,19 +343,14 @@ def add_hists(inputflux: PathLike, simfile: PathLike, nupdg: int) -> None:
     ------
     FileNotFoundError
         If the requested histogram is not found in ``inputflux``.
-    RuntimeError
+    OSError
         If ROOT fails to open either file.
 
     """
-    infile = ROOT.TFile(str(inputflux), "READ")
-    if not infile or infile.IsZombie():
-        raise RuntimeError(f"Failed to open input flux file: {inputflux}")
-    sfile = ROOT.TFile(str(simfile), "UPDATE")
-    if not sfile or sfile.IsZombie():
-        infile.Close()
-        raise RuntimeError(f"Failed to open simulation file for update: {simfile}")
-
-    try:
+    with (
+        ROOT.TFile.Open(str(inputflux), "READ") as infile,
+        ROOT.TFile.Open(str(simfile), "UPDATE") as sfile,
+    ):
         hname = get_2D_flux_name(nupdg)
         obj = infile.Get(hname)
         if not obj:
@@ -363,9 +358,6 @@ def add_hists(inputflux: PathLike, simfile: PathLike, nupdg: int) -> None:
         # Write into the current directory of sfile
         sfile.cd()
         obj.Write()
-    finally:
-        infile.Close()
-        sfile.Close()
 
 
 # --------------------------- CLI ---------------------------------------------

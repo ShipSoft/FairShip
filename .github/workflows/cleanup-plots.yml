@@ -1,4 +1,4 @@
-name: Cleanup old PR plots
+name: Cleanup Plots
 on:
   schedule:
     - cron: '0 3 * * 0' # Weekly, Sunday 03:00 UTC
@@ -8,13 +8,14 @@ concurrency:
   cancel-in-progress: false
 jobs:
   cleanup:
+    name: Clean up old plots
     runs-on: ubuntu-latest
     permissions:
       contents: write
       pull-requests: read
     steps:
       - name: Checkout gh-pages
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           ref: gh-pages
       - name: Remove plots for old closed PRs
@@ -53,11 +54,11 @@ jobs:
                 console.log(`Skipping ${prNum}: ${e.message}`);
               }
             }
-      - name: Keep only last 10 master plot directories
+      - name: Keep only last 10 main plot directories
         run: |
-          if [ -d plots/master ]; then
-            ls -1 plots/master | sort -r | tail -n +11 | while read dir; do
-              rm -rf "plots/master/$dir"
+          if [ -d plots/main ]; then
+            ls -1 plots/main | sort -rn | tail -n +11 | while read dir; do
+              rm -rf "plots/main/$dir"
             done
           fi
       - name: Push cleanup

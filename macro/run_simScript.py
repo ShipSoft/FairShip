@@ -3,11 +3,14 @@
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
 import glob
+import json
 import os
 import sys
 import uuid
 from argparse import ArgumentParser
 from array import array
+from datetime import datetime
+from typing import cast
 
 import geometry_config
 import ROOT
@@ -23,8 +26,6 @@ def _fraction_0_1(value: str) -> float:
         raise ValueError("--chargeFraction must be between 0 and 1")
     return v
 
-
-DownScaleDiMuon = False
 
 # Default HNL parameters
 theHNLMass = 1.0 * u.GeV
@@ -46,6 +47,18 @@ HNL = True
 
 inputFile = "$EOSSHIP/eos/experiment/ship/data/Charm/Cascade-parp16-MSTP82-1-MSEL4-978Bpot.root"
 defaultInputFile = True
+
+# Input files the generators actually read. Only these belong in the output
+# FileSummary: inputFile above is a placeholder that survives untouched for
+# generators which need no input at all (particle gun, cosmics).
+usedInputFiles: list[str] = []
+
+
+def useInputFile(paths):
+    """Check that the generator input exists and record it for the FileSummary."""
+    ut.checkFileExists(paths)
+    usedInputFiles.extend([paths] if isinstance(paths, str) else list(paths))
+
 
 parser = ArgumentParser()
 
@@ -156,9 +169,18 @@ pg_parser.add_argument(
     default=False,
     help="Print out the PG models that are available",
 )
+pg_parser.add_argument("--thetaMin", type=float, default=0, help="Minimum polar angle [deg] (default: 0)")
+pg_parser.add_argument("--thetaMax", type=float, default=0, help="Maximum polar angle [deg] (default: 0)")
 # === End of PG commands ===
 # === Genie subcommand ===
 genie_parser = subparsers.add_parser("Genie", help="Genie for reading and processing neutrino interactions")
+genie_parser.add_argument(
+    "--GenieOption",
+    dest="GenieOption",
+    default="simple_gevgen",
+    choices=["simple_gevgen", "genie_geometry"],
+    help="Genie generation option: (simple_gevgen, genie_geometry)",
+)
 genie_parser.add_argument(
     "--z_start_nu",
     dest="z_start_nu",
@@ -209,12 +231,12 @@ parser.add_argument(
 parser.add_argument("--PaintBeam", dest="PaintBeam", help="Radius of beam painting [cm]", default=5, type=float)
 parser.add_argument(
     "--Cosmics", dest="cosmics", help="Use cosmic generator, argument switch for cosmic generator 0 or 1", default=None
-)  # TODO: Understand integer options, replace with store_true?
+)  # 0/1 selects CosmicsGenerator::Init(largeMom); not store_true, since "0" must enable cosmics with largeMom=False
 parser.add_argument("--MuDIS", dest="mudis", help="Use muon deep inelastic scattering generator", action="store_true")
 parser.add_argument("--RpvSusy", dest="RPVSUSY", help="Generate events based on RPV neutralino", action="store_true")
 parser.add_argument("--FixedTarget", dest="fixedTarget", help="Enable fixed target simulation", action="store_true")
 parser.add_argument("--DarkPhoton", help="Generate dark photons", action="store_true")
-parser.add_argument("--SusyBench", dest="RPVSUSYbench", help="Generate HP Susy", default=2)
+parser.add_argument("--SusyBench", dest="RPVSUSYbench", help="Generate HP Susy", type=int, default=2)
 parser.add_argument(
     "-m",
     "--mass",
@@ -300,7 +322,7 @@ parser.add_argument(
 parser.add_argument("-Y", dest="dy", help="max height of vacuum tank", default=6.0, type=float)
 parser.add_argument(
     "--strawDesign",
-    help="Tracker station frame material: 4=aluminium; 10=steel (default)",
+    help="Tracker station frame material: 4=Aluminium; 10=steel (default)",
     default=10,
     type=int,
     choices=[4, 10],
@@ -317,8 +339,8 @@ parser.add_argument("-D", "--display", dest="eventDisplay", help="store trajecto
 parser.add_argument(
     "--shieldName",
     help="The name of the muon shield in the database to use.",
-    default="TRY_2025",
-    choices=["TRY_2025"],
+    default="TRY_2026",
+    choices=["TRY_2025", "TRY_2026"],
 )
 parser.add_argument(
     "--MesonMother", dest="MM", help="Choose DP production meson source: pi0, eta, omega, eta1, eta11", default="pi0"
@@ -413,16 +435,23 @@ if options.cosmics:
 if options.inputFile:
     if options.inputFile == ["none"]:
         options.inputFile = None
-    inputFile = []
-    for _f in options.inputFile:
-        if options.remoteInput:
-            inputFile.append(os.path.expandvars(_f))
+    else:
+        inputFile = []
+        for _f in options.inputFile:
+            if options.remoteInput:
+                inputFile.append(os.path.expandvars(_f))
+            else:
+                inputFile.extend(glob.glob(_f))
+        inputFile = list(dict.fromkeys(inputFile))
+        if options.nFiles > 0:
+            inputFile = inputFile[: options.nFiles]
+        # Only disable the default-input fallback when at least one path
+        # actually resolved; an explicit --inputFile that globs to nothing is a
+        # mistake and would otherwise run downstream setup with no input files.
+        if inputFile:
+            defaultInputFile = False
         else:
-            inputFile.extend(glob.glob(_f))
-    inputFile = list(dict.fromkeys(inputFile))
-    if options.nFiles > 0:
-        inputFile = inputFile[: options.nFiles]
-    defaultInputFile = False
+            parser.error(f"--inputFile {options.inputFile} matched no files")
 if options.RPVSUSY:
     HNL = False
 if options.DarkPhoton:
@@ -455,12 +484,12 @@ if (options.command == "Genie" or options.nuradio) and defaultInputFile:
 if options.mudis and defaultInputFile:
     print("input file required if simEngine = muonDIS")
     print(" for example -f  $EOSSHIP/eos/experiment/ship/data/muonDIS/muonDis_1.root")
-    sys.exit()
+    sys.exit(1)
 
 if (options.ntuple or options.muonback) and defaultInputFile:
     print("input file required if simEngine = Ntuple or MuonBack")
     print(" for example -f $EOSSHIP/eos/experiment/ship/data/Mbias/pythia8_Geant4-withCharm_onlyMuons_4magTarget.root")
-    sys.exit()
+    sys.exit(1)
 # PYTHIA8 requires Random:seed to be in range [0, 900000000]
 # When theSeed=0, ROOT generates a seed from system time which can exceed this limit
 seed = options.theSeed
@@ -575,6 +604,7 @@ if options.pythia8:
                 P8gen, options.theMass, theProductionCouplings, theDecayCouplings, inclusive, options.deepCopy
             )
         if options.RPVSUSY:
+            assert theCouplings is not None, "options.thecouplings is required for --RPVSUSY"
             print("Generating RPVSUSY events of mass %.3f GeV" % theHNLMass)
             print(f"and with couplings=[{theCouplings[0]:.3f},{theCouplings[1]:.3f}]")
             print("and with stop mass=%.3f GeV\n" % theCouplings[2])
@@ -589,7 +619,7 @@ if options.pythia8:
             )
         P8gen.SetParameters("ProcessLevel:all = off")
         if inputFile:
-            ut.checkFileExists(inputFile)
+            useInputFile(inputFile)
             # read from external file
             P8gen.UseExternalFile(inputFile, options.firstEvent)
     if options.DarkPhoton:
@@ -606,6 +636,7 @@ if options.pythia8:
         if passDPconf != 1:
             sys.exit()
     if HNL or options.RPVSUSY or options.DarkPhoton:
+        assert P8gen is not None  # guaranteed by the three branches above
         P8gen.SetSmearBeam(options.SmearBeam * u.cm)  # Gaussian beam smearing
         P8gen.SetPaintRadius(options.PaintBeam * u.cm)  # beam painting radius
         P8gen.SetLmin(ship_geo.decayVolume.z0 - ship_geo.target.z0)
@@ -620,7 +651,7 @@ if options.pythia8:
         P8gen.SetMaxTheta(max_theta_x, max_theta_y)  # slope bounds: |px/pz|, |py/pz|
     if charmonly:
         primGen.SetTarget(0.0, 0.0)  # vertex is set in pythia8Generator
-        ut.checkFileExists(inputFile)
+        useInputFile(inputFile)
         if ship_geo.Box.gausbeam:
             primGen.SetBeam(0.0, 0.0, 0.5, 0.5)  # more central beam, for hits in downstream detectors
             primGen.SmearGausVertexXY(True)  # sigma = x
@@ -667,7 +698,7 @@ if options.pythia6:
 if options.evtcalc:
     primGen.SetTarget(0.0, 0.0)
     print(f"Opening input file for EvtCalc generator: {inputFile}")
-    ut.checkFileExists(inputFile)
+    useInputFile(inputFile)
     EvtCalcGen = ROOT.EvtCalcGenerator()
     if not EvtCalcGen.Init(inputFile, options.firstEvent):
         raise RuntimeError(f"Failed to initialize EvtCalcGenerator from input: {inputFile}")
@@ -688,7 +719,9 @@ if options.command == "PG":
         sys.exit(0)
     myPgun.SetPRange(options.Estart, options.Eend)
     myPgun.SetPhiRange(0, 360)  # // Azimuth angle range [degree]
-    myPgun.SetThetaRange(0, 0)  # // Polar angle in lab system range [degree]
+    if options.thetaMin > options.thetaMax:
+        sys.exit(f"thetaMin ({options.thetaMin}) must not exceed thetaMax ({options.thetaMax})")
+    myPgun.SetThetaRange(options.thetaMin, options.thetaMax)  # Polar angle in lab system [degree]
     if options.bothCharges:
         myPgun.SetBothCharges(True, options.chargeFraction)
     if options.multiplePG:
@@ -726,7 +759,7 @@ if options.command == "PG":
     ROOT.SetOwnership(myPgun, False)  # C++ FairPrimaryGenerator takes ownership
 # -----muon DIS Background------------------------
 if options.mudis:
-    ut.checkFileExists(inputFile)
+    useInputFile(inputFile)
     primGen.SetTarget(0.0, 0.0)
     DISgen = ROOT.MuDISGenerator()
     # from nu_tau detector to tracking station 2
@@ -745,19 +778,24 @@ if options.mudis:
 # -----Neutrino Background------------------------
 if options.command == "Genie":
     # Genie
-    ut.checkFileExists(inputFile)
+    useInputFile(inputFile)
     primGen.SetTarget(0.0, 0.0)  # do not interfere with GenieGenerator
     Geniegen = ROOT.GenieGenerator()
+
+    GenieOptions = {"simple_gevgen": 0, "genie_geometry": 3}
+    genie_option = GenieOptions[options.GenieOption]  # 0 standard, 3 GENIE geometry driver
+    Geniegen.SetGenerationOption(genie_option)
     if not Geniegen.Init(inputFile, options.firstEvent):
         raise RuntimeError(f"Failed to initialize GenieGenerator from input: {inputFile}")
-    Geniegen.SetPositions(ship_geo.target.z0, options.z_start_nu, options.z_end_nu)
+    if genie_option == 0:
+        Geniegen.SetPositions(ship_geo.target.z0, options.z_start_nu, options.z_end_nu)
     primGen.AddGenerator(Geniegen)
     ROOT.SetOwnership(Geniegen, False)  # C++ FairPrimaryGenerator takes ownership
     options.nEvents = Geniegen.GetNevents() if options.nEvents == -1 else min(options.nEvents, Geniegen.GetNevents())
     run.SetPythiaDecayer("DecayConfigNuAge.C")
     print("Generate ", options.nEvents, " with Genie input", " first event", options.firstEvent)
 if options.nuradio:
-    ut.checkFileExists(inputFile)
+    useInputFile(inputFile)
     primGen.SetTarget(0.0, 0.0)  # do not interfere with GenieGenerator
     Geniegen = ROOT.GenieGenerator()
     if not Geniegen.Init(inputFile, options.firstEvent):
@@ -777,7 +815,7 @@ if options.nuradio:
     # for i in [431,421,411,-431,-421,-411]:
     # ROOT.gMC.SetUserDecay(i) # Force the decay to be done w/external decayer
 if options.ttree:
-    ut.checkFileExists(inputFile)
+    useInputFile(inputFile)
     primGen.SetTarget(0.0, 0.0)
     generator = ROOT.SHiP.TTreeGenerator()
     generator.SetTreeName("converted_ntuple")
@@ -790,7 +828,7 @@ if options.ttree:
     print("Process ", options.nEvents, " from input file")
 if options.ntuple:
     # reading previously processed muon events, [-50m - 50m]
-    ut.checkFileExists(inputFile)
+    useInputFile(inputFile)
     primGen.SetTarget(ship_geo.target.z0 + 50 * u.m, 0.0)
     Ntuplegen = ROOT.NtupleGenerator()
     if not Ntuplegen.Init(inputFile, options.firstEvent):
@@ -802,6 +840,7 @@ if options.ntuple:
 #
 if options.muonback:
     # reading muon tracks from previous Pythia8/Geant4 simulation with charm replaced by cascade production
+    useInputFile(inputFile)
     isNew = ut.checkForBranch(
         inputFile, "PlaneHAPoint"
     )  # If there is a branch PlaneHAPoint this file is from the new production
@@ -819,12 +858,6 @@ if options.muonback:
     MuonBackgen.SetPaintRadius(options.PaintBeam * u.cm)
     MuonBackgen.SetSmearBeam(options.SmearBeam * u.cm)
     MuonBackgen.SetPhiRandomize(options.phiRandom)
-    if DownScaleDiMuon:
-        testf = ROOT.TFile.Open(inputFile[0])
-        if not testf.FileHeader.GetTitle().find("diMu100.0") < 0:
-            MuonBackgen.SetDownScaleDiMuon()  # avoid interference with boosted channels
-            print("MuonBackgenerator: set downscale for dimuon on")
-        testf.Close()
     if options.sameSeed:
         MuonBackgen.SetSameSeed(options.sameSeed)
     primGen.AddGenerator(MuonBackgen)
@@ -853,6 +886,7 @@ if options.muonback:
     # ROOT.kShipMuonsCrossSectionFactor = 100.
 #
 if options.cosmics:
+    assert Opt_high is not None  # guaranteed by the same options.cosmics check above
     primGen.SetTarget(0.0, 0.0)
     Cosmicsgen = ROOT.CosmicsGenerator()
     import CMBG_conf
@@ -860,7 +894,7 @@ if options.cosmics:
     CMBG_conf.configure(Cosmicsgen, ship_geo)
     if not Cosmicsgen.Init(Opt_high):
         print("initialization of cosmic background generator failed ", Opt_high)
-        sys.exit(0)
+        sys.exit(1)
     Cosmicsgen.n_EVENTS = options.nEvents
     primGen.AddGenerator(Cosmicsgen)
     ROOT.SetOwnership(Cosmicsgen, False)  # C++ FairPrimaryGenerator takes ownership
@@ -997,14 +1031,13 @@ if not options.reproducible:
 # remove empty events
 if options.muonback:
     tmpFile = outFile + "tmp"
-    xxx = outFile.split("/")
-    check = xxx[len(xxx) - 1]
-    fin = False
+    target = os.path.normpath(outFile)
+    fin: ROOT.TFile | None = None
     for ff in ROOT.gROOT.GetListOfFiles():
-        nm = ff.GetName().split("/")
-        if nm[len(nm) - 1] == check:
-            fin = ff
-    if not fin:
+        if os.path.normpath(ff.GetName()) == target:
+            fin = cast(ROOT.TFile, ff)
+            break
+    if fin is None:
         fin = ROOT.TFile.Open(outFile)
     t = fin["cbmsim"]
     fout = ROOT.TFile(tmpFile, "recreate")
@@ -1097,8 +1130,6 @@ if options.command == "Genie":
     # Copy Genie (gst TTree) information to the output file
     input_path = inputFile[0] if isinstance(inputFile, (list, tuple)) else inputFile
     f_input = ROOT.TFile.Open(input_path, "READ")
-    if not f_input or f_input.IsZombie():
-        raise OSError(f"Failed to open GENIE input file: {input_path}")
     gst = f_input["gst"]
     if not gst:
         raise KeyError("TTree 'gst' not found in GENIE input file")
@@ -1125,6 +1156,60 @@ if options.run_number is not None:
             file_header.Write("FileHeader", ROOT.TObject.kSingleKey)
         else:
             print("WARNING: FileHeader not found in simulation output; skipped FileHeader RunID update")
+
+print("[INFO]: Saving FileSummary")
+
+
+def mergeFileSummary(inFiles: list[str] | str) -> dict:
+    """
+    Make a file summary for the output.
+    Keeps a list of the input files so that the total
+    provenance of the events can be traced back to the sim files.
+    """
+    if isinstance(inFiles, str):
+        inFiles = [inFiles]
+
+    energyCuts = []
+    prodSites = []
+    poTperFile = []
+    mergedFSR: dict = {
+        "PoT": 0,
+        "EnergyCut": [],
+        "prodSite": [],
+        "inputFiles": [],
+        "PoTperFile": [],
+        "date": datetime.today().strftime("%Y-%m-%d"),
+    }
+    for _f in inFiles:
+        mergedFSR["inputFiles"].append(_f)
+        # The recorded path keeps any $EOSSHIP/$FAIRSHIP prefix for portability,
+        # but ROOT needs it expanded to open the file.
+        path = os.path.expandvars(_f)
+        try:
+            with ROOT.TFile.Open(path, "READ") as _of:
+                key_names = [_k.GetName() for _k in _of.GetListOfKeys()]
+                if "FileSummary" in key_names:
+                    fsr = json.loads(str(_of.Get("FileSummary")))
+                    mergedFSR["PoT"] += fsr["PoT"]
+                    energyCuts.append(fsr["EnergyCut"])
+                    prodSites.append(fsr["prodSite"])
+                    poTperFile.append(fsr["PoT"])
+                else:
+                    print(f"[WARNING] No FileSummary in {_f}")
+        except OSError:
+            # PyROOT raises instead of returning a null file. A summary is not
+            # worth losing a simulation that has already run to completion.
+            print(f"[WARNING] Could not open {path} to read its FileSummary")
+
+    mergedFSR["EnergyCut"] = list(set(energyCuts))  # Just get unique values
+    mergedFSR["prodSite"] = list(set(prodSites))
+    mergedFSR["PoTperFile"] = list(set(poTperFile))
+    return mergedFSR
+
+
+newFileSummary = mergeFileSummary(usedInputFiles)
+with ROOT.TFile.Open(outFile, "UPDATE") as _of:
+    _of.WriteObject(ROOT.TString(json.dumps(newFileSummary)), "FileSummary")
 
 print("=" * 72)
 print("Simulation finished successfully")

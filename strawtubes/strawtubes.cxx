@@ -11,6 +11,7 @@
 #include <array>
 #include <iostream>
 #include <sstream>
+#include <unordered_map>
 #include <utility>
 
 #include "FairGeoBuilder.h"
@@ -60,6 +61,9 @@ Bool_t strawtubes::ProcessHits(FairVolume* vol) {
     fLength = gMC->TrackLength();
     gMC->TrackPosition(fPos);
     gMC->TrackMomentum(fMom);
+    // Reset the "already recorded" marker so a later traversal of the same
+    // straw (curling track, next track/event) is not silently dropped.
+    fVolumeID = -1;
   }
   // Sum energy loss for all steps in the active volume
   fELoss += gMC->Edep();
@@ -445,6 +449,14 @@ void strawtubes::StrawEndPoints(Int_t fDetectorID, TVector3& vbot,
                                 TVector3& vtop)
 // method to get end points from TGeoNavigator
 {
+  // The geometry is fixed, so cache the endpoints per detID; TGeo navigation
+  // is expensive in the stepping and digitisation hot paths.
+  static std::unordered_map<Int_t, std::pair<TVector3, TVector3>> endPointCache;
+  if (auto it = endPointCache.find(fDetectorID); it != endPointCache.end()) {
+    vbot = it->second.first;
+    vtop = it->second.second;
+    return;
+  }
   const auto [statnb, vnb, lnb, snb] = StrawDecode(fDetectorID);
   TString stat = "Tr";
   stat += statnb;
@@ -496,4 +508,5 @@ void strawtubes::StrawEndPoints(Int_t fDetectorID, TVector3& vbot,
   nav->LocalToMaster(bot, Gbot);
   vtop.SetXYZ(Gtop[0], Gtop[1], Gtop[2]);
   vbot.SetXYZ(Gbot[0], Gbot[1], Gbot[2]);
+  endPointCache.emplace(fDetectorID, std::make_pair(vbot, vtop));
 }

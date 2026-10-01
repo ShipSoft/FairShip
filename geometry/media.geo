@@ -6,7 +6,7 @@
 //name	ncomp	aw	an	dens
 //sensflag	fldflag	fld	epsil
 //npckov
-//ncomp: - number of components in the material (ncomp= 1 for a basic material and <1 or >1 for a mixture
+//ncomp: - number of components in the material (ncomp= 1 for a basic material and <1 or >1 for a mixture)
 //aw: 	- atomic weights A for the components
 //an: 	- atomic numbers Z for the components
 //dens:	density DENS in g cm(**-3)
@@ -108,10 +108,7 @@ silicon            1  28.0855 14.0 2.33
 HYPsilicon         1  28.0855 14.0 2.33
                    1  1  20.  .001
                    0
-aluminium          1  26.98 13. 2.7
-                   0  1  20.  .001
-                   0
-Aluminum           1  26.98 13. 2.7
+Aluminium          1  26.98 13. 2.7
                    0  1  20.  .001
                    0
 //  powder of Al to simulate sensitive material with 900cm of radiation length
@@ -166,6 +163,22 @@ Inconel718	    6 51.9961 55.845 95.96 92.906 58.6934 47.867 24 26 42 41 28 22 8.
 		    0
 
 
+// ----- SBT materials -----
+
+// Liquid scintillator filling the SBT cells: linear alkylbenzene (LAB) doped
+// with 2 g/l PPO. LAB = C6H5-CnH2n+1 with n = 10-13, i.e. <C17.2H28.4>, giving
+// an H/C atom ratio of 1.65. PPO (C15H11NO) is 0.23 % by mass and is neglected
+// here; the bulk properties are those of the LAB solvent.
+// rho = 0.86 g/cm3 (20 C); X0 = 44.4 g/cm2 = 51.6 cm; lambda_I = 79.5 g/cm2 = 92 cm.
+// NB: this is NOT "Scintillator", defined further down inside the ecal block,
+// which is the plastic C8H8 at 1.032 g/cm3. Do not use that one for the SBT.
+// Ref: SHiP SBT, arXiv:2311.07340, arXiv:2503.10250
+LiquidScintillator 2  1.00794 12.011 1. 6. 0.86 0.1216 0.8784
+                   1  0  20.  .001
+                   0
+
+// ----- End SBT materials -----
+
 // ----- MVD materials -----
 carbonfoam2       1  12.011  6.0  0.2265
                   0  1  20.  .001
@@ -200,7 +213,7 @@ SMD               1 26.98 13. 1.41
 PVC               3 1.00794 12.0107 35.453 1. 6. 17. 1.30  0.048380 0.384360 0.567260
                   0 1 20. .001
                   0
-// Polyvinylchloride (PVC2) Heavier definition for MVD containing some aluminum
+// Polyvinylchloride (PVC2) Heavier definition for MVD containing some aluminium
 PVCHEAVY          4 1.00794 12.0107 35.453 26.981539 1. 6. 17. 13. 1.44 0.043542 0.345924 0.510534 0.1
                   0	1	20.	.001
                   0

@@ -6,6 +6,7 @@
 #define VETO_VETO_H_
 
 #include <map>
+#include <utility>
 #include <vector>
 
 #include "Detector.h"
@@ -57,16 +58,20 @@ class veto : public SHiP::Detector<vetoPoint> {
   void ConstructGeometry() override;
 
   void SetVesselStructure(Float_t a, Float_t b, Float_t c, TString d, Float_t l,
-                          TString e, TString f, TString v, Float_t r) {
+                          TString e, TString f, TString v, Float_t r,
+                          Float_t he_balloon_thickness,
+                          TString he_balloon_med) {
     f_InnerSupportThickness = a;
     f_VetoThickness = b;
     f_OuterSupportThickness = c;
-    supportMedIn_name = d;
+    supportMedIn_name = std::move(d);
     f_LidThickness = l;
-    vetoMed_name = e;
-    supportMedOut_name = f;
-    decayVolumeMed_name = v;
+    vetoMed_name = std::move(e);
+    supportMedOut_name = std::move(f);
+    decayVolumeMed_name = std::move(v);
     f_RibThickness = r;
+    f_he_balloon_thickness = he_balloon_thickness;
+    f_he_balloon_med_name = std::move(he_balloon_med);
   }
 
   /** The following methods can be implemented if you need to make
@@ -96,20 +101,25 @@ class veto : public SHiP::Detector<vetoPoint> {
   //! Thickness of the liquid scintillator along z(Default = 20cm).
   Float_t f_VetoThickness;
   Float_t f_RibThickness;
+  //! Thickness of the He Balloon
+  Float_t f_he_balloon_thickness;
 
   //! medium of veto counter, liquid or plastic scintillator
   TString vetoMed_name;
-  //! medium of internal support structure(Default = Aluminum).
+  //! medium of internal support structure(Default = Aluminium).
   TString supportMedIn_name;
-  //! medium of external support structure(Default = Aluminum).
+  //! medium of external support structure(Default = Aluminium).
   TString supportMedOut_name;
   //! medium of decay volume(Default= helium).
   TString decayVolumeMed_name;
+  //! medium of He Balloon(Default= PVC).
+  TString f_he_balloon_med_name;
 
   TGeoMedium* vetoMed;
   TGeoMedium* supportMedIn;
   TGeoMedium* supportMedOut;
   TGeoMedium* decayVolumeMed;
+  TGeoMedium* f_he_balloon_med;
 
   //! Width of the Vessel along X at the start
   Float_t VetoStartInnerX;
@@ -133,9 +143,11 @@ class veto : public SHiP::Detector<vetoPoint> {
    * dimensions of wX_start * wY_start and end cross-section dimensions of
    * wX_end *wY_end
    */
-  TGeoVolume* GeoTrapezoid(const TString& xname, Double_t wz, Double_t wX_start,
-                           Double_t wX_end, Double_t wY_start, Double_t wY_end,
-                           Int_t color, TGeoMedium* material, Bool_t sens);
+  TGeoVolume* make_geo_trapezoid(const TString& xname, Double_t wz,
+                                 Double_t wX_start, Double_t wX_end,
+                                 Double_t wY_start, Double_t wY_end,
+                                 Int_t color, TGeoMedium* material,
+                                 Bool_t sens);
 
   /** Adds a Hollow Trapezoid of thickness (along z) wz with start cross-section
    * dimensions of wX_start * wY_start and end cross-section dimensions of
@@ -149,19 +161,19 @@ class veto : public SHiP::Detector<vetoPoint> {
                                  Int_t color, TGeoMedium* material,
                                  Bool_t sens);
 
-  /** Adds a custom block of OuterWall+InnerWall+LiSc+Support ribs for a given
+  /** Adds a custom block of OuterWall+LiSc+Support ribs for a given
    * distance along z. Ensures consistency in implementation throughout the z.
    */
-  void AddBlock(TGeoVolumeAssembly* tInnerWall,
-                TGeoVolumeAssembly* tDecayVacuum,
-                TGeoVolumeAssembly* tOuterWall, TGeoVolumeAssembly* tLongitRib,
-                TGeoVolumeAssembly* tVerticalRib, TGeoVolumeAssembly* ttLiSc,
-                int& liScCounter, int blockNr, int nx, int ny, double z1,
-                double z2, double Zshift, double dist, double wallThick,
-                double liscThick1, double liscThick2, double ribThick);
+  void add_block(TGeoVolumeAssembly* outer_wall,
+                 TGeoVolumeAssembly* longitudinal_rib,
+                 TGeoVolumeAssembly* vertical_rib, TGeoVolumeAssembly* lisc,
+                 int block_number, int nx, int ny, double z1, double z2,
+                 double z_shift, double cell_thickness_z, double wall_thickness,
+                 double lisc_thickness_start, double lisc_thickness_end,
+                 double rib_thickness);
   /**Definition of a Corner Rib Support Structure.
    */
-  TGeoVolumeAssembly* GeoCornerRib(const TString& xname, double ribThick,
+  TGeoVolumeAssembly* GeoCornerRib(const TString& xname, double rib_thickness,
                                    double lt1, double lt2, double dz,
                                    double slopeX, double slopeY, Int_t color,
                                    TGeoMedium* material, Bool_t sens);
@@ -171,8 +183,8 @@ class veto : public SHiP::Detector<vetoPoint> {
   int makeId(double z, double x, double y);
   /**Detector ID implementation for the SBT
    */
-  int liscId(const TString& ShapeTypeName, int blockNr, int Zlayer, int number,
-             int position);
+  int liscId(const TString& ShapeTypeName, int block_number, int Zlayer,
+             int number, int position);
   //! slope along the width (x)
   double wx(double z);
   //! slope along the length (y)
@@ -195,7 +207,7 @@ class veto : public SHiP::Detector<vetoPoint> {
                              double dA, double dB, Int_t color,
                              TGeoMedium* material, Bool_t sens);
 
-  TGeoVolume* MakeSegments();
+  TGeoVolume* make_segments();
 };
 
 #endif  // VETO_VETO_H_

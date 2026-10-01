@@ -62,12 +62,12 @@ withMCTracks = True
 #                        muon shield  strawtube                     decay vessel
 transparentMaterials = {
     "iron": 80,
-    "aluminium": 80,
+    "Aluminium": 80,
     "mylar": 60,
     "STTmix9010_2bar": 95,
     "steel": 80,
-    "Aluminum": 80,
     "Scintillator": 80,
+    "LiquidScintillator": 80,
     #                        tau nu detector
     "CoilCopper": 70,
     "copper": 90,
@@ -113,6 +113,7 @@ parser.add_argument(
     dest="HiddenParticleID",
     help="HiddenParticle ID",
     required=False,
+    type=int,
     default=9900015,
 )
 
@@ -208,6 +209,8 @@ def printParticles() -> None:
 
 class DrawVetoDigi(ROOT.FairTask):
     "My Fair Task"
+
+    Targetz: float = 0.0  # set externally by the owning EventLoop after geometry init
 
     def InitTask(self) -> None:
         self.comp = ROOT.TEveCompound("Veto Digis")
@@ -396,6 +399,22 @@ class DrawTracks(ROOT.FairTask):
         ntot = 0
         fPos = ROOT.TVector3()
         fMom = ROOT.TVector3()
+        # Map trackID -> hits once per event, preserving branch and in-branch
+        # order (the hitlist building below relies on it).
+        hits_by_track: dict[int, list] = {}
+        for P in [
+            "vetoPoint",
+            "strawtubesPoint",
+            "ShipRpcPoint",
+            "TargetPoint",
+            "MTCDetPoint",
+            "SiliconTargetPoint",
+            "TimeDetPoint",
+        ]:
+            if not sTree.GetBranch(P):
+                continue
+            for p in getattr(sTree, P):
+                hits_by_track.setdefault(p.GetTrackID(), []).append(p)
         for fT in sTree.MCTrack:
             n += 1
             DTrack = ROOT.TEveLine()
@@ -406,40 +425,30 @@ class DrawTracks(ROOT.FairTask):
             hitlist[fPos.Z()] = [fPos.X(), fPos.Y()]
             # look for HNL
             if abs(fT.GetPdgCode()) == options.HiddenParticleID:
+                found = False
                 for da in sTree.MCTrack:
                     if da.GetMotherId() == n:
+                        found = True
                         break
                 # end vertex of HNL
-                da.GetStartVertex(fPos)
-                hitlist[fPos.Z()] = [fPos.X(), fPos.Y()]
-            # loop over all sensitive volumes to find hits
-            for P in [
-                "vetoPoint",
-                "strawtubesPoint",
-                "ShipRpcPoint",
-                "TargetPoint",
-                "MTCDetPoint",
-                "SiliconTargetPoint",
-                "TimeDetPoint",
-            ]:
-                if not sTree.GetBranch(P):
-                    continue
-                c = eval("sTree." + P)
-                for p in c:
-                    if p.GetTrackID() == n:
-                        if hasattr(p, "LastPoint"):
-                            lp = p.LastPoint()
-                            if lp.x() == lp.y() and lp.x() == lp.z() and lp.x() == 0:
-                                # must be old data, don't expect hit at 0,0,0
-                                hitlist[p.GetZ()] = [p.GetX(), p.GetY()]
-                            else:
-                                hitlist[lp.z()] = [lp.x(), lp.y()]
-                                hitlist[2.0 * p.GetZ() - lp.z()] = [
-                                    2.0 * p.GetX() - lp.x(),
-                                    2.0 * p.GetY() - lp.y(),
-                                ]
-                        else:
-                            hitlist[p.GetZ()] = [p.GetX(), p.GetY()]
+                if found:
+                    da.GetStartVertex(fPos)
+                    hitlist[fPos.Z()] = [fPos.X(), fPos.Y()]
+            # collect the hits belonging to this MC track (per-event map above)
+            for p in hits_by_track.get(n, []):
+                if hasattr(p, "LastPoint"):
+                    lp = p.LastPoint()
+                    if lp.x() == lp.y() and lp.x() == lp.z() and lp.x() == 0:
+                        # must be old data, don't expect hit at 0,0,0
+                        hitlist[p.GetZ()] = [p.GetX(), p.GetY()]
+                    else:
+                        hitlist[lp.z()] = [lp.x(), lp.y()]
+                        hitlist[2.0 * p.GetZ() - lp.z()] = [
+                            2.0 * p.GetX() - lp.x(),
+                            2.0 * p.GetY() - lp.y(),
+                        ]
+                else:
+                    hitlist[p.GetZ()] = [p.GetX(), p.GetY()]
             if len(hitlist) == 1:
                 if fT.GetMotherId() < 0:
                     continue
@@ -588,7 +597,7 @@ class IO:
         else:
             a.set(0)
         self.lbut[x] = tkinter.Checkbutton(self.master, text="with MC Tracks", compound=tkinter.LEFT, variable=a)
-        self.lbut[x].var = a
+        self.lbut[x].var = a  # pyrefly: ignore  # dynamic attribute, read back by toggleMCTracks / toggle
         self.lbut[x]["command"] = self.toggleMCTracks
         self.lbut[x].pack(side=tkinter.TOP)
         self.geoscene = ROOT.gEve.GetScenes().FindChild("Geometry scene")
@@ -660,16 +669,18 @@ class IO:
         SHiPDisplay.NextEvent(self.n)
 
     def toggleMCTracks(self) -> None:
+        if fRun is None:
+            raise RuntimeError("toggleMCTracks called before fRun was initialised")
         tl = fRun.GetMainTask().GetListOfTasks()
         geoTask = tl.FindObject("GeoTracks")
         if globals()["withMCTracks"]:
             globals()["withMCTracks"] = False
-            self.lbut["withMC"].var.set(1)
+            self.lbut["withMC"].var.set(0)
             if geoTask:
                 geoTask.SetActive(0)
         else:
             globals()["withMCTracks"] = True
-            self.lbut["withMC"].var.set(0)
+            self.lbut["withMC"].var.set(1)
             if geoTask:
                 geoTask.SetActive(1)
 
@@ -722,6 +733,8 @@ class EventLoop(ROOT.FairTask):
         t0.SetText(ROOT.TGString("3D"))
 
     def NextEvent(self, i: int = -1) -> None:
+        if fRun is None:
+            raise RuntimeError("NextEvent called before fRun was initialised")
         if i < 0:
             self.n += 1
         else:

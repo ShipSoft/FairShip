@@ -1,7 +1,7 @@
 #ifndef SHIPDATA_ISTLPOINTCONTAINER_H_
 #define SHIPDATA_ISTLPOINTCONTAINER_H_
 
-#include <map>
+#include <vector>
 
 #include "RtypesCore.h"
 
@@ -17,11 +17,10 @@ class ISTLPointContainer {
  public:
   /**
    * @brief Update track indices in point collection after track filtering
-   * @param indexMap Map from old (particle) track index to new (stored) track
-   * index
+   * @param indexMap Old (particle) track index to new (stored) track index,
+   * indexed by old track index; -2 marks tracks that were not stored
    */
-  virtual void UpdatePointTrackIndices(
-      const std::map<Int_t, Int_t>& indexMap) = 0;
+  virtual void UpdatePointTrackIndices(const std::vector<Int_t>& indexMap) = 0;
 
   virtual ~ISTLPointContainer() = default;
 };

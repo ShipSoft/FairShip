@@ -63,7 +63,6 @@ class MTCDetector(BaseDetector):
                     norm[global_channel] = 0
 
                 weight = 1
-                # Append (energy_loss, weight) instead of (mc_point, weight)
                 hit_container[global_channel].append([mc_point, weight])
                 d_e = energy_loss * weight
                 mc_points[global_channel][k] = d_e

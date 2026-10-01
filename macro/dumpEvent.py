@@ -4,10 +4,8 @@
 # example for dumping an MC event
 
 import ROOT
-import ShipGeoConfig
 import shipunit as u
 
-ship_geo = ShipGeoConfig.Config().loadpy("$FAIRSHIP/geometry/geometry_config.py")
 PDG = ROOT.TDatabasePDG.Instance()
 
 

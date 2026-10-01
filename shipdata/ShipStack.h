@@ -27,10 +27,8 @@
 #ifndef SHIPDATA_SHIPSTACK_H_
 #define SHIPDATA_SHIPSTACK_H_
 
-#include <map>      // for map, map<>::iterator
-#include <stack>    // for stack
-#include <utility>  // for pair
-#include <vector>   // for vector
+#include <stack>   // for stack
+#include <vector>  // for vector
 
 #include "FairGenericStack.h"  // for FairGenericStack
 #include "Rtypes.h"            // for Int_t, Double_t, Bool_t, etc
@@ -153,14 +151,19 @@ class ShipStack : public FairGenericStack {
   void SetMinPoints(Int_t min) { fMinPoints = min; }
   void SetEnergyCut(Double_t eMin) { fEnergyCut = eMin; }
   void StoreMothers(Bool_t choice = kTRUE) { fStoreMothers = choice; }
+  void SetSplitting() { fSplitting = kTRUE; }
 
-  /** Increment number of points for the current track in a given detector
-   *@param iDet  Detector unique identifier
+  /** Increment the point total for the current track.
+   ** The count is per track, aggregated across all detectors; iDet is retained
+   ** for call-site compatibility but ignored for counting.
+   *@param iDet  Detector unique identifier (ignored)
    **/
   void AddPoint(DetectorId iDet);
 
-  /** Increment number of points for an arbitrary track in a given detector
-   *@param iDet    Detector unique identifier
+  /** Increment the point total for an arbitrary track.
+   ** The count is per track, aggregated across all detectors; iDet is retained
+   ** for call-site compatibility but ignored for counting.
+   *@param iDet    Detector unique identifier (ignored)
    *@param iTrack  Track number
    **/
   void AddPoint(DetectorId iDet, Int_t iTrack);
@@ -181,16 +184,14 @@ class ShipStack : public FairGenericStack {
   /** Array of FairMCTracks containing the tracks written to the output **/
   std::vector<ShipMCTrack>* fTracks;
 
-  /** STL map from particle index to storage flag  **/
-  std::map<Int_t, Bool_t> fStoreMap;             //!
-  std::map<Int_t, Bool_t>::iterator fStoreIter;  //!
+  /** Storage flag per particle index  **/
+  std::vector<Bool_t> fStoreFlags;  //!
 
-  /** STL map from particle index to track index  **/
-  std::map<Int_t, Int_t> fIndexMap;             //!
-  std::map<Int_t, Int_t>::iterator fIndexIter;  //!
+  /** Output track index per particle index (-2 if not stored)  **/
+  std::vector<Int_t> fIndexMap;  //!
 
-  /** STL map from track index and detector ID to number of MCPoints **/
-  std::map<std::pair<Int_t, Int_t>, Int_t> fPointsMap;  //!
+  /** Number of MCPoints per track index, summed over all detectors **/
+  std::vector<Int_t> fPointsPerTrack;  //!
 
   /** Some indizes and counters **/
   Int_t fCurrentTrack;  //! Index of current track
@@ -204,6 +205,7 @@ class ShipStack : public FairGenericStack {
   Int_t fMinPoints;
   Double32_t fEnergyCut;
   Bool_t fStoreMothers;
+  Bool_t fSplitting;
 
   /** Mark tracks for output using selection criteria  **/
   void SelectTracks();

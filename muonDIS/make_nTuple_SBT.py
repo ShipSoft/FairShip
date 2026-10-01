@@ -10,6 +10,7 @@ import logging
 import os
 
 import ROOT as r
+import rootUtils as ut
 import shipunit as u
 from tabulate import tabulate
 
@@ -223,7 +224,7 @@ for inputFolder in os.listdir(path):
             os.path.join(path, inputFolder, "ship.conical.MuonBack-TGeant4.root"),
             "read",
         )
-        tree = f.cbmsim
+        tree = f["cbmsim"]
     except Exception as e:
         logging.debug(f"Error :{e}")
 
@@ -285,9 +286,7 @@ for inputFolder in os.listdir(path):
                 if track_id != muon_:
                     continue
 
-                if muon_UpstreamTaggerPoints.GetSize() == ubt_index:
-                    muon_UpstreamTaggerPoints.Expand(ubt_index + 1)
-                muon_UpstreamTaggerPoints[ubt_index] = hit
+                ut.assignClonesArrayItem(muon_UpstreamTaggerPoints, ubt_index, hit)
 
                 ubt_index += 1
 
@@ -307,9 +306,7 @@ for inputFolder in os.listdir(path):
                     if global_event_nr not in processed_events:
                         processed_events[global_event_nr] = []
 
-                    if muon_vetoPoints.GetSize() == index:
-                        muon_vetoPoints.Expand(index + 1)
-                    muon_vetoPoints[index] = hit
+                    ut.assignClonesArrayItem(muon_vetoPoints, index, hit)
 
                     index += 1
 
@@ -348,7 +345,10 @@ for inputFolder in os.listdir(path):
                         h["PvPt_muon"].Fill(P, Pt)
                         h["n_softtracks"].Fill(len(track_array))
 
-                    muon_table[-1][-2] = len(muon_vetoPoints)
+                    # Update the final SBT-hit count (column -3); the row was
+                    # appended on the first SBT hit before the count was complete.
+                    # (-2 is the already-complete UBT count.)
+                    muon_table[-1][-3] = len(muon_vetoPoints)
 
             h["n_sbthits"].Fill(len(muon_vetoPoints))
 
@@ -381,7 +381,7 @@ print(
 event_data = []
 with r.TFile.Open(args.outputfile, "read") as file:
     try:
-        tree = file.MuonAndSoftInteractions
+        tree = file["MuonAndSoftInteractions"]
     except Exception as e:
         print(f"Error: {e}")
         exit(1)

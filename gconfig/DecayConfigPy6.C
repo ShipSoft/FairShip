@@ -47,7 +47,7 @@ void DecayConfig() {
   // the decay product neutrino flavor, which is otherwise not preserved in
   // Geant3 decays.
   const Int_t npartnf = 9;
-  // mu-,mu+,pi+,pi-,K+,K-,K0L, Xi-
+  // mu-, mu+, pi+, pi-, K+, K-, K0L, Xi-, J/psi
   Int_t pdgnf[npartnf] = {13, -13, 211, -211, 321, -321, 130, 3312, 443};
   for (Int_t ipartnf = 0; ipartnf < npartnf; ipartnf++) {
     Int_t ipdg = pdgnf[ipartnf];
@@ -61,13 +61,11 @@ void DecayConfig() {
   // The following will print the decay modes
   pythia6.Pyupda(1, 6);
 
-  // rho0 (113), rho+ (213), rho- (-213) and
-  // D+(411) ,D-(-411),D0(421),D0bar(-421) have decay modes defined in
-  // TGeant3::DefineParticles, but for these particles
-  // those decay modes are overridden to make use of pythia6.
+  // D0 (421), Lambda (3122) and Lambda-bar (-3122) have decay modes defined in
+  // TGeant3::DefineParticles, but for these particles those decay modes are
+  // overridden to make use of pythia6.
   const Int_t nparthq = 3;
-  // rho0,rho+,rho-,D+,D-,D0,D0bar
-  // Int_t pdghq[nparthq] = {113,213,-213,411,-411,421,-421};
+  // D0, Lambda, Lambda-bar
   Int_t pdghq[nparthq] = {421, 3122, -3122};
   for (Int_t iparthq = 0; iparthq < nparthq; iparthq++) {
     Int_t ipdg = pdghq[iparthq];

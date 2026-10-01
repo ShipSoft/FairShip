@@ -30,14 +30,12 @@ DPPythia8Generator::DPPythia8Generator() {
   fDP = 9900015;        // DP  pdg code
   fLmin = 5000. * cm;   // mm minimum  decay position z  ROOT units !
   fLmax = 12000. * cm;  // mm maximum decay position z
-  fFDs = 7.7 / 10.4;  // correction for Pythia6 to match measured Ds production
   fpbrem = kFALSE;
   fpbremPDF = nullptr;
   fsmearBeam = 8 * mm;  // default value for smearing beam (8 mm)
   fPaintBeam = 5 * cm;  // default value for painting beam (5 cm)
   fdy = kFALSE;
   fDPminM = 0.5;
-  fInputFile = nullptr;
   fnRetries = 0;
   fnDPtot = 0;
   fShipEventNr = 0;
@@ -247,8 +245,7 @@ Bool_t DPPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg) {
 
           cpg->AddTrack((Int_t)fPythia->event[1].id(), pxN, pyN, pzN,
                         xN * mm + dx, yN * mm + dy, zN * mm, -1, false, eN,
-                        tN * mm / c_light,
-                        w);  // event[0] is the root of the exported chain
+                        tN * mm / c_light, w);
 
           dec_chain.push_back(1);
 
@@ -269,7 +266,7 @@ Bool_t DPPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg) {
         em = fPythia->event[im].e();
         tm = fPythia->event[im].tProd();
 
-        // mother points to track 0 (event[1]) in the exported chain
+        // mother of the meson is track 0 (the beam nucleon)
         imout = 0;
 
         cpg->AddTrack(
@@ -277,8 +274,7 @@ Bool_t DPPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg) {
             ym * mm + dy, zm * mm, imout, false, em, tm * mm / c_light,
             w);  // convert pythia's (x,y,z[mm], t[mm/c]) to ([cm], [s])
 
-        // DP points to the direct mother in the exported chain, which is track
-        // 1
+        // mother of the DP is track 1 (the meson)
         cpg->AddTrack(fDP, px, py, pz, xp * mm + dx, yp * mm + dy, zp * mm, 1,
                       false, e, tp * mm / c_light, w);
 

@@ -5,50 +5,31 @@
 #ifndef SND_EMULSIONTARGET_TARGETPOINT_H_
 #define SND_EMULSIONTARGET_TARGETPOINT_H_
 
-#include "FairMCPoint.h"
-#include "TObject.h"
+#include "DetectorPoint.h"
 #include "TVector3.h"
 
-class TargetPoint : public FairMCPoint {
+class TargetPoint : public SHiP::DetectorPoint {
  public:
   /** Default constructor **/
-  TargetPoint();
+  TargetPoint() = default;
 
   /** Constructor with arguments
    *@param trackID  Index of MCTrack
    *@param detID    Detector ID
-   *@param pos      Ccoordinates at entrance to active volume [cm]
+   *@param pos      Coordinates at entrance to active volume [cm]
    *@param mom      Momentum of track at entrance [GeV]
    *@param tof      Time since event start [ns]
    *@param length   Track length since creation [cm]
    *@param eLoss    Energy deposit [GeV]
+   *@param pdgCode  PDG code of the track
    **/
-
-  /*TargetPoint(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom,
-                   Double_t tof, Double_t length, Double_t eLoss, Int_t pdgCode,
-              Bool_t emTop, Bool_t emBot,Bool_t emCESTop, Bool_t emCESBot,
-     Bool_t tt, Int_t nPlate, Int_t nColumn, Int_t nRow, Int_t nWall);*/
-
   TargetPoint(Int_t trackID, Int_t detID, const TVector3& pos,
               const TVector3& mom, Double_t tof, Double_t length,
-              Double_t eLoss, Int_t pdgCode);
+              Double_t eLoss, Int_t pdgCode)
+      : SHiP::DetectorPoint(0, trackID, detID, pos, mom, tof, length, eLoss,
+                            pdgCode) {}
 
-  /** Destructor **/
-  ~TargetPoint() override;
-
-  /** Copy constructor **/
-  TargetPoint(const TargetPoint& point) = default;
-  TargetPoint& operator=(const TargetPoint& point) = default;
-
-  /** Output to screen **/
-  void Print(const Option_t* opt) const override;
-
-  Int_t PdgCode() const { return fPdgCode; }
-
- private:
-  Int_t fPdgCode;
-
-  ClassDefOverride(TargetPoint, 3)
+  ClassDefOverride(TargetPoint, 4)
 };
 
 #endif  // SND_EMULSIONTARGET_TARGETPOINT_H_

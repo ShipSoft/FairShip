@@ -8,6 +8,8 @@
 
 #include <array>
 #include <cmath>
+#include <string>
+#include <vector>
 
 #include "BeamSmearingUtils.h"
 #include "FairMCEventHeader.h"
@@ -19,6 +21,7 @@
 #include "TGeoBBox.h"
 #include "TGeoNode.h"
 #include "TGeoVolume.h"
+#include "TH1.h"
 #include "TMCProcess.h"
 #include "TMath.h"
 #include "TROOT.h"
@@ -53,8 +56,9 @@ FixedTargetGenerator::FixedTargetGenerator() {
   fBoost = 1.;
   withEvtGen = kFALSE;
   withNtuple = kFALSE;
-  chicc = 1.7e-3;      // prob to produce primary ccbar pair/pot
-  chibb = 1.6e-7;      // prob to produce primary bbbar pair/pot
+  chicc = 1.7e-3;      // prob to produce primary ccbar pair/pot on Mo
+                       // (cf. python/heavyFlavourScaling.py)
+  chibb = 1.6e-7;      // prob to produce primary bbbar pair/pot on Mo
   nrpotspill = 5.E13;  // nr of protons / spill
   setByHand = kFALSE;
   Debug = kFALSE;
@@ -75,7 +79,7 @@ Bool_t FixedTargetGenerator::InitForCharmOrBeauty(const TString& fInName,
     return kFALSE;
   }
   fin = TFile::Open(fInName, "READ");
-  if (!fin || fin->IsZombie()) {
+  if (!fin) {
     LOG(error) << "FixedTargetGenerator: could not open input file "
                << fInName.Data();
     delete fin;
@@ -171,11 +175,32 @@ Bool_t FixedTargetGenerator::Init() {
     fPythiaN = new Pythia8::Pythia();
   } else if (Option != "charm" && Option != "beauty" && !G4only) {
     LOG(error) << "Option not known " << Option.Data() << ", abort";
+    return kFALSE;
   }
   if (fUseRandom1) fRandomEngine = std::make_shared<PyTr1Rng>();
   if (fUseRandom3) fRandomEngine = std::make_shared<PyTr3Rng>();
   std::vector<int> r = {221, 221, 223, 223, 113, 331, 333};
   std::vector<int> c = {6, 7, 5, 7, 5, 6, 9};  // decay channel mumu mumuX
+
+  // FTFT tune: parameters differing from Monash 2013, arXiv:2608.29076
+  const std::vector<std::string> ftftTune = {
+      "Tune:pp = 14",  // Monash 2013 baseline, must come first
+      "StringZ:aLund = 2.0",
+      "StringZ:bLund = 0.2",
+      "StringZ:rFactC = 2.0",
+      "MultipartonInteractions:ecmRef = 30.",
+      "MultipartonInteractions:pT0Ref = 0.69",
+      "MultipartonInteractions:ecmPow = 0.266",
+      "BeamRemnants:halfMassForKT = 1.21",
+      "PDF:piSet = 1"};  // GRV 92 LO, only relevant for pion beams
+  if (!fTune.IsNull() && fTune != "FTFT") {
+    LOG(fatal) << "FixedTargetGenerator: unknown Pythia8 tune " << fTune.Data()
+               << ", choices are FTFT or empty for the Pythia8 default";
+  }
+  if (fTune == "FTFT" && (Option != "Primary" || G4only)) {
+    LOG(warning) << "FixedTargetGenerator: Pythia8 tune " << fTune.Data()
+                 << " has no effect without Pythia8 primary interactions";
+  }
 
   if (Option == "Primary" && !G4only) {
     fPythiaP->settings.mode("Beams:idB", 2212);
@@ -198,6 +223,18 @@ Bool_t FixedTargetGenerator::Init() {
       fPythia->settings.mode("Beams:frameType", 2);
       fPythia->settings.parm("Beams:eA", fMom);  // codespell:ignore parm
       fPythia->settings.parm("Beams:eB", 0.);    // codespell:ignore parm
+      // apply the tune before the process settings below, which Tune:pp
+      // would otherwise reset
+      if (fTune == "FTFT" && !G4only) {
+        for (const auto& setting : ftftTune) {
+          if (!fPythia->readString(setting)) {
+            LOG(fatal) << "FixedTargetGenerator: Pythia8 rejected tune setting "
+                       << setting;
+          }
+        }
+        LOG(info) << "FixedTargetGenerator: using Pythia8 tune "
+                  << fTune.Data();
+      }
     }
     if (JpsiMainly) {
       // use this for all onia productions
@@ -304,7 +341,6 @@ Bool_t FixedTargetGenerator::Init() {
   }
   if (targetFromGeometry) {
     // Use geometry-based coordinates passed from run_simScript.py
-    fMaterialInvestigator = new GenieGenerator();
     start[0] = xOff;
     start[1] = yOff;
     start[2] = startZ + zOff;
@@ -319,7 +355,6 @@ Bool_t FixedTargetGenerator::Init() {
     maxCrossSection = mparam[9];
   } else if (targetName != "") {
     // Fallback to fragile TGeo navigation for backward compatibility
-    fMaterialInvestigator = new GenieGenerator();
     TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();
     if (nav->CheckPath(targetName)) {
       nav->cd(targetName);
@@ -370,6 +405,17 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
   // Calculate beam smearing and painting
   auto [dx, dy] = CalculateBeamOffset(fsmearBeam, fPaintBeam);
 
+  if (G4only) {
+    // Geant4 determines the primary interaction point, so skip the expensive
+    // interaction-point sampling below (it would only be discarded).
+    IncrementCounter("generated_events");
+    IncrementCounter("g4only_events");
+    IncrementCounter("stored_tracks");
+    cpg->AddTrack(2212, 0., 0., fMom, (xOff + dx) / cm, (yOff + dy) / cm,
+                  start[2], -1, kTRUE, -1., 0., 1.);
+    return kTRUE;
+  }
+
   Double_t zinter = 0;
   Double_t ZoverA = 1.;
   if (!targetName.IsNull()) {
@@ -415,14 +461,7 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
     zinter = zinter * cm;
   }
   Pythia8::Pythia* fPythia;
-  if (G4only) {
-    IncrementCounter("generated_events");
-    IncrementCounter("g4only_events");
-    IncrementCounter("stored_tracks");
-    cpg->AddTrack(2212, 0., 0., fMom, (xOff + dx) / cm, (yOff + dy) / cm,
-                  start[2], -1, kTRUE, -1., 0., 1.);
-    return kTRUE;
-  } else if (Option == "Primary") {
+  if (Option == "Primary") {
     constexpr int kMaxPythiaRetries = 100;
     if (gRandom->Uniform(0., 1.) < ZoverA) {
       int retries = 0;
@@ -465,7 +504,7 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
     Double_t pt = TMath::Sqrt((n_mpx * n_mpx) + (n_mpy * n_mpy));
     // every event appears twice, i.e.
     if (pt < 1.e-5 && n_mid == 2212) {
-      pot += +0.5;
+      pot += 0.5;
       ntotprim += 1;
     }
     Int_t idabs = static_cast<int>(TMath::Abs(n_id));
@@ -499,7 +538,7 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
   if (withEvtGen) {
     fPythia->moreDecays();
   }  // let the very short lived resonances decay via Pythia8
-  if (Debug && !G4only) {
+  if (Debug) {
     fPythia->event.list();
   }
   TMCProcess procID;

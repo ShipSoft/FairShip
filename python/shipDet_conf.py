@@ -27,8 +27,8 @@ def configure_snd_old(yaml_file: str, emulsion_target_z_end, cave_floorHeightMuo
         nuTauTT_geo.n_hor_planes * nuTauTT_geo.scifimat_width + 2.9 * u.cm
     )  # endpieces (~2.9cm from previous geom)
     snd_nuTauTT_TTY = (
-        nuTauTT_geo.n_vert_planes * nuTauTT_geo.scifimat_width + 2.9
-    )  # u.cm  # endpieces (~2.9cm from previous geom)
+        nuTauTT_geo.n_vert_planes * nuTauTT_geo.scifimat_width + 2.9 * u.cm
+    )  # endpieces (~2.9cm from previous geom)
 
     snd_nuTauTT_TTZ = 2 * nuTauTT_geo.support_z + 2 * nuTauTT_geo.scifimat_z + nuTauTT_geo.honeycomb_z
 
@@ -156,9 +156,9 @@ def configure_snd_siliconTarget(yaml_file: str, ship_geo) -> None:
     ship_geo.SiliconTarget_geo = AttrDict(config["SiliconTarget"])
     # Initialize detector
     if ship_geo.SiliconTarget_geo.zPosition == "auto":
-        # Get the the center of the next to last magnet (temporary placement)
-        # Offset placement of detector by 140 cm, magnet is 2* 212.54 cm,
-        # 120 layers at 132 cm will fit, with 140 cm offset final layer within 10 cm of MTC.
+        # auto: centre the target so its last layer ends one magnet Z-gap
+        # upstream of the last muon-shield magnet's entrance (where the MTC
+        # starts).
         SiliconTarget_total_length = ship_geo.SiliconTarget_geo.targetSpacing * ship_geo.SiliconTarget_geo.nLayers
         ship_geo.SiliconTarget_geo.zPosition = (
             ship_geo.muShield.Entrance[-1] - ship_geo.muShield.Zgap[-1] - SiliconTarget_total_length / 2
@@ -206,6 +206,8 @@ def configure_veto(yaml_file: str, z0) -> None:
         veto_geo.outerSupportMed,
         veto_geo.decayMed,
         veto_geo.rib,
+        veto_geo.he_balloon_thickness,
+        veto_geo.he_balloon_med,
     )
 
     detectorList.append(Veto)
@@ -222,7 +224,7 @@ def configure_strawtubes(yaml_file: str, ship_geo) -> None:
 
     # Choose frame material
     if ship_geo.strawDesign == 4:
-        ship_geo.strawtubes_geo.frame_material = "aluminium"
+        ship_geo.strawtubes_geo.frame_material = "Aluminium"
     elif ship_geo.strawDesign == 10:
         ship_geo.strawtubes_geo.frame_material = "steel"
 
@@ -340,6 +342,11 @@ def configure(run, ship_geo):
     TargetStation.SetLayerPosMat(
         ship_geo.target.xy, ship_geo.target.slices_length, ship_geo.target.slices_gap, ship_geo.target.slices_material
     )
+    target_version = getattr(ship_geo.target, "version", 1)
+    TargetStation.SetDesign(target_version)
+    if target_version >= 2:
+        TargetStation.SetLastDiskDiameter(ship_geo.target.xy2)
+    TargetStation.SetShieldingReferenceLength(ship_geo.target.length_fixed)
     detectorList.append(TargetStation)
 
     # For SND: support multiple designs

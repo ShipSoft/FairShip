@@ -77,12 +77,8 @@ class ShipMCTrack : public TObject {
   void Get4Momentum(TLorentzVector& momentum);
   void GetStartVertex(TVector3& vertex);
 
-  /** Accessors to the number of MCPoints in the detectors **/
-  Int_t GetNPoints(DetectorId detId) const;
-
   /**  Modifiers  **/
   void SetMotherId(Int_t id) { fMotherId = id; }
-  void SetNPoints(Int_t iDet, Int_t np);
   void SetStartT(Double_t t) { fStartT = t; }
   void SetEventID(const Int_t& eventID);
   void SetTrackID(const Int_t& trackID);

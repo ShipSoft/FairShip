@@ -61,8 +61,9 @@ def execute_parallel(prefix, ncpu: int = 4):
     for x in jobs:
         if k == ncpu:
             k = 0
-        if cpus[k] is not None:
-            cpus[k].communicate()
+        running = cpus[k]
+        if running is not None:
+            running.communicate()
             log[k].close()
         print("change to directory ", k, x)
         os.chdir("./" + x)
@@ -71,7 +72,7 @@ def execute_parallel(prefix, ncpu: int = 4):
                 inputfile = f.replace("geofile_full", "ship")
                 log[k] = open("logRec", "w")  # noqa: SIM115
                 cpus[k] = subprocess.Popen(
-                    ["python", cmd, "-n 9999999 -f " + inputfile],
+                    ["python", cmd, "-n", "9999999", "-f", inputfile, "-g", f],
                     stdout=log[k],
                 )
                 k += 1
@@ -132,13 +133,15 @@ def executeSimple(prefixes: list[str], reset=False) -> None:
                         print("wait a minute")
                         time.sleep(100)
                 print("launch reco", x)
-                proc[x] = 1
+                proc[x] = (inputfile, geofile)
                 with contextlib.suppress(Exception):
                     os.system("rm logRec")
                 if reset:
-                    os.system("python " + cmd + " -n 9999999 -f " + inputfile + " --saveDisk >> logRec &")
+                    os.system(
+                        "python " + cmd + " -n 9999999 -f " + inputfile + " -g " + geofile + " --saveDisk >> logRec &"
+                    )
                 else:
-                    os.system("python " + cmd + " -n 9999999 -f " + inputfile + " >> logRec &")
+                    os.system("python " + cmd + " -n 9999999 -f " + inputfile + " -g " + geofile + " >> logRec &")
                 os.chdir("../")
                 time.sleep(10)
     nJobs = len(proc)
@@ -160,10 +163,17 @@ def executeSimple(prefixes: list[str], reset=False) -> None:
                 completed = True
             if completed:
                 print("analyze ", p, nproc)
+                inputfile, geofile = proc[p]
                 with contextlib.suppress(Exception):
                     os.system("rm logAna")
                 os.system(
-                    "python " + cmdAna + " -n 9999999 -f " + inputfile.replace(".root", "_rec.root") + " >> logAna &"
+                    "python "
+                    + cmdAna
+                    + " -n 9999999 -f "
+                    + inputfile.replace(".root", "_rec.root")
+                    + " -g "
+                    + geofile
+                    + " >> logAna &"
                 )
                 proc.pop(p)
                 time.sleep(10)
@@ -188,7 +198,17 @@ def executeAna(prefixes) -> None:
                     inputfile = f.replace("geofile_full", "ship")
                     log[x] = open("logAna", "w")  # noqa: SIM115
                     process = subprocess.Popen(
-                        ["python", cmdAna, "-n 9999999", "-f " + inputfile.replace(".root", "_rec.root")], stdout=log[x]
+                        [
+                            "python",
+                            cmdAna,
+                            "-n",
+                            "9999999",
+                            "-f",
+                            inputfile.replace(".root", "_rec.root"),
+                            "-g",
+                            f,
+                        ],
+                        stdout=log[x],
                     )
                     process.wait()
                     print("finished ", process.returncode)
@@ -200,7 +220,7 @@ def executeAna(prefixes) -> None:
 h = {}
 
 
-def mergeHistosMakePlots(p: list[str]) -> None:
+def mergeHistosMakePlots(p: str | list[str]) -> None:
     if not isinstance(p, list):
         pl = [p]
     else:
@@ -263,12 +283,16 @@ def mergeNtuples(prefixes: list[str]) -> None:
     for prefix in prefixes:
         jobs = getJobs(prefix)
         haddCommand = ""
+        inputfile = None
         for x in jobs:
             for f in os.listdir(x):
                 if not f.find("geofile_full") < 0:
                     inputfile = (f.replace("geofile_full", "ship")).replace(".root", "_rec.root")
                     haddCommand += " " + x + "/" + inputfile
                     break
+        if inputfile is None:
+            print("ERROR: no geofile found for prefix", prefix)
+            continue
         cmd = "hadd -f " + inputfile.replace(".root", "_" + prefix + ".root") + haddCommand
         os.system(cmd)
 

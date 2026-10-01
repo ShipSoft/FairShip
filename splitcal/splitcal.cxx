@@ -5,6 +5,7 @@
 #include "splitcal.h"
 
 #include <iostream>
+#include <vector>
 
 #include "FairGeoBuilder.h"
 #include "FairGeoInterface.h"
@@ -169,12 +170,10 @@ void splitcal::ConstructGeometry() {
   TGeoVolume* stripGivingX;
   TGeoVolume* stripGivingY;
 
-  TGeoVolume* newHCALfilter[100];
-  TGeoVolume* newHCALdet[100];
-  const char* char_labelHCALfilter[100];
   TString labelHCALfilter;
-  const char* char_labelHCALdet[100];
   TString labelHCALdet;
+  std::vector<TGeoVolume*> newHCALfilter(fnHCALSamplings, nullptr);
+  std::vector<TGeoVolume*> newHCALdet(fnHCALSamplings, nullptr);
 
   Double_t z_splitcal = 0;
 
@@ -301,20 +300,16 @@ void splitcal::ConstructGeometry() {
 
   }  // end loop in ecal layers
 
-  for (Int_t i_nlayHCAL = 0; i_nlayHCAL < 1; i_nlayHCAL++) {
+  for (Int_t i_nlayHCAL = 0; i_nlayHCAL < fnHCALSamplings; i_nlayHCAL++) {
     labelHCALfilter = "HCALfilter_";
     labelHCALfilter += i_nlayHCAL;
-    char_labelHCALfilter[i_nlayHCAL] = labelHCALfilter;
     labelHCALdet = "HCAL_det";
     labelHCALdet += i_nlayHCAL;
-    char_labelHCALdet[i_nlayHCAL] = labelHCALdet;
-    newHCALfilter[i_nlayHCAL] =
-        gGeoManager->MakeBox(char_labelHCALfilter[i_nlayHCAL], A2, fXMax, fYMax,
-                             fFilterHCALThickness / 2);
+    newHCALfilter[i_nlayHCAL] = gGeoManager->MakeBox(
+        labelHCALfilter, A2, fXMax, fYMax, fFilterHCALThickness / 2);
     if (fActiveHCAL) {
-      newHCALdet[i_nlayHCAL] =
-          gGeoManager->MakeBox(char_labelHCALdet[i_nlayHCAL], A4, fXMax, fYMax,
-                               fActiveHCALThickness / 2);
+      newHCALdet[i_nlayHCAL] = gGeoManager->MakeBox(
+          labelHCALdet, A4, fXMax, fYMax, fActiveHCALThickness / 2);
 
       AddSensitiveVolume(newHCALdet[i_nlayHCAL]);
 

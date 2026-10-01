@@ -80,7 +80,7 @@ void ShipFieldPar::putParams(FairParamList* list) {
     list->add("Field Bx", fBx);
     list->add("Field By", fBy);
     list->add("Field Bz", fBz);
-  } else if (fType >= 1 && fType <= kMaxFieldMapType) {  //
+  } else if (fType == 1) {  //
     list->add("Field Peak", fPeak);
     list->add("Field Middle", fMiddle);
   } else if (fType >= 2 && fType <= kMaxFieldMapType) {  // field map
@@ -110,7 +110,7 @@ Bool_t ShipFieldPar::getParams(FairParamList* list) {
     if (!list->fill("Field By", &fBy)) return kFALSE;
     if (!list->fill("Field Bz", &fBz)) return kFALSE;
 
-  } else if (fType >= 1 && fType <= kMaxFieldMapType) {
+  } else if (fType == 1) {
     if (!list->fill("Field Peak", &fPeak)) return kFALSE;
     if (!list->fill("Field Middle", &fMiddle)) return kFALSE;
 

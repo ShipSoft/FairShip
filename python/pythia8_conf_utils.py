@@ -80,7 +80,7 @@ def parse_histograms(filepath):
     th1f_exp = re.compile(r"^TH1F\|.+")
     header_exp = re.compile(r"^TH1F\|(.+?)\|B(?:R|F)/U2(.+?)\|.+? mass \(GeV\)\|?")
     subheader_exp = re.compile(r"^\s*?(\d+?),\s*(\d+?\.\d+?),\s*(\d+\.\d+)\s*$")
-    data_exp = re.compile(r"^\s*(\d+?)\s*,\s*(\d+\.\d+)\s*$")
+    data_exp = re.compile(r"^\s*(\d+?)\s*,\s*(-?\d+\.\d+)\s*$")
     # Locate beginning of each histogram
     header_line_idx = [i for i in range(len(lines)) if th1f_exp.match(lines[i]) is not None]
     # Iterate over histograms
@@ -101,7 +101,7 @@ def parse_histograms(filepath):
         masses = np.linspace(min_mass, max_mass, npoints, endpoint=False)
         branching_ratios = np.zeros(npoints)
         # Now read the data lines (skipping the two header lines)
-        for line in lines[offset + 2 : offset + npoints + 1]:
+        for line in lines[offset + 2 : offset + npoints + 2]:
             md = data_exp.match(line)
             if md is None or len(md.groups()) != 2:
                 raise ValueError(f"Malformed data row encountered: {line}")
@@ -249,7 +249,7 @@ def add_dummy_channel(P8gen, particle, remainder) -> None:
         P8gen.SetParameters(f"{particle}:addChannel      1   {remainder:.16}    0       22      22")
 
 
-def compute_max_total_br(decay_chains) -> int:
+def compute_max_total_br(decay_chains) -> float:
     """
     This function computes the maximum total branching ratio for all decay chains.
 
@@ -271,11 +271,11 @@ def compute_max_total_br(decay_chains) -> int:
     return max(total_branching_ratios)
 
 
-def compute_total_br(particle, decay_chains) -> int:
+def compute_total_br(particle, decay_chains) -> float:
     """
     Returns the total branching ratio to HNLs for a given particle.
     """
-    return sum(np.prod(branching_ratios) for (top, branching_ratios) in decay_chains if top == particle)
+    return sum(float(np.prod(branching_ratios)) for (top, branching_ratios) in decay_chains if top == particle)
 
 
 def get_top_level_particles(decay_chains):

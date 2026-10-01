@@ -101,8 +101,8 @@ void ShipMagnet::ConstructGeometry() {
   TGeoVolume* top = gGeoManager->GetTopVolume();
   ShipGeo::InitMedium("iron");
   TGeoMedium* Fe = gGeoManager->GetMedium("iron");
-  ShipGeo::InitMedium("Aluminum");
-  TGeoMedium* Al = gGeoManager->GetMedium("Aluminum");
+  ShipGeo::InitMedium("Aluminium");
+  TGeoMedium* Al = gGeoManager->GetMedium("Aluminium");
   TGeoVolumeAssembly* tMagnet = new TGeoVolumeAssembly("SHiPMagnet");
   top->AddNode(tMagnet, 1, new TGeoTranslation(0, 0, 0));
 

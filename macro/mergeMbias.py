@@ -17,7 +17,8 @@ Mmu2 = Mmu * Mmu
 rnr = ROOT.TRandom()
 eospath = ROOT.gSystem.Getenv("EOSSHIP") + "/eos/experiment/ship/data/"
 ship_geo = geometry_config.create_config(Yheight=10.0)
-endOfHadronAbsorber = (ship_geo["hadronAbsorber"].z + ship_geo["hadronAbsorber"].length / 2.0) / 100.0
+# The magnetized hadron absorber is the first muon-shield magnet; take its exit face, in m.
+endOfHadronAbsorber = (ship_geo["muShield"].Entrance[0] + 2 * ship_geo["muShield"].half_length[0]) / 100.0
 startOfTarget = -50.0  # value used for Geant4 production
 
 
@@ -107,14 +108,13 @@ def TplotP(sTree) -> None:
             cv = h[t].cd(k)
             cv.SetLogy(1)
             h["T" + p].Draw()
-            if h["T" + p].GetEntries() < 1:
-                continue
-            if not p.find("mu") < 0:
-                h["T" + p + "+"].Draw("same")
-                h["T" + p + "-"].Draw("same")
-            cv = h[">" + t].cd(k)
-            cv.SetLogy(1)
-            h[hi].Draw()
+            if h["T" + p].GetEntries() >= 1:
+                if not p.find("mu") < 0:
+                    h["T" + p + "+"].Draw("same")
+                    h["T" + p + "-"].Draw("same")
+                cv = h[">" + t].cd(k)
+                cv.SetLogy(1)
+                h["T" + p + "_>E"].Draw()
             k += 1
         # plot different nu species:
         k = 3

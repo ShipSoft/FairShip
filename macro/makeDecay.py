@@ -8,16 +8,14 @@ import os
 
 import ROOT
 import rootUtils as ut
+from heavyFlavourScaling import (
+    check_run_type_override,
+    derive_cross_sections,
+    format_summary,
+)
 
 ROOT.gROOT.LoadMacro("$VMCWORKDIR/gconfig/basiclibs.C")
 ROOT.basiclibs()
-
-# Reference values for Molybdenum (historical defaults). Cross-section ratios
-# scale ~ A^(1/3) since heavy-flavour ~ A and mbias ~ A^(2/3).
-A_REF = 98.0
-CHICC_REF = 1.7e-3  # prob to produce primary ccbar pair/pot on Mo
-CHIBB_REF = 1.6e-7  # prob to produce primary bbbar pair/pot on Mo
-TARGET_A = {"W": 184.0, "Mo": 98.0}
 
 ap = argparse.ArgumentParser(description="Decay charm/beauty signals from makeCascade output with Pythia8")
 ap.add_argument(
@@ -27,14 +25,16 @@ ap.add_argument(
     help="input file with charm/beauty hadrons (.root suffix optional)",
 )
 ap.add_argument("-p", "--pot", type=float, default=5.0e13, help="number of protons on target per spill to normalise on")
-ap.add_argument(
+# A run is either charm or beauty, so only one ratio override is ever meaningful.
+cross_section = ap.add_mutually_exclusive_group()
+cross_section.add_argument(
     "-c", "--chicc", type=float, default=None, help="ccbar over mbias cross section (overrides target-derived value)"
 )
-ap.add_argument(
+cross_section.add_argument(
     "--chibb", type=float, default=None, help="bbbar over mbias cross section (overrides target-derived value)"
 )
 ap.add_argument(
-    "--target_composition",
+    "--target-composition",
     default="W",
     choices=["W", "Mo"],
     help="Target composition. Default is Tungsten (W); Molybdenum (Mo) is the other preset.",
@@ -43,35 +43,26 @@ ap.add_argument(
     "-A",
     type=float,
     default=None,
-    help="Target mass number; overrides --target_composition preset. Used to scale chicc/chibb as (A/A_Mo)^(1/3).",
+    help=(
+        "Target mass number; overrides --target-composition preset. "
+        "Used to scale chicc/chibb as (A/A_Mo)^(heavyflavour_Ascale-mbias_Ascale) "
+        "(default exponent: 0.29)."
+    ),
 )
 args = ap.parse_args()
 
 fname = args.input.replace(".root", "")
 nrpotspill = args.pot
 
-A = args.A if args.A is not None else TARGET_A[args.target_composition]
-scale = (A / A_REF) ** (1.0 / 3.0)
+cs = derive_cross_sections(args.target_composition, args.A, args.chicc, args.chibb)
+chicc, chibb = cs.chicc, cs.chibb
 
-if args.chicc is not None:
-    chicc = args.chicc
-    setByHand = True
-else:
-    chicc = CHICC_REF * scale
-    setByHand = False
-
-chibb = args.chibb if args.chibb is not None else CHIBB_REF * scale
-
-print(f"Target composition: {args.target_composition}, A={A}, scale=(A/{A_REF})^(1/3)={scale:.4f}")
-print(f"Derived cross-section ratios: chicc={chicc:.3e}, chibb={chibb:.3e}")
+print(format_summary(cs, None if args.A is not None else args.target_composition))
 
 FIN = fname + ".root"
 tmp = os.path.abspath(FIN).split("/")
 FOUT = "Decay-" + tmp[len(tmp) - 1]
-if FIN.find("eos") < 0:
-    fin = ROOT.TFile(FIN)
-else:
-    fin = ROOT.TFile.Open(ROOT.gSystem.Getenv("EOSSHIP") + FIN)
+fin = ROOT.TFile.Open(FIN)
 sTree = fin.FindObjectAny("pythia6")
 nEvents = sTree.GetEntries()
 
@@ -81,7 +72,7 @@ hc = {}
 if fin.GetKey("2"):
     hc["2"] = fin.Get("2")
 else:
-    fhin = ROOT.TFile(FIN.replace("ntuple", "hists"))
+    fhin = ROOT.TFile.Open(FIN.replace("ntuple", "hists"))
     hc["2"] = fhin.Get("2")
 
 # pot are counted double, i.e. for each signal, i.e. pot/2.
@@ -102,7 +93,7 @@ while n != 0:
     if p.tau0() > 1:
         command = str(n) + ":mayDecay = false"
         P8.readString(command)
-        print("Pythia8 configuration: Made %s stable for Pythia, should decay in Geant4", p.name())
+        print("Pythia8 configuration: Made %s stable for Pythia, should decay in Geant4" % p.name())
 P8.init()
 
 
@@ -139,7 +130,9 @@ for n in range(nEvents):
     rc = sTree.GetEvent(n)
     # check if we deal with charm or beauty:
     if n == 0:
-        if not setByHand and sTree.M > 5:
+        is_beauty = sTree.M > 5
+        check_run_type_override(is_beauty, args.chicc, args.chibb)
+        if is_beauty:
             chicc = chibb
             print("automatic detection of beauty, configured for beauty")
             print("bb cross section / mbias ", chicc)
@@ -160,7 +153,7 @@ for n in range(nEvents):
             nDsprim += 1
     P8.event.reset()
     P8.event.append(int(sTree.id), 1, 0, 0, sTree.px, sTree.py, sTree.pz, sTree.E, sTree.M, 0.0, 9.0)
-    next(P8)
+    P8.next()
     # P8.event.list()
     for n in range(len(P8.event)):
         # ask for stable particles
@@ -183,7 +176,7 @@ for n in range(nEvents):
                     sTree.py,
                     sTree.pz,
                     sTree.E,
-                    sTree.M,
+                    nrpotspill,
                     ptGM,
                     sTree.mpz,
                 )

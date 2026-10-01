@@ -53,28 +53,35 @@ class Task:
         self.TwoTrackVertex()
 
     # define global data and functions for vertex fit with TMinuit
+    # y_data packs the two 5D genfit track states (q/p, dx/dz, dy/dz, x, y)
+    # on the plane at z0; Vy is their joint 10x10 inverse covariance, flattened
     y_data = np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
     z0 = 0
     Vy = np.zeros(100)
 
-    def chi2(self, res, Vy) -> int:
+    def chi2(self, res, Vy) -> float:
+        # res^T V^-1 res, with the flat index i -> (row i//10, column i%10)
         s = 0
         for i in range(100):
             s += Vy[i] * res[i // 10] * res[i % 10]
         return s
 
-    def residuals(self, y_data, a, z0: int):
+    def residuals(self, y_data, a, z0: float):
+        # fit parameters a: 0-2 vertex (x, y, z), 3-5 track 1 (dx/dz, dy/dz,
+        # 1/|p|), 6-8 track 2; positions are propagated from the vertex to z0.
+        # The q/p state component is compared via abs(), which equals 1/|p|
+        # for unit-charge tracks.
         res = np.zeros(10)
         res[0] = abs(y_data[0]) - a[5]
         res[1] = y_data[1] - a[3]
         res[2] = y_data[2] - a[4]
-        res[3] = y_data[3] - a[0] - a[3] * (a[2] - z0)
-        res[4] = y_data[4] - a[1] - a[4] * (a[2] - z0)
+        res[3] = y_data[3] - a[0] - a[3] * (z0 - a[2])
+        res[4] = y_data[4] - a[1] - a[4] * (z0 - a[2])
         res[5] = abs(y_data[5]) - a[8]
         res[6] = y_data[6] - a[6]
         res[7] = y_data[7] - a[7]
-        res[8] = y_data[8] - a[0] - a[6] * (a[2] - z0)
-        res[9] = y_data[9] - a[1] - a[7] * (a[2] - z0)
+        res[8] = y_data[8] - a[0] - a[6] * (z0 - a[2])
+        res[9] = y_data[9] - a[1] - a[7] * (z0 - a[2])
         return res
 
     def fcn(self, npar, gin, f, par, iflag) -> None:
@@ -105,10 +112,9 @@ class Task:
         for tr in goodTracks:
             fittedTracks[tr].getFitStatus()
             xx = fittedTracks[tr].getFittedState()
+            # shipDigiReco fits every track under the muon hypothesis (+-13)
             pid = xx.getPDG()
-            if not global_variables.pidProton and abs(pid) == 2212:
-                pid = int(math.copysign(211, pid))
-            rep = ROOT.genfit.RKTrackRep(xx.getPDG())
+            rep = ROOT.genfit.RKTrackRep(pid)
             state = ROOT.genfit.StateOnPlane(rep)
             rep.setPosMom(state, xx.getPos(), xx.getMom())
             PosDirCharge[tr] = {
@@ -135,7 +141,7 @@ class Task:
                 # ignore this for background studies
                 if PosDirCharge[t2]["charge"] == c1:
                     continue
-                newPos, doca = self.VertexError(t1, t2, PosDirCharge)
+                newPos, _covX, doca = self.VertexError(t1, t2, PosDirCharge)
                 # Extrapolate both tracks toward the initial vertex
                 # estimate in steps to avoid long backward extrapolation
                 # through the magnetic field which causes RK failures.
@@ -164,7 +170,7 @@ class Task:
                 if not rc:
                     continue
                 # Recompute DOCA from the extrapolated positions
-                newPos, doca = self.VertexError(t1, t2, extrapolatedPosDir)
+                newPos, _covX, doca = self.VertexError(t1, t2, extrapolatedPosDir)
                 # as we have learned, need iterative procedure
                 dz = 99999.0
                 step = 0
@@ -185,7 +191,7 @@ class Task:
                         }
                     if not rc:
                         break
-                    newPos, doca = self.VertexError(t1, t2, self.newPosDir)
+                    newPos, _covX, doca = self.VertexError(t1, t2, self.newPosDir)
                     dz = abs(zBefore - newPos[2])
                     step += 1
                     if step > 10:
@@ -222,8 +228,11 @@ class Task:
                 # print "DEBUG",HNLPos[0],HNLPos[1],HNLPos[2],dist,covX[0][0],covX[1][1],covX[2][2]
                 # print "     ",mctrack.GetStartX(),mctrack.GetStartY(),mctrack.GetStartZ()
 
-                st1 = fittedTracks[t1].getFittedState()
-                st2 = fittedTracks[t2].getFittedState()
+                # Copy the fitted states: getFittedState() returns a reference
+                # cached in the track, and extrapolating it in place would make
+                # results depend on the pair-processing order.
+                st1 = ROOT.genfit.MeasuredStateOnPlane(fittedTracks[t1].getFittedState())
+                st2 = ROOT.genfit.MeasuredStateOnPlane(fittedTracks[t2].getFittedState())
                 # Extrapolate to the vertex Z-plane stepwise to avoid
                 # RK failures for long backward extrapolation.
                 rc = True
@@ -250,6 +259,9 @@ class Task:
                 covInv = ROOT.TMatrixDSym()
                 ROOT.genfit.tools.invertMatrix(cov, covInv)
 
+                # pack both 5D states (and their inverse covariance below) as
+                # expected by fcn/residuals; the covariance is block-diagonal,
+                # i.e. the fit treats the two track states as independent
                 self.y_data = np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
                 stVal1 = st1.getState()
                 stVal2 = st2.getState()
@@ -322,33 +334,10 @@ class Task:
                 )
                 dValue = ctypes.c_double()
                 dError = ctypes.c_double()
-                rc = gMinuit.GetParameter(0, dValue, dError)
-                values[0] = dValue.value
-                errors[0] = dError.value
-                rc = gMinuit.GetParameter(1, dValue, dError)
-                values[1] = dValue.value
-                errors[1] = dError.value
-                rc = gMinuit.GetParameter(2, dValue, dError)
-                values[2] = dValue.value
-                errors[2] = dError.value
-                rc = gMinuit.GetParameter(3, dValue, dError)
-                values[3] = dValue.value
-                errors[3] = dError.value
-                rc = gMinuit.GetParameter(4, dValue, dError)
-                values[4] = dValue.value
-                errors[4] = dError.value
-                rc = gMinuit.GetParameter(5, dValue, dError)
-                values[5] = dValue.value
-                errors[5] = dError.value
-                rc = gMinuit.GetParameter(6, dValue, dError)
-                values[6] = dValue.value
-                errors[6] = dError.value
-                rc = gMinuit.GetParameter(7, dValue, dError)
-                values[7] = dValue.value
-                errors[7] = dError.value
-                rc = gMinuit.GetParameter(8, dValue, dError)
-                values[8] = dValue.value
-                errors[8] = dError.value
+                for i in range(9):
+                    gMinuit.GetParameter(i, dValue, dError)
+                    values[i] = dValue.value
+                    errors[i] = dError.value
 
                 xFit = values[0]
                 yFit = values[1]
@@ -463,8 +452,10 @@ class Task:
                         for j in range(6):
                             MT_AtoP[j][i] = M_AtoP[i][j]
 
+                    # extract the 6x6 block of parameters 3-8 (slopes and
+                    # 1/|p|) from the flat, row-major 9x9 fit covariance
                     for i in range(36):
-                        covA[i // 6][i % 6] = cov[i // 6 + 3 + (i % 6 + 3) * 9]
+                        covA[i // 6][i % 6] = cov[(i // 6 + 3) * 9 + (i % 6 + 3)]
 
                     tmp = ROOT.TMatrixD(4, 6)
                     tmp.Mult(M_AtoP, covA)
@@ -516,7 +507,8 @@ class Task:
         # self.h['N_Vtx'].Fill(hasVertex)
 
     def VertexError(self, t1, t2, PosDir, CovMat=None, scalFac=None):
-        # with improved Vx x,y resolution
+        # with improved Vx x,y resolution. Returns (X, covX, dist) where covX is
+        # None when no track covariance was supplied.
         a, u = PosDir[t1]["position"], PosDir[t1]["direction"]
         c, v = PosDir[t2]["position"], PosDir[t2]["direction"]
         Vsq = v.Dot(v)
@@ -532,7 +524,8 @@ class Task:
         l1 = a - X + u * Va  # l2 = c - X + v*Vb
         dist = 2.0 * ROOT.TMath.Sqrt(l1.Dot(l1))
         if not CovMat:
-            return X, dist
+            return X, None, dist
+        assert scalFac is not None, "VertexError requires scalFac when CovMat is set"
         T = ROOT.TMatrixD(3, 12)
         for i in range(3):
             for k in range(4):

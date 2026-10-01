@@ -11,12 +11,26 @@ from ShipGeoConfig import AttrDict, Config
 # nuTargetPassive = 1  #0 = with active layers, 1 = only passive
 
 # targetOpt      = 5  # 0=solid   >0 sliced, 5: 5 pieces of tungsten, 4 air slits, 17: molybdenum tungsten interleaved with H20
-# strawOpt       = 0  # 4=aluminium frame 10=steel frame (default)
+# strawOpt       = 0  # 4=Aluminium frame 10=steel frame (default)
 
 # Here you can select the MS geometry
 # The first row is the length of the magnets
 # The other rows are the transverse dimensions of the magnets:  dXIn[i], dXOut[i] , dYIn[i], dYOut[i], gapIn[i], gapOut[i].
 shield_db = {
+    "TRY_2026": {
+        "hybrid": False,
+        "WithConstField": False,
+        "params": [
+            [0.0, 115.0, 40.0, 40.0, 119.0, 119.0, 61.5, 61.5, 1.5375, 1.5375, 50.0, 50.0, 0.0, 0.0, 2.05],
+            [15, 150, 62, 62, 11, 11, 12, 12, 1, 1.0, 69, 69, 0, 0, 1.87],
+            [15, 225, 70, 70, 12, 12, 9, 9, 1, 1.0, 77, 77, 0, 0, 1.865],
+            [16, 225, 64, 64, 14, 14, 8, 8, 1.3, 1.3, 71, 71, 0, 0, 1.92],
+            [15, 225, 42, 42, 13, 13, 8, 8, 2.6, 2.6, 47, 47, 0, 0, 1.89],
+            [16, 131, 40, 40, 30, 30, 0, 0, 2.25, 2.25, 22, 22, 0, 0, 0],
+            [15, 168, 20, 30, 30, 30, 22, 12, 5.4, 3.6, 33, 33, 0, 0, -1.42],
+            [19, 200, 38, 69, 51, 51, 8, 8, 3.2894736842105265, 1.36231884057971, 76, 76, 0, 0, -2.035],
+        ],
+    },
     "TRY_2025": {
         "hybrid": False,
         "WithConstField": False,
@@ -145,7 +159,7 @@ def create_config(
     Args:
         DecayVolumeMedium: Medium in decay volume ("helium" or "vacuums"), default: "helium"
         Yheight: Height of vacuum tank in meters, default: 6.0
-        strawDesign: Straw tube design (4=aluminium frame, 10=steel frame), default: 10
+        strawDesign: Straw tube design (4=Aluminium frame, 10=steel frame), default: 10
         muShieldGeo: Muon shield geometry file (for experts), default: None
         shieldName: Name of shield configuration, default: "TRY_2025"
         nuTargetPassive: Target type (0=with active layers, 1=only passive), default: 1
@@ -196,6 +210,8 @@ def create_config(
     with open(c.target_yaml) as file:
         targetconfig = yaml.safe_load(file)
         c.target = AttrDict(targetconfig["target"])
+    if "version" not in c.target:
+        c.target.version = 1  # legacy design
 
     c.target.slices_length = []
     c.target.slices_gap = []
@@ -230,9 +246,16 @@ def create_config(
 
     c.hadronAbsorber = AttrDict()
 
+    # Downstream elements are positioned using the nominal length of the
+    # legacy target so that they stay put when a different (e.g. shorter)
+    # target design is selected. This is the single authoritative value for the
+    # fixed length; it is passed to ShipTargetStation (SetShieldingReferenceLength)
+    # so the proximity shielding stays independent of the actual target length.
+    c.target.length_fixed = 158.64 * u.cm
+
     c.hadronAbsorber.z = (
         c.target.z0
-        + c.target.length
+        + c.target.length_fixed
         + 96.1 * u.mm  # Distance between target and proximity shielding
         + 250 * u.mm  # Thickness of proximity shielding
         + 207.5 * u.mm  # Distance between hadron absorber and proximity shielding
@@ -339,10 +362,10 @@ def create_config(
     # TimeDet
     c.TimeDet = AttrDict()
     c.TimeDet.dzBarRow = 1.2 * u.cm
-    c.TimeDet.dzBarCol = 2.4 * u.cm
+    c.TimeDet.dzBarCol = 9.0 * u.cm
     c.TimeDet.zBar = 1 * u.cm
     c.TimeDet.DZ = (c.TimeDet.dzBarRow + c.TimeDet.dzBarCol + c.TimeDet.zBar) / 2
-    c.TimeDet.DX = 225 * u.cm
+    c.TimeDet.DX = 275 * u.cm
     c.TimeDet.DY = 325 * u.cm
     c.TimeDet.z = (
         37.800 * u.m - c.TimeDet.dzBarRow * 3 / 2 + c.decayVolume.z

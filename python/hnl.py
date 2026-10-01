@@ -133,6 +133,11 @@ class HNLbranchings:
         self.U2 = couplings
         self.U = [math.sqrt(ui) for ui in self.U2]
         self.MN = mass * u.GeV
+        # Cache the total width (constant for fixed mass/couplings) and a
+        # reusable TF1 whose parameters are set per integral() call; binding a
+        # Python callable into a TF1 is expensive.
+        self._totalWidth = None
+        self._integrand_tf1 = None
         self.CKM = CKMmatrix()
         self.CKMelemSq = {
             "pi+": self.CKM.Vud**2.0,
@@ -324,8 +329,11 @@ class HNLbranchings:
         Numerical integral needed for 3-body decays through W boson.
         xi = mi/MN
         """
-        theFunction = self.Integrand
-        func = ROOT.TF1("func", theFunction, 0, 1, 3)  # Setting function
+        if self._integrand_tf1 is None:
+            # ROOT registers TF1s globally by name, so make it unique per
+            # instance to avoid collisions between HNLbranchings objects.
+            self._integrand_tf1 = ROOT.TF1(f"hnl_integrand_{id(self):x}", self.Integrand, 0, 1, 3)
+        func = self._integrand_tf1
         func.SetParameters(x1, x2, x3)
         xmin = (x1 + x3) ** 2
         xmax = (1.0 - x2) ** 2
@@ -511,11 +519,12 @@ class HNLbranchings:
         """
         Returns the total HNL decay width
         """
-        leptonWidth = self.Width_3nu() + self.Width_charged_leptons()
-        mesonWidth = self.Width_neutral_mesons() + self.Width_charged_mesons()
-        quarkWidth = self.Width_quarks_neutrino() + self.Width_quarks_lepton()
-        totalWidth = leptonWidth + max([mesonWidth, quarkWidth])
-        return totalWidth
+        if self._totalWidth is None:
+            leptonWidth = self.Width_3nu() + self.Width_charged_leptons()
+            mesonWidth = self.Width_neutral_mesons() + self.Width_charged_mesons()
+            quarkWidth = self.Width_quarks_neutrino() + self.Width_quarks_lepton()
+            self._totalWidth = leptonWidth + max([mesonWidth, quarkWidth])
+        return self._totalWidth
 
     def findBranchingRatio(self, decayString):
         """
@@ -531,7 +540,7 @@ class HNLbranchings:
             print("findBranchingRatio ERROR: unknown decay %s" % decayString)
             quit()
 
-        if decayString == "N -> nu nu nu" or decayString == "N -> 3nu":
+        if decayString == "N -> nu nu nu":
             br = self.Width_3nu() / totalWidth  # inclusive
         if decayString == "N -> e- e+ nu_e":
             br = self.Width_nu_f_fbar(1, 1) / totalWidth

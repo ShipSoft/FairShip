@@ -11,6 +11,7 @@ import time
 from array import array
 
 import ROOT as r
+import rootUtils as ut
 from tabulate import tabulate
 
 r.gROOT.LoadMacro("$VMCWORKDIR/gconfig/basiclibs.C")
@@ -51,6 +52,10 @@ parser.add_argument(
 )
 
 args = parser.parse_args()
+if args.nDIS <= 0 or args.nDIS % 2 != 0:
+    parser.error(
+        f"--nDIS must be a positive even integer (got {args.nDIS}), so proton and neutron DIS phases stay balanced."
+    )
 n_events = args.n_events
 first_mu_event = args.first_mu_event
 
@@ -73,7 +78,7 @@ def update_file(filename: str, final_xsec) -> None:
     """Update the DIS cross section of the muon to the converged value from Pythia."""
     file = r.TFile.Open(filename, "read")
 
-    original_tree = file.DIS
+    original_tree = file["DIS"]
 
     temp_filename = filename + ".tmp"
     temp_file = r.TFile.Open(temp_filename, "recreate")
@@ -82,7 +87,10 @@ def update_file(filename: str, final_xsec) -> None:
 
     for i, event in enumerate(original_tree):
         mu = event.InMuon[0]
-        mu[10] = final_xsec[int(first_mu_event + i / args.nDIS)]
+        proton_xsec, neutron_xsec = final_xsec[int(first_mu_event + i / args.nDIS)]
+        # mu[9] is the isProton flag: apply the converged cross-section of the
+        # matching target rather than the last (neutron) value to every entry.
+        mu[10] = proton_xsec if int(mu[9]) == 1 else neutron_xsec
         updated_tree.Fill()
 
     updated_tree.Write("DIS", r.TObject.kOverwrite)
@@ -109,7 +117,7 @@ Fixtarget = {1: "p+", 0: "n0"}
 def inspect_file(filename: str) -> None:
     """Inspect the contents of muonDis file."""
     file = r.TFile.Open(filename, "READ")
-    tree = file.DIS
+    tree = file["DIS"]
 
     table_rows = []
 
@@ -138,7 +146,7 @@ def makeMuonDIS() -> None:
     muonFile = r.TFile.Open(args.inputFile, "read")
 
     try:
-        muon_tree = muonFile.MuonAndSoftInteractions
+        muon_tree = muonFile["MuonAndSoftInteractions"]
     except Exception as e:
         logging.error(e)
         muonFile.Close()
@@ -213,6 +221,10 @@ def makeMuonDIS() -> None:
 
         isProton = 1
         xsec = 0
+        # Converged (final) Pythia cross-section for each target; the proton and
+        # neutron halves use separate Pythia runs with different cross-sections.
+        proton_xsec = 0.0
+        neutron_xsec = 0.0
 
         mu = array(
             "d",
@@ -246,14 +258,22 @@ def makeMuonDIS() -> None:
             dPartDIS.Clear()
             iMuon.Clear()
             muPart[9] = isProton
-            iMuon[0] = muPart
             myPythia.GenerateEvent()
             myPythia.Pyedit(1)
+            # Cross-section of this DIS event (constant per event). Store it in the
+            # muon vector BEFORE copying it into the output, so each entry keeps
+            # its own cross-section instead of the previous event's.
+            xsec = myPythia.GetPARI(1)
+            muPart[10] = xsec
+            # Remember the latest (converged) cross-section for each target so the
+            # proton half is not later overwritten with the neutron value.
+            if isProton:
+                proton_xsec = xsec
+            else:
+                neutron_xsec = xsec
+            ut.assignClonesArrayItem(iMuon, 0, muPart)
 
             for itrk in range(1, myPythia.GetN() + 1):
-                xsec = myPythia.GetPARI(1)
-
-                muPart[10] = xsec
                 did = myPythia.GetK(itrk, 2)
                 dpx, dpy, dpz = rotate(
                     myPythia.GetP(itrk, 1),
@@ -269,11 +289,7 @@ def makeMuonDIS() -> None:
                 E = r.TMath.Sqrt(masssq + psq)
                 m = array("d", [did, dpx, dpy, dpz, E])
                 part = r.TVectorD(5, m)
-                nPart = len(dPartDIS)
-                if dPartDIS.GetSize() == nPart:
-                    dPartDIS.Expand(nPart + 10)
-                # dPartDIS.ConstructedAt(nPart).Use(part) #to be adapted later
-                dPartDIS[nPart] = part
+                ut.assignClonesArrayItem(dPartDIS, len(dPartDIS), part)
 
             cross_sections.append(xsec)
 
@@ -299,30 +315,22 @@ def makeMuonDIS() -> None:
                 m = array("d", [did, dpx, dpy, dpz, E, softx, softy, softz, time_])
 
                 part = r.TVectorD(9, m)
-                nPart = len(dPartSoft)
-                if dPartSoft.GetSize() == nPart:
-                    dPartSoft.Expand(nPart + 10)
-                # dPartSoft.ConstructedAt(nPart).Use(part) #to be adapted later
-                dPartSoft[nPart] = part
+                ut.assignClonesArrayItem(dPartSoft, len(dPartSoft), part)
 
             muon_vetoPoints.Clear()
 
             index = 0
             for hit in muon_tree.muon_vetoPoints:
-                if muon_vetoPoints.GetSize() == index:
-                    muon_vetoPoints.Expand(index + 1)
                 hit.SetTrackID(0)  # Set TrackID to match for muon ID for new simulation
-                muon_vetoPoints[index] = hit
+                ut.assignClonesArrayItem(muon_vetoPoints, index, hit)
                 index += 1
 
             muon_UpstreamTaggerPoints.Clear()
 
             ubt_index = 0
             for hit in muon_tree.muon_UpstreamTaggerPoints:
-                if muon_UpstreamTaggerPoints.GetSize() == ubt_index:
-                    muon_UpstreamTaggerPoints.Expand(ubt_index + 1)
                 hit.SetTrackID(0)  # Set TrackID to match for muon ID for new simulation
-                muon_UpstreamTaggerPoints[ubt_index] = hit
+                ut.assignClonesArrayItem(muon_UpstreamTaggerPoints, ubt_index, hit)
                 ubt_index += 1
 
             output_tree.Fill()
@@ -338,7 +346,7 @@ def makeMuonDIS() -> None:
                 ]
             )
 
-        final_xsec[k] = xsec
+        final_xsec[k] = (proton_xsec, neutron_xsec)
 
         nMade += 1
         logging.debug(

@@ -13,6 +13,7 @@ import shipVertex
 import validationTools as validation_tools
 from detectors.MTCDetector import MTCDetector
 from detectors.SBTDetector import SBTDetector
+from detectors.SiliconTargetDetector import SiliconTargetDetector
 from detectors.splitcalDetector import splitcalDetector
 from detectors.strawtubesDetector import strawtubesDetector
 from detectors.timeDetector import timeDetector
@@ -26,7 +27,10 @@ class ShipDigiReco:
 
     def __init__(self, finput, fout, fgeo, validation: bool = False) -> None:
         self.validation = validation
-        self.validation_stats = validation_tools.make_reco_validation_stats() if self.validation else None
+        # Always allocate the counter dict so static analysis sees it as
+        # subscriptable; entries are only updated when self.validation is true,
+        # so a non-validation run still ends with the zeroed defaults.
+        self.validation_stats = validation_tools.make_reco_validation_stats()
         # Open input file (read-only) and get the MC tree
         self.inputFile = ROOT.TFile.Open(finput, "read")
         self.sTree = self.inputFile["cbmsim"]
@@ -54,10 +58,15 @@ class ShipDigiReco:
         self.fTrackletsArray = ROOT.std.vector("Tracklet")()
         self.Tracklets = self.recoTree.Branch("Tracklets", self.fTrackletsArray, 32000, -1)
         #
-        self.strawtubes = strawtubesDetector("strawtubes", self.sTree, outtree=self.recoTree)
+        if "strawtubes" in global_variables.modules:
+            self.strawtubes = strawtubesDetector("strawtubes", self.sTree, outtree=self.recoTree)
 
         if self.sTree.GetBranch("MTCDetPoint"):
             self.digiMTC = MTCDetector("MTCDet", self.sTree, "MTC", outtree=self.recoTree)
+        if self.sTree.GetBranch("SiliconTargetPoint"):
+            self.digiSiliconTarget = SiliconTargetDetector(
+                "SiliconTarget", self.sTree, "SiliconTarget", outtree=self.recoTree
+            )
         if self.sTree.GetBranch("vetoPoint"):
             self.digiSBT = SBTDetector("veto", self.sTree, "SBT", mcBranchName="digiSBT2MC", outtree=self.recoTree)
             self.vetoHitOnTrackArray = ROOT.std.vector("vetoHitOnTrack")()
@@ -68,8 +77,9 @@ class ShipDigiReco:
             self.upstreamTaggerDetector = UpstreamTaggerDetector("UpstreamTagger", self.sTree, outtree=self.recoTree)
 
         # for the digitizing step
-        self.v_drift = global_variables.modules["strawtubes"].StrawVdrift()
-        self.sigma_spatial = global_variables.modules["strawtubes"].StrawSigmaSpatial()
+        if hasattr(self, "strawtubes"):
+            self.v_drift = global_variables.modules["strawtubes"].StrawVdrift()
+            self.sigma_spatial = global_variables.modules["strawtubes"].StrawSigmaSpatial()
         # optional if present, splitcalCluster
         if self.sTree.GetBranch("splitcalPoint"):
             self.splitcalDetector = splitcalDetector("splitcal", self.sTree, outtree=self.recoTree)
@@ -110,6 +120,8 @@ class ShipDigiReco:
         shipPatRec.initialize(fgeo)
 
     def reconstruct(self) -> None:
+        if not hasattr(self, "strawtubes"):
+            return
         n_tracks = self.findTracks()
         n_good_tracks = self.findGoodTracks()
         if hasattr(self, "digiSBT"):
@@ -141,13 +153,16 @@ class ShipDigiReco:
         self.header.SetMCEntryNumber(self.sTree.MCEventHeader.GetEventID())  # counts from 1
         if hasattr(self, "digiSBT"):
             self.digiSBT.process()
-        self.strawtubes.process()
+        if hasattr(self, "strawtubes"):
+            self.strawtubes.process()
         if hasattr(self, "timeDetector"):
             self.timeDetector.process()
         if hasattr(self, "upstreamTaggerDetector"):
             self.upstreamTaggerDetector.process()
         if hasattr(self, "digiMTC"):
             self.digiMTC.process()
+        if hasattr(self, "digiSiliconTarget"):
+            self.digiSiliconTarget.process()
         if self.sTree.GetBranch("splitcalPoint"):
             self.splitcalDetector.process()
         if self.validation:
@@ -246,7 +261,7 @@ class ShipDigiReco:
                 self.validation_stats["candidate_stations_count"] += 1
             if nM < 13:
                 n_too_few_hits += 1
-                continue  # not enough hits to make a good trackfit
+                continue  # not enough hits for a good trackfit (threshold tuned to the 1-plane-per-view geometry, #552)
             if n_stations_crossed < 3:
                 n_too_few_stations += 1
                 continue  # not enough stations crossed to make a good trackfit
@@ -269,6 +284,8 @@ class ShipDigiReco:
                     resolution *= 1.4  # worse resolution due to t0 estimate
                 for i in range(3):
                     covM[i][i] = resolution * resolution
+                # x is only measured by the small-angle stereo views, so give
+                # the seed a ~10x larger x uncertainty than y
                 covM[0][0] = resolution * resolution * 100.0
                 for i in range(3, 6):
                     covM[i][i] = ROOT.TMath.Power(resolution / nM / ROOT.TMath.Sqrt(3), 2)
@@ -476,7 +493,7 @@ class ShipDigiReco:
             veto_link = self.findVetoHitOnTrack(track)
             self.vetoHitOnTrackArray.push_back(veto_link)
             if self.validation:
-                if veto_link.GetIndex() >= 0:  # Only record real matches
+                if veto_link.GetHitID() >= 0:  # Only record real matches
                     dist = float(veto_link.GetDist())
                     self.validation_stats["veto_link_distance_sum"] += dist
                     self.validation_stats["veto_link_distance_sum_sq"] += dist * dist
@@ -493,7 +510,7 @@ class ShipDigiReco:
             else:
                 track[tid] = 1
         if track != {}:
-            tmax = max(track, key=track.get)
+            tmax = max(track, key=lambda k: track[k])
         else:
             track = {-999: 0}
             tmax = -999

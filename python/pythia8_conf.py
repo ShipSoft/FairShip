@@ -46,6 +46,9 @@ def configurerpvsusy(
     # let strange particle decay in Geant4
     make_particles_stable(P8gen, above_lifetime=1)
 
+    if inclusive is True:  # For backward compatibility with a boolean argument
+        inclusive = "True"
+
     if inclusive == "True":
         setup_pythia_inclusive(P8gen)
 
@@ -81,13 +84,10 @@ def configurerpvsusy(
             "    0.00000    0.00000    0.00000  1.49900e-01   0   1   0   1   0"
         )
         sumBR = 0.0
-        if getbr_rpvsusy(h, "ds_mu", mass, couplings[1]) > 0.0:
-            P8gen.SetParameters(
-                "431:addChannel      1  {:.12}    0      -13       9900015".format(
-                    getbr_rpvsusy(h, "ds_mu", mass, couplings[1]) / maxsumBR
-                )
-            )
-            sumBR += float(getbr_rpvsusy(h, "ds_mu", mass, couplings[1]) / maxsumBR)
+        br_ds_mu = getbr_rpvsusy(h, "ds_mu", mass, couplings[1])
+        if br_ds_mu > 0.0:
+            P8gen.SetParameters(f"431:addChannel      1  {br_ds_mu / maxsumBR:.12}    0      -13       9900015")
+            sumBR += float(br_ds_mu / maxsumBR)
         if sumBR < 1.0 and sumBR > 0.0:
             P8gen.SetParameters(f"431:addChannel      1   {1.0 - sumBR:.12}    0       22      -11")
 
@@ -96,13 +96,10 @@ def configurerpvsusy(
             "411:new  D+ D-    1   3   0    1.86962    0.00000    0.00000    0.00000  3.11800e-01   0   1   0   1   0"
         )
         sumBR = 0.0
-        if getbr_rpvsusy(h, "d_mu", mass, couplings[1]) > 0.0:
-            P8gen.SetParameters(
-                "411:addChannel      1  {:.12}    0      -13       9900015".format(
-                    getbr_rpvsusy(h, "d_mu", mass, couplings[1]) / maxsumBR
-                )
-            )
-            sumBR += float(getbr_rpvsusy(h, "d_mu", mass, couplings[1]) / maxsumBR)
+        br_d_mu = getbr_rpvsusy(h, "d_mu", mass, couplings[1])
+        if br_d_mu > 0.0:
+            P8gen.SetParameters(f"411:addChannel      1  {br_d_mu / maxsumBR:.12}    0      -13       9900015")
+            sumBR += float(br_d_mu / maxsumBR)
         if sumBR < 1.0 and sumBR > 0.0:
             P8gen.SetParameters(f"411:addChannel      1   {1.0 - sumBR:.12}    0       22      -11")
 
@@ -135,13 +132,10 @@ def configurerpvsusy(
             "    0.00000    0.00000    0.00000  4.91100e-01   0   1   0   1   0"
         )
         sumBR = 0.0
-        if getbr_rpvsusy(h, "b_tau", mass, couplings[1]) > 0.0:
-            P8gen.SetParameters(
-                "521:addChannel      1  {:.12}    0       9900015      -15".format(
-                    getbr_rpvsusy(h, "b_tau", mass, couplings[1]) / maxsumBR
-                )
-            )
-            sumBR += float(getbr_rpvsusy(h, "b_tau", mass, couplings[1]) / maxsumBR)
+        br_b_tau = getbr_rpvsusy(h, "b_tau", mass, couplings[1])
+        if br_b_tau > 0.0:
+            P8gen.SetParameters(f"521:addChannel      1  {br_b_tau / maxsumBR:.12}    0       9900015      -15")
+            sumBR += float(br_b_tau / maxsumBR)
         if sumBR < 1.0 and sumBR > 0.0:
             P8gen.SetParameters(f"521:addChannel      1   {1.0 - sumBR:.12}    0       22      22")
 
@@ -151,12 +145,10 @@ def configurerpvsusy(
             "    0.00000    0.00000    0.00000  4.58700e-01   0   1   0   1   0"
         )
         sumBR = 0.0
-        if getbr_rpvsusy(h, "b0_nu_tau", mass, couplings[1]) > 0.0:
-            P8gen.SetParameters(
-                "511:addChannel      1  {:.12}   22       9900015      16".format(
-                    getbr_rpvsusy(h, "b0_nu_tau", mass, couplings[1]) / maxsumBR
-                )
-            )
+        br_b0_nu_tau = getbr_rpvsusy(h, "b0_nu_tau", mass, couplings[1])
+        if br_b0_nu_tau > 0.0:
+            P8gen.SetParameters(f"511:addChannel      1  {br_b0_nu_tau / maxsumBR:.12}   22       9900015      16")
+            sumBR += float(br_b0_nu_tau / maxsumBR)
         if sumBR < 1.0 and sumBR > 0.0:
             P8gen.SetParameters(f"511:addChannel      1   {1.0 - sumBR:.12}    0       22      22")
 

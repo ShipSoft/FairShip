@@ -45,7 +45,7 @@ ap.add_argument(
     help="If this argument is used, store all particles produced together with charm.",
 )
 ap.add_argument(
-    "--target_composition",
+    "--target-composition",
     default="W",
     help="Target composition (to determine the ratio of protons in the material). Default is Tungsten (W). Only other choice is Molybdenum (Mo)",
     choices=["W", "Mo"],
@@ -210,9 +210,9 @@ def fillp1(hist) -> None:
                 px = hist.GetBinCenter(ib)
                 yx = (px - p1) * tg + y1
                 hist.Fill(px, yx)
-                i1 = i
-                y1 = y2
-                p1 = p2
+            i1 = i
+            y1 = y2
+            p1 = p2
 
 
 if args.pythia_tune == "PoorE791":
@@ -241,7 +241,7 @@ for idp in range(0, len(idbeam)):
     for idpm in [-1, 1]:  # particle or anti-particle
         idw = idbeam[idp] * idpm
         _p = PDG.GetParticle(idw)
-        if _p is not None:  # if particle exists, book hists etc.
+        if _p:  # if particle exists, book hists etc.
             name = _p.GetName()
             id = id + 1
             for idnp in range(2):

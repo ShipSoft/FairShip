@@ -52,7 +52,8 @@ class SBTDetector(BaseDetector):
             if ElossPerDetId[seg] < 0.045:
                 aHit.setInvalid()  # threshold for liquid scintillator, source Berlin group
             self.det.push_back(aHit)
-            v = ROOT.std.vector("int")()
-            for x in listOfVetoPoints[seg]:
-                v.push_back(x)
-            self.MCdet.push_back(v)
+            if self.MCdet is not None:
+                v = ROOT.std.vector("int")()
+                for x in listOfVetoPoints[seg]:
+                    v.push_back(x)
+                self.MCdet.push_back(v)

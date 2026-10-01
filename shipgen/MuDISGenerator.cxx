@@ -43,7 +43,7 @@ Bool_t MuDISGenerator::Init(const char* fileName, const int startEvent) {
   dPart = nullptr;
   dPartSoft = nullptr;
   fInputFile = TFile::Open(fileName, "READ");
-  if (!fInputFile || fInputFile->IsZombie()) {
+  if (!fInputFile) {
     LOG(error) << "MuDISGenerator: error opening input file " << fileName;
     delete fInputFile;
     fInputFile = nullptr;
@@ -114,7 +114,9 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
   Double_t start[3] = {0., 0., startZ};
   Double_t end[3] = {0., 0., endZ};
 
-  // incoming muon  array('d',[pid,px,py,pz,E,x,y,z,w,t])
+  // incoming muon
+  // array('d',[pid,px,py,pz,E,x,y,z,w,isProton,xsec,t,nDIS,nmuons]); entries
+  // 10-12 hold cross-section, time and nDIS (see below)
   TVectorD* mu = dynamic_cast<TVectorD*>(iMuon->AddrAt(0));
   LOG(debug) << "muon DIS Generator in muon " << int((*mu)[0]);
   Double_t x = (*mu)[5] * 100.;  // come in m -> cm
@@ -167,18 +169,22 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
     // get local material at this point
     TGeoNode* node = gGeoManager->FindNode(xmu, ymu, zmu);
     TGeoMaterial* mat = nullptr;
-    if (node && !gGeoManager->IsOutside())
+    if (node && !gGeoManager->IsOutside()) {
       mat = node->GetVolume()->GetMaterial();
-    LOG(debug) << "Info MuDISGenerator: mat " << count << ", " << mat->GetName()
-               << ", " << mat->GetDensity();
-    // density relative to Prob largest density along this trajectory, i.e. use
-    // rho(Pt)
-    prob2int = mat->GetDensity() / mparam[7];
-    if (prob2int > 1.) {
-      LOG(warning) << "MuDISGenerator: prob2int > Maximum density????";
-      LOG(warning) << "prob2int: " << prob2int;
-      LOG(warning) << "maxrho: " << mparam[7];
-      LOG(warning) << "material: " << mat->GetName();
+      LOG(debug) << "Info MuDISGenerator: mat " << count << ", "
+                 << mat->GetName() << ", " << mat->GetDensity();
+      // density relative to Prob largest density along this trajectory, i.e.
+      // use rho(Pt)
+      prob2int = mat->GetDensity() / mparam[7];
+      if (prob2int > 1.) {
+        LOG(warning) << "MuDISGenerator: prob2int > Maximum density????";
+        LOG(warning) << "prob2int: " << prob2int;
+        LOG(warning) << "maxrho: " << mparam[7];
+        LOG(warning) << "material: " << mat->GetName();
+      }
+    } else {
+      // sampled point is outside the geometry: reject and resample
+      prob2int = 0.;
     }
     count += 1;
   }

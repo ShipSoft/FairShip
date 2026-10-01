@@ -75,6 +75,12 @@ MTCDetHit::MTCDetHit(int SiPMChan, const std::vector<MTCDetPoint*>& points,
 
   // Separate handling for scintillating mat (plane_type == 2)
   if (plane_type == 2) {
+    if (points.empty()) {
+      // No deposits: avoid dividing by n == 0 (NaN coordinates) and seeding
+      // the time from FLT_MAX.
+      flag = false;
+      return;
+    }
     Float_t x_temp = 0.0, y_temp = 0.0, z_temp = 0.0;
     for (auto* pt : points) {
       signal_sum += pt->GetEnergyLoss();

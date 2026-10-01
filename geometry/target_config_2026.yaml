@@ -1,0 +1,74 @@
+# 2026 BDF/SHiP target design, extracted from CATIA model ST1A07710_01_AB.02.
+# 33 solid tungsten disks (no cladding) held in a steel core with serpentine
+# He cooling grooves, surrounded by a jacket tube with flanges and a domed
+# rear endcap (structural steel dimensions are defined in ShipTargetStation).
+# Select with --target-yaml; the default remains the legacy target_config.yaml.
+target:
+  version: 2 # target design version; 2 = 2026 BDF target
+  Nplates: 19 # number of sublayer blocks = layers
+  M:
+    - "tungsten"
+  L:
+    - 3.0 #*u.cm
+    - 1.0 #*u.cm
+    - 0.8 #*u.cm (x15)
+    - 0.9 #*u.cm
+    - 1.1 #*u.cm
+    - 1.2 #*u.cm
+    - 1.3 #*u.cm
+    - 1.3 #*u.cm
+    - 1.6 #*u.cm
+    - 2.0 #*u.cm
+    - 2.0 #*u.cm
+    - 2.1 #*u.cm
+    - 3.0 #*u.cm
+    - 4.0 #*u.cm
+    - 5.5 #*u.cm
+    - 7.3 #*u.cm
+    - 10.6 #*u.cm
+    - 27.6 #*u.cm
+    - 45.5 #*u.cm
+  G:
+    - 0.4
+    - 0.4
+    - 0.4
+    - 0.4
+    - 0.4
+    - 0.4
+    - 0.4
+    - 0.4
+    - 0.4
+    - 0.4
+    - 0.5
+    - 0.5
+    - 0.4
+    - 0.4
+    - 0.4
+    - 0.4
+    - 0.4
+    - 0.4
+    - 0
+  N:
+    - 1
+    - 1
+    - 15
+    - 1
+    - 1
+    - 1
+    - 1
+    - 1
+    - 1
+    - 1
+    - 1
+    - 1
+    - 1
+    - 1
+    - 1
+    - 1
+    - 1
+    - 1
+    - 1
+  nS: 33
+  xy: 25. # [cm] diameter of the standard disks
+  xy2: 31.4 # [cm] diameter of the last disk (rear block)
+  HeT: 90 # He temperature in Celsius degrees, integer, Medium with name PressurisedHe<value> must exist in media.geo file

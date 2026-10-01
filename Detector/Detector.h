@@ -57,13 +57,11 @@ class Detector : public FairDetector, public ISTLPointContainer {
 
   TClonesArray* GetCollection(Int_t iColl) const override { return nullptr; }
 
-  void UpdatePointTrackIndices(
-      const std::map<Int_t, Int_t>& indexMap) override {
+  void UpdatePointTrackIndices(const std::vector<Int_t>& indexMap) override {
     for (auto& point : *fDetPoints) {
       Int_t oldTrackID = point.GetTrackID();
-      auto iter = indexMap.find(oldTrackID);
-      if (iter != indexMap.end()) {
-        point.SetTrackID(iter->second);
+      if (oldTrackID >= 0 && oldTrackID < static_cast<Int_t>(indexMap.size())) {
+        point.SetTrackID(indexMap[oldTrackID]);
       }
     }
   }

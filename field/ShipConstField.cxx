@@ -137,6 +137,21 @@ Double_t ShipConstField::GetBz(Double_t x, Double_t y, Double_t z) {
 }
 // -------------------------------------------------------------------------
 
+// -----   Get all field components at once   ------------------------------
+void ShipConstField::GetFieldValue(const Double_t point[3], Double_t* bField) {
+  if (point[0] < fXmin || point[0] > fXmax || point[1] < fYmin ||
+      point[1] > fYmax || point[2] < fZmin || point[2] > fZmax) {
+    bField[0] = 0.;
+    bField[1] = 0.;
+    bField[2] = 0.;
+    return;
+  }
+  bField[0] = fBx;
+  bField[1] = fBy;
+  bField[2] = fBz;
+}
+// -------------------------------------------------------------------------
+
 // -----   Screen output   -------------------------------------------------
 void ShipConstField::Print(Option_t*) const {
   cout << "======================================================" << endl;
