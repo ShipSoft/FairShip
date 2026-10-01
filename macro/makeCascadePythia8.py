@@ -219,6 +219,11 @@ class SignalEvents:
         return buffer.pop()
 
 
+# safety limit on the inclusive events tried for one charm signal event; near the 34 GeV threshold
+# about 1 in 3e5 inelastic events contains charm
+MAX_INCLUSIVE_TRIES = 100_000_000
+
+
 class InclusiveSignalEvents:
     """Inclusive inelastic events with signal hadrons, at the exact projectile momentum, one Pythia8 instance
     per target nucleon. Events are hadronised only if they contain a heavy quark, which saves most of the
@@ -242,7 +247,7 @@ class InclusiveSignalEvents:
         pythia = self.pythia[i_nucleon]
         pythia.setBeamIDs(beam_id, TARGET_NUCLEONS[i_nucleon])
         pythia.setKinematics(px, py, pz, 0.0, 0.0, 0.0)
-        while True:
+        for _ in range(MAX_INCLUSIVE_TRIES):
             next_event(pythia)
             self.n_tried += 1
             event = pythia.event
@@ -256,6 +261,10 @@ class InclusiveSignalEvents:
             ]
             if hadrons:
                 return pythia.infoPython().code(), [(h.id(), h.px(), h.py(), h.pz(), h.e(), h.m()) for h in hadrons]
+        raise RuntimeError(
+            f"no charm in {MAX_INCLUSIVE_TRIES} inclusive events of {beam_id} on {TARGET_NUCLEONS[i_nucleon]}"
+            f" at p = ({px:.1f}, {py:.1f}, {pz:.1f}) GeV"
+        )
 
 
 def parse_args():
@@ -305,7 +314,8 @@ def parse_args():
         "--charm-production",
         default="forced",
         choices=["forced", "inclusive"],
-        help="Charm signal events from forced (HardQCD:hardccbar) or inclusive (SoftQCD:inelastic) production",
+        help="Charm signal events from forced (HardQCD:hardccbar) or inclusive (SoftQCD:inelastic) production; "
+        "inclusive is only for charm (-m 4), beauty is always forced",
     )
     ap.add_argument(
         "--nev", dest="n_sigma_events", type=int, default=2000, help="Events per momentum point for sig/sigtot"
