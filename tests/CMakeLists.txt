@@ -78,4 +78,11 @@ target_link_libraries(
     FairRoot::Base
     FairLogger::FairLogger
 )
+# The cvmfs libPythia6.so lacks the PDFLIB dummies (structm_, structp_,
+# pdfset_), which are only called for MSTP(52)=2. Shared libraries tolerate
+# this, executables do not by default.
+target_link_options(
+    testFixedTargetCascadeWeight
+    PRIVATE LINKER:--allow-shlib-undefined
+)
 add_test(NAME FixedTargetCascadeWeight COMMAND testFixedTargetCascadeWeight)
