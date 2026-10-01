@@ -1,5 +1,6 @@
 var namespacemakeCascadePythia8 =
 [
+    [ "InclusiveSignalEvents", "classmakeCascadePythia8_1_1InclusiveSignalEvents.html", "classmakeCascadePythia8_1_1InclusiveSignalEvents" ],
     [ "PythiaFactory", "classmakeCascadePythia8_1_1PythiaFactory.html", "classmakeCascadePythia8_1_1PythiaFactory" ],
     [ "SignalConfig", "classmakeCascadePythia8_1_1SignalConfig.html", null ],
     [ "SignalEvents", "classmakeCascadePythia8_1_1SignalEvents.html", "classmakeCascadePythia8_1_1SignalEvents" ],
@@ -15,6 +16,7 @@ var namespacemakeCascadePythia8 =
     [ "FTFT_SETTINGS", "namespacemakeCascadePythia8.html#afecf7428ec5e09fe7b975fb3ccdab62d", null ],
     [ "KFORCED_CHARM", "namespacemakeCascadePythia8.html#a330625eafb20f73b0fc31ca6c9ad864f", null ],
     [ "KFORCED_CHARM_P", "namespacemakeCascadePythia8.html#a52dd6beb962dab6fe17c4ac11c72447b", null ],
+    [ "MAX_INCLUSIVE_TRIES", "namespacemakeCascadePythia8.html#a88c2b973eba498966349e73e72c9b4e7", null ],
     [ "PDG", "namespacemakeCascadePythia8.html#aec702d889979744b2d082d84f26941f3", null ],
     [ "PROTON_FRACTION", "namespacemakeCascadePythia8.html#ae17963f99da56366f6d038f7fe50c3f0", null ],
     [ "SIGNAL", "namespacemakeCascadePythia8.html#ae26e05b890eba8820c216a8ea3114843", null ],

@@ -119,6 +119,7 @@ var hierarchy =
     [ "hnl.HNLbranchings", "classhnl_1_1HNLbranchings.html", [
       [ "hnl.HNL", "classhnl_1_1HNL.html", null ]
     ] ],
+    [ "makeCascadePythia8.InclusiveSignalEvents", "classmakeCascadePythia8_1_1InclusiveSignalEvents.html", null ],
     [ "eventDisplay.IO", "classeventDisplay_1_1IO.html", null ],
     [ "ISTLPointContainer", "classISTLPointContainer.html", [
       [ "SHiP::Detector< MTCDetPoint >", "classSHiP_1_1Detector.html", null ],

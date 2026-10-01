@@ -119,7 +119,7 @@ Public Attributes</h2></td></tr>
 <div class="textblock"><pre class="fragment">Create initialised Pythia8 instances with the tune, their own seed and stable cascade and signal
 particles. The seeds are drawn from a generator of their own, so that they do not follow the draws
 of the cascade; Pythia8 accepts seeds up to 900000000.</pre> 
-<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00149">149</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00154">154</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a30bc9e54c114ba3fb32c122dcd39184e" name="a30bc9e54c114ba3fb32c122dcd39184e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a30bc9e54c114ba3fb32c122dcd39184e">&#9670;&#160;</a></span>__init__()</h2>
@@ -159,13 +159,13 @@ of the cascade; Pythia8 accepts seeds up to 900000000.</pre>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00154">154</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  154</span>    <span class="keyword">def </span>__init__(self, seed, tune_settings, stable_ids):</div>
-<div class="line"><span class="lineno">  155</span>        self.seeds = random.Random(f<span class="stringliteral">&quot;pythia8-{seed}&quot;</span>)</div>
-<div class="line"><span class="lineno">  156</span>        self.tune_settings = tune_settings</div>
-<div class="line"><span class="lineno">  157</span>        self.stable_ids = stable_ids</div>
-<div class="line"><span class="lineno">  158</span>        self.n_instances = 0</div>
-<div class="line"><span class="lineno">  159</span> </div>
+<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00159">159</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  159</span>    <span class="keyword">def </span>__init__(self, seed, tune_settings, stable_ids):</div>
+<div class="line"><span class="lineno">  160</span>        self.seeds = random.Random(f<span class="stringliteral">&quot;pythia8-{seed}&quot;</span>)</div>
+<div class="line"><span class="lineno">  161</span>        self.tune_settings = tune_settings</div>
+<div class="line"><span class="lineno">  162</span>        self.stable_ids = stable_ids</div>
+<div class="line"><span class="lineno">  163</span>        self.n_instances = 0</div>
+<div class="line"><span class="lineno">  164</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -196,20 +196,20 @@ of the cascade; Pythia8 accepts seeds up to 900000000.</pre>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00160">160</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  160</span>    <span class="keyword">def </span>__call__(self, settings):</div>
-<div class="line"><span class="lineno">  161</span>        self.n_instances += 1</div>
-<div class="line"><span class="lineno">  162</span>        pythia = pythia8.Pythia(<span class="stringliteral">&quot;&quot;</span>, <span class="keyword">False</span>)</div>
-<div class="line"><span class="lineno">  163</span>        <span class="keywordflow">for</span> setting <span class="keywordflow">in</span> [*self.tune_settings, *settings, <span class="stringliteral">&quot;Print:quiet = on&quot;</span>, <span class="stringliteral">&quot;Random:setSeed = on&quot;</span>]:</div>
-<div class="line"><span class="lineno">  164</span>            pythia.readString(setting)</div>
-<div class="line"><span class="lineno">  165</span>        pythia.readString(f<span class="stringliteral">&quot;Random:seed = {self.seeds.randint(1, 900000000)}&quot;</span>)</div>
-<div class="line"><span class="lineno">  166</span>        <span class="keywordflow">for</span> pdg_id <span class="keywordflow">in</span> self.stable_ids:</div>
-<div class="line"><span class="lineno">  167</span>            pythia.readString(f<span class="stringliteral">&quot;{pdg_id}:mayDecay = off&quot;</span>)</div>
-<div class="line"><span class="lineno">  168</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> pythia.init():</div>
-<div class="line"><span class="lineno">  169</span>            <span class="keywordflow">raise</span> RuntimeError(f<span class="stringliteral">&quot;Pythia8 initialisation failed for {settings}&quot;</span>)</div>
-<div class="line"><span class="lineno">  170</span>        <span class="keywordflow">return</span> pythia</div>
-<div class="line"><span class="lineno">  171</span> </div>
-<div class="line"><span class="lineno">  172</span> </div>
+<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00165">165</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  165</span>    <span class="keyword">def </span>__call__(self, settings):</div>
+<div class="line"><span class="lineno">  166</span>        self.n_instances += 1</div>
+<div class="line"><span class="lineno">  167</span>        pythia = pythia8.Pythia(<span class="stringliteral">&quot;&quot;</span>, <span class="keyword">False</span>)</div>
+<div class="line"><span class="lineno">  168</span>        <span class="keywordflow">for</span> setting <span class="keywordflow">in</span> [*self.tune_settings, *settings, <span class="stringliteral">&quot;Print:quiet = on&quot;</span>, <span class="stringliteral">&quot;Random:setSeed = on&quot;</span>]:</div>
+<div class="line"><span class="lineno">  169</span>            pythia.readString(setting)</div>
+<div class="line"><span class="lineno">  170</span>        pythia.readString(f<span class="stringliteral">&quot;Random:seed = {self.seeds.randint(1, 900000000)}&quot;</span>)</div>
+<div class="line"><span class="lineno">  171</span>        <span class="keywordflow">for</span> pdg_id <span class="keywordflow">in</span> self.stable_ids:</div>
+<div class="line"><span class="lineno">  172</span>            pythia.readString(f<span class="stringliteral">&quot;{pdg_id}:mayDecay = off&quot;</span>)</div>
+<div class="line"><span class="lineno">  173</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> pythia.init():</div>
+<div class="line"><span class="lineno">  174</span>            <span class="keywordflow">raise</span> RuntimeError(f<span class="stringliteral">&quot;Pythia8 initialisation failed for {settings}&quot;</span>)</div>
+<div class="line"><span class="lineno">  175</span>        <span class="keywordflow">return</span> pythia</div>
+<div class="line"><span class="lineno">  176</span> </div>
+<div class="line"><span class="lineno">  177</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -226,7 +226,7 @@ of the cascade; Pythia8 accepts seeds up to 900000000.</pre>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00158">158</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00163">163</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
 
 </div>
 </div>
@@ -242,7 +242,7 @@ of the cascade; Pythia8 accepts seeds up to 900000000.</pre>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00155">155</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00160">160</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
 
 </div>
 </div>
@@ -258,7 +258,7 @@ of the cascade; Pythia8 accepts seeds up to 900000000.</pre>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00157">157</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00162">162</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
 
 </div>
 </div>
@@ -274,7 +274,7 @@ of the cascade; Pythia8 accepts seeds up to 900000000.</pre>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00156">156</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00161">161</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
 
 </div>
 </div>

@@ -99,6 +99,8 @@ $(document).ready(function(){initNavTree('namespacemakeCascadePythia8.html','');
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmakeCascadePythia8_1_1InclusiveSignalEvents.html">InclusiveSignalEvents</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmakeCascadePythia8_1_1PythiaFactory.html">PythiaFactory</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmakeCascadePythia8_1_1SignalConfig.html">SignalConfig</a></td></tr>
@@ -145,6 +147,8 @@ Variables</h2></td></tr>
 <tr class="separator:a71550639fb97c5d982ab9fcf8ac883d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aec702d889979744b2d082d84f26941f3" id="r_aec702d889979744b2d082d84f26941f3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemakeCascadePythia8.html#aec702d889979744b2d082d84f26941f3">PDG</a> = ROOT.TDatabasePDG.Instance()</td></tr>
 <tr class="separator:aec702d889979744b2d082d84f26941f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a88c2b973eba498966349e73e72c9b4e7" id="r_a88c2b973eba498966349e73e72c9b4e7"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemakeCascadePythia8.html#a88c2b973eba498966349e73e72c9b4e7">MAX_INCLUSIVE_TRIES</a> = 100_000_000</td></tr>
+<tr class="separator:a88c2b973eba498966349e73e72c9b4e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><pre class="fragment">Pythia8 version of makeCascade.py: generate ccbar or bbbar in the hadronic cascade of the target.
@@ -158,6 +162,11 @@ boosted to the lab along the projectile.
 
 Unlike makeCascade.py, elastic scattering does not increase the cascade depth, so depth 1 (the
 normalisation of run_fixedTarget.py) covers the beam proton up to its first inelastic interaction.
+
+With --charm-production inclusive, charm signal events are inclusive inelastic events (SoftQCD:inelastic)
+generated at the exact momentum and direction of the projectile and kept if they contain charm, instead
+of forced HardQCD:hardccbar events. The FTFT tune describes charm production data with inclusive events;
+forced production has somewhat different x_F and pT^2 distributions. The normalisation (chi) is the same.
 </pre> </div><h2 class="groupheader">Function Documentation</h2>
 <a id="a9a72ec8998020a54650079362084f29c" name="a9a72ec8998020a54650079362084f29c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9a72ec8998020a54650079362084f29c">&#9670;&#160;</a></span>cm_beam_settings()</h2>
@@ -191,18 +200,18 @@ normalisation of run_fixedTarget.py) covers the beam proton up to its first inel
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00138">138</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  138</span><span class="keyword">def </span>cm_beam_settings(beam_id, nucleon_id, p):</div>
-<div class="line"><span class="lineno">  139</span>    <span class="keywordflow">return</span> [</div>
-<div class="line"><span class="lineno">  140</span>        f<span class="stringliteral">&quot;Beams:idA = {beam_id}&quot;</span>,</div>
-<div class="line"><span class="lineno">  141</span>        f<span class="stringliteral">&quot;Beams:idB = {nucleon_id}&quot;</span>,</div>
-<div class="line"><span class="lineno">  142</span>        <span class="comment"># centre-of-mass frame: events generated at the nearest grid momentum are boosted with the</span></div>
-<div class="line"><span class="lineno">  143</span>        <span class="comment"># momentum and direction of the actual projectile</span></div>
-<div class="line"><span class="lineno">  144</span>        <span class="stringliteral">&quot;Beams:frameType = 1&quot;</span>,</div>
-<div class="line"><span class="lineno">  145</span>        f<span class="stringliteral">&quot;Beams:eCM = {ecm(beam_id, nucleon_id, p)}&quot;</span>,</div>
-<div class="line"><span class="lineno">  146</span>    ]</div>
-<div class="line"><span class="lineno">  147</span> </div>
-<div class="line"><span class="lineno">  148</span> </div>
+<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00143">143</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  143</span><span class="keyword">def </span>cm_beam_settings(beam_id, nucleon_id, p):</div>
+<div class="line"><span class="lineno">  144</span>    <span class="keywordflow">return</span> [</div>
+<div class="line"><span class="lineno">  145</span>        f<span class="stringliteral">&quot;Beams:idA = {beam_id}&quot;</span>,</div>
+<div class="line"><span class="lineno">  146</span>        f<span class="stringliteral">&quot;Beams:idB = {nucleon_id}&quot;</span>,</div>
+<div class="line"><span class="lineno">  147</span>        <span class="comment"># centre-of-mass frame: events generated at the nearest grid momentum are boosted with the</span></div>
+<div class="line"><span class="lineno">  148</span>        <span class="comment"># momentum and direction of the actual projectile</span></div>
+<div class="line"><span class="lineno">  149</span>        <span class="stringliteral">&quot;Beams:frameType = 1&quot;</span>,</div>
+<div class="line"><span class="lineno">  150</span>        f<span class="stringliteral">&quot;Beams:eCM = {ecm(beam_id, nucleon_id, p)}&quot;</span>,</div>
+<div class="line"><span class="lineno">  151</span>    ]</div>
+<div class="line"><span class="lineno">  152</span> </div>
+<div class="line"><span class="lineno">  153</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -238,13 +247,13 @@ normalisation of run_fixedTarget.py) covers the beam proton up to its first inel
       </table>
 </div><div class="memdoc">
 <pre class="fragment">Centre-of-mass energy of beam_id with momentum p on nucleon_id at rest.</pre> 
-<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00132">132</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  132</span><span class="keyword">def </span>ecm(beam_id, nucleon_id, p):</div>
-<div class="line"><span class="lineno">  133</span>    <span class="stringliteral">&quot;&quot;&quot;Centre-of-mass energy of beam_id with momentum p on nucleon_id at rest.&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  134</span>    m_beam, m_target = mass(beam_id), mass(nucleon_id)</div>
-<div class="line"><span class="lineno">  135</span>    <span class="keywordflow">return</span> math.sqrt(m_beam**2 + m_target**2 + 2.0 * m_target * math.sqrt(p**2 + m_beam**2))</div>
-<div class="line"><span class="lineno">  136</span> </div>
-<div class="line"><span class="lineno">  137</span> </div>
+<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00137">137</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  137</span><span class="keyword">def </span>ecm(beam_id, nucleon_id, p):</div>
+<div class="line"><span class="lineno">  138</span>    <span class="stringliteral">&quot;&quot;&quot;Centre-of-mass energy of beam_id with momentum p on nucleon_id at rest.&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  139</span>    m_beam, m_target = mass(beam_id), mass(nucleon_id)</div>
+<div class="line"><span class="lineno">  140</span>    <span class="keywordflow">return</span> math.sqrt(m_beam**2 + m_target**2 + 2.0 * m_target * math.sqrt(p**2 + m_beam**2))</div>
+<div class="line"><span class="lineno">  141</span> </div>
+<div class="line"><span class="lineno">  142</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -280,24 +289,24 @@ normalisation of run_fixedTarget.py) covers the beam proton up to its first inel
       </table>
 </div><div class="memdoc">
 <pre class="fragment">Forced-production charm K-factor for beam_id on target nucleon nucleon_id at momentum p.</pre> 
-<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00099">99</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   99</span><span class="keyword">def </span>kforced_charm(beam_id, nucleon_id, p):</div>
-<div class="line"><span class="lineno">  100</span>    <span class="stringliteral">&quot;&quot;&quot;Forced-production charm K-factor for beam_id on target nucleon nucleon_id at momentum p.&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  101</span>    abs_id = abs(beam_id)</div>
-<div class="line"><span class="lineno">  102</span>    <span class="keywordflow">if</span> abs_id <span class="keywordflow">in</span> (2212, 2112):</div>
-<div class="line"><span class="lineno">  103</span>        <span class="comment"># n on p behaves as p on n, and n on n as p on p</span></div>
-<div class="line"><span class="lineno">  104</span>        key = (2212, nucleon_id) <span class="keywordflow">if</span> abs_id == 2212 <span class="keywordflow">else</span> (2212, 2112 <span class="keywordflow">if</span> nucleon_id == 2212 <span class="keywordflow">else</span> 2212)</div>
-<div class="line"><span class="lineno">  105</span>        kfactors = KFORCED_CHARM[key]</div>
-<div class="line"><span class="lineno">  106</span>    <span class="keywordflow">elif</span> abs_id == 211:</div>
-<div class="line"><span class="lineno">  107</span>        <span class="comment"># pi+ n behaves as pi- p, and pi- n as pi+ p</span></div>
-<div class="line"><span class="lineno">  108</span>        sign = 1 <span class="keywordflow">if</span> beam_id &gt; 0 <span class="keywordflow">else</span> -1</div>
-<div class="line"><span class="lineno">  109</span>        key = (sign * 211 <span class="keywordflow">if</span> nucleon_id == 2212 <span class="keywordflow">else</span> -sign * 211, 2212)</div>
+<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00104">104</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  104</span><span class="keyword">def </span>kforced_charm(beam_id, nucleon_id, p):</div>
+<div class="line"><span class="lineno">  105</span>    <span class="stringliteral">&quot;&quot;&quot;Forced-production charm K-factor for beam_id on target nucleon nucleon_id at momentum p.&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  106</span>    abs_id = abs(beam_id)</div>
+<div class="line"><span class="lineno">  107</span>    <span class="keywordflow">if</span> abs_id <span class="keywordflow">in</span> (2212, 2112):</div>
+<div class="line"><span class="lineno">  108</span>        <span class="comment"># n on p behaves as p on n, and n on n as p on p</span></div>
+<div class="line"><span class="lineno">  109</span>        key = (2212, nucleon_id) <span class="keywordflow">if</span> abs_id == 2212 <span class="keywordflow">else</span> (2212, 2112 <span class="keywordflow">if</span> nucleon_id == 2212 <span class="keywordflow">else</span> 2212)</div>
 <div class="line"><span class="lineno">  110</span>        kfactors = KFORCED_CHARM[key]</div>
-<div class="line"><span class="lineno">  111</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  112</span>        kfactors = [0.5 * (a + b) <span class="keywordflow">for</span> a, b <span class="keywordflow">in</span> zip(KFORCED_CHARM[211, 2212], KFORCED_CHARM[-211, 2212])]</div>
-<div class="line"><span class="lineno">  113</span>    <span class="keywordflow">return</span> float(np.interp(math.log(p), np.log(KFORCED_CHARM_P), kfactors))</div>
-<div class="line"><span class="lineno">  114</span> </div>
-<div class="line"><span class="lineno">  115</span> </div>
+<div class="line"><span class="lineno">  111</span>    <span class="keywordflow">elif</span> abs_id == 211:</div>
+<div class="line"><span class="lineno">  112</span>        <span class="comment"># pi+ n behaves as pi- p, and pi- n as pi+ p</span></div>
+<div class="line"><span class="lineno">  113</span>        sign = 1 <span class="keywordflow">if</span> beam_id &gt; 0 <span class="keywordflow">else</span> -1</div>
+<div class="line"><span class="lineno">  114</span>        key = (sign * 211 <span class="keywordflow">if</span> nucleon_id == 2212 <span class="keywordflow">else</span> -sign * 211, 2212)</div>
+<div class="line"><span class="lineno">  115</span>        kfactors = KFORCED_CHARM[key]</div>
+<div class="line"><span class="lineno">  116</span>    <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  117</span>        kfactors = [0.5 * (a + b) <span class="keywordflow">for</span> a, b <span class="keywordflow">in</span> zip(KFORCED_CHARM[211, 2212], KFORCED_CHARM[-211, 2212])]</div>
+<div class="line"><span class="lineno">  118</span>    <span class="keywordflow">return</span> float(np.interp(math.log(p), np.log(KFORCED_CHARM_P), kfactors))</div>
+<div class="line"><span class="lineno">  119</span> </div>
+<div class="line"><span class="lineno">  120</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -316,139 +325,150 @@ normalisation of run_fixedTarget.py) covers the beam proton up to its first inel
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00279">279</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  279</span><span class="keyword">def </span><a class="code hl_function" href="test__fixedtarget__cascade__weight_8cxx.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a>():</div>
-<div class="line"><span class="lineno">  280</span>    args = parse_args()</div>
-<div class="line"><span class="lineno">  281</span>    signal = SIGNAL[args.heavy_quark]</div>
-<div class="line"><span class="lineno">  282</span>    p_threshold, signal_ids, signal_process = signal.p_threshold, signal.ids, signal.process</div>
-<div class="line"><span class="lineno">  283</span>    proton_fraction = PROTON_FRACTION[args.target_composition]</div>
-<div class="line"><span class="lineno">  284</span>    <span class="keywordflow">if</span> args.pythia8_tune == <span class="stringliteral">&quot;FTFT&quot;</span>:</div>
-<div class="line"><span class="lineno">  285</span>        tune_settings, kfactors = FTFT_SETTINGS, signal.kfactors</div>
-<div class="line"><span class="lineno">  286</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  287</span>        tune_settings, kfactors = [], (1.0, 1.0)</div>
-<div class="line"><span class="lineno">  288</span> </div>
-<div class="line"><span class="lineno">  289</span>    random.seed(args.seed)</div>
-<div class="line"><span class="lineno">  290</span>    new_pythia = PythiaFactory(args.seed, tune_settings, [*CASCADE_IDS, *signal_ids])</div>
-<div class="line"><span class="lineno">  291</span> </div>
-<div class="line"><span class="lineno">  292</span>    <span class="comment"># minimum-bias events with variable beam particle and energy, one instance per target nucleon</span></div>
-<div class="line"><span class="lineno">  293</span>    mbias_pythia = [</div>
-<div class="line"><span class="lineno">  294</span>        new_pythia(</div>
-<div class="line"><span class="lineno">  295</span>            [<span class="stringliteral">&quot;SoftQCD:all = on&quot;</span>, <span class="stringliteral">&quot;Beams:frameType = 3&quot;</span>, <span class="stringliteral">&quot;Beams:allowVariableEnergy = on&quot;</span>, <span class="stringliteral">&quot;Beams:allowIDAswitch = on&quot;</span>]</div>
-<div class="line"><span class="lineno">  296</span>            + [f<span class="stringliteral">&quot;Beams:idB = {nucleon_id}&quot;</span>, f<span class="stringliteral">&quot;Beams:pzA = {args.p_beam}&quot;</span>, <span class="stringliteral">&quot;Beams:pzB = 0.&quot;</span>]</div>
-<div class="line"><span class="lineno">  297</span>        )</div>
-<div class="line"><span class="lineno">  298</span>        <span class="keywordflow">for</span> nucleon_id <span class="keywordflow">in</span> TARGET_NUCLEONS</div>
-<div class="line"><span class="lineno">  299</span>    ]</div>
-<div class="line"><span class="lineno">  300</span> </div>
-<div class="line"><span class="lineno">  301</span>    <span class="comment"># chi = K * sigma(signal) / sigma(total) vs momentum for all beam and target particles.</span></div>
-<div class="line"><span class="lineno">  302</span>    <span class="comment"># The grid is logarithmic and chi is interpolated in log(chi) vs log(p): chi varies by orders of</span></div>
-<div class="line"><span class="lineno">  303</span>    <span class="comment"># magnitude over the range and most of that variation sits close to the threshold.</span></div>
-<div class="line"><span class="lineno">  304</span>    p_grid = np.geomspace(p_threshold, args.p_beam, args.n_momentum_points)</div>
-<div class="line"><span class="lineno">  305</span>    log_p_grid = np.log(p_grid)</div>
-<div class="line"><span class="lineno">  306</span>    log_chi, sigma = {}, {}</div>
-<div class="line"><span class="lineno">  307</span>    <span class="keywordflow">for</span> pdg_id <span class="keywordflow">in</span> CASCADE_IDS:</div>
-<div class="line"><span class="lineno">  308</span>        <span class="keywordflow">for</span> beam_id <span class="keywordflow">in</span> sorted({pdg_id, -pdg_id}):</div>
-<div class="line"><span class="lineno">  309</span>            <span class="keywordflow">if</span> <span class="keywordflow">not</span> PDG.GetParticle(beam_id):</div>
-<div class="line"><span class="lineno">  310</span>                <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  311</span>            <span class="keywordflow">for</span> i_nucleon, nucleon_id <span class="keywordflow">in</span> enumerate(TARGET_NUCLEONS):</div>
-<div class="line"><span class="lineno">  312</span>                sigma[beam_id, i_nucleon] = []</div>
-<div class="line"><span class="lineno">  313</span>                <span class="keywordflow">for</span> p <span class="keywordflow">in</span> p_grid:</div>
-<div class="line"><span class="lineno">  314</span>                    pythia = new_pythia(</div>
-<div class="line"><span class="lineno">  315</span>                        [signal_process, <span class="stringliteral">&quot;PartonLevel:all = off&quot;</span>, <span class="stringliteral">&quot;HadronLevel:all = off&quot;</span>]</div>
-<div class="line"><span class="lineno">  316</span>                        + cm_beam_settings(beam_id, nucleon_id, p)</div>
-<div class="line"><span class="lineno">  317</span>                    )</div>
-<div class="line"><span class="lineno">  318</span>                    <span class="keywordflow">for</span> _ <span class="keywordflow">in</span> range(args.n_sigma_events):</div>
-<div class="line"><span class="lineno">  319</span>                        next_event(pythia)</div>
-<div class="line"><span class="lineno">  320</span>                    sigma[beam_id, i_nucleon].append(</div>
-<div class="line"><span class="lineno">  321</span>                        signal_kfactor(kfactors, beam_id, nucleon_id, p) * pythia.infoPython().sigmaGen()</div>
-<div class="line"><span class="lineno">  322</span>                    )</div>
-<div class="line"><span class="lineno">  323</span>                sigma_total = [</div>
-<div class="line"><span class="lineno">  324</span>                    mbias_pythia[i_nucleon].getSigmaTotal(beam_id, nucleon_id, ecm(beam_id, nucleon_id, p))</div>
-<div class="line"><span class="lineno">  325</span>                    <span class="keywordflow">for</span> p <span class="keywordflow">in</span> p_grid</div>
-<div class="line"><span class="lineno">  326</span>                ]</div>
-<div class="line"><span class="lineno">  327</span>                log_chi[beam_id, i_nucleon] = np.log([s / t <span class="keywordflow">for</span> s, t <span class="keywordflow">in</span> zip(sigma[beam_id, i_nucleon], sigma_total)])</div>
-<div class="line"><span class="lineno">  328</span>                print(</div>
-<div class="line"><span class="lineno">  329</span>                    f<span class="stringliteral">&quot;K*sigma and chi at {args.p_beam} GeV for {beam_id} on {nucleon_id}: &quot;</span></div>
-<div class="line"><span class="lineno">  330</span>                    f<span class="stringliteral">&quot;{sigma[beam_id, i_nucleon][-1]:.3e} mb, {math.exp(log_chi[beam_id, i_nucleon][-1]):.3e}&quot;</span></div>
-<div class="line"><span class="lineno">  331</span>                )</div>
-<div class="line"><span class="lineno">  332</span>    chi_max = max(np.exp(c).max() <span class="keywordflow">for</span> c <span class="keywordflow">in</span> log_chi.values())</div>
-<div class="line"><span class="lineno">  333</span>    <span class="comment"># cross section per nucleon of the target composition, at the beam energy, for the normalisation</span></div>
-<div class="line"><span class="lineno">  334</span>    sigma_QQ = proton_fraction * sigma[2212, 0][-1] + (1.0 - proton_fraction) * sigma[2212, 1][-1]</div>
-<div class="line"><span class="lineno">  335</span>    print(f<span class="stringliteral">&quot;K*sigma per nucleon at {args.p_beam} GeV: {1e3 * sigma_QQ:.2f} ub&quot;</span>)</div>
-<div class="line"><span class="lineno">  336</span> </div>
-<div class="line"><span class="lineno">  337</span>    signal_events = SignalEvents(new_pythia, signal_process, signal_ids, args.p_beam)</div>
-<div class="line"><span class="lineno">  338</span> </div>
-<div class="line"><span class="lineno">  339</span>    output_file = ROOT.TFile.Open(args.output, <span class="stringliteral">&quot;RECREATE&quot;</span>)</div>
-<div class="line"><span class="lineno">  340</span>    ntuple = ROOT.TNtuple(</div>
-<div class="line"><span class="lineno">  341</span>        <span class="stringliteral">&quot;pythia6&quot;</span>,</div>
-<div class="line"><span class="lineno">  342</span>        <span class="stringliteral">&quot;pythia8 heavy flavour&quot;</span>,</div>
-<div class="line"><span class="lineno">  343</span>        <span class="stringliteral">&quot;id:px:py:pz:E:M:mid:mpx:mpy:mpz:mE:mM:k:a0:a1:a2:a3:a4:a5:a6:a7:a8:a9:a10:a11:a12:a13:a14:a15:\</span></div>
-<div class="line"><span class="lineno">  344</span><span class="stringliteral">s0:s1:s2:s3:s4:s5:s6:s7:s8:s9:s10:s11:s12:s13:s14:s15&quot;</span>,</div>
-<div class="line"><span class="lineno">  345</span>    )</div>
-<div class="line"><span class="lineno">  346</span>    <span class="comment"># number of signal particles per cascade depth, used by FixedTargetGenerator for the normalisation</span></div>
-<div class="line"><span class="lineno">  347</span>    depth_hist = ROOT.TH1F(<span class="stringliteral">&quot;2&quot;</span>, <span class="stringliteral">&quot;nr signal per cascade depth&quot;</span>, 50, 0.5, 50.5)</div>
-<div class="line"><span class="lineno">  348</span>    <span class="comment"># cross section per nucleon [mb] this file was generated with, read back by run_fixedTarget.py to</span></div>
-<div class="line"><span class="lineno">  349</span>    <span class="comment"># scale chicc/chibb, so that the normalisation follows the beam energy, tune and target of the file</span></div>
-<div class="line"><span class="lineno">  350</span>    ROOT.TParameter(<span class="stringliteral">&quot;double&quot;</span>)(<span class="stringliteral">&quot;sigma_QQ&quot;</span>, sigma_QQ).Write()  <span class="comment"># type: ignore[missing-attribute]</span></div>
+<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00339">339</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  339</span><span class="keyword">def </span><a class="code hl_function" href="test__fixedtarget__cascade__weight_8cxx.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a>():</div>
+<div class="line"><span class="lineno">  340</span>    args = parse_args()</div>
+<div class="line"><span class="lineno">  341</span>    signal = SIGNAL[args.heavy_quark]</div>
+<div class="line"><span class="lineno">  342</span>    p_threshold, signal_ids, signal_process = signal.p_threshold, signal.ids, signal.process</div>
+<div class="line"><span class="lineno">  343</span>    proton_fraction = PROTON_FRACTION[args.target_composition]</div>
+<div class="line"><span class="lineno">  344</span>    <span class="keywordflow">if</span> args.pythia8_tune == <span class="stringliteral">&quot;FTFT&quot;</span>:</div>
+<div class="line"><span class="lineno">  345</span>        tune_settings, kfactors = FTFT_SETTINGS, signal.kfactors</div>
+<div class="line"><span class="lineno">  346</span>    <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  347</span>        tune_settings, kfactors = [], (1.0, 1.0)</div>
+<div class="line"><span class="lineno">  348</span> </div>
+<div class="line"><span class="lineno">  349</span>    random.seed(args.seed)</div>
+<div class="line"><span class="lineno">  350</span>    new_pythia = PythiaFactory(args.seed, tune_settings, [*CASCADE_IDS, *signal_ids])</div>
 <div class="line"><span class="lineno">  351</span> </div>
-<div class="line"><span class="lineno">  352</span>    t0 = time.time()</div>
-<div class="line"><span class="lineno">  353</span>    <span class="keywordflow">for</span> i_pot <span class="keywordflow">in</span> range(args.n_pot):</div>
-<div class="line"><span class="lineno">  354</span>        <span class="keywordflow">if</span> i_pot % 1000 == 0:</div>
-<div class="line"><span class="lineno">  355</span>            print(<span class="stringliteral">&quot;Generate event &quot;</span>, i_pot)</div>
-<div class="line"><span class="lineno">  356</span>        <span class="comment"># stack: PID, px, py, pz, cascade depth, ancestors, interaction processes</span></div>
-<div class="line"><span class="lineno">  357</span>        stack: list[tuple[int, float, float, float, int, list[int], list[int]]] = []</div>
-<div class="line"><span class="lineno">  358</span>        stack.append((2212, 0.0, 0.0, args.p_beam, 1, [2212] + 99 * [0], 100 * [0]))</div>
-<div class="line"><span class="lineno">  359</span>        <span class="keywordflow">while</span> stack:</div>
-<div class="line"><span class="lineno">  360</span>            beam_id, px, py, pz, depth, ancestors, processes = stack.pop()</div>
-<div class="line"><span class="lineno">  361</span>            p = math.sqrt(px**2 + py**2 + pz**2)</div>
-<div class="line"><span class="lineno">  362</span>            i_nucleon = 0 <span class="keywordflow">if</span> random.random() &lt; proton_fraction <span class="keywordflow">else</span> 1</div>
-<div class="line"><span class="lineno">  363</span>            nucleon_id = TARGET_NUCLEONS[i_nucleon]</div>
-<div class="line"><span class="lineno">  364</span>            <span class="keywordflow">if</span> math.exp(np.interp(math.log(p), log_p_grid, log_chi[beam_id, i_nucleon])) / chi_max &gt; random.random():</div>
-<div class="line"><span class="lineno">  365</span>                code, hadrons = signal_events.next(beam_id, nucleon_id, p)</div>
-<div class="line"><span class="lineno">  366</span>                beam_mass = mass(beam_id)</div>
-<div class="line"><span class="lineno">  367</span>                beam = ROOT.TLorentzVector(px, py, pz, math.sqrt(p**2 + beam_mass**2))</div>
-<div class="line"><span class="lineno">  368</span>                boost = (beam + ROOT.TLorentzVector(0, 0, 0, mass(nucleon_id))).BoostVector()  <span class="comment"># type: ignore[missing-attribute]</span></div>
-<div class="line"><span class="lineno">  369</span>                n_processes = min(depth - 1, 15)</div>
-<div class="line"><span class="lineno">  370</span>                <span class="keywordflow">for</span> hadron_id, *p4, hadron_mass <span class="keywordflow">in</span> hadrons:</div>
-<div class="line"><span class="lineno">  371</span>                    hadron = ROOT.TLorentzVector(*p4)</div>
-<div class="line"><span class="lineno">  372</span>                    hadron.RotateUz(beam.Vect().Unit())  <span class="comment"># type: ignore[missing-attribute]</span></div>
-<div class="line"><span class="lineno">  373</span>                    hadron.Boost(boost)  <span class="comment"># type: ignore[missing-attribute]</span></div>
-<div class="line"><span class="lineno">  374</span>                    row = [hadron_id, hadron.Px(), hadron.Py(), hadron.Pz(), hadron.E(), hadron_mass]</div>
-<div class="line"><span class="lineno">  375</span>                    row += [beam_id, px, py, pz, beam.E(), beam_mass, depth]</div>
-<div class="line"><span class="lineno">  376</span>                    row += ancestors[:16] + processes[:n_processes] + [code] + (15 - n_processes) * [0]</div>
-<div class="line"><span class="lineno">  377</span>                    ntuple.Fill(array(<span class="stringliteral">&quot;f&quot;</span>, row))</div>
-<div class="line"><span class="lineno">  378</span>                    depth_hist.Fill(depth)</div>
-<div class="line"><span class="lineno">  379</span>            <span class="comment"># minimum-bias event to add new cascade particles to the stack</span></div>
-<div class="line"><span class="lineno">  380</span>            i_nucleon = 0 <span class="keywordflow">if</span> random.random() &lt; proton_fraction <span class="keywordflow">else</span> 1</div>
-<div class="line"><span class="lineno">  381</span>            pythia = mbias_pythia[i_nucleon]</div>
-<div class="line"><span class="lineno">  382</span>            pythia.setBeamIDs(beam_id, TARGET_NUCLEONS[i_nucleon])</div>
-<div class="line"><span class="lineno">  383</span>            pythia.setKinematics(px, py, pz, 0.0, 0.0, 0.0)</div>
-<div class="line"><span class="lineno">  384</span>            next_event(pythia)</div>
-<div class="line"><span class="lineno">  385</span>            code = pythia.infoPython().code()</div>
-<div class="line"><span class="lineno">  386</span>            <span class="keywordflow">if</span> code == 102:</div>
-<div class="line"><span class="lineno">  387</span>                <span class="comment"># Elastic scattering does not start a new cascade generation: the scattered hadron keeps</span></div>
-<div class="line"><span class="lineno">  388</span>                <span class="comment"># its depth. Depth 1 is then everything the beam proton produces up to and including its</span></div>
-<div class="line"><span class="lineno">  389</span>                <span class="comment"># first inelastic interaction, which is what chicc/chibb in run_fixedTarget.py normalise.</span></div>
-<div class="line"><span class="lineno">  390</span>                final = [pythia.event[i] <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(pythia.event.size()) <span class="keywordflow">if</span> pythia.event[i].isFinal()]</div>
-<div class="line"><span class="lineno">  391</span>                leading = max(final, key=<span class="keyword">lambda</span> part: part.pAbs())</div>
-<div class="line"><span class="lineno">  392</span>                <span class="keywordflow">if</span> leading.pAbs() &gt; p_threshold <span class="keywordflow">and</span> len(stack) &lt; 999:</div>
-<div class="line"><span class="lineno">  393</span>                    stack.append((beam_id, leading.px(), leading.py(), leading.pz(), depth, ancestors, processes))</div>
-<div class="line"><span class="lineno">  394</span>                <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  395</span>            new_depth = min(depth + 1, 98)</div>
-<div class="line"><span class="lineno">  396</span>            <span class="keywordflow">if</span> depth == 1:  <span class="comment"># first inelastic interaction process of the beam proton</span></div>
-<div class="line"><span class="lineno">  397</span>                processes = [code] + processes[1:]</div>
-<div class="line"><span class="lineno">  398</span>            <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(pythia.event.size()):</div>
-<div class="line"><span class="lineno">  399</span>                part = pythia.event[i]</div>
-<div class="line"><span class="lineno">  400</span>                <span class="keywordflow">if</span> part.idAbs() <span class="keywordflow">in</span> CASCADE_IDS <span class="keywordflow">and</span> part.isFinal() <span class="keywordflow">and</span> part.pAbs() &gt; p_threshold <span class="keywordflow">and</span> len(stack) &lt; 999:</div>
-<div class="line"><span class="lineno">  401</span>                    new_ancestors = ancestors[: new_depth - 1] + [part.id()] + ancestors[new_depth:]</div>
-<div class="line"><span class="lineno">  402</span>                    new_processes = processes[: new_depth - 1] + [code] + processes[new_depth:]</div>
-<div class="line"><span class="lineno">  403</span>                    stack.append((part.id(), part.px(), part.py(), part.pz(), new_depth, new_ancestors, new_processes))</div>
-<div class="line"><span class="lineno">  404</span> </div>
-<div class="line"><span class="lineno">  405</span>    print(f<span class="stringliteral">&quot;Generated {args.n_pot} p.o.t. in {time.time() - t0} s with {new_pythia.n_instances} Pythia8 instances&quot;</span>)</div>
-<div class="line"><span class="lineno">  406</span>    output_file.Write()</div>
-<div class="line"><span class="lineno">  407</span>    output_file.Close()</div>
-<div class="line"><span class="lineno">  408</span>    print(f<span class="stringliteral">&quot;Output file is {args.output}&quot;</span>)</div>
-<div class="line"><span class="lineno">  409</span> </div>
-<div class="line"><span class="lineno">  410</span> </div>
+<div class="line"><span class="lineno">  352</span>    <span class="comment"># minimum-bias events with variable beam particle and energy, one instance per target nucleon</span></div>
+<div class="line"><span class="lineno">  353</span>    mbias_pythia = [</div>
+<div class="line"><span class="lineno">  354</span>        new_pythia(</div>
+<div class="line"><span class="lineno">  355</span>            [<span class="stringliteral">&quot;SoftQCD:all = on&quot;</span>, <span class="stringliteral">&quot;Beams:frameType = 3&quot;</span>, <span class="stringliteral">&quot;Beams:allowVariableEnergy = on&quot;</span>, <span class="stringliteral">&quot;Beams:allowIDAswitch = on&quot;</span>]</div>
+<div class="line"><span class="lineno">  356</span>            + [f<span class="stringliteral">&quot;Beams:idB = {nucleon_id}&quot;</span>, f<span class="stringliteral">&quot;Beams:pzA = {args.p_beam}&quot;</span>, <span class="stringliteral">&quot;Beams:pzB = 0.&quot;</span>]</div>
+<div class="line"><span class="lineno">  357</span>        )</div>
+<div class="line"><span class="lineno">  358</span>        <span class="keywordflow">for</span> nucleon_id <span class="keywordflow">in</span> TARGET_NUCLEONS</div>
+<div class="line"><span class="lineno">  359</span>    ]</div>
+<div class="line"><span class="lineno">  360</span> </div>
+<div class="line"><span class="lineno">  361</span>    <span class="comment"># chi = K * sigma(signal) / sigma(total) vs momentum for all beam and target particles.</span></div>
+<div class="line"><span class="lineno">  362</span>    <span class="comment"># The grid is logarithmic and chi is interpolated in log(chi) vs log(p): chi varies by orders of</span></div>
+<div class="line"><span class="lineno">  363</span>    <span class="comment"># magnitude over the range and most of that variation sits close to the threshold.</span></div>
+<div class="line"><span class="lineno">  364</span>    p_grid = np.geomspace(p_threshold, args.p_beam, args.n_momentum_points)</div>
+<div class="line"><span class="lineno">  365</span>    log_p_grid = np.log(p_grid)</div>
+<div class="line"><span class="lineno">  366</span>    log_chi, sigma = {}, {}</div>
+<div class="line"><span class="lineno">  367</span>    <span class="keywordflow">for</span> pdg_id <span class="keywordflow">in</span> CASCADE_IDS:</div>
+<div class="line"><span class="lineno">  368</span>        <span class="keywordflow">for</span> beam_id <span class="keywordflow">in</span> sorted({pdg_id, -pdg_id}):</div>
+<div class="line"><span class="lineno">  369</span>            <span class="keywordflow">if</span> <span class="keywordflow">not</span> PDG.GetParticle(beam_id):</div>
+<div class="line"><span class="lineno">  370</span>                <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  371</span>            <span class="keywordflow">for</span> i_nucleon, nucleon_id <span class="keywordflow">in</span> enumerate(TARGET_NUCLEONS):</div>
+<div class="line"><span class="lineno">  372</span>                sigma[beam_id, i_nucleon] = []</div>
+<div class="line"><span class="lineno">  373</span>                <span class="keywordflow">for</span> p <span class="keywordflow">in</span> p_grid:</div>
+<div class="line"><span class="lineno">  374</span>                    pythia = new_pythia(</div>
+<div class="line"><span class="lineno">  375</span>                        [signal_process, <span class="stringliteral">&quot;PartonLevel:all = off&quot;</span>, <span class="stringliteral">&quot;HadronLevel:all = off&quot;</span>]</div>
+<div class="line"><span class="lineno">  376</span>                        + cm_beam_settings(beam_id, nucleon_id, p)</div>
+<div class="line"><span class="lineno">  377</span>                    )</div>
+<div class="line"><span class="lineno">  378</span>                    <span class="keywordflow">for</span> _ <span class="keywordflow">in</span> range(args.n_sigma_events):</div>
+<div class="line"><span class="lineno">  379</span>                        next_event(pythia)</div>
+<div class="line"><span class="lineno">  380</span>                    sigma[beam_id, i_nucleon].append(</div>
+<div class="line"><span class="lineno">  381</span>                        signal_kfactor(kfactors, beam_id, nucleon_id, p) * pythia.infoPython().sigmaGen()</div>
+<div class="line"><span class="lineno">  382</span>                    )</div>
+<div class="line"><span class="lineno">  383</span>                sigma_total = [</div>
+<div class="line"><span class="lineno">  384</span>                    mbias_pythia[i_nucleon].getSigmaTotal(beam_id, nucleon_id, ecm(beam_id, nucleon_id, p))</div>
+<div class="line"><span class="lineno">  385</span>                    <span class="keywordflow">for</span> p <span class="keywordflow">in</span> p_grid</div>
+<div class="line"><span class="lineno">  386</span>                ]</div>
+<div class="line"><span class="lineno">  387</span>                log_chi[beam_id, i_nucleon] = np.log([s / t <span class="keywordflow">for</span> s, t <span class="keywordflow">in</span> zip(sigma[beam_id, i_nucleon], sigma_total)])</div>
+<div class="line"><span class="lineno">  388</span>                print(</div>
+<div class="line"><span class="lineno">  389</span>                    f<span class="stringliteral">&quot;K*sigma and chi at {args.p_beam} GeV for {beam_id} on {nucleon_id}: &quot;</span></div>
+<div class="line"><span class="lineno">  390</span>                    f<span class="stringliteral">&quot;{sigma[beam_id, i_nucleon][-1]:.3e} mb, {math.exp(log_chi[beam_id, i_nucleon][-1]):.3e}&quot;</span></div>
+<div class="line"><span class="lineno">  391</span>                )</div>
+<div class="line"><span class="lineno">  392</span>    chi_max = max(np.exp(c).max() <span class="keywordflow">for</span> c <span class="keywordflow">in</span> log_chi.values())</div>
+<div class="line"><span class="lineno">  393</span>    <span class="comment"># cross section per nucleon of the target composition, at the beam energy, for the normalisation</span></div>
+<div class="line"><span class="lineno">  394</span>    sigma_QQ = proton_fraction * sigma[2212, 0][-1] + (1.0 - proton_fraction) * sigma[2212, 1][-1]</div>
+<div class="line"><span class="lineno">  395</span>    print(f<span class="stringliteral">&quot;K*sigma per nucleon at {args.p_beam} GeV: {1e3 * sigma_QQ:.2f} ub&quot;</span>)</div>
+<div class="line"><span class="lineno">  396</span> </div>
+<div class="line"><span class="lineno">  397</span>    signal_events = SignalEvents(new_pythia, signal_process, signal_ids, args.p_beam)</div>
+<div class="line"><span class="lineno">  398</span>    inclusive_events = (</div>
+<div class="line"><span class="lineno">  399</span>        InclusiveSignalEvents(new_pythia, signal_ids, args.heavy_quark, args.p_beam)</div>
+<div class="line"><span class="lineno">  400</span>        <span class="keywordflow">if</span> args.charm_production == <span class="stringliteral">&quot;inclusive&quot;</span> <span class="keywordflow">and</span> args.heavy_quark == 4</div>
+<div class="line"><span class="lineno">  401</span>        <span class="keywordflow">else</span> <span class="keywordtype">None</span></div>
+<div class="line"><span class="lineno">  402</span>    )</div>
+<div class="line"><span class="lineno">  403</span> </div>
+<div class="line"><span class="lineno">  404</span>    output_file = ROOT.TFile.Open(args.output, <span class="stringliteral">&quot;RECREATE&quot;</span>)</div>
+<div class="line"><span class="lineno">  405</span>    ntuple = ROOT.TNtuple(</div>
+<div class="line"><span class="lineno">  406</span>        <span class="stringliteral">&quot;pythia6&quot;</span>,</div>
+<div class="line"><span class="lineno">  407</span>        <span class="stringliteral">&quot;pythia8 heavy flavour&quot;</span>,</div>
+<div class="line"><span class="lineno">  408</span>        <span class="stringliteral">&quot;id:px:py:pz:E:M:mid:mpx:mpy:mpz:mE:mM:k:a0:a1:a2:a3:a4:a5:a6:a7:a8:a9:a10:a11:a12:a13:a14:a15:\</span></div>
+<div class="line"><span class="lineno">  409</span><span class="stringliteral">s0:s1:s2:s3:s4:s5:s6:s7:s8:s9:s10:s11:s12:s13:s14:s15&quot;</span>,</div>
+<div class="line"><span class="lineno">  410</span>    )</div>
+<div class="line"><span class="lineno">  411</span>    <span class="comment"># number of signal particles per cascade depth, used by FixedTargetGenerator for the normalisation</span></div>
+<div class="line"><span class="lineno">  412</span>    depth_hist = ROOT.TH1F(<span class="stringliteral">&quot;2&quot;</span>, <span class="stringliteral">&quot;nr signal per cascade depth&quot;</span>, 50, 0.5, 50.5)</div>
+<div class="line"><span class="lineno">  413</span>    <span class="comment"># cross section per nucleon [mb] this file was generated with, read back by run_fixedTarget.py to</span></div>
+<div class="line"><span class="lineno">  414</span>    <span class="comment"># scale chicc/chibb, so that the normalisation follows the beam energy, tune and target of the file</span></div>
+<div class="line"><span class="lineno">  415</span>    ROOT.TParameter(<span class="stringliteral">&quot;double&quot;</span>)(<span class="stringliteral">&quot;sigma_QQ&quot;</span>, sigma_QQ).Write()  <span class="comment"># type: ignore[missing-attribute]</span></div>
+<div class="line"><span class="lineno">  416</span> </div>
+<div class="line"><span class="lineno">  417</span>    t0 = time.time()</div>
+<div class="line"><span class="lineno">  418</span>    <span class="keywordflow">for</span> i_pot <span class="keywordflow">in</span> range(args.n_pot):</div>
+<div class="line"><span class="lineno">  419</span>        <span class="keywordflow">if</span> i_pot % 1000 == 0:</div>
+<div class="line"><span class="lineno">  420</span>            print(<span class="stringliteral">&quot;Generate event &quot;</span>, i_pot)</div>
+<div class="line"><span class="lineno">  421</span>        <span class="comment"># stack: PID, px, py, pz, cascade depth, ancestors, interaction processes</span></div>
+<div class="line"><span class="lineno">  422</span>        stack: list[tuple[int, float, float, float, int, list[int], list[int]]] = []</div>
+<div class="line"><span class="lineno">  423</span>        stack.append((2212, 0.0, 0.0, args.p_beam, 1, [2212] + 99 * [0], 100 * [0]))</div>
+<div class="line"><span class="lineno">  424</span>        <span class="keywordflow">while</span> stack:</div>
+<div class="line"><span class="lineno">  425</span>            beam_id, px, py, pz, depth, ancestors, processes = stack.pop()</div>
+<div class="line"><span class="lineno">  426</span>            p = math.sqrt(px**2 + py**2 + pz**2)</div>
+<div class="line"><span class="lineno">  427</span>            i_nucleon = 0 <span class="keywordflow">if</span> random.random() &lt; proton_fraction <span class="keywordflow">else</span> 1</div>
+<div class="line"><span class="lineno">  428</span>            nucleon_id = TARGET_NUCLEONS[i_nucleon]</div>
+<div class="line"><span class="lineno">  429</span>            <span class="keywordflow">if</span> math.exp(np.interp(math.log(p), log_p_grid, log_chi[beam_id, i_nucleon])) / chi_max &gt; random.random():</div>
+<div class="line"><span class="lineno">  430</span>                beam_mass = mass(beam_id)</div>
+<div class="line"><span class="lineno">  431</span>                beam = ROOT.TLorentzVector(px, py, pz, math.sqrt(p**2 + beam_mass**2))</div>
+<div class="line"><span class="lineno">  432</span>                <span class="keywordflow">if</span> inclusive_events <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span>:</div>
+<div class="line"><span class="lineno">  433</span>                    code, hadrons = inclusive_events.next(beam_id, i_nucleon, px, py, pz)</div>
+<div class="line"><span class="lineno">  434</span>                <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  435</span>                    code, hadrons = signal_events.next(beam_id, nucleon_id, p)</div>
+<div class="line"><span class="lineno">  436</span>                boost = (beam + ROOT.TLorentzVector(0, 0, 0, mass(nucleon_id))).BoostVector()  <span class="comment"># type: ignore[missing-attribute]</span></div>
+<div class="line"><span class="lineno">  437</span>                n_processes = min(depth - 1, 15)</div>
+<div class="line"><span class="lineno">  438</span>                <span class="keywordflow">for</span> hadron_id, *p4, hadron_mass <span class="keywordflow">in</span> hadrons:</div>
+<div class="line"><span class="lineno">  439</span>                    hadron = ROOT.TLorentzVector(*p4)</div>
+<div class="line"><span class="lineno">  440</span>                    <span class="keywordflow">if</span> inclusive_events <span class="keywordflow">is</span> <span class="keywordtype">None</span>:  <span class="comment"># forced events are generated in the CM frame</span></div>
+<div class="line"><span class="lineno">  441</span>                        hadron.RotateUz(beam.Vect().Unit())  <span class="comment"># type: ignore[missing-attribute]</span></div>
+<div class="line"><span class="lineno">  442</span>                        hadron.Boost(boost)  <span class="comment"># type: ignore[missing-attribute]</span></div>
+<div class="line"><span class="lineno">  443</span>                    row = [hadron_id, hadron.Px(), hadron.Py(), hadron.Pz(), hadron.E(), hadron_mass]</div>
+<div class="line"><span class="lineno">  444</span>                    row += [beam_id, px, py, pz, beam.E(), beam_mass, depth]</div>
+<div class="line"><span class="lineno">  445</span>                    row += ancestors[:16] + processes[:n_processes] + [code] + (15 - n_processes) * [0]</div>
+<div class="line"><span class="lineno">  446</span>                    ntuple.Fill(array(<span class="stringliteral">&quot;f&quot;</span>, row))</div>
+<div class="line"><span class="lineno">  447</span>                    depth_hist.Fill(depth)</div>
+<div class="line"><span class="lineno">  448</span>            <span class="comment"># minimum-bias event to add new cascade particles to the stack</span></div>
+<div class="line"><span class="lineno">  449</span>            i_nucleon = 0 <span class="keywordflow">if</span> random.random() &lt; proton_fraction <span class="keywordflow">else</span> 1</div>
+<div class="line"><span class="lineno">  450</span>            pythia = mbias_pythia[i_nucleon]</div>
+<div class="line"><span class="lineno">  451</span>            pythia.setBeamIDs(beam_id, TARGET_NUCLEONS[i_nucleon])</div>
+<div class="line"><span class="lineno">  452</span>            pythia.setKinematics(px, py, pz, 0.0, 0.0, 0.0)</div>
+<div class="line"><span class="lineno">  453</span>            next_event(pythia)</div>
+<div class="line"><span class="lineno">  454</span>            code = pythia.infoPython().code()</div>
+<div class="line"><span class="lineno">  455</span>            <span class="keywordflow">if</span> code == 102:</div>
+<div class="line"><span class="lineno">  456</span>                <span class="comment"># Elastic scattering does not start a new cascade generation: the scattered hadron keeps</span></div>
+<div class="line"><span class="lineno">  457</span>                <span class="comment"># its depth. Depth 1 is then everything the beam proton produces up to and including its</span></div>
+<div class="line"><span class="lineno">  458</span>                <span class="comment"># first inelastic interaction, which is what chicc/chibb in run_fixedTarget.py normalise.</span></div>
+<div class="line"><span class="lineno">  459</span>                final = [pythia.event[i] <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(pythia.event.size()) <span class="keywordflow">if</span> pythia.event[i].isFinal()]</div>
+<div class="line"><span class="lineno">  460</span>                leading = max(final, key=<span class="keyword">lambda</span> part: part.pAbs())</div>
+<div class="line"><span class="lineno">  461</span>                <span class="keywordflow">if</span> leading.pAbs() &gt; p_threshold <span class="keywordflow">and</span> len(stack) &lt; 999:</div>
+<div class="line"><span class="lineno">  462</span>                    stack.append((beam_id, leading.px(), leading.py(), leading.pz(), depth, ancestors, processes))</div>
+<div class="line"><span class="lineno">  463</span>                <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  464</span>            new_depth = min(depth + 1, 98)</div>
+<div class="line"><span class="lineno">  465</span>            <span class="keywordflow">if</span> depth == 1:  <span class="comment"># first inelastic interaction process of the beam proton</span></div>
+<div class="line"><span class="lineno">  466</span>                processes = [code] + processes[1:]</div>
+<div class="line"><span class="lineno">  467</span>            <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(pythia.event.size()):</div>
+<div class="line"><span class="lineno">  468</span>                part = pythia.event[i]</div>
+<div class="line"><span class="lineno">  469</span>                <span class="keywordflow">if</span> part.idAbs() <span class="keywordflow">in</span> CASCADE_IDS <span class="keywordflow">and</span> part.isFinal() <span class="keywordflow">and</span> part.pAbs() &gt; p_threshold <span class="keywordflow">and</span> len(stack) &lt; 999:</div>
+<div class="line"><span class="lineno">  470</span>                    new_ancestors = ancestors[: new_depth - 1] + [part.id()] + ancestors[new_depth:]</div>
+<div class="line"><span class="lineno">  471</span>                    new_processes = processes[: new_depth - 1] + [code] + processes[new_depth:]</div>
+<div class="line"><span class="lineno">  472</span>                    stack.append((part.id(), part.px(), part.py(), part.pz(), new_depth, new_ancestors, new_processes))</div>
+<div class="line"><span class="lineno">  473</span> </div>
+<div class="line"><span class="lineno">  474</span>    print(f<span class="stringliteral">&quot;Generated {args.n_pot} p.o.t. in {time.time() - t0} s with {new_pythia.n_instances} Pythia8 instances&quot;</span>)</div>
+<div class="line"><span class="lineno">  475</span>    <span class="keywordflow">if</span> inclusive_events <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span>:</div>
+<div class="line"><span class="lineno">  476</span>        print(f<span class="stringliteral">&quot;{inclusive_events.n_tried} inclusive events generated for the charm signal&quot;</span>)</div>
+<div class="line"><span class="lineno">  477</span>    output_file.Write()</div>
+<div class="line"><span class="lineno">  478</span>    output_file.Close()</div>
+<div class="line"><span class="lineno">  479</span>    print(f<span class="stringliteral">&quot;Output file is {args.output}&quot;</span>)</div>
+<div class="line"><span class="lineno">  480</span> </div>
+<div class="line"><span class="lineno">  481</span> </div>
 <div class="ttc" id="atest__fixedtarget__cascade__weight_8cxx_html_ae66f6b31b5ad750f1fe042a706a4e3d4"><div class="ttname"><a href="test__fixedtarget__cascade__weight_8cxx.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a></div><div class="ttdeci">int main()</div><div class="ttdef"><b>Definition</b> <a href="test__fixedtarget__cascade__weight_8cxx_source.html#l00018">test_fixedtarget_cascade_weight.cxx:18</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -469,13 +489,13 @@ normalisation of run_fixedTarget.py) covers the beam proton up to its first inel
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00126">126</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  126</span><span class="keyword">def </span>mass(pdg_id):</div>
-<div class="line"><span class="lineno">  127</span>    particle = PDG.GetParticle(pdg_id)</div>
-<div class="line"><span class="lineno">  128</span>    <span class="keyword">assert</span> particle <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span>, f<span class="stringliteral">&quot;Unknown PDG: {pdg_id}&quot;</span></div>
-<div class="line"><span class="lineno">  129</span>    <span class="keywordflow">return</span> particle.Mass()</div>
-<div class="line"><span class="lineno">  130</span> </div>
-<div class="line"><span class="lineno">  131</span> </div>
+<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00131">131</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  131</span><span class="keyword">def </span>mass(pdg_id):</div>
+<div class="line"><span class="lineno">  132</span>    particle = PDG.GetParticle(pdg_id)</div>
+<div class="line"><span class="lineno">  133</span>    <span class="keyword">assert</span> particle <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span>, f<span class="stringliteral">&quot;Unknown PDG: {pdg_id}&quot;</span></div>
+<div class="line"><span class="lineno">  134</span>    <span class="keywordflow">return</span> particle.Mass()</div>
+<div class="line"><span class="lineno">  135</span> </div>
+<div class="line"><span class="lineno">  136</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -495,17 +515,17 @@ normalisation of run_fixedTarget.py) covers the beam proton up to its first inel
       </table>
 </div><div class="memdoc">
 <pre class="fragment">Generate the next event, giving up after 100 failed attempts.</pre> 
-<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00173">173</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  173</span><span class="keyword">def </span>next_event(pythia):</div>
-<div class="line"><span class="lineno">  174</span>    <span class="stringliteral">&quot;&quot;&quot;Generate the next event, giving up after 100 failed attempts.&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  175</span>    <span class="keywordflow">for</span> _ <span class="keywordflow">in</span> range(100):</div>
-<div class="line"><span class="lineno">  176</span>        <span class="keywordflow">if</span> pythia.next():</div>
-<div class="line"><span class="lineno">  177</span>            <span class="keywordflow">return</span></div>
-<div class="line"><span class="lineno">  178</span>    <span class="keywordflow">raise</span> RuntimeError(</div>
-<div class="line"><span class="lineno">  179</span>        f<span class="stringliteral">&quot;Pythia8 failed to generate an event for beams {pythia.infoPython().idA()} on {pythia.infoPython().idB()}&quot;</span></div>
-<div class="line"><span class="lineno">  180</span>    )</div>
-<div class="line"><span class="lineno">  181</span> </div>
-<div class="line"><span class="lineno">  182</span> </div>
+<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00178">178</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  178</span><span class="keyword">def </span>next_event(pythia):</div>
+<div class="line"><span class="lineno">  179</span>    <span class="stringliteral">&quot;&quot;&quot;Generate the next event, giving up after 100 failed attempts.&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  180</span>    <span class="keywordflow">for</span> _ <span class="keywordflow">in</span> range(100):</div>
+<div class="line"><span class="lineno">  181</span>        <span class="keywordflow">if</span> pythia.next():</div>
+<div class="line"><span class="lineno">  182</span>            <span class="keywordflow">return</span></div>
+<div class="line"><span class="lineno">  183</span>    <span class="keywordflow">raise</span> RuntimeError(</div>
+<div class="line"><span class="lineno">  184</span>        f<span class="stringliteral">&quot;Pythia8 failed to generate an event for beams {pythia.infoPython().idA()} on {pythia.infoPython().idB()}&quot;</span></div>
+<div class="line"><span class="lineno">  185</span>    )</div>
+<div class="line"><span class="lineno">  186</span> </div>
+<div class="line"><span class="lineno">  187</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -524,69 +544,76 @@ normalisation of run_fixedTarget.py) covers the beam proton up to its first inel
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00217">217</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  217</span><span class="keyword">def </span>parse_args():</div>
-<div class="line"><span class="lineno">  218</span>    ap = argparse.ArgumentParser(description=<span class="stringliteral">&quot;Run SHiP makeCascade with Pythia8: generate ccbar or bbbar&quot;</span>)</div>
-<div class="line"><span class="lineno">  219</span>    ap.add_argument(</div>
-<div class="line"><span class="lineno">  220</span>        <span class="stringliteral">&quot;-s&quot;</span>,</div>
-<div class="line"><span class="lineno">  221</span>        <span class="stringliteral">&quot;--seed&quot;</span>,</div>
-<div class="line"><span class="lineno">  222</span>        type=int,</div>
-<div class="line"><span class="lineno">  223</span>        default=int(time.time() * 100000000 % 900000000),</div>
-<div class="line"><span class="lineno">  224</span>        help=<span class="stringliteral">&quot;Random number seed, integer. If not given, current time will be used&quot;</span>,</div>
-<div class="line"><span class="lineno">  225</span>    )</div>
-<div class="line"><span class="lineno">  226</span>    ap.add_argument(</div>
-<div class="line"><span class="lineno">  227</span>        <span class="stringliteral">&quot;-t&quot;</span>,</div>
-<div class="line"><span class="lineno">  228</span>        <span class="stringliteral">&quot;--Fntuple&quot;</span>,</div>
-<div class="line"><span class="lineno">  229</span>        dest=<span class="stringliteral">&quot;output&quot;</span>,</div>
-<div class="line"><span class="lineno">  230</span>        default=<span class="stringliteral">&quot;&quot;</span>,</div>
-<div class="line"><span class="lineno">  231</span>        help=<span class="stringliteral">&quot;Name of ntuple output file, default: Cascade{nevgen/1000}k-pythia8-{pythia8_tune}-MSEL{mselcb}-ntuple.root&quot;</span>,</div>
-<div class="line"><span class="lineno">  232</span>    )</div>
-<div class="line"><span class="lineno">  233</span>    ap.add_argument(</div>
-<div class="line"><span class="lineno">  234</span>        <span class="stringliteral">&quot;-n&quot;</span>, <span class="stringliteral">&quot;--nevgen&quot;</span>, dest=<span class="stringliteral">&quot;n_pot&quot;</span>, type=int, default=100000, help=<span class="stringliteral">&quot;Number of events to produce, default 100000&quot;</span></div>
-<div class="line"><span class="lineno">  235</span>    )</div>
-<div class="line"><span class="lineno">  236</span>    ap.add_argument(</div>
-<div class="line"><span class="lineno">  237</span>        <span class="stringliteral">&quot;-E&quot;</span>, <span class="stringliteral">&quot;--pbeamh&quot;</span>, dest=<span class="stringliteral">&quot;p_beam&quot;</span>, type=float, default=400.0, help=<span class="stringliteral">&quot;Energy of beam in GeV, default 400 GeV&quot;</span></div>
-<div class="line"><span class="lineno">  238</span>    )</div>
-<div class="line"><span class="lineno">  239</span>    ap.add_argument(</div>
-<div class="line"><span class="lineno">  240</span>        <span class="stringliteral">&quot;-m&quot;</span>,</div>
-<div class="line"><span class="lineno">  241</span>        <span class="stringliteral">&quot;--mselcb&quot;</span>,</div>
-<div class="line"><span class="lineno">  242</span>        dest=<span class="stringliteral">&quot;heavy_quark&quot;</span>,</div>
-<div class="line"><span class="lineno">  243</span>        type=int,</div>
-<div class="line"><span class="lineno">  244</span>        default=4,</div>
-<div class="line"><span class="lineno">  245</span>        help=<span class="stringliteral">&quot;4 (5): charm (beauty) production, default charm&quot;</span>,</div>
-<div class="line"><span class="lineno">  246</span>        choices=[4, 5],</div>
-<div class="line"><span class="lineno">  247</span>    )</div>
-<div class="line"><span class="lineno">  248</span>    ap.add_argument(</div>
-<div class="line"><span class="lineno">  249</span>        <span class="stringliteral">&quot;--target-composition&quot;</span>,</div>
-<div class="line"><span class="lineno">  250</span>        default=<span class="stringliteral">&quot;W&quot;</span>,</div>
-<div class="line"><span class="lineno">  251</span>        help=<span class="stringliteral">&quot;Target composition (to determine the ratio of protons in the material). Default is Tungsten (W). Only other choice is Molybdenum (Mo)&quot;</span>,</div>
-<div class="line"><span class="lineno">  252</span>        choices=[<span class="stringliteral">&quot;W&quot;</span>, <span class="stringliteral">&quot;Mo&quot;</span>],</div>
-<div class="line"><span class="lineno">  253</span>    )</div>
-<div class="line"><span class="lineno">  254</span>    ap.add_argument(</div>
-<div class="line"><span class="lineno">  255</span>        <span class="stringliteral">&quot;--pythia8-tune&quot;</span>,</div>
-<div class="line"><span class="lineno">  256</span>        default=<span class="stringliteral">&quot;default&quot;</span>,</div>
-<div class="line"><span class="lineno">  257</span>        choices=[<span class="stringliteral">&quot;default&quot;</span>, <span class="stringliteral">&quot;FTFT&quot;</span>],</div>
-<div class="line"><span class="lineno">  258</span>        help=<span class="stringliteral">&quot;Pythia8 tune: default (Monash 2013) or FTFT (arXiv:2608.29076, with its K-factors)&quot;</span>,</div>
-<div class="line"><span class="lineno">  259</span>    )</div>
-<div class="line"><span class="lineno">  260</span>    ap.add_argument(</div>
-<div class="line"><span class="lineno">  261</span>        <span class="stringliteral">&quot;--nev&quot;</span>, dest=<span class="stringliteral">&quot;n_sigma_events&quot;</span>, type=int, default=2000, help=<span class="stringliteral">&quot;Events per momentum point for sig/sigtot&quot;</span></div>
-<div class="line"><span class="lineno">  262</span>    )</div>
-<div class="line"><span class="lineno">  263</span>    ap.add_argument(</div>
-<div class="line"><span class="lineno">  264</span>        <span class="stringliteral">&quot;--nrpoints&quot;</span>,</div>
-<div class="line"><span class="lineno">  265</span>        dest=<span class="stringliteral">&quot;n_momentum_points&quot;</span>,</div>
-<div class="line"><span class="lineno">  266</span>        type=int,</div>
-<div class="line"><span class="lineno">  267</span>        default=40,</div>
-<div class="line"><span class="lineno">  268</span>        help=<span class="stringliteral">&quot;Number of momentum points taken to calculate sig/sigtot&quot;</span>,</div>
-<div class="line"><span class="lineno">  269</span>    )</div>
-<div class="line"><span class="lineno">  270</span>    args = ap.parse_args()</div>
-<div class="line"><span class="lineno">  271</span>    p_threshold = SIGNAL[args.heavy_quark].p_threshold</div>
-<div class="line"><span class="lineno">  272</span>    <span class="keywordflow">if</span> args.n_pot &lt; 1 <span class="keywordflow">or</span> args.n_sigma_events &lt; 1 <span class="keywordflow">or</span> args.n_momentum_points &lt; 2 <span class="keywordflow">or</span> args.p_beam &lt;= p_threshold:</div>
-<div class="line"><span class="lineno">  273</span>        ap.error(f<span class="stringliteral">&quot;need --nevgen &gt;= 1, --nev &gt;= 1, --nrpoints &gt;= 2 and a beam energy above {p_threshold} GeV&quot;</span>)</div>
-<div class="line"><span class="lineno">  274</span>    <span class="keywordflow">if</span> args.output == <span class="stringliteral">&quot;&quot;</span>:</div>
-<div class="line"><span class="lineno">  275</span>        args.output = f<span class="stringliteral">&quot;Cascade{int(args.n_pot / 1000)}k-pythia8-{args.pythia8_tune}-MSEL{args.heavy_quark}-ntuple.root&quot;</span></div>
-<div class="line"><span class="lineno">  276</span>    <span class="keywordflow">return</span> args</div>
-<div class="line"><span class="lineno">  277</span> </div>
-<div class="line"><span class="lineno">  278</span> </div>
+<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00270">270</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  270</span><span class="keyword">def </span>parse_args():</div>
+<div class="line"><span class="lineno">  271</span>    ap = argparse.ArgumentParser(description=<span class="stringliteral">&quot;Run SHiP makeCascade with Pythia8: generate ccbar or bbbar&quot;</span>)</div>
+<div class="line"><span class="lineno">  272</span>    ap.add_argument(</div>
+<div class="line"><span class="lineno">  273</span>        <span class="stringliteral">&quot;-s&quot;</span>,</div>
+<div class="line"><span class="lineno">  274</span>        <span class="stringliteral">&quot;--seed&quot;</span>,</div>
+<div class="line"><span class="lineno">  275</span>        type=int,</div>
+<div class="line"><span class="lineno">  276</span>        default=int(time.time() * 100000000 % 900000000),</div>
+<div class="line"><span class="lineno">  277</span>        help=<span class="stringliteral">&quot;Random number seed, integer. If not given, current time will be used&quot;</span>,</div>
+<div class="line"><span class="lineno">  278</span>    )</div>
+<div class="line"><span class="lineno">  279</span>    ap.add_argument(</div>
+<div class="line"><span class="lineno">  280</span>        <span class="stringliteral">&quot;-t&quot;</span>,</div>
+<div class="line"><span class="lineno">  281</span>        <span class="stringliteral">&quot;--Fntuple&quot;</span>,</div>
+<div class="line"><span class="lineno">  282</span>        dest=<span class="stringliteral">&quot;output&quot;</span>,</div>
+<div class="line"><span class="lineno">  283</span>        default=<span class="stringliteral">&quot;&quot;</span>,</div>
+<div class="line"><span class="lineno">  284</span>        help=<span class="stringliteral">&quot;Name of ntuple output file, default: Cascade{nevgen/1000}k-pythia8-{pythia8_tune}-MSEL{mselcb}-ntuple.root&quot;</span>,</div>
+<div class="line"><span class="lineno">  285</span>    )</div>
+<div class="line"><span class="lineno">  286</span>    ap.add_argument(</div>
+<div class="line"><span class="lineno">  287</span>        <span class="stringliteral">&quot;-n&quot;</span>, <span class="stringliteral">&quot;--nevgen&quot;</span>, dest=<span class="stringliteral">&quot;n_pot&quot;</span>, type=int, default=100000, help=<span class="stringliteral">&quot;Number of events to produce, default 100000&quot;</span></div>
+<div class="line"><span class="lineno">  288</span>    )</div>
+<div class="line"><span class="lineno">  289</span>    ap.add_argument(</div>
+<div class="line"><span class="lineno">  290</span>        <span class="stringliteral">&quot;-E&quot;</span>, <span class="stringliteral">&quot;--pbeamh&quot;</span>, dest=<span class="stringliteral">&quot;p_beam&quot;</span>, type=float, default=400.0, help=<span class="stringliteral">&quot;Energy of beam in GeV, default 400 GeV&quot;</span></div>
+<div class="line"><span class="lineno">  291</span>    )</div>
+<div class="line"><span class="lineno">  292</span>    ap.add_argument(</div>
+<div class="line"><span class="lineno">  293</span>        <span class="stringliteral">&quot;-m&quot;</span>,</div>
+<div class="line"><span class="lineno">  294</span>        <span class="stringliteral">&quot;--mselcb&quot;</span>,</div>
+<div class="line"><span class="lineno">  295</span>        dest=<span class="stringliteral">&quot;heavy_quark&quot;</span>,</div>
+<div class="line"><span class="lineno">  296</span>        type=int,</div>
+<div class="line"><span class="lineno">  297</span>        default=4,</div>
+<div class="line"><span class="lineno">  298</span>        help=<span class="stringliteral">&quot;4 (5): charm (beauty) production, default charm&quot;</span>,</div>
+<div class="line"><span class="lineno">  299</span>        choices=[4, 5],</div>
+<div class="line"><span class="lineno">  300</span>    )</div>
+<div class="line"><span class="lineno">  301</span>    ap.add_argument(</div>
+<div class="line"><span class="lineno">  302</span>        <span class="stringliteral">&quot;--target-composition&quot;</span>,</div>
+<div class="line"><span class="lineno">  303</span>        default=<span class="stringliteral">&quot;W&quot;</span>,</div>
+<div class="line"><span class="lineno">  304</span>        help=<span class="stringliteral">&quot;Target composition (to determine the ratio of protons in the material). Default is Tungsten (W). Only other choice is Molybdenum (Mo)&quot;</span>,</div>
+<div class="line"><span class="lineno">  305</span>        choices=[<span class="stringliteral">&quot;W&quot;</span>, <span class="stringliteral">&quot;Mo&quot;</span>],</div>
+<div class="line"><span class="lineno">  306</span>    )</div>
+<div class="line"><span class="lineno">  307</span>    ap.add_argument(</div>
+<div class="line"><span class="lineno">  308</span>        <span class="stringliteral">&quot;--pythia8-tune&quot;</span>,</div>
+<div class="line"><span class="lineno">  309</span>        default=<span class="stringliteral">&quot;default&quot;</span>,</div>
+<div class="line"><span class="lineno">  310</span>        choices=[<span class="stringliteral">&quot;default&quot;</span>, <span class="stringliteral">&quot;FTFT&quot;</span>],</div>
+<div class="line"><span class="lineno">  311</span>        help=<span class="stringliteral">&quot;Pythia8 tune: default (Monash 2013) or FTFT (arXiv:2608.29076, with its K-factors)&quot;</span>,</div>
+<div class="line"><span class="lineno">  312</span>    )</div>
+<div class="line"><span class="lineno">  313</span>    ap.add_argument(</div>
+<div class="line"><span class="lineno">  314</span>        <span class="stringliteral">&quot;--charm-production&quot;</span>,</div>
+<div class="line"><span class="lineno">  315</span>        default=<span class="stringliteral">&quot;forced&quot;</span>,</div>
+<div class="line"><span class="lineno">  316</span>        choices=[<span class="stringliteral">&quot;forced&quot;</span>, <span class="stringliteral">&quot;inclusive&quot;</span>],</div>
+<div class="line"><span class="lineno">  317</span>        help=<span class="stringliteral">&quot;Charm signal events from forced (HardQCD:hardccbar) or inclusive (SoftQCD:inelastic) production; &quot;</span></div>
+<div class="line"><span class="lineno">  318</span>        <span class="stringliteral">&quot;inclusive is only for charm (-m 4), beauty is always forced&quot;</span>,</div>
+<div class="line"><span class="lineno">  319</span>    )</div>
+<div class="line"><span class="lineno">  320</span>    ap.add_argument(</div>
+<div class="line"><span class="lineno">  321</span>        <span class="stringliteral">&quot;--nev&quot;</span>, dest=<span class="stringliteral">&quot;n_sigma_events&quot;</span>, type=int, default=2000, help=<span class="stringliteral">&quot;Events per momentum point for sig/sigtot&quot;</span></div>
+<div class="line"><span class="lineno">  322</span>    )</div>
+<div class="line"><span class="lineno">  323</span>    ap.add_argument(</div>
+<div class="line"><span class="lineno">  324</span>        <span class="stringliteral">&quot;--nrpoints&quot;</span>,</div>
+<div class="line"><span class="lineno">  325</span>        dest=<span class="stringliteral">&quot;n_momentum_points&quot;</span>,</div>
+<div class="line"><span class="lineno">  326</span>        type=int,</div>
+<div class="line"><span class="lineno">  327</span>        default=40,</div>
+<div class="line"><span class="lineno">  328</span>        help=<span class="stringliteral">&quot;Number of momentum points taken to calculate sig/sigtot&quot;</span>,</div>
+<div class="line"><span class="lineno">  329</span>    )</div>
+<div class="line"><span class="lineno">  330</span>    args = ap.parse_args()</div>
+<div class="line"><span class="lineno">  331</span>    p_threshold = SIGNAL[args.heavy_quark].p_threshold</div>
+<div class="line"><span class="lineno">  332</span>    <span class="keywordflow">if</span> args.n_pot &lt; 1 <span class="keywordflow">or</span> args.n_sigma_events &lt; 1 <span class="keywordflow">or</span> args.n_momentum_points &lt; 2 <span class="keywordflow">or</span> args.p_beam &lt;= p_threshold:</div>
+<div class="line"><span class="lineno">  333</span>        ap.error(f<span class="stringliteral">&quot;need --nevgen &gt;= 1, --nev &gt;= 1, --nrpoints &gt;= 2 and a beam energy above {p_threshold} GeV&quot;</span>)</div>
+<div class="line"><span class="lineno">  334</span>    <span class="keywordflow">if</span> args.output == <span class="stringliteral">&quot;&quot;</span>:</div>
+<div class="line"><span class="lineno">  335</span>        args.output = f<span class="stringliteral">&quot;Cascade{int(args.n_pot / 1000)}k-pythia8-{args.pythia8_tune}-MSEL{args.heavy_quark}-ntuple.root&quot;</span></div>
+<div class="line"><span class="lineno">  336</span>    <span class="keywordflow">return</span> args</div>
+<div class="line"><span class="lineno">  337</span> </div>
+<div class="line"><span class="lineno">  338</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -631,17 +658,17 @@ normalisation of run_fixedTarget.py) covers the beam proton up to its first inel
 
 kfactors: (nucleon beams, meson beams), or None for the momentum-dependent charm K-factors.
 </pre> 
-<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00116">116</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  116</span><span class="keyword">def </span>signal_kfactor(kfactors, beam_id, nucleon_id, p):</div>
-<div class="line"><span class="lineno">  117</span>    <span class="stringliteral">&quot;&quot;&quot;K-factor applied to the forced signal cross section of beam_id on nucleon_id at momentum p.</span></div>
-<div class="line"><span class="lineno">  118</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  119</span><span class="stringliteral">    kfactors: (nucleon beams, meson beams), or None for the momentum-dependent charm K-factors.</span></div>
-<div class="line"><span class="lineno">  120</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  121</span>    <span class="keywordflow">if</span> kfactors <span class="keywordflow">is</span> <span class="keywordtype">None</span>:</div>
-<div class="line"><span class="lineno">  122</span>        <span class="keywordflow">return</span> kforced_charm(beam_id, nucleon_id, p)</div>
-<div class="line"><span class="lineno">  123</span>    <span class="keywordflow">return</span> kfactors[0] <span class="keywordflow">if</span> abs(beam_id) <span class="keywordflow">in</span> (2212, 2112) <span class="keywordflow">else</span> kfactors[1]</div>
-<div class="line"><span class="lineno">  124</span> </div>
-<div class="line"><span class="lineno">  125</span> </div>
+<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00121">121</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  121</span><span class="keyword">def </span>signal_kfactor(kfactors, beam_id, nucleon_id, p):</div>
+<div class="line"><span class="lineno">  122</span>    <span class="stringliteral">&quot;&quot;&quot;K-factor applied to the forced signal cross section of beam_id on nucleon_id at momentum p.</span></div>
+<div class="line"><span class="lineno">  123</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  124</span><span class="stringliteral">    kfactors: (nucleon beams, meson beams), or None for the momentum-dependent charm K-factors.</span></div>
+<div class="line"><span class="lineno">  125</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  126</span>    <span class="keywordflow">if</span> kfactors <span class="keywordflow">is</span> <span class="keywordtype">None</span>:</div>
+<div class="line"><span class="lineno">  127</span>        <span class="keywordflow">return</span> kforced_charm(beam_id, nucleon_id, p)</div>
+<div class="line"><span class="lineno">  128</span>    <span class="keywordflow">return</span> kfactors[0] <span class="keywordflow">if</span> abs(beam_id) <span class="keywordflow">in</span> (2212, 2112) <span class="keywordflow">else</span> kfactors[1]</div>
+<div class="line"><span class="lineno">  129</span> </div>
+<div class="line"><span class="lineno">  130</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -658,7 +685,7 @@ kfactors: (nucleon beams, meson beams), or None for the momentum-dependent charm
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00029">29</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00034">34</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
 
 </div>
 </div>
@@ -685,7 +712,7 @@ kfactors: (nucleon beams, meson beams), or None for the momentum-dependent charm
 <div class="line"><span class="lineno">   10</span>    <span class="stringliteral">&quot;PDF:piSet = 1&quot;</span>,</div>
 <div class="line"><span class="lineno">   11</span>]</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00065">65</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00070">70</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
 
 </div>
 </div>
@@ -707,7 +734,7 @@ kfactors: (nucleon beams, meson beams), or None for the momentum-dependent charm
 <div class="line"><span class="lineno">    5</span>    (-211, 2212): [10.89, 9.22, 7.66, 7.03, 5.79, 5.30, 5.12, 5.12],</div>
 <div class="line"><span class="lineno">    6</span>}</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00086">86</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00091">91</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
 
 </div>
 </div>
@@ -723,7 +750,23 @@ kfactors: (nucleon beams, meson beams), or None for the momentum-dependent charm
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00085">85</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00090">90</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
+
+</div>
+</div>
+<a id="a88c2b973eba498966349e73e72c9b4e7" name="a88c2b973eba498966349e73e72c9b4e7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a88c2b973eba498966349e73e72c9b4e7">&#9670;&#160;</a></span>MAX_INCLUSIVE_TRIES</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int makeCascadePythia8.MAX_INCLUSIVE_TRIES = 100_000_000</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00224">224</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
 
 </div>
 </div>
@@ -739,7 +782,7 @@ kfactors: (nucleon beams, meson beams), or None for the momentum-dependent charm
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00096">96</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00101">101</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
 
 </div>
 </div>
@@ -755,7 +798,7 @@ kfactors: (nucleon beams, meson beams), or None for the momentum-dependent charm
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00032">32</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00037">37</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
 
 </div>
 </div>
@@ -786,7 +829,7 @@ kfactors: (nucleon beams, meson beams), or None for the momentum-dependent charm
 <div class="line"><span class="lineno">   14</span>    ),</div>
 <div class="line"><span class="lineno">   15</span>}</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00048">48</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00053">53</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
 
 </div>
 </div>
@@ -802,7 +845,7 @@ kfactors: (nucleon beams, meson beams), or None for the momentum-dependent charm
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00094">94</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00099">99</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
 
 </div>
 </div>
@@ -818,7 +861,7 @@ kfactors: (nucleon beams, meson beams), or None for the momentum-dependent charm
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00030">30</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00035">35</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
 
 </div>
 </div>

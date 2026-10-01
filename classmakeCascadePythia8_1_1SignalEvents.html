@@ -120,7 +120,7 @@ Public Attributes</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><pre class="fragment">Signal events in momentum bins p_beam / SIGNAL_BIN_RATIO^i, generated in batches of increasing
 size, one Pythia8 instance per batch.</pre> 
-<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00183">183</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00188">188</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a5b740f54781d1467a1c5ebb8a17f5d9c" name="a5b740f54781d1467a1c5ebb8a17f5d9c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5b740f54781d1467a1c5ebb8a17f5d9c">&#9670;&#160;</a></span>__init__()</h2>
@@ -166,14 +166,14 @@ size, one Pythia8 instance per batch.</pre>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00187">187</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  187</span>    <span class="keyword">def </span>__init__(self, new_pythia, process, signal_ids, p_beam):</div>
-<div class="line"><span class="lineno">  188</span>        self.new_pythia = new_pythia</div>
-<div class="line"><span class="lineno">  189</span>        self.process = process</div>
-<div class="line"><span class="lineno">  190</span>        self.signal_ids = signal_ids</div>
-<div class="line"><span class="lineno">  191</span>        self.p_beam = p_beam</div>
-<div class="line"><span class="lineno">  192</span>        self.buffers = {}</div>
-<div class="line"><span class="lineno">  193</span> </div>
+<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00192">192</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  192</span>    <span class="keyword">def </span>__init__(self, new_pythia, process, signal_ids, p_beam):</div>
+<div class="line"><span class="lineno">  193</span>        self.new_pythia = new_pythia</div>
+<div class="line"><span class="lineno">  194</span>        self.process = process</div>
+<div class="line"><span class="lineno">  195</span>        self.signal_ids = signal_ids</div>
+<div class="line"><span class="lineno">  196</span>        self.p_beam = p_beam</div>
+<div class="line"><span class="lineno">  197</span>        self.buffers = {}</div>
+<div class="line"><span class="lineno">  198</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -217,30 +217,32 @@ size, one Pythia8 instance per batch.</pre>
 </div><div class="memdoc">
 <pre class="fragment">Return process code and signal hadrons (id, px, py, pz, E, m) in the CM frame of an event at
 momentum p.</pre> 
-<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00194">194</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  194</span>    <span class="keyword">def </span>next(self, beam_id, nucleon_id, p):</div>
-<div class="line"><span class="lineno">  195</span>        <span class="stringliteral">&quot;&quot;&quot;Return process code and signal hadrons (id, px, py, pz, E, m) in the CM frame of an event at</span></div>
-<div class="line"><span class="lineno">  196</span><span class="stringliteral">        momentum p.&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  197</span>        p_bin = round(math.log(self.p_beam / p) / math.log(SIGNAL_BIN_RATIO))</div>
-<div class="line"><span class="lineno">  198</span>        buffer, n_fill = self.buffers.setdefault((beam_id, nucleon_id, p_bin), ([], 5))</div>
-<div class="line"><span class="lineno">  199</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> buffer:</div>
-<div class="line"><span class="lineno">  200</span>            n_fill = min(2 * n_fill, 1000)</div>
-<div class="line"><span class="lineno">  201</span>            self.buffers[beam_id, nucleon_id, p_bin] = (buffer, n_fill)</div>
-<div class="line"><span class="lineno">  202</span>            pythia = self.new_pythia(</div>
-<div class="line"><span class="lineno">  203</span>                [self.process, *cm_beam_settings(beam_id, nucleon_id, self.p_beam / SIGNAL_BIN_RATIO**p_bin)]</div>
-<div class="line"><span class="lineno">  204</span>            )</div>
-<div class="line"><span class="lineno">  205</span>            <span class="keywordflow">for</span> _ <span class="keywordflow">in</span> range(n_fill):</div>
-<div class="line"><span class="lineno">  206</span>                next_event(pythia)</div>
-<div class="line"><span class="lineno">  207</span>                event = pythia.event</div>
-<div class="line"><span class="lineno">  208</span>                hadrons = [</div>
-<div class="line"><span class="lineno">  209</span>                    event[i] <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(event.size()) <span class="keywordflow">if</span> event[i].idAbs() <span class="keywordflow">in</span> self.signal_ids <span class="keywordflow">and</span> event[i].isFinal()</div>
-<div class="line"><span class="lineno">  210</span>                ]</div>
-<div class="line"><span class="lineno">  211</span>                buffer.append(</div>
-<div class="line"><span class="lineno">  212</span>                    (pythia.infoPython().code(), [(h.id(), h.px(), h.py(), h.pz(), h.e(), h.m()) <span class="keywordflow">for</span> h <span class="keywordflow">in</span> hadrons])</div>
-<div class="line"><span class="lineno">  213</span>                )</div>
-<div class="line"><span class="lineno">  214</span>        <span class="keywordflow">return</span> buffer.pop()</div>
-<div class="line"><span class="lineno">  215</span> </div>
-<div class="line"><span class="lineno">  216</span> </div>
+<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00199">199</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  199</span>    <span class="keyword">def </span>next(self, beam_id, nucleon_id, p):</div>
+<div class="line"><span class="lineno">  200</span>        <span class="stringliteral">&quot;&quot;&quot;Return process code and signal hadrons (id, px, py, pz, E, m) in the CM frame of an event at</span></div>
+<div class="line"><span class="lineno">  201</span><span class="stringliteral">        momentum p.&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  202</span>        p_bin = round(math.log(self.p_beam / p) / math.log(SIGNAL_BIN_RATIO))</div>
+<div class="line"><span class="lineno">  203</span>        buffer, n_fill = self.buffers.setdefault((beam_id, nucleon_id, p_bin), ([], 5))</div>
+<div class="line"><span class="lineno">  204</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> buffer:</div>
+<div class="line"><span class="lineno">  205</span>            n_fill = min(2 * n_fill, 1000)</div>
+<div class="line"><span class="lineno">  206</span>            self.buffers[beam_id, nucleon_id, p_bin] = (buffer, n_fill)</div>
+<div class="line"><span class="lineno">  207</span>            pythia = self.new_pythia(</div>
+<div class="line"><span class="lineno">  208</span>                [self.process, *cm_beam_settings(beam_id, nucleon_id, self.p_beam / SIGNAL_BIN_RATIO**p_bin)]</div>
+<div class="line"><span class="lineno">  209</span>            )</div>
+<div class="line"><span class="lineno">  210</span>            <span class="keywordflow">for</span> _ <span class="keywordflow">in</span> range(n_fill):</div>
+<div class="line"><span class="lineno">  211</span>                next_event(pythia)</div>
+<div class="line"><span class="lineno">  212</span>                event = pythia.event</div>
+<div class="line"><span class="lineno">  213</span>                hadrons = [</div>
+<div class="line"><span class="lineno">  214</span>                    event[i] <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(event.size()) <span class="keywordflow">if</span> event[i].idAbs() <span class="keywordflow">in</span> self.signal_ids <span class="keywordflow">and</span> event[i].isFinal()</div>
+<div class="line"><span class="lineno">  215</span>                ]</div>
+<div class="line"><span class="lineno">  216</span>                buffer.append(</div>
+<div class="line"><span class="lineno">  217</span>                    (pythia.infoPython().code(), [(h.id(), h.px(), h.py(), h.pz(), h.e(), h.m()) <span class="keywordflow">for</span> h <span class="keywordflow">in</span> hadrons])</div>
+<div class="line"><span class="lineno">  218</span>                )</div>
+<div class="line"><span class="lineno">  219</span>        <span class="keywordflow">return</span> buffer.pop()</div>
+<div class="line"><span class="lineno">  220</span> </div>
+<div class="line"><span class="lineno">  221</span> </div>
+<div class="line"><span class="lineno">  222</span><span class="comment"># safety limit on the inclusive events tried for one charm signal event; near the 34 GeV threshold</span></div>
+<div class="line"><span class="lineno">  223</span><span class="comment"># about 1 in 3e5 inelastic events contains charm</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -257,7 +259,7 @@ momentum p.</pre>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00192">192</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00197">197</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
 
 </div>
 </div>
@@ -273,7 +275,7 @@ momentum p.</pre>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00188">188</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00193">193</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
 
 </div>
 </div>
@@ -289,7 +291,7 @@ momentum p.</pre>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00191">191</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00196">196</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
 
 </div>
 </div>
@@ -305,7 +307,7 @@ momentum p.</pre>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00189">189</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00194">194</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
 
 </div>
 </div>
@@ -321,7 +323,7 @@ momentum p.</pre>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00190">190</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00195">195</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
 
 </div>
 </div>

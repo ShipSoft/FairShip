@@ -66,7 +66,7 @@ var searchData=
   ['setevtgenparticlefile_63',['SetEvtGenParticleFile',['../classTEvtGenDecayer.html#a5ea971c19db0a4c52cbb7a3a58f9a412',1,'TEvtGenDecayer']]],
   ['setfastmuon_64',['SetFastMuon',['../classveto.html#a908f68bb15a24c99dc415196e9a42e13',1,'veto']]],
   ['setffds_65',['setffds',['../classHNLPythia8Generator.html#aebcfb33ad46af8a61fb435fb6bb61e4c',1,'HNLPythia8Generator::SetfFDs()'],['../classPythia8Generator.html#abab3c221126823904c878ab6fd80021f',1,'Pythia8Generator::SetfFDs()']]],
-  ['setfield_66',['setfield',['../classgenfit_1_1FairShipFields.html#a59ca6be2a2e357cfa18ac39ef4ff7dde',1,'genfit::FairShipFields::setField()'],['../classShipConstField.html#ab110378b8acbcd1a006d424cccb64edc',1,'ShipConstField::SetField(Double_t bX, Double_t bY, Double_t bZ)']]],
+  ['setfield_66',['setfield',['../classShipConstField.html#ab110378b8acbcd1a006d424cccb64edc',1,'ShipConstField::SetField()'],['../classgenfit_1_1FairShipFields.html#a59ca6be2a2e357cfa18ac39ef4ff7dde',1,'genfit::FairShipFields::setField()']]],
   ['setfieldregion_67',['SetFieldRegion',['../classShipConstField.html#a2432ab47f54214210eb88be03e73bf0d',1,'ShipConstField']]],
   ['setfollowmuon_68',['SetFollowMuon',['../classveto.html#a1a503dfdb9d90891e26410623e190c89',1,'veto']]],
   ['setforcedecay_69',['SetForceDecay',['../classTEvtGenDecayer.html#a2e581d6fb7200163b53010e107eb0516',1,'TEvtGenDecayer']]],

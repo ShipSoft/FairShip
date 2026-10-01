@@ -29,6 +29,7 @@ var annotated_dup =
       [ "HNLbranchings", "classhnl_1_1HNLbranchings.html", "classhnl_1_1HNLbranchings" ]
     ] ],
     [ "makeCascadePythia8", "namespacemakeCascadePythia8.html", [
+      [ "InclusiveSignalEvents", "classmakeCascadePythia8_1_1InclusiveSignalEvents.html", "classmakeCascadePythia8_1_1InclusiveSignalEvents" ],
       [ "PythiaFactory", "classmakeCascadePythia8_1_1PythiaFactory.html", "classmakeCascadePythia8_1_1PythiaFactory" ],
       [ "SignalConfig", "classmakeCascadePythia8_1_1SignalConfig.html", null ],
       [ "SignalEvents", "classmakeCascadePythia8_1_1SignalEvents.html", "classmakeCascadePythia8_1_1SignalEvents" ]
