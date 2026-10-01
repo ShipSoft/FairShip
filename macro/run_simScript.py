@@ -71,7 +71,9 @@ parser.add_argument(
     help="Use TEvtGenDecayer for J/psi and other quarkonium decays",
     action="store_true",
 )
-parser.add_argument("--targetOffset", dest="targetOffset", help="z offset for the target coordinate", default = 0., type=float)
+parser.add_argument(
+    "--targetOffset", dest="targetOffset", help="z offset for the target coordinate", default=0.0, type=float
+)
 subparsers = parser.add_subparsers(dest="command", help="Which mode to run")
 # === PG subcommand ===
 pg_parser = subparsers.add_parser("PG", help="Use Particle Gun")
