@@ -108,6 +108,7 @@ Added</h2>
 Changed</h2>
 <ul>
 <li>Update default He balloon liner to be made with polyester like Mylar, named mylar_linerHe with density/thickness matching material #5</li>
+<li>Scale <code>chicc</code>/<code>chibb</code> in <code><a class="el" href="run__fixedTarget_8py.html">run_fixedTarget.py</a></code> by the heavy-flavour cross section per nucleon stored in the cascade input file, so that the normalisation follows the beam energy, tune and target composition the file was generated with. Files without it, such as the existing ones on EOS, keep the previous values.</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md5"></a>
 Fixed</h2>
@@ -226,7 +227,7 @@ Macros and simulation driver</h3>
 <li>Fix <code><a class="el" href="namespaceeventDisplay.html">eventDisplay</a></code>, <code><a class="el" href="namespacemakeCascade.html">makeCascade</a></code>, <code><a class="el" href="namespacemakeDecay.html">makeDecay</a></code> and <code><a class="el" href="namespacerunPythia8.html">runPythia8</a></code>: <code>-i/--HiddenParticleID</code> takes <code>type=int</code>, and the HNL end-vertex daughter search uses a found flag so the last MC track is not silently used; <code><a class="el" href="namespacemakeCascade.html">makeCascade</a></code>'s interpolation-anchor update is dedented out of the inner gap-fill loop so the anchor advances; <code><a class="el" href="namespacemakeDecay.html">makeDecay</a></code> opens the EOS histogram fallback through the <code>$EOSSHIP</code> prefix and fixes a printf placeholder passed to <code>print()</code>; and the <code><a class="el" href="namespacerunPythia8.html">runPythia8</a></code> analysis functions guard against empty histograms so the non-Drell-Yan modes do not divide by zero</li>
 <li>Advance the pad counter for empty species in <code><a class="el" href="namespacemergeMbias.html#a80871c00ceb9b82d45566f3b00b15e2a">mergeMbias.TplotP</a></code>. An empty first species made the next species draw over the previous pad and left the last pad blank on both the P and &gt;P canvases.</li>
 <li>Open <code><a class="el" href="namespacemakeDecay.html">makeDecay</a></code> input paths directly rather than routing any path containing the substring <code>eos</code> through XRootD; ROOT resolves <code>/eos</code> paths itself through FUSE or XRootD</li>
-<li>Accept an explicit <code>-A</code> without <code>--target-composition</code> in <code><a class="el" href="namespaceheavyFlavourScaling.html#a7425e6668d65070af46d3ce13b2076a2">heavyFlavourScaling.derive_cross_sections</a></code>, where calls such as <code>derive_cross_sections(A=181)</code> were rejected, and omit the target label from the printed summary when <code>-A</code> overrides the preset, so a stale preset name no longer appears beside the overriding value</li>
+<li>Accept an explicit <code>-A</code> without <code>--target-composition</code> in <code><a class="el" href="namespaceheavyFlavourScaling.html#a0ddfee189db56feb677649bfabb04999">heavyFlavourScaling.derive_cross_sections</a></code>, where calls such as <code>derive_cross_sections(A=181)</code> were rejected, and omit the target label from the printed summary when <code>-A</code> overrides the preset, so a stale preset name no longer appears beside the overriding value</li>
 </ul>
 <h3><a class="anchor" id="autotoc_md18"></a>
 Python helpers and type checking</h3>
