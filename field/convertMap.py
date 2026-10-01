@@ -33,7 +33,10 @@ ROOT.gROOT.ProcessLine(
 # The field map is assumed to obey the following coordinate bin ordering:
 # z is increased first, y is increased 2nd, x is increased last.
 # For the coordinate bin (iX, iY, iZ), the field bin = (iX*Ny + iY)*Nz + iZ,
-# where Ny and Nz are the number of y and z bins
+# where Ny and Nz are the number of y and z bins.
+# Store the coordinates as well: nothing else in the file records the ordering,
+# and ShipBFieldMap checks them against the one it assumes. A map written
+# without them loads with a warning instead.
 
 ROOT.gROOT.ProcessLine(
     "struct dataStruct{\
@@ -51,7 +54,7 @@ def run(
     inFileName: str = "FieldTest.txt",
     rootFileName: str = "BFieldTest.root",
     cmScale: float = 1.0,
-    storeCoords: bool = False,
+    storeCoords: bool = True,
 ) -> None:
     createRootMap(inFileName, rootFileName, cmScale, storeCoords)
 
