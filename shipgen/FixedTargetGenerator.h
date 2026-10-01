@@ -96,9 +96,11 @@ class FixedTargetGenerator : public SHiP::Generator {
     EMax = emax;
   }  // min energy to be copied to Geant4
   inline void SetDebug(Bool_t x) { Debug = x; }
-  // Pythia8 tune for the primary interaction: "" (default, Monash 2013) or
+  // Pythia8 tune for the primary interaction: "" or "default" (Monash 2013) or
   // "FTFT" (fixed-target open charm and beauty tune, arXiv:2608.29076)
-  inline void SetPythiaTune(const TString& tune) { fTune = tune; }
+  inline void SetPythiaTune(const TString& tune) {
+    fTune = (tune == "default") ? "" : tune;
+  }
   inline void SetOpt4DP(TNtuple* t) {
     withNtuple = kTRUE;
     fNtuple = t;
