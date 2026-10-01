@@ -1,5 +1,7 @@
 <map id="shipgen/FixedTargetGenerator.h" name="shipgen/FixedTargetGenerator.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="13,5,240,31"/>
-<area shape="rect" id="Node000002" href="$FixedTargetGenerator_8cxx.html" title=" " alt="" coords="5,79,248,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="129,44,129,79,124,79,124,44"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="125,5,352,31"/>
+<area shape="rect" id="Node000002" href="$FixedTargetGenerator_8cxx.html" title=" " alt="" coords="5,86,248,111"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="212,41,145,88,142,84,209,37"/>
+<area shape="rect" id="Node000003" href="$test__fixedtarget__cascade__weight_8cxx.html" title=" " alt="" coords="272,79,432,119"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="268,36,326,76,323,81,265,41"/>
 </map>
