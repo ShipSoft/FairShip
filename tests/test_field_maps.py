@@ -36,6 +36,7 @@ EXPECTED = {
     "2026_09_28_MainSpectrometerField_V13_3500": ("Bx", 10.0, 0.1),
     "2026_09_28_MainSpectrometerField_V21_2000": ("Bx", 10.0, 0.1),
     "2026_09_28_MainSpectrometerField_V21_3000": ("Bx", 10.0, 0.1),
+    "2026_07_02_MainSpectrometerField_V21_2455": ("Bx", 10.0, 0.1),
     "MainSpectrometerField": ("Bx", 2.0, 0.5),
     "TRY_2025": ("By", 1.4, 1.2),
     "TRY_2026": ("By", 1.4, 1.2),
