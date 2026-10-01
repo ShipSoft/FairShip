@@ -42,10 +42,6 @@ if genfit_root:
     )
 
 
-def forReadingOldFile() -> None:
-    ROOT.gInterpreter.ProcessLine("typedef double Double32_t")
-
-
 def configure(darkphoton=None) -> None:
     ROOT.gROOT.ProcessLine('#include "' + os.environ["FAIRSHIP"] + '/shipdata/ShipGlobals.h"')
     pdg = ROOT.TDatabasePDG.Instance()

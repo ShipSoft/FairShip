@@ -62,7 +62,7 @@ include(GNUInstallDirs)
 # aliBuild modulefile expects libraries in lib/, not lib64/
 set(CMAKE_INSTALL_LIBDIR lib)
 
-# C++20 required; ROOT 6.36 requires at least C++17
+# C++20: the conda-forge ROOT build FairShip links against is cxx20.
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
@@ -80,7 +80,6 @@ set(FAIRROOTPATH $ENV{FAIRROOTPATH})
 # Where to look first for cmake modules, before ${CMAKE_ROOT}/Modules/
 list(
     PREPEND CMAKE_MODULE_PATH
-    "${FAIRROOTPATH}/share/fairbase/cmake/modules_old"
     "${FAIRROOTPATH}/share/fairbase/cmake/modules"
     "${CMAKE_SOURCE_DIR}/cmake/modules"
 )
