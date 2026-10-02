@@ -1,0 +1,45 @@
+# Electron / hadron / muon identification for the CaloScoringPlane (CaloScoringPlanePID).
+# Author: M. Climescu 19.09.2026, matclim[at]cern.ch
+# Use with: ShipReco.py --caloScoringPlanePID geometry/caloScoringPlane_pid_provided.yaml
+# Format: CaloScoringPlane/README.md
+species: [electron, muon, hadron] # order of the matrix rows (true) and columns (identified)
+interpolation: log # between energy points: linear in E, or linear in log E
+points: # strictly increasing total energy in GeV; each row must sum to 1
+  - energy: 3.0
+    matrix:
+      - [0.991, 0.0, 0.009] # true electron
+      - [0.0, 0.93, 0.07] # true muon
+      - [0.059, 0.006, 0.935] # true hadron
+  - energy: 10.0
+    matrix:
+      - [0.998, 0.0, 0.002]
+      - [0.0, 0.987, 0.013]
+      - [0.023, 0.001, 0.976]
+  - energy: 30.0
+    matrix:
+      - [0.998, 0.0, 0.002]
+      - [0.0, 0.99, 0.01]
+      - [0.008, 0.002, 0.99]
+  - energy: 50.0
+    matrix:
+      - [0.998, 0.0, 0.002]
+      - [0.0, 0.989, 0.011]
+      - [0.004, 0.004, 0.992]
+  - energy: 75.0
+    matrix:
+      - [0.998, 0.0, 0.002]
+      - [0.0, 0.986, 0.014]
+      - [0.003, 0.005, 0.992]
+  - energy: 100.0
+    matrix:
+      - [0.998, 0.0, 0.002]
+      - [0.0, 0.991, 0.009]
+      - [0.002, 0.006, 0.992]
+  - energy: 150.0
+    matrix:
+      - [1.0, 0.0, 0.0]
+      - [0.0, 0.992, 0.008]
+      - [0.003, 0.006, 0.991]
+pdg_overrides: {}
+#pdg_overrides: # optional: |PDG code| -> electron, hadron, muon or none
+#  22: electron # treat photons as electromagnetic showers
