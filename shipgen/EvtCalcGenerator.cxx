@@ -186,12 +186,10 @@ Bool_t EvtCalcGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
 
   Ndau = GetNdaughters(fTree);
   // Vertex coordinates in the SHiP reference frame, expressed in [cm]
-  Double_t space_unit_conv = 100.;                                    // m to cm
-  Double_t coord_shift = (zDecayVolume - ztarget) / space_unit_conv;  // units m
-  Double_t vx_transf = GetVx(fTree) * space_unit_conv;  // units cm
-  Double_t vy_transf = GetVy(fTree) * space_unit_conv;  // units cm
-  Double_t vz_transf =
-      (GetVz(fTree) - coord_shift) * space_unit_conv;  // units cm
+  Double_t space_unit_conv = 100.;                                // m to cm
+  Double_t vx_transf = GetVx(fTree) * space_unit_conv;            // units cm
+  Double_t vy_transf = GetVy(fTree) * space_unit_conv;            // units cm
+  Double_t vz_transf = GetVz(fTree) * space_unit_conv + ztarget;  // units cm
 
   Double_t c = 2.99792458e+10;  // speed of light [cm/s]
   Double_t tof = TMath::Sqrt(vx_transf * vx_transf + vy_transf * vy_transf +
