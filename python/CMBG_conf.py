@@ -4,7 +4,7 @@
 
 def configure(CMBG, ship_geo):
     # handles external variables for the Cosmic Muon Background Generator within FairShip
-    Z1 = ship_geo.MuonStation3.z  # 3900
+    Z1 = ship_geo.CaloScoringPlane.z  # downstream end of the detector
     Z2 = ship_geo.vetoStation.z  # -1968
     Z3 = ship_geo.chambers.Tub1length  # 250
     zmiddle = (Z1 + (Z2 - 2 * Z3)) / 2  # 716

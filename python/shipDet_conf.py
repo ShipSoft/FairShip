@@ -290,6 +290,13 @@ def configure(run, ship_geo):
     # -----Create geometry----------------------------------------------
     cave = ROOT.ShipCave(ship_geo.muShield.z)
     cave.SetGeometryFileName("caveWithAir.geo")
+    if hasattr(ship_geo.cave, "ECN3_length"):
+        cave.SetCavernDimensions(
+            ship_geo.cave.TCC8_length,
+            ship_geo.cave.ECN3_length,
+            ship_geo.cave.stair_step_length,
+            ship_geo.cave.z_transition,
+        )
     detectorList.append(cave)
 
     TargetStation = ROOT.ShipTargetStation(
@@ -397,40 +404,15 @@ def configure(run, ship_geo):
         ship_geo,
     )
 
-    if ship_geo.EcalOption == 2:  # splitCal with pointing information
-        SplitCal = ROOT.splitcal("SplitCal", ROOT.kTRUE)
-        x = ship_geo.SplitCal
-        SplitCal.SetThickness(
-            x.ActiveECALThickness,
-            x.ActiveHCALThickness,
-            x.FilterECALThickness,
-            x.FilterECALThickness_first,
-            x.FilterHCALThickness,
-            x.ActiveECAL_gas_Thickness,
+    if hasattr(ship_geo, "CaloScoringPlane"):  # absent in geometry files made before SplitCal removal
+        caloScoringPlane = ROOT.CaloScoringPlane("CaloScoringPlane", ROOT.kTRUE)
+        caloScoringPlane.SetZposition(ship_geo.CaloScoringPlane.z)
+        caloScoringPlane.SetBoxDimensions(
+            ship_geo.CaloScoringPlane.DX, ship_geo.CaloScoringPlane.DY, ship_geo.CaloScoringPlane.DZ
         )
-        SplitCal.SetMaterial(
-            x.ActiveECALMaterial,
-            x.ActiveHCALMaterial,
-            x.FilterECALMaterial,
-            x.FilterHCALMaterial,
-        )
-        SplitCal.SetNSamplings(x.nECALSamplings, x.nHCALSamplings, x.ActiveHCAL)
-        SplitCal.SetZStart(x.ZStart)
-        SplitCal.SetXMax(x.XMax)
-        SplitCal.SetYMax(x.YMax)
-        SplitCal.SetEmpty(
-            x.Empty,
-            x.BigGap,
-            x.ActiveECAL_gas_gap,
-            x.first_precision_layer,
-            x.second_precision_layer,
-            x.third_precision_layer,
-            x.num_precision_layers,
-        )
-        SplitCal.SetNModules(x.NModulesInX, x.NModulesInY)
-        SplitCal.SetNStrips(x.NStripsPerModule)
-        SplitCal.SetStripSize(x.StripHalfWidth, x.StripHalfLength)
-        detectorList.append(SplitCal)
+        detectorList.append(caloScoringPlane)
+    else:
+        print("Warning: no CaloScoringPlane in this geometry configuration; not building it.")
 
     upstreamTagger = ROOT.UpstreamTagger("UpstreamTagger", ROOT.kTRUE)
     upstreamTagger.SetZposition(ship_geo.UpstreamTagger.Z_Position)
