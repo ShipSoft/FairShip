@@ -18,6 +18,9 @@ it in future.
 * Add `macro/makeCascadePythia8.py`, a Pythia8 version of `makeCascade.py` that writes charm or beauty cascade files in the same format, with `--pythia8-tune` (`default`, `FTFT`). With `FTFT`, charm is normalised to the tune's inclusive charm cross section through forced-production K-factors that depend on the beam particle, the target nucleon and the momentum; beauty uses the tune's K-factors. Elastic scattering does not increase the cascade depth, so the depth-1 normalisation used by `run_fixedTarget.py` covers the beam proton up to its first inelastic interaction and its elastic re-interactions are not counted twice. `makeCascade.py` is unchanged. `FixedTargetGenerator` tags hadrons from depth 1 as primary when the input file has the depth branch, so beam protons that scattered elastically before are included; files without it keep the zero-transverse-momentum test.
 * Add `--charm-production` (`forced`, `inclusive`) to `macro/makeCascadePythia8.py`. With `inclusive`, charm signal events are inclusive inelastic events (`SoftQCD:inelastic`) generated at the exact momentum and direction of the projectile and kept if they contain charm, as in the FTFT tune, instead of forced `HardQCD:hardccbar` events. The normalisation is unchanged. Inclusive generation is about 20 times slower; `forced` remains the default.
 
+* Add converter of neutrino flux to the aegir-genie format
+
+
 ### Changed
 
 * Update default He balloon liner to be made with polyester like Mylar, named mylar_linerHe with density/thickness matching material #5
@@ -165,6 +168,8 @@ random sequence.
 
 ### Fixed
 
+* Remove duplicated 4232 pdg code in extractNeutrinosAndUpdateWeight and extractMuonsAndUpdateWeight
+* Update charm and beauty over mbias cross sections in run_fixedTarget
 * Fix pot branch in Decay tree from makeDecay
 * Fix check of existing particle pdg in makeCascade
 * Restore `tPythia6Generator` instantiation from Python — broken since 26.02 by the `SHiP::Generator` base-class refactor leaving the file-based `Init` overloads pure virtual without a stub override (#1272)
