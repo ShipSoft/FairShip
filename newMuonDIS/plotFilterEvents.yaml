@@ -1,0 +1,28 @@
+# SPDX-License-Identifier: LGPL-3.0-or-later
+# SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
+
+# All 1D/2D validation histograms are plotted, one histogram per PDF page.
+# null: full stored coordinate range; automatic range for histogram contents.
+defaults:
+  x_range: null
+  y_range: null
+  z_range: null
+  log_x: false
+  log_y: false
+  log_z: false
+  rebin: 1
+  enabled: true
+
+# Override settings by the exact ROOT path. For example:
+# histograms:
+#   MS/muon_p_:
+#     x_range: [1, 400]
+#     log_x: true
+#     log_y: true
+#     rebin: 4
+#   MS/vertex_x_vs_z_filtered:
+#     x_range: [3000, 9000]
+#     y_range: [-200, 200]
+#     log_z: true
+#     rebin: [5, 2]
+histograms: {}
