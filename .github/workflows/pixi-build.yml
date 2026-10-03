@@ -41,6 +41,8 @@ jobs:
         run: pixi run --locked build
       - name: Test
         run: pixi run --locked test
+      - name: Python unit tests
+        run: pixi run --locked ci-pytest
       - name: Upload build artifact
         uses: actions/upload-artifact@v7
         with:
