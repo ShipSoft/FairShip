@@ -49,7 +49,7 @@ class exitHadronAbsorber : public SHiP::Detector<vetoPoint> {
   void PreTrack() override;
   void PostTrack() override;
   void BeginEvent() override;
-  // void FinishEvent();
+  void FinishEvent() override;
 
   void SetNSplits(Int_t n) { fNsplits = n; }
   void SetIntermediateNSplits(Int_t n) { fIntermediateNsplits = n; }
