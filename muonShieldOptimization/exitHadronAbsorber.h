@@ -30,6 +30,13 @@ class exitHadronAbsorber : public SHiP::Detector<vetoPoint> {
   exitHadronAbsorber(const char* Name, Bool_t Active);
   exitHadronAbsorber();
 
+  // Number of stack entries each pending split clone is assumed to add to the
+  // event once it has decayed and its products have showered. This is an
+  // empirical, conservative estimate from production runs with per-step
+  // splitting. It projects the event size that --max-event-size is checked
+  // against, and run_fixedTarget.py uses it to validate that option.
+  static constexpr std::size_t kShowerSafetyFactor = 500;
+
   void Initialize() override;
 
   Bool_t ProcessHits(FairVolume* v = nullptr) override;
@@ -84,9 +91,14 @@ class exitHadronAbsorber : public SHiP::Detector<vetoPoint> {
   // enough to leave room for the fNsplits endpoint clones PostTrack() appends,
   // and Initialize() rejects a cap that fNsplits alone would exceed.
   std::size_t fMaxSplitBuffer = 25'000;
+  // Upper bound on the projected event size: the stack size plus
+  // kShowerSafetyFactor entries for every pending clone. With the defaults this
+  // is the cap that stops per-step splitting, at about 10k pending clones.
+  // Set via --max-event-size.
   std::size_t fMaxEventSize = 5'000'000;
-  // latch so the split-buffer cap is reported at most once per event
+  // latches so each cap is reported at most once per event
   Bool_t fSplitBufferLimitWarned = kFALSE;  //!
+  Bool_t fEventSizeLimitWarned = kFALSE;    //!
   Bool_t fSplitOnce =
       kTRUE;  // determine if we want to split once (when the particle decays)
               // or at every step (taking decay probabilities into account)

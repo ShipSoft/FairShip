@@ -113,15 +113,16 @@ ap.add_argument(
     default=25000,
     help="EXPERTS ONLY: maximum number of split clones buffered per track before further per-step splitting is "
     "skipped. Memory safety valve for --multiple-kpi-splits; lowering it reduces the statistical boost but "
-    "conserves weight",
+    "conserves weight. With the default --max-event-size, that cap is reached first (at about 10k clones)",
 )
 ap.add_argument(
     "--max-event-size",
     type=int,
     default=5_000_000,
-    help="EXPERTS ONLY: maximum size of the event in number of particles (accounting for an extra safety factor "
-         "depending on per-step splitting) before further per-step splitting is skipped. Memory safety valve "
-         "for --multiple-kpi-splits; lowering it reduces the statistical boost but conserves weight",
+    help="EXPERTS ONLY: cap on the projected number of particles in the event, counting "
+    "exitHadronAbsorber::kShowerSafetyFactor (500) for each pending split clone, beyond which further per-step "
+    "splitting is skipped. Memory safety valve for "
+    "--multiple-kpi-splits; lowering it reduces the statistical boost but conserves weight",
 )
 
 ap.add_argument(
@@ -264,8 +265,8 @@ if args.kaon_pion_splits < 0:
     ap.error("--kaon-pion-splits must be >= 0")
 if args.pythia8_tune != "default" and (args.charm or args.beauty or args.G4only):
     ap.error("--pythia8-tune only affects the Pythia8 primary interaction, which --charm/--beauty/--G4only do not run")
-if args.multiple_kpi_splits and (args.kaon_pion_splits <= 0 or args.intermediate_kaon_pion_splits <= 1):
-    ap.error("--multiple-kpi-splits requires --kaon-pion-splits > 0 and --intermediate-kaon-pion-splits > 1")
+if args.multiple_kpi_splits and (args.kaon_pion_splits < 1 or args.intermediate_kaon_pion_splits < 1):
+    ap.error("--multiple-kpi-splits requires --kaon-pion-splits and --intermediate-kaon-pion-splits to be positive")
 if args.max_split_buffer < 1:
     ap.error("--max-split-buffer must be >= 1")
 if args.max_event_size < 1 or args.max_event_size > 2_147_483_647:
@@ -276,13 +277,20 @@ if args.max_split_buffer < args.kaon_pion_splits:
         "--max-split-buffer must be >= --kaon-pion-splits: the clones buffered when the parent "
         "decays have to fit under the cap"
     )
-if args.max_event_size < args.kaon_pion_splits:
-    ap.error(
-        "--max-event-size must be >= --kaon-pion-splits: the event size "
-        "(plus a safety factor accounting for showers) has to fit under the cap"
-    )
-
-
+if args.multiple_kpi_splits:
+    # A per-step split has to reserve room for its own clones and for the endpoint clones of the
+    # same track under both caps (see exitHadronAbsorber::ProcessHits); if even the first one
+    # cannot, per-step splitting would silently never happen.
+    clones_per_split = args.kaon_pion_splits + args.intermediate_kaon_pion_splits
+    if args.max_split_buffer < clones_per_split:
+        ap.error("--max-split-buffer must be >= --kaon-pion-splits + --intermediate-kaon-pion-splits")
+    shower_safety_factor = ROOT.exitHadronAbsorber.kShowerSafetyFactor
+    if args.max_event_size < shower_safety_factor * clones_per_split:
+        ap.error(
+            f"--max-event-size must be >= {shower_safety_factor} * "
+            "(--kaon-pion-splits + --intermediate-kaon-pion-splits), "
+            "the projected event size of a single per-step split"
+        )
 
 if args.G4only:
     args.charm = False
