@@ -103,7 +103,6 @@ void exitHadronAbsorber::SetMaxEventSize(Int_t n) {
   fMaxEventSize = static_cast<std::size_t>(n);
 }
 
-
 Bool_t exitHadronAbsorber::ProcessHits(FairVolume* vol) {
   /** This method is called from the MC stepping */
   TString volName = gMC->CurrentVolName();
@@ -185,17 +184,17 @@ Bool_t exitHadronAbsorber::ProcessHits(FairVolume* vol) {
           // when the parent finally decays, so the buffer never exceeds
           // fMaxSplitBuffer. All terms are on the left to keep the unsigned
           // arithmetic from wrapping.
-          std::size_t secondaryBufferSize = fSecondaryBuffer.size();
-          std::size_t event_size = gMC->GetStack()->GetNtrack();
+          const std::size_t secondaryBufferSize = fSecondaryBuffer.size();
+          const std::size_t event_size = gMC->GetStack()->GetNtrack();
 
-          const std::size_t pending = secondaryBufferSize +
-                             static_cast<std::size_t>(fIntermediateNsplits) +
-                             static_cast<std::size_t>(fNsplits);
+          const std::size_t pending =
+              secondaryBufferSize +
+              static_cast<std::size_t>(fIntermediateNsplits) +
+              static_cast<std::size_t>(fNsplits);
           const bool bufferFull = pending > fMaxSplitBuffer;
-
-          // multiplying pending tracks by factor to account for showers
-          const int32_t shower_safety_factor = 500;
-          const bool eventFull  = event_size + pending * shower_safety_factor > fMaxEventSize;
+          const std::size_t projected_size =
+              event_size + pending * kShowerSafetyFactor;
+          const bool eventFull = projected_size > fMaxEventSize;
           if (bufferFull || eventFull) {
             // Skip the split for this step instead of truncating the buffer.
             // The track weight is the ledger: leaving it untouched
@@ -203,28 +202,28 @@ Bool_t exitHadronAbsorber::ProcessHits(FairVolume* vol) {
             // track, and reaches the natural-decay clones in PostTrack() if
             // the track ends in a decay. The total weight the track
             // contributes is unchanged, only the statistical boost is reduced.
-            if (!fSplitBufferLimitWarned) {
-              if (bufferFull) {
-                 LOG(warning) << "exitHadronAbsorber: intermediate split buffer "
-                                 "reached "
-                              << secondaryBufferSize
-                              << " entries; skipping further per-step splitting "
-                                 "for this track. Consider lowering "
-                                 "--intermediate-kaon-pion-splits or raising "
-                                 "--max-split-buffer.";
-              } else {  // that means the event is full
-                 LOG(warning) << "exitHadronAbsorber: event size reached "
-                              << event_size
-                              << " entries with projected size (accounting for splitting) "
-                              << event_size + pending * shower_safety_factor
-                              << "; skipping further per-step splitting "
-                                 "for this track. Consider lowering "
-                                 "--intermediate-kaon-pion-splits or raising "
-                                 " --max-event-size.";
-              }
-            fSplitBufferLimitWarned = kTRUE;
+            if (bufferFull && !fSplitBufferLimitWarned) {
+              LOG(warning) << "exitHadronAbsorber: intermediate split buffer "
+                              "reached "
+                           << secondaryBufferSize
+                           << " entries; skipping further per-step splitting "
+                              "(reported once per event). Consider lowering "
+                              "--intermediate-kaon-pion-splits or raising "
+                              "--max-split-buffer.";
+              fSplitBufferLimitWarned = kTRUE;
             }
-          return kTRUE;
+            if (eventFull && !fEventSizeLimitWarned) {
+              LOG(warning) << "exitHadronAbsorber: event size reached "
+                           << event_size << " entries, projected size "
+                           << projected_size
+                           << " with the pending split clones; skipping "
+                              "further per-step splitting (reported once per "
+                              "event). Consider lowering "
+                              "--intermediate-kaon-pion-splits or raising "
+                              "--max-event-size.";
+              fEventSizeLimitWarned = kTRUE;
+            }
+            return kTRUE;
           }
 
           // The track's own weight is the ledger: it starts at whatever the
@@ -371,6 +370,7 @@ void exitHadronAbsorber::BeginEvent() {
   fDecayedParentIDs.clear();
   fSecondaryBuffer.clear();
   fSplitBufferLimitWarned = kFALSE;
+  fEventSizeLimitWarned = kFALSE;
 }
 
 void exitHadronAbsorber::PostTrack() {
