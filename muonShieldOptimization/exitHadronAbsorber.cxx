@@ -107,7 +107,10 @@ Bool_t exitHadronAbsorber::ProcessHits(FairVolume* vol) {
   /** This method is called from the MC stepping */
   TString volName = gMC->CurrentVolName();
 
-  if (volName.Contains("exitHadronAbsorber")) {
+  // Only this detector's own plane: with per-step splitting the volumes
+  // registered below the target include other exitHadronAbsorber planes, whose
+  // names share the prefix.
+  if (volName == fPlaneVolName) {
     if (gMC->IsTrackEntering()) {
       fTrackID = gMC->GetStack()->GetCurrentTrackNumber();
       fEventID = gMC->CurrentEvent();
@@ -518,8 +521,9 @@ void exitHadronAbsorber::PreTrack() {
 
   // A module whose PreTrack() ran before ours may already have stopped the
   // track: FairMCApplication calls the detectors in registration order, and
-  // run_fixedTarget.py can register a second exitHadronAbsorber ahead of the
-  // one that owns the split buffer.
+  // run_fixedTarget.py registers the other exitHadronAbsorber planes ahead of
+  // the one that owns the split buffer. A module registered after this one is
+  // not covered: if it stops the track, the clones flushed below are lost.
   if (!gMC->IsTrackAlive()) {
     return;
   }
@@ -674,6 +678,7 @@ void exitHadronAbsorber::ConstructGeometry() {
     sensPlane->SetLineColor(kBlue - 10);
     nav->GetCurrentNode()->GetVolume()->AddNode(
         sensPlane, 1, new TGeoTranslation(xLocPlane, yLocPlane, zLocPlane));
+    fPlaneVolName = sensPlane->GetName();
     AddSensitiveVolume(sensPlane);
   } else {  // add cylindrical sensPlane
     TGeoVolume* sensPlaneCyl =
@@ -686,6 +691,7 @@ void exitHadronAbsorber::ConstructGeometry() {
     nav->cd("/target_vacuum_box_1/TargetArea_1/HeVolume_1");
     nav->GetCurrentNode()->GetVolume()->AddNode(sensPlaneCyl, 1,
                                                 new TGeoTranslation(0, 0, 0));
+    fPlaneVolName = sensPlaneCyl->GetName();
     AddSensitiveVolume(sensPlaneCyl);
   }
   // Keep in sync with the per-step splitting guard in ProcessHits().

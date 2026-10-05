@@ -71,6 +71,7 @@ class exitHadronAbsorber : public SHiP::Detector<vetoPoint> {
   Bool_t fOnlyMuons;         //! flag if only muons should be stored
   Bool_t fSkipNeutrinos;     //! flag if neutrinos should be ignored
   TString fVetoName;         // name to save veto collection
+  TString fPlaneVolName;     //! name of the sensitive plane volume
   Double_t fzPos;            //!  zPos, optional
   Bool_t withNtuple;         //! special option for Dark Photon physics studies
   TNtuple* fNtuple;          //!
