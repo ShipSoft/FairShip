@@ -488,12 +488,17 @@ if args.FourDP:  # in case a ntuple should be filled with pi0,etas,omega
     if sensPlaneT is not None:
         sensPlaneT.SetOpt4DP()
 
-run.AddModule(sensPlaneHA)
-ROOT.SetOwnership(sensPlaneHA, False)  # C++ FairRunSim takes ownership
-
-if args.AddCylindricalSensPlane:
+# Register every other exitHadronAbsorber plane before sensPlaneHA, which owns the kaon/pion split buffer:
+# FairMCApplication calls PreTrack() in registration order, and sensPlaneHA hands its buffered clones only
+# to a track that no earlier plane has stopped. A plane registered after it could stop the carrier and lose
+# the clones. Registering first also keeps the plane's volume its own: the first module to register a volume
+# owns it, and sensPlaneHA registers everything below the target for per-step splitting.
+if sensPlaneT is not None:
     run.AddModule(sensPlaneT)
     ROOT.SetOwnership(sensPlaneT, False)  # C++ FairRunSim takes ownership
+
+run.AddModule(sensPlaneHA)
+ROOT.SetOwnership(sensPlaneHA, False)  # C++ FairRunSim takes ownership
 
 # -----Create PrimaryGenerator--------------------------------------
 primGen = ROOT.FairPrimaryGenerator()
