@@ -5,7 +5,6 @@
 #ifndef UPSTREAMTAGGER_UPSTREAMTAGGER_H_
 #define UPSTREAMTAGGER_UPSTREAMTAGGER_H_
 
-#include <map>
 #include <vector>
 
 #include "Detector.h"
