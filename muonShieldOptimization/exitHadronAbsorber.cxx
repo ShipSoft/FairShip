@@ -354,23 +354,28 @@ void exitHadronAbsorber::Initialize() {
 }
 
 void exitHadronAbsorber::BeginEvent() {
+  fCloneTracks.clear();
+  fDecayedParentIDs.clear();
+  fSplitBufferLimitWarned = kFALSE;
+  fEventSizeLimitWarned = kFALSE;
+}
+
+void exitHadronAbsorber::FinishEvent() {
+  // Checked here rather than at the start of the next event so that the last
+  // event of a run is covered too.
   if (!fSecondaryBuffer.empty()) {
-    // No track surviving the energy cut followed the last splitting decay of
-    // the previous event, so its clones could not be handed to the stack
-    // popper and their weight is lost.
+    // No track that went on to step followed the last splitting decay of the
+    // event, so its clones could not be handed to the stack popper and their
+    // weight is lost.
     Double_t lostWeight = 0;
     for (const auto& trk : fSecondaryBuffer) {
       lostWeight += trk.weight;
     }
     LOG(warning) << "exitHadronAbsorber: discarding " << fSecondaryBuffer.size()
                  << " buffered split clones (summed weight " << lostWeight
-                 << ") left over from the previous event";
+                 << ") left over at the end of the event";
   }
-  fCloneTracks.clear();
-  fDecayedParentIDs.clear();
   fSecondaryBuffer.clear();
-  fSplitBufferLimitWarned = kFALSE;
-  fEventSizeLimitWarned = kFALSE;
 }
 
 void exitHadronAbsorber::PostTrack() {
