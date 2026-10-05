@@ -146,7 +146,10 @@ class FixedTargetGenerator : public SHiP::Generator {
   TFile* fin;      //!
   TNtuple* nTree;  //!
   Float_t n_id, n_px, n_py, n_pz, n_M, n_E, n_mpx, n_mpy, n_mpz, n_mE, n_mid,
-      ck;
+      ck, n_hadrons;
+  // input stores the number of heavy-flavour hadrons per event; files without
+  // it hold exactly two per event
+  Bool_t hasHadronCount = kFALSE;
   Int_t heartbeat;
 };
 #endif  // SHIPGEN_FIXEDTARGETGENERATOR_H_
