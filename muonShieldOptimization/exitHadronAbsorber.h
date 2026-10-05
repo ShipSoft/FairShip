@@ -87,8 +87,6 @@ class exitHadronAbsorber : public SHiP::Detector<vetoPoint> {
   std::size_t fMaxEventSize = 5'000'000;
   // latch so the split-buffer cap is reported at most once per event
   Bool_t fSplitBufferLimitWarned = kFALSE;  //!
-  Double_t fCurrentSurvivalFactor;  // survival factor at every step, if we
-                                    // choose to split at every step
   Bool_t fSplitOnce =
       kTRUE;  // determine if we want to split once (when the particle decays)
               // or at every step (taking decay probabilities into account)
