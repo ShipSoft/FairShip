@@ -12,6 +12,7 @@ var dir_7837fde3ab9c1fb2fc5be7b717af8d79 =
     [ "darkphoton.py", "darkphoton_8py.html", "darkphoton_8py" ],
     [ "decorators.py", "decorators_8py.html", "decorators_8py" ],
     [ "dpProductionRates.py", "dpProductionRates_8py.html", "dpProductionRates_8py" ],
+    [ "fieldMapTools.py", "fieldMapTools_8py.html", "fieldMapTools_8py" ],
     [ "genie_interface.py", "genie__interface_8py.html", "genie__interface_8py" ],
     [ "geometry_config.py", "geometry__config_8py.html", "geometry__config_8py" ],
     [ "geomGeant4.py", "geomGeant4_8py.html", "geomGeant4_8py" ],

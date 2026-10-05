@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['inspect_5ftree_5fbranches_0',['inspect_tree_branches',['../namespaceinspect__tree__branches.html',1,'']]],
-  ['inspectgeant4geo_1',['inspectGeant4Geo',['../namespaceinspectGeant4Geo.html',1,'']]]
+  ['heavyflavourscaling_0',['heavyFlavourScaling',['../namespaceheavyFlavourScaling.html',1,'']]],
+  ['hepunit_1',['hepunit',['../namespacehepunit.html',1,'']]],
+  ['hnl_2',['hnl',['../namespacehnl.html',1,'']]]
 ];

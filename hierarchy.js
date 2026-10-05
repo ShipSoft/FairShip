@@ -133,6 +133,7 @@ var hierarchy =
       [ "SHiP::Detector< strawtubesPoint >", "classSHiP_1_1Detector.html", null ],
       [ "SHiP::Detector< PointType >", "classSHiP_1_1Detector.html", null ]
     ] ],
+    [ "fieldMapTools.MapRange", "classfieldMapTools_1_1MapRange.html", null ],
     [ "method_logger.MethodLogger", "classmethod__logger_1_1MethodLogger.html", null ],
     [ "ModelSpec", "structModelSpec.html", null ],
     [ "ParticleGunParticle", "structParticleGunParticle.html", null ],

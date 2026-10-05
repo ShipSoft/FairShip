@@ -123,6 +123,14 @@ var namespaces_dup =
       [ "main", "namespaceanalysis__example.html#a37197f68a23160081ca58a0805e4c527", null ]
     ] ],
     [ "BaseDetector", "namespaceBaseDetector.html", "namespaceBaseDetector" ],
+    [ "canonicaliseFieldMap", "namespacecanonicaliseFieldMap.html", [
+      [ "checksum", "namespacecanonicaliseFieldMap.html#af0e2677b8c4e0ac366726b6d940dd0d6", null ],
+      [ "describe", "namespacecanonicaliseFieldMap.html#a9bc5008d10df5cb547815292de620073", null ],
+      [ "divergence_order", "namespacecanonicaliseFieldMap.html#a615000b57f17e62323cab65f6cd20688", null ],
+      [ "main", "namespacecanonicaliseFieldMap.html#a9d9f2eeb3d9dde2f6351198f2d830a32", null ],
+      [ "resolve_order", "namespacecanonicaliseFieldMap.html#aee39c64be201696ec81ad442db44ea4d", null ],
+      [ "DIVERGENCE_MARGIN", "namespacecanonicaliseFieldMap.html#a66fbe4aa79e85762d10a11abcc0a2c7e", null ]
+    ] ],
     [ "checkMagFields", "namespacecheckMagFields.html", [
       [ "run", "namespacecheckMagFields.html#a65e69e17f1b05eb283a8bb6d5d695249", null ]
     ] ],
@@ -179,7 +187,7 @@ var namespaces_dup =
     [ "convertMap", "namespaceconvertMap.html", [
       [ "createRootMap", "namespaceconvertMap.html#a5110ff2d3512e3b41442e48f91f858b4", null ],
       [ "findRanges", "namespaceconvertMap.html#ad51cacc730cb7a1761b2e6c1f145a887", null ],
-      [ "run", "namespaceconvertMap.html#aee467fd0a20172a1250a58de44542e1b", null ]
+      [ "run", "namespaceconvertMap.html#ab99b6c6bf86a5993419557141442e4ed", null ]
     ] ],
     [ "convertMisisMap", "namespaceconvertMisisMap.html", [
       [ "createRootMap", "namespaceconvertMisisMap.html#a6de2b894af804ae1ca97c7b81e0e8a95", null ],
@@ -188,7 +196,7 @@ var namespaces_dup =
     [ "convertNoisyMap", "namespaceconvertNoisyMap.html", [
       [ "createRootMap", "namespaceconvertNoisyMap.html#a22a8d0f3700d3e69591d2a2da2ff636b", null ],
       [ "findRanges", "namespaceconvertNoisyMap.html#a16783f254a4ad313ea8f36dfc015214f", null ],
-      [ "run", "namespaceconvertNoisyMap.html#a811eca7da56da1ef7443688f79e16621", null ]
+      [ "run", "namespaceconvertNoisyMap.html#ade017a6ed8959a8aba439aa4af27f4da", null ]
     ] ],
     [ "convertRALMap", "namespaceconvertRALMap.html", [
       [ "createRootMap", "namespaceconvertRALMap.html#a094819cd077b38a2a86679030e81d9aa", null ],
@@ -314,6 +322,7 @@ var namespaces_dup =
       [ "weightMbias", "namespaceextractNeutrinosAndUpdateWeight.html#ada8cdca68067f6a53d1115bf882b2d2c", null ],
       [ "weightMbias1GeV", "namespaceextractNeutrinosAndUpdateWeight.html#a255cf9b881f376a23b67633ac2307b83", null ]
     ] ],
+    [ "fieldMapTools", "namespacefieldMapTools.html", "namespacefieldMapTools" ],
     [ "genfit", "namespacegenfit.html", "namespacegenfit" ],
     [ "genie_interface", "namespacegenie__interface.html", [
       [ "_merge_env", "namespacegenie__interface.html#ac6e6905f3b30305d16b57fe8d96cbb1e", null ],
@@ -893,6 +902,12 @@ var namespaces_dup =
       [ "merge", "namespacemuDIS__mergeFiles.html#ab4fbf22cc0259817a2268d6b4f736bf6", null ],
       [ "test", "namespacemuDIS__mergeFiles.html#ac9b6cc3beba4698015a60694a23fb16a", null ],
       [ "h", "namespacemuDIS__mergeFiles.html#a83f94c211fdeec0f62c2f112ef51da13", null ]
+    ] ],
+    [ "plotFieldMap", "namespaceplotFieldMap.html", [
+      [ "bending_power", "namespaceplotFieldMap.html#a73a7d0be8506d4b6d74679164628f803", null ],
+      [ "draw", "namespaceplotFieldMap.html#a7241ec8d3fd0196ac515a6e31da4f3d0", null ],
+      [ "main", "namespaceplotFieldMap.html#a298183f392f89f0d4be895adde10ef17", null ],
+      [ "APERTURE", "namespaceplotFieldMap.html#a29b48d8b27572e81759f5db296bf8101", null ]
     ] ],
     [ "proton_bremsstrahlung", "namespaceproton__bremsstrahlung.html", [
       [ "dNdPdTheta", "namespaceproton__bremsstrahlung.html#ac3747a46ab38964a9676801aa3ca0cc9", null ],
@@ -1782,6 +1797,21 @@ var namespaces_dup =
     [ "study_GammaConv", "namespacestudy__GammaConv.html", "namespacestudy__GammaConv" ],
     [ "study_muMSC", "namespacestudy__muMSC.html", "namespacestudy__muMSC" ],
     [ "study_thinTarget", "namespacestudy__thinTarget.html", "namespacestudy__thinTarget" ],
+    [ "test_field_maps", "namespacetest__field__maps.html", [
+      [ "_discover", "namespacetest__field__maps.html#a3a4e1e7eaf2d89b0bd71c94d9c6935d4", null ],
+      [ "_is_lfs_pointer", "namespacetest__field__maps.html#a4c7564c4c98f9d9cc32048fc18a7e3dd", null ],
+      [ "expectation", "namespacetest__field__maps.html#a4fba50b12b2a77a57d3d039c58934a84", null ],
+      [ "loaded", "namespacetest__field__maps.html#a5ffa193fe4b3f580d3188fc600ad25b2", null ],
+      [ "test_binning_is_consistent", "namespacetest__field__maps.html#aec86ed81bb1f6a0a550192f2915f61da", null ],
+      [ "test_coordinates_follow_the_assumed_order", "namespacetest__field__maps.html#a1254febd6a7161fd1af1d243517120a5", null ],
+      [ "test_divergence_prefers_the_stored_order", "namespacetest__field__maps.html#ae59ae7edb95a108c144dbeb1c6ee55fc", null ],
+      [ "test_expected_component_dominates_on_axis", "namespacetest__field__maps.html#af0e78a14a6952d447faef1bc314f0e4d", null ],
+      [ "test_map_is_expected", "namespacetest__field__maps.html#a53b44481c5c4322ff837488adb9cd714", null ],
+      [ "EXPECTED", "namespacetest__field__maps.html#a41706d33ece31f6587f430faf20fa82c", null ],
+      [ "MAP_DIRECTORY", "namespacetest__field__maps.html#ab7246f0f3bddb1f875db7f34a5c00ece", null ],
+      [ "MAPS", "namespacetest__field__maps.html#a9a6c169be08617e649dfcda0c632b9d7", null ],
+      [ "pytestmark", "namespacetest__field__maps.html#af7773685efa21739d7b7a45635f5b579", null ]
+    ] ],
     [ "test_heavyFlavourScaling", "namespacetest__heavyFlavourScaling.html", [
       [ "test_A_without_target_composition", "namespacetest__heavyFlavourScaling.html#ac02ea77ca560496416857f546def4103", null ],
       [ "test_beauty_run_on_charm_file_raises", "namespacetest__heavyFlavourScaling.html#a7c9886ecdbadab676c0375ca22712ae8", null ],

@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['z_0',['z',['../structTrackBuffer.html#a82f54dde28cb193990ffec500e7ead8d',1,'TrackBuffer::z'],['../namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed',1,'run_simScript.z'],['../namespacemake__nTuple__SBT.html#abf4155fc67a8e22daa201493ba9865cf',1,'make_nTuple_SBT.z'],['../namespacemake__nTuple__Tr.html#a6d39cc4b19e6b04e99fd8c3788ea9db0',1,'make_nTuple_Tr.z'],['../namespacemakeMuonEM.html#ab601c963f2068c0096eee496020b9003',1,'makeMuonEM.z'],['../structParticleGunParticle.html#a012c5a2b530b3d6cf3655833f2a02a2d',1,'ParticleGunParticle::Z'],['../classCosmicsGenerator.html#a978ef560446fec1d7837973dc6989816',1,'CosmicsGenerator::z']]],
-  ['z0_1',['z0',['../classCosmicsGenerator.html#ab53157e341f5dd3de8259deb3241f8f2',1,'CosmicsGenerator::z0'],['../classshipVertex_1_1Task.html#a45f7a32ea5e1ad1b8c4e02130dfb7042',1,'shipVertex.Task.z0'],['../classshipVertex_1_1Task.html#ae29c8c4c868bef6e261486de6064ebe0',1,'shipVertex.Task.z0']]],
+  ['z_0',['z',['../classCosmicsGenerator.html#a978ef560446fec1d7837973dc6989816',1,'CosmicsGenerator::z'],['../namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed',1,'run_simScript.z'],['../namespacemake__nTuple__SBT.html#abf4155fc67a8e22daa201493ba9865cf',1,'make_nTuple_SBT.z'],['../namespacemake__nTuple__Tr.html#a6d39cc4b19e6b04e99fd8c3788ea9db0',1,'make_nTuple_Tr.z'],['../namespacemakeMuonEM.html#ab601c963f2068c0096eee496020b9003',1,'makeMuonEM.z'],['../structTrackBuffer.html#a82f54dde28cb193990ffec500e7ead8d',1,'TrackBuffer::z'],['../structParticleGunParticle.html#a012c5a2b530b3d6cf3655833f2a02a2d',1,'ParticleGunParticle::Z']]],
+  ['z0_1',['z0',['../classshipVertex_1_1Task.html#a45f7a32ea5e1ad1b8c4e02130dfb7042',1,'shipVertex.Task.z0'],['../classshipVertex_1_1Task.html#ae29c8c4c868bef6e261486de6064ebe0',1,'shipVertex.Task.z0'],['../classCosmicsGenerator.html#ab53157e341f5dd3de8259deb3241f8f2',1,'CosmicsGenerator::z0']]],
   ['z0_5f_2',['z0_',['../structShipFieldMaker_1_1transformInfo.html#a38fd237f14541937e081c8205e668811',1,'ShipFieldMaker::transformInfo']]],
   ['z_5fecal_3',['z_ecal',['../namespaceTrackExtrapolateTool.html#aeb68a90b815acb1e2f1453cb90bf5b60',1,'TrackExtrapolateTool']]],
   ['z_5fend_4',['z_end',['../classeventDisplay_1_1DrawTracks.html#a3631d180b23e6d941b82b6cca485efa9',1,'eventDisplay.DrawTracks.z_end'],['../namespacerun__simScript.html#a79e45ce98ca051f0fab9a6eeebbb1f23',1,'run_simScript.z_end']]],
@@ -22,9 +22,9 @@ var searchData=
   ['zfibermat2_19',['zFiberMat2',['../classMTCDetector.html#acb23c87bbb23319e28e3028d7e0acf3e',1,'MTCDetector']]],
   ['zlastslab_20',['zLastSlab',['../classShipTAUMagneticSpectrometer.html#ae44cea024ab6f01cd6dd6290251465eb',1,'ShipTAUMagneticSpectrometer']]],
   ['zlowerironint_21',['zLowerIronInt',['../classMTCDetector.html#aa8e6cab1f93701edae3f1fbd4b7cd20c',1,'MTCDetector']]],
-  ['zmax_22',['zmax',['../namespaceevd__addParticleFollower.html#a765a77f0aff4b62145f0224f95cb09dc',1,'evd_addParticleFollower']]],
+  ['zmax_22',['zmax',['../namespaceevd__addParticleFollower.html#a765a77f0aff4b62145f0224f95cb09dc',1,'evd_addParticleFollower.zmax'],['../classfieldMapTools_1_1MapRange.html#a0bfb56aa879df6b2d57d82fab907c18b',1,'fieldMapTools.MapRange.zMax'],['../classfieldMapTools_1_1MapRange.html#a121f9fd17bc1d5210de399d6a145b36f',1,'fieldMapTools.MapRange.zMax']]],
   ['zmax_5f_23',['zMax_',['../classShipBFieldMap.html#adaea4a95149e4923b17e6e05c0d56c9f',1,'ShipBFieldMap']]],
-  ['zmin_24',['zmin',['../namespaceevd__addParticleFollower.html#a96a729f423bea86fb187b6785c4b257a',1,'evd_addParticleFollower']]],
+  ['zmin_24',['zmin',['../classfieldMapTools_1_1MapRange.html#a50adccc1b7be70c237bd49dc17466c8a',1,'fieldMapTools.MapRange.zMin'],['../classfieldMapTools_1_1MapRange.html#adfac85d174021aa24e1cb2ca9dac9ad0',1,'fieldMapTools.MapRange.zMin'],['../namespaceevd__addParticleFollower.html#a96a729f423bea86fb187b6785c4b257a',1,'evd_addParticleFollower.zmin']]],
   ['zmin_5f_25',['zMin_',['../classShipBFieldMap.html#ae1b7e7af5e9ab9b4220dafc40f5de51c',1,'ShipBFieldMap']]],
   ['zmuon_26',['zmuon',['../namespaceana__ShipMuon.html#a572d7a276be83768b914021ab9f41902',1,'ana_ShipMuon']]],
   ['znew_27',['znew',['../namespacecheckZpositions.html#a766185761e35ea4bb4e8076786316d7a',1,'checkZpositions']]],
@@ -36,6 +36,6 @@ var searchData=
   ['zstar_33',['Zstar',['../namespacerunPythia8.html#a24680e77a16421da609473d84823d0ad',1,'runPythia8']]],
   ['zstartdecayvol_34',['zStartDecayVol',['../classveto.html#a99e5d32f6a467dba1d81d864bd4290a9',1,'veto']]],
   ['zta_35',['zTa',['../namespacerun__simScript.html#afce74e2bd8c0a67df6486c301366a253',1,'run_simScript']]],
-  ['ztarget_36',['ztarget',['../classGenieGenerator.html#a0b934c83601ea29b2d32f9a2635ec686',1,'GenieGenerator::ztarget'],['../classEvtCalcGenerator.html#a816e91b68269f2f4da0198913703a474',1,'EvtCalcGenerator::ztarget'],['../namespaceana__ShipMuon.html#ada72af618717367bdc88b972a811a7c0',1,'ana_ShipMuon.ztarget']]],
+  ['ztarget_36',['ztarget',['../namespaceana__ShipMuon.html#ada72af618717367bdc88b972a811a7c0',1,'ana_ShipMuon.ztarget'],['../classEvtCalcGenerator.html#a816e91b68269f2f4da0198913703a474',1,'EvtCalcGenerator::ztarget'],['../classGenieGenerator.html#a0b934c83601ea29b2d32f9a2635ec686',1,'GenieGenerator::ztarget']]],
   ['zupperironint_37',['zUpperIronInt',['../classMTCDetector.html#a7477ce31e230e8d12ac844064f144a53',1,'MTCDetector']]]
 ];

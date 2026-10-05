@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['x_0',['x',['../classCosmicsGenerator.html#a495048f84ef5cce2af2e08db2a79f99d',1,'CosmicsGenerator::x'],['../namespacerunCharmHadProd.html#aa7d89d8b2989c7014600e67b707dea90',1,'runCharmHadProd.x'],['../namespacemakeMuonEM.html#aed3bddf19f451fdc5e44154c54c70cf9',1,'makeMuonEM.x'],['../namespacemake__nTuple__Tr.html#a1444af2233925ecdf57d578675df6a96',1,'make_nTuple_Tr.x'],['../namespacemake__nTuple__SBT.html#a47fc320230ff839c15f5f5944f1aed33',1,'make_nTuple_SBT.x'],['../namespacerun__tracking__scan.html#a56671f26478081821648cb1c30ed9c5d',1,'run_tracking_scan.x'],['../namespacerun__fixedTarget.html#a68f8e54ebe34ed88a1aff4505c32be7c',1,'run_fixedTarget.x'],['../namespacerunPythia8.html#ad74ad296dc1b3ef42e2efe98600c7a05',1,'runPythia8.X'],['../structTrackBuffer.html#a253a2de70fce2a1873c55b56c8b39f2b',1,'TrackBuffer::x'],['../structParticleGunParticle.html#a64bbcbff136f6bd013f10bd243a8b6ae',1,'ParticleGunParticle::X']]],
+  ['x_0',['x',['../classCosmicsGenerator.html#a495048f84ef5cce2af2e08db2a79f99d',1,'CosmicsGenerator::x'],['../namespacemake__nTuple__Tr.html#a1444af2233925ecdf57d578675df6a96',1,'make_nTuple_Tr.x'],['../namespacemake__nTuple__SBT.html#a47fc320230ff839c15f5f5944f1aed33',1,'make_nTuple_SBT.x'],['../namespacerun__tracking__scan.html#a56671f26478081821648cb1c30ed9c5d',1,'run_tracking_scan.x'],['../namespacerun__fixedTarget.html#a68f8e54ebe34ed88a1aff4505c32be7c',1,'run_fixedTarget.x'],['../namespacerunPythia8.html#ad74ad296dc1b3ef42e2efe98600c7a05',1,'runPythia8.X'],['../namespacemakeMuonEM.html#aed3bddf19f451fdc5e44154c54c70cf9',1,'makeMuonEM.x'],['../namespacerunCharmHadProd.html#aa7d89d8b2989c7014600e67b707dea90',1,'runCharmHadProd.x'],['../structTrackBuffer.html#a253a2de70fce2a1873c55b56c8b39f2b',1,'TrackBuffer::x'],['../structParticleGunParticle.html#a64bbcbff136f6bd013f10bd243a8b6ae',1,'ParticleGunParticle::X']]],
   ['x0_5f_1',['x0_',['../structShipFieldMaker_1_1transformInfo.html#a3a709cf11c81f7e10e2b69f6fe93ed02',1,'ShipFieldMaker::transformInfo']]],
   ['xbox_2',['xBox',['../classCosmicsGenerator.html#a0b94b15a80545d75d55bcd4a88271e63',1,'CosmicsGenerator']]],
   ['xbox_5ffulldet_3',['xbox_fulldet',['../classUpstreamTagger.html#a93f65d5b6f13b18386f645c749cc7c1c',1,'UpstreamTagger']]],
@@ -10,12 +10,14 @@ var searchData=
   ['xdist_7',['xdist',['../classCosmicsGenerator.html#a2afe624d5b83908e99e19dad84ab1d87',1,'CosmicsGenerator']]],
   ['xf_8',['xf',['../namespacemakeCascade.html#a70c92707038e355071f4b1a753e1055e',1,'makeCascade']]],
   ['xffilterecalthickness_9',['xfFilterECALThickness',['../classsplitcal.html#a7f6f2d585f38b166dce6daf0328ed348',1,'splitcal']]],
-  ['xmax_5f_10',['xMax_',['../classShipBFieldMap.html#a00ebcf5d5871b4d60a087710fca705a6',1,'ShipBFieldMap']]],
-  ['xmin_5f_11',['xMin_',['../classShipBFieldMap.html#a686affa4758dc834602d7274f111fa76',1,'ShipBFieldMap']]],
-  ['xoff_12',['xoff',['../classFixedTargetGenerator.html#a29a0822f3d61012c5178500b3c6f9567',1,'FixedTargetGenerator::xOff'],['../classPythia8Generator.html#a667fa3cbfa0010ff6b95f0287c2d8641',1,'Pythia8Generator::xOff']]],
-  ['xoffset_5f_13',['xOffset_',['../classShipBFieldMap.html#aef8ad7f3ddb52b6aeea3e6dc4a8ce339',1,'ShipBFieldMap']]],
-  ['xrange_5f_14',['xRange_',['../classShipBFieldMap.html#aabcbe3429ca9391b96a87e131d6affdc',1,'ShipBFieldMap']]],
-  ['xspace_15',['xSpace',['../namespaceadd__noise__to__field.html#ac0ccac9074ea58e6b1bd65830caa940f',1,'add_noise_to_field']]],
-  ['xvessel_16',['Xvessel',['../classGenieGenerator.html#a40473bbcd7e3415ac5cf48c15ae86bfb',1,'GenieGenerator']]],
-  ['xx_17',['xx',['../namespaceana__ShipMuon.html#a04fe6357d90a9e3df96d89802a6959c4',1,'ana_ShipMuon.xx'],['../namespacerun__reco.html#a7e74d79c29b7ed5cbb9ac5c9787a66dc',1,'run_reco.xx']]]
+  ['xmax_10',['xmax',['../classfieldMapTools_1_1MapRange.html#ae547833b725a9d718eec2290a423a9de',1,'fieldMapTools.MapRange.xMax'],['../classfieldMapTools_1_1MapRange.html#a7ef93932d935f848b2f29406359f3479',1,'fieldMapTools.MapRange.xMax']]],
+  ['xmax_5f_11',['xMax_',['../classShipBFieldMap.html#a00ebcf5d5871b4d60a087710fca705a6',1,'ShipBFieldMap']]],
+  ['xmin_12',['xmin',['../classfieldMapTools_1_1MapRange.html#ae9e962ad681804d8644ae063b7973ab5',1,'fieldMapTools.MapRange.xMin'],['../classfieldMapTools_1_1MapRange.html#ab3ad618022424626278fbe8d12a304e8',1,'fieldMapTools.MapRange.xMin']]],
+  ['xmin_5f_13',['xMin_',['../classShipBFieldMap.html#a686affa4758dc834602d7274f111fa76',1,'ShipBFieldMap']]],
+  ['xoff_14',['xoff',['../classFixedTargetGenerator.html#a29a0822f3d61012c5178500b3c6f9567',1,'FixedTargetGenerator::xOff'],['../classPythia8Generator.html#a667fa3cbfa0010ff6b95f0287c2d8641',1,'Pythia8Generator::xOff']]],
+  ['xoffset_5f_15',['xOffset_',['../classShipBFieldMap.html#aef8ad7f3ddb52b6aeea3e6dc4a8ce339',1,'ShipBFieldMap']]],
+  ['xrange_5f_16',['xRange_',['../classShipBFieldMap.html#aabcbe3429ca9391b96a87e131d6affdc',1,'ShipBFieldMap']]],
+  ['xspace_17',['xSpace',['../namespaceadd__noise__to__field.html#ac0ccac9074ea58e6b1bd65830caa940f',1,'add_noise_to_field']]],
+  ['xvessel_18',['Xvessel',['../classGenieGenerator.html#a40473bbcd7e3415ac5cf48c15ae86bfb',1,'GenieGenerator']]],
+  ['xx_19',['xx',['../namespaceana__ShipMuon.html#a04fe6357d90a9e3df96d89802a6959c4',1,'ana_ShipMuon.xx'],['../namespacerun__reco.html#a7e74d79c29b7ed5cbb9ac5c9787a66dc',1,'run_reco.xx']]]
 ];

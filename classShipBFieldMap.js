@@ -11,6 +11,7 @@ var classShipBFieldMap =
     [ "ShipBFieldMap", "classShipBFieldMap.html#a06e67002d9891031bdb9e146f2f9753e", null ],
     [ "~ShipBFieldMap", "classShipBFieldMap.html#ad4956091d9908f0150898a5acc44e679", null ],
     [ "ShipBFieldMap", "classShipBFieldMap.html#a2117a4ad076f903a07540e26b10501c2", null ],
+    [ "checkRootFileOrdering", "classShipBFieldMap.html#aaa91207211ff5d98bce225de56591db1", null ],
     [ "ClassDefOverride", "classShipBFieldMap.html#a9f14bc11fe308155f4f96a6c84cfdbc9", null ],
     [ "Field", "classShipBFieldMap.html#a6ef8935a084b7e803008a5cd379118b5", null ],
     [ "getBinInfo", "classShipBFieldMap.html#abda94682051dbd6af5ef32a87582f541", null ],

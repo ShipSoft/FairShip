@@ -1,6 +1,7 @@
 var dir_b53ddcf3c2f78522bad11056100467d8 =
 [
     [ "add_noise_to_field.py", "add__noise__to__field_8py.html", "add__noise__to__field_8py" ],
+    [ "canonicaliseFieldMap.py", "canonicaliseFieldMap_8py.html", "canonicaliseFieldMap_8py" ],
     [ "convertMap.py", "convertMap_8py.html", "convertMap_8py" ],
     [ "convertMisisMap.py", "convertMisisMap_8py.html", "convertMisisMap_8py" ],
     [ "convertNoisyMap.py", "convertNoisyMap_8py.html", "convertNoisyMap_8py" ],
@@ -8,6 +9,7 @@ var dir_b53ddcf3c2f78522bad11056100467d8 =
     [ "FairShipFields.cxx", "FairShipFields_8cxx.html", null ],
     [ "FairShipFields.h", "FairShipFields_8h.html", "FairShipFields_8h" ],
     [ "LinkDef.h", "field_2LinkDef_8h.html", null ],
+    [ "plotFieldMap.py", "plotFieldMap_8py.html", "plotFieldMap_8py" ],
     [ "ShipBellField.cxx", "ShipBellField_8cxx.html", "ShipBellField_8cxx" ],
     [ "ShipBellField.h", "ShipBellField_8h.html", "ShipBellField_8h" ],
     [ "ShipBFieldMap.cxx", "ShipBFieldMap_8cxx.html", null ],

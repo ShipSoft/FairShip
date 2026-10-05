@@ -19,6 +19,9 @@ var annotated_dup =
         [ "selection_check", "classexperimental_1_1analysis__toolkit_1_1selection__check.html", "classexperimental_1_1analysis__toolkit_1_1selection__check" ]
       ] ]
     ] ],
+    [ "fieldMapTools", "namespacefieldMapTools.html", [
+      [ "MapRange", "classfieldMapTools_1_1MapRange.html", "classfieldMapTools_1_1MapRange" ]
+    ] ],
     [ "genfit", "namespacegenfit.html", [
       [ "FairShipFields", "classgenfit_1_1FairShipFields.html", "classgenfit_1_1FairShipFields" ]
     ] ],

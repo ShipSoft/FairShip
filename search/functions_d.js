@@ -1,19 +1,23 @@
 var searchData=
 [
-  ['n_0',['N',['../classTrackInfo.html#a6cf99efb2f2012badae4bbff00a83500',1,'TrackInfo']]],
+  ['n_0',['n',['../classTrackInfo.html#a6cf99efb2f2012badae4bbff00a83500',1,'TrackInfo::N()'],['../classfieldMapTools_1_1MapRange.html#adcf4dd20bcb5a34c700abf5aeb9de05d',1,'fieldMapTools.MapRange.N()']]],
   ['na50_1',['na50',['../namespacerunPythia8.html#aee8ad9ec7b436a89728d499ec2bfe518',1,'runPythia8']]],
   ['ncomposite_2',['nComposite',['../classShipCompField.html#a3005035d531de7934d27eb9d8df23d5e',1,'ShipCompField']]],
-  ['ndecaywidth_3',['ndecaywidth',['../classrpvsusy_1_1RPVSUSYbranchings.html#a19df3958d4a6e134b77bd25df0991c15',1,'rpvsusy.RPVSUSYbranchings.NdecayWidth()'],['../classhnl_1_1HNLbranchings.html#a16eb7b8877b111b5d25d5a770390cc8d',1,'hnl.HNLbranchings.NDecayWidth()']]],
+  ['ndecaywidth_3',['ndecaywidth',['../classhnl_1_1HNLbranchings.html#a16eb7b8877b111b5d25d5a770390cc8d',1,'hnl.HNLbranchings.NDecayWidth()'],['../classrpvsusy_1_1RPVSUSYbranchings.html#a19df3958d4a6e134b77bd25df0991c15',1,'rpvsusy.RPVSUSYbranchings.NdecayWidth()']]],
   ['ndof_4',['nDOF',['../classexperimental_1_1analysis__toolkit_1_1selection__check.html#a59129329627f6852632978e880978706',1,'experimental::analysis_toolkit::selection_check']]],
   ['next_5',['next',['../classmakeCascadePythia8_1_1SignalEvents.html#a60f2a927eeba98bca154710107ad3004',1,'makeCascadePythia8.SignalEvents.next()'],['../classmakeCascadePythia8_1_1InclusiveSignalEvents.html#ac73563524f3afd46d7979652a3c9faea',1,'makeCascadePythia8.InclusiveSignalEvents.next()']]],
   ['next_5fevent_6',['next_event',['../namespacemakeCascadePythia8.html#a39f088c75433efb0cbe52594c72055aa',1,'makeCascadePythia8']]],
-  ['nextevent_7',['nextevent',['../classeventDisplay_1_1EventLoop.html#ab1c1a1e533af16e919be135aee02c9fe',1,'eventDisplay.EventLoop.NextEvent()'],['../classeventDisplay_1_1IO.html#a574e7c1a11236a388f75e7fab7818dd2',1,'eventDisplay.IO.nextEvent()']]],
+  ['nextevent_7',['nextevent',['../classeventDisplay_1_1IO.html#a574e7c1a11236a388f75e7fab7818dd2',1,'eventDisplay.IO.nextEvent()'],['../classeventDisplay_1_1EventLoop.html#ab1c1a1e533af16e919be135aee02c9fe',1,'eventDisplay.EventLoop.NextEvent()']]],
   ['nextlevel_8',['nextLevel',['../namespacegeomGeant4.html#a0b3a37be8c641c12bb33aa7dabf9d8dc',1,'geomGeant4']]],
-  ['normalisedproductionpdf_9',['normalisedProductionPDF',['../namespaceproton__bremsstrahlung.html#a11d3365e0a7dc4fa1fac32e960395aae',1,'proton_bremsstrahlung']]],
-  ['nprodwidth_10',['NprodWidth',['../classrpvsusy_1_1RPVSUSYbranchings.html#aa6d52e87bff518be795828cf4b4d0b35',1,'rpvsusy::RPVSUSYbranchings']]],
-  ['nrofdp_11',['nrOfDP',['../classDPPythia8Generator.html#ac22405944fb875eafb294401d640dd3a',1,'DPPythia8Generator']]],
-  ['nrofgeorejections_12',['nrOfGeoRejections',['../classSHiP_1_1Generator.html#a86124aa380a3b973a4ac328d2e86cfc6',1,'SHiP::Generator']]],
-  ['nrofretries_13',['nrofretries',['../classHNLPythia8Generator.html#a8a7f6fa2e231fc507b03d8673f6fccaa',1,'HNLPythia8Generator::nrOfRetries()'],['../classPythia8Generator.html#a348eed559b7ee6ee92142e2dca21d18a',1,'Pythia8Generator::nrOfRetries()'],['../classDPPythia8Generator.html#a17439775cf6134d296325698b5680142',1,'DPPythia8Generator::nrOfRetries()']]],
-  ['ntuplegenerator_14',['NtupleGenerator',['../classNtupleGenerator.html#a99f6acb8763351a65c08a44250d3f0c2',1,'NtupleGenerator']]],
-  ['nuonly_15',['NuOnly',['../classGenieGenerator.html#a1099711d1ecd43706bf9e5d131c82416',1,'GenieGenerator']]]
+  ['node_5findices_9',['node_indices',['../classfieldMapTools_1_1MapRange.html#abd81182d7ba43ac01c33542a266d294f',1,'fieldMapTools::MapRange']]],
+  ['normalisedproductionpdf_10',['normalisedProductionPDF',['../namespaceproton__bremsstrahlung.html#a11d3365e0a7dc4fa1fac32e960395aae',1,'proton_bremsstrahlung']]],
+  ['nprodwidth_11',['NprodWidth',['../classrpvsusy_1_1RPVSUSYbranchings.html#aa6d52e87bff518be795828cf4b4d0b35',1,'rpvsusy::RPVSUSYbranchings']]],
+  ['nrofdp_12',['nrOfDP',['../classDPPythia8Generator.html#ac22405944fb875eafb294401d640dd3a',1,'DPPythia8Generator']]],
+  ['nrofgeorejections_13',['nrOfGeoRejections',['../classSHiP_1_1Generator.html#a86124aa380a3b973a4ac328d2e86cfc6',1,'SHiP::Generator']]],
+  ['nrofretries_14',['nrofretries',['../classHNLPythia8Generator.html#a8a7f6fa2e231fc507b03d8673f6fccaa',1,'HNLPythia8Generator::nrOfRetries()'],['../classPythia8Generator.html#a348eed559b7ee6ee92142e2dca21d18a',1,'Pythia8Generator::nrOfRetries()'],['../classDPPythia8Generator.html#a17439775cf6134d296325698b5680142',1,'DPPythia8Generator::nrOfRetries()']]],
+  ['ntuplegenerator_15',['NtupleGenerator',['../classNtupleGenerator.html#a99f6acb8763351a65c08a44250d3f0c2',1,'NtupleGenerator']]],
+  ['nuonly_16',['NuOnly',['../classGenieGenerator.html#a1099711d1ecd43706bf9e5d131c82416',1,'GenieGenerator']]],
+  ['nx_17',['Nx',['../classfieldMapTools_1_1MapRange.html#a49c8d8d42b736fda0f2420e03d753adb',1,'fieldMapTools::MapRange']]],
+  ['ny_18',['Ny',['../classfieldMapTools_1_1MapRange.html#a0bded72d0ec95de152de2ff647b0a409',1,'fieldMapTools::MapRange']]],
+  ['nz_19',['Nz',['../classfieldMapTools_1_1MapRange.html#a91326c0b4c1bd780799c7a184aa7eddb',1,'fieldMapTools::MapRange']]]
 ];

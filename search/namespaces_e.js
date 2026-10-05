@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['validationtools_0',['validationTools',['../namespacevalidationTools.html',1,'']]]
+  ['upstreamtaggerdetector_0',['UpstreamTaggerDetector',['../namespaceUpstreamTaggerDetector.html',1,'']]]
 ];
