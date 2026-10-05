@@ -169,20 +169,20 @@ Unfetched git-lfs pointers are dropped one by one rather than taken as a
 reason to skip the lot, so a partly fetched checkout still checks the maps
 it does have.
 </pre> 
-<p class="definition">Definition at line <a class="el" href="test__field__maps_8py_source.html#l00050">50</a> of file <a class="el" href="test__field__maps_8py_source.html">test_field_maps.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   50</span><span class="keyword">def </span>_discover():</div>
-<div class="line"><span class="lineno">   51</span>    <span class="stringliteral">&quot;&quot;&quot;Every readable field map in files/.</span></div>
-<div class="line"><span class="lineno">   52</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">   53</span><span class="stringliteral">    Unfetched git-lfs pointers are dropped one by one rather than taken as a</span></div>
-<div class="line"><span class="lineno">   54</span><span class="stringliteral">    reason to skip the lot, so a partly fetched checkout still checks the maps</span></div>
-<div class="line"><span class="lineno">   55</span><span class="stringliteral">    it does have.</span></div>
-<div class="line"><span class="lineno">   56</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   57</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> MAP_DIRECTORY.is_dir():</div>
-<div class="line"><span class="lineno">   58</span>        <span class="keywordflow">return</span> []</div>
-<div class="line"><span class="lineno">   59</span>    candidates = sorted(MAP_DIRECTORY.glob(<span class="stringliteral">&quot;*.root&quot;</span>))</div>
-<div class="line"><span class="lineno">   60</span>    <span class="keywordflow">return</span> [path <span class="keywordflow">for</span> path <span class="keywordflow">in</span> candidates <span class="keywordflow">if</span> <span class="keywordflow">not</span> _is_lfs_pointer(path) <span class="keywordflow">and</span> fmt.is_field_map(path)]</div>
-<div class="line"><span class="lineno">   61</span> </div>
+<p class="definition">Definition at line <a class="el" href="test__field__maps_8py_source.html#l00051">51</a> of file <a class="el" href="test__field__maps_8py_source.html">test_field_maps.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   51</span><span class="keyword">def </span>_discover():</div>
+<div class="line"><span class="lineno">   52</span>    <span class="stringliteral">&quot;&quot;&quot;Every readable field map in files/.</span></div>
+<div class="line"><span class="lineno">   53</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">   54</span><span class="stringliteral">    Unfetched git-lfs pointers are dropped one by one rather than taken as a</span></div>
+<div class="line"><span class="lineno">   55</span><span class="stringliteral">    reason to skip the lot, so a partly fetched checkout still checks the maps</span></div>
+<div class="line"><span class="lineno">   56</span><span class="stringliteral">    it does have.</span></div>
+<div class="line"><span class="lineno">   57</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   58</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> MAP_DIRECTORY.is_dir():</div>
+<div class="line"><span class="lineno">   59</span>        <span class="keywordflow">return</span> []</div>
+<div class="line"><span class="lineno">   60</span>    candidates = sorted(MAP_DIRECTORY.glob(<span class="stringliteral">&quot;*.root&quot;</span>))</div>
+<div class="line"><span class="lineno">   61</span>    <span class="keywordflow">return</span> [path <span class="keywordflow">for</span> path <span class="keywordflow">in</span> candidates <span class="keywordflow">if</span> <span class="keywordflow">not</span> _is_lfs_pointer(path) <span class="keywordflow">and</span> fmt.is_field_map(path)]</div>
 <div class="line"><span class="lineno">   62</span> </div>
+<div class="line"><span class="lineno">   63</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -210,12 +210,12 @@ it does have.
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__field__maps_8py_source.html#l00045">45</a> of file <a class="el" href="test__field__maps_8py_source.html">test_field_maps.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   45</span><span class="keyword">def </span>_is_lfs_pointer(path):</div>
-<div class="line"><span class="lineno">   46</span>    <span class="keyword">with</span> path.open(<span class="stringliteral">&quot;rb&quot;</span>) <span class="keyword">as</span> handle:</div>
-<div class="line"><span class="lineno">   47</span>        <span class="keywordflow">return</span> handle.read(40).startswith(b<span class="stringliteral">&quot;version https://git-lfs&quot;</span>)</div>
-<div class="line"><span class="lineno">   48</span> </div>
+<p class="definition">Definition at line <a class="el" href="test__field__maps_8py_source.html#l00046">46</a> of file <a class="el" href="test__field__maps_8py_source.html">test_field_maps.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   46</span><span class="keyword">def </span>_is_lfs_pointer(path):</div>
+<div class="line"><span class="lineno">   47</span>    <span class="keyword">with</span> path.open(<span class="stringliteral">&quot;rb&quot;</span>) <span class="keyword">as</span> handle:</div>
+<div class="line"><span class="lineno">   48</span>        <span class="keywordflow">return</span> handle.read(40).startswith(b<span class="stringliteral">&quot;version https://git-lfs&quot;</span>)</div>
 <div class="line"><span class="lineno">   49</span> </div>
+<div class="line"><span class="lineno">   50</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -235,15 +235,15 @@ it does have.
       </table>
 </div><div class="memdoc">
 <pre class="fragment">What this map should look like, or a skip if nobody has said.</pre> 
-<p class="definition">Definition at line <a class="el" href="test__field__maps_8py_source.html#l00074">74</a> of file <a class="el" href="test__field__maps_8py_source.html">test_field_maps.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   74</span><span class="keyword">def </span>expectation(stem):</div>
-<div class="line"><span class="lineno">   75</span>    <span class="stringliteral">&quot;&quot;&quot;What this map should look like, or a skip if nobody has said.&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   76</span>    <span class="keywordflow">if</span> stem <span class="keywordflow">not</span> <span class="keywordflow">in</span> EXPECTED:</div>
-<div class="line"><span class="lineno">   77</span>        pytest.skip(f<span class="stringliteral">&quot;{stem} is not listed in EXPECTED (see test_map_is_expected)&quot;</span>)</div>
-<div class="line"><span class="lineno">   78</span>    <span class="keywordflow">return</span> EXPECTED[stem]</div>
-<div class="line"><span class="lineno">   79</span> </div>
+<p class="definition">Definition at line <a class="el" href="test__field__maps_8py_source.html#l00075">75</a> of file <a class="el" href="test__field__maps_8py_source.html">test_field_maps.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   75</span><span class="keyword">def </span>expectation(stem):</div>
+<div class="line"><span class="lineno">   76</span>    <span class="stringliteral">&quot;&quot;&quot;What this map should look like, or a skip if nobody has said.&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   77</span>    <span class="keywordflow">if</span> stem <span class="keywordflow">not</span> <span class="keywordflow">in</span> EXPECTED:</div>
+<div class="line"><span class="lineno">   78</span>        pytest.skip(f<span class="stringliteral">&quot;{stem} is not listed in EXPECTED (see test_map_is_expected)&quot;</span>)</div>
+<div class="line"><span class="lineno">   79</span>    <span class="keywordflow">return</span> EXPECTED[stem]</div>
 <div class="line"><span class="lineno">   80</span> </div>
-<div class="line"><span class="lineno">   81</span><span class="preprocessor">@pytest.mark.parametrize(&quot;path&quot;, MAPS, ids=lambda path: path.stem)</span></div>
+<div class="line"><span class="lineno">   81</span> </div>
+<div class="line"><span class="lineno">   82</span><span class="preprocessor">@pytest.mark.parametrize(&quot;path&quot;, MAPS, ids=lambda path: path.stem)</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -262,12 +262,12 @@ it does have.
       </table>
 </div><div class="memdoc">
 <pre class="fragment">Every map read once, as ``{stem: (range, field)}``.</pre> 
-<p class="definition">Definition at line <a class="el" href="test__field__maps_8py_source.html#l00069">69</a> of file <a class="el" href="test__field__maps_8py_source.html">test_field_maps.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   69</span><span class="keyword">def </span>loaded():</div>
-<div class="line"><span class="lineno">   70</span>    <span class="stringliteral">&quot;&quot;&quot;Every map read once, as ``{stem: (range, field)}``.&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   71</span>    <span class="keywordflow">return</span> {path.stem: (fmt.read_range(path), fmt.read_field(path)) <span class="keywordflow">for</span> path <span class="keywordflow">in</span> MAPS}</div>
-<div class="line"><span class="lineno">   72</span> </div>
+<p class="definition">Definition at line <a class="el" href="test__field__maps_8py_source.html#l00070">70</a> of file <a class="el" href="test__field__maps_8py_source.html">test_field_maps.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   70</span><span class="keyword">def </span>loaded():</div>
+<div class="line"><span class="lineno">   71</span>    <span class="stringliteral">&quot;&quot;&quot;Every map read once, as ``{stem: (range, field)}``.&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   72</span>    <span class="keywordflow">return</span> {path.stem: (fmt.read_range(path), fmt.read_field(path)) <span class="keywordflow">for</span> path <span class="keywordflow">in</span> MAPS}</div>
 <div class="line"><span class="lineno">   73</span> </div>
+<div class="line"><span class="lineno">   74</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -287,18 +287,18 @@ it does have.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__field__maps_8py_source.html#l00091">91</a> of file <a class="el" href="test__field__maps_8py_source.html">test_field_maps.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   91</span><span class="keyword">def </span>test_binning_is_consistent(path):</div>
-<div class="line"><span class="lineno">   92</span>    rng = fmt.read_range(path)</div>
-<div class="line"><span class="lineno">   93</span>    <span class="keyword">assert</span> min(rng.dx, rng.dy, rng.dz) &gt; 0.0</div>
-<div class="line"><span class="lineno">   94</span>    <span class="keyword">assert</span> min(rng.Nx, rng.Ny, rng.Nz) &gt;= 2</div>
-<div class="line"><span class="lineno">   95</span>    <span class="comment"># Limits that are not a whole number of bins apart would put every node</span></div>
-<div class="line"><span class="lineno">   96</span>    <span class="comment"># away from where the interpolation looks for it.</span></div>
-<div class="line"><span class="lineno">   97</span>    <span class="keyword">assert</span> max(rng.extent_mismatch()) &lt; 1e-2</div>
-<div class="line"><span class="lineno">   98</span>    <span class="keyword">assert</span> fmt.entry_count(path) == rng.N</div>
-<div class="line"><span class="lineno">   99</span> </div>
+<p class="definition">Definition at line <a class="el" href="test__field__maps_8py_source.html#l00092">92</a> of file <a class="el" href="test__field__maps_8py_source.html">test_field_maps.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   92</span><span class="keyword">def </span>test_binning_is_consistent(path):</div>
+<div class="line"><span class="lineno">   93</span>    rng = fmt.read_range(path)</div>
+<div class="line"><span class="lineno">   94</span>    <span class="keyword">assert</span> min(rng.dx, rng.dy, rng.dz) &gt; 0.0</div>
+<div class="line"><span class="lineno">   95</span>    <span class="keyword">assert</span> min(rng.Nx, rng.Ny, rng.Nz) &gt;= 2</div>
+<div class="line"><span class="lineno">   96</span>    <span class="comment"># Limits that are not a whole number of bins apart would put every node</span></div>
+<div class="line"><span class="lineno">   97</span>    <span class="comment"># away from where the interpolation looks for it.</span></div>
+<div class="line"><span class="lineno">   98</span>    <span class="keyword">assert</span> max(rng.extent_mismatch()) &lt; 1e-2</div>
+<div class="line"><span class="lineno">   99</span>    <span class="keyword">assert</span> fmt.entry_count(path) == rng.N</div>
 <div class="line"><span class="lineno">  100</span> </div>
-<div class="line"><span class="lineno">  101</span><span class="preprocessor">@pytest.mark.parametrize(&quot;path&quot;, MAPS, ids=lambda path: path.stem)</span></div>
+<div class="line"><span class="lineno">  101</span> </div>
+<div class="line"><span class="lineno">  102</span><span class="preprocessor">@pytest.mark.parametrize(&quot;path&quot;, MAPS, ids=lambda path: path.stem)</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -318,24 +318,24 @@ it does have.
       </table>
 </div><div class="memdoc">
 <pre class="fragment">The regression test: a transposed map is off by tens of bins here.</pre> 
-<p class="definition">Definition at line <a class="el" href="test__field__maps_8py_source.html#l00102">102</a> of file <a class="el" href="test__field__maps_8py_source.html">test_field_maps.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  102</span><span class="keyword">def </span>test_coordinates_follow_the_assumed_order(path):</div>
-<div class="line"><span class="lineno">  103</span>    <span class="stringliteral">&quot;&quot;&quot;The regression test: a transposed map is off by tens of bins here.&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  104</span>    rng = fmt.read_range(path)</div>
-<div class="line"><span class="lineno">  105</span>    residuals = fmt.coord_residuals(path, rng)</div>
-<div class="line"><span class="lineno">  106</span>    <span class="keyword">assert</span> residuals <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span>, (</div>
-<div class="line"><span class="lineno">  107</span>        f<span class="stringliteral">&quot;{path.name} stores no x,y,z branches, so its ordering cannot be &quot;</span></div>
-<div class="line"><span class="lineno">  108</span>        <span class="stringliteral">&quot;verified. Repack it with field/canonicaliseFieldMap.py.&quot;</span></div>
-<div class="line"><span class="lineno">  109</span>    )</div>
-<div class="line"><span class="lineno">  110</span>    <span class="comment"># The builtin max() skips a NaN that is not first, so check explicitly.</span></div>
-<div class="line"><span class="lineno">  111</span>    <span class="keyword">assert</span> np.all(np.isfinite(residuals)), f<span class="stringliteral">&quot;{path.name} stores non-finite node coordinates: residuals {residuals}&quot;</span></div>
-<div class="line"><span class="lineno">  112</span>    <span class="keyword">assert</span> max(residuals) &lt; 0.5, (</div>
-<div class="line"><span class="lineno">  113</span>        f<span class="stringliteral">&quot;{path.name} is stored in {fmt.infer_data_order(path, rng)} order, not &quot;</span></div>
-<div class="line"><span class="lineno">  114</span>        <span class="stringliteral">&quot;the ascending z,y,x order ShipBFieldMap assumes.&quot;</span></div>
-<div class="line"><span class="lineno">  115</span>    )</div>
-<div class="line"><span class="lineno">  116</span> </div>
+<p class="definition">Definition at line <a class="el" href="test__field__maps_8py_source.html#l00103">103</a> of file <a class="el" href="test__field__maps_8py_source.html">test_field_maps.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  103</span><span class="keyword">def </span>test_coordinates_follow_the_assumed_order(path):</div>
+<div class="line"><span class="lineno">  104</span>    <span class="stringliteral">&quot;&quot;&quot;The regression test: a transposed map is off by tens of bins here.&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  105</span>    rng = fmt.read_range(path)</div>
+<div class="line"><span class="lineno">  106</span>    residuals = fmt.coord_residuals(path, rng)</div>
+<div class="line"><span class="lineno">  107</span>    <span class="keyword">assert</span> residuals <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span>, (</div>
+<div class="line"><span class="lineno">  108</span>        f<span class="stringliteral">&quot;{path.name} stores no x,y,z branches, so its ordering cannot be &quot;</span></div>
+<div class="line"><span class="lineno">  109</span>        <span class="stringliteral">&quot;verified. Repack it with field/canonicaliseFieldMap.py.&quot;</span></div>
+<div class="line"><span class="lineno">  110</span>    )</div>
+<div class="line"><span class="lineno">  111</span>    <span class="comment"># The builtin max() skips a NaN that is not first, so check explicitly.</span></div>
+<div class="line"><span class="lineno">  112</span>    <span class="keyword">assert</span> np.all(np.isfinite(residuals)), f<span class="stringliteral">&quot;{path.name} stores non-finite node coordinates: residuals {residuals}&quot;</span></div>
+<div class="line"><span class="lineno">  113</span>    <span class="keyword">assert</span> max(residuals) &lt; 0.5, (</div>
+<div class="line"><span class="lineno">  114</span>        f<span class="stringliteral">&quot;{path.name} is stored in {fmt.infer_data_order(path, rng)} order, not &quot;</span></div>
+<div class="line"><span class="lineno">  115</span>        <span class="stringliteral">&quot;the ascending z,y,x order ShipBFieldMap assumes.&quot;</span></div>
+<div class="line"><span class="lineno">  116</span>    )</div>
 <div class="line"><span class="lineno">  117</span> </div>
-<div class="line"><span class="lineno">  118</span><span class="preprocessor">@pytest.mark.parametrize(&quot;path&quot;, MAPS, ids=lambda path: path.stem)</span></div>
+<div class="line"><span class="lineno">  118</span> </div>
+<div class="line"><span class="lineno">  119</span><span class="preprocessor">@pytest.mark.parametrize(&quot;path&quot;, MAPS, ids=lambda path: path.stem)</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -365,18 +365,18 @@ it does have.
       </table>
 </div><div class="memdoc">
 <pre class="fragment">div B = 0 only holds for the reading that matches the file.</pre> 
-<p class="definition">Definition at line <a class="el" href="test__field__maps_8py_source.html#l00119">119</a> of file <a class="el" href="test__field__maps_8py_source.html">test_field_maps.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  119</span><span class="keyword">def </span>test_divergence_prefers_the_stored_order(path, loaded):</div>
-<div class="line"><span class="lineno">  120</span>    <span class="stringliteral">&quot;&quot;&quot;div B = 0 only holds for the reading that matches the file.&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  121</span>    _, minimum_ratio, maximum_relative = expectation(path.stem)</div>
-<div class="line"><span class="lineno">  122</span>    rng, field = loaded[path.stem]</div>
-<div class="line"><span class="lineno">  123</span>    as_stored, scale = fmt.div_b_rms(field, rng)</div>
-<div class="line"><span class="lineno">  124</span>    transposed, _ = fmt.div_b_rms(fmt.transpose_xy(field), rng)</div>
-<div class="line"><span class="lineno">  125</span>    <span class="keyword">assert</span> as_stored * minimum_ratio &lt; transposed</div>
-<div class="line"><span class="lineno">  126</span>    <span class="keyword">assert</span> as_stored &lt; maximum_relative * scale</div>
-<div class="line"><span class="lineno">  127</span> </div>
+<p class="definition">Definition at line <a class="el" href="test__field__maps_8py_source.html#l00120">120</a> of file <a class="el" href="test__field__maps_8py_source.html">test_field_maps.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  120</span><span class="keyword">def </span>test_divergence_prefers_the_stored_order(path, loaded):</div>
+<div class="line"><span class="lineno">  121</span>    <span class="stringliteral">&quot;&quot;&quot;div B = 0 only holds for the reading that matches the file.&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  122</span>    _, minimum_ratio, maximum_relative = expectation(path.stem)</div>
+<div class="line"><span class="lineno">  123</span>    rng, field = loaded[path.stem]</div>
+<div class="line"><span class="lineno">  124</span>    as_stored, scale = fmt.div_b_rms(field, rng)</div>
+<div class="line"><span class="lineno">  125</span>    transposed, _ = fmt.div_b_rms(fmt.transpose_xy(field), rng)</div>
+<div class="line"><span class="lineno">  126</span>    <span class="keyword">assert</span> as_stored * minimum_ratio &lt; transposed</div>
+<div class="line"><span class="lineno">  127</span>    <span class="keyword">assert</span> as_stored &lt; maximum_relative * scale</div>
 <div class="line"><span class="lineno">  128</span> </div>
-<div class="line"><span class="lineno">  129</span><span class="preprocessor">@pytest.mark.parametrize(&quot;path&quot;, MAPS, ids=lambda path: path.stem)</span></div>
+<div class="line"><span class="lineno">  129</span> </div>
+<div class="line"><span class="lineno">  130</span><span class="preprocessor">@pytest.mark.parametrize(&quot;path&quot;, MAPS, ids=lambda path: path.stem)</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -406,15 +406,15 @@ it does have.
       </table>
 </div><div class="memdoc">
 <pre class="fragment">Catches a Bx/By column swap, which leaves div B untouched.</pre> 
-<p class="definition">Definition at line <a class="el" href="test__field__maps_8py_source.html#l00130">130</a> of file <a class="el" href="test__field__maps_8py_source.html">test_field_maps.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  130</span><span class="keyword">def </span>test_expected_component_dominates_on_axis(path, loaded):</div>
-<div class="line"><span class="lineno">  131</span>    <span class="stringliteral">&quot;&quot;&quot;Catches a Bx/By column swap, which leaves div B untouched.&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  132</span>    dominant = expectation(path.stem)[0]</div>
-<div class="line"><span class="lineno">  133</span>    rng, field = loaded[path.stem]</div>
-<div class="line"><span class="lineno">  134</span>    peaks = np.abs(fmt.on_axis(field, rng)).max(axis=0)</div>
-<div class="line"><span class="lineno">  135</span>    index = fmt.FIELD_BRANCHES.index(dominant)</div>
-<div class="line"><span class="lineno">  136</span>    others = np.delete(peaks, index).max()</div>
-<div class="line"><span class="lineno">  137</span>    <span class="keyword">assert</span> peaks[index] &gt; 5.0 * others</div>
+<p class="definition">Definition at line <a class="el" href="test__field__maps_8py_source.html#l00131">131</a> of file <a class="el" href="test__field__maps_8py_source.html">test_field_maps.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  131</span><span class="keyword">def </span>test_expected_component_dominates_on_axis(path, loaded):</div>
+<div class="line"><span class="lineno">  132</span>    <span class="stringliteral">&quot;&quot;&quot;Catches a Bx/By column swap, which leaves div B untouched.&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  133</span>    dominant = expectation(path.stem)[0]</div>
+<div class="line"><span class="lineno">  134</span>    rng, field = loaded[path.stem]</div>
+<div class="line"><span class="lineno">  135</span>    peaks = np.abs(fmt.on_axis(field, rng)).max(axis=0)</div>
+<div class="line"><span class="lineno">  136</span>    index = fmt.FIELD_BRANCHES.index(dominant)</div>
+<div class="line"><span class="lineno">  137</span>    others = np.delete(peaks, index).max()</div>
+<div class="line"><span class="lineno">  138</span>    <span class="keyword">assert</span> peaks[index] &gt; 5.0 * others</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -434,16 +434,16 @@ it does have.
       </table>
 </div><div class="memdoc">
 <pre class="fragment">A new map has to be added to EXPECTED deliberately, not by accident.</pre> 
-<p class="definition">Definition at line <a class="el" href="test__field__maps_8py_source.html#l00082">82</a> of file <a class="el" href="test__field__maps_8py_source.html">test_field_maps.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   82</span><span class="keyword">def </span>test_map_is_expected(path):</div>
-<div class="line"><span class="lineno">   83</span>    <span class="stringliteral">&quot;&quot;&quot;A new map has to be added to EXPECTED deliberately, not by accident.&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   84</span>    <span class="keyword">assert</span> path.stem <span class="keywordflow">in</span> EXPECTED, (</div>
-<div class="line"><span class="lineno">   85</span>        f<span class="stringliteral">&quot;{path.name} is not listed in EXPECTED. Work out which component it is &quot;</span></div>
-<div class="line"><span class="lineno">   86</span>        <span class="stringliteral">&quot;meant to produce and how clean its divergence is, then add it.&quot;</span></div>
-<div class="line"><span class="lineno">   87</span>    )</div>
-<div class="line"><span class="lineno">   88</span> </div>
+<p class="definition">Definition at line <a class="el" href="test__field__maps_8py_source.html#l00083">83</a> of file <a class="el" href="test__field__maps_8py_source.html">test_field_maps.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   83</span><span class="keyword">def </span>test_map_is_expected(path):</div>
+<div class="line"><span class="lineno">   84</span>    <span class="stringliteral">&quot;&quot;&quot;A new map has to be added to EXPECTED deliberately, not by accident.&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   85</span>    <span class="keyword">assert</span> path.stem <span class="keywordflow">in</span> EXPECTED, (</div>
+<div class="line"><span class="lineno">   86</span>        f<span class="stringliteral">&quot;{path.name} is not listed in EXPECTED. Work out which component it is &quot;</span></div>
+<div class="line"><span class="lineno">   87</span>        <span class="stringliteral">&quot;meant to produce and how clean its divergence is, then add it.&quot;</span></div>
+<div class="line"><span class="lineno">   88</span>    )</div>
 <div class="line"><span class="lineno">   89</span> </div>
-<div class="line"><span class="lineno">   90</span><span class="preprocessor">@pytest.mark.parametrize(&quot;path&quot;, MAPS, ids=lambda path: path.stem)</span></div>
+<div class="line"><span class="lineno">   90</span> </div>
+<div class="line"><span class="lineno">   91</span><span class="preprocessor">@pytest.mark.parametrize(&quot;path&quot;, MAPS, ids=lambda path: path.stem)</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -464,10 +464,11 @@ it does have.
 <div class="line"><span class="lineno">    3</span>    <span class="stringliteral">&quot;2026_09_28_MainSpectrometerField_V13_3500&quot;</span>: (<span class="stringliteral">&quot;Bx&quot;</span>, 10.0, 0.1),</div>
 <div class="line"><span class="lineno">    4</span>    <span class="stringliteral">&quot;2026_09_28_MainSpectrometerField_V21_2000&quot;</span>: (<span class="stringliteral">&quot;Bx&quot;</span>, 10.0, 0.1),</div>
 <div class="line"><span class="lineno">    5</span>    <span class="stringliteral">&quot;2026_09_28_MainSpectrometerField_V21_3000&quot;</span>: (<span class="stringliteral">&quot;Bx&quot;</span>, 10.0, 0.1),</div>
-<div class="line"><span class="lineno">    6</span>    <span class="stringliteral">&quot;MainSpectrometerField&quot;</span>: (<span class="stringliteral">&quot;Bx&quot;</span>, 2.0, 0.5),</div>
-<div class="line"><span class="lineno">    7</span>    <span class="stringliteral">&quot;TRY_2025&quot;</span>: (<span class="stringliteral">&quot;By&quot;</span>, 1.4, 1.2),</div>
-<div class="line"><span class="lineno">    8</span>    <span class="stringliteral">&quot;TRY_2026&quot;</span>: (<span class="stringliteral">&quot;By&quot;</span>, 1.4, 1.2),</div>
-<div class="line"><span class="lineno">    9</span>}</div>
+<div class="line"><span class="lineno">    6</span>    <span class="stringliteral">&quot;2026_07_02_MainSpectrometerField_V21_2455&quot;</span>: (<span class="stringliteral">&quot;Bx&quot;</span>, 10.0, 0.1),</div>
+<div class="line"><span class="lineno">    7</span>    <span class="stringliteral">&quot;MainSpectrometerField&quot;</span>: (<span class="stringliteral">&quot;Bx&quot;</span>, 2.0, 0.5),</div>
+<div class="line"><span class="lineno">    8</span>    <span class="stringliteral">&quot;TRY_2025&quot;</span>: (<span class="stringliteral">&quot;By&quot;</span>, 1.4, 1.2),</div>
+<div class="line"><span class="lineno">    9</span>    <span class="stringliteral">&quot;TRY_2026&quot;</span>: (<span class="stringliteral">&quot;By&quot;</span>, 1.4, 1.2),</div>
+<div class="line"><span class="lineno">   10</span>}</div>
 </div><!-- fragment -->
 <p class="definition">Definition at line <a class="el" href="test__field__maps_8py_source.html#l00034">34</a> of file <a class="el" href="test__field__maps_8py_source.html">test_field_maps.py</a>.</p>
 
@@ -501,7 +502,7 @@ it does have.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__field__maps_8py_source.html#l00063">63</a> of file <a class="el" href="test__field__maps_8py_source.html">test_field_maps.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="test__field__maps_8py_source.html#l00064">64</a> of file <a class="el" href="test__field__maps_8py_source.html">test_field_maps.py</a>.</p>
 
 </div>
 </div>
@@ -517,7 +518,7 @@ it does have.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__field__maps_8py_source.html#l00065">65</a> of file <a class="el" href="test__field__maps_8py_source.html">test_field_maps.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="test__field__maps_8py_source.html#l00066">66</a> of file <a class="el" href="test__field__maps_8py_source.html">test_field_maps.py</a>.</p>
 
 </div>
 </div>
