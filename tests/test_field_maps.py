@@ -107,6 +107,8 @@ def test_coordinates_follow_the_assumed_order(path):
         f"{path.name} stores no x,y,z branches, so its ordering cannot be "
         "verified. Repack it with field/canonicaliseFieldMap.py."
     )
+    # The builtin max() skips a NaN that is not first, so check explicitly.
+    assert np.all(np.isfinite(residuals)), f"{path.name} stores non-finite node coordinates: residuals {residuals}"
     assert max(residuals) < 0.5, (
         f"{path.name} is stored in {fmt.infer_data_order(path, rng)} order, not "
         "the ascending z,y,x order ShipBFieldMap assumes."
