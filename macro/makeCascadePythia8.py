@@ -406,7 +406,7 @@ def main():
         "pythia6",
         "pythia8 heavy flavour",
         "id:px:py:pz:E:M:mid:mpx:mpy:mpz:mE:mM:k:a0:a1:a2:a3:a4:a5:a6:a7:a8:a9:a10:a11:a12:a13:a14:a15:\
-s0:s1:s2:s3:s4:s5:s6:s7:s8:s9:s10:s11:s12:s13:s14:s15",
+s0:s1:s2:s3:s4:s5:s6:s7:s8:s9:s10:s11:s12:s13:s14:s15:n_hadrons",
     )
     # number of signal particles per cascade depth, used by FixedTargetGenerator for the normalisation
     depth_hist = ROOT.TH1F("2", "nr signal per cascade depth", 50, 0.5, 50.5)
@@ -446,6 +446,8 @@ s0:s1:s2:s3:s4:s5:s6:s7:s8:s9:s10:s11:s12:s13:s14:s15",
                     row = [hadron_id, hadron.Px(), hadron.Py(), hadron.Pz(), hadron.E(), hadron_mass]
                     row += [beam_id, px, py, pz, beam.E(), beam_mass, depth]
                     row += ancestors[:16] + processes[:n_processes] + [code] + (15 - n_processes) * [0]
+                    # all signal hadrons of the event, read back together by FixedTargetGenerator
+                    row += [len(hadrons)]
                     ntuple.Fill(array("f", row))
                     depth_hist.Fill(depth)
             # minimum-bias event to add new cascade particles to the stack

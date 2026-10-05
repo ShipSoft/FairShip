@@ -163,6 +163,10 @@ Bool_t FixedTargetGenerator::InitForCharmOrBeauty(const TString& fInName,
     LOG(info) << "+++has branch+++";
     nTree->SetBranchAddress("k", &ck);
   }
+  hasHadronCount = nTree->GetBranch("n_hadrons") && nTree->GetBranch("k");
+  if (hasHadronCount) {
+    nTree->SetBranchAddress("n_hadrons", &n_hadrons);
+  }
   // check if we deal with charm or beauty:
   nTree->GetEvent(0);
   if (!setByHand && n_M > 5) {
@@ -185,11 +189,47 @@ Bool_t FixedTargetGenerator::InitForCharmOrBeauty(const TString& fInName,
     nTree = nullptr;
     return kFALSE;
   }
-  Int_t nrcpot =
-      potHist->GetBinContent(1) / 2.;  // number of primary interactions
-  // every event reads two entries, the two heavy-flavour hadrons of a pair,
-  // so the file holds nEvents / 2 events
-  wspill = nrpotspill * chicc / nrcpot * (nEvents / 2.) / nev;
+  // number of primary interactions and of events on the file. Without the
+  // hadron count every event is a pair of entries.
+  Double_t nrcpot = static_cast<Int_t>(potHist->GetBinContent(1) / 2.);
+  Double_t nInputEvents = nEvents / 2.;
+  if (hasHadronCount) {
+    // count the events and the primary (depth 1) ones, and move the start to
+    // the first entry of an event
+    nTree->SetBranchStatus("*", 0);
+    nTree->SetBranchStatus("n_hadrons", 1);
+    nTree->SetBranchStatus("k", 1);
+    nrcpot = 0.;
+    nInputEvents = 0.;
+    Int_t firstEntry = nEvents;
+    for (Int_t i = 0; i < nEvents;) {
+      nTree->GetEntry(i);
+      if (firstEntry == nEvents && i >= nStart) {
+        firstEntry = i;
+      }
+      nInputEvents += 1.;
+      if (ck < 1.5) {
+        nrcpot += 1.;
+      }
+      i += std::max(1, static_cast<Int_t>(TMath::Nint(n_hadrons)));
+    }
+    nTree->SetBranchStatus("*", 1);
+    if (firstEntry == nEvents) {
+      LOG(error) << "FixedTargetGenerator: no event starts at or after entry "
+                 << nStart;
+      fin->Close();
+      delete fin;
+      fin = nullptr;
+      nTree = nullptr;
+      return kFALSE;
+    }
+    if (firstEntry != nStart) {
+      LOG(info) << "start entry " << nStart
+                << " is inside an event, starting at entry " << firstEntry;
+    }
+    nEntry = firstEntry;
+  }
+  wspill = nrpotspill * chicc / nrcpot * nInputEvents / nev;
   LOG(info) << "Input file: " << fInName.Data() << " with " << nEvents
             << " entries, corresponding to nr-pot=" << (nrcpot / chicc);
   LOG(info) << "weight " << wspill << " corresponding to " << nrpotspill
@@ -455,7 +495,7 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
     return kTRUE;
   }
 
-  // Cascade input: read the first hadron of the pair before placing the event,
+  // Cascade input: read the first hadron of the event before placing it,
   // since its cascade depth sets how far into the target it is produced.
   Int_t nInteractions = 1;
   if (Option != "Primary") {
@@ -549,7 +589,7 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
       fPythia = fPythiaN;
     }
   } else {
-    // the first hadron of the pair was read above
+    // the first hadron of the event was read above
     IncrementCounter("charm_input_pairs");
     // primary: produced by the beam proton, cascade depth 1. Files without
     // the depth branch tag the beam proton by its zero transverse momentum,
@@ -580,15 +620,23 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
                   (xOff + dx) * cm, (yOff + dy) * cm, zinter * cm, -1, kFALSE,
                   n_mE, 0., wspill, procID);
     IncrementCounter("stored_tracks");
-    // second charm hadron in the event
-    nTree->GetEvent(nEntry);
-    if (nID1 * n_id > 0) {
-      LOG(info) << "same sign charm: " << nEntry << ", " << nID1 << ", "
-                << n_id;
+    // the other heavy-flavour hadrons of the event
+    const Int_t nHadrons =
+        hasHadronCount ? static_cast<Int_t>(TMath::Nint(n_hadrons)) : 2;
+    for (Int_t iHadron = 1; iHadron < nHadrons; ++iHadron) {
+      if (nEntry >= nEvents) {
+        LOG(error) << "FixedTargetGenerator: input ends inside an event";
+        break;
+      }
+      nTree->GetEvent(nEntry);
+      if (nHadrons == 2 && nID1 * n_id > 0) {
+        LOG(info) << "same sign charm: " << nEntry << ", " << nID1 << ", "
+                  << n_id;
+      }
+      nEntry += 1;
+      fPythiaP->event.append(static_cast<int>(n_id), 1, 0, 0, n_px, n_py,
+                             n_pz, n_E, n_M, 0., 9.);
     }
-    nEntry += 1;
-    fPythiaP->event.append(static_cast<int>(n_id), 1, 0, 0, n_px, n_py, n_pz,
-                           n_E, n_M, 0., 9.);
     fPythiaP->next();
     fPythia = fPythiaP;
   }
