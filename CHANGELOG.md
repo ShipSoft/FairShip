@@ -27,8 +27,8 @@ it in future.
 * Add `CaloScoringPlane` detector: an ideal thin vacuum plane at the calorimeter entrance window, anchored to the timing detector (z = 96.570 m, the former SplitCal front face) (`ship_geo.CaloScoringPlane`). Every track entering it is stored as a `CaloScoringPlanePoint` (MC-truth position, momentum, time and PDG code at the exit face), without an energy-deposit requirement. Secondaries are only kept in `MCTrack` because of these points if the stack is configured with a minimum number of points; otherwise such points carry track ID -2.
 * Add `--cascade-model` (`nucleus`, `nucleon`) to `macro/makeCascadePythia8.py`. With `nucleus`, the default, every interaction of a cascade hadron is a hadron-nucleus collision built from hadron-nucleon subcollisions as in Pythia's PythiaCascade, with the heavy-flavour probability per hadron-nucleus collision, A sigma(signal)/sigma(hA). This matches the normalisation of `run_fixedTarget.py`, which is per proton-nucleus interaction and already contains the subcollisions inside the nucleus; single collisions on free nucleons (`nucleon`, as in `makeCascade.py`) count them twice and overestimate the cascade. The tables of the average number of subcollisions and the process of the later subcollisions follow the installed Pythia version (8.312 to 8.316, or 8.317 and later), and hadrons decay only once the collision is complete, so that a leading resonance collides again itself, as in PythiaCascade.
 * `--intermediate-kaon-pion-splits` (default 2): splitting factor applied to kaons and pions at each GEANT4 step before they decay, separate from the `--kaon-pion-splits` factor applied at the decay itself
-* `--max-split-buffer` (default 25000): hard bound on the split clones buffered per track. Per-step splitting stops once the cap is reached, reducing the statistical boost but conserving weight
-* `--max-event-size` (default 5000000): threshold on the estimated event size taking into account a safety factor depending on per-step splitting, with the per-step splitting stopping once the cap is reached
+* `--max-split-buffer` (default 25000): hard bound on the split clones buffered per track. Per-step splitting stops once the cap is reached, reducing the statistical boost but conserving weight. With the default `--max-event-size`, that cap is reached first, at about 10k pending clones
+* `--max-event-size` (default 5000000): cap on the projected number of particles per event, counting the particles already on the stack plus 500 for each pending split clone. Per-step splitting stops once the cap would be exceeded; weight is conserved. `run_fixedTarget.py` rejects values of this or `--max-split-buffer` that are too small for even one per-step split
 
 ### Changed
 
@@ -41,6 +41,7 @@ it in future.
 * Scale `chicc`/`chibb` in `run_fixedTarget.py` by the heavy-flavour cross section per nucleon stored in the cascade input file, so that the normalisation follows the beam energy, tune and target composition the file was generated with. Files without it, such as the existing ones on EOS, keep the previous values.
 * Default for reweighting boosted muon files is now to keep all events rather than only those containing a muon
 * `--multiple-kpi-splits` now splits with `--intermediate-kaon-pion-splits` at each step instead of reusing `--kaon-pion-splits`, and requires both to be positive
+* Kaon/pion splitting takes the clone weights from the current weight of the split track, instead of assuming that the track has the same weight as its mother on the stack, or weight 1 if it has none. That holds for all current inputs, so results do not change
 
 ### Fixed
 
