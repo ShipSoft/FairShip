@@ -1,0 +1,348 @@
+{
+  "job": "fixed-target",
+  "config": "pixi",
+  "files": [
+    {
+      "name": "PlaneHA20011",
+      "root_path": "PlaneHA20011",
+      "file": "PlaneHA20011.png",
+      "type": "TH1D"
+    },
+    {
+      "name": "PlaneHA21011",
+      "root_path": "PlaneHA21011",
+      "file": "PlaneHA21011.png",
+      "type": "TH2D"
+    },
+    {
+      "name": "PlaneHA22011",
+      "root_path": "PlaneHA22011",
+      "file": "PlaneHA22011.png",
+      "type": "TH2D"
+    },
+    {
+      "name": "PlaneHA10011",
+      "root_path": "PlaneHA10011",
+      "file": "PlaneHA10011.png",
+      "type": "TH1D"
+    },
+    {
+      "name": "PlaneHA11011",
+      "root_path": "PlaneHA11011",
+      "file": "PlaneHA11011.png",
+      "type": "TH2D"
+    },
+    {
+      "name": "PlaneHA12011",
+      "root_path": "PlaneHA12011",
+      "file": "PlaneHA12011.png",
+      "type": "TH2D"
+    },
+    {
+      "name": "PlaneHA20012",
+      "root_path": "PlaneHA20012",
+      "file": "PlaneHA20012.png",
+      "type": "TH1D"
+    },
+    {
+      "name": "PlaneHA21012",
+      "root_path": "PlaneHA21012",
+      "file": "PlaneHA21012.png",
+      "type": "TH2D"
+    },
+    {
+      "name": "PlaneHA22012",
+      "root_path": "PlaneHA22012",
+      "file": "PlaneHA22012.png",
+      "type": "TH2D"
+    },
+    {
+      "name": "PlaneHA10012",
+      "root_path": "PlaneHA10012",
+      "file": "PlaneHA10012.png",
+      "type": "TH1D"
+    },
+    {
+      "name": "PlaneHA11012",
+      "root_path": "PlaneHA11012",
+      "file": "PlaneHA11012.png",
+      "type": "TH2D"
+    },
+    {
+      "name": "PlaneHA12012",
+      "root_path": "PlaneHA12012",
+      "file": "PlaneHA12012.png",
+      "type": "TH2D"
+    },
+    {
+      "name": "PlaneHA20013",
+      "root_path": "PlaneHA20013",
+      "file": "PlaneHA20013.png",
+      "type": "TH1D"
+    },
+    {
+      "name": "PlaneHA21013",
+      "root_path": "PlaneHA21013",
+      "file": "PlaneHA21013.png",
+      "type": "TH2D"
+    },
+    {
+      "name": "PlaneHA22013",
+      "root_path": "PlaneHA22013",
+      "file": "PlaneHA22013.png",
+      "type": "TH2D"
+    },
+    {
+      "name": "PlaneHA10013",
+      "root_path": "PlaneHA10013",
+      "file": "PlaneHA10013.png",
+      "type": "TH1D"
+    },
+    {
+      "name": "PlaneHA11013",
+      "root_path": "PlaneHA11013",
+      "file": "PlaneHA11013.png",
+      "type": "TH2D"
+    },
+    {
+      "name": "PlaneHA12013",
+      "root_path": "PlaneHA12013",
+      "file": "PlaneHA12013.png",
+      "type": "TH2D"
+    },
+    {
+      "name": "PlaneHA20014",
+      "root_path": "PlaneHA20014",
+      "file": "PlaneHA20014.png",
+      "type": "TH1D"
+    },
+    {
+      "name": "PlaneHA21014",
+      "root_path": "PlaneHA21014",
+      "file": "PlaneHA21014.png",
+      "type": "TH2D"
+    },
+    {
+      "name": "PlaneHA22014",
+      "root_path": "PlaneHA22014",
+      "file": "PlaneHA22014.png",
+      "type": "TH2D"
+    },
+    {
+      "name": "PlaneHA10014",
+      "root_path": "PlaneHA10014",
+      "file": "PlaneHA10014.png",
+      "type": "TH1D"
+    },
+    {
+      "name": "PlaneHA11014",
+      "root_path": "PlaneHA11014",
+      "file": "PlaneHA11014.png",
+      "type": "TH2D"
+    },
+    {
+      "name": "PlaneHA12014",
+      "root_path": "PlaneHA12014",
+      "file": "PlaneHA12014.png",
+      "type": "TH2D"
+    },
+    {
+      "name": "PlaneHA20015",
+      "root_path": "PlaneHA20015",
+      "file": "PlaneHA20015.png",
+      "type": "TH1D"
+    },
+    {
+      "name": "PlaneHA21015",
+      "root_path": "PlaneHA21015",
+      "file": "PlaneHA21015.png",
+      "type": "TH2D"
+    },
+    {
+      "name": "PlaneHA22015",
+      "root_path": "PlaneHA22015",
+      "file": "PlaneHA22015.png",
+      "type": "TH2D"
+    },
+    {
+      "name": "PlaneHA10015",
+      "root_path": "PlaneHA10015",
+      "file": "PlaneHA10015.png",
+      "type": "TH1D"
+    },
+    {
+      "name": "PlaneHA11015",
+      "root_path": "PlaneHA11015",
+      "file": "PlaneHA11015.png",
+      "type": "TH2D"
+    },
+    {
+      "name": "PlaneHA12015",
+      "root_path": "PlaneHA12015",
+      "file": "PlaneHA12015.png",
+      "type": "TH2D"
+    },
+    {
+      "name": "PlaneHA20016",
+      "root_path": "PlaneHA20016",
+      "file": "PlaneHA20016.png",
+      "type": "TH1D"
+    },
+    {
+      "name": "PlaneHA21016",
+      "root_path": "PlaneHA21016",
+      "file": "PlaneHA21016.png",
+      "type": "TH2D"
+    },
+    {
+      "name": "PlaneHA22016",
+      "root_path": "PlaneHA22016",
+      "file": "PlaneHA22016.png",
+      "type": "TH2D"
+    },
+    {
+      "name": "PlaneHA10016",
+      "root_path": "PlaneHA10016",
+      "file": "PlaneHA10016.png",
+      "type": "TH1D"
+    },
+    {
+      "name": "PlaneHA11016",
+      "root_path": "PlaneHA11016",
+      "file": "PlaneHA11016.png",
+      "type": "TH2D"
+    },
+    {
+      "name": "PlaneHA12016",
+      "root_path": "PlaneHA12016",
+      "file": "PlaneHA12016.png",
+      "type": "TH2D"
+    },
+    {
+      "name": "PlaneHA20017",
+      "root_path": "PlaneHA20017",
+      "file": "PlaneHA20017.png",
+      "type": "TH1D"
+    },
+    {
+      "name": "PlaneHA21017",
+      "root_path": "PlaneHA21017",
+      "file": "PlaneHA21017.png",
+      "type": "TH2D"
+    },
+    {
+      "name": "PlaneHA22017",
+      "root_path": "PlaneHA22017",
+      "file": "PlaneHA22017.png",
+      "type": "TH2D"
+    },
+    {
+      "name": "PlaneHA10017",
+      "root_path": "PlaneHA10017",
+      "file": "PlaneHA10017.png",
+      "type": "TH1D"
+    },
+    {
+      "name": "PlaneHA11017",
+      "root_path": "PlaneHA11017",
+      "file": "PlaneHA11017.png",
+      "type": "TH2D"
+    },
+    {
+      "name": "PlaneHA12017",
+      "root_path": "PlaneHA12017",
+      "file": "PlaneHA12017.png",
+      "type": "TH2D"
+    },
+    {
+      "name": "PlaneHA10022",
+      "root_path": "PlaneHA10022",
+      "file": "PlaneHA10022.png",
+      "type": "TH1D"
+    },
+    {
+      "name": "PlaneHA11022",
+      "root_path": "PlaneHA11022",
+      "file": "PlaneHA11022.png",
+      "type": "TH2D"
+    },
+    {
+      "name": "PlaneHA12022",
+      "root_path": "PlaneHA12022",
+      "file": "PlaneHA12022.png",
+      "type": "TH2D"
+    },
+    {
+      "name": "PlaneHA10111",
+      "root_path": "PlaneHA10111",
+      "file": "PlaneHA10111.png",
+      "type": "TH1D"
+    },
+    {
+      "name": "PlaneHA11111",
+      "root_path": "PlaneHA11111",
+      "file": "PlaneHA11111.png",
+      "type": "TH2D"
+    },
+    {
+      "name": "PlaneHA12111",
+      "root_path": "PlaneHA12111",
+      "file": "PlaneHA12111.png",
+      "type": "TH2D"
+    },
+    {
+      "name": "PlaneHA10221",
+      "root_path": "PlaneHA10221",
+      "file": "PlaneHA10221.png",
+      "type": "TH1D"
+    },
+    {
+      "name": "PlaneHA11221",
+      "root_path": "PlaneHA11221",
+      "file": "PlaneHA11221.png",
+      "type": "TH2D"
+    },
+    {
+      "name": "PlaneHA12221",
+      "root_path": "PlaneHA12221",
+      "file": "PlaneHA12221.png",
+      "type": "TH2D"
+    },
+    {
+      "name": "PlaneHA10223",
+      "root_path": "PlaneHA10223",
+      "file": "PlaneHA10223.png",
+      "type": "TH1D"
+    },
+    {
+      "name": "PlaneHA11223",
+      "root_path": "PlaneHA11223",
+      "file": "PlaneHA11223.png",
+      "type": "TH2D"
+    },
+    {
+      "name": "PlaneHA12223",
+      "root_path": "PlaneHA12223",
+      "file": "PlaneHA12223.png",
+      "type": "TH2D"
+    },
+    {
+      "name": "PlaneHA10331",
+      "root_path": "PlaneHA10331",
+      "file": "PlaneHA10331.png",
+      "type": "TH1D"
+    },
+    {
+      "name": "PlaneHA11331",
+      "root_path": "PlaneHA11331",
+      "file": "PlaneHA11331.png",
+      "type": "TH2D"
+    },
+    {
+      "name": "PlaneHA12331",
+      "root_path": "PlaneHA12331",
+      "file": "PlaneHA12331.png",
+      "type": "TH2D"
+    }
+  ]
+}
