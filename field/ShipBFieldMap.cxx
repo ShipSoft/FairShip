@@ -383,6 +383,15 @@ void ShipBFieldMap::checkRootFileOrdering(TTree* dTree) {
 
     dTree->GetEntry(entry);
 
+    // A NaN or infinite coordinate cannot be rounded to a node, so it says
+    // nothing about the ordering and would only produce a misleading report.
+    if (!std::isfinite(x) || !std::isfinite(y) || !std::isfinite(z)) {
+      LOG(fatal) << "ShipBFieldMap: field map " << mapFileName_ << " entry "
+                 << entry << " holds a non-finite coordinate (" << x << ", "
+                 << y << ", " << z << ") cm.";
+      break;
+    }
+
     // Round to the nearest node rather than compare coordinates directly.
     // Some maps sit slightly off the nominal grid, by up to an eighth of a
     // bin, while a permuted ordering is off by tens of bins.
