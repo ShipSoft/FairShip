@@ -238,7 +238,14 @@ Bool_t exitHadronAbsorber::ProcessHits(FairVolume* vol) {
           // makes if it ends by interacting rather than decaying. Geant4
           // pushes a secondary onto the VMC stack when that secondary starts
           // tracking, which is after the parent is done, so the secondaries
-          // pick this up on their own.
+          // pick this up on their own. This relies on
+          // /mcTracking/saveSecondariesInStep staying off (see
+          // gconfig/g4config.in); turning it on pushes secondaries during the
+          // step that makes them. A side effect is that secondaries made
+          // mid-track by processes that do not end it (delta rays, elastic
+          // recoils) get the parent's final weight, not its weight at the
+          // step that made them. That is negligible for the muon rate, but do
+          // not rely on their weights.
           const Double_t trackWeight = part->GetWeight();
           const Double_t cloneWeight = trackWeight * P_decay /
                                        fIntermediateNsplits /
