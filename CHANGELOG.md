@@ -20,8 +20,8 @@ it in future.
 * Add `--charm-production` (`forced`, `inclusive`) to `macro/makeCascadePythia8.py`. With `inclusive`, charm signal events are inclusive inelastic events (`SoftQCD:inelastic`) generated at the exact momentum and direction of the projectile and kept if they contain charm, as in the FTFT tune, instead of forced `HardQCD:hardccbar` events. The normalisation is unchanged. Inclusive generation is about 20 times slower; `forced` remains the default.
 * Add the V21_2455 spectrometer field map (`files/2026_07_02_MainSpectrometerField_V21_2455.root`). The map was delivered with its x and y coordinate columns transposed, like the `2026_05_07_*` maps, and is shipped with the coordinates regenerated. The field values are unchanged.
 * `--intermediate-kaon-pion-splits` (default 2): splitting factor applied to kaons and pions at each GEANT4 step before they decay, separate from the `--kaon-pion-splits` factor applied at the decay itself
-* `--max-split-buffer` (default 25000): hard bound on the split clones buffered per track. Per-step splitting stops once the cap is reached, reducing the statistical boost but conserving weight
-* `--max-event-size` (default 5000000): threshold on the estimated event size taking into account a safety factor depending on per-step splitting, with the per-step splitting stopping once the cap is reached
+* `--max-split-buffer` (default 25000): hard bound on the split clones buffered per track. Per-step splitting stops once the cap is reached, reducing the statistical boost but conserving weight. With the default `--max-event-size`, that cap is reached first, at about 10k pending clones
+* `--max-event-size` (default 5000000): cap on the projected number of particles per event, counting the particles already on the stack plus 500 for each pending split clone. Per-step splitting stops once the cap would be exceeded; weight is conserved. `run_fixedTarget.py` rejects values of this or `--max-split-buffer` that are too small for even one per-step split
 
 ### Changed
 
@@ -29,6 +29,7 @@ it in future.
 * Update default He balloon liner to be made with polyester like Mylar, named mylar_linerHe with density/thickness matching material #5
 * Scale `chicc`/`chibb` in `run_fixedTarget.py` by the heavy-flavour cross section per nucleon stored in the cascade input file, so that the normalisation follows the beam energy, tune and target composition the file was generated with. Files without it, such as the existing ones on EOS, keep the previous values.
 * `--multiple-kpi-splits` now splits with `--intermediate-kaon-pion-splits` at each step instead of reusing `--kaon-pion-splits`, and requires both to be positive
+* Kaon/pion splitting takes the clone weights from the current weight of the split track, instead of assuming that the track has the same weight as its mother on the stack, or weight 1 if it has none. That holds for all current inputs, so results do not change
 
 ### Fixed
 
