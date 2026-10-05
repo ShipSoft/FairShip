@@ -37,6 +37,7 @@ it in future.
 * Update location of post-target sensitive plane in `run_fixedTarget` to use nominal target length, in order to avoid overlaps
 * Read the normalisation histogram of charm and beauty input files as `TH1`, not `TH1F`, so that files written by `makeCascade.py` (`rootUtils` books a `TH1D`) are accepted instead of failing with "histogram '2' not found".
 * Post-process the simulation output of `run_fixedTarget.py`, not the first open ROOT file, which for charm and beauty is the cascade input file kept open by the generator, so that charm and beauty runs no longer end with `KeyError: 'cbmsim'`.
+* Added `ROOT::EGPythia8` in `shipgen/CMakeLists.txt` to avoid symbol lookup errors when using EvtGen
 
 ### Removed
 
