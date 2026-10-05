@@ -1,6 +1,5 @@
 var NAVTREEINDEX3 =
 {
-"classEvtCalcGenerator.html#afbe7ab880390edb4e71de4416b6d71de":[7,0,30,5],
 "classFixedTargetGenerator.html":[7,0,32],
 "classFixedTargetGenerator.html#a03500249963f1da62224d1596e890fdc":[7,0,32,8],
 "classFixedTargetGenerator.html#a0569be4e0f2547af009df1212b5f1c75":[7,0,32,1],
@@ -249,5 +248,6 @@ var NAVTREEINDEX3 =
 "classMTCDetHit.html#afb02e0ae751ce734df0f1b439326a2d8":[7,0,38,15],
 "classMTCDetPoint.html":[7,0,39],
 "classMTCDetPoint.html#a8d5a2645f97542018a3819e3a448f285":[7,0,39,2],
-"classMTCDetPoint.html#a8dbfa793b609fe98e98632c5c6136f5d":[7,0,39,3]
+"classMTCDetPoint.html#a8dbfa793b609fe98e98632c5c6136f5d":[7,0,39,3],
+"classMTCDetPoint.html#aa654e449dba269475e9e372f8f8ca216":[7,0,39,0]
 };

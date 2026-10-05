@@ -9,7 +9,7 @@ var indexSectionsWithContent =
   6: "bfps",
   7: "bcdfs",
   8: "dkmuvxyz",
-  9: "dep",
+  9: "dp",
   10: "acdfgprs"
 };
 

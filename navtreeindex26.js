@@ -1,6 +1,5 @@
 var NAVTREEINDEX26 =
 {
-"namespacerun__tracking__scan.html#a6bbc2e553dfe383f68e41f91e0e86101":[6,0,77,72],
 "namespacerun__tracking__scan.html#a6e4c94ffbbf35a49bcd16198b68facbe":[6,0,77,10],
 "namespacerun__tracking__scan.html#a6f51321935daa66f8b5db5e2973b5cfb":[6,0,77,47],
 "namespacerun__tracking__scan.html#a6feb5bf3bdbb315302698f6eed2645ed":[6,0,77,69],
@@ -81,8 +80,7 @@ var NAVTREEINDEX26 =
 "namespaceshipPatRec.html#afd6ee5defa4e303b50f3e977c1c729db":[6,0,90,12],
 "namespaceshipRoot__conf.html":[6,0,92],
 "namespaceshipRoot__conf.html#a59bfc0b1b7bf8bc3e1a1270881622da6":[6,0,92,0],
-"namespaceshipRoot__conf.html#abe7f64e661e45192074d6aff22e9fa75":[6,0,92,2],
-"namespaceshipRoot__conf.html#afe7a5abdf5ac74baa52b7d271a6b18ad":[6,0,92,1],
+"namespaceshipRoot__conf.html#abe7f64e661e45192074d6aff22e9fa75":[6,0,92,1],
 "namespaceshipStrawTracking.html":[6,0,93],
 "namespaceshipStrawTracking.html#a005e72c92291692e5a0b39ae98d0ab13":[6,0,93,2],
 "namespaceshipStrawTracking.html#a11c0a12bc12c6f289a0eb2ccb0c01a53":[6,0,93,10],
@@ -249,5 +247,7 @@ var NAVTREEINDEX26 =
 "namespaceshipunit.html#aff15247b0aca829326bd74f17fb53f82":[6,0,94,113],
 "namespaceshipunit.html#aff9ebe7ef5ba7a5f8a1648f441a47e9c":[6,0,94,17],
 "namespaceshipunit.html#affd553cc6125fe2c47bcaf733ba91e52":[6,0,94,97],
-"namespaceskim__muonback__smoke.html":[6,0,99]
+"namespaceskim__muonback__smoke.html":[6,0,99],
+"namespaceskim__muonback__smoke.html#acd265e66314c1a63a4f8d835f99a00f0":[6,0,99,0],
+"namespacesplitcalDetector.html":[6,0,100]
 };

@@ -1,6 +1,5 @@
 var NAVTREEINDEX4 =
 {
-"classMTCDetPoint.html#aa654e449dba269475e9e372f8f8ca216":[7,0,39,0],
 "classMTCDetPoint.html#af96d93351254c739881d68948a116fcf":[7,0,39,1],
 "classMTCDetector.html":[7,0,37],
 "classMTCDetector.html#a018fbd8f91cadfb1a695ae553e995031":[7,0,37,32],
@@ -249,5 +248,6 @@ var NAVTREEINDEX4 =
 "classPythia8Generator.html#a0c0700217112797a3f2982b47089a4f8":[7,0,46,34],
 "classPythia8Generator.html#a0e02d13911bdc97f07817b0e5435fba4":[7,0,46,0],
 "classPythia8Generator.html#a115f4c756a4644f7ad98d3d4bd4c97fd":[7,0,46,42],
-"classPythia8Generator.html#a17e88a1dee12e9ae5a32b04f09605ea5":[7,0,46,29]
+"classPythia8Generator.html#a17e88a1dee12e9ae5a32b04f09605ea5":[7,0,46,29],
+"classPythia8Generator.html#a1a3546254b6ba9faabeb3b8719ac36f6":[7,0,46,39]
 };

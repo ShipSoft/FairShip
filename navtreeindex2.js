@@ -1,6 +1,5 @@
 var NAVTREEINDEX2 =
 {
-"ana__ShipMuon_8py.html#a550db34c5b3b15b947bc1694e7b4ea0e":[8,0,8,0,68],
 "ana__ShipMuon_8py.html#a572d7a276be83768b914021ab9f41902":[8,0,8,0,76],
 "ana__ShipMuon_8py.html#a5c5d59df831bdc579a9ea9a98e40bb67":[8,0,8,0,4],
 "ana__ShipMuon_8py.html#a5e8e836bebe15ab5933281e2a9e01303":[8,0,8,0,9],
@@ -249,5 +248,6 @@ var NAVTREEINDEX2 =
 "classEvtCalcGenerator.html#ac3c5044abd7b89900b45a03ab3eb6199":[7,0,30,16],
 "classEvtCalcGenerator.html#adc605667f4571c677c821a3a21c52e78":[7,0,30,31],
 "classEvtCalcGenerator.html#af82dd7fe1355493ce691944dd10c8ddf":[7,0,30,18],
-"classEvtCalcGenerator.html#af8c7129d55af02c6befe0f3451788a6f":[7,0,30,2]
+"classEvtCalcGenerator.html#af8c7129d55af02c6befe0f3451788a6f":[7,0,30,2],
+"classEvtCalcGenerator.html#afbe7ab880390edb4e71de4416b6d71de":[7,0,30,5]
 };

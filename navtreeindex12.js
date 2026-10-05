@@ -1,6 +1,5 @@
 var NAVTREEINDEX12 =
 {
-"classshipDigiReco_1_1ShipDigiReco.html#a598627d4dc8cf15bc8a6f70d15d1139f":[7,0,14,0,43],
 "classshipDigiReco_1_1ShipDigiReco.html#a60f54023b5d36dd748b5fb9d375d261d":[6,0,86,0,24],
 "classshipDigiReco_1_1ShipDigiReco.html#a60f54023b5d36dd748b5fb9d375d261d":[7,0,14,0,24],
 "classshipDigiReco_1_1ShipDigiReco.html#a6478031fc70d5599ec2a11f87899ebe9":[6,0,86,0,0],
@@ -249,5 +248,6 @@ var NAVTREEINDEX12 =
 "classsplitcalDetector_1_1splitcalDetector.html#a7bfd26cc42f7bad16c967d4a578d9791":[7,0,19,0,10],
 "classsplitcalDetector_1_1splitcalDetector.html#a9f08393fb860da4760951d5e321d28bb":[7,0,19,0,11],
 "classsplitcalDetector_1_1splitcalDetector.html#a9f08393fb860da4760951d5e321d28bb":[6,0,100,0,11],
-"classsplitcalDetector_1_1splitcalDetector.html#aac3b51e6817c5a49fdf2e2dbedf77d0a":[7,0,19,0,13]
+"classsplitcalDetector_1_1splitcalDetector.html#aac3b51e6817c5a49fdf2e2dbedf77d0a":[7,0,19,0,13],
+"classsplitcalDetector_1_1splitcalDetector.html#aac3b51e6817c5a49fdf2e2dbedf77d0a":[6,0,100,0,13]
 };
