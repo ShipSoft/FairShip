@@ -20,7 +20,7 @@ import fieldMapTools as fmt
 import numpy as np
 import pytest
 
-MAP_DIRECTORY = Path("files")
+MAP_DIRECTORY = Path(__file__).resolve().parent.parent / "files"
 
 # Per map: the component that dominates on the beam axis, how much better the
 # divergence has to be than the transposed reading, and how large the
