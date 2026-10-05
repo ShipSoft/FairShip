@@ -22,6 +22,9 @@
 #/mcVerbose/regionsManager 3
 
 #/run/particle/applyCuts
+# Keep off: the kaon/pion splitting in exitHadronAbsorber expects secondaries
+# to reach the VMC stack after their parent is done, so that they inherit its
+# final, split-reduced weight.
 #/mcTracking/saveSecondariesInStep true
 
 #/tracking/verbose 1
