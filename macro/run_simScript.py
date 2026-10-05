@@ -68,7 +68,7 @@ parser.add_argument("--Pythia8", dest="pythia8", help="Use Pythia8", action="sto
 parser.add_argument(
     "--EvtGenDecayer",
     dest="evtgen_decayer",
-    help="Use TEvtGenDecayer for J/psi and other quarkonium decays",
+    help="Use EvtGen for heavy hadron decays",
     action="store_true",
 )
 subparsers = parser.add_subparsers(dest="command", help="Which mode to run")
@@ -913,10 +913,11 @@ else:
     run.SetStoreTraj(ROOT.kFALSE)
 
 # -----Configure external decayer globally------------------------------------
-# Override any previous SetPythiaDecayer calls if EvtGenDecayer is requested
 if options.evtgen_decayer:
-    run.SetPythiaDecayer("DecayConfigTEvtGen.C")
-    print("Using TEvtGenDecayer for J/psi and quarkonium decays with EvtGen")
+    os.environ["EXTDECAYER_HEAVY_HADRONS"] = "1"
+    print("Using EvtGen for heavy hadron decays")
+else:
+    os.environ["EXTDECAYER_HEAVY_HADRONS"] = "0"
 
 # -----Initialize simulation run------------------------------------
 run.Init()
