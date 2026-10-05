@@ -41,6 +41,23 @@ constexpr Double_t cm = 1;         // cm
 constexpr Double_t m = 100 * cm;   //  m
 constexpr Double_t mm = 0.1 * cm;  //  mm
 
+namespace {
+// ShipStack::PushTrack multiplies the weight of a pushed track by that of the
+// track it names as parent, and leaves it alone for a primary. A clone that
+// should end up with weight w is therefore pushed with w divided by this.
+Double_t PushedWeightScale(Int_t parentId) {
+  if (parentId < 0) {
+    return 1.;
+  }
+  auto* stack = dynamic_cast<ShipStack*>(gMC->GetStack());
+  TParticle* parent = stack->GetParticle(parentId);
+  if (!parent || parent->GetWeight() <= 0.) {
+    return 1.;
+  }
+  return parent->GetWeight();
+}
+}  // namespace
+
 exitHadronAbsorber::exitHadronAbsorber(const char* Name, Bool_t Active)
     : Detector(Name, Active, kVETO),
       fOnlyMuons(kFALSE),
@@ -51,8 +68,7 @@ exitHadronAbsorber::exitHadronAbsorber(const char* Name, Bool_t Active)
       fCylindricalPlane(kFALSE),
       fUseCaveCoordinates(kFALSE),
       fNsplits(0),
-      fIntermediateNsplits(2),
-      fCurrentSurvivalFactor(1) {}
+      fIntermediateNsplits(2) {}
 
 exitHadronAbsorber::exitHadronAbsorber()
     : Detector("exitHadronAbsorber", kTRUE, kVETO),
@@ -65,8 +81,7 @@ exitHadronAbsorber::exitHadronAbsorber()
       fCylindricalPlane(kFALSE),
       fUseCaveCoordinates(kFALSE),
       fNsplits(0),
-      fIntermediateNsplits(2),
-      fCurrentSurvivalFactor(1) {}
+      fIntermediateNsplits(2) {}
 
 void exitHadronAbsorber::SetMaxSplitBuffer(Int_t n) {
   // Guard the conversion: a negative value would become a huge std::size_t and
@@ -183,7 +198,7 @@ Bool_t exitHadronAbsorber::ProcessHits(FairVolume* vol) {
           const bool eventFull  = event_size + pending * shower_safety_factor > fMaxEventSize;
           if (bufferFull || eventFull) {
             // Skip the split for this step instead of truncating the buffer.
-            // fCurrentSurvivalFactor is the weight ledger: leaving it untouched
+            // The track weight is the ledger: leaving it untouched
             // means the weight we did not split off is still carried by the
             // track, and reaches the natural-decay clones in PostTrack() if
             // the track ends in a decay. The total weight the track
@@ -212,8 +227,22 @@ Bool_t exitHadronAbsorber::ProcessHits(FairVolume* vol) {
           return kTRUE;
           }
 
-          Double_t decayBranchWeight = fCurrentSurvivalFactor * P_decay;
-          Double_t cloneWeight = decayBranchWeight / fIntermediateNsplits;
+          // The track's own weight is the ledger: it starts at whatever the
+          // track was pushed with and loses the decay branch at every split.
+          // The clones get exactly what the track loses, so track + clones
+          // keep the weight the track started with at every step, whatever
+          // that weight is, even if it differs from that of the track
+          // ShipStack scales the clones by (see PushedWeightScale). Lowering
+          // the track's weight also keeps everything it goes on to do in
+          // step: its hit at the sensitive plane, and the secondaries it
+          // makes if it ends by interacting rather than decaying. Geant4
+          // pushes a secondary onto the VMC stack when that secondary starts
+          // tracking, which is after the parent is done, so the secondaries
+          // pick this up on their own.
+          const Double_t trackWeight = part->GetWeight();
+          const Double_t cloneWeight = trackWeight * P_decay /
+                                       fIntermediateNsplits /
+                                       PushedWeightScale(trueParentId);
           for (int i = 0; i < fIntermediateNsplits; ++i) {
             TrackBuffer clone;
             clone.pdg = track_pid;
@@ -232,20 +261,7 @@ Bool_t exitHadronAbsorber::ProcessHits(FairVolume* vol) {
             clone.parentID = trueParentId;
             fSecondaryBuffer.push_back(clone);
           }
-          // The clone weights above are relative to trueParentId, because
-          // ShipStack::PushTrack multiplies a pushed weight by the weight of
-          // the track it names as parent. The parent's own weight, relative
-          // to that same track, has to follow the ledger down from 1 to
-          // fCurrentSurvivalFactor, otherwise everything it goes on to do
-          // still counts at full weight: its hit at the sensitive plane, and
-          // the secondaries it makes if it ends by interacting rather than
-          // decaying. Scaling it here keeps parent + clones equal to the
-          // weight the parent started with at every step. Geant4 pushes a
-          // secondary onto the VMC stack when that secondary starts tracking,
-          // which is after the parent is done, so the secondaries pick this
-          // up on their own.
-          fCurrentSurvivalFactor *= (1.0 - P_decay);
-          part->SetWeight(part->GetWeight() * (1.0 - P_decay));
+          part->SetWeight(trackWeight * (1.0 - P_decay));
         }
       }
     }
@@ -387,10 +403,12 @@ void exitHadronAbsorber::PostTrack() {
     polZ = polVector.Z();
     Int_t trueParentId = part->GetFirstMother();
 
-    // All remaining weight used if cloning happens at point where original
-    // particle decays
+    // A track that decays hands all of its remaining weight to the endpoint
+    // clones. With per-step splitting its weight has already been lowered by
+    // every split along the way.
     if (isNaturalDecay) {
-      Double_t finalEndpointWeight = fCurrentSurvivalFactor / fNsplits;
+      Double_t finalEndpointWeight =
+          part->GetWeight() / fNsplits / PushedWeightScale(trueParentId);
       for (int i = 0; i < fNsplits; ++i) {
         TrackBuffer clone;
         clone.pdg = track_pid;
@@ -409,7 +427,6 @@ void exitHadronAbsorber::PostTrack() {
         clone.parentID = trueParentId;
         fSecondaryBuffer.push_back(clone);
       }
-      fCurrentSurvivalFactor = 0.0;
       fDecayedParentIDs.insert(currentTrackId);
     }
 
@@ -425,9 +442,6 @@ void exitHadronAbsorber::PostTrack() {
 }
 
 void exitHadronAbsorber::PreTrack() {
-  // Reset relative survival factor to 1.0
-  fCurrentSurvivalFactor = 1.0;
-
   // Invariant for this whole method: the clone buffer may only be handed to a
   // carrier that is guaranteed to step. TG4StackPopper converts pushed tracks
   // into Geant4 secondaries from PostStepDoIt only, and its Reset() at the
