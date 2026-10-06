@@ -80,6 +80,15 @@ class exitHadronAbsorber : public SHiP::Detector<vetoPoint> {
   // Ask for the next track to carry the clones just added to the buffer.
   static void RequestCloneCarrier() { fgCarrierTrackID = kCarrierRequested; }
 
+  // A decay that the clones re-sample is replaced as a whole: its products,
+  // and everything they go on to make, would otherwise be counted on top of
+  // the same channels from the clones. Shared by all instances for the same
+  // reason as the carrier: a sibling plane must not score them either.
+  static std::set<Int_t> fgReplacedDecays;  //! split tracks whose decay the
+                                            //! clones replace
+  static std::set<Int_t> fgReplacedTracks;  //! products of those decays and
+                                            //! their descendants
+
   // Drop the clones still buffered at the end of an event or run, keeping
   // track of how much weight was never simulated.
   void DiscardBufferedClones();
@@ -123,7 +132,6 @@ class exitHadronAbsorber : public SHiP::Detector<vetoPoint> {
 
   std::vector<TrackBuffer> fSecondaryBuffer;
   std::set<Int_t> fCloneTracks;
-  std::set<Int_t> fDecayedParentIDs;
 
   Int_t fSplitDecays = 0;          //! decays replaced by clones
   Int_t fClonesBuffered = 0;       //! clones created for those decays

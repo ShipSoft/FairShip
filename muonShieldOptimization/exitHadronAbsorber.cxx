@@ -59,6 +59,8 @@ Double_t PushedWeightScale(Int_t parentId) {
 }  // namespace
 
 Int_t exitHadronAbsorber::fgCarrierTrackID = exitHadronAbsorber::kNoCarrier;
+std::set<Int_t> exitHadronAbsorber::fgReplacedDecays;
+std::set<Int_t> exitHadronAbsorber::fgReplacedTracks;
 
 exitHadronAbsorber::exitHadronAbsorber(const char* Name, Bool_t Active)
     : Detector(Name, Active, kVETO),
@@ -119,14 +121,13 @@ Bool_t exitHadronAbsorber::ProcessHits(FairVolume* vol) {
       TParticle* p = gMC->GetStack()->GetCurrentTrack();
       fUniqueID = p->GetUniqueID();
       Int_t pdgCode = p->GetPdgCode();
-      Int_t motherId = p->GetFirstMother();
       gMC->TrackMomentum(fMom);
       if (!fOnlyMuons || TMath::Abs(pdgCode) == 13) {
         fTime = gMC->TrackTime() * 1.0e09;
         fLength = gMC->TrackLength();
         gMC->TrackPosition(fPos);
         if (((fMom.E() - fMom.M()) > EMax) &&
-            (fDecayedParentIDs.count(motherId) == 0)) {
+            (fgReplacedTracks.count(fTrackID) == 0)) {
           AddHit(fEventID, fTrackID, 111,
                  TVector3(fPos.X(), fPos.Y(), fPos.Z()),
                  TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength, 0,
@@ -149,7 +150,8 @@ Bool_t exitHadronAbsorber::ProcessHits(FairVolume* vol) {
   if (fNsplits > 0 && fIntermediateNsplits > 0 && (!fSplitOnce)) {
     Int_t currentTrackId = gMC->GetStack()->GetCurrentTrackNumber();
 
-    if (fCloneTracks.count(currentTrackId) > 0) {
+    if (fCloneTracks.count(currentTrackId) > 0 ||
+        fgReplacedTracks.count(currentTrackId) > 0) {
       return kTRUE;
     }
 
@@ -364,7 +366,8 @@ void exitHadronAbsorber::Initialize() {
 void exitHadronAbsorber::BeginEvent() {
   fgCarrierTrackID = kNoCarrier;
   fCloneTracks.clear();
-  fDecayedParentIDs.clear();
+  fgReplacedDecays.clear();
+  fgReplacedTracks.clear();
   fSplitBufferLimitWarned = kFALSE;
   fEventSizeLimitWarned = kFALSE;
 }
@@ -397,7 +400,10 @@ void exitHadronAbsorber::DiscardBufferedClones() {
 void exitHadronAbsorber::PostTrack() {
   Int_t currentTrackId = gMC->GetStack()->GetCurrentTrackNumber();
 
-  if (fCloneTracks.count(currentTrackId) > 0) {
+  // A replaced track can only get here as a carrier; its decay is part of one
+  // that the clones already re-sample, so it must not be split again.
+  if (fCloneTracks.count(currentTrackId) > 0 ||
+      fgReplacedTracks.count(currentTrackId) > 0) {
     return;
   }
 
@@ -455,7 +461,7 @@ void exitHadronAbsorber::PostTrack() {
         clone.parentID = trueParentId;
         fSecondaryBuffer.push_back(clone);
       }
-      fDecayedParentIDs.insert(currentTrackId);
+      fgReplacedDecays.insert(currentTrackId);
       fSplitDecays++;
       fClonesBuffered += fNsplits;
       RequestCloneCarrier();
@@ -495,16 +501,26 @@ void exitHadronAbsorber::PreTrack() {
 
   Bool_t belowCut = (fMom.E() - fMom.M()) < EMax;
 
-  if (!isClone && !isCarrier && belowCut) {
+  // Products of a replaced decay, and their descendants, are replaced too.
+  // Every instance runs this, so the set is complete before any track steps.
+  const Int_t motherId = p->GetFirstMother();
+  if (fgReplacedDecays.count(motherId) > 0 ||
+      fgReplacedTracks.count(motherId) > 0) {
+    fgReplacedTracks.insert(currentID);
+  }
+  const Bool_t isReplaced = fgReplacedTracks.count(currentID) > 0;
+
+  if (!isClone && !isCarrier && (belowCut || isReplaced)) {
     // Do NOT flush the clone buffer into this track: it is stopped before its
     // first step, so the stack popper would never run for it and the pending
     // clones would be silently discarded at the next track's popper reset.
     // The designated carrier is exempt so that it does step, and is dropped
-    // from the scoring below instead. ProcessHits does not score it either: it
-    // is a daughter of a split decay, which fDecayedParentIDs excludes. Its
-    // secondaries are still transported and can be scored if they pass the
-    // cut, which costs one sub-threshold track's worth of extra physics per
-    // splitting decay.
+    // from the statistics below instead. If it is a product of the replaced
+    // decay, which it usually is, ProcessHits does not score it either and
+    // its own secondaries are replaced and stopped here. A sub-threshold
+    // carrier from any other source keeps its secondaries, which are scored
+    // if they pass the cut: one sub-threshold track's worth of extra physics
+    // per splitting decay.
     //
     // Clones are exempt from the cut. They are a bookkeeping device that has
     // to decay immediately (ForceDecayTime(0)) so that the decay can be
@@ -517,10 +533,11 @@ void exitHadronAbsorber::PreTrack() {
     return;
   }
 
-  // A carrier below the cut only has to step so that the stack popper hands
-  // the clones over. An unsplit run would have stopped it above, so it must
-  // not reach the histograms or the ntuple.
-  const Bool_t recordStatistics = !(isCarrier && !isClone && belowCut);
+  // A carrier that is below the cut or replaced only has to step so that the
+  // stack popper hands the clones over. An unsplit run would not have it, so
+  // it must not reach the histograms or the ntuple.
+  const Bool_t recordStatistics =
+      !(isCarrier && !isClone && (belowCut || isReplaced));
 
   Int_t pdgCode = p->GetPdgCode();
 
