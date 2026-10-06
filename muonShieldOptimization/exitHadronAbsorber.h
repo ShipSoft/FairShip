@@ -23,6 +23,9 @@ struct TrackBuffer {
   Double_t polx, poly, polz;
   Double_t weight;
   Int_t parentID;
+  // A continuation of a per-step split track rather than a clone: it is
+  // transported normally instead of being forced to decay at once.
+  Bool_t continuation = kFALSE;
 };
 
 class exitHadronAbsorber : public SHiP::Detector<vetoPoint> {
@@ -132,9 +135,14 @@ class exitHadronAbsorber : public SHiP::Detector<vetoPoint> {
 
   std::vector<TrackBuffer> fSecondaryBuffer;
   std::set<Int_t> fCloneTracks;
+  // The last per-step split, so that PostTrack() can tell whether the step on
+  // which a track decayed was split.
+  Int_t fLastSplitTrackID = -1;  //!
+  Int_t fLastSplitStep = -1;     //!
 
   Int_t fSplitDecays = 0;          //! decays replaced by clones
   Int_t fClonesBuffered = 0;       //! clones created for those decays
+  Int_t fContinuedDecays = 0;      //! natural decays replaced by a continuation
   Int_t fLostBufferEvents = 0;     //! events ending with unflushed clones
   Int_t fLostCloneTracks = 0;      //! clones which were never tracked
   Double_t fLostCloneWeight = 0.;  //! summed weight of those clones

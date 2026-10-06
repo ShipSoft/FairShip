@@ -277,6 +277,8 @@ Bool_t exitHadronAbsorber::ProcessHits(FairVolume* vol) {
           part->SetWeight(trackWeight * (1.0 - P_decay));
           fSplitDecays++;
           fClonesBuffered += fIntermediateNsplits;
+          fLastSplitTrackID = currentTrackId;
+          fLastSplitStep = gMC->StepNumber();
           RequestCloneCarrier();
         }
       }
@@ -368,6 +370,8 @@ void exitHadronAbsorber::BeginEvent() {
   fCloneTracks.clear();
   fgReplacedDecays.clear();
   fgReplacedTracks.clear();
+  fLastSplitTrackID = -1;
+  fLastSplitStep = -1;
   fSplitBufferLimitWarned = kFALSE;
   fEventSizeLimitWarned = kFALSE;
 }
@@ -440,30 +444,53 @@ void exitHadronAbsorber::PostTrack() {
     // A track that decays hands all of its remaining weight to the endpoint
     // clones. With per-step splitting its weight has already been lowered by
     // every split along the way.
+    //
+    // Except where the per-step split already covered the step. There, the
+    // clones of every step are the track's decays, and its weight e^(-tau) is
+    // what survives them. Letting Geant4 decay the track as well would apply
+    // the decay probability twice: the track would be both removed with
+    // probability 1 - e^(-tau) and down-weighted by e^(-tau), which roughly
+    // doubles the decay yield when interactions dominate. So a natural decay
+    // on a split step is not a decay: the track is pushed again at the decay
+    // point as a continuation with its current weight. The decay length is
+    // exponential, so this is the same as switching the decay off while the
+    // track is being split. Off the split steps (outside the volumes
+    // registered for splitting, below the energy cut, or with the buffer
+    // full) the natural decay stands and goes to the endpoint clones.
+    const Bool_t splitThisStep = !fSplitOnce &&
+                                 fLastSplitTrackID == currentTrackId &&
+                                 fLastSplitStep == gMC->StepNumber();
     if (isNaturalDecay) {
-      Double_t finalEndpointWeight =
-          part->GetWeight() / fNsplits / PushedWeightScale(trueParentId);
-      for (int i = 0; i < fNsplits; ++i) {
-        TrackBuffer clone;
-        clone.pdg = track_pid;
-        clone.px = finalMom.Px();
-        clone.py = finalMom.Py();
-        clone.pz = finalMom.Pz();
-        clone.e = finalMom.E();
-        clone.x = finalPos.X();
-        clone.y = finalPos.Y();
-        clone.z = finalPos.Z();
-        clone.t = finalPos.T();
-        clone.polx = polX;
-        clone.poly = polY;
-        clone.polz = polZ;
-        clone.weight = finalEndpointWeight;
-        clone.parentID = trueParentId;
-        fSecondaryBuffer.push_back(clone);
+      TrackBuffer endpoint;
+      endpoint.pdg = track_pid;
+      endpoint.px = finalMom.Px();
+      endpoint.py = finalMom.Py();
+      endpoint.pz = finalMom.Pz();
+      endpoint.e = finalMom.E();
+      endpoint.x = finalPos.X();
+      endpoint.y = finalPos.Y();
+      endpoint.z = finalPos.Z();
+      endpoint.t = finalPos.T();
+      endpoint.polx = polX;
+      endpoint.poly = polY;
+      endpoint.polz = polZ;
+      endpoint.parentID = trueParentId;
+      if (splitThisStep) {
+        endpoint.weight = part->GetWeight() / PushedWeightScale(trueParentId);
+        endpoint.continuation = kTRUE;
+        fSecondaryBuffer.push_back(endpoint);
+        fContinuedDecays++;
+      } else {
+        endpoint.weight =
+            part->GetWeight() / fNsplits / PushedWeightScale(trueParentId);
+        for (int i = 0; i < fNsplits; ++i) {
+          fSecondaryBuffer.push_back(endpoint);
+        }
+        fSplitDecays++;
+        fClonesBuffered += fNsplits;
       }
+      // Either way the products of this decay are replaced.
       fgReplacedDecays.insert(currentTrackId);
-      fSplitDecays++;
-      fClonesBuffered += fNsplits;
       RequestCloneCarrier();
     }
 
@@ -603,7 +630,9 @@ void exitHadronAbsorber::PreTrack() {
       stack->PushTrack(1, trk.parentID, trk.pdg, trk.px, trk.py, trk.pz, trk.e,
                        trk.x, trk.y, trk.z, trk.t, trk.polx, trk.poly, trk.polz,
                        kPNoProcess, ntr, trk.weight, 999);
-      fCloneTracks.insert(ntr);
+      if (!trk.continuation) {
+        fCloneTracks.insert(ntr);
+      }
     }
     // Clear the buffer so we don't duplicate them for the next track
     fSecondaryBuffer.clear();
@@ -622,6 +651,10 @@ void exitHadronAbsorber::FinishRun() {
   if (fNsplits > 0) {
     LOG(info) << "exitHadronAbsorber: split " << fSplitDecays
               << " times, creating " << fClonesBuffered << " clones";
+    if (!fSplitOnce) {
+      LOG(info) << "exitHadronAbsorber: " << fContinuedDecays
+                << " natural decays on split steps continued instead";
+    }
     if (fLostBufferEvents > 0) {
       LOG(warning) << "exitHadronAbsorber: " << fLostBufferEvents
                    << " event(s) ended with buffered split clones, losing "
