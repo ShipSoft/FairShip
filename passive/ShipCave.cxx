@@ -21,9 +21,11 @@ using ShipUnit::m;
 using ShipUnit::mm;
 using ShipUnit::tesla;
 
-ShipCave::ShipCave(Double_t z) : FairModule("Cave", "ShipCave") {
-  z_end_of_proximity_shielding = z;
-}
+ShipCave::ShipCave(Double_t z, Double_t z_transition, Double_t z_spectrometer)
+    : FairModule("Cave", "ShipCave"),
+      z_end_of_proximity_shielding(z),
+      fZTransition(z_transition),
+      fZSpectrometer(z_spectrometer) {}
 
 void ShipCave::ConstructGeometry() {
   FairGeoLoader* loader = FairGeoLoader::Instance();
@@ -46,7 +48,7 @@ void ShipCave::ConstructGeometry() {
   Double_t Proximity_shield_half_length = 55.36 / 2 * cm;
   Double_t zEndOfTarget =
       z_end_of_proximity_shielding - 2 * Proximity_shield_half_length;
-  Double_t z_transition = 20.52 * m;
+  Double_t z_transition = fZTransition;
   [[maybe_unused]] auto* rock = new TGeoBBox(
       "rock", 20 * m, 20 * m, TCC8_length / 2. + ECN3_length / 2. + 5 * m);
   [[maybe_unused]] auto* muon_shield_cavern =
@@ -74,7 +76,7 @@ void ShipCave::ConstructGeometry() {
   [[maybe_unused]] auto* yoke_pit =
       new TGeoBBox("yoke_pit", 4.2 * m, 0.5 * m, 4.5 * m);
   auto* yoke_pit_shift = new TGeoTranslation("yoke_pit_shift", 0 * m, -3.86 * m,
-                                             89.57 * m - z_transition);
+                                             fZSpectrometer - z_transition);
   yoke_pit_shift->RegisterYourself();
 
   [[maybe_unused]] auto* target_pit =

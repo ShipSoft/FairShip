@@ -23,7 +23,8 @@ shield_db = {
         "params": [
             [0.0, 115.0, 40.0, 40.0, 119.0, 119.0, 61.5, 61.5, 1.5375, 1.5375, 50.0, 50.0, 0.0, 0.0, 2.05],
             [15, 150, 62, 62, 11, 11, 12, 12, 1, 1.0, 69, 69, 0, 0, 1.87],
-            [15, 225, 70, 70, 12, 12, 9, 9, 1, 1.0, 77, 77, 0, 0, 1.865],
+            # 0.3 m gap between the M1 and M2 yokes (integration layout 2026-0.1)
+            [30, 225, 70, 70, 12, 12, 9, 9, 1, 1.0, 77, 77, 0, 0, 1.865],
             [16, 225, 64, 64, 14, 14, 8, 8, 1.3, 1.3, 71, 71, 0, 0, 1.92],
             [15, 225, 42, 42, 13, 13, 8, 8, 2.6, 2.6, 47, 47, 0, 0, 1.89],
             [16, 131, 40, 40, 30, 30, 0, 0, 2.25, 2.25, 22, 22, 0, 0, 0],
@@ -206,6 +207,8 @@ def create_config(
     if strawDesign == 10:
         c.cave.floorHeightMuonShield = c.cave.floorHeightTankA  # avoid the gap, for 2018 geometry
     c.cave.floorHeightTankB = 2 * u.m
+    # TCC8/ECN3 step, at the mid-plane of the gap between M4 and S5 (integration layout 2026-0.1)
+    c.cave.z_transition = 21.78 * u.m
 
     with open(c.target_yaml) as file:
         targetconfig = yaml.safe_load(file)
@@ -259,8 +262,7 @@ def create_config(
         + 96.1 * u.mm  # Distance between target and proximity shielding
         + 250 * u.mm  # Thickness of proximity shielding
         + 207.5 * u.mm  # Distance between hadron absorber and proximity shielding
-        - 10 * u.cm  # Remove spacing internal to hadron absorber
-    )
+    )  # front face of the magnetised hadron stopper at 2.14 m (integration layout 2026-0.1)
 
     # DEFINITION OF THE MUON SHIELD
     c.muShield = AttrDict()
@@ -302,7 +304,7 @@ def create_config(
 
     # make z coordinates for the decay volume and tracking stations relative to T4z
     # eventually, the only parameter which needs to be changed when the active shielding length changes.
-    c.z = 89.57 * u.m  # absolute position of spectrometer magnet
+    c.z = 89.72 * u.m  # mid-plane of the spectrometer magnet (integration layout 2026-0.1)
     c.decayVolume.z = c.z - 31.450 * u.m  # Relative position of decay vessel centre to spectrometer magnet
     c.decayVolume.z0 = c.decayVolume.z - c.decayVolume.length / 2.0
     veto_yaml = os.path.expandvars(f"$FAIRSHIP/geometry/veto_config_{DecayVolumeMedium}.yaml")
@@ -365,15 +367,15 @@ def create_config(
     c.TimeDet.DZ = (c.TimeDet.dzBarRow + c.TimeDet.dzBarCol + c.TimeDet.zBar) / 2
     c.TimeDet.DX = 275 * u.cm
     c.TimeDet.DY = 325 * u.cm
-    c.TimeDet.z = (
-        37.800 * u.m - c.TimeDet.dzBarRow * 3 / 2 + c.decayVolume.z
-    )  # Relative position of first layer of timing detector to decay vessel centre
+    # First bar row, placed so that the front face of the timing detector is 37.87 m
+    # downstream of the decay vessel centre, i.e. at 96.14 m (integration layout 2026-0.1)
+    c.TimeDet.z = 37.870 * u.m + c.decayVolume.z + c.TimeDet.zBar / 2
 
     c.HcalOption = -1
     c.EcalOption = 2
 
     c.SplitCal = AttrDict()
-    c.SplitCal.ZStart = 38.450 * u.m + c.decayVolume.z  # Relative start z of split cal to decay vessel centre
+    c.SplitCal.ZStart = 38.900 * u.m + c.decayVolume.z  # ECAL front face at 97.17 m (integration layout 2026-0.1)
     c.SplitCal.XMax = 4 * u.m / 2  # half length
     c.SplitCal.YMax = 6 * u.m / 2  # half length
     c.SplitCal.Empty = 0 * u.cm
