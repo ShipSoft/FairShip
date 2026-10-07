@@ -250,11 +250,19 @@ Bool_t Pythia8Generator::ReadEvent(FairPrimaryGenerator* cpg) {
       // Fe: nuclear /\ 16.77 cm pion 20.42 cm  f=1.22
       // W:  nuclear /\ 9.946 cm pion 11.33 cm  f=1.14
       // Mo: nuclear /\ 15.25 cm pion 17.98 cm  f=1.18
-      while (prob2int < rndm) {
+      // The material is counted from the previous interaction point: counting
+      // it from the start of the target only multiplies every trial by the
+      // same survival probability, which leaves the distribution unchanged but
+      // makes the acceptance vanish for interactions deep in the cascade.
+      const Double_t from[3] = {xOff, yOff, zinterStart};
+      constexpr int kMaxTries = 100000;
+      int tries = 0;
+      while (prob2int < rndm && tries < kMaxTries) {
+        ++tries;
         // place x,y,z uniform along path
         zinter = gRandom->Uniform(zinterStart, end[2]);
         Double_t point[3] = {xOff, yOff, zinter};
-        bparam = shipgen::MeanMaterialBudget(start, point, mparam);
+        bparam = shipgen::MeanMaterialBudget(from, point, mparam);
         Double_t interLength =
             mparam[8] * intLengthFactor *
             1.7;  // 1.7 = interaction length / collision length from PDG Tables
@@ -271,6 +279,11 @@ Bool_t Pythia8Generator::ReadEvent(FairPrimaryGenerator* cpg) {
           prob2int = 0.;
         }
         rndm = gRandom->Uniform(0., 1.);
+      }
+      if (prob2int < rndm) {
+        // no material left downstream: keep the previous interaction point
+        zinter = zinterStart;
+        break;
       }
       zinterStart = zinter;
     }
