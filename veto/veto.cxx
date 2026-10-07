@@ -324,14 +324,11 @@ TGeoVolumeAssembly* veto::GeoCornerRib(const TString& xname,
 
 int veto::makeId(double z, double x, double y) {
   double Z = z / 10;
-  double r = sqrt(x * x + y * y);
-  double phi = 999;
-  if (y >= 0)
-    phi = acos(x / r);
-  else
-    phi = -acos(x / r) + 2 * TMath::Pi();
-
-  phi = phi * 180 / TMath::Pi();
+  double r = std::hypot(x, y);
+  // azimuth in [0, 360) degrees
+  double phi = std::atan2(y, x);
+  if (phi < 0) phi += 2 * TMath::Pi();
+  phi *= TMath::RadToDeg();
   return static_cast<int>(Z) * 1000000 + static_cast<int>(r) * 1000 +
          static_cast<int>(phi);
 }
