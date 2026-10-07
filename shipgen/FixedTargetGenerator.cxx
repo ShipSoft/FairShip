@@ -444,7 +444,7 @@ Bool_t FixedTargetGenerator::Init() {
     TObjArray* nodes = target->GetVolume()->GetNodes();
     // Get the first and last node of the target to calculate the material seen
     TGeoNode* first = static_cast<TGeoNode*>(nodes->At(0));
-    TGeoNode* last = static_cast<TGeoNode*>(nodes->At(nodes->GetSize() - 1));
+    TGeoNode* last = static_cast<TGeoNode*>(nodes->At(nodes->GetLast()));
     nav->cd(targetName + "/" + first->GetName());
     TGeoBBox* sha = static_cast<TGeoBBox*>(first->GetVolume()->GetShape());
     Double_t dz = sha->GetDZ();
@@ -453,7 +453,7 @@ Bool_t FixedTargetGenerator::Init() {
     nav->LocalToMaster(origin, master);
     startZ = master[2];
     nav->cd(targetName + "/" + last->GetName());
-    sha = static_cast<TGeoBBox*>(first->GetVolume()->GetShape());
+    sha = static_cast<TGeoBBox*>(last->GetVolume()->GetShape());
     dz = sha->GetDZ();
     origin[2] = +dz;
     nav->LocalToMaster(origin, master);
