@@ -140,7 +140,7 @@ def createRootMap(inFileName, rootFileName, cmScale, storeCoords) -> None:
 
     # Reopen the file and store the information in the ROOT file
 
-    inData = pd.read_csv(inFileName, delim_whitespace=True, header=None)
+    inData = pd.read_csv(inFileName, sep=r"\s+", header=None)
     inData.columns = ["x", "y", "z", "bx", "by", "bz"]
     inData = inData.sort_values(by=["x", "y", "z"])
     inData = inData.astype(float)
