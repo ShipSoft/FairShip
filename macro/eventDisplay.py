@@ -397,7 +397,7 @@ class DrawTracks(ROOT.FairTask):
             zEx = 10 * u.m
             if evVx:
                 zEx = -10 * u.m
-            lam = (zEx + fPos.Z()) / fMom.Z()
+            lam = zEx / fMom.Z()
             DTrack.SetNextPoint(fPos.X() + lam * fMom.X(), fPos.Y() + lam * fMom.Y(), zEx + fPos.Z())
         c = ROOT.kYellow
         DTrack.SetMainColor(c)
@@ -478,7 +478,7 @@ class DrawTracks(ROOT.FairTask):
                     else:
                         zEx = 10 * u.m
                         fT.GetMomentum(fMom)
-                        lam = (zEx + fPos.Z()) / fMom.Z()
+                        lam = zEx / fMom.Z()
                         hitlist[zEx + fPos.Z()] = [
                             fPos.X() + lam * fMom.X(),
                             fPos.Y() + lam * fMom.Y(),
