@@ -54,8 +54,11 @@ ShipMuonShield::ShipMuonShield(std::vector<double> in_params, Double_t z,
 }
 
 void ShipMuonShield::SetSNDSpace(Bool_t hole, Double_t hole_dx,
-                                 Double_t hole_dy) {
+                                 Double_t hole_dy, Int_t first_magnet,
+                                 Int_t last_magnet) {
   snd_hole = hole;
+  snd_first_magnet = first_magnet;
+  snd_last_magnet = last_magnet;
   snd_hole_dx = hole_dx / 2.;  // since the hole is cut in 2 halves, we need to
                                // divide the width by 2
   snd_hole_dy = hole_dy;
@@ -71,13 +74,13 @@ void ShipMuonShield::CreateArb8(const TString& arbName, TGeoMedium* medium,
 
   LOG(debug) << " Create CreateArb8 of the MS ";
 
-  TString magnLast = Form("Magn%zu", nMagnets - 1);
-  TString magnPrev = Form("Magn%zu", nMagnets - 2);
-
-  bool snd_magnet = (arbName == magnLast + "_MiddleMagL") ||
-                    (arbName == magnLast + "_MiddleMagR") ||
-                    (arbName == magnPrev + "_MiddleMagL") ||
-                    (arbName == magnPrev + "_MiddleMagR");
+  bool snd_magnet = false;
+  for (Int_t i = snd_first_magnet; i >= 0 && i <= snd_last_magnet; ++i) {
+    TString magn = Form("Magn%d", i);
+    if (arbName == magn + "_MiddleMagL" || arbName == magn + "_MiddleMagR") {
+      snd_magnet = true;
+    }
+  }
 
   if (snd_hole && snd_magnet) {
     //

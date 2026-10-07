@@ -74,7 +74,7 @@ void ShipCave::ConstructGeometry() {
   [[maybe_unused]] auto* yoke_pit =
       new TGeoBBox("yoke_pit", 4.2 * m, 0.5 * m, 4.5 * m);
   auto* yoke_pit_shift = new TGeoTranslation("yoke_pit_shift", 0 * m, -3.86 * m,
-                                             89.57 * m - z_transition);
+                                             fZSpectrometer - z_transition);
   yoke_pit_shift->RegisterYourself();
 
   [[maybe_unused]] auto* target_pit =

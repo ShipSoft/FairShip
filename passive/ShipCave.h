@@ -26,12 +26,16 @@ class ShipCave : public FairModule {
   }
   /** z of the downstream ECN3 wall (cm). */
   Double_t GetCavernEndZ() const { return fZTransition + fECN3Length; }
+  /** z of the spectrometer magnet mid-plane (cm), on which the yoke pit is
+   * centred. */
+  void SetSpectrometerZ(Double_t z) { fZSpectrometer = z; }
 
  private:
   Double_t fTCC8Length = 17000.;
   Double_t fECN3Length = 10000.;
   Double_t fStairStepLength = 82.;
   Double_t fZTransition = 2052.;
+  Double_t fZSpectrometer = 8957.;
   Double_t z_end_of_proximity_shielding;
   Double_t world[3];
 
