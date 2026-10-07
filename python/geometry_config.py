@@ -23,7 +23,8 @@ shield_db = {
         "params": [
             [0.0, 115.0, 40.0, 40.0, 119.0, 119.0, 61.5, 61.5, 1.5375, 1.5375, 50.0, 50.0, 0.0, 0.0, 2.05],
             [15, 150, 62, 62, 11, 11, 12, 12, 1, 1.0, 69, 69, 0, 0, 1.87],
-            [15, 225, 70, 70, 12, 12, 9, 9, 1, 1.0, 77, 77, 0, 0, 1.865],
+            # 0.3 m gap between the M1 and M2 yokes (integration layout 2026-0.1)
+            [30, 225, 70, 70, 12, 12, 9, 9, 1, 1.0, 77, 77, 0, 0, 1.865],
             [16, 225, 64, 64, 14, 14, 8, 8, 1.3, 1.3, 71, 71, 0, 0, 1.92],
             [15, 225, 42, 42, 13, 13, 8, 8, 2.6, 2.6, 47, 47, 0, 0, 1.89],
             [16, 131, 40, 40, 30, 30, 0, 0, 2.25, 2.25, 22, 22, 0, 0, 0],
@@ -208,7 +209,7 @@ def create_config(
     c.cave.TCC8_length = 170 * u.m
     c.cave.ECN3_length = 100 * u.m
     c.cave.stair_step_length = 0.82 * u.m
-    c.cave.z_transition = 20.52 * u.m
+    c.cave.z_transition = 21.78 * u.m  # mid-plane of the M4/S5 gap (integration layout 2026-0.1)
     c.cave.zEnd = c.cave.z_transition + c.cave.ECN3_length  # downstream ECN3 wall
 
     with open(c.target_yaml) as file:
@@ -263,8 +264,7 @@ def create_config(
         + 96.1 * u.mm  # Distance between target and proximity shielding
         + 250 * u.mm  # Thickness of proximity shielding
         + 207.5 * u.mm  # Distance between hadron absorber and proximity shielding
-        - 10 * u.cm  # Remove spacing internal to hadron absorber
-    )
+    )  # front face of the magnetised hadron stopper at 2.14 m (integration layout 2026-0.1)
 
     # DEFINITION OF THE MUON SHIELD
     c.muShield = AttrDict()
@@ -306,7 +306,7 @@ def create_config(
 
     # make z coordinates for the decay volume and tracking stations relative to T4z
     # eventually, the only parameter which needs to be changed when the active shielding length changes.
-    c.z = 89.57 * u.m  # absolute position of spectrometer magnet
+    c.z = 89.72 * u.m  # mid-plane of the spectrometer magnet (integration layout 2026-0.1)
     c.decayVolume.z = c.z - 31.450 * u.m  # Relative position of decay vessel centre to spectrometer magnet
     c.decayVolume.z0 = c.decayVolume.z - c.decayVolume.length / 2.0
     veto_yaml = os.path.expandvars(f"$FAIRSHIP/geometry/veto_config_{DecayVolumeMedium}.yaml")
@@ -369,21 +369,19 @@ def create_config(
     c.TimeDet.DZ = (c.TimeDet.dzBarRow + c.TimeDet.dzBarCol + c.TimeDet.zBar) / 2
     c.TimeDet.DX = 275 * u.cm
     c.TimeDet.DY = 325 * u.cm
-    c.TimeDet.z = (
-        37.800 * u.m - c.TimeDet.dzBarRow * 3 / 2 + c.decayVolume.z
-    )  # Relative position of first layer of timing detector to decay vessel centre
+    # First bar row, placed so that the front face of the timing detector is 37.87 m
+    # downstream of the decay vessel centre, i.e. at 96.14 m (integration layout 2026-0.1)
+    c.TimeDet.z = 37.870 * u.m + c.decayVolume.z + c.TimeDet.zBar / 2
 
-    # CaloScoringPlane: ideal (vacuum) plane where the calorimeter entrance window sits,
-    # i.e. just downstream of the timing detector. Every track entering it is scored.
+    # CaloScoringPlane: ideal (vacuum) plane where the calorimeter entrance window sits.
+    # Every track entering it is scored.
     c.CaloScoringPlane = AttrDict()
-    c.CaloScoringPlane.gapToTimeDet = 56.1 * u.cm  # ECAL entrance window, z = 96.570 m (former SplitCal front face)
     c.CaloScoringPlane.DX = 4 * u.m  # full width  (former SplitCal 2*XMax)
     c.CaloScoringPlane.DY = 6 * u.m  # full height (former SplitCal 2*YMax)
     c.CaloScoringPlane.DZ = 1 * u.mm  # full thickness
-    # Downstream face of the timing detector (bars are staggered downstream of TimeDet.z).
-    c.TimeDet.zEnd = c.TimeDet.z + c.TimeDet.dzBarRow + c.TimeDet.dzBarCol + c.TimeDet.zBar / 2
-    # Centre of the plane; its upstream face is the calorimeter entrance window.
-    c.CaloScoringPlane.z = c.TimeDet.zEnd + c.CaloScoringPlane.gapToTimeDet + c.CaloScoringPlane.DZ / 2
+    # Centre of the plane; its upstream face is the ECAL front face, 38.90 m downstream of the
+    # decay vessel centre, i.e. at 97.17 m (integration layout 2026-0.1)
+    c.CaloScoringPlane.z = 38.900 * u.m + c.decayVolume.z + c.CaloScoringPlane.DZ / 2
     if c.CaloScoringPlane.z + c.CaloScoringPlane.DZ / 2 >= c.cave.zEnd:
         raise ValueError(
             f"CaloScoringPlane ends at z = {c.CaloScoringPlane.z + c.CaloScoringPlane.DZ / 2} cm, "

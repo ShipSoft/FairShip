@@ -41,7 +41,8 @@ def muon_gun(n_events: int) -> list[str]:
     import geometry_config
 
     ship_geo = geometry_config.create_config(DecayVolumeMedium="vacuums", shieldName="TRY_2026", SND=True)
-    z_mtc_start = ship_geo.muShield.Entrance[-1]
+    # The MTC fills the second-to-last magnet (M6), see shipDet_conf.configure_snd_mtc
+    z_mtc_start = ship_geo.muShield.Entrance[-2]
     return [
         "-n", str(n_events),
         "PG", "--pID", "13", "--bothCharges",
