@@ -80,6 +80,18 @@ target_link_libraries(
 )
 add_test(NAME FixedTargetCascadeWeight COMMAND testFixedTargetCascadeWeight)
 
+# Mass and energy of ShipMCTrack, including spacelike particles
+add_executable(testShipMCTrackMass test_shipmctrack_mass.cxx)
+target_link_libraries(
+    testShipMCTrackMass
+    ShipData
+    ROOT::Core
+    ROOT::EG
+    FairRoot::Base
+    FairLogger::FairLogger
+)
+add_test(NAME ShipMCTrackMass COMMAND testShipMCTrackMass)
+
 # Python unit tests. Run with the interpreter of the active environment so the
 # ROOT, numpy and pytest it provides are the ones used. activate.sh already
 # puts <source>/python on PYTHONPATH; set it here too so a bare ctest works.
