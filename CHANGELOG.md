@@ -22,6 +22,7 @@ it in future.
 * `--intermediate-kaon-pion-splits` (default 2): splitting factor applied to kaons and pions at each GEANT4 step before they decay, separate from the `--kaon-pion-splits` factor applied at the decay itself
 * `--max-split-buffer` (default 25000): hard bound on the split clones buffered per track. Per-step splitting stops once the cap is reached, reducing the statistical boost but conserving weight. With the default `--max-event-size`, that cap is reached first, at about 10k pending clones
 * `--max-event-size` (default 5000000): cap on the projected number of particles per event, counting the particles already on the stack plus 500 for each pending split clone. Per-step splitting stops once the cap would be exceeded; weight is conserved. `run_fixedTarget.py` rejects values of this or `--max-split-buffer` that are too small for even one per-step split
+* `exitHadronAbsorber` reports the split-clone balance (decays split, clones created, clones never tracked and their weight) at the end of the run, including the final event's leftover buffer
 
 ### Changed
 
@@ -46,6 +47,8 @@ it in future.
 * Added `ROOT::EGPythia8` in `shipgen/CMakeLists.txt` to avoid symbol lookup errors when using EvtGen
 * Kaon/pion splitting no longer discards the whole clone set when the track that follows the decay is stopped before it takes a step. The energy cut cost ~17% of the muons from charged-kaon decay in flight (−2.8% of the total muon rate) in split productions; pions were unaffected. `--skipNeutrinos` was a second route into the same loss, and left nothing in the log. Clones are now handed only to tracks that are still alive at the end of `PreTrack`, and a warning is emitted if an event ends with clones still buffered
 * Per-step kaon/pion splitting now lowers the weight of the parent kaon or pion as weight is split off into clones. The survival factor was only kept internally before, so a parent that ended by interacting rather than decaying still contributed its own hit at the sensitive plane, and the secondaries of that interaction, at full weight. Only `--multiple-kpi-splits` runs are affected; with `--kaon-pion-splits` alone no weight is split off before the decay
+* Split clones are no longer subject to the transport energy cut. A clone is the parent re-injected at its decay point, so re-applying the cut there discarded clone sets that an unsplit run keeps
+* The first track after a splitting decay now carries the buffered clones to the stack popper and is exempt from the energy and neutrino cuts, so a clone set can no longer be stranded in the buffer
 
 ### Removed
 
