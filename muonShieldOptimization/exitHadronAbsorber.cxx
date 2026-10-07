@@ -4,6 +4,7 @@
 
 #include "exitHadronAbsorber.h"
 
+#include <cstddef>
 #include <iostream>
 
 #include "FairGeoBuilder.h"
@@ -40,6 +41,23 @@ constexpr Double_t cm = 1;         // cm
 constexpr Double_t m = 100 * cm;   //  m
 constexpr Double_t mm = 0.1 * cm;  //  mm
 
+namespace {
+// ShipStack::PushTrack multiplies the weight of a pushed track by that of the
+// track it names as parent, and leaves it alone for a primary. A clone that
+// should end up with weight w is therefore pushed with w divided by this.
+Double_t PushedWeightScale(Int_t parentId) {
+  if (parentId < 0) {
+    return 1.;
+  }
+  auto* stack = dynamic_cast<ShipStack*>(gMC->GetStack());
+  TParticle* parent = stack->GetParticle(parentId);
+  if (!parent || parent->GetWeight() <= 0.) {
+    return 1.;
+  }
+  return parent->GetWeight();
+}
+}  // namespace
+
 exitHadronAbsorber::exitHadronAbsorber(const char* Name, Bool_t Active)
     : Detector(Name, Active, kVETO),
       fOnlyMuons(kFALSE),
@@ -50,7 +68,7 @@ exitHadronAbsorber::exitHadronAbsorber(const char* Name, Bool_t Active)
       fCylindricalPlane(kFALSE),
       fUseCaveCoordinates(kFALSE),
       fNsplits(0),
-      fCurrentSurvivalFactor(1) {}
+      fIntermediateNsplits(2) {}
 
 exitHadronAbsorber::exitHadronAbsorber()
     : Detector("exitHadronAbsorber", kTRUE, kVETO),
@@ -63,13 +81,36 @@ exitHadronAbsorber::exitHadronAbsorber()
       fCylindricalPlane(kFALSE),
       fUseCaveCoordinates(kFALSE),
       fNsplits(0),
-      fCurrentSurvivalFactor(1) {}
+      fIntermediateNsplits(2) {}
+
+void exitHadronAbsorber::SetMaxSplitBuffer(Int_t n) {
+  // Guard the conversion: a negative value would become a huge std::size_t and
+  // silently disable the safety valve.
+  if (n < 1) {
+    LOG(error) << "exitHadronAbsorber: max split buffer must be >= 1, ignoring "
+               << n;
+    return;
+  }
+  fMaxSplitBuffer = static_cast<std::size_t>(n);
+}
+
+void exitHadronAbsorber::SetMaxEventSize(Int_t n) {
+  if (n < 1) {
+    LOG(error) << "exitHadronAbsorber: max event size must be >= 1, ignoring "
+               << n;
+    return;
+  }
+  fMaxEventSize = static_cast<std::size_t>(n);
+}
 
 Bool_t exitHadronAbsorber::ProcessHits(FairVolume* vol) {
   /** This method is called from the MC stepping */
   TString volName = gMC->CurrentVolName();
 
-  if (volName.Contains("exitHadronAbsorber")) {
+  // Only this detector's own plane: with per-step splitting the volumes
+  // registered below the target include other exitHadronAbsorber planes, whose
+  // names share the prefix.
+  if (volName == fPlaneVolName) {
     if (gMC->IsTrackEntering()) {
       fTrackID = gMC->GetStack()->GetCurrentTrackNumber();
       fEventID = gMC->CurrentEvent();
@@ -100,11 +141,13 @@ Bool_t exitHadronAbsorber::ProcessHits(FairVolume* vol) {
     }
   }
 
-  if (fNsplits > 0 && (!fSplitOnce)) {
+  // Both counts have to be positive: PostTrack() only terminates the ledger,
+  // handing what is left of it to the endpoint clones, when fNsplits > 0.
+  // run_fixedTarget.py pairs the two options for the same reason.
+  if (fNsplits > 0 && fIntermediateNsplits > 0 && (!fSplitOnce)) {
     Int_t currentTrackId = gMC->GetStack()->GetCurrentTrackNumber();
 
-    if (fCloneTracks.count(currentTrackId) > 0 ||
-        fContinuationTracks.count(currentTrackId) > 0) {
+    if (fCloneTracks.count(currentTrackId) > 0) {
       return kTRUE;
     }
 
@@ -140,9 +183,76 @@ Bool_t exitHadronAbsorber::ProcessHits(FairVolume* vol) {
           polZ = polVector.Z();
           Int_t trueParentId = part->GetFirstMother();
 
-          Double_t decayBranchWeight = fCurrentSurvivalFactor * P_decay;
-          Double_t cloneWeight = decayBranchWeight / fNsplits;
-          for (int i = 0; i < fNsplits; ++i) {
+          // Reserve room for the fNsplits endpoint clones PostTrack() appends
+          // when the parent finally decays, so the buffer never exceeds
+          // fMaxSplitBuffer. All terms are on the left to keep the unsigned
+          // arithmetic from wrapping.
+          const std::size_t secondaryBufferSize = fSecondaryBuffer.size();
+          const std::size_t event_size = gMC->GetStack()->GetNtrack();
+
+          const std::size_t pending =
+              secondaryBufferSize +
+              static_cast<std::size_t>(fIntermediateNsplits) +
+              static_cast<std::size_t>(fNsplits);
+          const bool bufferFull = pending > fMaxSplitBuffer;
+          const std::size_t projected_size =
+              event_size + pending * kShowerSafetyFactor;
+          const bool eventFull = projected_size > fMaxEventSize;
+          if (bufferFull || eventFull) {
+            // Skip the split for this step instead of truncating the buffer.
+            // The track weight is the ledger: leaving it untouched
+            // means the weight we did not split off is still carried by the
+            // track, and reaches the natural-decay clones in PostTrack() if
+            // the track ends in a decay. The total weight the track
+            // contributes is unchanged, only the statistical boost is reduced.
+            if (bufferFull && !fSplitBufferLimitWarned) {
+              LOG(warning) << "exitHadronAbsorber: intermediate split buffer "
+                              "reached "
+                           << secondaryBufferSize
+                           << " entries; skipping further per-step splitting "
+                              "(reported once per event). Consider lowering "
+                              "--intermediate-kaon-pion-splits or raising "
+                              "--max-split-buffer.";
+              fSplitBufferLimitWarned = kTRUE;
+            }
+            if (eventFull && !fEventSizeLimitWarned) {
+              LOG(warning) << "exitHadronAbsorber: event size reached "
+                           << event_size << " entries, projected size "
+                           << projected_size
+                           << " with the pending split clones; skipping "
+                              "further per-step splitting (reported once per "
+                              "event). Consider lowering "
+                              "--intermediate-kaon-pion-splits or raising "
+                              "--max-event-size.";
+              fEventSizeLimitWarned = kTRUE;
+            }
+            return kTRUE;
+          }
+
+          // The track's own weight is the ledger: it starts at whatever the
+          // track was pushed with and loses the decay branch at every split.
+          // The clones get exactly what the track loses, so track + clones
+          // keep the weight the track started with at every step, whatever
+          // that weight is, even if it differs from that of the track
+          // ShipStack scales the clones by (see PushedWeightScale). Lowering
+          // the track's weight also keeps everything it goes on to do in
+          // step: its hit at the sensitive plane, and the secondaries it
+          // makes if it ends by interacting rather than decaying. Geant4
+          // pushes a secondary onto the VMC stack when that secondary starts
+          // tracking, which is after the parent is done, so the secondaries
+          // pick this up on their own. This relies on
+          // /mcTracking/saveSecondariesInStep staying off (see
+          // gconfig/g4config.in); turning it on pushes secondaries during the
+          // step that makes them. A side effect is that secondaries made
+          // mid-track by processes that do not end it (delta rays, elastic
+          // recoils) get the parent's final weight, not its weight at the
+          // step that made them. That is negligible for the muon rate, but do
+          // not rely on their weights.
+          const Double_t trackWeight = part->GetWeight();
+          const Double_t cloneWeight = trackWeight * P_decay /
+                                       fIntermediateNsplits /
+                                       PushedWeightScale(trueParentId);
+          for (int i = 0; i < fIntermediateNsplits; ++i) {
             TrackBuffer clone;
             clone.pdg = track_pid;
             clone.px = mom.Px();
@@ -160,7 +270,7 @@ Bool_t exitHadronAbsorber::ProcessHits(FairVolume* vol) {
             clone.parentID = trueParentId;
             fSecondaryBuffer.push_back(clone);
           }
-          fCurrentSurvivalFactor *= (1.0 - P_decay);
+          part->SetWeight(trackWeight * (1.0 - P_decay));
         }
       }
     }
@@ -170,6 +280,15 @@ Bool_t exitHadronAbsorber::ProcessHits(FairVolume* vol) {
 
 void exitHadronAbsorber::Initialize() {
   SHiP::Detector<vetoPoint>::Initialize();
+  // PostTrack() buffers fNsplits endpoint clones for every splitting decay in
+  // both modes, without consulting the cap, so a cap below fNsplits breaks the
+  // hard bound. With per-step splitting it also makes the ProcessHits()
+  // reservation permanently unsatisfiable, disabling per-step splitting.
+  if (fNsplits > 0 && static_cast<std::size_t>(fNsplits) > fMaxSplitBuffer) {
+    LOG(fatal) << "exitHadronAbsorber: max split buffer (" << fMaxSplitBuffer
+               << ") must be at least the endpoint split count (" << fNsplits
+               << ")";
+  }
   TSeqCollection* fileList = gROOT->GetListOfFiles();
   fout = dynamic_cast<TFile*>(fileList->At(0));
   // book hists for Genie neutrino momentum distribution
@@ -239,16 +358,33 @@ void exitHadronAbsorber::Initialize() {
 
 void exitHadronAbsorber::BeginEvent() {
   fCloneTracks.clear();
-  fContinuationTracks.clear();
   fDecayedParentIDs.clear();
+  fSplitBufferLimitWarned = kFALSE;
+  fEventSizeLimitWarned = kFALSE;
+}
+
+void exitHadronAbsorber::FinishEvent() {
+  // Checked here rather than at the start of the next event so that the last
+  // event of a run is covered too.
+  if (!fSecondaryBuffer.empty()) {
+    // No track that went on to step followed the last splitting decay of the
+    // event, so its clones could not be handed to the stack popper and their
+    // weight is lost.
+    Double_t lostWeight = 0;
+    for (const auto& trk : fSecondaryBuffer) {
+      lostWeight += trk.weight;
+    }
+    LOG(warning) << "exitHadronAbsorber: discarding " << fSecondaryBuffer.size()
+                 << " buffered split clones (summed weight " << lostWeight
+                 << ") left over at the end of the event";
+  }
   fSecondaryBuffer.clear();
 }
 
 void exitHadronAbsorber::PostTrack() {
   Int_t currentTrackId = gMC->GetStack()->GetCurrentTrackNumber();
 
-  if (fCloneTracks.count(currentTrackId) > 0 ||
-      fContinuationTracks.count(currentTrackId) > 0) {
+  if (fCloneTracks.count(currentTrackId) > 0) {
     return;
   }
 
@@ -258,7 +394,6 @@ void exitHadronAbsorber::PostTrack() {
 
   if (fNsplits > 0 && kaon_or_pion) {
     bool isNaturalDecay = false;
-    bool isParticleDestroyed = gMC->IsTrackStop() || gMC->IsTrackDisappeared();
     TArrayI processes;
     gMC->StepProcesses(processes);
     for (int i = 0; i < processes.GetSize(); i++) {
@@ -283,12 +418,12 @@ void exitHadronAbsorber::PostTrack() {
     polZ = polVector.Z();
     Int_t trueParentId = part->GetFirstMother();
 
-    auto* stack = dynamic_cast<ShipStack*>(gMC->GetStack());
-
-    // All remaining weight used if cloning happens at point where original
-    // particle decays
+    // A track that decays hands all of its remaining weight to the endpoint
+    // clones. With per-step splitting its weight has already been lowered by
+    // every split along the way.
     if (isNaturalDecay) {
-      Double_t finalEndpointWeight = fCurrentSurvivalFactor / fNsplits;
+      Double_t finalEndpointWeight =
+          part->GetWeight() / fNsplits / PushedWeightScale(trueParentId);
       for (int i = 0; i < fNsplits; ++i) {
         TrackBuffer clone;
         clone.pdg = track_pid;
@@ -307,55 +442,35 @@ void exitHadronAbsorber::PostTrack() {
         clone.parentID = trueParentId;
         fSecondaryBuffer.push_back(clone);
       }
-      fCurrentSurvivalFactor = 0.0;
       fDecayedParentIDs.insert(currentTrackId);
     }
 
-    // tracks which do not decay are stopped with stoptrack and added back with
-    // a given weight
-    if (!isNaturalDecay && !isParticleDestroyed && stack) {
-      Int_t ntr;
-      stack->PushTrack(1, trueParentId, track_pid, finalMom.Px(), finalMom.Py(),
-                       finalMom.Pz(), finalMom.E(), finalPos.X(), finalPos.Y(),
-                       finalPos.Z(), finalPos.T(), polX, polY, polZ,
-                       kPNoProcess, ntr, fCurrentSurvivalFactor, 999);
-      fContinuationTracks.insert(ntr);
-    }
-
+    // A track that ends any other way keeps the remaining weight itself, so
+    // there is nothing to hand on. Geant4 never gives us a track that is
+    // still going: G4TrackingManager steps while the status is fAlive or
+    // fStopButAlive, TG4TrackingAction::PostUserTrackingAction skips
+    // PostTrack for fSuspend, and IsTrackStop() covers every status that is
+    // left. StopTrack() stays because it is the one call here that can still
+    // matter for a status other than fStopAndKill.
     gMC->StopTrack();
   }
 }
 
 void exitHadronAbsorber::PreTrack() {
-  bool stackbufferisnotempty = !fSecondaryBuffer.empty();
-  if (stackbufferisnotempty) {
-    auto* stack = dynamic_cast<ShipStack*>(gMC->GetStack());
-    Int_t ntr;
-    for (const auto& trk : fSecondaryBuffer) {
-      stack->PushTrack(1, trk.parentID, trk.pdg, trk.px, trk.py, trk.pz, trk.e,
-                       trk.x, trk.y, trk.z, trk.t, trk.polx, trk.poly, trk.polz,
-                       kPNoProcess, ntr, trk.weight, 999);
-      fCloneTracks.insert(ntr);
-    }
-    // Clear the buffer so we don't duplicate them for the next track
-    fSecondaryBuffer.clear();
-  }
-
-  // Reset relative survival factor to 1.0
-  fCurrentSurvivalFactor = 1.0;
-
+  // Invariant for this whole method: the clone buffer may only be handed to a
+  // carrier that is guaranteed to step. TG4StackPopper converts pushed tracks
+  // into Geant4 secondaries from PostStepDoIt only, and its Reset() at the
+  // start of the next track writes off everything still pending, so a carrier
+  // stopped before its first step swallows the entire set. Every reason to stop
+  // this track is therefore settled before the flush at the end.
   gMC->TrackMomentum(fMom);
   if ((fMom.E() - fMom.M()) < EMax) {
     gMC->StopTrack();
     return;
   }
+
   TParticle* p = gMC->GetStack()->GetCurrentTrack();
   Int_t currentID = gMC->GetStack()->GetCurrentTrackNumber();
-
-  if (fCloneTracks.find(currentID) != fCloneTracks.end()) {
-    //  Force the decay time to 0
-    gMC->ForceDecayTime(0);
-  }
 
   Int_t pdgCode = p->GetPdgCode();
 
@@ -397,8 +512,38 @@ void exitHadronAbsorber::PreTrack() {
                     fPos.Y(), fPos.Z());
     }
     if (fSkipNeutrinos && (idabs == 12 || idabs == 14 || idabs == 16)) {
+      // The statistics above are still recorded, but the track is stopped
+      // before its first step, so it must not receive the clone buffer.
       gMC->StopTrack();
+      return;
     }
+  }
+
+  // A module whose PreTrack() ran before ours may already have stopped the
+  // track: FairMCApplication calls the detectors in registration order, and
+  // run_fixedTarget.py registers the other exitHadronAbsorber planes ahead of
+  // the one that owns the split buffer. A module registered after this one is
+  // not covered: if it stops the track, the clones flushed below are lost.
+  if (!gMC->IsTrackAlive()) {
+    return;
+  }
+
+  if (!fSecondaryBuffer.empty()) {
+    auto* stack = dynamic_cast<ShipStack*>(gMC->GetStack());
+    Int_t ntr;
+    for (const auto& trk : fSecondaryBuffer) {
+      stack->PushTrack(1, trk.parentID, trk.pdg, trk.px, trk.py, trk.pz, trk.e,
+                       trk.x, trk.y, trk.z, trk.t, trk.polx, trk.poly, trk.polz,
+                       kPNoProcess, ntr, trk.weight, 999);
+      fCloneTracks.insert(ntr);
+    }
+    // Clear the buffer so we don't duplicate them for the next track
+    fSecondaryBuffer.clear();
+  }
+
+  if (fCloneTracks.find(currentID) != fCloneTracks.end()) {
+    //  Force the decay time to 0
+    gMC->ForceDecayTime(0);
   }
 }
 
@@ -533,6 +678,7 @@ void exitHadronAbsorber::ConstructGeometry() {
     sensPlane->SetLineColor(kBlue - 10);
     nav->GetCurrentNode()->GetVolume()->AddNode(
         sensPlane, 1, new TGeoTranslation(xLocPlane, yLocPlane, zLocPlane));
+    fPlaneVolName = sensPlane->GetName();
     AddSensitiveVolume(sensPlane);
   } else {  // add cylindrical sensPlane
     TGeoVolume* sensPlaneCyl =
@@ -545,9 +691,11 @@ void exitHadronAbsorber::ConstructGeometry() {
     nav->cd("/target_vacuum_box_1/TargetArea_1/HeVolume_1");
     nav->GetCurrentNode()->GetVolume()->AddNode(sensPlaneCyl, 1,
                                                 new TGeoTranslation(0, 0, 0));
+    fPlaneVolName = sensPlaneCyl->GetName();
     AddSensitiveVolume(sensPlaneCyl);
   }
-  if ((fNsplits > 0) && (!fSplitOnce)) {
+  // Keep in sync with the per-step splitting guard in ProcessHits().
+  if ((fNsplits > 0) && (fIntermediateNsplits > 0) && (!fSplitOnce)) {
     TString parentVolumeName = "/target_vacuum_box_1";
     nav->cd(parentVolumeName.Data());
     TGeoVolume* vol = nav->GetCurrentNode()->GetVolume();

@@ -5,6 +5,7 @@
 #ifndef MUONSHIELDOPTIMIZATION_EXITHADRONABSORBER_H_
 #define MUONSHIELDOPTIMIZATION_EXITHADRONABSORBER_H_
 
+#include <cstddef>
 #include <set>
 #include <utility>
 
@@ -29,6 +30,13 @@ class exitHadronAbsorber : public SHiP::Detector<vetoPoint> {
   exitHadronAbsorber(const char* Name, Bool_t Active);
   exitHadronAbsorber();
 
+  // Number of stack entries each pending split clone is assumed to add to the
+  // event once it has decayed and its products have showered. This is an
+  // empirical, conservative estimate from production runs with per-step
+  // splitting. It projects the event size that --max-event-size is checked
+  // against, and run_fixedTarget.py uses it to validate that option.
+  static constexpr std::size_t kShowerSafetyFactor = 500;
+
   void Initialize() override;
 
   Bool_t ProcessHits(FairVolume* v = nullptr) override;
@@ -41,9 +49,12 @@ class exitHadronAbsorber : public SHiP::Detector<vetoPoint> {
   void PreTrack() override;
   void PostTrack() override;
   void BeginEvent() override;
-  // void FinishEvent();
+  void FinishEvent() override;
 
   void SetNSplits(Int_t n) { fNsplits = n; }
+  void SetIntermediateNSplits(Int_t n) { fIntermediateNsplits = n; }
+  void SetMaxSplitBuffer(Int_t n);
+  void SetMaxEventSize(Int_t n);
   void SetSplitMultipleTimes() { fSplitOnce = kFALSE; }
 
   inline void SetEnergyCut(Float_t emax) { EMax = emax; }
@@ -60,6 +71,7 @@ class exitHadronAbsorber : public SHiP::Detector<vetoPoint> {
   Bool_t fOnlyMuons;         //! flag if only muons should be stored
   Bool_t fSkipNeutrinos;     //! flag if neutrinos should be ignored
   TString fVetoName;         // name to save veto collection
+  TString fPlaneVolName;     //! name of the sensitive plane volume
   Double_t fzPos;            //!  zPos, optional
   Bool_t withNtuple;         //! special option for Dark Photon physics studies
   TNtuple* fNtuple;          //!
@@ -68,15 +80,32 @@ class exitHadronAbsorber : public SHiP::Detector<vetoPoint> {
   Bool_t fUseCaveCoordinates = kFALSE;  //! set position from cave
 
   int32_t fNsplits;
-  Double_t fCurrentSurvivalFactor;  // survival factor at every step, if we
-                                    // choose to split at every step
+  // intermediate splits to use at each step before the particle decays
+  int32_t fIntermediateNsplits;
+  // Upper bound on the clone buffer, in both splitting modes. Per-step
+  // splitting is the pathological case: the buffer grows by
+  // fIntermediateNsplits on every qualifying step and is only drained in
+  // PreTrack(), so a bad split count could make it grow without bound within a
+  // single track. ~25k TrackBuffer records is about 2.5 MB, far above what any
+  // sane configuration reaches. Set via --max-split-buffer.
+  // This is a hard bound: ProcessHits() stops accepting per-step clones early
+  // enough to leave room for the fNsplits endpoint clones PostTrack() appends,
+  // and Initialize() rejects a cap that fNsplits alone would exceed.
+  std::size_t fMaxSplitBuffer = 25'000;
+  // Upper bound on the projected event size: the stack size plus
+  // kShowerSafetyFactor entries for every pending clone. With the defaults this
+  // is the cap that stops per-step splitting, at about 10k pending clones.
+  // Set via --max-event-size.
+  std::size_t fMaxEventSize = 5'000'000;
+  // latches so each cap is reported at most once per event
+  Bool_t fSplitBufferLimitWarned = kFALSE;  //!
+  Bool_t fEventSizeLimitWarned = kFALSE;    //!
   Bool_t fSplitOnce =
       kTRUE;  // determine if we want to split once (when the particle decays)
               // or at every step (taking decay probabilities into account)
 
   std::vector<TrackBuffer> fSecondaryBuffer;
   std::set<Int_t> fCloneTracks;
-  std::set<Int_t> fContinuationTracks;
   std::set<Int_t> fDecayedParentIDs;
 
   TFile* fout;               //!

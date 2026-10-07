@@ -97,10 +97,38 @@ ap.add_argument(
     "--kaon-pion-splits",
     type=int,
     default=0,
-    help="splitting factor for kaons and pions, in order to boost the number of muons stemming from their decays",
+    help="splitting factor for kaons and pions when they decay, in order to boost the number of muons stemming from their decays",
 )
 ap.add_argument(
-    "--multiple-kpi-splits", action="store_true", help="split kaons and pions multiple times along the track path"
+    "--intermediate-kaon-pion-splits",
+    type=int,
+    default=2,
+    help="EXPERTS ONLY: intermediate splitting factor for kaons and pions for each GEANT4 step before they decay, "
+    "in order to boost the number of muons stemming from forced decays. "
+    "EXPERTS ONLY: risk of very large memory usage if the number is set without proper testing",
+)
+ap.add_argument(
+    "--max-split-buffer",
+    type=int,
+    default=25000,
+    help="EXPERTS ONLY: maximum number of split clones buffered per track before further per-step splitting is "
+    "skipped. Memory safety valve for --multiple-kpi-splits; lowering it reduces the statistical boost but "
+    "conserves weight. With the default --max-event-size, that cap is reached first (at about 10k clones)",
+)
+ap.add_argument(
+    "--max-event-size",
+    type=int,
+    default=5_000_000,
+    help="EXPERTS ONLY: cap on the projected number of particles in the event, counting "
+    "exitHadronAbsorber::kShowerSafetyFactor (500) for each pending split clone, beyond which further per-step "
+    "splitting is skipped. Memory safety valve for "
+    "--multiple-kpi-splits; lowering it reduces the statistical boost but conserves weight",
+)
+
+ap.add_argument(
+    "--multiple-kpi-splits",
+    action="store_true",
+    help="split kaons and pions multiple times along the track path",
 )
 
 ap.add_argument("-C", "--charm", action=argparse.BooleanOptionalAction, default=False, help="generate charm decays")
@@ -235,11 +263,34 @@ if args.debug:
 
 if args.kaon_pion_splits < 0:
     ap.error("--kaon-pion-splits must be >= 0")
-if args.multiple_kpi_splits and args.kaon_pion_splits == 0:
-    ap.error("--multiple-kpi-splits requires --kaon-pion-splits > 0")
 if args.pythia8_tune != "default" and (args.charm or args.beauty or args.G4only):
     ap.error("--pythia8-tune only affects the Pythia8 primary interaction, which --charm/--beauty/--G4only do not run")
+if args.multiple_kpi_splits and (args.kaon_pion_splits < 1 or args.intermediate_kaon_pion_splits < 1):
+    ap.error("--multiple-kpi-splits requires --kaon-pion-splits and --intermediate-kaon-pion-splits to be positive")
+if args.max_split_buffer < 1:
+    ap.error("--max-split-buffer must be >= 1")
+if args.max_event_size < 1 or args.max_event_size > 2_147_483_647:
+    ap.error("--max-event-size must be >= 1 and <= 2_147_483_647")
 
+if args.max_split_buffer < args.kaon_pion_splits:
+    ap.error(
+        "--max-split-buffer must be >= --kaon-pion-splits: the clones buffered when the parent "
+        "decays have to fit under the cap"
+    )
+if args.multiple_kpi_splits:
+    # A per-step split has to reserve room for its own clones and for the endpoint clones of the
+    # same track under both caps (see exitHadronAbsorber::ProcessHits); if even the first one
+    # cannot, per-step splitting would silently never happen.
+    clones_per_split = args.kaon_pion_splits + args.intermediate_kaon_pion_splits
+    if args.max_split_buffer < clones_per_split:
+        ap.error("--max-split-buffer must be >= --kaon-pion-splits + --intermediate-kaon-pion-splits")
+    shower_safety_factor = ROOT.exitHadronAbsorber.kShowerSafetyFactor
+    if args.max_event_size < shower_safety_factor * clones_per_split:
+        ap.error(
+            f"--max-event-size must be >= {shower_safety_factor} * "
+            "(--kaon-pion-splits + --intermediate-kaon-pion-splits), "
+            "the projected event size of a single per-step split"
+        )
 
 if args.G4only:
     args.charm = False
@@ -405,9 +456,12 @@ if args.AddMuonShield or args.AddHadronAbsorberOnly:
 
 
 sensPlaneHA = ROOT.exitHadronAbsorber()
-sensPlaneHA.SetNSplits(args.kaon_pion_splits)  # type: ignore[missing-attribute]
+sensPlaneHA.SetNSplits(args.kaon_pion_splits)
+sensPlaneHA.SetMaxSplitBuffer(args.max_split_buffer)
+sensPlaneHA.SetMaxEventSize(args.max_event_size)
 if args.multiple_kpi_splits:
-    sensPlaneHA.SetSplitMultipleTimes()  # type: ignore[missing-attribute]
+    sensPlaneHA.SetSplitMultipleTimes()
+    sensPlaneHA.SetIntermediateNSplits(args.intermediate_kaon_pion_splits)
 sensPlaneHA.SetEnergyCut(args.ecut * u.GeV)
 sensPlaneHA.SetVetoPointName("PlaneHA")
 
@@ -434,12 +488,17 @@ if args.FourDP:  # in case a ntuple should be filled with pi0,etas,omega
     if sensPlaneT is not None:
         sensPlaneT.SetOpt4DP()
 
-run.AddModule(sensPlaneHA)
-ROOT.SetOwnership(sensPlaneHA, False)  # C++ FairRunSim takes ownership
-
-if args.AddCylindricalSensPlane:
+# Register every other exitHadronAbsorber plane before sensPlaneHA, which owns the kaon/pion split buffer:
+# FairMCApplication calls PreTrack() in registration order, and sensPlaneHA hands its buffered clones only
+# to a track that no earlier plane has stopped. A plane registered after it could stop the carrier and lose
+# the clones. Registering first also keeps the plane's volume its own: the first module to register a volume
+# owns it, and sensPlaneHA registers everything below the target for per-step splitting.
+if sensPlaneT is not None:
     run.AddModule(sensPlaneT)
     ROOT.SetOwnership(sensPlaneT, False)  # C++ FairRunSim takes ownership
+
+run.AddModule(sensPlaneHA)
+ROOT.SetOwnership(sensPlaneHA, False)  # C++ FairRunSim takes ownership
 
 # -----Create PrimaryGenerator--------------------------------------
 primGen = ROOT.FairPrimaryGenerator()
