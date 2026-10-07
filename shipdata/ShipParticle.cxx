@@ -124,7 +124,8 @@ void ShipParticle::GetVertex(TVector3& vertex) const {
 
 // -----   Public method GetMass   -----------------------------------------
 Double_t ShipParticle::GetMass() const {
-  return TMath::Sqrt(fE * fE - fPx * fPx - fPy * fPy - fPz * fPz);
+  // TLorentzVector::M() returns -sqrt(-m^2) when rounding makes m^2 < 0
+  return TLorentzVector(fPx, fPy, fPz, fE).M();
 }
 // -------------------------------------------------------------------------
 
