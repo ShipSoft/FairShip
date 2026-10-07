@@ -8,5 +8,5 @@ MTC:
   scintThick: 1.5 # Scintillator layer thickness (cm)
   scint_cell_size: 5 # Scintillator tile cell size (cm)
   nLayers: 45 # Number of sandwich layers
-  zPosition: auto # Default: auto -- center of the last magnet or global z position in cm
+  zPosition: auto # Default: auto -- centre of the second-to-last muon-shield magnet (M6 in the 2026 layout), or global z position in cm
   fieldY: -1.7 # Magnetic field strength (tesla)

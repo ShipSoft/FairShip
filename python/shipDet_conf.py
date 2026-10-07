@@ -127,11 +127,13 @@ def configure_snd_mtc(yaml_file: str, ship_geo) -> None:
     ship_geo.mtc_geo = AttrDict(config["MTC"])
     # Initialize detector
     if ship_geo.mtc_geo.zPosition == "auto":
-        # Get the the center of the *last* magnet
+        # Centre of the second-to-last magnet (M6 in the 2026 layout), see configure_snd_siliconTarget
         mtc_total_length = (
             ship_geo.mtc_geo.ironThick + ship_geo.mtc_geo.sciFiThick + ship_geo.mtc_geo.scintThick
         ) * ship_geo.mtc_geo.nLayers
-        ship_geo.mtc_geo.zPosition = ship_geo.muShield.Entrance[-1] + mtc_total_length / 2
+        ship_geo.mtc_geo.zPosition = ship_geo.muShield.Entrance[-2] + ship_geo.muShield.half_length[-2]
+        if mtc_total_length > 2 * ship_geo.muShield.half_length[-2]:
+            print("Warning: MTC is longer than the magnet it is placed in")
     mtc = ROOT.MTCDetector("MTC", ROOT.kTRUE)
     mtc.SetMTCParameters(
         ship_geo.mtc_geo.width,
@@ -156,12 +158,14 @@ def configure_snd_siliconTarget(yaml_file: str, ship_geo) -> None:
     ship_geo.SiliconTarget_geo = AttrDict(config["SiliconTarget"])
     # Initialize detector
     if ship_geo.SiliconTarget_geo.zPosition == "auto":
-        # auto: centre the target so its last layer ends one magnet Z-gap
-        # upstream of the last muon-shield magnet's entrance (where the MTC
-        # starts).
+        # auto: the last layer ends at the downstream face of the third-to-last
+        # magnet (S5 in the 2026 layout), one magnet Z-gap upstream of the
+        # magnet that holds the MTC. This follows the integration layout
+        # 2026-0.1, where the scattering detector occupies the end of S5 and
+        # the whole of M6.
         SiliconTarget_total_length = ship_geo.SiliconTarget_geo.targetSpacing * ship_geo.SiliconTarget_geo.nLayers
         ship_geo.SiliconTarget_geo.zPosition = (
-            ship_geo.muShield.Entrance[-1] - ship_geo.muShield.Zgap[-1] - SiliconTarget_total_length / 2
+            ship_geo.muShield.Entrance[-2] - ship_geo.muShield.Zgap[-2] - SiliconTarget_total_length / 2
         )
         print("SiliconTarget zPosition set to ", ship_geo.SiliconTarget_geo.zPosition)
     SiliconTarget = ROOT.SiliconTarget("SiliconTarget", ROOT.kTRUE)
@@ -288,7 +292,7 @@ def configure(run, ship_geo):
     # ------------------------------------------------------------------------
 
     # -----Create geometry----------------------------------------------
-    cave = ROOT.ShipCave(ship_geo.muShield.z)
+    cave = ROOT.ShipCave(ship_geo.muShield.z, ship_geo.cave.z_transition, ship_geo.z)
     cave.SetGeometryFileName("caveWithAir.geo")
     detectorList.append(cave)
 
@@ -342,10 +346,15 @@ def configure(run, ship_geo):
     if ship_geo.SND:
         # If any SND design is 2 (MTC), set SNDSpace for MuonShield
         if 2 in getattr(ship_geo, "SND_design", []):
+            # The SND sits in the third-to-last and second-to-last magnets
+            # (S5 and M6 in the 2026 layout), see configure_snd_mtc.
+            n_magnets = ship_geo.muShield.nMagnets
             MuonShield.SetSNDSpace(
                 hole=True,
                 hole_dx=(ship_geo.mtc_geo.width + 5.0 * u.cm) / 2.0,
                 hole_dy=(ship_geo.mtc_geo.height + 5.0 * u.cm) / 2.0,
+                first_magnet=n_magnets - 3,
+                last_magnet=n_magnets - 2,
             )
     detectorList.append(MuonShield)
 

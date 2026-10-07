@@ -10,7 +10,8 @@
 
 class ShipCave : public FairModule {
  public:
-  explicit ShipCave(Double_t z);
+  ShipCave(Double_t z_end_of_proximity_shielding, Double_t z_transition,
+           Double_t z_spectrometer);
   explicit ShipCave(const char* name, const char* Title = "Exp Cave");
   ShipCave();
   ~ShipCave() override;
@@ -18,6 +19,8 @@ class ShipCave : public FairModule {
 
  private:
   Double_t z_end_of_proximity_shielding;
+  Double_t fZTransition;    // TCC8/ECN3 step
+  Double_t fZSpectrometer;  // mid-plane of the spectrometer magnet (yoke pit)
   Double_t world[3];
 
  public:
