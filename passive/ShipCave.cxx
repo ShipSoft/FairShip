@@ -46,41 +46,41 @@ void ShipCave::ConstructGeometry() {
   Double_t Proximity_shield_half_length = 55.36 / 2 * cm;
   Double_t zEndOfTarget =
       z_end_of_proximity_shielding - 2 * Proximity_shield_half_length;
-  Double_t z_transition = 20.52 * m;
+  Double_t z_transition = 21.37 * m;
   [[maybe_unused]] auto* rock = new TGeoBBox(
       "rock", 20 * m, 20 * m, TCC8_length / 2. + ECN3_length / 2. + 5 * m);
   [[maybe_unused]] auto* muon_shield_cavern =
-      new TGeoBBox("muon_shield_cavern", 4.995 * m, 3.75 * m, TCC8_length / 2.);
+      new TGeoBBox("muon_shield_cavern", 4.672 * m, 3.26 * m, TCC8_length / 2.);
   auto* TCC8_shift =
-      new TGeoTranslation("TCC8_shift", 1.435 * m, 2.05 * m, -TCC8_length / 2.);
+      new TGeoTranslation("TCC8_shift", 1.7049 * m, 1.8 * m, -TCC8_length / 2.);
   TCC8_shift->RegisterYourself();
 
   // Create ECN3 cavern around vessel
   [[maybe_unused]] auto* experiment_rock =
       new TGeoBBox("experiment_rock", 20 * m, 20 * m, ECN3_length / 2.);
   [[maybe_unused]] auto* stair_step =
-      new TGeoBBox("stair_step", 7.995 * m, 5.6 * m, stair_step_length / 2.);
+      new TGeoBBox("stair_step", 5.0 * m, 1.660 * m, stair_step_length / 2.);
   auto* stair_step_shift = new TGeoTranslation(
-      "stair_step_shift", 3.435 * m, 3.04 * m, stair_step_length / 2.);
+      "stair_step_shift", 1.683 * m, 1.7049 * m, stair_step_length / 2.);
   stair_step_shift->RegisterYourself();
   [[maybe_unused]] auto* experiment_cavern =
-      new TGeoBBox("experiment_cavern", 7.995 * m, 6 * m,
+      new TGeoBBox("experiment_cavern", 9.357 * m, 7.66 * m,
                    ECN3_length / 2. - stair_step_length / 2.);
   auto* ECN3_shift =
-      new TGeoTranslation("ECN3_shift", 3.435 * m, 2.64 * m,
+      new TGeoTranslation("ECN3_shift", 3.430 * m, 2.4025 * m,
                           ECN3_length / 2. + stair_step_length / 2.);
   ECN3_shift->RegisterYourself();
 
   [[maybe_unused]] auto* yoke_pit =
       new TGeoBBox("yoke_pit", 4.2 * m, 0.5 * m, 4.5 * m);
-  auto* yoke_pit_shift = new TGeoTranslation("yoke_pit_shift", 0 * m, -3.86 * m,
-                                             89.57 * m - z_transition);
+  auto* yoke_pit_shift = new TGeoTranslation("yoke_pit_shift", 0 * m, -3.317 * m,
+                                             89.72 * m - z_transition);
   yoke_pit_shift->RegisterYourself();
 
   [[maybe_unused]] auto* target_pit =
       new TGeoBBox("target_pit", 2 * m, 0.5 * m, 2 * m);
   auto* target_pit_shift = new TGeoTranslation(
-      "target_pit_shift", 0 * m, -2.2 * m, zEndOfTarget - 2 * m - z_transition);
+      "target_pit_shift", 0 * m, -2.4025 * m, zEndOfTarget - 3.5475 * m - z_transition);
   target_pit_shift->RegisterYourself();
 
   auto* compRock = new TGeoCompositeShape("compRock",

@@ -21,9 +21,9 @@ shield_db = {
         "hybrid": False,
         "WithConstField": False,
         "params": [
-            [0.0, 115.0, 40.0, 40.0, 119.0, 119.0, 61.5, 61.5, 1.5375, 1.5375, 50.0, 50.0, 0.0, 0.0, 2.05],
+            [10, 115.0, 40.0, 40.0, 119.0, 119.0, 61.5, 61.5, 1.5375, 1.5375, 50.0, 50.0, 0.0, 0.0, 2.05],
             [15, 150, 62, 62, 11, 11, 12, 12, 1, 1.0, 69, 69, 0, 0, 1.87],
-            [15, 225, 70, 70, 12, 12, 9, 9, 1, 1.0, 77, 77, 0, 0, 1.865],
+            [15+15, 225, 70, 70, 12, 12, 9, 9, 1, 1.0, 77, 77, 0, 0, 1.865],
             [16, 225, 64, 64, 14, 14, 8, 8, 1.3, 1.3, 71, 71, 0, 0, 1.92],
             [15, 225, 42, 42, 13, 13, 8, 8, 2.6, 2.6, 47, 47, 0, 0, 1.89],
             [16, 131, 40, 40, 30, 30, 0, 0, 2.25, 2.25, 22, 22, 0, 0, 0],
@@ -302,7 +302,7 @@ def create_config(
 
     # make z coordinates for the decay volume and tracking stations relative to T4z
     # eventually, the only parameter which needs to be changed when the active shielding length changes.
-    c.z = 89.57 * u.m  # absolute position of spectrometer magnet
+    c.z = 89.72 * u.m  # absolute position of spectrometer magnet
     c.decayVolume.z = c.z - 31.450 * u.m  # Relative position of decay vessel centre to spectrometer magnet
     c.decayVolume.z0 = c.decayVolume.z - c.decayVolume.length / 2.0
     veto_yaml = os.path.expandvars(f"$FAIRSHIP/geometry/veto_config_{DecayVolumeMedium}.yaml")
@@ -366,14 +366,14 @@ def create_config(
     c.TimeDet.DX = 275 * u.cm
     c.TimeDet.DY = 325 * u.cm
     c.TimeDet.z = (
-        37.800 * u.m - c.TimeDet.dzBarRow * 3 / 2 + c.decayVolume.z
+        37.870 * u.m - c.TimeDet.dzBarRow * 3 / 2 + c.decayVolume.z
     )  # Relative position of first layer of timing detector to decay vessel centre
 
     c.HcalOption = -1
     c.EcalOption = 2
 
     c.SplitCal = AttrDict()
-    c.SplitCal.ZStart = 38.450 * u.m + c.decayVolume.z  # Relative start z of split cal to decay vessel centre
+    c.SplitCal.ZStart = 38.900 * u.m + c.decayVolume.z  # Relative start z of split cal to decay vessel centre
     c.SplitCal.XMax = 4 * u.m / 2  # half length
     c.SplitCal.YMax = 6 * u.m / 2  # half length
     c.SplitCal.Empty = 0 * u.cm
