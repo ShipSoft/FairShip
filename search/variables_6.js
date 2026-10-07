@@ -391,7 +391,7 @@ var searchData=
   ['fx_388',['fx',['../classSHiP_1_1TTreeGenerator.html#ab80c4aecbf7a57a8bde6a2a85f271f71',1,'SHiP::TTreeGenerator::fX'],['../classSiliconTargetHit.html#a45abd01a7f87f822f26672cf19c516d3',1,'SiliconTargetHit::fX'],['../classUpstreamTaggerHit.html#a9263a866e88731fbd12a0c9e6cbc62e7',1,'UpstreamTaggerHit::fX']]],
   ['fxbar_389',['fxBar',['../classTimeDet.html#a18b89f8acb9a3b3351394c1087344a45',1,'TimeDet']]],
   ['fxcenter_390',['fxCenter',['../classTimeDet.html#a290fade10c890516f07974217fc647ec',1,'TimeDet']]],
-  ['fxmax_391',['fxmax',['../classShipConstField.html#acdc11b6fa7bc34db47b0e7293460a5ba',1,'ShipConstField::fXmax'],['../classShipFieldPar.html#aa04ed74fbf5893614ede3dae70ccbb32',1,'ShipFieldPar::fXmax'],['../classsplitcal.html#ab60249cb3e04631eac6495be02224fc6',1,'splitcal::fXMax']]],
+  ['fxmax_391',['fxmax',['../classShipFieldPar.html#aa04ed74fbf5893614ede3dae70ccbb32',1,'ShipFieldPar::fXmax'],['../classsplitcal.html#ab60249cb3e04631eac6495be02224fc6',1,'splitcal::fXMax'],['../classShipConstField.html#acdc11b6fa7bc34db47b0e7293460a5ba',1,'ShipConstField::fXmax']]],
   ['fxmin_392',['fxmin',['../classShipConstField.html#a37606b850bde316a64bd2a697bf946d6',1,'ShipConstField::fXmin'],['../classShipFieldPar.html#ae7c1dafb7d4bf5a148638731590e92ea',1,'ShipFieldPar::fXmin']]],
   ['fxnu11_393',['fXnu11',['../classGenieGenerator.html#a522d2e55843f6e9e04665f743c25d2f7',1,'GenieGenerator']]],
   ['fxov_394',['fxOv',['../classTimeDet.html#af87399a7b5bcd1abc6cad4d78beb6c38',1,'TimeDet']]],

@@ -1,5 +1,7 @@
 var NAVTREEINDEX32 =
 {
+"test__heavyFlavourScaling_8py.html#a4372f9cb80711448bf6749b37d1e1ed4":[8,0,16,4,10],
+"test__heavyFlavourScaling_8py.html#a46d49c7e2a33ed03e216b194c1021b3d":[8,0,16,4,6],
 "test__heavyFlavourScaling_8py.html#a77d40506bdae288579639111a73ead6d":[8,0,16,4,9],
 "test__heavyFlavourScaling_8py.html#a7c9886ecdbadab676c0375ca22712ae8":[8,0,16,4,1],
 "test__heavyFlavourScaling_8py.html#a87f40f09bed788baab055e15389894a4":[8,0,16,4,13],

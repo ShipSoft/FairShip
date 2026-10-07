@@ -1,5 +1,7 @@
 var NAVTREEINDEX27 =
 {
+"namespaceskim__muonback__smoke.html#acd265e66314c1a63a4f8d835f99a00f0":[6,0,99,0],
+"namespacesplitcalDetector.html":[6,0,100],
 "namespacestrawtubesDetector.html":[6,0,101],
 "namespacestudy__GammaConv.html":[6,0,102],
 "namespacestudy__GammaConv.html#a07854bb8bfaae44603d03642d1e042ad":[6,0,102,37],
@@ -247,7 +249,5 @@ var NAVTREEINDEX27 =
 "pythia8__conf__utils_8py.html#af4c096d7b903bbbb76b9828e32e521a0":[8,0,10,23,7],
 "pythia8__conf__utils_8py.html#af6878ec49546de3b11ddc0c54ce1fcce":[8,0,10,23,5],
 "pythia8__conf__utils_8py_source.html":[8,0,10,23],
-"pythia8darkphoton__conf_8py.html":[8,0,10,24],
-"pythia8darkphoton__conf_8py.html#a2d210c1850611efa3f2d94cfed4a549d":[8,0,10,24,0],
-"pythia8darkphoton__conf_8py.html#a30ec2a38b1c060549969ba2c6703c113":[8,0,10,24,6]
+"pythia8darkphoton__conf_8py.html":[8,0,10,24]
 };

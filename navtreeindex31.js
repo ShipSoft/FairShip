@@ -1,5 +1,7 @@
 var NAVTREEINDEX31 =
 {
+"splitcal_2LinkDef_8h_source.html":[8,0,14,0],
+"splitcal_8cxx.html":[8,0,14,1],
 "splitcal_8cxx_source.html":[8,0,14,1],
 "splitcal_8h.html":[8,0,14,2],
 "splitcal_8h_source.html":[8,0,14,2],
@@ -247,7 +249,5 @@ var NAVTREEINDEX31 =
 "test__heavyFlavourScaling_8py.html#a09a9741db8e8543a430dcdc1fc2697f4":[8,0,16,4,15],
 "test__heavyFlavourScaling_8py.html#a1f5951fe107152708e93822485ac2e2e":[8,0,16,4,18],
 "test__heavyFlavourScaling_8py.html#a3509c74ee4b532ba0ab0a332f9d563f7":[8,0,16,4,8],
-"test__heavyFlavourScaling_8py.html#a3a1d343bed1364e5a0ea96d7074279e0":[8,0,16,4,17],
-"test__heavyFlavourScaling_8py.html#a4372f9cb80711448bf6749b37d1e1ed4":[8,0,16,4,10],
-"test__heavyFlavourScaling_8py.html#a46d49c7e2a33ed03e216b194c1021b3d":[8,0,16,4,6]
+"test__heavyFlavourScaling_8py.html#a3a1d343bed1364e5a0ea96d7074279e0":[8,0,16,4,17]
 };

@@ -1,5 +1,7 @@
 var NAVTREEINDEX21 =
 {
+"namespaceexperimental_1_1compare__histograms.html#aeb831e15a289966f95345e6a202e7c05":[6,0,31,2,2],
+"namespaceexperimental_1_1compare__histograms.html#af21aa23c8a8ae248277f3dedbd6918b2":[6,0,31,2,6],
 "namespaceexperimental_1_1compare__histograms.html#af6dbf09acea43aceea58147dcfbeece0":[6,0,31,2,1],
 "namespaceexperimental_1_1eminem__importer.html":[6,0,31,3],
 "namespaceexperimental_1_1eminem__importer.html#a00e0523bb0f7a736351a6aae59ecd397":[6,0,31,3,4],
@@ -247,7 +249,5 @@ var NAVTREEINDEX21 =
 "namespacehepunit.html#ac05e0c73ef63320e4b4ed9413941a362":[6,0,43,0],
 "namespacehepunit.html#ac07f845c832b3d6b8678fc48a4c8ed7c":[6,0,43,96],
 "namespacehepunit.html#ac1f4c6dab9b2a5e965a31a013ad06ea0":[6,0,43,37],
-"namespacehepunit.html#ac3326f1c0779c8e049b8a5f7705b4196":[6,0,43,120],
-"namespacehepunit.html#ac6ef5132b19473fded6b88f37267bd35":[6,0,43,126],
-"namespacehepunit.html#ac71c8869e7ecdce035ca7a64c86d5164":[6,0,43,70]
+"namespacehepunit.html#ac3326f1c0779c8e049b8a5f7705b4196":[6,0,43,120]
 };

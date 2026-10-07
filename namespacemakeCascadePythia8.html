@@ -396,7 +396,7 @@ forced production has somewhat different x_F and pT^2 distributions. The normali
 <div class="line"><span class="lineno">  406</span>        <span class="stringliteral">&quot;pythia6&quot;</span>,</div>
 <div class="line"><span class="lineno">  407</span>        <span class="stringliteral">&quot;pythia8 heavy flavour&quot;</span>,</div>
 <div class="line"><span class="lineno">  408</span>        <span class="stringliteral">&quot;id:px:py:pz:E:M:mid:mpx:mpy:mpz:mE:mM:k:a0:a1:a2:a3:a4:a5:a6:a7:a8:a9:a10:a11:a12:a13:a14:a15:\</span></div>
-<div class="line"><span class="lineno">  409</span><span class="stringliteral">s0:s1:s2:s3:s4:s5:s6:s7:s8:s9:s10:s11:s12:s13:s14:s15&quot;</span>,</div>
+<div class="line"><span class="lineno">  409</span><span class="stringliteral">s0:s1:s2:s3:s4:s5:s6:s7:s8:s9:s10:s11:s12:s13:s14:s15:n_hadrons&quot;</span>,</div>
 <div class="line"><span class="lineno">  410</span>    )</div>
 <div class="line"><span class="lineno">  411</span>    <span class="comment"># number of signal particles per cascade depth, used by FixedTargetGenerator for the normalisation</span></div>
 <div class="line"><span class="lineno">  412</span>    depth_hist = ROOT.TH1F(<span class="stringliteral">&quot;2&quot;</span>, <span class="stringliteral">&quot;nr signal per cascade depth&quot;</span>, 50, 0.5, 50.5)</div>
@@ -436,42 +436,44 @@ forced production has somewhat different x_F and pT^2 distributions. The normali
 <div class="line"><span class="lineno">  446</span>                    row = [hadron_id, hadron.Px(), hadron.Py(), hadron.Pz(), hadron.E(), hadron_mass]</div>
 <div class="line"><span class="lineno">  447</span>                    row += [beam_id, px, py, pz, beam.E(), beam_mass, depth]</div>
 <div class="line"><span class="lineno">  448</span>                    row += ancestors[:16] + processes[:n_processes] + [code] + (15 - n_processes) * [0]</div>
-<div class="line"><span class="lineno">  449</span>                    ntuple.Fill(array(<span class="stringliteral">&quot;f&quot;</span>, row))</div>
-<div class="line"><span class="lineno">  450</span>                    depth_hist.Fill(depth)</div>
-<div class="line"><span class="lineno">  451</span>            <span class="comment"># minimum-bias event to add new cascade particles to the stack</span></div>
-<div class="line"><span class="lineno">  452</span>            i_nucleon = 0 <span class="keywordflow">if</span> random.random() &lt; proton_fraction <span class="keywordflow">else</span> 1</div>
-<div class="line"><span class="lineno">  453</span>            pythia = mbias_pythia[i_nucleon]</div>
-<div class="line"><span class="lineno">  454</span>            pythia.setBeamIDs(beam_id, TARGET_NUCLEONS[i_nucleon])</div>
-<div class="line"><span class="lineno">  455</span>            pythia.setKinematics(px, py, pz, 0.0, 0.0, 0.0)</div>
-<div class="line"><span class="lineno">  456</span>            next_event(pythia)</div>
-<div class="line"><span class="lineno">  457</span>            code = pythia.infoPython().code()</div>
-<div class="line"><span class="lineno">  458</span>            <span class="keywordflow">if</span> code == 102:</div>
-<div class="line"><span class="lineno">  459</span>                <span class="comment"># Elastic scattering does not start a new cascade generation: the scattered hadron keeps</span></div>
-<div class="line"><span class="lineno">  460</span>                <span class="comment"># its depth. Depth 1 is then everything the beam proton produces up to and including its</span></div>
-<div class="line"><span class="lineno">  461</span>                <span class="comment"># first inelastic interaction, which is what chicc/chibb in run_fixedTarget.py normalise.</span></div>
-<div class="line"><span class="lineno">  462</span>                final = [pythia.event[i] <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(pythia.event.size()) <span class="keywordflow">if</span> pythia.event[i].isFinal()]</div>
-<div class="line"><span class="lineno">  463</span>                leading = max(final, key=<span class="keyword">lambda</span> part: part.pAbs())</div>
-<div class="line"><span class="lineno">  464</span>                <span class="keywordflow">if</span> leading.pAbs() &gt; p_threshold <span class="keywordflow">and</span> len(stack) &lt; 999:</div>
-<div class="line"><span class="lineno">  465</span>                    stack.append((beam_id, leading.px(), leading.py(), leading.pz(), depth, ancestors, processes))</div>
-<div class="line"><span class="lineno">  466</span>                <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  467</span>            new_depth = min(depth + 1, 98)</div>
-<div class="line"><span class="lineno">  468</span>            <span class="keywordflow">if</span> depth == 1:  <span class="comment"># first inelastic interaction process of the beam proton</span></div>
-<div class="line"><span class="lineno">  469</span>                processes = [code] + processes[1:]</div>
-<div class="line"><span class="lineno">  470</span>            <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(pythia.event.size()):</div>
-<div class="line"><span class="lineno">  471</span>                part = pythia.event[i]</div>
-<div class="line"><span class="lineno">  472</span>                <span class="keywordflow">if</span> part.idAbs() <span class="keywordflow">in</span> CASCADE_IDS <span class="keywordflow">and</span> part.isFinal() <span class="keywordflow">and</span> part.pAbs() &gt; p_threshold <span class="keywordflow">and</span> len(stack) &lt; 999:</div>
-<div class="line"><span class="lineno">  473</span>                    new_ancestors = ancestors[: new_depth - 1] + [part.id()] + ancestors[new_depth:]</div>
-<div class="line"><span class="lineno">  474</span>                    new_processes = processes[: new_depth - 1] + [code] + processes[new_depth:]</div>
-<div class="line"><span class="lineno">  475</span>                    stack.append((part.id(), part.px(), part.py(), part.pz(), new_depth, new_ancestors, new_processes))</div>
-<div class="line"><span class="lineno">  476</span> </div>
-<div class="line"><span class="lineno">  477</span>    print(f<span class="stringliteral">&quot;Generated {args.n_pot} p.o.t. in {time.time() - t0} s with {new_pythia.n_instances} Pythia8 instances&quot;</span>)</div>
-<div class="line"><span class="lineno">  478</span>    <span class="keywordflow">if</span> inclusive_events <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span>:</div>
-<div class="line"><span class="lineno">  479</span>        print(f<span class="stringliteral">&quot;{inclusive_events.n_tried} inclusive events generated for the charm signal&quot;</span>)</div>
-<div class="line"><span class="lineno">  480</span>    output_file.Write()</div>
-<div class="line"><span class="lineno">  481</span>    output_file.Close()</div>
-<div class="line"><span class="lineno">  482</span>    print(f<span class="stringliteral">&quot;Output file is {args.output}&quot;</span>)</div>
-<div class="line"><span class="lineno">  483</span> </div>
-<div class="line"><span class="lineno">  484</span> </div>
+<div class="line"><span class="lineno">  449</span>                    <span class="comment"># all signal hadrons of the event, read back together by FixedTargetGenerator</span></div>
+<div class="line"><span class="lineno">  450</span>                    row += [len(hadrons)]</div>
+<div class="line"><span class="lineno">  451</span>                    ntuple.Fill(array(<span class="stringliteral">&quot;f&quot;</span>, row))</div>
+<div class="line"><span class="lineno">  452</span>                    depth_hist.Fill(depth)</div>
+<div class="line"><span class="lineno">  453</span>            <span class="comment"># minimum-bias event to add new cascade particles to the stack</span></div>
+<div class="line"><span class="lineno">  454</span>            i_nucleon = 0 <span class="keywordflow">if</span> random.random() &lt; proton_fraction <span class="keywordflow">else</span> 1</div>
+<div class="line"><span class="lineno">  455</span>            pythia = mbias_pythia[i_nucleon]</div>
+<div class="line"><span class="lineno">  456</span>            pythia.setBeamIDs(beam_id, TARGET_NUCLEONS[i_nucleon])</div>
+<div class="line"><span class="lineno">  457</span>            pythia.setKinematics(px, py, pz, 0.0, 0.0, 0.0)</div>
+<div class="line"><span class="lineno">  458</span>            next_event(pythia)</div>
+<div class="line"><span class="lineno">  459</span>            code = pythia.infoPython().code()</div>
+<div class="line"><span class="lineno">  460</span>            <span class="keywordflow">if</span> code == 102:</div>
+<div class="line"><span class="lineno">  461</span>                <span class="comment"># Elastic scattering does not start a new cascade generation: the scattered hadron keeps</span></div>
+<div class="line"><span class="lineno">  462</span>                <span class="comment"># its depth. Depth 1 is then everything the beam proton produces up to and including its</span></div>
+<div class="line"><span class="lineno">  463</span>                <span class="comment"># first inelastic interaction, which is what chicc/chibb in run_fixedTarget.py normalise.</span></div>
+<div class="line"><span class="lineno">  464</span>                final = [pythia.event[i] <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(pythia.event.size()) <span class="keywordflow">if</span> pythia.event[i].isFinal()]</div>
+<div class="line"><span class="lineno">  465</span>                leading = max(final, key=<span class="keyword">lambda</span> part: part.pAbs())</div>
+<div class="line"><span class="lineno">  466</span>                <span class="keywordflow">if</span> leading.pAbs() &gt; p_threshold <span class="keywordflow">and</span> len(stack) &lt; 999:</div>
+<div class="line"><span class="lineno">  467</span>                    stack.append((beam_id, leading.px(), leading.py(), leading.pz(), depth, ancestors, processes))</div>
+<div class="line"><span class="lineno">  468</span>                <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  469</span>            new_depth = min(depth + 1, 98)</div>
+<div class="line"><span class="lineno">  470</span>            <span class="keywordflow">if</span> depth == 1:  <span class="comment"># first inelastic interaction process of the beam proton</span></div>
+<div class="line"><span class="lineno">  471</span>                processes = [code] + processes[1:]</div>
+<div class="line"><span class="lineno">  472</span>            <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(pythia.event.size()):</div>
+<div class="line"><span class="lineno">  473</span>                part = pythia.event[i]</div>
+<div class="line"><span class="lineno">  474</span>                <span class="keywordflow">if</span> part.idAbs() <span class="keywordflow">in</span> CASCADE_IDS <span class="keywordflow">and</span> part.isFinal() <span class="keywordflow">and</span> part.pAbs() &gt; p_threshold <span class="keywordflow">and</span> len(stack) &lt; 999:</div>
+<div class="line"><span class="lineno">  475</span>                    new_ancestors = ancestors[: new_depth - 1] + [part.id()] + ancestors[new_depth:]</div>
+<div class="line"><span class="lineno">  476</span>                    new_processes = processes[: new_depth - 1] + [code] + processes[new_depth:]</div>
+<div class="line"><span class="lineno">  477</span>                    stack.append((part.id(), part.px(), part.py(), part.pz(), new_depth, new_ancestors, new_processes))</div>
+<div class="line"><span class="lineno">  478</span> </div>
+<div class="line"><span class="lineno">  479</span>    print(f<span class="stringliteral">&quot;Generated {args.n_pot} p.o.t. in {time.time() - t0} s with {new_pythia.n_instances} Pythia8 instances&quot;</span>)</div>
+<div class="line"><span class="lineno">  480</span>    <span class="keywordflow">if</span> inclusive_events <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span>:</div>
+<div class="line"><span class="lineno">  481</span>        print(f<span class="stringliteral">&quot;{inclusive_events.n_tried} inclusive events generated for the charm signal&quot;</span>)</div>
+<div class="line"><span class="lineno">  482</span>    output_file.Write()</div>
+<div class="line"><span class="lineno">  483</span>    output_file.Close()</div>
+<div class="line"><span class="lineno">  484</span>    print(f<span class="stringliteral">&quot;Output file is {args.output}&quot;</span>)</div>
+<div class="line"><span class="lineno">  485</span> </div>
+<div class="line"><span class="lineno">  486</span> </div>
 <div class="ttc" id="atest__fixedtarget__cascade__weight_8cxx_html_ae66f6b31b5ad750f1fe042a706a4e3d4"><div class="ttname"><a href="test__fixedtarget__cascade__weight_8cxx.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a></div><div class="ttdeci">int main()</div><div class="ttdef"><b>Definition</b> <a href="test__fixedtarget__cascade__weight_8cxx_source.html#l00018">test_fixedtarget_cascade_weight.cxx:18</a></div></div>
 </div><!-- fragment -->
 </div>

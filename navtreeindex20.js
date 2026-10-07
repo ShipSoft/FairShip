@@ -1,5 +1,7 @@
 var NAVTREEINDEX20 =
 {
+"namespaceana__ShipMuon.html#acb40a6edc5bacb4b331e0118328b97e4":[6,0,4,5],
+"namespaceana__ShipMuon.html#acd174bdc52961dc55d9eb064df953e5b":[6,0,4,1],
 "namespaceana__ShipMuon.html#aceb4435527f3eb61a1f396363700023f":[6,0,4,14],
 "namespaceana__ShipMuon.html#ad1b80062e01829ad78bcbea45eea1f0d":[6,0,4,53],
 "namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d":[6,0,4,54],
@@ -247,7 +249,5 @@ var NAVTREEINDEX20 =
 "namespaceexperimental_1_1compare__histograms.html#a749c93fca44e38491ba75d0a31d0fa0b":[6,0,31,2,8],
 "namespaceexperimental_1_1compare__histograms.html#aa085abd70ec6e91ce8cd3233f1bb44b1":[6,0,31,2,0],
 "namespaceexperimental_1_1compare__histograms.html#aa62b2d0a16f870914fa42a905426fa08":[6,0,31,2,4],
-"namespaceexperimental_1_1compare__histograms.html#abaf9794f1df3dd1e9710576ca8a1e0cd":[6,0,31,2,7],
-"namespaceexperimental_1_1compare__histograms.html#aeb831e15a289966f95345e6a202e7c05":[6,0,31,2,2],
-"namespaceexperimental_1_1compare__histograms.html#af21aa23c8a8ae248277f3dedbd6918b2":[6,0,31,2,6]
+"namespaceexperimental_1_1compare__histograms.html#abaf9794f1df3dd1e9710576ca8a1e0cd":[6,0,31,2,7]
 };

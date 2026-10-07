@@ -3,7 +3,7 @@ var searchData=
   ['n_0',['n',['../classTrackInfo.html#a6cf99efb2f2012badae4bbff00a83500',1,'TrackInfo::N()'],['../classfieldMapTools_1_1MapRange.html#adcf4dd20bcb5a34c700abf5aeb9de05d',1,'fieldMapTools.MapRange.N()']]],
   ['na50_1',['na50',['../namespacerunPythia8.html#aee8ad9ec7b436a89728d499ec2bfe518',1,'runPythia8']]],
   ['ncomposite_2',['nComposite',['../classShipCompField.html#a3005035d531de7934d27eb9d8df23d5e',1,'ShipCompField']]],
-  ['ndecaywidth_3',['ndecaywidth',['../classhnl_1_1HNLbranchings.html#a16eb7b8877b111b5d25d5a770390cc8d',1,'hnl.HNLbranchings.NDecayWidth()'],['../classrpvsusy_1_1RPVSUSYbranchings.html#a19df3958d4a6e134b77bd25df0991c15',1,'rpvsusy.RPVSUSYbranchings.NdecayWidth()']]],
+  ['ndecaywidth_3',['ndecaywidth',['../classrpvsusy_1_1RPVSUSYbranchings.html#a19df3958d4a6e134b77bd25df0991c15',1,'rpvsusy.RPVSUSYbranchings.NdecayWidth()'],['../classhnl_1_1HNLbranchings.html#a16eb7b8877b111b5d25d5a770390cc8d',1,'hnl.HNLbranchings.NDecayWidth()']]],
   ['ndof_4',['nDOF',['../classexperimental_1_1analysis__toolkit_1_1selection__check.html#a59129329627f6852632978e880978706',1,'experimental::analysis_toolkit::selection_check']]],
   ['next_5',['next',['../classmakeCascadePythia8_1_1SignalEvents.html#a60f2a927eeba98bca154710107ad3004',1,'makeCascadePythia8.SignalEvents.next()'],['../classmakeCascadePythia8_1_1InclusiveSignalEvents.html#ac73563524f3afd46d7979652a3c9faea',1,'makeCascadePythia8.InclusiveSignalEvents.next()']]],
   ['next_5fevent_6',['next_event',['../namespacemakeCascadePythia8.html#a39f088c75433efb0cbe52594c72055aa',1,'makeCascadePythia8']]],
