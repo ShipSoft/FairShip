@@ -25,6 +25,7 @@ it in future.
 * The default spectrometer field map is now `files/2026_07_02_MainSpectrometerField_V21_2455.root`. Its polarity is opposite to the MgB2 map it replaces: the integral of Bx along the beam axis is +0.84 T m, against -0.83 T m before, so charged tracks bend the other way in y. Off axis the bending power differs too, so samples produced with the earlier default are not comparable, and a sample has to be reconstructed with the map it was simulated with. The MgB2 map remains available through `--field_map`.
 * Update default He balloon liner to be made with polyester like Mylar, named mylar_linerHe with density/thickness matching material #5
 * Scale `chicc`/`chibb` in `run_fixedTarget.py` by the heavy-flavour cross section per nucleon stored in the cascade input file, so that the normalisation follows the beam energy, tune and target composition the file was generated with. Files without it, such as the existing ones on EOS, keep the previous values.
+* Default for reweighting boosted muon files is now to keep all events rather than only those containing a muon
 
 ### Fixed
 
