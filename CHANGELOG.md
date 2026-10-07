@@ -28,6 +28,12 @@ it in future.
 
 ### Fixed
 
+* `eventDisplay.py` extends MC tracks without a decay vertex along their own direction. The step to the end point 10 m away was computed from the absolute z of the end point, so x and y of the end point were wrong for tracks not starting at z = 0.
+* `shipStrawTracking.py` skips points a fitted track cannot be extrapolated to. It replaced a failed Runge-Kutta extrapolation by a straight line, and these points entered the hit residuals and the `rmse_x`/`rmse_y` histograms.
+* `makeCascade.py` seeds the random draws of the cascade (target nucleon, signal probability) with `--seed`, which only seeded Pythia6, so runs could not be reproduced.
+* `extractNeutrinosAndUpdateWeight.py` writes the beauty neutrino histograms in `run4beauty`, which was copied from the muon script and did nothing.
+* `field/convertNoisyMap.py` works with pandas 3, which removed the `delim_whitespace` argument.
+* `analysis_toolkit.dist_to_innerwall` returns 0 for vertices outside the decay volume, as documented. The preselection was not affected.
 * `makeCascadePythia8.py` writes `sigma_QQ` with merge mode first, so cascade files merged with `hadd` keep the cross section instead of summing it, which made the normalisation N times too large for N merged files.
 * Cascade input files written by `makeCascadePythia8.py` now store the number of heavy-flavour hadrons of each Pythia8 event (`n_hadrons`), and `FixedTargetGenerator` reads all of them as one event. Before, it read the hadrons two at a time, so an event with one, three or four of them was split or merged with the next event. The normalisation counts the events and the primary ones on the file instead of assuming pairs, and a start entry inside an event moves to the next event. Files without `n_hadrons`, including those from `makeCascade.py`, are read in pairs as before.
 * The default spectrometer field map was stored with x and y transposed relative to the ordering `ShipBFieldMap` assumes, so the 4 m (x) by 6 m (y) aperture reached Geant4 as 6 m by 4 m and the return-yoke flux that belongs at y = ±400 cm sat at x = ±400 cm instead. The field on the beam axis was unaffected, which is why it went unnoticed, but the bending power off axis was wrong by 12% at (150, 0) cm, 21% at (0, 250) cm and 63% at (190, 290) cm. The four 101×101×151 spectrometer maps have been repacked in the documented order, with node coordinates that match, and are shipped under new names (`2026_09_28_*`). Only the MgB2 map changes what the simulation sees; the three `2026_05_07_*` maps had the right field data and only their coordinate column labels were wrong. The ACTS field map in `ACTSReco.py` assumes the same ordering and read the MgB2 map mirrored in the same way. Samples produced with the earlier default map are not comparable.
@@ -43,6 +49,7 @@ it in future.
 
 ### Removed
 
+* The unused copy of `makeProd` in `muonShieldOptimization/ana_ShipMuon.py`; `run_prod.makeProd` is the maintained one.
 ## 26.09 - 2026-09-15
 
 This release fixes bugs that change simulation output. Samples produced with

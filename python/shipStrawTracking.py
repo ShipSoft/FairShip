@@ -563,12 +563,9 @@ def extrapolateToPlane(fT, z):
                 pos, mom = state.getPos(), state.getMom()
                 rc = True
             except Exception:
+                # no valid extrapolation: pos/mom are None, as in TrackExtrapolateTool
                 print("error with extrapolation")
-            if not rc:
-                # use linear extrapolation
-                px, py, pz = mom.X(), mom.Y(), mom.Z()
-                lam = (z - pos.Z()) / pz
-                pos = ROOT.TVector3(pos.X() + lam * px, pos.Y() + lam * py, z)
+                pos, mom = None, None
     return rc, pos, mom
 
 

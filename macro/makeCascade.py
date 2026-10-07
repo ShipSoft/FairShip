@@ -226,6 +226,8 @@ else:
 # start with different random number for each run...
 print(f"Setting random number seed = {args.seed}")
 myPythia.SetMRPY(1, args.seed)
+# the cascade itself (target nucleon, signal probability) is sampled with Python's random
+random.seed(args.seed)
 
 # histogram helper
 h = {}

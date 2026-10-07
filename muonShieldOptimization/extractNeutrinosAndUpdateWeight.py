@@ -127,14 +127,8 @@ def run4beauty() -> None:
     global weight
     weight = weightBeauty
     fname = "pythia8_Geant4_beauty_5336B_10.0.root"
-    rc = processFile(fname, False)
-    if rc == 0:
-        fmu = fname.replace(".root", "_mu.root")
-        rc = os.system("xrdcp " + fmu + " $EOSSHIP/eos/experiment/ship/data/Mbias/background-prod-2018/" + fmu)
-        if rc != 0:
-            print("copy to EOS failed, stop", fmu)
-        else:
-            rc = os.system("rm " + fmu)
+    processFile(fname, False)
+    ut.writeHists(h, "pythia8_Geant4_beauty_10.0_nu.root")
 
 
 def finalResult() -> None:
