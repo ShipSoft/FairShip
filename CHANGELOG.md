@@ -20,6 +20,10 @@ it in future.
 
 * The hit lists in `Tracklets` and `fitTrack2MC` now come from fitted states. They therefore leave out any surface that ACTS skipped. #1537
 
+### Fixed
+
+* `ShipMCTrack::GetMass` and `GetEnergy` gave spacelike particles such as virtual photons their PDG mass and an energy equal to the momentum. They read every negative stored mass as "mass not stored", the marker for old files, although a negative mass also marks a spacelike particle. Only the default value, -1, now means "not stored"; other negative masses are returned as stored and the energy uses the negative m^2.
+
 ## 26.11 - 2026-11-26
 
 This release makes ACTS the default for pattern recognition, track fitting and
