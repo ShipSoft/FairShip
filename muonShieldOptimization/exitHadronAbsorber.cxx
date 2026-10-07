@@ -40,6 +40,28 @@ constexpr Double_t cm = 1;         // cm
 constexpr Double_t m = 100 * cm;   //  m
 constexpr Double_t mm = 0.1 * cm;  //  mm
 
+namespace {
+
+/// Particles whose momentum spectra are histogrammed at the plane: neutrinos,
+/// leptons, the photon, light neutral mesons for dark-photon production, and
+/// charged pions, kaons and protons. Booking and writing both use this table.
+struct HistogrammedParticle {
+  Int_t pdg;
+  bool withAntiparticle;
+};
+constexpr HistogrammedParticle kHistogrammed[] = {
+    {11, true},   {12, true},   {13, true},  {14, true},   {15, true},
+    {16, true},   {17, true},   {22, false}, {111, false}, {221, false},
+    {223, false}, {331, false}, {211, true}, {321, true},  {2212, true}};
+
+/// Histogram number of a particle, as PreTrack fills it: 10000 + |pdg|, plus
+/// 10000 for antiparticles. The two 2D histograms add 1000 and 2000 to it.
+Int_t HistogramId(Int_t pdg) {
+  return 10000 + TMath::Abs(pdg) + (pdg < 0 ? 10000 : 0);
+}
+
+}  // namespace
+
 exitHadronAbsorber::exitHadronAbsorber(const char* Name, Bool_t Active)
     : Detector(Name, Active, kVETO),
       fOnlyMuons(kFALSE),
@@ -172,46 +194,16 @@ void exitHadronAbsorber::Initialize() {
   SHiP::Detector<vetoPoint>::Initialize();
   TSeqCollection* fileList = gROOT->GetListOfFiles();
   fout = dynamic_cast<TFile*>(fileList->At(0));
-  // book hists for Genie neutrino momentum distribution
-  // add also leptons, and photon
-  // add pi0 111 eta 221 eta' 331  omega 223 for DM production
+  // book hists for Genie neutrino momentum distribution, and for the other
+  // particles in kHistogrammed
   TDatabasePDG* PDG = TDatabasePDG::Instance();
-  for (Int_t idnu = 11; idnu < 26; idnu += 1) {
-    // nu or anti-nu
-    for (Int_t idadd = -1; idadd < 3; idadd += 2) {
-      Int_t idw = idnu;
-      if (idnu == 18) {
-        idw = 22;
+  for (const auto& particle : kHistogrammed) {
+    for (Int_t sign : {1, -1}) {
+      if (sign < 0 && !particle.withAntiparticle) {
+        continue;
       }
-      if (idnu == 19) {
-        idw = 111;
-      }
-      if (idnu == 20) {
-        idw = 221;
-      }
-      if (idnu == 21) {
-        idw = 223;
-      }
-      if (idnu == 22) {
-        idw = 331;
-      }
-      if (idnu == 23) {
-        idw = 211;
-      }
-      if (idnu == 24) {
-        idw = 321;
-      }
-      if (idnu == 25) {
-        idw = 2212;
-      }
-      Int_t idhnu = 10000 + idw;
-      if (idadd == -1) {
-        if (idnu > 17) {
-          continue;
-        }
-        idhnu += 10000;
-        idw = -idnu;
-      }
+      const Int_t idw = sign * particle.pdg;
+      const Int_t idhnu = HistogramId(idw);
       TString name = PDG->GetParticle(idw)->GetName();
       TString title = name;
       title += " momentum (GeV)";
@@ -403,33 +395,12 @@ void exitHadronAbsorber::PreTrack() {
 }
 
 void exitHadronAbsorber::FinishRun() {
-  for (Int_t idnu = 11; idnu < 23; idnu += 1) {
-    // nu or anti-nu
-    for (Int_t idadd = -1; idadd < 3; idadd += 2) {
-      Int_t idw = idnu;
-      if (idnu == 18) {
-        idw = 22;
+  for (const auto& particle : kHistogrammed) {
+    for (Int_t sign : {1, -1}) {
+      if (sign < 0 && !particle.withAntiparticle) {
+        continue;
       }
-      if (idnu == 19) {
-        idw = 111;
-      }
-      if (idnu == 20) {
-        idw = 221;
-      }
-      if (idnu == 21) {
-        idw = 223;
-      }
-      if (idnu == 22) {
-        idw = 331;
-      }
-      Int_t idhnu = 10000 + idw;
-      if (idadd == -1) {
-        if (idnu > 17) {
-          continue;
-        }
-        idhnu += 10000;
-        idw = -idnu;
-      }
+      const Int_t idhnu = HistogramId(sign * particle.pdg);
       TString key = fVetoName;
       key += idhnu;
       TSeqCollection* fileList = gROOT->GetListOfFiles();
