@@ -117,7 +117,7 @@ class selection_check:
         min_distance = float("inf")
 
         node = self.geometry_manager.FindNode(*position)
-        if not node:
+        if not node or not node.GetName().startswith("decay_medium"):
             return 0  # is outside the decay volume
 
         # Loop over directions in the XY plane
