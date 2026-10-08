@@ -209,7 +209,9 @@ def create_config(
     c.cave.TCC8_length = 170 * u.m
     c.cave.ECN3_length = 100 * u.m
     c.cave.stair_step_length = 0.82 * u.m
-    c.cave.z_transition = 21.78 * u.m  # mid-plane of the M4/S5 gap (integration layout 2026-0.1)
+    # End of the TCC8 floor (integration layout 2026-0.1); the stair step that follows is
+    # centred on the gap between M4 and S5
+    c.cave.z_transition = 21.37 * u.m
     c.cave.zEnd = c.cave.z_transition + c.cave.ECN3_length  # downstream ECN3 wall
 
     with open(c.target_yaml) as file:
