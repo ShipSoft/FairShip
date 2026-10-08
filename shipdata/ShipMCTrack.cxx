@@ -29,7 +29,10 @@ ShipMCTrack::ShipMCTrack()
       fProcID(44),
       fNPoints(0),
       fEventID(0),
-      fTrackID(0) {}
+      fTrackID(0),
+      fSplitSet(-1),
+      fSplitRole(kNotSplit),
+      fSplitWeight(0.) {}
 // -------------------------------------------------------------------------
 
 // -----   Standard constructor   ------------------------------------------
@@ -52,7 +55,10 @@ ShipMCTrack::ShipMCTrack(Int_t pdgCode, Int_t motherId, Double_t px,
       fProcID(44),
       fNPoints(nPoints),
       fEventID(eventID),
-      fTrackID(trackID) {}
+      fTrackID(trackID),
+      fSplitSet(-1),
+      fSplitRole(kNotSplit),
+      fSplitWeight(0.) {}
 // -------------------------------------------------------------------------
 
 // -----   Copy constructor   ----------------------------------------------
@@ -72,7 +78,10 @@ ShipMCTrack::ShipMCTrack(const ShipMCTrack& track)
       fProcID(track.GetProcID()),
       fNPoints(track.fNPoints),
       fEventID(track.fEventID),
-      fTrackID(track.fTrackID) {}
+      fTrackID(track.fTrackID),
+      fSplitSet(track.fSplitSet),
+      fSplitRole(track.fSplitRole),
+      fSplitWeight(track.fSplitWeight) {}
 // -------------------------------------------------------------------------
 
 // -----   Constructor from TParticle   ------------------------------------
@@ -101,7 +110,10 @@ ShipMCTrack::ShipMCTrack(TParticle* part)
       fProcID(part->GetUniqueID()),
       fNPoints(0),
       fEventID(0),
-      fTrackID(0) {}
+      fTrackID(0),
+      fSplitSet(-1),
+      fSplitRole(kNotSplit),
+      fSplitWeight(0.) {}
 // -------------------------------------------------------------------------
 
 // -----   Destructor   ----------------------------------------------------
