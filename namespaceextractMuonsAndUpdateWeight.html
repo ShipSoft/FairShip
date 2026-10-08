@@ -104,8 +104,8 @@ Functions</h2></td></tr>
 <tr class="separator:a57763c60dba4b7e8637e1cb6b4d6b3f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a71a62f94a5c841e87ffdbad0497b8de8" id="r_a71a62f94a5c841e87ffdbad0497b8de8"><td class="memItemLeft" align="right" valign="top">None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceextractMuonsAndUpdateWeight.html#a71a62f94a5c841e87ffdbad0497b8de8">TotStat</a> ()</td></tr>
 <tr class="separator:a71a62f94a5c841e87ffdbad0497b8de8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aabe80f39b29e261cb965455cf6b6882e" id="r_aabe80f39b29e261cb965455cf6b6882e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceextractMuonsAndUpdateWeight.html#aabe80f39b29e261cb965455cf6b6882e">processFile</a> (str fin, bool noCharm=True)</td></tr>
-<tr class="separator:aabe80f39b29e261cb965455cf6b6882e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a70a6083dac0b34d42ad8f64e3db0e041" id="r_a70a6083dac0b34d42ad8f64e3db0e041"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceextractMuonsAndUpdateWeight.html#a70a6083dac0b34d42ad8f64e3db0e041">processFile</a> (str fin, bool noCharm=True, bool process_muons_only=False)</td></tr>
+<tr class="separator:a70a6083dac0b34d42ad8f64e3db0e041"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac10ab68bb29c16815e14776f291b16cf" id="r_ac10ab68bb29c16815e14776f291b16cf"><td class="memItemLeft" align="right" valign="top">None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceextractMuonsAndUpdateWeight.html#ac10ab68bb29c16815e14776f291b16cf">run</a> ()</td></tr>
 <tr class="separator:ac10ab68bb29c16815e14776f291b16cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3fb8815e9900666740bca8a1de5ff952" id="r_a3fb8815e9900666740bca8a1de5ff952"><td class="memItemLeft" align="right" valign="top">None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceextractMuonsAndUpdateWeight.html#a3fb8815e9900666740bca8a1de5ff952">run4Charm</a> ()</td></tr>
@@ -403,8 +403,8 @@ Variables</h2></td></tr>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="aabe80f39b29e261cb965455cf6b6882e" name="aabe80f39b29e261cb965455cf6b6882e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aabe80f39b29e261cb965455cf6b6882e">&#9670;&#160;</a></span>processFile()</h2>
+<a id="a70a6083dac0b34d42ad8f64e3db0e041" name="a70a6083dac0b34d42ad8f64e3db0e041"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a70a6083dac0b34d42ad8f64e3db0e041">&#9670;&#160;</a></span>processFile()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -419,7 +419,13 @@ Variables</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">bool &#160;</td>
-          <td class="paramname"><em>noCharm</em> = <code>True</code>&#160;</td>
+          <td class="paramname"><em>noCharm</em> = <code>True</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool &#160;</td>
+          <td class="paramname"><em>process_muons_only</em> = <code>False</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -430,7 +436,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="extractMuonsAndUpdateWeight_8py_source.html#l00104">104</a> of file <a class="el" href="extractMuonsAndUpdateWeight_8py_source.html">extractMuonsAndUpdateWeight.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  104</span><span class="keyword">def </span>processFile(fin: str, noCharm: bool = <span class="keyword">True</span>) -&gt; int:</div>
+<div class="fragment"><div class="line"><span class="lineno">  104</span><span class="keyword">def </span>processFile(fin: str, noCharm: bool = <span class="keyword">True</span>, process_muons_only: bool = <span class="keyword">False</span>) -&gt; int:</div>
 <div class="line"><span class="lineno">  105</span>    f = ROOT.TFile.Open(os.environ[<span class="stringliteral">&quot;EOSSHIP&quot;</span>] + path + fin)</div>
 <div class="line"><span class="lineno">  106</span>    nPot, diMuboost, xSecboost = PoT(f)</div>
 <div class="line"><span class="lineno">  107</span>    sTree = f.Get(<span class="stringliteral">&quot;cbmsim&quot;</span>)</div>
@@ -440,7 +446,7 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">  111</span>    <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(sTree.GetEntries()):</div>
 <div class="line"><span class="lineno">  112</span>        sTree.GetEntry(n)</div>
 <div class="line"><span class="lineno">  113</span>        nMu = muonUpdateWeight(sTree, diMuboost, xSecboost, noCharm)</div>
-<div class="line"><span class="lineno">  114</span>        <span class="keywordflow">if</span> nMu &gt; 0:</div>
+<div class="line"><span class="lineno">  114</span>        <span class="keywordflow">if</span> nMu &gt; 0 <span class="keywordflow">or</span> <span class="keywordflow">not</span> process_muons_only:</div>
 <div class="line"><span class="lineno">  115</span>            newTree.Fill()</div>
 <div class="line"><span class="lineno">  116</span>    ff = f.FileHeader.Clone(<span class="stringliteral">&quot;Extracted Muon Background File&quot;</span>)</div>
 <div class="line"><span class="lineno">  117</span>    txt = ff.GetTitle()</div>

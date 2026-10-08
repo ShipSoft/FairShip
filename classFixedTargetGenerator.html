@@ -810,7 +810,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  444</span>    TObjArray* nodes = <a class="code hl_variable" href="namespacemakeCascade.html#a84ddf46aec68748aa97d4395eabca427">target</a>-&gt;GetVolume()-&gt;GetNodes();</div>
 <div class="line"><span class="lineno">  445</span>    <span class="comment">// Get the first and last node of the target to calculate the material seen</span></div>
 <div class="line"><span class="lineno">  446</span>    TGeoNode* first = <span class="keyword">static_cast&lt;</span>TGeoNode*<span class="keyword">&gt;</span>(nodes-&gt;At(0));</div>
-<div class="line"><span class="lineno">  447</span>    TGeoNode* last = <span class="keyword">static_cast&lt;</span>TGeoNode*<span class="keyword">&gt;</span>(nodes-&gt;At(nodes-&gt;GetSize() - 1));</div>
+<div class="line"><span class="lineno">  447</span>    TGeoNode* last = <span class="keyword">static_cast&lt;</span>TGeoNode*<span class="keyword">&gt;</span>(nodes-&gt;At(nodes-&gt;GetLast()));</div>
 <div class="line"><span class="lineno">  448</span>    nav-&gt;cd(<a class="code hl_variable" href="classFixedTargetGenerator.html#a0e8e528cc53ba28b6aa7560f471330ae">targetName</a> + <span class="stringliteral">&quot;/&quot;</span> + first-&gt;GetName());</div>
 <div class="line"><span class="lineno">  449</span>    TGeoBBox* sha = <span class="keyword">static_cast&lt;</span>TGeoBBox*<span class="keyword">&gt;</span>(first-&gt;GetVolume()-&gt;GetShape());</div>
 <div class="line"><span class="lineno">  450</span>    Double_t dz = sha-&gt;GetDZ();</div>
@@ -819,7 +819,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  453</span>    nav-&gt;LocalToMaster(origin, master);</div>
 <div class="line"><span class="lineno">  454</span>    <a class="code hl_variable" href="classFixedTargetGenerator.html#a588c731c0eb44dc2127dda5630a2408b">startZ</a> = master[2];</div>
 <div class="line"><span class="lineno">  455</span>    nav-&gt;cd(<a class="code hl_variable" href="classFixedTargetGenerator.html#a0e8e528cc53ba28b6aa7560f471330ae">targetName</a> + <span class="stringliteral">&quot;/&quot;</span> + last-&gt;GetName());</div>
-<div class="line"><span class="lineno">  456</span>    sha = <span class="keyword">static_cast&lt;</span>TGeoBBox*<span class="keyword">&gt;</span>(first-&gt;GetVolume()-&gt;GetShape());</div>
+<div class="line"><span class="lineno">  456</span>    sha = <span class="keyword">static_cast&lt;</span>TGeoBBox*<span class="keyword">&gt;</span>(last-&gt;GetVolume()-&gt;GetShape());</div>
 <div class="line"><span class="lineno">  457</span>    dz = sha-&gt;GetDZ();</div>
 <div class="line"><span class="lineno">  458</span>    <a class="code hl_function" href="namespaceana__ShipMuon.html#a05e83c6aa9234009f5e43dda6be3e5f6">origin</a>[2] = +dz;</div>
 <div class="line"><span class="lineno">  459</span>    nav-&gt;LocalToMaster(origin, master);</div>
