@@ -187,8 +187,9 @@ def n_coll_avg(a, sigma_hn):
 def nuclear_collision(mbias_pythia, beam_id, px, py, pz, z, a, p_min):
     """Hadron-nucleus collision as a sequence of hadron-nucleon subcollisions, as in PythiaCascade::nextColl.
 
-    Returns the process code of the first subcollision, the number of subcollisions, and the final
-    particles (id, px, py, pz, p) of all subcollisions, without the hadrons that collided again.
+    Returns the process code of the first non-elastic subcollision (102 if all were elastic), the
+    number of subcollisions, and the final particles (id, px, py, pz, p) of all subcollisions, without
+    the hadrons that collided again.
     Subcollisions stop once the leading hadron is below p_min, which no longer adds particles above it.
     """
     p = math.sqrt(px**2 + py**2 + pz**2)
@@ -198,7 +199,7 @@ def nuclear_collision(mbias_pythia, beam_id, px, py, pz, z, a, p_min):
     n_p, n_n = z, a - z
     final, latest = [], []
     projectile = (beam_id, px, py, pz)
-    first_code, n_coll = 0, 0
+    first_code, n_coll = 102, 0
     for i_coll in range(1, a + 1):
         proc_type = 0
         if i_coll > 1:
@@ -227,7 +228,7 @@ def nuclear_collision(mbias_pythia, beam_id, px, py, pz, z, a, p_min):
                 break
         else:
             raise RuntimeError(f"Pythia8 failed to generate a subcollision for {projectile[0]}")
-        if i_coll == 1:
+        if first_code == 102:
             first_code = pythia.infoPython().code()
         n_coll += 1
         event = pythia.event
@@ -569,11 +570,9 @@ s0:s1:s2:s3:s4:s5:s6:s7:s8:s9:s10:s11:s12:s13:s14:s15:n_hadrons",
                     depth_hist.Fill(depth)
             if args.cascade_model == "nucleus":
                 # hadron-nucleus collision to add new cascade particles to the stack
-                code, n_coll, final = nuclear_collision(
-                    mbias_pythia, beam_id, px, py, pz, z_target, a_target, p_threshold
-                )
-                if code == 102 and n_coll == 1:
-                    # elastic scattering on a single nucleon keeps the cascade generation
+                code, _, final = nuclear_collision(mbias_pythia, beam_id, px, py, pz, z_target, a_target, p_threshold)
+                if code == 102:
+                    # only elastic subcollisions: the cascade generation is kept
                     leading = max(final, key=lambda f: f[4])
                     if leading[4] > p_threshold and len(stack) < 999:
                         stack.append((beam_id, *leading[1:4], depth, ancestors, processes))
