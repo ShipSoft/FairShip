@@ -1167,6 +1167,7 @@ if options.muonback:
         "CaloScoringPlanePoint",
         "MCEventHeader",
         "UpstreamTaggerPoint",
+        "UpstreamTaggerScoringPoint",
         "MTCdetPoint",
         "SiliconTargetPoint",
         "sGeoTracks",
