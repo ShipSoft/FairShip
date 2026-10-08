@@ -19,6 +19,8 @@ it in future.
 * Add `macro/makeCascadePythia8.py`, a Pythia8 version of `makeCascade.py` that writes charm or beauty cascade files in the same format, with `--pythia8-tune` (`default`, `FTFT`). With `FTFT`, charm is normalised to the tune's inclusive charm cross section through forced-production K-factors that depend on the beam particle, the target nucleon and the momentum; beauty uses the tune's K-factors. Elastic scattering does not increase the cascade depth, so the depth-1 normalisation used by `run_fixedTarget.py` covers the beam proton up to its first inelastic interaction and its elastic re-interactions are not counted twice. `makeCascade.py` is unchanged. `FixedTargetGenerator` tags hadrons from depth 1 as primary when the input file has the depth branch, so beam protons that scattered elastically before are included; files without it keep the zero-transverse-momentum test.
 * Add `--charm-production` (`forced`, `inclusive`) to `macro/makeCascadePythia8.py`. With `inclusive`, charm signal events are inclusive inelastic events (`SoftQCD:inelastic`) generated at the exact momentum and direction of the projectile and kept if they contain charm, as in the FTFT tune, instead of forced `HardQCD:hardccbar` events. The normalisation is unchanged. Inclusive generation is about 20 times slower; `forced` remains the default.
 * Add the V21_2455 spectrometer field map (`files/2026_07_02_MainSpectrometerField_V21_2455.root`). The map was delivered with its x and y coordinate columns transposed, like the `2026_05_07_*` maps, and is shipped with the coordinates regenerated. The field values are unchanged.
+* ACTS is available as an alternative track fitter in the main reconstruction chain: `ShipReco.py --trackFitter acts` writes `RecoTracks`/`RecoVertices`/`Particles` branches instead of the GenFit `FitTracks` (which remains the default). Both fitters write `goodTracks`, and one `VetoHitOnTrack` entry per good track with the distance in cm. Analysis tools (`ShipAna`, `shipVeto`, `analysis_toolkit`, `tracking_benchmark`) detect either output format automatically.
+* New `--patRec Truth` option for MC-truth track seeding (requires `--trackFitter acts`).
 
 ### Changed
 
@@ -44,6 +46,8 @@ it in future.
 * Read the normalisation histogram of charm and beauty input files as `TH1`, not `TH1F`, so that files written by `makeCascade.py` (`rootUtils` books a `TH1D`) are accepted instead of failing with "histogram '2' not found".
 * Post-process the simulation output of `run_fixedTarget.py`, not the first open ROOT file, which for charm and beauty is the cascade input file kept open by the generator, so that charm and beauty runs no longer end with `KeyError: 'cbmsim'`.
 * Added `ROOT::EGPythia8` in `shipgen/CMakeLists.txt` to avoid symbol lookup errors when using EvtGen
+* ACTS vertex positions were scaled by the covariance conversion factor rather than the length one, placing every reconstructed vertex ten times too close to the target
+* Track candidates were built with a charge that contradicted their PDG code. The charge is the one the bending actually supports, so the PDG code was corrected to match it; GenFit results are unaffected (it does not use the seed charge) and ACTS results are unchanged
 
 ### Removed
 
