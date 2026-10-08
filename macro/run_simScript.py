@@ -236,6 +236,12 @@ parser.add_argument(
     "--Cosmics", dest="cosmics", help="Use cosmic generator, argument switch for cosmic generator 0 or 1", default=None
 )  # 0/1 selects CosmicsGenerator::Init(largeMom); not store_true, since "0" must enable cosmics with largeMom=False
 parser.add_argument("--MuDIS", dest="mudis", help="Use muon deep inelastic scattering generator", action="store_true")
+parser.add_argument(
+    "--NewMuDIS",
+    dest="newmudis",
+    help="Replay prepared/filtered MuonDIS events with NewMuDISGenerator",
+    action="store_true",
+)
 parser.add_argument("--RpvSusy", dest="RPVSUSY", help="Generate events based on RPV neutralino", action="store_true")
 parser.add_argument("--FixedTarget", dest="fixedTarget", help="Enable fixed target simulation", action="store_true")
 parser.add_argument("--DarkPhoton", help="Generate dark photons", action="store_true")
@@ -274,8 +280,17 @@ parser.add_argument(
 parser.add_argument(
     "-e", "--epsilon", dest="theDPepsilon", help="to set mixing parameter epsilon", default=0.00000008, type=float
 )
-parser.add_argument("-n", "--nEvents", dest="nEvents", help="Number of events to generate", default=100, type=int)
-parser.add_argument("-i", "--firstEvent", help="First event of input file to use", default=0, type=int)
+parser.add_argument(
+    "-n",
+    "--nEvents",
+    dest="nEvents",
+    help="Number of events to generate (input muons for --NewMuDIS; -1: all)",
+    default=100,
+    type=int,
+)
+parser.add_argument(
+    "-i", "--firstEvent", help="First input entry to use (muon entry for --NewMuDIS)", default=0, type=int
+)
 parser.add_argument(
     "-s",
     "--seed",
@@ -409,6 +424,11 @@ parser.add_argument(
 
 
 options = parser.parse_args()
+
+default_nEvents = not any(arg.startswith(("-n", "--nEvents")) for arg in sys.argv[1:])
+
+if options.mudis and options.newmudis:
+    parser.error("--MuDIS and --NewMuDIS are mutually exclusive")
 # Handle SND_design: allow 'all' (case-insensitive) or list of ints
 available_snd_designs = [1, 2]  # Extend this list as new designs are added
 if any(str(x).lower() == "all" for x in options.SND_design):
@@ -484,7 +504,7 @@ if (HNL and options.RPVSUSY) or (HNL and options.DarkPhoton) or (options.DarkPho
 
 if (options.command == "Genie" or options.nuradio) and defaultInputFile:
     inputFile = "$EOSSHIP/eos/experiment/ship/data/GenieEvents/genie-nu_mu.root"
-if options.mudis and defaultInputFile:
+if (options.mudis or options.newmudis) and defaultInputFile:
     print("input file required if simEngine = muonDIS")
     print(" for example -f  $EOSSHIP/eos/experiment/ship/data/muonDIS/muonDis_1.root")
     sys.exit(1)
@@ -538,6 +558,7 @@ if not options.command:
         "ntuple",
         "muonback",
         "mudis",
+        "newmudis",
         "fixedTarget",
         "cosmics",
     ]:
@@ -761,23 +782,35 @@ if options.command == "PG":
     primGen.AddGenerator(myPgun)
     ROOT.SetOwnership(myPgun, False)  # C++ FairPrimaryGenerator takes ownership
 # -----muon DIS Background------------------------
-if options.mudis:
+DISgen = None
+if options.mudis or options.newmudis:
     useInputFile(inputFile)
     primGen.SetTarget(0.0, 0.0)
-    DISgen = ROOT.MuDISGenerator()
-    # from nu_tau detector to tracking station 2
-    # mu_start, mu_end =  ship_geo.tauMudet.zMudetC,ship_geo.TrackStation2.z
-    #
-    # in front of UVT up to tracking station 1
-    mu_start, mu_end = ship_geo.Chamber1.z - ship_geo.chambers.Tub1length - 10.0 * u.cm, ship_geo.TrackStation1.z
-    print("MuDIS position info input=", mu_start, mu_end)
-    DISgen.SetPositions(mu_start, mu_end)
+    if options.newmudis:
+        DISgen = ROOT.NewMuDISGenerator()
+        DISgen.SetNevents(options.nEvents)  # Set number of input muons to process
+    else:
+        DISgen = ROOT.MuDISGenerator()
+        # from nu_tau detector to tracking station 2
+        # mu_start, mu_end =  ship_geo.tauMudet.zMudetC,ship_geo.TrackStation2.z
+        #
+        # in front of UVT up to tracking station 1
+        mu_start, mu_end = ship_geo.Chamber1.z - ship_geo.chambers.Tub1length - 10.0 * u.cm, ship_geo.TrackStation1.z
+        print("MuDIS position info input=", mu_start, mu_end)
+        DISgen.SetPositions(mu_start, mu_end)
     if not DISgen.Init(inputFile, options.firstEvent):
-        raise RuntimeError(f"Failed to initialize MuDISGenerator from input: {inputFile}")
+        raise RuntimeError(f"Failed to initialize DIS generator from input: {inputFile}")
     primGen.AddGenerator(DISgen)
     ROOT.SetOwnership(DISgen, False)  # C++ FairPrimaryGenerator takes ownership
-    options.nEvents = DISgen.GetNevents() if options.nEvents == -1 else min(options.nEvents, DISgen.GetNevents())
-    print("Generate ", options.nEvents, " with DIS input", " first event", options.firstEvent)
+    if options.newmudis:
+        options.nEvents = (
+            DISgen.GetNevents()
+        )  # overwrite the option with the actual number of DIS events to be generated
+        if default_nEvents:  # cap to 100 dis events, for the test case with no explicit nEvents parsed as argument
+            options.nEvents = min(options.nEvents, 100)
+    else:
+        options.nEvents = DISgen.GetNevents() if options.nEvents == -1 else min(options.nEvents, DISgen.GetNevents())
+    print("(New)MuDISGenerator: Generating ", options.nEvents, " DIS events, first event ", options.firstEvent)
 # -----Neutrino Background------------------------
 if options.command == "Genie":
     # Genie
@@ -925,12 +958,16 @@ if options.evtgen_decayer:
 run.Init()
 if options.dryrun:  # Early stop after setting up Pythia 8
     sys.exit(0)
+if options.newmudis:
+    assert isinstance(DISgen, ROOT.NewMuDISGenerator)
+    if not DISgen.RegisterOutputBranches(sink.GetOutTree()):
+        raise RuntimeError("Failed to register the MuDIS output branches")
 gMC = ROOT.TVirtualMC.GetMC()
 fStack = gMC.GetStack()
 
 # -----J/psi external decayer configuration handled in g4config.in------------------------------------
 # VMC command /mcPhysics/setExtDecayerSelection J/psi forces external decayer usage
-EnergyCut = 10.0 * u.MeV if options.mudis else 100.0 * u.MeV
+EnergyCut = 10.0 * u.MeV if (options.mudis or options.newmudis) else 100.0 * u.MeV
 
 if MCTracksWithHitsOnly:
     fStack.SetMinPoints(1)
@@ -1101,7 +1138,11 @@ if options.muonback:
     rc2 = os.system("mv " + tmpFile + " " + outFile)
     fin.SetWritable(False)  # bpyass flush error
 
-if options.mudis:
+if options.newmudis:
+    from MuDISGenerator_postProcessing import post_process
+
+    post_process(outFile, inputFile, options.firstEvent)
+elif options.mudis:
     temp_filename = outFile.replace(".root", "_tmp.root")
 
     with (
