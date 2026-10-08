@@ -153,6 +153,15 @@ class ShipStack : public FairGenericStack {
   void StoreMothers(Bool_t choice = kTRUE) { fStoreMothers = choice; }
   void SetSplitting() { fSplitting = kTRUE; }
 
+  /** Record that a track belongs to a split set, with its role (see
+   ** ShipMCTrack::GetSplitSet()). Copied to the stored ShipMCTrack.
+   *@param iTrack    Particle index on the stack
+   *@param splitSet  Split set ID, unique within the event
+   *@param role      ShipMCTrack::SplitRole
+   *@param weight    Weight of the split track before splitting
+   **/
+  void SetSplitSet(Int_t iTrack, Int_t splitSet, Int_t role, Double_t weight);
+
   /** Increment the point total for the current track.
    ** The count is per track, aggregated across all detectors; iDet is retained
    ** for call-site compatibility but ignored for counting.
@@ -192,6 +201,14 @@ class ShipStack : public FairGenericStack {
 
   /** Number of MCPoints per track index, summed over all detectors **/
   std::vector<Int_t> fPointsPerTrack;  //!
+
+  /** Split set, role and split weight per particle index **/
+  struct SplitInfo {
+    Int_t splitSet = -1;
+    Int_t role = 0;
+    Double_t weight = 0.;
+  };
+  std::vector<SplitInfo> fSplitSets;  //!
 
   /** Some indizes and counters **/
   Int_t fCurrentTrack;  //! Index of current track
