@@ -15,30 +15,36 @@ using std::endl;
 
 // -----   Default constructor   --------------
 UpstreamTaggerHit::UpstreamTaggerHit()
-    : SHiP::DetectorHit(), fX(0.), fY(0.), fZ(0.), fTime(0.) {}
+    : SHiP::DetectorHit(),
+      fX(0.),
+      fY(0.),
+      fZ(0.),
+      fTime(0.),
+      fTileID(-1),
+      fTriggered(kFALSE) {}
 
 // -----   Constructor from UpstreamTaggerPoint   --------------
 UpstreamTaggerHit::UpstreamTaggerHit(UpstreamTaggerPoint* p, Double_t t0,
-                                     Double_t pos_res, Double_t time_res)
-    : SHiP::DetectorHit() {
+                                     const TVector3& digitizedPosition,
+                                     Double_t time_res)
+    : SHiP::DetectorHit(), fTileID(-1), fTriggered(kFALSE) {
   if (!p) {
     LOG(error) << "UpstreamTaggerHit: null UpstreamTaggerPoint pointer";
     return;
   }
   fDetectorID = p->GetDetectorID();
-
-  // Smear position with Gaussian resolution
-  fX = gRandom->Gaus(p->GetX(), pos_res);
-  fY = gRandom->Gaus(p->GetY(), pos_res);
-  fZ = gRandom->Gaus(p->GetZ(), pos_res);
-
-  // Smear time with Gaussian resolution
+  fX = digitizedPosition.X();
+  fY = digitizedPosition.Y();
+  fZ = digitizedPosition.Z();
   fTime = gRandom->Gaus(p->GetTime() + t0, time_res);
 }
 
 // -----   Print   ------------------------------
 void UpstreamTaggerHit::Print() const {
   cout << "-I- UpstreamTaggerHit: detector " << fDetectorID << endl;
+  cout << "    Constituent tile ID: " << fTileID << endl;
   cout << "    Position: (" << fX << ", " << fY << ", " << fZ << ") cm" << endl;
   cout << "    Time: " << fTime << " ns" << endl;
+  cout << "    ADC: " << GetADC()
+       << ", triggered: " << (fTriggered ? "yes" : "no") << endl;
 }

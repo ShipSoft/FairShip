@@ -451,8 +451,8 @@ def create_config(
     c.UpstreamTagger.SmallTileZ = 0.5 * u.cm  # 20 x 20 mm2 tile thickness
     c.UpstreamTagger.LargeTileZ = 1.0 * u.cm  # 40 x 40 mm2 tile thickness
     c.UpstreamTagger.Z_Position = -25.400 * u.m + c.decayVolume.z  # Relative position of UBT to decay vessel centre
-    c.UpstreamTagger.PositionResolution = 1.0 * u.cm  # Position smearing resolution
     c.UpstreamTagger.TimeResolution = 0.3  # Time resolution in ns
+    c.UpstreamTagger.ADCTriggerThreshold = 100
 
     # Thin vacuum scoring planes. They record every track entering them,
     # without energy deposit; the point detID is the plane number.

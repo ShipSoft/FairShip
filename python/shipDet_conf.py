@@ -267,8 +267,8 @@ def configure_strawtubes(yaml_file: str, ship_geo) -> None:
     detectorList.append(strawtubes)
 
 
-def configure_upstream_tagger(yaml_file: str, upstream_tagger) -> None:
-    """Load the UBT simulation map and add its regions to the detector."""
+def configure_upstream_tagger(yaml_file: str, upstream_tagger, ship_geo) -> None:
+    """Load the shared UBT simulation map and configure geometry/digitization."""
     with open(yaml_file) as file:
         config = yaml.safe_load(file)
 
@@ -279,6 +279,23 @@ def configure_upstream_tagger(yaml_file: str, upstream_tagger) -> None:
     region_ids = [region["id"] for region in regions]
     if len(region_ids) != len(set(region_ids)):
         raise ValueError("The UBT detector map contains duplicate region IDs")
+
+    # Kept in ShipGeo for digitization: detector ID -> constituent tile side
+    # in FairShip internal length units.  This distinguishes 2x2 and 4x4 cm2.
+    ship_geo.UpstreamTagger.RegionTileSize = {
+        region["id"]: region["constituent_tile_size"] * u.cm for region in regions
+    }
+    ship_geo.UpstreamTagger.TileGridOriginX, ship_geo.UpstreamTagger.TileGridEndX = (
+        bound * u.cm for bound in config["bounds"]["x"]
+    )
+    ship_geo.UpstreamTagger.TileGridOriginY, ship_geo.UpstreamTagger.TileGridEndY = (
+        bound * u.cm for bound in config["bounds"]["y"]
+    )
+    # TH2D maps of ADC counts per MeV vs local hit position (mm) in a tile,
+    # named adc_per_mev_<tile side in mm>mm.
+    ship_geo.UpstreamTagger.ADCResponseMapFile = os.path.join(
+        os.environ["FAIRSHIP"], "geometry", "UpstreamTagger_adc_response.root"
+    )
 
     for region in regions:
         upstream_tagger.AddRegion(
@@ -466,6 +483,7 @@ def configure(run, ship_geo):
     configure_upstream_tagger(
         os.path.join(os.environ["FAIRSHIP"], "geometry", "UpstreamTagger_config.yaml"),
         upstreamTagger,
+        ship_geo,
     )
     detectorList.append(upstreamTagger)
 

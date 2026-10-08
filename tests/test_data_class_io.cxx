@@ -145,6 +145,9 @@ void test_const_access(const UpstreamTaggerHit& obj) {
   [[maybe_unused]] auto y = obj.GetY();
   [[maybe_unused]] auto z = obj.GetZ();
   [[maybe_unused]] auto time = obj.GetTime();
+  [[maybe_unused]] auto adc = obj.GetADC();
+  [[maybe_unused]] auto tileID = obj.GetTileID();
+  [[maybe_unused]] auto triggered = obj.IsTriggered();
 }
 
 void test_const_access(const UpstreamTaggerPoint& obj) {
