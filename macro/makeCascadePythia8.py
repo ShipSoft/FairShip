@@ -47,9 +47,10 @@ PROTON_FRACTION = {"W": 0.40, "Mo": 0.43}
 TARGET_NUCLEUS = {"W": (74, 184), "Mo": (42, 96)}
 
 # Average number of hadron-nucleon subcollisions in a hadron-nucleus collision, <n> - 1 linear in the
-# hadron-nucleon total cross section [mb], from PythiaCascade of Pythia 8.312, the version FairShip uses.
-# Pythia 8.318 retunes them, with about 20% more subcollisions in W. PythiaCascade cannot be used
-# directly: its Pythia instances are private, so the tune cannot be applied to its collisions.
+# hadron-nucleon total cross section [mb], from PythiaCascade of Pythia 8.312, unchanged up to 8.316.
+# Pythia 8.317 retunes them, with about 20% more subcollisions in W, so the nucleus model is restricted
+# to the versions below.
+NCOLL_PYTHIA_VERSIONS = (8.312, 8.316)
 NCOLL_A = [1, 2, 4, 9, 12, 14, 16, 27, 40, 56, 63, 84, 107, 129, 197, 208]
 NCOLL_OFFSET = [0.0, 0.03, 0.08, 0.15, 0.20, 0.20, 0.20, 0.26, 0.30, 0.34, 0.40, 0.40, 0.40, 0.50, 0.50, 0.60]
 NCOLL_SLOPE = [0.0, 0.0016, 0.0033, 0.0075, 0.0092, 0.0105, 0.012, 0.017, 0.022, 0.027, 0.028, 0.034, 0.040]
@@ -438,6 +439,14 @@ def parse_args():
     p_threshold = SIGNAL[args.heavy_quark].p_threshold
     if args.n_pot < 1 or args.n_sigma_events < 1 or args.n_momentum_points < 2 or args.p_beam <= p_threshold:
         ap.error(f"need --nevgen >= 1, --nev >= 1, --nrpoints >= 2 and a beam energy above {p_threshold} GeV")
+    if args.cascade_model == "nucleus":
+        version = round(pythia8.Pythia("", False).settings.parm("Pythia:versionNumber"), 3)
+        if not NCOLL_PYTHIA_VERSIONS[0] <= version <= NCOLL_PYTHIA_VERSIONS[1]:
+            ap.error(
+                f"--cascade-model nucleus uses the PythiaCascade tables of Pythia {NCOLL_PYTHIA_VERSIONS[0]}"
+                f"-{NCOLL_PYTHIA_VERSIONS[1]}, but Pythia {version} is installed; update NCOLL_* or use"
+                " --cascade-model nucleon"
+            )
     if args.output == "":
         args.output = f"Cascade{int(args.n_pot / 1000)}k-pythia8-{args.pythia8_tune}-MSEL{args.heavy_quark}-ntuple.root"
     return args
