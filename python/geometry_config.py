@@ -207,8 +207,9 @@ def create_config(
     if strawDesign == 10:
         c.cave.floorHeightMuonShield = c.cave.floorHeightTankA  # avoid the gap, for 2018 geometry
     c.cave.floorHeightTankB = 2 * u.m
-    # TCC8/ECN3 step, at the mid-plane of the gap between M4 and S5 (integration layout 2026-0.1)
-    c.cave.z_transition = 21.78 * u.m
+    # End of the TCC8 floor (integration layout 2026-0.1); the 0.82 m stair step that
+    # follows is centred on the gap between M4 and S5
+    c.cave.z_transition = 21.37 * u.m
 
     with open(c.target_yaml) as file:
         targetconfig = yaml.safe_load(file)
