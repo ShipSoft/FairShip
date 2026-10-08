@@ -102,7 +102,8 @@ class exitHadronAbsorber : public SHiP::Detector<vetoPoint> {
   // PreTrack() for a secondary has to see it.
   struct WeightHistory {
     Double_t initial = 1.;  ///< weight before the first split
-    /// (time at the end of the split step, weight after the split)
+    /// (time at the end of the split step, weight after the split), in step
+    /// order and so strictly increasing in time
     std::vector<std::pair<Double_t, Double_t>> splits;
     /// Weight of the track at time t; a secondary made exactly at the end of
     /// a split step, e.g. by the interaction that ends the track, survived
