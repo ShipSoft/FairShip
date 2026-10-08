@@ -4,6 +4,7 @@
 
 #include "exitHadronAbsorber.h"
 
+#include <cmath>
 #include <cstddef>
 #include <iostream>
 
@@ -61,6 +62,22 @@ Double_t PushedWeightScale(Int_t parentId) {
 Int_t exitHadronAbsorber::fgCarrierTrackID = exitHadronAbsorber::kNoCarrier;
 std::set<Int_t> exitHadronAbsorber::fgReplacedDecays;
 std::set<Int_t> exitHadronAbsorber::fgReplacedTracks;
+std::map<Int_t, exitHadronAbsorber::WeightHistory>
+    exitHadronAbsorber::fgWeightHistory;
+std::set<Int_t> exitHadronAbsorber::fgWeightCorrected;
+
+Double_t exitHadronAbsorber::WeightHistory::WeightAt(Double_t t) const {
+  // The times of a secondary made at the end of a step and of the split on
+  // that step come from the same Geant4 post-step point and agree; the
+  // tolerance only guards against rounding in the unit conversion.
+  const Double_t tol = 1e-12 * std::abs(t);
+  Double_t w = initial;
+  for (const auto& [time, weight] : splits) {
+    if (time > t + tol) break;
+    w = weight;
+  }
+  return w;
+}
 
 exitHadronAbsorber::exitHadronAbsorber(const char* Name, Bool_t Active)
     : Detector(Name, Active, kVETO),
@@ -275,6 +292,12 @@ Bool_t exitHadronAbsorber::ProcessHits(FairVolume* vol) {
             fSecondaryBuffer.push_back(clone);
           }
           part->SetWeight(trackWeight * (1.0 - P_decay));
+          auto [history, isNew] = fgWeightHistory.try_emplace(currentTrackId);
+          if (isNew) {
+            history->second.initial = trackWeight;
+          }
+          history->second.splits.emplace_back(pos.T(),
+                                              trackWeight * (1.0 - P_decay));
           fSplitDecays++;
           fClonesBuffered += fIntermediateNsplits;
           fLastSplitTrackID = currentTrackId;
@@ -370,6 +393,8 @@ void exitHadronAbsorber::BeginEvent() {
   fCloneTracks.clear();
   fgReplacedDecays.clear();
   fgReplacedTracks.clear();
+  fgWeightHistory.clear();
+  fgWeightCorrected.clear();
   fLastSplitTrackID = -1;
   fLastSplitStep = -1;
   fSplitBufferLimitWarned = kFALSE;
@@ -531,6 +556,24 @@ void exitHadronAbsorber::PreTrack() {
   // Products of a replaced decay, and their descendants, are replaced too.
   // Every instance runs this, so the set is complete before any track steps.
   const Int_t motherId = p->GetFirstMother();
+
+  // A Geant4 secondary of a per-step split track was pushed with the track's
+  // final weight; give it the weight the track had when it made it. This
+  // precedes every stop below, so stopped secondaries are stored with the
+  // right weight too, and their own secondaries inherit it. Clones and
+  // continuations (kPNoProcess) already carry exact weights.
+  const auto history = fgWeightHistory.find(motherId);
+  if (history != fgWeightHistory.end() && p->GetUniqueID() != kPNoProcess &&
+      fgWeightCorrected.insert(currentID).second) {
+    auto* shipStack = dynamic_cast<ShipStack*>(gMC->GetStack());
+    const TParticle* mother =
+        shipStack ? shipStack->GetParticle(motherId) : nullptr;
+    const Double_t finalWeight = mother ? mother->GetWeight() : 0.;
+    if (finalWeight > 0.) {
+      p->SetWeight(p->GetWeight() * history->second.WeightAt(p->T()) /
+                   finalWeight);
+    }
+  }
   if (fgReplacedDecays.count(motherId) > 0 ||
       fgReplacedTracks.count(motherId) > 0) {
     fgReplacedTracks.insert(currentID);

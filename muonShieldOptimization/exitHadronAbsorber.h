@@ -6,8 +6,10 @@
 #define MUONSHIELDOPTIMIZATION_EXITHADRONABSORBER_H_
 
 #include <cstddef>
+#include <map>
 #include <set>
 #include <utility>
+#include <vector>
 
 #include "Detector.h"
 #include "TFile.h"
@@ -91,6 +93,24 @@ class exitHadronAbsorber : public SHiP::Detector<vetoPoint> {
                                             //! clones replace
   static std::set<Int_t> fgReplacedTracks;  //! products of those decays and
                                             //! their descendants
+
+  // Weight of a per-step split track along its path. Geant4 hands a track's
+  // secondaries to the stack only once the track is done, and ShipStack then
+  // scales them by its final weight, although one made mid-track should carry
+  // the weight the track had when it made it. PreTrack() puts that right from
+  // this history. Shared by all instances, because the first plane to run
+  // PreTrack() for a secondary has to see it.
+  struct WeightHistory {
+    Double_t initial = 1.;  ///< weight before the first split
+    /// (time at the end of the split step, weight after the split)
+    std::vector<std::pair<Double_t, Double_t>> splits;
+    /// Weight of the track at time t; a secondary made exactly at the end of
+    /// a split step, e.g. by the interaction that ends the track, survived
+    /// that step's decay probability and gets the weight after the split.
+    Double_t WeightAt(Double_t t) const;
+  };
+  static std::map<Int_t, WeightHistory> fgWeightHistory;  //!
+  static std::set<Int_t> fgWeightCorrected;  //! secondaries already rescaled
 
   // Drop the clones still buffered at the end of an event or run, keeping
   // track of how much weight was never simulated.
