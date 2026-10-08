@@ -236,6 +236,10 @@ void ShipStack::FillTrackArray() {
     if (fStoreFlags[iPart]) {
       fTracks->emplace_back(dynamic_cast<TParticle*>(GetParticle(iPart)));
       ShipMCTrack& track = fTracks->back();
+      if (iPart < static_cast<Int_t>(fSplitSets.size())) {
+        const SplitInfo& info = fSplitSets[iPart];
+        track.SetSplitSet(info.splitSet, info.role, info.weight);
+      }
       fIndexMap[iPart] = fNTracks;
       track.SetTrackID(fNTracks);
       track.SetEventID(evtNo);
@@ -318,6 +322,19 @@ void ShipStack::Reset() {
   fParticles->Clear();
   fTracks->clear();
   fPointsPerTrack.clear();
+  fSplitSets.clear();
+}
+
+void ShipStack::SetSplitSet(Int_t iTrack, Int_t splitSet, Int_t role,
+                            Double_t weight) {
+  if (iTrack < 0 || iTrack >= fNParticles) {
+    LOG(error) << "ShipStack::SetSplitSet: no particle with index " << iTrack;
+    return;
+  }
+  if (iTrack >= static_cast<Int_t>(fSplitSets.size())) {
+    fSplitSets.resize(fNParticles);
+  }
+  fSplitSets[iTrack] = {splitSet, role, weight};
 }
 // -------------------------------------------------------------------------
 

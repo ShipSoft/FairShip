@@ -80,6 +80,25 @@ target_link_libraries(
 )
 add_test(NAME FixedTargetCascadeWeight COMMAND testFixedTargetCascadeWeight)
 
+# Split-set provenance of ShipMCTrack, including files written before it existed
+add_executable(testSplitSet test_split_set.cxx)
+target_link_libraries(
+    testSplitSet
+    ShipData
+    ROOT::Core
+    ROOT::RIO
+    ROOT::Tree
+    ROOT::EG
+    ROOT::Physics
+    FairRoot::Base
+    genfit2
+    FairLogger::FairLogger
+)
+add_test(
+    NAME SplitSet
+    COMMAND testSplitSet ${CMAKE_CURRENT_SOURCE_DIR}/data/muonback_smoke.root
+)
+
 # Python unit tests. Run with the interpreter of the active environment so the
 # ROOT, numpy and pytest it provides are the ones used. activate.sh already
 # puts <source>/python on PYTHONPATH; set it here too so a bare ctest works.
