@@ -4,9 +4,12 @@
 
 #include "exitHadronAbsorber.h"
 
+#include <algorithm>
 #include <cmath>
 #include <cstddef>
 #include <iostream>
+#include <iterator>
+#include <limits>
 
 #include "FairGeoBuilder.h"
 #include "FairGeoInterface.h"
@@ -67,16 +70,19 @@ std::map<Int_t, exitHadronAbsorber::WeightHistory>
 std::set<Int_t> exitHadronAbsorber::fgWeightCorrected;
 
 Double_t exitHadronAbsorber::WeightHistory::WeightAt(Double_t t) const {
-  // The times of a secondary made at the end of a step and of the split on
-  // that step come from the same Geant4 post-step point and agree; the
-  // tolerance only guards against rounding in the unit conversion.
-  const Double_t tol = 1e-12 * std::abs(t);
-  Double_t w = initial;
-  for (const auto& [time, weight] : splits) {
-    if (time > t + tol) break;
-    w = weight;
-  }
-  return w;
+  // A secondary made at the end of a step and the split on that step share
+  // the Geant4 post-step time, but geant4_vmc converts it to seconds by
+  // division for the split (TrackPosition) and by multiplication with the
+  // inverse unit for the secondary (stack push), so the two can differ by an
+  // ulp or two. A few ulp of tolerance covers that and stays far below the
+  // time of any real step. Split times increase strictly (a split needs a
+  // step of non-zero length), so the lookup is a binary search.
+  const Double_t tMax =
+      t + 4 * std::numeric_limits<Double_t>::epsilon() * std::abs(t);
+  const auto after = std::upper_bound(
+      splits.begin(), splits.end(), tMax,
+      [](Double_t time, const auto& split) { return time < split.first; });
+  return after == splits.begin() ? initial : std::prev(after)->second;
 }
 
 exitHadronAbsorber::exitHadronAbsorber(const char* Name, Bool_t Active)
