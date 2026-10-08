@@ -17,6 +17,7 @@
 #include "FairRootManager.h"
 #include "FairVolume.h"
 #include "ShipDetectorList.h"
+#include "ShipMCTrack.h"
 #include "ShipStack.h"
 #include "TArrayI.h"
 #include "TDatabasePDG.h"
@@ -256,6 +257,7 @@ Bool_t exitHadronAbsorber::ProcessHits(FairVolume* vol) {
           const Double_t cloneWeight = trackWeight * P_decay /
                                        fIntermediateNsplits /
                                        PushedWeightScale(trueParentId);
+          const Int_t splitSet = SplitSetOf(currentTrackId, trackWeight);
           for (int i = 0; i < fIntermediateNsplits; ++i) {
             TrackBuffer clone;
             clone.pdg = track_pid;
@@ -272,6 +274,8 @@ Bool_t exitHadronAbsorber::ProcessHits(FairVolume* vol) {
             clone.polz = polZ;
             clone.weight = cloneWeight;
             clone.parentID = trueParentId;
+            clone.splitSet = splitSet;
+            clone.splitRole = ShipMCTrack::kSplitDecay;
             fSecondaryBuffer.push_back(clone);
           }
           part->SetWeight(trackWeight * (1.0 - P_decay));
@@ -372,6 +376,9 @@ void exitHadronAbsorber::BeginEvent() {
   fgReplacedTracks.clear();
   fLastSplitTrackID = -1;
   fLastSplitStep = -1;
+  fSplitSetOfTrack.clear();
+  fSplitSetWeight.clear();
+  fNextSplitSet = 0;
   fSplitBufferLimitWarned = kFALSE;
   fEventSizeLimitWarned = kFALSE;
 }
@@ -399,6 +406,20 @@ void exitHadronAbsorber::DiscardBufferedClones() {
                << " buffered split clones (summed weight " << lostWeight
                << ") which no track handed to the stack popper";
   fSecondaryBuffer.clear();
+}
+
+Int_t exitHadronAbsorber::SplitSetOf(Int_t trackId, Double_t weight) {
+  const auto it = fSplitSetOfTrack.find(trackId);
+  if (it != fSplitSetOfTrack.end()) {
+    return it->second;
+  }
+  const Int_t splitSet = fNextSplitSet++;
+  fSplitSetOfTrack.emplace(trackId, splitSet);
+  fSplitSetWeight.push_back(weight);
+  if (auto* stack = dynamic_cast<ShipStack*>(gMC->GetStack())) {
+    stack->SetSplitSet(trackId, splitSet, ShipMCTrack::kSplitSurvivor, weight);
+  }
+  return splitSet;
 }
 
 void exitHadronAbsorber::PostTrack() {
@@ -475,6 +496,11 @@ void exitHadronAbsorber::PostTrack() {
       endpoint.poly = polY;
       endpoint.polz = polZ;
       endpoint.parentID = trueParentId;
+      // The continuation stays on the survivor side of the set; endpoint
+      // clones are its decay alternatives.
+      endpoint.splitSet = SplitSetOf(currentTrackId, part->GetWeight());
+      endpoint.splitRole = splitThisStep ? ShipMCTrack::kSplitSurvivor
+                                         : ShipMCTrack::kSplitDecay;
       if (splitThisStep) {
         endpoint.weight = part->GetWeight() / PushedWeightScale(trueParentId);
         endpoint.continuation = kTRUE;
@@ -632,6 +658,13 @@ void exitHadronAbsorber::PreTrack() {
                        kPNoProcess, ntr, trk.weight, 999);
       if (!trk.continuation) {
         fCloneTracks.insert(ntr);
+      }
+      if (trk.splitSet >= 0) {
+        stack->SetSplitSet(ntr, trk.splitSet, trk.splitRole,
+                           fSplitSetWeight[trk.splitSet]);
+        if (trk.splitRole == ShipMCTrack::kSplitSurvivor) {
+          fSplitSetOfTrack[ntr] = trk.splitSet;
+        }
       }
     }
     // Clear the buffer so we don't duplicate them for the next track

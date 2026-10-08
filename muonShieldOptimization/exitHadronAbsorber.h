@@ -6,6 +6,7 @@
 #define MUONSHIELDOPTIMIZATION_EXITHADRONABSORBER_H_
 
 #include <cstddef>
+#include <map>
 #include <set>
 #include <utility>
 
@@ -26,6 +27,10 @@ struct TrackBuffer {
   // A continuation of a per-step split track rather than a clone: it is
   // transported normally instead of being forced to decay at once.
   Bool_t continuation = kFALSE;
+  // Split set of the split track and the role of this entry in it
+  // (ShipMCTrack::SplitRole), recorded on the stack when it is pushed.
+  Int_t splitSet = -1;
+  Int_t splitRole = 0;
 };
 
 class exitHadronAbsorber : public SHiP::Detector<vetoPoint> {
@@ -96,6 +101,14 @@ class exitHadronAbsorber : public SHiP::Detector<vetoPoint> {
   // track of how much weight was never simulated.
   void DiscardBufferedClones();
 
+  // Split set of a track that is being split, created on first use. The
+  // track is recorded on the stack as the survivor of its set; its clones
+  // and continuations join the same set. A continuation maps to the set of
+  // the track it continues, so a per-step split track keeps one set along its
+  // whole path. The set's weight is the track's weight when the set is
+  // created, before any split lowers it.
+  Int_t SplitSetOf(Int_t trackId, Double_t weight);
+
   Int_t fUniqueID = 0;
   Bool_t fOnlyMuons;         //! flag if only muons should be stored
   Bool_t fSkipNeutrinos;     //! flag if neutrinos should be ignored
@@ -139,6 +152,11 @@ class exitHadronAbsorber : public SHiP::Detector<vetoPoint> {
   // which a track decayed was split.
   Int_t fLastSplitTrackID = -1;  //!
   Int_t fLastSplitStep = -1;     //!
+  // Split set per stack index of a split track or continuation, and the next
+  // free set ID in the event.
+  std::map<Int_t, Int_t> fSplitSetOfTrack;  //!
+  std::vector<Double_t> fSplitSetWeight;    //! indexed by set ID
+  Int_t fNextSplitSet = 0;                  //!
 
   Int_t fSplitDecays = 0;          //! decays replaced by clones
   Int_t fClonesBuffered = 0;       //! clones created for those decays
