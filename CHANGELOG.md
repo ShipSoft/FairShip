@@ -14,9 +14,12 @@ it in future.
 
 ### Added
 
+* `UpstreamTaggerScoringPlane`: two 1 mm thick vacuum scoring planes. Plane 1 (4.4 x 6.72 m2, centred on the beam axis, y in [-3.36, 3.36] m, from the ECN3 floor) sits between the UBT and the decay vessel entrance and stores every track entering it. Plane 2 (9.12 x 8.56 m2, x in [-4.56, 4.56] m, from the ECN3 side wall to its mirror image, and y in [-3.36, 5.2] m, from the ECN3 floor) sits 10 cm downstream of the muon shield and stores only muons. Each entering track is stored as an `UpstreamTaggerScoringPoint` (new `UpstreamTaggerScoringPoint` branch, detID = plane number), independent of energy deposit
 * Add `--pythia8-tune` (`default`, `FTFT`) to `run_fixedTarget.py` and `FixedTargetGenerator::SetPythiaTune` to select the FTFT Pythia8 tune for open charm and beauty production in fixed-target collisions (arXiv:2608.29076) in the Pythia8 primary interaction. The Pythia8 default (Monash 2013) remains the default. Charm and beauty read from cascade input files are unaffected. `SetPythiaTune` takes the same tune names as the command line, with `default` and the empty string both selecting the Pythia8 default. `run_fixedTarget.py` rejects the flag up front when combined with `--charm`, `--beauty` or `--G4only`, where the tune would have no effect. A non-default tune also tags the work directory (e.g. `<host>_run_fixedTarget_1_FTFT`), so runs that differ only by tune no longer overwrite each other.
 
 ### Changed
+
+* The UBT is now a 3.4 x 5.04 m2 (x in [-1.7, 1.7] m, y in [-3.34, 1.7] m, from just above the ECN3 floor to above the decay vessel entrance) p-terphenyl scintillator plane built from the region map in `geometry/UpstreamTagger_config.yaml` (5 mm thick for 20 mm tiles, 10 mm for 40 mm tiles) and no longer a vacuum scoring box
 
 ### Fixed
 

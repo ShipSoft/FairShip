@@ -4,6 +4,7 @@
 
 #include "UpstreamTagger.h"
 
+#include <cmath>
 #include <iostream>
 
 #include "FairVolume.h"
@@ -13,6 +14,7 @@
 #include "TGeoManager.h"
 #include "TGeoMedium.h"
 #include "TParticle.h"
+#include "TString.h"
 #include "TVector3.h"
 #include "TVirtualMC.h"
 #include "UpstreamTaggerPoint.h"
@@ -20,14 +22,10 @@ using std::cout;
 using std::endl;
 
 UpstreamTagger::UpstreamTagger()
-    : Detector("UpstreamTagger", kTRUE, kUpstreamTagger),
-      det_zPos(0),
-      UpstreamTagger_fulldet(nullptr) {}
+    : Detector("UpstreamTagger", kTRUE, kUpstreamTagger), det_zPos(0) {}
 
 UpstreamTagger::UpstreamTagger(const char* name, Bool_t active)
-    : Detector(name, active, kUpstreamTagger),
-      det_zPos(0),
-      UpstreamTagger_fulldet(nullptr) {}
+    : Detector(name, active, kUpstreamTagger), det_zPos(0) {}
 
 Bool_t UpstreamTagger::ProcessHits(FairVolume* vol) {
   /** This method is called from the MC stepping */
@@ -52,14 +50,8 @@ Bool_t UpstreamTagger::ProcessHits(FairVolume* vol) {
 
     fTrackID = gMC->GetStack()->GetCurrentTrackNumber();
     fEventID = gMC->CurrentEvent();
-    Int_t uniqueId;
-    gMC->CurrentVolID(uniqueId);
-    if (uniqueId > 1000000)  // Solid scintillator case
-    {
-      Int_t vcpy;
-      gMC->CurrentVolOffID(1, vcpy);
-      if (vcpy == 5) uniqueId += 4;  // Copy of half
-    }
+    Int_t tileId;
+    gMC->CurrentVolID(tileId);
 
     TParticle* p = gMC->GetStack()->GetCurrentTrack();
     Int_t pdgCode = p->GetPdgCode();
@@ -71,7 +63,7 @@ Bool_t UpstreamTagger::ProcessHits(FairVolume* vol) {
     Double_t ymean = (fPos.Y() + Pos.Y()) / 2.;
     Double_t zmean = (fPos.Z() + Pos.Z()) / 2.;
 
-    AddHit(fEventID, fTrackID, uniqueId, TVector3(xmean, ymean, zmean),
+    AddHit(fEventID, fTrackID, tileId, TVector3(xmean, ymean, zmean),
            TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength, fELoss,
            pdgCode, TVector3(Pos.X(), Pos.Y(), Pos.Z()),
            TVector3(Mom.Px(), Mom.Py(), Mom.Pz()));
@@ -87,22 +79,49 @@ Bool_t UpstreamTagger::ProcessHits(FairVolume* vol) {
 void UpstreamTagger::ConstructGeometry() {
   TGeoVolume* top = gGeoManager->GetTopVolume();
 
-  ShipGeo::InitMedium("vacuum");
-  TGeoMedium* Vacuum_box = gGeoManager->GetMedium("vacuum");
-
-  if (!Vacuum_box) {
-    Fatal("ConstructGeometry", "Medium 'vacuum' not found.");
+  ShipGeo::InitMedium("pterphenyl");
+  TGeoMedium* scintillator = gGeoManager->GetMedium("pterphenyl");
+  if (!scintillator) {
+    Fatal("ConstructGeometry", "Medium 'pterphenyl' not found.");
+  }
+  if (fRegions.empty()) {
+    Fatal("ConstructGeometry", "No regions loaded from the UBT detector map.");
+  }
+  if (fSmallTileZ <= 0. || fLargeTileZ <= 0. || fSmallTileZ > fEnvelopeZ ||
+      fLargeTileZ > fEnvelopeZ) {
+    Fatal("ConstructGeometry", "Invalid UBT tile thicknesses.");
   }
 
-  UpstreamTagger_fulldet =
-      gGeoManager->MakeBox("Upstream_Tagger", Vacuum_box, xbox_fulldet / 2.0,
-                           ybox_fulldet / 2.0, zbox_fulldet / 2.0);
-  UpstreamTagger_fulldet->SetLineColor(kGreen);
+  fDetector = new TGeoVolumeAssembly("Upstream_Tagger");
 
-  top->AddNode(UpstreamTagger_fulldet, 1,
-               new TGeoTranslation(0.0, 0.0, det_zPos));
-  AddSensitiveVolume(UpstreamTagger_fulldet);
-  cout << " Z Position (Upstream Tagger1) " << det_zPos << endl;
+  Int_t smallRegions = 0;
+  Int_t bigRegions = 0;
+  for (const Region& region : fRegions) {
+    const Bool_t isSmall = region.constituentTileSize == 2.;
+    if (region.sizeX <= 0. || region.sizeY <= 0. ||
+        (!isSmall && region.constituentTileSize != 4.) ||
+        std::abs(region.x - fCenterX) + region.sizeX / 2. > fSizeX / 2. ||
+        std::abs(region.y - fCenterY) + region.sizeY / 2. > fSizeY / 2.) {
+      Fatal("ConstructGeometry", "Invalid entry in the UBT detector map.");
+    }
+    const TString volumeName =
+        TString::Format("UpstreamTaggerRegion%d_%dcm", region.id,
+                        static_cast<Int_t>(region.constituentTileSize));
+    const Double_t regionThickness = isSmall ? fSmallTileZ : fLargeTileZ;
+    TGeoVolume* regionVolume =
+        gGeoManager->MakeBox(volumeName, scintillator, region.sizeX / 2.,
+                             region.sizeY / 2., regionThickness / 2.);
+    regionVolume->SetLineColor(isSmall ? kGreen + 2 : kBlue);
+    AddSensitiveVolume(regionVolume);
+    fDetector->AddNode(regionVolume, region.id,
+                       new TGeoTranslation(region.x, region.y, 0.));
+    smallRegions += isSmall;
+    bigRegions += !isSmall;
+  }
 
-  return;
+  top->AddNode(fDetector, 1, new TGeoTranslation(0., 0., det_zPos));
+  cout << " Z Position (Upstream Tagger) " << det_zPos << ", "
+       << fRegions.size() << " mapped regions (" << smallRegions
+       << " with 20 x 20 mm2 tiles, " << bigRegions
+       << " with 40 x 40 mm2 tiles)" << endl;
 }

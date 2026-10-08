@@ -55,6 +55,7 @@ bool objects_equal(const T& a, const T& b) {
 #include "Tracklet.h"
 #include "UpstreamTaggerHit.h"
 #include "UpstreamTaggerPoint.h"
+#include "UpstreamTaggerScoringPoint.h"
 #include "splitcalCluster.h"
 #include "splitcalHit.h"
 #include "splitcalPoint.h"
@@ -387,6 +388,16 @@ int main(int argc, char** argv) {
                          lmom);
     total++;
     if (test_rntuple_io("UpstreamTaggerPoint", objects)) passed++;
+  }
+
+  {
+    std::vector<UpstreamTaggerScoringPoint> objects;
+    TVector3 pos(1.0, 2.0, 3.0);
+    TVector3 mom(0.1, 0.2, 0.3);
+    objects.emplace_back(1, 1, 1, pos, mom, 123.45, 234.56, 0., 13);
+    objects.emplace_back(2, 2, 1, pos, mom, 345.67, 456.78, 0., -13);
+    total++;
+    if (test_rntuple_io("UpstreamTaggerScoringPoint", objects)) passed++;
   }
 
   {

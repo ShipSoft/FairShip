@@ -267,6 +267,30 @@ def configure_strawtubes(yaml_file: str, ship_geo) -> None:
     detectorList.append(strawtubes)
 
 
+def configure_upstream_tagger(yaml_file: str, upstream_tagger) -> None:
+    """Load the UBT simulation map and add its regions to the detector."""
+    with open(yaml_file) as file:
+        config = yaml.safe_load(file)
+
+    if config.get("kind") != "simulation" or config.get("units") != "cm":
+        raise ValueError("The UBT map must be a simulation map expressed in cm")
+
+    regions = config["regions"]
+    region_ids = [region["id"] for region in regions]
+    if len(region_ids) != len(set(region_ids)):
+        raise ValueError("The UBT detector map contains duplicate region IDs")
+
+    for region in regions:
+        upstream_tagger.AddRegion(
+            region["id"],
+            region["x"] * u.cm,
+            region["y"] * u.cm,
+            region["size_x"] * u.cm,
+            region["size_y"] * u.cm,
+            region["constituent_tile_size"],
+        )
+
+
 def configure(run, ship_geo):
     # ---- for backward compatibility ----
     if not hasattr(ship_geo, "DecayVolumeMedium"):
@@ -437,7 +461,21 @@ def configure(run, ship_geo):
     upstreamTagger.SetBoxDimensions(
         ship_geo.UpstreamTagger.BoxX, ship_geo.UpstreamTagger.BoxY, ship_geo.UpstreamTagger.BoxZ
     )
+    upstreamTagger.SetBoxCenter(ship_geo.UpstreamTagger.BoxCenterX, ship_geo.UpstreamTagger.BoxCenterY)
+    upstreamTagger.SetMappedTileThicknesses(ship_geo.UpstreamTagger.SmallTileZ, ship_geo.UpstreamTagger.LargeTileZ)
+    configure_upstream_tagger(
+        os.path.join(os.environ["FAIRSHIP"], "geometry", "UpstreamTagger_config.yaml"),
+        upstreamTagger,
+    )
     detectorList.append(upstreamTagger)
+
+    sp = ship_geo.UpstreamTaggerScoringPlane
+    ubt_scoring_plane = ROOT.UpstreamTaggerScoringPlane("UpstreamTaggerScoringPlane", ROOT.kTRUE)
+    ubt_scoring_plane.SetPlaneThickness(sp.Z)
+    ubt_scoring_plane.AddPlane(sp.CenterX, sp.CenterY, sp.Z_Position, sp.X, sp.Y)
+    # Muons only
+    ubt_scoring_plane.AddPlane(sp.ShieldCenterX, sp.ShieldCenterY, sp.ShieldZ_Position, sp.ShieldX, sp.ShieldY, True)
+    detectorList.append(ubt_scoring_plane)
 
     timeDet = ROOT.TimeDet("TimeDet", ROOT.kTRUE)
     timeDet.SetZposition(ship_geo.TimeDet.z)

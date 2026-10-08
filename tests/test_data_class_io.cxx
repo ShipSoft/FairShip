@@ -25,6 +25,7 @@
 #include "TimeDetPoint.h"
 #include "UpstreamTaggerHit.h"
 #include "UpstreamTaggerPoint.h"
+#include "UpstreamTaggerScoringPoint.h"
 #include "splitcalHit.h"
 #include "splitcalPoint.h"
 #include "strawtubesHit.h"
@@ -150,6 +151,10 @@ void test_const_access(const UpstreamTaggerPoint& obj) {
   [[maybe_unused]] auto pdg = obj.PdgCode();
 }
 
+void test_const_access(const UpstreamTaggerScoringPoint& obj) {
+  [[maybe_unused]] auto pdg = obj.PdgCode();
+}
+
 void test_const_access(const TTPoint& obj) {
   [[maybe_unused]] auto pdg = obj.PdgCode();
 }
@@ -246,6 +251,10 @@ int main(int argc, char** argv) {
   if (test_vector_operations<TimeDetPoint>("TimeDetPoint")) passed++;
   total++;
   if (test_vector_operations<UpstreamTaggerPoint>("UpstreamTaggerPoint"))
+    passed++;
+  total++;
+  if (test_vector_operations<UpstreamTaggerScoringPoint>(
+          "UpstreamTaggerScoringPoint"))
     passed++;
   total++;
   if (test_vector_operations<TTPoint>("TTPoint")) passed++;

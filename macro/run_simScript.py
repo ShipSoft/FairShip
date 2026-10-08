@@ -1080,6 +1080,7 @@ if options.muonback:
         "TimeDetPoint",
         "MCEventHeader",
         "UpstreamTaggerPoint",
+        "UpstreamTaggerScoringPoint",
         "MTCdetPoint",
         "SiliconTargetPoint",
         "sGeoTracks",
