@@ -47,7 +47,9 @@ PROTON_FRACTION = {"W": 0.40, "Mo": 0.43}
 TARGET_NUCLEUS = {"W": (74, 184), "Mo": (42, 96)}
 
 # Average number of hadron-nucleon subcollisions in a hadron-nucleus collision, <n> - 1 linear in the
-# hadron-nucleon total cross section [mb], from Pythia 8.312 PythiaCascade
+# hadron-nucleon total cross section [mb], from PythiaCascade of Pythia 8.312, the version FairShip uses.
+# Pythia 8.318 retunes them, with about 20% more subcollisions in W. PythiaCascade cannot be used
+# directly: its Pythia instances are private, so the tune cannot be applied to its collisions.
 NCOLL_A = [1, 2, 4, 9, 12, 14, 16, 27, 40, 56, 63, 84, 107, 129, 197, 208]
 NCOLL_OFFSET = [0.0, 0.03, 0.08, 0.15, 0.20, 0.20, 0.20, 0.26, 0.30, 0.34, 0.40, 0.40, 0.40, 0.50, 0.50, 0.60]
 NCOLL_SLOPE = [0.0, 0.0016, 0.0033, 0.0075, 0.0092, 0.0105, 0.012, 0.017, 0.022, 0.027, 0.028, 0.034, 0.040]
