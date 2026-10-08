@@ -27,6 +27,13 @@ class TParticle;
 
 class ShipMCTrack : public TObject {
  public:
+  /** Role of a track in a split set (see GetSplitSet()). **/
+  enum SplitRole : Int_t {
+    kNotSplit = 0,       ///< not part of a split set
+    kSplitSurvivor = 1,  ///< the split track itself, or its continuation
+    kSplitDecay = 2      ///< a clone standing for one decay of the split track
+  };
+
   /**  Default constructor  **/
   ShipMCTrack();
 
@@ -77,11 +84,37 @@ class ShipMCTrack : public TObject {
   void Get4Momentum(TLorentzVector& momentum);
   void GetStartVertex(TVector3& vertex);
 
+  /** Split set of the track, -1 if it is not part of one. Splitting a kaon or
+   ** pion replaces its decay by weighted alternatives, which are mutually
+   ** exclusive histories rather than particles that exist together. All
+   ** tracks created for one split track share its split set: the track itself
+   ** and its continuations (kSplitSurvivor), and the clones that each stand
+   ** for one of its decays (kSplitDecay). The clones and continuations are
+   ** pushed with the split track's mother as their mother, so the split set,
+   ** not the mother index, tells them apart from real siblings. The ID is
+   ** unique within an event.
+   ** GetSplitWeight() is the weight of the split track before it was split,
+   ** the same for every member: a decay alternative of weight w stands for a
+   ** decay with probability w / GetSplitWeight(). A survivor track carries
+   ** the weight of its own path, before any decay that ends it. Clones whose
+   ** products were not stored are pruned from the output, so the stored
+   ** alternatives of a set need not add up to it. **/
+  Int_t GetSplitSet() const { return fSplitSet; }
+  Int_t GetSplitRole() const { return fSplitRole; }
+  Double_t GetSplitWeight() const { return fSplitWeight; }
+  Bool_t IsSplitDecay() const { return fSplitRole == kSplitDecay; }
+  Bool_t IsSplitSurvivor() const { return fSplitRole == kSplitSurvivor; }
+
   /**  Modifiers  **/
   void SetMotherId(Int_t id) { fMotherId = id; }
   void SetStartT(Double_t t) { fStartT = t; }
   void SetEventID(const Int_t& eventID);
   void SetTrackID(const Int_t& trackID);
+  void SetSplitSet(Int_t splitSet, Int_t role, Double_t splitWeight) {
+    fSplitSet = splitSet;
+    fSplitRole = role;
+    fSplitWeight = splitWeight;
+  }
 
  private:
   /**  PDG particle code  **/
@@ -125,7 +158,16 @@ class ShipMCTrack : public TObject {
   /** Index of track in the event **/
   Int_t fTrackID;
 
-  ClassDefOverride(ShipMCTrack, 9);
+  /** Split set the track belongs to, -1 if none (see GetSplitSet()) **/
+  Int_t fSplitSet;
+
+  /** Role in the split set, a SplitRole **/
+  Int_t fSplitRole;
+
+  /** Weight of the split track before splitting (see GetSplitSet()) **/
+  Double32_t fSplitWeight;
+
+  ClassDefOverride(ShipMCTrack, 10);
 };
 
 // ==========   Inline functions   ========================================
