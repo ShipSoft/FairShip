@@ -21,7 +21,9 @@
 #include "TSystem.h"
 #include "TVectorD.h"
 
-using namespace ShipMuDIS;
+using ShipMuDIS::MatTypeStr;
+using ShipMuDIS::MuonDISInBranches;
+using ShipMuDIS::nMats;
 
 NewMuDISGenerator::NewMuDISGenerator() : SHiP::Generator() {
   fTree = nullptr;

@@ -25,7 +25,10 @@
 #include "TSystem.h"
 #include "TVectorD.h"
 
-using namespace ShipMuDIS;
+using ShipMuDIS::MatTypeStr;
+using ShipMuDIS::MuonDISInBranches;
+using ShipMuDIS::MuonInBranches;
+using ShipMuDIS::nMats;
 
 namespace {
 // Keep the nominal bin width and reserve one visible bin at each end.
@@ -550,6 +553,8 @@ int MuDISFilter::DaughterCategory(const DISparticle& particle) const {
       return 7;
     case 111:
       return 9;
+    default:
+      break;
   }
   const auto* pdg = fPDG->GetParticle(particle.pid);
   if (pdg) {

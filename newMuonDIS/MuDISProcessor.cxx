@@ -19,7 +19,11 @@
 #include "TSystem.h"
 #include "TVectorD.h"
 
-using namespace ShipMuDIS;
+using ShipMuDIS::kMuonShieldTailZ;
+using ShipMuDIS::MatTypeStr;
+using ShipMuDIS::MuonDISBranches;
+using ShipMuDIS::nMats;
+using ShipMuDIS::REST;
 
 namespace {
 double DISMinLength(const std::string& label, const MuonPath& path) {
