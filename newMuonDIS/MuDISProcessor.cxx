@@ -22,10 +22,11 @@ using namespace ShipMuDIS;
 
 namespace {
 double DISMinLength(const std::string& label, const MuonPath& path) {
-  // Restrict MS to the last 20 cm in accumulated z, with gaps removed.
+  // Restrict MS to the material tail in accumulated z, with gaps removed.
   return label.find("MS") != label.npos
-             ? path.GetLengthAtZ(path.GetstartZ() +
-                                 std::max(0., path.GetZLength() - 20.))
+             ? path.GetLengthAtZ(
+                   path.GetstartZ() +
+                   std::max(0., path.GetZLength() - kMuonShieldTailZ))
              : 0.;
 }
 }  // namespace
@@ -290,7 +291,7 @@ void MuDISProcessor::generateDISevents(const std::string& tType,
   // print summary of initialisation params
   // fPythia->Pylist(1);
 
-  // Preserve the shield's last-20-cm restriction in compact z, then sample
+  // Preserve the shield's material-tail restriction in compact z, then sample
   // actual segment length so changes of direction do not bias the vertices.
   const double minLength = DISMinLength(aLabel, aPath);
   double lastxs = 0;

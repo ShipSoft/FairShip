@@ -700,8 +700,41 @@ std::vector<MuDISFilter::FilterCandidate> MuDISFilter::DecayDaughters(
   return candidates;
 }
 
-bool MuDISFilter::HitsTrackingAndTD(double charge, const DISparticle& particle,
-                                    const TVector3& vertex) const {
+bool MuDISFilter::IncludesParticle(const DISparticle& particle) const {
+  return fIncludeMuons || std::abs(particle.pid) != 13;
+}
+
+bool MuDISFilter::IsForwardToPlane(const FilterCandidate& candidate,
+                                   double z) const {
+  return (z - candidate.vertex.Z()) * candidate.particle.pz >= 0.;
+}
+
+double MuDISFilter::ChargedCandidateCharge(
+    const FilterCandidate& candidate) const {
+  const auto& particle = candidate.particle;
+  if (!IncludesParticle(particle) || !PassesChargedMomentumCut(particle) ||
+      (fUseDetectorAcceptance && !IsForwardToPlane(candidate, fDetectorZ)))
+    return 0.;
+  return Charge(particle);
+}
+
+bool MuDISFilter::HitsDetectorPlane(const FilterCandidate& candidate,
+                                    double charge, double z,
+                                    const std::array<double, 4>& bounds) const {
+  if (!IsForwardToPlane(candidate, z)) return false;
+  const auto& particle = candidate.particle;
+  TVector3 hit, momentum;
+  return fPropagator->Extrapolate(
+             charge, candidate.vertex,
+             TVector3(particle.px, particle.py, particle.pz), z, hit,
+             momentum) &&
+         InsideXY(hit, bounds);
+}
+
+bool MuDISFilter::HitsTrackingAndTD(const FilterCandidate& candidate,
+                                    double charge) const {
+  const auto& particle = candidate.particle;
+  const auto& vertex = candidate.vertex;
   TVector3 position = vertex, momentum(particle.px, particle.py, particle.pz);
   std::array<unsigned, 5> order = {0, 1, 2, 3, 4};
   std::sort(order.begin(), order.end(),
@@ -711,7 +744,7 @@ bool MuDISFilter::HitsTrackingAndTD(double charge, const DISparticle& particle,
             });
   bool firstPair = false, secondPair = false, TD = false;
   for (unsigned station : order) {
-    if ((fStationZ[station] - vertex.Z()) * particle.pz < 0.) continue;
+    if (!IsForwardToPlane(candidate, fStationZ[station])) continue;
     TVector3 hit, nextMomentum;
     if (!fPropagator->Extrapolate(charge, position, momentum,
                                   fStationZ[station], hit, nextMomentum))
@@ -730,44 +763,42 @@ bool MuDISFilter::HitsTrackingAndTD(double charge, const DISparticle& particle,
   return false;
 }
 
-bool MuDISFilter::PassDetectorFilter(
-    const std::vector<FilterCandidate>& candidates) const {
-  if (fFilterOption == 2) {
-    const TVector3 minimum(-200., -300., fDetectorVolumeZ.first);
-    const TVector3 maximum(200., 300., fDetectorVolumeZ.second);
-    for (const auto& candidate : candidates) {
-      const auto& particle = candidate.particle;
-      if (IsNeutrino(particle)) continue;
-      if (!fIncludeMuons && std::abs(particle.pid) == 13) continue;
-      if (fPropagator->IntersectsBox(
-              Charge(particle), candidate.vertex,
-              TVector3(particle.px, particle.py, particle.pz), minimum,
-              maximum))
-        return true;
-    }
-    return false;
-  }
-  // Count candidates before expensive transport; option 1 always requires two.
+bool MuDISFilter::HitsDetectorVolume(const FilterCandidate& candidate) const {
+  const auto& particle = candidate.particle;
+  if (IsNeutrino(particle) || !IncludesParticle(particle)) return false;
+  const TVector3 minimum(-200., -300., fDetectorVolumeZ.first);
+  const TVector3 maximum(200., 300., fDetectorVolumeZ.second);
+  return fPropagator->IntersectsBox(
+      Charge(particle), candidate.vertex,
+      TVector3(particle.px, particle.py, particle.pz), minimum, maximum);
+}
+
+bool MuDISFilter::PassChargedCandidates(
+    const std::vector<FilterCandidate>& candidates, unsigned minimum) const {
+  if (minimum == 0) return true;
+  if (candidates.size() < minimum) return false;
+  // Both charged filters count eligible candidates before expensive transport.
   unsigned remaining = 0, accepted = 0;
   std::vector<double> charges;
   charges.reserve(candidates.size());
   for (const auto& candidate : candidates) {
-    const auto& particle = candidate.particle;
-    const double charge = !fIncludeMuons && std::abs(particle.pid) == 13 ? 0.
-                          : PassesChargedMomentumCut(particle)
-                              ? Charge(particle)
-                              : 0.;
+    const double charge = ChargedCandidateCharge(candidate);
     charges.push_back(charge);
     if (charge != 0.) ++remaining;
   }
   for (std::size_t i = 0; i < candidates.size(); ++i) {
-    if (accepted + remaining < 2) return false;
+    if (accepted + remaining < minimum) return false;
     if (charges[i] == 0.) continue;
     --remaining;
-    if (HitsTrackingAndTD(charges[i], candidates[i].particle,
-                          candidates[i].vertex) &&
-        ++accepted == 2)
-      return true;
+    if (fUseDetectorAcceptance) {
+      const bool hits =
+          fFilterOption == 1
+              ? HitsTrackingAndTD(candidates[i], charges[i])
+              : HitsDetectorPlane(candidates[i], charges[i], fDetectorZ,
+                                  {-200., 200., -300., 300.});
+      if (!hits) continue;
+    }
+    if (++accepted >= minimum) return true;
   }
   return false;
 }
@@ -824,63 +855,22 @@ bool MuDISFilter::PassCandidates(
   if (fUseDetectorAcceptance && !fPropagator)
     throw std::runtime_error(
         "Configure detector acceptance with geometry and field map first");
-  if (fFilterOption != 0) return PassDetectorFilter(candidates);
-  if (fMinChargedDaughters == 0) return true;
-  if (candidates.size() < fMinChargedDaughters) return false;
-  std::vector<double> charges;
-  unsigned remaining = 0;
-  if (fUseDetectorAcceptance) {
-    charges.reserve(candidates.size());
-    for (const auto& candidate : candidates) {
-      const auto& p = candidate.particle;
-      // Count only candidates that can make a forward physical crossing.
-      const double charge =
-          (!fIncludeMuons && std::abs(p.pid) == 13) ||
-                  (fDetectorZ - candidate.vertex.Z()) * p.pz < 0. ||
-                  !PassesChargedMomentumCut(p)
-              ? 0.
-              : Charge(p);
-      charges.push_back(charge);
-      if (charge != 0.) ++remaining;
-    }
-    if (remaining < fMinChargedDaughters) return false;
-  }
-  unsigned charged = 0;
-  for (std::size_t i = 0; i < candidates.size(); ++i) {
-    const auto& candidate = candidates[i];
-    const auto& p = candidate.particle;
-    if (!fIncludeMuons && std::abs(p.pid) == 13) continue;
-    const double charge = fUseDetectorAcceptance ? charges[i] : Charge(p);
-    if (charge == 0.) continue;
-    if (!PassesChargedMomentumCut(p)) continue;
-    if (fUseDetectorAcceptance) {
-      if (charged + remaining < fMinChargedDaughters) return false;
-      --remaining;
-      TVector3 hit, momentum;
-      if (!fPropagator->Extrapolate(charge, candidate.vertex,
-                                    TVector3(p.px, p.py, p.pz), fDetectorZ, hit,
-                                    momentum) ||
-          std::abs(hit.X()) > 200. || std::abs(hit.Y()) > 300.)
-        continue;
-    }
-    ++charged;
-    if (charged >= fMinChargedDaughters) return true;
-  }
-  return charged >= fMinChargedDaughters;
+  if (fFilterOption == 2)
+    return std::any_of(candidates.begin(), candidates.end(),
+                       [this](const FilterCandidate& candidate) {
+                         return HitsDetectorVolume(candidate);
+                       });
+  // Option 1 always requires two tracks, independently of the option-0 minimum.
+  return PassChargedCandidates(candidates,
+                               fFilterOption == 1 ? 2 : fMinChargedDaughters);
 }
 
 bool MuDISFilter::HitsTimingDetector(const FilterCandidate& candidate) const {
   if (!fUseDetectorAcceptance || !fPropagator ||
-      !std::isfinite(fTimingDetectorZ) ||
-      (fTimingDetectorZ - candidate.vertex.Z()) * candidate.particle.pz < 0.)
+      !std::isfinite(fTimingDetectorZ))
     return false;
-  TVector3 hit, momentum;
-  return fPropagator->Extrapolate(
-             Charge(candidate.particle), candidate.vertex,
-             TVector3(candidate.particle.px, candidate.particle.py,
-                      candidate.particle.pz),
-             fTimingDetectorZ, hit, momentum) &&
-         InsideXY(hit, fTimingDetectorXY);
+  return HitsDetectorPlane(candidate, Charge(candidate.particle),
+                           fTimingDetectorZ, fTimingDetectorXY);
 }
 
 void MuDISFilter::FillDIS(Histograms& h, const MuonDISInBranches& br, int idis,
