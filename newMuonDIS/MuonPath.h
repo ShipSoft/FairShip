@@ -30,55 +30,50 @@ constexpr double muon_mass = 0.10565999895334244;  // muon mass in GeV
 
 class MuonPath {
  public:
-  MuonPath();
-  ~MuonPath() {};
-
-  inline void AddVolume(const std::string& aVol, const std::string& aMat,
-                        const double& aD) {
+  void AddVolume(const std::string& aVol, const std::string& aMat, double aD) {
     flabel = GetLabel(aVol, aMat);
     fvolName.push_back(aVol);
     fmaterial.push_back(aMat);
     fdensity = aD;
-  };
+  }
 
-  inline double GetMomentum(const unsigned& idx) const {
+  double GetMomentum(unsigned idx) const {
     if (idx >= GetNSlices()) return 0;
     return fpvec[idx].R();
-  };
+  }
 
-  inline double Getpx(const unsigned& idx) const {
+  double Getpx(unsigned idx) const {
     if (idx >= GetNSlices()) return 0;
     return fpvec[idx].X();
-  };
+  }
 
-  inline double Getpy(const unsigned& idx) const {
+  double Getpy(unsigned idx) const {
     if (idx >= GetNSlices()) return 0;
     return fpvec[idx].Y();
-  };
+  }
 
-  inline double Getpz(const unsigned& idx) const {
+  double Getpz(unsigned idx) const {
     if (idx >= GetNSlices()) return 0;
     return fpvec[idx].Z();
-  };
+  }
 
-  inline std::string GetLabel() const { return flabel; };
+  std::string GetLabel() const { return flabel; }
 
-  inline void SetLabel(const std::string& aLab) { flabel = aLab; };
+  void SetLabel(const std::string& aLab) { flabel = aLab; }
 
-  inline double GetDensity() const { return fdensity; };
+  double GetDensity() const { return fdensity; }
 
-  inline double GetWeightedDensity() const { return fwdensity; };
+  double GetWeightedDensity() const { return fwdensity; }
 
   double GetWeightedDensity(double minLength) const;
 
-  inline void SetDensity(const double& aD) { fdensity = aD; };
+  void SetDensity(double aD) { fdensity = aD; }
 
-  inline double GetLength() const { return flength; };
+  double GetLength() const { return flength; }
 
-  inline double GetZLength() const { return fzlength; };
+  double GetZLength() const { return fzlength; }
 
-  inline void SetLength(const double& aStep, const ROOT::Math::XYZPoint& aStart,
-                        const double& aZ) {
+  void SetLength(double aStep, const ROOT::Math::XYZPoint& aStart, double aZ) {
     flength += aStep;
     fendLength.push_back(flength);
     fzlength += aZ;
@@ -89,71 +84,69 @@ class MuonPath {
     const unsigned idx = static_cast<unsigned>(fstart.size() - 1);
     fstartT.push_back(0.);
     fstartT.back() = GetTimeNs(aStart.Z(), idx);
-  };
+  }
 
-  inline unsigned GetNSlices() const {
+  unsigned GetNSlices() const {
     return static_cast<unsigned>(
         std::min({fvolName.size(), fmaterial.size(), fpvec.size(), fvtx.size(),
                   fvtxT.size(), fstart.size(), fstartT.size(), fendZ.size()}));
-  };
+  }
 
-  inline double GetstartZ() const {
-    return fstart.empty() ? 0. : fstart.front().Z();
-  };
+  double GetstartZ() const { return fstart.empty() ? 0. : fstart.front().Z(); }
 
-  inline double GetstartX(const unsigned& idx) const {
+  double GetstartX(unsigned idx) const {
     if (idx >= GetNSlices()) return 0;
     return fstart[idx].X();
-  };
+  }
 
-  inline double GetstartY(const unsigned& idx) const {
+  double GetstartY(unsigned idx) const {
     if (idx >= GetNSlices()) return 0;
     return fstart[idx].Y();
-  };
+  }
 
-  inline double GetstartZ(const unsigned& idx) const {
+  double GetstartZ(unsigned idx) const {
     if (idx >= GetNSlices()) return 0;
     return fstart[idx].Z();
-  };
+  }
 
-  inline double GetEndZ(const unsigned& idx) const {
+  double GetEndZ(unsigned idx) const {
     if (idx >= GetNSlices()) return 0;
     return fendZ[idx];
-  };
+  }
 
-  inline double GetSliceLength(const unsigned& idx) const {
+  double GetSliceLength(unsigned idx) const {
     if (idx >= GetNSlices()) return 0;
     return fendLength[idx] - (idx == 0 ? 0. : fendLength[idx - 1]);
-  };
+  }
 
   void SetVertexInfo(const ROOT::Math::XYZPoint& vecpos,
-                     const ROOT::Math::XYZVector& vecp, const double& time);
+                     const ROOT::Math::XYZVector& vecp, double time);
   std::string GetLabel(const std::string& aVol, const std::string& aMat) const;
   void Print();
-  double GetZ(const double& aZ, unsigned& idx) const;
+  double GetZ(double aZ, unsigned& idx) const;
   double GetZAtLength(double length, unsigned& idx) const;
-  double GetLengthAtZ(const double& aZ) const;
+  double GetLengthAtZ(double aZ) const;
   bool Add(const MuonPath& aEle);
 
-  inline double GetX(const double& aZ, const unsigned& idx) const {
+  double GetX(double aZ, unsigned idx) const {
     if (idx >= GetNSlices() || fpvec[idx].Z() == 0) return 0;
     return fvtx[idx].X() +
            (aZ - fvtx[idx].Z()) * fpvec[idx].X() / fpvec[idx].Z();
-  };
+  }
 
-  inline double GetY(const double& aZ, const unsigned& idx) const {
+  double GetY(double aZ, unsigned idx) const {
     if (idx >= GetNSlices() || fpvec[idx].Z() == 0) return 0;
     return fvtx[idx].Y() +
            (aZ - fvtx[idx].Z()) * fpvec[idx].Y() / fpvec[idx].Z();
-  };
+  }
 
-  inline double GetLength(const double& aZ, const unsigned& idx) const {
+  double GetLength(double aZ, unsigned idx) const {
     if (idx >= GetNSlices()) return 0;
     return (ROOT::Math::XYZPoint(GetX(aZ, idx), GetY(aZ, idx), aZ) - fvtx[idx])
         .R();  // in cm
-  };
+  }
 
-  inline double GetTimeNs(const double& aZ, const unsigned& idx) const {
+  double GetTimeNs(double aZ, unsigned idx) const {
     if (idx >= GetNSlices() || fpvec[idx].Z() == 0.) return 0;
     double P = fpvec[idx].R();
     if (P == 0.) return 0;
@@ -161,14 +154,14 @@ class MuonPath {
     if (v == 0.) return 0;
     // A slice may precede its reference measurement in z.
     return fvtxT[idx] + (aZ - fvtx[idx].Z()) * P / fpvec[idx].Z() / v;
-  };
+  }
 
  private:
-  std::string flabel;
-  double fdensity;
-  double fwdensity;
-  double flength;
-  double fzlength;
+  std::string flabel = "None";
+  double fdensity = 0.;
+  double fwdensity = 0.;
+  double flength = 0.;
+  double fzlength = 0.;
 
   std::vector<std::string> fvolName;
   std::vector<std::string> fmaterial;

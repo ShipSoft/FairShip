@@ -9,17 +9,8 @@
 
 #include "FairLogger.h"
 
-MuonPath::MuonPath() {
-  flabel = "None";
-  fdensity = 0;
-  fwdensity = 0;
-  flength = 0;
-  fzlength = 0;
-}
-
 void MuonPath::SetVertexInfo(const ROOT::Math::XYZPoint& vecpos,
-                             const ROOT::Math::XYZVector& vecp,
-                             const double& time) {
+                             const ROOT::Math::XYZVector& vecp, double time) {
   fvtx.push_back(vecpos);
   fvtxT.push_back(time);
   fpvec.push_back(vecp);
@@ -55,7 +46,7 @@ double MuonPath::GetZAtLength(double length, unsigned& idx) const {
 }
 
 // Convert the existing compact z coordinate (gaps removed) into path length.
-double MuonPath::GetLengthAtZ(const double& aZ) const {
+double MuonPath::GetLengthAtZ(double aZ) const {
   if (fendLength.empty()) return 0.;
   unsigned idx = 0;
   const double z = GetZ(aZ, idx);
@@ -66,7 +57,7 @@ double MuonPath::GetLengthAtZ(const double& aZ) const {
                              : 0.);
 }
 
-double MuonPath::GetZ(const double& aZ, unsigned& idx) const {
+double MuonPath::GetZ(double aZ, unsigned& idx) const {
   //@FIXME AMM- is this efficient enough??
   const unsigned nSlices = GetNSlices();
   if (nSlices == 0) {

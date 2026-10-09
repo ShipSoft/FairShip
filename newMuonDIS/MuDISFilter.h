@@ -91,7 +91,7 @@ class MuDISFilter {
 
   Histograms BookHistograms(TDirectory* dir, const std::string& mat,
                             const std::string& label = "");
-  void init(const int& aEvts, const int& aStart);
+  void init(int aEvts, int aStart);
 
   bool InitFile(const char*, int);
   bool InitFile(const char*);
@@ -168,15 +168,15 @@ class MuDISFilter {
   std::unique_ptr<TChain> ftree;
   ShipMuDIS::MuonInBranches finEv;
 
-  TTree* fouttree;
+  TTree* fouttree = nullptr;
   ShipMuDIS::MuonBranches foutEv;
 
-  int fnEvts;
-  int fstartEvt;
+  int fnEvts = -1;
+  int fstartEvt = 0;
 
   TDatabasePDG* fPDG;
-  Histograms hist_all[ShipMuDIS::nMats];
-  Histograms hist_filt[ShipMuDIS::nMats];
+  std::array<Histograms, ShipMuDIS::nMats> hist_all;
+  std::array<Histograms, ShipMuDIS::nMats> hist_filt;
   FilterEfficiencyHistograms fFilterEfficiency;
   bool fDetailedHistograms = false;
   std::array<double, 4> fEfficiencyXYBounds = {-200., 200., -300., 300.};

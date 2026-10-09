@@ -98,13 +98,7 @@ int KinematicBin(double value, const double* edges, unsigned bins) {
 }  // namespace
 
 // -----   Default constructor   -------------------------------------------
-MuDISFilter::MuDISFilter() {
-  fouttree = nullptr;
-
-  fnEvts = -1;
-  fstartEvt = 0;
-  fPDG = TDatabasePDG::Instance();
-}
+MuDISFilter::MuDISFilter() : fPDG(TDatabasePDG::Instance()) {}
 
 void MuDISFilter::SetFilterEfficiencyBinning(double xmin, double xmax,
                                              unsigned xbins, double ymin,
@@ -165,11 +159,11 @@ Histograms MuDISFilter::BookHistograms(TDirectory* dir, const std::string& mat,
       dir, std::format("daughter_pdg_grouped_{}", label),
       std::format("DIS daughter species - {};Species;Particles", mat), 11, 0.5,
       11.5);
-  const char* labels[] = {"e^{+}",   "e^{-}",         "#mu^{+}",   "#mu^{-}",
-                          "#gamma",  "#nu/#bar{#nu}", "#pi^{#pm}", "h^{#pm}",
-                          "#pi^{0}", "h^{0}",         "other"};
-  for (int bin = 1; bin <= 11; ++bin)
-    h.dis_pdgGrouped->GetXaxis()->SetBinLabel(bin + 1, labels[bin - 1]);
+  constexpr std::array<const char*, 11> labels = {
+      "e^{+}",     "e^{-}",   "#mu^{+}", "#mu^{-}", "#gamma", "#nu/#bar{#nu}",
+      "#pi^{#pm}", "h^{#pm}", "#pi^{0}", "h^{0}",   "other"};
+  for (std::size_t bin = 0; bin < labels.size(); ++bin)
+    h.dis_pdgGrouped->GetXaxis()->SetBinLabel(bin + 2, labels[bin]);
   if (fDetailedHistograms)
     h.dis_n = WithFlowBins<TH1I>(
         dir, std::format("n_daughters_{}", label),
@@ -318,7 +312,7 @@ void MuDISFilter::FillFilterEfficiencyHistograms(unsigned material,
     fFilterEfficiency.passedZ[ip][ipt][ix][iy][material]->Fill(z, weight);
 }
 
-void MuDISFilter::init(const int& aEvts, const int& aStart) {
+void MuDISFilter::init(int aEvts, int aStart) {
   if (aEvts < -1 || aStart < 0)
     throw std::invalid_argument("Invalid event range");
   fnEvts = aEvts;
@@ -953,11 +947,9 @@ void MuDISFilter::ProcessEvents() {
                                            ftree->GetEntries())
                   : ftree->GetEntries();
   std::int64_t selected = 0, skipped = 0;
-  std::int64_t selectedDIS[nMats] = {};
-  double weightedDIS[nMats] = {};
-  std::int64_t processedDIS[nMats] = {};
-  double weightedProcessedDIS[nMats] = {};
-  double weightedMuons[nMats] = {}, weightedSelectedMuons[nMats] = {};
+  std::array<std::int64_t, nMats> selectedDIS{}, processedDIS{};
+  std::array<double, nMats> weightedDIS{}, weightedProcessedDIS{};
+  std::array<double, nMats> weightedMuons{}, weightedSelectedMuons{};
   for (std::int64_t event = fstartEvt; event < end; ++event) {
     if ((event - fstartEvt) % 100 == 0)
       LOG(info) << "MuDISFilter: processing entry " << event;
@@ -1093,18 +1085,19 @@ void MuDISFilter::ProcessEvents() {
         new TH1D("filter_counts", "Filter counts;Sample;Count", 8, 0., 8.);
     counts->SetDirectory(
         fouttree->GetDirectory()->GetDirectory(MatTypeStr[imat].c_str()));
-    const char* labels[] = {"muons_processed_raw", "muons_processed_weighted",
-                            "muons_selected_raw",  "muons_selected_weighted",
-                            "dis_processed_raw",   "dis_processed_weighted",
-                            "dis_selected_raw",    "dis_selected_weighted"};
-    const double values[] = {
+    constexpr std::array<const char*, 8> labels = {
+        "muons_processed_raw", "muons_processed_weighted",
+        "muons_selected_raw",  "muons_selected_weighted",
+        "dis_processed_raw",   "dis_processed_weighted",
+        "dis_selected_raw",    "dis_selected_weighted"};
+    const std::array<double, 8> values = {
         hist_all[imat].mu_ppt->GetEntries(),     weightedMuons[imat],
         hist_filt[imat].mu_ppt->GetEntries(),    weightedSelectedMuons[imat],
         static_cast<double>(processedDIS[imat]), weightedProcessedDIS[imat],
         static_cast<double>(selectedDIS[imat]),  weightedDIS[imat]};
-    for (int bin = 1; bin <= 8; ++bin) {
-      counts->GetXaxis()->SetBinLabel(bin, labels[bin - 1]);
-      counts->SetBinContent(bin, values[bin - 1]);
+    for (std::size_t bin = 0; bin < labels.size(); ++bin) {
+      counts->GetXaxis()->SetBinLabel(bin + 1, labels[bin]);
+      counts->SetBinContent(bin + 1, values[bin]);
     }
   }
 }

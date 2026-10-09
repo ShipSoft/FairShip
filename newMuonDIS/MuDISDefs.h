@@ -58,7 +58,7 @@ struct MuonDISBranches {
   std::vector<int> nDISdau;               // per DIS event muon
   std::vector<DISparticle> DISparticles;  // all DIS events together.
 
-  void InitTree(TTree*& aT, const std::string& aLabel) {
+  void InitTree(TTree* aT, const std::string& aLabel) {
     aT->Branch(("muon_nDISevt_" + aLabel).c_str(), &nDISevts);
     aT->Branch(("muon_nDISGenerated_" + aLabel).c_str(), &nDISevtsGenerated);
     aT->Branch(("muon_pPythia_" + aLabel).c_str(), &pPythia);
@@ -71,9 +71,9 @@ struct MuonDISBranches {
     aT->Branch(("mudis_DISvt_" + aLabel).c_str(), &DISvt);
     aT->Branch(("mudis_nDISdaughters_" + aLabel).c_str(), &nDISdau);
     aT->Branch(("mudis_DISproducts_" + aLabel).c_str(), &DISparticles);
-  };
+  }
 
-  void initEvent(const int& nDIS) {
+  void initEvent(int nDIS) {
     nDISevts = 0;
     nDISevtsGenerated = -1;
     pPythia = -1.;
@@ -94,7 +94,7 @@ struct MuonDISBranches {
     nDISdau.reserve(nDIS);
     DISparticles.clear();
     DISparticles.reserve(10 * nDIS);
-  };
+  }
 };
 
 struct MuonBranches {
@@ -105,8 +105,8 @@ struct MuonBranches {
   std::vector<TimeDetPoint> tdPt;
   double pathLength = 0.;
   std::array<double, nMats> pathLengthByMat = {};
-  MuonDISBranches br[nMats];
-  void InitTree(TTree*& aT) {
+  std::array<MuonDISBranches, nMats> br;
+  void InitTree(TTree* aT) {
     aT->Branch("muon_MCTracks", &mcTrks);
     aT->Branch("muon_SBTPoints", &sbtPt);
     aT->Branch("muon_SSTPoints", &sstPt);
@@ -118,8 +118,8 @@ struct MuonBranches {
                  &pathLengthByMat[i]);
       br[i].InitTree(aT, MatTypeStr[i]);
     }
-  };
-  void initEvent(const int& nMax = 100) {
+  }
+  void initEvent(int nMax = 100) {
     mcTrks.clear();
     mcTrks.reserve(nMax);
     sbtPt.clear();
@@ -132,7 +132,7 @@ struct MuonBranches {
     tdPt.reserve(nMax);
     pathLength = 0.;
     pathLengthByMat.fill(0.);
-  };
+  }
 };
 
 // Bind only on the current file's tree, never on TChain's persistent address
@@ -286,9 +286,9 @@ struct MuonDISInBranches {
     }
     lOut << '\n';
     return lOut.str();
-  };
+  }
 
-  std::ostringstream Print(const unsigned& aEvt, const std::string& aLabel) {
+  std::string Print(unsigned aEvt, const std::string& aLabel) {
     std::ostringstream lOut;
     lOut << "------------ print evt " << aEvt << " branch " << aLabel
          << " -------------\n"
@@ -303,8 +303,8 @@ struct MuonDISInBranches {
     if (nDISdau) lOut << Print(*nDISdau, "nDISdau");
     if (DISparticles) lOut << Print(*DISparticles, "DISparticles");
 
-    return lOut;
-  };
+    return lOut.str();
+  }
 
  private:
   MuonDISBranches fStorage;
@@ -318,7 +318,7 @@ struct MuonInBranches {
   std::vector<TimeDetPoint>* tdPt = nullptr;
   double pathLength = 0.;
   std::array<double, nMats> pathLengthByMat = {};
-  MuonDISInBranches br[nMats];
+  std::array<MuonDISInBranches, nMats> br;
 
   bool Setup(TTree* tree) {
     fTreeNumber = -1;

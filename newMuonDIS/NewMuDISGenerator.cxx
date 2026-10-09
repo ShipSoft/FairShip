@@ -13,15 +13,7 @@
 
 using namespace ShipMuDIS;
 
-NewMuDISGenerator::NewMuDISGenerator() : SHiP::Generator() {
-  fNevents = -1;
-  fn = 0;
-  fnmu = 0;
-  fMat = 0;
-  fnmuDis = 0;
-  fnmuDisDau = 0;
-  ResetOutputBranches();
-}
+NewMuDISGenerator::NewMuDISGenerator() { ResetOutputBranches(); }
 
 std::vector<std::string> NewMuDISGenerator::GetMaterialNames() {
   return {MatTypeStr.begin(), MatTypeStr.end()};
@@ -140,7 +132,7 @@ Bool_t NewMuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
   // access the different materials in turn
   // accessing by reference leads to sometimes vectors inside branch being reset
   MuonDISInBranches* lBr = &finEv.br[fMat];
-  LOG(debug) << "Initial branch: " << lBr->Print(fn, MatTypeStr[fMat]).str();
+  LOG(debug) << "Initial branch: " << lBr->Print(fn, MatTypeStr[fMat]);
   int nDIS = lBr->nDISevts;
   LOG(debug) << " nDIS " << nDIS << " DISparticles size "
              << (*lBr->DISparticles).size() << " fMat " << fMat
@@ -174,7 +166,7 @@ Bool_t NewMuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
       }
     }
     lBr = &finEv.br[fMat];
-    LOG(debug) << "Updating branch: " << lBr->Print(fn, MatTypeStr[fMat]).str();
+    LOG(debug) << "Updating branch: " << lBr->Print(fn, MatTypeStr[fMat]);
     nDIS = lBr->nDISevts;
   }
 

@@ -27,23 +27,10 @@ double DISMinLength(const std::string& label, const MuonPath& path) {
 }
 }  // namespace
 
-// -----   Default constructor   -------------------------------------------
-MuDISProcessor::MuDISProcessor() {
-  fouttree = nullptr;
+MuDISProcessor::MuDISProcessor() : fPythia(TPythia6::Instance()) {}
 
-  fnEvts = -1;
-  fstartEvt = 0;
-  fPythia = TPythia6::Instance();
-
-  fMinPythiaP = 2;
-  fnDIS = 10;
-  fP6seed = 0;
-}
-
-bool MuDISProcessor::init(const int& aEvts, const int& aStart,
-                          const double& aMinPythiaP, const int& aDIS,
-                          const int& aSeed, const double& aZmax,
-                          const double& aZmin) {
+bool MuDISProcessor::init(int aEvts, int aStart, double aMinPythiaP, int aDIS,
+                          int aSeed, double aZmax, double aZmin) {
   fnEvts = aEvts;
   fstartEvt = aStart;
   fMinPythiaP = aMinPythiaP;
@@ -66,10 +53,10 @@ void MuDISProcessor::initPythia6() {
   // set min hard scale: 2 GeV --->try 1.5 for soft muons ?
   fPythia->SetPARP(2, fMinPythiaP);
   // disable decay for those PDGID
-  unsigned hadrons[10] = {211,  321,  130,  310,  3112,
-                          3122, 3222, 3312, 3322, 3334};
-  for (unsigned ikf(0); ikf < 10; ++ikf) {
-    int kc = fPythia->Pycomp(hadrons[ikf]);
+  constexpr std::array<int, 10> hadrons = {211,  321,  130,  310,  3112,
+                                           3122, 3222, 3312, 3322, 3334};
+  for (int pdg : hadrons) {
+    const int kc = fPythia->Pycomp(pdg);
     fPythia->SetMDCY(kc, 1, 0);
   }
 
@@ -248,8 +235,7 @@ void MuDISProcessor::fillTDHits(const int aIdx) {
   }
 }
 
-void MuDISProcessor::generateDISevents(const std::string& tType,
-                                       const double& amuonW,
+void MuDISProcessor::generateDISevents(const std::string& tType, double amuonW,
                                        const std::string& aLabel,
                                        const MuonPath& aPath,
                                        MuonDISBranches& aDISBr) {
