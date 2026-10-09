@@ -133,23 +133,21 @@ void MuonPath::Print() {
   std::ostringstream ldebug;
   ldebug << flabel << " "
          << " d=" << fdensity << " l=" << flength << " l_in_z=" << fzlength;
-  if (flength > 0) ldebug << " <d>=" << fwdensity / flength << std::endl;
+  if (flength > 0) ldebug << " <d>=" << fwdensity / flength << '\n';
 
   if (nSlices == 0) {
-    ldebug << "z-slices n=0" << std::endl;
+    ldebug << "z-slices n=0\n";
     LOG(debug) << ldebug.str();
     return;
   }
 
-  ldebug << " zIn=" << fstart[0].Z() << " zOut=" << fendZ[nSlices - 1]
-         << std::endl;
-  ldebug << "z-slices n=" << nSlices << ": " << std::endl;
+  ldebug << " zIn=" << fstart[0].Z() << " zOut=" << fendZ[nSlices - 1] << '\n';
+  ldebug << "z-slices n=" << nSlices << ": \n";
   for (unsigned iz(0); iz < nSlices; ++iz) {
     ldebug << fvolName[iz] << " " << fmaterial[iz] << " vtxz=" << fvtx[iz].Z()
-           << " slice [" << fstart[iz].Z() << "-" << fendZ[iz] << "] "
-           << std::endl;
+           << " slice [" << fstart[iz].Z() << "-" << fendZ[iz] << "] \n";
   }
-  ldebug << std::endl;
+  ldebug << '\n';
   LOG(debug) << ldebug.str();
 }
 

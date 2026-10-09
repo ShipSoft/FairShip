@@ -16,8 +16,7 @@
 #include "FairLogger.h"  // for FairLogger, MESSAGE_ORIGIN
 #include "ShipMCTrack.h"
 #include "TChain.h"  // for TTree
-#include "TROOT.h"
-#include "TTree.h"  // for TTree
+#include "TTree.h"   // for TTree
 #include "TVector3.h"
 #include "TimeDetPoint.h"
 #include "UpstreamTaggerPoint.h"
@@ -284,16 +283,16 @@ struct MuonDISInBranches {
     for (const auto& value : aVec) {
       lOut << value << " ";
     }
-    lOut << std::endl;
+    lOut << '\n';
     return lOut.str();
   };
 
   std::ostringstream Print(const unsigned& aEvt, const TString& aLabel) {
     std::ostringstream lOut;
     lOut << "------------ print evt " << aEvt << " branch " << aLabel
-         << " -------------" << std::endl
-         << " - nDISevts = " << nDISevts << std::endl
-         << " - wDIS = " << wDIS << std::endl;
+         << " -------------\n"
+         << " - nDISevts = " << nDISevts << '\n'
+         << " - wDIS = " << wDIS << '\n';
     if (DISxsec) lOut << Print(*DISxsec, "DISxsec");
     if (DIStarget) lOut << Print(*DIStarget, "DIStarget");
     if (DISvx) lOut << Print(*DISvx, "DISvx");

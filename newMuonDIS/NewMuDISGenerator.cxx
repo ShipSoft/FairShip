@@ -10,16 +10,6 @@
 #include "FairLogger.h"
 #include "FairPrimaryGenerator.h"
 #include "TFile.h"
-#include "TGeoCompositeShape.h"
-#include "TGeoEltu.h"
-#include "TGeoManager.h"
-#include "TGeoNode.h"
-#include "TGeoVolume.h"
-#include "TMath.h"
-#include "TROOT.h"
-#include "TRandom.h"
-#include "TSystem.h"
-#include "TVectorD.h"
 
 using namespace ShipMuDIS;
 

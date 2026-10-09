@@ -19,11 +19,6 @@
 
 #include "FairLogger.h"
 #include "MagneticTrackPropagator.h"
-#include "TMath.h"
-#include "TROOT.h"
-#include "TRandom.h"
-#include "TSystem.h"
-#include "TVectorD.h"
 
 using namespace ShipMuDIS;
 
@@ -100,7 +95,6 @@ MuDISFilter::MuDISFilter() {
   ftree = nullptr;
   fouttree = nullptr;
 
-  fLogger = FairLogger::GetLogger();
   fnEvts = -1;
   fstartEvt = 0;
   fPDG = TDatabasePDG::Instance();
@@ -496,7 +490,7 @@ void MuDISFilter::process_file(const std::vector<std::string>& input,
   foutEv.InitTree(fouttree);
 
   Long64_t n = ftree->GetEntries();
-  LOG(info) << " * input tree with " << n << " entries" << std::endl;
+  LOG(info) << " * input tree with " << n << " entries";
 
   ProcessEvents();
 
