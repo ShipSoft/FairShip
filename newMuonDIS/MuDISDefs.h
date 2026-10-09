@@ -40,7 +40,7 @@ enum MatType {
   REST = 9
 };
 
-inline const std::array<TString, nMats> MatTypeStr = {
+inline const std::array<std::string, nMats> MatTypeStr = {
     "MS",    "UBT", "SBTsens", "SBTfr",     "SSTsens",
     "SSTfr", "HE",  "AIR",     "HeBalloon", "REST"};
 
@@ -59,19 +59,19 @@ struct MuonDISBranches {
   std::vector<int> nDISdau;               // per DIS event muon
   std::vector<DISparticle> DISparticles;  // all DIS events together.
 
-  void InitTree(TTree*& aT, const TString& aLabel) {
-    aT->Branch("muon_nDISevt_" + aLabel, &nDISevts);
-    aT->Branch("muon_nDISGenerated_" + aLabel, &nDISevtsGenerated);
-    aT->Branch("muon_pPythia_" + aLabel, &pPythia);
-    aT->Branch("muon_wDIS_" + aLabel, &wDIS);
-    aT->Branch("mudis_DISxsec_" + aLabel, &DISxsec);
-    aT->Branch("mudis_DIStarget_" + aLabel, &DIStarget);
-    aT->Branch("mudis_DISvx_" + aLabel, &DISvx);
-    aT->Branch("mudis_DISvy_" + aLabel, &DISvy);
-    aT->Branch("mudis_DISvz_" + aLabel, &DISvz);
-    aT->Branch("mudis_DISvt_" + aLabel, &DISvt);
-    aT->Branch("mudis_nDISdaughters_" + aLabel, &nDISdau);
-    aT->Branch("mudis_DISproducts_" + aLabel, &DISparticles);
+  void InitTree(TTree*& aT, const std::string& aLabel) {
+    aT->Branch(("muon_nDISevt_" + aLabel).c_str(), &nDISevts);
+    aT->Branch(("muon_nDISGenerated_" + aLabel).c_str(), &nDISevtsGenerated);
+    aT->Branch(("muon_pPythia_" + aLabel).c_str(), &pPythia);
+    aT->Branch(("muon_wDIS_" + aLabel).c_str(), &wDIS);
+    aT->Branch(("mudis_DISxsec_" + aLabel).c_str(), &DISxsec);
+    aT->Branch(("mudis_DIStarget_" + aLabel).c_str(), &DIStarget);
+    aT->Branch(("mudis_DISvx_" + aLabel).c_str(), &DISvx);
+    aT->Branch(("mudis_DISvy_" + aLabel).c_str(), &DISvy);
+    aT->Branch(("mudis_DISvz_" + aLabel).c_str(), &DISvz);
+    aT->Branch(("mudis_DISvt_" + aLabel).c_str(), &DISvt);
+    aT->Branch(("mudis_nDISdaughters_" + aLabel).c_str(), &nDISdau);
+    aT->Branch(("mudis_DISproducts_" + aLabel).c_str(), &DISparticles);
   };
 
   void initEvent(const int& nDIS) {
@@ -115,7 +115,8 @@ struct MuonBranches {
     aT->Branch("muon_TDPoints", &tdPt);
     aT->Branch("muon_path_length", &pathLength);
     for (unsigned i(0); i < nMats; ++i) {
-      aT->Branch("muon_path_length_" + MatTypeStr[i], &pathLengthByMat[i]);
+      aT->Branch(("muon_path_length_" + MatTypeStr[i]).c_str(),
+                 &pathLengthByMat[i]);
       br[i].InitTree(aT, MatTypeStr[i]);
     }
   };
@@ -138,9 +139,9 @@ struct MuonBranches {
 // Bind only on the current file's tree, never on TChain's persistent address
 // list. This checks both presence and type when a chain changes files.
 template <class T>
-bool BindInputBranch(TTree* tree, const TString& name, T* address,
+bool BindInputBranch(TTree* tree, const std::string& name, T* address,
                      bool required = true) {
-  auto* branch = tree->GetBranch(name);
+  auto* branch = tree->GetBranch(name.c_str());
   if (!branch) {
     if (required) LOG(error) << "Missing required input branch " << name;
     return !required;
@@ -153,7 +154,7 @@ bool BindInputBranch(TTree* tree, const TString& name, T* address,
     }
   }
   branch->SetAutoDelete(false);
-  return tree->SetBranchAddress(name, address) >= 0;
+  return tree->SetBranchAddress(name.c_str(), address) >= 0;
 }
 
 struct CBMSimBranches {
@@ -258,7 +259,7 @@ struct MuonDISInBranches {
     DISparticles = &fStorage.DISparticles;
   }
 
-  bool SetupTree(TTree* tree, const TString& label) {
+  bool SetupTree(TTree* tree, const std::string& label) {
     Clear();
     bool ok = BindInputBranch(tree, "muon_nDISevt_" + label, &nDISevts);
     ok &= BindInputBranch(tree, "muon_nDISGenerated_" + label,
@@ -277,7 +278,7 @@ struct MuonDISInBranches {
   }
 
   template <class T>
-  std::string Print(const std::vector<T>& aVec, const TString& aName) {
+  std::string Print(const std::vector<T>& aVec, const std::string& aName) {
     std::ostringstream lOut;
     lOut << " - " << aName << " size " << aVec.size() << " pointer " << &aVec
          << ": ";
@@ -288,7 +289,7 @@ struct MuonDISInBranches {
     return lOut.str();
   };
 
-  std::ostringstream Print(const unsigned& aEvt, const TString& aLabel) {
+  std::ostringstream Print(const unsigned& aEvt, const std::string& aLabel) {
     std::ostringstream lOut;
     lOut << "------------ print evt " << aEvt << " branch " << aLabel
          << " -------------\n"
@@ -339,7 +340,7 @@ struct MuonInBranches {
       fValid &= BindInputBranch(current, "muon_SSTPoints", &sstPt);
       fValid &= BindInputBranch(current, "muon_path_length", &pathLength);
       for (unsigned i = 0; i < nMats; ++i) {
-        const TString name = "muon_path_length_" + MatTypeStr[i];
+        const std::string name = "muon_path_length_" + MatTypeStr[i];
         fValid &= BindInputBranch(current, name, &pathLengthByMat[i]);
         fValid &= br[i].SetupTree(current, MatTypeStr[i]);
       }

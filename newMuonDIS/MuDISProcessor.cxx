@@ -497,7 +497,7 @@ void MuDISProcessor::ProcessMuons() {
     // Persist the intervals used for DIS vertex sampling, including the MS
     // restriction. Keep REST separately, but exclude it from the total.
     for (unsigned i = 0; i < nMats; ++i) {
-      const auto path = lPathMap.find(MatTypeStr[i].Data());
+      const auto path = lPathMap.find(MatTypeStr[i]);
       if (path == lPathMap.end() || path->second.GetNSlices() < 1) continue;
       // Crossed but not generated (including REST) is distinct from unvisited.
       foutEv.br[i].nDISevtsGenerated = 0;
@@ -513,10 +513,9 @@ void MuDISProcessor::ProcessMuons() {
     // Discarding REST: many muons go through CONCRETE,no need to record DIS
     // there....
     for (unsigned i(0); i < nMats - 1; ++i) {
-      if (lPathMap.find(MatTypeStr[i].Data()) != lPathMap.end())
-        generateDISevents(targetType, muW, MatTypeStr[i].Data(),
-                          lPathMap.find(MatTypeStr[i].Data())->second,
-                          foutEv.br[i]);
+      if (lPathMap.find(MatTypeStr[i]) != lPathMap.end())
+        generateDISevents(targetType, muW, MatTypeStr[i],
+                          lPathMap.find(MatTypeStr[i])->second, foutEv.br[i]);
     }
 
     fouttree->Fill();

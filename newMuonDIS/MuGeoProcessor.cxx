@@ -450,8 +450,8 @@ void MuGeoProcessor::CheckAllVolumes() {
   std::ostringstream summary;
   summary << " -- Unique volumes and materials by MatType:\n";
   for (const auto& category : MatTypeStr) {
-    summary << "MatType " << category.Data() << ":\n"
-            << categoryOutput[category.Data()].str();
+    summary << "MatType " << category << ":\n"
+            << categoryOutput[category].str();
   }
   LOG(info) << summary.str();
   std::ofstream output("CheckAllVolumes.txt");

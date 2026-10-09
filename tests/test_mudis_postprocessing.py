@@ -93,7 +93,7 @@ def write_output(path, identities):
         tree.Branch(class_name, vector)
     muon_entry = array("i", [0])
     dis_index = array("i", [0])
-    material = ROOT.TString()
+    material = ROOT.std.string()
     tree.Branch("muDIS_muEntry", muon_entry, "muDIS_muEntry/I")
     tree.Branch("muDIS_material", material)
     tree.Branch("muDIS_disIndex", dis_index, "muDIS_disIndex/I")
@@ -106,8 +106,7 @@ def write_output(path, identities):
         points["vetoPoint"].push_back(make_point("vetoPoint", SIMULATED_Z, track_id=1))
         muon_entry[0] = entry
         dis_index[0] = index
-        material.Clear()
-        material.Append(label)
+        material.assign(label)
         tree.Fill()
     tree.Write()
     output.Close()

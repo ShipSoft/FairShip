@@ -89,8 +89,8 @@ class MuDISFilter {
   bool PassFilter(const std::vector<DISparticle>& daughters,
                   const TVector3& vertex) const;
 
-  Histograms BookHistograms(TDirectory* dir, const TString& mat,
-                            const TString& label = "");
+  Histograms BookHistograms(TDirectory* dir, const std::string& mat,
+                            const std::string& label = "");
   void init(const int& aEvts, const int& aStart);
 
   bool InitFile(const char*, int);

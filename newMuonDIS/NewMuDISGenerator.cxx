@@ -25,12 +25,7 @@ NewMuDISGenerator::NewMuDISGenerator() : SHiP::Generator() {
 }
 
 std::vector<std::string> NewMuDISGenerator::GetMaterialNames() {
-  std::vector<std::string> names;
-  names.reserve(nMats);
-  for (const auto& label : MatTypeStr) {
-    names.emplace_back(label.Data());
-  }
-  return names;
+  return {MatTypeStr.begin(), MatTypeStr.end()};
 }
 
 Bool_t NewMuDISGenerator::Init(const char* fileName) {

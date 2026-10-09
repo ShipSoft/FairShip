@@ -12,10 +12,13 @@
 
 #include <algorithm>
 #include <cmath>
+#include <format>
 #include <iostream>
 #include <memory>
 #include <sstream>
 #include <stdexcept>
+#include <string>
+#include <string_view>
 
 #include "FairLogger.h"
 #include "MagneticTrackPropagator.h"
@@ -25,22 +28,24 @@ using namespace ShipMuDIS;
 namespace {
 // Keep the nominal bin width and reserve one visible bin at each end.
 template <typename Histogram>
-Histogram* WithFlowBins(TDirectory* dir, const char* name, const char* title,
-                        int bins, double low, double high) {
+Histogram* WithFlowBins(TDirectory* dir, const std::string& name,
+                        const std::string& title, int bins, double low,
+                        double high) {
   const double width = (high - low) / bins;
-  auto* histogram =
-      new Histogram(name, title, bins + 2, low - width, high + width);
+  auto* histogram = new Histogram(name.c_str(), title.c_str(), bins + 2,
+                                  low - width, high + width);
   histogram->SetDirectory(dir);
   return histogram;
 }
 
 template <typename Histogram>
-Histogram* WithFlowBins(TDirectory* dir, const char* name, const char* title,
-                        int nx, double xmin, double xmax, int ny, double ymin,
-                        double ymax) {
+Histogram* WithFlowBins(TDirectory* dir, const std::string& name,
+                        const std::string& title, int nx, double xmin,
+                        double xmax, int ny, double ymin, double ymax) {
   const double dx = (xmax - xmin) / nx, dy = (ymax - ymin) / ny;
-  auto* histogram = new Histogram(name, title, nx + 2, xmin - dx, xmax + dx,
-                                  ny + 2, ymin - dy, ymax + dy);
+  auto* histogram =
+      new Histogram(name.c_str(), title.c_str(), nx + 2, xmin - dx, xmax + dx,
+                    ny + 2, ymin - dy, ymax + dy);
   histogram->SetDirectory(dir);
   return histogram;
 }
@@ -124,40 +129,40 @@ void MuDISFilter::SetFilterEfficiencyBinning(double xmin, double xmax,
   fEfficiencyZBins = zbins;
 }
 
-Histograms MuDISFilter::BookHistograms(TDirectory* dir, const TString& mat,
-                                       const TString& label) {
+Histograms MuDISFilter::BookHistograms(TDirectory* dir, const std::string& mat,
+                                       const std::string& label) {
   dir->cd();
 
   Histograms h;
 
   h.dis_vxz = WithFlowBins<TH2D>(
-      dir, Form("vertex_x_vs_z_%s", label.Data()),
-      Form("DIS vertex x vs z - %s;z [cm];x [cm]", mat.Data()), 3300, 2700.,
+      dir, std::format("vertex_x_vs_z_{}", label),
+      std::format("DIS vertex x vs z - {};z [cm];x [cm]", mat), 3300, 2700.,
       9000., 600, -300., 300.);
   h.dis_vyz = WithFlowBins<TH2D>(
-      dir, Form("vertex_y_vs_z_%s", label.Data()),
-      Form("DIS vertex y vs z - %s;z [cm];y [cm]", mat.Data()), 3300, 2700.,
+      dir, std::format("vertex_y_vs_z_{}", label),
+      std::format("DIS vertex y vs z - {};z [cm];y [cm]", mat), 3300, 2700.,
       9000., 600, -300., 300.);
   h.dis_vxy = WithFlowBins<TH2D>(
-      dir, Form("vertex_y_vs_x_%s", label.Data()),
-      Form("DIS vertex y vs x - %s;x [cm];y [cm]", mat.Data()), 600, -300.,
+      dir, std::format("vertex_y_vs_x_{}", label),
+      std::format("DIS vertex y vs x - {};x [cm];y [cm]", mat), 600, -300.,
       300., 600, -300., 300.);
   if (fDetailedHistograms)
     h.dis_vr = WithFlowBins<TH1D>(
-        dir, Form("vertex_r_%s", label.Data()),
-        Form("DIS vertex radius - %s;r [cm];Events", mat.Data()), 600, 0.,
+        dir, std::format("vertex_r_{}", label),
+        std::format("DIS vertex radius - {};r [cm];Events", mat), 600, 0.,
         600.);
   h.dis_vz = WithFlowBins<TH1D>(
-      dir, Form("vertex_z_%s", label.Data()),
-      Form("DIS vertex z - %s;z [cm];Events", mat.Data()), 3300, 2700., 9000.);
+      dir, std::format("vertex_z_{}", label),
+      std::format("DIS vertex z - {};z [cm];Events", mat), 3300, 2700., 9000.);
   if (fDetailedHistograms)
     h.dis_pdg = WithFlowBins<TH1I>(
-        dir, Form("daughter_pdg_%s", label.Data()),
-        Form("PDG code of DIS daughters - %s;PDG code;Particles", mat.Data()),
+        dir, std::format("daughter_pdg_{}", label),
+        std::format("PDG code of DIS daughters - {};PDG code;Particles", mat),
         12001, -6000.5, 6000.5);
   h.dis_pdgGrouped = WithFlowBins<TH1I>(
-      dir, Form("daughter_pdg_grouped_%s", label.Data()),
-      Form("DIS daughter species - %s;Species;Particles", mat.Data()), 11, 0.5,
+      dir, std::format("daughter_pdg_grouped_{}", label),
+      std::format("DIS daughter species - {};Species;Particles", mat), 11, 0.5,
       11.5);
   const char* labels[] = {"e^{+}",   "e^{-}",         "#mu^{+}",   "#mu^{-}",
                           "#gamma",  "#nu/#bar{#nu}", "#pi^{#pm}", "h^{#pm}",
@@ -166,63 +171,66 @@ Histograms MuDISFilter::BookHistograms(TDirectory* dir, const TString& mat,
     h.dis_pdgGrouped->GetXaxis()->SetBinLabel(bin + 1, labels[bin - 1]);
   if (fDetailedHistograms)
     h.dis_n = WithFlowBins<TH1I>(
-        dir, Form("n_daughters_%s", label.Data()),
-        Form("Number of DIS daughters - %s;multiplicity;Event", mat.Data()), 50,
+        dir, std::format("n_daughters_{}", label),
+        std::format("Number of DIS daughters - {};multiplicity;Event", mat), 50,
         0, 50);
   if (fDetailedHistograms)
     h.dis_nCharged = WithFlowBins<TH1I>(
-        dir, Form("n_daughters_charged_%s", label.Data()),
-        Form("Number of charged DIS daughters - %s;charged multiplicity;Event",
-             mat.Data()),
+        dir, std::format("n_daughters_charged_{}", label),
+        std::format(
+            "Number of charged DIS daughters - {};charged multiplicity;Event",
+            mat),
         50, 0, 50);
   h.dis_nChargedCandidates = WithFlowBins<TH1I>(
-      dir, Form("n_charged_candidates_%s", label.Data()),
-      Form(
-          "Number of charged filter candidates - %s;charged multiplicity;Event",
-          mat.Data()),
+      dir, std::format("n_charged_candidates_{}", label),
+      std::format(
+          "Number of charged filter candidates - {};charged multiplicity;Event",
+          mat),
       50, 0, 50);
   h.dis_eNeutralTD = WithFlowBins<TH1D>(
-      dir, Form("neutral_candidate_energy_TD_%s", label.Data()),
-      Form("Visible neutral candidate energy reaching timing detector - "
-           "%s;energy [GeV];Event",
-           mat.Data()),
+      dir, std::format("neutral_candidate_energy_TD_{}", label),
+      std::format("Visible neutral candidate energy reaching timing detector - "
+                  "{};energy [GeV];Event",
+                  mat),
       400, 0., 400.);
   if (fDetailedHistograms)
     h.dis_pChargedFrac = WithFlowBins<TH1D>(
-        dir, Form("pfrac_charged_%s", label.Data()),
-        Form("Charged fraction - %s;p(charged)/p(all);Event", mat.Data()), 101,
+        dir, std::format("pfrac_charged_{}", label),
+        std::format("Charged fraction - {};p(charged)/p(all);Event", mat), 101,
         0, 1.01);
   if (fDetailedHistograms)
     h.dis_pMuFrac = WithFlowBins<TH1D>(
-        dir, Form("pfrac_mu_%s", label.Data()),
-        Form("p fraction of outgoing mu - %s;p(mu)/p(all);Event", mat.Data()),
+        dir, std::format("pfrac_mu_{}", label),
+        std::format("p fraction of outgoing mu - {};p(mu)/p(all);Event", mat),
         101, 0, 1.01);
   if (fDetailedHistograms)
     h.mu_p = WithFlowBins<TH1D>(
-        dir, Form("muon_p_%s", label.Data()),
-        Form("muon momentum - %s;p_{#mu,in} [GeV]; Input mu events",
-             mat.Data()),
+        dir, std::format("muon_p_{}", label),
+        std::format("muon momentum - {};p_{{#mu,in}} [GeV]; Input mu events",
+                    mat),
         400, 0., 400.);
   if (fDetailedHistograms)
     h.mu_pt = WithFlowBins<TH1D>(
-        dir, Form("muon_pt_%s", label.Data()),
-        Form("muon p_{T} - %s;p_{T,#mu,in} [GeV];Input mu events", mat.Data()),
+        dir, std::format("muon_pt_{}", label),
+        std::format("muon p_{{T}} - {};p_{{T,#mu,in}} [GeV];Input mu events",
+                    mat),
         100, 0., 10.);
-  h.mu_ppt = WithFlowBins<TH2D>(dir, Form("muon_pt_vs_p_%s", label.Data()),
-                                Form("muon p_{T} vs p - %s;p_{#mu,in} [GeV]; "
-                                     "p_{T,#mu,in} [GeV];Input mu events",
-                                     mat.Data()),
-                                400, 0, 400, 100, 0., 10.);
+  h.mu_ppt = WithFlowBins<TH2D>(
+      dir, std::format("muon_pt_vs_p_{}", label),
+      std::format("muon p_{{T}} vs p - {};p_{{#mu,in}} [GeV]; "
+                  "p_{{T,#mu,in}} [GeV];Input mu events",
+                  mat),
+      400, 0, 400, 100, 0., 10.);
   if (fDetailedHistograms)
     h.mu_ndis = WithFlowBins<TH1I>(
-        dir, Form("muon_n_dis_%s", label.Data()),
-        Form("Number of DIS events - %s;DIS multiplicity;Input mu events",
-             mat.Data()),
+        dir, std::format("muon_n_dis_{}", label),
+        std::format(
+            "Number of DIS events - {};DIS multiplicity;Input mu events", mat),
         1001, 0, 1001);
   if (fDetailedHistograms)
     h.mu_wdis = WithFlowBins<TH1D>(
-        dir, Form("muon_vtx_weight_%s", label.Data()),
-        Form("DIS vertex weight - %s;wDIS;Input mu events", mat.Data()), 100,
+        dir, std::format("muon_vtx_weight_{}", label),
+        std::format("DIS vertex weight - {};wDIS;Input mu events", mat), 100,
         0., 1000.);
   return h;
 }
@@ -235,22 +243,22 @@ void MuDISFilter::BookFilterEfficiencyHistograms(TDirectory* dir) {
   for (unsigned ip = 0; ip < kMomentumBins; ++ip)
     for (unsigned ipt = 0; ipt < kPtBins; ++ipt)
       for (unsigned imat = 0; imat < kEfficiencyMaterials; ++imat) {
-        const TString tag =
-            Form("p%u_pt%u_%s", ip, ipt, MatTypeStr[imat].Data());
-        const TString title = Form(
-            "DIS filter efficiency, %.0f #leq p < %.0f GeV, "
-            "%.0f #leq p_{T} < %.0f GeV - %s;x_{#mu,start} [cm];"
-            "y_{#mu,start} [cm]",
+        const std::string tag =
+            std::format("p{}_pt{}_{}", ip, ipt, MatTypeStr[imat]);
+        const std::string title = std::format(
+            "DIS filter efficiency, {:.0f} #leq p < {:.0f} GeV, "
+            "{:.0f} #leq p_{{T}} < {:.0f} GeV - {};x_{{#mu,start}} [cm];"
+            "y_{{#mu,start}} [cm]",
             kMomentumEdges[ip], kMomentumEdges[ip + 1], kPtEdges[ipt],
-            kPtEdges[ipt + 1], MatTypeStr[imat].Data());
+            kPtEdges[ipt + 1], MatTypeStr[imat]);
         auto*& all = fFilterEfficiency.allXY[ip][ipt][imat];
         auto*& passed = fFilterEfficiency.passedXY[ip][ipt][imat];
-        all = new TH2D(Form("filter_efficiency_all_%s", tag.Data()), title,
+        all = new TH2D(("filter_efficiency_all_" + tag).c_str(), title.c_str(),
                        fEfficiencyXBins, xmin, xmax, fEfficiencyYBins, ymin,
                        ymax);
-        passed = new TH2D(Form("filter_efficiency_passed_%s", tag.Data()),
-                          title, fEfficiencyXBins, xmin, xmax, fEfficiencyYBins,
-                          ymin, ymax);
+        passed = new TH2D(("filter_efficiency_passed_" + tag).c_str(),
+                          title.c_str(), fEfficiencyXBins, xmin, xmax,
+                          fEfficiencyYBins, ymin, ymax);
         all->SetDirectory(dir);
         all->Sumw2();
         passed->SetDirectory(dir);
@@ -267,13 +275,16 @@ void MuDISFilter::BookFilterEfficiencyHistograms(TDirectory* dir) {
             auto*& allZ = fFilterEfficiency.allZ[ip][ipt][ix][iy][imat];
             auto*& passedZ = fFilterEfficiency.passedZ[ip][ipt][ix][iy][imat];
             allZ = new TH1D(
-                Form("filter_efficiency_z_all_%s_x%u_y%u", tag.Data(), ix, iy),
-                title + Form(";z_{DIS} [cm];Weighted DIS events"),
+                std::format("filter_efficiency_z_all_{}_x{}_y{}", tag, ix, iy)
+                    .c_str(),
+                (title + ";z_{DIS} [cm];Weighted DIS events").c_str(),
                 fEfficiencyZBins, fEfficiencyZBounds[0], fEfficiencyZBounds[1]);
-            passedZ = new TH1D(Form("filter_efficiency_z_passed_%s_x%u_y%u",
-                                    tag.Data(), ix, iy),
-                               allZ->GetTitle(), fEfficiencyZBins,
-                               fEfficiencyZBounds[0], fEfficiencyZBounds[1]);
+            passedZ =
+                new TH1D(std::format("filter_efficiency_z_passed_{}_x{}_y{}",
+                                     tag, ix, iy)
+                             .c_str(),
+                         allZ->GetTitle(), fEfficiencyZBins,
+                         fEfficiencyZBounds[0], fEfficiencyZBounds[1]);
             allZ->SetDirectory(dir);
             allZ->Sumw2();
             passedZ->SetDirectory(dir);
@@ -407,7 +418,7 @@ void MuDISFilter::process_file(const std::vector<std::string>& input,
     std::vector<std::unique_ptr<TTreeReaderValue<std::vector<double>>>> vz;
     for (unsigned imat = 0; imat < nMats; ++imat)
       vz.emplace_back(new TTreeReaderValue<std::vector<double>>(
-          reader, "mudis_DISvz_" + MatTypeStr[imat]));
+          reader, ("mudis_DISvz_" + MatTypeStr[imat]).c_str()));
     const std::int64_t end =
         fnEvts >= 0 ? std::min<std::int64_t>(std::int64_t{fstartEvt} + fnEvts,
                                              ftree->GetEntries())
@@ -478,7 +489,7 @@ void MuDISFilter::process_file(const std::vector<std::string>& input,
   outfile->cd();
 
   for (unsigned imat = 0; imat < nMats; ++imat) {
-    TDirectory* dir = outfile->mkdir(MatTypeStr[imat].Data());
+    TDirectory* dir = outfile->mkdir(MatTypeStr[imat].c_str());
 
     hist_all[imat] = BookHistograms(dir, MatTypeStr[imat]);
     hist_filt[imat] = BookHistograms(dir, MatTypeStr[imat], "filtered");
@@ -548,7 +559,7 @@ int MuDISFilter::DaughterCategory(const DISparticle& particle) const {
   }
   const auto* pdg = fPDG->GetParticle(particle.pid);
   if (pdg) {
-    const TString particleClass = pdg->ParticleClass();
+    const std::string_view particleClass = pdg->ParticleClass();
     if (particleClass == "Meson" || particleClass == "Baryon")
       return pdg->Charge() != 0. ? 8 : 10;
   }
@@ -1005,8 +1016,8 @@ void MuDISFilter::ProcessEvents() {
         if (!identical) {
           std::ostringstream original;
           for (const auto& daughter : daughters) original << ' ' << daughter;
-          LOG(debug) << "MuDISFilter: " << MatTypeStr[imat].Data() << " DIS "
-                     << idis << " at z=" << vertex.Z()
+          LOG(debug) << "MuDISFilter: " << MatTypeStr[imat] << " DIS " << idis
+                     << " at z=" << vertex.Z()
                      << " cm original daughters:" << original.str();
           std::ostringstream final;
           for (const auto& candidate : candidates) {
@@ -1015,8 +1026,8 @@ void MuDISFilter::ProcessEvents() {
                   << daughter.py << ',' << daughter.pz << ',' << daughter.E
                   << "; vz=" << candidate.vertex.Z() << ']';
           }
-          LOG(debug) << "MuDISFilter: " << MatTypeStr[imat].Data() << " DIS "
-                     << idis << " final stable daughters:" << final.str();
+          LOG(debug) << "MuDISFilter: " << MatTypeStr[imat] << " DIS " << idis
+                     << " final stable daughters:" << final.str();
         }
         const bool accepted =
             fFilter ? fFilter(daughters) : PassCandidates(candidates);
@@ -1070,13 +1081,13 @@ void MuDISFilter::ProcessEvents() {
   LOG(info) << "MuDISFilter: saved " << selected << " muon entries; skipped "
             << skipped << " unreadable or malformed entries.";
   for (unsigned imat = 0; imat < nMats; ++imat) {
-    LOG(info) << "MuDISFilter: selected DIS events in "
-              << MatTypeStr[imat].Data() << ": raw = " << selectedDIS[imat]
+    LOG(info) << "MuDISFilter: selected DIS events in " << MatTypeStr[imat]
+              << ": raw = " << selectedDIS[imat]
               << ", weighted = " << weightedDIS[imat];
     auto* counts =
         new TH1D("filter_counts", "Filter counts;Sample;Count", 8, 0., 8.);
     counts->SetDirectory(
-        fouttree->GetDirectory()->GetDirectory(MatTypeStr[imat].Data()));
+        fouttree->GetDirectory()->GetDirectory(MatTypeStr[imat].c_str()));
     const char* labels[] = {"muons_processed_raw", "muons_processed_weighted",
                             "muons_selected_raw",  "muons_selected_weighted",
                             "dis_processed_raw",   "dis_processed_weighted",
