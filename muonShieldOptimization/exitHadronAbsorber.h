@@ -80,6 +80,12 @@ class exitHadronAbsorber : public SHiP::Detector<vetoPoint> {
   // Ask for the next track to carry the clones just added to the buffer.
   static void RequestCloneCarrier() { fgCarrierTrackID = kCarrierRequested; }
 
+  // Tracks that an unsplit run would never have transported: carriers which
+  // only step so the clones get popped, and their descendants. Nothing they do
+  // may reach the output. Shared by all instances for the same reason as the
+  // carrier, so that no plane scores them.
+  static std::set<Int_t> fgShadowTracks;  //!
+
   // Drop the clones still buffered at the end of an event or run, keeping
   // track of how much weight was never simulated.
   void DiscardBufferedClones();
