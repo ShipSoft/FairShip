@@ -29,7 +29,6 @@ double DISMinLength(const std::string& label, const MuonPath& path) {
 
 // -----   Default constructor   -------------------------------------------
 MuDISProcessor::MuDISProcessor() {
-  ftree = nullptr;
   fouttree = nullptr;
 
   fnEvts = -1;
@@ -126,10 +125,9 @@ bool MuDISProcessor::InitFiles(const std::vector<std::string>& fileNames,
   }
 
   LOG(info) << "Opening input file to find keys " << fileNames.at(0);
-  TFile* testFile = TFile::Open(fileNames.at(0).c_str(), "READ");
+  std::unique_ptr<TFile> testFile(TFile::Open(fileNames.at(0).c_str(), "READ"));
   auto testKeys = testFile ? testFile->GetListOfKeys() : nullptr;
   if (testKeys == nullptr) {
-    delete testFile;
     LOG(error) << "MuDISProcessor: Error opening input file " << fileNames.at(0)
                << ". Check that the path is correct and the file is a readable "
                   "ROOT file.";
@@ -137,11 +135,9 @@ bool MuDISProcessor::InitFiles(const std::vector<std::string>& fileNames,
   }
   const bool hastree = testKeys->FindObject("cbmsim") != nullptr;
   testFile->Close();
-  delete testFile;
 
   if (hastree) {
-    delete ftree;
-    ftree = new TChain("cbmsim");
+    ftree = std::make_unique<TChain>("cbmsim");
     for (auto& f : fileNames) {
       LOG(info) << "Opening input file " << f;
       ftree->Add(f.c_str());
@@ -149,7 +145,7 @@ bool MuDISProcessor::InitFiles(const std::vector<std::string>& fileNames,
     int treeEvts = ftree->GetEntries();
     LOG(info) << "Reading " << treeEvts << " entries.";
 
-    bool ok = finEv.Setup(ftree);
+    bool ok = finEv.Setup(ftree.get());
 
     if (!ok) {
       LOG(error)
@@ -178,12 +174,13 @@ void MuDISProcessor::process_file(const std::vector<std::string>& input,
     return;
   }
 
-  TFile* outfile = TFile::Open(output.c_str(), "RECREATE");
-  if (!outfile) {
+  std::unique_ptr<TFile> outfile(TFile::Open(output.c_str(), "RECREATE"));
+  if (!outfile || outfile->IsZombie()) {
     LOG(error) << " -- Error creating outputfile: " << output;
     return;
   }
   outfile->cd();
+  // Owned by outfile, which deletes it on Close().
   fouttree = new TTree(
       "MuonDIS", "Muon information, DIS products and soft interaction tracks");
   foutEv.InitTree(fouttree);
@@ -196,8 +193,10 @@ void MuDISProcessor::process_file(const std::vector<std::string>& input,
   ProcessMuons();
 
   outfile->cd();
-  fouttree->Write();
+  if (fouttree->Write() <= 0 || outfile->TestBit(TFile::kWriteError))
+    LOG(error) << " -- Error writing outputfile: " << output;
   outfile->Close();
+  fouttree = nullptr;
 
   fGeoProcessor.PrintVolumes();
 }
@@ -401,7 +400,8 @@ void MuDISProcessor::ProcessMuons() {
        iEvent < nEntries; ++iEvent) {
     LOG(debug) << " --- Processing event " << iEvent;
     if (iEvent % 100 == 0) LOG(info) << " --- Processing event " << iEvent;
-    if (!finEv.PrepareEntry(ftree, iEvent) || ftree->GetEntry(iEvent) <= 0) {
+    if (!finEv.PrepareEntry(ftree.get(), iEvent) ||
+        ftree->GetEntry(iEvent) <= 0) {
       LOG(error) << " --- Error reading tree entry: " << iEvent;
       skipEvt++;
       continue;

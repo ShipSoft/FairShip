@@ -164,7 +164,7 @@ class MuDISFilter {
   mutable std::unique_ptr<Pythia8::Pythia> fPythiaDecayer;  //! Runtime decayer
   std::unique_ptr<MagneticTrackPropagator> fPropagator;  //! Runtime transport
   Filter fFilter;  //! User-supplied runtime predicate
-  TChain* ftree;
+  std::unique_ptr<TChain> ftree;
   ShipMuDIS::MuonInBranches finEv;
 
   TTree* fouttree;

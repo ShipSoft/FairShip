@@ -14,7 +14,6 @@
 using namespace ShipMuDIS;
 
 NewMuDISGenerator::NewMuDISGenerator() : SHiP::Generator() {
-  fTree = nullptr;
   fNevents = -1;
   fn = 0;
   fnmu = 0;
@@ -59,10 +58,9 @@ Bool_t NewMuDISGenerator::Init(const std::vector<std::string>& fileNames,
   }
 
   LOG(info) << "Opening input file to find keys " << fileNames.at(0);
-  TFile* testFile = TFile::Open(fileNames.at(0).c_str(), "READ");
+  std::unique_ptr<TFile> testFile(TFile::Open(fileNames.at(0).c_str(), "READ"));
   auto testKeys = testFile ? testFile->GetListOfKeys() : nullptr;
   if (testKeys == nullptr) {
-    delete testFile;
     LOG(error) << "NewMuDISGenerator: Error opening input file "
                << fileNames.at(0)
                << ". Check that the path is correct and the file is a readable "
@@ -71,11 +69,9 @@ Bool_t NewMuDISGenerator::Init(const std::vector<std::string>& fileNames,
   }
   const bool hasDIStree = testKeys->FindObject("MuonDIS") != nullptr;
   testFile->Close();
-  delete testFile;
 
   if (hasDIStree) {
-    delete fTree;
-    fTree = new TChain("MuonDIS");
+    fTree = std::make_unique<TChain>("MuonDIS");
     for (auto& f : fileNames) {
       LOG(info) << "Opening input file " << f;
       fTree->Add(f.c_str());
@@ -94,7 +90,7 @@ Bool_t NewMuDISGenerator::Init(const std::vector<std::string>& fileNames,
     fnmuDis = 0;
     fnmuDisDau = 0;
 
-    bool ok = finEv.Setup(fTree);
+    bool ok = finEv.Setup(fTree.get());
 
     if (!ok) {
       LOG(error)
@@ -127,7 +123,7 @@ Bool_t NewMuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
              << " fnmuDis " << fnmuDis << " fnmuDisDau " << fnmuDisDau;
 
   if (!fEntryLoaded) {
-    if (!finEv.PrepareEntry(fTree, fnmu) || fTree->GetEntry(fnmu) <= 0) {
+    if (!finEv.PrepareEntry(fTree.get(), fnmu) || fTree->GetEntry(fnmu) <= 0) {
       LOG(error) << " Error reading event " << fnmu;
       fNevents = -1;
       return false;
@@ -164,7 +160,7 @@ Bool_t NewMuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
       LOG(debug) << " -- switching input muon " << fnmu;
       LOG(debug) << " - Processing input muon " << fnmu << " fMat " << fMat
                  << " fnmuDis " << fnmuDis << " fnmuDisDau " << fnmuDisDau;
-      if (fnmu >= fEndEvent || !finEv.PrepareEntry(fTree, fnmu) ||
+      if (fnmu >= fEndEvent || !finEv.PrepareEntry(fTree.get(), fnmu) ||
           fTree->GetEntry(fnmu) <= 0) {
         LOG(error) << " Error reading event " << fnmu;
         fNevents = -1;
@@ -346,7 +342,7 @@ void NewMuDISGenerator::SetNevents(int nMuons) {
                                            fTree->GetEntries());
   int total = 0;
   for (std::int64_t iEv = fStartEvent; iEv < fEndEvent; ++iEv) {
-    if (!finEv.PrepareEntry(fTree, iEv) || fTree->GetEntry(iEv) <= 0 ||
+    if (!finEv.PrepareEntry(fTree.get(), iEv) || fTree->GetEntry(iEv) <= 0 ||
         !ValidateEntry(iEv)) {
       LOG(error) << "NewMuDISGenerator: error counting input muon " << iEv;
       return;
