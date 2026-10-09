@@ -536,7 +536,7 @@ bool MuGeoProcessor::Trace(const Measurement& measurement, double startZ,
     double limit = remaining;
     if (backward && shield)
       limit = std::min(limit, (kMuonShieldTailZ - shieldZ) / forward.Z());
-    node = gGeoManager->FindNextBoundaryAndStep(limit, kFALSE);
+    node = gGeoManager->FindNextBoundaryAndStep(limit, false);
     const double step = std::min(gGeoManager->GetStep(), limit);
     if (!std::isfinite(step) || step < 0.) break;
     if (step > 0.) {

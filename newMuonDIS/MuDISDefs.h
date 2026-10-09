@@ -6,6 +6,7 @@
 #define NEWMUONDIS_MUDISDEFS_H_
 
 #include <array>
+#include <cstdint>
 #include <iostream>
 #include <sstream>
 #include <string>
@@ -170,7 +171,7 @@ struct CBMSimBranches {
     return tree->GetEntries() == 0 || PrepareEntry(tree, 0);
   }
 
-  bool PrepareEntry(TTree* tree, Long64_t entry) {
+  bool PrepareEntry(TTree* tree, std::int64_t entry) {
     Clear();
     if (tree->LoadTree(entry) < 0) return false;
     if (tree->GetTreeNumber() != fTreeNumber) {
@@ -327,7 +328,7 @@ struct MuonInBranches {
     return tree->GetEntries() == 0 || PrepareEntry(tree, 0);
   }
 
-  bool PrepareEntry(TTree* tree, Long64_t entry) {
+  bool PrepareEntry(TTree* tree, std::int64_t entry) {
     Clear();
     if (tree->LoadTree(entry) < 0) return false;
     if (tree->GetTreeNumber() != fTreeNumber) {

@@ -33,19 +33,19 @@ class MuDISProcessor {
   void rotate(const TVector3& pvec, const double& theta, const double& phi,
               TVector3& newp);
 
-  Bool_t InitFile(const char*, int);
-  Bool_t InitFile(const char*);
-  Bool_t InitFiles(const std::vector<std::string>&, int);
-  Bool_t InitFiles(const std::vector<std::string>&);
+  bool InitFile(const char*, int);
+  bool InitFile(const char*);
+  bool InitFiles(const std::vector<std::string>&, int);
+  bool InitFiles(const std::vector<std::string>&);
   void process_file(const std::string& input, const std::string& output);
   void process_file(const std::vector<std::string>& input,
                     const std::string& output);
   void initEvent();
-  void fillMCTracks(const Int_t aIdx);
-  void fillSBTHits(const Int_t aIdx);
-  void fillUBTHits(const Int_t aIdx);
-  void fillSSTHits(const Int_t aIdx);
-  void fillTDHits(const Int_t aIdx);
+  void fillMCTracks(const int aIdx);
+  void fillSBTHits(const int aIdx);
+  void fillUBTHits(const int aIdx);
+  void fillSSTHits(const int aIdx);
+  void fillTDHits(const int aIdx);
   void CheckAllVolumes() { fGeoProcessor.CheckAllVolumes(); }
   void SetMuonShieldField(ShipBFieldMap* field, TGeoManager* geometry) {
     fGeoProcessor.SetMuonShieldField(field, geometry);
