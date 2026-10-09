@@ -95,7 +95,6 @@ int KinematicBin(double value, const double* edges, unsigned bins) {
 
 // -----   Default constructor   -------------------------------------------
 MuDISFilter::MuDISFilter() {
-  ftree = nullptr;
   fouttree = nullptr;
 
   fnEvts = -1;
@@ -361,14 +360,13 @@ bool MuDISFilter::InitFiles(const std::vector<std::string>& fileNames,
   }
 
   {
-    delete ftree;
-    ftree = new TChain("MuonDIS");
+    ftree = std::make_unique<TChain>("MuonDIS");
     for (const auto& name : fileNames) {
       if (!ftree->Add(name.c_str())) return false;
     }
     std::int64_t treeEvts = ftree->GetEntries();
     LOG(info) << "Reading " << treeEvts << " entries.";
-    bool ok = finEv.Setup(ftree);
+    bool ok = finEv.Setup(ftree.get());
 
     if (!ok) {
       LOG(error) << "MuDISFilter: failed to bind one or more required branches";
@@ -409,7 +407,7 @@ void MuDISFilter::process_file(const std::vector<std::string>& input,
     TTreeReader reader(&vertices);
     std::vector<std::unique_ptr<TTreeReaderValue<std::vector<double>>>> vz;
     for (unsigned imat = 0; imat < nMats; ++imat)
-      vz.emplace_back(new TTreeReaderValue<std::vector<double>>(
+      vz.push_back(std::make_unique<TTreeReaderValue<std::vector<double>>>(
           reader, "mudis_DISvz_" + MatTypeStr[imat]));
     const std::int64_t end =
         fnEvts >= 0 ? std::min<std::int64_t>(std::int64_t{fstartEvt} + fnEvts,
@@ -489,6 +487,7 @@ void MuDISFilter::process_file(const std::vector<std::string>& input,
   BookFilterEfficiencyHistograms(outfile->mkdir("filter_efficiency"));
 
   outfile->cd();
+  // Owned by outfile, which deletes it on Close().
   fouttree = new TTree(
       "MuonDIS", "Muon information, DIS products and soft interaction tracks");
   foutEv.InitTree(fouttree);
@@ -504,7 +503,7 @@ void MuDISFilter::process_file(const std::vector<std::string>& input,
   outfile->Close();
 }
 
-MuDISFilter::~MuDISFilter() { delete ftree; }
+MuDISFilter::~MuDISFilter() = default;
 
 void MuDISFilter::initEvent() {
   foutEv.initEvent();
@@ -940,9 +939,9 @@ void MuDISFilter::ProcessEvents() {
   for (std::int64_t event = fstartEvt; event < end; ++event) {
     if ((event - fstartEvt) % 100 == 0)
       LOG(info) << "MuDISFilter: processing entry " << event;
-    if (!finEv.PrepareEntry(ftree, event) || ftree->GetEntry(event) <= 0 ||
-        !finEv.mcTrks || finEv.mcTrks->empty() || !finEv.sbtPt ||
-        !finEv.ubtPt || !finEv.sstPt) {
+    if (!finEv.PrepareEntry(ftree.get(), event) ||
+        ftree->GetEntry(event) <= 0 || !finEv.mcTrks || finEv.mcTrks->empty() ||
+        !finEv.sbtPt || !finEv.ubtPt || !finEv.sstPt) {
       ++skipped;
       continue;
     }
