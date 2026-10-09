@@ -20,12 +20,7 @@ using ShipMuDIS::kMuonShieldTailZ;
 using ShipMuDIS::MatTypeStr;
 using ShipMuDIS::MuonBranches;
 
-MuGeoProcessor::MuGeoProcessor() {
-  fZmax = 14000;
-  fZmin = 2500;
-}
-
-/** destructor **/
+MuGeoProcessor::MuGeoProcessor() = default;
 MuGeoProcessor::~MuGeoProcessor() = default;
 
 void MuGeoProcessor::SetMuonShieldField(ShipBFieldMap* field,
@@ -424,8 +419,9 @@ void MuGeoProcessor::CheckAllVolumes() {
     for (int iy(-nS); iy < nS + 1; ++iy) {
       for (int idx(-nSD); idx < nSD + 1; ++idx) {
         for (int idy(-nSD); idy < nSD + 1; ++idy) {
-          if (pow(idx * stepd, 2) + pow(idy * stepd, 2) > 1) continue;
-          double dz = sqrt(1 - pow(idx * stepd, 2) - pow(idy * stepd, 2));
+          const double dx = idx * stepd, dy = idy * stepd;
+          if (dx * dx + dy * dy > 1) continue;
+          const double dz = std::sqrt(1 - dx * dx - dy * dy);
           TGeoNode* startnode = gGeoManager->InitTrack(
               ix * step, iy * step, z, idx * stepd, idy * stepd, dz);
           if (!startnode) {

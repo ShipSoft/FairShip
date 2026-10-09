@@ -49,16 +49,16 @@ class MuGeoProcessor {
   int64_t GetStartsBeforeZminCount() const { return fStartsBeforeZmin; }
   double GetMaxTransverseJump() const { return fMaxTransverseJump; }
 
-  inline void SetZmax(const double& zmax) {
+  void SetZmax(double zmax) {
     LOG(info) << " Maximum z position for MuonPath building: " << zmax
               << " cm.";
     fZmax = zmax;
-  };
-  inline void SetZmin(const double& zmin) {
+  }
+  void SetZmin(double zmin) {
     LOG(info) << " Minimum z position for MuonPath building: " << zmin
               << " cm.";
     fZmin = zmin;
-  };
+  }
 
   ROOT::Math::XYZPoint GetVertex(const ROOT::Math::XYZPoint& r1,
                                  const ROOT::Math::XYZVector& p1,
@@ -69,8 +69,8 @@ class MuGeoProcessor {
   void PrintVolumes();
 
  private:
-  double fZmax;
-  double fZmin;
+  double fZmax = 14000;
+  double fZmin = 2500;
   struct Measurement {
     ROOT::Math::XYZPoint position;
     ROOT::Math::XYZVector momentum;

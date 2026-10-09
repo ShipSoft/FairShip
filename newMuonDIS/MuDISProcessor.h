@@ -23,9 +23,8 @@ class MuDISProcessor {
   /** default constructor **/
   MuDISProcessor();
 
-  bool init(const int& aEvts, const int& aStart, const double& aMinPythiaP,
-            const int& aDIS, const int& aSeed, const double& aZmax,
-            const double& aZmin = 2500);
+  bool init(int aEvts, int aStart, double aMinPythiaP, int aDIS, int aSeed,
+            double aZmax, double aZmin = 2500);
   void initPythia6();
 
   static ROOT::Math::XYZVector rotate(const ROOT::Math::XYZVector& pvec,
@@ -52,7 +51,7 @@ class MuDISProcessor {
     fGeoProcessor.SetPocaJumpThreshold(threshold);
   }
 
-  void generateDISevents(const std::string& tType, const double& amuonW,
+  void generateDISevents(const std::string& tType, double amuonW,
                          const std::string& aLabel, const MuonPath& aPath,
                          ShipMuDIS::MuonDISBranches& aDISBr);
 
@@ -62,17 +61,17 @@ class MuDISProcessor {
   std::unique_ptr<TChain> ftree;
   ShipMuDIS::CBMSimBranches finEv;
 
-  TTree* fouttree;
+  TTree* fouttree = nullptr;
   ShipMuDIS::MuonBranches foutEv;
 
-  int fnEvts;
-  int fstartEvt;
+  int fnEvts = -1;
+  int fstartEvt = 0;
 
   TPythia6* fPythia;
 
-  double fMinPythiaP;
-  int fnDIS;
-  int fP6seed;
+  double fMinPythiaP = 2;
+  int fnDIS = 10;
+  int fP6seed = 0;
 
   MuGeoProcessor fGeoProcessor;
 

@@ -231,7 +231,7 @@ bool MagneticTrackPropagator::SegmentIntersectsBox(const State& start,
              endPosition = Coordinates(end.position),
              startMomentum = Coordinates(start.momentum),
              endMomentum = Coordinates(end.momentum);
-  double coefficients[2][4];
+  std::array<std::array<double, 4>, 2> coefficients;
   std::vector<double> candidates{lo, hi};
   for (int axis = 0; axis < 2; ++axis) {
     const double a = startPosition[axis], b = endPosition[axis];
