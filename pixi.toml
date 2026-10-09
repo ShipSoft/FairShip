@@ -29,6 +29,9 @@ fairlogger = ">=2.3"
 # in transitively by acts-ship/genfit. acts-ship's CMake config requires
 # Eigen3 3.4.0 EXACT, so pin to 3.4.x (conda-forge is the only source).
 eigen = "3.4.*"
+# yaml-cpp comes with fairroot, but CaloScoringPlane links it directly (reads the
+# PID configuration), so keep it explicit for CMake's find_package(yaml-cpp).
+yaml-cpp = ">=0.7"
 
 # Python (conda-forge)
 # acts-ship requires python 3.13, so the whole env is pinned to 3.13.

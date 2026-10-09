@@ -80,6 +80,22 @@ target_link_libraries(
 )
 add_test(NAME FixedTargetCascadeWeight COMMAND testFixedTargetCascadeWeight)
 
+add_executable(testCaloScoringPlanePID test_calo_scoring_plane_pid.cxx)
+target_link_libraries(
+    testCaloScoringPlanePID
+    CaloScoringPlane
+    ROOT::Core
+    ROOT::MathCore
+    ROOT::EG
+    FairRoot::Base
+    FairLogger::FairLogger
+)
+add_test(NAME CaloScoringPlanePID COMMAND testCaloScoringPlanePID)
+set_tests_properties(
+    CaloScoringPlanePID
+    PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
+)
+
 # Python unit tests. Run with the interpreter of the active environment so the
 # ROOT, numpy and pytest it provides are the ones used. activate.sh already
 # puts <source>/python on PYTHONPATH; set it here too so a bare ctest works.
