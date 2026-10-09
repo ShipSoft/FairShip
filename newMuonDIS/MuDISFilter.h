@@ -93,10 +93,10 @@ class MuDISFilter {
                             const TString& label = "");
   void init(const int& aEvts, const int& aStart);
 
-  Bool_t InitFile(const char*, int);
-  Bool_t InitFile(const char*);
-  Bool_t InitFiles(const std::vector<std::string>&, int);
-  Bool_t InitFiles(const std::vector<std::string>&);
+  bool InitFile(const char*, int);
+  bool InitFile(const char*);
+  bool InitFiles(const std::vector<std::string>&, int);
+  bool InitFiles(const std::vector<std::string>&);
   void process_file(const std::string& input, const std::string& output);
   void process_file(const std::vector<std::string>& input,
                     const std::string& output);
