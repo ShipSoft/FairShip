@@ -648,6 +648,11 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
     fPythia->event.list();
   }
   TMCProcess procID;
+  // J/psi replaced by a data-driven source: the J/psi seen so far in the
+  // event. Every particle descending from a J/psi comes from its decay chain,
+  // which Pythia8 appends after it, so the J/psi among the ancestors of
+  // particle ii always have smaller indices: one pass over the event suffices.
+  std::vector<int> jpsiIndices;
   for (Int_t ii = 1; ii < fPythia->event.size(); ii++) {
     Double_t e = fPythia->event[ii].e();
     Double_t m = fPythia->event[ii].m();
@@ -661,6 +666,22 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
       // don't track underlying event
       if (fabs(id) != 13) {
         wanttracking = kFALSE;
+      }
+    }
+    if (fVetoJpsi) {
+      bool fromJpsi = std::abs(id) == 443;
+      for (int j : jpsiIndices) {
+        if (fromJpsi) {
+          break;
+        }
+        fromJpsi = fPythia->event[ii].isAncestor(j);
+      }
+      if (std::abs(id) == 443) {
+        jpsiIndices.push_back(ii);
+      }
+      if (fromJpsi) {
+        wanttracking = kFALSE;
+        IncrementCounter("vetoed_jpsi_tracks");
       }
     }
     Double_t z = fPythia->event[ii].zProd() * mm + zinter * cm;
