@@ -87,7 +87,7 @@ generator must outlive the output tree. Each simulated `cbmsim` event contains:
 
 | Branch | Type | Meaning |
 | --- | --- | --- |
-| `muDIS_material` | `TString` | Material label of the replayed interaction; replaces `DISMaterial`, so analysis need not translate an enum from another software version. |
+| `muDIS_material` | `std::string` | Material label of the replayed interaction; replaces `DISMaterial`, so analysis need not translate an enum from another software version. |
 | `muDIS_muEntry` | `Int_t` | Zero-based input muon entry across the input chain, including the start offset. For filtered input this refers to the filtered tree. |
 | `muDIS_disIndex` | `Int_t` | Zero-based DIS index within that muon's current material in the input tree (`fnmuDis` before advancement). |
 | `muDIS_xsec` | `Double_t` | Always `-1` until the input cross sections are reliable. |
