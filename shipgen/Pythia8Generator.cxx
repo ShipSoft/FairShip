@@ -11,15 +11,16 @@
 #include "FairPrimaryGenerator.h"
 #include "HNLPythia8Generator.h"
 #include "MeanMaterialBudget.h"
+#include "PythiaUnits.h"
 #include "TGeoBBox.h"
 #include "TGeoNode.h"
 #include "TGeoVolume.h"
 #include "TMath.h"
 #include "TROOT.h"
 #include "TSystem.h"
-const Double_t cm = 10.;                  // pythia units are mm
-const Double_t c_light = 2.99792458e+10;  // speed of light in cm/sec (c_light
-                                          // = 2.99792458e+8 * m/s)
+// positions are handled in Pythia8 units (mm) and converted on output
+using shipgen::PythiaLengthToCm;
+using shipgen::PythiaTimeToS;
 constexpr Double_t mbarn = 1E-3 * 1E-24 * TMath::Na();  // cm^2 * Avogadro
 
 // -----   Default constructor   -------------------------------------------
@@ -287,7 +288,7 @@ Bool_t Pythia8Generator::ReadEvent(FairPrimaryGenerator* cpg) {
       }
       zinterStart = zinter;
     }
-    zinter = zinter * cm;
+    zinter = zinter * shipgen::kPythiaLengthPerCm;  // to Pythia8 units
   }
   for (Int_t c = 0; c < 2; c++) {
     if (c > 0) {
@@ -313,7 +314,8 @@ Bool_t Pythia8Generator::ReadEvent(FairPrimaryGenerator* cpg) {
       y = 0.;
       z = zinter;
       id = mid[0];
-      cpg->AddTrack(id, px, py, pz, x / cm, y / cm, z / cm, -1, false);
+      cpg->AddTrack(id, px, py, pz, PythiaLengthToCm(x), PythiaLengthToCm(y),
+                    PythiaLengthToCm(z), -1, false);
       addedParticles += 1;
     }
     for (Int_t ii = 1; ii < fPythia->event.size(); ii++) {
@@ -326,14 +328,14 @@ Bool_t Pythia8Generator::ReadEvent(FairPrimaryGenerator* cpg) {
         z = fPythia->event[ii].zProd() + dl * fPythia->event[1].pz() + zinter;
         x = fPythia->event[ii].xProd() + dl * fPythia->event[1].px();
         y = fPythia->event[ii].yProd() + dl * fPythia->event[1].py();
-        tof = fPythia->event[ii].tProd() / (10 * c_light) +
-              dl * fPythia->event[1].e() / cm / c_light;
+        // the displaced vertex adds the flight time dl * E (mm/c)
+        tof = PythiaTimeToS(fPythia->event[ii].tProd()) +
+              PythiaTimeToS(dl * fPythia->event[1].e());
       } else {
         z = fPythia->event[ii].zProd() + zinter;
         x = fPythia->event[ii].xProd();
         y = fPythia->event[ii].yProd();
-        tof =
-            fPythia->event[ii].tProd() / (10 * c_light);  // to go from mm to s
+        tof = PythiaTimeToS(fPythia->event[ii].tProd());
       }
       pz = fPythia->event[ii].pz();
       px = fPythia->event[ii].px();
@@ -344,8 +346,8 @@ Bool_t Pythia8Generator::ReadEvent(FairPrimaryGenerator* cpg) {
       if (ii == 1) {
         im = 0;
       }
-      cpg->AddTrack(id, px, py, pz, x / cm, y / cm, z / cm, im, wanttracking, e,
-                    tof, 1.);
+      cpg->AddTrack(id, px, py, pz, PythiaLengthToCm(x), PythiaLengthToCm(y),
+                    PythiaLengthToCm(z), im, wanttracking, e, tof, 1.);
       addedParticles += 1;
     }
     key += addedParticles - 1;  // pythia counts from 1
@@ -359,10 +361,11 @@ Bool_t Pythia8Generator::ReadEvent(FairPrimaryGenerator* cpg) {
       lx = true;
       fn++;
       cpg->AddTrack((Int_t)hid[0], hpx[0], hpy[0], hpz[0],
-                    (mpx[0] + fPythia->event[0].xProd()) / cm,
-                    (mpy[0] + fPythia->event[0].yProd()) / cm,
-                    (mpz[0] + fPythia->event[0].zProd()) / cm + zinter / cm, -1,
-                    true);
+                    PythiaLengthToCm(mpx[0] + fPythia->event[0].xProd()),
+                    PythiaLengthToCm(mpy[0] + fPythia->event[0].yProd()),
+                    PythiaLengthToCm(mpz[0] + fPythia->event[0].zProd()) +
+                        PythiaLengthToCm(zinter),
+                    -1, true);
       // mpx,mpy,mpz are the vertex coordinates with respect to charm hadron,
       // first particle in Pythia is (system)
     }

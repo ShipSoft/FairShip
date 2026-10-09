@@ -17,6 +17,7 @@
 #include "FairVolume.h"
 #include "ShipDetectorList.h"
 #include "ShipStack.h"
+#include "ShipUnit.h"
 #include "TArrayI.h"
 #include "TDatabasePDG.h"
 #include "TGeoBBox.h"
@@ -36,9 +37,9 @@
 using std::cout;
 using std::endl;
 
-constexpr Double_t cm = 1;         // cm
-constexpr Double_t m = 100 * cm;   //  m
-constexpr Double_t mm = 0.1 * cm;  //  mm
+using ShipUnit::cm;
+using ShipUnit::m;
+using ShipUnit::mm;
 
 namespace {
 
@@ -147,7 +148,7 @@ Bool_t exitHadronAbsorber::ProcessHits(FairVolume* vol) {
 
         Double_t mass = gMC->TrackMass();
         Double_t tau = gMC->ParticleLifeTime(track_pid);  // in nanoseconds
-        Double_t c_tau = tau * 29.9792458;                // in cm/ns
+        Double_t c_tau = tau * ShipUnit::c_light;         // in cm
 
         Double_t instantP = mom.P();
 

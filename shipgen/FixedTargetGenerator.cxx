@@ -19,6 +19,7 @@
 #include "HNLPythia8Generator.h"
 #include "MeanMaterialBudget.h"
 #include "Pythia8Plugins/EvtGen.h"
+#include "PythiaUnits.h"
 #include "ShipUnit.h"
 #include "TGeoBBox.h"
 #include "TGeoNode.h"
@@ -58,10 +59,9 @@ void SetDsToTauNuBR(Pythia8::Pythia* pythia, double br) {
 }
 }  // namespace
 
+using shipgen::PythiaTimeToS;
 using ShipUnit::cm;
 using ShipUnit::mm;
-const Double_t c_light = 2.99792458e+10;  // speed of light in cm/sec (c_light
-                                          // = 2.99792458e+8 * m/s)
 constexpr Double_t mbarn = 1E-3 * 1E-24 * TMath::Na();  // cm^2 * Avogadro
 
 // -----   Default constructor   -------------------------------------------
@@ -672,8 +672,7 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
     Double_t z = fPythia->event[ii].zProd() * mm + zinter * cm;
     Double_t x = fPythia->event[ii].xProd() * mm + xOff * cm + dx * cm;
     Double_t y = fPythia->event[ii].yProd() * mm + yOff * cm + dy * cm;
-    Double_t tof =
-        fPythia->event[ii].tProd() / (10 * c_light);  // to go from mm to s
+    Double_t tof = PythiaTimeToS(fPythia->event[ii].tProd());
     Double_t px = fPythia->event[ii].px();
     Double_t py = fPythia->event[ii].py();
     Int_t im = fPythia->event[ii].mother1() - 1;

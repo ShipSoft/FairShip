@@ -10,16 +10,16 @@
 #include "BeamSmearingUtils.h"
 #include "FairPrimaryGenerator.h"
 #include "Pythia8/Pythia.h"
+#include "PythiaUnits.h"
 #include "ShipUnit.h"
 #include "TDatabasePDG.h"  // for TDatabasePDG
 #include "TMath.h"
 #include "TROOT.h"
 #include "TSystem.h"
 
+using shipgen::PythiaTimeToS;
 using ShipUnit::cm;
 using ShipUnit::mm;
-const Double_t c_light = 2.99792458e+10;  // speed of light in cm/sec (c_light
-                                          // = 2.99792458e+8 * m/s)
 const Int_t debug = 1;
 
 // -----   Default constructor   -------------------------------------------
@@ -85,8 +85,9 @@ Bool_t DPPythia8Generator::Init() {
     List(fDP);
   }
   if (debug) {
-    std::cout << "tau root PDG database " << root_ctau
-              << "[s] ctau root = " << root_ctau * 3e10 << "[cm]" << std::endl;
+    std::cout << "tau root PDG database " << root_ctau << "[s] ctau root = "
+              << root_ctau * ShipUnit::s * ShipUnit::c_light << "[cm]"
+              << std::endl;
   }
   fctau = fPythia->particleData.tau0(fDP);  //* 3.3333e-12
   if (debug) {
@@ -245,7 +246,7 @@ Bool_t DPPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg) {
 
           cpg->AddTrack((Int_t)fPythia->event[1].id(), pxN, pyN, pzN,
                         xN * mm + dx, yN * mm + dy, zN * mm, -1, false, eN,
-                        tN * mm / c_light, w);
+                        PythiaTimeToS(tN), w);
 
           dec_chain.push_back(1);
 
@@ -271,12 +272,12 @@ Bool_t DPPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg) {
 
         cpg->AddTrack(
             (Int_t)fPythia->event[im].id(), pmx, pmy, pmz, xm * mm + dx,
-            ym * mm + dy, zm * mm, imout, false, em, tm * mm / c_light,
+            ym * mm + dy, zm * mm, imout, false, em, PythiaTimeToS(tm),
             w);  // convert pythia's (x,y,z[mm], t[mm/c]) to ([cm], [s])
 
         // mother of the DP is track 1 (the meson)
         cpg->AddTrack(fDP, px, py, pz, xp * mm + dx, yp * mm + dy, zp * mm, 1,
-                      false, e, tp * mm / c_light, w);
+                      false, e, PythiaTimeToS(tp), w);
 
         // bookkeep the indices of stored particles
         dec_chain.push_back(im);
@@ -295,7 +296,7 @@ Bool_t DPPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg) {
       } else {
         // Proton bremsstrahlung or no valid mother: export only the DP as root
         cpg->AddTrack(fDP, px, py, pz, xp * mm + dx, yp * mm + dy, zp * mm, -1,
-                      false, e, tp * mm / c_light, w);
+                      false, e, PythiaTimeToS(tp), w);
         dec_chain.push_back(i);
 
         if (debug > 1)
@@ -365,7 +366,7 @@ Bool_t DPPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg) {
     e = fPythia->event[k].e();
 
     cpg->AddTrack((Int_t)fPythia->event[k].id(), px, py, pz, xS * mm, yS * mm,
-                  zS * mm, im, wanttracking, e, tS * mm / c_light, w);
+                  zS * mm, im, wanttracking, e, PythiaTimeToS(tS), w);
   }
   return kTRUE;
 }
