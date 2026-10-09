@@ -11,9 +11,9 @@
 #include <iostream>
 
 #include "FairLogger.h"
-#include "TMath.h"
+#include "Math/RotationY.h"
+#include "Math/RotationZ.h"
 #include "TRandom.h"
-#include "TRotation.h"
 
 using namespace ShipMuDIS;
 
@@ -82,17 +82,11 @@ void MuDISProcessor::initPythia6() {
   // fPythia->SetMSTU(11, 6);
 }
 
-void MuDISProcessor::rotate(const TVector3& pvec, const double& theta,
-                            const double& phi, TVector3& newp) {
-  // Rotate the daughter particle momentum to align with respect to the muon's
-  // momentum."""
-
-  TRotation rotation;
-  rotation.RotateY(theta);  // Rotate around the Y-axis
-  rotation.RotateZ(phi);    // Rotate around the Z-axis
-
-  // Apply the rotation to the momentum vector
-  newp = rotation * pvec;
+ROOT::Math::XYZVector MuDISProcessor::rotate(const ROOT::Math::XYZVector& pvec,
+                                             double theta, double phi) {
+  // Align the daughter momentum with the muon: rotate about y by theta, then
+  // about z by phi.
+  return ROOT::Math::RotationZ(phi) * (ROOT::Math::RotationY(theta) * pvec);
 }
 
 bool MuDISProcessor::InitFile(const char* fileName) {
@@ -322,9 +316,9 @@ void MuDISProcessor::generateDISevents(const std::string& tType,
     aDISBr.DISvy.push_back(aPath.GetY(realz, slice));
     aDISBr.DISvt.push_back(aPath.GetTimeNs(realz, slice));
 
-    double theta = TMath::ACos(aPath.Getpz(slice) / sliceP);
+    double theta = std::acos(aPath.Getpz(slice) / sliceP);
     // returns phi between -pi and pi
-    double phi = TMath::ATan2(aPath.Getpy(slice), aPath.Getpx(slice));
+    double phi = std::atan2(aPath.Getpy(slice), aPath.Getpx(slice));
 
     unsigned ndaugh = fPythia->GetN();
     aDISBr.nDISdau.push_back(ndaugh);
@@ -333,10 +327,10 @@ void MuDISProcessor::generateDISevents(const std::string& tType,
     for (unsigned itrk(1); itrk < ndaugh + 1; ++itrk) {
       DISparticle adau;
       adau.pid = fPythia->GetK(itrk, 2);
-      TVector3 dauP(0, 0, 0);
-      TVector3 indauP(fPythia->GetP(itrk, 1), fPythia->GetP(itrk, 2),
-                      fPythia->GetP(itrk, 3));
-      rotate(indauP, theta, phi, dauP);
+      const auto dauP = rotate(
+          ROOT::Math::XYZVector(fPythia->GetP(itrk, 1), fPythia->GetP(itrk, 2),
+                                fPythia->GetP(itrk, 3)),
+          theta, phi);
       adau.px = dauP.X();
       adau.py = dauP.Y();
       adau.pz = dauP.Z();

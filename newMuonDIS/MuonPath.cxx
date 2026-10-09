@@ -17,7 +17,8 @@ MuonPath::MuonPath() {
   fzlength = 0;
 }
 
-void MuonPath::SetVertexInfo(const TVector3& vecpos, const TVector3& vecp,
+void MuonPath::SetVertexInfo(const ROOT::Math::XYZPoint& vecpos,
+                             const ROOT::Math::XYZVector& vecp,
                              const double& time) {
   fvtx.push_back(vecpos);
   fvtxT.push_back(time);

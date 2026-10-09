@@ -15,6 +15,8 @@
 #include "TGeoBBox.h"
 
 using namespace ShipMuDIS;
+using ROOT::Math::XYZPoint;
+using ROOT::Math::XYZVector;
 
 MuGeoProcessor::MuGeoProcessor() {
   fZmax = 14000;
@@ -81,16 +83,16 @@ void MuGeoProcessor::CacheGeometry() {
   visit(fTopNode, TGeoHMatrix(), false);
 }
 
-bool MuGeoProcessor::AddMagneticChord(const TVector3& a, const TVector3& b,
+bool MuGeoProcessor::AddMagneticChord(const XYZPoint& a, const XYZPoint& b,
                                       double momentum, double& time,
                                       unsigned depth) {
   double error = 0.;
-  TVector3 middle;
+  XYZPoint middle;
   for (double fraction : {0.25, 0.5, 0.75}) {
-    TVector3 point;
+    XYZPoint point;
     if (!fPropagator->PositionAt(a.Z() + fraction * (b.Z() - a.Z()), point))
       return false;
-    error = std::max(error, (point - (a + fraction * (b - a))).Mag());
+    error = std::max(error, (point - (a + fraction * (b - a))).R());
     if (fraction == 0.5) middle = point;
   }
   if (error > 1.e-4) {
@@ -98,11 +100,11 @@ bool MuGeoProcessor::AddMagneticChord(const TVector3& a, const TVector3& b,
     return AddMagneticChord(a, middle, momentum, time, depth + 1) &&
            AddMagneticChord(middle, b, momentum, time, depth + 1);
   }
-  const TVector3 displacement = b - a;
+  const XYZVector displacement = b - a;
   fSegments.push_back(
       {{a, momentum * displacement.Unit(), time}, a.Z(), b.Z(), false});
   const double speed = c_light * momentum / std::hypot(momentum, muon_mass);
-  time += displacement.Mag() / speed;
+  time += displacement.R() / speed;
   return true;
 }
 
@@ -112,10 +114,11 @@ bool MuGeoProcessor::AddMagneticSegments(const Measurement& start,
                                     endZ))
     return false;
   double time = start.time;
-  TVector3 previous = start.position, position, momentum;
+  XYZPoint previous = start.position, position;
+  XYZVector momentum;
   for (std::size_t i = 1; i < fPropagator->GetTrajectorySize(); ++i) {
     if (!fPropagator->GetTrajectoryState(i, position, momentum) ||
-        !AddMagneticChord(previous, position, start.momentum.Mag(), time))
+        !AddMagneticChord(previous, position, start.momentum.R(), time))
       return false;
     previous = position;
   }
@@ -124,23 +127,23 @@ bool MuGeoProcessor::AddMagneticSegments(const Measurement& start,
 
 double MuGeoProcessor::GetTrajectoryPocaZ(const Measurement& hit) const {
   if (fSegments.empty()) return fStart.position.Z();
-  const TVector3 direction = hit.momentum.Unit();
+  const XYZVector direction = hit.momentum.Unit();
   double bestDistance = std::numeric_limits<double>::infinity();
   double pocaZ = fStart.position.Z();
   // Minimize the distance between each refined trajectory chord and the
   // hit's line. Use the midpoint of the closest pair, as in GetVertex().
   for (const auto& segment : fSegments) {
     const auto& m = segment.measurement;
-    const TVector3 delta = m.position - hit.position;
-    const TVector3 slope = m.momentum * (1. / m.momentum.Z());
-    const TVector3 transverse = slope - slope.Dot(direction) * direction;
+    const XYZVector delta = m.position - hit.position;
+    const XYZVector slope = m.momentum * (1. / m.momentum.Z());
+    const XYZVector transverse = slope - slope.Dot(direction) * direction;
     const double denominator = transverse.Mag2();
     const double dz = denominator < 1.e-12
                           ? 0.
                           : std::clamp(-delta.Dot(transverse) / denominator, 0.,
                                        segment.endZ - segment.startZ);
-    const TVector3 onTrack = m.position + dz * slope;
-    const TVector3 onLine =
+    const XYZPoint onTrack = m.position + dz * slope;
+    const XYZPoint onLine =
         hit.position + (onTrack - hit.position).Dot(direction) * direction;
     const double distance = (onTrack - onLine).Mag2();
     if (distance < bestDistance) {
@@ -198,14 +201,17 @@ bool MuGeoProcessor::initialise(MuonBranches& aEvt) {
 
   std::array<Measurement, 8> measurements;
   unsigned count = 1;
-  aEvt.mcTrks[0].GetStartVertex(measurements[0].position);
-  aEvt.mcTrks[0].GetMomentum(measurements[0].momentum);
-  measurements[0].time = aEvt.mcTrks[0].GetStartT();
+  const auto& muon = aEvt.mcTrks[0];
+  measurements[0] = {
+      XYZPoint(muon.GetStartX(), muon.GetStartY(), muon.GetStartZ()),
+      XYZVector(muon.GetPx(), muon.GetPy(), muon.GetPz()), muon.GetStartT()};
+  const auto measure = [](const auto& hit) {
+    return Measurement{XYZPoint(hit.GetX(), hit.GetY(), hit.GetZ()),
+                       XYZVector(hit.GetPx(), hit.GetPy(), hit.GetPz()),
+                       hit.GetTime()};
+  };
   const auto addHit = [&](const auto& hit) {
-    auto& measurement = measurements[count++];
-    hit.Position(measurement.position);
-    hit.Momentum(measurement.momentum);
-    measurement.time = hit.GetTime();
+    measurements[count++] = measure(hit);
   };
   if (!aEvt.ubtPt.empty()) addHit(aEvt.ubtPt.front());
   if (!aEvt.sbtPt.empty()) addHit(aEvt.sbtPt.front());
@@ -225,8 +231,8 @@ bool MuGeoProcessor::initialise(MuonBranches& aEvt) {
     if (!std::isfinite(m.position.X()) || !std::isfinite(m.position.Y()) ||
         !std::isfinite(m.position.Z()) || !std::isfinite(m.momentum.X()) ||
         !std::isfinite(m.momentum.Y()) || !std::isfinite(m.momentum.Z()) ||
-        !std::isfinite(m.momentum.Mag()) || !std::isfinite(m.time) ||
-        m.momentum.Mag() == 0.) {
+        !std::isfinite(m.momentum.R()) || !std::isfinite(m.time) ||
+        m.momentum.R() == 0.) {
       ++fInvalidMuons;
       return false;
     }
@@ -258,11 +264,7 @@ bool MuGeoProcessor::initialise(MuonBranches& aEvt) {
     return true;
   }
   const bool hasUBT = !aEvt.ubtPt.empty();
-  if (hasUBT) {
-    aEvt.ubtPt.front().Position(fUBT.position);
-    aEvt.ubtPt.front().Momentum(fUBT.momentum);
-    fUBT.time = aEvt.ubtPt.front().GetTime();
-  }
+  if (hasUBT) fUBT = measure(aEvt.ubtPt.front());
   double startZ = fStart.position.Z();
   unsigned first = 0;
   if (hasUBT) {
@@ -326,19 +328,19 @@ bool MuGeoProcessor::initialise(MuonBranches& aEvt) {
   return true;
 }
 
-TVector3 MuGeoProcessor::GetVertex(const TVector3& r1, const TVector3& p1,
-                                   const TVector3& r2, const TVector3& p2) {
-  TVector3 u1 = p1.Unit();
-  TVector3 u2 = p2.Unit();
+XYZPoint MuGeoProcessor::GetVertex(const XYZPoint& r1, const XYZVector& p1,
+                                   const XYZPoint& r2, const XYZVector& p2) {
+  const XYZVector u1 = p1.Unit();
+  const XYZVector u2 = p2.Unit();
 
-  TVector3 w0 = r1 - r2;
+  const XYZVector w0 = r1 - r2;
 
-  double a = u1 * u1;
-  double b = u1 * u2;
-  double c = u2 * u2;
+  double a = u1.Dot(u1);
+  double b = u1.Dot(u2);
+  double c = u2.Dot(u2);
 
-  double d = u1 * w0;
-  double e = u2 * w0;
+  double d = u1.Dot(w0);
+  double e = u2.Dot(w0);
 
   double denom = a * c - b * b;
 
@@ -352,10 +354,10 @@ TVector3 MuGeoProcessor::GetVertex(const TVector3& r1, const TVector3& p1,
   double t = (b * e - c * d) / denom;
   double s = (a * e - b * d) / denom;
 
-  TVector3 poca1 = r1 + t * u1;
-  TVector3 poca2 = r2 + s * u2;
+  const XYZPoint poca1 = r1 + t * u1;
+  const XYZPoint poca2 = r2 + s * u2;
 
-  TVector3 vertex = 0.5 * (poca1 + poca2);
+  const XYZPoint vertex = poca1 + 0.5 * (poca2 - poca1);
 
   double zmin = std::min(r1.Z(), r2.Z());
   double zmax = std::max(r1.Z(), r2.Z());
@@ -470,9 +472,9 @@ void MuGeoProcessor::AddPath(const MuonPath& path) {
 bool MuGeoProcessor::Trace(const Measurement& measurement, double startZ,
                            double endZ, bool backward) {
   if (startZ == endZ) return true;
-  const TVector3 forward = measurement.momentum.Unit();
-  const TVector3 direction = backward ? -forward : forward;
-  const TVector3 start =
+  const XYZVector forward = measurement.momentum.Unit();
+  const XYZVector direction = backward ? -forward : forward;
+  const XYZPoint start =
       measurement.position +
       ((startZ - measurement.position.Z()) / forward.Z()) * forward;
   auto* node =
@@ -484,7 +486,7 @@ bool MuGeoProcessor::Trace(const Measurement& measurement, double startZ,
   unsigned steps = 0;
   while (node) {
     const auto* point = gGeoManager->GetCurrentPoint();
-    const TVector3 current(point[0], point[1], point[2]);
+    const XYZPoint current(point[0], point[1], point[2]);
     const double remaining = (endZ - current.Z()) / direction.Z();
     if (remaining <= 1.e-8) {
       reachedEnd = true;
@@ -568,15 +570,15 @@ std::map<std::string, MuonPath>& MuGeoProcessor::FillMuonPath() {
 
   bool hasPrevious = false;
   bool hasLargeJump = false;
-  TVector3 previousEnd;
+  XYZPoint previousEnd;
   for (const auto& segment : fSegments) {
     const auto& m = segment.measurement;
-    const TVector3 direction = m.momentum.Unit();
-    const TVector3 start =
+    const XYZVector direction = m.momentum.Unit();
+    const XYZPoint start =
         m.position +
         ((segment.startZ - m.position.Z()) / direction.Z()) * direction;
     if (hasPrevious && segment.measurementTransition) {
-      const double jump = (start - previousEnd).Perp();
+      const double jump = (start - previousEnd).Rho();
       ++fTransitions;
       fMaxTransverseJump = std::max(fMaxTransverseJump, jump);
       if (jump > fPocaJumpThreshold) {
