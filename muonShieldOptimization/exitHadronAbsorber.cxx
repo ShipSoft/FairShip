@@ -4,8 +4,12 @@
 
 #include "exitHadronAbsorber.h"
 
+#include <algorithm>
+#include <cmath>
 #include <cstddef>
 #include <iostream>
+#include <iterator>
+#include <limits>
 
 #include "FairGeoBuilder.h"
 #include "FairGeoInterface.h"
@@ -17,6 +21,7 @@
 #include "FairRootManager.h"
 #include "FairVolume.h"
 #include "ShipDetectorList.h"
+#include "ShipMCTrack.h"
 #include "ShipStack.h"
 #include "TArrayI.h"
 #include "TDatabasePDG.h"
@@ -59,6 +64,27 @@ Double_t PushedWeightScale(Int_t parentId) {
 }  // namespace
 
 Int_t exitHadronAbsorber::fgCarrierTrackID = exitHadronAbsorber::kNoCarrier;
+std::set<Int_t> exitHadronAbsorber::fgReplacedDecays;
+std::set<Int_t> exitHadronAbsorber::fgReplacedTracks;
+std::map<Int_t, exitHadronAbsorber::WeightHistory>
+    exitHadronAbsorber::fgWeightHistory;
+std::set<Int_t> exitHadronAbsorber::fgWeightCorrected;
+
+Double_t exitHadronAbsorber::WeightHistory::WeightAt(Double_t t) const {
+  // A secondary made at the end of a step and the split on that step share
+  // the Geant4 post-step time, but geant4_vmc converts it to seconds by
+  // division for the split (TrackPosition) and by multiplication with the
+  // inverse unit for the secondary (stack push), so the two can differ by an
+  // ulp or two. A few ulp of tolerance covers that and stays far below the
+  // time of any real step. Split times increase strictly (a split needs a
+  // step of non-zero length), so the lookup is a binary search.
+  const Double_t tMax =
+      t + 4 * std::numeric_limits<Double_t>::epsilon() * std::abs(t);
+  const auto after = std::upper_bound(
+      splits.begin(), splits.end(), tMax,
+      [](Double_t time, const auto& split) { return time < split.first; });
+  return after == splits.begin() ? initial : std::prev(after)->second;
+}
 
 exitHadronAbsorber::exitHadronAbsorber(const char* Name, Bool_t Active)
     : Detector(Name, Active, kVETO),
@@ -119,14 +145,13 @@ Bool_t exitHadronAbsorber::ProcessHits(FairVolume* vol) {
       TParticle* p = gMC->GetStack()->GetCurrentTrack();
       fUniqueID = p->GetUniqueID();
       Int_t pdgCode = p->GetPdgCode();
-      Int_t motherId = p->GetFirstMother();
       gMC->TrackMomentum(fMom);
       if (!fOnlyMuons || TMath::Abs(pdgCode) == 13) {
         fTime = gMC->TrackTime() * 1.0e09;
         fLength = gMC->TrackLength();
         gMC->TrackPosition(fPos);
         if (((fMom.E() - fMom.M()) > EMax) &&
-            (fDecayedParentIDs.count(motherId) == 0)) {
+            (fgReplacedTracks.count(fTrackID) == 0)) {
           AddHit(fEventID, fTrackID, 111,
                  TVector3(fPos.X(), fPos.Y(), fPos.Z()),
                  TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength, 0,
@@ -149,7 +174,8 @@ Bool_t exitHadronAbsorber::ProcessHits(FairVolume* vol) {
   if (fNsplits > 0 && fIntermediateNsplits > 0 && (!fSplitOnce)) {
     Int_t currentTrackId = gMC->GetStack()->GetCurrentTrackNumber();
 
-    if (fCloneTracks.count(currentTrackId) > 0) {
+    if (fCloneTracks.count(currentTrackId) > 0 ||
+        fgReplacedTracks.count(currentTrackId) > 0) {
       return kTRUE;
     }
 
@@ -254,6 +280,7 @@ Bool_t exitHadronAbsorber::ProcessHits(FairVolume* vol) {
           const Double_t cloneWeight = trackWeight * P_decay /
                                        fIntermediateNsplits /
                                        PushedWeightScale(trueParentId);
+          const Int_t splitSet = SplitSetOf(currentTrackId, trackWeight);
           for (int i = 0; i < fIntermediateNsplits; ++i) {
             TrackBuffer clone;
             clone.pdg = track_pid;
@@ -270,11 +297,21 @@ Bool_t exitHadronAbsorber::ProcessHits(FairVolume* vol) {
             clone.polz = polZ;
             clone.weight = cloneWeight;
             clone.parentID = trueParentId;
+            clone.splitSet = splitSet;
+            clone.splitRole = ShipMCTrack::kSplitDecay;
             fSecondaryBuffer.push_back(clone);
           }
           part->SetWeight(trackWeight * (1.0 - P_decay));
+          auto [history, isNew] = fgWeightHistory.try_emplace(currentTrackId);
+          if (isNew) {
+            history->second.initial = trackWeight;
+          }
+          history->second.splits.emplace_back(pos.T(),
+                                              trackWeight * (1.0 - P_decay));
           fSplitDecays++;
           fClonesBuffered += fIntermediateNsplits;
+          fLastSplitTrackID = currentTrackId;
+          fLastSplitStep = gMC->StepNumber();
           RequestCloneCarrier();
         }
       }
@@ -364,7 +401,15 @@ void exitHadronAbsorber::Initialize() {
 void exitHadronAbsorber::BeginEvent() {
   fgCarrierTrackID = kNoCarrier;
   fCloneTracks.clear();
-  fDecayedParentIDs.clear();
+  fgReplacedDecays.clear();
+  fgReplacedTracks.clear();
+  fgWeightHistory.clear();
+  fgWeightCorrected.clear();
+  fLastSplitTrackID = -1;
+  fLastSplitStep = -1;
+  fSplitSetOfTrack.clear();
+  fSplitSetWeight.clear();
+  fNextSplitSet = 0;
   fSplitBufferLimitWarned = kFALSE;
   fEventSizeLimitWarned = kFALSE;
 }
@@ -394,10 +439,27 @@ void exitHadronAbsorber::DiscardBufferedClones() {
   fSecondaryBuffer.clear();
 }
 
+Int_t exitHadronAbsorber::SplitSetOf(Int_t trackId, Double_t weight) {
+  const auto it = fSplitSetOfTrack.find(trackId);
+  if (it != fSplitSetOfTrack.end()) {
+    return it->second;
+  }
+  const Int_t splitSet = fNextSplitSet++;
+  fSplitSetOfTrack.emplace(trackId, splitSet);
+  fSplitSetWeight.push_back(weight);
+  if (auto* stack = dynamic_cast<ShipStack*>(gMC->GetStack())) {
+    stack->SetSplitSet(trackId, splitSet, ShipMCTrack::kSplitSurvivor, weight);
+  }
+  return splitSet;
+}
+
 void exitHadronAbsorber::PostTrack() {
   Int_t currentTrackId = gMC->GetStack()->GetCurrentTrackNumber();
 
-  if (fCloneTracks.count(currentTrackId) > 0) {
+  // A replaced track can only get here as a carrier; its decay is part of one
+  // that the clones already re-sample, so it must not be split again.
+  if (fCloneTracks.count(currentTrackId) > 0 ||
+      fgReplacedTracks.count(currentTrackId) > 0) {
     return;
   }
 
@@ -434,30 +496,58 @@ void exitHadronAbsorber::PostTrack() {
     // A track that decays hands all of its remaining weight to the endpoint
     // clones. With per-step splitting its weight has already been lowered by
     // every split along the way.
+    //
+    // Except where the per-step split already covered the step. There, the
+    // clones of every step are the track's decays, and its weight e^(-tau) is
+    // what survives them. Letting Geant4 decay the track as well would apply
+    // the decay probability twice: the track would be both removed with
+    // probability 1 - e^(-tau) and down-weighted by e^(-tau), which roughly
+    // doubles the decay yield when interactions dominate. So a natural decay
+    // on a split step is not a decay: the track is pushed again at the decay
+    // point as a continuation with its current weight. The decay length is
+    // exponential, so this is the same as switching the decay off while the
+    // track is being split. Off the split steps (outside the volumes
+    // registered for splitting, below the energy cut, or with the buffer
+    // full) the natural decay stands and goes to the endpoint clones.
+    const Bool_t splitThisStep = !fSplitOnce &&
+                                 fLastSplitTrackID == currentTrackId &&
+                                 fLastSplitStep == gMC->StepNumber();
     if (isNaturalDecay) {
-      Double_t finalEndpointWeight =
-          part->GetWeight() / fNsplits / PushedWeightScale(trueParentId);
-      for (int i = 0; i < fNsplits; ++i) {
-        TrackBuffer clone;
-        clone.pdg = track_pid;
-        clone.px = finalMom.Px();
-        clone.py = finalMom.Py();
-        clone.pz = finalMom.Pz();
-        clone.e = finalMom.E();
-        clone.x = finalPos.X();
-        clone.y = finalPos.Y();
-        clone.z = finalPos.Z();
-        clone.t = finalPos.T();
-        clone.polx = polX;
-        clone.poly = polY;
-        clone.polz = polZ;
-        clone.weight = finalEndpointWeight;
-        clone.parentID = trueParentId;
-        fSecondaryBuffer.push_back(clone);
+      TrackBuffer endpoint;
+      endpoint.pdg = track_pid;
+      endpoint.px = finalMom.Px();
+      endpoint.py = finalMom.Py();
+      endpoint.pz = finalMom.Pz();
+      endpoint.e = finalMom.E();
+      endpoint.x = finalPos.X();
+      endpoint.y = finalPos.Y();
+      endpoint.z = finalPos.Z();
+      endpoint.t = finalPos.T();
+      endpoint.polx = polX;
+      endpoint.poly = polY;
+      endpoint.polz = polZ;
+      endpoint.parentID = trueParentId;
+      // The continuation stays on the survivor side of the set; endpoint
+      // clones are its decay alternatives.
+      endpoint.splitSet = SplitSetOf(currentTrackId, part->GetWeight());
+      endpoint.splitRole = splitThisStep ? ShipMCTrack::kSplitSurvivor
+                                         : ShipMCTrack::kSplitDecay;
+      if (splitThisStep) {
+        endpoint.weight = part->GetWeight() / PushedWeightScale(trueParentId);
+        endpoint.continuation = kTRUE;
+        fSecondaryBuffer.push_back(endpoint);
+        fContinuedDecays++;
+      } else {
+        endpoint.weight =
+            part->GetWeight() / fNsplits / PushedWeightScale(trueParentId);
+        for (int i = 0; i < fNsplits; ++i) {
+          fSecondaryBuffer.push_back(endpoint);
+        }
+        fSplitDecays++;
+        fClonesBuffered += fNsplits;
       }
-      fDecayedParentIDs.insert(currentTrackId);
-      fSplitDecays++;
-      fClonesBuffered += fNsplits;
+      // Either way the products of this decay are replaced.
+      fgReplacedDecays.insert(currentTrackId);
       RequestCloneCarrier();
     }
 
@@ -495,16 +585,44 @@ void exitHadronAbsorber::PreTrack() {
 
   Bool_t belowCut = (fMom.E() - fMom.M()) < EMax;
 
-  if (!isClone && !isCarrier && belowCut) {
+  // Products of a replaced decay, and their descendants, are replaced too.
+  // Every instance runs this, so the set is complete before any track steps.
+  const Int_t motherId = p->GetFirstMother();
+
+  // A Geant4 secondary of a per-step split track was pushed with the track's
+  // final weight; give it the weight the track had when it made it. This
+  // precedes every stop below, so stopped secondaries are stored with the
+  // right weight too, and their own secondaries inherit it. Clones and
+  // continuations (kPNoProcess) already carry exact weights.
+  const auto history = fgWeightHistory.find(motherId);
+  if (history != fgWeightHistory.end() && p->GetUniqueID() != kPNoProcess &&
+      fgWeightCorrected.insert(currentID).second) {
+    auto* shipStack = dynamic_cast<ShipStack*>(gMC->GetStack());
+    const TParticle* mother =
+        shipStack ? shipStack->GetParticle(motherId) : nullptr;
+    const Double_t finalWeight = mother ? mother->GetWeight() : 0.;
+    if (finalWeight > 0.) {
+      p->SetWeight(p->GetWeight() * history->second.WeightAt(p->T()) /
+                   finalWeight);
+    }
+  }
+  if (fgReplacedDecays.count(motherId) > 0 ||
+      fgReplacedTracks.count(motherId) > 0) {
+    fgReplacedTracks.insert(currentID);
+  }
+  const Bool_t isReplaced = fgReplacedTracks.count(currentID) > 0;
+
+  if (!isClone && !isCarrier && (belowCut || isReplaced)) {
     // Do NOT flush the clone buffer into this track: it is stopped before its
     // first step, so the stack popper would never run for it and the pending
     // clones would be silently discarded at the next track's popper reset.
     // The designated carrier is exempt so that it does step, and is dropped
-    // from the scoring below instead. ProcessHits does not score it either: it
-    // is a daughter of a split decay, which fDecayedParentIDs excludes. Its
-    // secondaries are still transported and can be scored if they pass the
-    // cut, which costs one sub-threshold track's worth of extra physics per
-    // splitting decay.
+    // from the statistics below instead. If it is a product of the replaced
+    // decay, which it usually is, ProcessHits does not score it either and
+    // its own secondaries are replaced and stopped here. A sub-threshold
+    // carrier from any other source keeps its secondaries, which are scored
+    // if they pass the cut: one sub-threshold track's worth of extra physics
+    // per splitting decay.
     //
     // Clones are exempt from the cut. They are a bookkeeping device that has
     // to decay immediately (ForceDecayTime(0)) so that the decay can be
@@ -517,10 +635,11 @@ void exitHadronAbsorber::PreTrack() {
     return;
   }
 
-  // A carrier below the cut only has to step so that the stack popper hands
-  // the clones over. An unsplit run would have stopped it above, so it must
-  // not reach the histograms or the ntuple.
-  const Bool_t recordStatistics = !(isCarrier && !isClone && belowCut);
+  // A carrier that is below the cut or replaced only has to step so that the
+  // stack popper hands the clones over. An unsplit run would not have it, so
+  // it must not reach the histograms or the ntuple.
+  const Bool_t recordStatistics =
+      !(isCarrier && !isClone && (belowCut || isReplaced));
 
   Int_t pdgCode = p->GetPdgCode();
 
@@ -586,7 +705,16 @@ void exitHadronAbsorber::PreTrack() {
       stack->PushTrack(1, trk.parentID, trk.pdg, trk.px, trk.py, trk.pz, trk.e,
                        trk.x, trk.y, trk.z, trk.t, trk.polx, trk.poly, trk.polz,
                        kPNoProcess, ntr, trk.weight, 999);
-      fCloneTracks.insert(ntr);
+      if (!trk.continuation) {
+        fCloneTracks.insert(ntr);
+      }
+      if (trk.splitSet >= 0) {
+        stack->SetSplitSet(ntr, trk.splitSet, trk.splitRole,
+                           fSplitSetWeight[trk.splitSet]);
+        if (trk.splitRole == ShipMCTrack::kSplitSurvivor) {
+          fSplitSetOfTrack[ntr] = trk.splitSet;
+        }
+      }
     }
     // Clear the buffer so we don't duplicate them for the next track
     fSecondaryBuffer.clear();
@@ -605,6 +733,10 @@ void exitHadronAbsorber::FinishRun() {
   if (fNsplits > 0) {
     LOG(info) << "exitHadronAbsorber: split " << fSplitDecays
               << " times, creating " << fClonesBuffered << " clones";
+    if (!fSplitOnce) {
+      LOG(info) << "exitHadronAbsorber: " << fContinuedDecays
+                << " natural decays on split steps continued instead";
+    }
     if (fLostBufferEvents > 0) {
       LOG(warning) << "exitHadronAbsorber: " << fLostBufferEvents
                    << " event(s) ended with buffered split clones, losing "
