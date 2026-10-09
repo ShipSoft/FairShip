@@ -21,7 +21,6 @@
 // positions are handled in Pythia8 units (mm) and converted on output
 using shipgen::PythiaLengthToCm;
 using shipgen::PythiaTimeToS;
-constexpr Double_t mbarn = 1E-3 * 1E-24 * TMath::Na();  // cm^2 * Avogadro
 
 // -----   Default constructor   -------------------------------------------
 Pythia8Generator::Pythia8Generator() {
@@ -271,10 +270,8 @@ Bool_t Pythia8Generator::ReadEvent(FairPrimaryGenerator* cpg) {
         TGeoMaterial* mat = nullptr;
         if (node && !gGeoManager->IsOutside()) {
           mat = node->GetVolume()->GetMaterial();
-          Double_t n = mat->GetDensity() / mat->GetA();
-          sigma = 1. / (n * mat->GetIntLen()) /
-                  mbarn;  // no need to multiply with intLengthFactor, will
-                          // cancel in next equation.
+          // no need to multiply with intLengthFactor, it cancels below
+          sigma = shipgen::NuclearCrossSection_mbarn(*mat);
           prob2int = TMath::Exp(-interLength) * sigma / maxCrossSection;
         } else {
           prob2int = 0.;

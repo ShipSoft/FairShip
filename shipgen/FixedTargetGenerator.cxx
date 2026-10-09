@@ -62,7 +62,6 @@ void SetDsToTauNuBR(Pythia8::Pythia* pythia, double br) {
 using shipgen::PythiaTimeToS;
 using ShipUnit::cm;
 using ShipUnit::mm;
-constexpr Double_t mbarn = 1E-3 * 1E-24 * TMath::Na();  // cm^2 * Avogadro
 
 // -----   Default constructor   -------------------------------------------
 FixedTargetGenerator::FixedTargetGenerator() {
@@ -544,9 +543,8 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
         TGeoMaterial* mat = nullptr;
         if (node && !gGeoManager->IsOutside()) {
           mat = node->GetVolume()->GetMaterial();
-          Double_t n = mat->GetDensity() / mat->GetA();
           ZoverA = mat->GetZ() / mat->GetA();
-          sigma = 1. / (n * mat->GetIntLen()) / mbarn;
+          sigma = shipgen::NuclearCrossSection_mbarn(*mat);
           prob2int = TMath::Exp(-interLength) * sigma / maxCrossSection;
         } else {
           prob2int = 0.;
