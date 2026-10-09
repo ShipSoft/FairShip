@@ -24,8 +24,8 @@ linearly using a vertex position which corresponds to the relevant point of
 measurement along the trajectory.
 */
 
-const Double_t c_light = 29.9792458;             // speed of light in cm/ns
-const Double_t muon_mass = 0.10565999895334244;  // muon mass in GeV
+constexpr double c_light = 29.9792458;             // speed of light in cm/ns
+constexpr double muon_mass = 0.10565999895334244;  // muon mass in GeV
 
 class MuonPath {
  public:

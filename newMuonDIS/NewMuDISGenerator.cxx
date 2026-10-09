@@ -48,18 +48,18 @@ Bool_t NewMuDISGenerator::Init(const std::vector<std::string>& fileNames,
   fEntryLoaded = false;
   if (startEvent < 0) {
     LOG(error) << "NewMuDISGenerator: startEvent must be nonnegative";
-    return kFALSE;
+    return false;
   }
   if (fileNames.empty()) {
     LOG(error) << "NewMuDISGenerator: no input files provided. "
                << "Check the -f/--inputFile argument or input file glob.";
-    return kFALSE;
+    return false;
   }
   for (const auto& fileName : fileNames) {
     if (fileName.empty()) {
       LOG(error) << "NewMuDISGenerator: received an empty input file name. "
                  << "Check the -f/--inputFile argument.";
-      return kFALSE;
+      return false;
     }
   }
 
@@ -72,7 +72,7 @@ Bool_t NewMuDISGenerator::Init(const std::vector<std::string>& fileNames,
                << fileNames.at(0)
                << ". Check that the path is correct and the file is a readable "
                   "ROOT file.";
-    return kFALSE;
+    return false;
   }
   const bool hasDIStree = testKeys->FindObject("MuonDIS") != nullptr;
   testFile->Close();
@@ -85,12 +85,12 @@ Bool_t NewMuDISGenerator::Init(const std::vector<std::string>& fileNames,
       LOG(info) << "Opening input file " << f;
       fTree->Add(f.c_str());
     }
-    const Long64_t treeEvts = fTree->GetEntries();
+    const std::int64_t treeEvts = fTree->GetEntries();
     LOG(info) << "Reading " << treeEvts << " entries.";
     if (startEvent > treeEvts) {
       LOG(error) << "NewMuDISGenerator: startEvent " << startEvent
                  << " exceeds the number of input muon entries " << treeEvts;
-      return kFALSE;
+      return false;
     }
     fStartEvent = startEvent;
     fn = 0;
@@ -104,14 +104,14 @@ Bool_t NewMuDISGenerator::Init(const std::vector<std::string>& fileNames,
     if (!ok) {
       LOG(error)
           << "NewMuDISGenerator: failed to bind one or more required branches";
-      return kFALSE;
+      return false;
     }
     SetNevents(fMaxMuons);
-    if (fNevents < 0) return kFALSE;
+    if (fNevents < 0) return false;
     LOG(info) << "NewMuDISGenerator: Initialization successful.";
-    return kTRUE;
+    return true;
   }
-  return kFALSE;
+  return false;
 }
 
 // -----   Default constructor   -------------------------------------------
@@ -126,7 +126,7 @@ Bool_t NewMuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
   if (fn >= fNevents) {
     LOG(info) << " Reached total number of DIS events: counter " << fn
               << " nTot=" << fNevents;
-    return kFALSE;
+    return false;
   }
   LOG(debug) << " - Processing input muon " << fnmu << " fMat " << fMat
              << " fnmuDis " << fnmuDis << " fnmuDisDau " << fnmuDisDau;
@@ -135,13 +135,13 @@ Bool_t NewMuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
     if (!finEv.PrepareEntry(fTree, fnmu) || fTree->GetEntry(fnmu) <= 0) {
       LOG(error) << " Error reading event " << fnmu;
       fNevents = -1;
-      return kFALSE;
+      return false;
     } else {
       LOG(debug) << " Updated tree entry: " << fnmu;
     }
     if (!ValidateEntry(fnmu)) {
       fNevents = -1;
-      return kFALSE;
+      return false;
     }
     fEntryLoaded = true;
   }
@@ -173,13 +173,13 @@ Bool_t NewMuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
           fTree->GetEntry(fnmu) <= 0) {
         LOG(error) << " Error reading event " << fnmu;
         fNevents = -1;
-        return kFALSE;
+        return false;
       } else {
         LOG(debug) << " Updated tree entry: " << fnmu;
       }
       if (!ValidateEntry(fnmu)) {
         fNevents = -1;
-        return kFALSE;
+        return false;
       }
     }
     lBr = &finEv.br[fMat];
@@ -193,10 +193,10 @@ Bool_t NewMuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
   }
 
   if (nDIS > 0) {  // if fMat branch has elements
-    if (fnmu > std::numeric_limits<Int_t>::max()) {
-      LOG(error) << "NewMuDISGenerator: input muon entry exceeds Int_t range";
+    if (fnmu > std::numeric_limits<int>::max()) {
+      LOG(error) << "NewMuDISGenerator: input muon entry exceeds int range";
       fNevents = -1;
-      return kFALSE;
+      return false;
     }
     if (fnmuDis < 0 || !lBr->nDISdau || !lBr->DISparticles || !lBr->DISvx ||
         !lBr->DISvy || !lBr->DISvz || !lBr->DISvt ||
@@ -208,7 +208,7 @@ Bool_t NewMuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
       LOG(error) << "NewMuDISGenerator: invalid DIS index " << fnmuDis
                  << " in input muon " << fnmu << " material " << fMat;
       fNevents = -1;
-      return kFALSE;
+      return false;
     }
     const int nDaughters = (*lBr->nDISdau)[fnmuDis];
     const auto nDISparts = lBr->DISparticles->size();
@@ -219,7 +219,7 @@ Bool_t NewMuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
                  << nDISparts << " DIS particles for input muon " << fnmu
                  << " material " << fMat << " DIS index " << fnmuDis;
       fNevents = -1;
-      return kFALSE;
+      return false;
     }
     // add also soft tracks up to z_interaction
     bool first = true;
@@ -256,9 +256,9 @@ Bool_t NewMuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
                     (*lBr->DISvy)[fnmuDis], (*lBr->DISvz)[fnmuDis], 0, true,
                     lDau.E, (*lBr->DISvt)[fnmuDis] / 1E9, lBr->wDIS);
     }
-    fDISMaterial = static_cast<Int_t>(fMat);
+    fDISMaterial = static_cast<int>(fMat);
     fMaterialLabel = MatTypeStr[fMat];
-    fMuonEntry = static_cast<Int_t>(fnmu);
+    fMuonEntry = static_cast<int>(fnmu);
     fDISIndex = fnmuDis;
     // DISxsec is not reliable yet; retain the -1 placeholder.
     fPythiaP = lBr->pPythia;
@@ -275,7 +275,7 @@ Bool_t NewMuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
     LOG(error) << " Failed to process input muon " << fnmu << " fMat " << fMat
                << " fnmuDis " << fnmuDis << " fnmuDisDau " << fnmuDisDau
                << " local event " << fn;
-    return kFALSE;
+    return false;
   }
 
   if (fn == fNevents) {
@@ -283,22 +283,22 @@ Bool_t NewMuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
               << " nTot=" << fNevents;
   }
 
-  return kTRUE;
+  return true;
 }
 
 // -------------------------------------------------------------------------
-Int_t NewMuDISGenerator::GetNevents() { return fNevents; }
+int NewMuDISGenerator::GetNevents() { return fNevents; }
 
-Bool_t NewMuDISGenerator::RegisterOutputBranches(TTree* tree) {
+bool NewMuDISGenerator::RegisterOutputBranches(TTree* tree) {
   if (!tree || tree->GetEntries() != 0) {
     LOG(error) << "NewMuDISGenerator: output branches require an empty tree";
-    return kFALSE;
+    return false;
   }
   for (const auto* name : {"muDIS_material", "muDIS_muEntry", "muDIS_disIndex",
                            "muDIS_xsec", "muDIS_pPythia", "muDIS_nGenerated"}) {
     if (tree->GetBranch(name)) {
       LOG(error) << "NewMuDISGenerator: output branch already exists: " << name;
-      return kFALSE;
+      return false;
     }
   }
   return tree->Branch("muDIS_material", &fMaterialLabel) &&
@@ -319,7 +319,7 @@ void NewMuDISGenerator::ResetOutputBranches() {
   fNGenerated.assign(nMats, -1);
 }
 
-bool NewMuDISGenerator::ValidateEntry(Long64_t entry) const {
+bool NewMuDISGenerator::ValidateEntry(std::int64_t entry) const {
   if (!finEv.mcTrks || finEv.mcTrks->empty()) {
     LOG(error) << "NewMuDISGenerator: missing muon tracks in entry " << entry;
     return false;
@@ -345,11 +345,12 @@ void NewMuDISGenerator::SetNevents(int nMuons) {
     return;
   }
   if (!fTree) return;
-  fEndEvent = nMuons < 0 ? fTree->GetEntries()
-                         : std::min(Long64_t(fStartEvent) + nMuons,
-                                    fTree->GetEntries());
+  fEndEvent = nMuons < 0
+                  ? fTree->GetEntries()
+                  : std::min<std::int64_t>(std::int64_t{fStartEvent} + nMuons,
+                                           fTree->GetEntries());
   int total = 0;
-  for (Long64_t iEv = fStartEvent; iEv < fEndEvent; ++iEv) {
+  for (std::int64_t iEv = fStartEvent; iEv < fEndEvent; ++iEv) {
     if (!finEv.PrepareEntry(fTree, iEv) || fTree->GetEntry(iEv) <= 0 ||
         !ValidateEntry(iEv)) {
       LOG(error) << "NewMuDISGenerator: error counting input muon " << iEv;
@@ -357,7 +358,7 @@ void NewMuDISGenerator::SetNevents(int nMuons) {
     }
     for (const auto& br : finEv.br) {
       if (br.nDISevts > std::numeric_limits<int>::max() - total) {
-        LOG(error) << "NewMuDISGenerator: DIS event count exceeds Int_t range";
+        LOG(error) << "NewMuDISGenerator: DIS event count exceeds int range";
         return;
       }
       total += br.nDISevts;

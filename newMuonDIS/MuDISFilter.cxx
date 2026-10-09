@@ -313,34 +313,34 @@ void MuDISFilter::init(const int& aEvts, const int& aStart) {
   fstartEvt = aStart;
 }
 
-Bool_t MuDISFilter::InitFile(const char* fileName) {
+bool MuDISFilter::InitFile(const char* fileName) {
   return InitFile(fileName, 0);
 }
 
-Bool_t MuDISFilter::InitFiles(const std::vector<std::string>& fileNames) {
+bool MuDISFilter::InitFiles(const std::vector<std::string>& fileNames) {
   return InitFiles(fileNames, 0);
 }
 
 // -----   Default constructor   -------------------------------------------
-Bool_t MuDISFilter::InitFile(const char* fileName, const int startEvent) {
+bool MuDISFilter::InitFile(const char* fileName, const int startEvent) {
   std::vector<std::string> fileNames = {fileName};
   return InitFiles(fileNames, startEvent);
 }
 
-Bool_t MuDISFilter::InitFiles(const std::vector<std::string>& fileNames,
-                              const int startEvent) {
-  if (startEvent < 0) return kFALSE;
+bool MuDISFilter::InitFiles(const std::vector<std::string>& fileNames,
+                            const int startEvent) {
+  if (startEvent < 0) return false;
   fstartEvt = startEvent;
   if (fileNames.empty()) {
     LOG(error) << "MuDISFilter: no input files provided. "
                << "Check the -f/--inputFile argument or input file glob.";
-    return kFALSE;
+    return false;
   }
   for (const auto& fileName : fileNames) {
     if (fileName.empty()) {
       LOG(error) << "MuDISFilter: received an empty input file name. "
                  << "Check the -f/--inputFile argument.";
-      return kFALSE;
+      return false;
     }
   }
 
@@ -350,10 +350,10 @@ Bool_t MuDISFilter::InitFiles(const std::vector<std::string>& fileNames,
     if (file && !file->IsZombie()) file->GetObject("MuonDIS", tree);
     if (!tree) {
       LOG(error) << "MuDISFilter: missing MuonDIS tree in " << name;
-      return kFALSE;
+      return false;
     }
     MuonInBranches check;
-    if (!check.Setup(tree)) return kFALSE;
+    if (!check.Setup(tree)) return false;
     tree->ResetBranchAddresses();
   }
 
@@ -361,20 +361,20 @@ Bool_t MuDISFilter::InitFiles(const std::vector<std::string>& fileNames,
     delete ftree;
     ftree = new TChain("MuonDIS");
     for (const auto& name : fileNames) {
-      if (!ftree->Add(name.c_str())) return kFALSE;
+      if (!ftree->Add(name.c_str())) return false;
     }
-    Long64_t treeEvts = ftree->GetEntries();
+    std::int64_t treeEvts = ftree->GetEntries();
     LOG(info) << "Reading " << treeEvts << " entries.";
     bool ok = finEv.Setup(ftree);
 
     if (!ok) {
       LOG(error) << "MuDISFilter: failed to bind one or more required branches";
-      return kFALSE;
+      return false;
     }
     LOG(info) << "MuDISFilter: Initialization successful.";
-    return kTRUE;
+    return true;
   }
-  return kFALSE;
+  return false;
 }
 
 void MuDISFilter::process_file(const std::string& input,
@@ -392,7 +392,7 @@ void MuDISFilter::process_file(const std::vector<std::string>& input,
     throw std::runtime_error(
         "Configure detector acceptance with geometry and field map first");
 
-  Bool_t treeOK = InitFiles(input, fstartEvt);
+  bool treeOK = InitFiles(input, fstartEvt);
 
   if (!treeOK) {
     throw std::runtime_error("MuDISFilter: failed to initialize input files");
@@ -408,15 +408,16 @@ void MuDISFilter::process_file(const std::vector<std::string>& input,
     for (unsigned imat = 0; imat < nMats; ++imat)
       vz.emplace_back(new TTreeReaderValue<std::vector<double>>(
           reader, "mudis_DISvz_" + MatTypeStr[imat]));
-    const Long64_t end = fnEvts >= 0 ? std::min(Long64_t(fstartEvt) + fnEvts,
-                                                ftree->GetEntries())
-                                     : ftree->GetEntries();
+    const std::int64_t end =
+        fnEvts >= 0 ? std::min<std::int64_t>(std::int64_t{fstartEvt} + fnEvts,
+                                             ftree->GetEntries())
+                    : ftree->GetEntries();
     double minimum = std::numeric_limits<double>::infinity(),
            msMinimum = minimum;
     bool valid = true;
     if (fstartEvt < end) {
       reader.SetEntriesRange(fstartEvt, end);
-      Long64_t scanned = 0;
+      std::int64_t scanned = 0;
       while (reader.Next()) {
         ++scanned;
         for (unsigned imat = 0; imat < nMats; ++imat) {
@@ -489,7 +490,7 @@ void MuDISFilter::process_file(const std::vector<std::string>& input,
       "MuonDIS", "Muon information, DIS products and soft interaction tracks");
   foutEv.InitTree(fouttree);
 
-  Long64_t n = ftree->GetEntries();
+  std::int64_t n = ftree->GetEntries();
   LOG(info) << " * input tree with " << n << " entries";
 
   ProcessEvents();
@@ -931,16 +932,17 @@ void MuDISFilter::ProcessEvents() {
   if (!ftree || !fouttree)
     throw std::runtime_error("Initialize input and output first");
   if (fstartEvt < 0) throw std::invalid_argument("Negative start event");
-  const Long64_t end =
-      fnEvts >= 0 ? std::min(Long64_t(fstartEvt) + fnEvts, ftree->GetEntries())
+  const std::int64_t end =
+      fnEvts >= 0 ? std::min<std::int64_t>(std::int64_t{fstartEvt} + fnEvts,
+                                           ftree->GetEntries())
                   : ftree->GetEntries();
-  Long64_t selected = 0, skipped = 0;
-  Long64_t selectedDIS[nMats] = {};
+  std::int64_t selected = 0, skipped = 0;
+  std::int64_t selectedDIS[nMats] = {};
   double weightedDIS[nMats] = {};
-  Long64_t processedDIS[nMats] = {};
+  std::int64_t processedDIS[nMats] = {};
   double weightedProcessedDIS[nMats] = {};
   double weightedMuons[nMats] = {}, weightedSelectedMuons[nMats] = {};
-  for (Long64_t event = fstartEvt; event < end; ++event) {
+  for (std::int64_t event = fstartEvt; event < end; ++event) {
     if ((event - fstartEvt) % 100 == 0)
       LOG(info) << "MuDISFilter: processing entry " << event;
     if (!finEv.PrepareEntry(ftree, event) || ftree->GetEntry(event) <= 0 ||

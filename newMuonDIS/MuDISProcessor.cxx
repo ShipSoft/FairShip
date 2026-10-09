@@ -96,32 +96,32 @@ void MuDISProcessor::rotate(const TVector3& pvec, const double& theta,
   newp = rotation * pvec;
 }
 
-Bool_t MuDISProcessor::InitFile(const char* fileName) {
+bool MuDISProcessor::InitFile(const char* fileName) {
   return InitFile(fileName, 0);
 }
 
-Bool_t MuDISProcessor::InitFiles(const std::vector<std::string>& fileNames) {
+bool MuDISProcessor::InitFiles(const std::vector<std::string>& fileNames) {
   return InitFiles(fileNames, 0);
 }
 
 // -----   Default constructor   -------------------------------------------
-Bool_t MuDISProcessor::InitFile(const char* fileName, const int startEvent) {
+bool MuDISProcessor::InitFile(const char* fileName, const int startEvent) {
   std::vector<std::string> fileNames = {fileName};
   return InitFiles(fileNames, startEvent);
 }
 
-Bool_t MuDISProcessor::InitFiles(const std::vector<std::string>& fileNames,
-                                 const int startEvent) {
+bool MuDISProcessor::InitFiles(const std::vector<std::string>& fileNames,
+                               const int startEvent) {
   if (fileNames.empty()) {
     LOG(error) << "MuDISProcessor: no input files provided. "
                << "Check the -f/--inputFile argument or input file glob.";
-    return kFALSE;
+    return false;
   }
   for (const auto& fileName : fileNames) {
     if (fileName.empty()) {
       LOG(error) << "MuDISProcessor: received an empty input file name. "
                  << "Check the -f/--inputFile argument.";
-      return kFALSE;
+      return false;
     }
   }
 
@@ -133,7 +133,7 @@ Bool_t MuDISProcessor::InitFiles(const std::vector<std::string>& fileNames,
     LOG(error) << "MuDISProcessor: Error opening input file " << fileNames.at(0)
                << ". Check that the path is correct and the file is a readable "
                   "ROOT file.";
-    return kFALSE;
+    return false;
   }
   const bool hastree = testKeys->FindObject("cbmsim") != nullptr;
   testFile->Close();
@@ -154,12 +154,12 @@ Bool_t MuDISProcessor::InitFiles(const std::vector<std::string>& fileNames,
     if (!ok) {
       LOG(error)
           << "MuDISProcessor: failed to bind one or more required branches";
-      return kFALSE;
+      return false;
     }
     LOG(info) << "MuDISProcessor: Initialization successful.";
-    return kTRUE;
+    return true;
   }
-  return kFALSE;
+  return false;
 }
 
 void MuDISProcessor::process_file(const std::string& input,
@@ -170,7 +170,7 @@ void MuDISProcessor::process_file(const std::string& input,
 
 void MuDISProcessor::process_file(const std::vector<std::string>& input,
                                   const std::string& output) {
-  Bool_t treeOK = InitFiles(input);
+  bool treeOK = InitFiles(input);
 
   if (!treeOK) {
     LOG(error) << " -- Error reading input files: n=" << input.size();
@@ -190,7 +190,7 @@ void MuDISProcessor::process_file(const std::vector<std::string>& input,
 
   initPythia6();
 
-  Long64_t n = ftree->GetEntries();
+  std::int64_t n = ftree->GetEntries();
   LOG(info) << " * input tree with " << n << " entries";
 
   ProcessMuons();
@@ -211,8 +211,8 @@ void MuDISProcessor::initEvent() {
   }
 }
 
-void MuDISProcessor::fillMCTracks(const Int_t aIdx) {
-  Int_t iEle = 0;
+void MuDISProcessor::fillMCTracks(const int aIdx) {
+  int iEle = 0;
   for (auto& tkIt : (*finEv.MCTrack)) {
     if (iEle == aIdx) foutEv.mcTrks.push_back(tkIt);
 
@@ -225,7 +225,7 @@ void MuDISProcessor::fillMCTracks(const Int_t aIdx) {
   }
 }
 
-void MuDISProcessor::fillSBTHits(const Int_t aIdx) {
+void MuDISProcessor::fillSBTHits(const int aIdx) {
   for (auto& hitIt : (*finEv.sbtPt)) {
     if (hitIt.GetTrackID() == aIdx) {
       foutEv.sbtPt.push_back(hitIt);
@@ -233,7 +233,7 @@ void MuDISProcessor::fillSBTHits(const Int_t aIdx) {
   }
 }
 
-void MuDISProcessor::fillUBTHits(const Int_t aIdx) {
+void MuDISProcessor::fillUBTHits(const int aIdx) {
   for (auto& hitIt : (*finEv.ubtPt)) {
     if (hitIt.GetTrackID() == aIdx) {
       foutEv.ubtPt.push_back(hitIt);
@@ -241,7 +241,7 @@ void MuDISProcessor::fillUBTHits(const Int_t aIdx) {
   }
 }
 
-void MuDISProcessor::fillSSTHits(const Int_t aIdx) {
+void MuDISProcessor::fillSSTHits(const int aIdx) {
   for (auto& hitIt : (*finEv.sstPt)) {
     if (hitIt.GetTrackID() == aIdx) {
       foutEv.sstPt.push_back(hitIt);
@@ -249,7 +249,7 @@ void MuDISProcessor::fillSSTHits(const Int_t aIdx) {
   }
 }
 
-void MuDISProcessor::fillTDHits(const Int_t aIdx) {
+void MuDISProcessor::fillTDHits(const int aIdx) {
   for (const auto& hit : *finEv.tdPt) {
     if (hit.GetTrackID() == aIdx) foutEv.tdPt.push_back(hit);
   }
@@ -376,16 +376,17 @@ void MuDISProcessor::ProcessMuons() {
   LOG(info) << " * Start of event loop";
   fGeoProcessor.ResetDiagnostics();
 
-  if (static_cast<Long64_t>(fstartEvt) >= ftree->GetEntries()) {
+  if (static_cast<std::int64_t>(fstartEvt) >= ftree->GetEntries()) {
     LOG(error) << " ** Trying to start from event " << fstartEvt
                << " which is greater than the tree entries: "
                << ftree->GetEntries() << ". Doing nothing...";
     return;
   }
 
-  const Long64_t nEntries =
-      fnEvts > 0 ? std::min(static_cast<Long64_t>(fstartEvt + fnEvts),
-                            ftree->GetEntries())
+  const std::int64_t nEntries =
+      fnEvts > 0 ? std::min<std::int64_t>(
+                       static_cast<std::int64_t>(fstartEvt + fnEvts),
+                       ftree->GetEntries())
                  : ftree->GetEntries();
   LOG(info) << " - Processing event " << fstartEvt << " to event "
             << nEntries - 1;
@@ -396,8 +397,8 @@ void MuDISProcessor::ProcessMuons() {
   unsigned skipMu_acc = 0;
   unsigned skipEvt = 0;
 
-  for (Long64_t iEvent = static_cast<Long64_t>(fstartEvt); iEvent < nEntries;
-       ++iEvent) {
+  for (std::int64_t iEvent = static_cast<std::int64_t>(fstartEvt);
+       iEvent < nEntries; ++iEvent) {
     LOG(debug) << " --- Processing event " << iEvent;
     if (iEvent % 100 == 0) LOG(info) << " --- Processing event " << iEvent;
     if (!finEv.PrepareEntry(ftree, iEvent) || ftree->GetEntry(iEvent) <= 0) {
@@ -419,7 +420,7 @@ void MuDISProcessor::ProcessMuons() {
     // interested in the first muon track - for PG setting
     //@FIXME AMM adapt also to MuonBack input, take all muons?
     // for now take MCTrack[0]
-    Int_t muIdx = 0;
+    int muIdx = 0;
 
     ShipMCTrack& track = (*finEv.MCTrack)[static_cast<unsigned>(muIdx)];
     int pid = track.GetPdgCode();
