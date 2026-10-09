@@ -26,6 +26,8 @@
 
 namespace ShipMuDIS {
 static const unsigned nMats = 10;
+// Last shield material in accumulated z (cm), excluding gaps.
+inline constexpr double kMuonShieldTailZ = 20.;
 
 enum MatType {
   MS = 0,
