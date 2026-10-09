@@ -162,7 +162,7 @@ void MuGeoProcessor::SetPocaJumpThreshold(double threshold) {
 void MuGeoProcessor::ResetDiagnostics() {
   fMuons = fBackwardMuons = fInvalidMuons = fTransitions = 0;
   fUBTBackwardPaths = fStartMagneticPaths = fStartStraightPaths = 0;
-  fUBTBackwardMisses = fStartsBeyondZmax = 0;
+  fUBTBackwardMisses = fStartsBeyondZmax = fStartsBeforeZmin = 0;
   fLargeJumps = fMuonsWithLargeJumps = 0;
   fMaxTransverseJump = 0.;
 }
@@ -178,6 +178,8 @@ void MuGeoProcessor::PrintDiagnostics() const {
             << " from MC start in field-free region (bending on field entry); "
             << fStartsBeyondZmax << " skipped with start z >= maximum z";
   LOG(info) << "UBT backward paths missing MS: " << fUBTBackwardMisses;
+  LOG(info) << "Muons starting before z = " << fZmin
+            << " cm (paths still built): " << fStartsBeforeZmin;
   LOG(info) << "POCA transverse jumps: " << fLargeJumps << " of "
             << fTransitions << " transitions exceed " << fPocaJumpThreshold
             << " cm, in " << fMuonsWithLargeJumps
@@ -535,8 +537,12 @@ bool MuGeoProcessor::Trace(const Measurement& measurement, double startZ,
 std::map<std::string, MuonPath>& MuGeoProcessor::FillMuonPath() {
   fPathMap.clear();
   if (!gGeoManager || (fSegments.empty() && !fTraceBackward)) return fPathMap;
-  if (fStart.position.Z() < fZmin)
-    LOG(error) << "Muon starts before minimum z = " << fZmin << " cm";
+  // Informational only: upstream starts are routed via UBT or field transport.
+  if (fStart.position.Z() < fZmin) {
+    ++fStartsBeforeZmin;
+    LOG(debug) << "Muon starts at z = " << fStart.position.Z()
+               << " cm, before z_min = " << fZmin << " cm";
+  }
 
   if (fTraceBackward) {
     const double high = std::min(fUBT.position.Z(), fZmax);

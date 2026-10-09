@@ -52,12 +52,23 @@ def load_spectrometer_field(geometry_file, field_map=None, field_z=None):
 
 
 def load_muon_shield_field(field_maker, geometry_file, field_map=None, field_z=None):
-    """Load the shield map with the same placement and symmetry as geomGeant4."""
+    """Load the shield map with the same placement and symmetry as geomGeant4.
+
+    geomGeant4.addVMCFields uses the map only when muShield.WithConstField is
+    false; otherwise the shield has constant per-volume fields, which the
+    propagator does not model. Refuse that case instead of silently using a
+    map the simulation never used.
+    """
     from ShipGeoConfig import load_from_root_file
 
+    with ROOT.TFile.Open(geometry_file) as source:
+        ship_geo = load_from_root_file(source, "ShipGeo")
+    if getattr(getattr(ship_geo, "muShield", None), "WithConstField", False):
+        raise ValueError(
+            "the geometry uses constant muon shield fields (muShield.WithConstField), "
+            "which the field-map propagator cannot reproduce"
+        )
     if field_map is None or field_z is None:
-        with ROOT.TFile.Open(geometry_file) as source:
-            ship_geo = load_from_root_file(source, "ShipGeo")
         if field_map is None:
             field_map = Path(os.environ["VMCWORKDIR"]) / "files" / f"{ship_geo.shieldName}.root"
         if field_z is None:
