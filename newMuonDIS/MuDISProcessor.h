@@ -5,6 +5,9 @@
 #ifndef NEWMUONDIS_MUDISPROCESSOR_H_
 #define NEWMUONDIS_MUDISPROCESSOR_H_
 
+#include <string>
+#include <vector>
+
 #include "FairLogger.h"  // for FairLogger, MESSAGE_ORIGIN
 #include "MuDISDefs.h"
 #include "MuGeoProcessor.h"
@@ -12,9 +15,7 @@
 #include "TChain.h"  // for TTree
 #include "TPythia6.h"
 #include "TPythia6Calls.h"
-#include "TROOT.h"
 #include "TVector3.h"
-#include "vector"
 
 class MuDISProcessor {
  public:
@@ -66,7 +67,6 @@ class MuDISProcessor {
   TTree* fouttree;
   ShipMuDIS::MuonBranches foutEv;
 
-  FairLogger* fLogger;  //!   don't make it persistent, magic ROOT command
   int fnEvts;
   int fstartEvt;
 

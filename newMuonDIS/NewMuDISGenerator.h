@@ -5,14 +5,13 @@
 #ifndef NEWMUONDIS_NEWMUDISGENERATOR_H_
 #define NEWMUONDIS_NEWMUDISGENERATOR_H_
 
+#include <string>
+#include <vector>
+
 #include "FairLogger.h"  // for FairLogger, MESSAGE_ORIGIN
 #include "Generator.h"
 #include "MuDISDefs.h"
 #include "TChain.h"
-#include "TF1.h"
-#include "TROOT.h"
-#include "TVector3.h"
-#include "vector"
 
 class FairPrimaryGenerator;
 
@@ -45,7 +44,6 @@ class NewMuDISGenerator : public SHiP::Generator {
   Int_t GetMaterial() const { return fDISMaterial; }
 
  protected:
-  FairLogger* fLogger;
   TChain* fTree;
   int fNevents;
   int fStartEvent = 0;

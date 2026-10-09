@@ -13,11 +13,8 @@
 
 #include "FairLogger.h"
 #include "TMath.h"
-#include "TROOT.h"
 #include "TRandom.h"
 #include "TRotation.h"
-#include "TSystem.h"
-#include "TVectorD.h"
 
 using ShipMuDIS::kMuonShieldTailZ;
 using ShipMuDIS::MatTypeStr;
@@ -41,7 +38,6 @@ MuDISProcessor::MuDISProcessor() {
   ftree = nullptr;
   fouttree = nullptr;
 
-  fLogger = FairLogger::GetLogger();
   fnEvts = -1;
   fstartEvt = 0;
   fPythia = TPythia6::Instance();
@@ -85,8 +81,7 @@ void MuDISProcessor::initPythia6() {
   }
 
   int seed = static_cast<int>(fP6seed % 900000000);
-  LOG(info) << " * Pythia6 seed set to " << fP6seed << " wrapped to " << seed
-            << std::endl;
+  LOG(info) << " * Pythia6 seed set to " << fP6seed << " wrapped to " << seed;
   fPythia->SetMRPY(1, seed);
   // To direct specific verbose Pythia6 output to a special file.
   fPythia->SetMSTU(11, 11);
@@ -202,7 +197,7 @@ void MuDISProcessor::process_file(const std::vector<std::string>& input,
   initPythia6();
 
   Long64_t n = ftree->GetEntries();
-  LOG(info) << " * input tree with " << n << " entries" << std::endl;
+  LOG(info) << " * input tree with " << n << " entries";
 
   ProcessMuons();
 
@@ -368,10 +363,10 @@ void MuDISProcessor::generateDISevents(const std::string& tType,
         amuonW / aDISBr.nDISevts * aPath.GetWeightedDensity(minLength);
 
   LOG(debug) << " -- path " << aLabel << " muonW " << amuonW
-             << " -- size of DISparticles collections: " << std::endl
-             << " ---- particles: " << aDISBr.DISparticles.size() << std::endl
-             << " ---- nDIS events: " << aDISBr.nDISevts << std::endl
-             << " ---- weightDIS: " << aDISBr.wDIS << std::endl
+             << " -- size of DISparticles collections: \n"
+             << " ---- particles: " << aDISBr.DISparticles.size() << '\n'
+             << " ---- nDIS events: " << aDISBr.nDISevts << '\n'
+             << " ---- weightDIS: " << aDISBr.wDIS << '\n'
              << " ---- xsec: ";
   for (int i(0); i < aDISBr.nDISevts; ++i) {
     LOG(debug) << aDISBr.DISxsec[i] << " ";
@@ -384,7 +379,7 @@ void MuDISProcessor::generateDISevents(const std::string& tType,
 }
 
 void MuDISProcessor::ProcessMuons() {
-  LOG(info) << " * Start of event loop" << std::endl;
+  LOG(info) << " * Start of event loop";
   fGeoProcessor.ResetDiagnostics();
 
   if (static_cast<Long64_t>(fstartEvt) >= ftree->GetEntries()) {
@@ -399,7 +394,7 @@ void MuDISProcessor::ProcessMuons() {
                              ftree->GetEntries())
                   : ftree->GetEntries();
   LOG(info) << " - Processing event " << fstartEvt << " to event "
-            << nEntries - 1 << std::endl;
+            << nEntries - 1;
 
   unsigned nplus = 0;
   unsigned nminus = 0;
@@ -429,9 +424,8 @@ void MuDISProcessor::ProcessMuons() {
 
   for (Long64_t iEvent = static_cast<Long64_t>(fstartEvt); iEvent < nEntries;
        ++iEvent) {
-    LOG(debug) << " --- Processing event " << iEvent << std::endl;
-    if (iEvent % 100 == 0)
-      LOG(info) << " --- Processing event " << iEvent << std::endl;
+    LOG(debug) << " --- Processing event " << iEvent;
+    if (iEvent % 100 == 0) LOG(info) << " --- Processing event " << iEvent;
     if (!finEv.PrepareEntry(ftree, iEvent) || ftree->GetEntry(iEvent) <= 0) {
       LOG(error) << " --- Error reading tree entry: " << iEvent;
       skipEvt++;
@@ -479,7 +473,7 @@ void MuDISProcessor::ProcessMuons() {
     } else {
       LOG(warning) << iEvent << " skipped: "
                    << " nTracks= " << nTr
-                   << " -- 1st track pid not a muon: " << pid << std::endl;
+                   << " -- 1st track pid not a muon: " << pid;
       skipEvt++;
       continue;
     }
@@ -502,18 +496,18 @@ void MuDISProcessor::ProcessMuons() {
                  << " UBT Hits: " << foutEv.ubtPt.size()
                  << ", SBT Hits: " << foutEv.sbtPt.size()
                  << ", SST Hits: " << foutEv.sstPt.size()
-                 << ", TD Hits: " << foutEv.tdPt.size() << std::endl;
+                 << ", TD Hits: " << foutEv.tdPt.size();
       skipMu_acc++;
       skipMu_accW += muW;
       // counting, but want to still fill DIS in MS (and UBT detector)...
       // continue;
     }
 
-    LOG(debug) << " -- size of hits collections: " << std::endl
-               << " ---- mcTracks: " << foutEv.mcTrks.size() << std::endl
-               << " ---- UBT Hits: " << foutEv.ubtPt.size() << std::endl
-               << " ---- SBT Hits: " << foutEv.sbtPt.size() << std::endl
-               << " ---- SST Hits: " << foutEv.sstPt.size() << std::endl;
+    LOG(debug) << " -- size of hits collections: \n"
+               << " ---- mcTracks: " << foutEv.mcTrks.size() << '\n'
+               << " ---- UBT Hits: " << foutEv.ubtPt.size() << '\n'
+               << " ---- SBT Hits: " << foutEv.sbtPt.size() << '\n'
+               << " ---- SST Hits: " << foutEv.sstPt.size();
 
     // retrieve a map of material label, with same density, and lengths, and
     // [zin,zout] ranges
@@ -563,10 +557,9 @@ void MuDISProcessor::ProcessMuons() {
 
   }  // loop on events
 
-  LOG(info) << "Found " << nplus << " mu+ and " << nminus << " mu-."
-            << std::endl
+  LOG(info) << "Found " << nplus << " mu+ and " << nminus << " mu-.\n"
             << "Skipped: " << skipEvt << " events and " << skipMu_pmin
-            << " muons with too low p" << std::endl
+            << " muons with too low p\n"
             << "Counted: " << skipMu_acc
             << " muons with no recorded hits in UBT,SBT,SST,TD.";
   LOG(info) << "Weighted counts (sum MCTrack[0].fW): " << wplus << " mu+ and "
