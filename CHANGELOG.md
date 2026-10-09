@@ -49,6 +49,7 @@ it in future.
 * Per-step kaon/pion splitting now lowers the weight of the parent kaon or pion as weight is split off into clones. The survival factor was only kept internally before, so a parent that ended by interacting rather than decaying still contributed its own hit at the sensitive plane, and the secondaries of that interaction, at full weight. Only `--multiple-kpi-splits` runs are affected; with `--kaon-pion-splits` alone no weight is split off before the decay
 * Split clones are no longer subject to the transport energy cut. A clone is the parent re-injected at its decay point, so re-applying the cut there discarded clone sets that an unsplit run keeps
 * The first track after a splitting decay now carries the buffered clones to the stack popper and is exempt from the energy and neutrino cuts, so a clone set can no longer be stranded in the buffer
+* A carrier that an unsplit run would have stopped, and everything it produces, is kept out of the output. A decay turns rest mass into kinetic energy, so a carrier below the energy cut could still produce secondaries above it (a photon from a slow π⁰, a muon from a slow kaon), and a carrier kaon or pion that decayed was split again
 
 ### Removed
 
