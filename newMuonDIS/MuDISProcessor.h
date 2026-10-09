@@ -10,13 +10,13 @@
 #include <vector>
 
 #include "FairLogger.h"  // for FairLogger, MESSAGE_ORIGIN
+#include "Math/Vector3D.h"
 #include "MuDISDefs.h"
 #include "MuGeoProcessor.h"
 #include "MuonPath.h"
 #include "TChain.h"  // for TTree
 #include "TPythia6.h"
 #include "TPythia6Calls.h"
-#include "TVector3.h"
 
 class MuDISProcessor {
  public:
@@ -28,8 +28,8 @@ class MuDISProcessor {
             const double& aZmin = 2500);
   void initPythia6();
 
-  void rotate(const TVector3& pvec, const double& theta, const double& phi,
-              TVector3& newp);
+  static ROOT::Math::XYZVector rotate(const ROOT::Math::XYZVector& pvec,
+                                      double theta, double phi);
 
   bool InitFile(const char*, int);
   bool InitFile(const char*);

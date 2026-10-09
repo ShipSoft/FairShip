@@ -18,7 +18,6 @@
 #include "ShipMCTrack.h"
 #include "TChain.h"  // for TTree
 #include "TTree.h"   // for TTree
-#include "TVector3.h"
 #include "TimeDetPoint.h"
 #include "UpstreamTaggerPoint.h"
 #include "strawtubesPoint.h"

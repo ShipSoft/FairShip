@@ -223,8 +223,10 @@ requires a supplied map when detector acceptance is enabled.
 ```cpp
 ShipBFieldMap field("SST", "spectrometer.root", 0., 0., fieldZ);
 MagneticTrackPropagator transport(&field, gGeoManager);
-TVector3 start(0., 0., 4000.), momentum(0.1, 0., 10.);
-TVector3 hit, momentumAtPlane;
+ROOT::Math::XYZPoint start(0., 0., 4000.);
+ROOT::Math::XYZVector momentum(0.1, 0., 10.);
+ROOT::Math::XYZPoint hit;
+ROOT::Math::XYZVector momentumAtPlane;
 double planeZ = transport.GetPlaneZ();  // Tr1, or pass another volume name
 bool ok = transport.Extrapolate(-1., start, momentum, planeZ, hit, momentumAtPlane);
 

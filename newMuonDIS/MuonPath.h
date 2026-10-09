@@ -6,11 +6,12 @@
 #define NEWMUONDIS_MUONPATH_H_
 
 #include <algorithm>
+#include <cmath>
 #include <string>
 #include <vector>
 
-#include "TMath.h"
-#include "TVector3.h"
+#include "Math/Point3D.h"
+#include "Math/Vector3D.h"
 
 /*
 This class allows to consider a track with changes in directions between the
@@ -42,7 +43,7 @@ class MuonPath {
 
   inline double GetMomentum(const unsigned& idx) const {
     if (idx >= GetNSlices()) return 0;
-    return fpvec[idx].Mag();
+    return fpvec[idx].R();
   };
 
   inline double Getpx(const unsigned& idx) const {
@@ -76,7 +77,7 @@ class MuonPath {
 
   inline double GetZLength() const { return fzlength; };
 
-  inline void SetLength(const double& aStep, const TVector3& aStart,
+  inline void SetLength(const double& aStep, const ROOT::Math::XYZPoint& aStart,
                         const double& aZ) {
     flength += aStep;
     fendLength.push_back(flength);
@@ -125,8 +126,8 @@ class MuonPath {
     return fendLength[idx] - (idx == 0 ? 0. : fendLength[idx - 1]);
   };
 
-  void SetVertexInfo(const TVector3& vecpos, const TVector3& vecp,
-                     const double& time);
+  void SetVertexInfo(const ROOT::Math::XYZPoint& vecpos,
+                     const ROOT::Math::XYZVector& vecp, const double& time);
   std::string GetLabel(const std::string& aVol, const std::string& aMat) const;
   void Print();
   double GetZ(const double& aZ, unsigned& idx) const;
@@ -148,17 +149,15 @@ class MuonPath {
 
   inline double GetLength(const double& aZ, const unsigned& idx) const {
     if (idx >= GetNSlices()) return 0;
-    return TMath::Sqrt(TMath::Power(GetX(aZ, idx) - fvtx[idx].X(), 2) +
-                       TMath::Power(GetY(aZ, idx) - fvtx[idx].Y(), 2) +
-                       TMath::Power(aZ - fvtx[idx].Z(), 2));  // in cm
+    return (ROOT::Math::XYZPoint(GetX(aZ, idx), GetY(aZ, idx), aZ) - fvtx[idx])
+        .R();  // in cm
   };
 
   inline double GetTimeNs(const double& aZ, const unsigned& idx) const {
     if (idx >= GetNSlices() || fpvec[idx].Z() == 0.) return 0;
-    double P = fpvec[idx].Mag();
+    double P = fpvec[idx].R();
     if (P == 0.) return 0;
-    double v = c_light * P /
-               TMath::Sqrt(TMath::Power(P, 2) + TMath::Power(muon_mass, 2));
+    double v = c_light * P / std::hypot(P, muon_mass);
     if (v == 0.) return 0;
     // A slice may precede its reference measurement in z.
     return fvtxT[idx] + (aZ - fvtx[idx].Z()) * P / fpvec[idx].Z() / v;
@@ -173,15 +172,15 @@ class MuonPath {
 
   std::vector<std::string> fvolName;
   std::vector<std::string> fmaterial;
-  std::vector<TVector3> fvtx;
+  std::vector<ROOT::Math::XYZPoint> fvtx;
   std::vector<double> fvtxT;
-  std::vector<TVector3> fstart;
+  std::vector<ROOT::Math::XYZPoint> fstart;
   std::vector<double> fstartT;
   std::vector<double> fendZ;
   std::vector<double> fsliceDensity;
   std::vector<double>
       fendLength;  // cumulative segment lengths, excluding jumps
-  std::vector<TVector3> fpvec;
+  std::vector<ROOT::Math::XYZVector> fpvec;
 };
 
 #endif  // NEWMUONDIS_MUONPATH_H_
