@@ -21,7 +21,6 @@
 #include "TGeoNode.h"
 #include "TGeoShape.h"
 #include "TGeoVolume.h"
-#include "TMath.h"
 #include "TVector3.h"
 
 class MuGeoProcessor {

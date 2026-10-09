@@ -18,7 +18,6 @@
 #include "TDatabasePDG.h"
 #include "TH1.h"
 #include "TH2.h"
-#include "TROOT.h"
 #include "TVector3.h"
 
 class MagneticTrackPropagator;
@@ -177,7 +176,6 @@ class MuDISFilter {
   TTree* fouttree;
   ShipMuDIS::MuonBranches foutEv;
 
-  FairLogger* fLogger;  //!   don't make it persistent, magic ROOT command
   int fnEvts;
   int fstartEvt;
 
