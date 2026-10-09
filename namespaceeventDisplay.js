@@ -32,6 +32,7 @@ var namespaceeventDisplay =
     [ "switchOffRock", "namespaceeventDisplay.html#a9846946c4474ae03daa0767745966050", null ],
     [ "switchOn", "namespaceeventDisplay.html#a69b74085a44f05f4523c8cd2fdc66177", null ],
     [ "switchOnAll", "namespaceeventDisplay.html#ac3e26dfb3888f7fad79bcf4566885f84", null ],
+    [ "z_end_of_detector", "namespaceeventDisplay.html#a9fc3bb612002df39681722b8c15663f4", null ],
     [ "_candidates", "namespaceeventDisplay.html#ad3369434abf0adc19fa383ac0e48a81a", null ],
     [ "_tmpFile", "namespaceeventDisplay.html#a7c3167e80d89f5cc064e4375fd425cc9", null ],
     [ "_tmpTree", "namespaceeventDisplay.html#a71c934bcd5ccbfe183282ebf5e87ce0c", null ],

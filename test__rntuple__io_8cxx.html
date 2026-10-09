@@ -108,6 +108,7 @@ $(document).ready(function(){initNavTree('test__rntuple__io_8cxx.html',''); init
 <code>#include &quot;TBufferFile.h&quot;</code><br />
 <code>#include &quot;TClass.h&quot;</code><br />
 <code>#include &quot;TFile.h&quot;</code><br />
+<code>#include &quot;<a class="el" href="CaloScoringPlanePoint_8h_source.html">CaloScoringPlanePoint.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="DetectorHit_8h_source.html">DetectorHit.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="MTCDetHit_8h_source.html">MTCDetHit.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="MTCDetPoint_8h_source.html">MTCDetPoint.h</a>&quot;</code><br />
@@ -123,9 +124,6 @@ $(document).ready(function(){initNavTree('test__rntuple__io_8cxx.html',''); init
 <code>#include &quot;<a class="el" href="Tracklet_8h_source.html">Tracklet.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="UpstreamTaggerHit_8h_source.html">UpstreamTaggerHit.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="UpstreamTaggerPoint_8h_source.html">UpstreamTaggerPoint.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="splitcalCluster_8h_source.html">splitcalCluster.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="splitcalHit_8h_source.html">splitcalHit.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="splitcalPoint_8h_source.html">splitcalPoint.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="strawtubesHit_8h_source.html">strawtubesHit.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="strawtubesPoint_8h_source.html">strawtubesPoint.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="vetoHit_8h_source.html">vetoHit.h</a>&quot;</code><br />
@@ -136,171 +134,162 @@ Include dependency graph for test_rntuple_io.cxx:</div>
 <div class="dyncontent">
 <div class="center"><img src="test__rntuple__io_8cxx__incl.png" border="0" usemap="#atests_2test__rntuple__io_8cxx" alt=""/></div>
 <map name="atests_2test__rntuple__io_8cxx" id="atests_2test__rntuple__io_8cxx">
-<area shape="rect" title=" " alt="" coords="1877,5,2013,45"/>
+<area shape="rect" title=" " alt="" coords="2073,5,2209,45"/>
 <area shape="rect" title=" " alt="" coords="5,93,91,119"/>
-<area shape="poly" title=" " alt="" coords="1877,30,1017,51,494,70,275,82,110,96,105,97,104,91,109,91,274,77,493,65,1017,45,1877,25"/>
-<area shape="rect" title=" " alt="" coords="2733,240,2795,265"/>
-<area shape="poly" title=" " alt="" coords="2014,26,2120,31,2244,42,2358,61,2403,75,2436,91,2449,103,2456,116,2462,142,2467,167,2473,179,2484,190,2501,200,2526,209,2589,224,2719,244,2718,249,2588,230,2524,214,2499,205,2481,194,2469,182,2462,169,2456,143,2451,118,2444,106,2433,96,2402,79,2357,66,2243,47,2120,36,2013,31"/>
-<area shape="rect" title=" " alt="" coords="165,93,232,119"/>
-<area shape="poly" title=" " alt="" coords="1877,30,1557,35,1090,47,610,67,405,80,246,96,246,91,405,75,609,61,1090,42,1557,30,1877,25"/>
-<area shape="rect" title=" " alt="" coords="256,93,336,119"/>
-<area shape="poly" title=" " alt="" coords="1877,31,1138,50,690,70,499,82,350,96,349,91,498,77,689,65,1138,45,1877,25"/>
-<area shape="rect" title=" " alt="" coords="360,93,437,119"/>
-<area shape="poly" title=" " alt="" coords="1877,31,1185,51,768,71,590,83,451,96,451,91,590,77,768,65,1185,46,1877,25"/>
-<area shape="rect" title=" " alt="" coords="462,93,538,119"/>
-<area shape="poly" title=" " alt="" coords="1877,29,1657,31,1331,39,948,60,751,75,558,96,552,97,551,91,557,91,750,70,948,54,1330,34,1656,26,1877,24"/>
-<area shape="rect" title=" " alt="" coords="1919,240,1982,265"/>
-<area shape="poly" title=" " alt="" coords="1931,47,1897,83,1853,121,1816,140,1779,153,1765,160,1756,168,1755,178,1761,190,1779,200,1816,213,1907,238,1906,243,1815,218,1777,205,1757,194,1749,178,1752,166,1762,156,1777,149,1814,135,1851,116,1893,80,1927,44"/>
-<area shape="rect" title=" " alt="" coords="613,93,757,119"/>
-<area shape="poly" title=" " alt="" coords="1877,31,1418,51,1100,70,771,96,771,91,1099,64,1417,45,1877,26"/>
-<area shape="rect" title=" " alt="" coords="781,93,965,119"/>
-<area shape="poly" title=" " alt="" coords="1877,33,1499,56,979,96,979,91,1499,51,1877,28"/>
-<area shape="rect" title=" " alt="" coords="989,93,1179,119"/>
-<area shape="poly" title=" " alt="" coords="1877,35,1193,96,1192,91,1877,30"/>
-<area shape="rect" title=" " alt="" coords="1203,93,1386,119"/>
-<area shape="poly" title=" " alt="" coords="1877,38,1400,95,1400,89,1877,32"/>
-<area shape="rect" title=" " alt="" coords="1411,93,1515,119"/>
-<area shape="poly" title=" " alt="" coords="1878,40,1529,96,1528,90,1877,35"/>
-<area shape="rect" title=" " alt="" coords="1539,93,1615,119"/>
-<area shape="poly" title=" " alt="" coords="1877,43,1629,96,1628,90,1876,38"/>
-<area shape="rect" title=" " alt="" coords="1639,93,1705,119"/>
-<area shape="poly" title=" " alt="" coords="1881,48,1719,94,1717,89,1879,43"/>
-<area shape="rect" href="DetectorHit_8h.html" title=" " alt="" coords="2223,240,2332,265"/>
-<area shape="poly" title=" " alt="" coords="2014,30,2054,37,2096,49,2138,67,2175,91,2196,115,2205,138,2212,163,2226,191,2258,228,2254,232,2222,193,2207,165,2200,140,2191,118,2172,95,2135,71,2094,54,2053,42,2013,35"/>
-<area shape="rect" href="MTCDetHit_8h.html" title=" " alt="" coords="1780,167,1884,192"/>
-<area shape="poly" title=" " alt="" coords="1945,46,1935,82,1916,120,1893,144,1868,162,1865,157,1890,140,1911,117,1930,80,1940,45"/>
-<area shape="rect" href="MTCDetPoint_8h.html" title=" " alt="" coords="3490,167,3609,192"/>
-<area shape="poly" title=" " alt="" coords="2013,26,2612,47,2960,66,3105,78,3215,91,3294,105,3373,124,3501,160,3500,165,3372,129,3293,111,3214,96,3105,83,2960,72,2611,53,2013,31"/>
-<area shape="rect" href="ShipMCTrack_8h.html" title=" " alt="" coords="1261,240,1379,265"/>
-<area shape="poly" title=" " alt="" coords="1877,29,1481,31,918,39,641,47,403,59,232,75,180,85,155,95,150,106,155,117,176,131,212,145,322,170,468,191,637,208,985,233,1248,246,1248,251,984,238,637,213,467,196,321,175,211,150,174,136,151,120,145,106,151,91,178,80,231,70,403,54,641,42,918,34,1481,25,1877,24"/>
-<area shape="rect" href="ShipParticle_8h.html" title=" " alt="" coords="1421,240,1531,265"/>
-<area shape="poly" title=" " alt="" coords="1877,30,1571,35,1156,47,954,56,782,67,658,80,621,87,603,95,598,106,603,117,632,125,704,138,933,173,1407,239,1406,245,932,178,704,143,631,130,600,121,593,106,599,91,619,82,658,75,782,61,954,50,1155,42,1571,30,1877,25"/>
-<area shape="rect" href="SiliconTargetHit_8h.html" title=" " alt="" coords="2287,93,2423,119"/>
-<area shape="poly" title=" " alt="" coords="2014,37,2282,88,2281,93,2013,42"/>
-<area shape="rect" href="SiliconTargetPoint_8h.html" title=" " alt="" coords="2730,167,2881,192"/>
-<area shape="poly" title=" " alt="" coords="2014,27,2239,45,2378,64,2517,91,2552,103,2588,116,2747,161,2746,166,2586,121,2551,108,2515,96,2377,69,2238,51,2013,32"/>
-<area shape="rect" href="TTPoint_8h.html" title=" " alt="" coords="3632,167,3715,192"/>
-<area shape="poly" title=" " alt="" coords="2013,23,2229,24,2545,32,2916,52,3107,69,3294,91,3384,106,3474,124,3620,160,3619,166,3473,129,3383,111,3293,96,3106,74,2915,58,2545,37,2228,29,2013,29"/>
-<area shape="rect" href="TargetPoint_8h.html" title=" " alt="" coords="3308,167,3415,192"/>
-<area shape="poly" title=" " alt="" coords="2013,25,2255,29,2587,40,2919,59,3057,73,3161,91,3208,104,3254,122,3330,158,3328,163,3252,127,3206,110,3159,96,3056,79,2919,65,2587,45,2255,34,2013,30"/>
-<area shape="rect" href="TimeDetHit_8h.html" title=" " alt="" coords="3701,93,3811,119"/>
-<area shape="poly" title=" " alt="" coords="2014,26,2669,46,3139,65,3622,91,3688,96,3687,101,3621,96,3139,70,2669,51,2014,31"/>
-<area shape="rect" href="TimeDetPoint_8h.html" title=" " alt="" coords="3920,167,4043,192"/>
-<area shape="poly" title=" " alt="" coords="2013,25,2405,29,2970,41,3510,61,3707,74,3777,82,3823,91,3861,104,3897,121,3956,156,3953,161,3895,126,3859,109,3822,96,3776,87,3707,80,3510,66,2970,46,2405,35,2013,30"/>
-<area shape="rect" href="TrackInfo_8h.html" title=" " alt="" coords="1452,167,1545,192"/>
-<area shape="poly" title=" " alt="" coords="1909,48,1762,121,1672,145,1559,169,1558,164,1670,140,1760,116,1906,43"/>
-<area shape="rect" href="Tracklet_8h.html" title=" " alt="" coords="1569,167,1655,192"/>
-<area shape="poly" title=" " alt="" coords="1924,48,1875,85,1813,121,1739,150,1669,169,1667,164,1737,145,1811,116,1872,80,1921,44"/>
-<area shape="rect" href="UpstreamTaggerHit_8h.html" title=" " alt="" coords="2495,167,2655,192"/>
-<area shape="poly" title=" " alt="" coords="2014,28,2127,35,2262,48,2389,66,2441,78,2480,91,2503,104,2525,120,2558,154,2555,158,2521,124,2500,108,2478,96,2440,83,2389,72,2262,53,2127,41,2013,33"/>
-<area shape="rect" href="UpstreamTaggerPoint_8h.html" title=" " alt="" coords="2934,93,3109,119"/>
-<area shape="poly" title=" " alt="" coords="2014,29,2920,95,2920,100,2013,34"/>
-<area shape="rect" href="splitcalCluster_8h.html" title=" " alt="" coords="2034,93,2161,119"/>
-<area shape="poly" title=" " alt="" coords="1983,43,2064,84,2061,89,1981,48"/>
-<area shape="rect" href="splitcalHit_8h.html" title=" " alt="" coords="1909,167,2009,192"/>
-<area shape="poly" title=" " alt="" coords="1955,45,1967,93,1967,119,1964,153,1959,153,1961,119,1961,94,1950,46"/>
-<area shape="rect" href="splitcalPoint_8h.html" title=" " alt="" coords="3169,167,3284,192"/>
-<area shape="poly" title=" " alt="" coords="2014,25,2272,32,2617,45,2938,64,3054,77,3122,91,3148,104,3172,120,3209,154,3206,158,3169,124,3145,108,3120,96,3053,82,2938,70,2617,51,2272,38,2014,31"/>
-<area shape="rect" href="strawtubesHit_8h.html" title=" " alt="" coords="2599,93,2724,119"/>
-<area shape="poly" title=" " alt="" coords="2014,30,2263,55,2580,91,2585,91,2585,97,2580,96,2263,61,2013,36"/>
-<area shape="rect" href="strawtubesPoint_8h.html" title=" " alt="" coords="2956,167,3095,192"/>
-<area shape="poly" title=" " alt="" coords="2014,25,2148,30,2328,41,2531,60,2737,91,2872,124,2982,160,2981,165,2870,129,2735,96,2531,65,2327,46,2147,35,2014,30"/>
-<area shape="rect" href="vetoHit_8h.html" title=" " alt="" coords="2236,167,2319,192"/>
-<area shape="poly" title=" " alt="" coords="2014,28,2062,34,2115,46,2169,64,2219,91,2249,120,2269,153,2264,156,2244,124,2216,95,2167,69,2114,51,2061,39,2013,33"/>
-<area shape="rect" href="vetoHitOnTrack_8h.html" title=" " alt="" coords="1658,240,1793,265"/>
-<area shape="poly" title=" " alt="" coords="1887,48,1826,70,1763,96,1740,109,1717,121,1674,131,1635,133,1564,125,1532,123,1501,127,1472,141,1442,168,1437,179,1442,190,1454,201,1473,210,1524,225,1585,236,1645,243,1644,248,1584,241,1523,230,1471,215,1452,205,1438,194,1432,179,1438,165,1469,137,1500,122,1532,118,1564,120,1635,128,1673,126,1715,116,1738,104,1760,91,1824,65,1885,43"/>
-<area shape="rect" href="vetoPoint_8h.html" title=" " alt="" coords="4067,167,4163,192"/>
-<area shape="poly" title=" " alt="" coords="2014,24,2379,24,2917,31,3202,39,3469,51,3699,68,3872,91,3930,104,3986,122,4078,158,4076,163,3984,127,3928,110,3872,96,3699,73,3469,56,3201,44,2917,36,2379,29,2014,29"/>
-<area shape="rect" title=" " alt="" coords="1703,313,1782,339"/>
-<area shape="poly" title=" " alt="" coords="2223,264,1796,320,1796,315,2222,259"/>
-<area shape="rect" title=" " alt="" coords="2119,313,2203,339"/>
-<area shape="poly" title=" " alt="" coords="2260,268,2193,308,2191,304,2257,263"/>
-<area shape="rect" title=" " alt="" coords="3036,313,3127,339"/>
-<area shape="poly" title=" " alt="" coords="2333,256,3023,317,3022,322,2332,262"/>
-<area shape="poly" title=" " alt="" coords="1852,190,1921,230,1918,235,1850,194"/>
-<area shape="poly" title=" " alt="" coords="1884,187,1896,189,2209,238,2208,244,1896,195,1884,193"/>
-<area shape="poly" title=" " alt="" coords="3552,192,3547,229,3539,250,3526,267,3497,284,3456,297,3352,315,3238,324,3141,327,3140,322,3237,319,3351,310,3455,292,3495,279,3522,263,3535,247,3542,228,3547,192"/>
-<area shape="rect" href="DetectorPoint_8h.html" title=" " alt="" coords="3389,240,3512,265"/>
-<area shape="poly" title=" " alt="" coords="3535,194,3479,234,3476,230,3532,190"/>
-<area shape="poly" title=" " alt="" coords="3392,268,3141,316,3140,311,3391,263"/>
-<area shape="rect" title=" " alt="" coords="4009,313,4065,339"/>
-<area shape="poly" title=" " alt="" coords="3513,259,3996,317,3996,322,3512,264"/>
-<area shape="poly" title=" " alt="" coords="1380,260,1517,281,1690,311,1689,316,1516,286,1379,265"/>
-<area shape="poly" title=" " alt="" coords="1379,259,1408,263,1808,298,2106,319,2105,324,1807,303,1408,268,1379,265"/>
-<area shape="poly" title=" " alt="" coords="1379,260,1408,263,1650,280,1896,294,2371,311,2768,320,3023,322,3023,327,2768,325,2371,317,1896,299,1649,285,1408,268,1379,265"/>
-<area shape="rect" href="ShipDetectorList_8h.html" title=" " alt="" coords="1381,313,1523,339"/>
-<area shape="poly" title=" " alt="" coords="1342,263,1420,304,1417,309,1340,268"/>
-<area shape="rect" title=" " alt="" coords="1128,313,1259,339"/>
-<area shape="poly" title=" " alt="" coords="1301,268,1227,309,1225,304,1298,263"/>
-<area shape="rect" title=" " alt="" coords="886,313,999,339"/>
-<area shape="poly" title=" " alt="" coords="1262,268,1013,314,1012,309,1261,262"/>
-<area shape="rect" title=" " alt="" coords="1283,313,1357,339"/>
-<area shape="poly" title=" " alt="" coords="1323,266,1323,300,1317,300,1317,266"/>
-<area shape="rect" title=" " alt="" coords="1024,313,1104,339"/>
-<area shape="poly" title=" " alt="" coords="1280,268,1118,313,1116,307,1278,263"/>
-<area shape="poly" title=" " alt="" coords="1520,263,1690,308,1689,313,1518,268"/>
-<area shape="poly" title=" " alt="" coords="1532,257,2106,316,2105,322,1531,262"/>
-<area shape="poly" title=" " alt="" coords="1532,255,1645,263,2461,300,3022,320,3022,325,2460,305,1645,268,1531,261"/>
-<area shape="poly" title=" " alt="" coords="1532,256,1645,263,2381,290,3090,308,3995,322,3995,327,3089,313,2381,295,1645,268,1531,261"/>
-<area shape="poly" title=" " alt="" coords="1475,267,1463,301,1458,299,1470,265"/>
-<area shape="poly" title=" " alt="" coords="1431,268,1253,313,1251,307,1430,263"/>
-<area shape="poly" title=" " alt="" coords="1452,268,1359,310,1357,305,1450,263"/>
-<area shape="rect" title=" " alt="" coords="1547,313,1679,339"/>
-<area shape="poly" title=" " alt="" coords="1499,263,1580,305,1578,309,1497,268"/>
-<area shape="poly" title=" " alt="" coords="2324,121,1996,238,1994,233,2322,116"/>
-<area shape="poly" title=" " alt="" coords="2356,119,2348,154,2333,193,2303,232,2298,229,2328,191,2343,152,2350,118"/>
-<area shape="poly" title=" " alt="" coords="2424,115,2720,162,2719,167,2423,121"/>
-<area shape="poly" title=" " alt="" coords="2801,194,2780,229,2775,227,2796,191"/>
-<area shape="poly" title=" " alt="" coords="2829,190,3049,305,3046,309,2826,195"/>
-<area shape="poly" title=" " alt="" coords="2882,186,3376,240,3375,246,2881,192"/>
-<area shape="poly" title=" " alt="" coords="3663,194,3616,232,3585,252,3552,268,3471,287,3359,303,3141,323,3140,318,3359,298,3470,282,3550,263,3583,247,3613,227,3659,190"/>
-<area shape="poly" title=" " alt="" coords="3638,195,3500,238,3499,233,3637,189"/>
-<area shape="poly" title=" " alt="" coords="3340,195,3117,309,3114,305,3338,190"/>
-<area shape="poly" title=" " alt="" coords="3377,190,3427,229,3424,233,3374,194"/>
-<area shape="poly" title=" " alt="" coords="3701,110,3495,113,3211,122,2926,140,2808,153,2719,169,2694,181,2668,194,2582,217,2495,233,2346,250,2345,245,2494,227,2581,212,2666,190,2691,176,2718,164,2807,147,2925,134,3210,117,3495,108,3701,105"/>
-<area shape="rect" title=" " alt="" coords="3739,167,3895,192"/>
-<area shape="poly" title=" " alt="" coords="3768,117,3800,154,3796,158,3764,121"/>
-<area shape="poly" title=" " alt="" coords="3793,116,3933,160,3931,165,3791,121"/>
-<area shape="poly" title=" " alt="" coords="3920,193,3908,195,3537,229,3033,268,2217,324,2217,318,3032,263,3537,224,3908,189,3919,188"/>
-<area shape="poly" title=" " alt="" coords="3937,195,3785,230,3592,268,3341,302,3141,322,3140,317,3341,297,3592,263,3783,225,3935,189"/>
-<area shape="poly" title=" " alt="" coords="3920,193,3908,195,3526,245,3525,240,3908,189,3919,188"/>
-<area shape="poly" title=" " alt="" coords="3988,191,4030,300,4025,301,3983,193"/>
-<area shape="poly" title=" " alt="" coords="1546,187,1558,189,1906,242,1905,248,1557,195,1545,192"/>
-<area shape="poly" title=" " alt="" coords="1516,190,1627,263,1707,305,1705,310,1624,268,1513,194"/>
-<area shape="poly" title=" " alt="" coords="1546,187,1805,237,1828,250,1850,263,1918,283,1987,299,2106,317,2105,322,1986,304,1916,289,1848,268,1825,255,1803,243,1545,192"/>
-<area shape="poly" title=" " alt="" coords="1656,187,1901,237,1906,239,1905,244,1899,243,1654,192"/>
-<area shape="poly" title=" " alt="" coords="1617,192,1627,226,1635,246,1647,264,1674,287,1703,305,1700,310,1670,292,1643,267,1631,248,1622,228,1612,193"/>
-<area shape="poly" title=" " alt="" coords="1656,187,1746,207,1850,237,1908,263,2013,292,2106,312,2105,317,2011,297,1906,268,1848,243,1745,212,1654,192"/>
-<area shape="poly" title=" " alt="" coords="2528,195,2339,239,2338,234,2526,189"/>
-<area shape="poly" title=" " alt="" coords="2591,190,2647,226,2684,246,2722,263,2802,286,2883,302,3023,319,3022,324,2882,308,2801,291,2720,268,2682,251,2645,231,2589,194"/>
-<area shape="poly" title=" " alt="" coords="3008,121,2895,206,2809,268,2758,282,2690,294,2524,311,2352,321,2217,326,2217,321,2352,316,2523,306,2689,289,2757,277,2807,263,2892,202,3005,117"/>
-<area shape="poly" title=" " alt="" coords="3052,117,3083,136,3098,149,3109,166,3119,201,3117,239,3108,273,3096,302,3091,300,3103,272,3112,238,3114,202,3104,168,3094,153,3080,140,3049,121"/>
-<area shape="poly" title=" " alt="" coords="3109,107,3196,112,3290,122,3373,139,3405,150,3428,165,3439,178,3447,194,3453,225,3448,226,3442,195,3435,181,3425,169,3403,155,3372,144,3289,127,3196,117,3109,112"/>
-<area shape="poly" title=" " alt="" coords="3109,106,3391,111,3751,121,4067,139,4172,150,4204,157,4220,165,4238,189,4242,215,4236,240,4221,267,4191,295,4154,313,4115,322,4079,327,4079,322,4114,317,4152,308,4188,290,4217,264,4231,238,4237,215,4233,192,4217,169,4202,162,4171,155,4067,144,3751,127,3391,116,3109,111"/>
-<area shape="poly" title=" " alt="" coords="2950,121,2661,167,2660,162,2949,116"/>
-<area shape="poly" title=" " alt="" coords="2034,112,1961,117,1882,127,1812,144,1787,155,1770,168,1765,179,1770,190,1787,200,1822,213,1907,237,1905,242,1820,218,1785,205,1766,194,1760,179,1766,165,1784,151,1811,139,1881,122,1960,112,2034,107"/>
-<area shape="poly" title=" " alt="" coords="2101,118,2110,182,2132,264,2149,301,2144,303,2127,266,2105,183,2096,119"/>
-<area shape="poly" title=" " alt="" coords="2106,118,2155,197,2186,238,2212,263,2259,276,2342,288,2574,305,2828,316,3022,321,3022,326,2828,321,2574,310,2341,293,2258,282,2209,268,2182,242,2151,200,2102,121"/>
-<area shape="poly" title=" " alt="" coords="2161,109,2275,116,3231,127,3870,141,4085,151,4148,157,4176,165,4189,185,4189,205,4180,226,4164,246,4120,281,4074,309,4071,304,4117,277,4160,242,4175,223,4184,204,4184,186,4173,169,4147,163,4084,157,3870,146,3231,132,2275,121,2161,115"/>
-<area shape="poly" title=" " alt="" coords="2076,121,1995,163,1992,158,2074,116"/>
-<area shape="poly" title=" " alt="" coords="1960,193,1956,227,1951,226,1955,192"/>
-<area shape="poly" title=" " alt="" coords="2009,189,2213,234,2212,240,2008,194"/>
-<area shape="poly" title=" " alt="" coords="3197,195,3085,232,3013,252,2941,268,2838,285,2732,298,2527,315,2347,324,2217,327,2217,322,2347,319,2526,310,2732,292,2837,279,2939,263,3012,247,3083,227,3195,190"/>
-<area shape="poly" title=" " alt="" coords="3219,194,3153,267,3108,306,3105,302,3149,263,3215,190"/>
-<area shape="poly" title=" " alt="" coords="3263,189,3402,233,3401,238,3262,195"/>
-<area shape="poly" title=" " alt="" coords="2625,121,2484,169,2317,237,2315,232,2482,164,2624,116"/>
-<area shape="poly" title=" " alt="" coords="2720,116,2954,161,2953,167,2719,121"/>
-<area shape="poly" title=" " alt="" coords="3014,194,2966,232,2933,252,2898,268,2839,283,2759,295,2567,312,2369,322,2218,326,2217,321,2369,317,2566,307,2759,290,2838,278,2896,263,2931,247,2963,228,3011,190"/>
-<area shape="poly" title=" " alt="" coords="3032,191,3074,300,3069,301,3027,193"/>
-<area shape="poly" title=" " alt="" coords="3094,189,3376,236,3375,242,3093,195"/>
-<area shape="poly" title=" " alt="" coords="2280,192,2280,226,2275,226,2275,192"/>
-<area shape="poly" title=" " alt="" coords="1731,265,1739,300,1734,301,1726,266"/>
-<area shape="poly" title=" " alt="" coords="1793,262,2106,313,2105,318,1793,268"/>
-<area shape="poly" title=" " alt="" coords="1793,256,1907,263,3022,319,3022,325,1907,268,1793,261"/>
-<area shape="poly" title=" " alt="" coords="4067,193,4055,195,3791,238,3674,253,3524,268,3133,296,2751,314,2429,323,2218,327,2217,321,2429,318,2751,308,3133,291,3524,263,3674,248,3790,232,4054,189,4066,187"/>
-<area shape="poly" title=" " alt="" coords="4089,195,3991,232,3928,252,3863,268,3761,286,3656,300,3451,318,3271,326,3140,328,3140,322,3271,321,3451,313,3656,295,3760,281,3862,263,3926,247,3989,227,4087,190"/>
-<area shape="poly" title=" " alt="" coords="4067,193,4055,195,3762,229,3526,249,3525,243,3762,223,4054,189,4066,188"/>
-<area shape="poly" title=" " alt="" coords="4111,194,4052,303,4048,300,4106,191"/>
+<area shape="poly" title=" " alt="" coords="2073,30,1691,36,1123,49,539,68,294,81,110,96,104,97,104,91,109,91,294,76,539,63,1123,43,1691,31,2073,25"/>
+<area shape="rect" title=" " alt="" coords="353,240,415,265"/>
+<area shape="poly" title=" " alt="" coords="2073,30,1754,37,1293,49,824,69,628,81,480,96,428,100,380,99,296,96,259,100,224,111,190,133,156,168,146,189,151,205,170,218,197,228,269,242,339,247,339,253,268,247,196,234,167,223,147,208,141,188,151,165,186,129,222,107,258,95,296,91,380,94,427,95,480,91,628,76,824,64,1293,44,1754,31,2073,25"/>
+<area shape="rect" title=" " alt="" coords="2740,93,2807,119"/>
+<area shape="poly" title=" " alt="" coords="2210,29,2436,50,2579,68,2727,91,2726,96,2578,73,2435,55,2209,34"/>
+<area shape="rect" title=" " alt="" coords="2831,93,2911,119"/>
+<area shape="poly" title=" " alt="" coords="2210,28,2472,49,2642,67,2817,91,2817,96,2642,72,2472,54,2209,33"/>
+<area shape="rect" title=" " alt="" coords="2935,93,3012,119"/>
+<area shape="poly" title=" " alt="" coords="2210,27,2514,46,2715,64,2921,91,2921,96,2714,70,2514,51,2209,32"/>
+<area shape="rect" title=" " alt="" coords="3037,93,3113,119"/>
+<area shape="poly" title=" " alt="" coords="2210,26,2355,32,2555,43,2786,62,3024,91,3023,96,2785,67,2555,48,2355,37,2210,31"/>
+<area shape="rect" title=" " alt="" coords="2438,167,2501,192"/>
+<area shape="poly" title=" " alt="" coords="2210,31,2344,53,2405,70,2429,80,2446,91,2457,105,2464,121,2471,152,2466,153,2459,122,2452,108,2442,95,2426,85,2403,75,2343,58,2209,36"/>
+<area shape="rect" title=" " alt="" coords="3137,93,3281,119"/>
+<area shape="poly" title=" " alt="" coords="2210,27,2594,48,2855,67,3124,91,3123,96,2854,72,2594,54,2209,32"/>
+<area shape="rect" title=" " alt="" coords="3305,93,3489,119"/>
+<area shape="poly" title=" " alt="" coords="2210,27,2660,48,2970,67,3291,91,3291,96,2970,72,2659,54,2209,32"/>
+<area shape="rect" title=" " alt="" coords="3513,93,3703,119"/>
+<area shape="poly" title=" " alt="" coords="2209,26,2740,46,3113,65,3500,91,3500,96,3113,70,2739,51,2209,31"/>
+<area shape="rect" title=" " alt="" coords="3727,93,3910,119"/>
+<area shape="poly" title=" " alt="" coords="2210,25,2822,43,3260,62,3713,91,3713,96,3260,68,2821,48,2210,31"/>
+<area shape="rect" title=" " alt="" coords="3935,93,4039,119"/>
+<area shape="poly" title=" " alt="" coords="2210,25,3033,46,3538,66,3753,77,3921,91,3920,96,3753,83,3538,71,3033,51,2210,31"/>
+<area shape="rect" title=" " alt="" coords="4063,93,4139,119"/>
+<area shape="poly" title=" " alt="" coords="2210,25,2565,30,3092,41,3637,61,3870,75,4050,91,4049,96,3869,80,3637,66,3092,46,2565,35,2210,30"/>
+<area shape="rect" title=" " alt="" coords="4163,93,4229,119"/>
+<area shape="poly" title=" " alt="" coords="2210,24,2582,27,3138,37,3715,57,3960,72,4150,91,4149,96,3960,77,3715,62,3138,42,2582,33,2210,30"/>
+<area shape="rect" href="CaloScoringPlanePoint_8h.html" title=" " alt="" coords="774,167,954,192"/>
+<area shape="poly" title=" " alt="" coords="2073,30,1917,34,1701,45,1453,64,1203,96,1044,129,915,165,913,160,1043,124,1202,91,1453,59,1701,39,1917,29,2073,25"/>
+<area shape="rect" href="DetectorHit_8h.html" title=" " alt="" coords="2044,240,2153,265"/>
+<area shape="poly" title=" " alt="" coords="2109,47,2083,68,2064,94,2061,113,2069,128,2083,144,2095,166,2101,197,2103,226,2097,226,2096,198,2089,168,2078,147,2065,131,2056,114,2059,92,2079,64,2105,43"/>
+<area shape="rect" href="MTCDetHit_8h.html" title=" " alt="" coords="2284,93,2388,119"/>
+<area shape="poly" title=" " alt="" coords="2189,43,2296,86,2294,91,2187,48"/>
+<area shape="rect" href="MTCDetPoint_8h.html" title=" " alt="" coords="297,167,415,192"/>
+<area shape="poly" title=" " alt="" coords="2073,29,1859,32,1544,41,1174,61,984,76,798,96,692,111,588,130,417,166,416,161,587,125,691,106,797,91,983,71,1174,56,1543,36,1859,27,2073,24"/>
+<area shape="rect" href="ShipMCTrack_8h.html" title=" " alt="" coords="1665,240,1783,265"/>
+<area shape="poly" title=" " alt="" coords="2074,31,2027,37,1975,49,1925,68,1879,95,1860,118,1853,142,1846,167,1829,194,1799,218,1767,237,1764,232,1796,214,1825,190,1841,165,1848,140,1856,115,1876,91,1922,63,1974,44,2026,32,2073,26"/>
+<area shape="rect" href="ShipParticle_8h.html" title=" " alt="" coords="1519,240,1630,265"/>
+<area shape="poly" title=" " alt="" coords="2074,39,1968,60,1910,76,1853,96,1803,119,1766,141,1683,194,1609,235,1606,231,1680,190,1763,136,1800,114,1851,91,1908,71,1967,55,2072,34"/>
+<area shape="rect" href="SiliconTargetHit_8h.html" title=" " alt="" coords="2073,93,2209,119"/>
+<area shape="poly" title=" " alt="" coords="2144,46,2144,79,2139,79,2139,46"/>
+<area shape="rect" href="SiliconTargetPoint_8h.html" title=" " alt="" coords="491,167,642,192"/>
+<area shape="poly" title=" " alt="" coords="2073,29,1878,31,1597,40,1269,60,1101,76,936,96,849,111,762,129,620,166,618,160,761,124,848,106,936,91,1100,70,1269,55,1596,34,1878,26,2073,24"/>
+<area shape="rect" href="TTPoint_8h.html" title=" " alt="" coords="667,167,749,192"/>
+<area shape="poly" title=" " alt="" coords="2073,30,1898,33,1651,43,1365,63,1218,78,1075,96,988,111,902,130,761,166,760,160,901,124,987,106,1074,91,1218,72,1364,58,1650,38,1898,28,2073,24"/>
+<area shape="rect" href="TargetPoint_8h.html" title=" " alt="" coords="165,167,272,192"/>
+<area shape="poly" title=" " alt="" coords="2073,29,1836,29,1480,36,1061,56,845,73,634,96,535,111,437,129,277,166,276,161,436,124,534,106,633,91,845,68,1061,51,1480,31,1836,23,2073,23"/>
+<area shape="rect" href="TimeDetHit_8h.html" title=" " alt="" coords="1889,93,1999,119"/>
+<area shape="poly" title=" " alt="" coords="2095,48,1987,91,1985,86,2093,43"/>
+<area shape="rect" href="TimeDetPoint_8h.html" title=" " alt="" coords="1547,167,1669,192"/>
+<area shape="poly" title=" " alt="" coords="2074,36,1938,57,1860,74,1784,96,1705,128,1640,162,1638,157,1703,123,1782,91,1859,69,1937,52,2073,31"/>
+<area shape="rect" href="TrackInfo_8h.html" title=" " alt="" coords="2623,93,2716,119"/>
+<area shape="poly" title=" " alt="" coords="2210,33,2387,57,2609,91,2609,96,2386,62,2209,38"/>
+<area shape="rect" href="Tracklet_8h.html" title=" " alt="" coords="2513,93,2599,119"/>
+<area shape="poly" title=" " alt="" coords="2210,37,2500,92,2499,97,2209,42"/>
+<area shape="rect" href="UpstreamTaggerHit_8h.html" title=" " alt="" coords="1363,167,1523,192"/>
+<area shape="poly" title=" " alt="" coords="2073,32,1999,39,1910,50,1813,69,1720,96,1698,108,1676,121,1596,148,1520,166,1519,161,1595,143,1674,116,1695,103,1718,91,1812,64,1909,45,1999,33,2073,27"/>
+<area shape="rect" href="UpstreamTaggerPoint_8h.html" title=" " alt="" coords="1321,93,1495,119"/>
+<area shape="poly" title=" " alt="" coords="2073,37,1509,97,1509,91,2073,31"/>
+<area shape="rect" href="strawtubesHit_8h.html" title=" " alt="" coords="1537,93,1663,119"/>
+<area shape="poly" title=" " alt="" coords="2074,39,1677,96,1676,91,2073,34"/>
+<area shape="rect" href="strawtubesPoint_8h.html" title=" " alt="" coords="1029,167,1168,192"/>
+<area shape="poly" title=" " alt="" coords="2073,31,1894,38,1663,50,1437,70,1344,82,1274,96,1234,109,1194,127,1130,162,1127,157,1192,122,1232,104,1273,91,1343,76,1436,64,1663,45,1894,33,2073,26"/>
+<area shape="rect" href="vetoHit_8h.html" title=" " alt="" coords="2229,167,2312,192"/>
+<area shape="poly" title=" " alt="" coords="2170,44,2197,65,2223,92,2245,123,2262,153,2257,155,2241,125,2219,95,2194,69,2167,48"/>
+<area shape="rect" href="vetoHitOnTrack_8h.html" title=" " alt="" coords="2178,240,2313,265"/>
+<area shape="poly" title=" " alt="" coords="2210,32,2323,54,2371,71,2390,80,2402,92,2413,114,2411,136,2400,157,2383,176,2335,211,2286,237,2284,232,2333,206,2379,172,2396,154,2406,134,2407,115,2398,95,2386,85,2369,75,2321,59,2209,37"/>
+<area shape="rect" href="vetoPoint_8h.html" title=" " alt="" coords="1192,167,1288,192"/>
+<area shape="poly" title=" " alt="" coords="2073,32,1885,40,1647,53,1431,72,1354,83,1310,96,1293,108,1278,123,1254,156,1250,153,1274,120,1290,104,1308,91,1353,78,1430,67,1646,48,1884,34,2073,26"/>
+<area shape="rect" href="DetectorPoint_8h.html" title=" " alt="" coords="931,240,1053,265"/>
+<area shape="poly" title=" " alt="" coords="886,190,960,231,958,235,883,194"/>
+<area shape="rect" title=" " alt="" coords="1168,313,1224,339"/>
+<area shape="poly" title=" " alt="" coords="1026,263,1156,308,1154,313,1024,268"/>
+<area shape="rect" title=" " alt="" coords="1053,313,1144,339"/>
+<area shape="poly" title=" " alt="" coords="1011,263,1071,303,1068,308,1008,268"/>
+<area shape="poly" title=" " alt="" coords="2044,259,1611,282,1356,298,1158,316,1158,311,1355,293,1611,276,2044,254"/>
+<area shape="rect" title=" " alt="" coords="2186,313,2265,339"/>
+<area shape="poly" title=" " alt="" coords="2120,263,2194,304,2191,309,2118,268"/>
+<area shape="rect" title=" " alt="" coords="2066,313,2150,339"/>
+<area shape="poly" title=" " alt="" coords="2103,265,2107,299,2102,300,2098,266"/>
+<area shape="poly" title=" " alt="" coords="2359,116,2437,158,2434,162,2356,121"/>
+<area shape="poly" title=" " alt="" coords="2341,119,2341,155,2337,175,2326,194,2305,205,2265,217,2167,240,2166,235,2264,212,2303,200,2322,190,2332,174,2336,154,2335,119"/>
+<area shape="poly" title=" " alt="" coords="416,185,917,240,917,246,416,190"/>
+<area shape="poly" title=" " alt="" coords="351,193,336,229,335,247,342,264,355,272,377,280,446,293,537,304,644,311,865,319,1039,322,1039,327,865,325,643,316,537,309,445,299,376,285,353,277,338,267,329,248,331,227,346,191"/>
+<area shape="poly" title=" " alt="" coords="1665,265,1643,268,1508,282,1402,290,1295,299,1158,316,1158,311,1295,293,1402,284,1508,276,1642,263,1665,260"/>
+<area shape="poly" title=" " alt="" coords="1783,258,1954,280,2163,311,2173,312,2172,318,2162,316,1953,286,1783,264"/>
+<area shape="poly" title=" " alt="" coords="1784,261,2052,310,2051,315,1783,267"/>
+<area shape="rect" href="ShipDetectorList_8h.html" title=" " alt="" coords="1504,313,1645,339"/>
+<area shape="poly" title=" " alt="" coords="1701,268,1613,310,1610,305,1699,263"/>
+<area shape="rect" title=" " alt="" coords="1669,313,1800,339"/>
+<area shape="poly" title=" " alt="" coords="1728,265,1734,299,1728,300,1723,266"/>
+<area shape="rect" title=" " alt="" coords="1929,313,2042,339"/>
+<area shape="poly" title=" " alt="" coords="1767,263,1930,307,1929,312,1765,268"/>
+<area shape="rect" title=" " alt="" coords="1405,313,1480,339"/>
+<area shape="poly" title=" " alt="" coords="1679,268,1494,315,1493,309,1678,263"/>
+<area shape="rect" title=" " alt="" coords="1824,313,1904,339"/>
+<area shape="poly" title=" " alt="" coords="1748,263,1830,305,1828,309,1745,268"/>
+<area shape="poly" title=" " alt="" coords="1520,266,1238,316,1238,316,1236,311,1237,311,1519,260"/>
+<area shape="poly" title=" " alt="" coords="1520,264,1361,285,1158,316,1157,311,1361,279,1519,258"/>
+<area shape="poly" title=" " alt="" coords="1630,260,1654,263,1797,277,1908,285,2020,294,2163,311,2173,312,2172,317,2162,316,2020,299,1908,290,1796,282,1653,268,1630,265"/>
+<area shape="poly" title=" " alt="" coords="1630,260,1654,263,1852,284,1940,294,2052,310,2052,316,1939,299,1851,290,1653,268,1630,265"/>
+<area shape="poly" title=" " alt="" coords="1577,266,1577,300,1572,300,1572,266"/>
+<area shape="poly" title=" " alt="" coords="1601,263,1697,305,1695,310,1599,268"/>
+<area shape="poly" title=" " alt="" coords="1555,268,1477,309,1475,304,1552,263"/>
+<area shape="rect" title=" " alt="" coords="1249,313,1381,339"/>
+<area shape="poly" title=" " alt="" coords="1534,268,1371,312,1369,307,1532,263"/>
+<area shape="poly" title=" " alt="" coords="2195,116,2425,166,2424,171,2193,121"/>
+<area shape="poly" title=" " alt="" coords="2151,118,2164,152,2167,172,2162,193,2148,215,2130,233,2126,229,2144,212,2158,191,2161,172,2159,153,2146,120"/>
+<area shape="poly" title=" " alt="" coords="2073,117,2011,121,1806,132,1632,137,1335,141,1038,146,863,155,656,169,656,164,862,149,1037,141,1335,135,1632,132,1805,127,2010,116,2073,111"/>
+<area shape="poly" title=" " alt="" coords="538,195,428,237,426,232,536,190"/>
+<area shape="poly" title=" " alt="" coords="635,189,917,236,917,242,635,195"/>
+<area shape="poly" title=" " alt="" coords="603,189,849,263,1041,309,1040,314,847,268,601,195"/>
+<area shape="poly" title=" " alt="" coords="751,189,934,234,933,239,749,194"/>
+<area shape="poly" title=" " alt="" coords="736,190,920,263,1050,307,1048,312,918,268,734,195"/>
+<area shape="poly" title=" " alt="" coords="272,188,284,189,462,209,638,225,917,245,916,250,638,230,461,215,284,195,272,193"/>
+<area shape="poly" title=" " alt="" coords="231,191,271,228,298,248,328,263,389,280,471,293,673,311,880,319,1039,322,1039,327,880,325,673,316,470,298,388,285,326,268,295,252,267,232,227,195"/>
+<area shape="poly" title=" " alt="" coords="1986,116,2028,135,2049,148,2067,165,2086,195,2096,225,2091,227,2081,197,2063,168,2046,153,2025,140,1984,121"/>
+<area shape="rect" title=" " alt="" coords="1897,167,2053,192"/>
+<area shape="poly" title=" " alt="" coords="1952,118,1967,153,1962,155,1947,120"/>
+<area shape="poly" title=" " alt="" coords="1891,121,1676,166,1675,161,1889,116"/>
+<area shape="poly" title=" " alt="" coords="1547,193,1535,195,1278,225,1067,247,1067,242,1277,220,1534,189,1546,188"/>
+<area shape="poly" title=" " alt="" coords="1591,195,1530,230,1449,268,1391,286,1344,296,1297,303,1238,316,1238,316,1236,311,1237,311,1296,298,1343,290,1390,281,1447,263,1527,226,1589,190"/>
+<area shape="poly" title=" " alt="" coords="1568,195,1153,312,1151,307,1567,190"/>
+<area shape="poly" title=" " alt="" coords="1670,188,1774,208,1890,237,1954,263,2066,306,2064,311,1952,268,1889,243,1773,213,1669,193"/>
+<area shape="poly" title=" " alt="" coords="2638,121,2515,165,2513,160,2636,116"/>
+<area shape="poly" title=" " alt="" coords="2700,116,2726,130,2751,148,2765,169,2766,181,2761,193,2748,209,2729,222,2679,247,2617,267,2546,284,2399,309,2279,323,2278,318,2398,304,2544,279,2615,262,2677,242,2726,218,2744,205,2756,191,2761,180,2760,171,2747,151,2723,135,2697,121"/>
+<area shape="poly" title=" " alt="" coords="2655,121,2543,194,2474,236,2401,268,2293,294,2164,318,2163,313,2292,289,2399,263,2472,231,2540,190,2652,117"/>
+<area shape="rect" title=" " alt="" coords="2821,167,2904,192"/>
+<area shape="poly" title=" " alt="" coords="2701,116,2819,159,2818,164,2699,121"/>
+<area shape="rect" title=" " alt="" coords="2678,167,2746,192"/>
+<area shape="poly" title=" " alt="" coords="2679,118,2700,154,2696,156,2674,120"/>
+<area shape="poly" title=" " alt="" coords="2544,121,2496,160,2492,156,2540,117"/>
+<area shape="poly" title=" " alt="" coords="2563,118,2572,147,2579,187,2577,229,2571,249,2559,267,2540,282,2512,294,2437,311,2353,321,2278,326,2278,320,2352,316,2436,306,2510,289,2537,277,2555,264,2566,247,2572,228,2574,187,2567,148,2558,120"/>
+<area shape="poly" title=" " alt="" coords="2556,120,2542,156,2530,176,2515,194,2489,212,2451,230,2356,264,2253,293,2164,315,2163,310,2251,288,2355,259,2449,225,2486,208,2512,190,2526,173,2537,153,2551,118"/>
+<area shape="poly" title=" " alt="" coords="1416,195,1140,310,1138,306,1414,190"/>
+<area shape="poly" title=" " alt="" coords="1523,188,1535,189,2030,242,2030,247,1534,195,1523,193"/>
+<area shape="poly" title=" " alt="" coords="1320,113,1237,118,1148,128,1070,145,1040,156,1019,169,1009,181,1002,195,995,226,990,225,997,194,1004,178,1016,165,1038,151,1068,140,1147,123,1236,113,1320,107"/>
+<area shape="poly" title=" " alt="" coords="1399,121,1219,305,1215,301,1395,117"/>
+<area shape="poly" title=" " alt="" coords="1321,112,826,132,591,149,514,158,480,169,473,183,475,196,488,209,510,222,577,246,666,267,767,284,869,298,1040,317,1039,322,869,304,766,289,665,272,575,251,508,227,485,213,470,198,467,182,477,165,513,153,590,143,825,127,1320,107"/>
+<area shape="poly" title=" " alt="" coords="1466,116,1682,164,1813,195,1870,212,1941,238,2016,271,2078,304,2076,309,2013,276,1939,242,1868,217,1812,201,1681,169,1465,121"/>
+<area shape="poly" title=" " alt="" coords="1416,118,1433,153,1429,155,1411,120"/>
+<area shape="poly" title=" " alt="" coords="1639,116,1886,189,2044,234,2043,239,1885,195,1637,121"/>
+<area shape="poly" title=" " alt="" coords="1537,119,1182,169,1182,164,1537,114"/>
+<area shape="poly" title=" " alt="" coords="1083,194,1022,235,1019,230,1080,190"/>
+<area shape="poly" title=" " alt="" coords="1101,192,1101,300,1096,300,1096,192"/>
+<area shape="poly" title=" " alt="" coords="1169,188,1180,189,1274,197,1354,198,1491,194,1557,194,1627,200,1705,213,1796,238,1818,250,1840,263,2053,310,2052,315,1838,268,1816,254,1794,242,1704,218,1626,205,1557,200,1491,199,1354,203,1274,202,1180,195,1168,193"/>
+<area shape="poly" title=" " alt="" coords="2244,194,2140,237,2138,232,2242,190"/>
+<area shape="poly" title=" " alt="" coords="2178,267,2166,268,2013,280,1884,286,1663,288,1441,292,1311,300,1158,316,1157,311,1311,295,1441,287,1663,282,1884,280,2013,275,2165,263,2177,261"/>
+<area shape="poly" title=" " alt="" coords="2245,266,2235,301,2230,299,2239,265"/>
+<area shape="poly" title=" " alt="" coords="2224,268,2144,309,2141,305,2222,263"/>
+<area shape="poly" title=" " alt="" coords="1201,195,1046,239,1045,234,1199,189"/>
+<area shape="poly" title=" " alt="" coords="1239,193,1206,301,1201,299,1234,192"/>
+<area shape="poly" title=" " alt="" coords="1230,194,1121,305,1118,302,1227,191"/>
+<area shape="poly" title=" " alt="" coords="1289,183,1351,189,1489,198,1598,199,1705,207,1767,219,1840,237,1865,250,1890,263,1975,290,2053,310,2052,315,1974,296,1888,268,1863,254,1838,243,1766,224,1704,213,1597,204,1489,203,1350,195,1288,188"/>
 </map>
 </div>
 </div>
@@ -344,284 +333,250 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__rntuple__io_8cxx_source.html#l00161">161</a> of file <a class="el" href="test__rntuple__io_8cxx_source.html">test_rntuple_io.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  161</span>                                {</div>
-<div class="line"><span class="lineno">  162</span>  std::cout &lt;&lt; <span class="stringliteral">&quot;\n=== Testing Data Classes with actual RNtuple I/O ===\n&quot;</span></div>
-<div class="line"><span class="lineno">  163</span>            &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  164</span> </div>
-<div class="line"><span class="lineno">  165</span>  <span class="keywordtype">int</span> passed = 0;</div>
-<div class="line"><span class="lineno">  166</span>  <span class="keywordtype">int</span> total = 0;</div>
-<div class="line"><span class="lineno">  167</span> </div>
-<div class="line"><span class="lineno">  168</span>  <span class="comment">// Test base classes</span></div>
-<div class="line"><span class="lineno">  169</span>  std::cout &lt;&lt; <span class="stringliteral">&quot;--- Base Classes ---&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  170</span> </div>
-<div class="line"><span class="lineno">  171</span>  {</div>
-<div class="line"><span class="lineno">  172</span>    std::vector&lt;SHiP::DetectorHit&gt; objects;</div>
-<div class="line"><span class="lineno">  173</span>    objects.emplace_back(1001, 123.45f);</div>
-<div class="line"><span class="lineno">  174</span>    objects.emplace_back(2002, 678.90f);</div>
-<div class="line"><span class="lineno">  175</span>    total++;</div>
-<div class="line"><span class="lineno">  176</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="test__rntuple__io_8cxx.html#a08a365ee8364cd02e98159ee1a6d64b6">test_rntuple_io</a>(<span class="stringliteral">&quot;SHiP::DetectorHit&quot;</span>, objects)) passed++;</div>
-<div class="line"><span class="lineno">  177</span>  }</div>
-<div class="line"><span class="lineno">  178</span> </div>
-<div class="line"><span class="lineno">  179</span>  {</div>
-<div class="line"><span class="lineno">  180</span>    std::vector&lt;ShipMCTrack&gt; objects;</div>
-<div class="line"><span class="lineno">  181</span>    objects.emplace_back();</div>
-<div class="line"><span class="lineno">  182</span>    objects.emplace_back();</div>
-<div class="line"><span class="lineno">  183</span>    total++;</div>
-<div class="line"><span class="lineno">  184</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="test__rntuple__io_8cxx.html#a08a365ee8364cd02e98159ee1a6d64b6">test_rntuple_io</a>(<span class="stringliteral">&quot;ShipMCTrack&quot;</span>, objects)) passed++;</div>
-<div class="line"><span class="lineno">  185</span>  }</div>
-<div class="line"><span class="lineno">  186</span> </div>
-<div class="line"><span class="lineno">  187</span>  {</div>
-<div class="line"><span class="lineno">  188</span>    std::vector&lt;ShipParticle&gt; objects;</div>
-<div class="line"><span class="lineno">  189</span>    objects.emplace_back();</div>
-<div class="line"><span class="lineno">  190</span>    objects.emplace_back();</div>
-<div class="line"><span class="lineno">  191</span>    total++;</div>
-<div class="line"><span class="lineno">  192</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="test__rntuple__io_8cxx.html#a08a365ee8364cd02e98159ee1a6d64b6">test_rntuple_io</a>(<span class="stringliteral">&quot;ShipParticle&quot;</span>, objects)) passed++;</div>
-<div class="line"><span class="lineno">  193</span>  }</div>
-<div class="line"><span class="lineno">  194</span> </div>
-<div class="line"><span class="lineno">  195</span>  {</div>
-<div class="line"><span class="lineno">  196</span>    std::vector&lt;vetoHitOnTrack&gt; objects;</div>
-<div class="line"><span class="lineno">  197</span>    objects.emplace_back(0, 99999.0f);</div>
-<div class="line"><span class="lineno">  198</span>    objects.emplace_back(5, 42.5f);</div>
-<div class="line"><span class="lineno">  199</span>    total++;</div>
-<div class="line"><span class="lineno">  200</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="test__rntuple__io_8cxx.html#a08a365ee8364cd02e98159ee1a6d64b6">test_rntuple_io</a>(<span class="stringliteral">&quot;vetoHitOnTrack&quot;</span>, objects)) passed++;</div>
-<div class="line"><span class="lineno">  201</span>  }</div>
-<div class="line"><span class="lineno">  202</span> </div>
-<div class="line"><span class="lineno">  203</span>  {</div>
-<div class="line"><span class="lineno">  204</span>    std::vector&lt;Tracklet&gt; objects;</div>
-<div class="line"><span class="lineno">  205</span>    <span class="comment">// Create first tracklet with some hit indices using modern constructor</span></div>
-<div class="line"><span class="lineno">  206</span>    std::vector&lt;unsigned int&gt; hits1 = {10, 15, 20, 25};</div>
-<div class="line"><span class="lineno">  207</span>    objects.emplace_back(1, hits1);  <span class="comment">// Type 1 = fitted track</span></div>
-<div class="line"><span class="lineno">  208</span> </div>
-<div class="line"><span class="lineno">  209</span>    <span class="comment">// Create second tracklet with different hit indices</span></div>
-<div class="line"><span class="lineno">  210</span>    std::vector&lt;unsigned int&gt; hits2 = {30, 35, 40};</div>
-<div class="line"><span class="lineno">  211</span>    objects.emplace_back(1, hits2);</div>
-<div class="line"><span class="lineno">  212</span> </div>
-<div class="line"><span class="lineno">  213</span>    total++;</div>
-<div class="line"><span class="lineno">  214</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="test__rntuple__io_8cxx.html#a08a365ee8364cd02e98159ee1a6d64b6">test_rntuple_io</a>(<span class="stringliteral">&quot;Tracklet&quot;</span>, objects)) passed++;</div>
-<div class="line"><span class="lineno">  215</span>  }</div>
-<div class="line"><span class="lineno">  216</span> </div>
-<div class="line"><span class="lineno">  217</span>  {</div>
-<div class="line"><span class="lineno">  218</span>    std::vector&lt;TrackInfo&gt; objects;</div>
-<div class="line"><span class="lineno">  219</span>    objects.emplace_back();</div>
-<div class="line"><span class="lineno">  220</span>    objects.emplace_back();</div>
-<div class="line"><span class="lineno">  221</span>    total++;</div>
-<div class="line"><span class="lineno">  222</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="test__rntuple__io_8cxx.html#a08a365ee8364cd02e98159ee1a6d64b6">test_rntuple_io</a>(<span class="stringliteral">&quot;TrackInfo&quot;</span>, objects)) passed++;</div>
-<div class="line"><span class="lineno">  223</span>  }</div>
-<div class="line"><span class="lineno">  224</span> </div>
-<div class="line"><span class="lineno">  225</span>  <span class="comment">// Test Hit classes</span></div>
-<div class="line"><span class="lineno">  226</span>  std::cout &lt;&lt; <span class="stringliteral">&quot;\n--- Hit Classes ---&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  227</span> </div>
-<div class="line"><span class="lineno">  228</span>  {</div>
-<div class="line"><span class="lineno">  229</span>    std::vector&lt;vetoHit&gt; objects;</div>
-<div class="line"><span class="lineno">  230</span>    objects.emplace_back(1001, 123.45f);</div>
-<div class="line"><span class="lineno">  231</span>    objects.emplace_back(2002, 345.67f);</div>
-<div class="line"><span class="lineno">  232</span>    total++;</div>
-<div class="line"><span class="lineno">  233</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="test__rntuple__io_8cxx.html#a08a365ee8364cd02e98159ee1a6d64b6">test_rntuple_io</a>(<span class="stringliteral">&quot;vetoHit&quot;</span>, objects)) passed++;</div>
-<div class="line"><span class="lineno">  234</span>  }</div>
-<div class="line"><span class="lineno">  235</span> </div>
-<div class="line"><span class="lineno">  236</span>  {</div>
-<div class="line"><span class="lineno">  237</span>    std::vector&lt;strawtubesHit&gt; objects;</div>
-<div class="line"><span class="lineno">  238</span>    objects.emplace_back(1001000, 123.45f);</div>
-<div class="line"><span class="lineno">  239</span>    objects.emplace_back(2002000, 234.56f);</div>
-<div class="line"><span class="lineno">  240</span>    total++;</div>
-<div class="line"><span class="lineno">  241</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="test__rntuple__io_8cxx.html#a08a365ee8364cd02e98159ee1a6d64b6">test_rntuple_io</a>(<span class="stringliteral">&quot;strawtubesHit&quot;</span>, objects)) passed++;</div>
-<div class="line"><span class="lineno">  242</span>  }</div>
-<div class="line"><span class="lineno">  243</span> </div>
-<div class="line"><span class="lineno">  244</span>  {</div>
-<div class="line"><span class="lineno">  245</span>    std::vector&lt;splitcalHit&gt; objects;</div>
-<div class="line"><span class="lineno">  246</span>    objects.emplace_back(1001, 123.45f);</div>
-<div class="line"><span class="lineno">  247</span>    objects.emplace_back(2002, 234.56f);</div>
-<div class="line"><span class="lineno">  248</span>    total++;</div>
-<div class="line"><span class="lineno">  249</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="test__rntuple__io_8cxx.html#a08a365ee8364cd02e98159ee1a6d64b6">test_rntuple_io</a>(<span class="stringliteral">&quot;splitcalHit&quot;</span>, objects)) passed++;</div>
-<div class="line"><span class="lineno">  250</span>  }</div>
-<div class="line"><span class="lineno">  251</span> </div>
-<div class="line"><span class="lineno">  252</span>  {</div>
-<div class="line"><span class="lineno">  253</span>    std::vector&lt;splitcalCluster&gt; objects;</div>
-<div class="line"><span class="lineno">  254</span>    <a class="code hl_class" href="classsplitcalCluster.html">splitcalCluster</a> cluster1;</div>
-<div class="line"><span class="lineno">  255</span>    cluster1.<a class="code hl_function" href="classsplitcalCluster.html#aac91dc803db9301c9a95b496f4369308">SetIndex</a>(0);</div>
-<div class="line"><span class="lineno">  256</span>    cluster1.<a class="code hl_function" href="classsplitcalCluster.html#a66e71fbd6bed3bb43d6494965b3ea5d4">AddHit</a>(0, 0.5);</div>
-<div class="line"><span class="lineno">  257</span>    cluster1.<a class="code hl_function" href="classsplitcalCluster.html#a66e71fbd6bed3bb43d6494965b3ea5d4">AddHit</a>(1, 0.3);</div>
-<div class="line"><span class="lineno">  258</span>    cluster1.<a class="code hl_function" href="classsplitcalCluster.html#a16365bbe7ce6158b6cef17c7d760b4cf">SetStartPoint</a>(1.0, 2.0, 100.0);</div>
-<div class="line"><span class="lineno">  259</span>    cluster1.<a class="code hl_function" href="classsplitcalCluster.html#a4e08266e6956e29ebf42b86ceb3741b9">SetEndPoint</a>(1.5, 2.5, 150.0);</div>
-<div class="line"><span class="lineno">  260</span>    objects.push_back(cluster1);</div>
-<div class="line"><span class="lineno">  261</span> </div>
-<div class="line"><span class="lineno">  262</span>    <a class="code hl_class" href="classsplitcalCluster.html">splitcalCluster</a> cluster2;</div>
-<div class="line"><span class="lineno">  263</span>    cluster2.<a class="code hl_function" href="classsplitcalCluster.html#aac91dc803db9301c9a95b496f4369308">SetIndex</a>(1);</div>
-<div class="line"><span class="lineno">  264</span>    cluster2.<a class="code hl_function" href="classsplitcalCluster.html#a66e71fbd6bed3bb43d6494965b3ea5d4">AddHit</a>(2, 0.8);</div>
-<div class="line"><span class="lineno">  265</span>    cluster2.<a class="code hl_function" href="classsplitcalCluster.html#a16365bbe7ce6158b6cef17c7d760b4cf">SetStartPoint</a>(3.0, 4.0, 200.0);</div>
-<div class="line"><span class="lineno">  266</span>    cluster2.<a class="code hl_function" href="classsplitcalCluster.html#a4e08266e6956e29ebf42b86ceb3741b9">SetEndPoint</a>(3.5, 4.5, 250.0);</div>
-<div class="line"><span class="lineno">  267</span>    objects.push_back(cluster2);</div>
-<div class="line"><span class="lineno">  268</span> </div>
-<div class="line"><span class="lineno">  269</span>    total++;</div>
-<div class="line"><span class="lineno">  270</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="test__rntuple__io_8cxx.html#a08a365ee8364cd02e98159ee1a6d64b6">test_rntuple_io</a>(<span class="stringliteral">&quot;splitcalCluster&quot;</span>, objects)) passed++;</div>
-<div class="line"><span class="lineno">  271</span>  }</div>
-<div class="line"><span class="lineno">  272</span> </div>
-<div class="line"><span class="lineno">  273</span>  {</div>
-<div class="line"><span class="lineno">  274</span>    std::vector&lt;MTCDetHit&gt; objects;</div>
-<div class="line"><span class="lineno">  275</span>    objects.emplace_back();</div>
-<div class="line"><span class="lineno">  276</span>    objects.emplace_back();</div>
-<div class="line"><span class="lineno">  277</span>    total++;</div>
-<div class="line"><span class="lineno">  278</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="test__rntuple__io_8cxx.html#a08a365ee8364cd02e98159ee1a6d64b6">test_rntuple_io</a>(<span class="stringliteral">&quot;MTCDetHit&quot;</span>, objects)) passed++;</div>
-<div class="line"><span class="lineno">  279</span>  }</div>
-<div class="line"><span class="lineno">  280</span> </div>
-<div class="line"><span class="lineno">  281</span>  {</div>
-<div class="line"><span class="lineno">  282</span>    std::vector&lt;SiliconTargetHit&gt; objects;</div>
-<div class="line"><span class="lineno">  283</span>    objects.emplace_back();</div>
-<div class="line"><span class="lineno">  284</span>    objects.emplace_back();</div>
-<div class="line"><span class="lineno">  285</span>    total++;</div>
-<div class="line"><span class="lineno">  286</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="test__rntuple__io_8cxx.html#a08a365ee8364cd02e98159ee1a6d64b6">test_rntuple_io</a>(<span class="stringliteral">&quot;SiliconTargetHit&quot;</span>, objects)) passed++;</div>
-<div class="line"><span class="lineno">  287</span>  }</div>
-<div class="line"><span class="lineno">  288</span> </div>
-<div class="line"><span class="lineno">  289</span>  {</div>
-<div class="line"><span class="lineno">  290</span>    std::vector&lt;TimeDetHit&gt; objects;</div>
-<div class="line"><span class="lineno">  291</span>    objects.emplace_back();</div>
-<div class="line"><span class="lineno">  292</span>    objects.emplace_back();</div>
-<div class="line"><span class="lineno">  293</span>    total++;</div>
-<div class="line"><span class="lineno">  294</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="test__rntuple__io_8cxx.html#a08a365ee8364cd02e98159ee1a6d64b6">test_rntuple_io</a>(<span class="stringliteral">&quot;TimeDetHit&quot;</span>, objects)) passed++;</div>
-<div class="line"><span class="lineno">  295</span>  }</div>
-<div class="line"><span class="lineno">  296</span> </div>
-<div class="line"><span class="lineno">  297</span>  {</div>
-<div class="line"><span class="lineno">  298</span>    std::vector&lt;UpstreamTaggerHit&gt; objects;</div>
-<div class="line"><span class="lineno">  299</span>    objects.emplace_back();</div>
-<div class="line"><span class="lineno">  300</span>    objects.emplace_back();</div>
-<div class="line"><span class="lineno">  301</span>    total++;</div>
-<div class="line"><span class="lineno">  302</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="test__rntuple__io_8cxx.html#a08a365ee8364cd02e98159ee1a6d64b6">test_rntuple_io</a>(<span class="stringliteral">&quot;UpstreamTaggerHit&quot;</span>, objects)) passed++;</div>
-<div class="line"><span class="lineno">  303</span>  }</div>
-<div class="line"><span class="lineno">  304</span> </div>
-<div class="line"><span class="lineno">  305</span>  <span class="comment">// Test Point classes</span></div>
-<div class="line"><span class="lineno">  306</span>  std::cout &lt;&lt; <span class="stringliteral">&quot;\n--- Point Classes ---&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  307</span> </div>
-<div class="line"><span class="lineno">  308</span>  {</div>
-<div class="line"><span class="lineno">  309</span>    std::vector&lt;vetoPoint&gt; objects;</div>
-<div class="line"><span class="lineno">  310</span>    TVector3 <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a>(1.0, 2.0, 3.0);</div>
-<div class="line"><span class="lineno">  311</span>    TVector3 <a class="code hl_variable" href="namespaceana__ShipMuon.html#ae6991624b16a4b2b551cc6baf20e54e9">mom</a>(0.1, 0.2, 0.3);</div>
-<div class="line"><span class="lineno">  312</span>    TVector3 lpos(1.1, 2.1, 3.1);</div>
-<div class="line"><span class="lineno">  313</span>    TVector3 lmom(0.11, 0.21, 0.31);</div>
-<div class="line"><span class="lineno">  314</span>    objects.emplace_back(0, 1, 1001, pos, mom, 123.45, 234.56, 0.001, 2212,</div>
-<div class="line"><span class="lineno">  315</span>                         lpos, lmom);</div>
-<div class="line"><span class="lineno">  316</span>    objects.emplace_back(1, 2, 2002, pos, mom, 345.67, 456.78, 0.002, 211, lpos,</div>
-<div class="line"><span class="lineno">  317</span>                         lmom);</div>
-<div class="line"><span class="lineno">  318</span>    total++;</div>
-<div class="line"><span class="lineno">  319</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="test__rntuple__io_8cxx.html#a08a365ee8364cd02e98159ee1a6d64b6">test_rntuple_io</a>(<span class="stringliteral">&quot;vetoPoint&quot;</span>, objects)) passed++;</div>
-<div class="line"><span class="lineno">  320</span>  }</div>
-<div class="line"><span class="lineno">  321</span> </div>
-<div class="line"><span class="lineno">  322</span>  {</div>
-<div class="line"><span class="lineno">  323</span>    std::vector&lt;strawtubesPoint&gt; objects;</div>
-<div class="line"><span class="lineno">  324</span>    TVector3 <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a>(1.0, 2.0, 3.0);</div>
-<div class="line"><span class="lineno">  325</span>    TVector3 <a class="code hl_variable" href="namespaceana__ShipMuon.html#ae6991624b16a4b2b551cc6baf20e54e9">mom</a>(0.1, 0.2, 0.3);</div>
-<div class="line"><span class="lineno">  326</span>    objects.emplace_back(0, 1, 1001000, pos, mom, 123.45, 234.56, 0.001, 2212,</div>
-<div class="line"><span class="lineno">  327</span>                         0.5);</div>
-<div class="line"><span class="lineno">  328</span>    objects.emplace_back(1, 2, 2002000, pos, mom, 345.67, 456.78, 0.002, 211,</div>
-<div class="line"><span class="lineno">  329</span>                         0.6);</div>
-<div class="line"><span class="lineno">  330</span>    total++;</div>
-<div class="line"><span class="lineno">  331</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="test__rntuple__io_8cxx.html#a08a365ee8364cd02e98159ee1a6d64b6">test_rntuple_io</a>(<span class="stringliteral">&quot;strawtubesPoint&quot;</span>, objects)) passed++;</div>
-<div class="line"><span class="lineno">  332</span>  }</div>
-<div class="line"><span class="lineno">  333</span> </div>
-<div class="line"><span class="lineno">  334</span>  {</div>
-<div class="line"><span class="lineno">  335</span>    std::vector&lt;splitcalPoint&gt; objects;</div>
-<div class="line"><span class="lineno">  336</span>    TVector3 <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a>(1.0, 2.0, 3.0);</div>
-<div class="line"><span class="lineno">  337</span>    TVector3 <a class="code hl_variable" href="namespaceana__ShipMuon.html#ae6991624b16a4b2b551cc6baf20e54e9">mom</a>(0.1, 0.2, 0.3);</div>
-<div class="line"><span class="lineno">  338</span>    objects.emplace_back(0, 1, 1001, pos, mom, 123.45, 234.56, 0.001, 2212);</div>
-<div class="line"><span class="lineno">  339</span>    objects.emplace_back(1, 2, 2002, pos, mom, 345.67, 456.78, 0.002, 211);</div>
-<div class="line"><span class="lineno">  340</span>    total++;</div>
-<div class="line"><span class="lineno">  341</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="test__rntuple__io_8cxx.html#a08a365ee8364cd02e98159ee1a6d64b6">test_rntuple_io</a>(<span class="stringliteral">&quot;splitcalPoint&quot;</span>, objects)) passed++;</div>
-<div class="line"><span class="lineno">  342</span>  }</div>
-<div class="line"><span class="lineno">  343</span> </div>
-<div class="line"><span class="lineno">  344</span>  {</div>
-<div class="line"><span class="lineno">  345</span>    std::vector&lt;MTCDetPoint&gt; objects;</div>
-<div class="line"><span class="lineno">  346</span>    TVector3 <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a>(1.0, 2.0, 3.0);</div>
-<div class="line"><span class="lineno">  347</span>    TVector3 <a class="code hl_variable" href="namespaceana__ShipMuon.html#ae6991624b16a4b2b551cc6baf20e54e9">mom</a>(0.1, 0.2, 0.3);</div>
-<div class="line"><span class="lineno">  348</span>    objects.emplace_back(1, 1001, pos, mom, 123.45, 234.56, 0.001, 2212);</div>
-<div class="line"><span class="lineno">  349</span>    objects.emplace_back(2, 2002, pos, mom, 345.67, 456.78, 0.002, 211);</div>
-<div class="line"><span class="lineno">  350</span>    total++;</div>
-<div class="line"><span class="lineno">  351</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="test__rntuple__io_8cxx.html#a08a365ee8364cd02e98159ee1a6d64b6">test_rntuple_io</a>(<span class="stringliteral">&quot;MTCDetPoint&quot;</span>, objects)) passed++;</div>
-<div class="line"><span class="lineno">  352</span>  }</div>
-<div class="line"><span class="lineno">  353</span> </div>
-<div class="line"><span class="lineno">  354</span>  {</div>
-<div class="line"><span class="lineno">  355</span>    std::vector&lt;SiliconTargetPoint&gt; objects;</div>
-<div class="line"><span class="lineno">  356</span>    TVector3 <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a>(1.0, 2.0, 3.0);</div>
-<div class="line"><span class="lineno">  357</span>    TVector3 <a class="code hl_variable" href="namespaceana__ShipMuon.html#ae6991624b16a4b2b551cc6baf20e54e9">mom</a>(0.1, 0.2, 0.3);</div>
-<div class="line"><span class="lineno">  358</span>    objects.emplace_back(1, 1001, pos, mom, 123.45, 234.56, 0.001, 2212);</div>
-<div class="line"><span class="lineno">  359</span>    objects.emplace_back(2, 2002, pos, mom, 345.67, 456.78, 0.002, 211);</div>
-<div class="line"><span class="lineno">  360</span>    total++;</div>
-<div class="line"><span class="lineno">  361</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="test__rntuple__io_8cxx.html#a08a365ee8364cd02e98159ee1a6d64b6">test_rntuple_io</a>(<span class="stringliteral">&quot;SiliconTargetPoint&quot;</span>, objects)) passed++;</div>
-<div class="line"><span class="lineno">  362</span>  }</div>
-<div class="line"><span class="lineno">  363</span> </div>
-<div class="line"><span class="lineno">  364</span>  {</div>
-<div class="line"><span class="lineno">  365</span>    std::vector&lt;TimeDetPoint&gt; objects;</div>
-<div class="line"><span class="lineno">  366</span>    TVector3 <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a>(1.0, 2.0, 3.0);</div>
-<div class="line"><span class="lineno">  367</span>    TVector3 <a class="code hl_variable" href="namespaceana__ShipMuon.html#ae6991624b16a4b2b551cc6baf20e54e9">mom</a>(0.1, 0.2, 0.3);</div>
-<div class="line"><span class="lineno">  368</span>    TVector3 lpos(1.1, 2.1, 3.1);</div>
-<div class="line"><span class="lineno">  369</span>    TVector3 lmom(0.11, 0.21, 0.31);</div>
-<div class="line"><span class="lineno">  370</span>    objects.emplace_back(0, 1, 1001, pos, mom, 123.45, 234.56, 0.001, 2212,</div>
-<div class="line"><span class="lineno">  371</span>                         lpos, lmom);</div>
-<div class="line"><span class="lineno">  372</span>    objects.emplace_back(1, 2, 2002, pos, mom, 345.67, 456.78, 0.002, 211, lpos,</div>
-<div class="line"><span class="lineno">  373</span>                         lmom);</div>
-<div class="line"><span class="lineno">  374</span>    total++;</div>
-<div class="line"><span class="lineno">  375</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="test__rntuple__io_8cxx.html#a08a365ee8364cd02e98159ee1a6d64b6">test_rntuple_io</a>(<span class="stringliteral">&quot;TimeDetPoint&quot;</span>, objects)) passed++;</div>
-<div class="line"><span class="lineno">  376</span>  }</div>
-<div class="line"><span class="lineno">  377</span> </div>
-<div class="line"><span class="lineno">  378</span>  {</div>
-<div class="line"><span class="lineno">  379</span>    std::vector&lt;UpstreamTaggerPoint&gt; objects;</div>
-<div class="line"><span class="lineno">  380</span>    TVector3 <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a>(1.0, 2.0, 3.0);</div>
-<div class="line"><span class="lineno">  381</span>    TVector3 <a class="code hl_variable" href="namespaceana__ShipMuon.html#ae6991624b16a4b2b551cc6baf20e54e9">mom</a>(0.1, 0.2, 0.3);</div>
-<div class="line"><span class="lineno">  382</span>    TVector3 lpos(1.1, 2.1, 3.1);</div>
-<div class="line"><span class="lineno">  383</span>    TVector3 lmom(0.11, 0.21, 0.31);</div>
-<div class="line"><span class="lineno">  384</span>    objects.emplace_back(1, 1, 1001, pos, mom, 123.45, 234.56, 0.001, 2212,</div>
-<div class="line"><span class="lineno">  385</span>                         lpos, lmom);</div>
-<div class="line"><span class="lineno">  386</span>    objects.emplace_back(2, 2, 2002, pos, mom, 345.67, 456.78, 0.002, 211, lpos,</div>
-<div class="line"><span class="lineno">  387</span>                         lmom);</div>
-<div class="line"><span class="lineno">  388</span>    total++;</div>
-<div class="line"><span class="lineno">  389</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="test__rntuple__io_8cxx.html#a08a365ee8364cd02e98159ee1a6d64b6">test_rntuple_io</a>(<span class="stringliteral">&quot;UpstreamTaggerPoint&quot;</span>, objects)) passed++;</div>
-<div class="line"><span class="lineno">  390</span>  }</div>
-<div class="line"><span class="lineno">  391</span> </div>
-<div class="line"><span class="lineno">  392</span>  {</div>
-<div class="line"><span class="lineno">  393</span>    std::vector&lt;TTPoint&gt; objects;</div>
-<div class="line"><span class="lineno">  394</span>    TVector3 <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a>(1.0, 2.0, 3.0);</div>
-<div class="line"><span class="lineno">  395</span>    TVector3 <a class="code hl_variable" href="namespaceana__ShipMuon.html#ae6991624b16a4b2b551cc6baf20e54e9">mom</a>(0.1, 0.2, 0.3);</div>
-<div class="line"><span class="lineno">  396</span>    objects.emplace_back(1, 1001, pos, mom, 123.45, 234.56, 0.001, 2212);</div>
-<div class="line"><span class="lineno">  397</span>    objects.emplace_back(2, 2002, pos, mom, 345.67, 456.78, 0.002, 211);</div>
-<div class="line"><span class="lineno">  398</span>    total++;</div>
-<div class="line"><span class="lineno">  399</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="test__rntuple__io_8cxx.html#a08a365ee8364cd02e98159ee1a6d64b6">test_rntuple_io</a>(<span class="stringliteral">&quot;TTPoint&quot;</span>, objects)) passed++;</div>
-<div class="line"><span class="lineno">  400</span>  }</div>
-<div class="line"><span class="lineno">  401</span> </div>
-<div class="line"><span class="lineno">  402</span>  {</div>
-<div class="line"><span class="lineno">  403</span>    std::vector&lt;TargetPoint&gt; objects;</div>
-<div class="line"><span class="lineno">  404</span>    TVector3 <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a>(1.0, 2.0, 3.0);</div>
-<div class="line"><span class="lineno">  405</span>    TVector3 <a class="code hl_variable" href="namespaceana__ShipMuon.html#ae6991624b16a4b2b551cc6baf20e54e9">mom</a>(0.1, 0.2, 0.3);</div>
-<div class="line"><span class="lineno">  406</span>    objects.emplace_back(1, 1001, pos, mom, 123.45, 234.56, 0.001, 2212);</div>
-<div class="line"><span class="lineno">  407</span>    objects.emplace_back(2, 2002, pos, mom, 345.67, 456.78, 0.002, 211);</div>
-<div class="line"><span class="lineno">  408</span>    total++;</div>
-<div class="line"><span class="lineno">  409</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="test__rntuple__io_8cxx.html#a08a365ee8364cd02e98159ee1a6d64b6">test_rntuple_io</a>(<span class="stringliteral">&quot;TargetPoint&quot;</span>, objects)) passed++;</div>
-<div class="line"><span class="lineno">  410</span>  }</div>
-<div class="line"><span class="lineno">  411</span> </div>
-<div class="line"><span class="lineno">  412</span>  std::cout &lt;&lt; <span class="stringliteral">&quot;\n=== Summary ===&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  413</span>  std::cout &lt;&lt; <span class="stringliteral">&quot;Passed: &quot;</span> &lt;&lt; passed &lt;&lt; <span class="stringliteral">&quot; / &quot;</span> &lt;&lt; total &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  414</span>  std::cout &lt;&lt; <span class="stringliteral">&quot;Failed: &quot;</span> &lt;&lt; (total - passed) &lt;&lt; <span class="stringliteral">&quot; / &quot;</span> &lt;&lt; total &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  415</span> </div>
-<div class="line"><span class="lineno">  416</span>  <span class="keywordflow">if</span> (passed == total) {</div>
-<div class="line"><span class="lineno">  417</span>    std::cout &lt;&lt; <span class="stringliteral">&quot;\n✓ All RNtuple I/O tests PASSED!&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  418</span>    std::cout</div>
-<div class="line"><span class="lineno">  419</span>        &lt;&lt; <span class="stringliteral">&quot;All data classes successfully write to and read from RNtuple\n&quot;</span></div>
-<div class="line"><span class="lineno">  420</span>        &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  421</span>    <span class="keywordflow">return</span> 0;</div>
-<div class="line"><span class="lineno">  422</span>  } <span class="keywordflow">else</span> {</div>
-<div class="line"><span class="lineno">  423</span>    std::cout &lt;&lt; <span class="stringliteral">&quot;\n✗ Some RNtuple I/O tests FAILED!&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  424</span>    std::cout</div>
-<div class="line"><span class="lineno">  425</span>        &lt;&lt; <span class="stringliteral">&quot;Fix the failing classes before using with RNtuple in production\n&quot;</span></div>
-<div class="line"><span class="lineno">  426</span>        &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  427</span>    <span class="keywordflow">return</span> 1;</div>
-<div class="line"><span class="lineno">  428</span>  }</div>
-<div class="line"><span class="lineno">  429</span>}</div>
-<div class="ttc" id="aclasssplitcalCluster_html"><div class="ttname"><a href="classsplitcalCluster.html">splitcalCluster</a></div><div class="ttdef"><b>Definition</b> <a href="splitcalCluster_8h_source.html#l00016">splitcalCluster.h:16</a></div></div>
-<div class="ttc" id="aclasssplitcalCluster_html_a16365bbe7ce6158b6cef17c7d760b4cf"><div class="ttname"><a href="classsplitcalCluster.html#a16365bbe7ce6158b6cef17c7d760b4cf">splitcalCluster::SetStartPoint</a></div><div class="ttdeci">void SetStartPoint(const double &amp;x, const double &amp;y, const double &amp;z)</div><div class="ttdef"><b>Definition</b> <a href="splitcalCluster_8h_source.html#l00037">splitcalCluster.h:37</a></div></div>
-<div class="ttc" id="aclasssplitcalCluster_html_a4e08266e6956e29ebf42b86ceb3741b9"><div class="ttname"><a href="classsplitcalCluster.html#a4e08266e6956e29ebf42b86ceb3741b9">splitcalCluster::SetEndPoint</a></div><div class="ttdeci">void SetEndPoint(const double &amp;x, const double &amp;y, const double &amp;z)</div><div class="ttdef"><b>Definition</b> <a href="splitcalCluster_8h_source.html#l00042">splitcalCluster.h:42</a></div></div>
-<div class="ttc" id="aclasssplitcalCluster_html_a66e71fbd6bed3bb43d6494965b3ea5d4"><div class="ttname"><a href="classsplitcalCluster.html#a66e71fbd6bed3bb43d6494965b3ea5d4">splitcalCluster::AddHit</a></div><div class="ttdeci">void AddHit(int hitIndex, double weight=1.0)</div><div class="ttdef"><b>Definition</b> <a href="splitcalCluster_8h_source.html#l00048">splitcalCluster.h:48</a></div></div>
-<div class="ttc" id="aclasssplitcalCluster_html_aac91dc803db9301c9a95b496f4369308"><div class="ttname"><a href="classsplitcalCluster.html#aac91dc803db9301c9a95b496f4369308">splitcalCluster::SetIndex</a></div><div class="ttdeci">void SetIndex(int i)</div><div class="ttdef"><b>Definition</b> <a href="splitcalCluster_8h_source.html#l00036">splitcalCluster.h:36</a></div></div>
+<p class="definition">Definition at line <a class="el" href="test__rntuple__io_8cxx_source.html#l00159">159</a> of file <a class="el" href="test__rntuple__io_8cxx_source.html">test_rntuple_io.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  159</span>                                {</div>
+<div class="line"><span class="lineno">  160</span>  std::cout &lt;&lt; <span class="stringliteral">&quot;\n=== Testing Data Classes with actual RNtuple I/O ===\n&quot;</span></div>
+<div class="line"><span class="lineno">  161</span>            &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  162</span> </div>
+<div class="line"><span class="lineno">  163</span>  <span class="keywordtype">int</span> passed = 0;</div>
+<div class="line"><span class="lineno">  164</span>  <span class="keywordtype">int</span> total = 0;</div>
+<div class="line"><span class="lineno">  165</span> </div>
+<div class="line"><span class="lineno">  166</span>  <span class="comment">// Test base classes</span></div>
+<div class="line"><span class="lineno">  167</span>  std::cout &lt;&lt; <span class="stringliteral">&quot;--- Base Classes ---&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  168</span> </div>
+<div class="line"><span class="lineno">  169</span>  {</div>
+<div class="line"><span class="lineno">  170</span>    std::vector&lt;SHiP::DetectorHit&gt; objects;</div>
+<div class="line"><span class="lineno">  171</span>    objects.emplace_back(1001, 123.45f);</div>
+<div class="line"><span class="lineno">  172</span>    objects.emplace_back(2002, 678.90f);</div>
+<div class="line"><span class="lineno">  173</span>    total++;</div>
+<div class="line"><span class="lineno">  174</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="test__rntuple__io_8cxx.html#a08a365ee8364cd02e98159ee1a6d64b6">test_rntuple_io</a>(<span class="stringliteral">&quot;SHiP::DetectorHit&quot;</span>, objects)) passed++;</div>
+<div class="line"><span class="lineno">  175</span>  }</div>
+<div class="line"><span class="lineno">  176</span> </div>
+<div class="line"><span class="lineno">  177</span>  {</div>
+<div class="line"><span class="lineno">  178</span>    std::vector&lt;ShipMCTrack&gt; objects;</div>
+<div class="line"><span class="lineno">  179</span>    objects.emplace_back();</div>
+<div class="line"><span class="lineno">  180</span>    objects.emplace_back();</div>
+<div class="line"><span class="lineno">  181</span>    total++;</div>
+<div class="line"><span class="lineno">  182</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="test__rntuple__io_8cxx.html#a08a365ee8364cd02e98159ee1a6d64b6">test_rntuple_io</a>(<span class="stringliteral">&quot;ShipMCTrack&quot;</span>, objects)) passed++;</div>
+<div class="line"><span class="lineno">  183</span>  }</div>
+<div class="line"><span class="lineno">  184</span> </div>
+<div class="line"><span class="lineno">  185</span>  {</div>
+<div class="line"><span class="lineno">  186</span>    std::vector&lt;ShipParticle&gt; objects;</div>
+<div class="line"><span class="lineno">  187</span>    objects.emplace_back();</div>
+<div class="line"><span class="lineno">  188</span>    objects.emplace_back();</div>
+<div class="line"><span class="lineno">  189</span>    total++;</div>
+<div class="line"><span class="lineno">  190</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="test__rntuple__io_8cxx.html#a08a365ee8364cd02e98159ee1a6d64b6">test_rntuple_io</a>(<span class="stringliteral">&quot;ShipParticle&quot;</span>, objects)) passed++;</div>
+<div class="line"><span class="lineno">  191</span>  }</div>
+<div class="line"><span class="lineno">  192</span> </div>
+<div class="line"><span class="lineno">  193</span>  {</div>
+<div class="line"><span class="lineno">  194</span>    std::vector&lt;vetoHitOnTrack&gt; objects;</div>
+<div class="line"><span class="lineno">  195</span>    objects.emplace_back(0, 99999.0f);</div>
+<div class="line"><span class="lineno">  196</span>    objects.emplace_back(5, 42.5f);</div>
+<div class="line"><span class="lineno">  197</span>    total++;</div>
+<div class="line"><span class="lineno">  198</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="test__rntuple__io_8cxx.html#a08a365ee8364cd02e98159ee1a6d64b6">test_rntuple_io</a>(<span class="stringliteral">&quot;vetoHitOnTrack&quot;</span>, objects)) passed++;</div>
+<div class="line"><span class="lineno">  199</span>  }</div>
+<div class="line"><span class="lineno">  200</span> </div>
+<div class="line"><span class="lineno">  201</span>  {</div>
+<div class="line"><span class="lineno">  202</span>    std::vector&lt;Tracklet&gt; objects;</div>
+<div class="line"><span class="lineno">  203</span>    <span class="comment">// Create first tracklet with some hit indices using modern constructor</span></div>
+<div class="line"><span class="lineno">  204</span>    std::vector&lt;unsigned int&gt; hits1 = {10, 15, 20, 25};</div>
+<div class="line"><span class="lineno">  205</span>    objects.emplace_back(1, hits1);  <span class="comment">// Type 1 = fitted track</span></div>
+<div class="line"><span class="lineno">  206</span> </div>
+<div class="line"><span class="lineno">  207</span>    <span class="comment">// Create second tracklet with different hit indices</span></div>
+<div class="line"><span class="lineno">  208</span>    std::vector&lt;unsigned int&gt; hits2 = {30, 35, 40};</div>
+<div class="line"><span class="lineno">  209</span>    objects.emplace_back(1, hits2);</div>
+<div class="line"><span class="lineno">  210</span> </div>
+<div class="line"><span class="lineno">  211</span>    total++;</div>
+<div class="line"><span class="lineno">  212</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="test__rntuple__io_8cxx.html#a08a365ee8364cd02e98159ee1a6d64b6">test_rntuple_io</a>(<span class="stringliteral">&quot;Tracklet&quot;</span>, objects)) passed++;</div>
+<div class="line"><span class="lineno">  213</span>  }</div>
+<div class="line"><span class="lineno">  214</span> </div>
+<div class="line"><span class="lineno">  215</span>  {</div>
+<div class="line"><span class="lineno">  216</span>    std::vector&lt;TrackInfo&gt; objects;</div>
+<div class="line"><span class="lineno">  217</span>    objects.emplace_back();</div>
+<div class="line"><span class="lineno">  218</span>    objects.emplace_back();</div>
+<div class="line"><span class="lineno">  219</span>    total++;</div>
+<div class="line"><span class="lineno">  220</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="test__rntuple__io_8cxx.html#a08a365ee8364cd02e98159ee1a6d64b6">test_rntuple_io</a>(<span class="stringliteral">&quot;TrackInfo&quot;</span>, objects)) passed++;</div>
+<div class="line"><span class="lineno">  221</span>  }</div>
+<div class="line"><span class="lineno">  222</span> </div>
+<div class="line"><span class="lineno">  223</span>  <span class="comment">// Test Hit classes</span></div>
+<div class="line"><span class="lineno">  224</span>  std::cout &lt;&lt; <span class="stringliteral">&quot;\n--- Hit Classes ---&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  225</span> </div>
+<div class="line"><span class="lineno">  226</span>  {</div>
+<div class="line"><span class="lineno">  227</span>    std::vector&lt;vetoHit&gt; objects;</div>
+<div class="line"><span class="lineno">  228</span>    objects.emplace_back(1001, 123.45f);</div>
+<div class="line"><span class="lineno">  229</span>    objects.emplace_back(2002, 345.67f);</div>
+<div class="line"><span class="lineno">  230</span>    total++;</div>
+<div class="line"><span class="lineno">  231</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="test__rntuple__io_8cxx.html#a08a365ee8364cd02e98159ee1a6d64b6">test_rntuple_io</a>(<span class="stringliteral">&quot;vetoHit&quot;</span>, objects)) passed++;</div>
+<div class="line"><span class="lineno">  232</span>  }</div>
+<div class="line"><span class="lineno">  233</span> </div>
+<div class="line"><span class="lineno">  234</span>  {</div>
+<div class="line"><span class="lineno">  235</span>    std::vector&lt;strawtubesHit&gt; objects;</div>
+<div class="line"><span class="lineno">  236</span>    objects.emplace_back(1001000, 123.45f);</div>
+<div class="line"><span class="lineno">  237</span>    objects.emplace_back(2002000, 234.56f);</div>
+<div class="line"><span class="lineno">  238</span>    total++;</div>
+<div class="line"><span class="lineno">  239</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="test__rntuple__io_8cxx.html#a08a365ee8364cd02e98159ee1a6d64b6">test_rntuple_io</a>(<span class="stringliteral">&quot;strawtubesHit&quot;</span>, objects)) passed++;</div>
+<div class="line"><span class="lineno">  240</span>  }</div>
+<div class="line"><span class="lineno">  241</span> </div>
+<div class="line"><span class="lineno">  242</span>  {</div>
+<div class="line"><span class="lineno">  243</span>    std::vector&lt;MTCDetHit&gt; objects;</div>
+<div class="line"><span class="lineno">  244</span>    objects.emplace_back();</div>
+<div class="line"><span class="lineno">  245</span>    objects.emplace_back();</div>
+<div class="line"><span class="lineno">  246</span>    total++;</div>
+<div class="line"><span class="lineno">  247</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="test__rntuple__io_8cxx.html#a08a365ee8364cd02e98159ee1a6d64b6">test_rntuple_io</a>(<span class="stringliteral">&quot;MTCDetHit&quot;</span>, objects)) passed++;</div>
+<div class="line"><span class="lineno">  248</span>  }</div>
+<div class="line"><span class="lineno">  249</span> </div>
+<div class="line"><span class="lineno">  250</span>  {</div>
+<div class="line"><span class="lineno">  251</span>    std::vector&lt;SiliconTargetHit&gt; objects;</div>
+<div class="line"><span class="lineno">  252</span>    objects.emplace_back();</div>
+<div class="line"><span class="lineno">  253</span>    objects.emplace_back();</div>
+<div class="line"><span class="lineno">  254</span>    total++;</div>
+<div class="line"><span class="lineno">  255</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="test__rntuple__io_8cxx.html#a08a365ee8364cd02e98159ee1a6d64b6">test_rntuple_io</a>(<span class="stringliteral">&quot;SiliconTargetHit&quot;</span>, objects)) passed++;</div>
+<div class="line"><span class="lineno">  256</span>  }</div>
+<div class="line"><span class="lineno">  257</span> </div>
+<div class="line"><span class="lineno">  258</span>  {</div>
+<div class="line"><span class="lineno">  259</span>    std::vector&lt;TimeDetHit&gt; objects;</div>
+<div class="line"><span class="lineno">  260</span>    objects.emplace_back();</div>
+<div class="line"><span class="lineno">  261</span>    objects.emplace_back();</div>
+<div class="line"><span class="lineno">  262</span>    total++;</div>
+<div class="line"><span class="lineno">  263</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="test__rntuple__io_8cxx.html#a08a365ee8364cd02e98159ee1a6d64b6">test_rntuple_io</a>(<span class="stringliteral">&quot;TimeDetHit&quot;</span>, objects)) passed++;</div>
+<div class="line"><span class="lineno">  264</span>  }</div>
+<div class="line"><span class="lineno">  265</span> </div>
+<div class="line"><span class="lineno">  266</span>  {</div>
+<div class="line"><span class="lineno">  267</span>    std::vector&lt;UpstreamTaggerHit&gt; objects;</div>
+<div class="line"><span class="lineno">  268</span>    objects.emplace_back();</div>
+<div class="line"><span class="lineno">  269</span>    objects.emplace_back();</div>
+<div class="line"><span class="lineno">  270</span>    total++;</div>
+<div class="line"><span class="lineno">  271</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="test__rntuple__io_8cxx.html#a08a365ee8364cd02e98159ee1a6d64b6">test_rntuple_io</a>(<span class="stringliteral">&quot;UpstreamTaggerHit&quot;</span>, objects)) passed++;</div>
+<div class="line"><span class="lineno">  272</span>  }</div>
+<div class="line"><span class="lineno">  273</span> </div>
+<div class="line"><span class="lineno">  274</span>  <span class="comment">// Test Point classes</span></div>
+<div class="line"><span class="lineno">  275</span>  std::cout &lt;&lt; <span class="stringliteral">&quot;\n--- Point Classes ---&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  276</span> </div>
+<div class="line"><span class="lineno">  277</span>  {</div>
+<div class="line"><span class="lineno">  278</span>    std::vector&lt;vetoPoint&gt; objects;</div>
+<div class="line"><span class="lineno">  279</span>    TVector3 <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a>(1.0, 2.0, 3.0);</div>
+<div class="line"><span class="lineno">  280</span>    TVector3 <a class="code hl_variable" href="namespaceana__ShipMuon.html#ae6991624b16a4b2b551cc6baf20e54e9">mom</a>(0.1, 0.2, 0.3);</div>
+<div class="line"><span class="lineno">  281</span>    TVector3 lpos(1.1, 2.1, 3.1);</div>
+<div class="line"><span class="lineno">  282</span>    TVector3 lmom(0.11, 0.21, 0.31);</div>
+<div class="line"><span class="lineno">  283</span>    objects.emplace_back(0, 1, 1001, pos, mom, 123.45, 234.56, 0.001, 2212,</div>
+<div class="line"><span class="lineno">  284</span>                         lpos, lmom);</div>
+<div class="line"><span class="lineno">  285</span>    objects.emplace_back(1, 2, 2002, pos, mom, 345.67, 456.78, 0.002, 211, lpos,</div>
+<div class="line"><span class="lineno">  286</span>                         lmom);</div>
+<div class="line"><span class="lineno">  287</span>    total++;</div>
+<div class="line"><span class="lineno">  288</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="test__rntuple__io_8cxx.html#a08a365ee8364cd02e98159ee1a6d64b6">test_rntuple_io</a>(<span class="stringliteral">&quot;vetoPoint&quot;</span>, objects)) passed++;</div>
+<div class="line"><span class="lineno">  289</span>  }</div>
+<div class="line"><span class="lineno">  290</span> </div>
+<div class="line"><span class="lineno">  291</span>  {</div>
+<div class="line"><span class="lineno">  292</span>    std::vector&lt;strawtubesPoint&gt; objects;</div>
+<div class="line"><span class="lineno">  293</span>    TVector3 <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a>(1.0, 2.0, 3.0);</div>
+<div class="line"><span class="lineno">  294</span>    TVector3 <a class="code hl_variable" href="namespaceana__ShipMuon.html#ae6991624b16a4b2b551cc6baf20e54e9">mom</a>(0.1, 0.2, 0.3);</div>
+<div class="line"><span class="lineno">  295</span>    objects.emplace_back(0, 1, 1001000, pos, mom, 123.45, 234.56, 0.001, 2212,</div>
+<div class="line"><span class="lineno">  296</span>                         0.5);</div>
+<div class="line"><span class="lineno">  297</span>    objects.emplace_back(1, 2, 2002000, pos, mom, 345.67, 456.78, 0.002, 211,</div>
+<div class="line"><span class="lineno">  298</span>                         0.6);</div>
+<div class="line"><span class="lineno">  299</span>    total++;</div>
+<div class="line"><span class="lineno">  300</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="test__rntuple__io_8cxx.html#a08a365ee8364cd02e98159ee1a6d64b6">test_rntuple_io</a>(<span class="stringliteral">&quot;strawtubesPoint&quot;</span>, objects)) passed++;</div>
+<div class="line"><span class="lineno">  301</span>  }</div>
+<div class="line"><span class="lineno">  302</span> </div>
+<div class="line"><span class="lineno">  303</span>  {</div>
+<div class="line"><span class="lineno">  304</span>    std::vector&lt;CaloScoringPlanePoint&gt; objects;</div>
+<div class="line"><span class="lineno">  305</span>    TVector3 <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a>(1.0, 2.0, 3.0);</div>
+<div class="line"><span class="lineno">  306</span>    TVector3 <a class="code hl_variable" href="namespaceana__ShipMuon.html#ae6991624b16a4b2b551cc6baf20e54e9">mom</a>(0.1, 0.2, 0.3);</div>
+<div class="line"><span class="lineno">  307</span>    objects.emplace_back(0, 1, 1001, pos, mom, 123.45, 234.56, 0.001, 2212);</div>
+<div class="line"><span class="lineno">  308</span>    objects.emplace_back(1, 2, 2002, pos, mom, 345.67, 456.78, 0.002, 211);</div>
+<div class="line"><span class="lineno">  309</span>    total++;</div>
+<div class="line"><span class="lineno">  310</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="test__rntuple__io_8cxx.html#a08a365ee8364cd02e98159ee1a6d64b6">test_rntuple_io</a>(<span class="stringliteral">&quot;CaloScoringPlanePoint&quot;</span>, objects)) passed++;</div>
+<div class="line"><span class="lineno">  311</span>  }</div>
+<div class="line"><span class="lineno">  312</span> </div>
+<div class="line"><span class="lineno">  313</span>  {</div>
+<div class="line"><span class="lineno">  314</span>    std::vector&lt;MTCDetPoint&gt; objects;</div>
+<div class="line"><span class="lineno">  315</span>    TVector3 <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a>(1.0, 2.0, 3.0);</div>
+<div class="line"><span class="lineno">  316</span>    TVector3 <a class="code hl_variable" href="namespaceana__ShipMuon.html#ae6991624b16a4b2b551cc6baf20e54e9">mom</a>(0.1, 0.2, 0.3);</div>
+<div class="line"><span class="lineno">  317</span>    objects.emplace_back(1, 1001, pos, mom, 123.45, 234.56, 0.001, 2212);</div>
+<div class="line"><span class="lineno">  318</span>    objects.emplace_back(2, 2002, pos, mom, 345.67, 456.78, 0.002, 211);</div>
+<div class="line"><span class="lineno">  319</span>    total++;</div>
+<div class="line"><span class="lineno">  320</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="test__rntuple__io_8cxx.html#a08a365ee8364cd02e98159ee1a6d64b6">test_rntuple_io</a>(<span class="stringliteral">&quot;MTCDetPoint&quot;</span>, objects)) passed++;</div>
+<div class="line"><span class="lineno">  321</span>  }</div>
+<div class="line"><span class="lineno">  322</span> </div>
+<div class="line"><span class="lineno">  323</span>  {</div>
+<div class="line"><span class="lineno">  324</span>    std::vector&lt;SiliconTargetPoint&gt; objects;</div>
+<div class="line"><span class="lineno">  325</span>    TVector3 <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a>(1.0, 2.0, 3.0);</div>
+<div class="line"><span class="lineno">  326</span>    TVector3 <a class="code hl_variable" href="namespaceana__ShipMuon.html#ae6991624b16a4b2b551cc6baf20e54e9">mom</a>(0.1, 0.2, 0.3);</div>
+<div class="line"><span class="lineno">  327</span>    objects.emplace_back(1, 1001, pos, mom, 123.45, 234.56, 0.001, 2212);</div>
+<div class="line"><span class="lineno">  328</span>    objects.emplace_back(2, 2002, pos, mom, 345.67, 456.78, 0.002, 211);</div>
+<div class="line"><span class="lineno">  329</span>    total++;</div>
+<div class="line"><span class="lineno">  330</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="test__rntuple__io_8cxx.html#a08a365ee8364cd02e98159ee1a6d64b6">test_rntuple_io</a>(<span class="stringliteral">&quot;SiliconTargetPoint&quot;</span>, objects)) passed++;</div>
+<div class="line"><span class="lineno">  331</span>  }</div>
+<div class="line"><span class="lineno">  332</span> </div>
+<div class="line"><span class="lineno">  333</span>  {</div>
+<div class="line"><span class="lineno">  334</span>    std::vector&lt;TimeDetPoint&gt; objects;</div>
+<div class="line"><span class="lineno">  335</span>    TVector3 <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a>(1.0, 2.0, 3.0);</div>
+<div class="line"><span class="lineno">  336</span>    TVector3 <a class="code hl_variable" href="namespaceana__ShipMuon.html#ae6991624b16a4b2b551cc6baf20e54e9">mom</a>(0.1, 0.2, 0.3);</div>
+<div class="line"><span class="lineno">  337</span>    TVector3 lpos(1.1, 2.1, 3.1);</div>
+<div class="line"><span class="lineno">  338</span>    TVector3 lmom(0.11, 0.21, 0.31);</div>
+<div class="line"><span class="lineno">  339</span>    objects.emplace_back(0, 1, 1001, pos, mom, 123.45, 234.56, 0.001, 2212,</div>
+<div class="line"><span class="lineno">  340</span>                         lpos, lmom);</div>
+<div class="line"><span class="lineno">  341</span>    objects.emplace_back(1, 2, 2002, pos, mom, 345.67, 456.78, 0.002, 211, lpos,</div>
+<div class="line"><span class="lineno">  342</span>                         lmom);</div>
+<div class="line"><span class="lineno">  343</span>    total++;</div>
+<div class="line"><span class="lineno">  344</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="test__rntuple__io_8cxx.html#a08a365ee8364cd02e98159ee1a6d64b6">test_rntuple_io</a>(<span class="stringliteral">&quot;TimeDetPoint&quot;</span>, objects)) passed++;</div>
+<div class="line"><span class="lineno">  345</span>  }</div>
+<div class="line"><span class="lineno">  346</span> </div>
+<div class="line"><span class="lineno">  347</span>  {</div>
+<div class="line"><span class="lineno">  348</span>    std::vector&lt;UpstreamTaggerPoint&gt; objects;</div>
+<div class="line"><span class="lineno">  349</span>    TVector3 <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a>(1.0, 2.0, 3.0);</div>
+<div class="line"><span class="lineno">  350</span>    TVector3 <a class="code hl_variable" href="namespaceana__ShipMuon.html#ae6991624b16a4b2b551cc6baf20e54e9">mom</a>(0.1, 0.2, 0.3);</div>
+<div class="line"><span class="lineno">  351</span>    TVector3 lpos(1.1, 2.1, 3.1);</div>
+<div class="line"><span class="lineno">  352</span>    TVector3 lmom(0.11, 0.21, 0.31);</div>
+<div class="line"><span class="lineno">  353</span>    objects.emplace_back(1, 1, 1001, pos, mom, 123.45, 234.56, 0.001, 2212,</div>
+<div class="line"><span class="lineno">  354</span>                         lpos, lmom);</div>
+<div class="line"><span class="lineno">  355</span>    objects.emplace_back(2, 2, 2002, pos, mom, 345.67, 456.78, 0.002, 211, lpos,</div>
+<div class="line"><span class="lineno">  356</span>                         lmom);</div>
+<div class="line"><span class="lineno">  357</span>    total++;</div>
+<div class="line"><span class="lineno">  358</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="test__rntuple__io_8cxx.html#a08a365ee8364cd02e98159ee1a6d64b6">test_rntuple_io</a>(<span class="stringliteral">&quot;UpstreamTaggerPoint&quot;</span>, objects)) passed++;</div>
+<div class="line"><span class="lineno">  359</span>  }</div>
+<div class="line"><span class="lineno">  360</span> </div>
+<div class="line"><span class="lineno">  361</span>  {</div>
+<div class="line"><span class="lineno">  362</span>    std::vector&lt;TTPoint&gt; objects;</div>
+<div class="line"><span class="lineno">  363</span>    TVector3 <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a>(1.0, 2.0, 3.0);</div>
+<div class="line"><span class="lineno">  364</span>    TVector3 <a class="code hl_variable" href="namespaceana__ShipMuon.html#ae6991624b16a4b2b551cc6baf20e54e9">mom</a>(0.1, 0.2, 0.3);</div>
+<div class="line"><span class="lineno">  365</span>    objects.emplace_back(1, 1001, pos, mom, 123.45, 234.56, 0.001, 2212);</div>
+<div class="line"><span class="lineno">  366</span>    objects.emplace_back(2, 2002, pos, mom, 345.67, 456.78, 0.002, 211);</div>
+<div class="line"><span class="lineno">  367</span>    total++;</div>
+<div class="line"><span class="lineno">  368</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="test__rntuple__io_8cxx.html#a08a365ee8364cd02e98159ee1a6d64b6">test_rntuple_io</a>(<span class="stringliteral">&quot;TTPoint&quot;</span>, objects)) passed++;</div>
+<div class="line"><span class="lineno">  369</span>  }</div>
+<div class="line"><span class="lineno">  370</span> </div>
+<div class="line"><span class="lineno">  371</span>  {</div>
+<div class="line"><span class="lineno">  372</span>    std::vector&lt;TargetPoint&gt; objects;</div>
+<div class="line"><span class="lineno">  373</span>    TVector3 <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a>(1.0, 2.0, 3.0);</div>
+<div class="line"><span class="lineno">  374</span>    TVector3 <a class="code hl_variable" href="namespaceana__ShipMuon.html#ae6991624b16a4b2b551cc6baf20e54e9">mom</a>(0.1, 0.2, 0.3);</div>
+<div class="line"><span class="lineno">  375</span>    objects.emplace_back(1, 1001, pos, mom, 123.45, 234.56, 0.001, 2212);</div>
+<div class="line"><span class="lineno">  376</span>    objects.emplace_back(2, 2002, pos, mom, 345.67, 456.78, 0.002, 211);</div>
+<div class="line"><span class="lineno">  377</span>    total++;</div>
+<div class="line"><span class="lineno">  378</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="test__rntuple__io_8cxx.html#a08a365ee8364cd02e98159ee1a6d64b6">test_rntuple_io</a>(<span class="stringliteral">&quot;TargetPoint&quot;</span>, objects)) passed++;</div>
+<div class="line"><span class="lineno">  379</span>  }</div>
+<div class="line"><span class="lineno">  380</span> </div>
+<div class="line"><span class="lineno">  381</span>  std::cout &lt;&lt; <span class="stringliteral">&quot;\n=== Summary ===&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  382</span>  std::cout &lt;&lt; <span class="stringliteral">&quot;Passed: &quot;</span> &lt;&lt; passed &lt;&lt; <span class="stringliteral">&quot; / &quot;</span> &lt;&lt; total &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  383</span>  std::cout &lt;&lt; <span class="stringliteral">&quot;Failed: &quot;</span> &lt;&lt; (total - passed) &lt;&lt; <span class="stringliteral">&quot; / &quot;</span> &lt;&lt; total &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  384</span> </div>
+<div class="line"><span class="lineno">  385</span>  <span class="keywordflow">if</span> (passed == total) {</div>
+<div class="line"><span class="lineno">  386</span>    std::cout &lt;&lt; <span class="stringliteral">&quot;\n✓ All RNtuple I/O tests PASSED!&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  387</span>    std::cout</div>
+<div class="line"><span class="lineno">  388</span>        &lt;&lt; <span class="stringliteral">&quot;All data classes successfully write to and read from RNtuple\n&quot;</span></div>
+<div class="line"><span class="lineno">  389</span>        &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  390</span>    <span class="keywordflow">return</span> 0;</div>
+<div class="line"><span class="lineno">  391</span>  } <span class="keywordflow">else</span> {</div>
+<div class="line"><span class="lineno">  392</span>    std::cout &lt;&lt; <span class="stringliteral">&quot;\n✗ Some RNtuple I/O tests FAILED!&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  393</span>    std::cout</div>
+<div class="line"><span class="lineno">  394</span>        &lt;&lt; <span class="stringliteral">&quot;Fix the failing classes before using with RNtuple in production\n&quot;</span></div>
+<div class="line"><span class="lineno">  395</span>        &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  396</span>    <span class="keywordflow">return</span> 1;</div>
+<div class="line"><span class="lineno">  397</span>  }</div>
+<div class="line"><span class="lineno">  398</span>}</div>
 <div class="ttc" id="anamespaceana__ShipMuon_html_ad2e89313b1af7c8c6f4c5f89f723635d"><div class="ttname"><a href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">ana_ShipMuon.pos</a></div><div class="ttdeci">pos</div><div class="ttdef"><b>Definition</b> <a href="ana__ShipMuon_8py_source.html#l00588">ana_ShipMuon.py:588</a></div></div>
 <div class="ttc" id="anamespaceana__ShipMuon_html_ae6991624b16a4b2b551cc6baf20e54e9"><div class="ttname"><a href="namespaceana__ShipMuon.html#ae6991624b16a4b2b551cc6baf20e54e9">ana_ShipMuon.mom</a></div><div class="ttdeci">mom</div><div class="ttdef"><b>Definition</b> <a href="ana__ShipMuon_8py_source.html#l00587">ana_ShipMuon.py:587</a></div></div>
-<div class="ttc" id="atest__rntuple__io_8cxx_html_a08a365ee8364cd02e98159ee1a6d64b6"><div class="ttname"><a href="test__rntuple__io_8cxx.html#a08a365ee8364cd02e98159ee1a6d64b6">test_rntuple_io</a></div><div class="ttdeci">bool test_rntuple_io(const char *class_name, std::vector&lt; T &gt; &amp;test_objects)</div><div class="ttdef"><b>Definition</b> <a href="test__rntuple__io_8cxx_source.html#l00073">test_rntuple_io.cxx:73</a></div></div>
+<div class="ttc" id="atest__rntuple__io_8cxx_html_a08a365ee8364cd02e98159ee1a6d64b6"><div class="ttname"><a href="test__rntuple__io_8cxx.html#a08a365ee8364cd02e98159ee1a6d64b6">test_rntuple_io</a></div><div class="ttdeci">bool test_rntuple_io(const char *class_name, std::vector&lt; T &gt; &amp;test_objects)</div><div class="ttdef"><b>Definition</b> <a href="test__rntuple__io_8cxx_source.html#l00071">test_rntuple_io.cxx:71</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -702,94 +657,94 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__rntuple__io_8cxx_source.html#l00073">73</a> of file <a class="el" href="test__rntuple__io_8cxx_source.html">test_rntuple_io.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   73</span>                                                                         {</div>
-<div class="line"><span class="lineno">   74</span>  std::cout &lt;&lt; <span class="stringliteral">&quot;Testing &quot;</span> &lt;&lt; class_name &lt;&lt; <span class="stringliteral">&quot; RNtuple I/O... &quot;</span> &lt;&lt; std::flush;</div>
-<div class="line"><span class="lineno">   75</span> </div>
-<div class="line"><span class="lineno">   76</span>  std::string sanitised_name{class_name};</div>
-<div class="line"><span class="lineno">   77</span>  std::replace(sanitised_name.begin(), sanitised_name.end(), <span class="charliteral">&#39;:&#39;</span>, <span class="charliteral">&#39;_&#39;</span>);</div>
-<div class="line"><span class="lineno">   78</span>  <span class="keyword">const</span> std::string filename = std::string(<span class="stringliteral">&quot;test_&quot;</span>) + sanitised_name + <span class="stringliteral">&quot;.root&quot;</span>;</div>
-<div class="line"><span class="lineno">   79</span>  <span class="keyword">const</span> std::string ntuple_name = std::string(class_name) + <span class="stringliteral">&quot;_ntuple&quot;</span>;</div>
-<div class="line"><span class="lineno">   80</span> </div>
-<div class="line"><span class="lineno">   81</span>  <span class="keywordflow">try</span> {</div>
-<div class="line"><span class="lineno">   82</span>    <span class="comment">// === WRITE TEST ===</span></div>
-<div class="line"><span class="lineno">   83</span>    {</div>
-<div class="line"><span class="lineno">   84</span>      <span class="keyword">auto</span> model = RNTupleModel::Create();</div>
-<div class="line"><span class="lineno">   85</span>      <span class="keyword">auto</span> vec_field = model-&gt;MakeField&lt;std::vector&lt;T&gt;&gt;(class_name);</div>
-<div class="line"><span class="lineno">   86</span> </div>
-<div class="line"><span class="lineno">   87</span>      <span class="keyword">auto</span> writer =</div>
-<div class="line"><span class="lineno">   88</span>          RNTupleWriter::Recreate(std::move(model), ntuple_name, filename);</div>
-<div class="line"><span class="lineno">   89</span> </div>
-<div class="line"><span class="lineno">   90</span>      <span class="comment">// Write test data</span></div>
-<div class="line"><span class="lineno">   91</span>      *vec_field = test_objects;</div>
-<div class="line"><span class="lineno">   92</span>      writer-&gt;Fill();</div>
-<div class="line"><span class="lineno">   93</span> </div>
-<div class="line"><span class="lineno">   94</span>      <span class="comment">// Write another entry with empty vector</span></div>
-<div class="line"><span class="lineno">   95</span>      vec_field-&gt;clear();</div>
-<div class="line"><span class="lineno">   96</span>      writer-&gt;Fill();</div>
-<div class="line"><span class="lineno">   97</span> </div>
-<div class="line"><span class="lineno">   98</span>      <span class="comment">// Write another entry with the test objects again</span></div>
-<div class="line"><span class="lineno">   99</span>      *vec_field = test_objects;</div>
-<div class="line"><span class="lineno">  100</span>      writer-&gt;Fill();</div>
-<div class="line"><span class="lineno">  101</span>    }</div>
-<div class="line"><span class="lineno">  102</span> </div>
-<div class="line"><span class="lineno">  103</span>    <span class="comment">// === READ TEST ===</span></div>
-<div class="line"><span class="lineno">  104</span>    {</div>
-<div class="line"><span class="lineno">  105</span>      <span class="keyword">auto</span> reader = RNTupleReader::Open(ntuple_name, filename);</div>
-<div class="line"><span class="lineno">  106</span> </div>
-<div class="line"><span class="lineno">  107</span>      <span class="keywordflow">if</span> (reader-&gt;GetNEntries() != 3) {</div>
-<div class="line"><span class="lineno">  108</span>        std::cout &lt;&lt; <span class="stringliteral">&quot;FAIL: Expected 3 entries, got &quot;</span> &lt;&lt; reader-&gt;GetNEntries()</div>
-<div class="line"><span class="lineno">  109</span>                  &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  110</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  111</span>      }</div>
+<p class="definition">Definition at line <a class="el" href="test__rntuple__io_8cxx_source.html#l00071">71</a> of file <a class="el" href="test__rntuple__io_8cxx_source.html">test_rntuple_io.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   71</span>                                                                         {</div>
+<div class="line"><span class="lineno">   72</span>  std::cout &lt;&lt; <span class="stringliteral">&quot;Testing &quot;</span> &lt;&lt; class_name &lt;&lt; <span class="stringliteral">&quot; RNtuple I/O... &quot;</span> &lt;&lt; std::flush;</div>
+<div class="line"><span class="lineno">   73</span> </div>
+<div class="line"><span class="lineno">   74</span>  std::string sanitised_name{class_name};</div>
+<div class="line"><span class="lineno">   75</span>  std::replace(sanitised_name.begin(), sanitised_name.end(), <span class="charliteral">&#39;:&#39;</span>, <span class="charliteral">&#39;_&#39;</span>);</div>
+<div class="line"><span class="lineno">   76</span>  <span class="keyword">const</span> std::string filename = std::string(<span class="stringliteral">&quot;test_&quot;</span>) + sanitised_name + <span class="stringliteral">&quot;.root&quot;</span>;</div>
+<div class="line"><span class="lineno">   77</span>  <span class="keyword">const</span> std::string ntuple_name = std::string(class_name) + <span class="stringliteral">&quot;_ntuple&quot;</span>;</div>
+<div class="line"><span class="lineno">   78</span> </div>
+<div class="line"><span class="lineno">   79</span>  <span class="keywordflow">try</span> {</div>
+<div class="line"><span class="lineno">   80</span>    <span class="comment">// === WRITE TEST ===</span></div>
+<div class="line"><span class="lineno">   81</span>    {</div>
+<div class="line"><span class="lineno">   82</span>      <span class="keyword">auto</span> model = RNTupleModel::Create();</div>
+<div class="line"><span class="lineno">   83</span>      <span class="keyword">auto</span> vec_field = model-&gt;MakeField&lt;std::vector&lt;T&gt;&gt;(class_name);</div>
+<div class="line"><span class="lineno">   84</span> </div>
+<div class="line"><span class="lineno">   85</span>      <span class="keyword">auto</span> writer =</div>
+<div class="line"><span class="lineno">   86</span>          RNTupleWriter::Recreate(std::move(model), ntuple_name, filename);</div>
+<div class="line"><span class="lineno">   87</span> </div>
+<div class="line"><span class="lineno">   88</span>      <span class="comment">// Write test data</span></div>
+<div class="line"><span class="lineno">   89</span>      *vec_field = test_objects;</div>
+<div class="line"><span class="lineno">   90</span>      writer-&gt;Fill();</div>
+<div class="line"><span class="lineno">   91</span> </div>
+<div class="line"><span class="lineno">   92</span>      <span class="comment">// Write another entry with empty vector</span></div>
+<div class="line"><span class="lineno">   93</span>      vec_field-&gt;clear();</div>
+<div class="line"><span class="lineno">   94</span>      writer-&gt;Fill();</div>
+<div class="line"><span class="lineno">   95</span> </div>
+<div class="line"><span class="lineno">   96</span>      <span class="comment">// Write another entry with the test objects again</span></div>
+<div class="line"><span class="lineno">   97</span>      *vec_field = test_objects;</div>
+<div class="line"><span class="lineno">   98</span>      writer-&gt;Fill();</div>
+<div class="line"><span class="lineno">   99</span>    }</div>
+<div class="line"><span class="lineno">  100</span> </div>
+<div class="line"><span class="lineno">  101</span>    <span class="comment">// === READ TEST ===</span></div>
+<div class="line"><span class="lineno">  102</span>    {</div>
+<div class="line"><span class="lineno">  103</span>      <span class="keyword">auto</span> reader = RNTupleReader::Open(ntuple_name, filename);</div>
+<div class="line"><span class="lineno">  104</span> </div>
+<div class="line"><span class="lineno">  105</span>      <span class="keywordflow">if</span> (reader-&gt;GetNEntries() != 3) {</div>
+<div class="line"><span class="lineno">  106</span>        std::cout &lt;&lt; <span class="stringliteral">&quot;FAIL: Expected 3 entries, got &quot;</span> &lt;&lt; reader-&gt;GetNEntries()</div>
+<div class="line"><span class="lineno">  107</span>                  &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  108</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  109</span>      }</div>
+<div class="line"><span class="lineno">  110</span> </div>
+<div class="line"><span class="lineno">  111</span>      <span class="keyword">auto</span> vec_view = reader-&gt;GetView&lt;std::vector&lt;T&gt;&gt;(class_name);</div>
 <div class="line"><span class="lineno">  112</span> </div>
-<div class="line"><span class="lineno">  113</span>      <span class="keyword">auto</span> vec_view = reader-&gt;GetView&lt;std::vector&lt;T&gt;&gt;(class_name);</div>
-<div class="line"><span class="lineno">  114</span> </div>
-<div class="line"><span class="lineno">  115</span>      <span class="comment">// Check first entry</span></div>
-<div class="line"><span class="lineno">  116</span>      reader-&gt;LoadEntry(0);</div>
-<div class="line"><span class="lineno">  117</span>      <span class="keyword">const</span> <span class="keyword">auto</span>&amp; read_vec1 = vec_view(0);</div>
-<div class="line"><span class="lineno">  118</span>      <span class="keywordflow">if</span> (read_vec1.size() != test_objects.size()) {</div>
-<div class="line"><span class="lineno">  119</span>        std::cout &lt;&lt; <span class="stringliteral">&quot;FAIL: Entry 0 size mismatch. Expected &quot;</span></div>
-<div class="line"><span class="lineno">  120</span>                  &lt;&lt; test_objects.size() &lt;&lt; <span class="stringliteral">&quot;, got &quot;</span> &lt;&lt; read_vec1.size()</div>
-<div class="line"><span class="lineno">  121</span>                  &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  122</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  123</span>      }</div>
-<div class="line"><span class="lineno">  124</span>      <span class="keywordflow">for</span> (std::size_t i = 0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt; test_objects.size(); ++<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>) {</div>
-<div class="line"><span class="lineno">  125</span>        <span class="keywordflow">if</span> (!<a class="code hl_function" href="test__rntuple__io_8cxx.html#a63c74272a96ed942b16344eadbd99070">objects_equal</a>(read_vec1[i], test_objects[i])) {</div>
-<div class="line"><span class="lineno">  126</span>          std::cout &lt;&lt; <span class="stringliteral">&quot;FAIL: Entry 0 element &quot;</span> &lt;&lt; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a></div>
-<div class="line"><span class="lineno">  127</span>                    &lt;&lt; <span class="stringliteral">&quot; differs after round-trip&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  128</span>          <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  129</span>        }</div>
-<div class="line"><span class="lineno">  130</span>      }</div>
-<div class="line"><span class="lineno">  131</span> </div>
-<div class="line"><span class="lineno">  132</span>      <span class="comment">// Check second entry (should be empty)</span></div>
-<div class="line"><span class="lineno">  133</span>      reader-&gt;LoadEntry(1);</div>
-<div class="line"><span class="lineno">  134</span>      <span class="keyword">const</span> <span class="keyword">auto</span>&amp; read_vec2 = vec_view(1);</div>
-<div class="line"><span class="lineno">  135</span>      <span class="keywordflow">if</span> (read_vec2.size() != 0) {</div>
-<div class="line"><span class="lineno">  136</span>        std::cout &lt;&lt; <span class="stringliteral">&quot;FAIL: Entry 1 should be empty, got size &quot;</span></div>
-<div class="line"><span class="lineno">  137</span>                  &lt;&lt; read_vec2.size() &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  138</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  139</span>      }</div>
-<div class="line"><span class="lineno">  140</span> </div>
-<div class="line"><span class="lineno">  141</span>      <span class="comment">// Check third entry</span></div>
-<div class="line"><span class="lineno">  142</span>      reader-&gt;LoadEntry(2);</div>
-<div class="line"><span class="lineno">  143</span>      <span class="keyword">const</span> <span class="keyword">auto</span>&amp; read_vec3 = vec_view(2);</div>
-<div class="line"><span class="lineno">  144</span>      <span class="keywordflow">if</span> (read_vec3.size() != test_objects.size()) {</div>
-<div class="line"><span class="lineno">  145</span>        std::cout &lt;&lt; <span class="stringliteral">&quot;FAIL: Entry 2 size mismatch. Expected &quot;</span></div>
-<div class="line"><span class="lineno">  146</span>                  &lt;&lt; test_objects.size() &lt;&lt; <span class="stringliteral">&quot;, got &quot;</span> &lt;&lt; read_vec3.size()</div>
-<div class="line"><span class="lineno">  147</span>                  &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  148</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  149</span>      }</div>
-<div class="line"><span class="lineno">  150</span>    }</div>
-<div class="line"><span class="lineno">  151</span> </div>
-<div class="line"><span class="lineno">  152</span>    std::cout &lt;&lt; <span class="stringliteral">&quot;PASS&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  153</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  154</span> </div>
-<div class="line"><span class="lineno">  155</span>  } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception&amp; e) {</div>
-<div class="line"><span class="lineno">  156</span>    std::cout &lt;&lt; <span class="stringliteral">&quot;FAIL: &quot;</span> &lt;&lt; e.what() &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  157</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  158</span>  }</div>
-<div class="line"><span class="lineno">  159</span>}</div>
+<div class="line"><span class="lineno">  113</span>      <span class="comment">// Check first entry</span></div>
+<div class="line"><span class="lineno">  114</span>      reader-&gt;LoadEntry(0);</div>
+<div class="line"><span class="lineno">  115</span>      <span class="keyword">const</span> <span class="keyword">auto</span>&amp; read_vec1 = vec_view(0);</div>
+<div class="line"><span class="lineno">  116</span>      <span class="keywordflow">if</span> (read_vec1.size() != test_objects.size()) {</div>
+<div class="line"><span class="lineno">  117</span>        std::cout &lt;&lt; <span class="stringliteral">&quot;FAIL: Entry 0 size mismatch. Expected &quot;</span></div>
+<div class="line"><span class="lineno">  118</span>                  &lt;&lt; test_objects.size() &lt;&lt; <span class="stringliteral">&quot;, got &quot;</span> &lt;&lt; read_vec1.size()</div>
+<div class="line"><span class="lineno">  119</span>                  &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  120</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  121</span>      }</div>
+<div class="line"><span class="lineno">  122</span>      <span class="keywordflow">for</span> (std::size_t i = 0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt; test_objects.size(); ++<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>) {</div>
+<div class="line"><span class="lineno">  123</span>        <span class="keywordflow">if</span> (!<a class="code hl_function" href="test__rntuple__io_8cxx.html#a63c74272a96ed942b16344eadbd99070">objects_equal</a>(read_vec1[i], test_objects[i])) {</div>
+<div class="line"><span class="lineno">  124</span>          std::cout &lt;&lt; <span class="stringliteral">&quot;FAIL: Entry 0 element &quot;</span> &lt;&lt; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a></div>
+<div class="line"><span class="lineno">  125</span>                    &lt;&lt; <span class="stringliteral">&quot; differs after round-trip&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  126</span>          <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  127</span>        }</div>
+<div class="line"><span class="lineno">  128</span>      }</div>
+<div class="line"><span class="lineno">  129</span> </div>
+<div class="line"><span class="lineno">  130</span>      <span class="comment">// Check second entry (should be empty)</span></div>
+<div class="line"><span class="lineno">  131</span>      reader-&gt;LoadEntry(1);</div>
+<div class="line"><span class="lineno">  132</span>      <span class="keyword">const</span> <span class="keyword">auto</span>&amp; read_vec2 = vec_view(1);</div>
+<div class="line"><span class="lineno">  133</span>      <span class="keywordflow">if</span> (read_vec2.size() != 0) {</div>
+<div class="line"><span class="lineno">  134</span>        std::cout &lt;&lt; <span class="stringliteral">&quot;FAIL: Entry 1 should be empty, got size &quot;</span></div>
+<div class="line"><span class="lineno">  135</span>                  &lt;&lt; read_vec2.size() &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  136</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  137</span>      }</div>
+<div class="line"><span class="lineno">  138</span> </div>
+<div class="line"><span class="lineno">  139</span>      <span class="comment">// Check third entry</span></div>
+<div class="line"><span class="lineno">  140</span>      reader-&gt;LoadEntry(2);</div>
+<div class="line"><span class="lineno">  141</span>      <span class="keyword">const</span> <span class="keyword">auto</span>&amp; read_vec3 = vec_view(2);</div>
+<div class="line"><span class="lineno">  142</span>      <span class="keywordflow">if</span> (read_vec3.size() != test_objects.size()) {</div>
+<div class="line"><span class="lineno">  143</span>        std::cout &lt;&lt; <span class="stringliteral">&quot;FAIL: Entry 2 size mismatch. Expected &quot;</span></div>
+<div class="line"><span class="lineno">  144</span>                  &lt;&lt; test_objects.size() &lt;&lt; <span class="stringliteral">&quot;, got &quot;</span> &lt;&lt; read_vec3.size()</div>
+<div class="line"><span class="lineno">  145</span>                  &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  146</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  147</span>      }</div>
+<div class="line"><span class="lineno">  148</span>    }</div>
+<div class="line"><span class="lineno">  149</span> </div>
+<div class="line"><span class="lineno">  150</span>    std::cout &lt;&lt; <span class="stringliteral">&quot;PASS&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  151</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  152</span> </div>
+<div class="line"><span class="lineno">  153</span>  } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception&amp; e) {</div>
+<div class="line"><span class="lineno">  154</span>    std::cout &lt;&lt; <span class="stringliteral">&quot;FAIL: &quot;</span> &lt;&lt; e.what() &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  155</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  156</span>  }</div>
+<div class="line"><span class="lineno">  157</span>}</div>
 <div class="ttc" id="anamespaceShipAna_html_aa4bf87f4d17f9d38b1d8f4d009bb54b3"><div class="ttname"><a href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">ShipAna.i</a></div><div class="ttdeci">int i</div><div class="ttdef"><b>Definition</b> <a href="ShipAna_8py_source.html#l00102">ShipAna.py:102</a></div></div>
 <div class="ttc" id="atest__rntuple__io_8cxx_html_a63c74272a96ed942b16344eadbd99070"><div class="ttname"><a href="test__rntuple__io_8cxx.html#a63c74272a96ed942b16344eadbd99070">objects_equal</a></div><div class="ttdeci">bool objects_equal(const T &amp;a, const T &amp;b)</div><div class="ttdef"><b>Definition</b> <a href="test__rntuple__io_8cxx_source.html#l00029">test_rntuple_io.cxx:29</a></div></div>
 </div><!-- fragment -->

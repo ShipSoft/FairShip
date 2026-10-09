@@ -1,0 +1,15 @@
+<map id="CaloScoringPlane/CaloScoringPlanePoint.cxx" name="CaloScoringPlane/CaloScoringPlanePoint.cxx">
+<area shape="rect" id="Node000001" title=" " alt="" coords="115,5,331,45"/>
+<area shape="rect" id="Node000002" href="$CaloScoringPlanePoint_8h.html" title=" " alt="" coords="51,93,231,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="205,47,165,85,162,82,201,44"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="255,93,355,119"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="245,44,285,82,281,86,241,47"/>
+<area shape="rect" id="Node000003" href="$DetectorPoint_8h.html" title=" " alt="" coords="80,167,203,192"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="144,119,144,153,139,153,139,119"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="5,240,61,265"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="125,194,64,235,61,230,123,190"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="86,240,197,265"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="144,192,144,226,139,226,139,192"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="221,240,312,265"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="163,190,236,231,233,235,160,194"/>
+</map>

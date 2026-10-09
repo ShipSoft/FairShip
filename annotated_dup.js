@@ -77,9 +77,6 @@ var annotated_dup =
     [ "SiliconTargetDetector", "namespaceSiliconTargetDetector.html", [
       [ "SiliconTargetDetector", "classSiliconTargetDetector_1_1SiliconTargetDetector.html", "classSiliconTargetDetector_1_1SiliconTargetDetector" ]
     ] ],
-    [ "splitcalDetector", "namespacesplitcalDetector.html", [
-      [ "splitcalDetector", "classsplitcalDetector_1_1splitcalDetector.html", "classsplitcalDetector_1_1splitcalDetector" ]
-    ] ],
     [ "strawtubesDetector", "namespacestrawtubesDetector.html", [
       [ "strawtubesDetector", "classstrawtubesDetector_1_1strawtubesDetector.html", "classstrawtubesDetector_1_1strawtubesDetector" ]
     ] ],
@@ -103,6 +100,8 @@ var annotated_dup =
     [ "UpstreamTaggerDetector", "namespaceUpstreamTaggerDetector.html", [
       [ "UpstreamTaggerDetector", "classUpstreamTaggerDetector_1_1UpstreamTaggerDetector.html", "classUpstreamTaggerDetector_1_1UpstreamTaggerDetector" ]
     ] ],
+    [ "CaloScoringPlane", "classCaloScoringPlane.html", "classCaloScoringPlane" ],
+    [ "CaloScoringPlanePoint", "classCaloScoringPlanePoint.html", "classCaloScoringPlanePoint" ],
     [ "Co3Rng", "classCo3Rng.html", "classCo3Rng" ],
     [ "CosmicsGenerator", "classCosmicsGenerator.html", "classCosmicsGenerator" ],
     [ "DPPythia8Generator", "classDPPythia8Generator.html", "classDPPythia8Generator" ],
@@ -145,11 +144,6 @@ var annotated_dup =
     [ "SiliconTarget", "classSiliconTarget.html", "classSiliconTarget" ],
     [ "SiliconTargetHit", "classSiliconTargetHit.html", "classSiliconTargetHit" ],
     [ "SiliconTargetPoint", "classSiliconTargetPoint.html", "classSiliconTargetPoint" ],
-    [ "splitcal", "classsplitcal.html", "classsplitcal" ],
-    [ "splitcalCluster", "classsplitcalCluster.html", "classsplitcalCluster" ],
-    [ "splitcalContFact", "classsplitcalContFact.html", "classsplitcalContFact" ],
-    [ "splitcalHit", "classsplitcalHit.html", "classsplitcalHit" ],
-    [ "splitcalPoint", "classsplitcalPoint.html", "classsplitcalPoint" ],
     [ "strawtubes", "classstrawtubes.html", "classstrawtubes" ],
     [ "strawtubesContFact", "classstrawtubesContFact.html", "classstrawtubesContFact" ],
     [ "strawtubesHit", "classstrawtubesHit.html", "classstrawtubesHit" ],
@@ -170,8 +164,8 @@ var annotated_dup =
     [ "UpstreamTaggerHit", "classUpstreamTaggerHit.html", "classUpstreamTaggerHit" ],
     [ "UpstreamTaggerPoint", "classUpstreamTaggerPoint.html", "classUpstreamTaggerPoint" ],
     [ "VectorMCPointSource", "classVectorMCPointSource.html", "classVectorMCPointSource" ],
-    [ "Veto", "classVeto.html", null ],
     [ "veto", "classveto.html", "classveto" ],
+    [ "Veto", "classVeto.html", null ],
     [ "vetoContFact", "classvetoContFact.html", "classvetoContFact" ],
     [ "vetoHit", "classvetoHit.html", "classvetoHit" ],
     [ "vetoHitOnTrack", "classvetoHitOnTrack.html", "classvetoHitOnTrack" ],

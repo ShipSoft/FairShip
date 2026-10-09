@@ -1260,7 +1260,7 @@ var namespaces_dup =
       [ "passDPconf", "namespacerun__simScript.html#ac85e155d7819b32f9cea74f7c8fb2856", null ],
       [ "pdg", "namespacerun__simScript.html#aad907b322536b84e4c66abf9dc6a29a9", null ],
       [ "pg_parser", "namespacerun__simScript.html#a8c915c1feda8cda0b474712da99ccadb", null ],
-      [ "pointContainers", "namespacerun__simScript.html#aca9cae97fbde7b554a903d47eada7864", null ],
+      [ "pointContainers", "namespacerun__simScript.html#a415c7f13d139ee01e225b3f0a781eaf7", null ],
       [ "primGen", "namespacerun__simScript.html#aaf5d00485deac08f339575f5765fb79e", null ],
       [ "pythia8", "namespacerun__simScript.html#a8fb1d87868691be90334fae6651ab73d", null ],
       [ "rc1", "namespacerun__simScript.html#a7761e3105d78ab195878b40089abdfa1", null ],
@@ -1289,7 +1289,6 @@ var namespaces_dup =
       [ "timer", "namespacerun__simScript.html#a951f17627d18a53dbf261a8d57a2d6de", null ],
       [ "tmpFile", "namespacerun__simScript.html#a150102ed78b5fdc0a1a9efe0f7f9f796", null ],
       [ "trajFilter", "namespacerun__simScript.html#abb91726f585a0ba37957110e3883be6a", null ],
-      [ "True", "namespacerun__simScript.html#a0b3358b38fe3ce42b8126e2fb000b0b6", null ],
       [ "type", "namespacerun__simScript.html#adfb7a695088d9373dc7c795b7d8abb52", null ],
       [ "usedInputFiles", "namespacerun__simScript.html#a37c103c6ae06010e41e8c513b9a45096", null ],
       [ "z", "namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed", null ],
@@ -1638,6 +1637,7 @@ var namespaces_dup =
       [ "parser", "namespaceshipStrawTracking.html#a6f1c8ab4a8627d83bd87a950231721c6", null ],
       [ "required", "namespaceshipStrawTracking.html#a33f41ada450d677435ffd880e7462d3a", null ]
     ] ],
+    [ "ShipUnit", "namespaceShipUnit.html", null ],
     [ "shipunit", "namespaceshipunit.html", [
       [ "alpha_rcl2", "namespaceshipunit.html#a561928bad4973c63197de654cd92f007", null ],
       [ "ampere", "namespaceshipunit.html#a899bfcfc1e198fac90b788905bcf91b3", null ],
@@ -1784,14 +1784,12 @@ var namespaces_dup =
       [ "watt", "namespaceshipunit.html#a86f9ba53297f60184e521655c576baaf", null ],
       [ "weber", "namespaceshipunit.html#a0ef5d6a33e15f4c4fa62fb17c0bce1b2", null ]
     ] ],
-    [ "ShipUnit", "namespaceShipUnit.html", null ],
     [ "shipVertex", "namespaceshipVertex.html", "namespaceshipVertex" ],
     [ "shipVeto", "namespaceshipVeto.html", "namespaceshipVeto" ],
     [ "SiliconTargetDetector", "namespaceSiliconTargetDetector.html", "namespaceSiliconTargetDetector" ],
     [ "skim_muonback_smoke", "namespaceskim__muonback__smoke.html", [
       [ "main", "namespaceskim__muonback__smoke.html#acd265e66314c1a63a4f8d835f99a00f0", null ]
     ] ],
-    [ "splitcalDetector", "namespacesplitcalDetector.html", "namespacesplitcalDetector" ],
     [ "strawtubesDetector", "namespacestrawtubesDetector.html", "namespacestrawtubesDetector" ],
     [ "study_GammaConv", "namespacestudy__GammaConv.html", "namespacestudy__GammaConv" ],
     [ "study_muMSC", "namespacestudy__muMSC.html", "namespacestudy__muMSC" ],

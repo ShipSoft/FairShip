@@ -1,5 +1,6 @@
 var files_dup =
 [
+    [ "CaloScoringPlane", "dir_603b242ae3468e4f23dd3899c6f4b76d.html", "dir_603b242ae3468e4f23dd3899c6f4b76d" ],
     [ "Detector", "dir_f05c576c93f29c0a89698681fa56d8ab.html", "dir_f05c576c93f29c0a89698681fa56d8ab" ],
     [ "doxygen", "dir_4e8d938e9ddb5a617c200d5739d1f41a.html", null ],
     [ "examples", "dir_d28a4824dc47e487b107a5db32ef43c4.html", "dir_d28a4824dc47e487b107a5db32ef43c4" ],
@@ -14,7 +15,6 @@ var files_dup =
     [ "shipdata", "dir_d32c3015c3e8f785dc4289736c132c3d.html", "dir_d32c3015c3e8f785dc4289736c132c3d" ],
     [ "shipgen", "dir_077298d11411e0d78a9900d1a8de44bb.html", "dir_077298d11411e0d78a9900d1a8de44bb" ],
     [ "SND", "dir_32113a12037a3d9f3997febc88bd6396.html", "dir_32113a12037a3d9f3997febc88bd6396" ],
-    [ "splitcal", "dir_74c7a225f9dfa4f604ff250b2210d870.html", "dir_74c7a225f9dfa4f604ff250b2210d870" ],
     [ "strawtubes", "dir_73d80d5249fb06c79662fe45263444fd.html", "dir_73d80d5249fb06c79662fe45263444fd" ],
     [ "tests", "dir_59425e443f801f1f2fd8bbe4959a3ccf.html", "dir_59425e443f801f1f2fd8bbe4959a3ccf" ],
     [ "TimeDet", "dir_14b8127facb850683e99630d6654b886.html", "dir_14b8127facb850683e99630d6654b886" ],

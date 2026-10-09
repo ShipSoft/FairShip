@@ -28,15 +28,9 @@ var searchData=
   ['silicontargetdetector_25',['SiliconTargetDetector',['../classSiliconTargetDetector_1_1SiliconTargetDetector.html',1,'SiliconTargetDetector']]],
   ['silicontargethit_26',['SiliconTargetHit',['../classSiliconTargetHit.html',1,'']]],
   ['silicontargetpoint_27',['SiliconTargetPoint',['../classSiliconTargetPoint.html',1,'']]],
-  ['splitcal_28',['splitcal',['../classsplitcal.html',1,'']]],
-  ['splitcalcluster_29',['splitcalCluster',['../classsplitcalCluster.html',1,'']]],
-  ['splitcalcontfact_30',['splitcalContFact',['../classsplitcalContFact.html',1,'']]],
-  ['splitcaldetector_31',['splitcalDetector',['../classsplitcalDetector_1_1splitcalDetector.html',1,'splitcalDetector']]],
-  ['splitcalhit_32',['splitcalHit',['../classsplitcalHit.html',1,'']]],
-  ['splitcalpoint_33',['splitcalPoint',['../classsplitcalPoint.html',1,'']]],
-  ['strawtubes_34',['strawtubes',['../classstrawtubes.html',1,'']]],
-  ['strawtubescontfact_35',['strawtubesContFact',['../classstrawtubesContFact.html',1,'']]],
-  ['strawtubesdetector_36',['strawtubesDetector',['../classstrawtubesDetector_1_1strawtubesDetector.html',1,'strawtubesDetector']]],
-  ['strawtubeshit_37',['strawtubesHit',['../classstrawtubesHit.html',1,'']]],
-  ['strawtubespoint_38',['strawtubesPoint',['../classstrawtubesPoint.html',1,'']]]
+  ['strawtubes_28',['strawtubes',['../classstrawtubes.html',1,'']]],
+  ['strawtubescontfact_29',['strawtubesContFact',['../classstrawtubesContFact.html',1,'']]],
+  ['strawtubesdetector_30',['strawtubesDetector',['../classstrawtubesDetector_1_1strawtubesDetector.html',1,'strawtubesDetector']]],
+  ['strawtubeshit_31',['strawtubesHit',['../classstrawtubesHit.html',1,'']]],
+  ['strawtubespoint_32',['strawtubesPoint',['../classstrawtubesPoint.html',1,'']]]
 ];

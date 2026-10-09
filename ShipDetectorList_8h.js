@@ -13,7 +13,7 @@ var ShipDetectorList_8h =
       [ "kMuon", "ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680ad41d6187de68eaadf3d275fd40f869c6", null ],
       [ "kPreshower", "ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680a3391e9454e836493df7619c0690d3940", null ],
       [ "kTRSTATION", "ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680a3a5f17af29cf4a80d9e20f448c7fc96d", null ],
-      [ "kSplitCal", "ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680a26e20c276903443a560e83114ac30bb7", null ],
+      [ "kCaloScoringPlane", "ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680a5d92804f9926307f43e1cb6827ae0e80", null ],
       [ "kBox1", "ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680ac719833827d431f14ca4ace326c62076", null ],
       [ "kSpectrometer", "ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680a0e8f13788e4cd85703b6ca549927edbc", null ],
       [ "kPixelModules", "ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680a57c6121976b83844b6fbb594f25bc7ba", null ],

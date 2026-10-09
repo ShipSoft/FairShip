@@ -2,9 +2,9 @@ var searchData=
 [
   ['darkphoton_0',['DarkPhoton',['../classdarkphoton_1_1DarkPhoton.html',1,'darkphoton']]],
   ['detector_1',['Detector',['../classSHiP_1_1Detector.html',1,'SHiP']]],
-  ['detector_3c_20mtcdetpoint_20_3e_2',['Detector&lt; MTCDetPoint &gt;',['../classSHiP_1_1Detector.html',1,'SHiP']]],
-  ['detector_3c_20silicontargetpoint_20_3e_3',['Detector&lt; SiliconTargetPoint &gt;',['../classSHiP_1_1Detector.html',1,'SHiP']]],
-  ['detector_3c_20splitcalpoint_20_3e_4',['Detector&lt; splitcalPoint &gt;',['../classSHiP_1_1Detector.html',1,'SHiP']]],
+  ['detector_3c_20caloscoringplanepoint_20_3e_2',['Detector&lt; CaloScoringPlanePoint &gt;',['../classSHiP_1_1Detector.html',1,'SHiP']]],
+  ['detector_3c_20mtcdetpoint_20_3e_3',['Detector&lt; MTCDetPoint &gt;',['../classSHiP_1_1Detector.html',1,'SHiP']]],
+  ['detector_3c_20silicontargetpoint_20_3e_4',['Detector&lt; SiliconTargetPoint &gt;',['../classSHiP_1_1Detector.html',1,'SHiP']]],
   ['detector_3c_20strawtubespoint_20_3e_5',['Detector&lt; strawtubesPoint &gt;',['../classSHiP_1_1Detector.html',1,'SHiP']]],
   ['detector_3c_20targetpoint_20_3e_6',['Detector&lt; TargetPoint &gt;',['../classSHiP_1_1Detector.html',1,'SHiP']]],
   ['detector_3c_20timedetpoint_20_3e_7',['Detector&lt; TimeDetPoint &gt;',['../classSHiP_1_1Detector.html',1,'SHiP']]],

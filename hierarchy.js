@@ -16,7 +16,6 @@ var hierarchy =
     [ "experimental.analysis_toolkit.event_inspector", "classexperimental_1_1analysis__toolkit_1_1event__inspector.html", null ],
     [ "FairContFact", null, [
       [ "ShipPassiveContFact", "classShipPassiveContFact.html", null ],
-      [ "splitcalContFact", "classsplitcalContFact.html", null ],
       [ "strawtubesContFact", "classstrawtubesContFact.html", null ],
       [ "vetoContFact", "classvetoContFact.html", null ]
     ] ],
@@ -24,6 +23,9 @@ var hierarchy =
       [ "VectorMCPointSource< PointType >", "classVectorMCPointSource.html", null ]
     ] ],
     [ "FairDetector", null, [
+      [ "SHiP::Detector< CaloScoringPlanePoint >", "classSHiP_1_1Detector.html", [
+        [ "CaloScoringPlane", "classCaloScoringPlane.html", null ]
+      ] ],
       [ "SHiP::Detector< MTCDetPoint >", "classSHiP_1_1Detector.html", [
         [ "MTCDetector", "classMTCDetector.html", null ]
       ] ],
@@ -45,9 +47,6 @@ var hierarchy =
       [ "SHiP::Detector< vetoPoint >", "classSHiP_1_1Detector.html", [
         [ "exitHadronAbsorber", "classexitHadronAbsorber.html", null ],
         [ "veto", "classveto.html", null ]
-      ] ],
-      [ "SHiP::Detector< splitcalPoint >", "classSHiP_1_1Detector.html", [
-        [ "splitcal", "classsplitcal.html", null ]
       ] ],
       [ "SHiP::Detector< strawtubesPoint >", "classSHiP_1_1Detector.html", [
         [ "strawtubes", "classstrawtubes.html", null ]
@@ -86,13 +85,13 @@ var hierarchy =
     ] ],
     [ "FairMCPoint", null, [
       [ "SHiP::DetectorPoint", "classSHiP_1_1DetectorPoint.html", [
+        [ "CaloScoringPlanePoint", "classCaloScoringPlanePoint.html", null ],
         [ "MTCDetPoint", "classMTCDetPoint.html", null ],
         [ "SiliconTargetPoint", "classSiliconTargetPoint.html", null ],
         [ "TTPoint", "classTTPoint.html", null ],
         [ "TargetPoint", "classTargetPoint.html", null ],
         [ "TimeDetPoint", "classTimeDetPoint.html", null ],
         [ "UpstreamTaggerPoint", "classUpstreamTaggerPoint.html", null ],
-        [ "splitcalPoint", "classsplitcalPoint.html", null ],
         [ "strawtubesPoint", "classstrawtubesPoint.html", null ],
         [ "vetoPoint", "classvetoPoint.html", null ]
       ] ]
@@ -122,6 +121,7 @@ var hierarchy =
     [ "makeCascadePythia8.InclusiveSignalEvents", "classmakeCascadePythia8_1_1InclusiveSignalEvents.html", null ],
     [ "eventDisplay.IO", "classeventDisplay_1_1IO.html", null ],
     [ "ISTLPointContainer", "classISTLPointContainer.html", [
+      [ "SHiP::Detector< CaloScoringPlanePoint >", "classSHiP_1_1Detector.html", null ],
       [ "SHiP::Detector< MTCDetPoint >", "classSHiP_1_1Detector.html", null ],
       [ "SHiP::Detector< SiliconTargetPoint >", "classSHiP_1_1Detector.html", null ],
       [ "SHiP::Detector< TargetPoint >", "classSHiP_1_1Detector.html", null ],
@@ -129,7 +129,6 @@ var hierarchy =
       [ "SHiP::Detector< TimeDetPoint >", "classSHiP_1_1Detector.html", null ],
       [ "SHiP::Detector< UpstreamTaggerPoint >", "classSHiP_1_1Detector.html", null ],
       [ "SHiP::Detector< vetoPoint >", "classSHiP_1_1Detector.html", null ],
-      [ "SHiP::Detector< splitcalPoint >", "classSHiP_1_1Detector.html", null ],
       [ "SHiP::Detector< strawtubesPoint >", "classSHiP_1_1Detector.html", null ],
       [ "SHiP::Detector< PointType >", "classSHiP_1_1Detector.html", null ]
     ] ],
@@ -165,7 +164,6 @@ var hierarchy =
         [ "SiliconTargetHit", "classSiliconTargetHit.html", null ],
         [ "TimeDetHit", "classTimeDetHit.html", null ],
         [ "UpstreamTaggerHit", "classUpstreamTaggerHit.html", null ],
-        [ "splitcalHit", "classsplitcalHit.html", null ],
         [ "strawtubesHit", "classstrawtubesHit.html", null ],
         [ "vetoHit", "classvetoHit.html", null ]
       ] ],
@@ -173,7 +171,6 @@ var hierarchy =
       [ "ShipParticle", "classShipParticle.html", null ],
       [ "TrackInfo", "classTrackInfo.html", null ],
       [ "Tracklet", "classTracklet.html", null ],
-      [ "splitcalCluster", "classsplitcalCluster.html", null ],
       [ "vetoHitOnTrack", "classvetoHitOnTrack.html", null ]
     ] ],
     [ "TrackBuffer", "structTrackBuffer.html", null ],
@@ -193,7 +190,6 @@ var hierarchy =
         [ "SBTDetector.SBTDetector", "classSBTDetector_1_1SBTDetector.html", null ],
         [ "SiliconTargetDetector.SiliconTargetDetector", "classSiliconTargetDetector_1_1SiliconTargetDetector.html", null ],
         [ "UpstreamTaggerDetector.UpstreamTaggerDetector", "classUpstreamTaggerDetector_1_1UpstreamTaggerDetector.html", null ],
-        [ "splitcalDetector.splitcalDetector", "classsplitcalDetector_1_1splitcalDetector.html", null ],
         [ "strawtubesDetector.strawtubesDetector", "classstrawtubesDetector_1_1strawtubesDetector.html", null ],
         [ "timeDetector.timeDetector", "classtimeDetector_1_1timeDetector.html", null ]
       ] ]

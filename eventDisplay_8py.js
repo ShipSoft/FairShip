@@ -32,6 +32,7 @@ var eventDisplay_8py =
     [ "switchOffRock", "eventDisplay_8py.html#a9846946c4474ae03daa0767745966050", null ],
     [ "switchOn", "eventDisplay_8py.html#a69b74085a44f05f4523c8cd2fdc66177", null ],
     [ "switchOnAll", "eventDisplay_8py.html#ac3e26dfb3888f7fad79bcf4566885f84", null ],
+    [ "z_end_of_detector", "eventDisplay_8py.html#a9fc3bb612002df39681722b8c15663f4", null ],
     [ "_candidates", "eventDisplay_8py.html#ad3369434abf0adc19fa383ac0e48a81a", null ],
     [ "_tmpFile", "eventDisplay_8py.html#a7c3167e80d89f5cc064e4375fd425cc9", null ],
     [ "_tmpTree", "eventDisplay_8py.html#a71c934bcd5ccbfe183282ebf5e87ce0c", null ],
