@@ -14,7 +14,9 @@
 
 #include "TGeoBBox.h"
 
-using namespace ShipMuDIS;
+using ShipMuDIS::kMuonShieldTailZ;
+using ShipMuDIS::MatTypeStr;
+using ShipMuDIS::MuonBranches;
 
 MuGeoProcessor::MuGeoProcessor() {
   fZmax = 14000;
