@@ -12,13 +12,6 @@ import shipunit as u
 from method_logger import MethodLogger
 from pythia8_conf_utils import make_particles_stable
 
-# Boundaries for production in meson decays
-# mass of the mesons
-pi0mass = 0.1349770
-etamass = 0.547862
-omegamass = 0.78265
-eta1mass = 0.95778
-
 
 def addDPtoROOT(pid=9900015, m=0.2, g=4.866182e-04):
     pdg = ROOT.TDatabasePDG.Instance()
@@ -26,6 +19,9 @@ def addDPtoROOT(pid=9900015, m=0.2, g=4.866182e-04):
 
 
 def manipulatePhysics(motherMode, mass, P8gen):
+    # masses of the mother mesons, as Pythia8 decays them
+    m0 = P8gen.getPythiaInstance().particleData.m0
+    pi0mass, etamass, omegamass, eta1mass = m0(111), m0(221), m0(223), m0(331)
     # changes of the table, now it is deleted and we have each meson mother for each meson production
     # print motherMode
     if motherMode == "pi0" and pi0mass - mass >= 0.0000001:
