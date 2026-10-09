@@ -116,10 +116,16 @@ class MuDISFilter {
   std::vector<FilterCandidate> DecayDaughters(
       const std::vector<DISparticle>& daughters, const TVector3& vertex) const;
   bool PassCandidates(const std::vector<FilterCandidate>& candidates) const;
-  bool PassDetectorFilter(const std::vector<FilterCandidate>& candidates) const;
+  bool IncludesParticle(const DISparticle& particle) const;
+  bool IsForwardToPlane(const FilterCandidate& candidate, double z) const;
+  double ChargedCandidateCharge(const FilterCandidate& candidate) const;
+  bool PassChargedCandidates(const std::vector<FilterCandidate>& candidates,
+                             unsigned minimum) const;
+  bool HitsDetectorVolume(const FilterCandidate& candidate) const;
+  bool HitsDetectorPlane(const FilterCandidate& candidate, double charge,
+                         double z, const std::array<double, 4>& bounds) const;
   bool HitsTimingDetector(const FilterCandidate& candidate) const;
-  bool HitsTrackingAndTD(double charge, const DISparticle& particle,
-                         const TVector3& vertex) const;
+  bool HitsTrackingAndTD(const FilterCandidate& candidate, double charge) const;
   bool IsCharged(const DISparticle& particle) const;
   double Charge(const DISparticle& particle) const;
   int DaughterCategory(const DISparticle& particle) const;

@@ -502,7 +502,7 @@ bool MuGeoProcessor::Trace(const Measurement& measurement, double startZ,
     const bool shield = fShieldVolumes.count(volume) != 0;
     double limit = remaining;
     if (backward && shield)
-      limit = std::min(limit, (20. - shieldZ) / forward.Z());
+      limit = std::min(limit, (kMuonShieldTailZ - shieldZ) / forward.Z());
     node = gGeoManager->FindNextBoundaryAndStep(limit, kFALSE);
     const double step = std::min(gGeoManager->GetStep(), limit);
     if (!std::isfinite(step) || step < 0.) break;
@@ -522,7 +522,8 @@ bool MuGeoProcessor::Trace(const Measurement& measurement, double startZ,
         AddPath(path);
       if (shield) shieldZ += step * forward.Z();
     }
-    if (remaining - step <= 1.e-8 || (backward && shieldZ >= 20. - 1.e-8)) {
+    if (remaining - step <= 1.e-8 ||
+        (backward && shieldZ >= kMuonShieldTailZ - 1.e-8)) {
       reachedEnd = true;
       break;
     }

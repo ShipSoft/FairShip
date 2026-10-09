@@ -285,7 +285,7 @@ parser.add_argument(
     "--nEvents",
     dest="nEvents",
     help="Number of events to generate (input muons for --NewMuDIS; -1: all)",
-    default=100,
+    default=None,
     type=int,
 )
 parser.add_argument(
@@ -425,7 +425,8 @@ parser.add_argument(
 
 options = parser.parse_args()
 
-default_nEvents = not any(arg.startswith(("-n", "--nEvents")) for arg in sys.argv[1:])
+if options.nEvents is None and not options.newmudis:
+    options.nEvents = 100
 
 if options.mudis and options.newmudis:
     parser.error("--MuDIS and --NewMuDIS are mutually exclusive")
@@ -788,7 +789,8 @@ if options.mudis or options.newmudis:
     primGen.SetTarget(0.0, 0.0)
     if options.newmudis:
         DISgen = ROOT.NewMuDISGenerator()
-        DISgen.SetNevents(options.nEvents)  # Set number of input muons to process
+        # The default reads at most 100 input muons and replays at most 100 DIS events.
+        DISgen.SetNevents(100 if options.nEvents is None else options.nEvents)
     else:
         DISgen = ROOT.MuDISGenerator()
         # from nu_tau detector to tracking station 2
@@ -803,11 +805,8 @@ if options.mudis or options.newmudis:
     primGen.AddGenerator(DISgen)
     ROOT.SetOwnership(DISgen, False)  # C++ FairPrimaryGenerator takes ownership
     if options.newmudis:
-        options.nEvents = (
-            DISgen.GetNevents()
-        )  # overwrite the option with the actual number of DIS events to be generated
-        if default_nEvents:  # cap to 100 dis events, for the test case with no explicit nEvents parsed as argument
-            options.nEvents = min(options.nEvents, 100)
+        nDIS = DISgen.GetNevents()
+        options.nEvents = min(nDIS, 100) if options.nEvents is None else nDIS
     else:
         options.nEvents = DISgen.GetNevents() if options.nEvents == -1 else min(options.nEvents, DISgen.GetNevents())
     print("(New)MuDISGenerator: Generating ", options.nEvents, " DIS events, first event ", options.firstEvent)
