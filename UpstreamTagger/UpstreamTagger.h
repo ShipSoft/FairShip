@@ -8,7 +8,6 @@
 #include <vector>
 
 #include "Detector.h"
-#include "ShipUnit.h"
 #include "TLorentzVector.h"
 #include "TVector3.h"
 
@@ -84,14 +83,15 @@ class UpstreamTagger : public SHiP::Detector<UpstreamTaggerPoint> {
     Double_t constituentTileSize;
   };
 
+  // Sizes are set from the geometry configuration (python/geometry_config.py)
   std::vector<Region> fRegions;  //! coarse regions loaded from detector map
-  Double_t fSizeX = 3.4 * ShipUnit::m;        //! detector width
-  Double_t fSizeY = 5.04 * ShipUnit::m;       //! detector height
-  Double_t fCenterX = 0.;                     //! detector centre x
-  Double_t fCenterY = -0.82 * ShipUnit::m;    //! detector centre y
-  Double_t fEnvelopeZ = 16.0 * ShipUnit::cm;  //! allocated longitudinal space
-  Double_t fSmallTileZ = 0.5 * ShipUnit::cm;  //! 20 x 20 mm2 tile thickness
-  Double_t fLargeTileZ = 1.0 * ShipUnit::cm;  //! 40 x 40 mm2 tile thickness
+  Double_t fSizeX = 0.;          //! detector width
+  Double_t fSizeY = 0.;          //! detector height
+  Double_t fCenterX = 0.;        //! detector centre x
+  Double_t fCenterY = 0.;        //! detector centre y
+  Double_t fEnvelopeZ = 0.;      //! allocated longitudinal space
+  Double_t fSmallTileZ = 0.;     //! 20 x 20 mm2 tile thickness
+  Double_t fLargeTileZ = 0.;     //! 40 x 40 mm2 tile thickness
 
   UpstreamTagger(const UpstreamTagger&) = delete;
   UpstreamTagger& operator=(const UpstreamTagger&) = delete;

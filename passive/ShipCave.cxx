@@ -58,16 +58,20 @@ void ShipCave::ConstructGeometry() {
   // Create ECN3 cavern around vessel
   [[maybe_unused]] auto* experiment_rock =
       new TGeoBBox("experiment_rock", 20 * m, 20 * m, ECN3_length / 2.);
-  [[maybe_unused]] auto* stair_step =
-      new TGeoBBox("stair_step", 7.995 * m, 5.6 * m, stair_step_length / 2.);
+  // Same cross-section as the experiment cavern, with the floor raised by
+  // fECN3StairStepHeight
+  [[maybe_unused]] auto* stair_step = new TGeoBBox(
+      "stair_step", fECN3HalfX, fECN3HalfY - fECN3StairStepHeight / 2.,
+      stair_step_length / 2.);
   auto* stair_step_shift = new TGeoTranslation(
-      "stair_step_shift", 3.435 * m, 3.04 * m, stair_step_length / 2.);
+      "stair_step_shift", fECN3CenterX,
+      fECN3CenterY + fECN3StairStepHeight / 2., stair_step_length / 2.);
   stair_step_shift->RegisterYourself();
   [[maybe_unused]] auto* experiment_cavern =
-      new TGeoBBox("experiment_cavern", 7.995 * m, 6 * m,
+      new TGeoBBox("experiment_cavern", fECN3HalfX, fECN3HalfY,
                    ECN3_length / 2. - stair_step_length / 2.);
   auto* ECN3_shift =
-      new TGeoTranslation("ECN3_shift", 3.435 * m, 2.64 * m,
+      new TGeoTranslation("ECN3_shift", fECN3CenterX, fECN3CenterY,
                           ECN3_length / 2. + stair_step_length / 2.);
   ECN3_shift->RegisterYourself();
 
