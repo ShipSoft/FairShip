@@ -94,3 +94,43 @@ set_tests_properties(
         WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
         ENVIRONMENT "PYTHONPATH=${CMAKE_SOURCE_DIR}/python:$ENV{PYTHONPATH}"
 )
+
+# Data-driven J/psi sampler (ROOT GenVector and MathCore only): normalisation,
+# weights, nominal data map, configuration files
+add_executable(
+    testJpsiSampler
+    test_jpsi_sampler.cxx
+    ${CMAKE_SOURCE_DIR}/shipgen/JpsiSampler.cxx
+)
+target_include_directories(testJpsiSampler PRIVATE ${CMAKE_SOURCE_DIR}/shipgen)
+target_link_libraries(testJpsiSampler PRIVATE ROOT::GenVector ROOT::MathCore)
+add_test(NAME JpsiSampler COMMAND testJpsiSampler)
+
+# JpsiGenerator in a small TGeo geometry: target closure and track bookkeeping
+add_executable(testJpsiGenerator test_jpsi_generator.cxx)
+target_link_libraries(
+    testJpsiGenerator
+    ShipGen
+    ROOT::EGPythia8
+    ROOT::Core
+    ROOT::Geom
+    FairRoot::Base
+    FairLogger::FairLogger
+)
+add_test(NAME JpsiGenerator COMMAND testJpsiGenerator)
+
+# Closure of the data-map fit of macro/jpsi/JpsiDataMap.C (Minuit2)
+add_executable(
+    testJpsiDataMapFit
+    test_jpsi_datamap_fit.cxx
+    ${CMAKE_SOURCE_DIR}/shipgen/JpsiSampler.cxx
+)
+target_include_directories(
+    testJpsiDataMapFit
+    PRIVATE ${CMAKE_SOURCE_DIR}/shipgen
+)
+target_link_libraries(
+    testJpsiDataMapFit
+    PRIVATE ROOT::GenVector ROOT::MathCore ROOT::Minuit2
+)
+add_test(NAME JpsiDataMapFit COMMAND testJpsiDataMapFit)

@@ -1,0 +1,38 @@
+# target layers from /eos/experiment/ship/data/muflux/MC/geofile_full.conical.MuonBack-TGeant4.root (DumpTargetLayers.C)
+# format: zstart <cm> | layer <name> <A> <density g/cm3> <length cm> | gap <cm>
+zstart -394.328
+layer Mo 95.94 10.160 8.520
+gap 0.545
+layer Mo 95.94 10.160 2.800
+gap 0.545
+layer Mo 95.94 10.160 2.800
+gap 0.545
+layer Mo 95.94 10.160 2.800
+gap 0.545
+layer Mo 95.94 10.160 2.800
+gap 0.545
+layer Mo 95.94 10.160 2.800
+gap 0.545
+layer Mo 95.94 10.160 2.800
+gap 0.545
+layer Mo 95.94 10.160 2.800
+gap 0.545
+layer Mo 95.94 10.160 5.400
+gap 0.545
+layer Mo 95.94 10.160 5.400
+gap 0.545
+layer Mo 95.94 10.160 6.960
+gap 0.545
+layer Mo 95.94 10.160 8.520
+gap 0.545
+layer Mo 95.94 10.160 8.520
+gap 0.545
+layer W 183.84 18.850 5.170
+gap 0.545
+layer W 183.84 18.850 8.300
+gap 0.545
+layer W 183.84 18.850 10.390
+gap 0.545
+layer W 183.84 18.850 20.820
+gap 0.545
+layer W 183.84 18.850 36.470
