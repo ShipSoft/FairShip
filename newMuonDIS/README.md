@@ -154,7 +154,10 @@ and `muShield.Entrance[0]`. Explicit maps can be supplied with
 `MuDISProcessor::SetMuonShieldField(map, geometry)` (or the same method on
 `MuGeoProcessor`) and retain ownership of both objects. A missing map is an
 error for a muon without UBT in a geometry containing shield magnets, since
-the field cannot be inferred from material shapes.
+the field cannot be inferred from material shapes. Geometries with
+`muShield.WithConstField` are refused, as the simulation then does not use the
+map. Muons starting upstream of `--z_min` (default 2500 cm) are only counted in
+the end-of-run summary; their paths are built as described above.
 
 Only magnet volumes inside `MuonShieldArea` contribute to MS. Magnetic
 trajectories are navigated as chords refined to a 0.0001 cm interpolation

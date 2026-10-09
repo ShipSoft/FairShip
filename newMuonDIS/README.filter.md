@@ -53,7 +53,12 @@ are fixed (two and one respectively); `--min-charged` applies only to option 0.
 `--exclude-muons` applies to all three options. Only intersections along the
 particle's forward trajectory count, including motion towards decreasing z.
 These are geometric acceptance tests, not detector-efficiency or interaction
-models. The existing custom `SetFilter` predicate still overrides every mode.
+models. Daughters are propagated through the field only: there is no energy
+loss, multiple scattering or absorption in the material they cross. In
+particular, daughters of MS vertices are not stopped by the remaining shield
+iron, so the filter keeps more MS interactions than can actually reach the
+detector; this makes it conservative, and Geant4 removes the rest during
+replay. The existing custom `SetFilter` predicate still overrides every mode.
 
 `--pythia-decays` additionally decays each DIS daughter with Pythia8 before
 applying the selected filter option. A daughter is replaced recursively only when it moves
@@ -96,7 +101,10 @@ When the imported geometry contains `MuonShieldArea`, the filter also loads
 `ShipGeo.muShield.Entrance[0]` and quadrant symmetry, matching the simulation
 field setup. `--muon-shield-field-map` and `--muon-shield-field-z` override the
 shield map path and offset (cm). Missing maps or geometry metadata are reported
-as errors rather than silently omitting shield deflection. Both map files are
+as errors rather than silently omitting shield deflection. A geometry with
+`ShipGeo.muShield.WithConstField` set is refused: the simulation then uses
+constant per-volume shield fields instead of the map, which the propagator
+cannot reproduce. Both map files are
 excluded from recursive input discovery. Geometries without `MuonShieldArea`
 continue to support SST-only propagation.
 

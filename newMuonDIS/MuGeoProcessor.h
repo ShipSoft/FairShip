@@ -46,6 +46,7 @@ class MuGeoProcessor {
   int64_t GetUBTBackwardPathCount() const { return fUBTBackwardPaths; }
   int64_t GetStartInFieldCount() const { return fStartMagneticPaths; }
   int64_t GetStartFieldFreeCount() const { return fStartStraightPaths; }
+  int64_t GetStartsBeforeZminCount() const { return fStartsBeforeZmin; }
   double GetMaxTransverseJump() const { return fMaxTransverseJump; }
 
   inline void SetZmax(const double& zmax) {
@@ -107,6 +108,7 @@ class MuGeoProcessor {
   int64_t fStartMagneticPaths = 0;
   int64_t fStartStraightPaths = 0;
   int64_t fStartsBeyondZmax = 0;
+  int64_t fStartsBeforeZmin = 0;  // diagnostic only; counted per path build
   int64_t fTransitions = 0;
   int64_t fLargeJumps = 0;
   int64_t fMuonsWithLargeJumps = 0;
