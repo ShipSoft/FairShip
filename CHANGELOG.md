@@ -20,6 +20,11 @@ it in future.
 
 * The hit lists in `Tracklets` and `fitTrack2MC` now come from fitted states. They therefore leave out any surface that ACTS skipped. #1537
 
+### Fixed
+
+* `hnl.py`, `rpvsusy.py` and `darkphoton.py` take the reduced Planck constant, the speed of light and the fine-structure constant from `scipy.constants` instead of writing them out. `darkphoton.py` used alpha = 1/137, so the dark-photon widths and the proton bremsstrahlung rate change by 2.6e-4; the HNL and RPV lifetimes change by 4e-8 (from the CODATA 2010 value of hbar).
+* `pythia8darkphoton_conf.py` compares the dark-photon mass with the meson masses of Pythia8, which decays the mesons, instead of masses written into the file. `proton_bremsstrahlung.py` and `runPythia8.py` take the proton mass from `TDatabasePDG`, and `proton_bremsstrahlung.py` treats 400 GeV as the beam momentum, as the generators do, instead of the beam energy.
+
 ## 26.11 - 2026-11-26
 
 This release makes ACTS the default for pattern recognition, track fitting and
