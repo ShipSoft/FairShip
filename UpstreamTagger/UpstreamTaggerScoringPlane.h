@@ -8,7 +8,6 @@
 #include <vector>
 
 #include "Detector.h"
-#include "ShipUnit.h"
 #include "UpstreamTaggerScoringPoint.h"
 
 class FairVolume;
@@ -53,8 +52,9 @@ class UpstreamTaggerScoringPlane
     Double_t sizeY;    // plane height
     Bool_t muonsOnly;  // record only mu+-
   };
-  std::vector<Plane> fPlanes;            //! planes, detID = index + 1
-  Double_t fSizeZ = 1.0 * ShipUnit::mm;  //! plane thickness
+  std::vector<Plane> fPlanes;  //! planes, detID = index + 1
+  Double_t fSizeZ = 0.;        //! plane thickness, set from the
+                               //! geometry configuration
 
   UpstreamTaggerScoringPlane(const UpstreamTaggerScoringPlane&) = delete;
   UpstreamTaggerScoringPlane& operator=(const UpstreamTaggerScoringPlane&) =

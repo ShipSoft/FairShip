@@ -213,6 +213,15 @@ def create_config(
     # centred on the gap between M4 and S5
     c.cave.z_transition = 21.37 * u.m
     c.cave.zEnd = c.cave.z_transition + c.cave.ECN3_length  # downstream ECN3 wall
+    # ECN3 hall cross-section, used to place the UBT and its scoring planes:
+    # the inner concrete surfaces of the CAD model, as in
+    # passive/ShipCavernLayout.h (tests/test_cavern_layout.py checks that they
+    # agree). Beam axis at x = y = 0.
+    c.cave.ECN3LeftX = -4.566 * u.m
+    c.cave.ECN3RightX = 11.434 * u.m
+    c.cave.ECN3FloorY = -3.364 * u.m
+    # Side wall closest to the beam axis: the -x wall at x = -4.566 m
+    c.cave.ECN3WallDistance = min(-c.cave.ECN3LeftX, c.cave.ECN3RightX)
 
     with open(c.target_yaml) as file:
         targetconfig = yaml.safe_load(file)
@@ -407,16 +416,27 @@ def create_config(
     # geometry/UpstreamTagger_config.yaml. BoxZ is the space reserved by the
     # integration layout; the active thickness depends on the tile size.
     c.UpstreamTagger = AttrDict()
-    # The plane spans x in [-1.7, 1.7] m and y from 2 cm above the ECN3 floor
-    # (y = -3.36 m, see ShipCave) up to 1.7 m, covering the decay vessel entrance.
+    # The plane spans x in [-1.7, 1.7] m and y from FloorMargin above the ECN3
+    # floor up to Top, covering the decay vessel entrance. The map in
+    # UpstreamTagger_config.yaml must cover the same area.
+    c.UpstreamTagger.Top = 1.7 * u.m
+    # 2.4 cm above the ECN3 floor at -336.4 cm, so that the plane ends on a
+    # 40 mm tile edge (y = 2 + 4k cm), at -334 cm
+    c.UpstreamTagger.FloorMargin = 2.4 * u.cm
     c.UpstreamTagger.BoxX = 3.4 * u.m  # X extent of detector map
-    c.UpstreamTagger.BoxY = 5.04 * u.m  # Y extent of detector map
+    c.UpstreamTagger.BoxY = c.UpstreamTagger.Top - c.cave.ECN3FloorY - c.UpstreamTagger.FloorMargin  # 5.04 m
     c.UpstreamTagger.BoxCenterX = 0.0 * u.m
-    c.UpstreamTagger.BoxCenterY = -0.82 * u.m  # y in [-3.34, 1.70] m
+    c.UpstreamTagger.BoxCenterY = (
+        c.UpstreamTagger.Top + c.cave.ECN3FloorY + c.UpstreamTagger.FloorMargin
+    ) / 2.0  # -0.82 m
     c.UpstreamTagger.BoxZ = 16.0 * u.cm  # Z dimension (thickness)
     c.UpstreamTagger.SmallTileZ = 0.5 * u.cm  # 20 x 20 mm2 tile thickness
     c.UpstreamTagger.LargeTileZ = 1.0 * u.cm  # 40 x 40 mm2 tile thickness
-    c.UpstreamTagger.Z_Position = -25.400 * u.m + c.decayVolume.z  # Relative position of UBT to decay vessel centre
+    # Gap between the back of the UBT envelope and the decay vessel entrance
+    c.UpstreamTagger.DecayVesselGap = 32.0 * u.cm
+    # Centre (z) and front face (z0) of the UBT envelope
+    c.UpstreamTagger.z = c.decayVolume.z0 - c.UpstreamTagger.DecayVesselGap - c.UpstreamTagger.BoxZ / 2.0
+    c.UpstreamTagger.z0 = c.UpstreamTagger.z - c.UpstreamTagger.BoxZ / 2.0
     c.UpstreamTagger.TimeResolution = 0.3  # Time resolution in ns
     c.UpstreamTagger.ADCTriggerThreshold = 100
 
@@ -424,24 +444,27 @@ def create_config(
     # without energy deposit; the point detID is the plane number.
     c.UpstreamTaggerScoringPlane = AttrDict()
     c.UpstreamTaggerScoringPlane.Z = 1.0 * u.mm  # thickness
-    # Plane 1, all particles: 4.4 x 6.72 m2 centred on the beam axis in the gap
-    # between the UBT envelope and the decay vessel entrance. It spans y from
-    # the ECN3 floor (y = -3.36 m, see ShipCave) to its mirror image.
-    c.UpstreamTaggerScoringPlane.X = 4.4 * u.m
-    c.UpstreamTaggerScoringPlane.Y = 6.72 * u.m
-    c.UpstreamTaggerScoringPlane.CenterX = 0.0 * u.m
-    c.UpstreamTaggerScoringPlane.CenterY = 0.0 * u.m
-    c.UpstreamTaggerScoringPlane.Z_Position = (
-        c.UpstreamTagger.Z_Position + c.UpstreamTagger.BoxZ / 2.0 + c.decayVolume.z0
-    ) / 2.0
-    # Plane 2, muons only: 10 cm downstream of the muon shield. It spans x
-    # between the -x ECN3 side wall (x = -4.56 m, see ShipCave) and its mirror
-    # image, and y from the ECN3 floor (y = -3.36 m) up to 5.2 m.
-    c.UpstreamTaggerScoringPlane.ShieldX = 9.12 * u.m
-    c.UpstreamTaggerScoringPlane.ShieldY = 8.56 * u.m
-    c.UpstreamTaggerScoringPlane.ShieldCenterX = 0.0 * u.m
-    c.UpstreamTaggerScoringPlane.ShieldCenterY = 0.92 * u.m  # y in [-3.36, 5.20] m
-    c.UpstreamTaggerScoringPlane.ShieldZ_Position = c.muShield.z + c.muShield.length + 10 * u.cm
+    # Plane 1, all particles: on the decay vessel entrance, centred on the
+    # beam axis, with y from the ECN3 floor to its mirror image.
+    dv = c.UpstreamTaggerScoringPlane.DecayVessel = AttrDict()
+    dv.X = 4.4 * u.m
+    dv.Y = -2.0 * c.cave.ECN3FloorY  # 6.728 m
+    dv.CenterX = 0.0 * u.m
+    dv.CenterY = 0.0 * u.m
+    dv.z = c.decayVolume.z0 - c.UpstreamTaggerScoringPlane.Z / 2.0
+    dv.MuonsOnly = False
+    # Plane 2, muons only: ShieldGap downstream of the muon shield. It spans x
+    # between the closest ECN3 side wall and its mirror image, and y from the
+    # ECN3 floor up to Top.
+    ms = c.UpstreamTaggerScoringPlane.MuonShield = AttrDict()
+    ms.Top = 5.2 * u.m
+    ms.ShieldGap = 10.0 * u.cm
+    ms.X = 2.0 * c.cave.ECN3WallDistance  # 9.132 m
+    ms.Y = ms.Top - c.cave.ECN3FloorY  # 8.564 m
+    ms.CenterX = 0.0 * u.m
+    ms.CenterY = (ms.Top + c.cave.ECN3FloorY) / 2.0  # 0.918 m
+    ms.z = c.muShield.z + c.muShield.length + ms.ShieldGap
+    ms.MuonsOnly = True
 
     # Store parameters that might be needed for reference
     c.nuTargetPassive = nuTargetPassive
