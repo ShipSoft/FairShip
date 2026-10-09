@@ -191,10 +191,9 @@ Bool_t EvtCalcGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
   Double_t vy_transf = GetVy(fTree) * space_unit_conv;            // units cm
   Double_t vz_transf = GetVz(fTree) * space_unit_conv + ztarget;  // units cm
 
-  Double_t c = 2.99792458e+10;  // speed of light [cm/s]
   Double_t tof = TMath::Sqrt(vx_transf * vx_transf + vy_transf * vy_transf +
                              vz_transf * vz_transf) /
-                 c;
+                 ShipUnit::c_light / ShipUnit::s;  // s
   Double_t decay_prob = GetDecayProb(fTree);
   Double_t pdg_dau = 0;
 

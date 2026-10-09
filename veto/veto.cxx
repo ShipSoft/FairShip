@@ -33,6 +33,7 @@
 #include "ShipDetectorList.h"
 #include "ShipGeoUtil.h"
 #include "ShipStack.h"
+#include "ShipUnit.h"
 #include "TClonesArray.h"
 #include "TGeoArb8.h"
 #include "TGeoBBox.h"
@@ -50,9 +51,9 @@
 #include "TVirtualMC.h"
 #include "vetoPoint.h"
 
-constexpr Double_t cm = 1;         // cm
-constexpr Double_t m = 100 * cm;   //  m
-constexpr Double_t mm = 0.1 * cm;  //  mm
+using ShipUnit::cm;
+using ShipUnit::m;
+using ShipUnit::mm;
 
 /**
  * @brief Constructor for the Veto class.
