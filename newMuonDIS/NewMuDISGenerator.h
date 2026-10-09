@@ -6,6 +6,7 @@
 #define NEWMUONDIS_NEWMUDISGENERATOR_H_
 
 #include <cstdint>
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -20,9 +21,6 @@ class NewMuDISGenerator : public SHiP::Generator {
  public:
   /** default constructor **/
   NewMuDISGenerator();
-
-  /** destructor **/
-  ~NewMuDISGenerator() override { delete fTree; }
 
   /** public method ReadEvent **/
   using SHiP::Generator::Init;
@@ -45,7 +43,7 @@ class NewMuDISGenerator : public SHiP::Generator {
   int GetMaterial() const { return fDISMaterial; }
 
  protected:
-  TChain* fTree;
+  std::unique_ptr<TChain> fTree;
   int fNevents;
   int fStartEvent = 0;
   int fMaxMuons = -1;

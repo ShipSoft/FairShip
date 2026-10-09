@@ -5,6 +5,7 @@
 #ifndef NEWMUONDIS_MUDISPROCESSOR_H_
 #define NEWMUONDIS_MUDISPROCESSOR_H_
 
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -21,9 +22,6 @@ class MuDISProcessor {
  public:
   /** default constructor **/
   MuDISProcessor();
-
-  /** destructor **/
-  ~MuDISProcessor() { delete ftree; }
 
   bool init(const int& aEvts, const int& aStart, const double& aMinPythiaP,
             const int& aDIS, const int& aSeed, const double& aZmax,
@@ -61,7 +59,7 @@ class MuDISProcessor {
   void ProcessMuons();
 
  private:
-  TChain* ftree;
+  std::unique_ptr<TChain> ftree;
   ShipMuDIS::CBMSimBranches finEv;
 
   TTree* fouttree;
