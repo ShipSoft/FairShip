@@ -95,6 +95,32 @@ pixi add fairship
 pixi run python macro/run_simScript.py --tag my-simulation
 ```
 
+### On lxplus (AFS)
+
+A plain `pixi run build` installs the whole environment into `.pixi/` inside
+your clone, which is enough to exceed a typical AFS quota. On lxplus, use the
+pixi build published on CVMFS together with the `pixi cvmfs` extension
+instead, which keeps the environment out of your AFS area.
+
+Start from a clean shell and a FairShip clone without an old `build/` directory, then:
+
+```bash
+export PATH=/cvmfs/ship-nightlies.cern.ch/pixi/0.72.0-rattlerfs-layers-d5a7568/bin:/eos/experiment/ship/software/pixi-cvmfs:$PATH
+cd /path/to/FairShip
+pixi cvmfs build    # build (once, and again after code changes)
+pixi cvmfs          # enter the environment
+```
+
+To build a branch, check it out and rebuild:
+
+```bash
+git checkout yourbranch
+pixi cvmfs build
+```
+
+You can add the `export PATH=...` line to your `~/.bashrc` so the commands are
+available in every new shell.
+
 ## Run instructions
 
 Start a shell with the FairShip environment activated:
