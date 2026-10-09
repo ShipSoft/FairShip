@@ -62,7 +62,7 @@ class UpstreamTaggerDetector(BaseDetector):
         tile_size = cls.get_constituent_tile_size(point.GetDetectorID())
         x = cls._tile_center(point.GetX(), ubt_geo.TileGridOriginX, ubt_geo.TileGridEndX, tile_size)
         y = cls._tile_center(point.GetY(), ubt_geo.TileGridOriginY, ubt_geo.TileGridEndY, tile_size)
-        return ROOT.TVector3(x, y, ubt_geo.Z_Position)
+        return ROOT.TVector3(x, y, ubt_geo.z)
 
     @staticmethod
     def tile_id(position: ROOT.TVector3, tile_size: float) -> int:

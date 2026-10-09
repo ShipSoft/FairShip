@@ -87,6 +87,9 @@ void UpstreamTagger::ConstructGeometry() {
   if (fRegions.empty()) {
     Fatal("ConstructGeometry", "No regions loaded from the UBT detector map.");
   }
+  if (fSizeX <= 0. || fSizeY <= 0. || fEnvelopeZ <= 0.) {
+    Fatal("ConstructGeometry", "UBT box dimensions not set.");
+  }
   if (fSmallTileZ <= 0. || fLargeTileZ <= 0. || fSmallTileZ > fEnvelopeZ ||
       fLargeTileZ > fEnvelopeZ) {
     Fatal("ConstructGeometry", "Invalid UBT tile thicknesses.");

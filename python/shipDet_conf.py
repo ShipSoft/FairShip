@@ -330,6 +330,13 @@ def configure(run, ship_geo):
 
     # -----Create geometry----------------------------------------------
     cave = ROOT.ShipCave(ship_geo.muShield.z)
+    cave.SetECN3Cavern(
+        ship_geo.cave.ECN3HalfX,
+        ship_geo.cave.ECN3HalfY,
+        ship_geo.cave.ECN3CenterX,
+        ship_geo.cave.ECN3CenterY,
+        ship_geo.cave.ECN3StairStepHeight,
+    )
     cave.SetGeometryFileName("caveWithAir.geo")
     detectorList.append(cave)
 
@@ -363,9 +370,7 @@ def configure(run, ship_geo):
             elif design == 1:
                 configure_snd_old(
                     os.path.join(os.environ["FAIRSHIP"], "geometry", "snd_config_old.yaml"),
-                    ship_geo.UpstreamTagger.Z_Position
-                    - 8 * u.cm
-                    - 5 * u.cm,  # 16 cm width of UpstreamTagger (8 cm half-width)
+                    ship_geo.UpstreamTagger.z0 - 5 * u.cm,
                     ship_geo.cave.floorHeightMuonShield,
                 )
             else:
@@ -474,7 +479,7 @@ def configure(run, ship_geo):
         detectorList.append(SplitCal)
 
     upstreamTagger = ROOT.UpstreamTagger("UpstreamTagger", ROOT.kTRUE)
-    upstreamTagger.SetZposition(ship_geo.UpstreamTagger.Z_Position)
+    upstreamTagger.SetZposition(ship_geo.UpstreamTagger.z)
     upstreamTagger.SetBoxDimensions(
         ship_geo.UpstreamTagger.BoxX, ship_geo.UpstreamTagger.BoxY, ship_geo.UpstreamTagger.BoxZ
     )
@@ -490,9 +495,8 @@ def configure(run, ship_geo):
     sp = ship_geo.UpstreamTaggerScoringPlane
     ubt_scoring_plane = ROOT.UpstreamTaggerScoringPlane("UpstreamTaggerScoringPlane", ROOT.kTRUE)
     ubt_scoring_plane.SetPlaneThickness(sp.Z)
-    ubt_scoring_plane.AddPlane(sp.CenterX, sp.CenterY, sp.Z_Position, sp.X, sp.Y)
-    # Muons only
-    ubt_scoring_plane.AddPlane(sp.ShieldCenterX, sp.ShieldCenterY, sp.ShieldZ_Position, sp.ShieldX, sp.ShieldY, True)
+    for plane in (sp.DecayVessel, sp.MuonShield):
+        ubt_scoring_plane.AddPlane(plane.CenterX, plane.CenterY, plane.z, plane.X, plane.Y, plane.MuonsOnly)
     detectorList.append(ubt_scoring_plane)
 
     timeDet = ROOT.TimeDet("TimeDet", ROOT.kTRUE)
