@@ -11,7 +11,9 @@
 #include "FairPrimaryGenerator.h"
 #include "TFile.h"
 
-using namespace ShipMuDIS;
+using ShipMuDIS::MatTypeStr;
+using ShipMuDIS::MuonDISInBranches;
+using ShipMuDIS::nMats;
 
 NewMuDISGenerator::NewMuDISGenerator() { ResetOutputBranches(); }
 

@@ -99,11 +99,10 @@ std::string MuonPath::GetLabel(const std::string& aVol,
     label = "HE";
   else if (aMat.find("air") != aMat.npos)
     label = "AIR";
-  else if (aVol.find("straw") != aVol.npos)
-    label = "SSTsens";
-  else if (aVol.find("gas") != aVol.npos && aMat.find("STT") != aMat.npos)
-    label = "SSTsens";
-  else if (aVol.find("wire") != aVol.npos && aMat.find("tungsten") != aMat.npos)
+  else if (aVol.find("straw") != aVol.npos ||
+           (aVol.find("gas") != aVol.npos && aMat.find("STT") != aMat.npos) ||
+           (aVol.find("wire") != aVol.npos &&
+            aMat.find("tungsten") != aMat.npos))
     label = "SSTsens";
   else if ((aVol.find("Tr1_frame") != aVol.npos ||
             aVol.find("Tr2_frame") != aVol.npos ||
