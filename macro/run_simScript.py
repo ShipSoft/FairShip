@@ -7,17 +7,19 @@ import json
 import os
 import sys
 import uuid
-from argparse import ArgumentParser
+from argparse import ArgumentParser, Namespace
 from array import array
 from datetime import datetime
 from typing import cast
 
 import geometry_config
+import geometry_from_file
 import ROOT
 import rootUtils as ut
 import shipRoot_conf
 import shipunit as u
 import validationTools as validation_tools
+from ShipGeoConfig import load_from_root_file
 
 
 def _fraction_0_1(value: str) -> float:
@@ -306,7 +308,16 @@ parser.add_argument(
     action="store_true",
 )
 parser.add_argument("--nFiles", dest="nFiles", help="Number of input files to process", default=-1, type=int)
-parser.add_argument("-g", dest="geofile", help="geofile for muon shield geometry, for experts only", default=None)
+parser.add_argument(
+    "-g",
+    "--geofile",
+    dest="geofile",
+    help="Transport particles through the geometry stored in this geometry file, written by an earlier"
+    " run_simScript.py, instead of the one the current code builds. The geometry configuration stored in the file is"
+    " used, so geometry options (-Y, --strawDesign, --shieldName, --helium, --vacuums, --SND, --noSND, --SND_design,"
+    " --target-yaml) cannot be given.",
+    default=None,
+)
 parser.add_argument("-o", "--output", dest="outputDir", help="Output directory", default=".")
 parser.add_argument(
     "-r",
@@ -475,6 +486,24 @@ if options.thedeccouplings:
     theDecayCouplings = [float(c) for c in options.thedeccouplings.split(",")]
 if options.testFlag:
     inputFile = "$FAIRSHIP/files/Cascade-parp16-MSTP82-1-MSEL4-76Mpot_1_5000.root"
+if options.geofile:
+    # The geometry and its configuration both come from the geometry file.
+    # Parse again with these options already set to None: argparse then leaves
+    # them alone unless they are given on the command line.
+    geometry_options = ["dy", "strawDesign", "shieldName", "decayVolMed", "SND", "SND_design", "target_yaml"]
+    probe = parser.parse_args(namespace=Namespace(**dict.fromkeys(geometry_options)))
+    given = [
+        "/".join(flag for action in parser._actions if action.dest == dest for flag in action.option_strings)
+        for dest in geometry_options
+        if getattr(probe, dest) is not None
+    ]
+    if given:
+        parser.error(f"-g/--geofile cannot be combined with geometry options: {', '.join(given)}")
+    options.geofile = os.path.expandvars(options.geofile)
+    try:
+        geometry_from_file.check_file(options.geofile)  # fail early if it cannot be used
+    except ValueError as e:
+        parser.error(f"-g/--geofile: {e}")
 
 
 # sanity check
@@ -517,16 +546,23 @@ elif options.debug == 2:
     ROOT.gInterpreter.ProcessLine('fair::Logger::SetConsoleSeverity("debug1");')
 elif options.debug == 3:
     ROOT.gInterpreter.ProcessLine('fair::Logger::SetConsoleSeverity("debug2");')
-ship_geo = geometry_config.create_config(
-    Yheight=options.dy,
-    strawDesign=options.strawDesign,
-    muShieldGeo=options.geofile,
-    shieldName=options.shieldName,
-    DecayVolumeMedium=options.decayVolMed,
-    SND=options.SND,
-    SND_design=options.SND_design,
-    TARGET_YAML=options.target_yaml,
-)
+if options.geofile:
+    ship_geo = load_from_root_file(options.geofile, "ShipGeo")
+    # saveBasicParameters records the FairShip version of this run; keep the one
+    # that built the geometry as well.
+    if "FairShip" in ship_geo and "geometryBuiltWithFairShip" not in ship_geo:
+        ship_geo.geometryBuiltWithFairShip = ship_geo.FairShip
+    print(f"Geometry configuration loaded from {options.geofile}; particles are transported through its geometry")
+else:
+    ship_geo = geometry_config.create_config(
+        Yheight=options.dy,
+        strawDesign=options.strawDesign,
+        shieldName=options.shieldName,
+        DecayVolumeMedium=options.decayVolMed,
+        SND=options.SND,
+        SND_design=options.SND_design,
+        TARGET_YAML=options.target_yaml,
+    )
 
 if not options.command:
     for g in [
@@ -556,6 +592,10 @@ run_identifier = (
 if not os.path.exists(options.outputDir):
     os.makedirs(options.outputDir)
 outFile = f"{options.outputDir}/sim_{run_identifier}.root"
+if options.geofile and os.path.realpath(options.geofile) == os.path.realpath(
+    f"{options.outputDir}/geo_{run_identifier}.root"
+):
+    parser.error("-g/--geofile: the geometry file would be overwritten by the output of this run, use another --tag")
 
 # Parameter file name
 parFile = f"{options.outputDir}/params_{run_identifier}.root"
@@ -582,7 +622,7 @@ rtdb = run.GetRuntimeDb()
 # import shipTarget_only as shipDet_conf
 import shipDet_conf
 
-modules = shipDet_conf.configure(run, ship_geo)
+modules = shipDet_conf.configure(run, ship_geo, geofile=options.geofile)
 # -----Create PrimaryGenerator--------------------------------------
 primGen = ROOT.FairPrimaryGenerator()
 P8gen = None  # populated below by the various generator branches
@@ -923,6 +963,8 @@ if options.evtgen_decayer:
 
 # -----Initialize simulation run------------------------------------
 run.Init()
+if options.geofile:
+    geometry_from_file.check_swapped(modules[geometry_from_file.SWAP_NAME])
 if options.dryrun:  # Early stop after setting up Pythia 8
     sys.exit(0)
 gMC = ROOT.TVirtualMC.GetMC()

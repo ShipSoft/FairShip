@@ -122,6 +122,11 @@ cmd = "python macro/run_tracking_benchmark.py -n 200 --seed 42 --tag ci-benchmar
 [tasks.ci-fixed-target]
 cmd = "python macro/run_fixedTarget.py -n 10 -e 10.0 -r 1"
 
+# Build two different geometries, simulate again on each of them with its
+# geometry file (run_simScript.py -g), and check the hits and geometries.
+[tasks.ci-geofile-loading]
+cmd = "python .github/scripts/test_geofile_loading.py -n 20 -w geofile-loading-test"
+
 [tasks.ci-sim-muonback]
 cmd = "python macro/run_simScript.py -n 5 -i 100 -f tests/data/muonback_smoke.root -S 42 -s 42 --MuonBack --FollowMuon --FastMuon --tag ci-muonback"
 

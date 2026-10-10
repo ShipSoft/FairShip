@@ -146,7 +146,6 @@ def create_config(
     DecayVolumeMedium: str = "helium",
     Yheight: float = 6.0,
     strawDesign: int = 10,
-    muShieldGeo=None,
     shieldName: str = "TRY_2025",
     nuTargetPassive: int = 1,
     SND: bool = True,
@@ -160,7 +159,6 @@ def create_config(
         DecayVolumeMedium: Medium in decay volume ("helium" or "vacuums"), default: "helium"
         Yheight: Height of vacuum tank in meters, default: 6.0
         strawDesign: Straw tube design (4=Aluminium frame, 10=steel frame), default: 10
-        muShieldGeo: Muon shield geometry file (for experts), default: None
         shieldName: Name of shield configuration, default: "TRY_2025"
         nuTargetPassive: Target type (0=with active layers, 1=only passive), default: 1
         SND: Enable SND detector, default: True
@@ -418,7 +416,6 @@ def create_config(
     c.UpstreamTagger.TimeResolution = 0.3  # Time resolution in ns
 
     # Store parameters that might be needed for reference
-    c.muShieldGeo = muShieldGeo
     c.nuTargetPassive = nuTargetPassive
 
     return c

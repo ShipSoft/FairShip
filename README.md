@@ -128,6 +128,14 @@ python -i $FAIRSHIP/macro/ShipAna.py -f sim_my-simulation.root -r sim_my-simulat
 
 **Note**: Simulation output files use the naming convention `{sim,geo,params}_{identifier}.root`, where the identifier is either a UUID (auto-generated) or a custom tag specified with `--tag`. ShipReco creates a separate reconstruction file (`*_rec.root`) containing only digitisation and reconstruction branches. The original simulation file is not modified. ShipAna uses both files via ROOT's friend tree mechanism to access both MC truth and reconstruction data.
 
+To simulate on the geometry of an earlier simulation, for example a standard geometry shared between productions, pass its geometry file with `-g`. The geometry configuration is then read from the file, so geometry options such as `--vacuums` or `--SND` cannot be given, and particles are transported through the geometry stored in the file:
+
+```bash
+python $FAIRSHIP/macro/run_simScript.py -g geo_my-simulation.root --tag my-second-simulation
+```
+
+The detectors still build their geometry from the stored configuration, because building is also how they register their sensitive volumes and magnetic fields, which a geometry file does not keep; the stored geometry then replaces the built one. The run stops if the stored geometry lacks a volume or placement that the current code builds.
+
 Alternatively, you can make use of the experimental `analysis_toolkit` to run a simple pre-selection check on the events. An example script can be found in `$FAIRSHIP/examples/analysis_example.py`.
 
 Simulate MC signal events with EventCalc:

@@ -189,6 +189,32 @@ jobs:
         with:
           name: root-files-muonback
           path: sim_ci-muonback.root
+  run-geofile-loading:
+    name: Simulation on a geometry from file
+    needs: build
+    runs-on: ubuntu-latest
+    env:
+      QT_QPA_PLATFORM: offscreen
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          lfs: true
+          persist-credentials: false
+      - uses: prefix-dev/setup-pixi@v0.10.2
+        with:
+          cache: true
+      - uses: actions/download-artifact@v8
+        with:
+          name: build
+          path: build/
+      - name: Build two geometries and simulate on them with -g
+        run: pixi run --locked ci-geofile-loading
+      - name: Upload logs
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: logs-geofile-loading
+          path: geofile-loading-test/*.log
   static-analysis:
     name: Static analysis (PR diff)
     if: github.event_name == 'pull_request'
