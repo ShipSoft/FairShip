@@ -13,6 +13,14 @@ boosted to the lab along the projectile.
 Unlike makeCascade.py, elastic scattering does not increase the cascade depth, so depth 1 (the
 normalisation of run_fixedTarget.py) covers the beam proton up to its first inelastic interaction.
 
+With --cascade-model nucleus (default), every interaction of a cascade hadron is a hadron-nucleus
+collision built from hadron-nucleon subcollisions as in Pythia's PythiaCascade: a geometric number
+of subcollisions with the average of PythiaCascade for the target nucleus, the later ones by the
+leading hadron of the previous one. The heavy-flavour probability is then per hadron-nucleus
+collision, A sigma(signal) / sigma(hA), consistent with the normalisation of run_fixedTarget.py,
+which is per proton-nucleus interaction. --cascade-model nucleon follows makeCascade.py, with
+single collisions on free nucleons, which counts the subcollisions inside a nucleus twice.
+
 With --charm-production inclusive, charm signal events are inclusive inelastic events (SoftQCD:inelastic)
 generated at the exact momentum and direction of the projectile and kept if they contain charm, instead
 of forced HardQCD:hardccbar events. The FTFT tune describes charm production data with inclusive events;
@@ -35,6 +43,61 @@ CASCADE_IDS = [2212, 211, 2112, 321, 130, 310]
 TARGET_NUCLEONS = [2212, 2112]
 # fraction of protons in the nucleus, 74/184 for W, 42/98 for Mo
 PROTON_FRACTION = {"W": 0.40, "Mo": 0.43}
+# (Z, A) of the target nucleus for hadron-nucleus collisions
+TARGET_NUCLEUS = {"W": (74, 184), "Mo": (42, 98)}
+
+
+# PythiaCascade model of a hadron-nucleus collision for one range of Pythia versions: the average number of
+# hadron-nucleon subcollisions, <n> - 1 linear in the hadron-nucleon total cross section [mb] with a
+# separate slope at low cross section, and the process of the later subcollisions.
+class NucleusModel(NamedTuple):
+    offset: list[float]
+    slope: list[float]
+    slope_lo: list[float]
+    # low slope below this cross section (8.312), or the smaller of the two (8.317, None)
+    sigma_border: float | None
+    # later subcollisions above sd_min_ecm [GeV] are single-diffractive (target side) with probability
+    # prob_sd, else of process other_process (1: non-diffractive, 0: any)
+    prob_sd: float
+    sd_min_ecm: float
+    other_process: int
+
+
+NCOLL_A = [1, 2, 4, 9, 12, 14, 16, 27, 40, 56, 63, 84, 107, 129, 197, 208]
+NUCLEUS_MODELS = {
+    # Pythia 8.312 to 8.316
+    8.312: NucleusModel(
+        offset=[0.0, 0.03, 0.08, 0.15, 0.20, 0.20, 0.20, 0.26, 0.30, 0.34, 0.40, 0.40, 0.40, 0.50, 0.50, 0.60],
+        slope=[0.0, 0.0016, 0.0033, 0.0075, 0.0092, 0.0105, 0.012, 0.017, 0.022, 0.027, 0.028, 0.034, 0.040]
+        + [0.044, 0.055, 0.055],
+        slope_lo=[0.0, 0.0031, 0.0073, 0.015, 0.0192, 0.0205, 0.022, 0.03, 0.037, 0.044, 0.048, 0.054, 0.06]
+        + [0.069, 0.08, 0.085],
+        sigma_border=20.0,
+        prob_sd=0.3,
+        sd_min_ecm=10.0,
+        other_process=1,
+    ),
+    # Pythia 8.317 and later. Their nCollAvg interpolates between the tabulated nuclei with an integer
+    # division (A / tabA), which drops most of the interpolation for nuclei such as W and Mo; the intended
+    # interpolation is used here.
+    8.317: NucleusModel(
+        offset=[0.0, 0.0510, 0.1164, 0.2036, 0.2328, 0.2520, 0.2624, 0.3190]
+        + [0.3562, 0.3898, 0.3900, 0.3446, 0.3496, 0.3504, 0.3484, 0.3415],
+        slope=[0.0, 0.00187, 0.00496, 0.0107, 0.0136, 0.0152, 0.0169, 0.0243]
+        + [0.0314, 0.0385, 0.0415, 0.0506, 0.0581, 0.0644, 0.0806, 0.0830],
+        slope_lo=[0.0, 0.00361, 0.00884, 0.0174, 0.0210, 0.0233, 0.0252, 0.0340]
+        + [0.0418, 0.0496, 0.0524, 0.0600, 0.0668, 0.0727, 0.0873, 0.0893],
+        sigma_border=None,
+        prob_sd=0.5,
+        sd_min_ecm=0.0,
+        other_process=0,
+    ),
+}
+
+
+def nucleus_model(version):
+    """PythiaCascade model of the installed Pythia version."""
+    return NUCLEUS_MODELS[8.317 if version >= 8.317 else 8.312]
 
 
 class SignalConfig(NamedTuple):
@@ -138,6 +201,100 @@ def ecm(beam_id, nucleon_id, p):
     """Centre-of-mass energy of beam_id with momentum p on nucleon_id at rest."""
     m_beam, m_target = mass(beam_id), mass(nucleon_id)
     return math.sqrt(m_beam**2 + m_target**2 + 2.0 * m_target * math.sqrt(p**2 + m_beam**2))
+
+
+def n_coll_avg(a, sigma_hn, model):
+    """Average number of subcollisions in a hadron-nucleus collision (PythiaCascade::nCollAvg)."""
+
+    def n_more(i):
+        low = model.slope_lo[i] * sigma_hn
+        high = model.offset[i] + model.slope[i] * sigma_hn
+        if model.sigma_border is None:
+            return min(low, high)
+        return low if sigma_hn < model.sigma_border else high
+
+    for i, a_tab in enumerate(NCOLL_A):
+        if a == a_tab:
+            return 1.0 + n_more(i)
+        if a < a_tab:
+            w = (a_tab - a) / (a_tab - NCOLL_A[i - 1])
+            return (
+                1.0 + w * (a / NCOLL_A[i - 1]) ** (2 / 3) * n_more(i - 1) + (1 - w) * (a / a_tab) ** (2 / 3) * n_more(i)
+            )
+    raise ValueError(f"nucleus A = {a} outside 1-208")
+
+
+def nuclear_collision(coll_pythia, decayer, model, beam_id, px, py, pz, z, a, p_min):
+    """Hadron-nucleus collision as a sequence of hadron-nucleon subcollisions, as in PythiaCascade::nextColl.
+
+    coll_pythia are minimum-bias instances on proton and neutron with hadron decays off, so that a leading
+    resonance collides again itself; the decays are done by decayer once the collision is complete.
+
+    Returns the process code of the first non-elastic subcollision (102 if all were elastic), the
+    number of subcollisions, and the final particles (id, px, py, pz, p) of all subcollisions, without
+    the hadrons that collided again.
+    Subcollisions stop once the leading hadron is below p_min, which no longer adds particles above it.
+    """
+    p = math.sqrt(px**2 + py**2 + pz**2)
+    sigma_hn = coll_pythia[0].getSigmaTotal(beam_id, 2212, ecm(beam_id, 2212, p))
+    prob_more = 1.0 - 1.0 / n_coll_avg(a, sigma_hn, model)
+    direction = (px / p, py / p, pz / p)
+    n_p, n_n = z, a - z
+    final, latest = [], []
+    projectile = (beam_id, px, py, pz)
+    first_code, n_coll = 102, 0
+    for i_coll in range(1, a + 1):
+        proc_type = 0
+        if i_coll > 1:
+            if random.random() > prob_more:
+                break
+            hadrons = [f for f in latest if f[5]]
+            if not hadrons:
+                break
+            lead = max(hadrons, key=lambda f: f[1] * direction[0] + f[2] * direction[1] + f[3] * direction[2])
+            if lead[4] < p_min:
+                break
+            final.remove(lead)
+            projectile = lead[:4]
+            if ecm(lead[0], 2212, lead[4]) > model.sd_min_ecm:
+                proc_type = 4 if random.random() < model.prob_sd else model.other_process
+        on_proton = random.random() < n_p / (n_p + n_n)
+        if on_proton:
+            n_p -= 1
+        else:
+            n_n -= 1
+        pythia = coll_pythia[0 if on_proton else 1]
+        pythia.setBeamIDs(projectile[0], TARGET_NUCLEONS[0 if on_proton else 1])
+        pythia.setKinematics(*projectile[1:], 0.0, 0.0, 0.0)
+        for _ in range(100):
+            if pythia.next(proc_type) if proc_type else pythia.next():
+                break
+        else:
+            raise RuntimeError(f"Pythia8 failed to generate a subcollision for {projectile[0]}")
+        if first_code == 102:
+            first_code = pythia.infoPython().code()
+        n_coll += 1
+        event = pythia.event
+        latest = [
+            (event[i].id(), event[i].px(), event[i].py(), event[i].pz(), event[i].pAbs(), event[i].isHadron())
+            + (event[i].e(), event[i].m())
+            for i in range(event.size())
+            if event[i].isFinal()
+        ]
+        final += latest
+    # decays of the final particles, the cascade species staying stable
+    decayer.event.reset()
+    for part_id, part_px, part_py, part_pz, _, _, part_e, part_m in final:
+        decayer.event.append(part_id, 1, 0, 0, part_px, part_py, part_pz, part_e, part_m)
+    if not decayer.moreDecays():
+        raise RuntimeError("Pythia8 failed to decay the final particles of a hadron-nucleus collision")
+    event = decayer.event
+    final = [
+        (event[i].id(), event[i].px(), event[i].py(), event[i].pz(), event[i].pAbs())
+        for i in range(event.size())
+        if event[i].isFinal()
+    ]
+    return first_code, n_coll, final
 
 
 def cm_beam_settings(beam_id, nucleon_id, p):
@@ -311,6 +468,12 @@ def parse_args():
         help="Pythia8 tune: default (Monash 2013) or FTFT (arXiv:2608.29076, with its K-factors)",
     )
     ap.add_argument(
+        "--cascade-model",
+        default="nucleus",
+        choices=["nucleus", "nucleon"],
+        help="Hadron-nucleus collisions (default) or single hadron-nucleon collisions as in makeCascade.py",
+    )
+    ap.add_argument(
         "--charm-production",
         default="forced",
         choices=["forced", "inclusive"],
@@ -389,6 +552,30 @@ def main():
                     f"K*sigma and chi at {args.p_beam} GeV for {beam_id} on {nucleon_id}: "
                     f"{sigma[beam_id, i_nucleon][-1]:.3e} mb, {math.exp(log_chi[beam_id, i_nucleon][-1]):.3e}"
                 )
+    z_target, a_target = TARGET_NUCLEUS[args.target_composition]
+    version = round(mbias_pythia[0].settings.parm("Pythia:versionNumber"), 3)  # codespell:ignore parm
+    model = nucleus_model(version)
+    coll_pythia, decayer = [], None
+    if args.cascade_model == "nucleus":
+        # subcollisions with hadron decays off, and the decays once a collision is complete
+        coll_pythia = [
+            new_pythia(
+                ["SoftQCD:all = on", "HadronLevel:Decay = off", "Beams:frameType = 3"]
+                + ["Beams:allowVariableEnergy = on", "Beams:allowIDAswitch = on", f"Beams:idB = {nucleon_id}"]
+                + [f"Beams:pzA = {args.p_beam}", "Beams:pzB = 0."]
+            )
+            for nucleon_id in TARGET_NUCLEONS
+        ]
+        decayer = new_pythia(["ProcessLevel:all = off"])
+        # heavy-flavour probability per hadron-nucleus collision: A sigma_QQ(hN) / sigma(hA), with
+        # sigma(hA) = A sigma_tot(hp) / <n_coll> as in PythiaCascade
+        for beam_id in {b for b, _ in log_chi}:
+            chi_nucleus = []
+            for i, p in enumerate(p_grid):
+                sigma_tot = mbias_pythia[0].getSigmaTotal(beam_id, 2212, ecm(beam_id, 2212, p))
+                sigma_n = proton_fraction * sigma[beam_id, 0][i] + (1.0 - proton_fraction) * sigma[beam_id, 1][i]
+                chi_nucleus.append(n_coll_avg(a_target, sigma_tot, model) * sigma_n / sigma_tot)
+            log_chi[beam_id, 0] = log_chi[beam_id, 1] = np.log(chi_nucleus)
     chi_max = max(np.exp(c).max() for c in log_chi.values())
     # cross section per nucleon of the target composition, at the beam energy, for the normalisation
     sigma_QQ = proton_fraction * sigma[2212, 0][-1] + (1.0 - proton_fraction) * sigma[2212, 1][-1]
@@ -450,6 +637,26 @@ s0:s1:s2:s3:s4:s5:s6:s7:s8:s9:s10:s11:s12:s13:s14:s15:n_hadrons",
                     row += [len(hadrons)]
                     ntuple.Fill(array("f", row))
                     depth_hist.Fill(depth)
+            if args.cascade_model == "nucleus":
+                # hadron-nucleus collision to add new cascade particles to the stack
+                code, _, final = nuclear_collision(
+                    coll_pythia, decayer, model, beam_id, px, py, pz, z_target, a_target, p_threshold
+                )
+                if code == 102:
+                    # only elastic subcollisions: the cascade generation is kept
+                    leading = max(final, key=lambda f: f[4])
+                    if leading[4] > p_threshold and len(stack) < 999:
+                        stack.append((beam_id, *leading[1:4], depth, ancestors, processes))
+                    continue
+                new_depth = min(depth + 1, 98)
+                if depth == 1:  # first inelastic interaction process of the beam proton
+                    processes = [code] + processes[1:]
+                for part_id, part_px, part_py, part_pz, part_p in final:
+                    if abs(part_id) in CASCADE_IDS and part_p > p_threshold and len(stack) < 999:
+                        new_ancestors = ancestors[: new_depth - 1] + [part_id] + ancestors[new_depth:]
+                        new_processes = processes[: new_depth - 1] + [code] + processes[new_depth:]
+                        stack.append((part_id, part_px, part_py, part_pz, new_depth, new_ancestors, new_processes))
+                continue
             # minimum-bias event to add new cascade particles to the stack
             i_nucleon = 0 if random.random() < proton_fraction else 1
             pythia = mbias_pythia[i_nucleon]
