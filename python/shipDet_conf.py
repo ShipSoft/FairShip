@@ -5,6 +5,7 @@
 import os
 from typing import Any
 
+import geometry_from_file
 import ROOT
 import shipunit as u
 import yaml
@@ -267,12 +268,18 @@ def configure_strawtubes(yaml_file: str, ship_geo) -> None:
     detectorList.append(strawtubes)
 
 
-def configure(run, ship_geo):
+def configure(run, ship_geo, geofile: str | None = None):
+    """Configure the modules of the run and add them to it.
+
+    With ``geofile``, particles are transported through the geometry stored in
+    that geometry file: the modules build their geometry as usual, and a last
+    module replaces it by the stored one (see geometry_from_file). ``ship_geo``
+    must then be the configuration stored in the same file.
+    """
+    stored_yaml_configs = geometry_from_file.stored_yaml_configs(ship_geo) if geofile else {}
     # ---- for backward compatibility ----
     if not hasattr(ship_geo, "DecayVolumeMedium"):
         raise ValueError("DecayVolumeMedium is not defined, possibly old (incompatible) geometry!")
-    if not hasattr(ship_geo, "muShieldGeo"):
-        ship_geo.muShieldGeo = None
     if not hasattr(ship_geo.Bfield, "x"):
         ship_geo.Bfield.x = 3.0 * u.m
     if not hasattr(ship_geo, "cave"):
@@ -450,7 +457,7 @@ def configure(run, ship_geo):
         run.SetField(fMagField)
         ROOT.SetOwnership(fMagField, False)  # C++ FairRunSim takes ownership
 
-    exclusionList = []
+    exclusionList: list[str] = []
     # exclusionList = ["strawtubes","TargetTrackers","NuTauTarget",\
     #                 "SiliconTarget","Veto","Magnet","MuonShield","TargetStation", "TimeDet", "UpstreamTagger"]
 
@@ -458,10 +465,20 @@ def configure(run, ship_geo):
     # FairModule subclasses (Target/MTC/strawtubes/...). Annotate as Any to
     # match the heterogeneous detectorList type.
     detElements: dict[str, Any] = {}
+    if geofile:
+        geometry_from_file.check_yaml_configs(stored_yaml_configs, ship_geo)
     for x in detectorList:
         if x.GetName() in exclusionList:
             continue
         run.AddModule(x)
         ROOT.SetOwnership(x, False)  # C++ FairRunSim takes ownership
         detElements[x.GetName()] = x
+    if geofile:
+        # Last, so that every module has built its geometry, registered its
+        # sensitive volumes and attached its fields before the swap. The
+        # caller must keep the returned dict: C++ calls back into this object.
+        swap = geometry_from_file.make_swap(geofile)
+        run.AddModule(swap)
+        ROOT.SetOwnership(swap, False)  # C++ FairRunSim takes ownership
+        detElements[geometry_from_file.SWAP_NAME] = swap
     return detElements
