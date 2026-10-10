@@ -9,6 +9,7 @@ from argparse import ArgumentParser
 import ROOT
 import rootUtils as ut
 from experimental import analysis_toolkit
+from mc_truth import signal_weight
 
 
 def main() -> None:
@@ -99,7 +100,7 @@ def main() -> None:
         print(f"Event{event_nr}:")
         inspector.dump_event(event, mom_threshold=0.5)  # in GeV
 
-        event_weight = event.MCTrack[2].GetWeight()
+        event_weight = signal_weight(event.MCTrack)
 
         hist_dict["event_weight"].Fill(event_weight)
 
