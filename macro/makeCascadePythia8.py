@@ -553,8 +553,10 @@ def main():
                     f"{sigma[beam_id, i_nucleon][-1]:.3e} mb, {math.exp(log_chi[beam_id, i_nucleon][-1]):.3e}"
                 )
     z_target, a_target = TARGET_NUCLEUS[args.target_composition]
+    version = round(mbias_pythia[0].settings.parm("Pythia:versionNumber"), 3)  # codespell:ignore parm
+    model = nucleus_model(version)
+    coll_pythia, decayer = [], None
     if args.cascade_model == "nucleus":
-        model = nucleus_model(round(mbias_pythia[0].settings.parm("Pythia:versionNumber"), 3))
         # subcollisions with hadron decays off, and the decays once a collision is complete
         coll_pythia = [
             new_pythia(
