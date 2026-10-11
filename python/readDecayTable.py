@@ -78,10 +78,9 @@ def addHNLdecayChannels(P8Gen, hnl, conffile=os.path.expandvars("$FAIRSHIP/pytho
             BR = BR / 2.0
             codes = " ".join([str(code) for code in childrenCodes])
             P8Gen.SetParameters(f"9900015:addChannel =  1 {BR:.12} 0 {codes}")
-            # Charge conjugate modes
-            codes = " ".join(
-                [(str(-1 * code) if pdg.GetParticle(-code) is not None else str(code)) for code in childrenCodes]
-            )
+            # Charge conjugate modes. Self-conjugate daughters (pi0, eta, rho0, ...) have no -code entry;
+            # GetParticle returns a null pointer for it, which is falsy but not None.
+            codes = " ".join([(str(-1 * code) if pdg.GetParticle(-code) else str(code)) for code in childrenCodes])
             P8Gen.SetParameters(f"9900015:addChannel =  1 {BR:.12} 0 {codes}")
             # print "debug readdecay table",particles,children,BR
 
