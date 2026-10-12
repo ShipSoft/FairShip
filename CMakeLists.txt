@@ -18,7 +18,9 @@ if(POLICY CMP0144)
     cmake_policy(SET CMP0144 NEW)
 endif()
 
-# Determine version from git tags (CalVer: year.month[.patch])
+# Determine version from git tags (CalVer: year.month[.patch]). A GitHub tarball
+# (as built by the conda recipe) has no .git, but git archive has filled in
+# .git_archival.txt (export-subst in .gitattributes).
 find_package(Git QUIET)
 if(Git_FOUND)
     execute_process(
@@ -29,6 +31,33 @@ if(Git_FOUND)
         ERROR_QUIET
         RESULT_VARIABLE GIT_DESCRIBE_RESULT
     )
+    execute_process(
+        COMMAND ${GIT_EXECUTABLE} rev-parse HEAD
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        OUTPUT_VARIABLE FAIRSHIP_GIT_HASH
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+        ERROR_QUIET
+        RESULT_VARIABLE GIT_REV_PARSE_RESULT
+    )
+    if(NOT GIT_REV_PARSE_RESULT EQUAL 0)
+        set(FAIRSHIP_GIT_HASH "")
+    endif()
+endif()
+
+if(
+    NOT GIT_DESCRIBE_RESULT EQUAL 0
+    AND EXISTS "${CMAKE_SOURCE_DIR}/.git_archival.txt"
+)
+    file(STRINGS "${CMAKE_SOURCE_DIR}/.git_archival.txt" _archival)
+    # Outside a git archive the lines still hold $Format:...$ and match nothing.
+    foreach(_line IN LISTS _archival)
+        if(_line MATCHES "^node: ([0-9a-f]+)$")
+            set(FAIRSHIP_GIT_HASH "${CMAKE_MATCH_1}")
+        elseif(_line MATCHES "^describe-name: ([0-9].*)$")
+            set(FAIRSHIP_GIT_VERSION "${CMAKE_MATCH_1}")
+            set(GIT_DESCRIBE_RESULT 0)
+        endif()
+    endforeach()
 endif()
 
 if(GIT_DESCRIBE_RESULT EQUAL 0)
@@ -56,7 +85,7 @@ if(FAIRSHIP_VERSION_TWEAK)
     set(PROJECT_VERSION "${PROJECT_VERSION}.${PROJECT_VERSION_TWEAK}")
 endif()
 
-message(STATUS "FairShip version: ${PROJECT_VERSION}")
+message(STATUS "FairShip version: ${PROJECT_VERSION} ${FAIRSHIP_GIT_HASH}")
 
 include(GNUInstallDirs)
 # aliBuild modulefile expects libraries in lib/, not lib64/
@@ -185,6 +214,18 @@ set(PROJECT_LIBRARY_PROPERTIES
 )
 
 install(DIRECTORY geometry DESTINATION share/${PROJECT_NAME})
+
+# Lets Python record which FairShip build ran (saveBasicParameters), as
+# FairRoot's FairVersion.h does for FairRoot.
+configure_file(
+    ${CMAKE_SOURCE_DIR}/FairShipVersion.h.in
+    ${CMAKE_BINARY_DIR}/FairShipVersion.h
+    @ONLY
+)
+install(
+    FILES ${CMAKE_BINARY_DIR}/FairShipVersion.h
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)
 
 # Generate a Clang compile_commands.json "compilation database" file for use
 # with various development tools, such as Vim's YouCompleteMe plugin. See
