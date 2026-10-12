@@ -281,11 +281,11 @@ min_stations : int
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tracking__benchmark_8py_source.html#l00622">622</a> of file <a class="el" href="tracking__benchmark_8py_source.html">tracking_benchmark.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  622</span>    <span class="keyword">def </span>__del__(self) -&gt; None:</div>
-<div class="line"><span class="lineno">  623</span>        <span class="keywordflow">for</span> f <span class="keywordflow">in</span> [self.f_sim, self.f_reco, self.f_geo]:</div>
-<div class="line"><span class="lineno">  624</span>            <span class="keywordflow">if</span> f <span class="keywordflow">and</span> f.IsOpen():</div>
-<div class="line"><span class="lineno">  625</span>                f.Close()</div>
+<p class="definition">Definition at line <a class="el" href="tracking__benchmark_8py_source.html#l00623">623</a> of file <a class="el" href="tracking__benchmark_8py_source.html">tracking_benchmark.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  623</span>    <span class="keyword">def </span>__del__(self) -&gt; None:</div>
+<div class="line"><span class="lineno">  624</span>        <span class="keywordflow">for</span> f <span class="keywordflow">in</span> [self.f_sim, self.f_reco, self.f_geo]:</div>
+<div class="line"><span class="lineno">  625</span>            <span class="keywordflow">if</span> f <span class="keywordflow">and</span> f.IsOpen():</div>
+<div class="line"><span class="lineno">  626</span>                f.Close()</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -395,15 +395,15 @@ truth-lookup helpers.
 </table>
 </div><div class="memdoc">
 <pre class="fragment">Format value +/- uncertainty, handling None.</pre> 
-<p class="definition">Definition at line <a class="el" href="tracking__benchmark_8py_source.html#l00584">584</a> of file <a class="el" href="tracking__benchmark_8py_source.html">tracking_benchmark.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  584</span>    <span class="keyword">def </span>_fmt(value: float | <span class="keywordtype">None</span>, uncertainty: float | <span class="keywordtype">None</span>, fmt: str = <span class="stringliteral">&quot;.4f&quot;</span>) -&gt; str:</div>
-<div class="line"><span class="lineno">  585</span>        <span class="stringliteral">&quot;&quot;&quot;Format value +/- uncertainty, handling None.&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  586</span>        <span class="keywordflow">if</span> value <span class="keywordflow">is</span> <span class="keywordtype">None</span>:</div>
-<div class="line"><span class="lineno">  587</span>            <span class="keywordflow">return</span> <span class="stringliteral">&quot;undefined (no data)&quot;</span></div>
-<div class="line"><span class="lineno">  588</span>        <span class="keywordflow">if</span> uncertainty <span class="keywordflow">is</span> <span class="keywordtype">None</span>:</div>
-<div class="line"><span class="lineno">  589</span>            <span class="keywordflow">return</span> f<span class="stringliteral">&quot;{value:{fmt}}&quot;</span></div>
-<div class="line"><span class="lineno">  590</span>        <span class="keywordflow">return</span> f<span class="stringliteral">&quot;{value:{fmt}} +/- {uncertainty:{fmt}}&quot;</span></div>
-<div class="line"><span class="lineno">  591</span> </div>
+<p class="definition">Definition at line <a class="el" href="tracking__benchmark_8py_source.html#l00585">585</a> of file <a class="el" href="tracking__benchmark_8py_source.html">tracking_benchmark.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  585</span>    <span class="keyword">def </span>_fmt(value: float | <span class="keywordtype">None</span>, uncertainty: float | <span class="keywordtype">None</span>, fmt: str = <span class="stringliteral">&quot;.4f&quot;</span>) -&gt; str:</div>
+<div class="line"><span class="lineno">  586</span>        <span class="stringliteral">&quot;&quot;&quot;Format value +/- uncertainty, handling None.&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  587</span>        <span class="keywordflow">if</span> value <span class="keywordflow">is</span> <span class="keywordtype">None</span>:</div>
+<div class="line"><span class="lineno">  588</span>            <span class="keywordflow">return</span> <span class="stringliteral">&quot;undefined (no data)&quot;</span></div>
+<div class="line"><span class="lineno">  589</span>        <span class="keywordflow">if</span> uncertainty <span class="keywordflow">is</span> <span class="keywordtype">None</span>:</div>
+<div class="line"><span class="lineno">  590</span>            <span class="keywordflow">return</span> f<span class="stringliteral">&quot;{value:{fmt}}&quot;</span></div>
+<div class="line"><span class="lineno">  591</span>        <span class="keywordflow">return</span> f<span class="stringliteral">&quot;{value:{fmt}} +/- {uncertainty:{fmt}}&quot;</span></div>
+<div class="line"><span class="lineno">  592</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -906,166 +906,167 @@ dict
 <div class="line"><span class="lineno">  406</span>                        <span class="keywordflow">try</span>:</div>
 <div class="line"><span class="lineno">  407</span>                            tp = track.getPointWithMeasurement(i_hit)</div>
 <div class="line"><span class="lineno">  408</span>                            fitter_info = tp.getFitterInfo()</div>
-<div class="line"><span class="lineno">  409</span>                            <span class="keywordflow">if</span> fitter_info <span class="keywordflow">is</span> <span class="keywordtype">None</span>:</div>
-<div class="line"><span class="lineno">  410</span>                                <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  411</span>                            res = fitter_info.getResidual()</div>
-<div class="line"><span class="lineno">  412</span>                            <span class="comment"># Index 0: 1D residual (straw drift-distance measurement)</span></div>
-<div class="line"><span class="lineno">  413</span>                            res_val = res.getState()(0)</div>
-<div class="line"><span class="lineno">  414</span>                            res_cov = res.getCov()(0, 0)</div>
-<div class="line"><span class="lineno">  415</span>                            h_hit_residual.Fill(res_val)</div>
-<div class="line"><span class="lineno">  416</span>                            <span class="keywordflow">if</span> res_cov &gt; 0:</div>
-<div class="line"><span class="lineno">  417</span>                                h_hit_pull.Fill(res_val / math.sqrt(res_cov))</div>
-<div class="line"><span class="lineno">  418</span>                        <span class="keywordflow">except</span> (ROOT.genfit.Exception, AttributeError, IndexError) <span class="keyword">as</span> e:</div>
-<div class="line"><span class="lineno">  419</span>                            logger.debug(<span class="stringliteral">&quot;Skipping hit %d: %s&quot;</span>, i_hit, e)</div>
-<div class="line"><span class="lineno">  420</span>                            <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  421</span> </div>
-<div class="line"><span class="lineno">  422</span>            n_matched_mc += len(matched_mc_this_event)</div>
-<div class="line"><span class="lineno">  423</span> </div>
-<div class="line"><span class="lineno">  424</span>        <span class="comment"># Compute metrics (None when denominator is zero)</span></div>
-<div class="line"><span class="lineno">  425</span>        n_ghost_reco = n_total_reco - n_matched_reco</div>
-<div class="line"><span class="lineno">  426</span> </div>
-<div class="line"><span class="lineno">  427</span>        efficiency = n_matched_mc / n_reconstructible <span class="keywordflow">if</span> n_reconstructible &gt; 0 <span class="keywordflow">else</span> <span class="keywordtype">None</span></div>
-<div class="line"><span class="lineno">  428</span>        efficiency_unc = wilson_interval(n_matched_mc, n_reconstructible)</div>
-<div class="line"><span class="lineno">  429</span> </div>
-<div class="line"><span class="lineno">  430</span>        clone_rate = n_clone_reco / n_matched_reco <span class="keywordflow">if</span> n_matched_reco &gt; 0 <span class="keywordflow">else</span> <span class="keywordtype">None</span></div>
-<div class="line"><span class="lineno">  431</span>        clone_rate_unc = wilson_interval(n_clone_reco, n_matched_reco)</div>
-<div class="line"><span class="lineno">  432</span> </div>
-<div class="line"><span class="lineno">  433</span>        ghost_rate = n_ghost_reco / n_total_reco <span class="keywordflow">if</span> n_total_reco &gt; 0 <span class="keywordflow">else</span> <span class="keywordtype">None</span></div>
-<div class="line"><span class="lineno">  434</span>        ghost_rate_unc = wilson_interval(n_ghost_reco, n_total_reco)</div>
-<div class="line"><span class="lineno">  435</span> </div>
-<div class="line"><span class="lineno">  436</span>        <span class="comment"># Fit dp/p with Gaussian</span></div>
-<div class="line"><span class="lineno">  437</span>        dp_p_sigma: float | <span class="keywordtype">None</span> = <span class="keywordtype">None</span></div>
-<div class="line"><span class="lineno">  438</span>        dp_p_sigma_unc: float | <span class="keywordtype">None</span> = <span class="keywordtype">None</span></div>
-<div class="line"><span class="lineno">  439</span>        <span class="keywordflow">if</span> h_dp_over_p.GetEntries() &gt; 0:</div>
-<div class="line"><span class="lineno">  440</span>            dp_p_sigma = h_dp_over_p.GetRMS()</div>
-<div class="line"><span class="lineno">  441</span>            dp_p_sigma_unc = h_dp_over_p.GetRMSError()</div>
-<div class="line"><span class="lineno">  442</span>            <span class="keywordflow">if</span> h_dp_over_p.GetEntries() &gt; 20:</div>
-<div class="line"><span class="lineno">  443</span>                fit_result = h_dp_over_p.Fit(<span class="stringliteral">&quot;gaus&quot;</span>, <span class="stringliteral">&quot;QS&quot;</span>)</div>
-<div class="line"><span class="lineno">  444</span>                <span class="keywordflow">if</span> fit_result <span class="keywordflow">and</span> int(fit_result) == 0:</div>
-<div class="line"><span class="lineno">  445</span>                    dp_p_sigma = fit_result.Parameter(2)</div>
-<div class="line"><span class="lineno">  446</span>                    dp_p_sigma_unc = fit_result.ParError(2)</div>
-<div class="line"><span class="lineno">  447</span> </div>
-<div class="line"><span class="lineno">  448</span>        <span class="comment"># Charge-ID efficiency</span></div>
-<div class="line"><span class="lineno">  449</span>        n_charge_total = n_correct_charge + n_wrong_charge</div>
-<div class="line"><span class="lineno">  450</span>        charge_id_eff = n_correct_charge / n_charge_total <span class="keywordflow">if</span> n_charge_total &gt; 0 <span class="keywordflow">else</span> <span class="keywordtype">None</span></div>
-<div class="line"><span class="lineno">  451</span>        charge_id_eff_unc = wilson_interval(n_correct_charge, n_charge_total)</div>
-<div class="line"><span class="lineno">  452</span> </div>
-<div class="line"><span class="lineno">  453</span>        <span class="comment"># Fit hit pull with Gaussian</span></div>
-<div class="line"><span class="lineno">  454</span>        hit_pull_underflow = int(h_hit_pull.GetBinContent(0))</div>
-<div class="line"><span class="lineno">  455</span>        hit_pull_overflow = int(h_hit_pull.GetBinContent(h_hit_pull.GetNbinsX() + 1))</div>
-<div class="line"><span class="lineno">  456</span>        <span class="keywordflow">if</span> h_hit_pull.GetEntries() &gt; 50:</div>
-<div class="line"><span class="lineno">  457</span>            hit_pull_mean = h_hit_pull.GetMean()</div>
-<div class="line"><span class="lineno">  458</span>            hit_pull_mean_unc = h_hit_pull.GetMeanError()</div>
-<div class="line"><span class="lineno">  459</span>            hit_pull_sigma = h_hit_pull.GetRMS()</div>
-<div class="line"><span class="lineno">  460</span>            hit_pull_sigma_unc = h_hit_pull.GetRMSError()</div>
-<div class="line"><span class="lineno">  461</span>            pull_fit = h_hit_pull.Fit(<span class="stringliteral">&quot;gaus&quot;</span>, <span class="stringliteral">&quot;QS&quot;</span>)</div>
-<div class="line"><span class="lineno">  462</span>            <span class="keywordflow">if</span> pull_fit <span class="keywordflow">and</span> int(pull_fit) == 0:</div>
-<div class="line"><span class="lineno">  463</span>                hit_pull_mean = pull_fit.Parameter(1)</div>
-<div class="line"><span class="lineno">  464</span>                hit_pull_mean_unc = pull_fit.ParError(1)</div>
-<div class="line"><span class="lineno">  465</span>                hit_pull_sigma = pull_fit.Parameter(2)</div>
-<div class="line"><span class="lineno">  466</span>                hit_pull_sigma_unc = pull_fit.ParError(2)</div>
-<div class="line"><span class="lineno">  467</span>        <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  468</span>            hit_pull_mean = math.nan</div>
-<div class="line"><span class="lineno">  469</span>            hit_pull_mean_unc = math.nan</div>
-<div class="line"><span class="lineno">  470</span>            hit_pull_sigma = math.nan</div>
-<div class="line"><span class="lineno">  471</span>            hit_pull_sigma_unc = math.nan</div>
-<div class="line"><span class="lineno">  472</span> </div>
-<div class="line"><span class="lineno">  473</span>        self.metrics = {</div>
-<div class="line"><span class="lineno">  474</span>            <span class="stringliteral">&quot;tracking_benchmark&quot;</span>: {</div>
-<div class="line"><span class="lineno">  475</span>                <span class="stringliteral">&quot;n_events&quot;</span>: {<span class="stringliteral">&quot;value&quot;</span>: int(n_events), <span class="stringliteral">&quot;compare&quot;</span>: <span class="stringliteral">&quot;exact&quot;</span>},</div>
-<div class="line"><span class="lineno">  476</span>                <span class="stringliteral">&quot;n_reconstructible&quot;</span>: {<span class="stringliteral">&quot;value&quot;</span>: int(n_reconstructible), <span class="stringliteral">&quot;compare&quot;</span>: <span class="stringliteral">&quot;exact&quot;</span>},</div>
-<div class="line"><span class="lineno">  477</span>                <span class="stringliteral">&quot;n_total_reco&quot;</span>: {<span class="stringliteral">&quot;value&quot;</span>: int(n_total_reco), <span class="stringliteral">&quot;compare&quot;</span>: <span class="stringliteral">&quot;exact&quot;</span>},</div>
-<div class="line"><span class="lineno">  478</span>                <span class="stringliteral">&quot;efficiency&quot;</span>: {</div>
-<div class="line"><span class="lineno">  479</span>                    <span class="stringliteral">&quot;value&quot;</span>: _round_or_none(efficiency),</div>
-<div class="line"><span class="lineno">  480</span>                    <span class="stringliteral">&quot;uncertainty&quot;</span>: _round_or_none(efficiency_unc),</div>
-<div class="line"><span class="lineno">  481</span>                    <span class="stringliteral">&quot;compare&quot;</span>: <span class="stringliteral">&quot;statistical&quot;</span>,</div>
-<div class="line"><span class="lineno">  482</span>                },</div>
-<div class="line"><span class="lineno">  483</span>                <span class="stringliteral">&quot;clone_rate&quot;</span>: {</div>
-<div class="line"><span class="lineno">  484</span>                    <span class="stringliteral">&quot;value&quot;</span>: _round_or_none(clone_rate),</div>
-<div class="line"><span class="lineno">  485</span>                    <span class="stringliteral">&quot;uncertainty&quot;</span>: _round_or_none(clone_rate_unc),</div>
-<div class="line"><span class="lineno">  486</span>                    <span class="stringliteral">&quot;compare&quot;</span>: <span class="stringliteral">&quot;statistical&quot;</span>,</div>
-<div class="line"><span class="lineno">  487</span>                },</div>
-<div class="line"><span class="lineno">  488</span>                <span class="stringliteral">&quot;ghost_rate&quot;</span>: {</div>
-<div class="line"><span class="lineno">  489</span>                    <span class="stringliteral">&quot;value&quot;</span>: _round_or_none(ghost_rate),</div>
-<div class="line"><span class="lineno">  490</span>                    <span class="stringliteral">&quot;uncertainty&quot;</span>: _round_or_none(ghost_rate_unc),</div>
-<div class="line"><span class="lineno">  491</span>                    <span class="stringliteral">&quot;compare&quot;</span>: <span class="stringliteral">&quot;statistical&quot;</span>,</div>
-<div class="line"><span class="lineno">  492</span>                },</div>
-<div class="line"><span class="lineno">  493</span>                <span class="stringliteral">&quot;dp_over_p_sigma&quot;</span>: {</div>
-<div class="line"><span class="lineno">  494</span>                    <span class="stringliteral">&quot;value&quot;</span>: _round_or_none(dp_p_sigma),</div>
-<div class="line"><span class="lineno">  495</span>                    <span class="stringliteral">&quot;uncertainty&quot;</span>: _round_or_none(dp_p_sigma_unc),</div>
-<div class="line"><span class="lineno">  496</span>                    <span class="stringliteral">&quot;compare&quot;</span>: <span class="stringliteral">&quot;statistical&quot;</span>,</div>
-<div class="line"><span class="lineno">  497</span>                },</div>
-<div class="line"><span class="lineno">  498</span>                <span class="stringliteral">&quot;dx_rms&quot;</span>: {</div>
-<div class="line"><span class="lineno">  499</span>                    <span class="stringliteral">&quot;value&quot;</span>: round(h_dx.GetRMS(), 6),</div>
-<div class="line"><span class="lineno">  500</span>                    <span class="stringliteral">&quot;uncertainty&quot;</span>: round(h_dx.GetRMSError(), 6),</div>
-<div class="line"><span class="lineno">  501</span>                    <span class="stringliteral">&quot;compare&quot;</span>: <span class="stringliteral">&quot;statistical&quot;</span>,</div>
-<div class="line"><span class="lineno">  502</span>                },</div>
-<div class="line"><span class="lineno">  503</span>                <span class="stringliteral">&quot;dy_rms&quot;</span>: {</div>
-<div class="line"><span class="lineno">  504</span>                    <span class="stringliteral">&quot;value&quot;</span>: round(h_dy.GetRMS(), 6),</div>
-<div class="line"><span class="lineno">  505</span>                    <span class="stringliteral">&quot;uncertainty&quot;</span>: round(h_dy.GetRMSError(), 6),</div>
-<div class="line"><span class="lineno">  506</span>                    <span class="stringliteral">&quot;compare&quot;</span>: <span class="stringliteral">&quot;statistical&quot;</span>,</div>
-<div class="line"><span class="lineno">  507</span>                },</div>
-<div class="line"><span class="lineno">  508</span>                <span class="stringliteral">&quot;dtx_rms&quot;</span>: {</div>
-<div class="line"><span class="lineno">  509</span>                    <span class="stringliteral">&quot;value&quot;</span>: round(h_dtx.GetRMS(), 6),</div>
-<div class="line"><span class="lineno">  510</span>                    <span class="stringliteral">&quot;uncertainty&quot;</span>: round(h_dtx.GetRMSError(), 6),</div>
-<div class="line"><span class="lineno">  511</span>                    <span class="stringliteral">&quot;compare&quot;</span>: <span class="stringliteral">&quot;statistical&quot;</span>,</div>
-<div class="line"><span class="lineno">  512</span>                },</div>
-<div class="line"><span class="lineno">  513</span>                <span class="stringliteral">&quot;dty_rms&quot;</span>: {</div>
-<div class="line"><span class="lineno">  514</span>                    <span class="stringliteral">&quot;value&quot;</span>: round(h_dty.GetRMS(), 6),</div>
-<div class="line"><span class="lineno">  515</span>                    <span class="stringliteral">&quot;uncertainty&quot;</span>: round(h_dty.GetRMSError(), 6),</div>
-<div class="line"><span class="lineno">  516</span>                    <span class="stringliteral">&quot;compare&quot;</span>: <span class="stringliteral">&quot;statistical&quot;</span>,</div>
-<div class="line"><span class="lineno">  517</span>                },</div>
-<div class="line"><span class="lineno">  518</span>                <span class="stringliteral">&quot;hit_residual_rms&quot;</span>: {</div>
-<div class="line"><span class="lineno">  519</span>                    <span class="stringliteral">&quot;value&quot;</span>: round(h_hit_residual.GetRMS(), 6),</div>
-<div class="line"><span class="lineno">  520</span>                    <span class="stringliteral">&quot;uncertainty&quot;</span>: round(h_hit_residual.GetRMSError(), 6),</div>
-<div class="line"><span class="lineno">  521</span>                    <span class="stringliteral">&quot;compare&quot;</span>: <span class="stringliteral">&quot;statistical&quot;</span>,</div>
-<div class="line"><span class="lineno">  522</span>                },</div>
-<div class="line"><span class="lineno">  523</span>                <span class="stringliteral">&quot;hit_pull_mean&quot;</span>: {</div>
-<div class="line"><span class="lineno">  524</span>                    <span class="stringliteral">&quot;value&quot;</span>: round(hit_pull_mean, 6),</div>
-<div class="line"><span class="lineno">  525</span>                    <span class="stringliteral">&quot;uncertainty&quot;</span>: round(hit_pull_mean_unc, 6),</div>
-<div class="line"><span class="lineno">  526</span>                    <span class="stringliteral">&quot;compare&quot;</span>: <span class="stringliteral">&quot;statistical&quot;</span>,</div>
-<div class="line"><span class="lineno">  527</span>                },</div>
-<div class="line"><span class="lineno">  528</span>                <span class="stringliteral">&quot;hit_pull_sigma&quot;</span>: {</div>
-<div class="line"><span class="lineno">  529</span>                    <span class="stringliteral">&quot;value&quot;</span>: round(hit_pull_sigma, 6),</div>
-<div class="line"><span class="lineno">  530</span>                    <span class="stringliteral">&quot;uncertainty&quot;</span>: round(hit_pull_sigma_unc, 6),</div>
-<div class="line"><span class="lineno">  531</span>                    <span class="stringliteral">&quot;compare&quot;</span>: <span class="stringliteral">&quot;statistical&quot;</span>,</div>
-<div class="line"><span class="lineno">  532</span>                },</div>
-<div class="line"><span class="lineno">  533</span>                <span class="stringliteral">&quot;hit_pull_underflow&quot;</span>: {</div>
-<div class="line"><span class="lineno">  534</span>                    <span class="stringliteral">&quot;value&quot;</span>: hit_pull_underflow,</div>
-<div class="line"><span class="lineno">  535</span>                    <span class="stringliteral">&quot;compare&quot;</span>: <span class="stringliteral">&quot;exact&quot;</span>,</div>
-<div class="line"><span class="lineno">  536</span>                },</div>
-<div class="line"><span class="lineno">  537</span>                <span class="stringliteral">&quot;hit_pull_overflow&quot;</span>: {</div>
-<div class="line"><span class="lineno">  538</span>                    <span class="stringliteral">&quot;value&quot;</span>: hit_pull_overflow,</div>
-<div class="line"><span class="lineno">  539</span>                    <span class="stringliteral">&quot;compare&quot;</span>: <span class="stringliteral">&quot;exact&quot;</span>,</div>
-<div class="line"><span class="lineno">  540</span>                },</div>
-<div class="line"><span class="lineno">  541</span>                <span class="stringliteral">&quot;charge_id_efficiency&quot;</span>: {</div>
-<div class="line"><span class="lineno">  542</span>                    <span class="stringliteral">&quot;value&quot;</span>: _round_or_none(charge_id_eff),</div>
-<div class="line"><span class="lineno">  543</span>                    <span class="stringliteral">&quot;uncertainty&quot;</span>: _round_or_none(charge_id_eff_unc),</div>
-<div class="line"><span class="lineno">  544</span>                    <span class="stringliteral">&quot;compare&quot;</span>: <span class="stringliteral">&quot;statistical&quot;</span>,</div>
-<div class="line"><span class="lineno">  545</span>                },</div>
-<div class="line"><span class="lineno">  546</span>                <span class="stringliteral">&quot;n_correct_charge&quot;</span>: {<span class="stringliteral">&quot;value&quot;</span>: int(n_correct_charge), <span class="stringliteral">&quot;compare&quot;</span>: <span class="stringliteral">&quot;exact&quot;</span>},</div>
-<div class="line"><span class="lineno">  547</span>                <span class="stringliteral">&quot;n_wrong_charge&quot;</span>: {<span class="stringliteral">&quot;value&quot;</span>: int(n_wrong_charge), <span class="stringliteral">&quot;compare&quot;</span>: <span class="stringliteral">&quot;exact&quot;</span>},</div>
-<div class="line"><span class="lineno">  548</span>            }</div>
-<div class="line"><span class="lineno">  549</span>        }</div>
-<div class="line"><span class="lineno">  550</span> </div>
-<div class="line"><span class="lineno">  551</span>        self._histos = {</div>
-<div class="line"><span class="lineno">  552</span>            <span class="stringliteral">&quot;h_dp_over_p&quot;</span>: h_dp_over_p,</div>
-<div class="line"><span class="lineno">  553</span>            <span class="stringliteral">&quot;h_dp_vs_p&quot;</span>: h_dp_vs_p,</div>
-<div class="line"><span class="lineno">  554</span>            <span class="stringliteral">&quot;h_dx&quot;</span>: h_dx,</div>
-<div class="line"><span class="lineno">  555</span>            <span class="stringliteral">&quot;h_dy&quot;</span>: h_dy,</div>
-<div class="line"><span class="lineno">  556</span>            <span class="stringliteral">&quot;h_dtx&quot;</span>: h_dtx,</div>
-<div class="line"><span class="lineno">  557</span>            <span class="stringliteral">&quot;h_dty&quot;</span>: h_dty,</div>
-<div class="line"><span class="lineno">  558</span>            <span class="stringliteral">&quot;h_hit_residual&quot;</span>: h_hit_residual,</div>
-<div class="line"><span class="lineno">  559</span>            <span class="stringliteral">&quot;h_hit_pull&quot;</span>: h_hit_pull,</div>
-<div class="line"><span class="lineno">  560</span>            <span class="stringliteral">&quot;h_chi2ndf&quot;</span>: h_chi2ndf,</div>
-<div class="line"><span class="lineno">  561</span>            <span class="stringliteral">&quot;h_p_truth&quot;</span>: h_p_truth,</div>
-<div class="line"><span class="lineno">  562</span>            <span class="stringliteral">&quot;h_p_matched&quot;</span>: h_p_matched,</div>
-<div class="line"><span class="lineno">  563</span>            <span class="stringliteral">&quot;h_p_correct_charge&quot;</span>: h_p_correct_charge,</div>
-<div class="line"><span class="lineno">  564</span>            <span class="stringliteral">&quot;h_p_wrong_charge&quot;</span>: h_p_wrong_charge,</div>
-<div class="line"><span class="lineno">  565</span>        }</div>
-<div class="line"><span class="lineno">  566</span> </div>
-<div class="line"><span class="lineno">  567</span>        <span class="keywordflow">return</span> self.metrics</div>
-<div class="line"><span class="lineno">  568</span> </div>
+<div class="line"><span class="lineno">  409</span>                            <span class="comment"># A point without fitter info gives a null pointer: falsy, but not None.</span></div>
+<div class="line"><span class="lineno">  410</span>                            <span class="keywordflow">if</span> <span class="keywordflow">not</span> fitter_info:</div>
+<div class="line"><span class="lineno">  411</span>                                <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  412</span>                            res = fitter_info.getResidual()</div>
+<div class="line"><span class="lineno">  413</span>                            <span class="comment"># Index 0: 1D residual (straw drift-distance measurement)</span></div>
+<div class="line"><span class="lineno">  414</span>                            res_val = res.getState()(0)</div>
+<div class="line"><span class="lineno">  415</span>                            res_cov = res.getCov()(0, 0)</div>
+<div class="line"><span class="lineno">  416</span>                            h_hit_residual.Fill(res_val)</div>
+<div class="line"><span class="lineno">  417</span>                            <span class="keywordflow">if</span> res_cov &gt; 0:</div>
+<div class="line"><span class="lineno">  418</span>                                h_hit_pull.Fill(res_val / math.sqrt(res_cov))</div>
+<div class="line"><span class="lineno">  419</span>                        <span class="keywordflow">except</span> (ROOT.genfit.Exception, AttributeError, IndexError) <span class="keyword">as</span> e:</div>
+<div class="line"><span class="lineno">  420</span>                            logger.debug(<span class="stringliteral">&quot;Skipping hit %d: %s&quot;</span>, i_hit, e)</div>
+<div class="line"><span class="lineno">  421</span>                            <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  422</span> </div>
+<div class="line"><span class="lineno">  423</span>            n_matched_mc += len(matched_mc_this_event)</div>
+<div class="line"><span class="lineno">  424</span> </div>
+<div class="line"><span class="lineno">  425</span>        <span class="comment"># Compute metrics (None when denominator is zero)</span></div>
+<div class="line"><span class="lineno">  426</span>        n_ghost_reco = n_total_reco - n_matched_reco</div>
+<div class="line"><span class="lineno">  427</span> </div>
+<div class="line"><span class="lineno">  428</span>        efficiency = n_matched_mc / n_reconstructible <span class="keywordflow">if</span> n_reconstructible &gt; 0 <span class="keywordflow">else</span> <span class="keywordtype">None</span></div>
+<div class="line"><span class="lineno">  429</span>        efficiency_unc = wilson_interval(n_matched_mc, n_reconstructible)</div>
+<div class="line"><span class="lineno">  430</span> </div>
+<div class="line"><span class="lineno">  431</span>        clone_rate = n_clone_reco / n_matched_reco <span class="keywordflow">if</span> n_matched_reco &gt; 0 <span class="keywordflow">else</span> <span class="keywordtype">None</span></div>
+<div class="line"><span class="lineno">  432</span>        clone_rate_unc = wilson_interval(n_clone_reco, n_matched_reco)</div>
+<div class="line"><span class="lineno">  433</span> </div>
+<div class="line"><span class="lineno">  434</span>        ghost_rate = n_ghost_reco / n_total_reco <span class="keywordflow">if</span> n_total_reco &gt; 0 <span class="keywordflow">else</span> <span class="keywordtype">None</span></div>
+<div class="line"><span class="lineno">  435</span>        ghost_rate_unc = wilson_interval(n_ghost_reco, n_total_reco)</div>
+<div class="line"><span class="lineno">  436</span> </div>
+<div class="line"><span class="lineno">  437</span>        <span class="comment"># Fit dp/p with Gaussian</span></div>
+<div class="line"><span class="lineno">  438</span>        dp_p_sigma: float | <span class="keywordtype">None</span> = <span class="keywordtype">None</span></div>
+<div class="line"><span class="lineno">  439</span>        dp_p_sigma_unc: float | <span class="keywordtype">None</span> = <span class="keywordtype">None</span></div>
+<div class="line"><span class="lineno">  440</span>        <span class="keywordflow">if</span> h_dp_over_p.GetEntries() &gt; 0:</div>
+<div class="line"><span class="lineno">  441</span>            dp_p_sigma = h_dp_over_p.GetRMS()</div>
+<div class="line"><span class="lineno">  442</span>            dp_p_sigma_unc = h_dp_over_p.GetRMSError()</div>
+<div class="line"><span class="lineno">  443</span>            <span class="keywordflow">if</span> h_dp_over_p.GetEntries() &gt; 20:</div>
+<div class="line"><span class="lineno">  444</span>                fit_result = h_dp_over_p.Fit(<span class="stringliteral">&quot;gaus&quot;</span>, <span class="stringliteral">&quot;QS&quot;</span>)</div>
+<div class="line"><span class="lineno">  445</span>                <span class="keywordflow">if</span> fit_result <span class="keywordflow">and</span> int(fit_result) == 0:</div>
+<div class="line"><span class="lineno">  446</span>                    dp_p_sigma = fit_result.Parameter(2)</div>
+<div class="line"><span class="lineno">  447</span>                    dp_p_sigma_unc = fit_result.ParError(2)</div>
+<div class="line"><span class="lineno">  448</span> </div>
+<div class="line"><span class="lineno">  449</span>        <span class="comment"># Charge-ID efficiency</span></div>
+<div class="line"><span class="lineno">  450</span>        n_charge_total = n_correct_charge + n_wrong_charge</div>
+<div class="line"><span class="lineno">  451</span>        charge_id_eff = n_correct_charge / n_charge_total <span class="keywordflow">if</span> n_charge_total &gt; 0 <span class="keywordflow">else</span> <span class="keywordtype">None</span></div>
+<div class="line"><span class="lineno">  452</span>        charge_id_eff_unc = wilson_interval(n_correct_charge, n_charge_total)</div>
+<div class="line"><span class="lineno">  453</span> </div>
+<div class="line"><span class="lineno">  454</span>        <span class="comment"># Fit hit pull with Gaussian</span></div>
+<div class="line"><span class="lineno">  455</span>        hit_pull_underflow = int(h_hit_pull.GetBinContent(0))</div>
+<div class="line"><span class="lineno">  456</span>        hit_pull_overflow = int(h_hit_pull.GetBinContent(h_hit_pull.GetNbinsX() + 1))</div>
+<div class="line"><span class="lineno">  457</span>        <span class="keywordflow">if</span> h_hit_pull.GetEntries() &gt; 50:</div>
+<div class="line"><span class="lineno">  458</span>            hit_pull_mean = h_hit_pull.GetMean()</div>
+<div class="line"><span class="lineno">  459</span>            hit_pull_mean_unc = h_hit_pull.GetMeanError()</div>
+<div class="line"><span class="lineno">  460</span>            hit_pull_sigma = h_hit_pull.GetRMS()</div>
+<div class="line"><span class="lineno">  461</span>            hit_pull_sigma_unc = h_hit_pull.GetRMSError()</div>
+<div class="line"><span class="lineno">  462</span>            pull_fit = h_hit_pull.Fit(<span class="stringliteral">&quot;gaus&quot;</span>, <span class="stringliteral">&quot;QS&quot;</span>)</div>
+<div class="line"><span class="lineno">  463</span>            <span class="keywordflow">if</span> pull_fit <span class="keywordflow">and</span> int(pull_fit) == 0:</div>
+<div class="line"><span class="lineno">  464</span>                hit_pull_mean = pull_fit.Parameter(1)</div>
+<div class="line"><span class="lineno">  465</span>                hit_pull_mean_unc = pull_fit.ParError(1)</div>
+<div class="line"><span class="lineno">  466</span>                hit_pull_sigma = pull_fit.Parameter(2)</div>
+<div class="line"><span class="lineno">  467</span>                hit_pull_sigma_unc = pull_fit.ParError(2)</div>
+<div class="line"><span class="lineno">  468</span>        <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  469</span>            hit_pull_mean = math.nan</div>
+<div class="line"><span class="lineno">  470</span>            hit_pull_mean_unc = math.nan</div>
+<div class="line"><span class="lineno">  471</span>            hit_pull_sigma = math.nan</div>
+<div class="line"><span class="lineno">  472</span>            hit_pull_sigma_unc = math.nan</div>
+<div class="line"><span class="lineno">  473</span> </div>
+<div class="line"><span class="lineno">  474</span>        self.metrics = {</div>
+<div class="line"><span class="lineno">  475</span>            <span class="stringliteral">&quot;tracking_benchmark&quot;</span>: {</div>
+<div class="line"><span class="lineno">  476</span>                <span class="stringliteral">&quot;n_events&quot;</span>: {<span class="stringliteral">&quot;value&quot;</span>: int(n_events), <span class="stringliteral">&quot;compare&quot;</span>: <span class="stringliteral">&quot;exact&quot;</span>},</div>
+<div class="line"><span class="lineno">  477</span>                <span class="stringliteral">&quot;n_reconstructible&quot;</span>: {<span class="stringliteral">&quot;value&quot;</span>: int(n_reconstructible), <span class="stringliteral">&quot;compare&quot;</span>: <span class="stringliteral">&quot;exact&quot;</span>},</div>
+<div class="line"><span class="lineno">  478</span>                <span class="stringliteral">&quot;n_total_reco&quot;</span>: {<span class="stringliteral">&quot;value&quot;</span>: int(n_total_reco), <span class="stringliteral">&quot;compare&quot;</span>: <span class="stringliteral">&quot;exact&quot;</span>},</div>
+<div class="line"><span class="lineno">  479</span>                <span class="stringliteral">&quot;efficiency&quot;</span>: {</div>
+<div class="line"><span class="lineno">  480</span>                    <span class="stringliteral">&quot;value&quot;</span>: _round_or_none(efficiency),</div>
+<div class="line"><span class="lineno">  481</span>                    <span class="stringliteral">&quot;uncertainty&quot;</span>: _round_or_none(efficiency_unc),</div>
+<div class="line"><span class="lineno">  482</span>                    <span class="stringliteral">&quot;compare&quot;</span>: <span class="stringliteral">&quot;statistical&quot;</span>,</div>
+<div class="line"><span class="lineno">  483</span>                },</div>
+<div class="line"><span class="lineno">  484</span>                <span class="stringliteral">&quot;clone_rate&quot;</span>: {</div>
+<div class="line"><span class="lineno">  485</span>                    <span class="stringliteral">&quot;value&quot;</span>: _round_or_none(clone_rate),</div>
+<div class="line"><span class="lineno">  486</span>                    <span class="stringliteral">&quot;uncertainty&quot;</span>: _round_or_none(clone_rate_unc),</div>
+<div class="line"><span class="lineno">  487</span>                    <span class="stringliteral">&quot;compare&quot;</span>: <span class="stringliteral">&quot;statistical&quot;</span>,</div>
+<div class="line"><span class="lineno">  488</span>                },</div>
+<div class="line"><span class="lineno">  489</span>                <span class="stringliteral">&quot;ghost_rate&quot;</span>: {</div>
+<div class="line"><span class="lineno">  490</span>                    <span class="stringliteral">&quot;value&quot;</span>: _round_or_none(ghost_rate),</div>
+<div class="line"><span class="lineno">  491</span>                    <span class="stringliteral">&quot;uncertainty&quot;</span>: _round_or_none(ghost_rate_unc),</div>
+<div class="line"><span class="lineno">  492</span>                    <span class="stringliteral">&quot;compare&quot;</span>: <span class="stringliteral">&quot;statistical&quot;</span>,</div>
+<div class="line"><span class="lineno">  493</span>                },</div>
+<div class="line"><span class="lineno">  494</span>                <span class="stringliteral">&quot;dp_over_p_sigma&quot;</span>: {</div>
+<div class="line"><span class="lineno">  495</span>                    <span class="stringliteral">&quot;value&quot;</span>: _round_or_none(dp_p_sigma),</div>
+<div class="line"><span class="lineno">  496</span>                    <span class="stringliteral">&quot;uncertainty&quot;</span>: _round_or_none(dp_p_sigma_unc),</div>
+<div class="line"><span class="lineno">  497</span>                    <span class="stringliteral">&quot;compare&quot;</span>: <span class="stringliteral">&quot;statistical&quot;</span>,</div>
+<div class="line"><span class="lineno">  498</span>                },</div>
+<div class="line"><span class="lineno">  499</span>                <span class="stringliteral">&quot;dx_rms&quot;</span>: {</div>
+<div class="line"><span class="lineno">  500</span>                    <span class="stringliteral">&quot;value&quot;</span>: round(h_dx.GetRMS(), 6),</div>
+<div class="line"><span class="lineno">  501</span>                    <span class="stringliteral">&quot;uncertainty&quot;</span>: round(h_dx.GetRMSError(), 6),</div>
+<div class="line"><span class="lineno">  502</span>                    <span class="stringliteral">&quot;compare&quot;</span>: <span class="stringliteral">&quot;statistical&quot;</span>,</div>
+<div class="line"><span class="lineno">  503</span>                },</div>
+<div class="line"><span class="lineno">  504</span>                <span class="stringliteral">&quot;dy_rms&quot;</span>: {</div>
+<div class="line"><span class="lineno">  505</span>                    <span class="stringliteral">&quot;value&quot;</span>: round(h_dy.GetRMS(), 6),</div>
+<div class="line"><span class="lineno">  506</span>                    <span class="stringliteral">&quot;uncertainty&quot;</span>: round(h_dy.GetRMSError(), 6),</div>
+<div class="line"><span class="lineno">  507</span>                    <span class="stringliteral">&quot;compare&quot;</span>: <span class="stringliteral">&quot;statistical&quot;</span>,</div>
+<div class="line"><span class="lineno">  508</span>                },</div>
+<div class="line"><span class="lineno">  509</span>                <span class="stringliteral">&quot;dtx_rms&quot;</span>: {</div>
+<div class="line"><span class="lineno">  510</span>                    <span class="stringliteral">&quot;value&quot;</span>: round(h_dtx.GetRMS(), 6),</div>
+<div class="line"><span class="lineno">  511</span>                    <span class="stringliteral">&quot;uncertainty&quot;</span>: round(h_dtx.GetRMSError(), 6),</div>
+<div class="line"><span class="lineno">  512</span>                    <span class="stringliteral">&quot;compare&quot;</span>: <span class="stringliteral">&quot;statistical&quot;</span>,</div>
+<div class="line"><span class="lineno">  513</span>                },</div>
+<div class="line"><span class="lineno">  514</span>                <span class="stringliteral">&quot;dty_rms&quot;</span>: {</div>
+<div class="line"><span class="lineno">  515</span>                    <span class="stringliteral">&quot;value&quot;</span>: round(h_dty.GetRMS(), 6),</div>
+<div class="line"><span class="lineno">  516</span>                    <span class="stringliteral">&quot;uncertainty&quot;</span>: round(h_dty.GetRMSError(), 6),</div>
+<div class="line"><span class="lineno">  517</span>                    <span class="stringliteral">&quot;compare&quot;</span>: <span class="stringliteral">&quot;statistical&quot;</span>,</div>
+<div class="line"><span class="lineno">  518</span>                },</div>
+<div class="line"><span class="lineno">  519</span>                <span class="stringliteral">&quot;hit_residual_rms&quot;</span>: {</div>
+<div class="line"><span class="lineno">  520</span>                    <span class="stringliteral">&quot;value&quot;</span>: round(h_hit_residual.GetRMS(), 6),</div>
+<div class="line"><span class="lineno">  521</span>                    <span class="stringliteral">&quot;uncertainty&quot;</span>: round(h_hit_residual.GetRMSError(), 6),</div>
+<div class="line"><span class="lineno">  522</span>                    <span class="stringliteral">&quot;compare&quot;</span>: <span class="stringliteral">&quot;statistical&quot;</span>,</div>
+<div class="line"><span class="lineno">  523</span>                },</div>
+<div class="line"><span class="lineno">  524</span>                <span class="stringliteral">&quot;hit_pull_mean&quot;</span>: {</div>
+<div class="line"><span class="lineno">  525</span>                    <span class="stringliteral">&quot;value&quot;</span>: round(hit_pull_mean, 6),</div>
+<div class="line"><span class="lineno">  526</span>                    <span class="stringliteral">&quot;uncertainty&quot;</span>: round(hit_pull_mean_unc, 6),</div>
+<div class="line"><span class="lineno">  527</span>                    <span class="stringliteral">&quot;compare&quot;</span>: <span class="stringliteral">&quot;statistical&quot;</span>,</div>
+<div class="line"><span class="lineno">  528</span>                },</div>
+<div class="line"><span class="lineno">  529</span>                <span class="stringliteral">&quot;hit_pull_sigma&quot;</span>: {</div>
+<div class="line"><span class="lineno">  530</span>                    <span class="stringliteral">&quot;value&quot;</span>: round(hit_pull_sigma, 6),</div>
+<div class="line"><span class="lineno">  531</span>                    <span class="stringliteral">&quot;uncertainty&quot;</span>: round(hit_pull_sigma_unc, 6),</div>
+<div class="line"><span class="lineno">  532</span>                    <span class="stringliteral">&quot;compare&quot;</span>: <span class="stringliteral">&quot;statistical&quot;</span>,</div>
+<div class="line"><span class="lineno">  533</span>                },</div>
+<div class="line"><span class="lineno">  534</span>                <span class="stringliteral">&quot;hit_pull_underflow&quot;</span>: {</div>
+<div class="line"><span class="lineno">  535</span>                    <span class="stringliteral">&quot;value&quot;</span>: hit_pull_underflow,</div>
+<div class="line"><span class="lineno">  536</span>                    <span class="stringliteral">&quot;compare&quot;</span>: <span class="stringliteral">&quot;exact&quot;</span>,</div>
+<div class="line"><span class="lineno">  537</span>                },</div>
+<div class="line"><span class="lineno">  538</span>                <span class="stringliteral">&quot;hit_pull_overflow&quot;</span>: {</div>
+<div class="line"><span class="lineno">  539</span>                    <span class="stringliteral">&quot;value&quot;</span>: hit_pull_overflow,</div>
+<div class="line"><span class="lineno">  540</span>                    <span class="stringliteral">&quot;compare&quot;</span>: <span class="stringliteral">&quot;exact&quot;</span>,</div>
+<div class="line"><span class="lineno">  541</span>                },</div>
+<div class="line"><span class="lineno">  542</span>                <span class="stringliteral">&quot;charge_id_efficiency&quot;</span>: {</div>
+<div class="line"><span class="lineno">  543</span>                    <span class="stringliteral">&quot;value&quot;</span>: _round_or_none(charge_id_eff),</div>
+<div class="line"><span class="lineno">  544</span>                    <span class="stringliteral">&quot;uncertainty&quot;</span>: _round_or_none(charge_id_eff_unc),</div>
+<div class="line"><span class="lineno">  545</span>                    <span class="stringliteral">&quot;compare&quot;</span>: <span class="stringliteral">&quot;statistical&quot;</span>,</div>
+<div class="line"><span class="lineno">  546</span>                },</div>
+<div class="line"><span class="lineno">  547</span>                <span class="stringliteral">&quot;n_correct_charge&quot;</span>: {<span class="stringliteral">&quot;value&quot;</span>: int(n_correct_charge), <span class="stringliteral">&quot;compare&quot;</span>: <span class="stringliteral">&quot;exact&quot;</span>},</div>
+<div class="line"><span class="lineno">  548</span>                <span class="stringliteral">&quot;n_wrong_charge&quot;</span>: {<span class="stringliteral">&quot;value&quot;</span>: int(n_wrong_charge), <span class="stringliteral">&quot;compare&quot;</span>: <span class="stringliteral">&quot;exact&quot;</span>},</div>
+<div class="line"><span class="lineno">  549</span>            }</div>
+<div class="line"><span class="lineno">  550</span>        }</div>
+<div class="line"><span class="lineno">  551</span> </div>
+<div class="line"><span class="lineno">  552</span>        self._histos = {</div>
+<div class="line"><span class="lineno">  553</span>            <span class="stringliteral">&quot;h_dp_over_p&quot;</span>: h_dp_over_p,</div>
+<div class="line"><span class="lineno">  554</span>            <span class="stringliteral">&quot;h_dp_vs_p&quot;</span>: h_dp_vs_p,</div>
+<div class="line"><span class="lineno">  555</span>            <span class="stringliteral">&quot;h_dx&quot;</span>: h_dx,</div>
+<div class="line"><span class="lineno">  556</span>            <span class="stringliteral">&quot;h_dy&quot;</span>: h_dy,</div>
+<div class="line"><span class="lineno">  557</span>            <span class="stringliteral">&quot;h_dtx&quot;</span>: h_dtx,</div>
+<div class="line"><span class="lineno">  558</span>            <span class="stringliteral">&quot;h_dty&quot;</span>: h_dty,</div>
+<div class="line"><span class="lineno">  559</span>            <span class="stringliteral">&quot;h_hit_residual&quot;</span>: h_hit_residual,</div>
+<div class="line"><span class="lineno">  560</span>            <span class="stringliteral">&quot;h_hit_pull&quot;</span>: h_hit_pull,</div>
+<div class="line"><span class="lineno">  561</span>            <span class="stringliteral">&quot;h_chi2ndf&quot;</span>: h_chi2ndf,</div>
+<div class="line"><span class="lineno">  562</span>            <span class="stringliteral">&quot;h_p_truth&quot;</span>: h_p_truth,</div>
+<div class="line"><span class="lineno">  563</span>            <span class="stringliteral">&quot;h_p_matched&quot;</span>: h_p_matched,</div>
+<div class="line"><span class="lineno">  564</span>            <span class="stringliteral">&quot;h_p_correct_charge&quot;</span>: h_p_correct_charge,</div>
+<div class="line"><span class="lineno">  565</span>            <span class="stringliteral">&quot;h_p_wrong_charge&quot;</span>: h_p_wrong_charge,</div>
+<div class="line"><span class="lineno">  566</span>        }</div>
+<div class="line"><span class="lineno">  567</span> </div>
+<div class="line"><span class="lineno">  568</span>        <span class="keywordflow">return</span> self.metrics</div>
+<div class="line"><span class="lineno">  569</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1085,37 +1086,37 @@ dict
       </table>
 </div><div class="memdoc">
 <pre class="fragment">Print a human-readable summary of the benchmark results.</pre> 
-<p class="definition">Definition at line <a class="el" href="tracking__benchmark_8py_source.html#l00592">592</a> of file <a class="el" href="tracking__benchmark_8py_source.html">tracking_benchmark.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  592</span>    <span class="keyword">def </span>print_summary(self) -&gt; None:</div>
-<div class="line"><span class="lineno">  593</span>        <span class="stringliteral">&quot;&quot;&quot;Print a human-readable summary of the benchmark results.&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  594</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> self.metrics:</div>
-<div class="line"><span class="lineno">  595</span>            print(<span class="stringliteral">&quot;No metrics computed yet. Call compute_metrics() first.&quot;</span>)</div>
-<div class="line"><span class="lineno">  596</span>            <span class="keywordflow">return</span></div>
-<div class="line"><span class="lineno">  597</span>        m = self.metrics[<span class="stringliteral">&quot;tracking_benchmark&quot;</span>]</div>
-<div class="line"><span class="lineno">  598</span>        fmt = self._fmt</div>
-<div class="line"><span class="lineno">  599</span>        print(<span class="stringliteral">&quot;\n=== Tracking Benchmark Summary ===&quot;</span>)</div>
-<div class="line"><span class="lineno">  600</span>        print(f<span class="stringliteral">&quot;  Events:           {m[&#39;n_events&#39;][&#39;value&#39;]}&quot;</span>)</div>
-<div class="line"><span class="lineno">  601</span>        print(f<span class="stringliteral">&quot;  Reconstructible:  {m[&#39;n_reconstructible&#39;][&#39;value&#39;]}&quot;</span>)</div>
-<div class="line"><span class="lineno">  602</span>        print(f<span class="stringliteral">&quot;  Total reco:       {m[&#39;n_total_reco&#39;][&#39;value&#39;]}&quot;</span>)</div>
-<div class="line"><span class="lineno">  603</span>        print(f<span class="stringliteral">&quot;  Efficiency:       {fmt(m[&#39;efficiency&#39;][&#39;value&#39;], m[&#39;efficiency&#39;][&#39;uncertainty&#39;])}&quot;</span>)</div>
-<div class="line"><span class="lineno">  604</span>        print(f<span class="stringliteral">&quot;  Clone rate:       {fmt(m[&#39;clone_rate&#39;][&#39;value&#39;], m[&#39;clone_rate&#39;][&#39;uncertainty&#39;])}&quot;</span>)</div>
-<div class="line"><span class="lineno">  605</span>        print(f<span class="stringliteral">&quot;  Ghost rate:       {fmt(m[&#39;ghost_rate&#39;][&#39;value&#39;], m[&#39;ghost_rate&#39;][&#39;uncertainty&#39;])}&quot;</span>)</div>
-<div class="line"><span class="lineno">  606</span>        print(f<span class="stringliteral">&quot;  dp/p sigma:       {fmt(m[&#39;dp_over_p_sigma&#39;][&#39;value&#39;], m[&#39;dp_over_p_sigma&#39;][&#39;uncertainty&#39;], &#39;.6f&#39;)}&quot;</span>)</div>
-<div class="line"><span class="lineno">  607</span>        print(f<span class="stringliteral">&quot;  dx RMS:           {fmt(m[&#39;dx_rms&#39;][&#39;value&#39;], m[&#39;dx_rms&#39;][&#39;uncertainty&#39;])} cm&quot;</span>)</div>
-<div class="line"><span class="lineno">  608</span>        print(f<span class="stringliteral">&quot;  dy RMS:           {fmt(m[&#39;dy_rms&#39;][&#39;value&#39;], m[&#39;dy_rms&#39;][&#39;uncertainty&#39;])} cm&quot;</span>)</div>
-<div class="line"><span class="lineno">  609</span>        print(f<span class="stringliteral">&quot;  dtx RMS:          {fmt(m[&#39;dtx_rms&#39;][&#39;value&#39;], m[&#39;dtx_rms&#39;][&#39;uncertainty&#39;], &#39;.6f&#39;)}&quot;</span>)</div>
-<div class="line"><span class="lineno">  610</span>        print(f<span class="stringliteral">&quot;  dty RMS:          {fmt(m[&#39;dty_rms&#39;][&#39;value&#39;], m[&#39;dty_rms&#39;][&#39;uncertainty&#39;], &#39;.6f&#39;)}&quot;</span>)</div>
-<div class="line"><span class="lineno">  611</span>        print(</div>
-<div class="line"><span class="lineno">  612</span>            f<span class="stringliteral">&quot;  Hit resid RMS:    {fmt(m[&#39;hit_residual_rms&#39;][&#39;value&#39;], m[&#39;hit_residual_rms&#39;][&#39;uncertainty&#39;], &#39;.6f&#39;)} cm&quot;</span></div>
-<div class="line"><span class="lineno">  613</span>        )</div>
-<div class="line"><span class="lineno">  614</span>        print(f<span class="stringliteral">&quot;  Hit pull mean:    {fmt(m[&#39;hit_pull_mean&#39;][&#39;value&#39;], m[&#39;hit_pull_mean&#39;][&#39;uncertainty&#39;])}&quot;</span>)</div>
-<div class="line"><span class="lineno">  615</span>        print(f<span class="stringliteral">&quot;  Hit pull sigma:   {fmt(m[&#39;hit_pull_sigma&#39;][&#39;value&#39;], m[&#39;hit_pull_sigma&#39;][&#39;uncertainty&#39;])}&quot;</span>)</div>
-<div class="line"><span class="lineno">  616</span>        print(</div>
-<div class="line"><span class="lineno">  617</span>            f<span class="stringliteral">&quot;  Charge-ID eff:    {fmt(m[&#39;charge_id_efficiency&#39;][&#39;value&#39;], m[&#39;charge_id_efficiency&#39;][&#39;uncertainty&#39;])}&quot;</span></div>
-<div class="line"><span class="lineno">  618</span>        )</div>
-<div class="line"><span class="lineno">  619</span>        print(f<span class="stringliteral">&quot;  Correct/wrong:    {m[&#39;n_correct_charge&#39;][&#39;value&#39;]}/{m[&#39;n_wrong_charge&#39;][&#39;value&#39;]}&quot;</span>)</div>
-<div class="line"><span class="lineno">  620</span>        print(<span class="stringliteral">&quot;==================================\n&quot;</span>)</div>
-<div class="line"><span class="lineno">  621</span> </div>
+<p class="definition">Definition at line <a class="el" href="tracking__benchmark_8py_source.html#l00593">593</a> of file <a class="el" href="tracking__benchmark_8py_source.html">tracking_benchmark.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  593</span>    <span class="keyword">def </span>print_summary(self) -&gt; None:</div>
+<div class="line"><span class="lineno">  594</span>        <span class="stringliteral">&quot;&quot;&quot;Print a human-readable summary of the benchmark results.&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  595</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> self.metrics:</div>
+<div class="line"><span class="lineno">  596</span>            print(<span class="stringliteral">&quot;No metrics computed yet. Call compute_metrics() first.&quot;</span>)</div>
+<div class="line"><span class="lineno">  597</span>            <span class="keywordflow">return</span></div>
+<div class="line"><span class="lineno">  598</span>        m = self.metrics[<span class="stringliteral">&quot;tracking_benchmark&quot;</span>]</div>
+<div class="line"><span class="lineno">  599</span>        fmt = self._fmt</div>
+<div class="line"><span class="lineno">  600</span>        print(<span class="stringliteral">&quot;\n=== Tracking Benchmark Summary ===&quot;</span>)</div>
+<div class="line"><span class="lineno">  601</span>        print(f<span class="stringliteral">&quot;  Events:           {m[&#39;n_events&#39;][&#39;value&#39;]}&quot;</span>)</div>
+<div class="line"><span class="lineno">  602</span>        print(f<span class="stringliteral">&quot;  Reconstructible:  {m[&#39;n_reconstructible&#39;][&#39;value&#39;]}&quot;</span>)</div>
+<div class="line"><span class="lineno">  603</span>        print(f<span class="stringliteral">&quot;  Total reco:       {m[&#39;n_total_reco&#39;][&#39;value&#39;]}&quot;</span>)</div>
+<div class="line"><span class="lineno">  604</span>        print(f<span class="stringliteral">&quot;  Efficiency:       {fmt(m[&#39;efficiency&#39;][&#39;value&#39;], m[&#39;efficiency&#39;][&#39;uncertainty&#39;])}&quot;</span>)</div>
+<div class="line"><span class="lineno">  605</span>        print(f<span class="stringliteral">&quot;  Clone rate:       {fmt(m[&#39;clone_rate&#39;][&#39;value&#39;], m[&#39;clone_rate&#39;][&#39;uncertainty&#39;])}&quot;</span>)</div>
+<div class="line"><span class="lineno">  606</span>        print(f<span class="stringliteral">&quot;  Ghost rate:       {fmt(m[&#39;ghost_rate&#39;][&#39;value&#39;], m[&#39;ghost_rate&#39;][&#39;uncertainty&#39;])}&quot;</span>)</div>
+<div class="line"><span class="lineno">  607</span>        print(f<span class="stringliteral">&quot;  dp/p sigma:       {fmt(m[&#39;dp_over_p_sigma&#39;][&#39;value&#39;], m[&#39;dp_over_p_sigma&#39;][&#39;uncertainty&#39;], &#39;.6f&#39;)}&quot;</span>)</div>
+<div class="line"><span class="lineno">  608</span>        print(f<span class="stringliteral">&quot;  dx RMS:           {fmt(m[&#39;dx_rms&#39;][&#39;value&#39;], m[&#39;dx_rms&#39;][&#39;uncertainty&#39;])} cm&quot;</span>)</div>
+<div class="line"><span class="lineno">  609</span>        print(f<span class="stringliteral">&quot;  dy RMS:           {fmt(m[&#39;dy_rms&#39;][&#39;value&#39;], m[&#39;dy_rms&#39;][&#39;uncertainty&#39;])} cm&quot;</span>)</div>
+<div class="line"><span class="lineno">  610</span>        print(f<span class="stringliteral">&quot;  dtx RMS:          {fmt(m[&#39;dtx_rms&#39;][&#39;value&#39;], m[&#39;dtx_rms&#39;][&#39;uncertainty&#39;], &#39;.6f&#39;)}&quot;</span>)</div>
+<div class="line"><span class="lineno">  611</span>        print(f<span class="stringliteral">&quot;  dty RMS:          {fmt(m[&#39;dty_rms&#39;][&#39;value&#39;], m[&#39;dty_rms&#39;][&#39;uncertainty&#39;], &#39;.6f&#39;)}&quot;</span>)</div>
+<div class="line"><span class="lineno">  612</span>        print(</div>
+<div class="line"><span class="lineno">  613</span>            f<span class="stringliteral">&quot;  Hit resid RMS:    {fmt(m[&#39;hit_residual_rms&#39;][&#39;value&#39;], m[&#39;hit_residual_rms&#39;][&#39;uncertainty&#39;], &#39;.6f&#39;)} cm&quot;</span></div>
+<div class="line"><span class="lineno">  614</span>        )</div>
+<div class="line"><span class="lineno">  615</span>        print(f<span class="stringliteral">&quot;  Hit pull mean:    {fmt(m[&#39;hit_pull_mean&#39;][&#39;value&#39;], m[&#39;hit_pull_mean&#39;][&#39;uncertainty&#39;])}&quot;</span>)</div>
+<div class="line"><span class="lineno">  616</span>        print(f<span class="stringliteral">&quot;  Hit pull sigma:   {fmt(m[&#39;hit_pull_sigma&#39;][&#39;value&#39;], m[&#39;hit_pull_sigma&#39;][&#39;uncertainty&#39;])}&quot;</span>)</div>
+<div class="line"><span class="lineno">  617</span>        print(</div>
+<div class="line"><span class="lineno">  618</span>            f<span class="stringliteral">&quot;  Charge-ID eff:    {fmt(m[&#39;charge_id_efficiency&#39;][&#39;value&#39;], m[&#39;charge_id_efficiency&#39;][&#39;uncertainty&#39;])}&quot;</span></div>
+<div class="line"><span class="lineno">  619</span>        )</div>
+<div class="line"><span class="lineno">  620</span>        print(f<span class="stringliteral">&quot;  Correct/wrong:    {m[&#39;n_correct_charge&#39;][&#39;value&#39;]}/{m[&#39;n_wrong_charge&#39;][&#39;value&#39;]}&quot;</span>)</div>
+<div class="line"><span class="lineno">  621</span>        print(<span class="stringliteral">&quot;==================================\n&quot;</span>)</div>
+<div class="line"><span class="lineno">  622</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1145,15 +1146,15 @@ dict
       </table>
 </div><div class="memdoc">
 <pre class="fragment">Save detailed histograms to a ROOT file.</pre> 
-<p class="definition">Definition at line <a class="el" href="tracking__benchmark_8py_source.html#l00575">575</a> of file <a class="el" href="tracking__benchmark_8py_source.html">tracking_benchmark.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  575</span>    <span class="keyword">def </span>save_histograms(self, output_path: str) -&gt; <span class="keywordtype">None</span>:</div>
-<div class="line"><span class="lineno">  576</span>        <span class="stringliteral">&quot;&quot;&quot;Save detailed histograms to a ROOT file.&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  577</span>        f_out = ROOT.TFile.Open(output_path, <span class="stringliteral">&quot;recreate&quot;</span>)</div>
-<div class="line"><span class="lineno">  578</span>        <span class="keywordflow">for</span> name, hist <span class="keywordflow">in</span> self._histos.items():</div>
-<div class="line"><span class="lineno">  579</span>            hist.Write(name)</div>
-<div class="line"><span class="lineno">  580</span>        f_out.Close()</div>
-<div class="line"><span class="lineno">  581</span>        print(f<span class="stringliteral">&quot;Histograms saved to {output_path}&quot;</span>)</div>
-<div class="line"><span class="lineno">  582</span> </div>
+<p class="definition">Definition at line <a class="el" href="tracking__benchmark_8py_source.html#l00576">576</a> of file <a class="el" href="tracking__benchmark_8py_source.html">tracking_benchmark.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  576</span>    <span class="keyword">def </span>save_histograms(self, output_path: str) -&gt; <span class="keywordtype">None</span>:</div>
+<div class="line"><span class="lineno">  577</span>        <span class="stringliteral">&quot;&quot;&quot;Save detailed histograms to a ROOT file.&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  578</span>        f_out = ROOT.TFile.Open(output_path, <span class="stringliteral">&quot;recreate&quot;</span>)</div>
+<div class="line"><span class="lineno">  579</span>        <span class="keywordflow">for</span> name, hist <span class="keywordflow">in</span> self._histos.items():</div>
+<div class="line"><span class="lineno">  580</span>            hist.Write(name)</div>
+<div class="line"><span class="lineno">  581</span>        f_out.Close()</div>
+<div class="line"><span class="lineno">  582</span>        print(f<span class="stringliteral">&quot;Histograms saved to {output_path}&quot;</span>)</div>
+<div class="line"><span class="lineno">  583</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1183,13 +1184,13 @@ dict
       </table>
 </div><div class="memdoc">
 <pre class="fragment">Save metrics to JSON file.</pre> 
-<p class="definition">Definition at line <a class="el" href="tracking__benchmark_8py_source.html#l00569">569</a> of file <a class="el" href="tracking__benchmark_8py_source.html">tracking_benchmark.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  569</span>    <span class="keyword">def </span>save_json(self, output_path: str) -&gt; <span class="keywordtype">None</span>:</div>
-<div class="line"><span class="lineno">  570</span>        <span class="stringliteral">&quot;&quot;&quot;Save metrics to JSON file.&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  571</span>        <span class="keyword">with</span> open(output_path, <span class="stringliteral">&quot;w&quot;</span>) <span class="keyword">as</span> f:</div>
-<div class="line"><span class="lineno">  572</span>            json.dump(self.metrics, f, indent=2)</div>
-<div class="line"><span class="lineno">  573</span>        print(f<span class="stringliteral">&quot;Metrics saved to {output_path}&quot;</span>)</div>
-<div class="line"><span class="lineno">  574</span> </div>
+<p class="definition">Definition at line <a class="el" href="tracking__benchmark_8py_source.html#l00570">570</a> of file <a class="el" href="tracking__benchmark_8py_source.html">tracking_benchmark.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  570</span>    <span class="keyword">def </span>save_json(self, output_path: str) -&gt; <span class="keywordtype">None</span>:</div>
+<div class="line"><span class="lineno">  571</span>        <span class="stringliteral">&quot;&quot;&quot;Save metrics to JSON file.&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  572</span>        <span class="keyword">with</span> open(output_path, <span class="stringliteral">&quot;w&quot;</span>) <span class="keyword">as</span> f:</div>
+<div class="line"><span class="lineno">  573</span>            json.dump(self.metrics, f, indent=2)</div>
+<div class="line"><span class="lineno">  574</span>        print(f<span class="stringliteral">&quot;Metrics saved to {output_path}&quot;</span>)</div>
+<div class="line"><span class="lineno">  575</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1214,7 +1215,7 @@ dict
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tracking__benchmark_8py_source.html#l00551">551</a> of file <a class="el" href="tracking__benchmark_8py_source.html">tracking_benchmark.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tracking__benchmark_8py_source.html#l00552">552</a> of file <a class="el" href="tracking__benchmark_8py_source.html">tracking_benchmark.py</a>.</p>
 
 </div>
 </div>
@@ -1302,7 +1303,7 @@ dict
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tracking__benchmark_8py_source.html#l00473">473</a> of file <a class="el" href="tracking__benchmark_8py_source.html">tracking_benchmark.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tracking__benchmark_8py_source.html#l00474">474</a> of file <a class="el" href="tracking__benchmark_8py_source.html">tracking_benchmark.py</a>.</p>
 
 </div>
 </div>
