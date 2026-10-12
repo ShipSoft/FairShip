@@ -130,6 +130,8 @@ find_package2(PUBLIC EvtGen REQUIRED)
 # (GENERATORS REQUIRED)
 find_package2(PUBLIC Geant4)
 find_package2(PUBLIC GEANT4DATA)
+# Geant4VMC exports VGM targets in its link interface without looking for VGM
+find_package2(PUBLIC VGM)
 find_package2(PUBLIC Geant4VMC)
 find_package2(PUBLIC fmt)
 find_package2(PUBLIC FairRoot REQUIRED)
