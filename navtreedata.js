@@ -151,24 +151,25 @@ var NAVTREE =
       ] ],
       [ "Using pixi", "md_README.html#autotoc_md105", [
         [ "Build from source (recommended)", "md_README.html#autotoc_md106", null ],
-        [ "Using the pre-built package", "md_README.html#autotoc_md107", null ]
+        [ "Using the pre-built package", "md_README.html#autotoc_md107", null ],
+        [ "On lxplus (AFS)", "md_README.html#autotoc_md108", null ]
       ] ],
-      [ "Run instructions", "md_README.html#autotoc_md108", null ],
-      [ "Docker instructions", "md_README.html#autotoc_md109", null ],
-      [ "Troubleshooting information", "md_README.html#autotoc_md110", null ],
-      [ "Documentation", "md_README.html#autotoc_md111", null ],
-      [ "License", "md_README.html#autotoc_md112", null ],
-      [ "Contributing code", "md_README.html#autotoc_md113", null ],
-      [ "Legacy releases (CVMFS + aliBuild)", "md_README.html#autotoc_md114", [
-        [ "With CVMFS (lxplus and similar)", "md_README.html#autotoc_md115", null ],
-        [ "Without CVMFS", "md_README.html#autotoc_md116", null ]
+      [ "Run instructions", "md_README.html#autotoc_md109", null ],
+      [ "Docker instructions", "md_README.html#autotoc_md110", null ],
+      [ "Troubleshooting information", "md_README.html#autotoc_md111", null ],
+      [ "Documentation", "md_README.html#autotoc_md112", null ],
+      [ "License", "md_README.html#autotoc_md113", null ],
+      [ "Contributing code", "md_README.html#autotoc_md114", null ],
+      [ "Legacy releases (CVMFS + aliBuild)", "md_README.html#autotoc_md115", [
+        [ "With CVMFS (lxplus and similar)", "md_README.html#autotoc_md116", null ],
+        [ "Without CVMFS", "md_README.html#autotoc_md117", null ]
       ] ]
     ] ],
     [ "Configuration files for GENIE simulations", "md_shipgen_2genie__config_2README.html", [
-      [ "Introduction", "md_shipgen_2genie__config_2README.html#autotoc_md118", null ],
-      [ "Details", "md_shipgen_2genie__config_2README.html#autotoc_md119", null ],
-      [ "History", "md_shipgen_2genie__config_2README.html#autotoc_md120", null ],
-      [ "Notes on particle decays", "md_shipgen_2genie__config_2README.html#autotoc_md121", null ]
+      [ "Introduction", "md_shipgen_2genie__config_2README.html#autotoc_md119", null ],
+      [ "Details", "md_shipgen_2genie__config_2README.html#autotoc_md120", null ],
+      [ "History", "md_shipgen_2genie__config_2README.html#autotoc_md121", null ],
+      [ "Notes on particle decays", "md_shipgen_2genie__config_2README.html#autotoc_md122", null ]
     ] ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
@@ -227,19 +228,19 @@ var NAVTREEINDEX =
 "hepunit_8py.html#a539ba804c693c9c16d8c61235fafc349",
 "makeDecay_8py.html#ae036a600a0fe461ba6d63d7c5a7d1eb0",
 "md_CHANGELOG.html#autotoc_md45",
-"namespaceShipReco.html#acc64c7017469a0c560aa3810436b49f9",
-"namespaceevd__fillEnergy.html#ade878b622c0fe110d4ef453bea001a2c",
-"namespacehepunit.html#a13d4d4a682566e034747b30bba0e8d4a",
-"namespacemakeDecay.html#a7ec12e88da32853a5e27cbbf8bcd8899",
-"namespacemembers_func_r.html",
-"namespacerunPythia8.html#ad9597c9a1ad3ce48b90a0cb190e54bb2",
-"namespacerun__simScript.html#abb5c7a5b05a93048a8e607f187efb37a",
-"namespaceshipunit.html#a630c23fd38b8ff5b14c11ab181ba67fd",
-"namespacetest__heavyFlavourScaling.html#a9f6b6f052a9005f5a52e098da3dc7a81",
-"run__fixedTarget_8py.html#a0c69a894251ef9de75b9a06ec7d12804",
-"run__simScript_8py_source.html",
-"shipunit_8py.html#a86f9ba53297f60184e521655c576baaf",
-"study__thinTarget_8py.html#aa9ff8642ba3746c2603b01b6f1595c8b"
+"namespaceShipReco.html#ac8b44ebebde083d26d062978f205ead9",
+"namespaceevd__fillEnergy.html#a834aa4524b6fa47ff20eddba685596de",
+"namespacehepunit.html#a1122f2c3e05c478635450284fb8356b1",
+"namespacemakeDecay.html#a799db5ebd88d664f8f7075e2a4313c0e",
+"namespacemembers_func_q.html",
+"namespacerunPythia8.html#ad74ad296dc1b3ef42e2efe98600c7a05",
+"namespacerun__simScript.html#ab93e824396c27419daefc1d01f0ab022",
+"namespaceshipunit.html#a5e4a21080c6248773d05805947944aa2",
+"namespacetest__heavyFlavourScaling.html#a87f40f09bed788baab055e15389894a4",
+"run__fixedTarget_8py.html#a05d4d5d811ac982fb950c0e77dff935b",
+"run__simScript_8py.html#afedbc79013bdd48d4a872216aa4c6cb4",
+"shipunit_8py.html#a840f1ff457f443bffbda7115b750d7b8",
+"study__thinTarget_8py.html#a9ce12272d4b3b45917c0fe1d83afcb34"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
