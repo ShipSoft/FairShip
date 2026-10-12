@@ -2,7 +2,9 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
+import hashlib
 import json
+import math
 import os
 
 import geometry_config
@@ -101,6 +103,34 @@ ap.add_argument(
 )
 ap.add_argument(
     "--multiple-kpi-splits", action="store_true", help="split kaons and pions multiple times along the track path"
+)
+
+jpsi_group = ap.add_argument_group(
+    "data-driven J/psi",
+    "JpsiGenerator: NA50 normalisation, rapidity shape from NA50 and SHiP Table 5 (arXiv:2604.03661), instead of "
+    "Pythia8's J/psi (the default). Physics weights: each event stands for one POT, the POT normalisation is applied "
+    "in the analysis",
+)
+jpsi_group.add_argument(
+    "--jpsi-data", action="store_true", help="J/psi-only sample, one data-driven J/psi per event (no Pythia8)"
+)
+jpsi_group.add_argument(
+    "--jpsi-inject",
+    action="store_true",
+    help="minimum-bias production with Pythia8's J/psi (and descendants) not transported, data-driven J/psi added "
+    "as an independent weighted overlay (mean yields preserved, no correlation with the host event)",
+)
+jpsi_group.add_argument(
+    "--jpsi-per-event",
+    type=float,
+    default=None,
+    help="with --jpsi-inject: mean number of J/psi added per event, weight rate/mu (default: the physical rate, "
+    "weight 1)",
+)
+jpsi_group.add_argument(
+    "--jpsi-config",
+    default=None,
+    help="key-value file overriding the nominal J/psi generator (testing and variations, keys in JpsiSampler.h)",
 )
 
 ap.add_argument("-C", "--charm", action=argparse.BooleanOptionalAction, default=False, help="generate charm decays")
@@ -239,6 +269,32 @@ if args.multiple_kpi_splits and args.kaon_pion_splits == 0:
     ap.error("--multiple-kpi-splits requires --kaon-pion-splits > 0")
 if args.pythia8_tune != "default" and (args.charm or args.beauty or args.G4only):
     ap.error("--pythia8-tune only affects the Pythia8 primary interaction, which --charm/--beauty/--G4only do not run")
+if args.jpsi_data and (
+    args.jpsi_inject
+    or args.charm
+    or args.beauty
+    or args.JpsiMainly
+    or args.tauOnly
+    or args.G4only
+    or args.pythiaDecay
+    or args.boostDiMuon > 1
+    or args.pythia8_tune != "default"
+):
+    ap.error(
+        "--jpsi-data replaces Pythia8: not with --jpsi-inject, --charm, --beauty, -J, -t, --G4only, --pythiaDecay, "
+        "--boostDiMuon or --pythia8-tune"
+    )
+if args.jpsi_inject and (args.charm or args.beauty or args.JpsiMainly or args.G4only):
+    ap.error("--jpsi-inject needs the Pythia8 minimum-bias production: not with --charm, --beauty, -J or --G4only")
+if (args.jpsi_per_event is not None) and not args.jpsi_inject:
+    ap.error("--jpsi-per-event only applies to --jpsi-inject")
+if args.jpsi_config and not (args.jpsi_data or args.jpsi_inject):
+    ap.error("--jpsi-config needs --jpsi-data or --jpsi-inject")
+if args.jpsi_config:
+    # the macro changes into the work directory before the generator reads it
+    args.jpsi_config = os.path.abspath(args.jpsi_config)
+    if not os.path.isfile(args.jpsi_config):
+        ap.error(f"--jpsi-config: no such file {args.jpsi_config}")
 
 
 if args.G4only:
@@ -246,6 +302,9 @@ if args.G4only:
     args.beauty = False
     withEvtGen = False
     args.pythiaDecay = False
+elif args.jpsi_data:
+    withEvtGen = False
+    logger.info("no Pythia8 or EvtGen: the J/psi -> mu mu decay is made by JpsiGenerator")
 elif args.pythiaDecay:
     withEvtGen = False
     logger.info("use Pythia8 as primary decayer")
@@ -263,10 +322,20 @@ if args.work_dir is None:
         tag = "charm"
     elif args.beauty:
         tag = "beauty"
+    elif args.jpsi_data:
+        tag = "jpsi"
     elif args.pythia8_tune != "default":
         tag = args.pythia8_tune
     else:
         tag = None
+    if args.jpsi_inject:
+        tag = "jpsi_inject" if tag is None else tag + "_jpsi_inject"
+        if args.jpsi_per_event is not None:
+            tag += f"_mu{args.jpsi_per_event:g}"
+    if args.jpsi_config:
+        # variations of the configuration must not share a directory: tag it with a hash of the file
+        with open(args.jpsi_config, "rb") as _f:
+            tag = (tag or "jpsi") + "_cfg" + hashlib.sha256(_f.read()).hexdigest()[:8]
     args.work_dir = get_work_dir(args.runnr, tag)
 
 logger.debug("work_dir: %s" % args.work_dir)
@@ -443,60 +512,103 @@ if args.AddCylindricalSensPlane:
 
 # -----Create PrimaryGenerator--------------------------------------
 primGen = ROOT.FairPrimaryGenerator()
-P8gen = ROOT.FixedTargetGenerator()
-P8gen.SetZoffset(args.z_offset * u.mm)
-P8gen.SetXoffset(args.x_offset * u.mm)
-P8gen.SetYoffset(args.y_offset * u.mm)
-P8gen.SetSmearBeam(args.beam_smear * u.mm)
-P8gen.SetPaintRadius(args.beam_paint * u.mm)
-# Use geometry constants instead of fragile TGeo navigation
-P8gen.SetTargetCoordinates(ship_geo.target.z0, ship_geo.target.z0 + ship_geo.target.length)
-P8gen.SetMom(400.0 * u.GeV)
-P8gen.SetEnergyCut(args.ecut * u.GeV)
-P8gen.SetDebug(args.debug)
-P8gen.SetHeartBeat(100000)
-if args.G4only:
-    P8gen.SetG4only()
-P8gen.SetPythiaTune(args.pythia8_tune)
-if args.JpsiMainly:
-    P8gen.SetJpsiMainly()
-if args.tauOnly:
-    P8gen.SetTauOnly()
-if withEvtGen:
-    P8gen.WithEvtGen()
-if args.boostDiMuon > 1:
-    P8gen.SetBoost(
-        args.boostDiMuon
-    )  # will increase BR for rare eta,omega,rho ... mesons decaying to 2 muons in Pythia8
-    # and later copied to Geant4
-P8gen.SetSeed(seed)
-# for charm/beauty
-#        print ' for experts: p pot= number of protons on target per spill to normalize on'
-#        print '            : c chicc= ccbar over mbias cross section'
-if args.charm or args.beauty:
-    check_run_type_override(args.beauty, args.chicc, args.chibb)
-    # cascade files written by makeCascadePythia8.py carry the cross section they were made with;
-    # the flavour is taken from the file, as FixedTargetGenerator does
-    with ROOT.TFile.Open(charmInputFile) as _fin:
-        sigma_QQ = _fin.Get("sigma_QQ").GetVal() if _fin.Get("sigma_QQ") else None
-        _ntuple = _fin.Get("pythia6")
-        _ntuple.GetEntry(0)
-        input_is_beauty = file_is_beauty(_ntuple.M)
-        del _ntuple  # owned by the file, which is closed below
-    check_input_flavour(args.beauty, input_is_beauty)
-    if sigma_QQ:
-        flavour = "beauty" if input_is_beauty else "charm"
-        print(
-            f"Input file {flavour} cross section per nucleon: {1e3 * sigma_QQ:.3g} ub, used to scale chi{flavour[0] * 2}"
-        )
-    cs = derive_cross_sections(args.target_composition, args.A, args.chicc, args.chibb, sigma_QQ, args.beauty)
-    P8gen.SetChicc(cs.chicc)
-    P8gen.SetChibb(cs.chibb)
-    print(format_summary(cs, None if args.A is not None else args.target_composition))
-    print("--- process heavy flavours ---")
-    P8gen.InitForCharmOrBeauty(charmInputFile, args.nev, args.pot, args.nStart)
-primGen.AddGenerator(P8gen)
-ROOT.SetOwnership(P8gen, False)  # C++ FairPrimaryGenerator takes ownership
+
+
+def make_jpsi_generator():
+    """Data-driven J/psi source. Its Init() runs inside run.Init(), once the geometry exists: the target scan
+    then fixes the vertex distribution and the rate per POT, hence the weight."""
+    g = ROOT.JpsiGenerator()
+    if args.jpsi_config:
+        g.SetConfigFile(args.jpsi_config)
+    g.SetMom(400.0 * u.GeV)
+    g.SetTargetCoordinates(
+        ship_geo.target.z0 + args.z_offset * u.mm,
+        ship_geo.target.z0 + ship_geo.target.length,
+        args.x_offset * u.mm,
+        args.y_offset * u.mm,
+    )
+    g.SetSmearBeam(args.beam_smear * u.mm)
+    g.SetPaintRadius(args.beam_paint * u.mm)
+    g.SetSeed(seed)
+    return g
+
+
+jpsiGen = None
+P8gen = None
+if args.jpsi_data:
+    # J/psi-only sample: one data-driven J/psi per event, weight = J/psi -> mu mu per POT
+    jpsiGen = make_jpsi_generator()
+    jpsiGen.SetNEvents(args.nev)
+    primGen.AddGenerator(jpsiGen)
+    ROOT.SetOwnership(jpsiGen, False)  # C++ FairPrimaryGenerator takes ownership
+else:
+    P8gen = ROOT.FixedTargetGenerator()
+    P8gen.SetZoffset(args.z_offset * u.mm)
+    P8gen.SetXoffset(args.x_offset * u.mm)
+    P8gen.SetYoffset(args.y_offset * u.mm)
+    P8gen.SetSmearBeam(args.beam_smear * u.mm)
+    P8gen.SetPaintRadius(args.beam_paint * u.mm)
+    # Use geometry constants instead of fragile TGeo navigation
+    P8gen.SetTargetCoordinates(ship_geo.target.z0, ship_geo.target.z0 + ship_geo.target.length)
+    P8gen.SetMom(400.0 * u.GeV)
+    P8gen.SetEnergyCut(args.ecut * u.GeV)
+    P8gen.SetDebug(args.debug)
+    P8gen.SetHeartBeat(100000)
+    if args.G4only:
+        P8gen.SetG4only()
+    P8gen.SetPythiaTune(args.pythia8_tune)
+    if args.JpsiMainly:
+        P8gen.SetJpsiMainly()
+    if args.tauOnly:
+        P8gen.SetTauOnly()
+    if withEvtGen:
+        P8gen.WithEvtGen()
+    if args.boostDiMuon > 1:
+        P8gen.SetBoost(
+            args.boostDiMuon
+        )  # will increase BR for rare eta,omega,rho ... mesons decaying to 2 muons in Pythia8
+        # and later copied to Geant4
+    P8gen.SetSeed(seed)
+    # for charm/beauty
+    #        print ' for experts: p pot= number of protons on target per spill to normalize on'
+    #        print '            : c chicc= ccbar over mbias cross section'
+    if args.charm or args.beauty:
+        check_run_type_override(args.beauty, args.chicc, args.chibb)
+        # cascade files written by makeCascadePythia8.py carry the cross section they were made with;
+        # the flavour is taken from the file, as FixedTargetGenerator does
+        with ROOT.TFile.Open(charmInputFile) as _fin:
+            sigma_QQ = _fin.Get("sigma_QQ").GetVal() if _fin.Get("sigma_QQ") else None
+            _ntuple = _fin.Get("pythia6")
+            _ntuple.GetEntry(0)
+            input_is_beauty = file_is_beauty(_ntuple.M)
+            del _ntuple  # owned by the file, which is closed below
+        check_input_flavour(args.beauty, input_is_beauty)
+        if sigma_QQ:
+            flavour = "beauty" if input_is_beauty else "charm"
+            print(
+                f"Input file {flavour} cross section per nucleon: {1e3 * sigma_QQ:.3g} ub, used to scale chi{flavour[0] * 2}"
+            )
+        cs = derive_cross_sections(args.target_composition, args.A, args.chicc, args.chibb, sigma_QQ, args.beauty)
+        P8gen.SetChicc(cs.chicc)
+        P8gen.SetChibb(cs.chibb)
+        print(format_summary(cs, None if args.A is not None else args.target_composition))
+        print("--- process heavy flavours ---")
+        P8gen.InitForCharmOrBeauty(charmInputFile, args.nev, args.pot, args.nStart)
+    primGen.AddGenerator(P8gen)
+    ROOT.SetOwnership(P8gen, False)  # C++ FairPrimaryGenerator takes ownership
+    if args.jpsi_inject:
+        # Pythia8 keeps producing everything else; its J/psi and their descendants are not transported, and
+        # data-driven J/psi are added to the same events (one POT each) instead
+        P8gen.SetVetoJpsi()
+        jpsiGen = make_jpsi_generator()
+        jpsiGen.SetInjection(True)
+        jpsiGen.SetPotPerEvent(1.0)
+        if args.jpsi_per_event is not None:
+            jpsiGen.SetMeanPerEvent(args.jpsi_per_event)
+        else:
+            jpsiGen.SetEnhancement(1.0)
+        primGen.AddGenerator(jpsiGen)
+        ROOT.SetOwnership(jpsiGen, False)  # C++ FairPrimaryGenerator takes ownership
 #
 run.SetGenerator(primGen)
 ROOT.SetOwnership(primGen, False)  # C++ FairRunSim takes ownership
@@ -513,7 +625,8 @@ if args.kaon_pion_splits > 0:
 #
 import AddDiMuonDecayChannelsToG4
 
-AddDiMuonDecayChannelsToG4.Initialize(P8gen.GetPythia())
+if P8gen is not None:  # no Pythia8 instance in the J/psi-only mode
+    AddDiMuonDecayChannelsToG4.Initialize(P8gen.GetPythia())
 
 # boost gamma2muon conversion
 if args.boostFactor > 1:
@@ -527,6 +640,8 @@ if args.boostFactor > 1:
     procGMuPair.SetCrossSecFactor(args.boostFactor)
 
 # -----Start run----------------------------------------------------
+if jpsiGen is not None:
+    print(jpsiGen.Summary())
 run.Run(args.nev)
 
 # -----Finish-------------------------------------------------------
@@ -549,10 +664,12 @@ if fHeader:
     fHeader.SetRunId(args.runnr)
 else:
     print("WARNING: FileHeader not found in simulation output; skipped FileHeader RunID update")
-if args.charm or args.beauty:
+if (args.charm or args.beauty) and P8gen is not None:  # --charm/--beauty exclude --jpsi-data
     # normalization for charm
     poteq = P8gen.GetPotForCharm()
     info = "POT equivalent = %7.3G" % (poteq)
+elif args.jpsi_data:
+    info = f"POT = {args.nev} (J/psi only, one per event, weights per POT)"
 else:
     info = f"POT = {args.nev}"
 
@@ -569,6 +686,10 @@ if args.boostDiMuon > 1:
     conditions += " diMu" + str(args.boostDiMuon)
 if args.boostFactor > 1:
     conditions += " X" + str(args.boostFactor)
+if args.jpsi_inject:
+    conditions += " JpsiInject"
+if args.jpsi_config:
+    conditions += " JpsiConfig=" + os.path.basename(args.jpsi_config)
 
 info += conditions
 if fHeader:
@@ -623,6 +744,16 @@ print("removed out file, moved tmpFile to out file", rc1, rc2)
 if rc1 == 0 and rc2 == 0:
     print("INFO: Adding file summary")
     fsr = vars(args)
+    if jpsiGen is not None:
+        # every event stands for one POT; the J/psi weights are physics weights (per POT)
+        # JSON has no NaN: a setting that is not in use (e.g. map_tail_n without a data map) is stored as null
+        fsr["JpsiGenerator"] = {str(k): (float(v) if math.isfinite(v) else None) for k, v in jpsiGen.Metadata()}
+        fsr["JpsiGeneratorVersion"] = str(jpsiGen.Version())
+        fsr["JpsiGeneratorConfig"] = str(jpsiGen.ConfigFile()) or "nominal"
+        # the configuration and data-map files themselves, to reproduce the run
+        fsr["JpsiGeneratorConfigText"] = str(jpsiGen.ConfigText())
+    # the seed actually used (--seed 0 draws one from the clock), to reproduce the run
+    fsr["seed_used"] = seed
     with ROOT.TFile.Open(outFile, "UPDATE") as _of:
         _of.WriteObject(ROOT.TString(json.dumps(fsr)), "FileSummary")
 else:

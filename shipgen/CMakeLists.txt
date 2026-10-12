@@ -8,11 +8,24 @@ ship_add_library(
           NtupleGenerator.cxx MuonBackGenerator.cxx CosmicsGenerator.cxx
           MuDISGenerator.cxx FixedTargetGenerator.cxx EvtCalcGenerator.cxx TTreeGenerator.cxx
           TEvtGenDecayer.cxx BeamSmearingUtils.cxx MeanMaterialBudget.cxx
-          ParticleGunGenerator.cxx
+          ParticleGunGenerator.cxx JpsiGenerator.cxx JpsiSampler.cxx
   LINKDEF LinkDef.h
   DEPENDENCIES Base ShipData veto EvtGen::EvtGen EvtGen::EvtGenExternal
                FairLogger::FairLogger ROOT::EGPythia6 ROOT::EGPythia8
   INCLUDE_DIRECTORIES ${ROOTEGPythia6_INCLUDE_DIR}
   SYSTEM_INCLUDE_DIRECTORIES ${PYTHIA8_INCLUDE_DIR} ${PYTHIA8_INCLUDE_DIR}/..
                              ${EVTGEN_INCLUDE_DIR} ${EVTGEN_INCLUDE_DIR}/..
+)
+
+# Writer of standalone J/psi samples, e.g. the map base fitted by
+# macro/jpsi/JpsiDataMap.C (see macro/jpsi/README.md)
+add_executable(
+    makeJpsiNtuple
+    ${CMAKE_SOURCE_DIR}/macro/jpsi/makeJpsiNtuple.cxx
+    JpsiSampler.cxx
+)
+target_include_directories(makeJpsiNtuple PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+target_link_libraries(
+    makeJpsiNtuple
+    PRIVATE ROOT::Core ROOT::RIO ROOT::Tree ROOT::Hist
 )
