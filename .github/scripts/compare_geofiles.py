@@ -19,7 +19,7 @@ import sys
 import tempfile
 
 # Keys of ShipGeo that record which FairShip wrote the file, not the geometry
-PROVENANCE_KEYS = {"FairShip", "FairRoot", "geometryBuiltWithFairShip"}
+PROVENANCE_KEYS = {"FairShip", "FairShipLibrary", "FairRoot", "geometryBuiltWithFairShip"}
 
 
 def rounded(values) -> list[float]:
