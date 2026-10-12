@@ -183,7 +183,7 @@ min_hits : int
 min_stations : int
     Minimum number of tracking stations crossed for reconstructibility.
 </pre> 
-<p class="definition">Definition at line <a class="el" href="tracking__benchmark_8py_source.html#l00056">56</a> of file <a class="el" href="tracking__benchmark_8py_source.html">tracking_benchmark.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tracking__benchmark_8py_source.html#l00057">57</a> of file <a class="el" href="tracking__benchmark_8py_source.html">tracking_benchmark.py</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a49f74fb39d0c9862b4f4976e833f0d74" name="a49f74fb39d0c9862b4f4976e833f0d74"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a49f74fb39d0c9862b4f4976e833f0d74">&#9670;&#160;</a></span>__init__()</h2>
@@ -241,27 +241,27 @@ min_stations : int
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tracking__benchmark_8py_source.html#l00075">75</a> of file <a class="el" href="tracking__benchmark_8py_source.html">tracking_benchmark.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   83</span>    ) -&gt; <span class="keywordtype">None</span>:</div>
-<div class="line"><span class="lineno">   84</span>        self.purity_cut = purity_cut</div>
-<div class="line"><span class="lineno">   85</span>        self.min_hits = min_hits</div>
-<div class="line"><span class="lineno">   86</span>        self.min_stations = min_stations</div>
-<div class="line"><span class="lineno">   87</span> </div>
-<div class="line"><span class="lineno">   88</span>        self.f_sim = ROOT.TFile.Open(sim_file, <span class="stringliteral">&quot;read&quot;</span>)</div>
-<div class="line"><span class="lineno">   89</span>        self.sim_tree = self.f_sim[<span class="stringliteral">&quot;cbmsim&quot;</span>]</div>
-<div class="line"><span class="lineno">   90</span> </div>
-<div class="line"><span class="lineno">   91</span>        self.f_reco = ROOT.TFile.Open(reco_file, <span class="stringliteral">&quot;read&quot;</span>)</div>
-<div class="line"><span class="lineno">   92</span>        self.reco_tree = self.f_reco[<span class="stringliteral">&quot;ship_reco_sim&quot;</span>]</div>
-<div class="line"><span class="lineno">   93</span> </div>
-<div class="line"><span class="lineno">   94</span>        self.f_geo = ROOT.TFile.Open(geo_file, <span class="stringliteral">&quot;read&quot;</span>)</div>
-<div class="line"><span class="lineno">   95</span> </div>
-<div class="line"><span class="lineno">   96</span>        self.PDG = ROOT.TDatabasePDG.Instance()</div>
-<div class="line"><span class="lineno">   97</span> </div>
-<div class="line"><span class="lineno">   98</span>        self.metrics: dict[str, Any] = {}</div>
-<div class="line"><span class="lineno">   99</span>        self._histos: dict[str, Any] = {}</div>
-<div class="line"><span class="lineno">  100</span>        <span class="comment"># Per-event index over strawtubesPoint, rebuilt each event.</span></div>
-<div class="line"><span class="lineno">  101</span>        self._straw_index: dict[int, dict[str, Any]] = {}</div>
-<div class="line"><span class="lineno">  102</span> </div>
+<p class="definition">Definition at line <a class="el" href="tracking__benchmark_8py_source.html#l00076">76</a> of file <a class="el" href="tracking__benchmark_8py_source.html">tracking_benchmark.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   84</span>    ) -&gt; <span class="keywordtype">None</span>:</div>
+<div class="line"><span class="lineno">   85</span>        self.purity_cut = purity_cut</div>
+<div class="line"><span class="lineno">   86</span>        self.min_hits = min_hits</div>
+<div class="line"><span class="lineno">   87</span>        self.min_stations = min_stations</div>
+<div class="line"><span class="lineno">   88</span> </div>
+<div class="line"><span class="lineno">   89</span>        self.f_sim = ROOT.TFile.Open(sim_file, <span class="stringliteral">&quot;read&quot;</span>)</div>
+<div class="line"><span class="lineno">   90</span>        self.sim_tree = self.f_sim[<span class="stringliteral">&quot;cbmsim&quot;</span>]</div>
+<div class="line"><span class="lineno">   91</span> </div>
+<div class="line"><span class="lineno">   92</span>        self.f_reco = ROOT.TFile.Open(reco_file, <span class="stringliteral">&quot;read&quot;</span>)</div>
+<div class="line"><span class="lineno">   93</span>        self.reco_tree = self.f_reco[<span class="stringliteral">&quot;ship_reco_sim&quot;</span>]</div>
+<div class="line"><span class="lineno">   94</span> </div>
+<div class="line"><span class="lineno">   95</span>        self.f_geo = ROOT.TFile.Open(geo_file, <span class="stringliteral">&quot;read&quot;</span>)</div>
+<div class="line"><span class="lineno">   96</span> </div>
+<div class="line"><span class="lineno">   97</span>        self.PDG = ROOT.TDatabasePDG.Instance()</div>
+<div class="line"><span class="lineno">   98</span> </div>
+<div class="line"><span class="lineno">   99</span>        self.metrics: dict[str, Any] = {}</div>
+<div class="line"><span class="lineno">  100</span>        self._histos: dict[str, Any] = {}</div>
+<div class="line"><span class="lineno">  101</span>        <span class="comment"># Per-event index over strawtubesPoint, rebuilt each event.</span></div>
+<div class="line"><span class="lineno">  102</span>        self._straw_index: dict[int, dict[str, Any]] = {}</div>
+<div class="line"><span class="lineno">  103</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -320,38 +320,38 @@ Maps MC track id -&gt; {n_hits, stations, first}, where ``first`` holds the
 replaces the repeated full-branch scans in the reconstructibility and
 truth-lookup helpers.
 </pre> 
-<p class="definition">Definition at line <a class="el" href="tracking__benchmark_8py_source.html#l00103">103</a> of file <a class="el" href="tracking__benchmark_8py_source.html">tracking_benchmark.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  103</span>    <span class="keyword">def </span>_build_straw_index(self) -&gt; dict[int, dict[str, Any]]:</div>
-<div class="line"><span class="lineno">  104</span>        <span class="stringliteral">&quot;&quot;&quot;Build a per-event index over strawtubesPoint.</span></div>
-<div class="line"><span class="lineno">  105</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  106</span><span class="stringliteral">        Maps MC track id -&gt; {n_hits, stations, first}, where ``first`` holds the</span></div>
-<div class="line"><span class="lineno">  107</span><span class="stringliteral">        (px, py, pz, x, y, z) of the first straw hit for that track. One pass</span></div>
-<div class="line"><span class="lineno">  108</span><span class="stringliteral">        replaces the repeated full-branch scans in the reconstructibility and</span></div>
-<div class="line"><span class="lineno">  109</span><span class="stringliteral">        truth-lookup helpers.</span></div>
-<div class="line"><span class="lineno">  110</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  111</span>        index: dict[int, dict[str, Any]] = {}</div>
-<div class="line"><span class="lineno">  112</span>        <span class="keywordflow">for</span> hit <span class="keywordflow">in</span> self.sim_tree.strawtubesPoint:</div>
-<div class="line"><span class="lineno">  113</span>            tid = hit.GetTrackID()</div>
-<div class="line"><span class="lineno">  114</span>            station = int(hit.GetDetectorID() // 1_000_000)</div>
-<div class="line"><span class="lineno">  115</span>            entry = index.get(tid)</div>
-<div class="line"><span class="lineno">  116</span>            <span class="keywordflow">if</span> entry <span class="keywordflow">is</span> <span class="keywordtype">None</span>:</div>
-<div class="line"><span class="lineno">  117</span>                index[tid] = {</div>
-<div class="line"><span class="lineno">  118</span>                    <span class="stringliteral">&quot;n_hits&quot;</span>: 1,</div>
-<div class="line"><span class="lineno">  119</span>                    <span class="stringliteral">&quot;stations&quot;</span>: {station},</div>
-<div class="line"><span class="lineno">  120</span>                    <span class="stringliteral">&quot;first&quot;</span>: (</div>
-<div class="line"><span class="lineno">  121</span>                        hit.GetPx(),</div>
-<div class="line"><span class="lineno">  122</span>                        hit.GetPy(),</div>
-<div class="line"><span class="lineno">  123</span>                        hit.GetPz(),</div>
-<div class="line"><span class="lineno">  124</span>                        hit.GetX(),</div>
-<div class="line"><span class="lineno">  125</span>                        hit.GetY(),</div>
-<div class="line"><span class="lineno">  126</span>                        hit.GetZ(),</div>
-<div class="line"><span class="lineno">  127</span>                    ),</div>
-<div class="line"><span class="lineno">  128</span>                }</div>
-<div class="line"><span class="lineno">  129</span>            <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  130</span>                entry[<span class="stringliteral">&quot;n_hits&quot;</span>] += 1</div>
-<div class="line"><span class="lineno">  131</span>                entry[<span class="stringliteral">&quot;stations&quot;</span>].add(station)</div>
-<div class="line"><span class="lineno">  132</span>        <span class="keywordflow">return</span> index</div>
-<div class="line"><span class="lineno">  133</span> </div>
+<p class="definition">Definition at line <a class="el" href="tracking__benchmark_8py_source.html#l00104">104</a> of file <a class="el" href="tracking__benchmark_8py_source.html">tracking_benchmark.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  104</span>    <span class="keyword">def </span>_build_straw_index(self) -&gt; dict[int, dict[str, Any]]:</div>
+<div class="line"><span class="lineno">  105</span>        <span class="stringliteral">&quot;&quot;&quot;Build a per-event index over strawtubesPoint.</span></div>
+<div class="line"><span class="lineno">  106</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  107</span><span class="stringliteral">        Maps MC track id -&gt; {n_hits, stations, first}, where ``first`` holds the</span></div>
+<div class="line"><span class="lineno">  108</span><span class="stringliteral">        (px, py, pz, x, y, z) of the first straw hit for that track. One pass</span></div>
+<div class="line"><span class="lineno">  109</span><span class="stringliteral">        replaces the repeated full-branch scans in the reconstructibility and</span></div>
+<div class="line"><span class="lineno">  110</span><span class="stringliteral">        truth-lookup helpers.</span></div>
+<div class="line"><span class="lineno">  111</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  112</span>        index: dict[int, dict[str, Any]] = {}</div>
+<div class="line"><span class="lineno">  113</span>        <span class="keywordflow">for</span> hit <span class="keywordflow">in</span> self.sim_tree.strawtubesPoint:</div>
+<div class="line"><span class="lineno">  114</span>            tid = hit.GetTrackID()</div>
+<div class="line"><span class="lineno">  115</span>            station = int(hit.GetDetectorID() // 1_000_000)</div>
+<div class="line"><span class="lineno">  116</span>            entry = index.get(tid)</div>
+<div class="line"><span class="lineno">  117</span>            <span class="keywordflow">if</span> entry <span class="keywordflow">is</span> <span class="keywordtype">None</span>:</div>
+<div class="line"><span class="lineno">  118</span>                index[tid] = {</div>
+<div class="line"><span class="lineno">  119</span>                    <span class="stringliteral">&quot;n_hits&quot;</span>: 1,</div>
+<div class="line"><span class="lineno">  120</span>                    <span class="stringliteral">&quot;stations&quot;</span>: {station},</div>
+<div class="line"><span class="lineno">  121</span>                    <span class="stringliteral">&quot;first&quot;</span>: (</div>
+<div class="line"><span class="lineno">  122</span>                        hit.GetPx(),</div>
+<div class="line"><span class="lineno">  123</span>                        hit.GetPy(),</div>
+<div class="line"><span class="lineno">  124</span>                        hit.GetPz(),</div>
+<div class="line"><span class="lineno">  125</span>                        hit.GetX(),</div>
+<div class="line"><span class="lineno">  126</span>                        hit.GetY(),</div>
+<div class="line"><span class="lineno">  127</span>                        hit.GetZ(),</div>
+<div class="line"><span class="lineno">  128</span>                    ),</div>
+<div class="line"><span class="lineno">  129</span>                }</div>
+<div class="line"><span class="lineno">  130</span>            <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  131</span>                entry[<span class="stringliteral">&quot;n_hits&quot;</span>] += 1</div>
+<div class="line"><span class="lineno">  132</span>                entry[<span class="stringliteral">&quot;stations&quot;</span>].add(station)</div>
+<div class="line"><span class="lineno">  133</span>        <span class="keywordflow">return</span> index</div>
+<div class="line"><span class="lineno">  134</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -657,24 +657,23 @@ A particle is reconstructible if it is a charged primary with
 hits in &gt;= min_stations tracking stations and &gt;= min_hits total
 straw hits. This matches the cuts in shipDigiReco.findTracks().
 </pre> 
-<p class="definition">Definition at line <a class="el" href="tracking__benchmark_8py_source.html#l00134">134</a> of file <a class="el" href="tracking__benchmark_8py_source.html">tracking_benchmark.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  134</span>    <span class="keyword">def </span>_is_reconstructible(self, mc_track_id: int) -&gt; bool:</div>
-<div class="line"><span class="lineno">  135</span>        <span class="stringliteral">&quot;&quot;&quot;Check if an MC particle meets reconstructibility criteria.</span></div>
-<div class="line"><span class="lineno">  136</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  137</span><span class="stringliteral">        A particle is reconstructible if it is a charged primary with</span></div>
-<div class="line"><span class="lineno">  138</span><span class="stringliteral">        hits in &gt;= min_stations tracking stations and &gt;= min_hits total</span></div>
-<div class="line"><span class="lineno">  139</span><span class="stringliteral">        straw hits. This matches the cuts in shipDigiReco.findTracks().</span></div>
-<div class="line"><span class="lineno">  140</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  141</span>        mc_track = self.sim_tree.MCTrack[mc_track_id]</div>
-<div class="line"><span class="lineno">  142</span> </div>
-<div class="line"><span class="lineno">  143</span>        <span class="comment"># Must be primary (no mother)</span></div>
-<div class="line"><span class="lineno">  144</span>        <span class="keywordflow">if</span> mc_track.GetMotherId() &gt;= 0:</div>
-<div class="line"><span class="lineno">  145</span>            <span class="keywordflow">return</span> <span class="keyword">False</span></div>
-<div class="line"><span class="lineno">  146</span> </div>
-<div class="line"><span class="lineno">  147</span>        <span class="comment"># Must be charged</span></div>
-<div class="line"><span class="lineno">  148</span>        pdg_code = mc_track.GetPdgCode()</div>
-<div class="line"><span class="lineno">  149</span>        particle = self.PDG.GetParticle(pdg_code)</div>
-<div class="line"><span class="lineno">  150</span>        <span class="keywordflow">if</span> particle <span class="keywordflow">is</span> <span class="keywordtype">None</span> <span class="keywordflow">or</span> particle.Charge() == 0:</div>
+<p class="definition">Definition at line <a class="el" href="tracking__benchmark_8py_source.html#l00135">135</a> of file <a class="el" href="tracking__benchmark_8py_source.html">tracking_benchmark.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  135</span>    <span class="keyword">def </span>_is_reconstructible(self, mc_track_id: int) -&gt; bool:</div>
+<div class="line"><span class="lineno">  136</span>        <span class="stringliteral">&quot;&quot;&quot;Check if an MC particle meets reconstructibility criteria.</span></div>
+<div class="line"><span class="lineno">  137</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  138</span><span class="stringliteral">        A particle is reconstructible if it is a charged primary with</span></div>
+<div class="line"><span class="lineno">  139</span><span class="stringliteral">        hits in &gt;= min_stations tracking stations and &gt;= min_hits total</span></div>
+<div class="line"><span class="lineno">  140</span><span class="stringliteral">        straw hits. This matches the cuts in shipDigiReco.findTracks().</span></div>
+<div class="line"><span class="lineno">  141</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  142</span>        mc_track = self.sim_tree.MCTrack[mc_track_id]</div>
+<div class="line"><span class="lineno">  143</span> </div>
+<div class="line"><span class="lineno">  144</span>        <span class="comment"># Must be primary (no mother)</span></div>
+<div class="line"><span class="lineno">  145</span>        <span class="keywordflow">if</span> mc_track.GetMotherId() &gt;= 0:</div>
+<div class="line"><span class="lineno">  146</span>            <span class="keywordflow">return</span> <span class="keyword">False</span></div>
+<div class="line"><span class="lineno">  147</span> </div>
+<div class="line"><span class="lineno">  148</span>        <span class="comment"># Must be charged</span></div>
+<div class="line"><span class="lineno">  149</span>        pdg_code = mc_track.GetPdgCode()</div>
+<div class="line"><span class="lineno">  150</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> is_known_particle(pdg_code) <span class="keywordflow">or</span> get_particle(pdg_code).Charge() == 0:</div>
 <div class="line"><span class="lineno">  151</span>            <span class="keywordflow">return</span> <span class="keyword">False</span></div>
 <div class="line"><span class="lineno">  152</span> </div>
 <div class="line"><span class="lineno">  153</span>        <span class="comment"># Hit counts come from the per-event straw index (built once per event).</span></div>
@@ -1255,7 +1254,7 @@ dict
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tracking__benchmark_8py_source.html#l00094">94</a> of file <a class="el" href="tracking__benchmark_8py_source.html">tracking_benchmark.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tracking__benchmark_8py_source.html#l00095">95</a> of file <a class="el" href="tracking__benchmark_8py_source.html">tracking_benchmark.py</a>.</p>
 
 </div>
 </div>
@@ -1271,7 +1270,7 @@ dict
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tracking__benchmark_8py_source.html#l00091">91</a> of file <a class="el" href="tracking__benchmark_8py_source.html">tracking_benchmark.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tracking__benchmark_8py_source.html#l00092">92</a> of file <a class="el" href="tracking__benchmark_8py_source.html">tracking_benchmark.py</a>.</p>
 
 </div>
 </div>
@@ -1287,7 +1286,7 @@ dict
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tracking__benchmark_8py_source.html#l00088">88</a> of file <a class="el" href="tracking__benchmark_8py_source.html">tracking_benchmark.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tracking__benchmark_8py_source.html#l00089">89</a> of file <a class="el" href="tracking__benchmark_8py_source.html">tracking_benchmark.py</a>.</p>
 
 </div>
 </div>
@@ -1319,7 +1318,7 @@ dict
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tracking__benchmark_8py_source.html#l00085">85</a> of file <a class="el" href="tracking__benchmark_8py_source.html">tracking_benchmark.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tracking__benchmark_8py_source.html#l00086">86</a> of file <a class="el" href="tracking__benchmark_8py_source.html">tracking_benchmark.py</a>.</p>
 
 </div>
 </div>
@@ -1335,7 +1334,7 @@ dict
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tracking__benchmark_8py_source.html#l00086">86</a> of file <a class="el" href="tracking__benchmark_8py_source.html">tracking_benchmark.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tracking__benchmark_8py_source.html#l00087">87</a> of file <a class="el" href="tracking__benchmark_8py_source.html">tracking_benchmark.py</a>.</p>
 
 </div>
 </div>
@@ -1351,7 +1350,7 @@ dict
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tracking__benchmark_8py_source.html#l00096">96</a> of file <a class="el" href="tracking__benchmark_8py_source.html">tracking_benchmark.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tracking__benchmark_8py_source.html#l00097">97</a> of file <a class="el" href="tracking__benchmark_8py_source.html">tracking_benchmark.py</a>.</p>
 
 </div>
 </div>
@@ -1367,7 +1366,7 @@ dict
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tracking__benchmark_8py_source.html#l00084">84</a> of file <a class="el" href="tracking__benchmark_8py_source.html">tracking_benchmark.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tracking__benchmark_8py_source.html#l00085">85</a> of file <a class="el" href="tracking__benchmark_8py_source.html">tracking_benchmark.py</a>.</p>
 
 </div>
 </div>
@@ -1383,7 +1382,7 @@ dict
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tracking__benchmark_8py_source.html#l00092">92</a> of file <a class="el" href="tracking__benchmark_8py_source.html">tracking_benchmark.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tracking__benchmark_8py_source.html#l00093">93</a> of file <a class="el" href="tracking__benchmark_8py_source.html">tracking_benchmark.py</a>.</p>
 
 </div>
 </div>
@@ -1399,7 +1398,7 @@ dict
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tracking__benchmark_8py_source.html#l00089">89</a> of file <a class="el" href="tracking__benchmark_8py_source.html">tracking_benchmark.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tracking__benchmark_8py_source.html#l00090">90</a> of file <a class="el" href="tracking__benchmark_8py_source.html">tracking_benchmark.py</a>.</p>
 
 </div>
 </div>

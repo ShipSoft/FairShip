@@ -7,6 +7,8 @@ var rootUtils_8py =
     [ "checkFileExists", "rootUtils_8py.html#a4e338bc5e188e11be1877ab8fd706a3d", null ],
     [ "checkForBranch", "rootUtils_8py.html#a9d1a57fa6c9b71b21004e66bb1fae7c4", null ],
     [ "errorSummary", "rootUtils_8py.html#a9fad8948a40e9aac00e89f938b0a03af", null ],
+    [ "get_particle", "rootUtils_8py.html#a6fa7b470c587fa9daf3ee30c2b2be4e3", null ],
+    [ "is_known_particle", "rootUtils_8py.html#a135d7bfa10a1e034374497fd828da1b9", null ],
     [ "readHists", "rootUtils_8py.html#a61db3e66b871a770b6bc264b9e3ac33e", null ],
     [ "reportError", "rootUtils_8py.html#ab807114738eb9dfb5fef001e2fa9bc54", null ],
     [ "writeHists", "rootUtils_8py.html#a4288202f324fd0dae890c6208e1b9deb", null ],

@@ -289,24 +289,24 @@ forced production has somewhat different x_F and pT^2 distributions. The normali
       </table>
 </div><div class="memdoc">
 <pre class="fragment">Forced-production charm K-factor for beam_id on target nucleon nucleon_id at momentum p.</pre> 
-<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00104">104</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  104</span><span class="keyword">def </span>kforced_charm(beam_id, nucleon_id, p):</div>
-<div class="line"><span class="lineno">  105</span>    <span class="stringliteral">&quot;&quot;&quot;Forced-production charm K-factor for beam_id on target nucleon nucleon_id at momentum p.&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  106</span>    abs_id = abs(beam_id)</div>
-<div class="line"><span class="lineno">  107</span>    <span class="keywordflow">if</span> abs_id <span class="keywordflow">in</span> (2212, 2112):</div>
-<div class="line"><span class="lineno">  108</span>        <span class="comment"># n on p behaves as p on n, and n on n as p on p</span></div>
-<div class="line"><span class="lineno">  109</span>        key = (2212, nucleon_id) <span class="keywordflow">if</span> abs_id == 2212 <span class="keywordflow">else</span> (2212, 2112 <span class="keywordflow">if</span> nucleon_id == 2212 <span class="keywordflow">else</span> 2212)</div>
-<div class="line"><span class="lineno">  110</span>        kfactors = KFORCED_CHARM[key]</div>
-<div class="line"><span class="lineno">  111</span>    <span class="keywordflow">elif</span> abs_id == 211:</div>
-<div class="line"><span class="lineno">  112</span>        <span class="comment"># pi+ n behaves as pi- p, and pi- n as pi+ p</span></div>
-<div class="line"><span class="lineno">  113</span>        sign = 1 <span class="keywordflow">if</span> beam_id &gt; 0 <span class="keywordflow">else</span> -1</div>
-<div class="line"><span class="lineno">  114</span>        key = (sign * 211 <span class="keywordflow">if</span> nucleon_id == 2212 <span class="keywordflow">else</span> -sign * 211, 2212)</div>
-<div class="line"><span class="lineno">  115</span>        kfactors = KFORCED_CHARM[key]</div>
-<div class="line"><span class="lineno">  116</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  117</span>        kfactors = [0.5 * (a + b) <span class="keywordflow">for</span> a, b <span class="keywordflow">in</span> zip(KFORCED_CHARM[211, 2212], KFORCED_CHARM[-211, 2212])]</div>
-<div class="line"><span class="lineno">  118</span>    <span class="keywordflow">return</span> float(np.interp(math.log(p), np.log(KFORCED_CHARM_P), kfactors))</div>
-<div class="line"><span class="lineno">  119</span> </div>
+<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00105">105</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  105</span><span class="keyword">def </span>kforced_charm(beam_id, nucleon_id, p):</div>
+<div class="line"><span class="lineno">  106</span>    <span class="stringliteral">&quot;&quot;&quot;Forced-production charm K-factor for beam_id on target nucleon nucleon_id at momentum p.&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  107</span>    abs_id = abs(beam_id)</div>
+<div class="line"><span class="lineno">  108</span>    <span class="keywordflow">if</span> abs_id <span class="keywordflow">in</span> (2212, 2112):</div>
+<div class="line"><span class="lineno">  109</span>        <span class="comment"># n on p behaves as p on n, and n on n as p on p</span></div>
+<div class="line"><span class="lineno">  110</span>        key = (2212, nucleon_id) <span class="keywordflow">if</span> abs_id == 2212 <span class="keywordflow">else</span> (2212, 2112 <span class="keywordflow">if</span> nucleon_id == 2212 <span class="keywordflow">else</span> 2212)</div>
+<div class="line"><span class="lineno">  111</span>        kfactors = KFORCED_CHARM[key]</div>
+<div class="line"><span class="lineno">  112</span>    <span class="keywordflow">elif</span> abs_id == 211:</div>
+<div class="line"><span class="lineno">  113</span>        <span class="comment"># pi+ n behaves as pi- p, and pi- n as pi+ p</span></div>
+<div class="line"><span class="lineno">  114</span>        sign = 1 <span class="keywordflow">if</span> beam_id &gt; 0 <span class="keywordflow">else</span> -1</div>
+<div class="line"><span class="lineno">  115</span>        key = (sign * 211 <span class="keywordflow">if</span> nucleon_id == 2212 <span class="keywordflow">else</span> -sign * 211, 2212)</div>
+<div class="line"><span class="lineno">  116</span>        kfactors = KFORCED_CHARM[key]</div>
+<div class="line"><span class="lineno">  117</span>    <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  118</span>        kfactors = [0.5 * (a + b) <span class="keywordflow">for</span> a, b <span class="keywordflow">in</span> zip(KFORCED_CHARM[211, 2212], KFORCED_CHARM[-211, 2212])]</div>
+<div class="line"><span class="lineno">  119</span>    <span class="keywordflow">return</span> float(np.interp(math.log(p), np.log(KFORCED_CHARM_P), kfactors))</div>
 <div class="line"><span class="lineno">  120</span> </div>
+<div class="line"><span class="lineno">  121</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -494,10 +494,9 @@ forced production has somewhat different x_F and pT^2 distributions. The normali
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00131">131</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  131</span><span class="keyword">def </span>mass(pdg_id):</div>
-<div class="line"><span class="lineno">  132</span>    particle = PDG.GetParticle(pdg_id)</div>
-<div class="line"><span class="lineno">  133</span>    <span class="keyword">assert</span> particle <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span>, f<span class="stringliteral">&quot;Unknown PDG: {pdg_id}&quot;</span></div>
+<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00132">132</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  132</span><span class="keyword">def </span>mass(pdg_id):</div>
+<div class="line"><span class="lineno">  133</span>    particle = get_particle(pdg_id)</div>
 <div class="line"><span class="lineno">  134</span>    <span class="keywordflow">return</span> particle.Mass()</div>
 <div class="line"><span class="lineno">  135</span> </div>
 <div class="line"><span class="lineno">  136</span> </div>
@@ -663,17 +662,17 @@ forced production has somewhat different x_F and pT^2 distributions. The normali
 
 kfactors: (nucleon beams, meson beams), or None for the momentum-dependent charm K-factors.
 </pre> 
-<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00121">121</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  121</span><span class="keyword">def </span>signal_kfactor(kfactors, beam_id, nucleon_id, p):</div>
-<div class="line"><span class="lineno">  122</span>    <span class="stringliteral">&quot;&quot;&quot;K-factor applied to the forced signal cross section of beam_id on nucleon_id at momentum p.</span></div>
-<div class="line"><span class="lineno">  123</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  124</span><span class="stringliteral">    kfactors: (nucleon beams, meson beams), or None for the momentum-dependent charm K-factors.</span></div>
-<div class="line"><span class="lineno">  125</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  126</span>    <span class="keywordflow">if</span> kfactors <span class="keywordflow">is</span> <span class="keywordtype">None</span>:</div>
-<div class="line"><span class="lineno">  127</span>        <span class="keywordflow">return</span> kforced_charm(beam_id, nucleon_id, p)</div>
-<div class="line"><span class="lineno">  128</span>    <span class="keywordflow">return</span> kfactors[0] <span class="keywordflow">if</span> abs(beam_id) <span class="keywordflow">in</span> (2212, 2112) <span class="keywordflow">else</span> kfactors[1]</div>
-<div class="line"><span class="lineno">  129</span> </div>
+<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00122">122</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  122</span><span class="keyword">def </span>signal_kfactor(kfactors, beam_id, nucleon_id, p):</div>
+<div class="line"><span class="lineno">  123</span>    <span class="stringliteral">&quot;&quot;&quot;K-factor applied to the forced signal cross section of beam_id on nucleon_id at momentum p.</span></div>
+<div class="line"><span class="lineno">  124</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  125</span><span class="stringliteral">    kfactors: (nucleon beams, meson beams), or None for the momentum-dependent charm K-factors.</span></div>
+<div class="line"><span class="lineno">  126</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  127</span>    <span class="keywordflow">if</span> kfactors <span class="keywordflow">is</span> <span class="keywordtype">None</span>:</div>
+<div class="line"><span class="lineno">  128</span>        <span class="keywordflow">return</span> kforced_charm(beam_id, nucleon_id, p)</div>
+<div class="line"><span class="lineno">  129</span>    <span class="keywordflow">return</span> kfactors[0] <span class="keywordflow">if</span> abs(beam_id) <span class="keywordflow">in</span> (2212, 2112) <span class="keywordflow">else</span> kfactors[1]</div>
 <div class="line"><span class="lineno">  130</span> </div>
+<div class="line"><span class="lineno">  131</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -690,7 +689,7 @@ kfactors: (nucleon beams, meson beams), or None for the momentum-dependent charm
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00034">34</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00035">35</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
 
 </div>
 </div>
@@ -717,7 +716,7 @@ kfactors: (nucleon beams, meson beams), or None for the momentum-dependent charm
 <div class="line"><span class="lineno">   10</span>    <span class="stringliteral">&quot;PDF:piSet = 1&quot;</span>,</div>
 <div class="line"><span class="lineno">   11</span>]</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00070">70</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00071">71</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
 
 </div>
 </div>
@@ -739,7 +738,7 @@ kfactors: (nucleon beams, meson beams), or None for the momentum-dependent charm
 <div class="line"><span class="lineno">    5</span>    (-211, 2212): [10.89, 9.22, 7.66, 7.03, 5.79, 5.30, 5.12, 5.12],</div>
 <div class="line"><span class="lineno">    6</span>}</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00091">91</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00092">92</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
 
 </div>
 </div>
@@ -755,7 +754,7 @@ kfactors: (nucleon beams, meson beams), or None for the momentum-dependent charm
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00090">90</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00091">91</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
 
 </div>
 </div>
@@ -787,7 +786,7 @@ kfactors: (nucleon beams, meson beams), or None for the momentum-dependent charm
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00101">101</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00102">102</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
 
 </div>
 </div>
@@ -803,7 +802,7 @@ kfactors: (nucleon beams, meson beams), or None for the momentum-dependent charm
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00037">37</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00038">38</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
 
 </div>
 </div>
@@ -834,7 +833,7 @@ kfactors: (nucleon beams, meson beams), or None for the momentum-dependent charm
 <div class="line"><span class="lineno">   14</span>    ),</div>
 <div class="line"><span class="lineno">   15</span>}</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00053">53</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00054">54</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
 
 </div>
 </div>
@@ -850,7 +849,7 @@ kfactors: (nucleon beams, meson beams), or None for the momentum-dependent charm
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00099">99</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00100">100</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
 
 </div>
 </div>
@@ -866,7 +865,7 @@ kfactors: (nucleon beams, meson beams), or None for the momentum-dependent charm
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00035">35</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascadePythia8_8py_source.html#l00036">36</a> of file <a class="el" href="makeCascadePythia8_8py_source.html">makeCascadePythia8.py</a>.</p>
 
 </div>
 </div>

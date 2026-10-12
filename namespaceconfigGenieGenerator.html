@@ -123,7 +123,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   10</span>    top = fGeo.GetTopVolume()</div>
 <div class="line"><span class="lineno">   11</span>    <span class="comment"># positions for nu events inside the nutau detector volume</span></div>
 <div class="line"><span class="lineno">   12</span>    muSpectrometer = top.FindNode(<span class="stringliteral">&quot;volNuTauMudet_1&quot;</span>)</div>
-<div class="line"><span class="lineno">   13</span>    <span class="keywordflow">if</span> muSpectrometer <span class="keywordflow">is</span> <span class="keywordtype">None</span>:</div>
+<div class="line"><span class="lineno">   13</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> muSpectrometer:  <span class="comment"># FindNode gives a null pointer, not None, for a missing node</span></div>
 <div class="line"><span class="lineno">   14</span>        <span class="keywordflow">raise</span> RuntimeError(<span class="stringliteral">&quot;GenieGenerator config requires volNuTauMudet_1 in the geometry&quot;</span>)</div>
 <div class="line"><span class="lineno">   15</span>    muSpectrometerTrans = muSpectrometer.GetMatrix().GetTranslation()</div>
 <div class="line"><span class="lineno">   16</span>    <span class="comment"># upper and lower yokes:</span></div>

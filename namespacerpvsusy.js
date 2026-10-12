@@ -8,6 +8,5 @@ var namespacerpvsusy =
     [ "PDGcode", "namespacerpvsusy.html#abd73aa2c17e9d3ad238d506eda8a9b03", null ],
     [ "PDGname", "namespacerpvsusy.html#a2295cbd58cd9ef5388bf3ef1097e440d", null ],
     [ "width", "namespacerpvsusy.html#a65398d2857d77a98dec2551c2086163f", null ],
-    [ "c", "namespacerpvsusy.html#ac884dc3219ae13b9dda6c048615e929d", null ],
-    [ "pdg", "namespacerpvsusy.html#a8b5544128495c9d33bee37ddf3210f10", null ]
+    [ "c", "namespacerpvsusy.html#ac884dc3219ae13b9dda6c048615e929d", null ]
 ];

@@ -994,8 +994,7 @@ var namespaces_dup =
       [ "addHNLdecayChannels", "namespacereadDecayTable.html#a7b20cc3e8df553c9dfbb68addb0e2665", null ],
       [ "load", "namespacereadDecayTable.html#accb3ca4d591c8a297fc406190aa012d1", null ],
       [ "PDGcode", "namespacereadDecayTable.html#a94bdd8639bf7a4e00cb64f1d4d0c820e", null ],
-      [ "configuredDecays", "namespacereadDecayTable.html#ac7b78e10a0805dc3d04baed8475ec3d7", null ],
-      [ "pdg", "namespacereadDecayTable.html#a216e0525d0705b0b1690f178c74c2cf9", null ]
+      [ "configuredDecays", "namespacereadDecayTable.html#ac7b78e10a0805dc3d04baed8475ec3d7", null ]
     ] ],
     [ "rootUtils", "namespacerootUtils.html", [
       [ "assignClonesArrayItem", "namespacerootUtils.html#ae9fb99014f636adbd119f23c5eaf6b5f", null ],
@@ -1005,6 +1004,8 @@ var namespaces_dup =
       [ "checkFileExists", "namespacerootUtils.html#a4e338bc5e188e11be1877ab8fd706a3d", null ],
       [ "checkForBranch", "namespacerootUtils.html#a9d1a57fa6c9b71b21004e66bb1fae7c4", null ],
       [ "errorSummary", "namespacerootUtils.html#a9fad8948a40e9aac00e89f938b0a03af", null ],
+      [ "get_particle", "namespacerootUtils.html#a6fa7b470c587fa9daf3ee30c2b2be4e3", null ],
+      [ "is_known_particle", "namespacerootUtils.html#a135d7bfa10a1e034374497fd828da1b9", null ],
       [ "readHists", "namespacerootUtils.html#a61db3e66b871a770b6bc264b9e3ac33e", null ],
       [ "reportError", "namespacerootUtils.html#ab807114738eb9dfb5fef001e2fa9bc54", null ],
       [ "writeHists", "namespacerootUtils.html#a4288202f324fd0dae890c6208e1b9deb", null ],
