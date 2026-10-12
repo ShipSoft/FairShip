@@ -108,6 +108,14 @@ ap.add_argument(
     "EXPERTS ONLY: risk of very large memory usage if the number is set without proper testing",
 )
 ap.add_argument(
+    "--kaon-pion-lifetime-factor",
+    type=float,
+    default=1.0,
+    help="VALIDATION ONLY: scale the lifetimes of K+-, pi+- in Geant4 by this factor. Shorter lifetimes make "
+    "decays in flight common, so that split and unsplit samples can be compared at the level of single decays "
+    "with few events. The output is not physical for any factor other than 1",
+)
+ap.add_argument(
     "--max-split-buffer",
     type=int,
     default=25000,
@@ -267,6 +275,8 @@ if args.pythia8_tune != "default" and (args.charm or args.beauty or args.G4only)
     ap.error("--pythia8-tune only affects the Pythia8 primary interaction, which --charm/--beauty/--G4only do not run")
 if args.multiple_kpi_splits and (args.kaon_pion_splits < 1 or args.intermediate_kaon_pion_splits < 1):
     ap.error("--multiple-kpi-splits requires --kaon-pion-splits and --intermediate-kaon-pion-splits to be positive")
+if not args.kaon_pion_lifetime_factor > 0:
+    ap.error("--kaon-pion-lifetime-factor must be > 0")
 if args.max_split_buffer < 1:
     ap.error("--max-split-buffer must be >= 1")
 if args.max_event_size < 1 or args.max_event_size > 2_147_483_647:
@@ -570,6 +580,23 @@ fStack.SetMinPoints(1)
 fStack.SetEnergyCut(-1.0)
 if args.kaon_pion_splits > 0:
     fStack.SetSplitting()
+
+if args.kaon_pion_lifetime_factor != 1.0:
+    # G4Decay and the per-step splitting in exitHadronAbsorber both read the lifetime from the Geant4
+    # particle definition, so scaling it there after initialisation changes both consistently.
+    for cls in ("G4KaonPlus", "G4KaonMinus", "G4PionPlus", "G4PionMinus"):
+        ROOT.gROOT.ProcessLine(f'#include "Geant4/{cls}.hh"')
+        ROOT.gROOT.ProcessLine(
+            f"{cls}::Definition()->SetPDGLifeTime("
+            f"{cls}::Definition()->GetPDGLifeTime() * {args.kaon_pion_lifetime_factor!r});"
+        )
+    for pdg in (321, 211):
+        logger.warning(
+            "Lifetime of %d scaled by %g to %.6g ns: validation only, the output is not physical",
+            pdg,
+            args.kaon_pion_lifetime_factor,
+            gMC.ParticleLifeTime(pdg),
+        )
 #
 import AddDiMuonDecayChannelsToG4
 
