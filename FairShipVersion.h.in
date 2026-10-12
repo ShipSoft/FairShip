@@ -1,0 +1,11 @@
+// SPDX-License-Identifier: LGPL-3.0-or-later
+// SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP
+// Collaboration
+
+#ifndef FAIRSHIPVERSION_H_
+#define FAIRSHIPVERSION_H_
+
+#define FAIRSHIP_VERSION "@PROJECT_VERSION@"
+#define FAIRSHIP_GIT_VERSION "@FAIRSHIP_GIT_HASH@"
+
+#endif  // FAIRSHIPVERSION_H_
