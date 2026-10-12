@@ -15,6 +15,7 @@ var dir_7837fde3ab9c1fb2fc5be7b717af8d79 =
     [ "fieldMapTools.py", "fieldMapTools_8py.html", "fieldMapTools_8py" ],
     [ "genie_interface.py", "genie__interface_8py.html", "genie__interface_8py" ],
     [ "geometry_config.py", "geometry__config_8py.html", "geometry__config_8py" ],
+    [ "geometry_from_file.py", "geometry__from__file_8py.html", "geometry__from__file_8py" ],
     [ "geomGeant4.py", "geomGeant4_8py.html", "geomGeant4_8py" ],
     [ "global_variables.py", "global__variables_8py.html", "global__variables_8py" ],
     [ "heavyFlavourScaling.py", "heavyFlavourScaling_8py.html", "heavyFlavourScaling_8py" ],

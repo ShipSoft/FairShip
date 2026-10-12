@@ -137,7 +137,7 @@ $(document).ready(function(){initNavTree('convertToACTS_8py_source.html',''); in
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    ROOT.SetOwnership(sink, <span class="keyword">False</span>)  <span class="comment"># C++ FairRun takes ownership</span></div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    run.SetUserConfig(<span class="stringliteral">&quot;g4Config_basic.C&quot;</span>)  <span class="comment"># geant4 transport not used, only needed for creating VMC field</span></div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    run.GetRuntimeDb()</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    <a class="code hl_function" href="namespaceshipDet__conf.html#a7f232397871353ce80c1ea03eb15bd20">shipDet_conf.configure</a>(run, ShipGeo)</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    <a class="code hl_function" href="namespaceshipDet__conf.html#a6e3eaea419c04a40644184c1c4bd7ae0">shipDet_conf.configure</a>(run, ShipGeo)</div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    <span class="keyword">with</span> ROOT.TFile.Open(outFile, <span class="stringliteral">&quot;RECREATE&quot;</span>) <span class="keyword">as</span> f:</div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>        <span class="comment"># Trees to hold converted data: particles, vertices, SiliconTarget hits, Strawtube hits.</span></div>
@@ -712,7 +712,7 @@ $(document).ready(function(){initNavTree('convertToACTS_8py_source.html',''); in
 <div class="line"><a id="l00611" name="l00611"></a><span class="lineno">  611</span>    ROOT.gROOT.SetBatch(<span class="keyword">True</span>)</div>
 <div class="line"><a id="l00612" name="l00612"></a><span class="lineno">  612</span>    <a class="code hl_function" href="namespaceconvertToACTS.html#abb41a5cf7ecd01213fd3f40fbb9a8ca9">main</a>()</div>
 <div class="ttc" id="anamespaceconvertToACTS_html_abb41a5cf7ecd01213fd3f40fbb9a8ca9"><div class="ttname"><a href="namespaceconvertToACTS.html#abb41a5cf7ecd01213fd3f40fbb9a8ca9">convertToACTS.main</a></div><div class="ttdeci">main()</div><div class="ttdef"><b>Definition</b> <a href="convertToACTS_8py_source.html#l00019">convertToACTS.py:19</a></div></div>
-<div class="ttc" id="anamespaceshipDet__conf_html_a7f232397871353ce80c1ea03eb15bd20"><div class="ttname"><a href="namespaceshipDet__conf.html#a7f232397871353ce80c1ea03eb15bd20">shipDet_conf.configure</a></div><div class="ttdeci">configure(run, ship_geo)</div><div class="ttdef"><b>Definition</b> <a href="shipDet__conf_8py_source.html#l00270">shipDet_conf.py:270</a></div></div>
+<div class="ttc" id="anamespaceshipDet__conf_html_a6e3eaea419c04a40644184c1c4bd7ae0"><div class="ttname"><a href="namespaceshipDet__conf.html#a6e3eaea419c04a40644184c1c4bd7ae0">shipDet_conf.configure</a></div><div class="ttdeci">configure(run, ship_geo, str|None geofile=None)</div><div class="ttdef"><b>Definition</b> <a href="shipDet__conf_8py_source.html#l00271">shipDet_conf.py:271</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
