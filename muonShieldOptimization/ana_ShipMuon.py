@@ -351,7 +351,7 @@ for f in os.listdir(testdir):
         sGeo = fgeo.Get("FAIRGeom")
         inputFile = f.replace("geofile_full", "ship")
         break
-if fgeo is None or sGeo is None or inputFile is None:
+if fgeo is None or not sGeo or inputFile is None:
     raise RuntimeError("No geofile_full found in " + testdir)
 # try to extract from input file name
 tmp = inputFile.split(".")

@@ -63,13 +63,13 @@ def main(file1_path: str, file2_path: str, use_ks_test: bool, significance_thres
     histograms1 = {}
     for key in file1.GetListOfKeys():
         cls = ROOT.TClass.GetClass(key.GetClassName())
-        if cls is not None and cls.InheritsFrom("TH1"):
+        if cls and cls.InheritsFrom("TH1"):
             histograms1[key.GetName()] = file1.Get(key.GetName())
 
     histograms2 = {}
     for key in file2.GetListOfKeys():
         cls = ROOT.TClass.GetClass(key.GetClassName())
-        if cls is not None and cls.InheritsFrom("TH1"):
+        if cls and cls.InheritsFrom("TH1"):
             histograms2[key.GetName()] = file2.Get(key.GetName())
 
     for hist_name in histograms1:
