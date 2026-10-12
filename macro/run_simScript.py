@@ -569,10 +569,10 @@ elif options.debug == 3:
     ROOT.gInterpreter.ProcessLine('fair::Logger::SetConsoleSeverity("debug2");')
 if options.geofile:
     ship_geo = load_from_root_file(options.geofile, "ShipGeo")
-    # saveBasicParameters records the FairShip version of this run; keep the one
-    # that built the geometry as well.
-    if "FairShip" in ship_geo and "geometryBuiltWithFairShip" not in ship_geo:
-        ship_geo.geometryBuiltWithFairShip = ship_geo.FairShip
+    # saveBasicParameters replaces the versions with those of this run; keep the
+    # one that built the geometry, set once so later -g runs cannot overwrite it.
+    if "geometryBuiltWithFairShip" not in ship_geo:
+        ship_geo.geometryBuiltWithFairShip = ship_geo.get("FairShip", "unknown")
     print(f"Geometry configuration loaded from {options.geofile}; particles are transported through its geometry")
 else:
     ship_geo = geometry_config.create_config(
