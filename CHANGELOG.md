@@ -38,7 +38,7 @@ it in future.
 * Default for reweighting boosted muon files is now to keep all events rather than only those containing a muon
 
 ### Fixed
-
+* Fix duplicated 4232 pdg code in extractMuonsAndUpdateWeight.
 * `tracking_benchmark.py` skips track points without fitter info instead of stopping. `TrackPoint::getFitterInfo` returns a null pointer for such a point, which PyROOT gives as an object that is falsy but not `None`, so the `is None` check never skipped it and `getResidual()` raised `ReferenceError`, which the `except` clause does not catch: `run_tracking_benchmark.py` aborted in its metrics phase once a sample contained such a point. On linux-aarch64 that happened already with CI's settings (`-n 200 --seed 42`) and with `-n 1000`; CI's linux-64 runs have not hit it so far.
 * HNL decay channels with a self-conjugate daughter (pi0, eta, rho0, omega, eta', phi, eta_c) no longer abort the simulation. `readDecayTable.addHNLdecayChannels` adds every enabled channel a second time, charge conjugated, and keeps a daughter's code when `TDatabasePDG` has no antiparticle for it. Since 26.03 that lookup was tested with `is not None`, which is always true, because PyROOT returns a null pointer (falsy, but not `None`) for an unknown code. The conjugate channel therefore carried codes such as -111, which Pythia8 accepts and Geant4 rejects, ending the run at the first such decay. The default channel, N -> pi+ mu-, was not affected.
 * The checks for unknown PDG codes added in 26.06 (`assert p is not None, "Unknown PDG: ..."`) could never fire, so an unknown code still ended in `ReferenceError: attempt to access a null-pointer`. They now use `rootUtils.get_particle`, which raises `ValueError` with the code. For the same reason `DrawCharmTracks` in the event display and the charge check in `tracking_benchmark.py` now skip particles with unknown codes instead of failing, and `configGenieGenerator.py` reports a missing `volNuTauMudet_1` as intended.
@@ -195,7 +195,6 @@ random sequence.
 
 ### Fixed
 
-* Remove duplicated 4232 pdg code in extractNeutrinosAndUpdateWeight and extractMuonsAndUpdateWeight
 * Update charm and beauty over mbias cross sections in run_fixedTarget
 * Fix pot branch in Decay tree from makeDecay
 * Fix check of existing particle pdg in makeCascade
