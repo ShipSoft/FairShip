@@ -7,6 +7,7 @@ import os
 import tkinter
 
 import ROOT
+from rootUtils import get_particle, is_known_particle
 
 ROOT.gROOT.ProcessLine('#include "FairEventHeader.h"')
 # only helps if class version in FairEventHeader.h is increased
@@ -1333,8 +1334,8 @@ def DrawCharmTracks() -> None:
         if i < 2:
             continue
         if aTrack.GetMotherId() == 1:
-            pa = pdg.GetParticle(sTree.MCTrack[i].GetPdgCode())
-            if pa is not None and pa.Lifetime() > 1.0e-12:
+            pdg_code = sTree.MCTrack[i].GetPdgCode()
+            if is_known_particle(pdg_code) and get_particle(pdg_code).Lifetime() > 1.0e-12:
                 print(sTree.MCTrack[i])
                 SHiPDisplay.tracks.DrawMCTrack(i)
 

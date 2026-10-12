@@ -17,6 +17,7 @@ import math
 from typing import Any
 
 import ROOT
+from rootUtils import get_particle, is_known_particle
 
 ROOT.gROOT.SetBatch(True)
 
@@ -146,8 +147,7 @@ class TrackingBenchmark:
 
         # Must be charged
         pdg_code = mc_track.GetPdgCode()
-        particle = self.PDG.GetParticle(pdg_code)
-        if particle is None or particle.Charge() == 0:
+        if not is_known_particle(pdg_code) or get_particle(pdg_code).Charge() == 0:
             return False
 
         # Hit counts come from the per-event straw index (built once per event).
@@ -406,7 +406,8 @@ class TrackingBenchmark:
                         try:
                             tp = track.getPointWithMeasurement(i_hit)
                             fitter_info = tp.getFitterInfo()
-                            if fitter_info is None:
+                            # A point without fitter info gives a null pointer: falsy, but not None.
+                            if not fitter_info:
                                 continue
                             res = fitter_info.getResidual()
                             # Index 0: 1D residual (straw drift-distance measurement)

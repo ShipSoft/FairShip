@@ -139,8 +139,7 @@ for n in range(sTree.GetEntries()):
     rc = sTree.GetEvent(n)
     for aHit in sTree.vetoPoint:
         oTrack = sTree.MCTrack[aHit.GetTrackID()]
-        _p = pdg.GetParticle(oTrack.GetPdgCode())
-        assert _p is not None, f"Unknown PDG: {oTrack.GetPdgCode()}"
+        _p = ut.get_particle(oTrack.GetPdgCode())
         M = _p.Mass()
         Ekin = ROOT.TMath.Sqrt(aHit.GetPx() ** 2 + aHit.GetPy() ** 2 + aHit.GetPz() ** 2 + M**2) - M
         rc = h["Ekin"].Fill(Ekin)
