@@ -8,6 +8,7 @@ import global_variables
 import numpy as np
 import ROOT
 import shipunit as u
+from rootUtils import get_particle
 
 PDG = ROOT.TDatabasePDG.Instance()
 import acts
@@ -508,8 +509,7 @@ def main():
                 pz.push_back(-part.GetPx())
                 pp.push_back(part.GetP())
                 m.push_back(part.GetMass())
-                pdg_particle = PDG.GetParticle(part.GetPdgCode())
-                assert pdg_particle is not None, f"Unknown PDG: {part.GetPdgCode()}"
+                pdg_particle = get_particle(part.GetPdgCode())
                 charge = pdg_particle.Charge()
                 q.push_back(np.sign(charge))
                 eta.push_back(fourVec.Eta())

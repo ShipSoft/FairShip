@@ -210,3 +210,17 @@ def checkForBranch(inFile, branchName) -> bool:
     else:
         print("ERROR CheckForBranch: File must be either a string or list of files")
         os._exit(1)
+
+
+def is_known_particle(code: int | str) -> bool:
+    """Return True if TDatabasePDG knows this PDG code or particle name."""
+    # GetParticle returns a null pointer for an unknown code: it is falsy, but it is not None.
+    return bool(ROOT.TDatabasePDG.Instance().GetParticle(code))
+
+
+def get_particle(code: int | str) -> ROOT.TParticlePDG:
+    """Return the TDatabasePDG entry for a PDG code or particle name; raise ValueError if it is unknown."""
+    particle = ROOT.TDatabasePDG.Instance().GetParticle(code)
+    if not particle:
+        raise ValueError(f"Unknown particle: {code}")
+    return particle
