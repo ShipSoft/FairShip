@@ -12,9 +12,10 @@ of independent events per bin; below about 20 the error itself is unreliable.
 
     python examples/split_weight_uncertainties.py -f out/*/pythia8_*.root -o spectrum.root
 
-The output holds the accumulator (hadd-mergeable, readable with
-EventHistogram.from_root or the C++ EventHistogram::Read) and the per-event
-spectrum <name>_result with event-level errors.
+The output holds only the accumulator, so outputs of several jobs can be merged
+with hadd. Get the per-event spectrum from the (merged) file with
+EventHistogram.from_root(f, name).values() and .errors(), or in C++ with
+EventHistogram::Read(f, name)->MakeResult().
 """
 
 import argparse
@@ -63,7 +64,7 @@ def main():
     print(f"{n_generated} generated events, {args.branch}, |pdg| = {args.pdg or 'all'}")
     print(f"{'p (GeV/c)':>15} {'per event':>11} {'error':>10} {'sqrt(Σw²)':>10} {'ratio':>6} {'n_eff':>7}")
     for b in range(len(values)):
-        if values[b] == 0:
+        if values[b] == 0 and errors[b] == 0:
             continue
         ratio = errors[b] / naive[b] if naive[b] > 0 else float("nan")
         flag = "  <- unreliable" if n_eff[b] < 20 else ""
@@ -74,11 +75,6 @@ def main():
 
     out = ROOT.TFile(args.output, "RECREATE")
     h.to_root(out)
-    result = ROOT.TH1D(args.name + "_result", h.title, len(values), edges)
-    for b in range(len(values)):
-        result.SetBinContent(b + 1, values[b])
-        result.SetBinError(b + 1, errors[b])
-    out.WriteTObject(result)
     out.Close()
     print(f"written to {args.output}")
 
