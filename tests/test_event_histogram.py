@@ -66,6 +66,38 @@ def test_merge_equals_single_accumulator():
     assert ha.bootstrap_errors() == pytest.approx(hab.bootstrap_errors())
 
 
+@pytest.mark.parametrize(
+    "kwargs",
+    [{"covariance": False, "n_replicas": 50}, {"covariance": True, "n_replicas": 20}, {"covariance": True}],
+)
+def test_incompatible_merge_is_refused(kwargs):
+    ha = EventHistogram("x", EDGES, covariance=True, n_replicas=50)
+    fill(ha, correlated_sample(5, 200))
+    before = ha.sum_t.copy(), ha.sum_tt.copy(), ha.boot.copy(), ha.n_events
+    hb = EventHistogram("x", EDGES, **kwargs)
+    fill(hb, correlated_sample(6, 200))
+    with pytest.raises(ValueError):
+        ha += hb
+    after = ha.sum_t, ha.sum_tt, ha.boot, ha.n_events
+    for x, y in zip(before, after):
+        assert np.array_equal(x, y)
+
+
+def test_merge_with_open_event_is_an_error():
+    ha, hb = EventHistogram("x", EDGES), EventHistogram("x", EDGES)
+    hb.fill(1.0)
+    with pytest.raises(RuntimeError):
+        ha += hb
+
+
+def test_no_events_gives_zeros():
+    h = EventHistogram("x", EDGES, covariance=True, n_replicas=10)
+    nb = len(EDGES) - 1
+    for result in (h.values(), h.errors(), h.naive_errors(), h.bootstrap_errors()):
+        assert np.array_equal(result, np.zeros(nb))
+    assert np.array_equal(h.covariance(), np.zeros((nb, nb)))
+
+
 def test_covariance_diagonal_is_variance():
     h = EventHistogram("x", EDGES, covariance=True)
     fill(h, correlated_sample(5, 2000))
