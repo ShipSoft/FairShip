@@ -41,7 +41,7 @@ class BaseDetector(ABC):
     def delete(self) -> None:
         """Clear detector hit containers."""
         self.det.clear()
-        if self.MCdet:
+        if self.MCdet is not None:
             self.MCdet.clear()
 
     def fill(self) -> None:  # noqa: B027
