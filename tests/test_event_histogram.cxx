@@ -184,6 +184,22 @@ int main() {
     }
   }
   fab.Close();
+
+  // Incompatible accumulators are refused and leave the target unchanged.
+  const Long64_t nBefore = ha.GetNEvents();
+  const std::vector<double> otherEdges = {0., 1., 2., 3., 4., 5.,
+                                          6., 7., 8., 9., 12.};
+  EventHistogram hEdges("x", "test;x", nbins, otherEdges.data(), kTRUE, 200);
+  FillSample(hEdges, b, 2);
+  ha.Add(hEdges);
+  EventHistogram hReplicas("x", "test;x", nbins, 0., 10., kTRUE, 100);
+  FillSample(hReplicas, b, 2);
+  ha.Add(hReplicas);
+  EventHistogram hNoCov("x", "test;x", nbins, 0., 10., kFALSE, 200);
+  FillSample(hNoCov, b, 2);
+  ha.Add(hNoCov);
+  Check(ha.GetNEvents() == nBefore, "refused merge", ha.GetNEvents(), nBefore);
+
   std::remove("test_event_histogram_a.root");
   std::remove("test_event_histogram_b.root");
   std::remove("test_event_histogram_ab.root");

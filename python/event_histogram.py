@@ -135,13 +135,20 @@ class EventHistogram:
         self.n_events += int(n)
 
     def __iadd__(self, other):
+        self._check_closed("merge")
+        other._check_closed("merge")
         if not np.array_equal(self.edges, other.edges):
             raise ValueError("EventHistogram: binning differs, cannot merge")
-        self._check_closed("merge")
+        if (self.sum_tt is None) != (other.sum_tt is None):
+            raise ValueError("EventHistogram: only one has a covariance, cannot merge")
+        if (self.boot is None) != (other.boot is None) or (
+            self.boot is not None and self.boot.shape != other.boot.shape
+        ):
+            raise ValueError("EventHistogram: bootstrap replicas differ, cannot merge")
         for attr in ("sum_t", "sum_t2", "sum_w", "sum_w2", "sum_tt", "boot"):
-            mine, theirs = getattr(self, attr), getattr(other, attr)
-            if mine is not None and theirs is not None:
-                mine += theirs
+            mine = getattr(self, attr)
+            if mine is not None:
+                mine += getattr(other, attr)
         self.n_events += other.n_events
         return self
 
@@ -153,12 +160,16 @@ class EventHistogram:
 
     def values(self):
         self._check_closed("values")
+        if self.n_events <= 0:
+            return np.zeros(self.nbins)
         return self.sum_t[1:-1] / self.n_events
 
     def errors(self):
         """Event-level standard errors."""
         self._check_closed("errors")
         n = self.n_events
+        if n <= 0:
+            return np.zeros(self.nbins)
         m = self.sum_t[1:-1] / n
         if n < 2:
             return np.sqrt(self.sum_t2[1:-1]) / n
@@ -166,6 +177,8 @@ class EventHistogram:
 
     def naive_errors(self):
         """sqrt(sum w^2)/N, which treats branches as independent. For comparison only."""
+        if self.n_events <= 0:
+            return np.zeros(self.nbins)
         return np.sqrt(self.sum_w2[1:-1]) / self.n_events
 
     def n_eff(self):
@@ -179,12 +192,16 @@ class EventHistogram:
         if self.sum_tt is None:
             raise ValueError("EventHistogram: created without covariance=True")
         n = self.n_events
+        if n < 2:
+            return np.zeros((self.nbins, self.nbins))
         m = self.sum_t[1:-1] / n
         return (self.sum_tt / n - np.outer(m, m)) / (n - 1)
 
     def bootstrap_errors(self):
         if self.boot is None or len(self.boot) < 2:
             raise ValueError("EventHistogram: needs at least two bootstrap replicas")
+        if self.n_events <= 0:
+            return np.zeros(self.nbins)
         return (self.boot / self.n_events).std(axis=0, ddof=1)
 
     # --- ROOT I/O, same objects as EventHistogram::Write/Read -----------------

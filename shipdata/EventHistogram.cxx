@@ -130,15 +130,26 @@ void EventHistogram::AddEmptyEvents(Long64_t n) {
 
 void EventHistogram::Add(const EventHistogram& other) {
   CheckClosed("Add");
-  if (other.fSum->GetNbinsX() != fSum->GetNbinsX()) {
-    LOG(error) << "EventHistogram::Add: binning of " << other.fSum->GetName()
-               << " differs from " << fSum->GetName() << ", not merged";
+  other.CheckClosed("Add");
+  const char* problem = nullptr;
+  if (AxisEdges(other.fSum->GetXaxis()) != AxisEdges(fSum->GetXaxis())) {
+    problem = "binning";
+  } else if (!fCov != !other.fCov) {
+    problem = "covariance";
+  } else if (!fBoot != !other.fBoot ||
+             (fBoot && fBoot->GetNbinsY() != other.fBoot->GetNbinsY())) {
+    problem = "number of bootstrap replicas";
+  }
+  if (problem) {
+    LOG(error) << "EventHistogram::Add: " << problem << " of "
+               << other.fSum->GetName() << " differs from " << fSum->GetName()
+               << ", not merged";
     return;
   }
   fSum->Add(other.fSum.get());
   fNaive->Add(other.fNaive.get());
-  if (fCov && other.fCov) fCov->Add(other.fCov.get());
-  if (fBoot && other.fBoot) fBoot->Add(other.fBoot.get());
+  if (fCov) fCov->Add(other.fCov.get());
+  if (fBoot) fBoot->Add(other.fBoot.get());
   fNEvents += other.fNEvents;
   fSum->SetEntries(fNEvents);
 }
