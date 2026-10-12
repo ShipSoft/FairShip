@@ -29,6 +29,7 @@ from typing import NamedTuple
 import numpy as np
 import pythia8
 import ROOT
+from rootUtils import get_particle
 
 # cascade beam particles, anti-particles are generated automatically if they exist.
 CASCADE_IDS = [2212, 211, 2112, 321, 130, 310]
@@ -129,8 +130,7 @@ def signal_kfactor(kfactors, beam_id, nucleon_id, p):
 
 
 def mass(pdg_id):
-    particle = PDG.GetParticle(pdg_id)
-    assert particle is not None, f"Unknown PDG: {pdg_id}"
+    particle = get_particle(pdg_id)
     return particle.Mass()
 
 

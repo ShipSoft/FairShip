@@ -35,6 +35,7 @@ import os
 
 import ROOT
 import shipunit as u
+from rootUtils import get_particle
 
 # Load PDG database
 pdg = ROOT.TDatabasePDG.Instance()
@@ -56,8 +57,7 @@ def mass(particle: str | None):
     Read particle mass from PDG database
     """
     particle = PDGname(particle)
-    tPart = pdg.GetParticle(particle)
-    assert tPart is not None, f"Unknown particle: {particle}"
+    tPart = get_particle(particle)
     return tPart.Mass()
 
 
@@ -66,8 +66,7 @@ def lifetime(particle):
     Read particle lifetime from PDG database
     """
     particle = PDGname(particle)
-    tPart = pdg.GetParticle(particle)
-    assert tPart is not None, f"Unknown particle: {particle}"
+    tPart = get_particle(particle)
     return tPart.Lifetime()
 
 
