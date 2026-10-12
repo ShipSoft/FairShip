@@ -406,7 +406,8 @@ class TrackingBenchmark:
                         try:
                             tp = track.getPointWithMeasurement(i_hit)
                             fitter_info = tp.getFitterInfo()
-                            if fitter_info is None:
+                            # A point without fitter info gives a null pointer: falsy, but not None.
+                            if not fitter_info:
                                 continue
                             res = fitter_info.getResidual()
                             # Index 0: 1D residual (straw drift-distance measurement)
