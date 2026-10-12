@@ -8,6 +8,7 @@
 #include <cstddef>
 #include <map>
 #include <set>
+#include <string>
 #include <utility>
 
 #include "Detector.h"
@@ -16,6 +17,7 @@
 #include "vetoPoint.h"
 
 class FairVolume;
+class G4Step;
 
 struct TrackBuffer {
   Int_t pdg;
@@ -37,6 +39,11 @@ class exitHadronAbsorber : public SHiP::Detector<vetoPoint> {
  public:
   exitHadronAbsorber(const char* Name, Bool_t Active);
   exitHadronAbsorber();
+  ~exitHadronAbsorber() override {
+    if (fgSplitter == this) {
+      fgSplitter = nullptr;
+    }
+  }
 
   // Number of stack entries each pending split clone is assumed to add to the
   // event once it has decayed and its products have showered. This is an
@@ -64,6 +71,11 @@ class exitHadronAbsorber : public SHiP::Detector<vetoPoint> {
   void SetMaxSplitBuffer(Int_t n);
   void SetMaxEventSize(Int_t n);
   void SetSplitMultipleTimes() { fSplitOnce = kFALSE; }
+
+  // Per-step splitting entry point, called for every Geant4 step by
+  // ShipSteppingAction (gconfig/g4Config.C installs it through
+  // ShipRunConfiguration). Forwards to the one instance that splits per step.
+  static void SplitStepHook(const G4Step* step);
 
   inline void SetEnergyCut(Float_t emax) { EMax = emax; }
   inline void SetOnlyMuons() { fOnlyMuons = kTRUE; }
@@ -101,6 +113,18 @@ class exitHadronAbsorber : public SHiP::Detector<vetoPoint> {
   // track of how much weight was never simulated.
   void DiscardBufferedClones();
 
+  // Split a kaon or pion step: hand its decay probability to clones and lower
+  // the track's weight. Called for every Geant4 step through SplitStepHook().
+  void SplitStep(const G4Step* step);
+
+  // The instance that splits per step, if any.
+  static exitHadronAbsorber* fgSplitter;  //!
+  // Logical volumes in which steps are split, decided from the pre-step point.
+  std::set<std::string> fSplitVolumes;  //!
+  // Kaon/pion steps that reached SplitStep(), to catch a run configuration
+  // without ShipSteppingAction.
+  Long64_t fHookSteps = 0;  //!
+
   // Split set of a track that is being split, created on first use. The
   // track is recorded on the stack as the survivor of its set; its clones
   // and continuations join the same set. A continuation maps to the set of
@@ -130,7 +154,7 @@ class exitHadronAbsorber : public SHiP::Detector<vetoPoint> {
   // PreTrack(), so a bad split count could make it grow without bound within a
   // single track. ~25k TrackBuffer records is about 2.5 MB, far above what any
   // sane configuration reaches. Set via --max-split-buffer.
-  // This is a hard bound: ProcessHits() stops accepting per-step clones early
+  // This is a hard bound: SplitStep() stops accepting per-step clones early
   // enough to leave room for the fNsplits endpoint clones PostTrack() appends,
   // and Initialize() rejects a cap that fNsplits alone would exceed.
   std::size_t fMaxSplitBuffer = 25'000;
