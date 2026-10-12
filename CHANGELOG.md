@@ -23,6 +23,7 @@ it in future.
 
 ### Changed
 
+* The `shipVeto.Task` decisions (`SBT_decision`, `SBT_plastic_decision`, `SBT_liquid_decision`, `UBT_decision`, `Track_decision`) take the keyword-only arguments `only_track` and `exclude_track` instead of the signed `mcParticle`, which is removed. With `mcParticle`, track 0 (the primary, e.g. the incoming muon of muon DIS) could not be selected: `mcParticle=0` meant no filter, and excluding it would have needed -0. Replace `mcParticle=n` with `only_track=n` for n > 0 and with `exclude_track=-n` for n < 0.
 * The default spectrometer field map is now `files/2026_07_02_MainSpectrometerField_V21_2455.root`. Its polarity is opposite to the MgB2 map it replaces: the integral of Bx along the beam axis is +0.84 T m, against -0.83 T m before, so charged tracks bend the other way in y. Off axis the bending power differs too, so samples produced with the earlier default are not comparable, and a sample has to be reconstructed with the map it was simulated with. The MgB2 map remains available through `--field_map`.
 * Update default He balloon liner to be made with polyester like Mylar, named mylar_linerHe with density/thickness matching material #5
 * Scale `chicc`/`chibb` in `run_fixedTarget.py` by the heavy-flavour cross section per nucleon stored in the cascade input file, so that the normalisation follows the beam energy, tune and target composition the file was generated with. Files without it, such as the existing ones on EOS, keep the previous values.

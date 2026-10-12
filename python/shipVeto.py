@@ -27,15 +27,25 @@ class Task:
             detList[i] = nm
         return detList
 
-    def SBT_plastic_decision(self, mcParticle=None) -> tuple[bool, float, int]:
-        return self.SBT_decision(mcParticle, detector="plastic")
+    @staticmethod
+    def _skip(contributors, only_track, exclude_track) -> bool:
+        """Return True if a hit with these MC track IDs is filtered out.
 
-    def SBT_liquid_decision(self, mcParticle=None) -> tuple[bool, float, int]:
-        return self.SBT_decision(mcParticle, detector="liquid")
+        only_track: count only hits this track contributed to.
+        exclude_track: do not count hits this track contributed to.
+        Either may be 0 (the primary, e.g. the incoming muon of muon DIS).
+        """
+        if only_track is not None and only_track not in contributors:
+            return True
+        return exclude_track is not None and exclude_track in contributors
 
-    def SBT_decision(self, mcParticle=None, detector="liquid") -> tuple[bool, float, int]:
-        # if mcParticle >0, only count hits with this particle
-        # if mcParticle <0, do not count hits with this particle
+    def SBT_plastic_decision(self, *, only_track=None, exclude_track=None) -> tuple[bool, float, int]:
+        return self.SBT_decision(only_track=only_track, exclude_track=exclude_track, detector="plastic")
+
+    def SBT_liquid_decision(self, *, only_track=None, exclude_track=None) -> tuple[bool, float, int]:
+        return self.SBT_decision(only_track=only_track, exclude_track=exclude_track, detector="liquid")
+
+    def SBT_decision(self, *, only_track=None, exclude_track=None, detector="liquid") -> tuple[bool, float, int]:
         hitSegments = 0
         index = -1
         fdetector = detector == "liquid"
@@ -46,16 +56,10 @@ class Task:
                 continue
             if not fdetector and not detID > 999999:
                 continue
-            if mcParticle:
-                contributors = list(self.sTree.digiSBT2MC[index])
-                if mcParticle > 0:
-                    # only count hits from this particle: skip if it is absent
-                    if mcParticle not in contributors:
-                        continue
-                elif mcParticle < 0:
-                    # do not count hits from this particle: skip if it is present
-                    if abs(mcParticle) in contributors:
-                        continue
+            if (only_track is not None or exclude_track is not None) and self._skip(
+                list(self.sTree.digiSBT2MC[index]), only_track, exclude_track
+            ):
+                continue
             aDigi.GetXYZ()
             aDigi.GetEloss()
             if aDigi.isValid():
@@ -65,15 +69,12 @@ class Task:
         # print 'SBT :',hitSegments
         return veto, w, hitSegments
 
-    def UBT_decision(self, mcParticle=None) -> tuple[bool, float, int]:
+    def UBT_decision(self, *, only_track=None, exclude_track=None) -> tuple[bool, float, int]:
         nHits = 0
         mom = ROOT.TVector3()
         for ahit in self.sTree.UpstreamTaggerPoint:
-            if mcParticle:
-                if mcParticle > 0 and mcParticle != ahit.GetTrackID():
-                    continue
-                if mcParticle < 0 and abs(mcParticle) == ahit.GetTrackID():
-                    continue
+            if self._skip((ahit.GetTrackID(),), only_track, exclude_track):
+                continue
             ahit.Momentum(mom)
             if mom.Mag() > 0.1:
                 nHits += 1
@@ -81,16 +82,13 @@ class Task:
         veto = self.random.Rndm() > w
         return veto, w, nHits
 
-    def Track_decision(self, mcParticle=None) -> tuple[bool, int | float, int]:
+    def Track_decision(self, *, only_track=None, exclude_track=None) -> tuple[bool, int | float, int]:
         nMultCon = 0
         k = -1
         for aTrack in self.sTree.FitTracks:
             k += 1
-            if mcParticle:
-                if mcParticle > 0 and mcParticle != self.sTree.fitTrack2MC[k]:
-                    continue
-                if mcParticle < 0 and abs(mcParticle) == self.sTree.fitTrack2MC[k]:
-                    continue
+            if self._skip((self.sTree.fitTrack2MC[k],), only_track, exclude_track):
+                continue
             fstatus = aTrack.getFitStatus()
             if not fstatus.isFitConverged():
                 continue
