@@ -33,6 +33,7 @@ var annotated_dup =
     ] ],
     [ "makeCascadePythia8", "namespacemakeCascadePythia8.html", [
       [ "InclusiveSignalEvents", "classmakeCascadePythia8_1_1InclusiveSignalEvents.html", "classmakeCascadePythia8_1_1InclusiveSignalEvents" ],
+      [ "NucleusModel", "classmakeCascadePythia8_1_1NucleusModel.html", null ],
       [ "PythiaFactory", "classmakeCascadePythia8_1_1PythiaFactory.html", "classmakeCascadePythia8_1_1PythiaFactory" ],
       [ "SignalConfig", "classmakeCascadePythia8_1_1SignalConfig.html", null ],
       [ "SignalEvents", "classmakeCascadePythia8_1_1SignalEvents.html", "classmakeCascadePythia8_1_1SignalEvents" ]

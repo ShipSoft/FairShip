@@ -216,6 +216,7 @@ var hierarchy =
       ] ]
     ] ],
     [ "NamedTuple", null, [
+      [ "makeCascadePythia8.NucleusModel", "classmakeCascadePythia8_1_1NucleusModel.html", null ],
       [ "makeCascadePythia8.SignalConfig", "classmakeCascadePythia8_1_1SignalConfig.html", null ],
       [ "study_GammaConv.Setup", "classstudy__GammaConv_1_1Setup.html", null ],
       [ "study_muMSC.Setup", "classstudy__muMSC_1_1Setup.html", null ]

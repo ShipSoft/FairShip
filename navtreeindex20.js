@@ -1,5 +1,13 @@
 var NAVTREEINDEX20 =
 {
+"mergeMbias_8py.html#ac1ba9c5e18f9a604f0c372e588cc6a67":[10,0,7,19,11],
+"mergeMbias_8py.html#ad76b253d12e2a798dff088668ce0484c":[10,0,7,19,9],
+"mergeMbias_8py.html#aecbed99f072995cde06221015f615f6d":[10,0,7,19,23],
+"mergeMbias_8py.html#af0bee5d03f6eab7bea29fc1cbb4e25ea":[10,0,7,19,20],
+"mergeMbias_8py.html#afbc71d5b31936ca2259096a7d07c6f10":[10,0,7,19,24],
+"mergeMbias_8py_source.html":[10,0,7,19],
+"method__logger_8py.html":[10,0,12,21],
+"method__logger_8py_source.html":[10,0,12,21],
 "muDIS__mergeFiles_8py.html":[10,0,9,8],
 "muDIS__mergeFiles_8py.html#a4272df3d93776489cbaf69a8c4a2ca87":[10,0,9,8,0],
 "muDIS__mergeFiles_8py.html#a83f94c211fdeec0f62c2f112ef51da13":[10,0,9,8,4],
@@ -241,13 +249,5 @@ var NAVTREEINDEX20 =
 "namespaceana__ShipMuon.html#a719c7c28f52aea2b25892e8879ada445":[8,0,4,59],
 "namespaceana__ShipMuon.html#a72502c6a6e4f8b31655aed2aa2528f10":[8,0,4,0],
 "namespaceana__ShipMuon.html#a7261d9119dc8f042df0977eaee773b8d":[8,0,4,2],
-"namespaceana__ShipMuon.html#a7c19f0ac702070d2458480d245c643c0":[8,0,4,6],
-"namespaceana__ShipMuon.html#a85c4d87606b0e1721deb3059874433b1":[8,0,4,32],
-"namespaceana__ShipMuon.html#a87c0c2bea0c9d6fbc1f06ba119119410":[8,0,4,55],
-"namespaceana__ShipMuon.html#a8a1b848c8602cc3562334ec08f52aa95":[8,0,4,47],
-"namespaceana__ShipMuon.html#a8c6da2deece5c2a993970f8b4781b466":[8,0,4,12],
-"namespaceana__ShipMuon.html#a8c71f1541b3145f2d028ac1f2eac5349":[8,0,4,60],
-"namespaceana__ShipMuon.html#a8f351bfa27b7173cbc2da0d7a319783d":[8,0,4,40],
-"namespaceana__ShipMuon.html#a916dd5983d4b6d3945f22cce86c4dc35":[8,0,4,52],
-"namespaceana__ShipMuon.html#a9659d4d32a1cb6cfd4a31d22e63b3a06":[8,0,4,62]
+"namespaceana__ShipMuon.html#a7c19f0ac702070d2458480d245c643c0":[8,0,4,6]
 };
