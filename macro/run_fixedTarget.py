@@ -116,6 +116,13 @@ ap.add_argument(
     "with few events. The output is not physical for any factor other than 1",
 )
 ap.add_argument(
+    "--store-all-tracks",
+    action="store_true",
+    help="VALIDATION ONLY: store every track and every event, not only tracks with hits in a sensitive plane "
+    "(and their ancestors) in events with such hits. Needed to compare split and unsplit samples at the level of "
+    "the kaon/pion decays themselves. Output files are about 100 times larger with --multiple-kpi-splits",
+)
+ap.add_argument(
     "--max-split-buffer",
     type=int,
     default=25000,
@@ -576,7 +583,9 @@ run.Init()
 
 gMC = ROOT.TVirtualMC.GetMC()
 fStack = gMC.GetStack()
-fStack.SetMinPoints(1)
+# With --store-all-tracks, tracks without hits are kept as well, e.g. all split clones and the kaons and
+# pions that decay without leaving a hit.
+fStack.SetMinPoints(0 if args.store_all_tracks else 1)
 fStack.SetEnergyCut(-1.0)
 if args.kaon_pion_splits > 0:
     fStack.SetSplitting()
@@ -682,7 +691,8 @@ nEvents = 0
 for n in range(t.GetEntries()):
     rc = t.GetEvent(n)
     if (
-        (len(t.PlaneHAPoint) > 0)
+        args.store_all_tracks
+        or (len(t.PlaneHAPoint) > 0)
         or (args.AddCylindricalSensPlane and len(t.PlaneTPoint) > 0)
         or (args.AddPostTargetSensPlane and len(t.PlanePostTPoint) > 0)
     ):
