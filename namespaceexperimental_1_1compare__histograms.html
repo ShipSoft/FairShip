@@ -294,13 +294,13 @@ False otherwise (so the caller can propagate a non-zero exit status).
 <div class="line"><span class="lineno">   63</span>    histograms1 = {}</div>
 <div class="line"><span class="lineno">   64</span>    <span class="keywordflow">for</span> key <span class="keywordflow">in</span> file1.GetListOfKeys():</div>
 <div class="line"><span class="lineno">   65</span>        cls = ROOT.TClass.GetClass(key.GetClassName())</div>
-<div class="line"><span class="lineno">   66</span>        <span class="keywordflow">if</span> cls <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span> <span class="keywordflow">and</span> cls.InheritsFrom(<span class="stringliteral">&quot;TH1&quot;</span>):</div>
+<div class="line"><span class="lineno">   66</span>        <span class="keywordflow">if</span> cls <span class="keywordflow">and</span> cls.InheritsFrom(<span class="stringliteral">&quot;TH1&quot;</span>):</div>
 <div class="line"><span class="lineno">   67</span>            histograms1[key.GetName()] = file1.Get(key.GetName())</div>
 <div class="line"><span class="lineno">   68</span> </div>
 <div class="line"><span class="lineno">   69</span>    histograms2 = {}</div>
 <div class="line"><span class="lineno">   70</span>    <span class="keywordflow">for</span> key <span class="keywordflow">in</span> file2.GetListOfKeys():</div>
 <div class="line"><span class="lineno">   71</span>        cls = ROOT.TClass.GetClass(key.GetClassName())</div>
-<div class="line"><span class="lineno">   72</span>        <span class="keywordflow">if</span> cls <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span> <span class="keywordflow">and</span> cls.InheritsFrom(<span class="stringliteral">&quot;TH1&quot;</span>):</div>
+<div class="line"><span class="lineno">   72</span>        <span class="keywordflow">if</span> cls <span class="keywordflow">and</span> cls.InheritsFrom(<span class="stringliteral">&quot;TH1&quot;</span>):</div>
 <div class="line"><span class="lineno">   73</span>            histograms2[key.GetName()] = file2.Get(key.GetName())</div>
 <div class="line"><span class="lineno">   74</span> </div>
 <div class="line"><span class="lineno">   75</span>    <span class="keywordflow">for</span> hist_name <span class="keywordflow">in</span> histograms1:</div>

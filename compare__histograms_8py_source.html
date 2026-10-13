@@ -167,13 +167,13 @@ $(document).ready(function(){initNavTree('compare__histograms_8py_source.html','
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    histograms1 = {}</div>
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    <span class="keywordflow">for</span> key <span class="keywordflow">in</span> file1.GetListOfKeys():</div>
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>        cls = ROOT.TClass.GetClass(key.GetClassName())</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>        <span class="keywordflow">if</span> cls <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span> <span class="keywordflow">and</span> cls.InheritsFrom(<span class="stringliteral">&quot;TH1&quot;</span>):</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>        <span class="keywordflow">if</span> cls <span class="keywordflow">and</span> cls.InheritsFrom(<span class="stringliteral">&quot;TH1&quot;</span>):</div>
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>            histograms1[key.GetName()] = file1.Get(key.GetName())</div>
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    histograms2 = {}</div>
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    <span class="keywordflow">for</span> key <span class="keywordflow">in</span> file2.GetListOfKeys():</div>
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>        cls = ROOT.TClass.GetClass(key.GetClassName())</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>        <span class="keywordflow">if</span> cls <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span> <span class="keywordflow">and</span> cls.InheritsFrom(<span class="stringliteral">&quot;TH1&quot;</span>):</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>        <span class="keywordflow">if</span> cls <span class="keywordflow">and</span> cls.InheritsFrom(<span class="stringliteral">&quot;TH1&quot;</span>):</div>
 <div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>            histograms2[key.GetName()] = file2.Get(key.GetName())</div>
 <div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
 <div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    <span class="keywordflow">for</span> hist_name <span class="keywordflow">in</span> histograms1:</div>

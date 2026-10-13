@@ -270,7 +270,7 @@ Public Attributes</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">   41</span>    <span class="keyword">def </span>delete(self) -&gt; None:</div>
 <div class="line"><span class="lineno">   42</span>        <span class="stringliteral">&quot;&quot;&quot;Clear detector hit containers.&quot;&quot;&quot;</span></div>
 <div class="line"><span class="lineno">   43</span>        self.det.clear()</div>
-<div class="line"><span class="lineno">   44</span>        <span class="keywordflow">if</span> self.MCdet:</div>
+<div class="line"><span class="lineno">   44</span>        <span class="keywordflow">if</span> self.MCdet <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span>:</div>
 <div class="line"><span class="lineno">   45</span>            self.MCdet.clear()</div>
 <div class="line"><span class="lineno">   46</span> </div>
 </div><!-- fragment -->
