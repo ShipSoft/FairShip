@@ -18,60 +18,11 @@ if(POLICY CMP0144)
     cmake_policy(SET CMP0144 NEW)
 endif()
 
-# Determine version from git tags (CalVer: year.month[.patch]). A GitHub tarball
-# (as built by the conda recipe) has no .git, but git archive has filled in
-# .git_archival.txt (export-subst in .gitattributes).
-find_package(Git QUIET)
-if(Git_FOUND)
-    execute_process(
-        COMMAND ${GIT_EXECUTABLE} describe --tags --match "[0-9]*"
-        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-        OUTPUT_VARIABLE FAIRSHIP_GIT_VERSION
-        OUTPUT_STRIP_TRAILING_WHITESPACE
-        ERROR_QUIET
-        RESULT_VARIABLE GIT_DESCRIBE_RESULT
-    )
-    execute_process(
-        COMMAND ${GIT_EXECUTABLE} rev-parse HEAD
-        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-        OUTPUT_VARIABLE FAIRSHIP_GIT_HASH
-        OUTPUT_STRIP_TRAILING_WHITESPACE
-        ERROR_QUIET
-        RESULT_VARIABLE GIT_REV_PARSE_RESULT
-    )
-    if(NOT GIT_REV_PARSE_RESULT EQUAL 0)
-        set(FAIRSHIP_GIT_HASH "")
-    endif()
-endif()
-
-if(
-    NOT GIT_DESCRIBE_RESULT EQUAL 0
-    AND EXISTS "${CMAKE_SOURCE_DIR}/.git_archival.txt"
-)
-    file(STRINGS "${CMAKE_SOURCE_DIR}/.git_archival.txt" _archival)
-    # Outside a git archive the lines still hold $Format:...$ and match nothing.
-    foreach(_line IN LISTS _archival)
-        if(_line MATCHES "^node: ([0-9a-f]+)$")
-            set(FAIRSHIP_GIT_HASH "${CMAKE_MATCH_1}")
-        elseif(_line MATCHES "^describe-name: ([0-9].*)$")
-            set(FAIRSHIP_GIT_VERSION "${CMAKE_MATCH_1}")
-            set(GIT_DESCRIBE_RESULT 0)
-        endif()
-    endforeach()
-endif()
-
-if(GIT_DESCRIBE_RESULT EQUAL 0)
-    # Parse: "26.05", "26.05.1", "26.05-12-gabcdef", or "26.05.1-3-gabcdef"
-    string(
-        REGEX MATCH "^[0-9]+\\.[0-9]+(\\.[0-9]+)?"
-        FAIRSHIP_VERSION
-        "${FAIRSHIP_GIT_VERSION}"
-    )
-    if(FAIRSHIP_GIT_VERSION MATCHES "^[0-9.]+-([0-9]+)-g")
-        set(FAIRSHIP_VERSION_TWEAK "${CMAKE_MATCH_1}")
-    endif()
-else()
-    set(FAIRSHIP_VERSION "0.0.0")
+# Determine version from git tags (CalVer: year.month[.patch]), or from
+# .git_archival.txt in a GitHub tarball.
+set(FAIRSHIP_SOURCE_DIR ${CMAKE_SOURCE_DIR})
+include(${CMAKE_SOURCE_DIR}/cmake/modules/FairShipGitVersion.cmake)
+if(NOT GIT_DESCRIBE_RESULT EQUAL 0)
     message(
         WARNING
         "Git not found or no tags — using fallback version ${FAIRSHIP_VERSION}"
@@ -216,11 +167,21 @@ set(PROJECT_LIBRARY_PROPERTIES
 install(DIRECTORY geometry DESTINATION share/${PROJECT_NAME})
 
 # Lets Python record which FairShip build ran (saveBasicParameters), as
-# FairRoot's FairVersion.h does for FairRoot.
-configure_file(
-    ${CMAKE_SOURCE_DIR}/FairShipVersion.h.in
-    ${CMAKE_BINARY_DIR}/FairShipVersion.h
-    @ONLY
+# FairRoot's FairVersion.h does for FairRoot. Regenerated on every build, so the
+# recorded commit does not go stale when CMake does not re-run; nothing compiles
+# against it, so a new commit rebuilds nothing.
+add_custom_target(
+    FairShipVersion
+    ALL
+    COMMAND
+        ${CMAKE_COMMAND} -DFAIRSHIP_SOURCE_DIR=${CMAKE_SOURCE_DIR}
+        -DGIT_EXECUTABLE=${GIT_EXECUTABLE}
+        -DIN=${CMAKE_SOURCE_DIR}/FairShipVersion.h.in
+        -DOUT=${CMAKE_BINARY_DIR}/FairShipVersion.h -P
+        ${CMAKE_SOURCE_DIR}/cmake/scripts/WriteFairShipVersion.cmake
+    BYPRODUCTS ${CMAKE_BINARY_DIR}/FairShipVersion.h
+    COMMENT "Updating FairShipVersion.h"
+    VERBATIM
 )
 install(
     FILES ${CMAKE_BINARY_DIR}/FairShipVersion.h
