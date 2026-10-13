@@ -181,6 +181,16 @@ the largest gap. Set the threshold with `--poca-jump-threshold <cm>` in
 `prepareEvents.py`, or `MuDISProcessor::SetPocaJumpThreshold(cm)` in C++.
 The default is 1 cm, and a gap equal to the threshold is not counted.
 
+The end-of-run summary also reports sums of `MCTrack[0].fW` (via
+`GetWeight()`) for the muon counters, including geometry routes, rejections,
+and muons with large POCA jumps. Each muon contributes its weight once to
+each applicable count, independent of the number of generated DIS events.
+Charge counts use the existing momentum cut; the no-hit count is diagnostic
+and does not reject the muon. The weighted skipped-path count includes
+muons with invalid or empty paths. Unreadable entries, missing tracks and
+non-muon entries in the general skipped-event count have no corresponding
+muon weight and are not included in that weighted count.
+
 Each output muon has `muon_path_length`, the sum of the path intervals used
 for DIS vertex sampling, excluding `REST`, and `muon_path_length_<MatType>`
 branches for `MS`, `UBT`, `SBTsens`, `SBTfr`, `SSTsens`, `SSTfr`, `HE`, `AIR`,
@@ -189,6 +199,22 @@ lengths are in cm and exclude transverse POCA jumps. The MS length uses only
 the last 20 cm in accumulated z (or the full MS path if shorter), converted
 to trajectory length, matching the vertex sampling and DIS weight interval.
 The full REST length is saved separately in `muon_path_length_REST`.
+
+The end-of-run `Muon path totals` lines accumulate these same lengths,
+once per output muon, independently of the number of DIS interactions.
+Each category (including `REST`) reports `sum(L)` and `sum(fW*L)` in cm,
+plus the count and `sum(fW)` of crossing muons (positive path length).
+The overall line excludes `REST` from the lengths and counts all output
+muons, including those with zero total DIS path length. Totals reset each run
+and are printed with 17 significant digits for combining jobs.
+
+Sum the printed quantities across jobs before dividing: use `sum(L)` divided
+by the crossing count for a conditional mean, or `sum(fW*L) / sum(fW)` for
+its MC-weighted counterpart. For means over all output muons, including
+zero lengths, use the overall line's count or weight sum as the denominator.
+A weighted mean is undefined when its weight sum is zero. These are DIS
+material categories, not individual geometry material names; the MS total
+uses the restricted sampling interval, not the full shield trajectory.
 
 `HeBalloon` groups the helium balloon liner walls and both lids. In the veto
 geometry these are the skin of the `HeBalloon` volume around `decay_medium`;

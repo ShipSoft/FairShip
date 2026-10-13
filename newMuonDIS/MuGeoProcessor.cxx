@@ -165,6 +165,7 @@ void MuGeoProcessor::ResetDiagnostics() {
   fUBTBackwardMisses = fStartsBeyondZmax = fStartsBeforeZmin = 0;
   fLargeJumps = fMuonsWithLargeJumps = 0;
   fMaxTransverseJump = 0.;
+  fMuonWeights = {};
 }
 
 void MuGeoProcessor::PrintDiagnostics() const {
@@ -184,15 +185,35 @@ void MuGeoProcessor::PrintDiagnostics() const {
             << fTransitions << " transitions exceed " << fPocaJumpThreshold
             << " cm, in " << fMuonsWithLargeJumps
             << " muons; maximum jump = " << fMaxTransverseJump << " cm";
+  LOG(info) << "Muon path diagnostics (sum MCTrack[0].fW): "
+            << fMuonWeights.considered << " considered, "
+            << fMuonWeights.backward << " rejected for non-forward momentum, "
+            << fMuonWeights.invalid << " rejected for invalid measurements"
+            << " (entries without MCTrack have no weight)";
+  LOG(info) << "Muon path routes prepared (sum MCTrack[0].fW): "
+            << fMuonWeights.ubtBackward << " from UBT, "
+            << fMuonWeights.startMagnetic << " from MC start in field, "
+            << fMuonWeights.startStraight
+            << " from MC start in field-free region, "
+            << fMuonWeights.beyondZmax << " skipped with start z >= maximum z";
+  LOG(info) << "UBT backward paths missing MS (sum MCTrack[0].fW): "
+            << fMuonWeights.ubtMiss;
+  LOG(info) << "Muons starting before z = " << fZmin
+            << " cm (sum MCTrack[0].fW): " << fMuonWeights.beforeZmin;
+  LOG(info) << "Muons with large POCA transverse jumps (sum MCTrack[0].fW): "
+            << fMuonWeights.largeJump;
 }
 
 bool MuGeoProcessor::initialise(MuonBranches& aEvt) {
   fSegments.clear();
   fTraceBackward = false;
   fPathMap.clear();
+  fMuonWeight = aEvt.mcTrks.empty() ? 0. : aEvt.mcTrks[0].GetWeight();
   ++fMuons;
+  fMuonWeights.considered += fMuonWeight;
   if (aEvt.mcTrks.empty()) {
     ++fInvalidMuons;
+    fMuonWeights.invalid += fMuonWeight;
     return false;
   }
 
@@ -228,14 +249,17 @@ bool MuGeoProcessor::initialise(MuonBranches& aEvt) {
         !std::isfinite(m.momentum.Mag()) || !std::isfinite(m.time) ||
         m.momentum.Mag() == 0.) {
       ++fInvalidMuons;
+      fMuonWeights.invalid += fMuonWeight;
       return false;
     }
     if (m.momentum.Z() <= 0.) {
       ++fBackwardMuons;
+      fMuonWeights.backward += fMuonWeight;
       return false;
     }
     if (m.position.Z() < measurements[0].position.Z()) {
       ++fInvalidMuons;
+      fMuonWeights.invalid += fMuonWeight;
       return false;
     }
   }
@@ -255,6 +279,7 @@ bool MuGeoProcessor::initialise(MuonBranches& aEvt) {
   fStart = measurements[0];
   if (fStart.position.Z() >= fZmax) {
     ++fStartsBeyondZmax;
+    fMuonWeights.beyondZmax += fMuonWeight;
     return true;
   }
   const bool hasUBT = !aEvt.ubtPt.empty();
@@ -276,6 +301,7 @@ bool MuGeoProcessor::initialise(MuonBranches& aEvt) {
     count = kept;
     startZ = fUBT.position.Z();
     ++fUBTBackwardPaths;
+    fMuonWeights.ubtBackward += fMuonWeight;
   } else if (fPropagator) {
     const bool startsInField = fPropagator->HasFieldAt(fStart.position);
     // The propagator skips field-free regions linearly and resumes bending
@@ -288,6 +314,7 @@ bool MuGeoProcessor::initialise(MuonBranches& aEvt) {
                  << startZ;
       fSegments.clear();
       ++fInvalidMuons;
+      fMuonWeights.invalid += fMuonWeight;
       return false;
     }
     startZ = count > 1 ? GetTrajectoryPocaZ(measurements[1]) : endZ;
@@ -300,15 +327,19 @@ bool MuGeoProcessor::initialise(MuonBranches& aEvt) {
     else
       fSegments.back().endZ = startZ;
     first = 1;
-    if (startsInField)
+    if (startsInField) {
       ++fStartMagneticPaths;
-    else
+      fMuonWeights.startMagnetic += fMuonWeight;
+    } else {
       ++fStartStraightPaths;
+      fMuonWeights.startStraight += fMuonWeight;
+    }
   } else {
     if (!fShieldVolumes.empty())
       throw std::runtime_error(
           "Muon without UBT requires a configured shield field map");
     ++fStartStraightPaths;
+    fMuonWeights.startStraight += fMuonWeight;
   }
   for (unsigned i = first; i < count && startZ < fZmax; ++i) {
     const auto& m = measurements[i];
@@ -541,6 +572,7 @@ std::map<std::string, MuonPath>& MuGeoProcessor::FillMuonPath() {
   // Informational only: upstream starts are routed via UBT or field transport.
   if (fStart.position.Z() < fZmin) {
     ++fStartsBeforeZmin;
+    fMuonWeights.beforeZmin += fMuonWeight;
     LOG(debug) << "Muon starts at z = " << fStart.position.Z()
                << " cm, before z_min = " << fZmin << " cm";
   }
@@ -554,6 +586,7 @@ std::map<std::string, MuonPath>& MuGeoProcessor::FillMuonPath() {
     }
     if (fPathMap.count("MS") == 0) {
       ++fUBTBackwardMisses;
+      fMuonWeights.ubtMiss += fMuonWeight;
       LOG(debug)
           << "UBT backward extrapolation does not cross MS: start position ("
           << fStart.position.X() << ", " << fStart.position.Y() << ", "
@@ -593,7 +626,10 @@ std::map<std::string, MuonPath>& MuGeoProcessor::FillMuonPath() {
                   ((segment.endZ - m.position.Z()) / direction.Z()) * direction;
     hasPrevious = true;
   }
-  if (hasLargeJump) ++fMuonsWithLargeJumps;
+  if (hasLargeJump) {
+    ++fMuonsWithLargeJumps;
+    fMuonWeights.largeJump += fMuonWeight;
+  }
   return fPathMap;
 }
 
