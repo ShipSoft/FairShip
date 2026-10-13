@@ -1,0 +1,24 @@
+<map id="newMuonDIS" name="newMuonDIS">
+<area shape="rect" id="node1" href="dir_c7af8ae1fa24dc0e27242ce21fb42ad9.html" title="newMuonDIS" alt="" coords="297,5,403,31"/>
+<area shape="rect" id="node2" href="dir_077298d11411e0d78a9900d1a8de44bb.html" title="shipgen" alt="" coords="5,79,79,104"/>
+<area shape="poly" id="edge1" href="dir_000016_000020.html" alt="" coords="300,33,93,81,91,76,299,28"/>
+<area shape="rect" id="edge1-headlabel" href="dir_000016_000020.html" title="1" alt="" coords="94,78,103,93"/>
+<area shape="rect" id="node3" href="dir_14b8127facb850683e99630d6654b886.html" title="TimeDet" alt="" coords="103,79,181,104"/>
+<area shape="poly" id="edge2" href="dir_000016_000025.html" alt="" coords="317,33,190,77,188,72,316,28"/>
+<area shape="rect" id="edge2-headlabel" href="dir_000016_000025.html" title="1" alt="" coords="191,73,200,88"/>
+<area shape="rect" id="node4" href="dir_73d80d5249fb06c79662fe45263444fd.html" title="strawtubes" alt="" coords="205,79,300,104"/>
+<area shape="poly" id="edge3" href="dir_000016_000023.html" alt="" coords="336,33,281,72,278,68,333,29"/>
+<area shape="rect" id="edge3-headlabel" href="dir_000016_000023.html" title="1" alt="" coords="284,67,293,82"/>
+<area shape="rect" id="node5" href="dir_b53ddcf3c2f78522bad11056100467d8.html" title="field" alt="" coords="325,79,375,104"/>
+<area shape="poly" id="edge4" href="dir_000016_000008.html" alt="" coords="353,31,353,65,347,65,347,31"/>
+<area shape="rect" id="edge4-headlabel" href="dir_000016_000008.html" title="1" alt="" coords="354,53,363,68"/>
+<area shape="rect" id="node6" href="dir_d32c3015c3e8f785dc4289736c132c3d.html" title="shipdata" alt="" coords="400,79,479,104"/>
+<area shape="poly" id="edge5" href="dir_000016_000019.html" alt="" coords="366,29,416,68,412,72,363,33"/>
+<area shape="rect" id="edge5-headlabel" href="dir_000016_000019.html" title="1" alt="" coords="411,53,420,68"/>
+<area shape="rect" id="node7" href="dir_fad65dc12642af85d79633a04051eba1.html" title="UpstreamTagger" alt="" coords="503,79,632,104"/>
+<area shape="poly" id="edge6" href="dir_000016_000026.html" alt="" coords="386,28,520,72,518,77,384,33"/>
+<area shape="rect" id="edge6-headlabel" href="dir_000016_000026.html" title="1" alt="" coords="513,58,522,72"/>
+<area shape="rect" id="node8" href="dir_fe24cdf4a9f9ffbe8e86d90b3d49ea5b.html" title="veto" alt="" coords="657,79,707,104"/>
+<area shape="poly" id="edge7" href="dir_000016_000027.html" alt="" coords="404,26,511,46,644,76,642,81,510,51,403,31"/>
+<area shape="rect" id="edge7-headlabel" href="dir_000016_000027.html" title="1" alt="" coords="636,62,646,77"/>
+</map>

@@ -1,0 +1,7 @@
+<map id="MagneticTrackPropagator" name="MagneticTrackPropagator">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,168,192,193"/>
+<area shape="rect" id="Node000002" href="$classShipBFieldMap.html" title="Class that defines a (3d) magnetic field map (distances in cm, fields in tesla)" alt="" coords="39,80,158,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="101,119,101,167,96,167,96,119"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="33,5,165,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="101,45,101,80,96,80,96,45"/>
+</map>

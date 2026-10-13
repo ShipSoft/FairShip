@@ -13,7 +13,8 @@ var searchData=
   ['detector_3c_20vetopoint_20_3e_10',['Detector&lt; vetoPoint &gt;',['../classSHiP_1_1Detector.html',1,'SHiP']]],
   ['detectorhit_11',['DetectorHit',['../classSHiP_1_1DetectorHit.html',1,'SHiP']]],
   ['detectorpoint_12',['DetectorPoint',['../classSHiP_1_1DetectorPoint.html',1,'SHiP']]],
-  ['dppythia8generator_13',['DPPythia8Generator',['../classDPPythia8Generator.html',1,'']]],
-  ['drawtracks_14',['DrawTracks',['../classeventDisplay_1_1DrawTracks.html',1,'eventDisplay']]],
-  ['drawvetodigi_15',['DrawVetoDigi',['../classeventDisplay_1_1DrawVetoDigi.html',1,'eventDisplay']]]
+  ['disparticle_13',['DISparticle',['../classDISparticle.html',1,'']]],
+  ['dppythia8generator_14',['DPPythia8Generator',['../classDPPythia8Generator.html',1,'']]],
+  ['drawtracks_15',['DrawTracks',['../classeventDisplay_1_1DrawTracks.html',1,'eventDisplay']]],
+  ['drawvetodigi_16',['DrawVetoDigi',['../classeventDisplay_1_1DrawVetoDigi.html',1,'eventDisplay']]]
 ];

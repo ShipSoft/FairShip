@@ -12,5 +12,6 @@ var searchData=
   ['mergembias_9',['mergeMbias',['../namespacemergeMbias.html',1,'']]],
   ['method_5flogger_10',['method_logger',['../namespacemethod__logger.html',1,'']]],
   ['mtcdetector_11',['MTCDetector',['../namespaceMTCDetector.html',1,'']]],
-  ['mudis_5fmergefiles_12',['muDIS_mergeFiles',['../namespacemuDIS__mergeFiles.html',1,'']]]
+  ['mudis_5fmergefiles_12',['muDIS_mergeFiles',['../namespacemuDIS__mergeFiles.html',1,'']]],
+  ['mudisgenerator_5fpostprocessing_13',['MuDISGenerator_postProcessing',['../namespaceMuDISGenerator__postProcessing.html',1,'']]]
 ];

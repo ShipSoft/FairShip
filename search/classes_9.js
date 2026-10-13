@@ -1,11 +1,22 @@
 var searchData=
 [
-  ['maprange_0',['MapRange',['../classfieldMapTools_1_1MapRange.html',1,'fieldMapTools']]],
-  ['methodlogger_1',['MethodLogger',['../classmethod__logger_1_1MethodLogger.html',1,'method_logger']]],
-  ['modelspec_2',['ModelSpec',['../structModelSpec.html',1,'']]],
-  ['mtcdetector_3',['mtcdetector',['../classMTCDetector.html',1,'MTCDetector'],['../classMTCDetector_1_1MTCDetector.html',1,'MTCDetector.MTCDetector']]],
-  ['mtcdethit_4',['MTCDetHit',['../classMTCDetHit.html',1,'']]],
-  ['mtcdetpoint_5',['MTCDetPoint',['../classMTCDetPoint.html',1,'']]],
-  ['mudisgenerator_6',['MuDISGenerator',['../classMuDISGenerator.html',1,'']]],
-  ['muonbackgenerator_7',['MuonBackGenerator',['../classMuonBackGenerator.html',1,'']]]
+  ['magnetictrackpropagator_0',['MagneticTrackPropagator',['../classMagneticTrackPropagator.html',1,'']]],
+  ['maprange_1',['MapRange',['../classfieldMapTools_1_1MapRange.html',1,'fieldMapTools']]],
+  ['measurement_2',['Measurement',['../structMuGeoProcessor_1_1Measurement.html',1,'MuGeoProcessor']]],
+  ['methodlogger_3',['MethodLogger',['../classmethod__logger_1_1MethodLogger.html',1,'method_logger']]],
+  ['modelspec_4',['ModelSpec',['../structModelSpec.html',1,'']]],
+  ['mtcdetector_5',['mtcdetector',['../classMTCDetector.html',1,'MTCDetector'],['../classMTCDetector_1_1MTCDetector.html',1,'MTCDetector.MTCDetector']]],
+  ['mtcdethit_6',['MTCDetHit',['../classMTCDetHit.html',1,'']]],
+  ['mtcdetpoint_7',['MTCDetPoint',['../classMTCDetPoint.html',1,'']]],
+  ['mudisfilter_8',['MuDISFilter',['../classMuDISFilter.html',1,'']]],
+  ['mudisgenerator_9',['MuDISGenerator',['../classMuDISGenerator.html',1,'']]],
+  ['mudisprocessor_10',['MuDISProcessor',['../classMuDISProcessor.html',1,'']]],
+  ['mugeoprocessor_11',['MuGeoProcessor',['../classMuGeoProcessor.html',1,'']]],
+  ['muonbackgenerator_12',['MuonBackGenerator',['../classMuonBackGenerator.html',1,'']]],
+  ['muonbranches_13',['MuonBranches',['../structShipMuDIS_1_1MuonBranches.html',1,'ShipMuDIS']]],
+  ['muondisbranches_14',['MuonDISBranches',['../structShipMuDIS_1_1MuonDISBranches.html',1,'ShipMuDIS']]],
+  ['muondisinbranches_15',['MuonDISInBranches',['../structShipMuDIS_1_1MuonDISInBranches.html',1,'ShipMuDIS']]],
+  ['muoninbranches_16',['MuonInBranches',['../structShipMuDIS_1_1MuonInBranches.html',1,'ShipMuDIS']]],
+  ['muonpath_17',['MuonPath',['../classMuonPath.html',1,'']]],
+  ['muonweights_18',['MuonWeights',['../structMuGeoProcessor_1_1MuonWeights.html',1,'MuGeoProcessor']]]
 ];

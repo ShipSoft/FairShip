@@ -83,6 +83,7 @@ var run__simScript_8py =
     [ "n_EVENTS", "run__simScript_8py.html#a0ad5a8757666a018ab23b8e7f5eaeca2", null ],
     [ "name", "run__simScript_8py.html#a0b223972f3cecde5ffa255bf68198a5e", null ],
     [ "nargs", "run__simScript_8py.html#aa922f75e6c8c8de037a8b802066c2496", null ],
+    [ "nDIS", "run__simScript_8py.html#a997fa59dcbe57e8642a2244f347d6500", null ],
     [ "nEvents", "run__simScript_8py.html#ac224f2a2d08b71115bf77bb3b3f3dea3", null ],
     [ "new_tree", "run__simScript_8py.html#a4435f2e074882181ff7ce09cef9ef113", null ],
     [ "newFileSummary", "run__simScript_8py.html#aa57c176f480c3a1677f8c1f444598de6", null ],

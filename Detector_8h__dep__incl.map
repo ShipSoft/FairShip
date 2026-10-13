@@ -14,12 +14,12 @@
 <area shape="poly" id="edge13_Node000001_Node000014" title=" " alt="" coords="1472,33,1600,83,1598,88,1470,38"/>
 <area shape="rect" id="Node000018" href="$UpstreamTagger_8h.html" title=" " alt="" coords="1897,86,2148,111"/>
 <area shape="poly" id="edge17_Node000001_Node000018" title=" " alt="" coords="1518,28,1936,83,1936,89,1517,34"/>
-<area shape="rect" id="Node000025" href="$exitHadronAbsorber_8h.html" title=" " alt="" coords="2249,79,2431,119"/>
-<area shape="poly" id="edge25_Node000001_Node000025" title=" " alt="" coords="1518,23,2160,76,2249,85,2248,90,2160,81,1518,29"/>
-<area shape="rect" id="Node000027" href="$strawtubes_8h.html" title=" " alt="" coords="2539,86,2722,111"/>
-<area shape="poly" id="edge27_Node000001_Node000027" title=" " alt="" coords="1518,21,1919,41,2443,76,2539,85,2539,90,2442,81,1918,47,1518,26"/>
-<area shape="rect" id="Node000030" href="$veto_8h.html" title=" " alt="" coords="3001,86,3097,111"/>
-<area shape="poly" id="edge30_Node000001_Node000030" title=" " alt="" coords="1518,20,2033,42,2733,76,3001,92,3001,97,2733,81,2033,48,1518,26"/>
+<area shape="rect" id="Node000034" href="$exitHadronAbsorber_8h.html" title=" " alt="" coords="2249,79,2431,119"/>
+<area shape="poly" id="edge35_Node000001_Node000034" title=" " alt="" coords="1518,23,2160,76,2249,85,2248,90,2160,81,1518,29"/>
+<area shape="rect" id="Node000036" href="$strawtubes_8h.html" title=" " alt="" coords="2539,86,2722,111"/>
+<area shape="poly" id="edge37_Node000001_Node000036" title=" " alt="" coords="1518,21,1919,41,2443,76,2539,85,2539,90,2442,81,1918,47,1518,26"/>
+<area shape="rect" id="Node000039" href="$veto_8h.html" title=" " alt="" coords="3001,86,3097,111"/>
+<area shape="poly" id="edge40_Node000001_Node000039" title=" " alt="" coords="1518,20,2033,42,2733,76,3001,92,3001,97,2733,81,2033,48,1518,26"/>
 <area shape="rect" id="Node000003" href="$CaloScoringPlane_8cxx.html" title=" " alt="" coords="5,167,221,207"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="133,133,122,167,117,166,128,131"/>
 <area shape="rect" id="Node000005" href="$Target_8cxx.html" title=" " alt="" coords="245,167,400,207"/>
@@ -40,27 +40,46 @@
 <area shape="poly" id="edge15_Node000014_Node000016" title=" " alt="" coords="1654,118,1716,171,1712,175,1650,122"/>
 <area shape="rect" id="Node000017" href="$test__timedet__geometry_8cxx.html" title=" " alt="" coords="1844,167,1985,207"/>
 <area shape="poly" id="edge16_Node000014_Node000017" title=" " alt="" coords="1680,113,1852,164,1851,169,1679,118"/>
-<area shape="rect" id="Node000019" href="$UpstreamTagger_8cxx.html" title=" " alt="" coords="1637,262,1904,287"/>
-<area shape="poly" id="edge18_Node000018_Node000019" title=" " alt="" coords="2026,126,2021,167,2012,189,1999,209,1972,226,1930,241,1835,265,1834,259,1929,236,1970,221,1995,205,2008,187,2015,166,2021,125"/>
+<area shape="rect" id="Node000019" href="$UpstreamTagger_8cxx.html" title=" " alt="" coords="1505,262,1772,287"/>
+<area shape="poly" id="edge18_Node000018_Node000019" title=" " alt="" coords="2027,126,2021,168,2013,190,1999,209,1962,224,1893,239,1728,265,1727,259,1892,234,1960,219,1996,205,2008,187,2016,167,2021,125"/>
 <area shape="rect" id="Node000020" href="$UpstreamTaggerPoint_8h.html" title=" " alt="" coords="2060,167,2300,207"/>
 <area shape="poly" id="edge19_Node000018_Node000020" title=" " alt="" coords="2057,116,2147,164,2144,169,2055,120"/>
-<area shape="poly" id="edge20_Node000020_Node000019" title=" " alt="" coords="2078,212,1826,265,1825,259,2077,207"/>
-<area shape="rect" id="Node000021" href="$UpstreamTaggerHit_8cxx.html" title=" " alt="" coords="1928,255,2168,295"/>
-<area shape="poly" id="edge21_Node000020_Node000021" title=" " alt="" coords="2141,217,2079,257,2076,252,2138,212"/>
-<area shape="rect" id="Node000022" href="$UpstreamTaggerPoint_8cxx.html" title=" " alt="" coords="2192,255,2432,295"/>
-<area shape="poly" id="edge22_Node000020_Node000022" title=" " alt="" coords="2222,212,2284,252,2281,257,2219,217"/>
-<area shape="rect" id="Node000023" href="$test__data__class__io_8cxx.html" title=" " alt="" coords="2457,255,2615,295"/>
-<area shape="poly" id="edge23_Node000020_Node000023" title=" " alt="" coords="2272,207,2459,252,2457,257,2271,212"/>
-<area shape="rect" id="Node000024" href="$test__rntuple__io_8cxx.html" title=" " alt="" coords="2640,255,2776,295"/>
-<area shape="poly" id="edge24_Node000020_Node000024" title=" " alt="" coords="2314,205,2627,252,2640,255,2639,260,2626,257,2313,210"/>
-<area shape="rect" id="Node000026" href="$exitHadronAbsorber_8cxx.html" title=" " alt="" coords="2325,167,2507,207"/>
-<area shape="poly" id="edge26_Node000025_Node000026" title=" " alt="" coords="2368,127,2401,165,2397,168,2364,131"/>
-<area shape="rect" id="Node000028" href="$strawtubes_8cxx.html" title=" " alt="" coords="2532,174,2729,199"/>
-<area shape="poly" id="edge28_Node000027_Node000028" title=" " alt="" coords="2633,125,2633,173,2628,173,2628,125"/>
-<area shape="rect" id="Node000029" href="$strawtubesHit_8cxx.html" title=" " alt="" coords="2753,174,2969,199"/>
-<area shape="poly" id="edge29_Node000027_Node000029" title=" " alt="" coords="2675,114,2831,171,2829,176,2674,119"/>
-<area shape="rect" id="Node000031" href="$veto_8cxx.html" title="Implementation of the Veto detector class." alt="" coords="2994,174,3105,199"/>
-<area shape="poly" id="edge31_Node000030_Node000031" title=" " alt="" coords="3052,125,3052,173,3047,173,3047,125"/>
-<area shape="rect" id="Node000032" href="$vetoHit_8cxx.html" title=" " alt="" coords="3129,174,3260,199"/>
-<area shape="poly" id="edge32_Node000030_Node000032" title=" " alt="" coords="3082,116,3176,171,3174,176,3079,121"/>
+<area shape="poly" id="edge20_Node000020_Node000019" title=" " alt="" coords="2049,211,1711,265,1710,259,2048,206"/>
+<area shape="rect" id="Node000021" href="$UpstreamTaggerHit_8cxx.html" title=" " alt="" coords="1796,255,2036,295"/>
+<area shape="poly" id="edge21_Node000020_Node000021" title=" " alt="" coords="2110,213,1975,257,1973,252,2108,208"/>
+<area shape="rect" id="Node000022" href="$UpstreamTaggerPoint_8cxx.html" title=" " alt="" coords="2060,255,2300,295"/>
+<area shape="poly" id="edge22_Node000020_Node000022" title=" " alt="" coords="2183,221,2183,254,2177,254,2177,221"/>
+<area shape="rect" id="Node000023" href="$MuDISDefs_8h.html" title=" " alt="" coords="2324,262,2519,287"/>
+<area shape="poly" id="edge23_Node000020_Node000023" title=" " alt="" coords="2247,209,2390,259,2388,264,2245,214"/>
+<area shape="rect" id="Node000032" href="$test__data__class__io_8cxx.html" title=" " alt="" coords="2543,255,2702,295"/>
+<area shape="poly" id="edge33_Node000020_Node000032" title=" " alt="" coords="2294,207,2531,252,2543,254,2542,260,2530,257,2293,212"/>
+<area shape="rect" id="Node000033" href="$test__rntuple__io_8cxx.html" title=" " alt="" coords="2727,255,2863,295"/>
+<area shape="poly" id="edge34_Node000020_Node000033" title=" " alt="" coords="2314,204,2516,225,2604,235,2714,252,2727,254,2726,260,2713,257,2603,240,2516,231,2314,210"/>
+<area shape="rect" id="Node000024" href="$MuDISFilter_8h.html" title=" " alt="" coords="2057,343,2255,368"/>
+<area shape="poly" id="edge24_Node000023_Node000024" title=" " alt="" coords="2370,294,2195,345,2194,340,2369,289"/>
+<area shape="rect" id="Node000026" href="$MuDISProcessor_8h.html" title=" " alt="" coords="2232,416,2459,441"/>
+<area shape="poly" id="edge26_Node000023_Node000026" title=" " alt="" coords="2404,299,2373,344,2358,383,2350,417,2345,415,2353,381,2368,341,2400,296"/>
+<area shape="rect" id="Node000028" href="$MuGeoProcessor_8h.html" title=" " alt="" coords="2383,343,2614,368"/>
+<area shape="poly" id="edge28_Node000023_Node000028" title=" " alt="" coords="2444,295,2489,341,2485,344,2440,299"/>
+<area shape="rect" id="Node000030" href="$NewMuDISGenerator_8h.html" title=" " alt="" coords="2700,343,2959,368"/>
+<area shape="poly" id="edge31_Node000023_Node000030" title=" " alt="" coords="2494,287,2770,340,2769,345,2493,292"/>
+<area shape="rect" id="Node000025" href="$MuDISFilter_8cxx.html" title=" " alt="" coords="1995,416,2207,441"/>
+<area shape="poly" id="edge25_Node000024_Node000025" title=" " alt="" coords="2141,381,2112,418,2108,414,2137,377"/>
+<area shape="rect" id="Node000027" href="$MuDISProcessor_8cxx.html" title=" " alt="" coords="2224,489,2467,515"/>
+<area shape="poly" id="edge27_Node000026_Node000027" title=" " alt="" coords="2348,455,2348,489,2343,489,2343,455"/>
+<area shape="poly" id="edge29_Node000028_Node000026" title=" " alt="" coords="2463,376,2372,418,2369,413,2461,371"/>
+<area shape="rect" id="Node000029" href="$MuGeoProcessor_8cxx.html" title=" " alt="" coords="2483,416,2730,441"/>
+<area shape="poly" id="edge30_Node000028_Node000029" title=" " alt="" coords="2529,373,2590,414,2588,418,2526,378"/>
+<area shape="rect" id="Node000031" href="$NewMuDISGenerator_8cxx.html" title=" " alt="" coords="2754,416,3027,441"/>
+<area shape="poly" id="edge32_Node000030_Node000031" title=" " alt="" coords="2850,377,2883,414,2879,418,2846,380"/>
+<area shape="rect" id="Node000035" href="$exitHadronAbsorber_8cxx.html" title=" " alt="" coords="2325,167,2507,207"/>
+<area shape="poly" id="edge36_Node000034_Node000035" title=" " alt="" coords="2368,127,2401,165,2397,168,2364,131"/>
+<area shape="rect" id="Node000037" href="$strawtubes_8cxx.html" title=" " alt="" coords="2532,174,2729,199"/>
+<area shape="poly" id="edge38_Node000036_Node000037" title=" " alt="" coords="2633,125,2633,173,2628,173,2628,125"/>
+<area shape="rect" id="Node000038" href="$strawtubesHit_8cxx.html" title=" " alt="" coords="2753,174,2969,199"/>
+<area shape="poly" id="edge39_Node000036_Node000038" title=" " alt="" coords="2675,114,2831,171,2829,176,2674,119"/>
+<area shape="rect" id="Node000040" href="$veto_8cxx.html" title="Implementation of the Veto detector class." alt="" coords="2994,174,3105,199"/>
+<area shape="poly" id="edge41_Node000039_Node000040" title=" " alt="" coords="3052,125,3052,173,3047,173,3047,125"/>
+<area shape="rect" id="Node000041" href="$vetoHit_8cxx.html" title=" " alt="" coords="3129,174,3260,199"/>
+<area shape="poly" id="edge42_Node000039_Node000041" title=" " alt="" coords="3082,116,3176,171,3174,176,3079,121"/>
 </map>

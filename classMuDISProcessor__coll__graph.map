@@ -1,0 +1,15 @@
+<map id="MuDISProcessor" name="MuDISProcessor">
+<area shape="rect" id="Node000001" title=" " alt="" coords="279,196,405,221"/>
+<area shape="rect" id="Node000002" href="$structShipMuDIS_1_1CBMSimBranches.html" title=" " alt="" coords="5,108,220,133"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="157,136,312,193,310,198,155,141"/>
+<area shape="rect" id="Node000003" href="$structShipMuDIS_1_1MuonBranches.html" title=" " alt="" coords="244,108,440,133"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="345,147,345,195,339,195,339,147"/>
+<area shape="rect" id="Node000004" href="$structShipMuDIS_1_1MuonDISBranches.html" title=" " alt="" coords="203,5,422,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="322,43,341,107,336,109,317,45"/>
+<area shape="rect" id="Node000005" href="$classMuGeoProcessor.html" title=" " alt="" coords="495,108,626,133"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="520,141,372,198,370,193,518,136"/>
+<area shape="rect" id="Node000006" href="$structMuGeoProcessor_1_1Measurement.html" title=" " alt="" coords="446,5,675,31"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="563,45,563,108,558,108,558,45"/>
+<area shape="rect" id="Node000007" href="$structMuGeoProcessor_1_1MuonWeights.html" title=" " alt="" coords="699,5,926,31"/>
+<area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="772,38,590,110,588,106,770,33"/>
+</map>

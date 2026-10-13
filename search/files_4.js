@@ -7,8 +7,9 @@ var searchData=
   ['detectorhit_2eh_4',['DetectorHit.h',['../DetectorHit_8h.html',1,'']]],
   ['detectorpoint_2ecxx_5',['DetectorPoint.cxx',['../DetectorPoint_8cxx.html',1,'']]],
   ['detectorpoint_2eh_6',['DetectorPoint.h',['../DetectorPoint_8h.html',1,'']]],
-  ['dpproductionrates_2epy_7',['dpProductionRates.py',['../dpProductionRates_8py.html',1,'']]],
-  ['dppythia8generator_2ecxx_8',['DPPythia8Generator.cxx',['../DPPythia8Generator_8cxx.html',1,'']]],
-  ['dppythia8generator_2eh_9',['DPPythia8Generator.h',['../DPPythia8Generator_8h.html',1,'']]],
-  ['dumpevent_2epy_10',['dumpEvent.py',['../dumpEvent_8py.html',1,'']]]
+  ['disparticle_2eh_7',['DISparticle.h',['../DISparticle_8h.html',1,'']]],
+  ['dpproductionrates_2epy_8',['dpProductionRates.py',['../dpProductionRates_8py.html',1,'']]],
+  ['dppythia8generator_2ecxx_9',['DPPythia8Generator.cxx',['../DPPythia8Generator_8cxx.html',1,'']]],
+  ['dppythia8generator_2eh_10',['DPPythia8Generator.h',['../DPPythia8Generator_8h.html',1,'']]],
+  ['dumpevent_2epy_11',['dumpEvent.py',['../dumpEvent_8py.html',1,'']]]
 ];

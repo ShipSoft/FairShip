@@ -3,6 +3,8 @@ var hierarchy =
     [ "AbsBField", null, [
       [ "genfit::FairShipFields", "classgenfit_1_1FairShipFields.html", null ]
     ] ],
+    [ "MagneticTrackPropagator::Box", "structMagneticTrackPropagator_1_1Box.html", null ],
+    [ "ShipMuDIS::CBMSimBranches", "structShipMuDIS_1_1CBMSimBranches.html", null ],
     [ "hnl.CKMmatrix", "classhnl_1_1CKMmatrix.html", null ],
     [ "Co3Rng", "classCo3Rng.html", null ],
     [ "hnl.constants", "classhnl_1_1constants.html", null ],
@@ -13,6 +15,7 @@ var hierarchy =
         [ "ShipGeoConfig.Config", "classShipGeoConfig_1_1Config.html", null ]
       ] ]
     ] ],
+    [ "DISparticle", "classDISparticle.html", null ],
     [ "experimental.analysis_toolkit.event_inspector", "classexperimental_1_1analysis__toolkit_1_1event__inspector.html", null ],
     [ "FairContFact", null, [
       [ "ShipPassiveContFact", "classShipPassiveContFact.html", null ],
@@ -70,6 +73,7 @@ var hierarchy =
         [ "HNLPythia8Generator", "classHNLPythia8Generator.html", null ],
         [ "MuDISGenerator", "classMuDISGenerator.html", null ],
         [ "MuonBackGenerator", "classMuonBackGenerator.html", null ],
+        [ "NewMuDISGenerator", "classNewMuDISGenerator.html", null ],
         [ "NtupleGenerator", "classNtupleGenerator.html", null ],
         [ "ParticleGunGenerator", "classParticleGunGenerator.html", null ],
         [ "Pythia8Generator", "classPythia8Generator.html", null ],
@@ -114,7 +118,11 @@ var hierarchy =
       [ "eventDisplay.Rulers", "classeventDisplay_1_1Rulers.html", null ]
     ] ],
     [ "ShipFieldMaker::fieldInfo", "structShipFieldMaker_1_1fieldInfo.html", null ],
+    [ "MagneticTrackPropagator::FieldMap", "structMagneticTrackPropagator_1_1FieldMap.html", null ],
+    [ "MuDISFilter::FilterCandidate", "structMuDISFilter_1_1FilterCandidate.html", null ],
+    [ "MuDISFilter::FilterEfficiencyHistograms", "structMuDISFilter_1_1FilterEfficiencyHistograms.html", null ],
     [ "ParticleGunGenerator::HistoEntry", "structParticleGunGenerator_1_1HistoEntry.html", null ],
+    [ "Histograms", "structHistograms.html", null ],
     [ "hnl.HNLbranchings", "classhnl_1_1HNLbranchings.html", [
       [ "hnl.HNL", "classhnl_1_1HNL.html", null ]
     ] ],
@@ -132,9 +140,20 @@ var hierarchy =
       [ "SHiP::Detector< strawtubesPoint >", "classSHiP_1_1Detector.html", null ],
       [ "SHiP::Detector< PointType >", "classSHiP_1_1Detector.html", null ]
     ] ],
+    [ "MagneticTrackPropagator", "classMagneticTrackPropagator.html", null ],
     [ "fieldMapTools.MapRange", "classfieldMapTools_1_1MapRange.html", null ],
+    [ "MuGeoProcessor::Measurement", "structMuGeoProcessor_1_1Measurement.html", null ],
     [ "method_logger.MethodLogger", "classmethod__logger_1_1MethodLogger.html", null ],
     [ "ModelSpec", "structModelSpec.html", null ],
+    [ "MuDISFilter", "classMuDISFilter.html", null ],
+    [ "MuDISProcessor", "classMuDISProcessor.html", null ],
+    [ "MuGeoProcessor", "classMuGeoProcessor.html", null ],
+    [ "ShipMuDIS::MuonBranches", "structShipMuDIS_1_1MuonBranches.html", null ],
+    [ "ShipMuDIS::MuonDISBranches", "structShipMuDIS_1_1MuonDISBranches.html", null ],
+    [ "ShipMuDIS::MuonDISInBranches", "structShipMuDIS_1_1MuonDISInBranches.html", null ],
+    [ "ShipMuDIS::MuonInBranches", "structShipMuDIS_1_1MuonInBranches.html", null ],
+    [ "MuonPath", "classMuonPath.html", null ],
+    [ "MuGeoProcessor::MuonWeights", "structMuGeoProcessor_1_1MuonWeights.html", null ],
     [ "ParticleGunParticle", "structParticleGunParticle.html", null ],
     [ "ROOT.pyFairModule", null, [
       [ "study_GammaConv.Block", "classstudy__GammaConv_1_1Block.html", null ],
@@ -150,9 +169,11 @@ var hierarchy =
       [ "rpvsusy.RPVSUSY", "classrpvsusy_1_1RPVSUSY.html", null ]
     ] ],
     [ "SciFiMapping.SciFiMapping", "classSciFiMapping_1_1SciFiMapping.html", null ],
+    [ "MuGeoProcessor::Segment", "structMuGeoProcessor_1_1Segment.html", null ],
     [ "experimental.analysis_toolkit.selection_check", "classexperimental_1_1analysis__toolkit_1_1selection__check.html", null ],
     [ "shipDigiReco.ShipDigiReco", "classshipDigiReco_1_1ShipDigiReco.html", null ],
     [ "makeCascadePythia8.SignalEvents", "classmakeCascadePythia8_1_1SignalEvents.html", null ],
+    [ "MagneticTrackPropagator::State", "structMagneticTrackPropagator_1_1State.html", null ],
     [ "shipVertex.Task", "classshipVertex_1_1Task.html", null ],
     [ "shipVeto.Task", "classshipVeto_1_1Task.html", null ],
     [ "TG4VUserPostDetConstruction", null, [

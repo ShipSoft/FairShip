@@ -14,10 +14,12 @@ var searchData=
   ['load_11',['load',['../classShipGeoConfig_1_1Config.html#aa36885fca85b2ea273ad191e3508df8f',1,'ShipGeoConfig.Config.load()'],['../namespacereadDecayTable.html#accb3ca4d591c8a297fc406190aa012d1',1,'readDecayTable.load()']]],
   ['load_5fcustom_5fconfig_12',['load_custom_config',['../namespaceexperimental_1_1eminem__importer.html#acd6144a642352fcd56d208906a67012e',1,'experimental::eminem_importer']]],
   ['load_5ffrom_5froot_5ffile_13',['load_from_root_file',['../namespaceShipGeoConfig.html#ad0ba78745e1c9d354b0a8cafed88a784',1,'ShipGeoConfig']]],
-  ['load_5fpickled_5fdata_14',['load_pickled_data',['../namespaceexperimental_1_1eminem__importer.html#a00e0523bb0f7a736351a6aae59ecd397',1,'experimental::eminem_importer']]],
-  ['loaded_15',['loaded',['../namespacetest__field__maps.html#a5ffa193fe4b3f580d3188fc600ad25b2',1,'test_field_maps']]],
-  ['loadhistofromfile_16',['LoadHistoFromFile',['../classParticleGunGenerator.html#adb4adb35544eec6ca34ce7f224d43dc6',1,'ParticleGunGenerator']]],
-  ['loads_17',['loads',['../classShipGeoConfig_1_1Config.html#ab05b5555a5b2565d7bdbced03cb99843',1,'ShipGeoConfig::Config']]],
-  ['loads_5fjson_18',['loads_json',['../classShipGeoConfig_1_1Config.html#a86cc9ef6b9103346ae0e57f47af6b0db',1,'ShipGeoConfig::Config']]],
-  ['local2global_19',['local2Global',['../namespacegetGeoInformation.html#a448cb3b3e4a85101cc5feed35c977556',1,'getGeoInformation']]]
+  ['load_5fmuon_5fshield_5ffield_14',['load_muon_shield_field',['../namespacefilterEvents.html#a794eba20fad6a26cd0739fd0eb8a3f45',1,'filterEvents']]],
+  ['load_5fpickled_5fdata_15',['load_pickled_data',['../namespaceexperimental_1_1eminem__importer.html#a00e0523bb0f7a736351a6aae59ecd397',1,'experimental::eminem_importer']]],
+  ['load_5fspectrometer_5ffield_16',['load_spectrometer_field',['../namespacefilterEvents.html#a390926d80d50147c09e38e6abe532c34',1,'filterEvents']]],
+  ['loaded_17',['loaded',['../namespacetest__field__maps.html#a5ffa193fe4b3f580d3188fc600ad25b2',1,'test_field_maps']]],
+  ['loadhistofromfile_18',['LoadHistoFromFile',['../classParticleGunGenerator.html#adb4adb35544eec6ca34ce7f224d43dc6',1,'ParticleGunGenerator']]],
+  ['loads_19',['loads',['../classShipGeoConfig_1_1Config.html#ab05b5555a5b2565d7bdbced03cb99843',1,'ShipGeoConfig::Config']]],
+  ['loads_5fjson_20',['loads_json',['../classShipGeoConfig_1_1Config.html#a86cc9ef6b9103346ae0e57f47af6b0db',1,'ShipGeoConfig::Config']]],
+  ['local2global_21',['local2Global',['../namespacegetGeoInformation.html#a448cb3b3e4a85101cc5feed35c977556',1,'getGeoInformation']]]
 ];

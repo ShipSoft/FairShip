@@ -10,6 +10,7 @@ var files_dup =
     [ "macro", "dir_3b579af105d68949fc87077585f616df.html", "dir_3b579af105d68949fc87077585f616df" ],
     [ "muonDIS", "dir_8361b15a73807c2b11fd6500a4c40777.html", "dir_8361b15a73807c2b11fd6500a4c40777" ],
     [ "muonShieldOptimization", "dir_72a79d73443babb282d0800e65628bdf.html", "dir_72a79d73443babb282d0800e65628bdf" ],
+    [ "newMuonDIS", "dir_c7af8ae1fa24dc0e27242ce21fb42ad9.html", "dir_c7af8ae1fa24dc0e27242ce21fb42ad9" ],
     [ "passive", "dir_3f060d1c8fe756af3597c9e2f80882ac.html", "dir_3f060d1c8fe756af3597c9e2f80882ac" ],
     [ "python", "dir_7837fde3ab9c1fb2fc5be7b717af8d79.html", "dir_7837fde3ab9c1fb2fc5be7b717af8d79" ],
     [ "shipdata", "dir_d32c3015c3e8f785dc4289736c132c3d.html", "dir_d32c3015c3e8f785dc4289736c132c3d" ],

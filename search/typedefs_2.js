@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['pyobject_0',['PyObject',['../pyFairModule_8h.html#ae19630c1f4ca6d5236b30719d9140013',1,'pyFairModule.h']]]
+  ['filter_0',['Filter',['../classMuDISFilter.html#a628c618fee620d6f5963fafb815d47c2',1,'MuDISFilter']]],
+  ['floatarray_1',['floatArray',['../classShipBFieldMap.html#ac09386960df586f494427ede649eae7a',1,'ShipBFieldMap']]]
 ];

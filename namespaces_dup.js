@@ -323,6 +323,11 @@ var namespaces_dup =
       [ "weightMbias1GeV", "namespaceextractNeutrinosAndUpdateWeight.html#a255cf9b881f376a23b67633ac2307b83", null ]
     ] ],
     [ "fieldMapTools", "namespacefieldMapTools.html", "namespacefieldMapTools" ],
+    [ "filterEvents", "namespacefilterEvents.html", [
+      [ "load_muon_shield_field", "namespacefilterEvents.html#a794eba20fad6a26cd0739fd0eb8a3f45", null ],
+      [ "load_spectrometer_field", "namespacefilterEvents.html#a390926d80d50147c09e38e6abe532c34", null ],
+      [ "main", "namespacefilterEvents.html#a0faa43b74fffc3df44b1c5b180a49961", null ]
+    ] ],
     [ "genfit", "namespacegenfit.html", "namespacegenfit" ],
     [ "genie_interface", "namespacegenie__interface.html", [
       [ "_merge_env", "namespacegenie__interface.html#ac6e6905f3b30305d16b57fe8d96cbb1e", null ],
@@ -918,11 +923,46 @@ var namespaces_dup =
       [ "test", "namespacemuDIS__mergeFiles.html#ac9b6cc3beba4698015a60694a23fb16a", null ],
       [ "h", "namespacemuDIS__mergeFiles.html#a83f94c211fdeec0f62c2f112ef51da13", null ]
     ] ],
+    [ "MuDISGenerator_postProcessing", "namespaceMuDISGenerator__postProcessing.html", [
+      [ "_copy_metadata", "namespaceMuDISGenerator__postProcessing.html#af022bb078db91c9f16ffff36d04e17a5", null ],
+      [ "_dis_events", "namespaceMuDISGenerator__postProcessing.html#a57bf0af5d4c0f19a4f28a9515460ed2c", null ],
+      [ "post_process", "namespaceMuDISGenerator__postProcessing.html#a682170391e99b26004b4ad8cda34f499", null ],
+      [ "_IDENTITY_BRANCHES", "namespaceMuDISGenerator__postProcessing.html#afa33da9ea902f76b9dd5be9b80cb270f", null ],
+      [ "_MARKER", "namespaceMuDISGenerator__postProcessing.html#a9b8f5e5a2de70470dd07d11ef0a80268", null ],
+      [ "_POINT_BRANCHES", "namespaceMuDISGenerator__postProcessing.html#a82258d83f86443ac701572164d80c5f7", null ]
+    ] ],
     [ "plotFieldMap", "namespaceplotFieldMap.html", [
       [ "bending_power", "namespaceplotFieldMap.html#a73a7d0be8506d4b6d74679164628f803", null ],
       [ "draw", "namespaceplotFieldMap.html#a7241ec8d3fd0196ac515a6e31da4f3d0", null ],
       [ "main", "namespaceplotFieldMap.html#a298183f392f89f0d4be895adde10ef17", null ],
       [ "APERTURE", "namespaceplotFieldMap.html#a29b48d8b27572e81759f5db296bf8101", null ]
+    ] ],
+    [ "prepareEvents", "namespaceprepareEvents.html", [
+      [ "action", "namespaceprepareEvents.html#a3f83959717e3ce3cebc85929432eb73c", null ],
+      [ "args", "namespaceprepareEvents.html#a95649be87506c5269e5fd725f436580e", null ],
+      [ "choices", "namespaceprepareEvents.html#a375705f770ae1e24dc5877044fe657c0", null ],
+      [ "default", "namespaceprepareEvents.html#ab3cf929d7e4deb486e8404759d093788", null ],
+      [ "dest", "namespaceprepareEvents.html#ac89c1b104eaef1cb787b0b9afc810102", null ],
+      [ "False", "namespaceprepareEvents.html#a7b929a887a8b11a29f7c27c5afe5fb4a", null ],
+      [ "field_maker", "namespaceprepareEvents.html#a62426835bf3651e22cf31969dd09776c", null ],
+      [ "float", "namespaceprepareEvents.html#a6a4a655c770740a819a505e2ce5f4edb", null ],
+      [ "flush", "namespaceprepareEvents.html#a4bb91148a9bd0c6f570c7aabed55ad2c", null ],
+      [ "gErrorIgnoreLevel", "namespaceprepareEvents.html#a49bdc2a52b52c304b93367f1009c9c36", null ],
+      [ "help", "namespaceprepareEvents.html#a1740073886b8b8a69504bcce361b7f38", null ],
+      [ "int", "namespaceprepareEvents.html#a397dde9049e4562affcd8d01f72aac1e", null ],
+      [ "level", "namespaceprepareEvents.html#a8e5ed8dcb73e441b1b4424a8f0ba10ee", null ],
+      [ "matching_files", "namespaceprepareEvents.html#acc10e03641b5e773b94a9e6152e5b6b0", null ],
+      [ "muDis", "namespaceprepareEvents.html#a811e2c403e2d02703387ddcca297744d", null ],
+      [ "ok", "namespaceprepareEvents.html#abd6c4941a145bc9fb87ae6746dd7d6df", null ],
+      [ "p", "namespaceprepareEvents.html#a2d1e694fe31efc0287cc3e40a1bb71c3", null ],
+      [ "parser", "namespaceprepareEvents.html#a34b73bf680232e555f569e5890af45dd", null ],
+      [ "pattern", "namespaceprepareEvents.html#aa5dc5c7768a5def4f321b5f9ca696edd", null ],
+      [ "pdg", "namespaceprepareEvents.html#a1cd57929cb20de80b23fdfca2ec7b6bf", null ],
+      [ "required", "namespaceprepareEvents.html#abe98112dd23558b7e6bfc8d9123057eb", null ],
+      [ "shield_field", "namespaceprepareEvents.html#a7f546adae41142fa0e12af34996a57a3", null ],
+      [ "shield_path", "namespaceprepareEvents.html#adfc45750434c79ae6380f53687b6142e", null ],
+      [ "theseed", "namespaceprepareEvents.html#a13258919d3ea42910bb902da6d3ea3aa", null ],
+      [ "type", "namespaceprepareEvents.html#a1d0e01732bceb567ad284095d9dca3fd", null ]
     ] ],
     [ "proton_bremsstrahlung", "namespaceproton__bremsstrahlung.html", [
       [ "dNdPdTheta", "namespaceproton__bremsstrahlung.html#ac3747a46ab38964a9676801aa3ca0cc9", null ],
@@ -1262,6 +1302,7 @@ var namespaces_dup =
       [ "n_EVENTS", "namespacerun__simScript.html#a0ad5a8757666a018ab23b8e7f5eaeca2", null ],
       [ "name", "namespacerun__simScript.html#a0b223972f3cecde5ffa255bf68198a5e", null ],
       [ "nargs", "namespacerun__simScript.html#aa922f75e6c8c8de037a8b802066c2496", null ],
+      [ "nDIS", "namespacerun__simScript.html#a997fa59dcbe57e8642a2244f347d6500", null ],
       [ "nEvents", "namespacerun__simScript.html#ac224f2a2d08b71115bf77bb3b3f3dea3", null ],
       [ "new_tree", "namespacerun__simScript.html#a4435f2e074882181ff7ce09cef9ef113", null ],
       [ "newFileSummary", "namespacerun__simScript.html#aa57c176f480c3a1677f8c1f444598de6", null ],
@@ -1569,6 +1610,7 @@ var namespaces_dup =
       [ "InitMedium", "namespaceShipGeo.html#a41fa6e1cd4e92f644524675c6850e934", null ]
     ] ],
     [ "ShipGeoConfig", "namespaceShipGeoConfig.html", "namespaceShipGeoConfig" ],
+    [ "ShipMuDIS", "namespaceShipMuDIS.html", "namespaceShipMuDIS" ],
     [ "shipPatRec", "namespaceshipPatRec.html", [
       [ "_prepare_output", "namespaceshipPatRec.html#abad752ad62262ead20afad027ff603e5", null ],
       [ "artificial_retina_pat_rec_stereo_views", "namespaceshipPatRec.html#a7bd6836b680505a30ee0d503878636cb", null ],
@@ -1850,6 +1892,25 @@ var namespaces_dup =
       [ "test_sigma_QQ_scales_the_beauty_reference_for_a_beauty_file", "namespacetest__heavyFlavourScaling.html#a082001d98eca4f06dd47f7d2d6a60f51", null ],
       [ "test_sigma_QQ_scales_the_charm_reference_only", "namespacetest__heavyFlavourScaling.html#a3a1d343bed1364e5a0ea96d7074279e0", null ],
       [ "test_w_preset_scales_up", "namespacetest__heavyFlavourScaling.html#a1f5951fe107152708e93822485ac2e2e", null ]
+    ] ],
+    [ "test_mudis_postprocessing", "namespacetest__mudis__postprocessing.html", [
+      [ "inputs", "namespacetest__mudis__postprocessing.html#a5eeef6da467c022260daa2c594cd8018", null ],
+      [ "make_point", "namespacetest__mudis__postprocessing.html#a9fcaf49d016b3178f1b8e3276a860356", null ],
+      [ "read_events", "namespacetest__mudis__postprocessing.html#a0c46f7e3384abb48f0356db1c2ffcdc3", null ],
+      [ "test_material_labels_used_by_the_test_exist", "namespacetest__mudis__postprocessing.html#a6e8171918557ba3b5aa26b57a44115c2", null ],
+      [ "test_mismatch_raises_and_leaves_output_unchanged", "namespacetest__mudis__postprocessing.html#a3d6117ea72e4855042c3e1d06b326b29", null ],
+      [ "test_more_output_events_than_interactions_raises", "namespacetest__mudis__postprocessing.html#a6184b06d7958970465f549fce8dbc8ec", null ],
+      [ "test_restores_hits_upstream_of_each_vertex", "namespacetest__mudis__postprocessing.html#a85f072ac6e5ca381f49ceafe39f57a9c", null ],
+      [ "test_start_entry_counts_across_input_files", "namespacetest__mudis__postprocessing.html#aeac00b42f415e69b3317995b0eff3419", null ],
+      [ "write_input", "namespacetest__mudis__postprocessing.html#a7f2535b669533ba5587538e596e45a61", null ],
+      [ "write_output", "namespacetest__mudis__postprocessing.html#a2996a34b73456d517b0bea45e4bc02ec", null ],
+      [ "FIRST_FILE", "namespacetest__mudis__postprocessing.html#aca93e5793acf393b05a7f37d4ae31132", null ],
+      [ "MATERIALS", "namespacetest__mudis__postprocessing.html#aaa0b736471f94068ebf4d2624bed5331", null ],
+      [ "MUON_MASS", "namespacetest__mudis__postprocessing.html#a62f85aa42b316cb1e14d92f66b40ebc1", null ],
+      [ "REPLAY_FROM_START", "namespacetest__mudis__postprocessing.html#a5b65ed1d6ac463808cc5b5552e91cdb0", null ],
+      [ "ROOT", "namespacetest__mudis__postprocessing.html#a3018b5eaa47c5056e9649ae4370a5bab", null ],
+      [ "SECOND_FILE", "namespacetest__mudis__postprocessing.html#acf8965596c1fc710bc339a49e18385d5", null ],
+      [ "SIMULATED_Z", "namespacetest__mudis__postprocessing.html#aa879d04453cd82dd4e17088918e2f9e0", null ]
     ] ],
     [ "timeDetector", "namespacetimeDetector.html", "namespacetimeDetector" ],
     [ "TrackExtrapolateTool", "namespaceTrackExtrapolateTool.html", [

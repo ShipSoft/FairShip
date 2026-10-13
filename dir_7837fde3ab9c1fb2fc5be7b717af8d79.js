@@ -22,6 +22,7 @@ var dir_7837fde3ab9c1fb2fc5be7b717af8d79 =
     [ "hepunit.py", "hepunit_8py.html", "hepunit_8py" ],
     [ "hnl.py", "hnl_8py.html", "hnl_8py" ],
     [ "method_logger.py", "method__logger_8py.html", "method__logger_8py" ],
+    [ "MuDISGenerator_postProcessing.py", "MuDISGenerator__postProcessing_8py.html", "MuDISGenerator__postProcessing_8py" ],
     [ "proton_bremsstrahlung.py", "proton__bremsstrahlung_8py.html", "proton__bremsstrahlung_8py" ],
     [ "pythia8_conf.py", "pythia8__conf_8py.html", "pythia8__conf_8py" ],
     [ "pythia8_conf_utils.py", "pythia8__conf__utils_8py.html", "pythia8__conf__utils_8py" ],

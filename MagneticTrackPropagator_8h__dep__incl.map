@@ -1,0 +1,15 @@
+<map id="newMuonDIS/MagneticTrackPropagator.h" name="newMuonDIS/MagneticTrackPropagator.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="239,5,444,45"/>
+<area shape="rect" id="Node000002" href="$MagneticTrackPropagator_8cxx.html" title=" " alt="" coords="5,93,211,133"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="278,53,160,96,158,91,276,48"/>
+<area shape="rect" id="Node000003" href="$MuDISFilter_8cxx.html" title=" " alt="" coords="235,101,447,126"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="344,59,344,100,339,100,339,59"/>
+<area shape="rect" id="Node000004" href="$MuGeoProcessor_8h.html" title=" " alt="" coords="471,101,702,126"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="409,47,555,98,553,103,407,52"/>
+<area shape="rect" id="Node000005" href="$MuDISProcessor_8h.html" title=" " alt="" coords="343,181,569,207"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="557,135,477,183,474,179,554,131"/>
+<area shape="rect" id="Node000007" href="$MuGeoProcessor_8cxx.html" title=" " alt="" coords="594,181,841,207"/>
+<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="619,131,699,179,697,183,616,135"/>
+<area shape="rect" id="Node000006" href="$MuDISProcessor_8cxx.html" title=" " alt="" coords="335,255,577,280"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="459,220,459,255,453,255,453,220"/>
+</map>
