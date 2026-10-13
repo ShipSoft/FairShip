@@ -43,7 +43,7 @@ Choose another acceptance condition with `--filter-option`:
 * **2:** at least one non-neutrino daughter, including visible neutral
   daughters, must enter the
   rectangular detector volume `|x| <= 200 cm`, `|y| <= 300 cm`, from the front
-  face of `Tr1` to the back face of `SplitCalDetector`. Bounds include parent
+  face of `Tr1` to the back face of `TimingDetector`. Bounds include parent
   placements and the volumes' bounding-box extents. Neutral particles travel
   in straight lines; charged particles use both field maps. Side entries count,
   including tracks that miss both z-end planes. Daughters starting inside count.

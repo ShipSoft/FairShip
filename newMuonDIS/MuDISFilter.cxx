@@ -245,18 +245,18 @@ void MuDISFilter::BookFilterEfficiencyHistograms(TDirectory* dir) {
             Form("p%u_pt%u_%s", ip, ipt, MatTypeStr[imat].Data());
         const TString title = Form(
             "DIS filter efficiency, %.0f #leq p < %.0f GeV, "
-            "%.0f #leq p_{T} < %.0f GeV - %s;x_{#mu,start} [cm];"
-            "y_{#mu,start} [cm]",
+            "%.0f #leq p_{T} < %.0f GeV - %s",
             kMomentumEdges[ip], kMomentumEdges[ip + 1], kPtEdges[ipt],
             kPtEdges[ipt + 1], MatTypeStr[imat].Data());
+        const TString axTitles = ";x_{#mu,start} [cm];y_{#mu,start} [cm]";
         auto*& all = fFilterEfficiency.allXY[ip][ipt][imat];
         auto*& passed = fFilterEfficiency.passedXY[ip][ipt][imat];
-        all = new TH2D(Form("filter_efficiency_all_%s", tag.Data()), title,
-                       fEfficiencyXBins, xmin, xmax, fEfficiencyYBins, ymin,
-                       ymax);
+        all = new TH2D(Form("filter_efficiency_all_%s", tag.Data()),
+                       title + axTitles, fEfficiencyXBins, xmin, xmax,
+                       fEfficiencyYBins, ymin, ymax);
         passed = new TH2D(Form("filter_efficiency_passed_%s", tag.Data()),
-                          title, fEfficiencyXBins, xmin, xmax, fEfficiencyYBins,
-                          ymin, ymax);
+                          title + axTitles, fEfficiencyXBins, xmin, xmax,
+                          fEfficiencyYBins, ymin, ymax);
         all->SetDirectory(dir);
         all->Sumw2();
         passed->SetDirectory(dir);
@@ -564,7 +564,7 @@ void MuDISFilter::ConfigureFilterGeometry(
     unsigned option, const MagneticTrackPropagator& propagator) {
   if (option == 1) {
     const std::array<const char*, 5> names = {"Tr1", "Tr2", "Tr3", "Tr4",
-                                              "Timing Detector"};
+                                              "TimingDetector"};
     std::array<double, 5> planes;
     std::array<std::array<double, 4>, 5> bounds;
     for (unsigned i = 0; i < names.size(); ++i) {
@@ -575,10 +575,10 @@ void MuDISFilter::ConfigureFilterGeometry(
     fStationXY = bounds;
   } else if (option == 2) {
     const double front = propagator.GetVolumeZRange("Tr1").first;
-    const double end = propagator.GetVolumeZRange("SplitCalDetector").second;
+    const double end = propagator.GetVolumeZRange("TimingDetector").second;
     if (front >= end)
       throw std::runtime_error(
-          "Calorimeter end must be downstream of the Tr1 front");
+          "Timing detector end must be downstream of the Tr1 front");
     fDetectorVolumeZ = {front, end};
   }
 }
@@ -822,8 +822,8 @@ void MuDISFilter::SetDetectorAcceptance(ShipBFieldMap* field,
     throw std::invalid_argument("Detector z must be finite");
   fTr1Z = propagator->GetPlaneZ("Tr1");
   try {
-    fTimingDetectorZ = propagator->GetPlaneZ("Timing Detector");
-    fTimingDetectorXY = propagator->GetVolumeExitFaceXY("Timing Detector");
+    fTimingDetectorZ = propagator->GetPlaneZ("TimingDetector");
+    fTimingDetectorXY = propagator->GetVolumeExitFaceXY("TimingDetector");
   } catch (const std::runtime_error&) {
     fTimingDetectorZ = std::numeric_limits<double>::quiet_NaN();
   }

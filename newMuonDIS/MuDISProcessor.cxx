@@ -391,9 +391,9 @@ void MuDISProcessor::ProcessMuons() {
   }
 
   const Long64_t nEntries =
-      fnEvts > 0 ? std::min(static_cast<Long64_t>(fstartEvt + fnEvts),
-                            ftree->GetEntries())
-                 : ftree->GetEntries();
+      fnEvts >= 0 ? std::min(static_cast<Long64_t>(fstartEvt + fnEvts),
+                             ftree->GetEntries())
+                  : ftree->GetEntries();
   LOG(info) << " - Processing event " << fstartEvt << " to event "
             << nEntries - 1 << std::endl;
 
