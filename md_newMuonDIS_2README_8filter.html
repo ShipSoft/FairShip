@@ -136,10 +136,11 @@ Custom selections</h2>
 <div class="line">selection.<a class="code hl_function" href="classMuDISFilter.html#a1b16228db635c7f207c2f1f77335f094">SetFilter</a>([](<span class="keyword">const</span> std::vector&lt;DISparticle&gt;&amp; daughters) {</div>
 <div class="line">  <span class="keywordtype">unsigned</span> energetic = 0;</div>
 <div class="line">  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; p : daughters)</div>
-<div class="line">    if (std::abs(p.pid) == 211 &amp;&amp; p.E &gt; 1.) ++energetic;</div>
+<div class="line">    <a class="code hl_function" href="CMakeLists_8txt.html#ae8b0a475e97263c5c960adf255ce96dc">if</a> (std::abs(p.pid) == 211 &amp;&amp; p.E &gt; 1.) ++energetic;</div>
 <div class="line">  <span class="keywordflow">return</span> energetic &gt;= 2;</div>
 <div class="line">});</div>
 <div class="line">selection.<a class="code hl_function" href="classMuDISFilter.html#ab9b7c80400f6e91c6b19f710b3ac68ba">process_file</a>(<span class="stringliteral">&quot;prepared.root&quot;</span>, <span class="stringliteral">&quot;selected.root&quot;</span>);</div>
+<div class="ttc" id="aCMakeLists_8txt_html_ae8b0a475e97263c5c960adf255ce96dc"><div class="ttname"><a href="CMakeLists_8txt.html#ae8b0a475e97263c5c960adf255ce96dc">if</a></div><div class="ttdeci">LANGUAGES CXX if(FAIRSHIP_VERSION_TWEAK) set(PROJECT_VERSION_TWEAK $</div><div class="ttdef"><b>Definition</b> <a href="CMakeLists_8txt_source.html#l00034">CMakeLists.txt:34</a></div></div>
 <div class="ttc" id="aclassMuDISFilter_html"><div class="ttname"><a href="classMuDISFilter.html">MuDISFilter</a></div><div class="ttdef"><b>Definition</b> <a href="MuDISFilter_8h_source.html#l00054">MuDISFilter.h:54</a></div></div>
 <div class="ttc" id="aclassMuDISFilter_html_a1b16228db635c7f207c2f1f77335f094"><div class="ttname"><a href="classMuDISFilter.html#a1b16228db635c7f207c2f1f77335f094">MuDISFilter::SetFilter</a></div><div class="ttdeci">void SetFilter(Filter filter)</div><div class="ttdef"><b>Definition</b> <a href="MuDISFilter_8h_source.html#l00066">MuDISFilter.h:66</a></div></div>
 <div class="ttc" id="aclassMuDISFilter_html_ab9b7c80400f6e91c6b19f710b3ac68ba"><div class="ttname"><a href="classMuDISFilter.html#ab9b7c80400f6e91c6b19f710b3ac68ba">MuDISFilter::process_file</a></div><div class="ttdeci">void process_file(const std::string &amp;input, const std::string &amp;output)</div><div class="ttdef"><b>Definition</b> <a href="MuDISFilter_8cxx_source.html#l00386">MuDISFilter.cxx:386</a></div></div>

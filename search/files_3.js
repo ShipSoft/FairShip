@@ -1,27 +1,7 @@
 var searchData=
 [
-  ['caloscoringplane_2ecxx_0',['CaloScoringPlane.cxx',['../CaloScoringPlane_8cxx.html',1,'']]],
-  ['caloscoringplane_2eh_1',['CaloScoringPlane.h',['../CaloScoringPlane_8h.html',1,'']]],
-  ['caloscoringplanepoint_2ecxx_2',['CaloScoringPlanePoint.cxx',['../CaloScoringPlanePoint_8cxx.html',1,'']]],
-  ['caloscoringplanepoint_2eh_3',['CaloScoringPlanePoint.h',['../CaloScoringPlanePoint_8h.html',1,'']]],
-  ['canonicalisefieldmap_2epy_4',['canonicaliseFieldMap.py',['../canonicaliseFieldMap_8py.html',1,'']]],
-  ['changelog_2emd_5',['CHANGELOG.md',['../CHANGELOG_8md.html',1,'']]],
-  ['check_5foverlaps_2epy_6',['check_overlaps.py',['../check__overlaps_8py.html',1,'']]],
-  ['checkmagfields_2epy_7',['checkMagFields.py',['../checkMagFields_8py.html',1,'']]],
-  ['checkzpositions_2epy_8',['checkZpositions.py',['../checkZpositions_8py.html',1,'']]],
-  ['cmakelists_2etxt_9',['cmakelists.txt',['../Detector_2CMakeLists_8txt.html',1,'(Global Namespace)'],['../veto_2CMakeLists_8txt.html',1,'(Global Namespace)'],['../field_2CMakeLists_8txt.html',1,'(Global Namespace)'],['../muonShieldOptimization_2CMakeLists_8txt.html',1,'(Global Namespace)'],['../newMuonDIS_2CMakeLists_8txt.html',1,'(Global Namespace)'],['../passive_2CMakeLists_8txt.html',1,'(Global Namespace)'],['../shipdata_2CMakeLists_8txt.html',1,'(Global Namespace)'],['../shipgen_2CMakeLists_8txt.html',1,'(Global Namespace)'],['../SND_2EmulsionTarget_2CMakeLists_8txt.html',1,'(Global Namespace)'],['../SND_2MTC_2CMakeLists_8txt.html',1,'(Global Namespace)'],['../SND_2SiliconTarget_2CMakeLists_8txt.html',1,'(Global Namespace)'],['../strawtubes_2CMakeLists_8txt.html',1,'(Global Namespace)'],['../tests_2CMakeLists_8txt.html',1,'(Global Namespace)'],['../TimeDet_2CMakeLists_8txt.html',1,'(Global Namespace)'],['../UpstreamTagger_2CMakeLists_8txt.html',1,'(Global Namespace)'],['../CMakeLists_8txt.html',1,'(Global Namespace)'],['../CaloScoringPlane_2CMakeLists_8txt.html',1,'(Global Namespace)']]],
-  ['cmbg_5fconf_2epy_10',['CMBG_conf.py',['../CMBG__conf_8py.html',1,'']]],
-  ['compactingbackgroundproduction_2epy_11',['compactingBackgroundProduction.py',['../compactingBackgroundProduction_8py.html',1,'']]],
-  ['compare_5fhistograms_2epy_12',['compare_histograms.py',['../compare__histograms_8py.html',1,'']]],
-  ['config_5ftester_2epy_13',['config_tester.py',['../config__tester_8py.html',1,'']]],
-  ['configgeniegenerator_2epy_14',['configGenieGenerator.py',['../configGenieGenerator_8py.html',1,'']]],
-  ['convertevtcalc_2epy_15',['convertEvtCalc.py',['../convertEvtCalc_8py.html',1,'']]],
-  ['convertmap_2epy_16',['convertMap.py',['../convertMap_8py.html',1,'']]],
-  ['convertmisismap_2epy_17',['convertMisisMap.py',['../convertMisisMap_8py.html',1,'']]],
-  ['convertnoisymap_2epy_18',['convertNoisyMap.py',['../convertNoisyMap_8py.html',1,'']]],
-  ['convertralmap_2epy_19',['convertRALMap.py',['../convertRALMap_8py.html',1,'']]],
-  ['converttoacts_2epy_20',['convertToACTS.py',['../convertToACTS_8py.html',1,'']]],
-  ['converttreetorntuple_2epy_21',['convertTreeToRNTuple.py',['../convertTreeToRNTuple_8py.html',1,'']]],
-  ['cosmicsgenerator_2ecxx_22',['CosmicsGenerator.cxx',['../CosmicsGenerator_8cxx.html',1,'']]],
-  ['cosmicsgenerator_2eh_23',['CosmicsGenerator.h',['../CosmicsGenerator_8h.html',1,'']]]
+  ['basedetector_2epy_0',['BaseDetector.py',['../BaseDetector_8py.html',1,'']]],
+  ['beamsmearingutils_2ecxx_1',['BeamSmearingUtils.cxx',['../BeamSmearingUtils_8cxx.html',1,'']]],
+  ['beamsmearingutils_2eh_2',['BeamSmearingUtils.h',['../BeamSmearingUtils_8h.html',1,'']]],
+  ['bsd_2d3_2dclause_2etxt_3',['BSD-3-Clause.txt',['../BSD-3-Clause_8txt.html',1,'']]]
 ];

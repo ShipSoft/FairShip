@@ -1,7 +1,11 @@
 var searchData=
 [
-  ['basedetector_2epy_0',['BaseDetector.py',['../BaseDetector_8py.html',1,'']]],
-  ['beamsmearingutils_2ecxx_1',['BeamSmearingUtils.cxx',['../BeamSmearingUtils_8cxx.html',1,'']]],
-  ['beamsmearingutils_2eh_2',['BeamSmearingUtils.h',['../BeamSmearingUtils_8h.html',1,'']]],
-  ['bsd_2d3_2dclause_2etxt_3',['BSD-3-Clause.txt',['../BSD-3-Clause_8txt.html',1,'']]]
+  ['actsreco_2epy_0',['ACTSReco.py',['../ACTSReco_8py.html',1,'']]],
+  ['add_5fmuonresponse_2epy_1',['add_muonresponse.py',['../add__muonresponse_8py.html',1,'']]],
+  ['add_5fnoise_5fto_5ffield_2epy_2',['add_noise_to_field.py',['../add__noise__to__field_8py.html',1,'']]],
+  ['adddimuondecaychannelstog4_2epy_3',['AddDiMuonDecayChannelsToG4.py',['../AddDiMuonDecayChannelsToG4_8py.html',1,'']]],
+  ['ai_5fpolicy_2emd_4',['AI_POLICY.md',['../AI__POLICY_8md.html',1,'']]],
+  ['ana_5fshipmuon_2epy_5',['ana_ShipMuon.py',['../ana__ShipMuon_8py.html',1,'']]],
+  ['analysis_5fexample_2epy_6',['analysis_example.py',['../analysis__example_8py.html',1,'']]],
+  ['analysis_5ftoolkit_2epy_7',['analysis_toolkit.py',['../analysis__toolkit_8py.html',1,'']]]
 ];

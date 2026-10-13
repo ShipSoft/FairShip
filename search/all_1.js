@@ -1,8 +1,10 @@
 var searchData=
 [
-  ['10_20freiburg_0',['24.10 - Freiburg',['../md_CHANGELOG.html#autotoc_md96',1,'']]],
-  ['11_1',['24.11',['../md_CHANGELOG.html#autotoc_md91',1,'']]],
-  ['12_202025_2012_2022_2',['25.12 - 2025-12-22',['../md_CHANGELOG.html#autotoc_md45',1,'']]],
-  ['15_3',['26.09 - 2026-09-15',['../md_CHANGELOG.html#autotoc_md7',1,'']]],
-  ['18_4',['26.06 - 2026-06-18',['../md_CHANGELOG.html#autotoc_md25',1,'']]]
+  ['01_0',['25.01',['../md_CHANGELOG.html#autotoc_md86',1,'']]],
+  ['03_202026_2003_2031_1',['26.03 - 2026-03-31',['../md_CHANGELOG.html#autotoc_md40',1,'']]],
+  ['04_202026_2004_2030_2',['26.04 - 2026-04-30',['../md_CHANGELOG.html#autotoc_md35',1,'']]],
+  ['05_202026_2005_2025_3',['26.05 - 2026-05-25',['../md_CHANGELOG.html#autotoc_md30',1,'']]],
+  ['06_202026_2006_2018_4',['26.06 - 2026-06-18',['../md_CHANGELOG.html#autotoc_md25',1,'']]],
+  ['07_202026_2007_2021_5',['26.07 - 2026-07-21',['../md_CHANGELOG.html#autotoc_md20',1,'']]],
+  ['09_202026_2009_2015_6',['26.09 - 2026-09-15',['../md_CHANGELOG.html#autotoc_md7',1,'']]]
 ];
