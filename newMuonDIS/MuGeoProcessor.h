@@ -113,6 +113,21 @@ class MuGeoProcessor {
   int64_t fLargeJumps = 0;
   int64_t fMuonsWithLargeJumps = 0;
   double fMaxTransverseJump = 0.;
+  // Sums of MCTrack[0].fW for the corresponding muon counters.
+  struct MuonWeights {
+    double considered = 0.;
+    double backward = 0.;
+    double invalid = 0.;
+    double ubtBackward = 0.;
+    double ubtMiss = 0.;
+    double startMagnetic = 0.;
+    double startStraight = 0.;
+    double beyondZmax = 0.;
+    double beforeZmin = 0.;
+    double largeJump = 0.;
+  };
+  MuonWeights fMuonWeights;
+  double fMuonWeight = 0.;  // current muon, also used by FillMuonPath()
 
   std::map<std::string, MuonPath> fPathMap;
   std::map<std::string, std::set<std::string>> fVolMap;

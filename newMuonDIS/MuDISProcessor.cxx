@@ -8,6 +8,7 @@
 #include <TTree.h>
 
 #include <cmath>
+#include <iomanip>
 #include <iostream>
 
 #include "FairLogger.h"
@@ -401,6 +402,26 @@ void MuDISProcessor::ProcessMuons() {
   unsigned skipMu_pmin = 0;
   unsigned skipMu_acc = 0;
   unsigned skipEvt = 0;
+  double wplus = 0.;
+  double wminus = 0.;
+  double skipMu_pminW = 0.;
+  double skipMu_accW = 0.;
+  double skipMu_pathW = 0.;
+
+  struct PathTotals {
+    Long64_t muons = 0;
+    double weight = 0.;
+    double length = 0.;
+    double weightedLength = 0.;
+    void Add(double w, double l) {
+      ++muons;
+      weight += w;
+      length += l;
+      weightedLength += w * l;
+    }
+  };
+  PathTotals pathTotals;
+  std::array<PathTotals, nMats> pathTotalsByMat = {};
 
   for (Long64_t iEvent = static_cast<Long64_t>(fstartEvt); iEvent < nEntries;
        ++iEvent) {
@@ -438,15 +459,18 @@ void MuDISProcessor::ProcessMuons() {
       LOG(debug) << iEvent << " skipped: muon momentum " << mup
                  << " below min value for Pythia:" << fMinPythiaP;
       skipMu_pmin++;
+      skipMu_pminW += muW;
       continue;
     }
 
     std::string targetType;
     if (pid == -13) {
       nplus++;
+      wplus += muW;
       targetType = "gamma/mu+";
     } else if (pid == 13) {
       nminus++;
+      wminus += muW;
       targetType = "gamma/mu-";
     } else {
       LOG(warning) << iEvent << " skipped: "
@@ -476,6 +500,7 @@ void MuDISProcessor::ProcessMuons() {
                  << ", SST Hits: " << foutEv.sstPt.size()
                  << ", TD Hits: " << foutEv.tdPt.size() << std::endl;
       skipMu_acc++;
+      skipMu_accW += muW;
       // counting, but want to still fill DIS in MS (and UBT detector)...
       // continue;
     }
@@ -490,6 +515,7 @@ void MuDISProcessor::ProcessMuons() {
     // [zin,zout] ranges
     if (!fGeoProcessor.initialise(foutEv)) {
       skipEvt++;
+      skipMu_pathW += muW;
       continue;
     }
     std::map<std::string, MuonPath>& lPathMap = fGeoProcessor.FillMuonPath();
@@ -497,6 +523,7 @@ void MuDISProcessor::ProcessMuons() {
     if (lPathMap.size() == 0) {
       LOG(error) << " -- No elements in path... Not doing anything...";
       skipEvt++;
+      skipMu_pathW += muW;
       continue;
     }
 
@@ -510,6 +537,8 @@ void MuDISProcessor::ProcessMuons() {
       foutEv.pathLengthByMat[i] =
           path->second.GetLength() - DISMinLength(path->first, path->second);
       if (i != REST) foutEv.pathLength += foutEv.pathLengthByMat[i];
+      if (foutEv.pathLengthByMat[i] > 0.)
+        pathTotalsByMat[i].Add(muW, foutEv.pathLengthByMat[i]);
     }
 
     // loop over the map, and do nDIS event in each element, with weight
@@ -526,6 +555,7 @@ void MuDISProcessor::ProcessMuons() {
     }
 
     fouttree->Fill();
+    pathTotals.Add(muW, foutEv.pathLength);
 
   }  // loop on events
 
@@ -535,5 +565,26 @@ void MuDISProcessor::ProcessMuons() {
             << " muons with too low p" << std::endl
             << "Counted: " << skipMu_acc
             << " muons with no recorded hits in UBT,SBT,SST,TD.";
+  LOG(info) << "Weighted counts (sum MCTrack[0].fW): " << wplus << " mu+ and "
+            << wminus << " mu- (after momentum cut)." << std::endl
+            << "Skipped (sum MCTrack[0].fW): " << skipMu_pminW
+            << " with too low p, " << skipMu_pathW
+            << " muons with invalid or empty paths." << std::endl
+            << "Counted (sum MCTrack[0].fW): " << skipMu_accW
+            << " muons with no recorded hits in UBT,SBT,SST,TD.";
   fGeoProcessor.PrintDiagnostics();
+  // Print additive quantities so jobs can be combined before taking means.
+  LOG(info) << std::setprecision(17)
+            << "Muon path totals (cm, excluding REST): output muons = "
+            << pathTotals.muons << ", sum(fW) = " << pathTotals.weight
+            << ", sum(L) = " << pathTotals.length
+            << ", sum(fW*L) = " << pathTotals.weightedLength;
+  for (unsigned i = 0; i < nMats; ++i) {
+    const auto& totals = pathTotalsByMat[i];
+    LOG(info) << std::setprecision(17) << "Muon path totals " << MatTypeStr[i]
+              << " (cm): crossing muons = " << totals.muons
+              << ", sum(fW) = " << totals.weight
+              << ", sum(L) = " << totals.length
+              << ", sum(fW*L) = " << totals.weightedLength;
+  }
 }
