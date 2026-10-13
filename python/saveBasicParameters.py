@@ -10,13 +10,23 @@ import ROOT
 from ShipGeoConfig import Config
 
 
-def versionFromHeader(library, header, version_macro, git_macro):
-    """Version of the library that is loaded, from the version header installed with it.
+def libraryPath(library):
+    """Path of the library this process has loaded, else of the one it would load."""
+    for path in str(ROOT.gSystem.GetLibraries(library, "", False)).split():
+        if os.path.basename(path).startswith(library + "."):
+            return path
+    return ROOT.gSystem.FindDynamicLibrary(ROOT.TString(library), True)
 
-    The header is next to the library's lib/ directory: in include/ of an install
-    prefix (conda, cmake --install), or at the top of a build directory.
+
+def versionFromHeader(library, header, version_macro, git_macro):
+    """Version of a library, from the version header installed with it.
+
+    The library is the loaded one, or the one that would be loaded if it is not
+    loaded yet. The header is next to the library's lib/ directory: in include/
+    of an install prefix (conda, cmake --install), or at the top of a build
+    directory.
     """
-    path = ROOT.gSystem.FindDynamicLibrary(ROOT.TString(library), True)
+    path = libraryPath(library)
     if not path:
         return None
     prefix = os.path.dirname(os.path.dirname(path))
@@ -51,7 +61,7 @@ def retrieveGitTags(o):
                 stderr=subprocess.DEVNULL,
             ).strip()
     versions["FairShipLibrary"] = versionFromHeader(
-        "libShipData", "FairShipVersion.h", "FAIRSHIP_VERSION", "FAIRSHIP_GIT_VERSION"
+        "libShipData", "FairShipVersion.h", "FAIRSHIP_VERSION", "FAIRSHIP_GIT_HASH"
     )
     versions["FairRoot"] = os.environ.get("FAIRROOT_HASH") or versionFromHeader(
         "libBase", "FairVersion.h", "FAIRROOT_VERSION", "FAIRROOT_GIT_VERSION"
