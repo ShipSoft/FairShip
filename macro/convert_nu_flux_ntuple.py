@@ -76,7 +76,7 @@ writer = ROOT.RNTupleWriter.Recreate(model, "nu_flux", out)
 entry = writer.CreateEntry()
 emax = 0.0
 
-charmExtern = [4332, 4232, 4132, 4122, 431, 411, 421, 15]  # exclude charmed hadrons and tau leptons
+charmExtern = [4332, 4232, 4132, 4122, 4322, 431, 411, 421, 15]  # exclude charmed hadrons and tau leptons
 neutrinos = [12, 14, 16]
 
 cm2mm = 10.0
