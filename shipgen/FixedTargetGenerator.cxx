@@ -257,17 +257,9 @@ Bool_t FixedTargetGenerator::Init() {
   std::vector<int> r = {221, 221, 223, 223, 113, 331, 333};
   std::vector<int> c = {6, 7, 5, 7, 5, 6, 9};  // decay channel mumu mumuX
 
-  // FTFT tune: parameters differing from Monash 2013, arXiv:2608.29076
-  const std::vector<std::string> ftftTune = {
-      "Tune:pp = 14",  // Monash 2013 baseline, must come first
-      "StringZ:aLund = 2.0",
-      "StringZ:bLund = 0.2",
-      "StringZ:rFactC = 2.0",
-      "MultipartonInteractions:ecmRef = 30.",
-      "MultipartonInteractions:pT0Ref = 0.69",
-      "MultipartonInteractions:ecmPow = 0.266",
-      "BeamRemnants:halfMassForKT = 1.21",
-      "PDF:piSet = 1"};  // GRV 92 LO, only relevant for pion beams
+  // FTFT tune (arXiv:2608.29076), shared with makeCascadePythia8.py
+  TString ftftTuneFile = getenv("FAIRSHIP");
+  ftftTuneFile += "/gconfig/FTFT.cmnd";
   if (!fTune.IsNull() && fTune != "FTFT") {
     LOG(fatal)
         << "FixedTargetGenerator: unknown Pythia8 tune " << fTune.Data()
@@ -302,11 +294,9 @@ Bool_t FixedTargetGenerator::Init() {
       // apply the tune before the process settings below, which Tune:pp
       // would otherwise reset
       if (fTune == "FTFT" && !G4only) {
-        for (const auto& setting : ftftTune) {
-          if (!fPythia->readString(setting)) {
-            LOG(fatal) << "FixedTargetGenerator: Pythia8 rejected tune setting "
-                       << setting;
-          }
+        if (!fPythia->readFile(ftftTuneFile.Data())) {
+          LOG(fatal) << "FixedTargetGenerator: Pythia8 could not read tune "
+                     << "settings from " << ftftTuneFile.Data();
         }
         LOG(info) << "FixedTargetGenerator: using Pythia8 tune "
                   << fTune.Data();
