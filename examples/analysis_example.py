@@ -58,6 +58,8 @@ def main() -> None:
         100,
     )
     ut.bookHist(hist_dict, "impact_parameter", "Impact parameter; cm", 200, 100, 100)
+    ut.bookHist(hist_dict, "impact_parameter_x", "Impact parameter, x component; cm", 200, 100, 100)
+    ut.bookHist(hist_dict, "impact_parameter_y", "Impact parameter, y component; cm", 200, 100, 100)
     ut.bookHist(hist_dict, "dist_to_innerwall", "Distance to inner wall; cm", 200, 100, 100)
     ut.bookHist(
         hist_dict,
@@ -106,6 +108,9 @@ def main() -> None:
         for candidate_id_in_event, signal in enumerate(event.Particles):
             hist_dict["candidate_time"].Fill(selection.define_candidate_time(signal))
             hist_dict["impact_parameter"].Fill(selection.impact_parameter(signal))
+            ip_x, ip_y = selection.impact_parameter_xy(signal)
+            hist_dict["impact_parameter_x"].Fill(ip_x)
+            hist_dict["impact_parameter_y"].Fill(ip_y)
             hist_dict["dist_to_innerwall"].Fill(selection.dist_to_innerwall(signal))
             hist_dict["dist_to_vesselentrance"].Fill(selection.dist_to_vesselentrance(signal))
             hist_dict["DOCA"].Fill(selection.DOCA(signal))
