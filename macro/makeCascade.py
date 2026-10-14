@@ -40,8 +40,7 @@ ap.add_argument(
 ap.add_argument(
     "-P",
     "--storePrimaries",
-    action=argparse.BooleanOptionalAction,
-    default=False,
+    action="store_true",
     help="If this argument is used, store all particles produced together with charm.",
 )
 ap.add_argument(
