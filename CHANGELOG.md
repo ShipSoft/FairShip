@@ -12,6 +12,8 @@ it in future.
 
 ## Unreleased
 
+* Add converter of neutrino flux to the aegir-genie format.
+
 ### Added
 
 * Add a muon DIS workflow in `newMuonDIS/` (see its README): `prepareEvents.py` follows each input muon through the material, anchored on its UBT, SBT, SST and TD hits (backwards from the UBT hit when there is one, otherwise transported through the shield field map from its start), and generates Pythia6 DIS interactions separately in each material category, with weight `wDIS` = muon weight × ∫ρ dl / number generated; `filterEvents.py` keeps the interactions whose products can reach the detector; `run_simScript.py --NewMuDIS` replays them, and `python/MuDISGenerator_postProcessing.py` then restores the incoming muon's hits upstream of each vertex, checking that every simulated event matches the interaction it was generated from. Each simulated event carries `muDIS_material`, `muDIS_muEntry`, `muDIS_disIndex`, `muDIS_pPythia` and `muDIS_nGenerated`; `muDIS_xsec` is a placeholder (-1) until a reliable cross section is available. For `--NewMuDIS`, `-i` and `-n` count input muons, not events. Prepared files from earlier development versions of this workflow cannot be read. The legacy `--MuDIS` generator is unchanged.
@@ -26,6 +28,7 @@ it in future.
 * Add `CaloScoringPlane` detector: an ideal thin vacuum plane at the calorimeter entrance window, anchored to the timing detector (z = 96.570 m, the former SplitCal front face) (`ship_geo.CaloScoringPlane`). Every track entering it is stored as a `CaloScoringPlanePoint` (MC-truth position, momentum, time and PDG code at the exit face), without an energy-deposit requirement. Secondaries are only kept in `MCTrack` because of these points if the stack is configured with a minimum number of points; otherwise such points carry track ID -2.
 * Add `--cascade-model` (`nucleus`, `nucleon`) to `macro/makeCascadePythia8.py`. With `nucleus`, the default, every interaction of a cascade hadron is a hadron-nucleus collision built from hadron-nucleon subcollisions as in Pythia's PythiaCascade, with the heavy-flavour probability per hadron-nucleus collision, A sigma(signal)/sigma(hA). This matches the normalisation of `run_fixedTarget.py`, which is per proton-nucleus interaction and already contains the subcollisions inside the nucleus; single collisions on free nucleons (`nucleon`, as in `makeCascade.py`) count them twice and overestimate the cascade. The tables of the average number of subcollisions and the process of the later subcollisions follow the installed Pythia version (8.312 to 8.316, or 8.317 and later), and hadrons decay only once the collision is complete, so that a leading resonance collides again itself, as in PythiaCascade.
 
+
 ### Changed
 
 * `-g` of `run_simScript.py` now gives a geometry file to simulate on (see Added). It used to set `ship_geo.muShieldGeo`, a muon shield geometry file that nothing has read since the muon shield stopped being built from files; `muShieldGeo` is removed from `geometry_config.create_config`.
@@ -35,7 +38,7 @@ it in future.
 * Default for reweighting boosted muon files is now to keep all events rather than only those containing a muon
 
 ### Fixed
-
+* Fix duplicated 4232 pdg code in extractMuonsAndUpdateWeight.
 * `tracking_benchmark.py` skips track points without fitter info instead of stopping. `TrackPoint::getFitterInfo` returns a null pointer for such a point, which PyROOT gives as an object that is falsy but not `None`, so the `is None` check never skipped it and `getResidual()` raised `ReferenceError`, which the `except` clause does not catch: `run_tracking_benchmark.py` aborted in its metrics phase once a sample contained such a point. On linux-aarch64 that happened already with CI's settings (`-n 200 --seed 42`) and with `-n 1000`; CI's linux-64 runs have not hit it so far.
 * HNL decay channels with a self-conjugate daughter (pi0, eta, rho0, omega, eta', phi, eta_c) no longer abort the simulation. `readDecayTable.addHNLdecayChannels` adds every enabled channel a second time, charge conjugated, and keeps a daughter's code when `TDatabasePDG` has no antiparticle for it. Since 26.03 that lookup was tested with `is not None`, which is always true, because PyROOT returns a null pointer (falsy, but not `None`) for an unknown code. The conjugate channel therefore carried codes such as -111, which Pythia8 accepts and Geant4 rejects, ending the run at the first such decay. The default channel, N -> pi+ mu-, was not affected.
 * The checks for unknown PDG codes added in 26.06 (`assert p is not None, "Unknown PDG: ..."`) could never fire, so an unknown code still ended in `ReferenceError: attempt to access a null-pointer`. They now use `rootUtils.get_particle`, which raises `ValueError` with the code. For the same reason `DrawCharmTracks` in the event display and the charge check in `tracking_benchmark.py` now skip particles with unknown codes instead of failing, and `configGenieGenerator.py` reports a missing `volNuTauMudet_1` as intended.
@@ -192,6 +195,7 @@ random sequence.
 
 ### Fixed
 
+* Update charm and beauty over mbias cross sections in run_fixedTarget
 * Fix pot branch in Decay tree from makeDecay
 * Fix check of existing particle pdg in makeCascade
 * Restore `tPythia6Generator` instantiation from Python — broken since 26.02 by the `SHiP::Generator` base-class refactor leaving the file-based `Init` overloads pure virtual without a stub override (#1272)

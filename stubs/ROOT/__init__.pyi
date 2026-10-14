@@ -8,7 +8,7 @@ so we know what to add.
 from __future__ import annotations
 
 from collections.abc import Callable, Iterator, Sequence
-from typing import Any, overload
+from typing import Any, overload, Protocol
 
 # ---------------------------------------------------------------------------
 # Submodules (re-exported so ROOT.genfit, ROOT.std, etc. resolve)
@@ -2033,3 +2033,26 @@ class ROOT:  # Partial stub — for ROOT.ROOT.RNTupleReader
         class RNTupleImporter:  # Partial stub
             @staticmethod
             def Create(src: str, dst: str, name: str = ...) -> Any: ...
+
+class RNTupleWriter:  # Partial stub
+        @staticmethod
+        def Recreate(model: ROOT.RNTupleModel, name: str, filename: str, *args: Any) -> Any: ...
+        @staticmethod
+        def Append(model: ROOT.RNTupleModel, name: str, filename: str, *args: Any) -> Any: ...
+        def CreateEntry(self) -> Any: ...
+        def Fill(self, entry: ROOT.REntry) -> Any: ...
+
+# Define the callable signature returned after specifying the template type
+class _MakeFieldCallable(Protocol):
+    def __call__(self, name: str, description: str = "") -> Any: ...
+
+# Proxy class representing the template method on RNTupleModel
+class _MakeFieldProxy:
+    def __getitem__(self, type_spec: Any) -> _MakeFieldCallable: ...
+    def __call__(self, name: str, description: str = "") -> Any: ...
+
+class RNTupleModel:  # Partial stub
+        MakeField: _MakeFieldProxy
+        @staticmethod
+        def Create() -> Any: ...
+
