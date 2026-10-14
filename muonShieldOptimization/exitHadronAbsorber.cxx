@@ -340,6 +340,15 @@ void exitHadronAbsorber::SplitStep(const G4Step* step) {
   // interpolated between the pre- and post-step points. Putting every clone at
   // the post-step point instead piles the decays of a long step (e.g. through
   // the helium between target slabs) up at the next volume boundary.
+  //
+  // The momentum is only interpolated if the track survives the step. A step
+  // that ends the track (an inelastic interaction, its own decay) leaves the
+  // post-step point with the momentum after that process, zero for a killed
+  // track, so interpolating towards it would give the clones of every track's
+  // last step too little momentum. Up to the interaction the track only loses
+  // energy continuously, which is negligible over one step, so those clones get
+  // the pre-step momentum.
+  const G4ThreeVector pEnd = track->GetTrackStatus() == fAlive ? pPost : pPre;
   const G4ThreeVector xPre = pre->GetPosition() / CLHEP::cm;
   const G4ThreeVector xPost = post->GetPosition() / CLHEP::cm;
   const Double_t tPre = pre->GetGlobalTime() / CLHEP::s;
@@ -349,7 +358,7 @@ void exitHadronAbsorber::SplitStep(const G4Step* step) {
         -lambda_decay * std::log(1.0 - G4UniformRand() * P_decay);
     const Double_t f = std::clamp(s / delta_s, 0.0, 1.0);
     const G4ThreeVector x = xPre + f * (xPost - xPre);
-    const G4ThreeVector p = pPre + f * (pPost - pPre);
+    const G4ThreeVector p = pPre + f * (pEnd - pPre);
     TrackBuffer clone;
     clone.pdg = track_pid;
     clone.px = p.x();
