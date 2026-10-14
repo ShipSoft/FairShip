@@ -1,0 +1,20 @@
+! SPDX-License-Identifier: LGPL-3.0-or-later
+! SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
+!
+! FTFT Pythia8 tune for open charm and beauty production in fixed-target
+! collisions (arXiv:2608.29076): the parameters that differ from Monash 2013.
+! Read by FixedTargetGenerator (--pythia8-tune FTFT in run_fixedTarget.py) and
+! by macro/makeCascadePythia8.py.
+!
+! Tune:pp resets the parameters below, so it must come first, and the settings
+! have to be read before any other settings that a tune would overwrite.
+Tune:pp = 14
+StringZ:aLund = 2.0
+StringZ:bLund = 0.2
+StringZ:rFactC = 2.0
+MultipartonInteractions:ecmRef = 30.
+MultipartonInteractions:pT0Ref = 0.69
+MultipartonInteractions:ecmPow = 0.266
+BeamRemnants:halfMassForKT = 1.21
+! GRV 92 LO, only relevant for pion beams
+PDF:piSet = 1

@@ -28,6 +28,7 @@ it in future.
 
 ### Changed
 
+* The FTFT Pythia8 tune is defined once, in `gconfig/FTFT.cmnd`, and read from there by `FixedTargetGenerator` and `makeCascadePythia8.py`, which each kept their own copy before. The settings are unchanged.
 * `-g` of `run_simScript.py` now gives a geometry file to simulate on (see Added). It used to set `ship_geo.muShieldGeo`, a muon shield geometry file that nothing has read since the muon shield stopped being built from files; `muShieldGeo` is removed from `geometry_config.create_config`.
 * The default spectrometer field map is now `files/2026_07_02_MainSpectrometerField_V21_2455.root`. Its polarity is opposite to the MgB2 map it replaces: the integral of Bx along the beam axis is +0.84 T m, against -0.83 T m before, so charged tracks bend the other way in y. Off axis the bending power differs too, so samples produced with the earlier default are not comparable, and a sample has to be reconstructed with the map it was simulated with. The MgB2 map remains available through `--field_map`.
 * Update default He balloon liner to be made with polyester like Mylar, named mylar_linerHe with density/thickness matching material #5

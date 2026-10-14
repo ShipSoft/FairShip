@@ -29,6 +29,7 @@ forced production has somewhat different x_F and pT^2 distributions. The normali
 
 import argparse
 import math
+import os
 import random
 import time
 from array import array
@@ -129,18 +130,15 @@ SIGNAL = {
     ),
 }
 
-# FTFT tune (arXiv:2608.29076): parameters differing from Monash 2013, as in FixedTargetGenerator.cxx
-FTFT_SETTINGS = [
-    "Tune:pp = 14",
-    "StringZ:aLund = 2.0",
-    "StringZ:bLund = 0.2",
-    "StringZ:rFactC = 2.0",
-    "MultipartonInteractions:ecmRef = 30.",
-    "MultipartonInteractions:pT0Ref = 0.69",
-    "MultipartonInteractions:ecmPow = 0.266",
-    "BeamRemnants:halfMassForKT = 1.21",
-    "PDF:piSet = 1",
-]
+# FTFT tune (arXiv:2608.29076): parameters differing from Monash 2013, shared with FixedTargetGenerator.cxx
+FTFT_FILE = "$FAIRSHIP/gconfig/FTFT.cmnd"
+
+
+def read_pythia8_settings(path):
+    """Settings of a Pythia8 command file, in order, without comments and blank lines."""
+    with open(os.path.expandvars(path)) as f:
+        return [line.split("!", 1)[0].strip() for line in f if line.split("!", 1)[0].strip()]
+
 
 # Forced-production charm K-factors equivalent to the FTFT inclusive normalisation (K = 2.48 for
 # nucleon and 2.02 for meson beams), K_incl * sigma_incl / sigma_forced, from Pythia 8.312 runs with
@@ -510,7 +508,7 @@ def main():
     p_threshold, signal_ids, signal_process = signal.p_threshold, signal.ids, signal.process
     proton_fraction = PROTON_FRACTION[args.target_composition]
     if args.pythia8_tune == "FTFT":
-        tune_settings, kfactors = FTFT_SETTINGS, signal.kfactors
+        tune_settings, kfactors = read_pythia8_settings(FTFT_FILE), signal.kfactors
     else:
         tune_settings, kfactors = [], (1.0, 1.0)
 
