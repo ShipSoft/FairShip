@@ -154,7 +154,7 @@ Using the pre-built package</h2>
 On lxplus (AFS)</h2>
 <p>A plain <code>pixi run build</code> installs the whole environment into <code>.pixi/</code> inside your clone, which is enough to exceed a typical AFS quota. On lxplus, use the pixi build published on CVMFS together with the <code>pixi cvmfs</code> extension instead, which keeps the environment out of your AFS area.</p>
 <p>Start from a clean shell and a FairShip clone without an old <code>build/</code> directory, then:</p>
-<div class="fragment"><div class="line">export PATH=/cvmfs/ship-nightlies.cern.ch/pixi/0.72.0-rattlerfs-layers-d5a7568/bin:/cvmfs/ship-nightlies.cern.ch/pixi/pixi-cvmfs:$PATH</div>
+<div class="fragment"><div class="line">export PATH=/cvmfs/ship-nightlies.cern.ch/pixi/0.72.0-rattlerfs-layers-d5a7568/bin:$PATH</div>
 <div class="line">cd /path/to/FairShip</div>
 <div class="line">pixi cvmfs build    # build (once, and again after code changes)</div>
 <div class="line">pixi cvmfs          # enter the environment</div>
