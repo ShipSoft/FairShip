@@ -228,6 +228,22 @@ Bool_t FixedTargetGenerator::InitForCharmOrBeauty(const TString& fInName,
                 << " is inside an event, starting at entry " << firstEntry;
     }
     nEntry = firstEntry;
+  } else if (nStart % 2 != 0) {
+    // events are pairs of entries, so an odd start entry is the second hadron
+    // of an event: start at the next event instead of pairing hadrons from
+    // two different events
+    if (nStart + 1 >= nEvents) {
+      LOG(error) << "FixedTargetGenerator: no event starts at or after entry "
+                 << nStart;
+      fin->Close();
+      delete fin;
+      fin = nullptr;
+      nTree = nullptr;
+      return kFALSE;
+    }
+    LOG(info) << "start entry " << nStart
+              << " is inside an event, starting at entry " << nStart + 1;
+    nEntry = nStart + 1;
   }
   wspill = nrpotspill * chicc / nrcpot * nInputEvents / nev;
   LOG(info) << "Input file: " << fInName.Data() << " with " << nEvents
