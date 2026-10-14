@@ -29,7 +29,7 @@ def cmp(a, b: int):
     return (a > b) - (a < b)
 
 
-def run_track_pattern_recognition(input_file, geo_file, output_file, method, dy=None):
+def run_track_pattern_recognition(input_file, geo_file, output_file, method):
     """
     Runs all steps of track pattern recognition.
     Parameters
@@ -66,10 +66,7 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method, dy=
 
     # Prepare ShipGeo dictionary
     if not fgeo.FindKey("ShipGeo"):
-        if dy:
-            ShipGeo = geometry_config.create_config(Yheight=dy)
-        else:
-            ShipGeo = geometry_config.create_config()
+        ShipGeo = geometry_config.create_config()
     else:
         ShipGeo = load_from_root_file(fgeo, "ShipGeo")
 

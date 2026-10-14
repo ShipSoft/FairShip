@@ -144,7 +144,6 @@ shield_db = {
 
 def create_config(
     DecayVolumeMedium: str = "helium",
-    Yheight: float = 6.0,
     strawDesign: int = 10,
     shieldName: str = "TRY_2025",
     nuTargetPassive: int = 1,
@@ -157,7 +156,6 @@ def create_config(
 
     Args:
         DecayVolumeMedium: Medium in decay volume ("helium" or "vacuums"), default: "helium"
-        Yheight: Height of vacuum tank in meters, default: 6.0
         strawDesign: Straw tube design (4=Aluminium frame, 10=steel frame), default: 10
         shieldName: Name of shield configuration, default: "TRY_2025"
         nuTargetPassive: Target type (0=with active layers, 1=only passive), default: 1
@@ -191,8 +189,6 @@ def create_config(
     c.shieldName = shieldName
     c.SC_mag = shield_db[shieldName]["hybrid"]
 
-    # global strawDesign, Yheight
-    c.Yheight = Yheight * u.m
     extraVesselLength = 10 * u.m
     windowBulge = 25 * u.cm
     c.strawDesign = strawDesign
@@ -351,7 +347,6 @@ def create_config(
     c.Bfield = AttrDict()
     c.Bfield.z = c.z
     c.Bfield.max = 0  # 1.4361*u.kilogauss  # was 1.15 in EOI
-    c.Bfield.y = c.Yheight
     c.Bfield.x = 2.4 * u.m
     c.Bfield.fieldMap = "files/2026_07_02_MainSpectrometerField_V21_2455.root"
     if c.magnetDesign > 3:  # MISIS design
