@@ -189,11 +189,11 @@ for reproducing reproducible, stateless environments for debugging, HTCondor
 and cluster use, or when a strict separation between `FairShip` and the host is
 desirable.
 
-1. Build an docker image from the provided `Dockerfile`:
+1. Build a Docker image from the provided `Containerfile`:
     ```bash
     git clone https://github.com/ShipSoft/FairShip.git
     cd FairShip
-    docker build -t fairship .
+    docker build -f Containerfile -t fairship .
     ```
 2. Run the `FairShip` docker image:
     ```bash
@@ -253,8 +253,10 @@ is now in maintenance mode.
     ls /cvmfs/ship.cern.ch
     ```
 3. Source the chosen release (see the
-   [cvmfs_release](https://github.com/ShipSoft/cvmfs_release) repo for the
-   list):
+   [shipdist releases](https://github.com/ShipSoft/shipdist/releases) and its
+   [CHANGELOG](https://github.com/ShipSoft/shipdist/blob/main/CHANGELOG.md) for
+   the list; releases up to 25.11 are listed in the archived
+   [cvmfs_release](https://github.com/ShipSoft/cvmfs_release) repo):
     ```bash
     source /cvmfs/ship.cern.ch/$SHIP_RELEASE/setUp.sh
     ```
@@ -262,7 +264,9 @@ is now in maintenance mode.
     ```bash
     aliBuild build FairShip --always-prefer-system --config-dir $SHIPDIST --defaults release
     ```
-    For legacy branches, swap `--defaults release` for `--defaults fairship-2018`.
+    For legacy branches (`SHiP-2018`, `muflux`), use `--defaults fairship-2018`
+    with a shipdist checkout at the `SHiP-BDF-2020` tag. The `fairship-2018`
+    defaults were removed from shipdist `main` in 2022.
 5. Load the environment:
     ```bash
     alienv enter FairShip/latest
