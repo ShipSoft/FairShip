@@ -25,6 +25,7 @@ var namespacemakeCascadePythia8 =
     [ "NUCLEUS_MODELS", "namespacemakeCascadePythia8.html#a6d9842e08a417e000c6ca786c1d03c87", null ],
     [ "PDG", "namespacemakeCascadePythia8.html#aec702d889979744b2d082d84f26941f3", null ],
     [ "PROTON_FRACTION", "namespacemakeCascadePythia8.html#ae17963f99da56366f6d038f7fe50c3f0", null ],
+    [ "PYTHIA_DATA", "namespacemakeCascadePythia8.html#aa00e390b53af22135a973f053bbc3e67", null ],
     [ "SIGNAL", "namespacemakeCascadePythia8.html#ae26e05b890eba8820c216a8ea3114843", null ],
     [ "SIGNAL_BIN_RATIO", "namespacemakeCascadePythia8.html#a71550639fb97c5d982ab9fcf8ac883d2", null ],
     [ "TARGET_NUCLEONS", "namespacemakeCascadePythia8.html#a0be722de1a7522c8fc10dd0b88180265", null ],

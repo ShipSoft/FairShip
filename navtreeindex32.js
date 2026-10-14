@@ -1,5 +1,7 @@
 var NAVTREEINDEX32 =
 {
+"shipunit_8py.html#a40fc3def69cd0f9e5cca7142a99c8490":[10,0,12,39,62],
+"shipunit_8py.html#a45f2b51afca6c6bc6b395866f62f6eff":[10,0,12,39,73],
 "shipunit_8py.html#a4674e521cd11cd1285bd45539a4a5322":[10,0,12,39,26],
 "shipunit_8py.html#a524f89344382ff20a472a80602f67dda":[10,0,12,39,77],
 "shipunit_8py.html#a543e18dbe14ff17a58391db8b199555b":[10,0,12,39,19],
@@ -247,7 +249,5 @@ var NAVTREEINDEX32 =
 "structShipMuDIS_1_1CBMSimBranches.html#ad8c92ffaa2217ffa7f39c015bfc65eb9":[8,0,94,0,8],
 "structShipMuDIS_1_1CBMSimBranches.html#ad8c92ffaa2217ffa7f39c015bfc65eb9":[9,0,16,0,8],
 "structShipMuDIS_1_1CBMSimBranches.html#ae574d3a82a0b1f1d280d23b1bd9c8bc7":[9,0,16,0,10],
-"structShipMuDIS_1_1CBMSimBranches.html#ae574d3a82a0b1f1d280d23b1bd9c8bc7":[8,0,94,0,10],
-"structShipMuDIS_1_1MuonBranches.html":[9,0,16,1],
-"structShipMuDIS_1_1MuonBranches.html":[8,0,94,1]
+"structShipMuDIS_1_1CBMSimBranches.html#ae574d3a82a0b1f1d280d23b1bd9c8bc7":[8,0,94,0,10]
 };
