@@ -36,6 +36,7 @@ import os
 import ROOT
 import shipunit as u
 from rootUtils import get_particle
+from scipy.constants import physical_constants
 
 # Load PDG database
 pdg = ROOT.TDatabasePDG.Instance()
@@ -108,8 +109,9 @@ class constants:
         }  # decay constants f_h of pseudoscalar and vector mesons
         self.GF = 1.166379e-05 / (u.GeV * u.GeV)  # Fermi's constant (GeV^-2)
         self.s2thetaw = 0.23126  # square sine of the Weinberg angle
-        self.heV = 6.58211928 * pow(10.0, -16)  # no units or it messes up!!
-        self.hGeV = self.heV * pow(10.0, -9)  # no units or it messes up!!
+        # reduced Planck constant in eV s and GeV s, without shipunit units
+        self.heV = physical_constants["reduced Planck constant in eV s"][0]
+        self.hGeV = self.heV * 1e-9
 
 
 # Load some useful constants
