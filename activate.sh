@@ -10,5 +10,8 @@ export CONFIG_DIR="$PIXI_PROJECT_ROOT/gconfig"
 export EVTGENDATA="${EVTGEN_ROOT:-$CONDA_PREFIX/share/EvtGen}"
 # shipRoot_conf.py uses GENFIT_ROOT to load libgenfit2 and locate headers.
 export GENFIT_ROOT="$CONDA_PREFIX"
+# Default inputs (e.g. the charm cascade in run_simScript.py) are opened as
+# $EOSSHIP/eos/experiment/ship/...; keep a value the user has already set.
+export EOSSHIP="${EOSSHIP:-root://eospublic.cern.ch/}"
 export PYTHONPATH="$PIXI_PROJECT_ROOT/build/lib:$PIXI_PROJECT_ROOT/python${PYTHONPATH:+:$PYTHONPATH}"
 export LD_LIBRARY_PATH="$PIXI_PROJECT_ROOT/build/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
