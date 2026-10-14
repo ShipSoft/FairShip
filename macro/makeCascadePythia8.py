@@ -37,7 +37,6 @@ from typing import NamedTuple
 import numpy as np
 import pythia8
 import ROOT
-from rootUtils import get_particle
 
 # cascade beam particles, anti-particles are generated automatically if they exist.
 CASCADE_IDS = [2212, 211, 2112, 321, 130, 310]
@@ -192,9 +191,15 @@ def signal_kfactor(kfactors, beam_id, nucleon_id, p):
     return kfactors[0] if abs(beam_id) in (2212, 2112) else kfactors[1]
 
 
+# Pythia8 instance for particle data: unlike TDatabasePDG it knows the resonances that can lead a
+# subcollision with decays off, such as psi(3770)
+PYTHIA_DATA = pythia8.Pythia("", False)
+
+
 def mass(pdg_id):
-    particle = get_particle(pdg_id)
-    return particle.Mass()
+    if not PYTHIA_DATA.particleData.isParticle(pdg_id):
+        raise ValueError(f"Unknown particle: {pdg_id}")
+    return PYTHIA_DATA.particleData.m0(pdg_id)
 
 
 def ecm(beam_id, nucleon_id, p):
