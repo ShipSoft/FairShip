@@ -207,7 +207,7 @@ def create_config(
     c.cave.floorHeightTankB = 2 * u.m
     # ECN3 cavern, see passive/ShipCave.cxx
     c.cave.TCC8_length = 170 * u.m
-    c.cave.ECN3_length = 100 * u.m
+    c.cave.ECN3_length = 100.81 * u.m  # step and hall, up to the end wall at 122.18 m
     c.cave.stair_step_length = 0.82 * u.m
     # End of the TCC8 floor (integration layout 2026-0.1); the stair step that follows is
     # centred on the gap between M4 and S5

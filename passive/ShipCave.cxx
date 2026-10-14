@@ -9,6 +9,7 @@
 #include "FairGeoInterface.h"  // for FairGeoInterface
 #include "FairGeoLoader.h"     // for FairGeoLoader
 #include "FairGeoMedia.h"
+#include "ShipCavernLayout.h"
 #include "ShipGeoCave.h"  // for ShipGeoCave
 #include "ShipGeoUtil.h"
 #include "ShipUnit.h"
@@ -16,14 +17,9 @@
 #include "TGeoCompositeShape.h"
 #include "TGeoManager.h"
 
-using ShipUnit::cm;
 using ShipUnit::m;
 using ShipUnit::mm;
 using ShipUnit::tesla;
-
-ShipCave::ShipCave(Double_t z) : FairModule("Cave", "ShipCave") {
-  z_end_of_proximity_shielding = z;
-}
 
 void ShipCave::ConstructGeometry() {
   FairGeoLoader* loader = FairGeoLoader::Instance();
@@ -39,56 +35,71 @@ void ShipCave::ConstructGeometry() {
   ShipGeo::InitMedium("Concrete");
   TGeoMedium* concrete = gGeoManager->GetMedium("Concrete");
 
+  using ShipCavernLayout::kECN3FloorY;
+  using ShipCavernLayout::kECN3LeftX;
+  using ShipCavernLayout::kECN3RightX;
+  using ShipCavernLayout::kECN3SpringlineY;
+  using ShipCavernLayout::kStairFloorY;
+  using ShipCavernLayout::kTCC8CeilingY;
+  using ShipCavernLayout::kTCC8FloorY;
+  using ShipCavernLayout::kTCC8LeftX;
+  using ShipCavernLayout::kTCC8RightX;
+  // All positions below are relative to the TCC8/ECN3 step at z_transition,
+  // the end of the TCC8 floor, where the Cavern volume is placed.
   Double_t TCC8_length = fTCC8Length;
-  // Add small stair step at the beginning of ECN3
+  // Short intermediate floor between TCC8 and ECN3
   Double_t stair_step_length = fStairStepLength;
   Double_t ECN3_length = fECN3Length;
-  Double_t Proximity_shield_half_length = 55.36 / 2 * cm;
-  Double_t zEndOfTarget =
-      z_end_of_proximity_shielding - 2 * Proximity_shield_half_length;
   Double_t z_transition = fZTransition;
-  [[maybe_unused]] auto* rock = new TGeoBBox(
-      "rock", 20 * m, 20 * m, TCC8_length / 2. + ECN3_length / 2. + 5 * m);
+  // Rock around the modelled tunnel and hall, closed 5 m beyond both ends
+  Double_t rock_half_length = (TCC8_length + ECN3_length) / 2. + 5 * m;
+  Double_t rock_centre = (ECN3_length - TCC8_length) / 2.;
+  [[maybe_unused]] auto* rock =
+      new TGeoBBox("rock", 20 * m, 20 * m, rock_half_length);
+  auto* rock_shift = new TGeoTranslation("rock_shift", 0, 0, rock_centre);
+  rock_shift->RegisterYourself();
+
   [[maybe_unused]] auto* muon_shield_cavern =
-      new TGeoBBox("muon_shield_cavern", 4.995 * m, 3.75 * m, TCC8_length / 2.);
-  auto* TCC8_shift =
-      new TGeoTranslation("TCC8_shift", 1.435 * m, 2.05 * m, -TCC8_length / 2.);
+      new TGeoBBox("muon_shield_cavern", (kTCC8RightX - kTCC8LeftX) / 2.,
+                   (kTCC8CeilingY - kTCC8FloorY) / 2., TCC8_length / 2.);
+  auto* TCC8_shift = new TGeoTranslation(
+      "TCC8_shift", (kTCC8RightX + kTCC8LeftX) / 2.,
+      (kTCC8CeilingY + kTCC8FloorY) / 2., -TCC8_length / 2.);
   TCC8_shift->RegisterYourself();
 
-  // Create ECN3 cavern around vessel
-  [[maybe_unused]] auto* experiment_rock =
-      new TGeoBBox("experiment_rock", 20 * m, 20 * m, ECN3_length / 2.);
   [[maybe_unused]] auto* stair_step =
-      new TGeoBBox("stair_step", 7.995 * m, 5.6 * m, stair_step_length / 2.);
+      new TGeoBBox("stair_step", (kTCC8RightX - kTCC8LeftX) / 2.,
+                   (kTCC8CeilingY - kStairFloorY) / 2., stair_step_length / 2.);
   auto* stair_step_shift = new TGeoTranslation(
-      "stair_step_shift", 3.435 * m, 3.04 * m, stair_step_length / 2.);
+      "stair_step_shift", (kTCC8RightX + kTCC8LeftX) / 2.,
+      (kTCC8CeilingY + kStairFloorY) / 2., stair_step_length / 2.);
   stair_step_shift->RegisterYourself();
+
+  // ECN3 hall around the decay vessel, from the stair step to the end wall
   [[maybe_unused]] auto* experiment_cavern =
-      new TGeoBBox("experiment_cavern", 7.995 * m, 6 * m,
+      new TGeoBBox("experiment_cavern", (kECN3RightX - kECN3LeftX) / 2.,
+                   (kECN3SpringlineY - kECN3FloorY) / 2.,
                    ECN3_length / 2. - stair_step_length / 2.);
   auto* ECN3_shift =
-      new TGeoTranslation("ECN3_shift", 3.435 * m, 2.64 * m,
+      new TGeoTranslation("ECN3_shift", (kECN3RightX + kECN3LeftX) / 2.,
+                          (kECN3SpringlineY + kECN3FloorY) / 2.,
                           ECN3_length / 2. + stair_step_length / 2.);
   ECN3_shift->RegisterYourself();
 
+  // Spectrometer yoke pit: 1 m deep, 9 m long, centred on the magnet
   [[maybe_unused]] auto* yoke_pit =
       new TGeoBBox("yoke_pit", 4.2 * m, 0.5 * m, 4.5 * m);
-  auto* yoke_pit_shift = new TGeoTranslation("yoke_pit_shift", 0 * m, -3.86 * m,
-                                             fZSpectrometer - z_transition);
+  auto* yoke_pit_shift =
+      new TGeoTranslation("yoke_pit_shift", 0, kECN3FloorY - 0.5 * m,
+                          fZSpectrometer - z_transition);
   yoke_pit_shift->RegisterYourself();
 
-  [[maybe_unused]] auto* target_pit =
-      new TGeoBBox("target_pit", 2 * m, 0.5 * m, 2 * m);
-  auto* target_pit_shift = new TGeoTranslation(
-      "target_pit_shift", 0 * m, -2.2 * m, zEndOfTarget - 2 * m - z_transition);
-  target_pit_shift->RegisterYourself();
-
   auto* compRock = new TGeoCompositeShape("compRock",
-                                          "rock - muon_shield_cavern:TCC8_shift"
+                                          "rock:rock_shift"
+                                          "- muon_shield_cavern:TCC8_shift"
                                           "- experiment_cavern:ECN3_shift"
                                           "- stair_step:stair_step_shift"
-                                          "- yoke_pit:yoke_pit_shift"
-                                          "- target_pit:target_pit_shift");
+                                          "- yoke_pit:yoke_pit_shift");
   auto* Cavern = new TGeoVolume("Cavern", compRock, concrete);
   Cavern->SetLineColor(11);  // grey
   Cavern->SetTransparency(50);

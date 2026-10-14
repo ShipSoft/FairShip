@@ -299,7 +299,7 @@ def configure(run, ship_geo, geofile: str | None = None):
     # ------------------------------------------------------------------------
 
     # -----Create geometry----------------------------------------------
-    cave = ROOT.ShipCave(ship_geo.muShield.z)
+    cave = ROOT.ShipCave("Cave", "ShipCave")
     cave.SetGeometryFileName("caveWithAir.geo")
     if hasattr(ship_geo.cave, "ECN3_length"):
         cave.SetCavernDimensions(
