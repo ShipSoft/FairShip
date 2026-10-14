@@ -101,7 +101,8 @@ bool MuGeoProcessor::AddMagneticChord(const TVector3& a, const TVector3& b,
   const TVector3 displacement = b - a;
   fSegments.push_back(
       {{a, momentum * displacement.Unit(), time}, a.Z(), b.Z(), false});
-  const double speed = c_light * momentum / std::hypot(momentum, muon_mass);
+  const double speed =
+      ShipUnit::c_light * momentum / std::hypot(momentum, MuonMass());
   time += displacement.Mag() / speed;
   return true;
 }

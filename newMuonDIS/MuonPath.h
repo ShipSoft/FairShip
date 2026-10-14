@@ -9,6 +9,8 @@
 #include <string>
 #include <vector>
 
+#include "ShipUnit.h"
+#include "TDatabasePDG.h"
 #include "TVector3.h"
 
 /*
@@ -23,8 +25,11 @@ linearly using a vertex position which corresponds to the relevant point of
 measurement along the trajectory.
 */
 
-const Double_t c_light = 29.9792458;             // speed of light in cm/ns
-const Double_t muon_mass = 0.10565999895334244;  // muon mass in GeV
+// muon mass in GeV, from the PDG table
+inline double MuonMass() {
+  static const double mass = TDatabasePDG::Instance()->GetParticle(13)->Mass();
+  return mass;
+}
 
 class MuonPath {
  public:
@@ -156,8 +161,8 @@ class MuonPath {
     if (idx >= GetNSlices() || fpvec[idx].Z() == 0.) return 0;
     double P = fpvec[idx].Mag();
     if (P == 0.) return 0;
-    double v = c_light * P /
-               TMath::Sqrt(TMath::Power(P, 2) + TMath::Power(muon_mass, 2));
+    double v = ShipUnit::c_light * P /
+               TMath::Sqrt(TMath::Power(P, 2) + TMath::Power(MuonMass(), 2));
     if (v == 0.) return 0;
     // A slice may precede its reference measurement in z.
     return fvtxT[idx] + (aZ - fvtx[idx].Z()) * P / fpvec[idx].Z() / v;
