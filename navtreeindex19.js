@@ -1,5 +1,6 @@
 var NAVTREEINDEX19 =
 {
+"make__nTuple__SBT_8py.html#aa9cf75043e52a72cc8c782f2ffee5d27":[10,0,8,1,7],
 "make__nTuple__SBT_8py.html#ab0f32a0f934d148852e51ad9dc1a0b47":[10,0,8,1,19],
 "make__nTuple__SBT_8py.html#ab175100d880956574cf6aef537d972af":[10,0,8,1,22],
 "make__nTuple__SBT_8py.html#ab295e9efeb1fec2e81721b9e0f5d9220":[10,0,8,1,15],
@@ -248,6 +249,5 @@ var NAVTREEINDEX19 =
 "mergeMbias_8py.html#a8d752950589c1ea80023881305e9eeab":[10,0,7,19,21],
 "mergeMbias_8py.html#a9a94ea0085e090e0c8254d8a9ff77483":[10,0,7,19,22],
 "mergeMbias_8py.html#aa85a082f32184ed210c0627286497d0e":[10,0,7,19,15],
-"mergeMbias_8py.html#aad008d057c90762599791506da6cabf5":[10,0,7,19,7],
-"mergeMbias_8py.html#aafa78ee55d809f949885ed280052d9c3":[10,0,7,19,17]
+"mergeMbias_8py.html#aad008d057c90762599791506da6cabf5":[10,0,7,19,7]
 };

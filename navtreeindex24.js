@@ -1,5 +1,7 @@
 var NAVTREEINDEX24 =
 {
+"namespacemakeGenieEvents.html#aef2c13310a027d86a7488d24d178e57b":[8,0,55,12],
+"namespacemakeMuonDIS.html":[8,0,56],
 "namespacemakeMuonDIS.html#a00f881b8b0529f9f9d19aa80a70703b8":[8,0,56,10],
 "namespacemakeMuonDIS.html#a1cd7e954ef137c6b2936151af44b5624":[8,0,56,16],
 "namespacemakeMuonDIS.html#a29557c520b9f73e475e2bd0c9ae79e23":[8,0,56,1],
@@ -180,8 +182,8 @@ var NAVTREEINDEX24 =
 "namespacemembers_enum.html":[8,1,3],
 "namespacemembers_eval.html":[8,1,4],
 "namespacemembers_f.html":[8,1,0,6],
-"namespacemembers_func.html":[8,1,1],
 "namespacemembers_func.html":[8,1,1,0],
+"namespacemembers_func.html":[8,1,1],
 "namespacemembers_func_a.html":[8,1,1,1],
 "namespacemembers_func_b.html":[8,1,1,2],
 "namespacemembers_func_c.html":[8,1,1,3],
@@ -222,8 +224,8 @@ var NAVTREEINDEX24 =
 "namespacemembers_t.html":[8,1,0,20],
 "namespacemembers_u.html":[8,1,0,21],
 "namespacemembers_v.html":[8,1,0,22],
-"namespacemembers_vars.html":[8,1,2],
 "namespacemembers_vars.html":[8,1,2,0],
+"namespacemembers_vars.html":[8,1,2],
 "namespacemembers_vars_a.html":[8,1,2,1],
 "namespacemembers_vars_b.html":[8,1,2,2],
 "namespacemembers_vars_c.html":[8,1,2,3],
@@ -247,7 +249,5 @@ var NAVTREEINDEX24 =
 "namespacemembers_vars_u.html":[8,1,2,21],
 "namespacemembers_vars_v.html":[8,1,2,22],
 "namespacemembers_vars_w.html":[8,1,2,23],
-"namespacemembers_vars_x.html":[8,1,2,24],
-"namespacemembers_vars_y.html":[8,1,2,25],
-"namespacemembers_vars_z.html":[8,1,2,26]
+"namespacemembers_vars_x.html":[8,1,2,24]
 };
