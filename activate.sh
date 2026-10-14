@@ -12,3 +12,9 @@ export EVTGENDATA="${EVTGEN_ROOT:-$CONDA_PREFIX/share/EvtGen}"
 export GENFIT_ROOT="$CONDA_PREFIX"
 export PYTHONPATH="$PIXI_PROJECT_ROOT/build/lib:$PIXI_PROJECT_ROOT/python${PYTHONPATH:+:$PYTHONPATH}"
 export LD_LIBRARY_PATH="$PIXI_PROJECT_ROOT/build/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+# Without a display, Geant4's Qt UI aborts at initialisation (#1223), e.g. over
+# ssh, in containers or on batch nodes. Use Qt's offscreen platform there,
+# unless the user chose a platform.
+if [ -z "${DISPLAY:-}" ] && [ -z "${WAYLAND_DISPLAY:-}" ]; then
+    export QT_QPA_PLATFORM="${QT_QPA_PLATFORM:-offscreen}"
+fi
