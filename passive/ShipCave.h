@@ -10,7 +10,6 @@
 
 class ShipCave : public FairModule {
  public:
-  explicit ShipCave(Double_t z);
   explicit ShipCave(const char* name, const char* Title = "Exp Cave");
   ShipCave();
   ~ShipCave() override;
@@ -36,7 +35,6 @@ class ShipCave : public FairModule {
   Double_t fStairStepLength = 82.;
   Double_t fZTransition = 2052.;
   Double_t fZSpectrometer = 8957.;
-  Double_t z_end_of_proximity_shielding;
   Double_t world[3];
 
  public:

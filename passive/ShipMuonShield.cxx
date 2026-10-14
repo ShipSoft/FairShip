@@ -14,6 +14,7 @@
 #include "FairGeoMedia.h"
 #include "FairLogger.h"     /// for FairLogger, MESSAGE_ORIGIN
 #include "FairRuntimeDb.h"  // for FairRuntimeDb
+#include "ShipCavernLayout.h"
 #include "ShipGeoUtil.h"
 #include "ShipUnit.h"
 #include "TFile.h"
@@ -427,13 +428,18 @@ void ShipMuonShield::ConstructGeometry() {
   Double_t absorber_offset = dZf[0];
   Double_t absorber_half_length = (Z_relf[0]);
 
-  // Absorber
+  // Absorber: iron filling the TCC8 cross-section around the hadron stopper
 
-  [[maybe_unused]] auto abs =
-      new TGeoBBox("absorber", 4.995 * m - 0.002 * m, 3.75 * m,
-                   absorber_half_length - 0.002 * m);
+  using ShipCavernLayout::kTCC8CeilingY;
+  using ShipCavernLayout::kTCC8FloorY;
+  using ShipCavernLayout::kTCC8LeftX;
+  using ShipCavernLayout::kTCC8RightX;
+  [[maybe_unused]] auto abs = new TGeoBBox(
+      "absorber", (kTCC8RightX - kTCC8LeftX) / 2. - 0.002 * m,
+      (kTCC8CeilingY - kTCC8FloorY) / 2., absorber_half_length - 0.002 * m);
   auto* absorber_shift =
-      new TGeoTranslation("absorber_shift", 1.435 * m, 2.05 * m, 0);
+      new TGeoTranslation("absorber_shift", (kTCC8RightX + kTCC8LeftX) / 2.,
+                          (kTCC8CeilingY + kTCC8FloorY) / 2., 0);
   absorber_shift->RegisterYourself();
 
   const std::vector<TString> absorber_magnets = {"MagnAbsorb"};
