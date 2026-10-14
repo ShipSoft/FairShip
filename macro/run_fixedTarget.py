@@ -70,16 +70,14 @@ ap.add_argument("-n", "--num-events", type=int, help="number of events to genera
 ap.add_argument(
     "-G",
     "--G4only",
-    action=argparse.BooleanOptionalAction,
-    default=False,
-    help="Whether or not to use Geant4 directly, no Pythia8 (--no-G4only or --G4only). Default set to False.",
+    action="store_true",
+    help="Use Geant4 directly, without Pythia8.",
 )
 ap.add_argument(
     "-P",
     "--pythiaDecay",
-    action=argparse.BooleanOptionalAction,
-    default=False,
-    help="Whether or not to use Pythia8 for decays (--no-PythiaDecay or --PythiaDecay). Default set to False.",
+    action="store_true",
+    help="Use Pythia8 for decays.",
 )
 ap.add_argument(
     "--pythia8-tune",
@@ -89,8 +87,8 @@ ap.add_argument(
     help="Pythia8 tune for the primary interaction: default (Monash 2013) or FTFT "
     "(fixed-target open charm and beauty tune, arXiv:2608.29076).",
 )
-ap.add_argument("-t", "--tau-only", action=argparse.BooleanOptionalAction, dest="tauOnly", default=False)
-ap.add_argument("-J", "--Jpsi-mainly", action=argparse.BooleanOptionalAction, dest="JpsiMainly", default=False)
+ap.add_argument("-t", "--tau-only", action="store_true", dest="tauOnly")
+ap.add_argument("-J", "--Jpsi-mainly", action="store_true", dest="JpsiMainly")
 ap.add_argument("-b", "--boostDiMuon", type=float, default=1.0, help="boost Di-muon branching ratios")
 ap.add_argument("-X", "--boostFactor", type=float, default=1.0, help="boost Di-muon prod cross sections")
 ap.add_argument(
@@ -103,22 +101,20 @@ ap.add_argument(
     "--multiple-kpi-splits", action="store_true", help="split kaons and pions multiple times along the track path"
 )
 
-ap.add_argument("-C", "--charm", action=argparse.BooleanOptionalAction, default=False, help="generate charm decays")
-ap.add_argument("-B", "--beauty", action=argparse.BooleanOptionalAction, default=False, help="generate beauty decays")
+ap.add_argument("-C", "--charm", action="store_true", help="generate charm decays")
+ap.add_argument("-B", "--beauty", action="store_true", help="generate beauty decays")
 ap.add_argument(
     "-M",
     "--storeOnlyMuons",
-    action=argparse.BooleanOptionalAction,
-    default=False,
+    action="store_true",
     help="store only muons, ignore neutrinos",
 )
-ap.add_argument("-N", "--skipNeutrinos", action=argparse.BooleanOptionalAction, default=False, help="skip neutrinos")
+ap.add_argument("-N", "--skipNeutrinos", action="store_true", help="skip neutrinos")
 ap.add_argument(
     "-D",
     "--4darkPhoton",
-    action=argparse.BooleanOptionalAction,
+    action="store_true",
     dest="FourDP",
-    default=False,
     help="enable ntuple production",
 )
 # for charm production
@@ -175,19 +171,17 @@ ap.add_argument(
 )
 ap.add_argument(
     "--AddMuonShield",
-    help="Whether or not to add the muon shield. Default set to False.",
-    default=False,
-    action=argparse.BooleanOptionalAction,
+    help="Add the muon shield.",
+    action="store_true",
 )
 ap.add_argument(
     "--AddMuonShieldField",
-    help="Whether or not to add the muon shield magnetic field. Default set to False.",
-    default=False,
-    action=argparse.BooleanOptionalAction,
+    help="Add the muon shield magnetic field.",
+    action="store_true",
 )
 ap.add_argument(
     "--AddHadronAbsorberOnly",
-    help="Whether to only add the hadron absorber part of the muon shield. Default set to True.",
+    help="Add only the hadron absorber part of the muon shield (default). Use --no-AddHadronAbsorberOnly with --AddMuonShield for the full shield.",
     default=True,
     action=argparse.BooleanOptionalAction,
 )
