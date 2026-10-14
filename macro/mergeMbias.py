@@ -15,7 +15,7 @@ Mmu = mu.Mass()
 Mmu2 = Mmu * Mmu
 rnr = ROOT.TRandom()
 eospath = ROOT.gSystem.Getenv("EOSSHIP") + "/eos/experiment/ship/data/"
-ship_geo = geometry_config.create_config(Yheight=10.0)
+ship_geo = geometry_config.create_config()
 # The magnetized hadron absorber is the first muon-shield magnet; take its exit face, in m.
 endOfHadronAbsorber = (ship_geo["muShield"].Entrance[0] + 2 * ship_geo["muShield"].half_length[0]) / 100.0
 startOfTarget = -50.0  # value used for Geant4 production
