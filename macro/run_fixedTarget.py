@@ -52,6 +52,11 @@ def get_work_dir(run_number, tag: str | None = None) -> str:
     return out_dir
 
 
+def local_abspath(path: str) -> str:
+    """Make a local path absolute, so it survives the chdir into the work directory; leave URLs alone."""
+    return path if "://" in path else os.path.abspath(path)
+
+
 logger.info("SHiP proton-on-taget simulator (C) Thomas Ruf, 2017")
 
 ap = argparse.ArgumentParser(description='Run SHiP "pot" simulation')
@@ -151,7 +156,7 @@ ap.add_argument("-S", "--nStart", type=int, help="first event of input file to s
 ap.add_argument(
     "-I",
     "--InputFile",
-    type=str,
+    type=local_abspath,
     dest="charmInputFile",
     default=ROOT.gSystem.Getenv("EOSSHIP")
     + "/eos/experiment/ship/data/Charm/Cascade-parp16-MSTP82-1-MSEL4-76Mpot_1.root",
@@ -214,6 +219,7 @@ ap.add_argument(
 ap.add_argument(
     "--TARGET_YAML",
     dest="TARGET_YAML",
+    type=os.path.abspath,
     help="File for target configuration",
     default=os.path.expandvars("$FAIRSHIP/geometry/target_config.yaml"),
 )
