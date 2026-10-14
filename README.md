@@ -57,6 +57,9 @@ even if you already know Git, as it explains how development is done on GitHub.
 `FAIRSHIP` and `GEOMPATH` (among others) to `PIXI_PROJECT_ROOT`, so the pixi
 project root **must** be the FairShip clone itself — it contains the required
 `geometry/` and `files/` directories.
+When neither `DISPLAY` nor `WAYLAND_DISPLAY` is set (ssh, containers, batch
+jobs), it also sets `QT_QPA_PLATFORM=offscreen`, as Geant4's Qt interface
+otherwise aborts the run. A value you set yourself is kept.
 
 ### Build from source (recommended)
 
