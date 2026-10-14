@@ -20,6 +20,10 @@ it in future.
 
 * The hit lists in `Tracklets` and `fitTrack2MC` now come from fitted states. They therefore leave out any surface that ACTS skipped. #1537
 
+### Fixed
+
+* `exitHadronAbsorber` checks that the volumes it looks up by path exist. In a geometry without them it used the previous navigator state or a null node; now it logs an error and skips only the sensitive plane or the kaon and pion per-step splitting setup that needs the missing volume. A missing hadron absorber stays fatal when the plane position comes from it.
+
 ## 26.11 - 2026-11-26
 
 This release makes ACTS the default for pattern recognition, track fitting and
