@@ -1118,6 +1118,9 @@ class pyFairModule:  # Partial stub
 # Namespace declared at run time with gInterpreter.Declare by geometry_from_file
 ship_geofile: Any
 
+# Function declared at run time with gInterpreter.Declare by TrackExtrapolateTool
+def shipExtrapolateToZ(pdg: int, pos0: TVector3, mom0: TVector3, z: float, pos: TVector3, mom: TVector3) -> bool: ...
+
 class FairRuntimeDb:  # Partial stub
     @staticmethod
     def instance() -> FairRuntimeDb: ...

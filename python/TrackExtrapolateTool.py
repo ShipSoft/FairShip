@@ -6,13 +6,23 @@ from typing import Any
 import ROOT
 import shipunit as u
 
-
-def cmp(a, b):
-    return (a > b) - (a < b)
-
-
+# In C++ because extrapolating with GENFIT objects created from Python made ShipAna crash at exit.
+ROOT.gInterpreter.Declare("""
+bool shipExtrapolateToZ(int pdg, const TVector3& pos0, const TVector3& mom0, double z, TVector3& pos, TVector3& mom) {
+  genfit::RKTrackRep rep(pdg);
+  genfit::StateOnPlane state(&rep);
+  rep.setPosMom(state, pos0, mom0);
+  try {
+    rep.extrapolateToPlane(state, genfit::SharedPlanePtr(new genfit::DetPlane(TVector3(0, 0, z), TVector3(0, 0, 1))));
+  } catch (genfit::Exception&) {
+    return false;
+  }
+  pos = state.getPos();
+  mom = state.getMom();
+  return true;
+}
+""")
 minNdf = 20
-parallelToZ = ROOT.TVector3(0.0, 0.0, 1.0)
 top = ROOT.gGeoManager.GetTopVolume()
 # Runge-Kutta extrapolation is done up to the scoring plane (former SplitCal
 # position); beyond it, tracks are extrapolated linearly.
@@ -38,26 +48,19 @@ def extrapolateToPlane(fT, z) -> tuple[bool, Any, Any]:
             else:
                 fstate = fstate1
             zs = min(z, z_ecal)
-            NewPosition = ROOT.TVector3(0.0, 0.0, zs)
-            rep = ROOT.genfit.RKTrackRep(13 * cmp(fstate.getPDG(), 0))
-            state = ROOT.genfit.StateOnPlane(rep)
-            pos, mom = fstate.getPos(), fstate.getMom()
-            rep.setPosMom(state, pos, mom)
-            try:
-                rep.extrapolateToPlane(state, NewPosition, parallelToZ)
-                pos, mom = state.getPos(), state.getMom()
-                rc = True
-            except Exception:
-                # print 'error with extrapolation: z=',z/u.m,'m',pos.X(),pos.Y(),pos.Z(),mom.X(),mom.Y(),mom.Z()
+            pos, mom = ROOT.TVector3(), ROOT.TVector3()
+            # muon hypothesis with the fitted charge (mu- is +13); the fitted PDG code keeps the seed's sign
+            pdg = 13 if fstate.getCharge() < 0 else -13
+            if not ROOT.shipExtrapolateToZ(pdg, fstate.getPos(), fstate.getMom(), zs, pos, mom):
                 # Honour the contract: no valid extrapolation -> pos/mom are None.
-                rc, pos, mom = False, None, None
-            if rc and z > z_ecal:
+                return False, None, None
+            if z > z_ecal:
                 # RK only reaches z_ecal; continue with linear extrapolation
                 px, py, pz = mom.X(), mom.Y(), mom.Z()
-                if pz != 0:
-                    lam = (z - pos.Z()) / pz
-                    pos = ROOT.TVector3(pos.X() + lam * px, pos.Y() + lam * py, z)
-                else:
+                if pz == 0:
                     # cannot extrapolate in z with zero longitudinal momentum
-                    rc, pos, mom = False, None, None
+                    return False, None, None
+                lam = (z - pos.Z()) / pz
+                pos = ROOT.TVector3(pos.X() + lam * px, pos.Y() + lam * py, z)
+            rc = True
     return rc, pos, mom
