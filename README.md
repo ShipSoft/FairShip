@@ -105,7 +105,7 @@ instead, which keeps the environment out of your AFS area.
 Start from a clean shell and a FairShip clone without an old `build/` directory, then:
 
 ```bash
-export PATH=/cvmfs/ship-nightlies.cern.ch/pixi/0.72.0-rattlerfs-layers-d5a7568/bin:/cvmfs/ship-nightlies.cern.ch/pixi/pixi-cvmfs:$PATH
+export PATH=/cvmfs/ship-nightlies.cern.ch/pixi/0.72.0-rattlerfs-layers-d5a7568/bin:$PATH
 cd /path/to/FairShip
 pixi cvmfs build    # build (once, and again after code changes)
 pixi cvmfs          # enter the environment
