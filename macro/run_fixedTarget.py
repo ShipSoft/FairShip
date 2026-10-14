@@ -494,7 +494,8 @@ if args.charm or args.beauty:
     P8gen.SetChibb(cs.chibb)
     print(format_summary(cs, None if args.A is not None else args.target_composition))
     print("--- process heavy flavours ---")
-    P8gen.InitForCharmOrBeauty(charmInputFile, args.nev, args.pot, args.nStart)
+    if not P8gen.InitForCharmOrBeauty(charmInputFile, args.nev, args.pot, args.nStart):
+        raise SystemExit(f"Could not use {charmInputFile} as heavy-flavour input, see the error above")
 primGen.AddGenerator(P8gen)
 ROOT.SetOwnership(P8gen, False)  # C++ FairPrimaryGenerator takes ownership
 #
