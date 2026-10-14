@@ -454,24 +454,40 @@ void exitHadronAbsorber::ConstructGeometry() {
   vac = gGeoManager->GetMedium("vacuums");
   gGeoManager->GetTopVolume();
   TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();
-  Double_t zLoc;
+  // Moves the navigator to a volume by path and returns it, or returns
+  // nullptr if this geometry has no such path, so that a missing volume skips
+  // what depends on it instead of using the previous navigator state.
+  auto cdVolume = [nav](const char* path) -> TGeoVolume* {
+    if (!nav->cd(path) || !nav->GetCurrentNode()) {
+      return nullptr;
+    }
+    return nav->GetCurrentNode()->GetVolume();
+  };
+  Bool_t addPlane = kTRUE;
+  Double_t zLoc = fzPos;  // use external input
   if (fzPos > 1E8) {
     // Add thin sensitive plane after hadron absorber
     Float_t distance = 1.;
     Double_t local[3] = {0, 0, 0};
-    if (!nav->cd("/MuonShieldArea_1/AbsorberVol_1")) {
-      nav->cd("/MuonShieldArea_1/MagnAbsorb_MagRetL_1");
+    TGeoVolume* absorber = cdVolume("/MuonShieldArea_1/AbsorberVol_1");
+    if (!absorber) {
+      absorber = cdVolume("/MuonShieldArea_1/MagnAbsorb_MagRetL_1");
       distance = -1.;
     }
-    TGeoBBox* tmp =
-        dynamic_cast<TGeoBBox*>(nav->GetCurrentNode()->GetVolume()->GetShape());
-    local[2] = distance * tmp->GetDZ();
-    Double_t global[3] = {0, 0, 0};
-    nav->LocalToMaster(local, global);
-    zLoc = global[2] + distance * 1. * cm;
-  } else {
-    zLoc = fzPos;
-  }  // use external input
+    auto* tmp =
+        absorber ? dynamic_cast<TGeoBBox*>(absorber->GetShape()) : nullptr;
+    if (tmp) {
+      local[2] = distance * tmp->GetDZ();
+      Double_t global[3] = {0, 0, 0};
+      nav->LocalToMaster(local, global);
+      zLoc = global[2] + distance * 1. * cm;
+    } else {
+      LOG(error) << GetName()
+                 << ": found no hadron absorber box in the geometry, not "
+                    "adding the sensitive plane after it";
+      addPlane = kFALSE;
+    }
+  }
 
   TString myname(this->GetName());
   TString shapename_prefix(myname);  // Use a prefix for shapenames
@@ -480,51 +496,66 @@ void exitHadronAbsorber::ConstructGeometry() {
   Double_t yLocPlane = 0.0;
   Double_t zLocPlane = zLoc;
 
-  if (!fCylindricalPlane) {
-    TGeoVolume* sensPlane =
-        gGeoManager->MakeBox(shapename_prefix + fVetoName + "_box", vac,
-                             3.56 * m - 1. * mm, 1.7 * m - 1. * mm, 1. * mm);
-    std::cout << this->GetName()
-              << ", ConstructGeometry(): Created Box with dimensions: "
-                 "3.56*m-1.*mm,1.7*m-1.*mm,1.*mm"
-              << std::endl;
-
+  if (addPlane && !fCylindricalPlane) {
+    TGeoVolume* mother = nullptr;
     if (!fUseCaveCoordinates) {
-      nav->cd("/MuonShieldArea_1/");
-    } else {
+      mother = cdVolume("/MuonShieldArea_1/");
+    } else if (cdVolume("/target_vacuum_box_1/TargetArea_1")) {
       Double_t local[3] = {0, 0, zLoc};
       Double_t global[3];
-      nav->cd("/target_vacuum_box_1/TargetArea_1");
       nav->LocalToMaster(local, global);
-      nav->cd("/cave_1");
+      mother = cdVolume("/cave_1");
       yLocPlane = global[1];
       zLocPlane = global[2];
       xLocPlane = global[0];
     }
-    sensPlane->SetLineColor(kBlue - 10);
-    nav->GetCurrentNode()->GetVolume()->AddNode(
-        sensPlane, 1, new TGeoTranslation(xLocPlane, yLocPlane, zLocPlane));
-    AddSensitiveVolume(sensPlane);
-  } else {  // add cylindrical sensPlane
-    TGeoVolume* sensPlaneCyl =
-        gGeoManager->MakeTube(shapename_prefix + fVetoName + "_tube", vac,
-                              12.51 * cm, 12.52 * cm, zLoc / 2.);
-    std::cout << this->GetName()
-              << ", ConstructGeometry(): Created Tube with dimensions: "
-                 "12.51*cm,12.52*cm,zLoc/2."
-              << std::endl;
-    nav->cd("/target_vacuum_box_1/TargetArea_1/HeVolume_1");
-    nav->GetCurrentNode()->GetVolume()->AddNode(sensPlaneCyl, 1,
-                                                new TGeoTranslation(0, 0, 0));
-    AddSensitiveVolume(sensPlaneCyl);
+    if (mother) {
+      TGeoVolume* sensPlane =
+          gGeoManager->MakeBox(shapename_prefix + fVetoName + "_box", vac,
+                               3.56 * m - 1. * mm, 1.7 * m - 1. * mm, 1. * mm);
+      std::cout << this->GetName()
+                << ", ConstructGeometry(): Created Box with dimensions: "
+                   "3.56*m-1.*mm,1.7*m-1.*mm,1.*mm"
+                << std::endl;
+      sensPlane->SetLineColor(kBlue - 10);
+      mother->AddNode(sensPlane, 1,
+                      new TGeoTranslation(xLocPlane, yLocPlane, zLocPlane));
+      AddSensitiveVolume(sensPlane);
+    } else {
+      LOG(error) << GetName()
+                 << ": found no mother volume for the sensitive plane in the "
+                    "geometry, not adding it";
+    }
+  } else if (addPlane) {  // add cylindrical sensPlane
+    TGeoVolume* mother =
+        cdVolume("/target_vacuum_box_1/TargetArea_1/HeVolume_1");
+    if (mother) {
+      TGeoVolume* sensPlaneCyl =
+          gGeoManager->MakeTube(shapename_prefix + fVetoName + "_tube", vac,
+                                12.51 * cm, 12.52 * cm, zLoc / 2.);
+      std::cout << this->GetName()
+                << ", ConstructGeometry(): Created Tube with dimensions: "
+                   "12.51*cm,12.52*cm,zLoc/2."
+                << std::endl;
+      mother->AddNode(sensPlaneCyl, 1, new TGeoTranslation(0, 0, 0));
+      AddSensitiveVolume(sensPlaneCyl);
+    } else {
+      LOG(error) << GetName()
+                 << ": found no HeVolume_1 in the geometry, not adding the "
+                    "cylindrical sensitive plane";
+    }
   }
   if ((fNsplits > 0) && (!fSplitOnce)) {
-    TString parentVolumeName = "/target_vacuum_box_1";
-    nav->cd(parentVolumeName.Data());
-    TGeoVolume* vol = nav->GetCurrentNode()->GetVolume();
-    AddSensitiveVolume(vol);
-    // register each unique daughter volume
-    RegisterDaughtersRecursively(vol, this);
+    TGeoVolume* vol = cdVolume("/target_vacuum_box_1");
+    if (vol) {
+      AddSensitiveVolume(vol);
+      // register each unique daughter volume
+      RegisterDaughtersRecursively(vol, this);
+    } else {
+      LOG(error) << GetName()
+                 << ": found no /target_vacuum_box_1 in the geometry, kaon and "
+                    "pion splitting is not set up";
+    }
   }
 }
 
