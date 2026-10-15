@@ -129,6 +129,8 @@ ut.bookHist(h, "Vypull", "Vy pull", 100, -5.0, 5.0)
 ut.bookHist(h, "Doca", "Doca between two tracks", 100, 0.0, 10.0)
 for x in ["", "_pi0"]:
     ut.bookHist(h, "IP0" + x, "Impact Parameter to target", 100, 0.0, 100.0)
+    ut.bookHist(h, "IP0x" + x, "Impact Parameter to target, x component", 100, -100.0, 100.0)
+    ut.bookHist(h, "IP0y" + x, "Impact Parameter to target, y component", 100, -100.0, 100.0)
     ut.bookHist(h, "IP0/mass" + x, "Impact Parameter to target vs mass", 100, 0.0, 2.0, 100, 0.0, 100.0)
     ut.bookHist(h, "HNL" + x, "reconstructed Mass", 500, 0.0, 2.0)
 ut.bookHist(h, "HNLw", "reconstructed Mass with weights", 500, 0.0, 2.0)
@@ -255,19 +257,20 @@ def isInFiducial(X, Y, Z) -> bool:
 
 
 #
+def _vect3(v):
+    """Spatial part of a TLorentzVector, or the TVector3 itself."""
+    return v.Vect() if hasattr(v, "Vect") else v
+
+
+def ImpactParameterVector(point, tPos, tMom):
+    """Vector from the line through tPos along tMom to point, at closest approach."""
+    direction = _vect3(tMom).Unit()
+    offset = _vect3(point) - _vect3(tPos)
+    return offset - offset.Dot(direction) * direction
+
+
 def ImpactParameter(point, tPos, tMom):
-    t = 0
-    if hasattr(tMom, "P"):
-        P = tMom.P()
-    else:
-        P = tMom.Mag()
-    for i in range(3):
-        t += tMom(i) / P * (point(i) - tPos(i))
-    dist = 0
-    for i in range(3):
-        dist += (point(i) - tPos(i) - t * tMom(i) / P) ** 2
-    dist = ROOT.TMath.Sqrt(dist)
-    return dist
+    return ImpactParameterVector(point, tPos, tMom).Mag()
 
 
 #
@@ -699,9 +702,12 @@ def myEventLoop(n: int) -> None:
        h['HNL_pi0'].Fill(mass)
     """
 
-        dist = ImpactParameter(tr, HNLPos, HNLMom)
+        ip = ImpactParameterVector(tr, HNLPos, HNLMom)
+        dist = ip.Mag()
         mass = HNLMom.M()
         h["IP0"].Fill(dist)
+        h["IP0x"].Fill(ip.X())
+        h["IP0y"].Fill(ip.Y())
         h["IP0/mass"].Fill(mass, dist)
         h["HNL"].Fill(mass)
         h["HNLw"].Fill(mass, wg)

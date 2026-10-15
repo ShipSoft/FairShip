@@ -82,8 +82,8 @@ class selection_check:
 
         return t_vtx  # units in ns
 
-    def impact_parameter(self, candidate):
-        """Calculate the impact parameter of the candidate relative to (0,0,target.z0)."""
+    def impact_parameter_vector(self, candidate) -> ROOT.TVector3:
+        """Return the vector from the candidate's line of flight to (0,0,target.z0) at closest approach, in cm."""
         candidate_pos = ROOT.TVector3()
         candidate.GetVertex(candidate_pos)
 
@@ -91,20 +91,18 @@ class selection_check:
         candidate.Momentum(candidate_mom)
         target_point = ROOT.TVector3(0, 0, self.ship_geo.target.z0)
 
-        projection_factor = 0
-        if hasattr(candidate_mom, "P"):
-            P = candidate_mom.P()
-        else:
-            P = candidate_mom.Mag()
-        for i in range(3):
-            projection_factor += candidate_mom(i) / P * (target_point(i) - candidate_pos(i))
+        direction = candidate_mom.Vect().Unit()
+        offset = target_point - candidate_pos
+        return offset - offset.Dot(direction) * direction
 
-        dist = 0
-        for i in range(3):
-            dist += (target_point(i) - candidate_pos(i) - projection_factor * candidate_mom(i) / P) ** 2
-        dist = ROOT.TMath.Sqrt(dist)
+    def impact_parameter(self, candidate):
+        """Calculate the impact parameter of the candidate relative to (0,0,target.z0)."""
+        return self.impact_parameter_vector(candidate).Mag()  # in cm
 
-        return dist  # in cm
+    def impact_parameter_xy(self, candidate) -> tuple[float, float]:
+        """Return the x and y components of the impact parameter vector, in cm (see impact_parameter_vector)."""
+        ip = self.impact_parameter_vector(candidate)
+        return ip.X(), ip.Y()
 
     def dist_to_innerwall(self, candidate) -> float | int:
         """Calculate the minimum distance(in XY plane) of the candidate decay vertex to the inner wall of the decay vessel. If outside the decay volume, return 0."""
