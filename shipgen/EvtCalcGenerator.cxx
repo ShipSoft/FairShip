@@ -185,16 +185,16 @@ Bool_t EvtCalcGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
   if (fn % 100 == 0) LOGF(info, "Info EvtCalcGenerator: event nr %d", fn);
 
   Ndau = GetNdaughters(fTree);
-  // Vertex coordinates in the SHiP reference frame, expressed in [cm]
-  Double_t space_unit_conv = 100.;                                // m to cm
-  Double_t vx_transf = GetVx(fTree) * space_unit_conv;            // units cm
-  Double_t vy_transf = GetVy(fTree) * space_unit_conv;            // units cm
-  Double_t vz_transf = GetVz(fTree) * space_unit_conv + ztarget;  // units cm
+  // Vertex coordinates in the SHiP reference frame. EventCalc writes them in
+  // [m]; convert to FairShip length units [cm].
+  Double_t vx_transf = GetVx(fTree) * ShipUnit::m;
+  Double_t vy_transf = GetVy(fTree) * ShipUnit::m;
+  Double_t vz_transf = GetVz(fTree) * ShipUnit::m + ztarget;
 
-  Double_t c = 2.99792458e+10;  // speed of light [cm/s]
+  // Time of flight from the origin, passed on in [s]
   Double_t tof = TMath::Sqrt(vx_transf * vx_transf + vy_transf * vy_transf +
                              vz_transf * vz_transf) /
-                 c;
+                 ShipUnit::c_light / ShipUnit::s;
   Double_t decay_prob = GetDecayProb(fTree);
   Double_t pdg_dau = 0;
 
