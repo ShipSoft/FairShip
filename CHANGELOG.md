@@ -66,6 +66,7 @@ it in future.
 ### Removed
 
 * Remove the SplitCal calorimeter (`splitcal`, `splitcalPoint`, `splitcalHit`, `splitcalCluster`, `splitcalDetector.py`, `ship_geo.SplitCal`, `ship_geo.EcalOption`). The `kSplitCal` detector ID slot is reused by `kCaloScoringPlane`. The muon stations and filters (`ship_geo.MuonStation*`, `ship_geo.MuonFilter*`, `ship_geo.Muon`), which had no geometry, are removed as well, and `ship_geo.HcalOption` (unused) with them; the scoring plane is now the downstream reference for the Genie generation window, the event display and `CMBG_conf`. `TrackExtrapolateTool` now switches from Runge-Kutta to linear extrapolation at the scoring plane. Code that needs the particles arriving at the former SplitCal position should use `ship_geo.CaloScoringPlane` and its `CaloScoringPlanePoint` (MC truth) instead; the calorimeter hits, clustering and digitisation (`splitcalHit`, `splitcalCluster`) have no direct replacement.
+* Remove the TRY_2025 muon shield and its field map (`files/TRY_2025.root`). `geometry_config.create_config()` now defaults to TRY_2026, as the command-line scripts already did, so scripts that call it without `shieldName` get the TRY_2026 shield. Geometry files built with TRY_2025 can no longer be used with `run_simScript.py -g`, because the shield field map is no longer shipped.
 
 ## 26.09 - 2026-09-15
 

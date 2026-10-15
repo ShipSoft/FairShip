@@ -10,7 +10,7 @@ and the same seed:
 * A: vacuum vessel, both SND designs, TRY_2026 muon shield. Muons from a
   particle gun cross the magnetised iron of the MTC, whose uniform field is
   not stored in geometry files and must be copied onto the stored volume.
-* B: helium vessel, no SND, TRY_2025 muon shield, aluminium straw frames,
+* B: helium vessel, no SND, TRY_2026 muon shield, aluminium straw frames,
   HNL events from the test cascade file.
 
 For each geometry, the run with -g must give the same hits as the run that
@@ -157,7 +157,7 @@ def main() -> int:
     r = Runner(args.workdir)
     geometries = {
         "A": (["--vacuums", "--SND", "--SND_design", "all", "--shieldName", "TRY_2026"], muon_gun(args.nEvents)),
-        "B": (["--helium", "--shieldName", "TRY_2025", "--strawDesign", "4"], hnl_events(args.nEvents)),
+        "B": (["--helium", "--shieldName", "TRY_2026", "--strawDesign", "4"], hnl_events(args.nEvents)),
     }
 
     for name, (geometry, generator) in geometries.items():
