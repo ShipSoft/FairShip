@@ -12,5 +12,6 @@
 #pragma link C++ class SiliconTargetHit+;
 #pragma link C++ class SHiP::Detector<SiliconTargetPoint>-;
 #pragma link C++ class std::vector<SiliconTargetPoint>+;
+#pragma link C++ class std::vector<SiliconTargetHit>+;
 
 #endif

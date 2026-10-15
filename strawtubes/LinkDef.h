@@ -14,5 +14,7 @@
 #pragma link C++ class std::vector<strawtubesPoint>+;
 #pragma link C++ class strawtubesHit+;
 #pragma link C++ class Tracklet+;
+#pragma link C++ class std::vector<strawtubesHit>+;
+#pragma link C++ class std::vector<Tracklet>+;
 
 #endif
