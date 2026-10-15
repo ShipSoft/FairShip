@@ -13,5 +13,6 @@
 #pragma link C++ class MTCDetHit+;
 #pragma link C++ class SHiP::Detector<MTCDetPoint>-;
 #pragma link C++ class std::vector<MTCDetPoint>+;
+#pragma link C++ class std::vector<MTCDetHit>+;
 
 #endif

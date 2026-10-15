@@ -13,5 +13,8 @@
 #pragma link C++ class ShipParticle+;
 #pragma link C++ class TrackInfo+;
 #pragma link C++ class ISTLPointContainer-;
+#pragma link C++ class std::vector<ShipParticle>+;
+#pragma link C++ class std::vector<genfit::Track*>+;
+#pragma link C++ class std::vector<std::vector<int>>+;
 
 #endif

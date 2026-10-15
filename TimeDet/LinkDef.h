@@ -13,5 +13,6 @@
 #pragma link C++ class TimeDetPoint+;
 #pragma link C++ class std::vector<TimeDetPoint>+;
 #pragma link C++ class TimeDetHit+;
+#pragma link C++ class std::vector<TimeDetHit>+;
 
 #endif
