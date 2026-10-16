@@ -80,7 +80,8 @@ Double_t PushedWeightScale(Int_t parentId) {
 }  // namespace
 
 Int_t exitHadronAbsorber::fgCarrierTrackID = exitHadronAbsorber::kNoCarrier;
-std::set<Int_t> exitHadronAbsorber::fgShadowTracks;
+std::set<Int_t> exitHadronAbsorber::fgReplacedDecays;
+std::set<Int_t> exitHadronAbsorber::fgReplacedTracks;
 
 exitHadronAbsorber::exitHadronAbsorber(const char* Name, Bool_t Active)
     : Detector(Name, Active, kVETO),
@@ -141,15 +142,13 @@ Bool_t exitHadronAbsorber::ProcessHits(FairVolume* vol) {
       TParticle* p = gMC->GetStack()->GetCurrentTrack();
       fUniqueID = p->GetUniqueID();
       Int_t pdgCode = p->GetPdgCode();
-      Int_t motherId = p->GetFirstMother();
       gMC->TrackMomentum(fMom);
       if (!fOnlyMuons || TMath::Abs(pdgCode) == 13) {
         fTime = gMC->TrackTime() * 1.0e09;
         fLength = gMC->TrackLength();
         gMC->TrackPosition(fPos);
         if (((fMom.E() - fMom.M()) > EMax) &&
-            (fDecayedParentIDs.count(motherId) == 0) &&
-            (fgShadowTracks.count(fTrackID) == 0)) {
+            (fgReplacedTracks.count(fTrackID) == 0)) {
           AddHit(fEventID, fTrackID, 111,
                  TVector3(fPos.X(), fPos.Y(), fPos.Z()),
                  TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength, 0,
@@ -173,7 +172,7 @@ Bool_t exitHadronAbsorber::ProcessHits(FairVolume* vol) {
     Int_t currentTrackId = gMC->GetStack()->GetCurrentTrackNumber();
 
     if (fCloneTracks.count(currentTrackId) > 0 ||
-        fgShadowTracks.count(currentTrackId) > 0) {
+        fgReplacedTracks.count(currentTrackId) > 0) {
       return kTRUE;
     }
 
@@ -357,9 +356,9 @@ void exitHadronAbsorber::Initialize() {
 
 void exitHadronAbsorber::BeginEvent() {
   fgCarrierTrackID = kNoCarrier;
-  fgShadowTracks.clear();
   fCloneTracks.clear();
-  fDecayedParentIDs.clear();
+  fgReplacedDecays.clear();
+  fgReplacedTracks.clear();
   fSplitBufferLimitWarned = kFALSE;
   fEventSizeLimitWarned = kFALSE;
 }
@@ -392,9 +391,11 @@ void exitHadronAbsorber::DiscardBufferedClones() {
 void exitHadronAbsorber::PostTrack() {
   Int_t currentTrackId = gMC->GetStack()->GetCurrentTrackNumber();
 
-  // A shadow must not split either: its clones would be exempt from the cut.
+  // A replaced track can only get here as a carrier. Its decay is either part
+  // of one that the clones already re-sample, or one an unsplit run would not
+  // have, so it must not be split: its clones would be exempt from the cut.
   if (fCloneTracks.count(currentTrackId) > 0 ||
-      fgShadowTracks.count(currentTrackId) > 0) {
+      fgReplacedTracks.count(currentTrackId) > 0) {
     return;
   }
 
@@ -452,7 +453,7 @@ void exitHadronAbsorber::PostTrack() {
         clone.parentID = trueParentId;
         fSecondaryBuffer.push_back(clone);
       }
-      fDecayedParentIDs.insert(currentTrackId);
+      fgReplacedDecays.insert(currentTrackId);
       fSplitDecays++;
       fClonesBuffered += fNsplits;
       RequestCloneCarrier();
@@ -496,22 +497,24 @@ void exitHadronAbsorber::PreTrack() {
   Bool_t skippedNeutrino =
       fSkipNeutrinos && (idabs == 12 || idabs == 14 || idabs == 16);
 
-  // A shadow is a track that an unsplit run would never have transported: a
-  // carrier that is only exempt from a stop so that it steps, or a descendant
-  // of a shadow. A shadow's secondaries can still pass the cut, because a
-  // decay turns rest mass into kinetic energy (a slow pi0 can give a photon
-  // above it), so they are stopped too, and no plane scores a shadow. Clones
-  // are never shadows: their parent is the split track, not the carrier.
-  Bool_t inheritedShadow =
-      !isClone && fgShadowTracks.count(p->GetFirstMother()) > 0;
-  Bool_t carrierShadow = isCarrier && !isClone && (belowCut || skippedNeutrino);
+  // Products of a replaced decay, and their descendants, are replaced too.
+  // Every instance runs this, so the set is complete before any track steps.
+  // A replaced track's secondaries can pass the cut even if it does not,
+  // because a decay turns rest mass into kinetic energy (a slow pi0 can give a
+  // photon above it), so they have to be stopped by ancestry, not by energy.
+  const Int_t motherId = p->GetFirstMother();
+  if (fgReplacedDecays.count(motherId) > 0 ||
+      fgReplacedTracks.count(motherId) > 0) {
+    fgReplacedTracks.insert(currentID);
+  }
+  const Bool_t isReplaced = fgReplacedTracks.count(currentID) > 0;
 
-  if (!isClone && !isCarrier && (belowCut || inheritedShadow)) {
+  if (!isClone && !isCarrier && (belowCut || isReplaced)) {
     // Do NOT flush the clone buffer into this track: it is stopped before its
     // first step, so the stack popper would never run for it and the pending
     // clones would be silently discarded at the next track's popper reset.
-    // The designated carrier is exempt so that it does step, and becomes a
-    // shadow instead.
+    // The designated carrier is exempt so that it does step, and is replaced
+    // below instead.
     //
     // Clones are exempt from the cut. They are a bookkeeping device that has
     // to decay immediately (ForceDecayTime(0)) so that the decay can be
@@ -524,16 +527,21 @@ void exitHadronAbsorber::PreTrack() {
     return;
   }
 
-  if (inheritedShadow || carrierShadow) {
-    fgShadowTracks.insert(currentID);
+  // A carrier that an unsplit run would have stopped, below the cut or as a
+  // skipped neutrino, is replaced: it steps, but ProcessHits does not score
+  // it, it is not split, and its descendants are stopped above. Clones are
+  // never replaced this way: their parent is the split track, not the carrier.
+  const Bool_t isCarrierOnly = isCarrier && !isClone;
+  if (isCarrierOnly && (belowCut || skippedNeutrino)) {
+    fgReplacedTracks.insert(currentID);
   }
 
-  // A shadow only has to step so that the stack popper hands the clones over.
-  // An unsplit run would have stopped it above, so it must not reach the
-  // histograms or the ntuple. The exception is a neutrino above the cut, which
-  // an unsplit run records before stopping it.
-  const Bool_t recordStatistics =
-      !(inheritedShadow || (carrierShadow && belowCut));
+  // A carrier that is below the cut or replaced by ancestry only has to step
+  // so that the stack popper hands the clones over. An unsplit run would not
+  // have it, so it must not reach the histograms or the ntuple. The exception
+  // is a neutrino above the cut, which an unsplit run records before stopping
+  // it.
+  const Bool_t recordStatistics = !(isCarrierOnly && (belowCut || isReplaced));
 
   // record statistics for neutrinos, electrons and photons
   // add pi0 111 eta 221 eta' 331  omega 223
