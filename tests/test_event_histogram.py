@@ -29,6 +29,16 @@ def fill(h, events, run=1):
             h.fill_event(*ev, key=make_event_key(run, i))
 
 
+def fill_cpp(h, events, run=1):
+    for i, ev in enumerate(events):
+        if ev is None:
+            h.AddEmptyEvents(1)
+            continue
+        for x, w in zip(*ev):
+            h.Fill(x, w)
+        h.EndEvent(make_event_key(run, i))
+
+
 def test_matches_per_event_formula():
     events = correlated_sample(1, 3000)
     h = EventHistogram("x", EDGES)
@@ -146,13 +156,7 @@ def test_root_round_trip_and_cpp_agree(root_with_shipdata, tmp_path):
     h = EventHistogram("x", EDGES, covariance=True, n_replicas=20)
     fill(h, events)
     cpp = ROOT.EventHistogram("x", "", len(EDGES) - 1, 0.0, 10.0, True, 20)
-    for i, ev in enumerate(events):
-        if ev is None:
-            cpp.AddEmptyEvents(1)
-            continue
-        for x, w in zip(*ev):
-            cpp.Fill(x, w)
-        cpp.EndEvent(make_event_key(1, i))
+    fill_cpp(cpp, events)
     result = cpp.MakeResult()
     assert [result.GetBinContent(b) for b in range(1, 11)] == pytest.approx(h.values())
     assert [result.GetBinError(b) for b in range(1, 11)] == pytest.approx(h.errors())

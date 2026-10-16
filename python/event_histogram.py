@@ -42,13 +42,16 @@ def make_event_key(run: int, event: int) -> int:
 
 
 def _poisson1_cdf():
-    """Poisson(1) distribution function, accumulated as in the C++ code."""
+    """Poisson(1) distribution function, accumulated as in the C++ code.
+
+    k = 0..19, so searchsorted caps the weight at 20 like the C++ inversion.
+    """
     p = math.exp(-1.0)
     cdf = [p]
-    for k in range(1, 21):
+    for k in range(1, 20):
         p /= k
         cdf.append(cdf[-1] + p)
-    return np.array(cdf[:-1])
+    return np.array(cdf)
 
 
 _CDF = _poisson1_cdf()
@@ -98,7 +101,7 @@ class EventHistogram:
         self.name = name
         self.title = title
         self.edges = np.asarray(edges, dtype=float)
-        nb = len(self.edges) - 1
+        nb = self.nbins
         self.n_events = 0
         self.sum_t = np.zeros(nb + 2)
         self.sum_t2 = np.zeros(nb + 2)
@@ -108,10 +111,6 @@ class EventHistogram:
         self.boot = np.zeros((nb, n_replicas)) if n_replicas else None
         self._current = np.zeros(nb + 2)
         self._open = False
-
-    @classmethod
-    def uniform(cls, name, nbins, low, high, **kwargs):
-        return cls(name, np.linspace(low, high, nbins + 1), **kwargs)
 
     @property
     def nbins(self):
@@ -184,28 +183,30 @@ class EventHistogram:
 
     # --- results, per generated event, in-range bins ---------------------------
 
-    def values(self):
-        self._check_closed("values")
+    def _per_event(self, sums):
+        """In-range sums divided by the number of events, zero without events."""
         if self.n_events <= 0:
             return np.zeros(self.nbins)
-        return self.sum_t[1:-1] / self.n_events
+        return sums[1:-1] / self.n_events
+
+    def values(self):
+        self._check_closed("values")
+        return self._per_event(self.sum_t)
 
     def errors(self):
         """Event-level standard errors."""
         self._check_closed("errors")
         n = self.n_events
-        if n <= 0:
-            return np.zeros(self.nbins)
-        m = self.sum_t[1:-1] / n
+        m2 = self._per_event(self.sum_t2)
         if n < 2:
-            return np.sqrt(self.sum_t2[1:-1]) / n
-        return np.sqrt(np.maximum(self.sum_t2[1:-1] / n - m * m, 0.0) / (n - 1))
+            # No spread to estimate from: sqrt(sum t^2) / N, zero without events.
+            return np.sqrt(m2)
+        m = self._per_event(self.sum_t)
+        return np.sqrt(np.maximum(m2 - m * m, 0.0) / (n - 1))
 
     def naive_errors(self):
         """sqrt(sum w^2)/N, which treats branches as independent. For comparison only."""
-        if self.n_events <= 0:
-            return np.zeros(self.nbins)
-        return np.sqrt(self.sum_w2[1:-1]) / self.n_events
+        return self._per_event(np.sqrt(self.sum_w2))
 
     def n_eff(self):
         """Independent events per bin, (sum t)^2 / sum t^2. Below about 20 the error

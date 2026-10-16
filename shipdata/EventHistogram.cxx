@@ -28,6 +28,13 @@ std::string Suffixed(const char* name, const char* suffix) {
   return std::string(name) + suffix;
 }
 
+template <class T>
+std::unique_ptr<T> DetachedClone(const T* h) {
+  std::unique_ptr<T> clone(static_cast<T*>(h->Clone()));
+  clone->SetDirectory(nullptr);
+  return clone;
+}
+
 ULong64_t SplitMix64(ULong64_t x) {
   x += 0x9E3779B97F4A7C15ULL;
   x = (x ^ (x >> 30U)) * 0xBF58476D1CE4E5B9ULL;
@@ -74,8 +81,12 @@ void EventHistogram::Init(Bool_t covariance, Int_t nReplicas) {
                                    edges.data(), nReplicas, 0., nReplicas);
     fBoot->SetDirectory(nullptr);
   }
-  fCurrent.assign(nbins + 2, 0.);
-  fIsTouched.assign(nbins + 2, false);
+  InitEventBuffers();
+}
+
+void EventHistogram::InitEventBuffers() {
+  fCurrent.assign(fSum->GetNbinsX() + 2, 0.);
+  fIsTouched.assign(fSum->GetNbinsX() + 2, false);
 }
 
 void EventHistogram::Fill(Double_t x, Double_t w) {
@@ -179,10 +190,10 @@ TH1D* EventHistogram::MakePerEvent(const char* name, const char* suffix) const {
 TH1D* EventHistogram::MakeResult(const char* name) const {
   CheckClosed("MakeResult");
   TH1D* h = MakePerEvent(name, "_result");
+  if (fNEvents <= 0) return h;
   const Double_t n = fNEvents;
   const TArrayD& sumw2 = *fSum->GetSumw2();
   for (Int_t b = 0; b <= fSum->GetNbinsX() + 1; ++b) {
-    if (n <= 0) break;
     const Double_t mean = fSum->GetBinContent(b) / n;
     const Double_t var =
         n > 1 ? (sumw2[b] / n - mean * mean) / (n - 1) : sumw2[b] / (n * n);
@@ -196,10 +207,10 @@ TH1D* EventHistogram::MakeResult(const char* name) const {
 TH1D* EventHistogram::MakeNaive(const char* name) const {
   CheckClosed("MakeNaive");
   TH1D* h = MakePerEvent(name, "_naive_result");
+  if (fNEvents <= 0) return h;
   const Double_t n = fNEvents;
   const TArrayD& sumw2 = *fNaive->GetSumw2();
   for (Int_t b = 0; b <= fSum->GetNbinsX() + 1; ++b) {
-    if (n <= 0) break;
     h->SetBinContent(b, fNaive->GetBinContent(b) / n);
     h->SetBinError(b, std::sqrt(sumw2[b]) / n);
   }
@@ -285,21 +296,16 @@ std::unique_ptr<EventHistogram> EventHistogram::Read(TDirectory* dir,
     return nullptr;
   }
   std::unique_ptr<EventHistogram> h(new EventHistogram());
-  h->fSum.reset(dynamic_cast<TH1D*>(sum->Clone()));
-  h->fSum->SetDirectory(nullptr);
-  h->fNaive.reset(dynamic_cast<TH1D*>(naive->Clone()));
-  h->fNaive->SetDirectory(nullptr);
+  h->fSum = DetachedClone(sum);
+  h->fNaive = DetachedClone(naive);
   if (auto* cov = dir->Get<TH2D>(Suffixed(name, "_cov").c_str())) {
-    h->fCov.reset(dynamic_cast<TH2D*>(cov->Clone()));
-    h->fCov->SetDirectory(nullptr);
+    h->fCov = DetachedClone(cov);
   }
   if (auto* boot = dir->Get<TH2D>(Suffixed(name, "_boot").c_str())) {
-    h->fBoot.reset(dynamic_cast<TH2D*>(boot->Clone()));
-    h->fBoot->SetDirectory(nullptr);
+    h->fBoot = DetachedClone(boot);
   }
   h->fNEvents = nevents->GetVal();
-  h->fCurrent.assign(h->fSum->GetNbinsX() + 2, 0.);
-  h->fIsTouched.assign(h->fSum->GetNbinsX() + 2, false);
+  h->InitEventBuffers();
   return h;
 }
 
