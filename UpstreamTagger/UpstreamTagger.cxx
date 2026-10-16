@@ -79,10 +79,10 @@ Bool_t UpstreamTagger::ProcessHits(FairVolume* vol) {
 void UpstreamTagger::ConstructGeometry() {
   TGeoVolume* top = gGeoManager->GetTopVolume();
 
-  ShipGeo::InitMedium("pterphenyl");
-  TGeoMedium* scintillator = gGeoManager->GetMedium("pterphenyl");
+  ShipGeo::InitMedium("Scintillator");
+  TGeoMedium* scintillator = gGeoManager->GetMedium("Scintillator");
   if (!scintillator) {
-    Fatal("ConstructGeometry", "Medium 'pterphenyl' not found.");
+    Fatal("ConstructGeometry", "Medium 'Scintillator' not found.");
   }
   if (fRegions.empty()) {
     Fatal("ConstructGeometry", "No regions loaded from the UBT detector map.");
