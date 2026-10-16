@@ -30,6 +30,13 @@ void Check(bool ok, const char* what, double got, double want) {
   }
 }
 
+void Require(bool ok, const char* what) {
+  if (!ok) {
+    std::cerr << "FAIL " << what << std::endl;
+    ++failures;
+  }
+}
+
 void CheckClose(double got, double want, double rel, const char* what) {
   const double scale = std::max(std::abs(want), 1e-300);
   Check(std::abs(got - want) <= rel * scale, what, got, want);
@@ -37,9 +44,7 @@ void CheckClose(double got, double want, double rel, const char* what) {
 
 // Events with n clones of weight 1/n near a common x: the clones of an event
 // are maximally correlated, as for split decays.
-struct Sample {
-  std::vector<std::vector<std::pair<double, double>>> events;
-};
+using Sample = std::vector<std::vector<std::pair<double, double>>>;
 
 Sample MakeSample(unsigned seed, int nEvents) {
   TRandom3 rng(seed);
@@ -53,18 +58,18 @@ Sample MakeSample(unsigned seed, int nEvents) {
         branches.emplace_back(x0 + rng.Gaus(0., 0.3), 1. / n);
       }
     }
-    s.events.push_back(branches);
+    s.push_back(branches);
   }
   return s;
 }
 
 void FillSample(EventHistogram& h, const Sample& s, unsigned run) {
-  for (size_t e = 0; e < s.events.size(); ++e) {
-    if (s.events[e].empty()) {
+  for (size_t e = 0; e < s.size(); ++e) {
+    if (s[e].empty()) {
       h.AddEmptyEvents(1);
       continue;
     }
-    for (const auto& [x, w] : s.events[e]) h.Fill(x, w);
+    for (const auto& [x, w] : s[e]) h.Fill(x, w);
     h.EndEvent(EventHistogram::MakeEventKey(run, e));
   }
 }
@@ -80,7 +85,7 @@ int main() {
   TH1D binning("binning", "", nbins, 0., 10.);
   std::vector<double> sumT(nbins + 2, 0.), sumT2(nbins + 2, 0.),
       sumW2(nbins + 2, 0.);
-  for (const auto& ev : a.events) {
+  for (const auto& ev : a) {
     std::vector<double> t(nbins + 2, 0.);
     for (const auto& [x, w] : ev) {
       const int bin = binning.GetXaxis()->FindFixBin(x);
@@ -138,9 +143,9 @@ int main() {
   }
   CheckClose(s1 / nk, 1., 0.01, "replica weight mean");
   CheckClose(s2 / nk - std::pow(s1 / nk, 2), 1., 0.02, "replica weight var");
-  Check(EventHistogram::ReplicaWeight(42, 7) ==
-            EventHistogram::ReplicaWeight(42, 7),
-        "replica weight deterministic", 0, 0);
+  Require(EventHistogram::ReplicaWeight(42, 7) ==
+              EventHistogram::ReplicaWeight(42, 7),
+          "replica weight deterministic");
 
   // Add() and a file merge (as hadd does) give the same as one accumulator.
   EventHistogram hb("x", "test;x", nbins, 0., 10., kTRUE, 200);
@@ -160,11 +165,11 @@ int main() {
     merger.OutputFile("test_event_histogram_ab.root", "RECREATE");
     merger.AddFile("test_event_histogram_a.root");
     merger.AddFile("test_event_histogram_b.root");
-    Check(merger.Merge(), "file merge", 0, 1);
+    Require(merger.Merge(), "file merge");
   }
   TFile fab("test_event_histogram_ab.root");
   std::unique_ptr<EventHistogram> merged = EventHistogram::Read(&fab, "x");
-  Check(merged != nullptr, "read merged", 0, 1);
+  Require(merged != nullptr, "read merged");
   if (merged) {
     Check(merged->GetNEvents() == 7000, "merged event count",
           merged->GetNEvents(), 7000);

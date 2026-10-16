@@ -101,6 +101,7 @@ class EventHistogram {
  private:
   EventHistogram() = default;
   void Init(Bool_t covariance, Int_t nReplicas);
+  void InitEventBuffers();
   void CheckClosed(const char* where) const;
   TH1D* MakePerEvent(const char* name, const char* suffix) const;
 
