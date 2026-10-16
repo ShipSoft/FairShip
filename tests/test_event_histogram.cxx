@@ -14,6 +14,7 @@
 #include <cstdio>
 #include <iostream>
 #include <memory>
+#include <stdexcept>
 #include <vector>
 
 #include "EventHistogram.h"
@@ -195,19 +196,50 @@ int main() {
   const std::vector<double> otherEdges = {0., 1., 2., 3., 4., 5.,
                                           6., 7., 8., 9., 12.};
   EventHistogram hEdges("x", "test;x", nbins, otherEdges.data(), kTRUE, 200);
-  FillSample(hEdges, b, 2);
-  ha.Add(hEdges);
   EventHistogram hReplicas("x", "test;x", nbins, 0., 10., kTRUE, 100);
-  FillSample(hReplicas, b, 2);
-  ha.Add(hReplicas);
   EventHistogram hNoCov("x", "test;x", nbins, 0., 10., kFALSE, 200);
-  FillSample(hNoCov, b, 2);
-  ha.Add(hNoCov);
+  for (EventHistogram* other : {&hEdges, &hReplicas, &hNoCov}) {
+    FillSample(*other, b, 2);
+    bool refused = false;
+    try {
+      ha.Add(*other);
+    } catch (const std::invalid_argument&) {
+      refused = true;
+    }
+    Require(refused, "incompatible merge throws");
+  }
   Check(ha.GetNEvents() == nBefore, "refused merge", ha.GetNEvents(), nBefore);
 
-  std::remove("test_event_histogram_a.root");
-  std::remove("test_event_histogram_b.root");
-  std::remove("test_event_histogram_ab.root");
+  // An open event is an error.
+  hNoCov.Fill(1.);
+  bool open = false;
+  try {
+    std::unique_ptr<TH1D> r(hNoCov.MakeResult());
+  } catch (const std::logic_error&) {
+    open = true;
+  }
+  Require(open, "open event throws");
+  hNoCov.EndEvent();
+
+  // Files with different settings merged by hadd are refused on reading.
+  {
+    TFile fc("test_event_histogram_c.root", "RECREATE");
+    hNoCov.Write(&fc);
+  }
+  {
+    TFileMerger merger(kFALSE);
+    merger.OutputFile("test_event_histogram_ac.root", "RECREATE");
+    merger.AddFile("test_event_histogram_a.root");
+    merger.AddFile("test_event_histogram_c.root");
+    Require(merger.Merge(), "mixed file merge");
+  }
+  TFile fac("test_event_histogram_ac.root");
+  Require(EventHistogram::Read(&fac, "x") == nullptr, "mixed merge refused");
+  fac.Close();
+
+  for (const char* f : {"a", "b", "ab", "c", "ac"}) {
+    std::remove((std::string("test_event_histogram_") + f + ".root").c_str());
+  }
 
   if (failures) {
     std::cerr << failures << " check(s) failed" << std::endl;

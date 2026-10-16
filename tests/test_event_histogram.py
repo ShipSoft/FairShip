@@ -142,7 +142,8 @@ def test_flows_are_kept_out_of_range():
     assert h.sum_t[-1] == pytest.approx(2.0)
 
 
-@pytest.fixture
+# Module scope: loading libShipData a second time crashes in ROOT 6.40.
+@pytest.fixture(scope="module")
 def root_with_shipdata():
     ROOT = pytest.importorskip("ROOT")
     if ROOT.gSystem.Load("libShipData") < 0 or not hasattr(ROOT, "EventHistogram"):
@@ -183,4 +184,35 @@ def test_root_round_trip_and_cpp_agree(root_with_shipdata, tmp_path):
     again = EventHistogram.from_root(f, "x")
     assert again.errors() == pytest.approx(h.errors())
     assert again.covariance() == pytest.approx(h.covariance())
+    f.Close()
+
+    # Both refuse an incompatible merge and an open event.
+    other = ROOT.EventHistogram("x", "", len(EDGES) - 1, 0.0, 10.0, False, 20)
+    with pytest.raises(Exception, match="covariance"):
+        cpp.Add(other)
+    other.Fill(1.0)
+    with pytest.raises(Exception, match="open event"):
+        other.MakeResult()
+
+
+def test_hadd_of_different_settings_is_refused(root_with_shipdata, tmp_path):
+    ROOT = root_with_shipdata
+    paths = []
+    for i, covariance in enumerate((True, False)):
+        h = EventHistogram("x", EDGES, covariance=covariance)
+        fill(h, correlated_sample(8 + i, 200), run=i)
+        paths.append(str(tmp_path / f"part{i}.root"))
+        f = ROOT.TFile(paths[-1], "RECREATE")
+        h.to_root(f)
+        f.Close()
+    merged = str(tmp_path / "merged.root")
+    merger = ROOT.TFileMerger(False)
+    merger.OutputFile(merged, "RECREATE")
+    for path in paths:
+        merger.AddFile(path)
+    assert merger.Merge()
+    f = ROOT.TFile(merged)
+    with pytest.raises(ValueError, match="different settings"):
+        EventHistogram.from_root(f, "x")
+    assert not ROOT.EventHistogram.Read(f, "x")
     f.Close()

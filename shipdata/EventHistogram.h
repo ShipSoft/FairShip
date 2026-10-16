@@ -70,6 +70,8 @@ class EventHistogram {
   /// Generated events that left no entry still count in the normalisation.
   void AddEmptyEvents(Long64_t n);
   /// Merge an accumulator filled with independent events and equal binning.
+  /// Throws std::invalid_argument if binning, covariance or number of
+  /// replicas differ; the target is then unchanged.
   void Add(const EventHistogram& other);
 
   Long64_t GetNEvents() const { return fNEvents; }
@@ -82,11 +84,16 @@ class EventHistogram {
   /// Effective number of independent events per bin, (sum t)^2 / sum t^2.
   /// Below about 20 the error estimate itself becomes unreliable.
   TH1D* MakeNeff(const char* name = nullptr) const;
-  /// Covariance of the per-event bin contents (in-range bins only).
+  /// Covariance of the per-event bin contents (in-range bins only). Throws
+  /// std::logic_error if created without covariance.
   TMatrixDSym GetCovariance() const;
   /// Spread of the bootstrap replicas, per generated event (in-range bins).
+  /// Throws std::logic_error with fewer than two replicas.
   std::vector<Double_t> GetBootstrapErrors() const;
 
+  /// Writing or reading results with an open event throws std::logic_error.
+  /// Read() returns nullptr if the objects are missing or hold different
+  /// numbers of events, e.g. after hadd of files with different settings.
   void Write(TDirectory* dir = gDirectory) const;
   static std::unique_ptr<EventHistogram> Read(TDirectory* dir,
                                               const char* name);
