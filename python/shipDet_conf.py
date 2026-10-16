@@ -5,6 +5,7 @@
 import os
 from typing import Any
 
+import geometry_config
 import geometry_from_file
 import ROOT
 import shipunit as u
@@ -330,6 +331,16 @@ def configure(run, ship_geo, geofile: str | None = None):
         ship_geo.cave.floorHeightTankB = 2.0 * u.m
     if not hasattr(ship_geo, "SND"):
         ship_geo.SND = True
+    if not hasattr(ship_geo.cave, "ECN3HalfX"):
+        # ShipCave used to hardcode the ECN3 cavern; the defaults keep it.
+        geometry_config.set_ecn3_cavern(ship_geo)
+    if not hasattr(ship_geo, "UpstreamTaggerScoringPlane") or not hasattr(
+        getattr(ship_geo, "UpstreamTagger", None), "SmallTileZ"
+    ):
+        # The old UBT (a vacuum box) can no longer be built: use the current
+        # UBT and scoring planes, placed from this geometry's decay vessel and
+        # muon shield.
+        geometry_config.set_upstream_tagger(ship_geo)
 
     # -----Create media-------------------------------------------------
     run.SetMaterials("media.geo")  # Materials
