@@ -971,6 +971,9 @@ void MuDISFilter::ProcessEvents() {
       out.wDIS = in.wDIS;
       out.nDISevtsGenerated = in.nDISevtsGenerated;
       out.pPythia = in.pPythia;
+      out.xsecByTarget = in.xsecByTarget;
+      out.xsecAccepted = in.xsecAccepted;
+      out.xsecTried = in.xsecTried;
       std::size_t offset = 0;
       for (int idis = 0; idis < in.nDISevts; ++idis) {
         const auto endOffset = offset + in.nDISdau->at(idis);
