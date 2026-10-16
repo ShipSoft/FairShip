@@ -19,6 +19,11 @@ it in future.
 ### Changed
 
 * The hit lists in `Tracklets` and `fitTrack2MC` now come from fitted states. They therefore leave out any surface that ACTS skipped. #1537
+* The `run_simScript.py` `FileSummary` also keeps the summary of each input file (`inputFileSummaries`, in the order of `inputFiles`), so the stages behind a file can be traced from the file alone, and records the run's `seed`, `firstEvent` and `nEvents`. Reading, merging and writing summaries moved to `python/file_summary.py`.
+
+### Fixed
+
+* `run_simScript.py` no longer fails at the very end of a run whose input has a `FileSummary` without `PoT`, `EnergyCut` or `prodSite`, or with `EnergyCut` or `prodSite` stored as lists, as `run_simScript.py` itself writes them. Merging such a summary raised `KeyError` or `TypeError` after the simulation had finished. Missing keys are now skipped and lists are merged.
 
 ## 26.11 - 2026-11-26
 
