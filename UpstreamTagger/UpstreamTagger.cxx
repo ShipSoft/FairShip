@@ -29,8 +29,9 @@ UpstreamTagger::UpstreamTagger(const char* name, Bool_t active)
 
 Bool_t UpstreamTagger::ProcessHits(FairVolume* vol) {
   /** This method is called from the MC stepping */
-  // Set parameters at entrance of volume. Reset ELoss.
-  if (gMC->IsTrackEntering()) {
+  // Set parameters at entrance of volume, or at the first step of a track
+  // created inside it (e.g. a delta ray). Reset ELoss.
+  if (gMC->IsTrackEntering() || gMC->IsNewTrack()) {
     fELoss = 0.;
     fTime = gMC->TrackTime() * 1.0e09;
     fLength = gMC->TrackLength();
@@ -67,6 +68,7 @@ Bool_t UpstreamTagger::ProcessHits(FairVolume* vol) {
            TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength, fELoss,
            pdgCode, TVector3(Pos.X(), Pos.Y(), Pos.Z()),
            TVector3(Mom.Px(), Mom.Py(), Mom.Pz()));
+    fELoss = 0.;
 
     // Increment number of veto det points in TParticle
     ShipStack* stack = dynamic_cast<ShipStack*>(gMC->GetStack());
