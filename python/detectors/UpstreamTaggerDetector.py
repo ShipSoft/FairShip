@@ -16,16 +16,28 @@ class _FiredTile:
 
     first: Any  # earliest UpstreamTaggerPoint in the tile
     position: ROOT.TVector3  # tile center
-    signal: float = 0.0  # summed, unrounded ADC signal
     points: list[int] = field(default_factory=list)  # indices of its MC points
+    signals: list[float] = field(default_factory=list)  # unrounded ADC signal of each point
 
 
 class UpstreamTaggerDetector(BaseDetector):
     def __init__(self, name, intree, outtree=None, mcBranchName=None) -> None:
         super().__init__(name, intree, mcBranchName=mcBranchName, outtree=outtree)
+        # Parallel to the MC link: for each hit, the unrounded ADC signal of
+        # each of its MC points, in the same order as the point indices.
+        self.MCadc = None
+        if mcBranchName:
+            self.MCadc = ROOT.std.vector("std::vector<float>")()
+            self.outtree.Branch(f"{mcBranchName}ADC", self.MCadc)
         ubt_geo = global_variables.ShipGeo.UpstreamTagger
         tile_sizes = {round(float(size), 6) for size in ubt_geo.RegionTileSize.values()}
         self._adc_response_maps = self._load_adc_response_maps(ubt_geo.ADCResponseMapFile, tile_sizes)
+
+    def delete(self) -> None:
+        """Clear the hit, MC link and per-point ADC containers."""
+        super().delete()
+        if self.MCadc is not None:
+            self.MCadc.clear()
 
     @staticmethod
     def _load_adc_response_maps(path: str, tile_sizes: set[float]) -> dict[float, ROOT.TH2D]:
@@ -151,18 +163,17 @@ class UpstreamTaggerDetector(BaseDetector):
                 tile = tiles[tile_id] = _FiredTile(aMCPoint, position)
             elif aMCPoint.GetTime() < tile.first.GetTime():
                 tile.first = aMCPoint
-            tile.signal += self.adc_signal(aMCPoint, position, tile_size)
             tile.points.append(index)
+            tile.signals.append(self.adc_signal(aMCPoint, position, tile_size))
 
         for tile_id, tile in tiles.items():
-            adc_counts = max(0, round(tile.signal))
+            adc_counts = max(0, round(sum(tile.signals)))
             aHit = ROOT.UpstreamTaggerHit(tile.first, self.intree.t0, tile.position, time_res)
             aHit.SetTileID(tile_id)
             aHit.SetADC(adc_counts)
             aHit.SetTriggered(adc_counts >= trigger_threshold)
             self.det.push_back(aHit)
             if self.MCdet is not None:
-                points = ROOT.std.vector("int")()
-                for index in tile.points:
-                    points.push_back(index)
-                self.MCdet.push_back(points)
+                self.MCdet.push_back(ROOT.std.vector("int")(tile.points))
+            if self.MCadc is not None:
+                self.MCadc.push_back(ROOT.std.vector("float")(tile.signals))
