@@ -1,0 +1,7 @@
+<map id="passive/ShipCavernLayout.h" name="passive/ShipCavernLayout.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,212,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="16,79,95,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="102,33,74,69,70,66,98,29"/>
+<area shape="rect" id="Node000003" href="$ShipUnit_8h.html" title=" " alt="" coords="119,79,208,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="120,29,148,66,144,69,116,33"/>
+</map>

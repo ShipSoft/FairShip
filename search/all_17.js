@@ -96,7 +96,7 @@ var searchData=
   ['root_5fwith_5fshipdata_93',['root_with_shipdata',['../namespacetest__event__histogram.html#a4538cbd263e6187d97221e41f3217ada',1,'test_event_histogram']]],
   ['rootutils_94',['rootUtils',['../namespacerootUtils.html',1,'']]],
   ['rootutils_2epy_95',['rootUtils.py',['../rootUtils_8py.html',1,'']]],
-  ['rotate_96',['rotate',['../namespacemakeMuonDIS.html#afff35847652b9d299b9b6d8eb9b35eab',1,'makeMuonDIS.rotate()'],['../classGenieGenerator.html#a42a8f65c60129d0af2427b04975db902',1,'GenieGenerator::Rotate()'],['../classMuDISProcessor.html#a4d7efb7ebd91e195786109b7db28092b',1,'MuDISProcessor::rotate()']]],
+  ['rotate_96',['rotate',['../namespacemakeMuonDIS.html#afff35847652b9d299b9b6d8eb9b35eab',1,'makeMuonDIS.rotate()'],['../classMuDISProcessor.html#a4d7efb7ebd91e195786109b7db28092b',1,'MuDISProcessor::rotate()'],['../classGenieGenerator.html#a42a8f65c60129d0af2427b04975db902',1,'GenieGenerator::Rotate()']]],
   ['rotateview_97',['rotateView',['../classeventDisplay_1_1EventLoop.html#a0d1947bcfd77843a5006cd9b7a99def7',1,'eventDisplay::EventLoop']]],
   ['rpvsusy_98',['rpvsusy',['../namespacerpvsusy.html',1,'rpvsusy'],['../classrpvsusy_1_1RPVSUSY.html',1,'rpvsusy.RPVSUSY']]],
   ['rpvsusy_2epy_99',['rpvsusy.py',['../rpvsusy_8py.html',1,'']]],
