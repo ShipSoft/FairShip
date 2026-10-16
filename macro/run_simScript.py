@@ -3,15 +3,14 @@
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
 import glob
-import json
 import os
 import sys
 import uuid
 from argparse import ArgumentParser, Namespace
 from array import array
-from datetime import datetime
 from typing import cast
 
+import file_summary
 import geometry_config
 import geometry_from_file
 import ROOT
@@ -1249,58 +1248,13 @@ if options.run_number is not None:
             print("WARNING: FileHeader not found in simulation output; skipped FileHeader RunID update")
 
 print("[INFO]: Saving FileSummary")
-
-
-def mergeFileSummary(inFiles: list[str] | str) -> dict:
-    """
-    Make a file summary for the output.
-    Keeps a list of the input files so that the total
-    provenance of the events can be traced back to the sim files.
-    """
-    if isinstance(inFiles, str):
-        inFiles = [inFiles]
-
-    energyCuts = []
-    prodSites = []
-    poTperFile = []
-    mergedFSR: dict = {
-        "PoT": 0,
-        "EnergyCut": [],
-        "prodSite": [],
-        "inputFiles": [],
-        "PoTperFile": [],
-        "date": datetime.today().strftime("%Y-%m-%d"),
-    }
-    for _f in inFiles:
-        mergedFSR["inputFiles"].append(_f)
-        # The recorded path keeps any $EOSSHIP/$FAIRSHIP prefix for portability,
-        # but ROOT needs it expanded to open the file.
-        path = os.path.expandvars(_f)
-        try:
-            with ROOT.TFile.Open(path, "READ") as _of:
-                key_names = [_k.GetName() for _k in _of.GetListOfKeys()]
-                if "FileSummary" in key_names:
-                    fsr = json.loads(str(_of.Get("FileSummary")))
-                    mergedFSR["PoT"] += fsr["PoT"]
-                    energyCuts.append(fsr["EnergyCut"])
-                    prodSites.append(fsr["prodSite"])
-                    poTperFile.append(fsr["PoT"])
-                else:
-                    print(f"[WARNING] No FileSummary in {_f}")
-        except OSError:
-            # PyROOT raises instead of returning a null file. A summary is not
-            # worth losing a simulation that has already run to completion.
-            print(f"[WARNING] Could not open {path} to read its FileSummary")
-
-    mergedFSR["EnergyCut"] = list(set(energyCuts))  # Just get unique values
-    mergedFSR["prodSite"] = list(set(prodSites))
-    mergedFSR["PoTperFile"] = list(set(poTperFile))
-    return mergedFSR
-
-
-newFileSummary = mergeFileSummary(usedInputFiles)
-with ROOT.TFile.Open(outFile, "UPDATE") as _of:
-    _of.WriteObject(ROOT.TString(json.dumps(newFileSummary)), "FileSummary")
+# Keeps the input files and their own summaries, so that the provenance of the
+# events can be traced back through the simulation chain. The recorded paths
+# keep any $EOSSHIP/$FAIRSHIP prefix for portability. A missing or unreadable
+# input summary only warns: it is not worth losing a completed simulation.
+newFileSummary = file_summary.merge_file_summaries(usedInputFiles)
+newFileSummary.update(seed=seed, firstEvent=options.firstEvent, nEvents=options.nEvents)
+file_summary.write_file_summary(outFile, newFileSummary)
 
 print("=" * 72)
 print("Simulation finished successfully")

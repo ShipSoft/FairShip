@@ -37,8 +37,11 @@ it in future.
 * Update default He balloon liner to be made with polyester like Mylar, named mylar_linerHe with density/thickness matching material #5
 * Scale `chicc`/`chibb` in `run_fixedTarget.py` by the heavy-flavour cross section per nucleon stored in the cascade input file, so that the normalisation follows the beam energy, tune and target composition the file was generated with. Files without it, such as the existing ones on EOS, keep the previous values.
 * Default for reweighting boosted muon files is now to keep all events rather than only those containing a muon
+* The `run_simScript.py` `FileSummary` also keeps the summary of each input file (`inputFileSummaries`, in the order of `inputFiles`), so the stages behind a file can be traced from the file alone, and records the run's `seed`, `firstEvent` and `nEvents`. Reading, merging and writing summaries moved to `python/file_summary.py`.
 
 ### Fixed
+
+* `run_simScript.py` no longer fails at the very end of a run whose input has a `FileSummary` without `PoT`, `EnergyCut` or `prodSite`, or with `EnergyCut` or `prodSite` stored as lists, as `run_simScript.py` itself writes them. Merging such a summary raised `KeyError` or `TypeError` after the simulation had finished. Missing keys are now skipped and lists are merged.
 
 * The vectors stored in the reconstruction tree now have compiled ROOT dictionaries: `FitTracks` (`std::vector<genfit::Track*>`), `digiSBT2MC` (`std::vector<std::vector<int>>`), `Particles` and the digitised hits and tracklets of strawtubes, veto, TimeDet, UpstreamTagger, MTC and silicon target. Without them ROOT has Cling generate their destructors at run time. With ROOT 6.40, a script that read the reconstruction tree and had created an object of a new template type from Python (e.g. `genfit::SharedPlanePtr`) segfaulted at exit, when ROOT deleted these branches. Files written before can still be read.
 * `run_fixedTarget.py -C`/`-B` stops with an error when `FixedTargetGenerator::InitForCharmOrBeauty` rejects the input file, for example one without the POT histogram `2`. The return value was ignored, so the run went on with no input tree and segfaulted on the first event.
