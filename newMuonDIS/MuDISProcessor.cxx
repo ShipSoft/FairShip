@@ -489,6 +489,8 @@ void MuDISProcessor::ProcessMuons() {
       foutEv.source.runID = finEv.header->GetRunID();
       foutEv.source.eventID = finEv.header->GetEventID();
     }
+    foutEv.source.potRunID = finEv.muBackRunID;
+    foutEv.source.potEventID = finEv.muBackEventID;
     fillMCTracks(muIdx);
     fillUBTHits(muIdx);
     fillSBTHits(muIdx);

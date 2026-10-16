@@ -9,6 +9,7 @@
 #include <unordered_map>
 
 #include "BeamSmearingUtils.h"
+#include "FairMCEventHeader.h"
 #include "FairPrimaryGenerator.h"
 #include "ShipMCTrack.h"
 #include "ShipUnit.h"
@@ -152,6 +153,16 @@ Bool_t MuonBackGenerator::Init(const std::vector<std::string>& fileNames,
       LOG(error) << "MuonBackGenerator: MCTrack branch not found in input file";
       return kFALSE;
     }
+    // Optional: the input event's identity, passed on to the output.
+    if (fTree->GetBranch("MCEventHeader.")) {
+      delete fInHeader;
+      fInHeader = new FairMCEventHeader();
+      if (fTree->SetBranchAddress("MCEventHeader.", &fInHeader) < 0) {
+        LOG(warn) << "MuonBackGenerator: cannot read the input MCEventHeader";
+        delete fInHeader;
+        fInHeader = nullptr;
+      }
+    }
 
     if (fTree->GetBranch("PlaneHAPoint")) {
       // New STL format
@@ -202,6 +213,8 @@ MuonBackGenerator::~MuonBackGenerator() {
   vetoPoints = nullptr;
   delete fTree;
   fTree = nullptr;
+  delete fInHeader;
+  fInHeader = nullptr;
 }
 // -------------------------------------------------------------------------
 Bool_t MuonBackGenerator::checkDiMuon(Int_t muIndex) {
@@ -310,9 +323,16 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
   }
   if (fn >= fNevents && !found_muon) {
     LOGF(info, "End of tree reached %i", fNevents);
+    fSrcFile = -1;
+    fSrcEntry = fSrcRunID = fSrcEventID = -1;
     gMC->StopRun();
     return kTRUE;
   }
+  // fn already points past the entry just read.
+  fSrcFile = fTree->GetTreeNumber();
+  fSrcEntry = fn - 1 - fTree->GetChainOffset();
+  fSrcRunID = fInHeader ? static_cast<Long64_t>(fInHeader->GetRunID()) : -1;
+  fSrcEventID = fInHeader ? fInHeader->GetEventID() : -1;
   if (fSameSeed) {
     Int_t theSeed = fn + fSameSeed * fNevents;
     LOGF(debug, "Seed: %d", theSeed);
@@ -386,3 +406,21 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
 
 // -------------------------------------------------------------------------
 Int_t MuonBackGenerator::GetNevents() { return fNevents; }
+
+Bool_t MuonBackGenerator::RegisterOutputBranches(TTree* tree) {
+  if (!tree || tree->GetEntries() != 0) {
+    LOG(error) << "MuonBackGenerator: output branches require an empty tree";
+    return kFALSE;
+  }
+  for (const auto* name : {"muBack_srcFile", "muBack_srcEntry",
+                           "muBack_srcRunID", "muBack_srcEventID"}) {
+    if (tree->GetBranch(name)) {
+      LOG(error) << "MuonBackGenerator: output branch already exists: " << name;
+      return kFALSE;
+    }
+  }
+  return tree->Branch("muBack_srcFile", &fSrcFile, "muBack_srcFile/I") &&
+         tree->Branch("muBack_srcEntry", &fSrcEntry, "muBack_srcEntry/L") &&
+         tree->Branch("muBack_srcRunID", &fSrcRunID, "muBack_srcRunID/L") &&
+         tree->Branch("muBack_srcEventID", &fSrcEventID, "muBack_srcEventID/L");
+}

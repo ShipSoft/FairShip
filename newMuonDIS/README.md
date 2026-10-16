@@ -98,6 +98,7 @@ generator must outlive the output tree. Each simulated `cbmsim` event contains:
 | `muDIS_pPythia` | `Double_t` | Beam momentum from `muon_pPythia_<material>`, in GeV/c. |
 | `muDIS_nGenerated` | `std::vector<Int_t>` | Actual counts before filtering from `muon_nDISGenerated_<material>`, in `MatTypeStr` order: MS, UBT, SBTsens, SBTfr, SSTsens, SSTfr, HE, AIR, HeBalloon, REST. `-1` means not crossed; `0` means crossed but no interactions generated. |
 | `muDIS_srcFile`, `muDIS_srcEntry`, `muDIS_srcTrackID`, `muDIS_srcRunID`, `muDIS_srcEventID` | `Int_t`, `Long64_t`, `Int_t`, `Long64_t`, `Long64_t` | Origin of the muon, copied from the `muon_src*` branches, see [Provenance](#provenance). `-1` for input written before these branches existed. |
+| `muDIS_potRunID`, `muDIS_potEventID` | `Long64_t` | `muon_potRunID` and `muon_potEventID`, see [Provenance](#provenance). |
 
 `GetMaterial()` still exposes the enum value after a successful `ReadEvent()`.
 
@@ -145,6 +146,7 @@ traced back to the input muon and grouped with the others sharing its history.
 | `muon_srcEntry` | `Long64_t` | Entry of the muon's event in that file's `cbmsim` tree. |
 | `muon_srcTrackID` | `Int_t` | Index of the muon in that event's `MCTrack` (currently always `0`). |
 | `muon_srcRunID`, `muon_srcEventID` | `Long64_t` | `RunID` and `EventID` of that event's `MCEventHeader`, or `-1` if the input has none. These identify the event of the simulation that produced the input muon (e.g. the muon background simulation), not a proton on target. |
+| `muon_potRunID`, `muon_potEventID` | `Long64_t` | `muBack_srcRunID` and `muBack_srcEventID` of that event, or `-1` if the input has none. `run_simScript.py --MuonBack` writes these: the `MCEventHeader` `RunID` and `EventID` of the event `MuonBackGenerator` read. When that input is the output of the proton-on-target simulation (one proton per event), they identify the proton on target. Inputs in the `pythia8-Geant4` ntuple format carry no event identity, so they give `-1`. |
 
 and, for each DIS interaction, `mudis_DISgenIndex_<VOL>`, its position in the
 `prepareEvents.py` output. `filterEvents.py` copies all of these unchanged, and
@@ -153,7 +155,8 @@ Interactions with equal `(muon_srcFile, muon_srcEntry, muon_srcTrackID)` in one
 `prepareEvents.py` output come from the same input muon and are alternatives of
 each other. Across outputs, compare `inputFiles[muon_srcFile]` and
 `muon_srcEntry`, or `(muon_srcRunID, muon_srcEventID, muon_srcTrackID)` if the
-run IDs of the input production are unique.
+run IDs of the input production are unique. Muons with equal
+`(muon_potRunID, muon_potEventID)` come from the same proton on target.
 
 Each stage writes a `FileSummary`: a JSON `TString` with the merged `PoT`,
 `EnergyCut` and `prodSite` of its inputs, `inputFiles`, and the summaries of the
@@ -330,7 +333,7 @@ geometry scan (also available as `MuDISProcessor::CheckAllVolumes()`).
 ## Structure of output tree:
 
 - branches muon_* : input muon information. Size: number of entries processed.
-- branches `muon_srcFile`, `muon_srcEntry`, `muon_srcTrackID`, `muon_srcRunID`, `muon_srcEventID`: origin of the muon, see [Provenance](#provenance).
+- branches `muon_srcFile`, `muon_srcEntry`, `muon_srcTrackID`, `muon_srcRunID`, `muon_srcEventID`, `muon_potRunID`, `muon_potEventID`: origin of the muon, see [Provenance](#provenance).
 - branch `mudis_DISgenIndex_<VOL>`: position of each interaction in the `prepareEvents.py` output, kept by the filter.
 - branch `muon_nDISevt_<VOL>`: number of DIS interactions stored for each volume; after filtering, this is the number of surviving interactions.
 - branch `muon_nDISGenerated_<VOL>`: actual number of generated interactions before filtering, copied unchanged by the filter (including repeated filtering). `-1` means the muon never crossed the material; `0` means it crossed but no interactions were generated (including REST, where generation is disabled).
