@@ -1135,9 +1135,9 @@ if options.muonback:
         if "Point" in name:
             pointContainers.append(name)
 
-    # The scoring plane records every crossing with no energy threshold, so on its own it
+    # The scoring planes record every crossing with no energy threshold, so on their own they
     # must not make an event non-empty.
-    pointContainers = [n for n in pointContainers if n != "CaloScoringPlanePoint"]
+    pointContainers = [n for n in pointContainers if n not in ("CaloScoringPlanePoint", "UpstreamTaggerScoringPoint")]
 
     # Filter out empty events (events with no hits in any Point container)
     for event in t:
