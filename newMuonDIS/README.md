@@ -9,8 +9,8 @@ SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 This folder contains the necessary processors to create DIS events from input muons, and the generator to replay the created daughters with Geant4.
 
 - Input: root files with cbmsim tree with muons from FairShip Particle Gun or MuonBack generators.
-  - assumes muons are available at a z position before the last interaction length of the muon shield, will use the very first MCTrack found.
-  - To do still: process several muons from the same "event" = pot interaction.
+  - assumes muons are available at a z position before the last interaction length of the muon shield.
+  - `--muon-selection` chooses the muon tracks of each input event, see [Selecting the input muons](#selecting-the-input-muons). By default this is `MCTrack[0]` for particle-gun input and every muon with detector hits for muon background replays, which can have several muons per event.
 - Output: tree "MuonDIS" with the initial muon information, hits in veto detectors, SST and TD, soft particles emitted by the muon along its initial path, and daughters from DIS events in several volumes with random vertex positions within each volume, and associated probability weight.
   - Soft tracks are for all processes except destructive "Muon nuclear interaction". The first one is the initial input muon.
   - UBT, SBT, SST and TD hits are all hits with a GetTrackID() equal to the input muon track ID.
@@ -107,9 +107,9 @@ generator must outlive the output tree. Each simulated `cbmsim` event contains:
 ### Cross section and weight
 
 For an interaction in material `<VOL>`, `wDIS = w_mu * X / n`, with `w_mu` the
-weight of the input muon (`MCTrack[0].fW`), `X` the integral of the density
-over the sampled path in g/cm² (`muon_path_length_<VOL>` times the densities
-crossed) and `n` the number of interactions generated for that muon in that
+weight of the input muon (its `fW`, `muon_MCTracks[0]` in the output), `X` the
+integral of the density over the sampled path in g/cm²
+(`muon_path_length_<VOL>` times the densities crossed) and `n` the number of interactions generated for that muon in that
 material before filtering (`muon_nDISGenerated_<VOL>`). Filtering keeps `wDIS`,
 so the weights of the surviving interactions still refer to `n`.
 
@@ -176,7 +176,7 @@ traced back to the input muon and grouped with the others sharing its history.
 | --- | --- | --- |
 | `muon_srcFile` | `Int_t` | Index of the input file in the `FileSummary` key `inputFiles`, in the order the input chain was built (input directories are searched in sorted order). |
 | `muon_srcEntry` | `Long64_t` | Entry of the muon's event in that file's `cbmsim` tree. |
-| `muon_srcTrackID` | `Int_t` | Index of the muon in that event's `MCTrack` (currently always `0`). |
+| `muon_srcTrackID` | `Int_t` | Index of the muon in that event's `MCTrack` (`0` for particle-gun input). Muons selected from one input event share all other `muon_src*` and `muon_pot*` values. |
 | `muon_srcRunID`, `muon_srcEventID` | `Long64_t` | `RunID` and `EventID` of that event's `MCEventHeader`, or `-1` if the input has none. These identify the event of the simulation that produced the input muon (e.g. the muon background simulation), not a proton on target. |
 | `muon_potRunID`, `muon_potEventID` | `Long64_t` | `muBack_srcRunID` and `muBack_srcEventID` of that event, or `-1` if the input has none. `run_simScript.py --MuonBack` writes these: the `MCEventHeader` `RunID` and `EventID` of the event `MuonBackGenerator` read. When that input is the output of `run_fixedTarget.py` in its default (minimum-bias) or `--G4only` mode, which simulate one proton per event, they identify the proton on target. In `--charm` and `--beauty` runs an event is one heavy-flavour production event read from a cascade file and normalised through cross-section ratios, so it does not stand for one proton. Inputs in the `pythia8-Geant4` ntuple format carry no event identity, so they give `-1`. |
 
@@ -233,6 +233,37 @@ It must run before any output event skimming or reordering.
 - class MuDISFilter: filter events using an extrapolation of the charged daughters, with B field effects, up to the TD.
 - class NewMuDISGenerator: FairGenerator to read again the MuonDIS tree and process particles again through Geant4 to give cbmsim tree.
 
+
+## Selecting the input muons
+
+`prepareEvents.py --muon-selection` (`MuDISProcessor::SetMuonSelection` in
+C++) chooses which tracks of each input `cbmsim` event are processed:
+
+- `first`: `MCTrack[0]`, which must be a muon; otherwise the event is skipped
+  with a warning. This is the particle-gun case.
+- `hits`: every muon track (`|PDG| = 13`) with at least one UBT, SBT, SST or
+  TD point, the detectors the path is anchored on. This is for muon
+  background replays (`run_simScript.py --MuonBack`), where `MCTrack[0]` is
+  the primary proton or the muon's parent and an event can hold several
+  muons, including secondary muons from decays in flight.
+- `all`: every muon track, also those without any of these points. Their path
+  is extrapolated from the start of the track only, and there can be many of
+  them.
+- `auto` (default): `first` if `MCTrack[0]` is a muon, `hits` otherwise.
+  Particle-gun input is processed as before.
+
+The legacy chain (`muonDIS/make_nTuple_SBT.py`) takes every muon with an SBT
+point above 3 GeV. Here the momentum cut is the Pythia6 minimum (2 GeV/c at
+the start of the track), applied to every selected muon.
+
+Each selected muon becomes one entry of the output tree, with its own soft
+tracks and hits, and `muon_MCTracks[0]` is that muon. `-n` still counts input
+events. The muons of one event share `muon_srcFile`, `muon_srcEntry`,
+`muon_srcRunID`, `muon_srcEventID` and the `muon_pot*` IDs, and differ in
+`muon_srcTrackID`; `run_simScript.py --NewMuDIS` writes the same values as
+`muDIS_*`. The muons of one input event, and through the `muon_pot*` IDs those
+of one proton on target, can therefore be grouped, for example for the
+uncertainty of the background estimate.
 
 ## Path to volumes
 
@@ -292,7 +323,7 @@ the largest gap. Set the threshold with `--poca-jump-threshold <cm>` in
 `prepareEvents.py`, or `MuDISProcessor::SetPocaJumpThreshold(cm)` in C++.
 The default is 1 cm, and a gap equal to the threshold is not counted.
 
-The end-of-run summary also reports sums of `MCTrack[0].fW` (via
+The end-of-run summary also reports sums of the muon weight `fW` (via
 `GetWeight()`) for the muon counters, including geometry routes, rejections,
 and muons with large POCA jumps. Each muon contributes its weight once to
 each applicable count, independent of the number of generated DIS events.

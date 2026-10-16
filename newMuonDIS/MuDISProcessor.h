@@ -52,6 +52,14 @@ class MuDISProcessor {
   void SetPocaJumpThreshold(double threshold) {
     fGeoProcessor.SetPocaJumpThreshold(threshold);
   }
+  // Which tracks of an input event are processed as muons (see README.md):
+  // "first" MCTrack[0], which must be a muon (particle-gun input); "hits"
+  // every muon track with a UBT, SBT, SST or TD point; "all" every muon track;
+  // "auto" (default) "first" if MCTrack[0] is a muon, else "hits".
+  // Returns false for an unknown name.
+  bool SetMuonSelection(const std::string& selection);
+  // Indices in the current event's MCTrack of the tracks to process.
+  std::vector<Int_t> SelectMuons() const;
 
   void generateDISevents(const std::string& tType, const double& amuonW,
                          const std::string& aLabel, const MuonPath& aPath,
@@ -75,6 +83,8 @@ class MuDISProcessor {
   double fMinPythiaP;
   int fnDIS;
   int fP6seed;
+  enum class MuonSelection { kAuto, kFirst, kWithHits, kAll };
+  MuonSelection fMuonSelection = MuonSelection::kAuto;
 
   MuGeoProcessor fGeoProcessor;
 
