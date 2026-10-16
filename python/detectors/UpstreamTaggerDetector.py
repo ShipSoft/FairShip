@@ -2,15 +2,27 @@
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
 import math
+from dataclasses import dataclass, field
+from typing import Any
 
 import global_variables
 import ROOT
 from BaseDetector import BaseDetector
 
 
+@dataclass
+class _FiredTile:
+    """MC points collected in one constituent tile."""
+
+    first: Any  # earliest UpstreamTaggerPoint in the tile
+    position: ROOT.TVector3  # tile center
+    signal: float = 0.0  # summed, unrounded ADC signal
+    points: list[int] = field(default_factory=list)  # indices of its MC points
+
+
 class UpstreamTaggerDetector(BaseDetector):
-    def __init__(self, name, intree, outtree=None) -> None:
-        super().__init__(name, intree, outtree=outtree)
+    def __init__(self, name, intree, outtree=None, mcBranchName=None) -> None:
+        super().__init__(name, intree, mcBranchName=mcBranchName, outtree=outtree)
         ubt_geo = global_variables.ShipGeo.UpstreamTagger
         tile_sizes = {round(float(size), 6) for size in ubt_geo.RegionTileSize.values()}
         self._adc_response_maps = self._load_adc_response_maps(ubt_geo.ADCResponseMapFile, tile_sizes)
@@ -100,8 +112,8 @@ class UpstreamTaggerDetector(BaseDetector):
         size_namespace = tile_size_multiple - 1
         return size_namespace * cells_per_grid + row * columns + column
 
-    def adc_counts(self, point, tile_center: ROOT.TVector3, tile_size: float) -> int:
-        """Calculate ADC counts from deposited energy and local hit position."""
+    def adc_signal(self, point, tile_center: ROOT.TVector3, tile_size: float) -> float:
+        """Return the (unrounded) ADC signal of a point from its energy and position in the tile."""
         # FairShip positions are in cm and the response-map coordinates are mm.
         local_x_mm = 10.0 * (point.GetX() - tile_center.X())
         local_y_mm = 10.0 * (point.GetY() - tile_center.Y())
@@ -114,19 +126,43 @@ class UpstreamTaggerDetector(BaseDetector):
         y_bin = min(max(y_axis.FindFixBin(local_y_mm), 1), y_axis.GetNbins())
         adc_per_mev = response_map.GetBinContent(x_bin, y_bin)
         deposited_energy_mev = 1000.0 * point.GetEnergyLoss()
-        return max(0, round(deposited_energy_mev * adc_per_mev))
+        return deposited_energy_mev * adc_per_mev
 
     def digitize(self) -> None:
+        """Digitize UBT MC points into one hit per fired constituent tile.
+
+        An MC point covers a (track, region) pair and a region holds 25 or 100
+        tiles, so a tile can collect points of several tracks, e.g. a muon and
+        a delta ray. Their ADC signals, each taken at its own position in the
+        tile, are summed before rounding and before the trigger threshold is
+        applied. The hit time is that of the first point in the tile.
+        """
         ship_geo = global_variables.ShipGeo
         time_res = ship_geo.UpstreamTagger.TimeResolution
         trigger_threshold = ship_geo.UpstreamTagger.ADCTriggerThreshold
 
-        for aMCPoint in self.intree.UpstreamTaggerPoint:
+        tiles: dict[int, _FiredTile] = {}  # by tile ID, in the order of their first point
+        for index, aMCPoint in enumerate(self.intree.UpstreamTaggerPoint):
             position = self.digitized_position(aMCPoint)
             tile_size = self.get_constituent_tile_size(aMCPoint.GetDetectorID())
-            adc_counts = self.adc_counts(aMCPoint, position, tile_size)
-            aHit = ROOT.UpstreamTaggerHit(aMCPoint, self.intree.t0, position, time_res)
-            aHit.SetTileID(self.tile_id(position, tile_size))
+            tile_id = self.tile_id(position, tile_size)
+            tile = tiles.get(tile_id)
+            if tile is None:
+                tile = tiles[tile_id] = _FiredTile(aMCPoint, position)
+            elif aMCPoint.GetTime() < tile.first.GetTime():
+                tile.first = aMCPoint
+            tile.signal += self.adc_signal(aMCPoint, position, tile_size)
+            tile.points.append(index)
+
+        for tile_id, tile in tiles.items():
+            adc_counts = max(0, round(tile.signal))
+            aHit = ROOT.UpstreamTaggerHit(tile.first, self.intree.t0, tile.position, time_res)
+            aHit.SetTileID(tile_id)
             aHit.SetADC(adc_counts)
             aHit.SetTriggered(adc_counts >= trigger_threshold)
             self.det.push_back(aHit)
+            if self.MCdet is not None:
+                points = ROOT.std.vector("int")()
+                for index in tile.points:
+                    points.push_back(index)
+                self.MCdet.push_back(points)
