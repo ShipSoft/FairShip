@@ -76,6 +76,12 @@ def test_merge_equals_single_accumulator():
     assert ha.bootstrap_errors() == pytest.approx(hab.bootstrap_errors())
 
 
+def state(h):
+    """Copy of the accumulators of h, which has a covariance and replicas."""
+    assert h.sum_tt is not None and h.boot is not None
+    return h.sum_t.copy(), h.sum_tt.copy(), h.boot.copy(), h.n_events
+
+
 @pytest.mark.parametrize(
     "kwargs",
     [{"covariance": False, "n_replicas": 50}, {"covariance": True, "n_replicas": 20}, {"covariance": True}],
@@ -83,13 +89,12 @@ def test_merge_equals_single_accumulator():
 def test_incompatible_merge_is_refused(kwargs):
     ha = EventHistogram("x", EDGES, covariance=True, n_replicas=50)
     fill(ha, correlated_sample(5, 200))
-    before = ha.sum_t.copy(), ha.sum_tt.copy(), ha.boot.copy(), ha.n_events
+    before = state(ha)
     hb = EventHistogram("x", EDGES, **kwargs)
     fill(hb, correlated_sample(6, 200))
     with pytest.raises(ValueError):
         ha += hb
-    after = ha.sum_t, ha.sum_tt, ha.boot, ha.n_events
-    for x, y in zip(before, after):
+    for x, y in zip(before, state(ha)):
         assert np.array_equal(x, y)
 
 
