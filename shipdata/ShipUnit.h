@@ -5,7 +5,9 @@
 // Units of the FairShip C++ code, the same as python/shipunit.py and VMC:
 // lengths in cm, energies in GeV and magnetic fields in kilogauss. Times are
 // in ns here; VMC (gMC->TrackTime(), FairPrimaryGenerator::AddTrack) uses
-// seconds, so a time t in ns is t / ShipUnit::s in seconds.
+// seconds, so a time t in ns is t / ShipUnit::s in seconds. The exception is
+// geant4_vmc's gMC->ParticleLifeTime(), which returns the unconverted Geant4
+// value in ns.
 //
 // Multiply a value by its unit to express it in these units, and divide by a
 // unit to express a value in that unit. Angles are not defined here: TGeo

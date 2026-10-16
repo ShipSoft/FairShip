@@ -147,7 +147,7 @@ Bool_t exitHadronAbsorber::ProcessHits(FairVolume* vol) {
         gMC->TrackMomentum(mom);
 
         Double_t mass = gMC->TrackMass();
-        Double_t tau = gMC->ParticleLifeTime(track_pid);  // in nanoseconds
+        Double_t tau = gMC->ParticleLifeTime(track_pid);  // in ns, unconverted
         Double_t c_tau = tau * ShipUnit::c_light;         // in cm
 
         Double_t instantP = mom.P();
