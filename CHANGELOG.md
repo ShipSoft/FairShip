@@ -15,6 +15,7 @@ it in future.
 ### Added
 
 * Some extra fields added to the ACTS `RecoTrack`. These are the smoothed hit positions on the track, track length and extrapolation of the track to the UBT and timing detector planes. The `RecoTrack` class version number has been incremented. #1537
+* The muon DIS chain in `newMuonDIS/` records where every interaction comes from. `prepareEvents.py` stores for each muon its input file (`muon_srcFile`, an index into the `FileSummary` key `inputFiles`), the entry of its event in that file's `cbmsim` tree, its track and the `RunID` and `EventID` of the event's `MCEventHeader` (`muon_srcEntry`, `muon_srcTrackID`, `muon_srcRunID`, `muon_srcEventID`), and for each interaction its position in that output (`mudis_DISgenIndex_<VOL>`), which `filterEvents.py` keeps. `run_simScript.py --NewMuDIS` writes them to each event as `muDIS_src*` and `muDIS_genIndex`. Both scripts write a `FileSummary` with the summaries of their inputs, the seed actually used (also when it came from the time), the entry range and their options; `MuDISFilter::GetPythiaDecaySeed` gives the Pythia8 decay seed. Files written before can still be filtered and replayed, with these values set to -1. `prepareEvents.py` reads the files of an input directory in sorted order.
 
 ### Changed
 

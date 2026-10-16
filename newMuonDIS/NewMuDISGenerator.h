@@ -62,10 +62,12 @@ class NewMuDISGenerator : public SHiP::Generator {
   TString fMaterialLabel;   // material string for output branch
   Int_t fMuonEntry = -1;    // original input muon index for output branch
   Int_t fDISIndex = -1;     // original DIS index for output branch
+  Int_t fGenIndex = -1;     // DIS index in the prepareEvents output
   Double_t fDISXsec = -1.;  // cross section of the DIS event
   Double_t fPythiaP =
       -1.;  // momentum of the muon used to generate the DIS event
   std::vector<Int_t> fNGenerated;  // initial count of generated DIS events
+  ShipMuDIS::MuonSource fSource;   // origin of the input muon
   int fnmuDis;             // counter of DIS event per input muon per material
   std::size_t fnmuDisDau;  // daughter offset per input muon per material
 };
