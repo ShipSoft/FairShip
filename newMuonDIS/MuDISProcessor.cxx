@@ -13,13 +13,14 @@
 
 #include "FairLogger.h"
 #include "TMath.h"
-#include "TROOT.h"
 #include "TRandom.h"
 #include "TRotation.h"
-#include "TSystem.h"
-#include "TVectorD.h"
 
-using namespace ShipMuDIS;
+using ShipMuDIS::kMuonShieldTailZ;
+using ShipMuDIS::MatTypeStr;
+using ShipMuDIS::MuonDISBranches;
+using ShipMuDIS::nMats;
+using ShipMuDIS::REST;
 
 namespace {
 double DISMinLength(const std::string& label, const MuonPath& path) {
@@ -34,10 +35,8 @@ double DISMinLength(const std::string& label, const MuonPath& path) {
 
 // -----   Default constructor   -------------------------------------------
 MuDISProcessor::MuDISProcessor() {
-  ftree = nullptr;
   fouttree = nullptr;
 
-  fLogger = FairLogger::GetLogger();
   fnEvts = -1;
   fstartEvt = 0;
   fPythia = TPythia6::Instance();
@@ -81,8 +80,7 @@ void MuDISProcessor::initPythia6() {
   }
 
   int seed = static_cast<int>(fP6seed % 900000000);
-  LOG(info) << " * Pythia6 seed set to " << fP6seed << " wrapped to " << seed
-            << std::endl;
+  LOG(info) << " * Pythia6 seed set to " << fP6seed << " wrapped to " << seed;
   fPythia->SetMRPY(1, seed);
   // To direct specific verbose Pythia6 output to a special file.
   fPythia->SetMSTU(11, 11);
@@ -103,52 +101,49 @@ void MuDISProcessor::rotate(const TVector3& pvec, const double& theta,
   newp = rotation * pvec;
 }
 
-Bool_t MuDISProcessor::InitFile(const char* fileName) {
+bool MuDISProcessor::InitFile(const char* fileName) {
   return InitFile(fileName, 0);
 }
 
-Bool_t MuDISProcessor::InitFiles(const std::vector<std::string>& fileNames) {
+bool MuDISProcessor::InitFiles(const std::vector<std::string>& fileNames) {
   return InitFiles(fileNames, 0);
 }
 
 // -----   Default constructor   -------------------------------------------
-Bool_t MuDISProcessor::InitFile(const char* fileName, const int startEvent) {
+bool MuDISProcessor::InitFile(const char* fileName, const int startEvent) {
   std::vector<std::string> fileNames = {fileName};
   return InitFiles(fileNames, startEvent);
 }
 
-Bool_t MuDISProcessor::InitFiles(const std::vector<std::string>& fileNames,
-                                 const int startEvent) {
+bool MuDISProcessor::InitFiles(const std::vector<std::string>& fileNames,
+                               const int startEvent) {
   if (fileNames.empty()) {
     LOG(error) << "MuDISProcessor: no input files provided. "
                << "Check the -f/--inputFile argument or input file glob.";
-    return kFALSE;
+    return false;
   }
   for (const auto& fileName : fileNames) {
     if (fileName.empty()) {
       LOG(error) << "MuDISProcessor: received an empty input file name. "
                  << "Check the -f/--inputFile argument.";
-      return kFALSE;
+      return false;
     }
   }
 
   LOG(info) << "Opening input file to find keys " << fileNames.at(0);
-  TFile* testFile = TFile::Open(fileNames.at(0).c_str(), "READ");
+  std::unique_ptr<TFile> testFile(TFile::Open(fileNames.at(0).c_str(), "READ"));
   auto testKeys = testFile ? testFile->GetListOfKeys() : nullptr;
   if (testKeys == nullptr) {
-    delete testFile;
     LOG(error) << "MuDISProcessor: Error opening input file " << fileNames.at(0)
                << ". Check that the path is correct and the file is a readable "
                   "ROOT file.";
-    return kFALSE;
+    return false;
   }
   const bool hastree = testKeys->FindObject("cbmsim") != nullptr;
   testFile->Close();
-  delete testFile;
 
   if (hastree) {
-    delete ftree;
-    ftree = new TChain("cbmsim");
+    ftree = std::make_unique<TChain>("cbmsim");
     for (auto& f : fileNames) {
       LOG(info) << "Opening input file " << f;
       ftree->Add(f.c_str());
@@ -156,17 +151,17 @@ Bool_t MuDISProcessor::InitFiles(const std::vector<std::string>& fileNames,
     int treeEvts = ftree->GetEntries();
     LOG(info) << "Reading " << treeEvts << " entries.";
 
-    bool ok = finEv.Setup(ftree);
+    bool ok = finEv.Setup(ftree.get());
 
     if (!ok) {
       LOG(error)
           << "MuDISProcessor: failed to bind one or more required branches";
-      return kFALSE;
+      return false;
     }
     LOG(info) << "MuDISProcessor: Initialization successful.";
-    return kTRUE;
+    return true;
   }
-  return kFALSE;
+  return false;
 }
 
 void MuDISProcessor::process_file(const std::string& input,
@@ -177,7 +172,7 @@ void MuDISProcessor::process_file(const std::string& input,
 
 void MuDISProcessor::process_file(const std::vector<std::string>& input,
                                   const std::string& output) {
-  Bool_t treeOK = InitFiles(input);
+  bool treeOK = InitFiles(input);
 
   if (!treeOK) {
     LOG(error) << " -- Error reading input files: n=" << input.size();
@@ -185,26 +180,29 @@ void MuDISProcessor::process_file(const std::vector<std::string>& input,
     return;
   }
 
-  TFile* outfile = TFile::Open(output.c_str(), "RECREATE");
-  if (!outfile) {
+  std::unique_ptr<TFile> outfile(TFile::Open(output.c_str(), "RECREATE"));
+  if (!outfile || outfile->IsZombie()) {
     LOG(error) << " -- Error creating outputfile: " << output;
     return;
   }
   outfile->cd();
+  // Owned by outfile, which deletes it on Close().
   fouttree = new TTree(
       "MuonDIS", "Muon information, DIS products and soft interaction tracks");
   foutEv.InitTree(fouttree);
 
   initPythia6();
 
-  Long64_t n = ftree->GetEntries();
-  LOG(info) << " * input tree with " << n << " entries" << std::endl;
+  std::int64_t n = ftree->GetEntries();
+  LOG(info) << " * input tree with " << n << " entries";
 
   ProcessMuons();
 
   outfile->cd();
-  fouttree->Write();
+  if (fouttree->Write() <= 0 || outfile->TestBit(TFile::kWriteError))
+    LOG(error) << " -- Error writing outputfile: " << output;
   outfile->Close();
+  fouttree = nullptr;
 
   fGeoProcessor.PrintVolumes();
 }
@@ -218,8 +216,8 @@ void MuDISProcessor::initEvent() {
   }
 }
 
-void MuDISProcessor::fillMCTracks(const Int_t aIdx) {
-  Int_t iEle = 0;
+void MuDISProcessor::fillMCTracks(const int aIdx) {
+  int iEle = 0;
   for (auto& tkIt : (*finEv.MCTrack)) {
     if (iEle == aIdx) foutEv.mcTrks.push_back(tkIt);
 
@@ -232,7 +230,7 @@ void MuDISProcessor::fillMCTracks(const Int_t aIdx) {
   }
 }
 
-void MuDISProcessor::fillSBTHits(const Int_t aIdx) {
+void MuDISProcessor::fillSBTHits(const int aIdx) {
   for (auto& hitIt : (*finEv.sbtPt)) {
     if (hitIt.GetTrackID() == aIdx) {
       foutEv.sbtPt.push_back(hitIt);
@@ -240,7 +238,7 @@ void MuDISProcessor::fillSBTHits(const Int_t aIdx) {
   }
 }
 
-void MuDISProcessor::fillUBTHits(const Int_t aIdx) {
+void MuDISProcessor::fillUBTHits(const int aIdx) {
   for (auto& hitIt : (*finEv.ubtPt)) {
     if (hitIt.GetTrackID() == aIdx) {
       foutEv.ubtPt.push_back(hitIt);
@@ -248,7 +246,7 @@ void MuDISProcessor::fillUBTHits(const Int_t aIdx) {
   }
 }
 
-void MuDISProcessor::fillSSTHits(const Int_t aIdx) {
+void MuDISProcessor::fillSSTHits(const int aIdx) {
   for (auto& hitIt : (*finEv.sstPt)) {
     if (hitIt.GetTrackID() == aIdx) {
       foutEv.sstPt.push_back(hitIt);
@@ -256,7 +254,7 @@ void MuDISProcessor::fillSSTHits(const Int_t aIdx) {
   }
 }
 
-void MuDISProcessor::fillTDHits(const Int_t aIdx) {
+void MuDISProcessor::fillTDHits(const int aIdx) {
   for (const auto& hit : *finEv.tdPt) {
     if (hit.GetTrackID() == aIdx) foutEv.tdPt.push_back(hit);
   }
@@ -364,10 +362,10 @@ void MuDISProcessor::generateDISevents(const std::string& tType,
         amuonW / aDISBr.nDISevts * aPath.GetWeightedDensity(minLength);
 
   LOG(debug) << " -- path " << aLabel << " muonW " << amuonW
-             << " -- size of DISparticles collections: " << std::endl
-             << " ---- particles: " << aDISBr.DISparticles.size() << std::endl
-             << " ---- nDIS events: " << aDISBr.nDISevts << std::endl
-             << " ---- weightDIS: " << aDISBr.wDIS << std::endl
+             << " -- size of DISparticles collections: \n"
+             << " ---- particles: " << aDISBr.DISparticles.size() << '\n'
+             << " ---- nDIS events: " << aDISBr.nDISevts << '\n'
+             << " ---- weightDIS: " << aDISBr.wDIS << '\n'
              << " ---- xsec: ";
   for (int i(0); i < aDISBr.nDISevts; ++i) {
     LOG(debug) << aDISBr.DISxsec[i] << " ";
@@ -380,22 +378,23 @@ void MuDISProcessor::generateDISevents(const std::string& tType,
 }
 
 void MuDISProcessor::ProcessMuons() {
-  LOG(info) << " * Start of event loop" << std::endl;
+  LOG(info) << " * Start of event loop";
   fGeoProcessor.ResetDiagnostics();
 
-  if (static_cast<Long64_t>(fstartEvt) >= ftree->GetEntries()) {
+  if (static_cast<std::int64_t>(fstartEvt) >= ftree->GetEntries()) {
     LOG(error) << " ** Trying to start from event " << fstartEvt
                << " which is greater than the tree entries: "
                << ftree->GetEntries() << ". Doing nothing...";
     return;
   }
 
-  const Long64_t nEntries =
-      fnEvts >= 0 ? std::min(static_cast<Long64_t>(fstartEvt + fnEvts),
-                             ftree->GetEntries())
+  const std::int64_t nEntries =
+      fnEvts >= 0 ? std::min<std::int64_t>(
+                        static_cast<std::int64_t>(fstartEvt + fnEvts),
+                        ftree->GetEntries())
                   : ftree->GetEntries();
   LOG(info) << " - Processing event " << fstartEvt << " to event "
-            << nEntries - 1 << std::endl;
+            << nEntries - 1;
 
   unsigned nplus = 0;
   unsigned nminus = 0;
@@ -409,7 +408,7 @@ void MuDISProcessor::ProcessMuons() {
   double skipMu_pathW = 0.;
 
   struct PathTotals {
-    Long64_t muons = 0;
+    std::int64_t muons = 0;
     double weight = 0.;
     double length = 0.;
     double weightedLength = 0.;
@@ -423,12 +422,12 @@ void MuDISProcessor::ProcessMuons() {
   PathTotals pathTotals;
   std::array<PathTotals, nMats> pathTotalsByMat = {};
 
-  for (Long64_t iEvent = static_cast<Long64_t>(fstartEvt); iEvent < nEntries;
-       ++iEvent) {
-    LOG(debug) << " --- Processing event " << iEvent << std::endl;
-    if (iEvent % 100 == 0)
-      LOG(info) << " --- Processing event " << iEvent << std::endl;
-    if (!finEv.PrepareEntry(ftree, iEvent) || ftree->GetEntry(iEvent) <= 0) {
+  for (std::int64_t iEvent = static_cast<std::int64_t>(fstartEvt);
+       iEvent < nEntries; ++iEvent) {
+    LOG(debug) << " --- Processing event " << iEvent;
+    if (iEvent % 100 == 0) LOG(info) << " --- Processing event " << iEvent;
+    if (!finEv.PrepareEntry(ftree.get(), iEvent) ||
+        ftree->GetEntry(iEvent) <= 0) {
       LOG(error) << " --- Error reading tree entry: " << iEvent;
       skipEvt++;
       continue;
@@ -447,7 +446,7 @@ void MuDISProcessor::ProcessMuons() {
     // interested in the first muon track - for PG setting
     //@FIXME AMM adapt also to MuonBack input, take all muons?
     // for now take MCTrack[0]
-    Int_t muIdx = 0;
+    int muIdx = 0;
 
     ShipMCTrack& track = (*finEv.MCTrack)[static_cast<unsigned>(muIdx)];
     int pid = track.GetPdgCode();
@@ -475,7 +474,7 @@ void MuDISProcessor::ProcessMuons() {
     } else {
       LOG(warning) << iEvent << " skipped: "
                    << " nTracks= " << nTr
-                   << " -- 1st track pid not a muon: " << pid << std::endl;
+                   << " -- 1st track pid not a muon: " << pid;
       skipEvt++;
       continue;
     }
@@ -498,18 +497,18 @@ void MuDISProcessor::ProcessMuons() {
                  << " UBT Hits: " << foutEv.ubtPt.size()
                  << ", SBT Hits: " << foutEv.sbtPt.size()
                  << ", SST Hits: " << foutEv.sstPt.size()
-                 << ", TD Hits: " << foutEv.tdPt.size() << std::endl;
+                 << ", TD Hits: " << foutEv.tdPt.size();
       skipMu_acc++;
       skipMu_accW += muW;
       // counting, but want to still fill DIS in MS (and UBT detector)...
       // continue;
     }
 
-    LOG(debug) << " -- size of hits collections: " << std::endl
-               << " ---- mcTracks: " << foutEv.mcTrks.size() << std::endl
-               << " ---- UBT Hits: " << foutEv.ubtPt.size() << std::endl
-               << " ---- SBT Hits: " << foutEv.sbtPt.size() << std::endl
-               << " ---- SST Hits: " << foutEv.sstPt.size() << std::endl;
+    LOG(debug) << " -- size of hits collections: \n"
+               << " ---- mcTracks: " << foutEv.mcTrks.size() << '\n'
+               << " ---- UBT Hits: " << foutEv.ubtPt.size() << '\n'
+               << " ---- SBT Hits: " << foutEv.sbtPt.size() << '\n'
+               << " ---- SST Hits: " << foutEv.sstPt.size();
 
     // retrieve a map of material label, with same density, and lengths, and
     // [zin,zout] ranges
@@ -559,10 +558,9 @@ void MuDISProcessor::ProcessMuons() {
 
   }  // loop on events
 
-  LOG(info) << "Found " << nplus << " mu+ and " << nminus << " mu-."
-            << std::endl
+  LOG(info) << "Found " << nplus << " mu+ and " << nminus << " mu-.\n"
             << "Skipped: " << skipEvt << " events and " << skipMu_pmin
-            << " muons with too low p" << std::endl
+            << " muons with too low p\n"
             << "Counted: " << skipMu_acc
             << " muons with no recorded hits in UBT,SBT,SST,TD.";
   LOG(info) << "Weighted counts (sum MCTrack[0].fW): " << wplus << " mu+ and "

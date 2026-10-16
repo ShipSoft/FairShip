@@ -14,7 +14,9 @@
 
 #include "TGeoBBox.h"
 
-using namespace ShipMuDIS;
+using ShipMuDIS::kMuonShieldTailZ;
+using ShipMuDIS::MatTypeStr;
+using ShipMuDIS::MuonBranches;
 
 MuGeoProcessor::MuGeoProcessor() {
   fZmax = 14000;
@@ -534,7 +536,7 @@ bool MuGeoProcessor::Trace(const Measurement& measurement, double startZ,
     double limit = remaining;
     if (backward && shield)
       limit = std::min(limit, (kMuonShieldTailZ - shieldZ) / forward.Z());
-    node = gGeoManager->FindNextBoundaryAndStep(limit, kFALSE);
+    node = gGeoManager->FindNextBoundaryAndStep(limit, false);
     const double step = std::min(gGeoManager->GetStep(), limit);
     if (!std::isfinite(step) || step < 0.) break;
     if (step > 0.) {
