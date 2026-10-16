@@ -1611,7 +1611,12 @@ var namespaces_dup =
     ] ],
     [ "shipDigiReco", "namespaceshipDigiReco.html", "namespaceshipDigiReco" ],
     [ "shipgen", "namespaceshipgen.html", [
-      [ "MeanMaterialBudget", "namespaceshipgen.html#ac85d3b1e8d74de7b65eee39a98e92c1b", null ]
+      [ "MeanMaterialBudget", "namespaceshipgen.html#ac85d3b1e8d74de7b65eee39a98e92c1b", null ],
+      [ "NuclearCrossSection_mbarn", "namespaceshipgen.html#a697900e14010bb7c6ec21c4130c4574b", null ],
+      [ "PythiaLengthToCm", "namespaceshipgen.html#abf37dd718f47d2835452543cb4b3f0a1", null ],
+      [ "PythiaTimeToS", "namespaceshipgen.html#a1712d3106f13d600a33e5016f447f592", null ],
+      [ "kCLightCmPerS", "namespaceshipgen.html#ab487270fe6cf7792379f1564fb750e57", null ],
+      [ "kPythiaLengthPerCm", "namespaceshipgen.html#ac34c2223302691f3db2e078530598bba", null ]
     ] ],
     [ "ShipGeo", "namespaceShipGeo.html", [
       [ "InitMedium", "namespaceShipGeo.html#a41fa6e1cd4e92f644524675c6850e934", null ]
@@ -1853,7 +1858,22 @@ var namespaces_dup =
       [ "watt", "namespaceshipunit.html#a86f9ba53297f60184e521655c576baaf", null ],
       [ "weber", "namespaceshipunit.html#a0ef5d6a33e15f4c4fa62fb17c0bce1b2", null ]
     ] ],
-    [ "ShipUnit", "namespaceShipUnit.html", null ],
+    [ "ShipUnit", "namespaceShipUnit.html", [
+      [ "c_light", "namespaceShipUnit.html#aa5c80d1a788735fe9fd41b509583437b", null ],
+      [ "cm", "namespaceShipUnit.html#a265f40d0ffca1af0d38fe9a050c98bcf", null ],
+      [ "gauss", "namespaceShipUnit.html#a334f58e18b995ee78fa96a1c69c0bfba", null ],
+      [ "GeV", "namespaceShipUnit.html#aed43d63d5e6d980f22bc345f7a562011", null ],
+      [ "keV", "namespaceShipUnit.html#ad57422e4724115feacf1cabfb637e3a5", null ],
+      [ "kilogauss", "namespaceShipUnit.html#aeb2434130d4f4fe7921aa564c2965294", null ],
+      [ "km", "namespaceShipUnit.html#a6913b7e3b62fb09e1a1fcdb3a1f7c258", null ],
+      [ "m", "namespaceShipUnit.html#a7b82ae8775009208066598546951dd22", null ],
+      [ "MeV", "namespaceShipUnit.html#a355ccfd81a9820e7e0df4c8f7ca6bbb8", null ],
+      [ "mm", "namespaceShipUnit.html#a644590da60ab4efe07fbda3a260e5407", null ],
+      [ "ns", "namespaceShipUnit.html#ac17805e2154634b45e0493e800208b29", null ],
+      [ "s", "namespaceShipUnit.html#af5da50ee86db44fd81351c6c3a3dcf06", null ],
+      [ "tesla", "namespaceShipUnit.html#adae44b3580098be2b6f2c6d514dc72dd", null ],
+      [ "um", "namespaceShipUnit.html#a19c69dc056a268aa660dfce12af29f39", null ]
+    ] ],
     [ "shipVertex", "namespaceshipVertex.html", "namespaceshipVertex" ],
     [ "shipVeto", "namespaceshipVeto.html", "namespaceshipVeto" ],
     [ "SiliconTargetDetector", "namespaceSiliconTargetDetector.html", "namespaceSiliconTargetDetector" ],

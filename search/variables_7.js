@@ -1,10 +1,10 @@
 var searchData=
 [
-  ['g_0',['g',['../namespaceshipunit.html#ab825ca3f0f33266692d396c00ba0cfaa',1,'shipunit.g'],['../namespacehepunit.html#a2fce90db6b981f1b770129bf9329d86e',1,'hepunit.g'],['../namespaceeventDisplay.html#a37c858074cda5ceaa4e360389e712bc2',1,'eventDisplay.g'],['../namespacerunPythia8.html#ae4f2d48afcb43c984c0c0689436bac6a',1,'runPythia8.G'],['../namespacerun__fixedTarget.html#a049620ba28aeb292c74bb28518aa6c2f',1,'run_fixedTarget.G']]],
+  ['g_0',['g',['../namespacerunPythia8.html#ae4f2d48afcb43c984c0c0689436bac6a',1,'runPythia8.G'],['../namespacerun__fixedTarget.html#a049620ba28aeb292c74bb28518aa6c2f',1,'run_fixedTarget.G'],['../namespaceshipunit.html#ab825ca3f0f33266692d396c00ba0cfaa',1,'shipunit.g'],['../namespacehepunit.html#a2fce90db6b981f1b770129bf9329d86e',1,'hepunit.g'],['../namespaceeventDisplay.html#a37c858074cda5ceaa4e360389e712bc2',1,'eventDisplay.g']]],
   ['g4only_1',['G4only',['../classFixedTargetGenerator.html#a577dfcc36a4f54e69ebec43be167359b',1,'FixedTargetGenerator']]],
   ['gamma_2',['gamma',['../namespacemakeCascade.html#a1954f4a40c77a4917a15955372b85700',1,'makeCascade']]],
   ['gapfromvacuum_3',['GapFromVacuum',['../classShipTAUMagneticSpectrometer.html#a8830b299f287f54198ff559416c58cae',1,'ShipTAUMagneticSpectrometer']]],
-  ['gauss_4',['gauss',['../namespaceshipunit.html#a802e9a7428fde7c38a8762167bd0caed',1,'shipunit.gauss'],['../namespacehepunit.html#aafa0bc43603e4d0972e071fe6c077fb3',1,'hepunit.gauss']]],
+  ['gauss_4',['gauss',['../namespaceShipUnit.html#a334f58e18b995ee78fa96a1c69c0bfba',1,'ShipUnit::gauss'],['../namespaceshipunit.html#a802e9a7428fde7c38a8762167bd0caed',1,'shipunit.gauss'],['../namespacehepunit.html#aafa0bc43603e4d0972e071fe6c077fb3',1,'hepunit.gauss']]],
   ['generate_5',['generate',['../structModelSpec.html#a286246d782961db23a8eeddf18a70a55',1,'ModelSpec']]],
   ['generator_6',['generator',['../namespacerun__simScript.html#a02102a7960adc8fef03efc124ebd545d',1,'run_simScript']]],
   ['generators_7',['generators',['../namespacerunPythia8.html#a446af4b3cadb9f3d0a9d03e41763e89d',1,'runPythia8']]],
@@ -22,8 +22,8 @@ var searchData=
   ['geometry_5foptions_19',['geometry_options',['../namespacerun__simScript.html#a8f9ff0a9bb830ce5558944c89ef3f593',1,'run_simScript']]],
   ['geometrybuiltwithfairship_20',['geometryBuiltWithFairShip',['../namespacerun__simScript.html#ae98893db8e1ffe8e4ee5a54ec73ef6f6',1,'run_simScript']]],
   ['geoscene_21',['geoscene',['../classeventDisplay_1_1IO.html#a57cd8f57be7556a9428cd1367808b9d9',1,'eventDisplay::IO']]],
-  ['gerrorignorelevel_22',['gerrorignorelevel',['../namespaceprepareEvents.html#a49bdc2a52b52c304b93367f1009c9c36',1,'prepareEvents.gErrorIgnoreLevel'],['../namespacerun__simScript.html#a4a2c7d62cdeabab2c2a9e10cc0301312',1,'run_simScript.gErrorIgnoreLevel'],['../namespacerun__fixedTarget.html#a11b5b46e5234c652e24de4ee32caa056',1,'run_fixedTarget.gErrorIgnoreLevel'],['../namespaceconvertToACTS.html#a33553589a15038ae28605f544a475772',1,'convertToACTS.gErrorIgnoreLevel']]],
-  ['gev_23',['gev',['../namespacehepunit.html#ac9a9e477006f2a9172295c8b234b6b57',1,'hepunit.GeV'],['../namespaceshipunit.html#a67149621e9d50a72cbd03ed6d5c5f4bf',1,'shipunit.GeV']]],
+  ['gerrorignorelevel_22',['gerrorignorelevel',['../namespaceconvertToACTS.html#a33553589a15038ae28605f544a475772',1,'convertToACTS.gErrorIgnoreLevel'],['../namespaceprepareEvents.html#a49bdc2a52b52c304b93367f1009c9c36',1,'prepareEvents.gErrorIgnoreLevel'],['../namespacerun__simScript.html#a4a2c7d62cdeabab2c2a9e10cc0301312',1,'run_simScript.gErrorIgnoreLevel'],['../namespacerun__fixedTarget.html#a11b5b46e5234c652e24de4ee32caa056',1,'run_fixedTarget.gErrorIgnoreLevel']]],
+  ['gev_23',['gev',['../namespacehepunit.html#ac9a9e477006f2a9172295c8b234b6b57',1,'hepunit.GeV'],['../namespaceshipunit.html#a67149621e9d50a72cbd03ed6d5c5f4bf',1,'shipunit.GeV'],['../namespaceShipUnit.html#aed43d63d5e6d980f22bc345f7a562011',1,'ShipUnit::GeV']]],
   ['geve_24',['geve',['../namespaceevd__addParticleFollower.html#a1412b4683b4c39c3c1e5cd0123faa1d3',1,'evd_addParticleFollower.gEve'],['../namespaceeventDisplay.html#ae1f86819fc86d530c056ed77c60b5a38',1,'eventDisplay.gEve']]],
   ['gf_25',['gf',['../classhnl_1_1constants.html#a0474ba9c9b5126f414d0311ed0b37dea',1,'hnl.constants.GF'],['../classrpvsusy_1_1constants.html#acd18aad11e00b6fd0391a5ec277307a5',1,'rpvsusy.constants.GF']]],
   ['gfairbasecontfact_26',['gFairBaseContFact',['../namespacestudy__thinTarget.html#aa9ff8642ba3746c2603b01b6f1595c8b',1,'study_thinTarget']]],

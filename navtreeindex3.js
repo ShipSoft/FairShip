@@ -1,5 +1,16 @@
 var NAVTREEINDEX3 =
 {
+"classDISparticle.html#a3de2a6b12674c00a61e87194f3e95849":[9,0,32,4],
+"classDISparticle.html#a5bfe0dbec9238c5772a5acf9154bba2e":[9,0,32,6],
+"classDISparticle.html#ab41de276b94e49b270e57e6b949a497a":[9,0,32,5],
+"classDISparticle.html#adfd9b27262bd5102b2e29a3369fc69b6":[9,0,32,3],
+"classDISparticle.html#aea56345d0c04a5d18c73c6b1ff752c3a":[9,0,32,2],
+"classDPPythia8Generator.html":[9,0,33],
+"classDPPythia8Generator.html#a01a421c64a1ddc7904529672e65a6f47":[9,0,33,26],
+"classDPPythia8Generator.html#a01d5d3661051e834c473a3ed4cec5bc7":[9,0,33,24],
+"classDPPythia8Generator.html#a01fe33515fea881838c2b11eb5d4a9d1":[9,0,33,6],
+"classDPPythia8Generator.html#a06cc91b1b63c798bce9d68751f843157":[9,0,33,25],
+"classDPPythia8Generator.html#a09d08c84f83ba100758a87573d2fc35f":[9,0,33,21],
 "classDPPythia8Generator.html#a0ec98e4205363314266e3b2df49db2fe":[9,0,33,49],
 "classDPPythia8Generator.html#a17439775cf6134d296325698b5680142":[9,0,33,12],
 "classDPPythia8Generator.html#a214ac48a8b68c6f6ba7d445887d6b644":[9,0,33,13],
@@ -238,16 +249,5 @@ var NAVTREEINDEX3 =
 "classGenieGenerator.html#abc66e4178eddb9b795e6a48922119a07":[9,0,37,35],
 "classGenieGenerator.html#ac0648a1ec1c2fde5c0f1c09ddc2915e4":[9,0,37,4],
 "classGenieGenerator.html#ac41eff1990b44a13c75c97dfe3e735ea":[9,0,37,26],
-"classGenieGenerator.html#ac4de05620c620d858bf0fa433628b5bf":[9,0,37,12],
-"classGenieGenerator.html#ac7496dc50248fb1f924ad1d9d007a4be":[9,0,37,49],
-"classGenieGenerator.html#ac7845a34e1ffcc2d59d55f79ed2e90a6":[9,0,37,10],
-"classGenieGenerator.html#ad02010051c3bdef66eb4f82c960ae661":[9,0,37,28],
-"classGenieGenerator.html#ad946874c5703b0bc83863a3247c37da2":[9,0,37,41],
-"classGenieGenerator.html#adc8770be8782952b74ceab33e2e53693":[9,0,37,20],
-"classGenieGenerator.html#ae110e1b524b18313b0697a8cb4f84ad4":[9,0,37,34],
-"classGenieGenerator.html#ae973d46f0e410b6b418196f089cac232":[9,0,37,56],
-"classGenieGenerator.html#aeb692113b036fdc3740046c85cbf9d71":[9,0,37,31],
-"classGenieGenerator.html#aeccda1bacf472b4e29661781d21653b0":[9,0,37,14],
-"classGenieGenerator.html#af0f84554d20d2491d7414948b5d6f2dd":[9,0,37,29],
-"classGenieGenerator.html#af1307d0ee720856236260288946e290f":[9,0,37,58]
+"classGenieGenerator.html#ac4de05620c620d858bf0fa433628b5bf":[9,0,37,12]
 };

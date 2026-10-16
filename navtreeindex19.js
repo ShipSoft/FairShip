@@ -1,5 +1,13 @@
 var NAVTREEINDEX19 =
 {
+"make__nTuple__SBT_8py.html#a0e06770e4021c17b9c4bc8f9b40aee04":[10,0,8,1,27],
+"make__nTuple__SBT_8py.html#a12289a50c5d522f1a2220d504497a514":[10,0,8,1,1],
+"make__nTuple__SBT_8py.html#a12d037947f8f47df40ff3218d49b2734":[10,0,8,1,10],
+"make__nTuple__SBT_8py.html#a1391b7407359c40dbacead1473f5a96b":[10,0,8,1,17],
+"make__nTuple__SBT_8py.html#a1669fe4033902571e973de5e9649a362":[10,0,8,1,45],
+"make__nTuple__SBT_8py.html#a1cdb01243d3ec2f98d1b3dda16d0a5d0":[10,0,8,1,9],
+"make__nTuple__SBT_8py.html#a20bc34e7372638afea070927634df04f":[10,0,8,1,24],
+"make__nTuple__SBT_8py.html#a24d7444a55c68cafe6380898cf90d711":[10,0,8,1,35],
 "make__nTuple__SBT_8py.html#a30fc5b9f56d4024deea048ae9f4b19ce":[10,0,8,1,12],
 "make__nTuple__SBT_8py.html#a315942c41e02aef7640aaeff0d4d6b63":[10,0,8,1,25],
 "make__nTuple__SBT_8py.html#a3bd67c1e33f5f4ade58d97870e6c6f9b":[10,0,8,1,13],
@@ -241,13 +249,5 @@ var NAVTREEINDEX19 =
 "md_newMuonDIS_2README.html":[5],
 "md_newMuonDIS_2README.html#autotoc_md106":[5,0],
 "md_newMuonDIS_2README.html#autotoc_md107":[5,0,0],
-"md_newMuonDIS_2README.html#autotoc_md108":[5,0,1],
-"md_newMuonDIS_2README.html#autotoc_md109":[5,0,2],
-"md_newMuonDIS_2README.html#autotoc_md110":[5,0,3],
-"md_newMuonDIS_2README.html#autotoc_md111":[5,0,4],
-"md_newMuonDIS_2README.html#autotoc_md112":[5,0,5],
-"md_newMuonDIS_2README_8filter.html":[4],
-"md_newMuonDIS_2README_8filter.html#autotoc_md102":[4,0],
-"md_newMuonDIS_2README_8filter.html#autotoc_md103":[4,0,0],
-"md_newMuonDIS_2README_8filter.html#autotoc_md104":[4,0,1]
+"md_newMuonDIS_2README.html#autotoc_md108":[5,0,1]
 };

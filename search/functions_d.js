@@ -19,9 +19,10 @@ var searchData=
   ['nrofretries_16',['nrofretries',['../classDPPythia8Generator.html#a17439775cf6134d296325698b5680142',1,'DPPythia8Generator::nrOfRetries()'],['../classPythia8Generator.html#a348eed559b7ee6ee92142e2dca21d18a',1,'Pythia8Generator::nrOfRetries()'],['../classHNLPythia8Generator.html#a8a7f6fa2e231fc507b03d8673f6fccaa',1,'HNLPythia8Generator::nrOfRetries()']]],
   ['ntuplegenerator_17',['NtupleGenerator',['../classNtupleGenerator.html#a99f6acb8763351a65c08a44250d3f0c2',1,'NtupleGenerator']]],
   ['nuclear_5fcollision_18',['nuclear_collision',['../namespacemakeCascadePythia8.html#a0fd0bbcda95ce133976ffdc03c7f3db9',1,'makeCascadePythia8']]],
-  ['nucleus_5fmodel_19',['nucleus_model',['../namespacemakeCascadePythia8.html#afa3be98b734761607f1ba1d6e50c0b49',1,'makeCascadePythia8']]],
-  ['nuonly_20',['NuOnly',['../classGenieGenerator.html#a1099711d1ecd43706bf9e5d131c82416',1,'GenieGenerator']]],
-  ['nx_21',['Nx',['../classfieldMapTools_1_1MapRange.html#a49c8d8d42b736fda0f2420e03d753adb',1,'fieldMapTools::MapRange']]],
-  ['ny_22',['Ny',['../classfieldMapTools_1_1MapRange.html#a0bded72d0ec95de152de2ff647b0a409',1,'fieldMapTools::MapRange']]],
-  ['nz_23',['Nz',['../classfieldMapTools_1_1MapRange.html#a91326c0b4c1bd780799c7a184aa7eddb',1,'fieldMapTools::MapRange']]]
+  ['nuclearcrosssection_5fmbarn_19',['NuclearCrossSection_mbarn',['../namespaceshipgen.html#a697900e14010bb7c6ec21c4130c4574b',1,'shipgen']]],
+  ['nucleus_5fmodel_20',['nucleus_model',['../namespacemakeCascadePythia8.html#afa3be98b734761607f1ba1d6e50c0b49',1,'makeCascadePythia8']]],
+  ['nuonly_21',['NuOnly',['../classGenieGenerator.html#a1099711d1ecd43706bf9e5d131c82416',1,'GenieGenerator']]],
+  ['nx_22',['Nx',['../classfieldMapTools_1_1MapRange.html#a49c8d8d42b736fda0f2420e03d753adb',1,'fieldMapTools::MapRange']]],
+  ['ny_23',['Ny',['../classfieldMapTools_1_1MapRange.html#a0bded72d0ec95de152de2ff647b0a409',1,'fieldMapTools::MapRange']]],
+  ['nz_24',['Nz',['../classfieldMapTools_1_1MapRange.html#a91326c0b4c1bd780799c7a184aa7eddb',1,'fieldMapTools::MapRange']]]
 ];

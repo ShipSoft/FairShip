@@ -98,6 +98,7 @@ $(document).ready(function(){initNavTree('HNLPythia8Generator_8cxx.html',''); in
 <code>#include &lt;cmath&gt;</code><br />
 <code>#include &quot;<a class="el" href="BeamSmearingUtils_8h_source.html">BeamSmearingUtils.h</a>&quot;</code><br />
 <code>#include &quot;FairPrimaryGenerator.h&quot;</code><br />
+<code>#include &quot;<a class="el" href="PythiaUnits_8h_source.html">PythiaUnits.h</a>&quot;</code><br />
 <code>#include &quot;TDatabasePDG.h&quot;</code><br />
 <code>#include &quot;TMath.h&quot;</code><br />
 <code>#include &quot;TROOT.h&quot;</code><br />
@@ -107,59 +108,63 @@ Include dependency graph for HNLPythia8Generator.cxx:</div>
 <div class="dyncontent">
 <div class="center"><img src="HNLPythia8Generator_8cxx__incl.png" border="0" usemap="#ashipgen_2HNLPythia8Generator_8cxx" alt=""/></div>
 <map name="ashipgen_2HNLPythia8Generator_8cxx" id="ashipgen_2HNLPythia8Generator_8cxx">
-<area shape="rect" title=" " alt="" coords="1187,5,1431,31"/>
-<area shape="rect" href="HNLPythia8Generator_8h.html" title=" " alt="" coords="555,79,730,104"/>
-<area shape="poly" title=" " alt="" coords="1203,33,744,82,744,77,1202,28"/>
-<area shape="rect" title=" " alt="" coords="1153,225,1215,251"/>
-<area shape="poly" title=" " alt="" coords="1195,33,1154,51,1136,64,1121,80,1113,96,1111,114,1113,132,1120,150,1141,185,1165,214,1160,217,1136,188,1115,152,1108,133,1105,114,1108,95,1116,77,1132,60,1151,46,1193,28"/>
+<area shape="rect" title=" " alt="" coords="1283,5,1527,31"/>
+<area shape="rect" href="HNLPythia8Generator_8h.html" title=" " alt="" coords="445,79,619,104"/>
+<area shape="poly" title=" " alt="" coords="1283,32,634,84,633,79,1283,27"/>
+<area shape="rect" title=" " alt="" coords="969,225,1031,251"/>
+<area shape="poly" title=" " alt="" coords="1308,33,1199,53,1153,66,1122,81,1102,103,1093,125,1086,151,1070,179,1029,218,1026,215,1066,176,1081,149,1088,124,1097,100,1118,77,1151,61,1198,47,1307,28"/>
 <area shape="rect" title=" " alt="" coords="977,152,1055,177"/>
-<area shape="poly" title=" " alt="" coords="1199,33,1135,51,1105,64,1076,81,1048,109,1029,140,1025,138,1044,106,1073,77,1102,59,1134,46,1198,28"/>
+<area shape="poly" title=" " alt="" coords="1289,33,1165,52,1112,66,1076,81,1061,94,1048,109,1028,141,1024,138,1043,106,1057,90,1073,76,1111,60,1164,47,1289,28"/>
 <area shape="rect" href="BeamSmearingUtils_8h.html" title=" " alt="" coords="1131,79,1295,104"/>
-<area shape="poly" title=" " alt="" coords="1295,33,1242,72,1239,68,1292,29"/>
+<area shape="poly" title=" " alt="" coords="1375,33,1259,76,1257,71,1374,28"/>
 <area shape="rect" title=" " alt="" coords="1319,79,1491,104"/>
-<area shape="poly" title=" " alt="" coords="1326,29,1380,68,1377,72,1323,33"/>
-<area shape="rect" title=" " alt="" coords="1515,79,1647,104"/>
-<area shape="poly" title=" " alt="" coords="1354,28,1525,73,1524,78,1352,33"/>
-<area shape="rect" title=" " alt="" coords="1672,79,1747,104"/>
-<area shape="poly" title=" " alt="" coords="1385,28,1659,76,1658,81,1384,33"/>
-<area shape="rect" title=" " alt="" coords="1771,79,1861,104"/>
-<area shape="poly" title=" " alt="" coords="1410,28,1569,48,1757,76,1756,81,1568,53,1409,33"/>
-<area shape="rect" title=" " alt="" coords="701,152,779,177"/>
-<area shape="poly" title=" " alt="" coords="660,102,714,141,711,146,657,106"/>
-<area shape="rect" title=" " alt="" coords="466,225,566,251"/>
-<area shape="poly" title=" " alt="" coords="703,101,744,113,779,129,792,140,799,151,800,165,792,179,714,199,580,227,579,221,713,194,789,175,795,164,794,153,788,143,776,134,742,118,702,107"/>
-<area shape="rect" href="Generator_8h.html" title=" " alt="" coords="853,152,952,177"/>
-<area shape="poly" title=" " alt="" coords="685,101,848,146,847,151,684,107"/>
-<area shape="rect" title=" " alt="" coords="5,152,133,177"/>
-<area shape="poly" title=" " alt="" coords="555,105,148,154,147,149,555,100"/>
-<area shape="rect" title=" " alt="" coords="158,152,223,177"/>
-<area shape="poly" title=" " alt="" coords="555,106,411,125,237,155,236,149,410,120,555,100"/>
-<area shape="poly" title=" " alt="" coords="709,101,963,149,962,154,708,107"/>
-<area shape="rect" title=" " alt="" coords="248,152,352,177"/>
-<area shape="poly" title=" " alt="" coords="588,107,366,152,365,147,587,101"/>
-<area shape="rect" title=" " alt="" coords="376,152,480,177"/>
-<area shape="poly" title=" " alt="" coords="609,107,477,150,475,145,607,101"/>
-<area shape="rect" title=" " alt="" coords="504,152,584,177"/>
-<area shape="poly" title=" " alt="" coords="628,106,573,146,570,142,625,102"/>
-<area shape="rect" title=" " alt="" coords="608,152,677,177"/>
-<area shape="poly" title=" " alt="" coords="645,104,645,138,640,138,640,104"/>
-<area shape="poly" title=" " alt="" coords="854,178,580,228,579,222,853,172"/>
-<area shape="poly" title=" " alt="" coords="949,175,1140,222,1138,228,948,180"/>
-<area shape="rect" title=" " alt="" coords="736,225,811,251"/>
-<area shape="poly" title=" " alt="" coords="883,180,808,221,806,216,881,175"/>
-<area shape="rect" title=" " alt="" coords="835,225,893,251"/>
-<area shape="poly" title=" " alt="" coords="899,179,879,215,874,212,894,176"/>
-<area shape="rect" title=" " alt="" coords="918,225,1042,251"/>
-<area shape="poly" title=" " alt="" coords="917,175,959,214,955,218,913,179"/>
-<area shape="rect" title=" " alt="" coords="1239,225,1299,251"/>
-<area shape="poly" title=" " alt="" coords="953,173,964,175,1094,197,1227,222,1226,228,1093,202,964,180,952,178"/>
-<area shape="rect" title=" " alt="" coords="1066,225,1129,251"/>
-<area shape="poly" title=" " alt="" coords="935,175,1054,218,1052,223,933,180"/>
-<area shape="rect" title=" " alt="" coords="590,225,711,251"/>
-<area shape="poly" title=" " alt="" coords="863,180,706,224,704,219,861,175"/>
-<area shape="poly" title=" " alt="" coords="1222,103,1246,151,1266,211,1261,212,1242,153,1218,105"/>
-<area shape="rect" title=" " alt="" coords="1153,152,1231,177"/>
-<area shape="poly" title=" " alt="" coords="1212,105,1202,140,1197,138,1207,104"/>
+<area shape="poly" title=" " alt="" coords="1408,31,1408,65,1403,65,1403,31"/>
+<area shape="rect" href="PythiaUnits_8h.html" title=" " alt="" coords="1516,79,1625,104"/>
+<area shape="poly" title=" " alt="" coords="1433,28,1532,71,1530,76,1431,33"/>
+<area shape="rect" title=" " alt="" coords="1650,79,1782,104"/>
+<area shape="poly" title=" " alt="" coords="1456,28,1653,73,1652,78,1455,33"/>
+<area shape="rect" title=" " alt="" coords="1807,79,1881,104"/>
+<area shape="poly" title=" " alt="" coords="1493,28,1630,48,1794,76,1793,81,1629,53,1492,33"/>
+<area shape="rect" title=" " alt="" coords="1905,79,1996,104"/>
+<area shape="poly" title=" " alt="" coords="1519,28,1691,48,1892,76,1891,81,1690,53,1518,33"/>
+<area shape="rect" title=" " alt="" coords="331,152,408,177"/>
+<area shape="poly" title=" " alt="" coords="507,106,410,149,407,144,505,102"/>
+<area shape="rect" title=" " alt="" coords="225,225,325,251"/>
+<area shape="poly" title=" " alt="" coords="521,106,478,141,421,180,372,204,324,223,322,218,369,199,419,175,475,137,518,102"/>
+<area shape="rect" href="Generator_8h.html" title=" " alt="" coords="483,152,581,177"/>
+<area shape="poly" title=" " alt="" coords="535,104,535,138,529,138,529,104"/>
+<area shape="rect" title=" " alt="" coords="605,152,733,177"/>
+<area shape="poly" title=" " alt="" coords="555,102,636,143,634,148,553,106"/>
+<area shape="rect" title=" " alt="" coords="758,152,823,177"/>
+<area shape="poly" title=" " alt="" coords="574,101,746,148,744,153,573,107"/>
+<area shape="poly" title=" " alt="" coords="620,100,776,120,963,149,962,155,775,125,619,105"/>
+<area shape="rect" title=" " alt="" coords="848,152,952,177"/>
+<area shape="poly" title=" " alt="" coords="592,101,835,148,834,153,591,107"/>
+<area shape="rect" title=" " alt="" coords="5,152,109,177"/>
+<area shape="poly" title=" " alt="" coords="448,107,123,155,122,149,447,101"/>
+<area shape="rect" title=" " alt="" coords="133,152,213,177"/>
+<area shape="poly" title=" " alt="" coords="471,107,228,154,227,149,470,101"/>
+<area shape="rect" title=" " alt="" coords="237,152,307,177"/>
+<area shape="poly" title=" " alt="" coords="491,107,321,153,319,148,490,101"/>
+<area shape="poly" title=" " alt="" coords="491,180,330,224,329,219,490,175"/>
+<area shape="poly" title=" " alt="" coords="582,173,594,175,955,228,954,233,593,180,581,178"/>
+<area shape="rect" title=" " alt="" coords="495,225,569,251"/>
+<area shape="poly" title=" " alt="" coords="535,178,535,212,529,212,529,178"/>
+<area shape="rect" title=" " alt="" coords="593,225,652,251"/>
+<area shape="poly" title=" " alt="" coords="548,175,599,214,595,219,545,179"/>
+<area shape="rect" title=" " alt="" coords="677,225,801,251"/>
+<area shape="poly" title=" " alt="" coords="566,175,693,218,691,223,564,180"/>
+<area shape="rect" title=" " alt="" coords="1085,225,1145,251"/>
+<area shape="poly" title=" " alt="" coords="582,173,594,175,720,191,819,200,918,208,1044,223,1071,227,1071,232,1044,228,917,213,818,205,719,196,593,180,581,178"/>
+<area shape="rect" title=" " alt="" coords="825,225,887,251"/>
+<area shape="poly" title=" " alt="" coords="582,173,812,223,811,228,581,178"/>
+<area shape="rect" title=" " alt="" coords="349,225,470,251"/>
+<area shape="poly" title=" " alt="" coords="514,180,442,221,440,216,511,175"/>
+<area shape="poly" title=" " alt="" coords="1207,106,1173,154,1132,215,1127,212,1168,150,1203,103"/>
+<area shape="rect" title=" " alt="" coords="1182,152,1261,177"/>
+<area shape="poly" title=" " alt="" coords="1217,104,1221,138,1216,139,1212,105"/>
+<area shape="rect" href="ShipUnit_8h.html" title=" " alt="" coords="1526,152,1615,177"/>
+<area shape="poly" title=" " alt="" coords="1573,104,1573,138,1568,138,1568,104"/>
 </map>
 </div>
 </div>
@@ -167,48 +172,14 @@ Include dependency graph for HNLPythia8Generator.cxx:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:a20066c2dc15c8a3bac6f429aacdb4c30" id="r_a20066c2dc15c8a3bac6f429aacdb4c30"><td class="memItemLeft" align="right" valign="top">const Double_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="HNLPythia8Generator_8cxx.html#a20066c2dc15c8a3bac6f429aacdb4c30">cm</a> = 10.</td></tr>
-<tr class="separator:a20066c2dc15c8a3bac6f429aacdb4c30"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a32353fc987d3007179d764d4d51be9d8" id="r_a32353fc987d3007179d764d4d51be9d8"><td class="memItemLeft" align="right" valign="top">const Double_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="HNLPythia8Generator_8cxx.html#a32353fc987d3007179d764d4d51be9d8">mm</a> = 1.</td></tr>
-<tr class="separator:a32353fc987d3007179d764d4d51be9d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a918077216eb661c02ed2a5bfd06bb77d" id="r_a918077216eb661c02ed2a5bfd06bb77d"><td class="memItemLeft" align="right" valign="top">const Double_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="HNLPythia8Generator_8cxx.html#a918077216eb661c02ed2a5bfd06bb77d">c_light</a> = 2.99792458e+10</td></tr>
-<tr class="separator:a918077216eb661c02ed2a5bfd06bb77d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a45648dd438688a7a09405883819913f5" id="r_a45648dd438688a7a09405883819913f5"><td class="memItemLeft" align="right" valign="top">constexpr Double_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="HNLPythia8Generator_8cxx.html#a45648dd438688a7a09405883819913f5">kPythiaMm</a> = 1.</td></tr>
+<tr class="separator:a45648dd438688a7a09405883819913f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6282b7f4ada6dc7626d7d2627adb3b93" id="r_a6282b7f4ada6dc7626d7d2627adb3b93"><td class="memItemLeft" align="right" valign="top">constexpr Double_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="HNLPythia8Generator_8cxx.html#a6282b7f4ada6dc7626d7d2627adb3b93">kPythiaCm</a> = <a class="el" href="namespaceshipgen.html#ac34c2223302691f3db2e078530598bba">shipgen::kPythiaLengthPerCm</a></td></tr>
+<tr class="separator:a6282b7f4ada6dc7626d7d2627adb3b93"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af215ff526e2e21b94a2dfa6705c0243f" id="r_af215ff526e2e21b94a2dfa6705c0243f"><td class="memItemLeft" align="right" valign="top">const Bool_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="HNLPythia8Generator_8cxx.html#af215ff526e2e21b94a2dfa6705c0243f">debug</a> = false</td></tr>
 <tr class="separator:af215ff526e2e21b94a2dfa6705c0243f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Variable Documentation</h2>
-<a id="a918077216eb661c02ed2a5bfd06bb77d" name="a918077216eb661c02ed2a5bfd06bb77d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a918077216eb661c02ed2a5bfd06bb77d">&#9670;&#160;</a></span>c_light</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">const Double_t c_light = 2.99792458e+10</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="HNLPythia8Generator_8cxx_source.html#l00017">17</a> of file <a class="el" href="HNLPythia8Generator_8cxx_source.html">HNLPythia8Generator.cxx</a>.</p>
-
-</div>
-</div>
-<a id="a20066c2dc15c8a3bac6f429aacdb4c30" name="a20066c2dc15c8a3bac6f429aacdb4c30"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a20066c2dc15c8a3bac6f429aacdb4c30">&#9670;&#160;</a></span>cm</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">const Double_t cm = 10.</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="HNLPythia8Generator_8cxx_source.html#l00015">15</a> of file <a class="el" href="HNLPythia8Generator_8cxx_source.html">HNLPythia8Generator.cxx</a>.</p>
-
-</div>
-</div>
 <a id="af215ff526e2e21b94a2dfa6705c0243f" name="af215ff526e2e21b94a2dfa6705c0243f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af215ff526e2e21b94a2dfa6705c0243f">&#9670;&#160;</a></span>debug</h2>
 
@@ -221,23 +192,55 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="HNLPythia8Generator_8cxx_source.html#l00019">19</a> of file <a class="el" href="HNLPythia8Generator_8cxx_source.html">HNLPythia8Generator.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="HNLPythia8Generator_8cxx_source.html#l00022">22</a> of file <a class="el" href="HNLPythia8Generator_8cxx_source.html">HNLPythia8Generator.cxx</a>.</p>
 
 </div>
 </div>
-<a id="a32353fc987d3007179d764d4d51be9d8" name="a32353fc987d3007179d764d4d51be9d8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a32353fc987d3007179d764d4d51be9d8">&#9670;&#160;</a></span>mm</h2>
+<a id="a6282b7f4ada6dc7626d7d2627adb3b93" name="a6282b7f4ada6dc7626d7d2627adb3b93"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6282b7f4ada6dc7626d7d2627adb3b93">&#9670;&#160;</a></span>kPythiaCm</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const Double_t mm = 1.</td>
+          <td class="memname">constexpr Double_t kPythiaCm = <a class="el" href="namespaceshipgen.html#ac34c2223302691f3db2e078530598bba">shipgen::kPythiaLengthPerCm</a></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="HNLPythia8Generator_8cxx_source.html#l00016">16</a> of file <a class="el" href="HNLPythia8Generator_8cxx_source.html">HNLPythia8Generator.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="HNLPythia8Generator_8cxx_source.html#l00021">21</a> of file <a class="el" href="HNLPythia8Generator_8cxx_source.html">HNLPythia8Generator.cxx</a>.</p>
+
+</div>
+</div>
+<a id="a45648dd438688a7a09405883819913f5" name="a45648dd438688a7a09405883819913f5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a45648dd438688a7a09405883819913f5">&#9670;&#160;</a></span>kPythiaMm</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr Double_t kPythiaMm = 1.</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="HNLPythia8Generator_8cxx_source.html#l00020">20</a> of file <a class="el" href="HNLPythia8Generator_8cxx_source.html">HNLPythia8Generator.cxx</a>.</p>
 
 </div>
 </div>

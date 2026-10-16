@@ -313,7 +313,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">   32</span>  <a class="code hl_variable" href="classDPPythia8Generator.html#ad2753d1d5d2b6c5a70797e157693e016">fLmax</a> = 12000. * <a class="code hl_variable" href="ShipBellField_8cxx.html#a9842927f33236414d34831f59ed1c28f">cm</a>;  <span class="comment">// mm maximum decay position z</span></div>
 <div class="line"><span class="lineno">   33</span>  <a class="code hl_variable" href="classDPPythia8Generator.html#a6a5f8301c1bcbc7e8db4019900638c53">fpbrem</a> = kFALSE;</div>
 <div class="line"><span class="lineno">   34</span>  <a class="code hl_variable" href="classDPPythia8Generator.html#ada885c6f0a157ff2257c3e110df06122">fpbremPDF</a> = <span class="keyword">nullptr</span>;</div>
-<div class="line"><span class="lineno">   35</span>  <a class="code hl_variable" href="classDPPythia8Generator.html#a48b1775857ce84453cf944cd7b7c83d4">fsmearBeam</a> = 8 * <a class="code hl_variable" href="exitHadronAbsorber_8cxx.html#ab2a567bfbaee880f55a40bacfbb4bd3c">mm</a>;  <span class="comment">// default value for smearing beam (8 mm)</span></div>
+<div class="line"><span class="lineno">   35</span>  <a class="code hl_variable" href="classDPPythia8Generator.html#a48b1775857ce84453cf944cd7b7c83d4">fsmearBeam</a> = 8 * <a class="code hl_variable" href="namespacehepunit.html#aa8d55bedeb75dbb6b70fd3d2149fd02a">mm</a>;  <span class="comment">// default value for smearing beam (8 mm)</span></div>
 <div class="line"><span class="lineno">   36</span>  <a class="code hl_variable" href="classDPPythia8Generator.html#ae209e45722c4324df1d4d9af7838c1b6">fPaintBeam</a> = 5 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a9842927f33236414d34831f59ed1c28f">cm</a>;  <span class="comment">// default value for painting beam (5 cm)</span></div>
 <div class="line"><span class="lineno">   37</span>  <a class="code hl_variable" href="classDPPythia8Generator.html#a729a899451e7977dd6553967bb2188e3">fdy</a> = kFALSE;</div>
 <div class="line"><span class="lineno">   38</span>  <a class="code hl_variable" href="classDPPythia8Generator.html#aae58694f6b8530afffa27978daa71acf">fDPminM</a> = 0.5;</div>
@@ -339,7 +339,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="ttc" id="aclassDPPythia8Generator_html_add32973876a62b60efac6d7a92e10345"><div class="ttname"><a href="classDPPythia8Generator.html#add32973876a62b60efac6d7a92e10345">DPPythia8Generator::fId</a></div><div class="ttdeci">Int_t fId</div><div class="ttdef"><b>Definition</b> <a href="DPPythia8Generator_8h_source.html#l00098">DPPythia8Generator.h:98</a></div></div>
 <div class="ttc" id="aclassDPPythia8Generator_html_ae209e45722c4324df1d4d9af7838c1b6"><div class="ttname"><a href="classDPPythia8Generator.html#ae209e45722c4324df1d4d9af7838c1b6">DPPythia8Generator::fPaintBeam</a></div><div class="ttdeci">Double_t fPaintBeam</div><div class="ttdef"><b>Definition</b> <a href="DPPythia8Generator_8h_source.html#l00115">DPPythia8Generator.h:115</a></div></div>
 <div class="ttc" id="aclassDPPythia8Generator_html_afb8630e804ad1413145873d47a9ebc57"><div class="ttname"><a href="classDPPythia8Generator.html#afb8630e804ad1413145873d47a9ebc57">DPPythia8Generator::fMom</a></div><div class="ttdeci">Double_t fMom</div><div class="ttdef"><b>Definition</b> <a href="DPPythia8Generator_8h_source.html#l00096">DPPythia8Generator.h:96</a></div></div>
-<div class="ttc" id="aexitHadronAbsorber_8cxx_html_ab2a567bfbaee880f55a40bacfbb4bd3c"><div class="ttname"><a href="exitHadronAbsorber_8cxx.html#ab2a567bfbaee880f55a40bacfbb4bd3c">mm</a></div><div class="ttdeci">constexpr Double_t mm</div><div class="ttdef"><b>Definition</b> <a href="exitHadronAbsorber_8cxx_source.html#l00041">exitHadronAbsorber.cxx:41</a></div></div>
+<div class="ttc" id="anamespacehepunit_html_aa8d55bedeb75dbb6b70fd3d2149fd02a"><div class="ttname"><a href="namespacehepunit.html#aa8d55bedeb75dbb6b70fd3d2149fd02a">hepunit.mm</a></div><div class="ttdeci">float mm</div><div class="ttdef"><b>Definition</b> <a href="hepunit_8py_source.html#l00049">hepunit.py:49</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -367,11 +367,11 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p>destructor </p>
 
-<p class="definition">Definition at line <a class="el" href="DPPythia8Generator_8cxx_source.html#l00110">110</a> of file <a class="el" href="DPPythia8Generator_8cxx_source.html">DPPythia8Generator.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  110</span>                                        {</div>
-<div class="line"><span class="lineno">  111</span>  <span class="keyword">delete</span> <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>;</div>
-<div class="line"><span class="lineno">  112</span>  <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a> = <span class="keyword">nullptr</span>;</div>
-<div class="line"><span class="lineno">  113</span>}</div>
+<p class="definition">Definition at line <a class="el" href="DPPythia8Generator_8cxx_source.html#l00111">111</a> of file <a class="el" href="DPPythia8Generator_8cxx_source.html">DPPythia8Generator.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  111</span>                                        {</div>
+<div class="line"><span class="lineno">  112</span>  <span class="keyword">delete</span> <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>;</div>
+<div class="line"><span class="lineno">  113</span>  <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a> = <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">  114</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -522,25 +522,26 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">   85</span>    <a class="code hl_function" href="classDPPythia8Generator.html#aaf5583d052a6739dc78e1a76dce564bb">List</a>(<a class="code hl_variable" href="classDPPythia8Generator.html#acb5f2970c7d3531611c856faff2cacd9">fDP</a>);</div>
 <div class="line"><span class="lineno">   86</span>  }</div>
 <div class="line"><span class="lineno">   87</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a>) {</div>
-<div class="line"><span class="lineno">   88</span>    std::cout &lt;&lt; <span class="stringliteral">&quot;tau root PDG database &quot;</span> &lt;&lt; root_ctau</div>
-<div class="line"><span class="lineno">   89</span>              &lt;&lt; <span class="stringliteral">&quot;[s] ctau root = &quot;</span> &lt;&lt; root_ctau * 3e10 &lt;&lt; <span class="stringliteral">&quot;[cm]&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">   90</span>  }</div>
-<div class="line"><span class="lineno">   91</span>  <a class="code hl_variable" href="classDPPythia8Generator.html#acfd3be3b6cbb13221aa4580c6d342f2b">fctau</a> = <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;particleData.tau0(<a class="code hl_variable" href="classDPPythia8Generator.html#acb5f2970c7d3531611c856faff2cacd9">fDP</a>);  <span class="comment">//* 3.3333e-12</span></div>
-<div class="line"><span class="lineno">   92</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a>) {</div>
-<div class="line"><span class="lineno">   93</span>    std::cout &lt;&lt; <span class="stringliteral">&quot;ctau pythia &quot;</span> &lt;&lt; <a class="code hl_variable" href="classDPPythia8Generator.html#acfd3be3b6cbb13221aa4580c6d342f2b">fctau</a> &lt;&lt; <span class="stringliteral">&quot;[mm]&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">   94</span>  }</div>
-<div class="line"><span class="lineno">   95</span>  <span class="keywordtype">int</span> initPass = <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;init();</div>
-<div class="line"><span class="lineno">   96</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a>) {</div>
-<div class="line"><span class="lineno">   97</span>    std::cout &lt;&lt; <span class="stringliteral">&quot;Pythia initialisation bool: &quot;</span> &lt;&lt; initPass &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">   98</span>  }</div>
-<div class="line"><span class="lineno">   99</span> </div>
-<div class="line"><span class="lineno">  100</span>  <span class="keywordflow">if</span> (!initPass) {</div>
-<div class="line"><span class="lineno">  101</span>    LOG(fatal) &lt;&lt; <span class="stringliteral">&quot;Pythia initialisation failed&quot;</span>;</div>
-<div class="line"><span class="lineno">  102</span>    <span class="keywordflow">return</span> kFALSE;</div>
-<div class="line"><span class="lineno">  103</span>  }</div>
-<div class="line"><span class="lineno">  104</span> </div>
-<div class="line"><span class="lineno">  105</span>  <span class="keywordflow">return</span> kTRUE;</div>
-<div class="line"><span class="lineno">  106</span>}</div>
+<div class="line"><span class="lineno">   88</span>    std::cout &lt;&lt; <span class="stringliteral">&quot;tau root PDG database &quot;</span> &lt;&lt; root_ctau &lt;&lt; <span class="stringliteral">&quot;[s] ctau root = &quot;</span></div>
+<div class="line"><span class="lineno">   89</span>              &lt;&lt; root_ctau * <a class="code hl_variable" href="namespaceShipUnit.html#af5da50ee86db44fd81351c6c3a3dcf06">ShipUnit::s</a> * <a class="code hl_variable" href="namespaceShipUnit.html#aa5c80d1a788735fe9fd41b509583437b">ShipUnit::c_light</a> &lt;&lt; <span class="stringliteral">&quot;[cm]&quot;</span></div>
+<div class="line"><span class="lineno">   90</span>              &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">   91</span>  }</div>
+<div class="line"><span class="lineno">   92</span>  <a class="code hl_variable" href="classDPPythia8Generator.html#acfd3be3b6cbb13221aa4580c6d342f2b">fctau</a> = <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;particleData.tau0(<a class="code hl_variable" href="classDPPythia8Generator.html#acb5f2970c7d3531611c856faff2cacd9">fDP</a>);  <span class="comment">//* 3.3333e-12</span></div>
+<div class="line"><span class="lineno">   93</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a>) {</div>
+<div class="line"><span class="lineno">   94</span>    std::cout &lt;&lt; <span class="stringliteral">&quot;ctau pythia &quot;</span> &lt;&lt; <a class="code hl_variable" href="classDPPythia8Generator.html#acfd3be3b6cbb13221aa4580c6d342f2b">fctau</a> &lt;&lt; <span class="stringliteral">&quot;[mm]&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">   95</span>  }</div>
+<div class="line"><span class="lineno">   96</span>  <span class="keywordtype">int</span> initPass = <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;init();</div>
+<div class="line"><span class="lineno">   97</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a>) {</div>
+<div class="line"><span class="lineno">   98</span>    std::cout &lt;&lt; <span class="stringliteral">&quot;Pythia initialisation bool: &quot;</span> &lt;&lt; initPass &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">   99</span>  }</div>
+<div class="line"><span class="lineno">  100</span> </div>
+<div class="line"><span class="lineno">  101</span>  <span class="keywordflow">if</span> (!initPass) {</div>
+<div class="line"><span class="lineno">  102</span>    LOG(fatal) &lt;&lt; <span class="stringliteral">&quot;Pythia initialisation failed&quot;</span>;</div>
+<div class="line"><span class="lineno">  103</span>    <span class="keywordflow">return</span> kFALSE;</div>
+<div class="line"><span class="lineno">  104</span>  }</div>
+<div class="line"><span class="lineno">  105</span> </div>
+<div class="line"><span class="lineno">  106</span>  <span class="keywordflow">return</span> kTRUE;</div>
+<div class="line"><span class="lineno">  107</span>}</div>
 <div class="ttc" id="aDPPythia8Generator_8cxx_html_a07cdd66ebb44c854868e1f85a375ac1e"><div class="ttname"><a href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a></div><div class="ttdeci">const Int_t debug</div><div class="ttdef"><b>Definition</b> <a href="DPPythia8Generator_8cxx_source.html#l00023">DPPythia8Generator.cxx:23</a></div></div>
 <div class="ttc" id="aclassDPPythia8Generator_html_a0ec98e4205363314266e3b2df49db2fe"><div class="ttname"><a href="classDPPythia8Generator.html#a0ec98e4205363314266e3b2df49db2fe">DPPythia8Generator::fUseRandom1</a></div><div class="ttdeci">Bool_t fUseRandom1</div><div class="ttdef"><b>Definition</b> <a href="DPPythia8Generator_8h_source.html#l00099">DPPythia8Generator.h:99</a></div></div>
 <div class="ttc" id="aclassDPPythia8Generator_html_a911d2f27f33f472d4f105e7b5133f7bf"><div class="ttname"><a href="classDPPythia8Generator.html#a911d2f27f33f472d4f105e7b5133f7bf">DPPythia8Generator::fUseRandom3</a></div><div class="ttdeci">Bool_t fUseRandom3</div><div class="ttdef"><b>Definition</b> <a href="DPPythia8Generator_8h_source.html#l00100">DPPythia8Generator.h:100</a></div></div>
@@ -548,6 +549,8 @@ Additional Inherited Members</h2></td></tr>
 <div class="ttc" id="aclassDPPythia8Generator_html_acab6ca371a31f96e14fa4e5d8fdce61d"><div class="ttname"><a href="classDPPythia8Generator.html#acab6ca371a31f96e14fa4e5d8fdce61d">DPPythia8Generator::fRandomEngine</a></div><div class="ttdeci">std::shared_ptr&lt; Pythia8::RndmEngine &gt; fRandomEngine</div><div class="ttdef"><b>Definition</b> <a href="DPPythia8Generator_8h_source.html#l00092">DPPythia8Generator.h:92</a></div></div>
 <div class="ttc" id="aclassDPPythia8Generator_html_acfd3be3b6cbb13221aa4580c6d342f2b"><div class="ttname"><a href="classDPPythia8Generator.html#acfd3be3b6cbb13221aa4580c6d342f2b">DPPythia8Generator::fctau</a></div><div class="ttdeci">Double_t fctau</div><div class="ttdef"><b>Definition</b> <a href="DPPythia8Generator_8h_source.html#l00113">DPPythia8Generator.h:113</a></div></div>
 <div class="ttc" id="aclassDPPythia8Generator_html_af8906a85587568a7649963073e20d6de"><div class="ttname"><a href="classDPPythia8Generator.html#af8906a85587568a7649963073e20d6de">DPPythia8Generator::fn</a></div><div class="ttdeci">Int_t fn</div><div class="ttdef"><b>Definition</b> <a href="DPPythia8Generator_8h_source.html#l00116">DPPythia8Generator.h:116</a></div></div>
+<div class="ttc" id="anamespaceShipUnit_html_aa5c80d1a788735fe9fd41b509583437b"><div class="ttname"><a href="namespaceShipUnit.html#aa5c80d1a788735fe9fd41b509583437b">ShipUnit::c_light</a></div><div class="ttdeci">constexpr double c_light</div><div class="ttdef"><b>Definition</b> <a href="ShipUnit_8h_source.html#l00044">ShipUnit.h:44</a></div></div>
+<div class="ttc" id="anamespaceShipUnit_html_af5da50ee86db44fd81351c6c3a3dcf06"><div class="ttname"><a href="namespaceShipUnit.html#af5da50ee86db44fd81351c6c3a3dcf06">ShipUnit::s</a></div><div class="ttdeci">constexpr double s</div><div class="ttdef"><b>Definition</b> <a href="ShipUnit_8h_source.html#l00031">ShipUnit.h:31</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -814,264 +817,263 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p>public method ReadEvent </p>
 
-<p class="definition">Definition at line <a class="el" href="DPPythia8Generator_8cxx_source.html#l00117">117</a> of file <a class="el" href="DPPythia8Generator_8cxx_source.html">DPPythia8Generator.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  117</span>                                                              {</div>
-<div class="line"><span class="lineno">  118</span>  <span class="keyword">auto</span> [dx, <a class="code hl_variable" href="namespacerun__fixedTarget.html#a3112a5faf6aba672ca6db63ae2691c5c">dy</a>] = <a class="code hl_function" href="BeamSmearingUtils_8cxx.html#adf7404615c66ba9771106a05a6c0abbc">CalculateBeamOffset</a>(<a class="code hl_variable" href="classDPPythia8Generator.html#a48b1775857ce84453cf944cd7b7c83d4">fsmearBeam</a>, <a class="code hl_variable" href="classDPPythia8Generator.html#ae209e45722c4324df1d4d9af7838c1b6">fPaintBeam</a>);</div>
-<div class="line"><span class="lineno">  119</span>  Double_t <a class="code hl_variable" href="namespacemakeCascade.html#a7fa96a16bd8cee0441b6cec4aeda8761">tp</a>, tS, zp, xp, yp, zS, xS, yS, <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a595c352a9b1a3ae33b95fc5937803a60">pz</a>, <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#acb959a726115115cca6fd66067b7e986">px</a>, <a class="code hl_variable" href="namespacerunPythia8.html#ad6b7ec130f84165691f3d15beb4ac6ea">py</a>, e, <a class="code hl_variable" href="namespacemakeMuonEM.html#a04298ed1d5fc7dbec7e764537bfec5d5">w</a>;</div>
-<div class="line"><span class="lineno">  120</span>  Double_t tm, zm, xm, ym, pmz, pmx, pmy, em;</div>
-<div class="line"><span class="lineno">  121</span>  Int_t im;</div>
-<div class="line"><span class="lineno">  122</span>  Int_t imout;</div>
-<div class="line"><span class="lineno">  123</span>  Double_t tN, zN, xN, yN, pzN, pxN, pyN, eN;</div>
-<div class="line"><span class="lineno">  124</span> </div>
-<div class="line"><span class="lineno">  125</span>  <span class="keywordtype">int</span> iDP =</div>
-<div class="line"><span class="lineno">  126</span>      0;  <span class="comment">// index of the chosen DP, also ensures that at least 1 DP is produced</span></div>
-<div class="line"><span class="lineno">  127</span>  <span class="comment">// Pythia indices of the particles stored on the FairShip MCTrack stack.</span></div>
-<div class="line"><span class="lineno">  128</span>  <span class="comment">// In this implementation the exported chain is:</span></div>
-<div class="line"><span class="lineno">  129</span>  <span class="comment">//   [Pythia event[1] beam particle, mother meson, dark photon, daughters...]</span></div>
-<div class="line"><span class="lineno">  130</span>  <span class="comment">// Pythia event[0] is the internal system entry and is not exported.</span></div>
-<div class="line"><span class="lineno">  131</span>  std::vector&lt;int&gt;</div>
-<div class="line"><span class="lineno">  132</span>      dec_chain;  <span class="comment">// pythia indices of the particles to be stored on the stack</span></div>
-<div class="line"><span class="lineno">  133</span>  std::vector&lt;int&gt; dpvec;  <span class="comment">// pythia indices of DP particles</span></div>
-<div class="line"><span class="lineno">  134</span> </div>
-<div class="line"><span class="lineno">  135</span>  <span class="keywordflow">do</span> {</div>
-<div class="line"><span class="lineno">  136</span>    <span class="comment">// clear containers at every retry to avoid mixing different events</span></div>
-<div class="line"><span class="lineno">  137</span>    dec_chain.clear();</div>
-<div class="line"><span class="lineno">  138</span>    dpvec.clear();</div>
-<div class="line"><span class="lineno">  139</span> </div>
-<div class="line"><span class="lineno">  140</span>    <span class="comment">// bit for proton brem</span></div>
-<div class="line"><span class="lineno">  141</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classDPPythia8Generator.html#a6a5f8301c1bcbc7e8db4019900638c53">fpbrem</a>) {</div>
-<div class="line"><span class="lineno">  142</span>      <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event.reset();</div>
-<div class="line"><span class="lineno">  143</span>      <span class="keywordtype">double</span> dpmom = 0;</div>
-<div class="line"><span class="lineno">  144</span>      <span class="keywordtype">double</span> thetain = 0;</div>
-<div class="line"><span class="lineno">  145</span>      <a class="code hl_variable" href="classDPPythia8Generator.html#ada885c6f0a157ff2257c3e110df06122">fpbremPDF</a>-&gt;GetRandom2(dpmom, thetain);</div>
-<div class="line"><span class="lineno">  146</span>      <span class="keywordtype">double</span> dpm = <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;particleData.m0(<a class="code hl_variable" href="classDPPythia8Generator.html#acb5f2970c7d3531611c856faff2cacd9">fDP</a>);</div>
-<div class="line"><span class="lineno">  147</span>      <span class="keywordtype">double</span> dpe = sqrt(dpmom * dpmom + dpm * dpm);</div>
-<div class="line"><span class="lineno">  148</span>      <span class="keywordtype">double</span> phiin = 2. * M_PI * gRandom-&gt;Rndm();</div>
-<div class="line"><span class="lineno">  149</span> </div>
-<div class="line"><span class="lineno">  150</span>      <span class="keywordflow">if</span> (<a class="code hl_variable" href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a> &gt; 1) {</div>
-<div class="line"><span class="lineno">  151</span>        std::cout &lt;&lt; <span class="stringliteral">&quot; Adding DP gun with p &quot;</span> &lt;&lt; dpmom &lt;&lt; <span class="stringliteral">&quot; m &quot;</span> &lt;&lt; dpm &lt;&lt; <span class="stringliteral">&quot; e &quot;</span></div>
-<div class="line"><span class="lineno">  152</span>                  &lt;&lt; dpe &lt;&lt; <span class="stringliteral">&quot; theta,phi &quot;</span> &lt;&lt; thetain &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> &lt;&lt; phiin</div>
-<div class="line"><span class="lineno">  153</span>                  &lt;&lt; std::endl</div>
-<div class="line"><span class="lineno">  154</span>                  &lt;&lt; std::flush;</div>
-<div class="line"><span class="lineno">  155</span>      }</div>
-<div class="line"><span class="lineno">  156</span>      <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event.append(<a class="code hl_variable" href="classDPPythia8Generator.html#acb5f2970c7d3531611c856faff2cacd9">fDP</a>, 1, 0, 0, dpmom * sin(thetain) * cos(phiin),</div>
-<div class="line"><span class="lineno">  157</span>                            dpmom * sin(thetain) * sin(phiin),</div>
-<div class="line"><span class="lineno">  158</span>                            dpmom * cos(thetain), dpe, dpm);</div>
-<div class="line"><span class="lineno">  159</span>    }</div>
-<div class="line"><span class="lineno">  160</span> </div>
-<div class="line"><span class="lineno">  161</span>    <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;next()) LOG(fatal) &lt;&lt; <span class="stringliteral">&quot;fPythia-&gt;next() failed&quot;</span>;</div>
-<div class="line"><span class="lineno">  162</span> </div>
-<div class="line"><span class="lineno">  163</span>    <span class="comment">// fPythia-&gt;event.list();</span></div>
-<div class="line"><span class="lineno">  164</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt; <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event.size(); <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>++) {</div>
-<div class="line"><span class="lineno">  165</span>      <span class="comment">// find all DP</span></div>
-<div class="line"><span class="lineno">  166</span>      <span class="keywordflow">if</span> (abs(<a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[i].id()) == <a class="code hl_variable" href="classDPPythia8Generator.html#acb5f2970c7d3531611c856faff2cacd9">fDP</a>) {</div>
-<div class="line"><span class="lineno">  167</span>        dpvec.push_back(i);</div>
-<div class="line"><span class="lineno">  168</span>      }</div>
-<div class="line"><span class="lineno">  169</span>    }</div>
-<div class="line"><span class="lineno">  170</span>    iDP = dpvec.size();</div>
-<div class="line"><span class="lineno">  171</span>    <a class="code hl_variable" href="classDPPythia8Generator.html#aa8145e9613e61e5a524d4530fd8d4417">fnDPtot</a> += iDP;</div>
-<div class="line"><span class="lineno">  172</span>    <span class="keywordflow">if</span> (iDP == 0) {</div>
-<div class="line"><span class="lineno">  173</span>      <a class="code hl_variable" href="classDPPythia8Generator.html#a722bfda314cdc37c7624d0923927cc04">fnRetries</a> += 1;</div>
-<div class="line"><span class="lineno">  174</span>    } <span class="keywordflow">else</span> {</div>
-<div class="line"><span class="lineno">  175</span>      <span class="comment">// filter DPs by vessel acceptance</span></div>
-<div class="line"><span class="lineno">  176</span>      std::vector&lt;int&gt; accepted;</div>
-<div class="line"><span class="lineno">  177</span>      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> idx : dpvec) {</div>
-<div class="line"><span class="lineno">  178</span>        <span class="keywordflow">if</span> (<a class="code hl_function" href="classSHiP_1_1Generator.html#a570b30362f29d5850f263c17e8245313">IsInVesselAcceptance</a>(<a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[idx].px(),</div>
-<div class="line"><span class="lineno">  179</span>                                 <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[idx].py(),</div>
-<div class="line"><span class="lineno">  180</span>                                 <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[idx].pz())) {</div>
-<div class="line"><span class="lineno">  181</span>          accepted.push_back(idx);</div>
-<div class="line"><span class="lineno">  182</span>        }</div>
-<div class="line"><span class="lineno">  183</span>      }</div>
-<div class="line"><span class="lineno">  184</span>      <span class="keywordflow">if</span> (accepted.empty()) {</div>
-<div class="line"><span class="lineno">  185</span>        iDP = 0;</div>
-<div class="line"><span class="lineno">  186</span>        dpvec.clear();</div>
-<div class="line"><span class="lineno">  187</span>        <a class="code hl_variable" href="classSHiP_1_1Generator.html#a66b0ff652a8c474c9609d2560d91e6ba">fnGeoRejects</a> += 1;</div>
-<div class="line"><span class="lineno">  188</span>        <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">  189</span>      }</div>
-<div class="line"><span class="lineno">  190</span>      <span class="keywordtype">int</span> r = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(gRandom-&gt;Uniform(0, accepted.size()));</div>
-<div class="line"><span class="lineno">  191</span>      <span class="keywordtype">int</span> <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> = accepted[r];</div>
-<div class="line"><span class="lineno">  192</span>      <span class="comment">// production vertex</span></div>
-<div class="line"><span class="lineno">  193</span>      zp = <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>].zProd();</div>
-<div class="line"><span class="lineno">  194</span>      xp = <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>].xProd();</div>
-<div class="line"><span class="lineno">  195</span>      yp = <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>].yProd();</div>
-<div class="line"><span class="lineno">  196</span>      <a class="code hl_variable" href="namespacemakeCascade.html#a7fa96a16bd8cee0441b6cec4aeda8761">tp</a> = <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>].tProd();</div>
-<div class="line"><span class="lineno">  197</span>      <span class="comment">// momentum</span></div>
-<div class="line"><span class="lineno">  198</span>      <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a595c352a9b1a3ae33b95fc5937803a60">pz</a> = <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>].pz();</div>
-<div class="line"><span class="lineno">  199</span>      <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#acb959a726115115cca6fd66067b7e986">px</a> = <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>].px();</div>
-<div class="line"><span class="lineno">  200</span>      <a class="code hl_variable" href="namespacerunPythia8.html#ad6b7ec130f84165691f3d15beb4ac6ea">py</a> = <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>].py();</div>
-<div class="line"><span class="lineno">  201</span>      e = <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>].e();</div>
-<div class="line"><span class="lineno">  202</span>      <span class="comment">// old decay vertex</span></div>
-<div class="line"><span class="lineno">  203</span>      <span class="keywordflow">if</span> (<a class="code hl_variable" href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a> &gt; 1) {</div>
-<div class="line"><span class="lineno">  204</span>        <span class="keywordtype">int</span> id1 = <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>].daughter1();</div>
-<div class="line"><span class="lineno">  205</span>        <span class="keywordtype">int</span> id2 = <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>].daughter2();</div>
-<div class="line"><span class="lineno">  206</span>        std::cout &lt;&lt; <span class="stringliteral">&quot; Debug: decay product of A: &quot;</span>;</div>
-<div class="line"><span class="lineno">  207</span>        <span class="keywordflow">if</span> (id1 &gt; 0)</div>
-<div class="line"><span class="lineno">  208</span>          std::cout &lt;&lt; <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[id1].id() &lt;&lt; <span class="stringliteral">&quot; &quot;</span>;</div>
-<div class="line"><span class="lineno">  209</span>        <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  210</span>          std::cout &lt;&lt; <span class="stringliteral">&quot;none &quot;</span>;</div>
-<div class="line"><span class="lineno">  211</span>        <span class="keywordflow">if</span> (id2 &gt; 0)</div>
-<div class="line"><span class="lineno">  212</span>          std::cout &lt;&lt; <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[id2].id();</div>
-<div class="line"><span class="lineno">  213</span>        <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  214</span>          std::cout &lt;&lt; <span class="stringliteral">&quot;none&quot;</span>;</div>
-<div class="line"><span class="lineno">  215</span>        std::cout &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  216</span>      }</div>
-<div class="line"><span class="lineno">  217</span> </div>
-<div class="line"><span class="lineno">  218</span>      <span class="comment">//  new decay vertex</span></div>
-<div class="line"><span class="lineno">  219</span>      Double_t LS = gRandom-&gt;Uniform(<a class="code hl_variable" href="classDPPythia8Generator.html#a2fbc6c8ec533bd12f6c37f08574e5343">fLmin</a> / mm, <a class="code hl_variable" href="classDPPythia8Generator.html#ad2753d1d5d2b6c5a70797e157693e016">fLmax</a> / mm);  <span class="comment">// in mm</span></div>
-<div class="line"><span class="lineno">  220</span>      Double_t <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a> = TMath::Sqrt(px * px + py * py + pz * pz);</div>
-<div class="line"><span class="lineno">  221</span>      Double_t lam = LS / <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>;</div>
-<div class="line"><span class="lineno">  222</span>      xS = xp + lam * <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#acb959a726115115cca6fd66067b7e986">px</a>;</div>
-<div class="line"><span class="lineno">  223</span>      yS = yp + lam * <a class="code hl_variable" href="namespacerunPythia8.html#ad6b7ec130f84165691f3d15beb4ac6ea">py</a>;</div>
-<div class="line"><span class="lineno">  224</span>      zS = zp + lam * <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a595c352a9b1a3ae33b95fc5937803a60">pz</a>;</div>
-<div class="line"><span class="lineno">  225</span>      Double_t gam = e / TMath::Sqrt(e * e - p * p);</div>
-<div class="line"><span class="lineno">  226</span>      Double_t <a class="code hl_variable" href="namespacemakeCascade.html#aa27c1c99785df8bad2319ff9aafec366">beta</a> = <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a> / e;</div>
-<div class="line"><span class="lineno">  227</span>      tS = <a class="code hl_variable" href="namespacemakeCascade.html#a7fa96a16bd8cee0441b6cec4aeda8761">tp</a> + LS / <a class="code hl_variable" href="namespacemakeCascade.html#aa27c1c99785df8bad2319ff9aafec366">beta</a>;  <span class="comment">// all in Pythia units</span></div>
-<div class="line"><span class="lineno">  228</span>      <a class="code hl_variable" href="namespacemakeMuonEM.html#a04298ed1d5fc7dbec7e764537bfec5d5">w</a> = TMath::Exp(-LS / (beta * gam * <a class="code hl_variable" href="classDPPythia8Generator.html#acfd3be3b6cbb13221aa4580c6d342f2b">fctau</a>)) *</div>
-<div class="line"><span class="lineno">  229</span>          ((<a class="code hl_variable" href="classDPPythia8Generator.html#ad2753d1d5d2b6c5a70797e157693e016">fLmax</a> / <a class="code hl_variable" href="exitHadronAbsorber_8cxx.html#ab2a567bfbaee880f55a40bacfbb4bd3c">mm</a> - <a class="code hl_variable" href="classDPPythia8Generator.html#a2fbc6c8ec533bd12f6c37f08574e5343">fLmin</a> / <a class="code hl_variable" href="exitHadronAbsorber_8cxx.html#ab2a567bfbaee880f55a40bacfbb4bd3c">mm</a>) / (beta * gam * <a class="code hl_variable" href="classDPPythia8Generator.html#acfd3be3b6cbb13221aa4580c6d342f2b">fctau</a>));</div>
-<div class="line"><span class="lineno">  230</span> </div>
-<div class="line"><span class="lineno">  231</span>      <span class="comment">// direct mother of the DP</span></div>
-<div class="line"><span class="lineno">  232</span>      im = (Int_t)<a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[i].mother1();</div>
-<div class="line"><span class="lineno">  233</span> </div>
-<div class="line"><span class="lineno">  234</span>      <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classDPPythia8Generator.html#a6a5f8301c1bcbc7e8db4019900638c53">fpbrem</a> &amp;&amp; im &gt; 0) {</div>
-<div class="line"><span class="lineno">  235</span>        <span class="comment">// Meson-production chain: store event[1] (beam nucleon), mother, DP</span></div>
-<div class="line"><span class="lineno">  236</span>        <span class="keywordflow">if</span> (<a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event.size() &gt; 1) {</div>
-<div class="line"><span class="lineno">  237</span>          zN = <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[1].zProd();</div>
-<div class="line"><span class="lineno">  238</span>          xN = <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[1].xProd();</div>
-<div class="line"><span class="lineno">  239</span>          yN = <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[1].yProd();</div>
-<div class="line"><span class="lineno">  240</span>          pzN = <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[1].pz();</div>
-<div class="line"><span class="lineno">  241</span>          pxN = <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[1].px();</div>
-<div class="line"><span class="lineno">  242</span>          pyN = <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[1].py();</div>
-<div class="line"><span class="lineno">  243</span>          eN = <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[1].e();</div>
-<div class="line"><span class="lineno">  244</span>          tN = <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[1].tProd();</div>
-<div class="line"><span class="lineno">  245</span> </div>
-<div class="line"><span class="lineno">  246</span>          cpg-&gt;AddTrack((Int_t)<a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[1].id(), pxN, pyN, pzN,</div>
-<div class="line"><span class="lineno">  247</span>                        xN * <a class="code hl_variable" href="exitHadronAbsorber_8cxx.html#ab2a567bfbaee880f55a40bacfbb4bd3c">mm</a> + dx, yN * <a class="code hl_variable" href="exitHadronAbsorber_8cxx.html#ab2a567bfbaee880f55a40bacfbb4bd3c">mm</a> + <a class="code hl_variable" href="namespacerun__fixedTarget.html#a3112a5faf6aba672ca6db63ae2691c5c">dy</a>, zN * <a class="code hl_variable" href="exitHadronAbsorber_8cxx.html#ab2a567bfbaee880f55a40bacfbb4bd3c">mm</a>, -1, <span class="keyword">false</span>, eN,</div>
-<div class="line"><span class="lineno">  248</span>                        tN * <a class="code hl_variable" href="exitHadronAbsorber_8cxx.html#ab2a567bfbaee880f55a40bacfbb4bd3c">mm</a> / <a class="code hl_variable" href="MuonPath_8h.html#a918077216eb661c02ed2a5bfd06bb77d">c_light</a>, <a class="code hl_variable" href="namespacemakeMuonEM.html#a04298ed1d5fc7dbec7e764537bfec5d5">w</a>);</div>
-<div class="line"><span class="lineno">  249</span> </div>
-<div class="line"><span class="lineno">  250</span>          dec_chain.push_back(1);</div>
-<div class="line"><span class="lineno">  251</span> </div>
-<div class="line"><span class="lineno">  252</span>          <span class="keywordflow">if</span> (<a class="code hl_variable" href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a> &gt; 1)</div>
-<div class="line"><span class="lineno">  253</span>            std::cout &lt;&lt; std::endl</div>
-<div class="line"><span class="lineno">  254</span>                      &lt;&lt; <span class="stringliteral">&quot; insert nucleon ancestor id 0&quot;</span></div>
-<div class="line"><span class="lineno">  255</span>                      &lt;&lt; <span class="stringliteral">&quot; pdg=&quot;</span> &lt;&lt; <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[1].id() &lt;&lt; <span class="stringliteral">&quot; pz = &quot;</span> &lt;&lt; pzN</div>
-<div class="line"><span class="lineno">  256</span>                      &lt;&lt; <span class="stringliteral">&quot; [GeV], z = &quot;</span> &lt;&lt; zN &lt;&lt; <span class="stringliteral">&quot; [mm] t = &quot;</span> &lt;&lt; tN &lt;&lt; <span class="stringliteral">&quot; [mm/c]&quot;</span></div>
-<div class="line"><span class="lineno">  257</span>                      &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  258</span>        }</div>
-<div class="line"><span class="lineno">  259</span> </div>
-<div class="line"><span class="lineno">  260</span>        zm = <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[im].zProd();</div>
-<div class="line"><span class="lineno">  261</span>        xm = <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[im].xProd();</div>
-<div class="line"><span class="lineno">  262</span>        ym = <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[im].yProd();</div>
-<div class="line"><span class="lineno">  263</span>        pmz = <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[im].pz();</div>
-<div class="line"><span class="lineno">  264</span>        pmx = <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[im].px();</div>
-<div class="line"><span class="lineno">  265</span>        pmy = <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[im].py();</div>
-<div class="line"><span class="lineno">  266</span>        em = <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[im].e();</div>
-<div class="line"><span class="lineno">  267</span>        tm = <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[im].tProd();</div>
-<div class="line"><span class="lineno">  268</span> </div>
-<div class="line"><span class="lineno">  269</span>        <span class="comment">// mother of the meson is track 0 (the beam nucleon)</span></div>
-<div class="line"><span class="lineno">  270</span>        imout = 0;</div>
-<div class="line"><span class="lineno">  271</span> </div>
-<div class="line"><span class="lineno">  272</span>        cpg-&gt;AddTrack(</div>
-<div class="line"><span class="lineno">  273</span>            (Int_t)<a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[im].id(), pmx, pmy, pmz, xm * <a class="code hl_variable" href="exitHadronAbsorber_8cxx.html#ab2a567bfbaee880f55a40bacfbb4bd3c">mm</a> + dx,</div>
-<div class="line"><span class="lineno">  274</span>            ym * <a class="code hl_variable" href="exitHadronAbsorber_8cxx.html#ab2a567bfbaee880f55a40bacfbb4bd3c">mm</a> + <a class="code hl_variable" href="namespacerun__fixedTarget.html#a3112a5faf6aba672ca6db63ae2691c5c">dy</a>, zm * <a class="code hl_variable" href="exitHadronAbsorber_8cxx.html#ab2a567bfbaee880f55a40bacfbb4bd3c">mm</a>, imout, <span class="keyword">false</span>, em, tm * <a class="code hl_variable" href="exitHadronAbsorber_8cxx.html#ab2a567bfbaee880f55a40bacfbb4bd3c">mm</a> / <a class="code hl_variable" href="MuonPath_8h.html#a918077216eb661c02ed2a5bfd06bb77d">c_light</a>,</div>
-<div class="line"><span class="lineno">  275</span>            <a class="code hl_variable" href="namespacemakeMuonEM.html#a04298ed1d5fc7dbec7e764537bfec5d5">w</a>);  <span class="comment">// convert pythia&#39;s (x,y,z[mm], t[mm/c]) to ([cm], [s])</span></div>
-<div class="line"><span class="lineno">  276</span> </div>
-<div class="line"><span class="lineno">  277</span>        <span class="comment">// mother of the DP is track 1 (the meson)</span></div>
-<div class="line"><span class="lineno">  278</span>        cpg-&gt;AddTrack(<a class="code hl_variable" href="classDPPythia8Generator.html#acb5f2970c7d3531611c856faff2cacd9">fDP</a>, px, py, pz, xp * mm + dx, yp * mm + dy, zp * mm, 1,</div>
-<div class="line"><span class="lineno">  279</span>                      <span class="keyword">false</span>, e, tp * mm / <a class="code hl_variable" href="MuonPath_8h.html#a918077216eb661c02ed2a5bfd06bb77d">c_light</a>, w);</div>
-<div class="line"><span class="lineno">  280</span> </div>
-<div class="line"><span class="lineno">  281</span>        <span class="comment">// bookkeep the indices of stored particles</span></div>
-<div class="line"><span class="lineno">  282</span>        dec_chain.push_back(im);</div>
-<div class="line"><span class="lineno">  283</span>        dec_chain.push_back(i);</div>
-<div class="line"><span class="lineno">  284</span> </div>
-<div class="line"><span class="lineno">  285</span>        <span class="keywordflow">if</span> (<a class="code hl_variable" href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a> &gt; 1)</div>
-<div class="line"><span class="lineno">  286</span>          std::cout &lt;&lt; std::endl</div>
-<div class="line"><span class="lineno">  287</span>                    &lt;&lt; <span class="stringliteral">&quot; insert mother id &quot;</span> &lt;&lt; im</div>
-<div class="line"><span class="lineno">  288</span>                    &lt;&lt; <span class="stringliteral">&quot; pdg=&quot;</span> &lt;&lt; <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[im].id() &lt;&lt; <span class="stringliteral">&quot; pmz = &quot;</span> &lt;&lt; pmz</div>
-<div class="line"><span class="lineno">  289</span>                    &lt;&lt; <span class="stringliteral">&quot; [GeV],  zm = &quot;</span> &lt;&lt; zm &lt;&lt; <span class="stringliteral">&quot; [mm] tm = &quot;</span> &lt;&lt; tm</div>
-<div class="line"><span class="lineno">  290</span>                    &lt;&lt; <span class="stringliteral">&quot; [mm/c]&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  291</span>        <span class="keywordflow">if</span> (<a class="code hl_variable" href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a> &gt; 1)</div>
-<div class="line"><span class="lineno">  292</span>          std::cout &lt;&lt; <span class="stringliteral">&quot; ----&gt; insert DP id &quot;</span> &lt;&lt; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt;&lt; <span class="stringliteral">&quot; pdg=&quot;</span> &lt;&lt; <a class="code hl_variable" href="classDPPythia8Generator.html#acb5f2970c7d3531611c856faff2cacd9">fDP</a></div>
-<div class="line"><span class="lineno">  293</span>                    &lt;&lt; <span class="stringliteral">&quot; pz = &quot;</span> &lt;&lt; <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a595c352a9b1a3ae33b95fc5937803a60">pz</a> &lt;&lt; <span class="stringliteral">&quot; [GeV] zp = &quot;</span> &lt;&lt; zp</div>
-<div class="line"><span class="lineno">  294</span>                    &lt;&lt; <span class="stringliteral">&quot; [mm] tp = &quot;</span> &lt;&lt; <a class="code hl_variable" href="namespacemakeCascade.html#a7fa96a16bd8cee0441b6cec4aeda8761">tp</a> &lt;&lt; <span class="stringliteral">&quot; [mm/c]&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  295</span>      } <span class="keywordflow">else</span> {</div>
-<div class="line"><span class="lineno">  296</span>        <span class="comment">// Proton bremsstrahlung or no valid mother: export only the DP as root</span></div>
-<div class="line"><span class="lineno">  297</span>        cpg-&gt;AddTrack(<a class="code hl_variable" href="classDPPythia8Generator.html#acb5f2970c7d3531611c856faff2cacd9">fDP</a>, px, py, pz, xp * mm + dx, yp * mm + dy, zp * mm, -1,</div>
-<div class="line"><span class="lineno">  298</span>                      <span class="keyword">false</span>, e, tp * mm / <a class="code hl_variable" href="MuonPath_8h.html#a918077216eb661c02ed2a5bfd06bb77d">c_light</a>, w);</div>
-<div class="line"><span class="lineno">  299</span>        dec_chain.push_back(i);</div>
-<div class="line"><span class="lineno">  300</span> </div>
-<div class="line"><span class="lineno">  301</span>        <span class="keywordflow">if</span> (<a class="code hl_variable" href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a> &gt; 1)</div>
-<div class="line"><span class="lineno">  302</span>          std::cout &lt;&lt; <span class="stringliteral">&quot; ----&gt; insert DP (root) id &quot;</span> &lt;&lt; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt;&lt; <span class="stringliteral">&quot; pdg=&quot;</span> &lt;&lt; <a class="code hl_variable" href="classDPPythia8Generator.html#acb5f2970c7d3531611c856faff2cacd9">fDP</a></div>
-<div class="line"><span class="lineno">  303</span>                    &lt;&lt; <span class="stringliteral">&quot; pz = &quot;</span> &lt;&lt; <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a595c352a9b1a3ae33b95fc5937803a60">pz</a> &lt;&lt; <span class="stringliteral">&quot; [GeV] zp = &quot;</span> &lt;&lt; zp</div>
-<div class="line"><span class="lineno">  304</span>                    &lt;&lt; <span class="stringliteral">&quot; [mm] tp = &quot;</span> &lt;&lt; <a class="code hl_variable" href="namespacemakeCascade.html#a7fa96a16bd8cee0441b6cec4aeda8761">tp</a> &lt;&lt; <span class="stringliteral">&quot; [mm/c]&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  305</span>      }</div>
-<div class="line"><span class="lineno">  306</span>      iDP = <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>;</div>
-<div class="line"><span class="lineno">  307</span>    }</div>
-<div class="line"><span class="lineno">  308</span>  } <span class="keywordflow">while</span> (iDP ==</div>
-<div class="line"><span class="lineno">  309</span>           0);  <span class="comment">// ----------- avoid rare empty events w/o any DP&#39;s produced</span></div>
-<div class="line"><span class="lineno">  310</span> </div>
-<div class="line"><span class="lineno">  311</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classDPPythia8Generator.html#a8d6843273b93fbcf7e9a60e631122a20">fShipEventNr</a> % 100 == 0) {</div>
-<div class="line"><span class="lineno">  312</span>    LOGF(info, <span class="stringliteral">&quot;ship event %i / pythia event-nr %i&quot;</span>, <a class="code hl_variable" href="classDPPythia8Generator.html#a8d6843273b93fbcf7e9a60e631122a20">fShipEventNr</a>, <a class="code hl_variable" href="classDPPythia8Generator.html#af8906a85587568a7649963073e20d6de">fn</a>);</div>
-<div class="line"><span class="lineno">  313</span>  }</div>
-<div class="line"><span class="lineno">  314</span>  <a class="code hl_variable" href="classDPPythia8Generator.html#a8d6843273b93fbcf7e9a60e631122a20">fShipEventNr</a> += 1;</div>
-<div class="line"><span class="lineno">  315</span>  <span class="comment">// number of prefix entries (nucleon + mother + DP, or just DP for fpbrem)</span></div>
-<div class="line"><span class="lineno">  316</span>  <span class="keywordtype">size_t</span> prefix_len = dec_chain.size();</div>
-<div class="line"><span class="lineno">  317</span>  <span class="comment">// fill a container with pythia indices of the DP decay chain</span></div>
-<div class="line"><span class="lineno">  318</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a> &gt; 1) std::cout &lt;&lt; <span class="stringliteral">&quot;Filling daughter particles&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  319</span>  <span class="comment">// if (!hadDecay){</span></div>
-<div class="line"><span class="lineno">  320</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> k = 0; <a class="code hl_variable" href="namespacerunPythia8.html#a4cd74a33c53eaeef70fcb6b448b9b285">k</a> &lt; <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event.size(); <a class="code hl_variable" href="namespacerunPythia8.html#a4cd74a33c53eaeef70fcb6b448b9b285">k</a>++) {</div>
-<div class="line"><span class="lineno">  321</span>    <span class="comment">// if daughter of DP, copy</span></div>
-<div class="line"><span class="lineno">  322</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a> &gt; 1)</div>
-<div class="line"><span class="lineno">  323</span>      std::cout &lt;&lt; <a class="code hl_variable" href="namespacerunPythia8.html#a4cd74a33c53eaeef70fcb6b448b9b285">k</a> &lt;&lt; <span class="stringliteral">&quot; pdg =&quot;</span> &lt;&lt; <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[<a class="code hl_variable" href="namespacerunPythia8.html#a4cd74a33c53eaeef70fcb6b448b9b285">k</a>].id() &lt;&lt; <span class="stringliteral">&quot; mum &quot;</span></div>
-<div class="line"><span class="lineno">  324</span>                &lt;&lt; <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[<a class="code hl_variable" href="namespacerunPythia8.html#a4cd74a33c53eaeef70fcb6b448b9b285">k</a>].mother1() &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  325</span>    im = <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[<a class="code hl_variable" href="namespacerunPythia8.html#a4cd74a33c53eaeef70fcb6b448b9b285">k</a>].mother1();</div>
-<div class="line"><span class="lineno">  326</span>    <span class="keywordflow">while</span> (im &gt; 0) {</div>
-<div class="line"><span class="lineno">  327</span>      <span class="keywordflow">if</span> (im == iDP) {</div>
-<div class="line"><span class="lineno">  328</span>        <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  329</span>      }  <span class="comment">// pick the decay products of only 1 chosen DP</span></div>
-<div class="line"><span class="lineno">  330</span>      <span class="comment">// if ( abs(fPythia-&gt;event[im].id())==fDP &amp;&amp; im == iDP ){break;}</span></div>
-<div class="line"><span class="lineno">  331</span>      <span class="keywordflow">else</span> {</div>
-<div class="line"><span class="lineno">  332</span>        im = <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[im].mother1();</div>
-<div class="line"><span class="lineno">  333</span>      }</div>
-<div class="line"><span class="lineno">  334</span>    }</div>
-<div class="line"><span class="lineno">  335</span>    <span class="keywordflow">if</span> (im &lt; 1) {</div>
-<div class="line"><span class="lineno">  336</span>      <span class="keywordflow">if</span> (<a class="code hl_variable" href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a> &gt; 1) std::cout &lt;&lt; <span class="stringliteral">&quot;reject&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  337</span>      <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">  338</span>    }</div>
-<div class="line"><span class="lineno">  339</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a> &gt; 1) std::cout &lt;&lt; <span class="stringliteral">&quot;accept&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  340</span>    dec_chain.push_back(k);</div>
-<div class="line"><span class="lineno">  341</span>  }</div>
-<div class="line"><span class="lineno">  342</span> </div>
-<div class="line"><span class="lineno">  343</span>  <span class="comment">// go over daughters and store them on the stack</span></div>
-<div class="line"><span class="lineno">  344</span>  <span class="comment">// dec_chain now contains prefix entries followed by daughters</span></div>
-<div class="line"><span class="lineno">  345</span>  <span class="keywordflow">for</span> (std::vector&lt;int&gt;::iterator it = dec_chain.begin() + prefix_len;</div>
-<div class="line"><span class="lineno">  346</span>       it != dec_chain.end(); ++it) {</div>
-<div class="line"><span class="lineno">  347</span>    <span class="comment">// pythia index of the particle to store</span></div>
-<div class="line"><span class="lineno">  348</span>    <span class="keywordtype">int</span> <a class="code hl_variable" href="namespacerunPythia8.html#a4cd74a33c53eaeef70fcb6b448b9b285">k</a> = *it;</div>
-<div class="line"><span class="lineno">  349</span>    <span class="comment">// find mother position on the output stack: impy -&gt; im</span></div>
-<div class="line"><span class="lineno">  350</span>    <span class="keywordtype">int</span> impy = <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[<a class="code hl_variable" href="namespacerunPythia8.html#a4cd74a33c53eaeef70fcb6b448b9b285">k</a>].mother1();</div>
-<div class="line"><span class="lineno">  351</span>    std::vector&lt;int&gt;::iterator itm =</div>
-<div class="line"><span class="lineno">  352</span>        std::find(dec_chain.begin(), dec_chain.end(), impy);</div>
-<div class="line"><span class="lineno">  353</span>    im = -1;  <span class="comment">// safety</span></div>
-<div class="line"><span class="lineno">  354</span>    <span class="keywordflow">if</span> (itm != dec_chain.end()) {</div>
-<div class="line"><span class="lineno">  355</span>      im = itm - dec_chain.begin();  <span class="comment">// convert iterator into sequence number</span></div>
-<div class="line"><span class="lineno">  356</span>    }</div>
-<div class="line"><span class="lineno">  357</span> </div>
-<div class="line"><span class="lineno">  358</span>    Bool_t wanttracking = <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  359</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[k].isFinal()) {</div>
-<div class="line"><span class="lineno">  360</span>      wanttracking = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  361</span>    }</div>
-<div class="line"><span class="lineno">  362</span>    <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a595c352a9b1a3ae33b95fc5937803a60">pz</a> = <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[<a class="code hl_variable" href="namespacerunPythia8.html#a4cd74a33c53eaeef70fcb6b448b9b285">k</a>].pz();</div>
-<div class="line"><span class="lineno">  363</span>    <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#acb959a726115115cca6fd66067b7e986">px</a> = <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[<a class="code hl_variable" href="namespacerunPythia8.html#a4cd74a33c53eaeef70fcb6b448b9b285">k</a>].px();</div>
-<div class="line"><span class="lineno">  364</span>    <a class="code hl_variable" href="namespacerunPythia8.html#ad6b7ec130f84165691f3d15beb4ac6ea">py</a> = <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[<a class="code hl_variable" href="namespacerunPythia8.html#a4cd74a33c53eaeef70fcb6b448b9b285">k</a>].py();</div>
-<div class="line"><span class="lineno">  365</span>    e = <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[<a class="code hl_variable" href="namespacerunPythia8.html#a4cd74a33c53eaeef70fcb6b448b9b285">k</a>].e();</div>
-<div class="line"><span class="lineno">  366</span> </div>
-<div class="line"><span class="lineno">  367</span>    cpg-&gt;AddTrack((Int_t)<a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[k].id(), px, py, pz, xS * mm, yS * mm,</div>
-<div class="line"><span class="lineno">  368</span>                  zS * mm, im, wanttracking, e, tS * mm / <a class="code hl_variable" href="MuonPath_8h.html#a918077216eb661c02ed2a5bfd06bb77d">c_light</a>, w);</div>
-<div class="line"><span class="lineno">  369</span>  }</div>
-<div class="line"><span class="lineno">  370</span>  <span class="keywordflow">return</span> kTRUE;</div>
-<div class="line"><span class="lineno">  371</span>}</div>
+<p class="definition">Definition at line <a class="el" href="DPPythia8Generator_8cxx_source.html#l00118">118</a> of file <a class="el" href="DPPythia8Generator_8cxx_source.html">DPPythia8Generator.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  118</span>                                                              {</div>
+<div class="line"><span class="lineno">  119</span>  <span class="keyword">auto</span> [dx, <a class="code hl_variable" href="namespacerun__fixedTarget.html#a3112a5faf6aba672ca6db63ae2691c5c">dy</a>] = <a class="code hl_function" href="BeamSmearingUtils_8cxx.html#adf7404615c66ba9771106a05a6c0abbc">CalculateBeamOffset</a>(<a class="code hl_variable" href="classDPPythia8Generator.html#a48b1775857ce84453cf944cd7b7c83d4">fsmearBeam</a>, <a class="code hl_variable" href="classDPPythia8Generator.html#ae209e45722c4324df1d4d9af7838c1b6">fPaintBeam</a>);</div>
+<div class="line"><span class="lineno">  120</span>  Double_t <a class="code hl_variable" href="namespacemakeCascade.html#a7fa96a16bd8cee0441b6cec4aeda8761">tp</a>, tS, zp, xp, yp, zS, xS, yS, <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a595c352a9b1a3ae33b95fc5937803a60">pz</a>, <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#acb959a726115115cca6fd66067b7e986">px</a>, <a class="code hl_variable" href="namespacerunPythia8.html#ad6b7ec130f84165691f3d15beb4ac6ea">py</a>, e, <a class="code hl_variable" href="namespacemakeMuonEM.html#a04298ed1d5fc7dbec7e764537bfec5d5">w</a>;</div>
+<div class="line"><span class="lineno">  121</span>  Double_t tm, zm, xm, ym, pmz, pmx, pmy, em;</div>
+<div class="line"><span class="lineno">  122</span>  Int_t im;</div>
+<div class="line"><span class="lineno">  123</span>  Int_t imout;</div>
+<div class="line"><span class="lineno">  124</span>  Double_t tN, zN, xN, yN, pzN, pxN, pyN, eN;</div>
+<div class="line"><span class="lineno">  125</span> </div>
+<div class="line"><span class="lineno">  126</span>  <span class="keywordtype">int</span> iDP =</div>
+<div class="line"><span class="lineno">  127</span>      0;  <span class="comment">// index of the chosen DP, also ensures that at least 1 DP is produced</span></div>
+<div class="line"><span class="lineno">  128</span>  <span class="comment">// Pythia indices of the particles stored on the FairShip MCTrack stack.</span></div>
+<div class="line"><span class="lineno">  129</span>  <span class="comment">// In this implementation the exported chain is:</span></div>
+<div class="line"><span class="lineno">  130</span>  <span class="comment">//   [Pythia event[1] beam particle, mother meson, dark photon, daughters...]</span></div>
+<div class="line"><span class="lineno">  131</span>  <span class="comment">// Pythia event[0] is the internal system entry and is not exported.</span></div>
+<div class="line"><span class="lineno">  132</span>  std::vector&lt;int&gt;</div>
+<div class="line"><span class="lineno">  133</span>      dec_chain;  <span class="comment">// pythia indices of the particles to be stored on the stack</span></div>
+<div class="line"><span class="lineno">  134</span>  std::vector&lt;int&gt; dpvec;  <span class="comment">// pythia indices of DP particles</span></div>
+<div class="line"><span class="lineno">  135</span> </div>
+<div class="line"><span class="lineno">  136</span>  <span class="keywordflow">do</span> {</div>
+<div class="line"><span class="lineno">  137</span>    <span class="comment">// clear containers at every retry to avoid mixing different events</span></div>
+<div class="line"><span class="lineno">  138</span>    dec_chain.clear();</div>
+<div class="line"><span class="lineno">  139</span>    dpvec.clear();</div>
+<div class="line"><span class="lineno">  140</span> </div>
+<div class="line"><span class="lineno">  141</span>    <span class="comment">// bit for proton brem</span></div>
+<div class="line"><span class="lineno">  142</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classDPPythia8Generator.html#a6a5f8301c1bcbc7e8db4019900638c53">fpbrem</a>) {</div>
+<div class="line"><span class="lineno">  143</span>      <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event.reset();</div>
+<div class="line"><span class="lineno">  144</span>      <span class="keywordtype">double</span> dpmom = 0;</div>
+<div class="line"><span class="lineno">  145</span>      <span class="keywordtype">double</span> thetain = 0;</div>
+<div class="line"><span class="lineno">  146</span>      <a class="code hl_variable" href="classDPPythia8Generator.html#ada885c6f0a157ff2257c3e110df06122">fpbremPDF</a>-&gt;GetRandom2(dpmom, thetain);</div>
+<div class="line"><span class="lineno">  147</span>      <span class="keywordtype">double</span> dpm = <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;particleData.m0(<a class="code hl_variable" href="classDPPythia8Generator.html#acb5f2970c7d3531611c856faff2cacd9">fDP</a>);</div>
+<div class="line"><span class="lineno">  148</span>      <span class="keywordtype">double</span> dpe = sqrt(dpmom * dpmom + dpm * dpm);</div>
+<div class="line"><span class="lineno">  149</span>      <span class="keywordtype">double</span> phiin = 2. * M_PI * gRandom-&gt;Rndm();</div>
+<div class="line"><span class="lineno">  150</span> </div>
+<div class="line"><span class="lineno">  151</span>      <span class="keywordflow">if</span> (<a class="code hl_variable" href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a> &gt; 1) {</div>
+<div class="line"><span class="lineno">  152</span>        std::cout &lt;&lt; <span class="stringliteral">&quot; Adding DP gun with p &quot;</span> &lt;&lt; dpmom &lt;&lt; <span class="stringliteral">&quot; m &quot;</span> &lt;&lt; dpm &lt;&lt; <span class="stringliteral">&quot; e &quot;</span></div>
+<div class="line"><span class="lineno">  153</span>                  &lt;&lt; dpe &lt;&lt; <span class="stringliteral">&quot; theta,phi &quot;</span> &lt;&lt; thetain &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> &lt;&lt; phiin</div>
+<div class="line"><span class="lineno">  154</span>                  &lt;&lt; std::endl</div>
+<div class="line"><span class="lineno">  155</span>                  &lt;&lt; std::flush;</div>
+<div class="line"><span class="lineno">  156</span>      }</div>
+<div class="line"><span class="lineno">  157</span>      <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event.append(<a class="code hl_variable" href="classDPPythia8Generator.html#acb5f2970c7d3531611c856faff2cacd9">fDP</a>, 1, 0, 0, dpmom * sin(thetain) * cos(phiin),</div>
+<div class="line"><span class="lineno">  158</span>                            dpmom * sin(thetain) * sin(phiin),</div>
+<div class="line"><span class="lineno">  159</span>                            dpmom * cos(thetain), dpe, dpm);</div>
+<div class="line"><span class="lineno">  160</span>    }</div>
+<div class="line"><span class="lineno">  161</span> </div>
+<div class="line"><span class="lineno">  162</span>    <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;next()) LOG(fatal) &lt;&lt; <span class="stringliteral">&quot;fPythia-&gt;next() failed&quot;</span>;</div>
+<div class="line"><span class="lineno">  163</span> </div>
+<div class="line"><span class="lineno">  164</span>    <span class="comment">// fPythia-&gt;event.list();</span></div>
+<div class="line"><span class="lineno">  165</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt; <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event.size(); <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>++) {</div>
+<div class="line"><span class="lineno">  166</span>      <span class="comment">// find all DP</span></div>
+<div class="line"><span class="lineno">  167</span>      <span class="keywordflow">if</span> (abs(<a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[i].id()) == <a class="code hl_variable" href="classDPPythia8Generator.html#acb5f2970c7d3531611c856faff2cacd9">fDP</a>) {</div>
+<div class="line"><span class="lineno">  168</span>        dpvec.push_back(i);</div>
+<div class="line"><span class="lineno">  169</span>      }</div>
+<div class="line"><span class="lineno">  170</span>    }</div>
+<div class="line"><span class="lineno">  171</span>    iDP = dpvec.size();</div>
+<div class="line"><span class="lineno">  172</span>    <a class="code hl_variable" href="classDPPythia8Generator.html#aa8145e9613e61e5a524d4530fd8d4417">fnDPtot</a> += iDP;</div>
+<div class="line"><span class="lineno">  173</span>    <span class="keywordflow">if</span> (iDP == 0) {</div>
+<div class="line"><span class="lineno">  174</span>      <a class="code hl_variable" href="classDPPythia8Generator.html#a722bfda314cdc37c7624d0923927cc04">fnRetries</a> += 1;</div>
+<div class="line"><span class="lineno">  175</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><span class="lineno">  176</span>      <span class="comment">// filter DPs by vessel acceptance</span></div>
+<div class="line"><span class="lineno">  177</span>      std::vector&lt;int&gt; accepted;</div>
+<div class="line"><span class="lineno">  178</span>      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> idx : dpvec) {</div>
+<div class="line"><span class="lineno">  179</span>        <span class="keywordflow">if</span> (<a class="code hl_function" href="classSHiP_1_1Generator.html#a570b30362f29d5850f263c17e8245313">IsInVesselAcceptance</a>(<a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[idx].px(),</div>
+<div class="line"><span class="lineno">  180</span>                                 <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[idx].py(),</div>
+<div class="line"><span class="lineno">  181</span>                                 <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[idx].pz())) {</div>
+<div class="line"><span class="lineno">  182</span>          accepted.push_back(idx);</div>
+<div class="line"><span class="lineno">  183</span>        }</div>
+<div class="line"><span class="lineno">  184</span>      }</div>
+<div class="line"><span class="lineno">  185</span>      <span class="keywordflow">if</span> (accepted.empty()) {</div>
+<div class="line"><span class="lineno">  186</span>        iDP = 0;</div>
+<div class="line"><span class="lineno">  187</span>        dpvec.clear();</div>
+<div class="line"><span class="lineno">  188</span>        <a class="code hl_variable" href="classSHiP_1_1Generator.html#a66b0ff652a8c474c9609d2560d91e6ba">fnGeoRejects</a> += 1;</div>
+<div class="line"><span class="lineno">  189</span>        <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">  190</span>      }</div>
+<div class="line"><span class="lineno">  191</span>      <span class="keywordtype">int</span> r = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(gRandom-&gt;Uniform(0, accepted.size()));</div>
+<div class="line"><span class="lineno">  192</span>      <span class="keywordtype">int</span> <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> = accepted[r];</div>
+<div class="line"><span class="lineno">  193</span>      <span class="comment">// production vertex</span></div>
+<div class="line"><span class="lineno">  194</span>      zp = <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>].zProd();</div>
+<div class="line"><span class="lineno">  195</span>      xp = <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>].xProd();</div>
+<div class="line"><span class="lineno">  196</span>      yp = <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>].yProd();</div>
+<div class="line"><span class="lineno">  197</span>      <a class="code hl_variable" href="namespacemakeCascade.html#a7fa96a16bd8cee0441b6cec4aeda8761">tp</a> = <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>].tProd();</div>
+<div class="line"><span class="lineno">  198</span>      <span class="comment">// momentum</span></div>
+<div class="line"><span class="lineno">  199</span>      <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a595c352a9b1a3ae33b95fc5937803a60">pz</a> = <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>].pz();</div>
+<div class="line"><span class="lineno">  200</span>      <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#acb959a726115115cca6fd66067b7e986">px</a> = <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>].px();</div>
+<div class="line"><span class="lineno">  201</span>      <a class="code hl_variable" href="namespacerunPythia8.html#ad6b7ec130f84165691f3d15beb4ac6ea">py</a> = <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>].py();</div>
+<div class="line"><span class="lineno">  202</span>      e = <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>].e();</div>
+<div class="line"><span class="lineno">  203</span>      <span class="comment">// old decay vertex</span></div>
+<div class="line"><span class="lineno">  204</span>      <span class="keywordflow">if</span> (<a class="code hl_variable" href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a> &gt; 1) {</div>
+<div class="line"><span class="lineno">  205</span>        <span class="keywordtype">int</span> id1 = <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>].daughter1();</div>
+<div class="line"><span class="lineno">  206</span>        <span class="keywordtype">int</span> id2 = <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>].daughter2();</div>
+<div class="line"><span class="lineno">  207</span>        std::cout &lt;&lt; <span class="stringliteral">&quot; Debug: decay product of A: &quot;</span>;</div>
+<div class="line"><span class="lineno">  208</span>        <span class="keywordflow">if</span> (id1 &gt; 0)</div>
+<div class="line"><span class="lineno">  209</span>          std::cout &lt;&lt; <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[id1].id() &lt;&lt; <span class="stringliteral">&quot; &quot;</span>;</div>
+<div class="line"><span class="lineno">  210</span>        <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  211</span>          std::cout &lt;&lt; <span class="stringliteral">&quot;none &quot;</span>;</div>
+<div class="line"><span class="lineno">  212</span>        <span class="keywordflow">if</span> (id2 &gt; 0)</div>
+<div class="line"><span class="lineno">  213</span>          std::cout &lt;&lt; <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[id2].id();</div>
+<div class="line"><span class="lineno">  214</span>        <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  215</span>          std::cout &lt;&lt; <span class="stringliteral">&quot;none&quot;</span>;</div>
+<div class="line"><span class="lineno">  216</span>        std::cout &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  217</span>      }</div>
+<div class="line"><span class="lineno">  218</span> </div>
+<div class="line"><span class="lineno">  219</span>      <span class="comment">//  new decay vertex</span></div>
+<div class="line"><span class="lineno">  220</span>      Double_t LS = gRandom-&gt;Uniform(<a class="code hl_variable" href="classDPPythia8Generator.html#a2fbc6c8ec533bd12f6c37f08574e5343">fLmin</a> / mm, <a class="code hl_variable" href="classDPPythia8Generator.html#ad2753d1d5d2b6c5a70797e157693e016">fLmax</a> / mm);  <span class="comment">// in mm</span></div>
+<div class="line"><span class="lineno">  221</span>      Double_t <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a> = TMath::Sqrt(px * px + py * py + pz * pz);</div>
+<div class="line"><span class="lineno">  222</span>      Double_t lam = LS / <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>;</div>
+<div class="line"><span class="lineno">  223</span>      xS = xp + lam * <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#acb959a726115115cca6fd66067b7e986">px</a>;</div>
+<div class="line"><span class="lineno">  224</span>      yS = yp + lam * <a class="code hl_variable" href="namespacerunPythia8.html#ad6b7ec130f84165691f3d15beb4ac6ea">py</a>;</div>
+<div class="line"><span class="lineno">  225</span>      zS = zp + lam * <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a595c352a9b1a3ae33b95fc5937803a60">pz</a>;</div>
+<div class="line"><span class="lineno">  226</span>      Double_t gam = e / TMath::Sqrt(e * e - p * p);</div>
+<div class="line"><span class="lineno">  227</span>      Double_t <a class="code hl_variable" href="namespacemakeCascade.html#aa27c1c99785df8bad2319ff9aafec366">beta</a> = <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a> / e;</div>
+<div class="line"><span class="lineno">  228</span>      tS = <a class="code hl_variable" href="namespacemakeCascade.html#a7fa96a16bd8cee0441b6cec4aeda8761">tp</a> + LS / <a class="code hl_variable" href="namespacemakeCascade.html#aa27c1c99785df8bad2319ff9aafec366">beta</a>;  <span class="comment">// all in Pythia units</span></div>
+<div class="line"><span class="lineno">  229</span>      <a class="code hl_variable" href="namespacemakeMuonEM.html#a04298ed1d5fc7dbec7e764537bfec5d5">w</a> = TMath::Exp(-LS / (beta * gam * <a class="code hl_variable" href="classDPPythia8Generator.html#acfd3be3b6cbb13221aa4580c6d342f2b">fctau</a>)) *</div>
+<div class="line"><span class="lineno">  230</span>          ((<a class="code hl_variable" href="classDPPythia8Generator.html#ad2753d1d5d2b6c5a70797e157693e016">fLmax</a> / <a class="code hl_variable" href="namespacehepunit.html#aa8d55bedeb75dbb6b70fd3d2149fd02a">mm</a> - <a class="code hl_variable" href="classDPPythia8Generator.html#a2fbc6c8ec533bd12f6c37f08574e5343">fLmin</a> / <a class="code hl_variable" href="namespacehepunit.html#aa8d55bedeb75dbb6b70fd3d2149fd02a">mm</a>) / (beta * gam * <a class="code hl_variable" href="classDPPythia8Generator.html#acfd3be3b6cbb13221aa4580c6d342f2b">fctau</a>));</div>
+<div class="line"><span class="lineno">  231</span> </div>
+<div class="line"><span class="lineno">  232</span>      <span class="comment">// direct mother of the DP</span></div>
+<div class="line"><span class="lineno">  233</span>      im = (Int_t)<a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[i].mother1();</div>
+<div class="line"><span class="lineno">  234</span> </div>
+<div class="line"><span class="lineno">  235</span>      <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classDPPythia8Generator.html#a6a5f8301c1bcbc7e8db4019900638c53">fpbrem</a> &amp;&amp; im &gt; 0) {</div>
+<div class="line"><span class="lineno">  236</span>        <span class="comment">// Meson-production chain: store event[1] (beam nucleon), mother, DP</span></div>
+<div class="line"><span class="lineno">  237</span>        <span class="keywordflow">if</span> (<a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event.size() &gt; 1) {</div>
+<div class="line"><span class="lineno">  238</span>          zN = <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[1].zProd();</div>
+<div class="line"><span class="lineno">  239</span>          xN = <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[1].xProd();</div>
+<div class="line"><span class="lineno">  240</span>          yN = <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[1].yProd();</div>
+<div class="line"><span class="lineno">  241</span>          pzN = <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[1].pz();</div>
+<div class="line"><span class="lineno">  242</span>          pxN = <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[1].px();</div>
+<div class="line"><span class="lineno">  243</span>          pyN = <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[1].py();</div>
+<div class="line"><span class="lineno">  244</span>          eN = <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[1].e();</div>
+<div class="line"><span class="lineno">  245</span>          tN = <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[1].tProd();</div>
+<div class="line"><span class="lineno">  246</span> </div>
+<div class="line"><span class="lineno">  247</span>          cpg-&gt;AddTrack((Int_t)<a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[1].id(), pxN, pyN, pzN,</div>
+<div class="line"><span class="lineno">  248</span>                        xN * <a class="code hl_variable" href="namespacehepunit.html#aa8d55bedeb75dbb6b70fd3d2149fd02a">mm</a> + dx, yN * <a class="code hl_variable" href="namespacehepunit.html#aa8d55bedeb75dbb6b70fd3d2149fd02a">mm</a> + <a class="code hl_variable" href="namespacerun__fixedTarget.html#a3112a5faf6aba672ca6db63ae2691c5c">dy</a>, zN * <a class="code hl_variable" href="namespacehepunit.html#aa8d55bedeb75dbb6b70fd3d2149fd02a">mm</a>, -1, <span class="keyword">false</span>, eN,</div>
+<div class="line"><span class="lineno">  249</span>                        <a class="code hl_function" href="namespaceshipgen.html#a1712d3106f13d600a33e5016f447f592">PythiaTimeToS</a>(tN), <a class="code hl_variable" href="namespacemakeMuonEM.html#a04298ed1d5fc7dbec7e764537bfec5d5">w</a>);</div>
+<div class="line"><span class="lineno">  250</span> </div>
+<div class="line"><span class="lineno">  251</span>          dec_chain.push_back(1);</div>
+<div class="line"><span class="lineno">  252</span> </div>
+<div class="line"><span class="lineno">  253</span>          <span class="keywordflow">if</span> (<a class="code hl_variable" href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a> &gt; 1)</div>
+<div class="line"><span class="lineno">  254</span>            std::cout &lt;&lt; std::endl</div>
+<div class="line"><span class="lineno">  255</span>                      &lt;&lt; <span class="stringliteral">&quot; insert nucleon ancestor id 0&quot;</span></div>
+<div class="line"><span class="lineno">  256</span>                      &lt;&lt; <span class="stringliteral">&quot; pdg=&quot;</span> &lt;&lt; <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[1].id() &lt;&lt; <span class="stringliteral">&quot; pz = &quot;</span> &lt;&lt; pzN</div>
+<div class="line"><span class="lineno">  257</span>                      &lt;&lt; <span class="stringliteral">&quot; [GeV], z = &quot;</span> &lt;&lt; zN &lt;&lt; <span class="stringliteral">&quot; [mm] t = &quot;</span> &lt;&lt; tN &lt;&lt; <span class="stringliteral">&quot; [mm/c]&quot;</span></div>
+<div class="line"><span class="lineno">  258</span>                      &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  259</span>        }</div>
+<div class="line"><span class="lineno">  260</span> </div>
+<div class="line"><span class="lineno">  261</span>        zm = <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[im].zProd();</div>
+<div class="line"><span class="lineno">  262</span>        xm = <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[im].xProd();</div>
+<div class="line"><span class="lineno">  263</span>        ym = <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[im].yProd();</div>
+<div class="line"><span class="lineno">  264</span>        pmz = <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[im].pz();</div>
+<div class="line"><span class="lineno">  265</span>        pmx = <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[im].px();</div>
+<div class="line"><span class="lineno">  266</span>        pmy = <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[im].py();</div>
+<div class="line"><span class="lineno">  267</span>        em = <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[im].e();</div>
+<div class="line"><span class="lineno">  268</span>        tm = <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[im].tProd();</div>
+<div class="line"><span class="lineno">  269</span> </div>
+<div class="line"><span class="lineno">  270</span>        <span class="comment">// mother of the meson is track 0 (the beam nucleon)</span></div>
+<div class="line"><span class="lineno">  271</span>        imout = 0;</div>
+<div class="line"><span class="lineno">  272</span> </div>
+<div class="line"><span class="lineno">  273</span>        cpg-&gt;AddTrack(</div>
+<div class="line"><span class="lineno">  274</span>            (Int_t)<a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[im].id(), pmx, pmy, pmz, xm * <a class="code hl_variable" href="namespacehepunit.html#aa8d55bedeb75dbb6b70fd3d2149fd02a">mm</a> + dx,</div>
+<div class="line"><span class="lineno">  275</span>            ym * <a class="code hl_variable" href="namespacehepunit.html#aa8d55bedeb75dbb6b70fd3d2149fd02a">mm</a> + <a class="code hl_variable" href="namespacerun__fixedTarget.html#a3112a5faf6aba672ca6db63ae2691c5c">dy</a>, zm * <a class="code hl_variable" href="namespacehepunit.html#aa8d55bedeb75dbb6b70fd3d2149fd02a">mm</a>, imout, <span class="keyword">false</span>, em, <a class="code hl_function" href="namespaceshipgen.html#a1712d3106f13d600a33e5016f447f592">PythiaTimeToS</a>(tm),</div>
+<div class="line"><span class="lineno">  276</span>            <a class="code hl_variable" href="namespacemakeMuonEM.html#a04298ed1d5fc7dbec7e764537bfec5d5">w</a>);  <span class="comment">// convert pythia&#39;s (x,y,z[mm], t[mm/c]) to ([cm], [s])</span></div>
+<div class="line"><span class="lineno">  277</span> </div>
+<div class="line"><span class="lineno">  278</span>        <span class="comment">// mother of the DP is track 1 (the meson)</span></div>
+<div class="line"><span class="lineno">  279</span>        cpg-&gt;AddTrack(<a class="code hl_variable" href="classDPPythia8Generator.html#acb5f2970c7d3531611c856faff2cacd9">fDP</a>, px, py, pz, xp * mm + dx, yp * mm + dy, zp * mm, 1,</div>
+<div class="line"><span class="lineno">  280</span>                      <span class="keyword">false</span>, e, <a class="code hl_function" href="namespaceshipgen.html#a1712d3106f13d600a33e5016f447f592">PythiaTimeToS</a>(tp), <a class="code hl_variable" href="namespacemakeMuonEM.html#a04298ed1d5fc7dbec7e764537bfec5d5">w</a>);</div>
+<div class="line"><span class="lineno">  281</span> </div>
+<div class="line"><span class="lineno">  282</span>        <span class="comment">// bookkeep the indices of stored particles</span></div>
+<div class="line"><span class="lineno">  283</span>        dec_chain.push_back(im);</div>
+<div class="line"><span class="lineno">  284</span>        dec_chain.push_back(i);</div>
+<div class="line"><span class="lineno">  285</span> </div>
+<div class="line"><span class="lineno">  286</span>        <span class="keywordflow">if</span> (<a class="code hl_variable" href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a> &gt; 1)</div>
+<div class="line"><span class="lineno">  287</span>          std::cout &lt;&lt; std::endl</div>
+<div class="line"><span class="lineno">  288</span>                    &lt;&lt; <span class="stringliteral">&quot; insert mother id &quot;</span> &lt;&lt; im</div>
+<div class="line"><span class="lineno">  289</span>                    &lt;&lt; <span class="stringliteral">&quot; pdg=&quot;</span> &lt;&lt; <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[im].id() &lt;&lt; <span class="stringliteral">&quot; pmz = &quot;</span> &lt;&lt; pmz</div>
+<div class="line"><span class="lineno">  290</span>                    &lt;&lt; <span class="stringliteral">&quot; [GeV],  zm = &quot;</span> &lt;&lt; zm &lt;&lt; <span class="stringliteral">&quot; [mm] tm = &quot;</span> &lt;&lt; tm</div>
+<div class="line"><span class="lineno">  291</span>                    &lt;&lt; <span class="stringliteral">&quot; [mm/c]&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  292</span>        <span class="keywordflow">if</span> (<a class="code hl_variable" href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a> &gt; 1)</div>
+<div class="line"><span class="lineno">  293</span>          std::cout &lt;&lt; <span class="stringliteral">&quot; ----&gt; insert DP id &quot;</span> &lt;&lt; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt;&lt; <span class="stringliteral">&quot; pdg=&quot;</span> &lt;&lt; <a class="code hl_variable" href="classDPPythia8Generator.html#acb5f2970c7d3531611c856faff2cacd9">fDP</a></div>
+<div class="line"><span class="lineno">  294</span>                    &lt;&lt; <span class="stringliteral">&quot; pz = &quot;</span> &lt;&lt; <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a595c352a9b1a3ae33b95fc5937803a60">pz</a> &lt;&lt; <span class="stringliteral">&quot; [GeV] zp = &quot;</span> &lt;&lt; zp</div>
+<div class="line"><span class="lineno">  295</span>                    &lt;&lt; <span class="stringliteral">&quot; [mm] tp = &quot;</span> &lt;&lt; <a class="code hl_variable" href="namespacemakeCascade.html#a7fa96a16bd8cee0441b6cec4aeda8761">tp</a> &lt;&lt; <span class="stringliteral">&quot; [mm/c]&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  296</span>      } <span class="keywordflow">else</span> {</div>
+<div class="line"><span class="lineno">  297</span>        <span class="comment">// Proton bremsstrahlung or no valid mother: export only the DP as root</span></div>
+<div class="line"><span class="lineno">  298</span>        cpg-&gt;AddTrack(<a class="code hl_variable" href="classDPPythia8Generator.html#acb5f2970c7d3531611c856faff2cacd9">fDP</a>, px, py, pz, xp * mm + dx, yp * mm + dy, zp * mm, -1,</div>
+<div class="line"><span class="lineno">  299</span>                      <span class="keyword">false</span>, e, <a class="code hl_function" href="namespaceshipgen.html#a1712d3106f13d600a33e5016f447f592">PythiaTimeToS</a>(tp), <a class="code hl_variable" href="namespacemakeMuonEM.html#a04298ed1d5fc7dbec7e764537bfec5d5">w</a>);</div>
+<div class="line"><span class="lineno">  300</span>        dec_chain.push_back(i);</div>
+<div class="line"><span class="lineno">  301</span> </div>
+<div class="line"><span class="lineno">  302</span>        <span class="keywordflow">if</span> (<a class="code hl_variable" href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a> &gt; 1)</div>
+<div class="line"><span class="lineno">  303</span>          std::cout &lt;&lt; <span class="stringliteral">&quot; ----&gt; insert DP (root) id &quot;</span> &lt;&lt; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt;&lt; <span class="stringliteral">&quot; pdg=&quot;</span> &lt;&lt; <a class="code hl_variable" href="classDPPythia8Generator.html#acb5f2970c7d3531611c856faff2cacd9">fDP</a></div>
+<div class="line"><span class="lineno">  304</span>                    &lt;&lt; <span class="stringliteral">&quot; pz = &quot;</span> &lt;&lt; <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a595c352a9b1a3ae33b95fc5937803a60">pz</a> &lt;&lt; <span class="stringliteral">&quot; [GeV] zp = &quot;</span> &lt;&lt; zp</div>
+<div class="line"><span class="lineno">  305</span>                    &lt;&lt; <span class="stringliteral">&quot; [mm] tp = &quot;</span> &lt;&lt; <a class="code hl_variable" href="namespacemakeCascade.html#a7fa96a16bd8cee0441b6cec4aeda8761">tp</a> &lt;&lt; <span class="stringliteral">&quot; [mm/c]&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  306</span>      }</div>
+<div class="line"><span class="lineno">  307</span>      iDP = <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>;</div>
+<div class="line"><span class="lineno">  308</span>    }</div>
+<div class="line"><span class="lineno">  309</span>  } <span class="keywordflow">while</span> (iDP ==</div>
+<div class="line"><span class="lineno">  310</span>           0);  <span class="comment">// ----------- avoid rare empty events w/o any DP&#39;s produced</span></div>
+<div class="line"><span class="lineno">  311</span> </div>
+<div class="line"><span class="lineno">  312</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classDPPythia8Generator.html#a8d6843273b93fbcf7e9a60e631122a20">fShipEventNr</a> % 100 == 0) {</div>
+<div class="line"><span class="lineno">  313</span>    LOGF(info, <span class="stringliteral">&quot;ship event %i / pythia event-nr %i&quot;</span>, <a class="code hl_variable" href="classDPPythia8Generator.html#a8d6843273b93fbcf7e9a60e631122a20">fShipEventNr</a>, <a class="code hl_variable" href="classDPPythia8Generator.html#af8906a85587568a7649963073e20d6de">fn</a>);</div>
+<div class="line"><span class="lineno">  314</span>  }</div>
+<div class="line"><span class="lineno">  315</span>  <a class="code hl_variable" href="classDPPythia8Generator.html#a8d6843273b93fbcf7e9a60e631122a20">fShipEventNr</a> += 1;</div>
+<div class="line"><span class="lineno">  316</span>  <span class="comment">// number of prefix entries (nucleon + mother + DP, or just DP for fpbrem)</span></div>
+<div class="line"><span class="lineno">  317</span>  <span class="keywordtype">size_t</span> prefix_len = dec_chain.size();</div>
+<div class="line"><span class="lineno">  318</span>  <span class="comment">// fill a container with pythia indices of the DP decay chain</span></div>
+<div class="line"><span class="lineno">  319</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a> &gt; 1) std::cout &lt;&lt; <span class="stringliteral">&quot;Filling daughter particles&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  320</span>  <span class="comment">// if (!hadDecay){</span></div>
+<div class="line"><span class="lineno">  321</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> k = 0; <a class="code hl_variable" href="namespacerunPythia8.html#a4cd74a33c53eaeef70fcb6b448b9b285">k</a> &lt; <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event.size(); <a class="code hl_variable" href="namespacerunPythia8.html#a4cd74a33c53eaeef70fcb6b448b9b285">k</a>++) {</div>
+<div class="line"><span class="lineno">  322</span>    <span class="comment">// if daughter of DP, copy</span></div>
+<div class="line"><span class="lineno">  323</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a> &gt; 1)</div>
+<div class="line"><span class="lineno">  324</span>      std::cout &lt;&lt; <a class="code hl_variable" href="namespacerunPythia8.html#a4cd74a33c53eaeef70fcb6b448b9b285">k</a> &lt;&lt; <span class="stringliteral">&quot; pdg =&quot;</span> &lt;&lt; <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[<a class="code hl_variable" href="namespacerunPythia8.html#a4cd74a33c53eaeef70fcb6b448b9b285">k</a>].id() &lt;&lt; <span class="stringliteral">&quot; mum &quot;</span></div>
+<div class="line"><span class="lineno">  325</span>                &lt;&lt; <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[<a class="code hl_variable" href="namespacerunPythia8.html#a4cd74a33c53eaeef70fcb6b448b9b285">k</a>].mother1() &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  326</span>    im = <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[<a class="code hl_variable" href="namespacerunPythia8.html#a4cd74a33c53eaeef70fcb6b448b9b285">k</a>].mother1();</div>
+<div class="line"><span class="lineno">  327</span>    <span class="keywordflow">while</span> (im &gt; 0) {</div>
+<div class="line"><span class="lineno">  328</span>      <span class="keywordflow">if</span> (im == iDP) {</div>
+<div class="line"><span class="lineno">  329</span>        <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  330</span>      }  <span class="comment">// pick the decay products of only 1 chosen DP</span></div>
+<div class="line"><span class="lineno">  331</span>      <span class="comment">// if ( abs(fPythia-&gt;event[im].id())==fDP &amp;&amp; im == iDP ){break;}</span></div>
+<div class="line"><span class="lineno">  332</span>      <span class="keywordflow">else</span> {</div>
+<div class="line"><span class="lineno">  333</span>        im = <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[im].mother1();</div>
+<div class="line"><span class="lineno">  334</span>      }</div>
+<div class="line"><span class="lineno">  335</span>    }</div>
+<div class="line"><span class="lineno">  336</span>    <span class="keywordflow">if</span> (im &lt; 1) {</div>
+<div class="line"><span class="lineno">  337</span>      <span class="keywordflow">if</span> (<a class="code hl_variable" href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a> &gt; 1) std::cout &lt;&lt; <span class="stringliteral">&quot;reject&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  338</span>      <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">  339</span>    }</div>
+<div class="line"><span class="lineno">  340</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a> &gt; 1) std::cout &lt;&lt; <span class="stringliteral">&quot;accept&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  341</span>    dec_chain.push_back(k);</div>
+<div class="line"><span class="lineno">  342</span>  }</div>
+<div class="line"><span class="lineno">  343</span> </div>
+<div class="line"><span class="lineno">  344</span>  <span class="comment">// go over daughters and store them on the stack</span></div>
+<div class="line"><span class="lineno">  345</span>  <span class="comment">// dec_chain now contains prefix entries followed by daughters</span></div>
+<div class="line"><span class="lineno">  346</span>  <span class="keywordflow">for</span> (std::vector&lt;int&gt;::iterator it = dec_chain.begin() + prefix_len;</div>
+<div class="line"><span class="lineno">  347</span>       it != dec_chain.end(); ++it) {</div>
+<div class="line"><span class="lineno">  348</span>    <span class="comment">// pythia index of the particle to store</span></div>
+<div class="line"><span class="lineno">  349</span>    <span class="keywordtype">int</span> <a class="code hl_variable" href="namespacerunPythia8.html#a4cd74a33c53eaeef70fcb6b448b9b285">k</a> = *it;</div>
+<div class="line"><span class="lineno">  350</span>    <span class="comment">// find mother position on the output stack: impy -&gt; im</span></div>
+<div class="line"><span class="lineno">  351</span>    <span class="keywordtype">int</span> impy = <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[<a class="code hl_variable" href="namespacerunPythia8.html#a4cd74a33c53eaeef70fcb6b448b9b285">k</a>].mother1();</div>
+<div class="line"><span class="lineno">  352</span>    std::vector&lt;int&gt;::iterator itm =</div>
+<div class="line"><span class="lineno">  353</span>        std::find(dec_chain.begin(), dec_chain.end(), impy);</div>
+<div class="line"><span class="lineno">  354</span>    im = -1;  <span class="comment">// safety</span></div>
+<div class="line"><span class="lineno">  355</span>    <span class="keywordflow">if</span> (itm != dec_chain.end()) {</div>
+<div class="line"><span class="lineno">  356</span>      im = itm - dec_chain.begin();  <span class="comment">// convert iterator into sequence number</span></div>
+<div class="line"><span class="lineno">  357</span>    }</div>
+<div class="line"><span class="lineno">  358</span> </div>
+<div class="line"><span class="lineno">  359</span>    Bool_t wanttracking = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  360</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[k].isFinal()) {</div>
+<div class="line"><span class="lineno">  361</span>      wanttracking = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  362</span>    }</div>
+<div class="line"><span class="lineno">  363</span>    <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a595c352a9b1a3ae33b95fc5937803a60">pz</a> = <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[<a class="code hl_variable" href="namespacerunPythia8.html#a4cd74a33c53eaeef70fcb6b448b9b285">k</a>].pz();</div>
+<div class="line"><span class="lineno">  364</span>    <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#acb959a726115115cca6fd66067b7e986">px</a> = <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[<a class="code hl_variable" href="namespacerunPythia8.html#a4cd74a33c53eaeef70fcb6b448b9b285">k</a>].px();</div>
+<div class="line"><span class="lineno">  365</span>    <a class="code hl_variable" href="namespacerunPythia8.html#ad6b7ec130f84165691f3d15beb4ac6ea">py</a> = <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[<a class="code hl_variable" href="namespacerunPythia8.html#a4cd74a33c53eaeef70fcb6b448b9b285">k</a>].py();</div>
+<div class="line"><span class="lineno">  366</span>    e = <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[<a class="code hl_variable" href="namespacerunPythia8.html#a4cd74a33c53eaeef70fcb6b448b9b285">k</a>].e();</div>
+<div class="line"><span class="lineno">  367</span> </div>
+<div class="line"><span class="lineno">  368</span>    cpg-&gt;AddTrack((Int_t)<a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event[k].id(), px, py, pz, xS * mm, yS * mm,</div>
+<div class="line"><span class="lineno">  369</span>                  zS * mm, im, wanttracking, e, <a class="code hl_function" href="namespaceshipgen.html#a1712d3106f13d600a33e5016f447f592">PythiaTimeToS</a>(tS), w);</div>
+<div class="line"><span class="lineno">  370</span>  }</div>
+<div class="line"><span class="lineno">  371</span>  <span class="keywordflow">return</span> kTRUE;</div>
+<div class="line"><span class="lineno">  372</span>}</div>
 <div class="ttc" id="aBeamSmearingUtils_8cxx_html_adf7404615c66ba9771106a05a6c0abbc"><div class="ttname"><a href="BeamSmearingUtils_8cxx.html#adf7404615c66ba9771106a05a6c0abbc">CalculateBeamOffset</a></div><div class="ttdeci">std::pair&lt; Double_t, Double_t &gt; CalculateBeamOffset(Double_t smearBeam, Double_t paintBeam)</div><div class="ttdef"><b>Definition</b> <a href="BeamSmearingUtils_8cxx_source.html#l00010">BeamSmearingUtils.cxx:10</a></div></div>
-<div class="ttc" id="aMuonPath_8h_html_a918077216eb661c02ed2a5bfd06bb77d"><div class="ttname"><a href="MuonPath_8h.html#a918077216eb661c02ed2a5bfd06bb77d">c_light</a></div><div class="ttdeci">const Double_t c_light</div><div class="ttdef"><b>Definition</b> <a href="MuonPath_8h_source.html#l00026">MuonPath.h:26</a></div></div>
 <div class="ttc" id="aclassSHiP_1_1Generator_html_a570b30362f29d5850f263c17e8245313"><div class="ttname"><a href="classSHiP_1_1Generator.html#a570b30362f29d5850f263c17e8245313">SHiP::Generator::IsInVesselAcceptance</a></div><div class="ttdeci">bool IsInVesselAcceptance(Double_t px, Double_t py, Double_t pz) const</div><div class="ttdef"><b>Definition</b> <a href="Generator_8h_source.html#l00070">Generator.h:70</a></div></div>
 <div class="ttc" id="aclassSHiP_1_1Generator_html_a66b0ff652a8c474c9609d2560d91e6ba"><div class="ttname"><a href="classSHiP_1_1Generator.html#a66b0ff652a8c474c9609d2560d91e6ba">SHiP::Generator::fnGeoRejects</a></div><div class="ttdeci">Int_t fnGeoRejects</div><div class="ttdef"><b>Definition</b> <a href="Generator_8h_source.html#l00081">Generator.h:81</a></div></div>
 <div class="ttc" id="anamespaceShipAna_html_aa4bf87f4d17f9d38b1d8f4d009bb54b3"><div class="ttname"><a href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">ShipAna.i</a></div><div class="ttdeci">int i</div><div class="ttdef"><b>Definition</b> <a href="ShipAna_8py_source.html#l00103">ShipAna.py:103</a></div></div>
@@ -1084,6 +1086,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="ttc" id="anamespacerunPythia8_html_a4cd74a33c53eaeef70fcb6b448b9b285"><div class="ttname"><a href="namespacerunPythia8.html#a4cd74a33c53eaeef70fcb6b448b9b285">runPythia8.k</a></div><div class="ttdeci">int k</div><div class="ttdef"><b>Definition</b> <a href="runPythia8_8py_source.html#l00168">runPythia8.py:168</a></div></div>
 <div class="ttc" id="anamespacerunPythia8_html_ad6b7ec130f84165691f3d15beb4ac6ea"><div class="ttname"><a href="namespacerunPythia8.html#ad6b7ec130f84165691f3d15beb4ac6ea">runPythia8.py</a></div><div class="ttdeci">dict py</div><div class="ttdef"><b>Definition</b> <a href="runPythia8_8py_source.html#l00115">runPythia8.py:115</a></div></div>
 <div class="ttc" id="anamespacerun__fixedTarget_html_a3112a5faf6aba672ca6db63ae2691c5c"><div class="ttname"><a href="namespacerun__fixedTarget.html#a3112a5faf6aba672ca6db63ae2691c5c">run_fixedTarget.dy</a></div><div class="ttdeci">float dy</div><div class="ttdef"><b>Definition</b> <a href="run__fixedTarget_8py_source.html#l00024">run_fixedTarget.py:24</a></div></div>
+<div class="ttc" id="anamespaceshipgen_html_a1712d3106f13d600a33e5016f447f592"><div class="ttname"><a href="namespaceshipgen.html#a1712d3106f13d600a33e5016f447f592">shipgen::PythiaTimeToS</a></div><div class="ttdeci">constexpr double PythiaTimeToS(double t)</div><div class="ttdoc">A Pythia8 time (mm/c) in VMC units (s).</div><div class="ttdef"><b>Definition</b> <a href="PythiaUnits_8h_source.html#l00020">PythiaUnits.h:20</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1338,14 +1341,14 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="DPPythia8Generator_8cxx_source.html#l00373">373</a> of file <a class="el" href="DPPythia8Generator_8cxx_source.html">DPPythia8Generator.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  373</span>                                                {</div>
-<div class="line"><span class="lineno">  374</span>  <span class="comment">// Set Parameters</span></div>
-<div class="line"><span class="lineno">  375</span>  <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;readString(par);</div>
-<div class="line"><span class="lineno">  376</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a>) {</div>
-<div class="line"><span class="lineno">  377</span>    std::cout &lt;&lt; <span class="stringliteral">&quot;fPythia-&gt;readString(\&quot;&quot;</span> &lt;&lt; <a class="code hl_variable" href="namespacemakeDecay.html#ad0cca2a83c59bb283ee59cc30dc2ea4b">par</a> &lt;&lt; <span class="stringliteral">&quot;\&quot;)&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  378</span>  }</div>
-<div class="line"><span class="lineno">  379</span>}</div>
+<p class="definition">Definition at line <a class="el" href="DPPythia8Generator_8cxx_source.html#l00374">374</a> of file <a class="el" href="DPPythia8Generator_8cxx_source.html">DPPythia8Generator.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  374</span>                                                {</div>
+<div class="line"><span class="lineno">  375</span>  <span class="comment">// Set Parameters</span></div>
+<div class="line"><span class="lineno">  376</span>  <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;readString(par);</div>
+<div class="line"><span class="lineno">  377</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a>) {</div>
+<div class="line"><span class="lineno">  378</span>    std::cout &lt;&lt; <span class="stringliteral">&quot;fPythia-&gt;readString(\&quot;&quot;</span> &lt;&lt; <a class="code hl_variable" href="namespacemakeDecay.html#ad0cca2a83c59bb283ee59cc30dc2ea4b">par</a> &lt;&lt; <span class="stringliteral">&quot;\&quot;)&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  379</span>  }</div>
+<div class="line"><span class="lineno">  380</span>}</div>
 <div class="ttc" id="anamespacemakeDecay_html_ad0cca2a83c59bb283ee59cc30dc2ea4b"><div class="ttname"><a href="namespacemakeDecay.html#ad0cca2a83c59bb283ee59cc30dc2ea4b">makeDecay.par</a></div><div class="ttdeci">par</div><div class="ttdef"><b>Definition</b> <a href="makeDecay_8py_source.html#l00163">makeDecay.py:163</a></div></div>
 </div><!-- fragment -->
 </div>

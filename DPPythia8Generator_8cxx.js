@@ -1,5 +1,4 @@
 var DPPythia8Generator_8cxx =
 [
-    [ "c_light", "DPPythia8Generator_8cxx.html#a918077216eb661c02ed2a5bfd06bb77d", null ],
     [ "debug", "DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e", null ]
 ];

@@ -90,7 +90,8 @@ $(document).ready(function(){initNavTree('namespaceshipgen.html',''); initResiza
 
 <div class="header">
   <div class="summary">
-<a href="#func-members">Functions</a>  </div>
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">shipgen Namespace Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -99,6 +100,23 @@ $(document).ready(function(){initNavTree('namespaceshipgen.html',''); initResiza
 Functions</h2></td></tr>
 <tr class="memitem:ac85d3b1e8d74de7b65eee39a98e92c1b" id="r_ac85d3b1e8d74de7b65eee39a98e92c1b"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceshipgen.html#ac85d3b1e8d74de7b65eee39a98e92c1b">MeanMaterialBudget</a> (std::span&lt; const double, 3 &gt; start, std::span&lt; const double, 3 &gt; end, std::span&lt; double, 10 &gt; mparam)</td></tr>
 <tr class="separator:ac85d3b1e8d74de7b65eee39a98e92c1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a697900e14010bb7c6ec21c4130c4574b" id="r_a697900e14010bb7c6ec21c4130c4574b"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceshipgen.html#a697900e14010bb7c6ec21c4130c4574b">NuclearCrossSection_mbarn</a> (const TGeoMaterial &amp;material)</td></tr>
+<tr class="separator:a697900e14010bb7c6ec21c4130c4574b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf37dd718f47d2835452543cb4b3f0a1" id="r_abf37dd718f47d2835452543cb4b3f0a1"><td class="memItemLeft" align="right" valign="top">constexpr double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceshipgen.html#abf37dd718f47d2835452543cb4b3f0a1">PythiaLengthToCm</a> (double x)</td></tr>
+<tr class="memdesc:abf37dd718f47d2835452543cb4b3f0a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">A <a class="el" href="namespacePythia8.html">Pythia8</a> position (mm) in FairShip units (cm).  <br /></td></tr>
+<tr class="separator:abf37dd718f47d2835452543cb4b3f0a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1712d3106f13d600a33e5016f447f592" id="r_a1712d3106f13d600a33e5016f447f592"><td class="memItemLeft" align="right" valign="top">constexpr double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceshipgen.html#a1712d3106f13d600a33e5016f447f592">PythiaTimeToS</a> (double t)</td></tr>
+<tr class="memdesc:a1712d3106f13d600a33e5016f447f592"><td class="mdescLeft">&#160;</td><td class="mdescRight">A <a class="el" href="namespacePythia8.html">Pythia8</a> time (mm/c) in VMC units (s).  <br /></td></tr>
+<tr class="separator:a1712d3106f13d600a33e5016f447f592"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:ac34c2223302691f3db2e078530598bba" id="r_ac34c2223302691f3db2e078530598bba"><td class="memItemLeft" align="right" valign="top">constexpr double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceshipgen.html#ac34c2223302691f3db2e078530598bba">kPythiaLengthPerCm</a> = 10.</td></tr>
+<tr class="memdesc:ac34c2223302691f3db2e078530598bba"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespacePythia8.html">Pythia8</a> lengths are in mm, FairShip lengths in cm.  <br /></td></tr>
+<tr class="separator:ac34c2223302691f3db2e078530598bba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab487270fe6cf7792379f1564fb750e57" id="r_ab487270fe6cf7792379f1564fb750e57"><td class="memItemLeft" align="right" valign="top">constexpr double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceshipgen.html#ab487270fe6cf7792379f1564fb750e57">kCLightCmPerS</a> = <a class="el" href="namespaceShipUnit.html#aa5c80d1a788735fe9fd41b509583437b">ShipUnit::c_light</a> * <a class="el" href="namespaceShipUnit.html#af5da50ee86db44fd81351c6c3a3dcf06">ShipUnit::s</a></td></tr>
+<tr class="memdesc:ab487270fe6cf7792379f1564fb750e57"><td class="mdescLeft">&#160;</td><td class="mdescRight">Speed of light in cm/s, for VMC times in seconds.  <br /></td></tr>
+<tr class="separator:ab487270fe6cf7792379f1564fb750e57"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="ac85d3b1e8d74de7b65eee39a98e92c1b" name="ac85d3b1e8d74de7b65eee39a98e92c1b"></a>
@@ -176,148 +194,288 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   57</span>  mparam[8] = 0;</div>
 <div class="line"><span class="lineno">   58</span>  mparam[9] = 0;</div>
 <div class="line"><span class="lineno">   59</span>  <span class="comment">//</span></div>
-<div class="line"><span class="lineno">   60</span>  <span class="keywordtype">double</span> bparam[7];                           <span class="comment">// total parameters</span></div>
-<div class="line"><span class="lineno">   61</span>  <span class="keywordtype">double</span> lparam[7];                           <span class="comment">// local parameters</span></div>
-<div class="line"><span class="lineno">   62</span>  <span class="keywordtype">double</span> <a class="code hl_variable" href="FixedTargetGenerator_8cxx.html#a357b34ec460558c0942628e20a171eef">mbarn</a> = 1E-3 * 1E-24 * TMath::Na();  <span class="comment">// cm^2 * Avogadro</span></div>
-<div class="line"><span class="lineno">   63</span> </div>
-<div class="line"><span class="lineno">   64</span>  <span class="keywordflow">for</span> (Int_t i = 0; i &lt; 7; i++) bparam[i] = 0;</div>
-<div class="line"><span class="lineno">   65</span> </div>
-<div class="line"><span class="lineno">   66</span>  <span class="keywordflow">if</span> (!gGeoManager) {</div>
-<div class="line"><span class="lineno">   67</span>    <span class="keywordflow">return</span> 0.;</div>
-<div class="line"><span class="lineno">   68</span>  }</div>
-<div class="line"><span class="lineno">   69</span>  <span class="comment">//</span></div>
-<div class="line"><span class="lineno">   70</span>  <span class="keywordtype">double</span> length;</div>
-<div class="line"><span class="lineno">   71</span>  <span class="keywordtype">double</span> dir[3];</div>
-<div class="line"><span class="lineno">   72</span>  length = TMath::Sqrt((end[0] - start[0]) * (end[0] - start[0]) +</div>
-<div class="line"><span class="lineno">   73</span>                       (end[1] - start[1]) * (end[1] - start[1]) +</div>
-<div class="line"><span class="lineno">   74</span>                       (end[2] - start[2]) * (end[2] - start[2]));</div>
-<div class="line"><span class="lineno">   75</span>  mparam[4] = length;</div>
-<div class="line"><span class="lineno">   76</span>  <span class="keywordflow">if</span> (length &lt; TGeoShape::Tolerance()) <span class="keywordflow">return</span> 0.0;</div>
-<div class="line"><span class="lineno">   77</span>  <span class="keywordtype">double</span> invlen = 1. / length;</div>
-<div class="line"><span class="lineno">   78</span>  dir[0] = (end[0] - start[0]) * invlen;</div>
-<div class="line"><span class="lineno">   79</span>  dir[1] = (end[1] - start[1]) * invlen;</div>
-<div class="line"><span class="lineno">   80</span>  dir[2] = (end[2] - start[2]) * invlen;</div>
-<div class="line"><span class="lineno">   81</span> </div>
-<div class="line"><span class="lineno">   82</span>  <span class="comment">// Initialise start point and direction</span></div>
-<div class="line"><span class="lineno">   83</span>  TGeoNode* currentnode = <span class="keyword">nullptr</span>;</div>
-<div class="line"><span class="lineno">   84</span>  TGeoNode* startnode = gGeoManager-&gt;InitTrack(start.data(), dir);</div>
-<div class="line"><span class="lineno">   85</span>  <span class="keywordflow">if</span> (!startnode) {</div>
-<div class="line"><span class="lineno">   86</span>    LOG(error) &lt;&lt; <span class="stringliteral">&quot;MeanMaterialBudget: start point out of geometry: x &quot;</span></div>
-<div class="line"><span class="lineno">   87</span>               &lt;&lt; start[0] &lt;&lt; <span class="stringliteral">&quot;, y &quot;</span> &lt;&lt; start[1] &lt;&lt; <span class="stringliteral">&quot;, z &quot;</span> &lt;&lt; start[2];</div>
-<div class="line"><span class="lineno">   88</span>    <span class="keywordflow">return</span> 0.0;</div>
-<div class="line"><span class="lineno">   89</span>  }</div>
-<div class="line"><span class="lineno">   90</span>  TGeoMaterial* <a class="code hl_variable" href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">material</a> = startnode-&gt;GetVolume()-&gt;GetMedium()-&gt;GetMaterial();</div>
-<div class="line"><span class="lineno">   91</span>  lparam[0] = <a class="code hl_variable" href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">material</a>-&gt;GetDensity();</div>
-<div class="line"><span class="lineno">   92</span>  <span class="keywordflow">if</span> (lparam[0] &gt; mparam[7]) mparam[7] = lparam[0];</div>
-<div class="line"><span class="lineno">   93</span>  lparam[1] = <a class="code hl_variable" href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">material</a>-&gt;GetRadLen();</div>
-<div class="line"><span class="lineno">   94</span>  lparam[2] = <a class="code hl_variable" href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">material</a>-&gt;GetA();</div>
-<div class="line"><span class="lineno">   95</span>  lparam[3] = <a class="code hl_variable" href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">material</a>-&gt;GetZ();</div>
-<div class="line"><span class="lineno">   96</span>  lparam[4] = length;</div>
-<div class="line"><span class="lineno">   97</span>  lparam[5] = lparam[3] / lparam[2];</div>
-<div class="line"><span class="lineno">   98</span>  lparam[6] = <a class="code hl_variable" href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">material</a>-&gt;GetIntLen();</div>
-<div class="line"><span class="lineno">   99</span>  <span class="keywordtype">double</span> <a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a> = lparam[0] / lparam[2];</div>
-<div class="line"><span class="lineno">  100</span>  <span class="keywordtype">double</span> <a class="code hl_variable" href="namespacerunPythia8.html#aa6ccf15df5382fe526735a07d97d3cd4">sigma</a> = 1. / (<a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a> * lparam[6]) / <a class="code hl_variable" href="FixedTargetGenerator_8cxx.html#a357b34ec460558c0942628e20a171eef">mbarn</a>;</div>
-<div class="line"><span class="lineno">  101</span>  <span class="keywordflow">if</span> (sigma &gt; mparam[9]) mparam[9] = <a class="code hl_variable" href="namespacerunPythia8.html#aa6ccf15df5382fe526735a07d97d3cd4">sigma</a>;</div>
-<div class="line"><span class="lineno">  102</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">material</a>-&gt;IsMixture()) {</div>
-<div class="line"><span class="lineno">  103</span>    TGeoMixture* mixture = <span class="keyword">dynamic_cast&lt;</span>TGeoMixture*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">material</a>);</div>
-<div class="line"><span class="lineno">  104</span>    lparam[5] = 0;</div>
-<div class="line"><span class="lineno">  105</span>    <span class="keywordtype">double</span> sum = 0;</div>
-<div class="line"><span class="lineno">  106</span>    <span class="keywordflow">for</span> (Int_t iel = 0; iel &lt; mixture-&gt;GetNelements(); iel++) {</div>
-<div class="line"><span class="lineno">  107</span>      sum += mixture-&gt;GetWmixt()[iel];</div>
-<div class="line"><span class="lineno">  108</span>      lparam[5] += mixture-&gt;GetZmixt()[iel] * mixture-&gt;GetWmixt()[iel] /</div>
-<div class="line"><span class="lineno">  109</span>                   mixture-&gt;GetAmixt()[iel];</div>
-<div class="line"><span class="lineno">  110</span>    }</div>
-<div class="line"><span class="lineno">  111</span>    lparam[5] /= sum;</div>
-<div class="line"><span class="lineno">  112</span>  }</div>
-<div class="line"><span class="lineno">  113</span> </div>
-<div class="line"><span class="lineno">  114</span>  <span class="comment">// Locate next boundary within length without computing safety.</span></div>
-<div class="line"><span class="lineno">  115</span>  <span class="comment">// Propagate either with length (if no boundary found) or just cross boundary</span></div>
-<div class="line"><span class="lineno">  116</span>  gGeoManager-&gt;FindNextBoundaryAndStep(length, kFALSE);</div>
-<div class="line"><span class="lineno">  117</span>  <span class="keywordtype">double</span> <a class="code hl_variable" href="namespaceadd__noise__to__field.html#a96cf5cc2cc008d7422009cb2ad93cb51">step</a> = 0.0;  <span class="comment">// Step made</span></div>
-<div class="line"><span class="lineno">  118</span>  <span class="keywordtype">double</span> snext = gGeoManager-&gt;GetStep();</div>
-<div class="line"><span class="lineno">  119</span>  <span class="comment">// If no boundary within proposed length, return current density</span></div>
-<div class="line"><span class="lineno">  120</span>  <span class="keywordflow">if</span> (!gGeoManager-&gt;IsOnBoundary()) {</div>
-<div class="line"><span class="lineno">  121</span>    mparam[0] = lparam[0];</div>
-<div class="line"><span class="lineno">  122</span>    mparam[1] = lparam[4] / lparam[1];</div>
-<div class="line"><span class="lineno">  123</span>    mparam[2] = lparam[2];</div>
-<div class="line"><span class="lineno">  124</span>    mparam[3] = lparam[3];</div>
-<div class="line"><span class="lineno">  125</span>    mparam[4] = lparam[4];</div>
-<div class="line"><span class="lineno">  126</span>    mparam[8] = lparam[4] / lparam[6];</div>
-<div class="line"><span class="lineno">  127</span>    <span class="keywordflow">return</span> lparam[0];</div>
-<div class="line"><span class="lineno">  128</span>  }</div>
-<div class="line"><span class="lineno">  129</span>  <span class="comment">// Try to cross the boundary and see what is next</span></div>
-<div class="line"><span class="lineno">  130</span>  Int_t nzero = 0;</div>
-<div class="line"><span class="lineno">  131</span>  <span class="keywordflow">while</span> (length &gt; TGeoShape::Tolerance()) {</div>
-<div class="line"><span class="lineno">  132</span>    currentnode = gGeoManager-&gt;GetCurrentNode();</div>
-<div class="line"><span class="lineno">  133</span>    <span class="keywordflow">if</span> (snext &lt; 2. * TGeoShape::Tolerance())</div>
-<div class="line"><span class="lineno">  134</span>      nzero++;</div>
-<div class="line"><span class="lineno">  135</span>    <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  136</span>      nzero = 0;</div>
-<div class="line"><span class="lineno">  137</span>    <span class="keywordflow">if</span> (nzero &gt; 3) {</div>
-<div class="line"><span class="lineno">  138</span>      <span class="comment">// This means navigation has problems on one boundary</span></div>
-<div class="line"><span class="lineno">  139</span>      <span class="comment">// Try to cross by making a small step</span></div>
-<div class="line"><span class="lineno">  140</span>      mparam[0] = bparam[0] / <a class="code hl_variable" href="namespaceadd__noise__to__field.html#a96cf5cc2cc008d7422009cb2ad93cb51">step</a>;</div>
-<div class="line"><span class="lineno">  141</span>      mparam[1] = bparam[1];</div>
-<div class="line"><span class="lineno">  142</span>      mparam[2] = bparam[2] / <a class="code hl_variable" href="namespaceadd__noise__to__field.html#a96cf5cc2cc008d7422009cb2ad93cb51">step</a>;</div>
-<div class="line"><span class="lineno">  143</span>      mparam[3] = bparam[3] / <a class="code hl_variable" href="namespaceadd__noise__to__field.html#a96cf5cc2cc008d7422009cb2ad93cb51">step</a>;</div>
-<div class="line"><span class="lineno">  144</span>      mparam[5] = bparam[5] / <a class="code hl_variable" href="namespaceadd__noise__to__field.html#a96cf5cc2cc008d7422009cb2ad93cb51">step</a>;</div>
-<div class="line"><span class="lineno">  145</span>      mparam[8] = bparam[6];</div>
-<div class="line"><span class="lineno">  146</span>      mparam[4] = <a class="code hl_variable" href="namespaceadd__noise__to__field.html#a96cf5cc2cc008d7422009cb2ad93cb51">step</a>;</div>
-<div class="line"><span class="lineno">  147</span>      mparam[0] = 0.;       <span class="comment">// if crash of navigation take mean density 0</span></div>
-<div class="line"><span class="lineno">  148</span>      mparam[1] = 1000000;  <span class="comment">// and infinite rad length</span></div>
-<div class="line"><span class="lineno">  149</span>      <span class="keywordflow">return</span> bparam[0] / <a class="code hl_variable" href="namespaceadd__noise__to__field.html#a96cf5cc2cc008d7422009cb2ad93cb51">step</a>;</div>
-<div class="line"><span class="lineno">  150</span>    }</div>
-<div class="line"><span class="lineno">  151</span>    mparam[6] += 1.;</div>
-<div class="line"><span class="lineno">  152</span>    <a class="code hl_variable" href="namespaceadd__noise__to__field.html#a96cf5cc2cc008d7422009cb2ad93cb51">step</a> += snext;</div>
-<div class="line"><span class="lineno">  153</span>    bparam[1] += snext / lparam[1];</div>
-<div class="line"><span class="lineno">  154</span>    bparam[2] += snext * lparam[2];</div>
-<div class="line"><span class="lineno">  155</span>    bparam[3] += snext * lparam[3];</div>
-<div class="line"><span class="lineno">  156</span>    bparam[5] += snext * lparam[5];</div>
-<div class="line"><span class="lineno">  157</span>    bparam[6] += snext / lparam[6];</div>
-<div class="line"><span class="lineno">  158</span>    bparam[0] += snext * lparam[0];</div>
-<div class="line"><span class="lineno">  159</span> </div>
-<div class="line"><span class="lineno">  160</span>    <span class="keywordflow">if</span> (snext &gt;= length) <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  161</span>    <span class="keywordflow">if</span> (!currentnode) <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  162</span>    length -= snext;</div>
-<div class="line"><span class="lineno">  163</span>    <a class="code hl_variable" href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">material</a> = currentnode-&gt;GetVolume()-&gt;GetMedium()-&gt;GetMaterial();</div>
-<div class="line"><span class="lineno">  164</span>    lparam[0] = <a class="code hl_variable" href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">material</a>-&gt;GetDensity();</div>
-<div class="line"><span class="lineno">  165</span>    <span class="keywordflow">if</span> (lparam[0] &gt; mparam[7]) mparam[7] = lparam[0];</div>
-<div class="line"><span class="lineno">  166</span>    lparam[1] = <a class="code hl_variable" href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">material</a>-&gt;GetRadLen();</div>
-<div class="line"><span class="lineno">  167</span>    lparam[2] = <a class="code hl_variable" href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">material</a>-&gt;GetA();</div>
-<div class="line"><span class="lineno">  168</span>    lparam[3] = <a class="code hl_variable" href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">material</a>-&gt;GetZ();</div>
-<div class="line"><span class="lineno">  169</span>    lparam[5] = lparam[3] / lparam[2];</div>
-<div class="line"><span class="lineno">  170</span>    lparam[6] = <a class="code hl_variable" href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">material</a>-&gt;GetIntLen();</div>
-<div class="line"><span class="lineno">  171</span>    <a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a> = lparam[0] / lparam[2];</div>
-<div class="line"><span class="lineno">  172</span>    <a class="code hl_variable" href="namespacerunPythia8.html#aa6ccf15df5382fe526735a07d97d3cd4">sigma</a> = 1. / (<a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a> * lparam[6]) / <a class="code hl_variable" href="FixedTargetGenerator_8cxx.html#a357b34ec460558c0942628e20a171eef">mbarn</a>;</div>
-<div class="line"><span class="lineno">  173</span>    <span class="keywordflow">if</span> (sigma &gt; mparam[9]) mparam[9] = <a class="code hl_variable" href="namespacerunPythia8.html#aa6ccf15df5382fe526735a07d97d3cd4">sigma</a>;</div>
-<div class="line"><span class="lineno">  174</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">material</a>-&gt;IsMixture()) {</div>
-<div class="line"><span class="lineno">  175</span>      TGeoMixture* mixture = <span class="keyword">dynamic_cast&lt;</span>TGeoMixture*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">material</a>);</div>
-<div class="line"><span class="lineno">  176</span>      lparam[5] = 0;</div>
-<div class="line"><span class="lineno">  177</span>      <span class="keywordtype">double</span> sum = 0;</div>
-<div class="line"><span class="lineno">  178</span>      <span class="keywordflow">for</span> (Int_t iel = 0; iel &lt; mixture-&gt;GetNelements(); iel++) {</div>
-<div class="line"><span class="lineno">  179</span>        sum += mixture-&gt;GetWmixt()[iel];</div>
-<div class="line"><span class="lineno">  180</span>        lparam[5] += mixture-&gt;GetZmixt()[iel] * mixture-&gt;GetWmixt()[iel] /</div>
-<div class="line"><span class="lineno">  181</span>                     mixture-&gt;GetAmixt()[iel];</div>
-<div class="line"><span class="lineno">  182</span>      }</div>
-<div class="line"><span class="lineno">  183</span>      lparam[5] /= sum;</div>
-<div class="line"><span class="lineno">  184</span>    }</div>
-<div class="line"><span class="lineno">  185</span>    gGeoManager-&gt;FindNextBoundaryAndStep(length, kFALSE);</div>
-<div class="line"><span class="lineno">  186</span>    snext = gGeoManager-&gt;GetStep();</div>
-<div class="line"><span class="lineno">  187</span>  }</div>
-<div class="line"><span class="lineno">  188</span>  mparam[0] = bparam[0] / <a class="code hl_variable" href="namespaceadd__noise__to__field.html#a96cf5cc2cc008d7422009cb2ad93cb51">step</a>;</div>
-<div class="line"><span class="lineno">  189</span>  mparam[1] = bparam[1];</div>
-<div class="line"><span class="lineno">  190</span>  mparam[2] = bparam[2] / <a class="code hl_variable" href="namespaceadd__noise__to__field.html#a96cf5cc2cc008d7422009cb2ad93cb51">step</a>;</div>
-<div class="line"><span class="lineno">  191</span>  mparam[3] = bparam[3] / <a class="code hl_variable" href="namespaceadd__noise__to__field.html#a96cf5cc2cc008d7422009cb2ad93cb51">step</a>;</div>
-<div class="line"><span class="lineno">  192</span>  mparam[5] = bparam[5] / <a class="code hl_variable" href="namespaceadd__noise__to__field.html#a96cf5cc2cc008d7422009cb2ad93cb51">step</a>;</div>
-<div class="line"><span class="lineno">  193</span>  mparam[8] = bparam[6];</div>
-<div class="line"><span class="lineno">  194</span>  <span class="keywordflow">return</span> bparam[0] / <a class="code hl_variable" href="namespaceadd__noise__to__field.html#a96cf5cc2cc008d7422009cb2ad93cb51">step</a>;</div>
-<div class="line"><span class="lineno">  195</span>}</div>
-<div class="ttc" id="aFixedTargetGenerator_8cxx_html_a357b34ec460558c0942628e20a171eef"><div class="ttname"><a href="FixedTargetGenerator_8cxx.html#a357b34ec460558c0942628e20a171eef">mbarn</a></div><div class="ttdeci">constexpr Double_t mbarn</div><div class="ttdef"><b>Definition</b> <a href="FixedTargetGenerator_8cxx_source.html#l00065">FixedTargetGenerator.cxx:65</a></div></div>
+<div class="line"><span class="lineno">   60</span>  <span class="keywordtype">double</span> bparam[7];  <span class="comment">// total parameters</span></div>
+<div class="line"><span class="lineno">   61</span>  <span class="keywordtype">double</span> lparam[7];  <span class="comment">// local parameters</span></div>
+<div class="line"><span class="lineno">   62</span> </div>
+<div class="line"><span class="lineno">   63</span>  <span class="keywordflow">for</span> (Int_t i = 0; i &lt; 7; i++) bparam[i] = 0;</div>
+<div class="line"><span class="lineno">   64</span> </div>
+<div class="line"><span class="lineno">   65</span>  <span class="keywordflow">if</span> (!gGeoManager) {</div>
+<div class="line"><span class="lineno">   66</span>    <span class="keywordflow">return</span> 0.;</div>
+<div class="line"><span class="lineno">   67</span>  }</div>
+<div class="line"><span class="lineno">   68</span>  <span class="comment">//</span></div>
+<div class="line"><span class="lineno">   69</span>  <span class="keywordtype">double</span> length;</div>
+<div class="line"><span class="lineno">   70</span>  <span class="keywordtype">double</span> dir[3];</div>
+<div class="line"><span class="lineno">   71</span>  length = TMath::Sqrt((end[0] - start[0]) * (end[0] - start[0]) +</div>
+<div class="line"><span class="lineno">   72</span>                       (end[1] - start[1]) * (end[1] - start[1]) +</div>
+<div class="line"><span class="lineno">   73</span>                       (end[2] - start[2]) * (end[2] - start[2]));</div>
+<div class="line"><span class="lineno">   74</span>  mparam[4] = length;</div>
+<div class="line"><span class="lineno">   75</span>  <span class="keywordflow">if</span> (length &lt; TGeoShape::Tolerance()) <span class="keywordflow">return</span> 0.0;</div>
+<div class="line"><span class="lineno">   76</span>  <span class="keywordtype">double</span> invlen = 1. / length;</div>
+<div class="line"><span class="lineno">   77</span>  dir[0] = (end[0] - start[0]) * invlen;</div>
+<div class="line"><span class="lineno">   78</span>  dir[1] = (end[1] - start[1]) * invlen;</div>
+<div class="line"><span class="lineno">   79</span>  dir[2] = (end[2] - start[2]) * invlen;</div>
+<div class="line"><span class="lineno">   80</span> </div>
+<div class="line"><span class="lineno">   81</span>  <span class="comment">// Initialise start point and direction</span></div>
+<div class="line"><span class="lineno">   82</span>  TGeoNode* currentnode = <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">   83</span>  TGeoNode* startnode = gGeoManager-&gt;InitTrack(start.data(), dir);</div>
+<div class="line"><span class="lineno">   84</span>  <span class="keywordflow">if</span> (!startnode) {</div>
+<div class="line"><span class="lineno">   85</span>    LOG(error) &lt;&lt; <span class="stringliteral">&quot;MeanMaterialBudget: start point out of geometry: x &quot;</span></div>
+<div class="line"><span class="lineno">   86</span>               &lt;&lt; start[0] &lt;&lt; <span class="stringliteral">&quot;, y &quot;</span> &lt;&lt; start[1] &lt;&lt; <span class="stringliteral">&quot;, z &quot;</span> &lt;&lt; start[2];</div>
+<div class="line"><span class="lineno">   87</span>    <span class="keywordflow">return</span> 0.0;</div>
+<div class="line"><span class="lineno">   88</span>  }</div>
+<div class="line"><span class="lineno">   89</span>  TGeoMaterial* <a class="code hl_variable" href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">material</a> = startnode-&gt;GetVolume()-&gt;GetMedium()-&gt;GetMaterial();</div>
+<div class="line"><span class="lineno">   90</span>  lparam[0] = <a class="code hl_variable" href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">material</a>-&gt;GetDensity();</div>
+<div class="line"><span class="lineno">   91</span>  <span class="keywordflow">if</span> (lparam[0] &gt; mparam[7]) mparam[7] = lparam[0];</div>
+<div class="line"><span class="lineno">   92</span>  lparam[1] = <a class="code hl_variable" href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">material</a>-&gt;GetRadLen();</div>
+<div class="line"><span class="lineno">   93</span>  lparam[2] = <a class="code hl_variable" href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">material</a>-&gt;GetA();</div>
+<div class="line"><span class="lineno">   94</span>  lparam[3] = <a class="code hl_variable" href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">material</a>-&gt;GetZ();</div>
+<div class="line"><span class="lineno">   95</span>  lparam[4] = length;</div>
+<div class="line"><span class="lineno">   96</span>  lparam[5] = lparam[3] / lparam[2];</div>
+<div class="line"><span class="lineno">   97</span>  lparam[6] = <a class="code hl_variable" href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">material</a>-&gt;GetIntLen();</div>
+<div class="line"><span class="lineno">   98</span>  <span class="keywordtype">double</span> <a class="code hl_variable" href="namespacerunPythia8.html#aa6ccf15df5382fe526735a07d97d3cd4">sigma</a> = <a class="code hl_function" href="namespaceshipgen.html#a697900e14010bb7c6ec21c4130c4574b">NuclearCrossSection_mbarn</a>(*material);</div>
+<div class="line"><span class="lineno">   99</span>  <span class="keywordflow">if</span> (sigma &gt; mparam[9]) mparam[9] = <a class="code hl_variable" href="namespacerunPythia8.html#aa6ccf15df5382fe526735a07d97d3cd4">sigma</a>;</div>
+<div class="line"><span class="lineno">  100</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">material</a>-&gt;IsMixture()) {</div>
+<div class="line"><span class="lineno">  101</span>    TGeoMixture* mixture = <span class="keyword">dynamic_cast&lt;</span>TGeoMixture*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">material</a>);</div>
+<div class="line"><span class="lineno">  102</span>    lparam[5] = 0;</div>
+<div class="line"><span class="lineno">  103</span>    <span class="keywordtype">double</span> sum = 0;</div>
+<div class="line"><span class="lineno">  104</span>    <span class="keywordflow">for</span> (Int_t iel = 0; iel &lt; mixture-&gt;GetNelements(); iel++) {</div>
+<div class="line"><span class="lineno">  105</span>      sum += mixture-&gt;GetWmixt()[iel];</div>
+<div class="line"><span class="lineno">  106</span>      lparam[5] += mixture-&gt;GetZmixt()[iel] * mixture-&gt;GetWmixt()[iel] /</div>
+<div class="line"><span class="lineno">  107</span>                   mixture-&gt;GetAmixt()[iel];</div>
+<div class="line"><span class="lineno">  108</span>    }</div>
+<div class="line"><span class="lineno">  109</span>    lparam[5] /= sum;</div>
+<div class="line"><span class="lineno">  110</span>  }</div>
+<div class="line"><span class="lineno">  111</span> </div>
+<div class="line"><span class="lineno">  112</span>  <span class="comment">// Locate next boundary within length without computing safety.</span></div>
+<div class="line"><span class="lineno">  113</span>  <span class="comment">// Propagate either with length (if no boundary found) or just cross boundary</span></div>
+<div class="line"><span class="lineno">  114</span>  gGeoManager-&gt;FindNextBoundaryAndStep(length, kFALSE);</div>
+<div class="line"><span class="lineno">  115</span>  <span class="keywordtype">double</span> <a class="code hl_variable" href="namespaceadd__noise__to__field.html#a96cf5cc2cc008d7422009cb2ad93cb51">step</a> = 0.0;  <span class="comment">// Step made</span></div>
+<div class="line"><span class="lineno">  116</span>  <span class="keywordtype">double</span> snext = gGeoManager-&gt;GetStep();</div>
+<div class="line"><span class="lineno">  117</span>  <span class="comment">// If no boundary within proposed length, return current density</span></div>
+<div class="line"><span class="lineno">  118</span>  <span class="keywordflow">if</span> (!gGeoManager-&gt;IsOnBoundary()) {</div>
+<div class="line"><span class="lineno">  119</span>    mparam[0] = lparam[0];</div>
+<div class="line"><span class="lineno">  120</span>    mparam[1] = lparam[4] / lparam[1];</div>
+<div class="line"><span class="lineno">  121</span>    mparam[2] = lparam[2];</div>
+<div class="line"><span class="lineno">  122</span>    mparam[3] = lparam[3];</div>
+<div class="line"><span class="lineno">  123</span>    mparam[4] = lparam[4];</div>
+<div class="line"><span class="lineno">  124</span>    mparam[8] = lparam[4] / lparam[6];</div>
+<div class="line"><span class="lineno">  125</span>    <span class="keywordflow">return</span> lparam[0];</div>
+<div class="line"><span class="lineno">  126</span>  }</div>
+<div class="line"><span class="lineno">  127</span>  <span class="comment">// Try to cross the boundary and see what is next</span></div>
+<div class="line"><span class="lineno">  128</span>  Int_t nzero = 0;</div>
+<div class="line"><span class="lineno">  129</span>  <span class="keywordflow">while</span> (length &gt; TGeoShape::Tolerance()) {</div>
+<div class="line"><span class="lineno">  130</span>    currentnode = gGeoManager-&gt;GetCurrentNode();</div>
+<div class="line"><span class="lineno">  131</span>    <span class="keywordflow">if</span> (snext &lt; 2. * TGeoShape::Tolerance())</div>
+<div class="line"><span class="lineno">  132</span>      nzero++;</div>
+<div class="line"><span class="lineno">  133</span>    <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  134</span>      nzero = 0;</div>
+<div class="line"><span class="lineno">  135</span>    <span class="keywordflow">if</span> (nzero &gt; 3) {</div>
+<div class="line"><span class="lineno">  136</span>      <span class="comment">// This means navigation has problems on one boundary</span></div>
+<div class="line"><span class="lineno">  137</span>      <span class="comment">// Try to cross by making a small step</span></div>
+<div class="line"><span class="lineno">  138</span>      mparam[0] = bparam[0] / <a class="code hl_variable" href="namespaceadd__noise__to__field.html#a96cf5cc2cc008d7422009cb2ad93cb51">step</a>;</div>
+<div class="line"><span class="lineno">  139</span>      mparam[1] = bparam[1];</div>
+<div class="line"><span class="lineno">  140</span>      mparam[2] = bparam[2] / <a class="code hl_variable" href="namespaceadd__noise__to__field.html#a96cf5cc2cc008d7422009cb2ad93cb51">step</a>;</div>
+<div class="line"><span class="lineno">  141</span>      mparam[3] = bparam[3] / <a class="code hl_variable" href="namespaceadd__noise__to__field.html#a96cf5cc2cc008d7422009cb2ad93cb51">step</a>;</div>
+<div class="line"><span class="lineno">  142</span>      mparam[5] = bparam[5] / <a class="code hl_variable" href="namespaceadd__noise__to__field.html#a96cf5cc2cc008d7422009cb2ad93cb51">step</a>;</div>
+<div class="line"><span class="lineno">  143</span>      mparam[8] = bparam[6];</div>
+<div class="line"><span class="lineno">  144</span>      mparam[4] = <a class="code hl_variable" href="namespaceadd__noise__to__field.html#a96cf5cc2cc008d7422009cb2ad93cb51">step</a>;</div>
+<div class="line"><span class="lineno">  145</span>      mparam[0] = 0.;       <span class="comment">// if crash of navigation take mean density 0</span></div>
+<div class="line"><span class="lineno">  146</span>      mparam[1] = 1000000;  <span class="comment">// and infinite rad length</span></div>
+<div class="line"><span class="lineno">  147</span>      <span class="keywordflow">return</span> bparam[0] / <a class="code hl_variable" href="namespaceadd__noise__to__field.html#a96cf5cc2cc008d7422009cb2ad93cb51">step</a>;</div>
+<div class="line"><span class="lineno">  148</span>    }</div>
+<div class="line"><span class="lineno">  149</span>    mparam[6] += 1.;</div>
+<div class="line"><span class="lineno">  150</span>    <a class="code hl_variable" href="namespaceadd__noise__to__field.html#a96cf5cc2cc008d7422009cb2ad93cb51">step</a> += snext;</div>
+<div class="line"><span class="lineno">  151</span>    bparam[1] += snext / lparam[1];</div>
+<div class="line"><span class="lineno">  152</span>    bparam[2] += snext * lparam[2];</div>
+<div class="line"><span class="lineno">  153</span>    bparam[3] += snext * lparam[3];</div>
+<div class="line"><span class="lineno">  154</span>    bparam[5] += snext * lparam[5];</div>
+<div class="line"><span class="lineno">  155</span>    bparam[6] += snext / lparam[6];</div>
+<div class="line"><span class="lineno">  156</span>    bparam[0] += snext * lparam[0];</div>
+<div class="line"><span class="lineno">  157</span> </div>
+<div class="line"><span class="lineno">  158</span>    <span class="keywordflow">if</span> (snext &gt;= length) <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  159</span>    <span class="keywordflow">if</span> (!currentnode) <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  160</span>    length -= snext;</div>
+<div class="line"><span class="lineno">  161</span>    <a class="code hl_variable" href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">material</a> = currentnode-&gt;GetVolume()-&gt;GetMedium()-&gt;GetMaterial();</div>
+<div class="line"><span class="lineno">  162</span>    lparam[0] = <a class="code hl_variable" href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">material</a>-&gt;GetDensity();</div>
+<div class="line"><span class="lineno">  163</span>    <span class="keywordflow">if</span> (lparam[0] &gt; mparam[7]) mparam[7] = lparam[0];</div>
+<div class="line"><span class="lineno">  164</span>    lparam[1] = <a class="code hl_variable" href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">material</a>-&gt;GetRadLen();</div>
+<div class="line"><span class="lineno">  165</span>    lparam[2] = <a class="code hl_variable" href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">material</a>-&gt;GetA();</div>
+<div class="line"><span class="lineno">  166</span>    lparam[3] = <a class="code hl_variable" href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">material</a>-&gt;GetZ();</div>
+<div class="line"><span class="lineno">  167</span>    lparam[5] = lparam[3] / lparam[2];</div>
+<div class="line"><span class="lineno">  168</span>    lparam[6] = <a class="code hl_variable" href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">material</a>-&gt;GetIntLen();</div>
+<div class="line"><span class="lineno">  169</span>    <a class="code hl_variable" href="namespacerunPythia8.html#aa6ccf15df5382fe526735a07d97d3cd4">sigma</a> = <a class="code hl_function" href="namespaceshipgen.html#a697900e14010bb7c6ec21c4130c4574b">NuclearCrossSection_mbarn</a>(*material);</div>
+<div class="line"><span class="lineno">  170</span>    <span class="keywordflow">if</span> (sigma &gt; mparam[9]) mparam[9] = <a class="code hl_variable" href="namespacerunPythia8.html#aa6ccf15df5382fe526735a07d97d3cd4">sigma</a>;</div>
+<div class="line"><span class="lineno">  171</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">material</a>-&gt;IsMixture()) {</div>
+<div class="line"><span class="lineno">  172</span>      TGeoMixture* mixture = <span class="keyword">dynamic_cast&lt;</span>TGeoMixture*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">material</a>);</div>
+<div class="line"><span class="lineno">  173</span>      lparam[5] = 0;</div>
+<div class="line"><span class="lineno">  174</span>      <span class="keywordtype">double</span> sum = 0;</div>
+<div class="line"><span class="lineno">  175</span>      <span class="keywordflow">for</span> (Int_t iel = 0; iel &lt; mixture-&gt;GetNelements(); iel++) {</div>
+<div class="line"><span class="lineno">  176</span>        sum += mixture-&gt;GetWmixt()[iel];</div>
+<div class="line"><span class="lineno">  177</span>        lparam[5] += mixture-&gt;GetZmixt()[iel] * mixture-&gt;GetWmixt()[iel] /</div>
+<div class="line"><span class="lineno">  178</span>                     mixture-&gt;GetAmixt()[iel];</div>
+<div class="line"><span class="lineno">  179</span>      }</div>
+<div class="line"><span class="lineno">  180</span>      lparam[5] /= sum;</div>
+<div class="line"><span class="lineno">  181</span>    }</div>
+<div class="line"><span class="lineno">  182</span>    gGeoManager-&gt;FindNextBoundaryAndStep(length, kFALSE);</div>
+<div class="line"><span class="lineno">  183</span>    snext = gGeoManager-&gt;GetStep();</div>
+<div class="line"><span class="lineno">  184</span>  }</div>
+<div class="line"><span class="lineno">  185</span>  mparam[0] = bparam[0] / <a class="code hl_variable" href="namespaceadd__noise__to__field.html#a96cf5cc2cc008d7422009cb2ad93cb51">step</a>;</div>
+<div class="line"><span class="lineno">  186</span>  mparam[1] = bparam[1];</div>
+<div class="line"><span class="lineno">  187</span>  mparam[2] = bparam[2] / <a class="code hl_variable" href="namespaceadd__noise__to__field.html#a96cf5cc2cc008d7422009cb2ad93cb51">step</a>;</div>
+<div class="line"><span class="lineno">  188</span>  mparam[3] = bparam[3] / <a class="code hl_variable" href="namespaceadd__noise__to__field.html#a96cf5cc2cc008d7422009cb2ad93cb51">step</a>;</div>
+<div class="line"><span class="lineno">  189</span>  mparam[5] = bparam[5] / <a class="code hl_variable" href="namespaceadd__noise__to__field.html#a96cf5cc2cc008d7422009cb2ad93cb51">step</a>;</div>
+<div class="line"><span class="lineno">  190</span>  mparam[8] = bparam[6];</div>
+<div class="line"><span class="lineno">  191</span>  <span class="keywordflow">return</span> bparam[0] / <a class="code hl_variable" href="namespaceadd__noise__to__field.html#a96cf5cc2cc008d7422009cb2ad93cb51">step</a>;</div>
+<div class="line"><span class="lineno">  192</span>}</div>
 <div class="ttc" id="anamespaceadd__noise__to__field_html_a96cf5cc2cc008d7422009cb2ad93cb51"><div class="ttname"><a href="namespaceadd__noise__to__field.html#a96cf5cc2cc008d7422009cb2ad93cb51">add_noise_to_field.step</a></div><div class="ttdeci">step</div><div class="ttdef"><b>Definition</b> <a href="add__noise__to__field_8py_source.html#l00082">add_noise_to_field.py:82</a></div></div>
-<div class="ttc" id="anamespacemakeDecay_html_af2fe9da99a6c13f5bdd6d42663620c39"><div class="ttname"><a href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">makeDecay.n</a></div><div class="ttdeci">int n</div><div class="ttdef"><b>Definition</b> <a href="makeDecay_8py_source.html#l00089">makeDecay.py:89</a></div></div>
 <div class="ttc" id="anamespacerunPythia8_html_aa6ccf15df5382fe526735a07d97d3cd4"><div class="ttname"><a href="namespacerunPythia8.html#aa6ccf15df5382fe526735a07d97d3cd4">runPythia8.sigma</a></div><div class="ttdeci">dict sigma</div><div class="ttdef"><b>Definition</b> <a href="runPythia8_8py_source.html#l00187">runPythia8.py:187</a></div></div>
+<div class="ttc" id="anamespaceshipgen_html_a697900e14010bb7c6ec21c4130c4574b"><div class="ttname"><a href="namespaceshipgen.html#a697900e14010bb7c6ec21c4130c4574b">shipgen::NuclearCrossSection_mbarn</a></div><div class="ttdeci">double NuclearCrossSection_mbarn(const TGeoMaterial &amp;material)</div><div class="ttdef"><b>Definition</b> <a href="MeanMaterialBudget_8cxx_source.html#l00194">MeanMaterialBudget.cxx:194</a></div></div>
 <div class="ttc" id="anamespacestudy__GammaConv_html_abbc8036b3a71074383fbd57fa32aad59"><div class="ttname"><a href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">study_GammaConv.material</a></div><div class="ttdeci">material</div><div class="ttdef"><b>Definition</b> <a href="study__GammaConv_8py_source.html#l00042">study_GammaConv.py:42</a></div></div>
 </div><!-- fragment -->
+</div>
+</div>
+<a id="a697900e14010bb7c6ec21c4130c4574b" name="a697900e14010bb7c6ec21c4130c4574b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a697900e14010bb7c6ec21c4130c4574b">&#9670;&#160;</a></span>NuclearCrossSection_mbarn()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double shipgen::NuclearCrossSection_mbarn </td>
+          <td>(</td>
+          <td class="paramtype">const TGeoMaterial &amp;&#160;</td>
+          <td class="paramname"><em>material</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="MeanMaterialBudget_8cxx_source.html#l00194">194</a> of file <a class="el" href="MeanMaterialBudget_8cxx_source.html">MeanMaterialBudget.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  194</span>                                                               {</div>
+<div class="line"><span class="lineno">  195</span>  <span class="keyword">constexpr</span> <span class="keywordtype">double</span> mbarn = 1E-3 * 1E-24 * TMath::Na();  <span class="comment">// cm^2 * Avogadro</span></div>
+<div class="line"><span class="lineno">  196</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> n = material.GetDensity() / material.GetA();</div>
+<div class="line"><span class="lineno">  197</span>  <span class="keywordflow">return</span> 1. / (n * material.GetIntLen()) / mbarn;</div>
+<div class="line"><span class="lineno">  198</span>}</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="abf37dd718f47d2835452543cb4b3f0a1" name="abf37dd718f47d2835452543cb4b3f0a1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abf37dd718f47d2835452543cb4b3f0a1">&#9670;&#160;</a></span>PythiaLengthToCm()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr double shipgen::PythiaLengthToCm </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>x</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>A <a class="el" href="namespacePythia8.html">Pythia8</a> position (mm) in FairShip units (cm). </p>
+
+<p class="definition">Definition at line <a class="el" href="PythiaUnits_8h_source.html#l00018">18</a> of file <a class="el" href="PythiaUnits_8h_source.html">PythiaUnits.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   18</span>{ <span class="keywordflow">return</span> x / <a class="code hl_variable" href="namespaceshipgen.html#ac34c2223302691f3db2e078530598bba">kPythiaLengthPerCm</a>; }</div>
+<div class="ttc" id="anamespaceshipgen_html_ac34c2223302691f3db2e078530598bba"><div class="ttname"><a href="namespaceshipgen.html#ac34c2223302691f3db2e078530598bba">shipgen::kPythiaLengthPerCm</a></div><div class="ttdeci">constexpr double kPythiaLengthPerCm</div><div class="ttdoc">Pythia8 lengths are in mm, FairShip lengths in cm.</div><div class="ttdef"><b>Definition</b> <a href="PythiaUnits_8h_source.html#l00013">PythiaUnits.h:13</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a1712d3106f13d600a33e5016f447f592" name="a1712d3106f13d600a33e5016f447f592"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1712d3106f13d600a33e5016f447f592">&#9670;&#160;</a></span>PythiaTimeToS()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr double shipgen::PythiaTimeToS </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>t</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>A <a class="el" href="namespacePythia8.html">Pythia8</a> time (mm/c) in VMC units (s). </p>
+
+<p class="definition">Definition at line <a class="el" href="PythiaUnits_8h_source.html#l00020">20</a> of file <a class="el" href="PythiaUnits_8h_source.html">PythiaUnits.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   20</span>                                         {</div>
+<div class="line"><span class="lineno">   21</span>  <span class="keywordflow">return</span> t / <a class="code hl_variable" href="namespaceshipgen.html#ac34c2223302691f3db2e078530598bba">kPythiaLengthPerCm</a> / <a class="code hl_variable" href="namespaceshipgen.html#ab487270fe6cf7792379f1564fb750e57">kCLightCmPerS</a>;</div>
+<div class="line"><span class="lineno">   22</span>}</div>
+<div class="ttc" id="anamespaceshipgen_html_ab487270fe6cf7792379f1564fb750e57"><div class="ttname"><a href="namespaceshipgen.html#ab487270fe6cf7792379f1564fb750e57">shipgen::kCLightCmPerS</a></div><div class="ttdeci">constexpr double kCLightCmPerS</div><div class="ttdoc">Speed of light in cm/s, for VMC times in seconds.</div><div class="ttdef"><b>Definition</b> <a href="PythiaUnits_8h_source.html#l00015">PythiaUnits.h:15</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<h2 class="groupheader">Variable Documentation</h2>
+<a id="ab487270fe6cf7792379f1564fb750e57" name="ab487270fe6cf7792379f1564fb750e57"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab487270fe6cf7792379f1564fb750e57">&#9670;&#160;</a></span>kCLightCmPerS</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr double shipgen::kCLightCmPerS = <a class="el" href="namespaceShipUnit.html#aa5c80d1a788735fe9fd41b509583437b">ShipUnit::c_light</a> * <a class="el" href="namespaceShipUnit.html#af5da50ee86db44fd81351c6c3a3dcf06">ShipUnit::s</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Speed of light in cm/s, for VMC times in seconds. </p>
+
+<p class="definition">Definition at line <a class="el" href="PythiaUnits_8h_source.html#l00015">15</a> of file <a class="el" href="PythiaUnits_8h_source.html">PythiaUnits.h</a>.</p>
+
+</div>
+</div>
+<a id="ac34c2223302691f3db2e078530598bba" name="ac34c2223302691f3db2e078530598bba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac34c2223302691f3db2e078530598bba">&#9670;&#160;</a></span>kPythiaLengthPerCm</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr double shipgen::kPythiaLengthPerCm = 10.</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p><a class="el" href="namespacePythia8.html">Pythia8</a> lengths are in mm, FairShip lengths in cm. </p>
+
+<p class="definition">Definition at line <a class="el" href="PythiaUnits_8h_source.html#l00013">13</a> of file <a class="el" href="PythiaUnits_8h_source.html">PythiaUnits.h</a>.</p>
+
 </div>
 </div>
 </div><!-- contents -->
