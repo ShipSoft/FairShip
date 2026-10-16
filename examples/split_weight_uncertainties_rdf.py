@@ -42,6 +42,8 @@ def complete_element_class(df, column):
     the dictionaries only forward declare it. Looking the class up from Python
     makes Cling parse its header."""
     vector_class = ROOT.TClass.GetClass(df.GetColumnType(column))
+    if vector_class is None:
+        raise RuntimeError(f"no dictionary for the type of column {column}")
     getattr(ROOT, vector_class.GetCollectionProxy().GetValueClass().GetName())
 
 
@@ -58,7 +60,7 @@ def main():
         return statement, so RDataFrame takes the string as a function body."""
         return f"return Map({args.branch}, [&](const auto& v) {{ return {expr}; }}){mask};"
 
-    df = ROOT.RDataFrame("cbmsim", ROOT.std.vector["std::string"](args.files))
+    df = ROOT.RDataFrame("cbmsim", args.files)
     for column in (args.branch, "MCTrack"):
         complete_element_class(df, column)
     df = (
@@ -72,8 +74,8 @@ def main():
     slots = [
         ROOT.EventHistogram(args.name, title, len(edges) - 1, edges, True, args.replicas) for _ in range(df.GetNSlots())
     ]
-    pointers = ROOT.std.vector["EventHistogram*"](slots)
-    ROOT.FillEventHistograms(ROOT.RDF.AsRNode(df), pointers)
+    pointers = ROOT.std.vector("EventHistogram*")(slots)
+    ROOT.FillEventHistograms(ROOT.RDF.AsRNode(df), pointers)  # pyrefly: ignore[missing-attribute]  # declared above
     h = slots[0]
     for other in slots[1:]:
         h.Add(other)
