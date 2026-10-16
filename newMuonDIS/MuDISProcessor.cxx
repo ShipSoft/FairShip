@@ -21,7 +21,33 @@
 
 using namespace ShipMuDIS;
 
+// Pythia6 routine that, among others, sums the statistics of the photon
+// components of a gamma/lepton beam into PYINT5 (ISAVE = 5), as PYSTAT does.
+extern "C" void pysave_(int* isave, int* iga);
+
 namespace {
+// Store Pythia6's cross-section estimate for all events generated since the
+// last initialisation, i.e. for one target nucleon.
+void StoreTargetXsec(TPythia6* pythia, int nEvents, bool isProton,
+                     MuonDISBranches& branches) {
+  if (nEvents < 1) return;
+  if (pythia->GetMINT(121) > 1) {
+    int isave = 5, iga = 0;
+    pysave_(&isave, &iga);
+  }
+  const auto* stats = pythia->GetPyint5();
+  const unsigned target = isProton ? 1 : 0;
+  // PARI(1) is XSEC(0,3) after the last event; NGEN(0,3) and NGEN(0,1) count
+  // the accepted and tried events, summed over the photon components.
+  branches.xsecByTarget[target] = pythia->GetPARI(1);
+  branches.xsecAccepted[target] = stats->NGEN[2][0];
+  branches.xsecTried[target] = stats->NGEN[0][0];
+  LOG(debug) << " -- Pythia6 cross section " << (isProton ? "p" : "n")
+             << ": PARI(1) " << pythia->GetPARI(1) << " mb, XSEC(0,3) "
+             << stats->XSEC[2][0] << " mb, from " << stats->NGEN[2][0]
+             << " accepted of " << stats->NGEN[0][0] << " tried events";
+}
+
 double DISMinLength(const std::string& label, const MuonPath& path) {
   // Restrict MS to the material tail in accumulated z, with gaps removed.
   return label.find("MS") != label.npos
@@ -296,13 +322,16 @@ void MuDISProcessor::generateDISevents(const std::string& tType,
   // actual segment length so changes of direction do not bias the vertices.
   const double minLength = DISMinLength(aLabel, aPath);
   double lastxs = 0;
+  int targetEvents = 0;  // events generated since the last initialisation
   for (int ia(0); ia < fnDIS; ++ia) {
     LOG(debug) << " ---- Processing DIS event " << ia;
     //@FIXME AMM - half-way through, we change to neutron target with 50-50 :
     //---> update to real material ??
     if (ia == static_cast<int>(fnDIS / 2)) {
+      StoreTargetXsec(fPythia, targetEvents, isProton, aDISBr);
       fPythia->Initialize("FIXT", tType.c_str(), "n0", P);  // target = "n0"
       isProton = false;
+      targetEvents = 0;
     }
 
     // Choose a point on the measured segments, excluding spatial jumps.
@@ -318,6 +347,7 @@ void MuDISProcessor::generateDISevents(const std::string& tType,
 
     fPythia->GenerateEvent();
     aDISBr.nDISevts++;
+    targetEvents++;
     // clean all but final stable particles
     fPythia->Pyedit(1);
 
@@ -356,6 +386,7 @@ void MuDISProcessor::generateDISevents(const std::string& tType,
 
     //
   }  // loop on DIS events
+  StoreTargetXsec(fPythia, targetEvents, isProton, aDISBr);
 
   aDISBr.nDISevtsGenerated = aDISBr.nDISevts;
 

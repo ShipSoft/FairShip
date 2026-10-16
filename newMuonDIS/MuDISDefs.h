@@ -53,6 +53,13 @@ struct MuonDISBranches {
       -1;                // actual count before filtering; -1 if not crossed
   double pPythia = -1.;  // beam momentum passed to Pythia, in GeV/c
   double wDIS;           // per input muon per volume
+  // Pythia6 cross section (mb) after all interactions of one target nucleon,
+  // indexed by DIStarget (0 neutron, 1 proton); -1 if none was generated.
+  std::array<double, 2> xsecByTarget = {-1., -1.};
+  // Accepted and tried Pythia6 events behind each of those estimates.
+  std::array<int, 2> xsecAccepted = {0, 0};
+  std::array<int, 2> xsecTried = {0, 0};
+  // Running estimate PARI(1) after each interaction.
   std::vector<double> DISxsec;  // per input muon per DIS
   std::vector<bool> DIStarget;  // per input muon per DIS, p=true, n=false
   // Position of the interaction in the prepareEvents output, kept by filtering.
@@ -69,6 +76,12 @@ struct MuonDISBranches {
     aT->Branch("muon_nDISGenerated_" + aLabel, &nDISevtsGenerated);
     aT->Branch("muon_pPythia_" + aLabel, &pPythia);
     aT->Branch("muon_wDIS_" + aLabel, &wDIS);
+    aT->Branch("muon_xsecByTarget_" + aLabel, xsecByTarget.data(),
+               "muon_xsecByTarget_" + aLabel + "[2]/D");
+    aT->Branch("muon_xsecAccepted_" + aLabel, xsecAccepted.data(),
+               "muon_xsecAccepted_" + aLabel + "[2]/I");
+    aT->Branch("muon_xsecTried_" + aLabel, xsecTried.data(),
+               "muon_xsecTried_" + aLabel + "[2]/I");
     aT->Branch("mudis_DISxsec_" + aLabel, &DISxsec);
     aT->Branch("mudis_DIStarget_" + aLabel, &DIStarget);
     aT->Branch("mudis_DISgenIndex_" + aLabel, &DISgenIndex);
@@ -85,6 +98,9 @@ struct MuonDISBranches {
     nDISevtsGenerated = -1;
     pPythia = -1.;
     wDIS = 1;
+    xsecByTarget = {-1., -1.};
+    xsecAccepted = {0, 0};
+    xsecTried = {0, 0};
     DISxsec.clear();
     DISxsec.reserve(nDIS);
     DIStarget.clear();
@@ -265,7 +281,11 @@ struct MuonDISInBranches {
   int nDISevts = 0;  // per input muon per volume
   int nDISevtsGenerated = -1;
   double pPythia = -1.;
-  double wDIS = 1;                         // per input muon per volume
+  double wDIS = 1;  // per input muon per volume
+  // Optional: -1 (no estimate) in files written before these branches.
+  std::array<double, 2> xsecByTarget = {-1., -1.};
+  std::array<int, 2> xsecAccepted = {0, 0};
+  std::array<int, 2> xsecTried = {0, 0};
   std::vector<double>* DISxsec = nullptr;  // per input muon per DIS
   std::vector<bool>* DIStarget =
       nullptr;  // per input muon per DIS, p=true, n=false
@@ -310,6 +330,9 @@ struct MuonDISInBranches {
     nDISevtsGenerated = -1;
     pPythia = -1.;
     wDIS = 1.;
+    xsecByTarget = {-1., -1.};
+    xsecAccepted = {0, 0};
+    xsecTried = {0, 0};
     fStorage.initEvent(0);
     DISxsec = &fStorage.DISxsec;
     DIStarget = &fStorage.DIStarget;
@@ -329,6 +352,12 @@ struct MuonDISInBranches {
                           &nDISevtsGenerated);
     ok &= BindInputBranch(tree, "muon_pPythia_" + label, &pPythia);
     ok &= BindInputBranch(tree, "muon_wDIS_" + label, &wDIS);
+    ok &= BindInputBranch(tree, "muon_xsecByTarget_" + label,
+                          xsecByTarget.data(), false);
+    ok &= BindInputBranch(tree, "muon_xsecAccepted_" + label,
+                          xsecAccepted.data(), false);
+    ok &= BindInputBranch(tree, "muon_xsecTried_" + label, xsecTried.data(),
+                          false);
     ok &= BindInputBranch(tree, "mudis_DISxsec_" + label, &DISxsec);
     ok &= BindInputBranch(tree, "mudis_DIStarget_" + label, &DIStarget);
     fHasGenIndex = tree->GetBranch("mudis_DISgenIndex_" + label) != nullptr;

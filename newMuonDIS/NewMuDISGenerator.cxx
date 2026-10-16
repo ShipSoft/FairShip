@@ -277,9 +277,24 @@ Bool_t NewMuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
     fMuonEntry = static_cast<Int_t>(fnmu);
     fDISIndex = fnmuDis;
     fGenIndex = lBr->GenIndex(fnmuDis);
-    // Copied as stored; not validated yet, see README.md.
-    fDISXsec = (*lBr->DISxsec)[fnmuDis];
     fDISTarget = (*lBr->DIStarget)[fnmuDis] ? 1 : 0;
+    fDISXsecEvent = (*lBr->DISxsec)[fnmuDis];
+    fDISXsecAccepted = lBr->xsecAccepted[fDISTarget];
+    fDISXsecTried = lBr->xsecTried[fDISTarget];
+    // Prefer the estimate after all interactions on this target nucleon; files
+    // written before it was stored only have the running estimate.
+    fDISXsec = lBr->xsecByTarget[fDISTarget];
+    if (fDISXsec < 0.) {
+      if (!fWarnedRunningXsec) {
+        LOG(warn) << "NewMuDISGenerator: input has no converged Pythia6 cross "
+                     "section (muon_xsecByTarget_<material>); muDIS_xsec and "
+                     "muDIS_weight use the running estimate of each "
+                     "interaction, which can be off by several times for "
+                     "the first interactions of each target.";
+        fWarnedRunningXsec = true;
+      }
+      fDISXsec = fDISXsecEvent;
+    }
     fWDIS = lBr->wDIS;
     fWeight = fDISXsec >= 0. ? fWDIS * fDISXsec * kNucleonsPerGramTimesMb : -1.;
     fSource = finEv.source;
@@ -317,11 +332,13 @@ Bool_t NewMuDISGenerator::RegisterOutputBranches(TTree* tree) {
     return kFALSE;
   }
   for (const auto* name :
-       {"muDIS_material", "muDIS_muEntry", "muDIS_disIndex", "muDIS_genIndex",
-        "muDIS_xsec", "muDIS_target", "muDIS_wDIS", "muDIS_weight",
-        "muDIS_pPythia", "muDIS_nGenerated", "muDIS_srcFile", "muDIS_srcEntry",
-        "muDIS_srcTrackID", "muDIS_srcRunID", "muDIS_srcEventID",
-        "muDIS_potRunID", "muDIS_potEventID"}) {
+       {"muDIS_material",     "muDIS_muEntry",   "muDIS_disIndex",
+        "muDIS_genIndex",     "muDIS_xsec",      "muDIS_xsecEvent",
+        "muDIS_xsecAccepted", "muDIS_xsecTried", "muDIS_target",
+        "muDIS_wDIS",         "muDIS_weight",    "muDIS_pPythia",
+        "muDIS_nGenerated",   "muDIS_srcFile",   "muDIS_srcEntry",
+        "muDIS_srcTrackID",   "muDIS_srcRunID",  "muDIS_srcEventID",
+        "muDIS_potRunID",     "muDIS_potEventID"}) {
     if (tree->GetBranch(name)) {
       LOG(error) << "NewMuDISGenerator: output branch already exists: " << name;
       return kFALSE;
@@ -332,6 +349,10 @@ Bool_t NewMuDISGenerator::RegisterOutputBranches(TTree* tree) {
          tree->Branch("muDIS_disIndex", &fDISIndex, "muDIS_disIndex/I") &&
          tree->Branch("muDIS_genIndex", &fGenIndex, "muDIS_genIndex/I") &&
          tree->Branch("muDIS_xsec", &fDISXsec, "muDIS_xsec/D") &&
+         tree->Branch("muDIS_xsecEvent", &fDISXsecEvent, "muDIS_xsecEvent/D") &&
+         tree->Branch("muDIS_xsecAccepted", &fDISXsecAccepted,
+                      "muDIS_xsecAccepted/I") &&
+         tree->Branch("muDIS_xsecTried", &fDISXsecTried, "muDIS_xsecTried/I") &&
          tree->Branch("muDIS_target", &fDISTarget, "muDIS_target/I") &&
          tree->Branch("muDIS_wDIS", &fWDIS, "muDIS_wDIS/D") &&
          tree->Branch("muDIS_weight", &fWeight, "muDIS_weight/D") &&
@@ -357,6 +378,9 @@ void NewMuDISGenerator::ResetOutputBranches() {
   fDISIndex = -1;
   fGenIndex = -1;
   fDISXsec = -1.;
+  fDISXsecEvent = -1.;
+  fDISXsecAccepted = 0;
+  fDISXsecTried = 0;
   fDISTarget = -1;
   fWDIS = -1.;
   fWeight = -1.;
