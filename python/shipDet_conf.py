@@ -5,6 +5,7 @@
 import os
 from typing import Any
 
+import geometry_config
 import geometry_from_file
 import ROOT
 import shipunit as u
@@ -268,6 +269,47 @@ def configure_strawtubes(yaml_file: str, ship_geo) -> None:
     detectorList.append(strawtubes)
 
 
+def configure_upstream_tagger(yaml_file: str, upstream_tagger, ship_geo) -> None:
+    """Load the shared UBT simulation map and configure geometry/digitization."""
+    with open(yaml_file) as file:
+        config = yaml.safe_load(file)
+
+    if config.get("kind") != "simulation" or config.get("units") != "cm":
+        raise ValueError("The UBT map must be a simulation map expressed in cm")
+
+    regions = config["regions"]
+    region_ids = [region["id"] for region in regions]
+    if len(region_ids) != len(set(region_ids)):
+        raise ValueError("The UBT detector map contains duplicate region IDs")
+
+    # Kept in ShipGeo for digitization: detector ID -> constituent tile side
+    # in FairShip internal length units.  This distinguishes 2x2 and 4x4 cm2.
+    ship_geo.UpstreamTagger.RegionTileSize = {
+        region["id"]: region["constituent_tile_size"] * u.cm for region in regions
+    }
+    ship_geo.UpstreamTagger.TileGridOriginX, ship_geo.UpstreamTagger.TileGridEndX = (
+        bound * u.cm for bound in config["bounds"]["x"]
+    )
+    ship_geo.UpstreamTagger.TileGridOriginY, ship_geo.UpstreamTagger.TileGridEndY = (
+        bound * u.cm for bound in config["bounds"]["y"]
+    )
+    # TH2D maps of ADC counts per MeV vs local hit position (mm) in a tile,
+    # named adc_per_mev_<tile side in mm>mm.
+    ship_geo.UpstreamTagger.ADCResponseMapFile = os.path.join(
+        os.environ["FAIRSHIP"], "geometry", "UpstreamTagger_adc_response.root"
+    )
+
+    for region in regions:
+        upstream_tagger.AddRegion(
+            region["id"],
+            region["x"] * u.cm,
+            region["y"] * u.cm,
+            region["size_x"] * u.cm,
+            region["size_y"] * u.cm,
+            region["constituent_tile_size"],
+        )
+
+
 def configure(run, ship_geo, geofile: str | None = None):
     """Configure the modules of the run and add them to it.
 
@@ -289,6 +331,16 @@ def configure(run, ship_geo, geofile: str | None = None):
         ship_geo.cave.floorHeightTankB = 2.0 * u.m
     if not hasattr(ship_geo, "SND"):
         ship_geo.SND = True
+    if not hasattr(ship_geo.cave, "ECN3HalfX"):
+        # ShipCave used to hardcode the ECN3 cavern; the defaults keep it.
+        geometry_config.set_ecn3_cavern(ship_geo)
+    if not hasattr(ship_geo, "UpstreamTaggerScoringPlane") or not hasattr(
+        getattr(ship_geo, "UpstreamTagger", None), "SmallTileZ"
+    ):
+        # The old UBT (a vacuum box) can no longer be built: use the current
+        # UBT and scoring planes, placed from this geometry's decay vessel and
+        # muon shield.
+        geometry_config.set_upstream_tagger(ship_geo)
 
     # -----Create media-------------------------------------------------
     run.SetMaterials("media.geo")  # Materials
@@ -296,6 +348,13 @@ def configure(run, ship_geo, geofile: str | None = None):
 
     # -----Create geometry----------------------------------------------
     cave = ROOT.ShipCave(ship_geo.muShield.z)
+    cave.SetECN3Cavern(
+        ship_geo.cave.ECN3HalfX,
+        ship_geo.cave.ECN3HalfY,
+        ship_geo.cave.ECN3CenterX,
+        ship_geo.cave.ECN3CenterY,
+        ship_geo.cave.ECN3StairStepHeight,
+    )
     cave.SetGeometryFileName("caveWithAir.geo")
     if hasattr(ship_geo.cave, "ECN3_length"):
         cave.SetCavernDimensions(
@@ -336,9 +395,7 @@ def configure(run, ship_geo, geofile: str | None = None):
             elif design == 1:
                 configure_snd_old(
                     os.path.join(os.environ["FAIRSHIP"], "geometry", "snd_config_old.yaml"),
-                    ship_geo.UpstreamTagger.Z_Position
-                    - 8 * u.cm
-                    - 5 * u.cm,  # 16 cm width of UpstreamTagger (8 cm half-width)
+                    ship_geo.UpstreamTagger.z0 - 5 * u.cm,
                     ship_geo.cave.floorHeightMuonShield,
                 )
             else:
@@ -422,11 +479,25 @@ def configure(run, ship_geo, geofile: str | None = None):
         print("Warning: no CaloScoringPlane in this geometry configuration; not building it.")
 
     upstreamTagger = ROOT.UpstreamTagger("UpstreamTagger", ROOT.kTRUE)
-    upstreamTagger.SetZposition(ship_geo.UpstreamTagger.Z_Position)
+    upstreamTagger.SetZposition(ship_geo.UpstreamTagger.z)
     upstreamTagger.SetBoxDimensions(
         ship_geo.UpstreamTagger.BoxX, ship_geo.UpstreamTagger.BoxY, ship_geo.UpstreamTagger.BoxZ
     )
+    upstreamTagger.SetBoxCenter(ship_geo.UpstreamTagger.BoxCenterX, ship_geo.UpstreamTagger.BoxCenterY)
+    upstreamTagger.SetMappedTileThicknesses(ship_geo.UpstreamTagger.SmallTileZ, ship_geo.UpstreamTagger.LargeTileZ)
+    configure_upstream_tagger(
+        os.path.join(os.environ["FAIRSHIP"], "geometry", "UpstreamTagger_config.yaml"),
+        upstreamTagger,
+        ship_geo,
+    )
     detectorList.append(upstreamTagger)
+
+    sp = ship_geo.UpstreamTaggerScoringPlane
+    ubt_scoring_plane = ROOT.UpstreamTaggerScoringPlane("UpstreamTaggerScoringPlane", ROOT.kTRUE)
+    ubt_scoring_plane.SetPlaneThickness(sp.Z)
+    for plane in (sp.DecayVessel, sp.MuonShield):
+        ubt_scoring_plane.AddPlane(plane.CenterX, plane.CenterY, plane.z, plane.X, plane.Y, plane.MuonsOnly)
+    detectorList.append(ubt_scoring_plane)
 
     timeDet = ROOT.TimeDet("TimeDet", ROOT.kTRUE)
     timeDet.SetZposition(ship_geo.TimeDet.z)

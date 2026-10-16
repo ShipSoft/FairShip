@@ -73,7 +73,9 @@ class ShipDigiReco:
         if self.sTree.GetBranch("TimeDetPoint"):
             self.timeDetector = timeDetector("TimeDet", self.sTree, outtree=self.recoTree)
         if self.sTree.GetBranch("UpstreamTaggerPoint"):
-            self.upstreamTaggerDetector = UpstreamTaggerDetector("UpstreamTagger", self.sTree, outtree=self.recoTree)
+            self.upstreamTaggerDetector = UpstreamTaggerDetector(
+                "UpstreamTagger", self.sTree, mcBranchName="digiUBT2MC", outtree=self.recoTree
+            )
 
         # for the digitizing step
         if hasattr(self, "strawtubes"):
