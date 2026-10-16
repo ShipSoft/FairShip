@@ -320,7 +320,8 @@ Bool_t NewMuDISGenerator::RegisterOutputBranches(TTree* tree) {
        {"muDIS_material", "muDIS_muEntry", "muDIS_disIndex", "muDIS_genIndex",
         "muDIS_xsec", "muDIS_target", "muDIS_wDIS", "muDIS_weight",
         "muDIS_pPythia", "muDIS_nGenerated", "muDIS_srcFile", "muDIS_srcEntry",
-        "muDIS_srcTrackID", "muDIS_srcRunID", "muDIS_srcEventID"}) {
+        "muDIS_srcTrackID", "muDIS_srcRunID", "muDIS_srcEventID",
+        "muDIS_potRunID", "muDIS_potEventID"}) {
     if (tree->GetBranch(name)) {
       LOG(error) << "NewMuDISGenerator: output branch already exists: " << name;
       return kFALSE;
@@ -342,7 +343,11 @@ Bool_t NewMuDISGenerator::RegisterOutputBranches(TTree* tree) {
                       "muDIS_srcTrackID/I") &&
          tree->Branch("muDIS_srcRunID", &fSource.runID, "muDIS_srcRunID/L") &&
          tree->Branch("muDIS_srcEventID", &fSource.eventID,
-                      "muDIS_srcEventID/L");
+                      "muDIS_srcEventID/L") &&
+         tree->Branch("muDIS_potRunID", &fSource.potRunID,
+                      "muDIS_potRunID/L") &&
+         tree->Branch("muDIS_potEventID", &fSource.potEventID,
+                      "muDIS_potEventID/L");
 }
 
 void NewMuDISGenerator::ResetOutputBranches() {

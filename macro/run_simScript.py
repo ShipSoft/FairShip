@@ -963,6 +963,7 @@ if options.ntuple:
     options.nEvents = Ntuplegen.GetNevents() if options.nEvents == -1 else min(options.nEvents, Ntuplegen.GetNevents())
     print("Process ", options.nEvents, " from input file")
 #
+MuonBackgen = None
 if options.muonback:
     # reading muon tracks from previous Pythia8/Geant4 simulation with charm replaced by cascade production
     useInputFile(inputFile)
@@ -1087,6 +1088,10 @@ if options.newmudis:
     assert isinstance(DISgen, ROOT.NewMuDISGenerator)
     if not DISgen.RegisterOutputBranches(sink.GetOutTree()):
         raise RuntimeError("Failed to register the MuDIS output branches")
+if options.muonback:
+    assert isinstance(MuonBackgen, ROOT.MuonBackGenerator)
+    if not MuonBackgen.RegisterOutputBranches(sink.GetOutTree()):
+        raise RuntimeError("Failed to register the MuonBack output branches")
 gMC = ROOT.TVirtualMC.GetMC()
 fStack = gMC.GetStack()
 

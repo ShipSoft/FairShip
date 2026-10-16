@@ -113,13 +113,18 @@ struct MuonSource {
   Int_t trackID = -1;     // index of the muon in that event's MCTrack
   Long64_t runID = -1;    // MCEventHeader RunID of that event
   Long64_t eventID = -1;  // MCEventHeader EventID of that event
+  // muBack_srcRunID and muBack_srcEventID of that event: the input event of
+  // the MuonBackGenerator simulation that produced it, i.e. the PoT event
+  // when that input was the PoT simulation.
+  Long64_t potRunID = -1;
+  Long64_t potEventID = -1;
 
   void Reset() { *this = MuonSource(); }
 };
 
-inline const std::array<TString, 5> MuonSourceBranchNames = {
-    "muon_srcFile", "muon_srcEntry", "muon_srcTrackID", "muon_srcRunID",
-    "muon_srcEventID"};
+inline const std::array<TString, 7> MuonSourceBranchNames = {
+    "muon_srcFile",    "muon_srcEntry", "muon_srcTrackID", "muon_srcRunID",
+    "muon_srcEventID", "muon_potRunID", "muon_potEventID"};
 
 struct MuonBranches {
   std::vector<ShipMCTrack> mcTrks;
@@ -143,6 +148,8 @@ struct MuonBranches {
     aT->Branch(MuonSourceBranchNames[2], &source.trackID);
     aT->Branch(MuonSourceBranchNames[3], &source.runID);
     aT->Branch(MuonSourceBranchNames[4], &source.eventID);
+    aT->Branch(MuonSourceBranchNames[5], &source.potRunID);
+    aT->Branch(MuonSourceBranchNames[6], &source.potEventID);
     for (unsigned i(0); i < nMats; ++i) {
       aT->Branch("muon_path_length_" + MatTypeStr[i], &pathLengthByMat[i]);
       br[i].InitTree(aT, MatTypeStr[i]);
@@ -194,6 +201,9 @@ struct CBMSimBranches {
   std::vector<TimeDetPoint>* tdPt = nullptr;
   // Event header of the current input file; valid only if HasHeader().
   FairMCEventHeader* header = nullptr;
+  // Written by MuonBackGenerator; -1 if the input has no such branches.
+  Long64_t muBackRunID = -1;
+  Long64_t muBackEventID = -1;
 
   bool HasHeader() const { return fHasHeader; }
 
@@ -211,7 +221,10 @@ struct CBMSimBranches {
       auto* current = tree->GetTree();
       fHasHeader = current->GetBranch("MCEventHeader.") != nullptr &&
                    BindInputBranch(current, "MCEventHeader.", &header, false);
-      fValid = BindInputBranch(current, "MCTrack", &MCTrack);
+      fValid = BindInputBranch(current, "muBack_srcRunID", &muBackRunID, false);
+      fValid &=
+          BindInputBranch(current, "muBack_srcEventID", &muBackEventID, false);
+      fValid &= BindInputBranch(current, "MCTrack", &MCTrack);
       fValid &= BindInputBranch(current, "TimeDetPoint", &tdPt);
       fValid &= BindInputBranch(current, "vetoPoint", &sbtPt);
       fValid &= BindInputBranch(current, "UpstreamTaggerPoint", &ubtPt);
@@ -233,6 +246,8 @@ struct CBMSimBranches {
     sstPt = &fSST;
     tdPt = &fTD;
     header = &fHeader;
+    muBackRunID = -1;
+    muBackEventID = -1;
   }
   std::vector<ShipMCTrack> fTracks;
   std::vector<vetoPoint> fSBT;
@@ -404,6 +419,10 @@ struct MuonInBranches {
                                 &source.runID, false);
       fValid &= BindInputBranch(current, MuonSourceBranchNames[4],
                                 &source.eventID, false);
+      fValid &= BindInputBranch(current, MuonSourceBranchNames[5],
+                                &source.potRunID, false);
+      fValid &= BindInputBranch(current, MuonSourceBranchNames[6],
+                                &source.potEventID, false);
       for (unsigned i = 0; i < nMats; ++i) {
         const TString name = "muon_path_length_" + MatTypeStr[i];
         fValid &= BindInputBranch(current, name, &pathLengthByMat[i]);
