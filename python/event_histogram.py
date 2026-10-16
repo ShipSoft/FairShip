@@ -67,6 +67,26 @@ def replica_weights(key: int, n_replicas: int) -> np.ndarray:
     return np.searchsorted(_CDF, u, side="left")
 
 
+def _buffer(array, n):
+    array.reshape((n,))
+    return np.frombuffer(array, dtype=np.float64, count=n)
+
+
+def _cells(h):
+    """Writable view of the bin contents of a ROOT histogram, flows included."""
+    return _buffer(h.GetArray(), h.GetNcells())
+
+
+def _sumw2(h):
+    return _buffer(h.GetSumw2().GetArray(), h.GetNcells())
+
+
+def _inner2(h):
+    """In-range contents of a TH2D as a writable [x bin, y bin] view."""
+    ny, nx = h.GetNbinsY(), h.GetNbinsX()
+    return _cells(h).reshape(ny + 2, nx + 2)[1:-1, 1:-1].T
+
+
 class EventHistogram:
     """Accumulate per-event bin sums; see the module docstring.
 
@@ -85,7 +105,7 @@ class EventHistogram:
         self.sum_w = np.zeros(nb + 2)
         self.sum_w2 = np.zeros(nb + 2)
         self.sum_tt = np.zeros((nb, nb)) if covariance else None
-        self.boot = np.zeros((n_replicas, nb)) if n_replicas else None
+        self.boot = np.zeros((nb, n_replicas)) if n_replicas else None
         self._current = np.zeros(nb + 2)
         self._open = False
 
@@ -103,26 +123,32 @@ class EventHistogram:
 
     def fill(self, x, w=1.0):
         """Add branches (scalars or arrays) of the current event."""
-        x = np.atleast_1d(np.asarray(x, dtype=float))
-        w = np.broadcast_to(np.asarray(w, dtype=float), x.shape)
-        bins = self._bins(x)
-        np.add.at(self._current, bins, w)
-        np.add.at(self.sum_w, bins, w)
-        np.add.at(self.sum_w2, bins, w * w)
-        self._open = self._open or x.size > 0
+        x = np.asarray(x, dtype=float)
+        if x.size == 0:
+            return
+        w = np.broadcast_to(np.asarray(w, dtype=float), x.shape).ravel()
+        bins = self._bins(x.ravel())
+        t = np.bincount(bins, w, minlength=len(self._current))
+        self._current += t
+        self.sum_w += t
+        self.sum_w2 += np.bincount(bins, w * w, minlength=len(self._current))
+        self._open = True
 
     def end_event(self, key=0):
         """Close the current event. Use make_event_key(run, event) as key so the
         bootstrap replicas agree across files, jobs and the C++ class."""
-        t = self._current
-        self.sum_t += t
-        self.sum_t2 += t * t
-        inner = t[1:-1]
-        if self.sum_tt is not None and inner.any():
-            self.sum_tt += np.outer(inner, inner)
-        if self.boot is not None and inner.any():
-            self.boot += replica_weights(key, len(self.boot))[:, None] * inner[None, :]
-        self._current = np.zeros_like(t)
+        # Only the bins this event touched, as in the C++ class.
+        idx = np.flatnonzero(self._current)
+        t = self._current[idx]
+        self.sum_t[idx] += t
+        self.sum_t2[idx] += t * t
+        inner = (idx >= 1) & (idx <= self.nbins)
+        ii, ti = idx[inner] - 1, t[inner]
+        if self.sum_tt is not None:
+            self.sum_tt[np.ix_(ii, ii)] += np.outer(ti, ti)
+        if self.boot is not None and ii.size:
+            self.boot[ii] += ti[:, None] * replica_weights(key, self.boot.shape[1])[None, :]
+        self._current[idx] = 0.0
         self._open = False
         self.n_events += 1
 
@@ -198,11 +224,11 @@ class EventHistogram:
         return (self.sum_tt / n - np.outer(m, m)) / (n - 1)
 
     def bootstrap_errors(self):
-        if self.boot is None or len(self.boot) < 2:
+        if self.boot is None or self.boot.shape[1] < 2:
             raise ValueError("EventHistogram: needs at least two bootstrap replicas")
         if self.n_events <= 0:
             return np.zeros(self.nbins)
-        return (self.boot / self.n_events).std(axis=0, ddof=1)
+        return (self.boot / self.n_events).std(axis=1, ddof=1)
 
     # --- ROOT I/O, same objects as EventHistogram::Write/Read -----------------
 
@@ -218,10 +244,15 @@ class EventHistogram:
             h = ROOT.TH1D(name, self.title, nb, edges)
             h.SetDirectory(ROOT.nullptr)
             h.Sumw2()
-            for b in range(nb + 2):
-                h.SetBinContent(b, sums[b])
-                h.GetSumw2().SetAt(sums2[b], b)
+            _cells(h)[:] = sums
+            _sumw2(h)[:] = sums2
             h.SetEntries(self.n_events)
+            return h
+
+        def hist2(name, title, values, *yaxis):
+            h = ROOT.TH2D(name, title, nb, edges, *yaxis)
+            h.SetDirectory(ROOT.nullptr)
+            _inner2(h)[:] = values
             return h
 
         objects: list = [
@@ -229,20 +260,10 @@ class EventHistogram:
             hist1(self.name + "_naive", self.sum_w, self.sum_w2),
         ]
         if self.sum_tt is not None:
-            h = ROOT.TH2D(self.name + "_cov", "sum over events of t_a t_b", nb, edges, nb, edges)
-            for a in range(nb):
-                for b in range(nb):
-                    h.SetBinContent(a + 1, b + 1, self.sum_tt[a, b])
-            objects.append(h)
+            objects.append(hist2(self.name + "_cov", "sum over events of t_a t_b", self.sum_tt, nb, edges))
         if self.boot is not None:
-            nrep = len(self.boot)
-            h = ROOT.TH2D(self.name + "_boot", "bootstrap replicas;;replica", nb, edges, nrep, 0.0, float(nrep))
-            for r in range(nrep):
-                for b in range(nb):
-                    h.SetBinContent(b + 1, r + 1, self.boot[r, b])
-            objects.append(h)
-        for h in objects[2:]:
-            h.SetDirectory(ROOT.nullptr)
+            nrep = self.boot.shape[1]
+            objects.append(hist2(self.name + "_boot", "bootstrap replicas;;replica", self.boot, nrep, 0.0, float(nrep)))
         objects.append(ROOT.TParameter("Long64_t")(self.name + "_nevents", self.n_events, "+"))
         for obj in objects:
             directory.WriteTObject(obj, obj.GetName(), "Overwrite")
@@ -261,19 +282,12 @@ class EventHistogram:
         cov = directory.Get(name + "_cov")
         boot = directory.Get(name + "_boot")
         self = cls(name, edges, title=h.GetTitle(), covariance=bool(cov), n_replicas=boot.GetNbinsY() if boot else 0)
-        for b in range(nb + 2):
-            self.sum_t[b] = h.GetBinContent(b)
-            self.sum_t2[b] = h.GetSumw2().At(b)
-            self.sum_w[b] = naive.GetBinContent(b)
-            self.sum_w2[b] = naive.GetSumw2().At(b)
-        if cov and self.sum_tt is not None:
-            for a in range(nb):
-                for b in range(nb):
-                    self.sum_tt[a, b] = cov.GetBinContent(a + 1, b + 1)
-        if boot and self.boot is not None:
-            for r in range(len(self.boot)):
-                for b in range(nb):
-                    self.boot[r, b] = boot.GetBinContent(b + 1, r + 1)
+        self.sum_t[:], self.sum_t2[:] = _cells(h), _sumw2(h)
+        self.sum_w[:], self.sum_w2[:] = _cells(naive), _sumw2(naive)
+        if self.sum_tt is not None:
+            self.sum_tt[:] = _inner2(cov)
+        if self.boot is not None:
+            self.boot[:] = _inner2(boot)
         self.n_events = int(nevents.GetVal())
         return self
 
