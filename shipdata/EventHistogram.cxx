@@ -6,6 +6,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <stdexcept>
 #include <string>
 
 #include "FairLogger.h"
@@ -137,13 +138,9 @@ void EventHistogram::EndEvent(ULong64_t eventKey) {
   }
   fTouched.clear();
   ++fNEvents;
-  fSum->SetEntries(fNEvents);
 }
 
-void EventHistogram::AddEmptyEvents(Long64_t n) {
-  fNEvents += n;
-  fSum->SetEntries(fNEvents);
-}
+void EventHistogram::AddEmptyEvents(Long64_t n) { fNEvents += n; }
 
 void EventHistogram::Add(const EventHistogram& other) {
   CheckClosed("Add");
@@ -158,23 +155,22 @@ void EventHistogram::Add(const EventHistogram& other) {
     problem = "number of bootstrap replicas";
   }
   if (problem) {
-    LOG(error) << "EventHistogram::Add: " << problem << " of "
-               << other.fSum->GetName() << " differs from " << fSum->GetName()
-               << ", not merged";
-    return;
+    throw std::invalid_argument(std::string("EventHistogram::Add: ") + problem +
+                                " of " + other.fSum->GetName() +
+                                " differs from " + fSum->GetName());
   }
   fSum->Add(other.fSum.get());
   fNaive->Add(other.fNaive.get());
   if (fCov) fCov->Add(other.fCov.get());
   if (fBoot) fBoot->Add(other.fBoot.get());
   fNEvents += other.fNEvents;
-  fSum->SetEntries(fNEvents);
 }
 
 void EventHistogram::CheckClosed(const char* where) const {
   if (HasOpenEvent()) {
-    LOG(warning) << "EventHistogram::" << where << " on " << fSum->GetName()
-                 << " with an open event; call EndEvent() first";
+    throw std::logic_error(std::string("EventHistogram::") + where + " on " +
+                           fSum->GetName() +
+                           " with an open event; call EndEvent() first");
   }
 }
 
@@ -233,9 +229,8 @@ TMatrixDSym EventHistogram::GetCovariance() const {
   const Int_t nbins = fSum->GetNbinsX();
   TMatrixDSym cov(nbins);
   if (!fCov) {
-    LOG(error) << "EventHistogram " << fSum->GetName()
-               << " was created without covariance";
-    return cov;
+    throw std::logic_error(std::string("EventHistogram ") + fSum->GetName() +
+                           " was created without covariance");
   }
   const Double_t n = fNEvents;
   if (n < 2) return cov;
@@ -253,11 +248,11 @@ std::vector<Double_t> EventHistogram::GetBootstrapErrors() const {
   CheckClosed("GetBootstrapErrors");
   const Int_t nbins = fSum->GetNbinsX();
   std::vector<Double_t> errors(nbins, 0.);
-  if (!fBoot || fBoot->GetNbinsY() < 2 || fNEvents <= 0) {
-    LOG(error) << "EventHistogram " << fSum->GetName()
-               << " has fewer than two bootstrap replicas";
-    return errors;
+  if (!fBoot || fBoot->GetNbinsY() < 2) {
+    throw std::logic_error(std::string("EventHistogram ") + fSum->GetName() +
+                           " has fewer than two bootstrap replicas");
   }
+  if (fNEvents <= 0) return errors;
   const Int_t nrep = fBoot->GetNbinsY();
   for (Int_t b = 1; b <= nbins; ++b) {
     Double_t sum = 0., sum2 = 0.;
@@ -275,6 +270,13 @@ std::vector<Double_t> EventHistogram::GetBootstrapErrors() const {
 
 void EventHistogram::Write(TDirectory* dir) const {
   CheckClosed("Write");
+  // Every object carries the number of events it holds. hadd adds them up, so
+  // Read() can tell when files with different contents were merged.
+  for (TH1* h :
+       {static_cast<TH1*>(fSum.get()), static_cast<TH1*>(fNaive.get()),
+        static_cast<TH1*>(fCov.get()), static_cast<TH1*>(fBoot.get())}) {
+    if (h) h->SetEntries(fNEvents);
+  }
   dir->WriteTObject(fSum.get(), fSum->GetName(), "Overwrite");
   dir->WriteTObject(fNaive.get(), fNaive->GetName(), "Overwrite");
   if (fCov) dir->WriteTObject(fCov.get(), fCov->GetName(), "Overwrite");
@@ -295,15 +297,24 @@ std::unique_ptr<EventHistogram> EventHistogram::Read(TDirectory* dir,
                << dir->GetName();
     return nullptr;
   }
+  auto* cov = dir->Get<TH2D>(Suffixed(name, "_cov").c_str());
+  auto* boot = dir->Get<TH2D>(Suffixed(name, "_boot").c_str());
+  for (const TH1* obj :
+       {static_cast<const TH1*>(sum), static_cast<const TH1*>(naive),
+        static_cast<const TH1*>(cov), static_cast<const TH1*>(boot)}) {
+    if (obj && obj->GetEntries() != nevents->GetVal()) {
+      LOG(error) << "EventHistogram::Read: " << obj->GetName() << " holds "
+                 << obj->GetEntries() << " events, " << nevents->GetName()
+                 << " " << nevents->GetVal()
+                 << "; were files with different settings merged?";
+      return nullptr;
+    }
+  }
   std::unique_ptr<EventHistogram> h(new EventHistogram());
   h->fSum = DetachedClone(sum);
   h->fNaive = DetachedClone(naive);
-  if (auto* cov = dir->Get<TH2D>(Suffixed(name, "_cov").c_str())) {
-    h->fCov = DetachedClone(cov);
-  }
-  if (auto* boot = dir->Get<TH2D>(Suffixed(name, "_boot").c_str())) {
-    h->fBoot = DetachedClone(boot);
-  }
+  if (cov) h->fCov = DetachedClone(cov);
+  if (boot) h->fBoot = DetachedClone(boot);
   h->fNEvents = nevents->GetVal();
   h->InitEventBuffers();
   return h;

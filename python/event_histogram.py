@@ -206,16 +206,19 @@ class EventHistogram:
 
     def naive_errors(self):
         """sqrt(sum w^2)/N, which treats branches as independent. For comparison only."""
+        self._check_closed("naive_errors")
         return self._per_event(np.sqrt(self.sum_w2))
 
     def n_eff(self):
         """Independent events per bin, (sum t)^2 / sum t^2. Below about 20 the error
         estimate itself is unreliable: merge bins or check with the bootstrap."""
+        self._check_closed("n_eff")
         s, s2 = self.sum_t[1:-1], self.sum_t2[1:-1]
         with np.errstate(invalid="ignore", divide="ignore"):
             return np.where(s2 > 0, s * s / s2, 0.0)
 
     def covariance(self):
+        self._check_closed("covariance")
         if self.sum_tt is None:
             raise ValueError("EventHistogram: created without covariance=True")
         n = self.n_events
@@ -225,6 +228,7 @@ class EventHistogram:
         return (self.sum_tt / n - np.outer(m, m)) / (n - 1)
 
     def bootstrap_errors(self):
+        self._check_closed("bootstrap_errors")
         if self.boot is None or self.boot.shape[1] < 2:
             raise ValueError("EventHistogram: needs at least two bootstrap replicas")
         if self.n_events <= 0:
@@ -254,6 +258,7 @@ class EventHistogram:
             h = ROOT.TH2D(name, title, nb, edges, *yaxis)
             h.SetDirectory(ROOT.nullptr)
             _inner2(h)[:] = values
+            h.SetEntries(self.n_events)
             return h
 
         objects: list = [
@@ -282,6 +287,13 @@ class EventHistogram:
         edges = [axis.GetBinLowEdge(i) for i in range(1, nb + 2)]
         cov = directory.Get(name + "_cov")
         boot = directory.Get(name + "_boot")
+        n_events = nevents.GetVal()
+        for obj in (h, naive, cov, boot):
+            if obj and obj.GetEntries() != n_events:
+                raise ValueError(
+                    f"EventHistogram {name}: {obj.GetName()} holds {obj.GetEntries()} events,"
+                    f" {nevents.GetName()} {n_events}; were files with different settings merged?"
+                )
         self = cls(name, edges, title=h.GetTitle(), covariance=bool(cov), n_replicas=boot.GetNbinsY() if boot else 0)
         self.sum_t[:], self.sum_t2[:] = _cells(h), _sumw2(h)
         self.sum_w[:], self.sum_w2[:] = _cells(naive), _sumw2(naive)
@@ -289,7 +301,7 @@ class EventHistogram:
             self.sum_tt[:] = _inner2(cov)
         if self.boot is not None:
             self.boot[:] = _inner2(boot)
-        self.n_events = int(nevents.GetVal())
+        self.n_events = int(n_events)
         return self
 
 
