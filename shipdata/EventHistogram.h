@@ -110,6 +110,7 @@ class EventHistogram {
   std::unique_ptr<TH2D> fBoot;     ///< optional: (bin, replica) sum r t
   std::vector<Double_t> fCurrent;  ///< t_b of the open event, incl. flows
   std::vector<Int_t> fTouched;     ///< bins filled in the open event
+  std::vector<bool> fIsTouched;    ///< per bin: listed in fTouched
   Long64_t fNEvents = 0;
 };
 

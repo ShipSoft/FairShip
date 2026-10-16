@@ -75,15 +75,18 @@ void EventHistogram::Init(Bool_t covariance, Int_t nReplicas) {
     fBoot->SetDirectory(nullptr);
   }
   fCurrent.assign(nbins + 2, 0.);
+  fIsTouched.assign(nbins + 2, false);
 }
 
 void EventHistogram::Fill(Double_t x, Double_t w) {
   const Int_t bin = fSum->GetXaxis()->FindFixBin(x);
-  if (std::find(fTouched.begin(), fTouched.end(), bin) == fTouched.end()) {
+  if (!fIsTouched[bin]) {
+    fIsTouched[bin] = true;
     fTouched.push_back(bin);
   }
   fCurrent[bin] += w;
-  fNaive->Fill(x, w);
+  fNaive->AddBinContent(bin, w);
+  (*fNaive->GetSumw2())[bin] += w * w;
 }
 
 void EventHistogram::EndEvent(ULong64_t eventKey) {
@@ -96,27 +99,30 @@ void EventHistogram::EndEvent(ULong64_t eventKey) {
     fSum->AddBinContent(b, t);
     sumw2[b] += t * t;
   }
+  // Covariance and bootstrap cover the in-range bins, moved to the front.
+  const auto begin = fTouched.begin();
+  const auto end =
+      std::partition(fTouched.begin(), fTouched.end(),
+                     [nbins](Int_t b) { return b >= 1 && b <= nbins; });
   if (fCov) {
-    for (const Int_t a : fTouched) {
-      if (a < 1 || a > nbins) continue;
-      for (const Int_t b : fTouched) {
-        if (b < 1 || b > nbins) continue;
-        fCov->AddBinContent(fCov->GetBin(a, b), fCurrent[a] * fCurrent[b]);
+    for (auto a = begin; a != end; ++a) {
+      for (auto b = begin; b != end; ++b) {
+        fCov->AddBinContent(fCov->GetBin(*a, *b), fCurrent[*a] * fCurrent[*b]);
       }
     }
   }
-  if (fBoot) {
+  if (fBoot && begin != end) {
     for (Int_t r = 0; r < fBoot->GetNbinsY(); ++r) {
       const Int_t k = ReplicaWeight(eventKey, r);
       if (k == 0) continue;
-      for (const Int_t b : fTouched) {
-        if (b < 1 || b > nbins) continue;
-        fBoot->AddBinContent(fBoot->GetBin(b, r + 1), k * fCurrent[b]);
+      for (auto b = begin; b != end; ++b) {
+        fBoot->AddBinContent(fBoot->GetBin(*b, r + 1), k * fCurrent[*b]);
       }
     }
   }
   for (const Int_t b : fTouched) {
     fCurrent[b] = 0.;
+    fIsTouched[b] = false;
   }
   fTouched.clear();
   ++fNEvents;
@@ -293,6 +299,7 @@ std::unique_ptr<EventHistogram> EventHistogram::Read(TDirectory* dir,
   }
   h->fNEvents = nevents->GetVal();
   h->fCurrent.assign(h->fSum->GetNbinsX() + 2, 0.);
+  h->fIsTouched.assign(h->fSum->GetNbinsX() + 2, false);
   return h;
 }
 
@@ -301,7 +308,8 @@ Int_t EventHistogram::ReplicaWeight(ULong64_t key, Int_t replica) {
       key ^ (static_cast<ULong64_t>(replica + 1) * 0xD1B54A32D192ED03ULL));
   const Double_t u = static_cast<Double_t>(x >> 11U) * 0x1.0p-53;
   // Inversion of the Poisson(1) distribution function.
-  Double_t p = std::exp(-1.);
+  static const Double_t p0 = std::exp(-1.);
+  Double_t p = p0;
   Double_t cdf = p;
   Int_t k = 0;
   while (u > cdf && k < 20) {

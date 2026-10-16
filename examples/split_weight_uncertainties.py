@@ -19,6 +19,7 @@ EventHistogram::Read(f, name)->MakeResult().
 """
 
 import argparse
+import math
 
 import numpy as np
 import ROOT
@@ -46,14 +47,18 @@ def main():
     for name in args.files:
         f = ROOT.TFile.Open(name)
         n_generated += generated_events(f)
-        for event in f.Get("cbmsim"):
+        tree = f.Get("cbmsim")
+        tree.SetBranchStatus("*", 0)
+        for branch in ("MCEventHeader", "MCTrack", args.branch):
+            tree.SetBranchStatus(f"{branch}*", 1)
+        for event in tree:
             header = event.MCEventHeader
             tracks = event.MCTrack
             momenta, weights = [], []
             for point in getattr(event, args.branch):
                 if args.pdg and abs(point.PdgCode()) != args.pdg:
                     continue
-                momenta.append(np.sqrt(point.GetPx() ** 2 + point.GetPy() ** 2 + point.GetPz() ** 2))
+                momenta.append(math.hypot(point.GetPx(), point.GetPy(), point.GetPz()))
                 weights.append(tracks[point.GetTrackID()].GetWeight())
             h.fill(momenta, weights)
             h.end_event(make_event_key(header.GetRunID(), header.GetEventID()))
