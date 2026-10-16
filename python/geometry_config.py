@@ -412,7 +412,7 @@ def create_config(
     c.tauMudet.Ztot = 3 * u.m  # space allocated to Muon spectrometer
     c.tauMudet.zMudetC = c.muShield.z + c.muShield.length / 2.0 - c.tauMudet.Ztot / 2.0 - 70 * u.cm
 
-    # Upstream Tagger: p-terphenyl scintillator plane built from the regions in
+    # Upstream Tagger: polystyrene scintillator plane built from the regions in
     # geometry/UpstreamTagger_config.yaml. BoxZ is the space reserved by the
     # integration layout; the active thickness depends on the tile size.
     c.UpstreamTagger = AttrDict()

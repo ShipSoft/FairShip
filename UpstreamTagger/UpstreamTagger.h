@@ -20,9 +20,9 @@ class TClonesArray;
  *
  * The active plane uses the coarse regions from the UBT_DIGI simulation map.
  * Each region records whether it represents 20 x 20 or 40 x 40 mm^2
- * p-terphenyl tiles. Optical photon production and transport are deliberately
- * not simulated here: an MC point stores the energy deposited in a mapped
- * region, identified by its copy number.
+ * polystyrene scintillator tiles. Optical photon production and transport
+ * are deliberately not simulated here: an MC point stores the energy
+ * deposited in a mapped region, identified by its copy number.
  */
 
 class UpstreamTagger : public SHiP::Detector<UpstreamTaggerPoint> {
