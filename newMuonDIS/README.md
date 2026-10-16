@@ -24,7 +24,7 @@ This folder contains the necessary processors to create DIS events from input mu
     - the He balloon liner "HeBalloon"
     - The rest "REST" anything not taken into account in the previous categories. No DIS events are made in REST.
     - to add material or change categories, edit top part of MuDISDefs.h file, and method GetLabel() in MuonPath.cxx
-  - the weight wDIS does not include the cross section, this will be provided for analysis by an external tool. It is defined as (muon_initial_weight * density * length / number_of_DIS_events_per_input)
+  - the weight wDIS does not include the cross section. It is defined as (muon_initial_weight * density * length / number_of_DIS_events_per_input), in g/cm². The replay output combines it with the stored cross section into `muDIS_weight` (see below).
 - Replay: NewMuDISGenerator class, called from the main macro/run_simScript.py file with option NewMuDIS, and using a postprocessor file in python/MuDISGenerator_postProcessing.py script to add the initial muon hits back in the output, up to the disappearance of the muon track at DIS vertex.
 
 
@@ -69,10 +69,10 @@ on inconsistent input.
 The weight of the MCTracks associated with the daughters, MCTrack.fW,
 is the wDIS, i.e. input muon weight (also in MCTrack[0].fW) times
 density times length, divided by number of DIS events generated per
-input muon (also saved in a separate branch). To find the correct
-cross section for having a realistic physics weight, one should use
-the muon momentum used per DIS interaction, saved as well in a
-separate branch.
+input muon (also saved in a separate branch). The event weight
+`muDIS_weight` multiplies it by the stored Pythia6 cross section; to
+evaluate the cross section differently, use the muon momentum of each
+DIS interaction, saved in `muDIS_pPythia`.
 
 The main simulation macro selects this generator via `--NewMuDIS`
 (`--MuDIS` there still selects the legacy generator):
@@ -91,12 +91,46 @@ generator must outlive the output tree. Each simulated `cbmsim` event contains:
 | `muDIS_muEntry` | `Int_t` | Zero-based input muon entry across the input chain, including the start offset. For filtered input this refers to the filtered tree. |
 | `muDIS_disIndex` | `Int_t` | Zero-based DIS index within that muon's current material in the input tree (`fnmuDis` before advancement). |
 | `muDIS_genIndex` | `Int_t` | Zero-based DIS index within that muon and material in the `prepareEvents.py` output, from `mudis_DISgenIndex_<material>`. Equal to `muDIS_disIndex` for unfiltered input; unchanged by filtering. `-1` for input written before this branch existed. |
-| `muDIS_xsec` | `Double_t` | Always `-1` until the input cross sections are reliable. |
+| `muDIS_xsec` | `Double_t` | Pythia6 cross section stored with the interaction (`mudis_DISxsec_<material>`), in mb per nucleon. Not validated yet, see [Cross section and weight](#cross-section-and-weight). |
+| `muDIS_target` | `Int_t` | Pythia6 target nucleon from `mudis_DIStarget_<material>`: `1` proton, `0` neutron. |
+| `muDIS_wDIS` | `Double_t` | `muon_wDIS_<material>`, the weight also stored on the DIS daughters, in g/cm². |
+| `muDIS_weight` | `Double_t` | Event weight `muDIS_wDIS * muDIS_xsec * N_A * 1e-27`, see [Cross section and weight](#cross-section-and-weight). `-1` if the cross section is negative. |
 | `muDIS_pPythia` | `Double_t` | Beam momentum from `muon_pPythia_<material>`, in GeV/c. |
 | `muDIS_nGenerated` | `std::vector<Int_t>` | Actual counts before filtering from `muon_nDISGenerated_<material>`, in `MatTypeStr` order: MS, UBT, SBTsens, SBTfr, SSTsens, SSTfr, HE, AIR, HeBalloon, REST. `-1` means not crossed; `0` means crossed but no interactions generated. |
 | `muDIS_srcFile`, `muDIS_srcEntry`, `muDIS_srcTrackID`, `muDIS_srcRunID`, `muDIS_srcEventID` | `Int_t`, `Long64_t`, `Int_t`, `Long64_t`, `Long64_t` | Origin of the muon, copied from the `muon_src*` branches, see [Provenance](#provenance). `-1` for input written before these branches existed. |
 
 `GetMaterial()` still exposes the enum value after a successful `ReadEvent()`.
+
+### Cross section and weight
+
+For an interaction in material `<VOL>`, `wDIS = w_mu * X / n`, with `w_mu` the
+weight of the input muon (`MCTrack[0].fW`), `X` the integral of the density
+over the sampled path in g/cm² (`muon_path_length_<VOL>` times the densities
+crossed) and `n` the number of interactions generated for that muon in that
+material before filtering (`muon_nDISGenerated_<VOL>`). Filtering keeps `wDIS`,
+so the weights of the surviving interactions still refer to `n`.
+
+`muDIS_xsec` is the value of Pythia6's `PARI(1)` after generating that
+interaction: the running estimate of the total cross section in mb for the
+process and the target nucleon (`muDIS_target`), since the last Pythia6
+initialisation. Pythia6 is initialised again for every muon and material and
+for the neutron half, so early interactions of each half carry a poorly
+converged estimate. The value is copied as stored; it has not been validated
+against an independent calculation.
+
+The event weight is
+
+    muDIS_weight = muDIS_wDIS * muDIS_xsec * N_A * 1e-27
+
+with `N_A = TMath::Na()` per gram (nucleons per gram, neglecting the binding
+energy) and `1e-27` cm² per mb. `X * sigma * N_A` is the probability that the
+muon interacts in the sampled path, to first order in the interaction length,
+and for a cross section per nucleon without nuclear effects. Half of the
+interactions use a proton target and half a neutron target, independently of
+the material's composition. `muDIS_weight` is dimensionless and already
+contains `w_mu`: summed over selected events and divided by the number of
+protons on target behind the muon sample, it gives the expected number of
+selected interactions per proton on target.
 
 ## Provenance
 
