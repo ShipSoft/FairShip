@@ -324,6 +324,7 @@ void MuDISProcessor::generateDISevents(const std::string& tType,
     lastxs = fPythia->GetPARI(1);      // in mb
     aDISBr.DISxsec.push_back(lastxs);  // in mb
     aDISBr.DIStarget.push_back(isProton);
+    aDISBr.DISgenIndex.push_back(aDISBr.nDISevts - 1);
 
     aDISBr.DISvz.push_back(realz);
     aDISBr.DISvx.push_back(aPath.GetX(realz, slice));
@@ -481,6 +482,13 @@ void MuDISProcessor::ProcessMuons() {
     }
 
     initEvent();
+    foutEv.source.file = ftree->GetTreeNumber();
+    foutEv.source.entry = iEvent - ftree->GetChainOffset();
+    foutEv.source.trackID = muIdx;
+    if (finEv.HasHeader()) {
+      foutEv.source.runID = finEv.header->GetRunID();
+      foutEv.source.eventID = finEv.header->GetEventID();
+    }
     fillMCTracks(muIdx);
     fillUBTHits(muIdx);
     fillSBTHits(muIdx);

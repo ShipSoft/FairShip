@@ -27,7 +27,9 @@ import sys
 import time
 from pathlib import Path
 
+import file_summary
 import ROOT as r
+import saveBasicParameters
 from filterEvents import load_muon_shield_field
 
 print("Loading ShipMuDIS", flush=True)
@@ -112,6 +114,8 @@ logging.info("Geometry successfully loaded.")
 # Check
 r.gGeoManager.Print()  # Read geometry
 
+# Lowest muon momentum, in GeV/c, for which DIS interactions are generated.
+MIN_PYTHIA_P = 2.0
 muDis = r.MuDISProcessor()
 # Keep the maker alive: it owns the map borrowed by the path processor.
 field_maker = r.ShipFieldMaker()
@@ -123,7 +127,7 @@ logging.info("Muon shield field map: %s", shield_path)
 if args.check_all_volumes:
     muDis.CheckAllVolumes()
 muDis.SetPocaJumpThreshold(args.poca_jump_threshold)
-ok = muDis.init(args.n_events, args.start_event, 2.0, args.nDIS, theseed, args.z_max, args.z_min)
+ok = muDis.init(args.n_events, args.start_event, MIN_PYTHIA_P, args.nDIS, theseed, args.z_max, args.z_min)
 if not ok:
     print("Invalid initialisation. Doing nothing.")
     sys.exit(1)
@@ -131,23 +135,58 @@ if not ok:
 p = Path(args.inputfile)
 
 if p.is_file():
+    input_files = [args.inputfile]
     muDis.process_file(args.inputfile, args.outputfile)
 
 elif p.is_dir():
     pattern = "sim_"
 
-    matching_files = [
+    # Sorted, so that muon_srcFile indices and entry ranges are reproducible.
+    input_files = sorted(
         str(path) for path in p.rglob("*") if path.is_file() and pattern in path.name and ".root" in path.name
-    ]
+    )
 
-    print(f"Found {len(matching_files)} files:")
-    if len(matching_files) < 1:
+    print(f"Found {len(input_files)} files:")
+    if len(input_files) < 1:
         print("No input file found in path.")
         sys.exit(1)
-    for f in matching_files:
+    for f in input_files:
         print(f)
 
-    muDis.process_file(matching_files, args.outputfile)
+    muDis.process_file(input_files, args.outputfile)
 else:
     print("Inputfile string does not exist")
     sys.exit(1)
+
+if not Path(args.outputfile).is_file():
+    logging.error("No output written to %s", args.outputfile)
+    sys.exit(1)
+
+# Record how this file was made. muon_srcFile indexes inputFiles, in the order
+# the input chain was built; PoT refers to the input files as a whole.
+chain = r.TChain("cbmsim")
+for name in input_files:
+    chain.Add(name)
+n_input = chain.GetEntries()
+end_entry = n_input if args.n_events < 0 else min(args.start_event + args.n_events, n_input)
+with r.TFile.Open(args.outputfile, "READ") as output:
+    n_written = output.Get("MuonDIS").GetEntries()
+summary = file_summary.merge_file_summaries(input_files)
+summary.update(
+    stage="prepareEvents",
+    seed=theseed,
+    seedFromTime=args.seed is None,
+    nDIS=args.nDIS,
+    minPythiaP=MIN_PYTHIA_P,
+    inputEntries=n_input,
+    entryRange=[args.start_event, max(args.start_event, end_entry)],
+    muonsWritten=n_written,
+    zMin=args.z_min,
+    zMax=args.z_max,
+    geoFile=args.geoFile,
+    muonShieldFieldMap=str(shield_path),
+    pocaJumpThreshold=args.poca_jump_threshold,
+    versions=saveBasicParameters.retrieveGitTags({}),
+)
+file_summary.write_file_summary(args.outputfile, summary)
+logging.info("FileSummary written to %s", args.outputfile)

@@ -90,11 +90,53 @@ generator must outlive the output tree. Each simulated `cbmsim` event contains:
 | `muDIS_material` | `TString` | Material label of the replayed interaction; replaces `DISMaterial`, so analysis need not translate an enum from another software version. |
 | `muDIS_muEntry` | `Int_t` | Zero-based input muon entry across the input chain, including the start offset. For filtered input this refers to the filtered tree. |
 | `muDIS_disIndex` | `Int_t` | Zero-based DIS index within that muon's current material in the input tree (`fnmuDis` before advancement). |
+| `muDIS_genIndex` | `Int_t` | Zero-based DIS index within that muon and material in the `prepareEvents.py` output, from `mudis_DISgenIndex_<material>`. Equal to `muDIS_disIndex` for unfiltered input; unchanged by filtering. `-1` for input written before this branch existed. |
 | `muDIS_xsec` | `Double_t` | Always `-1` until the input cross sections are reliable. |
 | `muDIS_pPythia` | `Double_t` | Beam momentum from `muon_pPythia_<material>`, in GeV/c. |
 | `muDIS_nGenerated` | `std::vector<Int_t>` | Actual counts before filtering from `muon_nDISGenerated_<material>`, in `MatTypeStr` order: MS, UBT, SBTsens, SBTfr, SSTsens, SSTfr, HE, AIR, HeBalloon, REST. `-1` means not crossed; `0` means crossed but no interactions generated. |
+| `muDIS_srcFile`, `muDIS_srcEntry`, `muDIS_srcTrackID`, `muDIS_srcRunID`, `muDIS_srcEventID` | `Int_t`, `Long64_t`, `Int_t`, `Long64_t`, `Long64_t` | Origin of the muon, copied from the `muon_src*` branches, see [Provenance](#provenance). `-1` for input written before these branches existed. |
 
 `GetMaterial()` still exposes the enum value after a successful `ReadEvent()`.
+
+## Provenance
+
+Every stage records where its output comes from, so that an interaction can be
+traced back to the input muon and grouped with the others sharing its history.
+
+`prepareEvents.py` stores, for each muon:
+
+| Branch | Type | Meaning |
+| --- | --- | --- |
+| `muon_srcFile` | `Int_t` | Index of the input file in the `FileSummary` key `inputFiles`, in the order the input chain was built (input directories are searched in sorted order). |
+| `muon_srcEntry` | `Long64_t` | Entry of the muon's event in that file's `cbmsim` tree. |
+| `muon_srcTrackID` | `Int_t` | Index of the muon in that event's `MCTrack` (currently always `0`). |
+| `muon_srcRunID`, `muon_srcEventID` | `Long64_t` | `RunID` and `EventID` of that event's `MCEventHeader`, or `-1` if the input has none. These identify the event of the simulation that produced the input muon (e.g. the muon background simulation), not a proton on target. |
+
+and, for each DIS interaction, `mudis_DISgenIndex_<VOL>`, its position in the
+`prepareEvents.py` output. `filterEvents.py` copies all of these unchanged, and
+`NewMuDISGenerator` writes them to each simulated event (see the table above).
+Interactions with equal `(muon_srcFile, muon_srcEntry, muon_srcTrackID)` in one
+`prepareEvents.py` output come from the same input muon and are alternatives of
+each other. Across outputs, compare `inputFiles[muon_srcFile]` and
+`muon_srcEntry`, or `(muon_srcRunID, muon_srcEventID, muon_srcTrackID)` if the
+run IDs of the input production are unique.
+
+Each stage writes a `FileSummary`: a JSON `TString` with the merged `PoT`,
+`EnergyCut` and `prodSite` of its inputs, `inputFiles`, and the summaries of the
+inputs themselves in `inputFileSummaries`, so the whole chain is kept in the
+final file. `PoT` refers to the input files as a whole, also when only part of
+their entries was processed. In addition:
+
+- `prepareEvents.py`: `stage`, the random `seed` actually used and whether it
+  was taken from the time (`seedFromTime`), `nDIS`, `minPythiaP`, the number of
+  `inputEntries`, the `entryRange` processed (first, end), `muonsWritten`,
+  `zMin`, `zMax`, `geoFile`, `muonShieldFieldMap`, `pocaJumpThreshold` and the
+  software `versions`.
+- `filterEvents.py`: `stage`, `inputEntries`, `entryRange`, `muonsWritten`, the
+  filter options, the field maps, the Pythia8 decay seed actually used
+  (`pythiaDecaySeed`, `null` without `--pythia-decays`) and `versions`.
+- `run_simScript.py`: its `seed`, `firstEvent` and `nEvents` (for `--NewMuDIS`,
+  the number of DIS interactions replayed).
 
 The simulation macro calls `python/MuDISGenerator_postProcessing.py` after simulation.
 It appends the original muon's UBT, SBT, SST and TD points to each event's
@@ -225,7 +267,9 @@ histograms. `REST` remains the last category and is excluded from DIS generation
 
 `prepareEvents.py --seed INTEGER` seeds both Pythia6 and ROOT. Seeds wrap into
 [1, 899999999]; without this option a nanosecond-resolution time seed is used.
-The effective seed is logged. `--check-all-volumes` enables the optional inclusive
+The effective seed is logged and stored in the output `FileSummary` (`seed`,
+with `seedFromTime` true if it came from the time), so any output can be
+reproduced with `--seed`. `--check-all-volumes` enables the optional inclusive
 geometry scan (also available as `MuDISProcessor::CheckAllVolumes()`).
 
 - Pythia6 initialised with
@@ -252,6 +296,8 @@ geometry scan (also available as `MuDISProcessor::CheckAllVolumes()`).
 ## Structure of output tree:
 
 - branches muon_* : input muon information. Size: number of entries processed.
+- branches `muon_srcFile`, `muon_srcEntry`, `muon_srcTrackID`, `muon_srcRunID`, `muon_srcEventID`: origin of the muon, see [Provenance](#provenance).
+- branch `mudis_DISgenIndex_<VOL>`: position of each interaction in the `prepareEvents.py` output, kept by the filter.
 - branch `muon_nDISevt_<VOL>`: number of DIS interactions stored for each volume; after filtering, this is the number of surviving interactions.
 - branch `muon_nDISGenerated_<VOL>`: actual number of generated interactions before filtering, copied unchanged by the filter (including repeated filtering). `-1` means the muon never crossed the material; `0` means it crossed but no interactions were generated (including REST, where generation is disabled).
 - branch `muon_pPythia_<VOL>`: scalar beam momentum passed to Pythia6 in GeV/c, taken from the first path slice in that material. Set to `-1` when Pythia is not initialized for that material.
