@@ -147,13 +147,11 @@ def test_flows_are_kept_out_of_range():
     assert h.sum_t[-1] == pytest.approx(2.0)
 
 
-# Module scope: loading libShipData a second time crashes in ROOT 6.40.
 @pytest.fixture(scope="module")
-def root_with_shipdata():
-    ROOT = pytest.importorskip("ROOT")
-    if ROOT.gSystem.Load("libShipData") < 0 or not hasattr(ROOT, "EventHistogram"):
+def root_with_shipdata(root_with_shipdata):
+    if not hasattr(root_with_shipdata, "EventHistogram"):
         pytest.skip("libShipData with EventHistogram not available")
-    return ROOT
+    return root_with_shipdata
 
 
 def test_root_round_trip_and_cpp_agree(root_with_shipdata, tmp_path):

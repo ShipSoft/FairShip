@@ -136,9 +136,9 @@ def test_desplit_is_reproducible(event):
     assert np.array_equal(a, b)
 
 
-def test_from_tracks_reads_ship_mc_track():
-    ROOT = pytest.importorskip("ROOT")
-    if ROOT.gSystem.Load("libShipData") < 0 or not hasattr(ROOT.ShipMCTrack, "GetSplitSet"):
+def test_from_tracks_reads_ship_mc_track(root_with_shipdata):
+    ROOT = root_with_shipdata
+    if not hasattr(ROOT.ShipMCTrack, "GetSplitSet"):
         pytest.skip("libShipData with split sets not available")
     mother = ROOT.ShipMCTrack(321, -1, 0.0, 0.0, 50.0, 0.4937, 0.0, 0.0, 0.0, 1.0, 0, 0, 0, 1.0)
     clone = ROOT.ShipMCTrack(321, -1, 0.0, 0.0, 50.0, 0.4937, 0.0, 0.0, 10.0, 2.0, 0, 0, 1, 0.5)
