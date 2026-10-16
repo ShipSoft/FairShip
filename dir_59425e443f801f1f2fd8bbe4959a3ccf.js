@@ -7,5 +7,6 @@ var dir_59425e443f801f1f2fd8bbe4959a3ccf =
     [ "test_heavyFlavourScaling.py", "test__heavyFlavourScaling_8py.html", "test__heavyFlavourScaling_8py" ],
     [ "test_mudis_postprocessing.py", "test__mudis__postprocessing_8py.html", "test__mudis__postprocessing_8py" ],
     [ "test_rntuple_io.cxx", "test__rntuple__io_8cxx.html", "test__rntuple__io_8cxx" ],
+    [ "test_signal_particle.py", "test__signal__particle_8py.html", "test__signal__particle_8py" ],
     [ "test_timedet_geometry.cxx", "test__timedet__geometry_8cxx.html", "test__timedet__geometry_8cxx" ]
 ];

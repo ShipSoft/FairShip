@@ -99,6 +99,9 @@ var annotated_dup =
     [ "study_thinTarget", "namespacestudy__thinTarget.html", [
       [ "Block", "classstudy__thinTarget_1_1Block.html", "classstudy__thinTarget_1_1Block" ]
     ] ],
+    [ "test_signal_particle", "namespacetest__signal__particle.html", [
+      [ "FakeTrack", "classtest__signal__particle_1_1FakeTrack.html", "classtest__signal__particle_1_1FakeTrack" ]
+    ] ],
     [ "timeDetector", "namespacetimeDetector.html", [
       [ "timeDetector", "classtimeDetector_1_1timeDetector.html", "classtimeDetector_1_1timeDetector" ]
     ] ],

@@ -887,6 +887,11 @@ var namespaces_dup =
       [ "y", "namespacemakeMuonEM.html#a0d25cc9a190d0bdc64fa5cc1d7533039", null ],
       [ "z", "namespacemakeMuonEM.html#ab601c963f2068c0096eee496020b9003", null ]
     ] ],
+    [ "mc_truth", "namespacemc__truth.html", [
+      [ "find_signal_track", "namespacemc__truth.html#a8605c4676444ce9308a2ce341644e4a6", null ],
+      [ "signal_weight", "namespacemc__truth.html#a63363483b009911313c7461c370cb09a", null ],
+      [ "PRIMARY_PROCESS", "namespacemc__truth.html#a08af7d306db5db28d21de7be4774cb5b", null ]
+    ] ],
     [ "mergeMbias", "namespacemergeMbias.html", [
       [ "compare", "namespacemergeMbias.html#a326ee8240121d3b588c15423aab85494", null ],
       [ "fillPart", "namespacemergeMbias.html#a15953eeff46b5dafe7acd734e9273a72", null ],
@@ -1548,7 +1553,7 @@ var namespaces_dup =
       [ "ImpactParameter", "namespaceShipAna.html#a9fd214635803d1754bb70d65b6c28665", null ],
       [ "isInFiducial", "namespaceShipAna.html#af21cccbd48480f3b1d8f0b63da03502f", null ],
       [ "makePlots", "namespaceShipAna.html#a1ed05d17b9b3ae35de0634df939a1e6c", null ],
-      [ "match2HNL", "namespaceShipAna.html#adc991dd9fb680ae141ccaf7d2c1c2c64", null ],
+      [ "match2HNL", "namespaceShipAna.html#a68e11b162bfe00be318b9bc149895b93", null ],
       [ "myEventLoop", "namespaceShipAna.html#aac6dc163c17f64cf4fef3d96999a9c2d", null ],
       [ "myVertex", "namespaceShipAna.html#aa726b955ef95f4acb56fa79e3f976d2f", null ],
       [ "RedoVertexing", "namespaceShipAna.html#a365f177c7bf68e9ef076d53d9eef85b6", null ],
@@ -1914,6 +1919,7 @@ var namespaces_dup =
       [ "SECOND_FILE", "namespacetest__mudis__postprocessing.html#acf8965596c1fc710bc339a49e18385d5", null ],
       [ "SIMULATED_Z", "namespacetest__mudis__postprocessing.html#aa879d04453cd82dd4e17088918e2f9e0", null ]
     ] ],
+    [ "test_signal_particle", "namespacetest__signal__particle.html", "namespacetest__signal__particle" ],
     [ "timeDetector", "namespacetimeDetector.html", "namespacetimeDetector" ],
     [ "TrackExtrapolateTool", "namespaceTrackExtrapolateTool.html", [
       [ "cmp", "namespaceTrackExtrapolateTool.html#ab8db142297238572f1496a88dcb73c28", null ],

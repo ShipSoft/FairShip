@@ -117,6 +117,7 @@ var hierarchy =
       [ "eventDisplay.EventLoop", "classeventDisplay_1_1EventLoop.html", null ],
       [ "eventDisplay.Rulers", "classeventDisplay_1_1Rulers.html", null ]
     ] ],
+    [ "test_signal_particle.FakeTrack", "classtest__signal__particle_1_1FakeTrack.html", null ],
     [ "ShipFieldMaker::fieldInfo", "structShipFieldMaker_1_1fieldInfo.html", null ],
     [ "MagneticTrackPropagator::FieldMap", "structMagneticTrackPropagator_1_1FieldMap.html", null ],
     [ "MuDISFilter::FilterCandidate", "structMuDISFilter_1_1FilterCandidate.html", null ],
