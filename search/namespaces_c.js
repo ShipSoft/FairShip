@@ -15,13 +15,15 @@ var searchData=
   ['shipreco_12',['ShipReco',['../namespaceShipReco.html',1,'']]],
   ['shiproot_5fconf_13',['shipRoot_conf',['../namespaceshipRoot__conf.html',1,'']]],
   ['shipstrawtracking_14',['shipStrawTracking',['../namespaceshipStrawTracking.html',1,'']]],
-  ['shipunit_15',['shipunit',['../namespaceshipunit.html',1,'shipunit'],['../namespaceShipUnit.html',1,'ShipUnit']]],
+  ['shipunit_15',['shipunit',['../namespaceShipUnit.html',1,'ShipUnit'],['../namespaceshipunit.html',1,'shipunit']]],
   ['shipvertex_16',['shipVertex',['../namespaceshipVertex.html',1,'']]],
   ['shipveto_17',['shipVeto',['../namespaceshipVeto.html',1,'']]],
   ['silicontargetdetector_18',['SiliconTargetDetector',['../namespaceSiliconTargetDetector.html',1,'']]],
   ['skim_5fmuonback_5fsmoke_19',['skim_muonback_smoke',['../namespaceskim__muonback__smoke.html',1,'']]],
-  ['strawtubesdetector_20',['strawtubesDetector',['../namespacestrawtubesDetector.html',1,'']]],
-  ['study_5fgammaconv_21',['study_GammaConv',['../namespacestudy__GammaConv.html',1,'']]],
-  ['study_5fmumsc_22',['study_muMSC',['../namespacestudy__muMSC.html',1,'']]],
-  ['study_5fthintarget_23',['study_thinTarget',['../namespacestudy__thinTarget.html',1,'']]]
+  ['split_5fweight_5funcertainties_20',['split_weight_uncertainties',['../namespacesplit__weight__uncertainties.html',1,'']]],
+  ['split_5fweight_5funcertainties_5frdf_21',['split_weight_uncertainties_rdf',['../namespacesplit__weight__uncertainties__rdf.html',1,'']]],
+  ['strawtubesdetector_22',['strawtubesDetector',['../namespacestrawtubesDetector.html',1,'']]],
+  ['study_5fgammaconv_23',['study_GammaConv',['../namespacestudy__GammaConv.html',1,'']]],
+  ['study_5fmumsc_24',['study_muMSC',['../namespacestudy__muMSC.html',1,'']]],
+  ['study_5fthintarget_25',['study_thinTarget',['../namespacestudy__thinTarget.html',1,'']]]
 ];

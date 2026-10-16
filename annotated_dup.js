@@ -6,6 +6,9 @@ var annotated_dup =
     [ "darkphoton", "namespacedarkphoton.html", [
       [ "DarkPhoton", "classdarkphoton_1_1DarkPhoton.html", "classdarkphoton_1_1DarkPhoton" ]
     ] ],
+    [ "event_histogram", "namespaceevent__histogram.html", [
+      [ "EventHistogram", "classevent__histogram_1_1EventHistogram.html", "classevent__histogram_1_1EventHistogram" ]
+    ] ],
     [ "eventDisplay", "namespaceeventDisplay.html", [
       [ "DrawTracks", "classeventDisplay_1_1DrawTracks.html", "classeventDisplay_1_1DrawTracks" ],
       [ "DrawVetoDigi", "classeventDisplay_1_1DrawVetoDigi.html", "classeventDisplay_1_1DrawVetoDigi" ],
@@ -117,6 +120,7 @@ var annotated_dup =
     [ "CosmicsGenerator", "classCosmicsGenerator.html", "classCosmicsGenerator" ],
     [ "DISparticle", "classDISparticle.html", "classDISparticle" ],
     [ "DPPythia8Generator", "classDPPythia8Generator.html", "classDPPythia8Generator" ],
+    [ "EventHistogram", "classEventHistogram.html", "classEventHistogram" ],
     [ "EvtCalcGenerator", "classEvtCalcGenerator.html", "classEvtCalcGenerator" ],
     [ "exitHadronAbsorber", "classexitHadronAbsorber.html", "classexitHadronAbsorber" ],
     [ "FixedTargetGenerator", "classFixedTargetGenerator.html", "classFixedTargetGenerator" ],

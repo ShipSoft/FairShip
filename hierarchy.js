@@ -17,6 +17,8 @@ var hierarchy =
     ] ],
     [ "DISparticle", "classDISparticle.html", null ],
     [ "experimental.analysis_toolkit.event_inspector", "classexperimental_1_1analysis__toolkit_1_1event__inspector.html", null ],
+    [ "event_histogram.EventHistogram", "classevent__histogram_1_1EventHistogram.html", null ],
+    [ "EventHistogram", "classEventHistogram.html", null ],
     [ "FairContFact", null, [
       [ "ShipPassiveContFact", "classShipPassiveContFact.html", null ],
       [ "strawtubesContFact", "classstrawtubesContFact.html", null ],

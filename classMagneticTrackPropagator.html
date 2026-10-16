@@ -544,11 +544,11 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="MagneticTrackPropagator_8cxx_source.html#l00441">441</a> of file <a class="el" href="MagneticTrackPropagator_8cxx_source.html">MagneticTrackPropagator.cxx</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  443</span>                                                                  {</div>
-<div class="line"><span class="lineno">  444</span>  <span class="keywordflow">if</span> (!Finite(state.position) || !Finite(state.momentum) ||</div>
-<div class="line"><span class="lineno">  445</span>      state.momentum.Z() * pzSign &lt;= 1.e-10 * state.momentum.Mag())</div>
+<div class="line"><span class="lineno">  444</span>  <span class="keywordflow">if</span> (!Finite(<a class="code hl_function" href="namespacetest__event__histogram.html#a2d0b11f1b378a771928b160b98e1e172">state</a>.position) || !Finite(<a class="code hl_function" href="namespacetest__event__histogram.html#a2d0b11f1b378a771928b160b98e1e172">state</a>.momentum) ||</div>
+<div class="line"><span class="lineno">  445</span>      <a class="code hl_function" href="namespacetest__event__histogram.html#a2d0b11f1b378a771928b160b98e1e172">state</a>.momentum.Z() * pzSign &lt;= 1.e-10 * <a class="code hl_function" href="namespacetest__event__histogram.html#a2d0b11f1b378a771928b160b98e1e172">state</a>.momentum.Mag())</div>
 <div class="line"><span class="lineno">  446</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  447</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> point[3] = {state.position.X(), state.position.Y(),</div>
-<div class="line"><span class="lineno">  448</span>                           state.position.Z()};</div>
+<div class="line"><span class="lineno">  447</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> point[3] = {<a class="code hl_function" href="namespacetest__event__histogram.html#a2d0b11f1b378a771928b160b98e1e172">state</a>.position.X(), <a class="code hl_function" href="namespacetest__event__histogram.html#a2d0b11f1b378a771928b160b98e1e172">state</a>.position.Y(),</div>
+<div class="line"><span class="lineno">  448</span>                           <a class="code hl_function" href="namespacetest__event__histogram.html#a2d0b11f1b378a771928b160b98e1e172">state</a>.position.Z()};</div>
 <div class="line"><span class="lineno">  449</span>  <span class="keywordtype">double</span> b[3] = {0., 0., 0.};</div>
 <div class="line"><span class="lineno">  450</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; map : <a class="code hl_variable" href="classMagneticTrackPropagator.html#a86d8efaab921e5cbb4d351db240721f8">fFields</a>) {</div>
 <div class="line"><span class="lineno">  451</span>    <span class="keywordflow">if</span> (std::none_of(map.regions.begin(), map.regions.end(),</div>
@@ -560,13 +560,14 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  457</span>    map.field-&gt;Field(point, component);</div>
 <div class="line"><span class="lineno">  458</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt; 3; ++<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>) b[i] += component[i];</div>
 <div class="line"><span class="lineno">  459</span>  }</div>
-<div class="line"><span class="lineno">  460</span>  derivative.position = state.momentum * (1. / state.momentum.Z());</div>
+<div class="line"><span class="lineno">  460</span>  derivative.position = <a class="code hl_function" href="namespacetest__event__histogram.html#a2d0b11f1b378a771928b160b98e1e172">state</a>.momentum * (1. / <a class="code hl_function" href="namespacetest__event__histogram.html#a2d0b11f1b378a771928b160b98e1e172">state</a>.momentum.Z());</div>
 <div class="line"><span class="lineno">  461</span>  <span class="comment">// dp/dz = 0.000299792458 q (p cross B)/pz for cm, GeV/c and kGauss.</span></div>
-<div class="line"><span class="lineno">  462</span>  derivative.momentum = state.momentum.Cross(TVector3(b[0], b[1], b[2])) *</div>
-<div class="line"><span class="lineno">  463</span>                        (0.000299792458 * charge / state.momentum.Z());</div>
+<div class="line"><span class="lineno">  462</span>  derivative.momentum = <a class="code hl_function" href="namespacetest__event__histogram.html#a2d0b11f1b378a771928b160b98e1e172">state</a>.momentum.Cross(TVector3(b[0], b[1], b[2])) *</div>
+<div class="line"><span class="lineno">  463</span>                        (0.000299792458 * charge / <a class="code hl_function" href="namespacetest__event__histogram.html#a2d0b11f1b378a771928b160b98e1e172">state</a>.momentum.Z());</div>
 <div class="line"><span class="lineno">  464</span>  <span class="keywordflow">return</span> Finite(derivative.position) &amp;&amp; Finite(derivative.momentum);</div>
 <div class="line"><span class="lineno">  465</span>}</div>
 <div class="ttc" id="anamespaceShipAna_html_aa4bf87f4d17f9d38b1d8f4d009bb54b3"><div class="ttname"><a href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">ShipAna.i</a></div><div class="ttdeci">int i</div><div class="ttdef"><b>Definition</b> <a href="ShipAna_8py_source.html#l00103">ShipAna.py:103</a></div></div>
+<div class="ttc" id="anamespacetest__event__histogram_html_a2d0b11f1b378a771928b160b98e1e172"><div class="ttname"><a href="namespacetest__event__histogram.html#a2d0b11f1b378a771928b160b98e1e172">test_event_histogram.state</a></div><div class="ttdeci">state(h)</div><div class="ttdef"><b>Definition</b> <a href="test__event__histogram_8py_source.html#l00079">test_event_histogram.py:79</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1456,12 +1457,12 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  478</span>      !<a class="code hl_function" href="classMagneticTrackPropagator.html#afbf26c8200e3d88eae0a1937c686c8de">Derivative</a>(advance(state, k3, dz), charge, pzSign, k4))</div>
 <div class="line"><span class="lineno">  479</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><span class="lineno">  480</span>  <a class="code hl_variable" href="namespacerun__tracking__scan.html#aefd0a105108077accad31b51b4f0647e">result</a>.position =</div>
-<div class="line"><span class="lineno">  481</span>      state.position + (dz / 6.) * (k1.position + 2. * k2.position +</div>
+<div class="line"><span class="lineno">  481</span>      <a class="code hl_function" href="namespacetest__event__histogram.html#a2d0b11f1b378a771928b160b98e1e172">state</a>.position + (dz / 6.) * (k1.position + 2. * k2.position +</div>
 <div class="line"><span class="lineno">  482</span>                                    2. * k3.position + k4.position);</div>
 <div class="line"><span class="lineno">  483</span>  <a class="code hl_variable" href="namespacerun__tracking__scan.html#aefd0a105108077accad31b51b4f0647e">result</a>.momentum =</div>
-<div class="line"><span class="lineno">  484</span>      state.momentum + (dz / 6.) * (k1.momentum + 2. * k2.momentum +</div>
+<div class="line"><span class="lineno">  484</span>      <a class="code hl_function" href="namespacetest__event__histogram.html#a2d0b11f1b378a771928b160b98e1e172">state</a>.momentum + (dz / 6.) * (k1.momentum + 2. * k2.momentum +</div>
 <div class="line"><span class="lineno">  485</span>                                    2. * k3.momentum + k4.momentum);</div>
-<div class="line"><span class="lineno">  486</span>  <a class="code hl_variable" href="namespacerun__tracking__scan.html#aefd0a105108077accad31b51b4f0647e">result</a>.position.SetZ(state.position.Z() + dz);</div>
+<div class="line"><span class="lineno">  486</span>  <a class="code hl_variable" href="namespacerun__tracking__scan.html#aefd0a105108077accad31b51b4f0647e">result</a>.position.SetZ(<a class="code hl_function" href="namespacetest__event__histogram.html#a2d0b11f1b378a771928b160b98e1e172">state</a>.position.Z() + dz);</div>
 <div class="line"><span class="lineno">  487</span>  <span class="keywordflow">return</span> Finite(<a class="code hl_variable" href="namespacerun__tracking__scan.html#aefd0a105108077accad31b51b4f0647e">result</a>.position) &amp;&amp; Finite(<a class="code hl_variable" href="namespacerun__tracking__scan.html#aefd0a105108077accad31b51b4f0647e">result</a>.momentum) &amp;&amp;</div>
 <div class="line"><span class="lineno">  488</span>         <a class="code hl_variable" href="namespacerun__tracking__scan.html#aefd0a105108077accad31b51b4f0647e">result</a>.momentum.Z() * pzSign &gt; 1.e-10 * <a class="code hl_variable" href="namespacerun__tracking__scan.html#aefd0a105108077accad31b51b4f0647e">result</a>.momentum.Mag();</div>
 <div class="line"><span class="lineno">  489</span>}</div>

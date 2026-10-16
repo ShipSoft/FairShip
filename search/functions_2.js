@@ -11,10 +11,11 @@ var searchData=
   ['bookhist_8',['bookhist',['../namespaceana__ShipMuon.html#a4a3714254df2980602fbc03161dde57f',1,'ana_ShipMuon.bookHist()'],['../namespacerootUtils.html#a6558e8446659e2fe282f24dff579b11d',1,'rootUtils.bookHist()']]],
   ['bookhistograms_9',['BookHistograms',['../classMuDISFilter.html#a5ddf38c0dc8f2a7977ee76e36ab1427d',1,'MuDISFilter']]],
   ['bookprof_10',['bookProf',['../namespacerootUtils.html#ae7d21aa6d2c4142e2b2c17659540b018',1,'rootUtils']]],
-  ['bottomview_11',['bottomView',['../classeventDisplay_1_1EventLoop.html#adb9b213d912944b7bddba62716045e23',1,'eventDisplay::EventLoop']]],
-  ['branches_12',['branches',['../namespacefieldMapTools.html#a551834f6757b959db5ff9f84d25683fc',1,'fieldMapTools']]],
-  ['brmesontodp_13',['brMesonToDP',['../namespacedpProductionRates.html#a4af6a641de251cc7f5e016751954a39d',1,'dpProductionRates']]],
-  ['brmesontogammadp_14',['brMesonToGammaDP',['../namespacedpProductionRates.html#adec3f55d66baf8956b5bd0e43b950888',1,'dpProductionRates']]],
-  ['brmesontomesondp_15',['brMesonToMesonDP',['../namespacedpProductionRates.html#a9edcc507e84f413f91c151573d2f2218',1,'dpProductionRates']]],
-  ['buildtrajectory_16',['BuildTrajectory',['../classMagneticTrackPropagator.html#abcb13114ed52704c5cef5dd945d020ff',1,'MagneticTrackPropagator']]]
+  ['bootstrap_5ferrors_11',['bootstrap_errors',['../classevent__histogram_1_1EventHistogram.html#ab05865af09c2c5a73414bf69e28d0f46',1,'event_histogram::EventHistogram']]],
+  ['bottomview_12',['bottomView',['../classeventDisplay_1_1EventLoop.html#adb9b213d912944b7bddba62716045e23',1,'eventDisplay::EventLoop']]],
+  ['branches_13',['branches',['../namespacefieldMapTools.html#a551834f6757b959db5ff9f84d25683fc',1,'fieldMapTools']]],
+  ['brmesontodp_14',['brMesonToDP',['../namespacedpProductionRates.html#a4af6a641de251cc7f5e016751954a39d',1,'dpProductionRates']]],
+  ['brmesontogammadp_15',['brMesonToGammaDP',['../namespacedpProductionRates.html#adec3f55d66baf8956b5bd0e43b950888',1,'dpProductionRates']]],
+  ['brmesontomesondp_16',['brMesonToMesonDP',['../namespacedpProductionRates.html#a9edcc507e84f413f91c151573d2f2218',1,'dpProductionRates']]],
+  ['buildtrajectory_17',['BuildTrajectory',['../classMagneticTrackPropagator.html#abcb13114ed52704c5cef5dd945d020ff',1,'MagneticTrackPropagator']]]
 ];

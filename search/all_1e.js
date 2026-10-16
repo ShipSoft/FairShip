@@ -6,7 +6,7 @@ var searchData=
   ['yaml_5fconfigs_3',['YAML_CONFIGS',['../namespacegeometry__from__file.html#a95cd91ab64400027db0202d9acb2c451',1,'geometry_from_file']]],
   ['yandexprod_4',['YandexProd',['../namespacecompactingBackgroundProduction.html#a708e024acb290e4040ca0976c1be15f0',1,'compactingBackgroundProduction']]],
   ['yaxis_5',['yAxis',['../classShipBFieldMap.html#a861764baf5e15176bc69c9942c2a9c65a2a92b59da7fcc9aa9e15dcd556326087',1,'ShipBFieldMap']]],
-  ['ybeam_6',['ybeam',['../namespacerunPythia8.html#a5b3558b48027106d182fd3d46514884a',1,'runPythia8.ybeam'],['../namespacerunPythia8.html#a0773b179ce66354584f56325e5da1bc0',1,'runPythia8.yBeam(float Mproton=0.938272081, float pbeam=400.0)']]],
+  ['ybeam_6',['ybeam',['../namespacerunPythia8.html#a0773b179ce66354584f56325e5da1bc0',1,'runPythia8.yBeam(float Mproton=0.938272081, float pbeam=400.0)'],['../namespacerunPythia8.html#a5b3558b48027106d182fd3d46514884a',1,'runPythia8.ybeam']]],
   ['ybox_7',['yBox',['../classCosmicsGenerator.html#a7cdf63ffe46b0356831c2da709a4b7f9',1,'CosmicsGenerator']]],
   ['ybox_5ffulldet_8',['ybox_fulldet',['../classUpstreamTagger.html#a8ce3b317da08c7f52ff60792de4a04ae',1,'UpstreamTagger']]],
   ['ych_9',['Ych',['../classMTCDetHit.html#a71b4a82c51ae60fe4fc20824941dc37f',1,'MTCDetHit']]],

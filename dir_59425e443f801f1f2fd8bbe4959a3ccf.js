@@ -2,6 +2,8 @@ var dir_59425e443f801f1f2fd8bbe4959a3ccf =
 [
     [ "data", "dir_a5de59bb3ce2e2eb34fbfb710b8b1200.html", "dir_a5de59bb3ce2e2eb34fbfb710b8b1200" ],
     [ "test_data_class_io.cxx", "test__data__class__io_8cxx.html", "test__data__class__io_8cxx" ],
+    [ "test_event_histogram.cxx", "test__event__histogram_8cxx.html", "test__event__histogram_8cxx" ],
+    [ "test_event_histogram.py", "test__event__histogram_8py.html", "test__event__histogram_8py" ],
     [ "test_field_maps.py", "test__field__maps_8py.html", "test__field__maps_8py" ],
     [ "test_fixedtarget_cascade_weight.cxx", "test__fixedtarget__cascade__weight_8cxx.html", "test__fixedtarget__cascade__weight_8cxx" ],
     [ "test_heavyFlavourScaling.py", "test__heavyFlavourScaling_8py.html", "test__heavyFlavourScaling_8py" ],

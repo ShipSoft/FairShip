@@ -1,5 +1,7 @@
 var dir_d32c3015c3e8f785dc4289736c132c3d =
 [
+    [ "EventHistogram.cxx", "EventHistogram_8cxx.html", null ],
+    [ "EventHistogram.h", "EventHistogram_8h.html", "EventHistogram_8h" ],
     [ "ISTLPointContainer.h", "ISTLPointContainer_8h.html", "ISTLPointContainer_8h" ],
     [ "LinkDef.h", "shipdata_2LinkDef_8h.html", null ],
     [ "ShipDetectorList.h", "ShipDetectorList_8h.html", "ShipDetectorList_8h" ],

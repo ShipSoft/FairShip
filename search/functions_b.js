@@ -22,5 +22,6 @@ var searchData=
   ['loadhistofromfile_19',['LoadHistoFromFile',['../classParticleGunGenerator.html#adb4adb35544eec6ca34ce7f224d43dc6',1,'ParticleGunGenerator']]],
   ['loads_20',['loads',['../classShipGeoConfig_1_1Config.html#ab05b5555a5b2565d7bdbced03cb99843',1,'ShipGeoConfig::Config']]],
   ['loads_5fjson_21',['loads_json',['../classShipGeoConfig_1_1Config.html#a86cc9ef6b9103346ae0e57f47af6b0db',1,'ShipGeoConfig::Config']]],
-  ['local2global_22',['local2Global',['../namespacegetGeoInformation.html#a448cb3b3e4a85101cc5feed35c977556',1,'getGeoInformation']]]
+  ['local2global_22',['local2Global',['../namespacegetGeoInformation.html#a448cb3b3e4a85101cc5feed35c977556',1,'getGeoInformation']]],
+  ['log_5fedges_23',['log_edges',['../namespacesplit__weight__uncertainties.html#acbb3b44341381f4f2e1b333b1711de44',1,'split_weight_uncertainties']]]
 ];
