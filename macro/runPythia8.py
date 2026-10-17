@@ -40,7 +40,7 @@ X = ROOT.FixedTargetGenerator()
 print("end IGNOREIGNOREIGNOREIGNOREIGNOREIGNOREIGNOREIGNOREIGNORE")
 
 
-def yBeam(Mproton: float = ROOT.TDatabasePDG.Instance().GetParticle(2212).Mass(), pbeam: float = 400.0):
+def yBeam(Mproton: float = ut.get_particle(2212).Mass(), pbeam: float = 400.0):
     Ebeam = ROOT.TMath.Sqrt(pbeam**2 + Mproton**2)
     betaCM = pbeam / (Ebeam + Mproton)
     y_beam = 0.5 * ROOT.TMath.Log((1 + betaCM) / (1 - betaCM))  # https://arxiv.org/pdf/1604.02651.pdf
