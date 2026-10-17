@@ -2,11 +2,11 @@
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
 import math
-from types import SimpleNamespace
 
 import pytest
 import ROOT
 from experimental import analysis_toolkit
+from ShipGeoConfig import AttrDict, Config
 
 TARGET_Z0 = -3500.0
 
@@ -28,7 +28,7 @@ class FakeCandidate:
 @pytest.fixture
 def selection():
     sel = analysis_toolkit.selection_check.__new__(analysis_toolkit.selection_check)
-    sel.ship_geo = SimpleNamespace(target=SimpleNamespace(z0=TARGET_Z0))
+    sel.ship_geo = Config(target=AttrDict(z0=TARGET_Z0))
     return sel
 
 
