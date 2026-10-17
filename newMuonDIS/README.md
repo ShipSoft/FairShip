@@ -260,3 +260,28 @@ geometry scan (also available as `MuDISProcessor::CheckAllVolumes()`).
 
 The filter preserves both generation metadata values for every material,
 even when none of that material's DIS events survive.
+
+
+## Input-muon normalization
+
+Preparation, filtering, and `NewMuDISGenerator` store a `muDIS_normalization`
+list in the output tree's `GetUserInfo()`. Each stage invocation has a UUID
+record containing its stage name, input-muon count, sum of weights, and sum of
+squared weights. These are the original `MCTrack[0].fW` values (the first
+`muon_MCTracks` element in prepared/filtered inputs), before momentum,
+acceptance, or DIS selection. Unreadable entries or entries without a first
+track cannot contribute a weight. No event count is inferred from the number
+of surviving DIS interactions.
+
+Replay counts each muon once during the input-range scan in `SetNevents`,
+including muons with no DIS interactions; expanding a muon into several
+replay events does not multiply these counters. The scan covers the configured
+input-muon range, even if a caller subsequently stops replay early. Recounting
+resets the replay counters. Empty output trees retain their metadata.
+
+All ancestor records are copied unchanged, including preparation records for
+muons absent from the filtered trees. Shared records are identified by UUID
+and counted only once when inputs or analysis outputs are combined. Repeated
+filtering adds a distinct filtering invocation; the stage summary sums the
+unique invocations, while preparation remains unchanged.
+
