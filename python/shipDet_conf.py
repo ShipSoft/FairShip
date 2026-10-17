@@ -274,14 +274,35 @@ def configure_strawtubes(yaml_file: str, ship_geo) -> None:
 
 
 def configure_upstream_tagger(yaml_file: str, upstream_tagger, ship_geo) -> None:
-    """Load the shared UBT simulation map and configure geometry/digitization."""
+    """Configure the UBT regions and their digitization parameters from the UBT map.
+
+    The map read from ``yaml_file`` is kept in ``ship_geo.UpstreamTagger_geo``,
+    so that it is saved with the geometry. A configuration read back from a
+    geometry file (reconstruction, analysis, ``-g``) already has it: then the
+    stored map is used, so that the regions and tile IDs are those of the
+    simulation, whatever the YAML file in the checkout says.
+    """
     with open(yaml_file) as file:
         config = yaml.safe_load(file)
+    # The parts of the map that change the detector, without its description.
+    checkout_map = {key: config[key] for key in ("kind", "units", "bounds", "regions")}
 
-    if config.get("kind") != "simulation" or config.get("units") != "cm":
+    stored_map = ship_geo.get("UpstreamTagger_geo")
+    if stored_map is None:
+        ship_geo.UpstreamTagger_geo = AttrDict(checkout_map)
+        ubt_map = checkout_map
+    else:
+        if dict(stored_map) != checkout_map:
+            print(
+                f"Warning: {yaml_file} differs from the UBT map stored with the geometry; "
+                "the stored map, used in the simulation, is used."
+            )
+        ubt_map = stored_map
+
+    if ubt_map["kind"] != "simulation" or ubt_map["units"] != "cm":
         raise ValueError("The UBT map must be a simulation map expressed in cm")
 
-    regions = config["regions"]
+    regions = ubt_map["regions"]
     region_ids = [region["id"] for region in regions]
     if len(region_ids) != len(set(region_ids)):
         raise ValueError("The UBT detector map contains duplicate region IDs")
@@ -292,10 +313,10 @@ def configure_upstream_tagger(yaml_file: str, upstream_tagger, ship_geo) -> None
         region["id"]: region["constituent_tile_size"] * u.cm for region in regions
     }
     ship_geo.UpstreamTagger.TileGridOriginX, ship_geo.UpstreamTagger.TileGridEndX = (
-        bound * u.cm for bound in config["bounds"]["x"]
+        bound * u.cm for bound in ubt_map["bounds"]["x"]
     )
     ship_geo.UpstreamTagger.TileGridOriginY, ship_geo.UpstreamTagger.TileGridEndY = (
-        bound * u.cm for bound in config["bounds"]["y"]
+        bound * u.cm for bound in ubt_map["bounds"]["y"]
     )
     # TH2D maps of ADC counts per MeV vs local hit position (mm) in a tile,
     # named adc_per_mev_<tile side in mm>mm.
