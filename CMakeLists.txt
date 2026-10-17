@@ -128,6 +128,11 @@ include(ShipMacros)
 find_package2(PUBLIC Pythia8 REQUIRED)
 find_package2(PUBLIC EvtGen REQUIRED)
 # (GENERATORS REQUIRED)
+# alienv exports XERCESC_ROOT, which CMake < 4 ignores in favour of a system
+# XercesC too old for Geant4 11.4
+if(NOT DEFINED XercesC_ROOT AND DEFINED ENV{XERCESC_ROOT})
+    set(XercesC_ROOT "$ENV{XERCESC_ROOT}")
+endif()
 find_package2(PUBLIC Geant4)
 find_package2(PUBLIC GEANT4DATA)
 # Geant4VMC exports VGM targets in its link interface without looking for VGM
