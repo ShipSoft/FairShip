@@ -23,6 +23,12 @@
 
 using namespace ShipMuDIS;
 
+namespace {
+// Interaction probability per (mb g/cm^2) for a cross section per nucleon:
+// nucleons per gram (N_A, ignoring binding) times 1 mb = 1e-27 cm^2.
+constexpr double kNucleonsPerGramTimesMb = TMath::Na() * 1e-27;
+}  // namespace
+
 NewMuDISGenerator::NewMuDISGenerator() : SHiP::Generator() {
   fTree = nullptr;
   fNevents = -1;
@@ -270,7 +276,13 @@ Bool_t NewMuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
     fMaterialLabel = MatTypeStr[fMat];
     fMuonEntry = static_cast<Int_t>(fnmu);
     fDISIndex = fnmuDis;
-    // DISxsec is not reliable yet; retain the -1 placeholder.
+    fGenIndex = lBr->GenIndex(fnmuDis);
+    // Copied as stored; not validated yet, see README.md.
+    fDISXsec = (*lBr->DISxsec)[fnmuDis];
+    fDISTarget = (*lBr->DIStarget)[fnmuDis] ? 1 : 0;
+    fWDIS = lBr->wDIS;
+    fWeight = fDISXsec >= 0. ? fWDIS * fDISXsec * kNucleonsPerGramTimesMb : -1.;
+    fSource = finEv.source;
     fPythiaP = lBr->pPythia;
     for (unsigned material = 0; material < nMats; ++material) {
       fNGenerated[material] = finEv.br[material].nDISevtsGenerated;
@@ -304,8 +316,12 @@ Bool_t NewMuDISGenerator::RegisterOutputBranches(TTree* tree) {
     LOG(error) << "NewMuDISGenerator: output branches require an empty tree";
     return kFALSE;
   }
-  for (const auto* name : {"muDIS_material", "muDIS_muEntry", "muDIS_disIndex",
-                           "muDIS_xsec", "muDIS_pPythia", "muDIS_nGenerated"}) {
+  for (const auto* name :
+       {"muDIS_material", "muDIS_muEntry", "muDIS_disIndex", "muDIS_genIndex",
+        "muDIS_xsec", "muDIS_target", "muDIS_wDIS", "muDIS_weight",
+        "muDIS_pPythia", "muDIS_nGenerated", "muDIS_srcFile", "muDIS_srcEntry",
+        "muDIS_srcTrackID", "muDIS_srcRunID", "muDIS_srcEventID",
+        "muDIS_potRunID", "muDIS_potEventID"}) {
     if (tree->GetBranch(name)) {
       LOG(error) << "NewMuDISGenerator: output branch already exists: " << name;
       return kFALSE;
@@ -314,9 +330,24 @@ Bool_t NewMuDISGenerator::RegisterOutputBranches(TTree* tree) {
   return tree->Branch("muDIS_material", &fMaterialLabel) &&
          tree->Branch("muDIS_muEntry", &fMuonEntry, "muDIS_muEntry/I") &&
          tree->Branch("muDIS_disIndex", &fDISIndex, "muDIS_disIndex/I") &&
+         tree->Branch("muDIS_genIndex", &fGenIndex, "muDIS_genIndex/I") &&
          tree->Branch("muDIS_xsec", &fDISXsec, "muDIS_xsec/D") &&
+         tree->Branch("muDIS_target", &fDISTarget, "muDIS_target/I") &&
+         tree->Branch("muDIS_wDIS", &fWDIS, "muDIS_wDIS/D") &&
+         tree->Branch("muDIS_weight", &fWeight, "muDIS_weight/D") &&
          tree->Branch("muDIS_pPythia", &fPythiaP, "muDIS_pPythia/D") &&
-         tree->Branch("muDIS_nGenerated", &fNGenerated);
+         tree->Branch("muDIS_nGenerated", &fNGenerated) &&
+         tree->Branch("muDIS_srcFile", &fSource.file, "muDIS_srcFile/I") &&
+         tree->Branch("muDIS_srcEntry", &fSource.entry, "muDIS_srcEntry/L") &&
+         tree->Branch("muDIS_srcTrackID", &fSource.trackID,
+                      "muDIS_srcTrackID/I") &&
+         tree->Branch("muDIS_srcRunID", &fSource.runID, "muDIS_srcRunID/L") &&
+         tree->Branch("muDIS_srcEventID", &fSource.eventID,
+                      "muDIS_srcEventID/L") &&
+         tree->Branch("muDIS_potRunID", &fSource.potRunID,
+                      "muDIS_potRunID/L") &&
+         tree->Branch("muDIS_potEventID", &fSource.potEventID,
+                      "muDIS_potEventID/L");
 }
 
 void NewMuDISGenerator::ResetOutputBranches() {
@@ -324,9 +355,14 @@ void NewMuDISGenerator::ResetOutputBranches() {
   fMaterialLabel = "";
   fMuonEntry = -1;
   fDISIndex = -1;
+  fGenIndex = -1;
   fDISXsec = -1.;
+  fDISTarget = -1;
+  fWDIS = -1.;
+  fWeight = -1.;
   fPythiaP = -1.;
   fNGenerated.assign(nMats, -1);
+  fSource.Reset();
 }
 
 bool NewMuDISGenerator::ValidateEntry(Long64_t entry) const {

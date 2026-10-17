@@ -189,6 +189,14 @@ Selected muons are counted separately per material: a muon contributes when at
 least one interaction passes there. Muon weighted counts sum `wDIS` once per
 muon; DIS weighted counts sum `nDIS * wDIS`.
 
+The filter copies the muon source branches (`muon_src*`) unchanged and keeps
+`mudis_DISgenIndex_<VOL>`, the position of each surviving interaction in the
+`prepareEvents.py` output, so that repeated filtering still points to the
+generated interaction. Inputs written before this branch existed give `-1`.
+`filterEvents.py` also writes a `FileSummary` with the summaries of its inputs,
+the entry range, the filter options and the Pythia8 decay seed actually used;
+see [Provenance](README.md#provenance).
+
 Custom selections
 -----------------
 

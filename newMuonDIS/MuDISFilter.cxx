@@ -616,16 +616,19 @@ void MuDISFilter::InitialisePythiaDecayer() {
   if (!fPythiaDecayer->init())
     throw std::runtime_error(
         "MuDISFilter: failed to initialize the Pythia8 decayer");
+  fEffectivePythiaDecaySeed = fPythiaDecayer->rndm.getState().seed;
   LOG(info) << "MuDISFilter: Pythia8 decay seed = "
-            << fPythiaDecayer->rndm.getState().seed;
+            << fEffectivePythiaDecaySeed;
 }
 
 void MuDISFilter::SetUsePythiaDecays(bool enabled) {
   fUsePythiaDecays = enabled;
-  if (enabled)
+  if (enabled) {
     InitialisePythiaDecayer();
-  else
+  } else {
     fPythiaDecayer.reset();
+    fEffectivePythiaDecaySeed = 0;
+  }
 }
 
 void MuDISFilter::SetPythiaDecaySeed(unsigned seed) {
@@ -1023,6 +1026,7 @@ void MuDISFilter::ProcessEvents() {
         ++out.nDISevts;
         out.DISxsec.push_back(in.DISxsec->at(idis));
         out.DIStarget.push_back(in.DIStarget->at(idis));
+        out.DISgenIndex.push_back(in.GenIndex(idis));
         out.DISvx.push_back(in.DISvx->at(idis));
         out.DISvy.push_back(in.DISvy->at(idis));
         out.DISvz.push_back(in.DISvz->at(idis));
@@ -1056,6 +1060,7 @@ void MuDISFilter::ProcessEvents() {
       foutEv.tdPt = *finEv.tdPt;
       foutEv.pathLength = finEv.pathLength;
       foutEv.pathLengthByMat = finEv.pathLengthByMat;
+      foutEv.source = finEv.source;
       if (fouttree->Fill() < 0)
         throw std::runtime_error("Failed writing MuonDIS entry");
       ++selected;

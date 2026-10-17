@@ -14,6 +14,7 @@
 
 #include "DISparticle.h"
 #include "FairLogger.h"  // for FairLogger, MESSAGE_ORIGIN
+#include "FairMCEventHeader.h"
 #include "ShipMCTrack.h"
 #include "TChain.h"  // for TTree
 #include "TROOT.h"
@@ -54,6 +55,8 @@ struct MuonDISBranches {
   double wDIS;           // per input muon per volume
   std::vector<double> DISxsec;  // per input muon per DIS
   std::vector<bool> DIStarget;  // per input muon per DIS, p=true, n=false
+  // Position of the interaction in the prepareEvents output, kept by filtering.
+  std::vector<int> DISgenIndex;
   std::vector<double> DISvx;
   std::vector<double> DISvy;
   std::vector<double> DISvz;
@@ -68,6 +71,7 @@ struct MuonDISBranches {
     aT->Branch("muon_wDIS_" + aLabel, &wDIS);
     aT->Branch("mudis_DISxsec_" + aLabel, &DISxsec);
     aT->Branch("mudis_DIStarget_" + aLabel, &DIStarget);
+    aT->Branch("mudis_DISgenIndex_" + aLabel, &DISgenIndex);
     aT->Branch("mudis_DISvx_" + aLabel, &DISvx);
     aT->Branch("mudis_DISvy_" + aLabel, &DISvy);
     aT->Branch("mudis_DISvz_" + aLabel, &DISvz);
@@ -85,6 +89,8 @@ struct MuonDISBranches {
     DISxsec.reserve(nDIS);
     DIStarget.clear();
     DIStarget.reserve(nDIS);
+    DISgenIndex.clear();
+    DISgenIndex.reserve(nDIS);
     DISvx.clear();
     DISvx.reserve(nDIS);
     DISvy.clear();
@@ -100,6 +106,26 @@ struct MuonDISBranches {
   };
 };
 
+// Where an input muon comes from; -1 where unknown. See README.md.
+struct MuonSource {
+  Int_t file = -1;        // index into the FileSummary inputFiles
+  Long64_t entry = -1;    // entry of the muon's event in that file's cbmsim
+  Int_t trackID = -1;     // index of the muon in that event's MCTrack
+  Long64_t runID = -1;    // MCEventHeader RunID of that event
+  Long64_t eventID = -1;  // MCEventHeader EventID of that event
+  // muBack_srcRunID and muBack_srcEventID of that event: the input event of
+  // the MuonBackGenerator simulation that produced it, i.e. the PoT event
+  // when that input was the PoT simulation.
+  Long64_t potRunID = -1;
+  Long64_t potEventID = -1;
+
+  void Reset() { *this = MuonSource(); }
+};
+
+inline const std::array<TString, 7> MuonSourceBranchNames = {
+    "muon_srcFile",    "muon_srcEntry", "muon_srcTrackID", "muon_srcRunID",
+    "muon_srcEventID", "muon_potRunID", "muon_potEventID"};
+
 struct MuonBranches {
   std::vector<ShipMCTrack> mcTrks;
   std::vector<vetoPoint> sbtPt;
@@ -108,6 +134,7 @@ struct MuonBranches {
   std::vector<TimeDetPoint> tdPt;
   double pathLength = 0.;
   std::array<double, nMats> pathLengthByMat = {};
+  MuonSource source;
   MuonDISBranches br[nMats];
   void InitTree(TTree*& aT) {
     aT->Branch("muon_MCTracks", &mcTrks);
@@ -116,6 +143,13 @@ struct MuonBranches {
     aT->Branch("muon_UBTPoints", &ubtPt);
     aT->Branch("muon_TDPoints", &tdPt);
     aT->Branch("muon_path_length", &pathLength);
+    aT->Branch(MuonSourceBranchNames[0], &source.file);
+    aT->Branch(MuonSourceBranchNames[1], &source.entry);
+    aT->Branch(MuonSourceBranchNames[2], &source.trackID);
+    aT->Branch(MuonSourceBranchNames[3], &source.runID);
+    aT->Branch(MuonSourceBranchNames[4], &source.eventID);
+    aT->Branch(MuonSourceBranchNames[5], &source.potRunID);
+    aT->Branch(MuonSourceBranchNames[6], &source.potEventID);
     for (unsigned i(0); i < nMats; ++i) {
       aT->Branch("muon_path_length_" + MatTypeStr[i], &pathLengthByMat[i]);
       br[i].InitTree(aT, MatTypeStr[i]);
@@ -134,6 +168,7 @@ struct MuonBranches {
     tdPt.reserve(nMax);
     pathLength = 0.;
     pathLengthByMat.fill(0.);
+    source.Reset();
   };
 };
 
@@ -164,6 +199,13 @@ struct CBMSimBranches {
   std::vector<UpstreamTaggerPoint>* ubtPt = nullptr;
   std::vector<strawtubesPoint>* sstPt = nullptr;
   std::vector<TimeDetPoint>* tdPt = nullptr;
+  // Event header of the current input file; valid only if HasHeader().
+  FairMCEventHeader* header = nullptr;
+  // Written by MuonBackGenerator; -1 if the input has no such branches.
+  Long64_t muBackRunID = -1;
+  Long64_t muBackEventID = -1;
+
+  bool HasHeader() const { return fHasHeader; }
 
   bool Setup(TChain* tree) {
     fTreeNumber = -1;
@@ -177,7 +219,12 @@ struct CBMSimBranches {
     if (tree->GetTreeNumber() != fTreeNumber) {
       fTreeNumber = tree->GetTreeNumber();
       auto* current = tree->GetTree();
-      fValid = BindInputBranch(current, "MCTrack", &MCTrack);
+      fHasHeader = current->GetBranch("MCEventHeader.") != nullptr &&
+                   BindInputBranch(current, "MCEventHeader.", &header, false);
+      fValid = BindInputBranch(current, "muBack_srcRunID", &muBackRunID, false);
+      fValid &=
+          BindInputBranch(current, "muBack_srcEventID", &muBackEventID, false);
+      fValid &= BindInputBranch(current, "MCTrack", &MCTrack);
       fValid &= BindInputBranch(current, "TimeDetPoint", &tdPt);
       fValid &= BindInputBranch(current, "vetoPoint", &sbtPt);
       fValid &= BindInputBranch(current, "UpstreamTaggerPoint", &ubtPt);
@@ -198,14 +245,19 @@ struct CBMSimBranches {
     ubtPt = &fUBT;
     sstPt = &fSST;
     tdPt = &fTD;
+    header = &fHeader;
+    muBackRunID = -1;
+    muBackEventID = -1;
   }
   std::vector<ShipMCTrack> fTracks;
   std::vector<vetoPoint> fSBT;
   std::vector<UpstreamTaggerPoint> fUBT;
   std::vector<strawtubesPoint> fSST;
   std::vector<TimeDetPoint> fTD;
+  FairMCEventHeader fHeader;
   int fTreeNumber = -1;
   bool fValid = false;
+  bool fHasHeader = false;
 };
 
 // For reading back the DIS tree
@@ -217,6 +269,8 @@ struct MuonDISInBranches {
   std::vector<double>* DISxsec = nullptr;  // per input muon per DIS
   std::vector<bool>* DIStarget =
       nullptr;  // per input muon per DIS, p=true, n=false
+  // Missing from files written before it was introduced; use GenIndex().
+  std::vector<int>* DISgenIndex = nullptr;
   std::vector<double>* DISvx = nullptr;
   std::vector<double>* DISvy = nullptr;
   std::vector<double>* DISvz = nullptr;
@@ -224,11 +278,18 @@ struct MuonDISInBranches {
   std::vector<int>* nDISdau = nullptr;               // per DIS event muon
   std::vector<DISparticle>* DISparticles = nullptr;  // all DIS events together.
 
+  // Position of DIS interaction i in the prepareEvents output, or -1 if the
+  // input does not record it.
+  int GenIndex(int i) const {
+    return fHasGenIndex ? DISgenIndex->at(static_cast<std::size_t>(i)) : -1;
+  }
+
   bool IsValid() const {
-    if (nDISevts < 0 || !DISxsec || !DIStarget || !DISvx || !DISvy || !DISvz ||
-        !DISvt || !nDISdau || !DISparticles)
+    if (nDISevts < 0 || !DISxsec || !DIStarget || !DISgenIndex || !DISvx ||
+        !DISvy || !DISvz || !DISvt || !nDISdau || !DISparticles)
       return false;
     const auto size = static_cast<std::size_t>(nDISevts);
+    if (fHasGenIndex && DISgenIndex->size() != size) return false;
     if (DISxsec->size() != size || DIStarget->size() != size ||
         DISvx->size() != size || DISvy->size() != size ||
         DISvz->size() != size || DISvt->size() != size ||
@@ -252,6 +313,7 @@ struct MuonDISInBranches {
     fStorage.initEvent(0);
     DISxsec = &fStorage.DISxsec;
     DIStarget = &fStorage.DIStarget;
+    DISgenIndex = &fStorage.DISgenIndex;
     DISvx = &fStorage.DISvx;
     DISvy = &fStorage.DISvy;
     DISvz = &fStorage.DISvz;
@@ -269,6 +331,9 @@ struct MuonDISInBranches {
     ok &= BindInputBranch(tree, "muon_wDIS_" + label, &wDIS);
     ok &= BindInputBranch(tree, "mudis_DISxsec_" + label, &DISxsec);
     ok &= BindInputBranch(tree, "mudis_DIStarget_" + label, &DIStarget);
+    fHasGenIndex = tree->GetBranch("mudis_DISgenIndex_" + label) != nullptr;
+    ok &= BindInputBranch(tree, "mudis_DISgenIndex_" + label, &DISgenIndex,
+                          false);
     ok &= BindInputBranch(tree, "mudis_DISvx_" + label, &DISvx);
     ok &= BindInputBranch(tree, "mudis_DISvy_" + label, &DISvy);
     ok &= BindInputBranch(tree, "mudis_DISvz_" + label, &DISvz);
@@ -298,6 +363,7 @@ struct MuonDISInBranches {
          << " - wDIS = " << wDIS << std::endl;
     if (DISxsec) lOut << Print(*DISxsec, "DISxsec");
     if (DIStarget) lOut << Print(*DIStarget, "DIStarget");
+    if (fHasGenIndex) lOut << Print(*DISgenIndex, "DISgenIndex");
     if (DISvx) lOut << Print(*DISvx, "DISvx");
     if (DISvy) lOut << Print(*DISvy, "DISvy");
     if (DISvz) lOut << Print(*DISvz, "DISvz");
@@ -310,6 +376,7 @@ struct MuonDISInBranches {
 
  private:
   MuonDISBranches fStorage;
+  bool fHasGenIndex = false;
 };
 
 struct MuonInBranches {
@@ -320,6 +387,8 @@ struct MuonInBranches {
   std::vector<TimeDetPoint>* tdPt = nullptr;
   double pathLength = 0.;
   std::array<double, nMats> pathLengthByMat = {};
+  // Optional: files written before these branches existed leave them at -1.
+  MuonSource source;
   MuonDISInBranches br[nMats];
 
   bool Setup(TTree* tree) {
@@ -340,6 +409,20 @@ struct MuonInBranches {
       fValid &= BindInputBranch(current, "muon_UBTPoints", &ubtPt);
       fValid &= BindInputBranch(current, "muon_SSTPoints", &sstPt);
       fValid &= BindInputBranch(current, "muon_path_length", &pathLength);
+      fValid &= BindInputBranch(current, MuonSourceBranchNames[0], &source.file,
+                                false);
+      fValid &= BindInputBranch(current, MuonSourceBranchNames[1],
+                                &source.entry, false);
+      fValid &= BindInputBranch(current, MuonSourceBranchNames[2],
+                                &source.trackID, false);
+      fValid &= BindInputBranch(current, MuonSourceBranchNames[3],
+                                &source.runID, false);
+      fValid &= BindInputBranch(current, MuonSourceBranchNames[4],
+                                &source.eventID, false);
+      fValid &= BindInputBranch(current, MuonSourceBranchNames[5],
+                                &source.potRunID, false);
+      fValid &= BindInputBranch(current, MuonSourceBranchNames[6],
+                                &source.potEventID, false);
       for (unsigned i = 0; i < nMats; ++i) {
         const TString name = "muon_path_length_" + MatTypeStr[i];
         fValid &= BindInputBranch(current, name, &pathLengthByMat[i]);
@@ -363,6 +446,7 @@ struct MuonInBranches {
     tdPt = &fTD;
     pathLength = 0.;
     pathLengthByMat.fill(0.);
+    source.Reset();
     for (auto& material : br) material.Clear();
   }
   std::vector<ShipMCTrack> fTracks;
