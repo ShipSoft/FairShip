@@ -153,16 +153,8 @@ Bool_t MuonBackGenerator::Init(const std::vector<std::string>& fileNames,
       LOG(error) << "MuonBackGenerator: MCTrack branch not found in input file";
       return kFALSE;
     }
-    // Optional: the input event's identity, passed on to the output.
-    if (fTree->GetBranch("MCEventHeader.")) {
-      delete fInHeader;
-      fInHeader = new FairMCEventHeader();
-      if (fTree->SetBranchAddress("MCEventHeader.", &fInHeader) < 0) {
-        LOG(warn) << "MuonBackGenerator: cannot read the input MCEventHeader";
-        delete fInHeader;
-        fInHeader = nullptr;
-      }
-    }
+    // The optional input MCEventHeader is bound per file in ReadEvent, since
+    // the files of the chain need not all have one.
 
     if (fTree->GetBranch("PlaneHAPoint")) {
       // New STL format
@@ -217,6 +209,26 @@ MuonBackGenerator::~MuonBackGenerator() {
   fInHeader = nullptr;
 }
 // -------------------------------------------------------------------------
+void MuonBackGenerator::BindInputHeader() {
+  fInHeaderTree = fTree->GetTreeNumber();
+  fHasInHeader = false;
+  TTree* current = fTree->GetTree();
+  if (current == nullptr || current->GetBranch("MCEventHeader.") == nullptr) {
+    return;
+  }
+  if (fInHeader == nullptr) {
+    fInHeader = new FairMCEventHeader();
+  }
+  // The chain keeps the address and rebinds it for later files that have the
+  // branch; files without it are caught by the check above.
+  if (fTree->SetBranchAddress("MCEventHeader.", &fInHeader) < 0) {
+    LOG(warn) << "MuonBackGenerator: cannot read the input MCEventHeader of "
+              << current->GetCurrentFile()->GetName();
+    return;
+  }
+  fHasInHeader = true;
+}
+// -------------------------------------------------------------------------
 Bool_t MuonBackGenerator::checkDiMuon(Int_t muIndex) {
   ShipMCTrack* mu = fUseSTL ? &(*MCTrack_vec)[muIndex]
                             : dynamic_cast<ShipMCTrack*>(MCTrack->At(muIndex));
@@ -263,6 +275,9 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
 
   bool found_muon = false;
   while (fn < fNevents) {
+    if (fTree->LoadTree(fn) >= 0 && fTree->GetTreeNumber() != fInHeaderTree) {
+      BindInputHeader();
+    }
     fTree->GetEntry(fn);
     IncrementCounter("scanned_entries");
     muList.clear();
@@ -331,8 +346,10 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
   // fn already points past the entry just read.
   fSrcFile = fTree->GetTreeNumber();
   fSrcEntry = fn - 1 - fTree->GetChainOffset();
-  fSrcRunID = fInHeader ? static_cast<Long64_t>(fInHeader->GetRunID()) : -1;
-  fSrcEventID = fInHeader ? fInHeader->GetEventID() : -1;
+  fSrcRunID = fHasInHeader ? static_cast<Long64_t>(fInHeader->GetRunID()) : -1;
+  // Cast first: UInt_t ? UInt_t : int would turn -1 into 4294967295.
+  fSrcEventID =
+      fHasInHeader ? static_cast<Long64_t>(fInHeader->GetEventID()) : -1;
   if (fSameSeed) {
     Int_t theSeed = fn + fSameSeed * fNevents;
     LOGF(debug, "Seed: %d", theSeed);
