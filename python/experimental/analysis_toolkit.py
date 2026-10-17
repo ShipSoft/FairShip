@@ -93,7 +93,7 @@ class selection_check:
 
         direction = candidate_mom.Vect().Unit()
         offset = target_point - candidate_pos
-        return offset - offset.Dot(direction) * direction
+        return offset - direction * offset.Dot(direction)
 
     def impact_parameter(self, candidate):
         """Calculate the impact parameter of the candidate relative to (0,0,target.z0)."""
