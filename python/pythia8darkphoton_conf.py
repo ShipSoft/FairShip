@@ -109,7 +109,7 @@ def configure(P8gen, mass, epsilon, inclusive, motherMode, deepCopy=False, debug
         P8gen.SetParameters("Next:numberShowInfo = 0")
         P8gen.SetParameters("Next:numberShowProcess = 0")
         P8gen.SetParameters("Next:numberShowEvent = 0")
-        proton_bremsstrahlung.protonEnergy = P8gen.GetMom()
+        proton_bremsstrahlung.protonMomentum = P8gen.GetMom()
         norm = proton_bremsstrahlung.prodRate(mass, epsilon)
         print("A' production rate per p.o.t: \t %.8g" % norm)
         P8gen.SetPbrem(proton_bremsstrahlung.hProdPDF(mass, epsilon, norm, 350, 1500))
