@@ -24,6 +24,10 @@ it in future.
 
 * Remove the vacuum tank height: `-Y` of `run_simScript.py`, `-dy` of `ShipReco.py`, the `Yheight` argument of `geometry_config.create_config` and `ship_geo.Yheight`. It no longer affected the geometry. It only reached the spectrometer aperture `Bfield.y`, which the magnet design overrides, and the analytic bell field, which is only used without a field map, and a field map is always set. Scripts that pass `-Y`, `-dy` or `Yheight=` must drop it (#706).
 
+### Fixed
+
+* Pass the half-height of the analytic `ShipBellField` in cm in `shipDet_conf.py` and the event display. `Bfield.y` is already in cm, and multiplying it by `u.m` again made the field region 100 times too tall. The bell field is only used when no field map is configured.
+
 ## 26.11 - 2026-11-26
 
 This release makes ACTS the default for pattern recognition, track fitting and
