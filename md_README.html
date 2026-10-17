@@ -200,9 +200,9 @@ Run instructions</h1>
 Docker instructions</h1>
 <p>Docker is <b>not</b> the recommended way to run <code>FairShip</code> locally. It is ideal for reproducing reproducible, stateless environments for debugging, HTCondor and cluster use, or when a strict separation between <code>FairShip</code> and the host is desirable.</p>
 <ol type="1">
-<li>Build an docker image from the provided <code>Dockerfile</code>: <div class="fragment"><div class="line">git clone https://github.com/ShipSoft/FairShip.git</div>
+<li>Build a Docker image from the provided <code>Containerfile</code>: <div class="fragment"><div class="line">git clone https://github.com/ShipSoft/FairShip.git</div>
 <div class="line">cd FairShip</div>
-<div class="line">docker build -t fairship .</div>
+<div class="line">docker build -f Containerfile -t fairship .</div>
 </div><!-- fragment --></li>
 <li>Run the <code>FairShip</code> docker image: <div class="fragment"><div class="line">docker run -i -t --rm fairship /bin/bash</div>
 </div><!-- fragment --></li>
@@ -241,10 +241,10 @@ With CVMFS (lxplus and similar)</h2>
 </div><!-- fragment --></li>
 <li>Make sure CVMFS is mounted: <div class="fragment"><div class="line">ls /cvmfs/ship.cern.ch</div>
 </div><!-- fragment --></li>
-<li>Source the chosen release (see the <a href="https://github.com/ShipSoft/cvmfs_release">cvmfs_release</a> repo for the list): <div class="fragment"><div class="line">source /cvmfs/ship.cern.ch/$SHIP_RELEASE/setUp.sh</div>
+<li>Source the chosen release (see the <a href="https://github.com/ShipSoft/shipdist/releases">shipdist releases</a> and its <a href="https://github.com/ShipSoft/shipdist/blob/main/CHANGELOG.md">CHANGELOG</a> for the list; releases up to 25.11 are listed in the archived <a href="https://github.com/ShipSoft/cvmfs_release">cvmfs_release</a> repo): <div class="fragment"><div class="line">source /cvmfs/ship.cern.ch/$SHIP_RELEASE/setUp.sh</div>
 </div><!-- fragment --></li>
 <li>Build with aliBuild: <div class="fragment"><div class="line">aliBuild build FairShip --always-prefer-system --config-dir $SHIPDIST --defaults release</div>
-</div><!-- fragment --> For legacy branches, swap <code>--defaults release</code> for <code>--defaults fairship-2018</code>.</li>
+</div><!-- fragment --> For legacy branches (<code>SHiP-2018</code>, <code>muflux</code>), use <code>--defaults fairship-2018</code> with a shipdist checkout at the <code>SHiP-BDF-2020</code> tag. The <code>fairship-2018</code> defaults were removed from shipdist <code>main</code> in 2022.</li>
 <li>Load the environment: <div class="fragment"><div class="line">alienv enter FairShip/latest</div>
 </div><!-- fragment --> Or, in non-interactive contexts (e.g. HTCondor): <div class="fragment"><div class="line">eval $(alienv load FairShip/latest --no-refresh)</div>
 </div><!-- fragment --></li>
