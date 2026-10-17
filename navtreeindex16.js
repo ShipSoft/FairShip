@@ -1,5 +1,11 @@
 var NAVTREEINDEX16 =
 {
+"compare__histograms_8py.html#abaf9794f1df3dd1e9710576ca8a1e0cd":[10,0,12,1,3,7],
+"compare__histograms_8py.html#aeb831e15a289966f95345e6a202e7c05":[10,0,12,1,3,2],
+"compare__histograms_8py.html#af21aa23c8a8ae248277f3dedbd6918b2":[10,0,12,1,3,6],
+"compare__histograms_8py.html#af6dbf09acea43aceea58147dcfbeece0":[10,0,12,1,3,1],
+"compare__histograms_8py_source.html":[10,0,12,1,3],
+"configGenieGenerator_8py.html":[10,0,12,7],
 "configGenieGenerator_8py.html#a6bcca2f64dfe6e1783a59251bb8bacac":[10,0,12,7,0],
 "configGenieGenerator_8py_source.html":[10,0,12,7],
 "config__tester_8py.html":[10,0,5,0],
@@ -243,11 +249,5 @@ var NAVTREEINDEX16 =
 "event__histogram_8py_source.html":[10,0,12,12],
 "exitHadronAbsorber_8cxx.html":[10,0,9,2],
 "exitHadronAbsorber_8cxx.html#ac2e3ff00583568b65089520fa8f3cbfa":[10,0,9,2,0],
-"exitHadronAbsorber_8cxx_source.html":[10,0,9,2],
-"exitHadronAbsorber_8h.html":[10,0,9,3],
-"exitHadronAbsorber_8h_source.html":[10,0,9,3],
-"extractMuonsAndUpdateWeight_8py.html":[10,0,9,4],
-"extractMuonsAndUpdateWeight_8py.html#a34812acc3cdb30f7c9a2d5c5963d5d20":[10,0,9,4,2],
-"extractMuonsAndUpdateWeight_8py.html#a3540e4762b6a0339d1c923d86bd5314a":[10,0,9,4,11],
-"extractMuonsAndUpdateWeight_8py.html#a3ee737d91956d07c94601d0781b01ba5":[10,0,9,4,10]
+"exitHadronAbsorber_8cxx_source.html":[10,0,9,2]
 };

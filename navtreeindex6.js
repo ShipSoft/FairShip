@@ -238,8 +238,8 @@ var NAVTREEINDEX6 =
 "classPythia8Generator.html#af9b0d7cc138e3e2cc6b19ead232a248a":[9,0,59,50],
 "classSBTDetector_1_1SBTDetector.html":[9,0,12,0],
 "classSBTDetector_1_1SBTDetector.html":[8,0,87,0],
-"classSBTDetector_1_1SBTDetector.html#ad9f86da14fd0c2904d6324e83973e26c":[9,0,12,0,0],
 "classSBTDetector_1_1SBTDetector.html#ad9f86da14fd0c2904d6324e83973e26c":[8,0,87,0,0],
+"classSBTDetector_1_1SBTDetector.html#ad9f86da14fd0c2904d6324e83973e26c":[9,0,12,0,0],
 "classSBTDetector_1_1SBTDetector.html#addad85128a94a0bb4536533125dab960":[8,0,87,0,1],
 "classSBTDetector_1_1SBTDetector.html#addad85128a94a0bb4536533125dab960":[9,0,12,0,1],
 "classSHiP_1_1Detector.html":[9,0,14,0],
@@ -248,6 +248,6 @@ var NAVTREEINDEX6 =
 "classSHiP_1_1Detector.html#a03d8c93853fa437a2adc466863c6b39e":[8,0,89,0,6],
 "classSHiP_1_1Detector.html#a0f51e2d392c158d28d09fc71e9ef6a88":[8,0,89,0,28],
 "classSHiP_1_1Detector.html#a0f51e2d392c158d28d09fc71e9ef6a88":[9,0,14,0,28],
-"classSHiP_1_1Detector.html#a103ca9a2efe245ed360682958561bbf7":[9,0,14,0,17],
-"classSHiP_1_1Detector.html#a103ca9a2efe245ed360682958561bbf7":[8,0,89,0,17]
+"classSHiP_1_1Detector.html#a103ca9a2efe245ed360682958561bbf7":[8,0,89,0,17],
+"classSHiP_1_1Detector.html#a103ca9a2efe245ed360682958561bbf7":[9,0,14,0,17]
 };

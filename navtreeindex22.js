@@ -1,5 +1,11 @@
 var NAVTREEINDEX22 =
 {
+"namespacecheckMagFields.html":[8,0,8],
+"namespacecheckMagFields.html#a65e69e17f1b05eb283a8bb6d5d695249":[8,0,8,0],
+"namespacecheckZpositions.html":[8,0,9],
+"namespacecheckZpositions.html#a0070d4bd74e3b9a7ed335c4abcff51ef":[8,0,9,8],
+"namespacecheckZpositions.html#a0b40a172c1990bcb4e77bfad3643fc91":[8,0,9,3],
+"namespacecheckZpositions.html#a14704aefad1faf37b6fc0cdab58c7abc":[8,0,9,5],
 "namespacecheckZpositions.html#a3e777c8f47a72a7a86c18eb6d37197ca":[8,0,9,1],
 "namespacecheckZpositions.html#a4040402d5b3f2b28414152756c21d1dc":[8,0,9,0],
 "namespacecheckZpositions.html#a6f288b545491f59295cc51418daffef8":[8,0,9,2],
@@ -243,11 +249,5 @@ var NAVTREEINDEX22 =
 "namespaceextractMuonsAndUpdateWeight.html#a57763c60dba4b7e8637e1cb6b4d6b3f5":[8,0,33,3],
 "namespaceextractMuonsAndUpdateWeight.html#a58b5c8c3d5a08aa8a3a4c4b197c72517":[8,0,33,1],
 "namespaceextractMuonsAndUpdateWeight.html#a6931ea78c2f6638c3581e970e932c7cd":[8,0,33,15],
-"namespaceextractMuonsAndUpdateWeight.html#a70a6083dac0b34d42ad8f64e3db0e041":[8,0,33,4],
-"namespaceextractMuonsAndUpdateWeight.html#a71a62f94a5c841e87ffdbad0497b8de8":[8,0,33,9],
-"namespaceextractMuonsAndUpdateWeight.html#a78c024da4bd6482a82d5fdd95cd8fe7b":[8,0,33,12],
-"namespaceextractMuonsAndUpdateWeight.html#a9180a92836c1141948632a4a7616ba77":[8,0,33,8],
-"namespaceextractMuonsAndUpdateWeight.html#aa0feb4b8f8e763d2c876eda743804b27":[8,0,33,6],
-"namespaceextractMuonsAndUpdateWeight.html#aa62f94d168950261430ef026b2b30db5":[8,0,33,16],
-"namespaceextractMuonsAndUpdateWeight.html#ab67d73adf091feb460bcbabaae730de3":[8,0,33,13]
+"namespaceextractMuonsAndUpdateWeight.html#a70a6083dac0b34d42ad8f64e3db0e041":[8,0,33,4]
 };

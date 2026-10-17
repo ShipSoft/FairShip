@@ -274,26 +274,26 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8cxx_source.html#l00569">569</a> of file <a class="el" href="exitHadronAbsorber_8cxx_source.html">exitHadronAbsorber.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  570</span>                                                                {</div>
-<div class="line"><span class="lineno">  571</span>  <span class="keywordflow">if</span> (!volume) <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno">  572</span>  Int_t nDaughters = volume-&gt;GetNdaughters();</div>
-<div class="line"><span class="lineno">  573</span>  <span class="keywordflow">for</span> (Int_t i = 0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt; nDaughters; ++<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>) {</div>
-<div class="line"><span class="lineno">  574</span>    TGeoNode* daughterNode = volume-&gt;GetNode(i);</div>
-<div class="line"><span class="lineno">  575</span>    <span class="keywordflow">if</span> (daughterNode) {</div>
-<div class="line"><span class="lineno">  576</span>      TGeoVolume* daughterVol = daughterNode-&gt;GetVolume();</div>
-<div class="line"><span class="lineno">  577</span>      <span class="keywordflow">if</span> (daughterVol) {</div>
-<div class="line"><span class="lineno">  578</span>        <span class="comment">// register daughter volume</span></div>
-<div class="line"><span class="lineno">  579</span>        <a class="code hl_variable" href="namespacerun__ACTSTracking.html#a704b24a2f1434d8e701691b181f73a67">detector</a>-&gt;AddSensitiveVolume(daughterVol);</div>
-<div class="line"><span class="lineno">  580</span>        LOG(info) &lt;&lt; <span class="stringliteral">&quot;[exitHadronAbsorber] Registered subvolume: &quot;</span></div>
-<div class="line"><span class="lineno">  581</span>                  &lt;&lt; daughterVol-&gt;GetName();</div>
-<div class="line"><span class="lineno">  582</span>        <span class="comment">// call function recursively</span></div>
-<div class="line"><span class="lineno">  583</span>        <a class="code hl_function" href="exitHadronAbsorber_8cxx.html#ac2e3ff00583568b65089520fa8f3cbfa">RegisterDaughtersRecursively</a>(daughterVol, detector);</div>
-<div class="line"><span class="lineno">  584</span>      }</div>
-<div class="line"><span class="lineno">  585</span>    }</div>
-<div class="line"><span class="lineno">  586</span>  }</div>
-<div class="line"><span class="lineno">  587</span>}</div>
-<div class="ttc" id="aexitHadronAbsorber_8cxx_html_ac2e3ff00583568b65089520fa8f3cbfa"><div class="ttname"><a href="exitHadronAbsorber_8cxx.html#ac2e3ff00583568b65089520fa8f3cbfa">RegisterDaughtersRecursively</a></div><div class="ttdeci">void RegisterDaughtersRecursively(TGeoVolume *volume, exitHadronAbsorber *detector)</div><div class="ttdef"><b>Definition</b> <a href="exitHadronAbsorber_8cxx_source.html#l00569">exitHadronAbsorber.cxx:569</a></div></div>
+<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8cxx_source.html#l00653">653</a> of file <a class="el" href="exitHadronAbsorber_8cxx_source.html">exitHadronAbsorber.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  654</span>                                                                {</div>
+<div class="line"><span class="lineno">  655</span>  <span class="keywordflow">if</span> (!volume) <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">  656</span>  Int_t nDaughters = volume-&gt;GetNdaughters();</div>
+<div class="line"><span class="lineno">  657</span>  <span class="keywordflow">for</span> (Int_t i = 0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt; nDaughters; ++<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>) {</div>
+<div class="line"><span class="lineno">  658</span>    TGeoNode* daughterNode = volume-&gt;GetNode(i);</div>
+<div class="line"><span class="lineno">  659</span>    <span class="keywordflow">if</span> (daughterNode) {</div>
+<div class="line"><span class="lineno">  660</span>      TGeoVolume* daughterVol = daughterNode-&gt;GetVolume();</div>
+<div class="line"><span class="lineno">  661</span>      <span class="keywordflow">if</span> (daughterVol) {</div>
+<div class="line"><span class="lineno">  662</span>        <span class="comment">// register daughter volume</span></div>
+<div class="line"><span class="lineno">  663</span>        <a class="code hl_variable" href="namespacerun__ACTSTracking.html#a704b24a2f1434d8e701691b181f73a67">detector</a>-&gt;AddSensitiveVolume(daughterVol);</div>
+<div class="line"><span class="lineno">  664</span>        LOG(info) &lt;&lt; <span class="stringliteral">&quot;[exitHadronAbsorber] Registered subvolume: &quot;</span></div>
+<div class="line"><span class="lineno">  665</span>                  &lt;&lt; daughterVol-&gt;GetName();</div>
+<div class="line"><span class="lineno">  666</span>        <span class="comment">// call function recursively</span></div>
+<div class="line"><span class="lineno">  667</span>        <a class="code hl_function" href="exitHadronAbsorber_8cxx.html#ac2e3ff00583568b65089520fa8f3cbfa">RegisterDaughtersRecursively</a>(daughterVol, detector);</div>
+<div class="line"><span class="lineno">  668</span>      }</div>
+<div class="line"><span class="lineno">  669</span>    }</div>
+<div class="line"><span class="lineno">  670</span>  }</div>
+<div class="line"><span class="lineno">  671</span>}</div>
+<div class="ttc" id="aexitHadronAbsorber_8cxx_html_ac2e3ff00583568b65089520fa8f3cbfa"><div class="ttname"><a href="exitHadronAbsorber_8cxx.html#ac2e3ff00583568b65089520fa8f3cbfa">RegisterDaughtersRecursively</a></div><div class="ttdeci">void RegisterDaughtersRecursively(TGeoVolume *volume, exitHadronAbsorber *detector)</div><div class="ttdef"><b>Definition</b> <a href="exitHadronAbsorber_8cxx_source.html#l00653">exitHadronAbsorber.cxx:653</a></div></div>
 <div class="ttc" id="anamespaceShipAna_html_aa4bf87f4d17f9d38b1d8f4d009bb54b3"><div class="ttname"><a href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">ShipAna.i</a></div><div class="ttdeci">int i</div><div class="ttdef"><b>Definition</b> <a href="ShipAna_8py_source.html#l00103">ShipAna.py:103</a></div></div>
 <div class="ttc" id="anamespacerun__ACTSTracking_html_a704b24a2f1434d8e701691b181f73a67"><div class="ttname"><a href="namespacerun__ACTSTracking.html#a704b24a2f1434d8e701691b181f73a67">run_ACTSTracking.detector</a></div><div class="ttdeci">detector</div><div class="ttdef"><b>Definition</b> <a href="run__ACTSTracking_8py_source.html#l00051">run_ACTSTracking.py:51</a></div></div>
 </div><!-- fragment -->
