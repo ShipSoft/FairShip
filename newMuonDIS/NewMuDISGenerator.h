@@ -55,18 +55,22 @@ class NewMuDISGenerator : public SHiP::Generator {
   bool ValidateEntry(Long64_t entry) const;
   void ResetOutputBranches();
   ShipMuDIS::MuonInBranches finEv;
-  int fn;                   // counter of final output events
-  Long64_t fnmu;            // counter of original input muons
-  unsigned fMat;            // index of material
-  Int_t fDISMaterial = -1;  // material of the current output DIS event
-  TString fMaterialLabel;   // material string for output branch
-  Int_t fMuonEntry = -1;    // original input muon index for output branch
-  Int_t fDISIndex = -1;     // original DIS index for output branch
-  Int_t fGenIndex = -1;     // DIS index in the prepareEvents output
-  Double_t fDISXsec = -1.;  // Pythia6 cross section of the DIS event, in mb
-  Int_t fDISTarget = -1;    // Pythia6 target: 1 proton, 0 neutron
-  Double_t fWDIS = -1.;     // muon weight * int rho dl / n, in g/cm^2
-  Double_t fWeight = -1.;   // fWDIS * fDISXsec * N_A, see README.md
+  int fn;                        // counter of final output events
+  Long64_t fnmu;                 // counter of original input muons
+  unsigned fMat;                 // index of material
+  Int_t fDISMaterial = -1;       // material of the current output DIS event
+  TString fMaterialLabel;        // material string for output branch
+  Int_t fMuonEntry = -1;         // original input muon index for output branch
+  Int_t fDISIndex = -1;          // original DIS index for output branch
+  Int_t fGenIndex = -1;          // DIS index in the prepareEvents output
+  Double_t fDISXsec = -1.;       // Pythia6 cross section for the target, in mb
+  Double_t fDISXsecEvent = -1.;  // running estimate PARI(1) of the event, mb
+  Int_t fDISXsecAccepted = 0;    // accepted events behind fDISXsec
+  Int_t fDISXsecTried = 0;       // tried events behind fDISXsec
+  bool fWarnedRunningXsec = false;
+  Int_t fDISTarget = -1;   // Pythia6 target: 1 proton, 0 neutron
+  Double_t fWDIS = -1.;    // muon weight * int rho dl / n, in g/cm^2
+  Double_t fWeight = -1.;  // fWDIS * fDISXsec * N_A, see README.md
   Double_t fPythiaP =
       -1.;  // momentum of the muon used to generate the DIS event
   std::vector<Int_t> fNGenerated;  // initial count of generated DIS events

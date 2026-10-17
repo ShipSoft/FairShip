@@ -91,7 +91,9 @@ generator must outlive the output tree. Each simulated `cbmsim` event contains:
 | `muDIS_muEntry` | `Int_t` | Zero-based input muon entry across the input chain, including the start offset. For filtered input this refers to the filtered tree. |
 | `muDIS_disIndex` | `Int_t` | Zero-based DIS index within that muon's current material in the input tree (`fnmuDis` before advancement). |
 | `muDIS_genIndex` | `Int_t` | Zero-based DIS index within that muon and material in the `prepareEvents.py` output, from `mudis_DISgenIndex_<material>`. Equal to `muDIS_disIndex` for unfiltered input; unchanged by filtering. `-1` for input written before this branch existed. |
-| `muDIS_xsec` | `Double_t` | Pythia6 cross section stored with the interaction (`mudis_DISxsec_<material>`), in mb per nucleon. Not validated yet, see [Cross section and weight](#cross-section-and-weight). |
+| `muDIS_xsec` | `Double_t` | Pythia6 cross section for this muon, material and target nucleon, from `muon_xsecByTarget_<material>`, in mb per nucleon; see [Cross section and weight](#cross-section-and-weight). For input without that branch, the running estimate `muDIS_xsecEvent`, with a warning. |
+| `muDIS_xsecEvent` | `Double_t` | Running estimate stored with the interaction (`mudis_DISxsec_<material>`), in mb. For reference only. |
+| `muDIS_xsecAccepted`, `muDIS_xsecTried` | `Int_t` | Accepted and tried Pythia6 events behind `muDIS_xsec`, from `muon_xsecAccepted_<material>` and `muon_xsecTried_<material>`; `0` for input without them. |
 | `muDIS_target` | `Int_t` | Pythia6 target nucleon from `mudis_DIStarget_<material>`: `1` proton, `0` neutron. |
 | `muDIS_wDIS` | `Double_t` | `muon_wDIS_<material>`, the weight also stored on the DIS daughters, in g/cm². |
 | `muDIS_weight` | `Double_t` | Event weight `muDIS_wDIS * muDIS_xsec * N_A * 1e-27`, see [Cross section and weight](#cross-section-and-weight). `-1` if the cross section is negative. |
@@ -111,13 +113,43 @@ crossed) and `n` the number of interactions generated for that muon in that
 material before filtering (`muon_nDISGenerated_<VOL>`). Filtering keeps `wDIS`,
 so the weights of the surviving interactions still refer to `n`.
 
-`muDIS_xsec` is the value of Pythia6's `PARI(1)` after generating that
-interaction: the running estimate of the total cross section in mb for the
-process and the target nucleon (`muDIS_target`), since the last Pythia6
-initialisation. Pythia6 is initialised again for every muon and material and
-for the neutron half, so early interactions of each half carry a poorly
-converged estimate. The value is copied as stored; it has not been validated
-against an independent calculation.
+Pythia6 is initialised again for every muon and material, and for the second,
+neutron half of its interactions. Its cross-section estimate `PARI(1)` is a
+running Monte Carlo estimate over the events generated since the last
+initialisation, summed over the photon components of the `gamma/mu` beam.
+`prepareEvents.py` stores two values:
+
+- `mudis_DISxsec_<VOL>`: `PARI(1)` after each interaction. The first
+  interactions of each half carry a poorly converged value. In a test with
+  1000 interactions per muon and material, single values ranged from 0.03 to
+  6.8 µb where the converged value was about 2 µb.
+- `muon_xsecByTarget_<VOL>`: `PARI(1)` after the last interaction of each half,
+  indexed by `muDIS_target` (0 neutron, 1 proton), with the number of
+  accepted and tried events behind it in `muon_xsecAccepted_<VOL>` and
+  `muon_xsecTried_<VOL>` (`NGEN(0,3)` and `NGEN(0,1)`, summed over the photon
+  components). It is `-1` for a half without interactions.
+
+`muDIS_xsec` is the second, the estimate after all `n/2` interactions on that
+nucleon. Pythia6 gives no uncertainty for it. Its precision was measured by
+comparing the materials of one muon, which share the beam momentum to within
+5%: the relative spread of the per-material estimates was 35-60% for
+`--nDIS 20` (10 interactions per nucleon), 2-7% for 200 and 1.3-3.2% for 1000,
+about half of `1/sqrt(muon_xsecAccepted)`. Use the default `--nDIS 1000`, or
+average the estimates over muons of similar momentum, when the cross section
+matters.
+
+These numbers describe the statistical precision of Pythia6's own estimate.
+Whether Pythia6, with `MSEL=2` and the photon flux of the muon, gives the
+physical muon-nucleon cross section has not been validated against an
+independent calculation, and the proton and neutron values agree within their
+precision.
+
+Input written before `muon_xsecByTarget_<VOL>` existed falls back to the
+running estimate of each interaction, and `NewMuDISGenerator` warns once.
+Summed over all generated interactions of a material, the running estimates
+average out (0.88 of the converged value for `--nDIS 20`, 0.99 for 1000), but
+after filtering, the weight of a single interaction can be off by a large
+factor.
 
 The event weight is
 
@@ -338,6 +370,7 @@ geometry scan (also available as `MuDISProcessor::CheckAllVolumes()`).
 - branch `muon_nDISevt_<VOL>`: number of DIS interactions stored for each volume; after filtering, this is the number of surviving interactions.
 - branch `muon_nDISGenerated_<VOL>`: actual number of generated interactions before filtering, copied unchanged by the filter (including repeated filtering). `-1` means the muon never crossed the material; `0` means it crossed but no interactions were generated (including REST, where generation is disabled).
 - branch `muon_pPythia_<VOL>`: scalar beam momentum passed to Pythia6 in GeV/c, taken from the first path slice in that material. Set to `-1` when Pythia is not initialized for that material.
+- branches `muon_xsecByTarget_<VOL>[2]`, `muon_xsecAccepted_<VOL>[2]` and `muon_xsecTried_<VOL>[2]`: Pythia6 cross section in mb after all interactions on the neutron (index 0) and the proton (index 1), and the accepted and tried events behind it; see [Cross section and weight](#cross-section-and-weight). Copied by the filter.
 - vector branches mudis_*: DIS events information for each material. The vector size is variable and is determined by the actual per-entry `muon_nDISevt_<VOL>` count.
 - branches mudis_DISproducts_* : all DIS daughters in each material <VOL>, with all DIS events stored together. Use `mudis_nDISdaughters_<VOL>` to determine the actual daughter ranges per DIS event.
 
