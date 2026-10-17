@@ -69,7 +69,7 @@ var searchData=
   ['newton_66',['newton',['../namespaceshipunit.html#a8fc2d6bac51fd6296f27a0f66aa541a6',1,'shipunit.newton'],['../namespacehepunit.html#a8be56575a875fa9fca8ac1fc03920169',1,'hepunit.newton']]],
   ['next_67',['next',['../classmakeCascadePythia8_1_1SignalEvents.html#a60f2a927eeba98bca154710107ad3004',1,'makeCascadePythia8.SignalEvents.next()'],['../classmakeCascadePythia8_1_1InclusiveSignalEvents.html#ac73563524f3afd46d7979652a3c9faea',1,'makeCascadePythia8.InclusiveSignalEvents.next()']]],
   ['next_5fevent_68',['next_event',['../namespacemakeCascadePythia8.html#a39f088c75433efb0cbe52594c72055aa',1,'makeCascadePythia8']]],
-  ['nextevent_69',['nextevent',['../classeventDisplay_1_1IO.html#a94c7300f13d1e21f753bb7b0c9ee77ec',1,'eventDisplay.IO.nextEvent'],['../classeventDisplay_1_1IO.html#a574e7c1a11236a388f75e7fab7818dd2',1,'eventDisplay.IO.nextEvent(self, event=None)'],['../classeventDisplay_1_1EventLoop.html#ab1c1a1e533af16e919be135aee02c9fe',1,'eventDisplay.EventLoop.NextEvent()']]],
+  ['nextevent_69',['nextevent',['../classeventDisplay_1_1EventLoop.html#ab1c1a1e533af16e919be135aee02c9fe',1,'eventDisplay.EventLoop.NextEvent()'],['../classeventDisplay_1_1IO.html#a94c7300f13d1e21f753bb7b0c9ee77ec',1,'eventDisplay.IO.nextEvent'],['../classeventDisplay_1_1IO.html#a574e7c1a11236a388f75e7fab7818dd2',1,'eventDisplay.IO.nextEvent(self, event=None)']]],
   ['nextlevel_70',['nextLevel',['../namespacegeomGeant4.html#a0b3a37be8c641c12bb33aa7dabf9d8dc',1,'geomGeant4']]],
   ['nf_71',['nf',['../classGenieGenerator.html#a6daf7957dd1346baf108e818ac551578',1,'GenieGenerator']]],
   ['ninside_72',['nInside',['../classCosmicsGenerator.html#ae1acbbd5958aaab299e25a33155d6f9c',1,'CosmicsGenerator']]],
