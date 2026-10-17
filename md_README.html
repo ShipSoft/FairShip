@@ -129,7 +129,7 @@ Branches</h2>
 <p>All packages are managed in Git and GitHub. Please read <a href="https://github.com/ShipSoft/FairShip/wiki/Git-Tutorial-for-SHiP">the Git tutorial for SHiP</a> first, even if you already know Git, as it explains how development is done on GitHub.</p>
 <h1><a class="anchor" id="autotoc_md116"></a>
 Using pixi</h1>
-<p><a href="https://pixi.sh">Pixi</a> manages all dependencies via the <code>pixi.toml</code> and <code>activate.sh</code> already included in this repository. The activation script sets <code>FAIRSHIP</code> and <code>GEOMPATH</code> (among others) to <code>PIXI_PROJECT_ROOT</code>, so the pixi project root <b>must</b> be the FairShip clone itself — it contains the required <code>geometry/</code> and <code>files/</code> directories.</p>
+<p><a href="https://pixi.sh">Pixi</a> manages all dependencies via the <code>pixi.toml</code> and <code>activate.sh</code> already included in this repository. The activation script sets <code>FAIRSHIP</code> and <code>GEOMPATH</code> (among others) to <code>PIXI_PROJECT_ROOT</code>, so the pixi project root <b>must</b> be the FairShip clone itself — it contains the required <code>geometry/</code> and <code>files/</code> directories. When neither <code>DISPLAY</code> nor <code>WAYLAND_DISPLAY</code> is set (ssh, containers, batch jobs), it also sets <code>QT_QPA_PLATFORM=offscreen</code>, as Geant4's Qt interface otherwise aborts the run. A value you set yourself is kept.</p>
 <h2><a class="anchor" id="autotoc_md117"></a>
 Build from source (recommended)</h2>
 <ol type="1">
