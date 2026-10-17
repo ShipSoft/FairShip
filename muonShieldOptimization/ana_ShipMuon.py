@@ -353,13 +353,6 @@ for f in os.listdir(testdir):
         break
 if fgeo is None or not sGeo or inputFile is None:
     raise RuntimeError("No geofile_full found in " + testdir)
-# try to extract from input file name
-tmp = inputFile.split(".")
-try:
-    dy = float(tmp[1] + "." + tmp[2])
-except Exception:
-    dy = 10.0
-
 if not inputFile.find("_D.") < 0:
     inputFile1 = inputFile.replace("_D.", ".")
     inputFile2 = inputFile
@@ -377,7 +370,7 @@ import geometry_config
 if not fgeo.FindKey("ShipGeo"):
     # old geofile, missing Shipgeo dictionary
     # re-create geometry and mag. field
-    ShipGeo = geometry_config.create_config(Yheight=dy)
+    ShipGeo = geometry_config.create_config()
 else:
     # new geofile, load Shipgeo dictionary written by run_simScript.py
     ShipGeo = load_from_root_file(fgeo, "ShipGeo")

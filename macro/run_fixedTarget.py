@@ -21,7 +21,6 @@ mcEngine = "TGeant4"
 simEngine = "Pythia8"
 checkOverlap = True
 outputDir = "."
-dy = 6.0  # 10.
 ds = 8  # 9 # 5=TP muon shield, 6=magnetized hadron, 7=short magnet design, 9=optimised with T4 as constraint, 8=requires config file
 
 # example for primary interaction, nobias: python $FAIRSHIP/muonShieldOptimization/run_fixedTarget.py -n 10000 -e 10 -f -r 10
@@ -301,7 +300,6 @@ shipRoot_conf.configure()  # load basic libraries, prepare atexit for python
 if args.reproducible and not args.debug:
     ROOT.gErrorIgnoreLevel = ROOT.kWarning
 ship_geo_kwargs = {
-    "Yheight": dy,
     "DecayVolumeMedium": args.DecayVolumeMedium,
     "shieldName": args.shieldName,
     "TARGET_YAML": args.TARGET_YAML,

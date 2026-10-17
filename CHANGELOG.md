@@ -69,9 +69,11 @@ it in future.
 * Read the normalisation histogram of charm and beauty input files as `TH1`, not `TH1F`, so that files written by `makeCascade.py` (`rootUtils` books a `TH1D`) are accepted instead of failing with "histogram '2' not found".
 * Post-process the simulation output of `run_fixedTarget.py`, not the first open ROOT file, which for charm and beauty is the cascade input file kept open by the generator, so that charm and beauty runs no longer end with `KeyError: 'cbmsim'`.
 * Added `ROOT::EGPythia8` in `shipgen/CMakeLists.txt` to avoid symbol lookup errors when using EvtGen
+* Pass the half-height of the analytic `ShipBellField` in cm in `shipDet_conf.py` and the event display. `Bfield.y` is already in cm, and multiplying it by `u.m` again made the field region 100 times too tall. The bell field is only used when no field map is configured.
 
 ### Removed
 
+* Remove the vacuum tank height: `-Y` of `run_simScript.py`, `-dy` of `ShipReco.py`, the `Yheight` argument of `geometry_config.create_config` and `ship_geo.Yheight`. It no longer affected the geometry. It only reached the spectrometer aperture `Bfield.y`, which the magnet design overrides, and the analytic bell field, which is only used without a field map, and a field map is always set. Scripts that pass `-Y`, `-dy` or `Yheight=` must drop it. `ShipAna.py` from earlier releases reads `ShipGeo.Yheight` and fails on geometry files written without it (#706).
 * Remove the SplitCal calorimeter (`splitcal`, `splitcalPoint`, `splitcalHit`, `splitcalCluster`, `splitcalDetector.py`, `ship_geo.SplitCal`, `ship_geo.EcalOption`). The `kSplitCal` detector ID slot is reused by `kCaloScoringPlane`. The muon stations and filters (`ship_geo.MuonStation*`, `ship_geo.MuonFilter*`, `ship_geo.Muon`), which had no geometry, are removed as well, and `ship_geo.HcalOption` (unused) with them; the scoring plane is now the downstream reference for the Genie generation window, the event display and `CMBG_conf`. `TrackExtrapolateTool` now switches from Runge-Kutta to linear extrapolation at the scoring plane. Code that needs the particles arriving at the former SplitCal position should use `ship_geo.CaloScoringPlane` and its `CaloScoringPlanePoint` (MC truth) instead; the calorimeter hits, clustering and digitisation (`splitcalHit`, `splitcalCluster`) have no direct replacement.
 
 ## 26.09 - 2026-09-15

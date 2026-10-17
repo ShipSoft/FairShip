@@ -454,7 +454,7 @@ def configure(run, ship_geo, geofile: str | None = None):
                 ship_geo.Bfield.max,
                 ship_geo.Bfield.z,
                 2,
-                ship_geo.Yheight / 2.0 * u.m,
+                ship_geo.Bfield.y / 2.0,
             )
         else:
             fMagField = ROOT.ShipBellField(
@@ -462,7 +462,7 @@ def configure(run, ship_geo, geofile: str | None = None):
                 ship_geo.Bfield.max,
                 ship_geo.Bfield.z,
                 1,
-                ship_geo.Yheight / 2.0 * u.m,
+                ship_geo.Bfield.y / 2.0,
             )
         run.SetField(fMagField)
         ROOT.SetOwnership(fMagField, False)  # C++ FairRunSim takes ownership

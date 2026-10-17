@@ -348,7 +348,6 @@ parser.add_argument(
     help="Reduce nondeterministic log output for reproducibility/testing",
     action="store_true",
 )
-parser.add_argument("-Y", dest="dy", help="max height of vacuum tank", default=6.0, type=float)
 parser.add_argument(
     "--strawDesign",
     help="Tracker station frame material: 4=Aluminium; 10=steel (default)",
@@ -511,7 +510,7 @@ if options.geofile:
     # The geometry and its configuration both come from the geometry file.
     # Parse again with these options already set to None: argparse then leaves
     # them alone unless they are given on the command line.
-    geometry_options = ["dy", "strawDesign", "shieldName", "decayVolMed", "SND", "SND_design", "target_yaml"]
+    geometry_options = ["strawDesign", "shieldName", "decayVolMed", "SND", "SND_design", "target_yaml"]
     probe = parser.parse_args(namespace=Namespace(**dict.fromkeys(geometry_options)))
     given = [
         "/".join(flag for action in parser._actions if action.dest == dest for flag in action.option_strings)
@@ -576,7 +575,6 @@ if options.geofile:
     print(f"Geometry configuration loaded from {options.geofile}; particles are transported through its geometry")
 else:
     ship_geo = geometry_config.create_config(
-        Yheight=options.dy,
         strawDesign=options.strawDesign,
         shieldName=options.shieldName,
         DecayVolumeMedium=options.decayVolMed,

@@ -70,7 +70,6 @@ parser.add_argument(
     choices=["FH", "AR", "TemplateMatching"],
     default="AR",
 )
-parser.add_argument("-dy", dest="dy", help="Max height of tank", required=False, default=None, type=int)
 parser.add_argument("--Debug", dest="Debug", help="Switch on debugging", required=False, action="store_true")
 parser.add_argument(
     "--validation",
@@ -83,16 +82,6 @@ options = parser.parse_args()
 vertexing = not options.noVertexing
 
 
-# need to figure out which geometry was used, only needed if no geo file
-dy = options.dy
-if not options.dy:
-    # try to extract from input file name
-    tmp = options.inputFile.split(".")
-    try:
-        dy = float(tmp[1] + "." + tmp[2])
-    except (ValueError, IndexError):
-        dy = None
-
 print(
     "configured to process ",
     options.nEvents,
@@ -100,8 +89,6 @@ print(
     options.inputFile,
     " starting with event ",
     options.firstEvent,
-    " with option Yheight = ",
-    dy,
     " with vertexing",
     vertexing,
     " and pattern reco ",

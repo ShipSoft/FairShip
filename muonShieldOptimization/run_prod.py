@@ -12,13 +12,13 @@ def makeProd(prefix, DY, y: bool = False, phiRandom: bool = False, X=None) -> No
     shipsoft = os.environ["SHIPSOFT"].replace("/dev", "")
     if not y:
         f = shipsoft + "/data/pythia8_Geant4_onlyMuons.root"
-        cmd = "python $FAIRSHIP/macro/run_simScript.py --MuonBack -f " + f + " -Y " + str(float(DY))  # --display"
+        cmd = "python $FAIRSHIP/macro/run_simScript.py --MuonBack -f " + f  # --display"
     elif y == "Jpsi":
         f = shipsoft + "/data/pythia8_Geant4_Jpsi_onlyMuons.root"
-        cmd = "python $FAIRSHIP/macro/run_simScript.py --MuonBack -f " + f + " -Y " + str(float(DY))  # --display"
+        cmd = "python $FAIRSHIP/macro/run_simScript.py --MuonBack -f " + f  # --display"
     else:
         f = shipsoft + "/data/pythia8_Geant4_Yandex_onlyMuons.root"
-        cmd = "python $FAIRSHIP/macro/run_simScript.py --MuonBack -f " + f + " -Y " + str(float(DY))  # --display"
+        cmd = "python $FAIRSHIP/macro/run_simScript.py --MuonBack -f " + f  # --display"
     if phiRandom:
         cmd = cmd + " --phiRandom"
     fn = ROOT.TFile(f)

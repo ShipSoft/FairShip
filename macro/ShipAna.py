@@ -65,7 +65,6 @@ fgeo = ROOT.TFile(options.geoFile)
 
 # new geofile, load Shipgeo dictionary written by run_simScript.py
 ShipGeo = load_from_root_file(fgeo, "ShipGeo")
-dy = ShipGeo.Yheight / u.m
 
 # -----Create geometry----------------------------------------------
 import shipDet_conf
@@ -299,7 +298,7 @@ def checkHNLorigin(sTree) -> bool:
     return flag
 
 
-def checkFiducialVolume(sTree, tkey: int, dy) -> bool:
+def checkFiducialVolume(sTree, tkey: int) -> bool:
     # extrapolate track to middle of magnet and check if in decay volume
     inside = True
     if not fiducialCut:
@@ -588,7 +587,7 @@ def myEventLoop(n: int) -> None:
     for atrack in sTree.FitTracks:
         key += 1
         # kill tracks outside fiducial volume
-        if not checkFiducialVolume(sTree, key, dy):
+        if not checkFiducialVolume(sTree, key):
             continue
         fitStatus = atrack.getFitStatus()
         nmeas = fitStatus.getNdf()
@@ -654,7 +653,7 @@ def myEventLoop(n: int) -> None:
     for HNL in sTree.Particles:
         t1, t2 = HNL.GetDaughter(0), HNL.GetDaughter(1)
         # kill tracks outside fiducial volume, if enabled
-        if not checkFiducialVolume(sTree, t1, dy) or not checkFiducialVolume(sTree, t2, dy):
+        if not checkFiducialVolume(sTree, t1) or not checkFiducialVolume(sTree, t2):
             continue
         checkMeasurements = True
         # cut on nDOF
