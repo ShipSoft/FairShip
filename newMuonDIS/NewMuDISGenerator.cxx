@@ -311,6 +311,7 @@ Bool_t NewMuDISGenerator::RegisterOutputBranches(TTree* tree) {
       return kFALSE;
     }
   }
+  fNormalization.Attach(tree);
   return tree->Branch("muDIS_material", &fMaterialLabel) &&
          tree->Branch("muDIS_muEntry", &fMuonEntry, "muDIS_muEntry/I") &&
          tree->Branch("muDIS_disIndex", &fDISIndex, "muDIS_disIndex/I") &&
@@ -345,6 +346,7 @@ bool NewMuDISGenerator::ValidateEntry(Long64_t entry) const {
 }
 
 void NewMuDISGenerator::SetNevents(int nMuons) {
+  fNormalization.Reset("NewMuDISGenerator");
   fMaxMuons = nMuons;
   fNevents = -1;
   // Counting reads the tree; reload the current muon before replaying it.
@@ -355,16 +357,19 @@ void NewMuDISGenerator::SetNevents(int nMuons) {
     return;
   }
   if (!fTree) return;
+  fNormalization.ImportChain(fTree);
   fEndEvent = nMuons < 0 ? fTree->GetEntries()
                          : std::min(Long64_t(fStartEvent) + nMuons,
                                     fTree->GetEntries());
   int total = 0;
   for (Long64_t iEv = fStartEvent; iEv < fEndEvent; ++iEv) {
     if (!finEv.PrepareEntry(fTree, iEv) || fTree->GetEntry(iEv) <= 0 ||
-        !ValidateEntry(iEv)) {
+        !finEv.mcTrks || finEv.mcTrks->empty()) {
       LOG(error) << "NewMuDISGenerator: error counting input muon " << iEv;
       return;
     }
+    fNormalization.Add(finEv.mcTrks->at(0).GetWeight());
+    if (!ValidateEntry(iEv)) return;
     for (const auto& br : finEv.br) {
       if (br.nDISevts > std::numeric_limits<int>::max() - total) {
         LOG(error) << "NewMuDISGenerator: DIS event count exceeds Int_t range";

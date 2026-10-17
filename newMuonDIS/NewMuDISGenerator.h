@@ -8,6 +8,7 @@
 #include "FairLogger.h"  // for FairLogger, MESSAGE_ORIGIN
 #include "Generator.h"
 #include "MuDISDefs.h"
+#include "MuDISNormalization.h"
 #include "TChain.h"
 #include "TF1.h"
 #include "TROOT.h"
@@ -55,6 +56,8 @@ class NewMuDISGenerator : public SHiP::Generator {
   bool ValidateEntry(Long64_t entry) const;
   void ResetOutputBranches();
   ShipMuDIS::MuonInBranches finEv;
+  ShipMuDIS::Normalization
+      fNormalization;       //! Input counters, persisted in tree user info
   int fn;                   // counter of final output events
   Long64_t fnmu;            // counter of original input muons
   unsigned fMat;            // index of material
