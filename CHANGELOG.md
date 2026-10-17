@@ -22,7 +22,7 @@ it in future.
 
 ### Removed
 
-* Remove the vacuum tank height: `-Y` of `run_simScript.py`, `-dy` of `ShipReco.py`, the `Yheight` argument of `geometry_config.create_config` and `ship_geo.Yheight`. It no longer affected the geometry. It only reached the spectrometer aperture `Bfield.y`, which the magnet design overrides, and the analytic bell field, which is only used without a field map, and a field map is always set. Scripts that pass `-Y`, `-dy` or `Yheight=` must drop it (#706).
+* Remove the vacuum tank height: `-Y` of `run_simScript.py`, `-dy` of `ShipReco.py`, the `Yheight` argument of `geometry_config.create_config` and `ship_geo.Yheight`. It no longer affected the geometry. It only reached the spectrometer aperture `Bfield.y`, which the magnet design overrides, and the analytic bell field, which is only used without a field map, and a field map is always set. Scripts that pass `-Y`, `-dy` or `Yheight=` must drop it. `ShipAna.py` from earlier releases reads `ShipGeo.Yheight` and fails on geometry files written without it (#706).
 
 ### Fixed
 
