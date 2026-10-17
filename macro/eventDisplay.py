@@ -1283,9 +1283,7 @@ if hasattr(ShipGeo, "Bfield"):
         bfield = ROOT.genfit.FairShipFields()
         bfield.setField(fieldMaker.getGlobalField())
     else:
-        bellField = ROOT.ShipBellField(
-            "bellfield", ShipGeo.Bfield.max, ShipGeo.Bfield.z, 2, ShipGeo.Bfield.y / 2.0 * u.m
-        )
+        bellField = ROOT.ShipBellField("bellfield", ShipGeo.Bfield.max, ShipGeo.Bfield.z, 2, ShipGeo.Bfield.y / 2.0)
         compField = ROOT.ShipCompField("compfield", bellField)
         bfield = ROOT.genfit.FairShipFields()
         bfield.setField(compField)

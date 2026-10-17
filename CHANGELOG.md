@@ -58,6 +58,7 @@ it in future.
 * Read the normalisation histogram of charm and beauty input files as `TH1`, not `TH1F`, so that files written by `makeCascade.py` (`rootUtils` books a `TH1D`) are accepted instead of failing with "histogram '2' not found".
 * Post-process the simulation output of `run_fixedTarget.py`, not the first open ROOT file, which for charm and beauty is the cascade input file kept open by the generator, so that charm and beauty runs no longer end with `KeyError: 'cbmsim'`.
 * Added `ROOT::EGPythia8` in `shipgen/CMakeLists.txt` to avoid symbol lookup errors when using EvtGen
+* Pass the half-height of the analytic `ShipBellField` in cm in `shipDet_conf.py` and the event display. `Bfield.y` is already in cm, and multiplying it by `u.m` again made the field region 100 times too tall. The bell field is only used when no field map is configured.
 
 ### Removed
 
