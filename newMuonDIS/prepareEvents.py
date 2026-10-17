@@ -63,6 +63,13 @@ parser.add_argument(
     help="Count transverse jumps between measurement lines larger than this value in cm (default: 1)",
 )
 parser.add_argument(
+    "--muon-selection",
+    choices=("auto", "first", "hits", "all"),
+    default="auto",
+    help="Muon tracks to process per input event: first (MCTrack[0], particle gun), hits (every muon with a "
+    "UBT, SBT, SST or TD point), all (every muon), auto (first if MCTrack[0] is a muon, else hits; default)",
+)
+parser.add_argument(
     "--debug",
     help="Control FairLogger verbosity: 0=info (default), 1=+debug, 2=+debug1, 3=+debug2",
     default=0,
@@ -127,6 +134,8 @@ logging.info("Muon shield field map: %s", shield_path)
 if args.check_all_volumes:
     muDis.CheckAllVolumes()
 muDis.SetPocaJumpThreshold(args.poca_jump_threshold)
+if not muDis.SetMuonSelection(args.muon_selection):
+    sys.exit(1)
 ok = muDis.init(args.n_events, args.start_event, MIN_PYTHIA_P, args.nDIS, theseed, args.z_max, args.z_min)
 if not ok:
     print("Invalid initialisation. Doing nothing.")
@@ -186,6 +195,7 @@ summary.update(
     geoFile=args.geoFile,
     muonShieldFieldMap=str(shield_path),
     pocaJumpThreshold=args.poca_jump_threshold,
+    muonSelection=args.muon_selection,
     versions=saveBasicParameters.retrieveGitTags({}),
 )
 file_summary.write_file_summary(args.outputfile, summary)

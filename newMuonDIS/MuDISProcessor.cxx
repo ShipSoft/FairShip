@@ -10,6 +10,7 @@
 #include <cmath>
 #include <iomanip>
 #include <iostream>
+#include <set>
 
 #include "FairLogger.h"
 #include "TMath.h"
@@ -245,17 +246,63 @@ void MuDISProcessor::initEvent() {
 }
 
 void MuDISProcessor::fillMCTracks(const Int_t aIdx) {
-  Int_t iEle = 0;
+  // The muon first: the replay and the path use mcTrks[0] as the muon.
+  foutEv.mcTrks.push_back((*finEv.MCTrack)[static_cast<unsigned>(aIdx)]);
   for (auto& tkIt : (*finEv.MCTrack)) {
-    if (iEle == aIdx) foutEv.mcTrks.push_back(tkIt);
-
     if (tkIt.GetMotherId() == aIdx) {
       std::string procName = tkIt.GetProcName().Data();
       if (procName.find("Muon nuclear interaction") == procName.npos)
         foutEv.mcTrks.push_back(tkIt);
     }
-    iEle++;
   }
+}
+
+bool MuDISProcessor::SetMuonSelection(const std::string& selection) {
+  if (selection == "auto") {
+    fMuonSelection = MuonSelection::kAuto;
+  } else if (selection == "first") {
+    fMuonSelection = MuonSelection::kFirst;
+  } else if (selection == "hits") {
+    fMuonSelection = MuonSelection::kWithHits;
+  } else if (selection == "all") {
+    fMuonSelection = MuonSelection::kAll;
+  } else {
+    LOG(error) << "MuDISProcessor: unknown muon selection " << selection
+               << "; use auto, first, hits or all";
+    return false;
+  }
+  return true;
+}
+
+std::vector<Int_t> MuDISProcessor::SelectMuons() const {
+  std::vector<Int_t> selected;
+  const auto& tracks = *finEv.MCTrack;
+  if (tracks.empty()) return selected;
+  const auto isMuon = [](const ShipMCTrack& t) {
+    return std::abs(t.GetPdgCode()) == 13;
+  };
+  auto mode = fMuonSelection;
+  if (mode == MuonSelection::kAuto)
+    mode = isMuon(tracks.front()) ? MuonSelection::kFirst
+                                  : MuonSelection::kWithHits;
+  if (mode == MuonSelection::kFirst) {
+    selected.push_back(0);  // checked to be a muon by the caller
+    return selected;
+  }
+  std::set<Int_t> withHits;
+  if (mode == MuonSelection::kWithHits) {
+    for (const auto& hit : *finEv.ubtPt) withHits.insert(hit.GetTrackID());
+    for (const auto& hit : *finEv.sbtPt) withHits.insert(hit.GetTrackID());
+    for (const auto& hit : *finEv.sstPt) withHits.insert(hit.GetTrackID());
+    for (const auto& hit : *finEv.tdPt) withHits.insert(hit.GetTrackID());
+  }
+  for (std::size_t i = 0; i < tracks.size(); ++i) {
+    const auto index = static_cast<Int_t>(i);
+    if (isMuon(tracks[i]) &&
+        (mode == MuonSelection::kAll || withHits.count(index) > 0))
+      selected.push_back(index);
+  }
+  return selected;
 }
 
 void MuDISProcessor::fillSBTHits(const Int_t aIdx) {
@@ -302,7 +349,7 @@ void MuDISProcessor::generateDISevents(const std::string& tType,
   }
   aDISBr.nDISevtsGenerated = 0;
   double P = aPath.GetMomentum(0);
-  LOG(debug) << " ** initial mu momentum: " << (*finEv.MCTrack).front().GetP()
+  LOG(debug) << " ** initial mu momentum: " << foutEv.mcTrks.front().GetP()
              << " Pythia init P: " << P;
 
   if (P < fMinPythiaP) {
@@ -434,6 +481,7 @@ void MuDISProcessor::ProcessMuons() {
   unsigned skipMu_pmin = 0;
   unsigned skipMu_acc = 0;
   unsigned skipEvt = 0;
+  Long64_t nSelected = 0;  // muon tracks selected over all events
   double wplus = 0.;
   double wminus = 0.;
   double skipMu_pminW = 0.;
@@ -471,147 +519,149 @@ void MuDISProcessor::ProcessMuons() {
       continue;
     }
 
-    unsigned nTr = (*finEv.MCTrack).size();
-    if (nTr == 0) {
+    const auto muons = SelectMuons();
+    if (muons.empty()) {
+      LOG(debug) << iEvent << " skipped: no muon track selected";
       skipEvt++;
       continue;
     }
-    // interested in the first muon track - for PG setting
-    //@FIXME AMM adapt also to MuonBack input, take all muons?
-    // for now take MCTrack[0]
-    Int_t muIdx = 0;
+    const unsigned nTr = (*finEv.MCTrack).size();
+    nSelected += muons.size();
 
-    ShipMCTrack& track = (*finEv.MCTrack)[static_cast<unsigned>(muIdx)];
-    int pid = track.GetPdgCode();
-    double muW = track.GetWeight();
+    for (const Int_t muIdx : muons) {
+      ShipMCTrack& track = (*finEv.MCTrack)[static_cast<unsigned>(muIdx)];
+      int pid = track.GetPdgCode();
+      double muW = track.GetWeight();
 
-    double mup = track.GetP();
+      double mup = track.GetP();
 
-    if (mup < fMinPythiaP) {
-      LOG(debug) << iEvent << " skipped: muon momentum " << mup
-                 << " below min value for Pythia:" << fMinPythiaP;
-      skipMu_pmin++;
-      skipMu_pminW += muW;
-      continue;
-    }
+      if (mup < fMinPythiaP) {
+        LOG(debug) << iEvent << " track " << muIdx << " skipped: muon momentum "
+                   << mup << " below min value for Pythia:" << fMinPythiaP;
+        skipMu_pmin++;
+        skipMu_pminW += muW;
+        continue;
+      }
 
-    std::string targetType;
-    if (pid == -13) {
-      nplus++;
-      wplus += muW;
-      targetType = "gamma/mu+";
-    } else if (pid == 13) {
-      nminus++;
-      wminus += muW;
-      targetType = "gamma/mu-";
-    } else {
-      LOG(warning) << iEvent << " skipped: "
-                   << " nTracks= " << nTr
-                   << " -- 1st track pid not a muon: " << pid << std::endl;
-      skipEvt++;
-      continue;
-    }
+      std::string targetType;
+      if (pid == -13) {
+        nplus++;
+        wplus += muW;
+        targetType = "gamma/mu+";
+      } else if (pid == 13) {
+        nminus++;
+        wminus += muW;
+        targetType = "gamma/mu-";
+      } else {
+        LOG(warning) << iEvent << " skipped: "
+                     << " nTracks= " << nTr
+                     << " -- 1st track pid not a muon: " << pid << std::endl;
+        skipEvt++;
+        continue;
+      }
 
-    initEvent();
-    foutEv.source.file = ftree->GetTreeNumber();
-    foutEv.source.entry = iEvent - ftree->GetChainOffset();
-    foutEv.source.trackID = muIdx;
-    if (finEv.HasHeader()) {
-      foutEv.source.runID = finEv.header->GetRunID();
-      foutEv.source.eventID = finEv.header->GetEventID();
-    }
-    foutEv.source.potRunID = finEv.muBackRunID;
-    foutEv.source.potEventID = finEv.muBackEventID;
-    fillMCTracks(muIdx);
-    fillUBTHits(muIdx);
-    fillSBTHits(muIdx);
-    fillSSTHits(muIdx);
-    fillTDHits(muIdx);
+      initEvent();
+      foutEv.source.file = ftree->GetTreeNumber();
+      foutEv.source.entry = iEvent - ftree->GetChainOffset();
+      foutEv.source.trackID = muIdx;
+      if (finEv.HasHeader()) {
+        foutEv.source.runID = finEv.header->GetRunID();
+        foutEv.source.eventID = finEv.header->GetEventID();
+      }
+      foutEv.source.potRunID = finEv.muBackRunID;
+      foutEv.source.potEventID = finEv.muBackEventID;
+      fillMCTracks(muIdx);
+      fillUBTHits(muIdx);
+      fillSBTHits(muIdx);
+      fillSSTHits(muIdx);
+      fillTDHits(muIdx);
 
-    // Count events which have no hit in UBT, SBT, SST or TD, muon just
-    // flying out of vessel acceptance never bouncing back... For those, very
-    // numerous in the cudaMu files, skip to optimise processing.
-    //@FIXME AM to do: a study of whether the events created in the last lambda
-    // of MS could still contribute or would hit UBT...
-    if (foutEv.ubtPt.size() == 0 && foutEv.sbtPt.size() == 0 &&
-        foutEv.sstPt.size() == 0 && foutEv.tdPt.size() == 0) {
-      LOG(debug) << " Counting muon event with no hit " << iEvent
-                 << " UBT Hits: " << foutEv.ubtPt.size()
-                 << ", SBT Hits: " << foutEv.sbtPt.size()
-                 << ", SST Hits: " << foutEv.sstPt.size()
-                 << ", TD Hits: " << foutEv.tdPt.size() << std::endl;
-      skipMu_acc++;
-      skipMu_accW += muW;
-      // counting, but want to still fill DIS in MS (and UBT detector)...
-      // continue;
-    }
+      // Count muons which have no hit in UBT, SBT, SST or TD, muon just
+      // flying out of vessel acceptance never bouncing back... For those, very
+      // numerous in the cudaMu files, skip to optimise processing.
+      //@FIXME AM to do: a study of whether the events created in the last
+      // lambda of MS could still contribute or would hit UBT...
+      if (foutEv.ubtPt.size() == 0 && foutEv.sbtPt.size() == 0 &&
+          foutEv.sstPt.size() == 0 && foutEv.tdPt.size() == 0) {
+        LOG(debug) << " Counting muon with no hit " << iEvent << " track "
+                   << muIdx << " UBT Hits: " << foutEv.ubtPt.size()
+                   << ", SBT Hits: " << foutEv.sbtPt.size()
+                   << ", SST Hits: " << foutEv.sstPt.size()
+                   << ", TD Hits: " << foutEv.tdPt.size() << std::endl;
+        skipMu_acc++;
+        skipMu_accW += muW;
+        // counting, but want to still fill DIS in MS (and UBT detector)...
+        // continue;
+      }
 
-    LOG(debug) << " -- size of hits collections: " << std::endl
-               << " ---- mcTracks: " << foutEv.mcTrks.size() << std::endl
-               << " ---- UBT Hits: " << foutEv.ubtPt.size() << std::endl
-               << " ---- SBT Hits: " << foutEv.sbtPt.size() << std::endl
-               << " ---- SST Hits: " << foutEv.sstPt.size() << std::endl;
+      LOG(debug) << " -- size of hits collections: " << std::endl
+                 << " ---- mcTracks: " << foutEv.mcTrks.size() << std::endl
+                 << " ---- UBT Hits: " << foutEv.ubtPt.size() << std::endl
+                 << " ---- SBT Hits: " << foutEv.sbtPt.size() << std::endl
+                 << " ---- SST Hits: " << foutEv.sstPt.size() << std::endl;
 
-    // retrieve a map of material label, with same density, and lengths, and
-    // [zin,zout] ranges
-    if (!fGeoProcessor.initialise(foutEv)) {
-      skipEvt++;
-      skipMu_pathW += muW;
-      continue;
-    }
-    std::map<std::string, MuonPath>& lPathMap = fGeoProcessor.FillMuonPath();
+      // retrieve a map of material label, with same density, and lengths, and
+      // [zin,zout] ranges
+      if (!fGeoProcessor.initialise(foutEv)) {
+        skipEvt++;
+        skipMu_pathW += muW;
+        continue;
+      }
+      std::map<std::string, MuonPath>& lPathMap = fGeoProcessor.FillMuonPath();
 
-    if (lPathMap.size() == 0) {
-      LOG(error) << " -- No elements in path... Not doing anything...";
-      skipEvt++;
-      skipMu_pathW += muW;
-      continue;
-    }
+      if (lPathMap.size() == 0) {
+        LOG(error) << " -- No elements in path... Not doing anything...";
+        skipEvt++;
+        skipMu_pathW += muW;
+        continue;
+      }
 
-    // Persist the intervals used for DIS vertex sampling, including the MS
-    // restriction. Keep REST separately, but exclude it from the total.
-    for (unsigned i = 0; i < nMats; ++i) {
-      const auto path = lPathMap.find(MatTypeStr[i].Data());
-      if (path == lPathMap.end() || path->second.GetNSlices() < 1) continue;
-      // Crossed but not generated (including REST) is distinct from unvisited.
-      foutEv.br[i].nDISevtsGenerated = 0;
-      foutEv.pathLengthByMat[i] =
-          path->second.GetLength() - DISMinLength(path->first, path->second);
-      if (i != REST) foutEv.pathLength += foutEv.pathLengthByMat[i];
-      if (foutEv.pathLengthByMat[i] > 0.)
-        pathTotalsByMat[i].Add(muW, foutEv.pathLengthByMat[i]);
-    }
+      // Persist the intervals used for DIS vertex sampling, including the MS
+      // restriction. Keep REST separately, but exclude it from the total.
+      for (unsigned i = 0; i < nMats; ++i) {
+        const auto path = lPathMap.find(MatTypeStr[i].Data());
+        if (path == lPathMap.end() || path->second.GetNSlices() < 1) continue;
+        // Crossed but not generated (including REST) is distinct from
+        // unvisited.
+        foutEv.br[i].nDISevtsGenerated = 0;
+        foutEv.pathLengthByMat[i] =
+            path->second.GetLength() - DISMinLength(path->first, path->second);
+        if (i != REST) foutEv.pathLength += foutEv.pathLengthByMat[i];
+        if (foutEv.pathLengthByMat[i] > 0.)
+          pathTotalsByMat[i].Add(muW, foutEv.pathLengthByMat[i]);
+      }
 
-    // loop over the map, and do nDIS event in each element, with weight
-    // length*density. That way, do only once the calculation of the path, and
-    // plenty of DIS in each material. fill a branch with weight = path
-    // length*density.
-    // Discarding REST: many muons go through CONCRETE,no need to record DIS
-    // there....
-    for (unsigned i(0); i < nMats - 1; ++i) {
-      if (lPathMap.find(MatTypeStr[i].Data()) != lPathMap.end())
-        generateDISevents(targetType, muW, MatTypeStr[i].Data(),
-                          lPathMap.find(MatTypeStr[i].Data())->second,
-                          foutEv.br[i]);
-    }
+      // loop over the map, and do nDIS event in each element, with weight
+      // length*density. That way, do only once the calculation of the path,
+      // and plenty of DIS in each material. fill a branch with weight = path
+      // length*density.
+      // Discarding REST: many muons go through CONCRETE,no need to record DIS
+      // there....
+      for (unsigned i(0); i < nMats - 1; ++i) {
+        if (lPathMap.find(MatTypeStr[i].Data()) != lPathMap.end())
+          generateDISevents(targetType, muW, MatTypeStr[i].Data(),
+                            lPathMap.find(MatTypeStr[i].Data())->second,
+                            foutEv.br[i]);
+      }
 
-    fouttree->Fill();
-    pathTotals.Add(muW, foutEv.pathLength);
-
+      fouttree->Fill();
+      pathTotals.Add(muW, foutEv.pathLength);
+    }  // loop on selected muons
   }  // loop on events
 
+  LOG(info) << "Selected " << nSelected << " muon tracks.";
   LOG(info) << "Found " << nplus << " mu+ and " << nminus << " mu-."
             << std::endl
-            << "Skipped: " << skipEvt << " events and " << skipMu_pmin
+            << "Skipped: " << skipEvt << " events or muons and " << skipMu_pmin
             << " muons with too low p" << std::endl
             << "Counted: " << skipMu_acc
             << " muons with no recorded hits in UBT,SBT,SST,TD.";
-  LOG(info) << "Weighted counts (sum MCTrack[0].fW): " << wplus << " mu+ and "
+  LOG(info) << "Weighted counts (sum of muon fW): " << wplus << " mu+ and "
             << wminus << " mu- (after momentum cut)." << std::endl
-            << "Skipped (sum MCTrack[0].fW): " << skipMu_pminW
+            << "Skipped (sum of muon fW): " << skipMu_pminW
             << " with too low p, " << skipMu_pathW
             << " muons with invalid or empty paths." << std::endl
-            << "Counted (sum MCTrack[0].fW): " << skipMu_accW
+            << "Counted (sum of muon fW): " << skipMu_accW
             << " muons with no recorded hits in UBT,SBT,SST,TD.";
   fGeoProcessor.PrintDiagnostics();
   // Print additive quantities so jobs can be combined before taking means.
