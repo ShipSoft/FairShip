@@ -1,7 +1,7 @@
 [workspace]
 name = "fairship"
 description = "SHiP experiment simulation framework"
-channels = ["https://prefix.dev/ship", "conda-forge"]
+channels = ["https://prefix.dev/ship-experiment/stable", "conda-forge"]
 platforms = ["linux-64"]
 
 [dependencies]
@@ -42,7 +42,7 @@ pytest-xdist = "*"
 pyyaml = "*"
 tabulate = "*"
 
-# SHiP custom packages (prefix.dev/ship channel)
+# SHiP custom packages (prefix.dev/ship-experiment/stable channel)
 geant4-vmc = ">=6.7"
 fairroot = ">=19.0"
 genfit = ">=2.3"
