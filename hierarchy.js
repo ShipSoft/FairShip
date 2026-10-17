@@ -183,6 +183,12 @@ var hierarchy =
     [ "MagneticTrackPropagator::State", "structMagneticTrackPropagator_1_1State.html", null ],
     [ "shipVertex.Task", "classshipVertex_1_1Task.html", null ],
     [ "shipVeto.Task", "classshipVeto_1_1Task.html", null ],
+    [ "TG4RunConfiguration", null, [
+      [ "ShipRunConfiguration", "classShipRunConfiguration.html", null ]
+    ] ],
+    [ "TG4SteppingAction", null, [
+      [ "ShipSteppingAction", "classShipSteppingAction.html", null ]
+    ] ],
     [ "TG4VUserPostDetConstruction", null, [
       [ "ShipFieldMaker", "classShipFieldMaker.html", null ]
     ] ],

@@ -112,7 +112,7 @@ Public Attributes</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>products of those decays, stopped carriers, and their descendants </p>
 
-<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8h_source.html#l00111">111</a> of file <a class="el" href="exitHadronAbsorber_8h_source.html">exitHadronAbsorber.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8h_source.html#l00123">123</a> of file <a class="el" href="exitHadronAbsorber_8h_source.html">exitHadronAbsorber.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="aae6d328ae4ee73626699ed550f7e5488" name="aae6d328ae4ee73626699ed550f7e5488"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aae6d328ae4ee73626699ed550f7e5488">&#9670;&#160;</a></span>WeightAt()</h2>
@@ -131,25 +131,25 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Weight of the track at time t; a secondary made exactly at the end of a split step, e.g. by the interaction that ends the track, survived that step's decay probability and gets the weight after the split. </p>
 
-<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8cxx_source.html#l00094">94</a> of file <a class="el" href="exitHadronAbsorber_8cxx_source.html">exitHadronAbsorber.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   94</span>                                                                   {</div>
-<div class="line"><span class="lineno">   95</span>  <span class="comment">// A secondary made at the end of a step and the split on that step share</span></div>
-<div class="line"><span class="lineno">   96</span>  <span class="comment">// the Geant4 post-step time, but geant4_vmc converts it to seconds by</span></div>
-<div class="line"><span class="lineno">   97</span>  <span class="comment">// division for the split (TrackPosition) and by multiplication with the</span></div>
-<div class="line"><span class="lineno">   98</span>  <span class="comment">// inverse unit for the secondary (stack push), so the two can differ by an</span></div>
-<div class="line"><span class="lineno">   99</span>  <span class="comment">// ulp or two. A few ulp of tolerance covers that and stays far below the</span></div>
-<div class="line"><span class="lineno">  100</span>  <span class="comment">// time of any real step. Split times increase strictly (a split needs a</span></div>
-<div class="line"><span class="lineno">  101</span>  <span class="comment">// step of non-zero length), so the lookup is a binary search.</span></div>
-<div class="line"><span class="lineno">  102</span>  <span class="keyword">const</span> Double_t tMax =</div>
-<div class="line"><span class="lineno">  103</span>      <a class="code hl_variable" href="namespacerun__fixedTarget.html#a5745239ac3de03e89b0deb73f59bb52f">t</a> + 4 * std::numeric_limits&lt;Double_t&gt;::epsilon() * std::abs(t);</div>
-<div class="line"><span class="lineno">  104</span>  <span class="keyword">const</span> <span class="keyword">auto</span> after = std::upper_bound(</div>
-<div class="line"><span class="lineno">  105</span>      <a class="code hl_variable" href="structexitHadronAbsorber_1_1WeightHistory.html#adbc9413c3f775e9abd7b7e4b544620de">splits</a>.begin(), <a class="code hl_variable" href="structexitHadronAbsorber_1_1WeightHistory.html#adbc9413c3f775e9abd7b7e4b544620de">splits</a>.end(), tMax,</div>
-<div class="line"><span class="lineno">  106</span>      [](Double_t time, <span class="keyword">const</span> <span class="keyword">auto</span>&amp; split) { return time &lt; split.first; });</div>
-<div class="line"><span class="lineno">  107</span>  <span class="keywordflow">return</span> after == <a class="code hl_variable" href="structexitHadronAbsorber_1_1WeightHistory.html#adbc9413c3f775e9abd7b7e4b544620de">splits</a>.begin() ? <a class="code hl_variable" href="structexitHadronAbsorber_1_1WeightHistory.html#a3dcd2ac3299888c7ef0302b327ac212c">initial</a> : std::prev(after)-&gt;second;</div>
-<div class="line"><span class="lineno">  108</span>}</div>
+<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8cxx_source.html#l00103">103</a> of file <a class="el" href="exitHadronAbsorber_8cxx_source.html">exitHadronAbsorber.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  103</span>                                                                   {</div>
+<div class="line"><span class="lineno">  104</span>  <span class="comment">// A secondary made at the end of a step and the split on that step share</span></div>
+<div class="line"><span class="lineno">  105</span>  <span class="comment">// the Geant4 post-step time, but geant4_vmc converts it to seconds by</span></div>
+<div class="line"><span class="lineno">  106</span>  <span class="comment">// division for the split (TrackPosition) and by multiplication with the</span></div>
+<div class="line"><span class="lineno">  107</span>  <span class="comment">// inverse unit for the secondary (stack push), so the two can differ by an</span></div>
+<div class="line"><span class="lineno">  108</span>  <span class="comment">// ulp or two. A few ulp of tolerance covers that and stays far below the</span></div>
+<div class="line"><span class="lineno">  109</span>  <span class="comment">// time of any real step. Split times increase strictly (a split needs a</span></div>
+<div class="line"><span class="lineno">  110</span>  <span class="comment">// step of non-zero length), so the lookup is a binary search.</span></div>
+<div class="line"><span class="lineno">  111</span>  <span class="keyword">const</span> Double_t tMax =</div>
+<div class="line"><span class="lineno">  112</span>      <a class="code hl_variable" href="namespacerun__fixedTarget.html#a5745239ac3de03e89b0deb73f59bb52f">t</a> + 4 * std::numeric_limits&lt;Double_t&gt;::epsilon() * std::abs(t);</div>
+<div class="line"><span class="lineno">  113</span>  <span class="keyword">const</span> <span class="keyword">auto</span> after = std::upper_bound(</div>
+<div class="line"><span class="lineno">  114</span>      <a class="code hl_variable" href="structexitHadronAbsorber_1_1WeightHistory.html#adbc9413c3f775e9abd7b7e4b544620de">splits</a>.begin(), <a class="code hl_variable" href="structexitHadronAbsorber_1_1WeightHistory.html#adbc9413c3f775e9abd7b7e4b544620de">splits</a>.end(), tMax,</div>
+<div class="line"><span class="lineno">  115</span>      [](Double_t time, <span class="keyword">const</span> <span class="keyword">auto</span>&amp; split) { return time &lt; split.first; });</div>
+<div class="line"><span class="lineno">  116</span>  <span class="keywordflow">return</span> after == <a class="code hl_variable" href="structexitHadronAbsorber_1_1WeightHistory.html#adbc9413c3f775e9abd7b7e4b544620de">splits</a>.begin() ? <a class="code hl_variable" href="structexitHadronAbsorber_1_1WeightHistory.html#a3dcd2ac3299888c7ef0302b327ac212c">initial</a> : std::prev(after)-&gt;second;</div>
+<div class="line"><span class="lineno">  117</span>}</div>
 <div class="ttc" id="anamespacerun__fixedTarget_html_a5745239ac3de03e89b0deb73f59bb52f"><div class="ttname"><a href="namespacerun__fixedTarget.html#a5745239ac3de03e89b0deb73f59bb52f">run_fixedTarget.t</a></div><div class="ttdeci">t</div><div class="ttdef"><b>Definition</b> <a href="run__fixedTarget_8py_source.html#l00651">run_fixedTarget.py:651</a></div></div>
-<div class="ttc" id="astructexitHadronAbsorber_1_1WeightHistory_html_a3dcd2ac3299888c7ef0302b327ac212c"><div class="ttname"><a href="structexitHadronAbsorber_1_1WeightHistory.html#a3dcd2ac3299888c7ef0302b327ac212c">exitHadronAbsorber::WeightHistory::initial</a></div><div class="ttdeci">Double_t initial</div><div class="ttdef"><b>Definition</b> <a href="exitHadronAbsorber_8h_source.html#l00112">exitHadronAbsorber.h:112</a></div></div>
-<div class="ttc" id="astructexitHadronAbsorber_1_1WeightHistory_html_adbc9413c3f775e9abd7b7e4b544620de"><div class="ttname"><a href="structexitHadronAbsorber_1_1WeightHistory.html#adbc9413c3f775e9abd7b7e4b544620de">exitHadronAbsorber::WeightHistory::splits</a></div><div class="ttdeci">std::vector&lt; std::pair&lt; Double_t, Double_t &gt; &gt; splits</div><div class="ttdef"><b>Definition</b> <a href="exitHadronAbsorber_8h_source.html#l00115">exitHadronAbsorber.h:115</a></div></div>
+<div class="ttc" id="astructexitHadronAbsorber_1_1WeightHistory_html_a3dcd2ac3299888c7ef0302b327ac212c"><div class="ttname"><a href="structexitHadronAbsorber_1_1WeightHistory.html#a3dcd2ac3299888c7ef0302b327ac212c">exitHadronAbsorber::WeightHistory::initial</a></div><div class="ttdeci">Double_t initial</div><div class="ttdef"><b>Definition</b> <a href="exitHadronAbsorber_8h_source.html#l00124">exitHadronAbsorber.h:124</a></div></div>
+<div class="ttc" id="astructexitHadronAbsorber_1_1WeightHistory_html_adbc9413c3f775e9abd7b7e4b544620de"><div class="ttname"><a href="structexitHadronAbsorber_1_1WeightHistory.html#adbc9413c3f775e9abd7b7e4b544620de">exitHadronAbsorber::WeightHistory::splits</a></div><div class="ttdeci">std::vector&lt; std::pair&lt; Double_t, Double_t &gt; &gt; splits</div><div class="ttdef"><b>Definition</b> <a href="exitHadronAbsorber_8h_source.html#l00127">exitHadronAbsorber.h:127</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -167,7 +167,7 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>weight before the first split </p>
 
-<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8h_source.html#l00112">112</a> of file <a class="el" href="exitHadronAbsorber_8h_source.html">exitHadronAbsorber.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8h_source.html#l00124">124</a> of file <a class="el" href="exitHadronAbsorber_8h_source.html">exitHadronAbsorber.h</a>.</p>
 
 </div>
 </div>
@@ -184,7 +184,7 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>(time at the end of the split step, weight after the split), in step order and so strictly increasing in time </p>
 
-<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8h_source.html#l00115">115</a> of file <a class="el" href="exitHadronAbsorber_8h_source.html">exitHadronAbsorber.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8h_source.html#l00127">127</a> of file <a class="el" href="exitHadronAbsorber_8h_source.html">exitHadronAbsorber.h</a>.</p>
 
 </div>
 </div>

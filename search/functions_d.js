@@ -7,7 +7,7 @@ var searchData=
   ['naive_5ferrors_4',['naive_errors',['../classevent__histogram_1_1EventHistogram.html#a294f74284d63c6cc5e2b598483e315e4',1,'event_histogram::EventHistogram']]],
   ['nbins_5',['nbins',['../classevent__histogram_1_1EventHistogram.html#a56c42899652a1f2a8c04666e63ae59f9',1,'event_histogram::EventHistogram']]],
   ['ncomposite_6',['nComposite',['../classShipCompField.html#a3005035d531de7934d27eb9d8df23d5e',1,'ShipCompField']]],
-  ['ndecaywidth_7',['ndecaywidth',['../classhnl_1_1HNLbranchings.html#a16eb7b8877b111b5d25d5a770390cc8d',1,'hnl.HNLbranchings.NDecayWidth()'],['../classrpvsusy_1_1RPVSUSYbranchings.html#a19df3958d4a6e134b77bd25df0991c15',1,'rpvsusy.RPVSUSYbranchings.NdecayWidth()']]],
+  ['ndecaywidth_7',['ndecaywidth',['../classrpvsusy_1_1RPVSUSYbranchings.html#a19df3958d4a6e134b77bd25df0991c15',1,'rpvsusy.RPVSUSYbranchings.NdecayWidth()'],['../classhnl_1_1HNLbranchings.html#a16eb7b8877b111b5d25d5a770390cc8d',1,'hnl.HNLbranchings.NDecayWidth()']]],
   ['ndof_8',['nDOF',['../classexperimental_1_1analysis__toolkit_1_1selection__check.html#a59129329627f6852632978e880978706',1,'experimental::analysis_toolkit::selection_check']]],
   ['newmudisgenerator_9',['NewMuDISGenerator',['../classNewMuDISGenerator.html#a56e6eacd3ccc5380489020e5c091a2bf',1,'NewMuDISGenerator']]],
   ['next_10',['next',['../classmakeCascadePythia8_1_1SignalEvents.html#a60f2a927eeba98bca154710107ad3004',1,'makeCascadePythia8.SignalEvents.next()'],['../classmakeCascadePythia8_1_1InclusiveSignalEvents.html#ac73563524f3afd46d7979652a3c9faea',1,'makeCascadePythia8.InclusiveSignalEvents.next()']]],

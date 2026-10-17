@@ -124,7 +124,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="CMakeLists_8txt_source.html#l00013">13</a> of file <a class="el" href="CMakeLists_8txt_source.html">CMakeLists.txt</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   15</span>                : use &lt;PACKAGENAME&gt;_ROOT variables in <a class="code hl_function" href="muonShieldOptimization_2CMakeLists_8txt.html#a83f3cb6f06cde493fe4290d12778da37">find_package</a>. Still guarded</div>
+<div class="fragment"><div class="line"><span class="lineno">   15</span>                : use &lt;PACKAGENAME&gt;_ROOT variables in <a class="code hl_function" href="muonShieldOptimization_2CMakeLists_8txt.html#afdcb0a04a1b6bb78e955e6714cc028bb">find_package</a>. Still guarded</div>
 <div class="line"><span class="lineno">   16</span><span class="preprocessor"># because 3.27 is one minor above our 3.26 minimum, so the policy may not exist.</span></div>
 <div class="line"><span class="lineno">   17</span><span class="keywordflow">if</span>(POLICY CMP0144)</div>
 <div class="line"><span class="lineno">   18</span>    cmake_policy(SET CMP0144 NEW)</div>
@@ -134,7 +134,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   22</span><span class="preprocessor"># .git_archival.txt in a GitHub tarball.</span></div>
 <div class="line"><span class="lineno">   23</span>set(FAIRSHIP_SOURCE_DIR ${CMAKE_SOURCE_DIR})</div>
 <div class="ttc" id="aCMakeLists_8txt_html_a7832b0a0510c0b06f5d92f69dd65bcec"><div class="ttname"><a href="CMakeLists_8txt.html#a7832b0a0510c0b06f5d92f69dd65bcec">endif</a></div><div class="ttdeci">endif() project(FairShip VERSION $</div><div class="ttdef"><b>Definition</b> <a href="CMakeLists_8txt_source.html#l00030">CMakeLists.txt:30</a></div></div>
-<div class="ttc" id="amuonShieldOptimization_2CMakeLists_8txt_html_a83f3cb6f06cde493fe4290d12778da37"><div class="ttname"><a href="muonShieldOptimization_2CMakeLists_8txt.html#a83f3cb6f06cde493fe4290d12778da37">find_package</a></div><div class="ttdeci">find_package(Python3 COMPONENTS Development REQUIRED) ship_add_library(NAME ShipMuonShieldBackground SOURCES exitHadronAbsorber.cxx pyFairModule.cxx LINKDEF LinkDef.h EXTRA_DICT_HEADERS $</div><div class="ttdef"><b>Definition</b> <a href="muonShieldOptimization_2CMakeLists_8txt_source.html#l00004">CMakeLists.txt:4</a></div></div>
+<div class="ttc" id="amuonShieldOptimization_2CMakeLists_8txt_html_afdcb0a04a1b6bb78e955e6714cc028bb"><div class="ttname"><a href="muonShieldOptimization_2CMakeLists_8txt.html#afdcb0a04a1b6bb78e955e6714cc028bb">find_package</a></div><div class="ttdeci">find_package(Python3 COMPONENTS Development REQUIRED) ship_add_library(NAME ShipMuonShieldBackground SOURCES exitHadronAbsorber.cxx pyFairModule.cxx ShipRunConfiguration.cxx LINKDEF LinkDef.h EXTRA_DICT_HEADERS $</div><div class="ttdef"><b>Definition</b> <a href="muonShieldOptimization_2CMakeLists_8txt_source.html#l00004">CMakeLists.txt:4</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

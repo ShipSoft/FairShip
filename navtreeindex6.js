@@ -1,5 +1,9 @@
 var NAVTREEINDEX6 =
 {
+"classMuonPath.html#a2108a17cbf272a2ef36be54f453d7f5c":[9,0,54,17],
+"classMuonPath.html#a265d47c78a45429761cacdddf6f9b902":[9,0,54,6],
+"classMuonPath.html#a2eb3644b98582919befa47ba44b9fbda":[9,0,54,40],
+"classMuonPath.html#a348653c6577520d09e37054fc832f8c0":[9,0,54,31],
 "classMuonPath.html#a39596bd20b558c832d178770a0881371":[9,0,54,22],
 "classMuonPath.html#a3e51887ef556b0ea54c4f542f7023fcc":[9,0,54,0],
 "classMuonPath.html#a4104ce31b239e00d8b7110d14e1067ff":[9,0,54,41],
@@ -236,18 +240,14 @@ var NAVTREEINDEX6 =
 "classPythia8Generator.html#af56b43879aa68df1f93d3fa5d7309244":[9,0,60,25],
 "classPythia8Generator.html#af6c553dba17223a063a3fa9a700d9869":[9,0,60,32],
 "classPythia8Generator.html#af9b0d7cc138e3e2cc6b19ead232a248a":[9,0,60,50],
-"classSBTDetector_1_1SBTDetector.html":[8,0,88,0],
 "classSBTDetector_1_1SBTDetector.html":[9,0,12,0],
-"classSBTDetector_1_1SBTDetector.html#ad9f86da14fd0c2904d6324e83973e26c":[8,0,88,0,0],
+"classSBTDetector_1_1SBTDetector.html":[8,0,88,0],
 "classSBTDetector_1_1SBTDetector.html#ad9f86da14fd0c2904d6324e83973e26c":[9,0,12,0,0],
-"classSBTDetector_1_1SBTDetector.html#addad85128a94a0bb4536533125dab960":[8,0,88,0,1],
+"classSBTDetector_1_1SBTDetector.html#ad9f86da14fd0c2904d6324e83973e26c":[8,0,88,0,0],
 "classSBTDetector_1_1SBTDetector.html#addad85128a94a0bb4536533125dab960":[9,0,12,0,1],
+"classSBTDetector_1_1SBTDetector.html#addad85128a94a0bb4536533125dab960":[8,0,88,0,1],
 "classSHiP_1_1Detector.html":[9,0,14,0],
 "classSHiP_1_1Detector.html":[8,0,90,0],
-"classSHiP_1_1Detector.html#a03d8c93853fa437a2adc466863c6b39e":[8,0,90,0,6],
 "classSHiP_1_1Detector.html#a03d8c93853fa437a2adc466863c6b39e":[9,0,14,0,6],
-"classSHiP_1_1Detector.html#a0f51e2d392c158d28d09fc71e9ef6a88":[8,0,90,0,28],
-"classSHiP_1_1Detector.html#a0f51e2d392c158d28d09fc71e9ef6a88":[9,0,14,0,28],
-"classSHiP_1_1Detector.html#a103ca9a2efe245ed360682958561bbf7":[9,0,14,0,17],
-"classSHiP_1_1Detector.html#a103ca9a2efe245ed360682958561bbf7":[8,0,90,0,17]
+"classSHiP_1_1Detector.html#a03d8c93853fa437a2adc466863c6b39e":[8,0,90,0,6]
 };

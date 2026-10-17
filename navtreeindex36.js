@@ -1,5 +1,16 @@
 var NAVTREEINDEX36 =
 {
+"test__heavyFlavourScaling_8py.html#a09a9741db8e8543a430dcdc1fc2697f4":[10,0,17,7,15],
+"test__heavyFlavourScaling_8py.html#a1f5951fe107152708e93822485ac2e2e":[10,0,17,7,18],
+"test__heavyFlavourScaling_8py.html#a3509c74ee4b532ba0ab0a332f9d563f7":[10,0,17,7,8],
+"test__heavyFlavourScaling_8py.html#a3a1d343bed1364e5a0ea96d7074279e0":[10,0,17,7,17],
+"test__heavyFlavourScaling_8py.html#a4372f9cb80711448bf6749b37d1e1ed4":[10,0,17,7,10],
+"test__heavyFlavourScaling_8py.html#a46d49c7e2a33ed03e216b194c1021b3d":[10,0,17,7,6],
+"test__heavyFlavourScaling_8py.html#a77d40506bdae288579639111a73ead6d":[10,0,17,7,9],
+"test__heavyFlavourScaling_8py.html#a7c9886ecdbadab676c0375ca22712ae8":[10,0,17,7,1],
+"test__heavyFlavourScaling_8py.html#a87f40f09bed788baab055e15389894a4":[10,0,17,7,13],
+"test__heavyFlavourScaling_8py.html#a9f6b6f052a9005f5a52e098da3dc7a81":[10,0,17,7,2],
+"test__heavyFlavourScaling_8py.html#aaaa40b06ad3b57660f0b5b4f6364cb9e":[10,0,17,7,4],
 "test__heavyFlavourScaling_8py.html#aaad846759d9767bfbf4ab22dd30520b6":[10,0,17,7,5],
 "test__heavyFlavourScaling_8py.html#abb82df2f0a21f86fe742174ba0875103":[10,0,17,7,14],
 "test__heavyFlavourScaling_8py.html#ac02ea77ca560496416857f546def4103":[10,0,17,7,0],

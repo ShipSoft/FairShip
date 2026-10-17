@@ -5,7 +5,7 @@ var searchData=
   ['n_5fcurves_5fmult_2',['n_curves_mult',['../namespacerun__tracking__scan.html#a03e13ccb07c88c0d82a69d92298d587e',1,'run_tracking_scan']]],
   ['n_5fcurves_5ftheta_3',['n_curves_theta',['../namespacerun__tracking__scan.html#a1aae3c21759e8e7766d2f1eb7ffe358c',1,'run_tracking_scan']]],
   ['n_5fe_4',['n_E',['../classFixedTargetGenerator.html#ae7435e29af3557494013f4c469e959d2',1,'FixedTargetGenerator']]],
-  ['n_5fevents_5',['n_events',['../classCosmicsGenerator.html#aab375f933193b16006ddc7cd9a6a0241',1,'CosmicsGenerator::n_EVENTS'],['../namespacemakeMuonDIS.html#a321f78a1f271119e1f593edccaee7064',1,'makeMuonDIS.n_events'],['../namespacerun__simScript.html#a0ad5a8757666a018ab23b8e7f5eaeca2',1,'run_simScript.n_EVENTS'],['../classevent__histogram_1_1EventHistogram.html#ae9109e5bb6d6ee03049952bb63938fc2',1,'event_histogram.EventHistogram.n_events']]],
+  ['n_5fevents_5',['n_events',['../classevent__histogram_1_1EventHistogram.html#ae9109e5bb6d6ee03049952bb63938fc2',1,'event_histogram.EventHistogram.n_events'],['../namespacemakeMuonDIS.html#a321f78a1f271119e1f593edccaee7064',1,'makeMuonDIS.n_events'],['../namespacerun__simScript.html#a0ad5a8757666a018ab23b8e7f5eaeca2',1,'run_simScript.n_EVENTS'],['../classCosmicsGenerator.html#aab375f933193b16006ddc7cd9a6a0241',1,'CosmicsGenerator::n_EVENTS']]],
   ['n_5fhadrons_6',['n_hadrons',['../classFixedTargetGenerator.html#a5bc2f636a96ce2bf25f609010304549e',1,'FixedTargetGenerator']]],
   ['n_5fhor_5fplanes_7',['n_hor_planes',['../classTargetTracker.html#a4b1f189be15fc79d2c94866b8aceed40',1,'TargetTracker']]],
   ['n_5fid_8',['n_id',['../classFixedTargetGenerator.html#a53317a2db8067c4d488ae96769b2eef8',1,'FixedTargetGenerator']]],
