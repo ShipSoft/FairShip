@@ -83,7 +83,7 @@ project root **must** be the FairShip clone itself — it contains the required
 ### Using the pre-built package
 
 Pre-built FairShip packages are available from the
-[ship](https://prefix.dev/channels/ship) channel. Because `activate.sh`
+[ship-experiment/stable](https://prefix.dev/channels/@ship-experiment/stable) channel. Because `activate.sh`
 expects `geometry/`, `files/`, and other data directories at
 `PIXI_PROJECT_ROOT`, the simplest approach is to add `fairship` directly to
 the clone:
