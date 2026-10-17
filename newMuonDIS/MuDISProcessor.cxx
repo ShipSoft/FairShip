@@ -12,9 +12,9 @@
 #include <iostream>
 
 #include "FairLogger.h"
-#include "TMath.h"
+#include "Math/RotationY.h"
+#include "Math/RotationZ.h"
 #include "TRandom.h"
-#include "TRotation.h"
 
 using ShipMuDIS::kMuonShieldTailZ;
 using ShipMuDIS::MatTypeStr;
@@ -33,23 +33,10 @@ double DISMinLength(const std::string& label, const MuonPath& path) {
 }
 }  // namespace
 
-// -----   Default constructor   -------------------------------------------
-MuDISProcessor::MuDISProcessor() {
-  fouttree = nullptr;
+MuDISProcessor::MuDISProcessor() : fPythia(TPythia6::Instance()) {}
 
-  fnEvts = -1;
-  fstartEvt = 0;
-  fPythia = TPythia6::Instance();
-
-  fMinPythiaP = 2;
-  fnDIS = 10;
-  fP6seed = 0;
-}
-
-bool MuDISProcessor::init(const int& aEvts, const int& aStart,
-                          const double& aMinPythiaP, const int& aDIS,
-                          const int& aSeed, const double& aZmax,
-                          const double& aZmin) {
+bool MuDISProcessor::init(int aEvts, int aStart, double aMinPythiaP, int aDIS,
+                          int aSeed, double aZmax, double aZmin) {
   fnEvts = aEvts;
   fstartEvt = aStart;
   fMinPythiaP = aMinPythiaP;
@@ -72,10 +59,10 @@ void MuDISProcessor::initPythia6() {
   // set min hard scale: 2 GeV --->try 1.5 for soft muons ?
   fPythia->SetPARP(2, fMinPythiaP);
   // disable decay for those PDGID
-  unsigned hadrons[10] = {211,  321,  130,  310,  3112,
-                          3122, 3222, 3312, 3322, 3334};
-  for (unsigned ikf(0); ikf < 10; ++ikf) {
-    int kc = fPythia->Pycomp(hadrons[ikf]);
+  constexpr std::array<int, 10> hadrons = {211,  321,  130,  310,  3112,
+                                           3122, 3222, 3312, 3322, 3334};
+  for (int pdg : hadrons) {
+    const int kc = fPythia->Pycomp(pdg);
     fPythia->SetMDCY(kc, 1, 0);
   }
 
@@ -88,17 +75,11 @@ void MuDISProcessor::initPythia6() {
   // fPythia->SetMSTU(11, 6);
 }
 
-void MuDISProcessor::rotate(const TVector3& pvec, const double& theta,
-                            const double& phi, TVector3& newp) {
-  // Rotate the daughter particle momentum to align with respect to the muon's
-  // momentum."""
-
-  TRotation rotation;
-  rotation.RotateY(theta);  // Rotate around the Y-axis
-  rotation.RotateZ(phi);    // Rotate around the Z-axis
-
-  // Apply the rotation to the momentum vector
-  newp = rotation * pvec;
+ROOT::Math::XYZVector MuDISProcessor::rotate(const ROOT::Math::XYZVector& pvec,
+                                             double theta, double phi) {
+  // Align the daughter momentum with the muon: rotate about y by theta, then
+  // about z by phi.
+  return ROOT::Math::RotationZ(phi) * (ROOT::Math::RotationY(theta) * pvec);
 }
 
 bool MuDISProcessor::InitFile(const char* fileName) {
@@ -260,8 +241,7 @@ void MuDISProcessor::fillTDHits(const int aIdx) {
   }
 }
 
-void MuDISProcessor::generateDISevents(const std::string& tType,
-                                       const double& amuonW,
+void MuDISProcessor::generateDISevents(const std::string& tType, double amuonW,
                                        const std::string& aLabel,
                                        const MuonPath& aPath,
                                        MuonDISBranches& aDISBr) {
@@ -328,9 +308,9 @@ void MuDISProcessor::generateDISevents(const std::string& tType,
     aDISBr.DISvy.push_back(aPath.GetY(realz, slice));
     aDISBr.DISvt.push_back(aPath.GetTimeNs(realz, slice));
 
-    double theta = TMath::ACos(aPath.Getpz(slice) / sliceP);
+    double theta = std::acos(aPath.Getpz(slice) / sliceP);
     // returns phi between -pi and pi
-    double phi = TMath::ATan2(aPath.Getpy(slice), aPath.Getpx(slice));
+    double phi = std::atan2(aPath.Getpy(slice), aPath.Getpx(slice));
 
     unsigned ndaugh = fPythia->GetN();
     aDISBr.nDISdau.push_back(ndaugh);
@@ -339,10 +319,10 @@ void MuDISProcessor::generateDISevents(const std::string& tType,
     for (unsigned itrk(1); itrk < ndaugh + 1; ++itrk) {
       DISparticle adau;
       adau.pid = fPythia->GetK(itrk, 2);
-      TVector3 dauP(0, 0, 0);
-      TVector3 indauP(fPythia->GetP(itrk, 1), fPythia->GetP(itrk, 2),
-                      fPythia->GetP(itrk, 3));
-      rotate(indauP, theta, phi, dauP);
+      const auto dauP = rotate(
+          ROOT::Math::XYZVector(fPythia->GetP(itrk, 1), fPythia->GetP(itrk, 2),
+                                fPythia->GetP(itrk, 3)),
+          theta, phi);
       adau.px = dauP.X();
       adau.py = dauP.Y();
       adau.pz = dauP.Z();

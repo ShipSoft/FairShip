@@ -44,7 +44,7 @@ class NewMuDISGenerator : public SHiP::Generator {
 
  protected:
   std::unique_ptr<TChain> fTree;
-  int fNevents;
+  int fNevents = -1;
   int fStartEvent = 0;
   int fMaxMuons = -1;
   std::int64_t fEndEvent = 0;
@@ -52,9 +52,9 @@ class NewMuDISGenerator : public SHiP::Generator {
   bool ValidateEntry(std::int64_t entry) const;
   void ResetOutputBranches();
   ShipMuDIS::MuonInBranches finEv;
-  int fn;                      // counter of final output events
-  std::int64_t fnmu;           // counter of original input muons
-  unsigned fMat;               // index of material
+  int fn = 0;                  // counter of final output events
+  std::int64_t fnmu = 0;       // counter of original input muons
+  unsigned fMat = 0;           // index of material
   int fDISMaterial = -1;       // material of the current output DIS event
   std::string fMaterialLabel;  // material string for output branch
   int fMuonEntry = -1;         // original input muon index for output branch
@@ -62,7 +62,7 @@ class NewMuDISGenerator : public SHiP::Generator {
   double fDISXsec = -1.;       // cross section of the DIS event
   double fPythiaP = -1.;  // momentum of the muon used to generate the DIS event
   std::vector<int> fNGenerated;  // initial count of generated DIS events
-  int fnmuDis;             // counter of DIS event per input muon per material
-  std::size_t fnmuDisDau;  // daughter offset per input muon per material
+  int fnmuDis = 0;  // counter of DIS event per input muon per material
+  std::size_t fnmuDisDau = 0;  // daughter offset per input muon per material
 };
 #endif  // NEWMUONDIS_NEWMUDISGENERATOR_H_

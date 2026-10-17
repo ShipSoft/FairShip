@@ -13,12 +13,12 @@
 #include <vector>
 
 #include "FairLogger.h"  // for FairLogger, MESSAGE_ORIGIN
+#include "Math/Point3D.h"
 #include "MuDISDefs.h"
 #include "TChain.h"  // for TTree
 #include "TDatabasePDG.h"
 #include "TH1.h"
 #include "TH2.h"
-#include "TVector3.h"
 
 class MagneticTrackPropagator;
 class ShipBFieldMap;
@@ -87,11 +87,11 @@ class MuDISFilter {
 
   bool PassFilter(const std::vector<DISparticle>& daughters) const;
   bool PassFilter(const std::vector<DISparticle>& daughters,
-                  const TVector3& vertex) const;
+                  const ROOT::Math::XYZPoint& vertex) const;
 
   Histograms BookHistograms(TDirectory* dir, const std::string& mat,
                             const std::string& label = "");
-  void init(const int& aEvts, const int& aStart);
+  void init(int aEvts, int aStart);
 
   bool InitFile(const char*, int);
   bool InitFile(const char*);
@@ -106,14 +106,15 @@ class MuDISFilter {
  private:
   struct FilterCandidate {
     DISparticle particle;
-    TVector3 vertex;
+    ROOT::Math::XYZPoint vertex;
   };
 
   void ConfigureFilterGeometry(unsigned option,
                                const MagneticTrackPropagator& propagator);
   void InitialisePythiaDecayer();
   std::vector<FilterCandidate> DecayDaughters(
-      const std::vector<DISparticle>& daughters, const TVector3& vertex) const;
+      const std::vector<DISparticle>& daughters,
+      const ROOT::Math::XYZPoint& vertex) const;
   bool PassCandidates(const std::vector<FilterCandidate>& candidates) const;
   bool IncludesParticle(const DISparticle& particle) const;
   bool IsForwardToPlane(const FilterCandidate& candidate, double z) const;
@@ -173,15 +174,15 @@ class MuDISFilter {
   std::unique_ptr<TChain> ftree;
   ShipMuDIS::MuonInBranches finEv;
 
-  TTree* fouttree;
+  TTree* fouttree = nullptr;
   ShipMuDIS::MuonBranches foutEv;
 
-  int fnEvts;
-  int fstartEvt;
+  int fnEvts = -1;
+  int fstartEvt = 0;
 
   TDatabasePDG* fPDG;
-  Histograms hist_all[ShipMuDIS::nMats];
-  Histograms hist_filt[ShipMuDIS::nMats];
+  std::array<Histograms, ShipMuDIS::nMats> hist_all;
+  std::array<Histograms, ShipMuDIS::nMats> hist_filt;
   FilterEfficiencyHistograms fFilterEfficiency;
   bool fDetailedHistograms = false;
   std::array<double, 4> fEfficiencyXYBounds = {-200., 200., -300., 300.};

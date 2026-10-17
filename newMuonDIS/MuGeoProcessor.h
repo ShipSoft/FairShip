@@ -13,6 +13,8 @@
 
 #include "FairLogger.h"  // for FairLogger, MESSAGE_ORIGIN
 #include "MagneticTrackPropagator.h"
+#include "Math/Point3D.h"
+#include "Math/Vector3D.h"
 #include "MuDISDefs.h"
 #include "MuonPath.h"
 #include "TGeoManager.h"
@@ -21,7 +23,6 @@
 #include "TGeoNode.h"
 #include "TGeoShape.h"
 #include "TGeoVolume.h"
-#include "TVector3.h"
 
 class MuGeoProcessor {
  public:
@@ -48,29 +49,31 @@ class MuGeoProcessor {
   int64_t GetStartsBeforeZminCount() const { return fStartsBeforeZmin; }
   double GetMaxTransverseJump() const { return fMaxTransverseJump; }
 
-  inline void SetZmax(const double& zmax) {
+  void SetZmax(double zmax) {
     LOG(info) << " Maximum z position for MuonPath building: " << zmax
               << " cm.";
     fZmax = zmax;
-  };
-  inline void SetZmin(const double& zmin) {
+  }
+  void SetZmin(double zmin) {
     LOG(info) << " Minimum z position for MuonPath building: " << zmin
               << " cm.";
     fZmin = zmin;
-  };
+  }
 
-  TVector3 GetVertex(const TVector3& r1, const TVector3& p1, const TVector3& r2,
-                     const TVector3& p2);
+  ROOT::Math::XYZPoint GetVertex(const ROOT::Math::XYZPoint& r1,
+                                 const ROOT::Math::XYZVector& p1,
+                                 const ROOT::Math::XYZPoint& r2,
+                                 const ROOT::Math::XYZVector& p2);
   void CheckAllVolumes();
   std::map<std::string, MuonPath>& FillMuonPath();
   void PrintVolumes();
 
  private:
-  double fZmax;
-  double fZmin;
+  double fZmax = 14000;
+  double fZmin = 2500;
   struct Measurement {
-    TVector3 position;
-    TVector3 momentum;
+    ROOT::Math::XYZPoint position;
+    ROOT::Math::XYZVector momentum;
     double time;
   };
   struct Segment {
@@ -83,7 +86,8 @@ class MuGeoProcessor {
   bool AddMagneticSegments(const Measurement& start, double charge,
                            double endZ);
   double GetTrajectoryPocaZ(const Measurement& hit) const;
-  bool AddMagneticChord(const TVector3& a, const TVector3& b, double momentum,
+  bool AddMagneticChord(const ROOT::Math::XYZPoint& a,
+                        const ROOT::Math::XYZPoint& b, double momentum,
                         double& time, unsigned depth = 0);
   bool Trace(const Measurement& measurement, double startZ, double endZ,
              bool backward = false);

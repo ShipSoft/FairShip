@@ -23,6 +23,8 @@
 #include "FairLogger.h"
 #include "MagneticTrackPropagator.h"
 
+using ROOT::Math::XYZPoint;
+using ROOT::Math::XYZVector;
 using ShipMuDIS::MatTypeStr;
 using ShipMuDIS::MuonDISInBranches;
 using ShipMuDIS::MuonInBranches;
@@ -76,7 +78,7 @@ bool IsNeutrino(const DISparticle& particle) {
   return pid == 12 || pid == 14 || pid == 16;
 }
 
-bool InsideXY(const TVector3& hit, const std::array<double, 4>& bounds) {
+bool InsideXY(const XYZPoint& hit, const std::array<double, 4>& bounds) {
   return hit.X() >= bounds[0] && hit.X() <= bounds[1] && hit.Y() >= bounds[2] &&
          hit.Y() <= bounds[3];
 }
@@ -99,13 +101,7 @@ int KinematicBin(double value, const double* edges, unsigned bins) {
 }  // namespace
 
 // -----   Default constructor   -------------------------------------------
-MuDISFilter::MuDISFilter() {
-  fouttree = nullptr;
-
-  fnEvts = -1;
-  fstartEvt = 0;
-  fPDG = TDatabasePDG::Instance();
-}
+MuDISFilter::MuDISFilter() : fPDG(TDatabasePDG::Instance()) {}
 
 void MuDISFilter::SetFilterEfficiencyBinning(double xmin, double xmax,
                                              unsigned xbins, double ymin,
@@ -166,11 +162,11 @@ Histograms MuDISFilter::BookHistograms(TDirectory* dir, const std::string& mat,
       dir, std::format("daughter_pdg_grouped_{}", label),
       std::format("DIS daughter species - {};Species;Particles", mat), 11, 0.5,
       11.5);
-  const char* labels[] = {"e^{+}",   "e^{-}",         "#mu^{+}",   "#mu^{-}",
-                          "#gamma",  "#nu/#bar{#nu}", "#pi^{#pm}", "h^{#pm}",
-                          "#pi^{0}", "h^{0}",         "other"};
-  for (int bin = 1; bin <= 11; ++bin)
-    h.dis_pdgGrouped->GetXaxis()->SetBinLabel(bin + 1, labels[bin - 1]);
+  constexpr std::array<const char*, 11> labels = {
+      "e^{+}",     "e^{-}",   "#mu^{+}", "#mu^{-}", "#gamma", "#nu/#bar{#nu}",
+      "#pi^{#pm}", "h^{#pm}", "#pi^{0}", "h^{0}",   "other"};
+  for (std::size_t bin = 0; bin < labels.size(); ++bin)
+    h.dis_pdgGrouped->GetXaxis()->SetBinLabel(bin + 2, labels[bin]);
   if (fDetailedHistograms)
     h.dis_n = WithFlowBins<TH1I>(
         dir, std::format("n_daughters_{}", label),
@@ -319,7 +315,7 @@ void MuDISFilter::FillFilterEfficiencyHistograms(unsigned material,
     fFilterEfficiency.passedZ[ip][ipt][ix][iy][material]->Fill(z, weight);
 }
 
-void MuDISFilter::init(const int& aEvts, const int& aStart) {
+void MuDISFilter::init(int aEvts, int aStart) {
   if (aEvts < -1 || aStart < 0)
     throw std::invalid_argument("Invalid event range");
   fnEvts = aEvts;
@@ -644,7 +640,7 @@ void MuDISFilter::SetPythiaDecaySeed(unsigned seed) {
 }
 
 std::vector<MuDISFilter::FilterCandidate> MuDISFilter::DecayDaughters(
-    const std::vector<DISparticle>& daughters, const TVector3& vertex) const {
+    const std::vector<DISparticle>& daughters, const XYZPoint& vertex) const {
   if (!fUsePythiaDecays) {
     std::vector<FilterCandidate> candidates;
     candidates.reserve(daughters.size());
@@ -665,7 +661,7 @@ std::vector<MuDISFilter::FilterCandidate> MuDISFilter::DecayDaughters(
     daughter.pz = particle.pz();
     daughter.E = particle.e();
     candidates.push_back(
-        {daughter, TVector3(particle.xProd() / 10., particle.yProd() / 10.,
+        {daughter, XYZPoint(particle.xProd() / 10., particle.yProd() / 10.,
                             particle.zProd() / 10.)});
   };
   for (const auto& daughter : daughters) {
@@ -733,10 +729,11 @@ bool MuDISFilter::HitsDetectorPlane(const FilterCandidate& candidate,
                                     const std::array<double, 4>& bounds) const {
   if (!IsForwardToPlane(candidate, z)) return false;
   const auto& particle = candidate.particle;
-  TVector3 hit, momentum;
+  XYZPoint hit;
+  XYZVector momentum;
   return fPropagator->Extrapolate(
              charge, candidate.vertex,
-             TVector3(particle.px, particle.py, particle.pz), z, hit,
+             XYZVector(particle.px, particle.py, particle.pz), z, hit,
              momentum) &&
          InsideXY(hit, bounds);
 }
@@ -745,7 +742,8 @@ bool MuDISFilter::HitsTrackingAndTD(const FilterCandidate& candidate,
                                     double charge) const {
   const auto& particle = candidate.particle;
   const auto& vertex = candidate.vertex;
-  TVector3 position = vertex, momentum(particle.px, particle.py, particle.pz);
+  XYZPoint position = vertex;
+  XYZVector momentum(particle.px, particle.py, particle.pz);
   std::array<unsigned, 5> order = {0, 1, 2, 3, 4};
   std::sort(order.begin(), order.end(),
             [this, &particle](unsigned a, unsigned b) {
@@ -755,7 +753,8 @@ bool MuDISFilter::HitsTrackingAndTD(const FilterCandidate& candidate,
   bool firstPair = false, secondPair = false, TD = false;
   for (unsigned station : order) {
     if (!IsForwardToPlane(candidate, fStationZ[station])) continue;
-    TVector3 hit, nextMomentum;
+    XYZPoint hit;
+    XYZVector nextMomentum;
     if (!fPropagator->Extrapolate(charge, position, momentum,
                                   fStationZ[station], hit, nextMomentum))
       return false;
@@ -776,11 +775,11 @@ bool MuDISFilter::HitsTrackingAndTD(const FilterCandidate& candidate,
 bool MuDISFilter::HitsDetectorVolume(const FilterCandidate& candidate) const {
   const auto& particle = candidate.particle;
   if (IsNeutrino(particle) || !IncludesParticle(particle)) return false;
-  const TVector3 minimum(-200., -300., fDetectorVolumeZ.first);
-  const TVector3 maximum(200., 300., fDetectorVolumeZ.second);
+  const XYZPoint minimum(-200., -300., fDetectorVolumeZ.first);
+  const XYZPoint maximum(200., 300., fDetectorVolumeZ.second);
   return fPropagator->IntersectsBox(
       Charge(particle), candidate.vertex,
-      TVector3(particle.px, particle.py, particle.pz), minimum, maximum);
+      XYZVector(particle.px, particle.py, particle.pz), minimum, maximum);
 }
 
 bool MuDISFilter::PassChargedCandidates(
@@ -848,11 +847,11 @@ bool MuDISFilter::PassFilter(const std::vector<DISparticle>& daughters) const {
     throw std::runtime_error(
         "Detector acceptance requires the DIS vertex; use "
         "PassFilter(daughters, vertex)");
-  return PassFilter(daughters, TVector3());
+  return PassFilter(daughters, XYZPoint());
 }
 
 bool MuDISFilter::PassFilter(const std::vector<DISparticle>& daughters,
-                             const TVector3& vertex) const {
+                             const XYZPoint& vertex) const {
   if (fFilter) return fFilter(daughters);
   return PassCandidates(DecayDaughters(daughters, vertex));
 }
@@ -942,11 +941,9 @@ void MuDISFilter::ProcessEvents() {
                                            ftree->GetEntries())
                   : ftree->GetEntries();
   std::int64_t selected = 0, skipped = 0;
-  std::int64_t selectedDIS[nMats] = {};
-  double weightedDIS[nMats] = {};
-  std::int64_t processedDIS[nMats] = {};
-  double weightedProcessedDIS[nMats] = {};
-  double weightedMuons[nMats] = {}, weightedSelectedMuons[nMats] = {};
+  std::array<std::int64_t, nMats> selectedDIS{}, processedDIS{};
+  std::array<double, nMats> weightedDIS{}, weightedProcessedDIS{};
+  std::array<double, nMats> weightedMuons{}, weightedSelectedMuons{};
   for (std::int64_t event = fstartEvt; event < end; ++event) {
     if ((event - fstartEvt) % 100 == 0)
       LOG(info) << "MuDISFilter: processing entry " << event;
@@ -986,7 +983,7 @@ void MuDISFilter::ProcessEvents() {
             in.DISparticles->begin() + offset,
             in.DISparticles->begin() + endOffset);
         offset = endOffset;
-        const TVector3 vertex(in.DISvx->at(idis), in.DISvy->at(idis),
+        const XYZPoint vertex(in.DISvx->at(idis), in.DISvy->at(idis),
                               in.DISvz->at(idis));
         std::vector<FilterCandidate> candidates;
         if (fFilter) {
@@ -1082,18 +1079,19 @@ void MuDISFilter::ProcessEvents() {
         new TH1D("filter_counts", "Filter counts;Sample;Count", 8, 0., 8.);
     counts->SetDirectory(
         fouttree->GetDirectory()->GetDirectory(MatTypeStr[imat].c_str()));
-    const char* labels[] = {"muons_processed_raw", "muons_processed_weighted",
-                            "muons_selected_raw",  "muons_selected_weighted",
-                            "dis_processed_raw",   "dis_processed_weighted",
-                            "dis_selected_raw",    "dis_selected_weighted"};
-    const double values[] = {
+    constexpr std::array<const char*, 8> labels = {
+        "muons_processed_raw", "muons_processed_weighted",
+        "muons_selected_raw",  "muons_selected_weighted",
+        "dis_processed_raw",   "dis_processed_weighted",
+        "dis_selected_raw",    "dis_selected_weighted"};
+    const std::array<double, 8> values = {
         hist_all[imat].mu_ppt->GetEntries(),     weightedMuons[imat],
         hist_filt[imat].mu_ppt->GetEntries(),    weightedSelectedMuons[imat],
         static_cast<double>(processedDIS[imat]), weightedProcessedDIS[imat],
         static_cast<double>(selectedDIS[imat]),  weightedDIS[imat]};
-    for (int bin = 1; bin <= 8; ++bin) {
-      counts->GetXaxis()->SetBinLabel(bin, labels[bin - 1]);
-      counts->SetBinContent(bin, values[bin - 1]);
+    for (std::size_t bin = 0; bin < labels.size(); ++bin) {
+      counts->GetXaxis()->SetBinLabel(bin + 1, labels[bin]);
+      counts->SetBinContent(bin + 1, values[bin]);
     }
   }
 }

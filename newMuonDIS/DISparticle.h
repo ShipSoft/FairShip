@@ -9,20 +9,11 @@
 
 class DISparticle {
  public:
-  DISparticle() {
-    pid = 0;
-    px = 0;
-    py = 0;
-    pz = 0;
-    E = 0;
-  };
-  ~DISparticle() {};
-
-  int pid;
-  double px;
-  double py;
-  double pz;
-  double E;
+  int pid = 0;
+  double px = 0.;
+  double py = 0.;
+  double pz = 0.;
+  double E = 0.;
 };
 
 inline std::ostream& operator<<(std::ostream& os, const DISparticle& p) {

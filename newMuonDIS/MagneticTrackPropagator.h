@@ -11,7 +11,8 @@
 #include <utility>
 #include <vector>
 
-#include "TVector3.h"
+#include "Math/Point3D.h"
+#include "Math/Vector3D.h"
 
 class ShipBFieldMap;
 class TGeoManager;
@@ -40,54 +41,61 @@ class MagneticTrackPropagator {
   void SetMuonShieldMinZ(double minimumZ);
   double GetMuonShieldMinZ() const { return fMuonShieldMinZ; }
   // Test a forward trajectory against an axis-aligned detector volume.
-  bool IntersectsBox(double charge, const TVector3& position,
-                     const TVector3& momentum, const TVector3& minimum,
-                     const TVector3& maximum) const;
+  bool IntersectsBox(double charge, const ROOT::Math::XYZPoint& position,
+                     const ROOT::Math::XYZVector& momentum,
+                     const ROOT::Math::XYZPoint& minimum,
+                     const ROOT::Math::XYZPoint& maximum) const;
 
   // Both directions in z are supported, provided pz never changes sign.
   // False means invalid input, a turning track, or failure to converge.
-  bool Extrapolate(double charge, const TVector3& position,
-                   const TVector3& momentum, double z, TVector3& result,
-                   TVector3& resultMomentum) const;
-  bool BuildTrajectory(double charge, const TVector3& position,
-                       const TVector3& momentum, double endZ);
+  bool Extrapolate(double charge, const ROOT::Math::XYZPoint& position,
+                   const ROOT::Math::XYZVector& momentum, double z,
+                   ROOT::Math::XYZPoint& result,
+                   ROOT::Math::XYZVector& resultMomentum) const;
+  bool BuildTrajectory(double charge, const ROOT::Math::XYZPoint& position,
+                       const ROOT::Math::XYZVector& momentum, double endZ);
   // Cubic interpolation of cached positions; never evaluates the field.
-  bool PositionAt(double z, TVector3& position) const;
+  bool PositionAt(double z, ROOT::Math::XYZPoint& position) const;
   std::size_t GetTrajectorySize() const { return fTrajectory.size(); }
-  bool GetTrajectoryState(std::size_t index, TVector3& position,
-                          TVector3& momentum) const;
+  bool GetTrajectoryState(std::size_t index, ROOT::Math::XYZPoint& position,
+                          ROOT::Math::XYZVector& momentum) const;
   // Downstream end of all nonzero interpolation cells, including fringes.
   double GetFieldEndZ(double minimumZ) const;
   // Evaluate the map at the point, including interpolation and fringes.
-  bool HasFieldAt(const TVector3& position) const;
+  bool HasFieldAt(const ROOT::Math::XYZPoint& position) const;
 
  private:
   struct State {
-    TVector3 position;
-    TVector3 momentum;
+    ROOT::Math::XYZPoint position;
+    ROOT::Math::XYZVector momentum;
+  };
+  // d(State)/dz: track slope and momentum change per unit z.
+  struct StateDerivative {
+    ROOT::Math::XYZVector slope;
+    ROOT::Math::XYZVector momentum;
   };
   struct Box {
-    TVector3 minimum, maximum;
+    std::array<double, 3> minimum, maximum;
   };
   struct FieldMap {
     ShipBFieldMap* field;  // Borrowed; the caller owns the map.
     std::vector<Box> regions;
     double gridStep;
   };
-  static bool InsideBox(const TVector3& position, const Box& box);
-  static bool RayBoxInterval(const TVector3& position,
-                             const TVector3& direction, const Box& box,
-                             double& entry, double& exit);
+  static bool InsideBox(const ROOT::Math::XYZPoint& position, const Box& box);
+  static bool RayBoxInterval(const ROOT::Math::XYZPoint& position,
+                             const ROOT::Math::XYZVector& direction,
+                             const Box& box, double& entry, double& exit);
   static bool SegmentIntersectsBox(const State& start, const State& end,
                                    const Box& box);
   void AddFieldMap(ShipBFieldMap* field, double minimumZ) const;
   void EnsureMuonShield(double minimumZ) const;
   bool Derivative(const State& state, double charge, double pzSign,
-                  State& derivative) const;
+                  StateDerivative& derivative) const;
   bool RKStep(const State& state, double charge, double pzSign, double dz,
               State& result) const;
-  bool Propagate(double charge, const TVector3& position,
-                 const TVector3& momentum, double z, State& result,
+  bool Propagate(double charge, const ROOT::Math::XYZPoint& position,
+                 const ROOT::Math::XYZVector& momentum, double z, State& result,
                  std::vector<State>* trajectory,
                  const Box* box = nullptr) const;
   TGeoManager* fGeometry;  //! Borrowed geometry
