@@ -87,7 +87,7 @@ def runTracking(candidates, trackingGeometry, fieldMap, strawHits, fit_vertex=Tr
             iHit.push_back(sign)
 
     measurements = acts.processMeasurements(strawHits, trackingGeometry)
-    acts_index_map = build_acts_index_map(measurements, len(strawHits))
+    acts_index_map = build_acts_index_map(measurements, strawHits)
     # Setup output containers
     output_tracks = acts.examples.TrackContainer()
 
@@ -98,7 +98,7 @@ def runTracking(candidates, trackingGeometry, fieldMap, strawHits, fit_vertex=Tr
         cand["indices"].sort(key=lambda i: strawHits.at(i).at(8))
         # (ACTS measurement index, straw-hit index) pairs: the first is what
         # the fitter reads, the second indexes strawHits for the caller.
-        remapped_indices = align_candidate_indices(cand, acts_index_map, strawHits)
+        remapped_indices = align_candidate_indices(cand, acts_index_map)
 
         filtered_indices = []
         filtered_hit_indices = []
@@ -244,56 +244,63 @@ def calculateSBTDOCA(output_tracks, sbt_digis, trackingGeometry, fieldMap, selec
     return veto_results
 
 
-def build_acts_index_map(measurements, hit_count):
+def straw_geometry_id(hit):
+    """Return the ACTS GeometryIdentifier value of a straw hit.
+
+    This is the numbering of the acts-ship StrawtubeDetector geometry, as
+    SHiPMeasurementProvider assigns it: the whole spectrometer is volume 1,
+    and its layers are numbered consecutively with 16 per station, 4 per view
+    and 2 per layer, offset so that station 1 / view 0 / layer 0 is 2.
     """
-    Builds a lookup table: GeoID Value -> Acts Container Index.
+    station, layer, view, straw = (int(hit[i]) for i in range(1, 5))
+    gid = acts.GeometryIdentifier()
+    gid.volume = 1
+    gid.layer = 16 * station + 4 * view + 2 * layer - 14
+    gid.sensitive = straw
+    return gid.value
+
+
+def match_hits_to_measurements(hit_gids, measurement_gids):
+    """Map straw-hit indices to ACTS measurement indices by geometry ID.
+
+    processMeasurements makes one measurement per straw hit, ordered by
+    surface and, within a surface, in hit order; it drops all hits of a
+    surface it cannot find. So the k-th hit on a straw belongs to the k-th
+    measurement on it. Hits without a measurement are left out.
     """
-    gid_to_idx = defaultdict(list)
-    for i in range(hit_count):
-        gid = acts.getMeasurementGeoId(measurements, i)
-        gid_to_idx[gid.value].append(i)
-    return gid_to_idx
+    measurements_by_gid = defaultdict(list)
+    for index, gid in enumerate(measurement_gids):
+        measurements_by_gid[gid].append(index)
+    hits_by_gid = defaultdict(list)
+    for index, gid in enumerate(hit_gids):
+        hits_by_gid[gid].append(index)
+    hit_to_measurement = {}
+    for gid, hits in hits_by_gid.items():
+        matched = measurements_by_gid.get(gid, [])
+        if matched and len(matched) != len(hits):
+            logger.warning(
+                "Straw with geometry ID %s has %d hits but %d ACTS measurements; skipping them",
+                gid,
+                len(hits),
+                len(matched),
+            )
+            continue
+        hit_to_measurement.update(zip(hits, matched, strict=False))
+    return hit_to_measurement
 
 
-def align_candidate_indices(cand, index_map, strawHits):
-    """Match the straw hits of a candidate to ACTS measurements.
-
-    Return (ACTS measurement index, straw-hit index) pairs. processMeasurements
-    groups hits by surface, so the two indices generally differ.
-    """
-    aligned_indices = []
-
-    for old_idx in cand["indices"]:
-        h = strawHits[old_idx]
-
-        station = int(h[1])
-        layer = int(h[2])
-        view = int(h[3])
-        straw = int(h[4])
-        # ACTS straw layer numbering, as laid out by the acts-ship
-        # StrawtubeDetector geometry: the whole spectrometer is volume 1, and
-        # its layers are numbered consecutively with 16 per station, 4 per view
-        # and 2 per layer, offset so that station 1 / view 0 / layer 0 is 2.
-        acts_layer = 16 * station + 4 * view + 2 * layer - 14
-
-        gid = acts.GeometryIdentifier()
-
+def build_acts_index_map(measurements, strawHits):
+    """Map each straw-hit index to the index of its ACTS measurement."""
+    measurement_gids = []
+    # There is at most one measurement per hit; the container has no len().
+    for index in range(len(strawHits)):
         try:
-            gid.volume = 1
-            gid.layer = acts_layer
-            gid.sensitive = straw
-        except AttributeError:
-            logger.error("Could not set GeometryIdentifier properties in Python.")
-            return []
+            measurement_gids.append(acts.getMeasurementGeoId(measurements, index).value)
+        except IndexError:
+            break
+    return match_hits_to_measurements([straw_geometry_id(hit) for hit in strawHits], measurement_gids)
 
-        target_gid_value = gid.value
 
-        matching_indices = index_map.get(target_gid_value, [])
-        if old_idx in matching_indices:
-            aligned_indices.append((old_idx, old_idx))
-        elif len(matching_indices) == 1:
-            aligned_indices.append((matching_indices[0], old_idx))
-        elif matching_indices:
-            logger.warning("Ambiguous: Straw %d, Layer %d -> Value %d", straw, acts_layer, target_gid_value)
-
-    return aligned_indices
+def align_candidate_indices(cand, hit_to_measurement):
+    """Return (ACTS measurement index, straw-hit index) pairs for a candidate."""
+    return [(hit_to_measurement[index], index) for index in cand["indices"] if index in hit_to_measurement]
