@@ -91,7 +91,7 @@ def load_muon_shield_field(field_maker, geometry_file, field_map=None, field_z=N
     return field, field_path
 
 
-def write_summary(args, file_names, selection, field_path, shield_path):
+def write_summary(args, file_names, selection, field, field_path, shield_field, shield_path):
     """Write the output FileSummary: the input summaries plus this filtering."""
     import file_summary
     import saveBasicParameters
@@ -116,7 +116,16 @@ def write_summary(args, file_names, selection, field_path, shield_path):
         detectorZ=selection.GetDetectorZ() if math.isfinite(selection.GetDetectorZ()) else None,
         geoFile=args.geoFile,
         fieldMap=str(field_path) if field_path else None,
+        # Map z offsets actually used, from the geometry or --field-z overrides.
+        fieldZ=float(field.GetZOffset()) if field else None,
         muonShieldFieldMap=str(shield_path) if shield_path else None,
+        muonShieldFieldZ=float(shield_field.GetZOffset()) if shield_field else None,
+        filterEfficiencyBinning={
+            "x": [*args.filter_efficiency_x_bounds, args.filter_efficiency_x_bins],
+            "y": [*args.filter_efficiency_y_bounds, args.filter_efficiency_y_bins],
+            "z": [*args.filter_efficiency_z_bounds, args.filter_efficiency_z_bins],
+        },
+        detailedHistograms=args.detailed_histograms,
         pythiaDecays=args.pythia_decays,
         pythiaDecaySeed=selection.GetPythiaDecaySeed() if args.pythia_decays else None,
         versions=saveBasicParameters.retrieveGitTags({}),
@@ -366,7 +375,7 @@ def main():
     for name in file_names:
         inputs.push_back(name)
     selection.process_file(inputs, args.outputfile)
-    write_summary(args, file_names, selection, field_path, shield_path)
+    write_summary(args, file_names, selection, field, field_path, shield_field, shield_path)
     wall_seconds = time.perf_counter() - wall_start
     cpu_seconds = time.process_time() - cpu_start
     cpu_percent = 100.0 * cpu_seconds / wall_seconds if wall_seconds else 0.0
