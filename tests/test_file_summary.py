@@ -34,9 +34,16 @@ def test_merge_keeps_legacy_keys_and_input_summaries(tmp_path):
     assert merged["PoT"] == 1500
     assert merged["EnergyCut"] == [0.5, 1.0]
     assert merged["prodSite"] == ["cern"]
-    assert merged["PoTperFile"] == [1000, 500]
+    assert merged["PoTperFile"] == [1000, 500, None]
     assert merged["inputFiles"] == names
     assert merged["inputFileSummaries"] == [fixed_target, simulation, None]
+
+
+def test_pot_per_file_keeps_equal_values(tmp_path):
+    names = [make_file(tmp_path / f"{i}.root", {"PoT": 100}) for i in range(2)]
+    merged = merge_file_summaries(names)
+    assert merged["PoTperFile"] == [100, 100]
+    assert merged["PoT"] == 200
 
 
 def test_merge_accepts_summaries_without_pot(tmp_path):

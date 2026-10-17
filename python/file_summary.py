@@ -54,7 +54,8 @@ def merge_file_summaries(input_files) -> dict[str, Any]:
 
     The result keeps the keys ``run_simScript.py`` has always written (``PoT``,
     ``EnergyCut``, ``prodSite``, ``inputFiles``, ``PoTperFile``, ``date``) and
-    adds ``inputFileSummaries``: the summary of each input file, or None. A
+    adds ``inputFileSummaries``: the summary of each input file, or None.
+    ``PoTperFile`` and ``inputFileSummaries`` line up with ``inputFiles``. A
     missing key in an input summary is skipped, so summaries of other stages
     can be merged too. ``PoT`` describes the input files as a whole, also when
     only part of their entries is processed.
@@ -63,13 +64,17 @@ def merge_file_summaries(input_files) -> dict[str, Any]:
         input_files = [input_files]
     summaries = [read_file_summary(name) for name in input_files]
     found = [summary for summary in summaries if summary is not None]
-    pot = [summary["PoT"] for summary in found if isinstance(summary.get("PoT"), (int, float))]
+    # One entry per input file, None where the file has no PoT.
+    pot_per_file = [
+        summary["PoT"] if summary is not None and isinstance(summary.get("PoT"), (int, float)) else None
+        for summary in summaries
+    ]
     return {
-        "PoT": sum(pot),
+        "PoT": sum(pot for pot in pot_per_file if pot is not None),
         "EnergyCut": _flatten_unique(summary["EnergyCut"] for summary in found if "EnergyCut" in summary),
         "prodSite": _flatten_unique(summary["prodSite"] for summary in found if "prodSite" in summary),
         "inputFiles": [str(name) for name in input_files],
-        "PoTperFile": _flatten_unique(pot),
+        "PoTperFile": pot_per_file,
         "date": datetime.today().strftime("%Y-%m-%d"),
         "inputFileSummaries": summaries,
     }
