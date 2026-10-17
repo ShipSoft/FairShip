@@ -178,6 +178,9 @@ var namespaces_dup =
     [ "configGenieGenerator", "namespaceconfigGenieGenerator.html", [
       [ "config", "namespaceconfigGenieGenerator.html#a6bcca2f64dfe6e1783a59251bb8bacac", null ]
     ] ],
+    [ "conftest", "namespaceconftest.html", [
+      [ "root_with_shipdata", "namespaceconftest.html#ab403d908c73ec825d7749171dbf52e8c", null ]
+    ] ],
     [ "convertEvtCalc", "namespaceconvertEvtCalc.html", [
       [ "check_consistency_infile", "namespaceconvertEvtCalc.html#a8d40f2aa9130a085884c3eb860001f6e", null ],
       [ "convert_file", "namespaceconvertEvtCalc.html#a604c2950656f1d921d56e361f290f9ce", null ],
@@ -1726,22 +1729,6 @@ var namespaces_dup =
       [ "parser", "namespaceshipStrawTracking.html#a6f1c8ab4a8627d83bd87a950231721c6", null ],
       [ "required", "namespaceshipStrawTracking.html#a33f41ada450d677435ffd880e7462d3a", null ]
     ] ],
-    [ "ShipUnit", "namespaceShipUnit.html", [
-      [ "c_light", "namespaceShipUnit.html#aa5c80d1a788735fe9fd41b509583437b", null ],
-      [ "cm", "namespaceShipUnit.html#a265f40d0ffca1af0d38fe9a050c98bcf", null ],
-      [ "gauss", "namespaceShipUnit.html#a334f58e18b995ee78fa96a1c69c0bfba", null ],
-      [ "GeV", "namespaceShipUnit.html#aed43d63d5e6d980f22bc345f7a562011", null ],
-      [ "keV", "namespaceShipUnit.html#ad57422e4724115feacf1cabfb637e3a5", null ],
-      [ "kilogauss", "namespaceShipUnit.html#aeb2434130d4f4fe7921aa564c2965294", null ],
-      [ "km", "namespaceShipUnit.html#a6913b7e3b62fb09e1a1fcdb3a1f7c258", null ],
-      [ "m", "namespaceShipUnit.html#a7b82ae8775009208066598546951dd22", null ],
-      [ "MeV", "namespaceShipUnit.html#a355ccfd81a9820e7e0df4c8f7ca6bbb8", null ],
-      [ "mm", "namespaceShipUnit.html#a644590da60ab4efe07fbda3a260e5407", null ],
-      [ "ns", "namespaceShipUnit.html#ac17805e2154634b45e0493e800208b29", null ],
-      [ "s", "namespaceShipUnit.html#af5da50ee86db44fd81351c6c3a3dcf06", null ],
-      [ "tesla", "namespaceShipUnit.html#adae44b3580098be2b6f2c6d514dc72dd", null ],
-      [ "um", "namespaceShipUnit.html#a19c69dc056a268aa660dfce12af29f39", null ]
-    ] ],
     [ "shipunit", "namespaceshipunit.html", [
       [ "alpha_rcl2", "namespaceshipunit.html#a561928bad4973c63197de654cd92f007", null ],
       [ "ampere", "namespaceshipunit.html#a899bfcfc1e198fac90b788905bcf91b3", null ],
@@ -1888,12 +1875,29 @@ var namespaces_dup =
       [ "watt", "namespaceshipunit.html#a86f9ba53297f60184e521655c576baaf", null ],
       [ "weber", "namespaceshipunit.html#a0ef5d6a33e15f4c4fa62fb17c0bce1b2", null ]
     ] ],
+    [ "ShipUnit", "namespaceShipUnit.html", [
+      [ "c_light", "namespaceShipUnit.html#aa5c80d1a788735fe9fd41b509583437b", null ],
+      [ "cm", "namespaceShipUnit.html#a265f40d0ffca1af0d38fe9a050c98bcf", null ],
+      [ "gauss", "namespaceShipUnit.html#a334f58e18b995ee78fa96a1c69c0bfba", null ],
+      [ "GeV", "namespaceShipUnit.html#aed43d63d5e6d980f22bc345f7a562011", null ],
+      [ "keV", "namespaceShipUnit.html#ad57422e4724115feacf1cabfb637e3a5", null ],
+      [ "kilogauss", "namespaceShipUnit.html#aeb2434130d4f4fe7921aa564c2965294", null ],
+      [ "km", "namespaceShipUnit.html#a6913b7e3b62fb09e1a1fcdb3a1f7c258", null ],
+      [ "m", "namespaceShipUnit.html#a7b82ae8775009208066598546951dd22", null ],
+      [ "MeV", "namespaceShipUnit.html#a355ccfd81a9820e7e0df4c8f7ca6bbb8", null ],
+      [ "mm", "namespaceShipUnit.html#a644590da60ab4efe07fbda3a260e5407", null ],
+      [ "ns", "namespaceShipUnit.html#ac17805e2154634b45e0493e800208b29", null ],
+      [ "s", "namespaceShipUnit.html#af5da50ee86db44fd81351c6c3a3dcf06", null ],
+      [ "tesla", "namespaceShipUnit.html#adae44b3580098be2b6f2c6d514dc72dd", null ],
+      [ "um", "namespaceShipUnit.html#a19c69dc056a268aa660dfce12af29f39", null ]
+    ] ],
     [ "shipVertex", "namespaceshipVertex.html", "namespaceshipVertex" ],
     [ "shipVeto", "namespaceshipVeto.html", "namespaceshipVeto" ],
     [ "SiliconTargetDetector", "namespaceSiliconTargetDetector.html", "namespaceSiliconTargetDetector" ],
     [ "skim_muonback_smoke", "namespaceskim__muonback__smoke.html", [
       [ "main", "namespaceskim__muonback__smoke.html#acd265e66314c1a63a4f8d835f99a00f0", null ]
     ] ],
+    [ "split_provenance", "namespacesplit__provenance.html", "namespacesplit__provenance" ],
     [ "split_weight_uncertainties", "namespacesplit__weight__uncertainties.html", [
       [ "log_edges", "namespacesplit__weight__uncertainties.html#acbb3b44341381f4f2e1b333b1711de44", null ],
       [ "main", "namespacesplit__weight__uncertainties.html#a35bba978ee4e1cae1e7bdd8371d4f4ac", null ],
@@ -1912,7 +1916,7 @@ var namespaces_dup =
       [ "correlated_sample", "namespacetest__event__histogram.html#a412d8d079290903a55507df1ceade99b", null ],
       [ "fill", "namespacetest__event__histogram.html#a36f39f9bf878fdda6f0624b6c1b106a7", null ],
       [ "fill_cpp", "namespacetest__event__histogram.html#a7df49286ed831780dbd431ca3eceaff3", null ],
-      [ "root_with_shipdata", "namespacetest__event__histogram.html#a4538cbd263e6187d97221e41f3217ada", null ],
+      [ "root_with_shipdata", "namespacetest__event__histogram.html#af84057bbcd790c4a55c51ac589b3237c", null ],
       [ "state", "namespacetest__event__histogram.html#a2d0b11f1b378a771928b160b98e1e172", null ],
       [ "test_bootstrap_reproduces_errors", "namespacetest__event__histogram.html#af74c7a6bdf611a50cde3665195093026", null ],
       [ "test_covariance_diagonal_is_variance", "namespacetest__event__histogram.html#aec811b3738292443644c1d97e2fd462b", null ],
@@ -1985,6 +1989,21 @@ var namespaces_dup =
       [ "SIMULATED_Z", "namespacetest__mudis__postprocessing.html#aa879d04453cd82dd4e17088918e2f9e0", null ]
     ] ],
     [ "test_signal_particle", "namespacetest__signal__particle.html", "namespacetest__signal__particle" ],
+    [ "test_split_provenance", "namespacetest__split__provenance.html", [
+      [ "_desplit_rates", "namespacetest__split__provenance.html#a5ab9d074fc57591948137c93566d75f1", null ],
+      [ "event", "namespacetest__split__provenance.html#a0dfcae32f95d361d645257c6b37cb510", null ],
+      [ "synthetic_event", "namespacetest__split__provenance.html#a443cd267a016c07b04a416b5a1a2bf45", null ],
+      [ "test_alternatives_of_one_decay_are_incompatible", "namespacetest__split__provenance.html#adb63fec9ba8e03a9356dabe8d8f96bab", null ],
+      [ "test_decay_versus_survivor_line_follows_time", "namespacetest__split__provenance.html#a2bc22a5758a4e9673cc75d76eccccbfd", null ],
+      [ "test_desplit_is_reproducible", "namespacetest__split__provenance.html#a745b2c1093855638c133abc26e7f2092", null ],
+      [ "test_desplit_reproduces_weights_and_pair_weights", "namespacetest__split__provenance.html#a2eaf2ad5ae17c4e156d04a751abb5692", null ],
+      [ "test_from_tracks_reads_ship_mc_track", "namespacetest__split__provenance.html#a28a356bd5ba08013d3557d41b0b5d5b0", null ],
+      [ "test_independent_splits_and_siblings_are_compatible", "namespacetest__split__provenance.html#a9f45e38205df4d44c518bc6310b70418", null ],
+      [ "test_pair_weights_by_hand", "namespacetest__split__provenance.html#a51071a056c2f2a9d3592b4b1099f3190", null ],
+      [ "test_pruning_does_not_change_the_answer", "namespacetest__split__provenance.html#abc4de2e78fdad5f4c901949f9c80bb49", null ],
+      [ "G4", "namespacetest__split__provenance.html#a693a413e0f44dbcba32ddae90e26de30", null ],
+      [ "PRUNED", "namespacetest__split__provenance.html#a32ae21fa0c40d77990c37ffe8f999f46", null ]
+    ] ],
     [ "timeDetector", "namespacetimeDetector.html", "namespacetimeDetector" ],
     [ "TrackExtrapolateTool", "namespaceTrackExtrapolateTool.html", [
       [ "cmp", "namespaceTrackExtrapolateTool.html#ab8db142297238572f1496a88dcb73c28", null ],

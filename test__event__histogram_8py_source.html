@@ -275,96 +275,93 @@ $(document).ready(function(){initNavTree('test__event__histogram_8py_source.html
 <div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>    <span class="keyword">assert</span> h.sum_t[-1] == pytest.approx(2.0)</div>
 <div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span> </div>
 <div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span> </div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span><span class="comment"># Module scope: loading libShipData a second time crashes in ROOT 6.40.</span></div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span><span class="preprocessor">@pytest.fixture(scope=&quot;module&quot;)</span></div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span><span class="preprocessor">@pytest.fixture(scope=&quot;module&quot;)</span></div>
 </div>
-<div class="foldopen" id="foldopen00152" data-start="" data-end="">
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno"><a class="line" href="namespacetest__event__histogram.html#a4538cbd263e6187d97221e41f3217ada">  152</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacetest__event__histogram.html#a4538cbd263e6187d97221e41f3217ada">root_with_shipdata</a>():</div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>    ROOT = pytest.importorskip(<span class="stringliteral">&quot;ROOT&quot;</span>)</div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>    <span class="keywordflow">if</span> ROOT.gSystem.Load(<span class="stringliteral">&quot;libShipData&quot;</span>) &lt; 0 <span class="keywordflow">or</span> <span class="keywordflow">not</span> hasattr(ROOT, <span class="stringliteral">&quot;EventHistogram&quot;</span>):</div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>        pytest.skip(<span class="stringliteral">&quot;libShipData with EventHistogram not available&quot;</span>)</div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>    <span class="keywordflow">return</span> ROOT</div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span> </div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span> </div>
+<div class="foldopen" id="foldopen00151" data-start="" data-end="">
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno"><a class="line" href="namespacetest__event__histogram.html#af84057bbcd790c4a55c51ac589b3237c">  151</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacetest__event__histogram.html#af84057bbcd790c4a55c51ac589b3237c">root_with_shipdata</a>(root_with_shipdata):</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> hasattr(root_with_shipdata, <span class="stringliteral">&quot;EventHistogram&quot;</span>):</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>        pytest.skip(<span class="stringliteral">&quot;libShipData with EventHistogram not available&quot;</span>)</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>    <span class="keywordflow">return</span> root_with_shipdata</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span> </div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span> </div>
 </div>
-<div class="foldopen" id="foldopen00159" data-start="" data-end="">
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno"><a class="line" href="namespacetest__event__histogram.html#a6f8c14af93f4ca36660c12c6f46828e8">  159</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacetest__event__histogram.html#a6f8c14af93f4ca36660c12c6f46828e8">test_root_round_trip_and_cpp_agree</a>(root_with_shipdata, tmp_path):</div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>    ROOT = root_with_shipdata</div>
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>    events = <a class="code hl_function" href="namespacetest__event__histogram.html#a412d8d079290903a55507df1ceade99b">correlated_sample</a>(7, 2000)</div>
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>    h = <a class="code hl_class" href="classevent__histogram_1_1EventHistogram.html">EventHistogram</a>(<span class="stringliteral">&quot;x&quot;</span>, EDGES, covariance=<span class="keyword">True</span>, n_replicas=20)</div>
-<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>    <a class="code hl_function" href="namespacetest__event__histogram.html#a36f39f9bf878fdda6f0624b6c1b106a7">fill</a>(h, events)</div>
-<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>    cpp = ROOT.EventHistogram(<span class="stringliteral">&quot;x&quot;</span>, <span class="stringliteral">&quot;&quot;</span>, len(EDGES) - 1, 0.0, 10.0, <span class="keyword">True</span>, 20)</div>
-<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>    <a class="code hl_function" href="namespacetest__event__histogram.html#a7df49286ed831780dbd431ca3eceaff3">fill_cpp</a>(cpp, events)</div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>    result = cpp.MakeResult()</div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>    <span class="keyword">assert</span> [result.GetBinContent(b) <span class="keywordflow">for</span> b <span class="keywordflow">in</span> range(1, 11)] == pytest.approx(h.values())</div>
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>    <span class="keyword">assert</span> [result.GetBinError(b) <span class="keywordflow">for</span> b <span class="keywordflow">in</span> range(1, 11)] == pytest.approx(h.errors())</div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>    <span class="keyword">assert</span> list(cpp.GetBootstrapErrors()) == pytest.approx(h.bootstrap_errors())</div>
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>    <span class="keywordflow">for</span> key <span class="keywordflow">in</span> (0, 1, make_event_key(7, 123456)):</div>
-<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>        <span class="keyword">assert</span> [cpp.ReplicaWeight(key, r) <span class="keywordflow">for</span> r <span class="keywordflow">in</span> range(30)] == list(replica_weights(key, 30))</div>
-<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span> </div>
-<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>    <span class="comment"># Python writes, C++ reads; C++ writes, Python reads.</span></div>
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>    path = str(tmp_path / <span class="stringliteral">&quot;eh.root&quot;</span>)</div>
-<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>    f = ROOT.TFile(path, <span class="stringliteral">&quot;RECREATE&quot;</span>)</div>
-<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>    h.to_root(f)</div>
-<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>    f.Close()</div>
-<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>    f = ROOT.TFile(path)</div>
-<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>    back = ROOT.EventHistogram.Read(f, <span class="stringliteral">&quot;x&quot;</span>)</div>
-<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>    <span class="keyword">assert</span> back.GetNEvents() == h.n_events</div>
-<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>    res = back.MakeResult()</div>
-<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>    <span class="keyword">assert</span> [res.GetBinError(b) <span class="keywordflow">for</span> b <span class="keywordflow">in</span> range(1, 11)] == pytest.approx(h.errors())</div>
-<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>    f.Close()</div>
-<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>    path2 = str(tmp_path / <span class="stringliteral">&quot;eh_cpp.root&quot;</span>)</div>
-<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>    f = ROOT.TFile(path2, <span class="stringliteral">&quot;RECREATE&quot;</span>)</div>
-<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>    cpp.Write(f)</div>
-<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>    f.Close()</div>
-<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>    f = ROOT.TFile(path2)</div>
-<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>    again = EventHistogram.from_root(f, <span class="stringliteral">&quot;x&quot;</span>)</div>
-<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>    <span class="keyword">assert</span> again.errors() == pytest.approx(h.errors())</div>
-<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>    <span class="keyword">assert</span> again.covariance() == pytest.approx(h.covariance())</div>
-<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>    f.Close()</div>
-<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span> </div>
-<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>    <span class="comment"># Both refuse an incompatible merge and an open event.</span></div>
-<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>    other = ROOT.EventHistogram(<span class="stringliteral">&quot;x&quot;</span>, <span class="stringliteral">&quot;&quot;</span>, len(EDGES) - 1, 0.0, 10.0, <span class="keyword">False</span>, 20)</div>
-<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>    <span class="keyword">with</span> pytest.raises(Exception, match=<span class="stringliteral">&quot;covariance&quot;</span>):</div>
-<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>        cpp.Add(other)</div>
-<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>    other.Fill(1.0)</div>
-<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>    <span class="keyword">with</span> pytest.raises(Exception, match=<span class="stringliteral">&quot;open event&quot;</span>):</div>
-<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>        other.MakeResult()</div>
-<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span> </div>
-<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span> </div>
+<div class="foldopen" id="foldopen00157" data-start="" data-end="">
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno"><a class="line" href="namespacetest__event__histogram.html#a6f8c14af93f4ca36660c12c6f46828e8">  157</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacetest__event__histogram.html#a6f8c14af93f4ca36660c12c6f46828e8">test_root_round_trip_and_cpp_agree</a>(root_with_shipdata, tmp_path):</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>    ROOT = root_with_shipdata</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>    events = <a class="code hl_function" href="namespacetest__event__histogram.html#a412d8d079290903a55507df1ceade99b">correlated_sample</a>(7, 2000)</div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>    h = <a class="code hl_class" href="classevent__histogram_1_1EventHistogram.html">EventHistogram</a>(<span class="stringliteral">&quot;x&quot;</span>, EDGES, covariance=<span class="keyword">True</span>, n_replicas=20)</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>    <a class="code hl_function" href="namespacetest__event__histogram.html#a36f39f9bf878fdda6f0624b6c1b106a7">fill</a>(h, events)</div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>    cpp = ROOT.EventHistogram(<span class="stringliteral">&quot;x&quot;</span>, <span class="stringliteral">&quot;&quot;</span>, len(EDGES) - 1, 0.0, 10.0, <span class="keyword">True</span>, 20)</div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>    <a class="code hl_function" href="namespacetest__event__histogram.html#a7df49286ed831780dbd431ca3eceaff3">fill_cpp</a>(cpp, events)</div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>    result = cpp.MakeResult()</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>    <span class="keyword">assert</span> [result.GetBinContent(b) <span class="keywordflow">for</span> b <span class="keywordflow">in</span> range(1, 11)] == pytest.approx(h.values())</div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>    <span class="keyword">assert</span> [result.GetBinError(b) <span class="keywordflow">for</span> b <span class="keywordflow">in</span> range(1, 11)] == pytest.approx(h.errors())</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>    <span class="keyword">assert</span> list(cpp.GetBootstrapErrors()) == pytest.approx(h.bootstrap_errors())</div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>    <span class="keywordflow">for</span> key <span class="keywordflow">in</span> (0, 1, make_event_key(7, 123456)):</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>        <span class="keyword">assert</span> [cpp.ReplicaWeight(key, r) <span class="keywordflow">for</span> r <span class="keywordflow">in</span> range(30)] == list(replica_weights(key, 30))</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span> </div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>    <span class="comment"># Python writes, C++ reads; C++ writes, Python reads.</span></div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>    path = str(tmp_path / <span class="stringliteral">&quot;eh.root&quot;</span>)</div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>    f = ROOT.TFile(path, <span class="stringliteral">&quot;RECREATE&quot;</span>)</div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>    h.to_root(f)</div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>    f.Close()</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>    f = ROOT.TFile(path)</div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>    back = ROOT.EventHistogram.Read(f, <span class="stringliteral">&quot;x&quot;</span>)</div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>    <span class="keyword">assert</span> back.GetNEvents() == h.n_events</div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>    res = back.MakeResult()</div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>    <span class="keyword">assert</span> [res.GetBinError(b) <span class="keywordflow">for</span> b <span class="keywordflow">in</span> range(1, 11)] == pytest.approx(h.errors())</div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>    f.Close()</div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>    path2 = str(tmp_path / <span class="stringliteral">&quot;eh_cpp.root&quot;</span>)</div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>    f = ROOT.TFile(path2, <span class="stringliteral">&quot;RECREATE&quot;</span>)</div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>    cpp.Write(f)</div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>    f.Close()</div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>    f = ROOT.TFile(path2)</div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>    again = EventHistogram.from_root(f, <span class="stringliteral">&quot;x&quot;</span>)</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>    <span class="keyword">assert</span> again.errors() == pytest.approx(h.errors())</div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>    <span class="keyword">assert</span> again.covariance() == pytest.approx(h.covariance())</div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>    f.Close()</div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span> </div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>    <span class="comment"># Both refuse an incompatible merge and an open event.</span></div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>    other = ROOT.EventHistogram(<span class="stringliteral">&quot;x&quot;</span>, <span class="stringliteral">&quot;&quot;</span>, len(EDGES) - 1, 0.0, 10.0, <span class="keyword">False</span>, 20)</div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>    <span class="keyword">with</span> pytest.raises(Exception, match=<span class="stringliteral">&quot;covariance&quot;</span>):</div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>        cpp.Add(other)</div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>    other.Fill(1.0)</div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>    <span class="keyword">with</span> pytest.raises(Exception, match=<span class="stringliteral">&quot;open event&quot;</span>):</div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>        other.MakeResult()</div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span> </div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span> </div>
 </div>
-<div class="foldopen" id="foldopen00203" data-start="" data-end="">
-<div class="line"><a id="l00203" name="l00203"></a><span class="lineno"><a class="line" href="namespacetest__event__histogram.html#a8ee1102e7232d50679ffffaa88984f63">  203</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacetest__event__histogram.html#a8ee1102e7232d50679ffffaa88984f63">test_hadd_of_different_settings_is_refused</a>(root_with_shipdata, tmp_path):</div>
-<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>    ROOT = root_with_shipdata</div>
-<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>    paths = []</div>
-<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>    <span class="keywordflow">for</span> i, covariance <span class="keywordflow">in</span> enumerate((<span class="keyword">True</span>, <span class="keyword">False</span>)):</div>
-<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>        h = <a class="code hl_class" href="classevent__histogram_1_1EventHistogram.html">EventHistogram</a>(<span class="stringliteral">&quot;x&quot;</span>, EDGES, covariance=covariance)</div>
-<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>        <a class="code hl_function" href="namespacetest__event__histogram.html#a36f39f9bf878fdda6f0624b6c1b106a7">fill</a>(h, <a class="code hl_function" href="namespacetest__event__histogram.html#a412d8d079290903a55507df1ceade99b">correlated_sample</a>(8 + i, 200), run=i)</div>
-<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>        paths.append(str(tmp_path / f<span class="stringliteral">&quot;part{i}.root&quot;</span>))</div>
-<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>        f = ROOT.TFile(paths[-1], <span class="stringliteral">&quot;RECREATE&quot;</span>)</div>
-<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>        h.to_root(f)</div>
-<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>        f.Close()</div>
-<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>    merged = str(tmp_path / <span class="stringliteral">&quot;merged.root&quot;</span>)</div>
-<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>    merger = ROOT.TFileMerger(<span class="keyword">False</span>)</div>
-<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>    merger.OutputFile(merged, <span class="stringliteral">&quot;RECREATE&quot;</span>)</div>
-<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>    <span class="keywordflow">for</span> path <span class="keywordflow">in</span> paths:</div>
-<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>        merger.AddFile(path)</div>
-<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>    <span class="keyword">assert</span> merger.Merge()</div>
-<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>    f = ROOT.TFile(merged)</div>
-<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>    <span class="keyword">with</span> pytest.raises(ValueError, match=<span class="stringliteral">&quot;different settings&quot;</span>):</div>
-<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>        EventHistogram.from_root(f, <span class="stringliteral">&quot;x&quot;</span>)</div>
-<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>    <span class="keyword">assert</span> <span class="keywordflow">not</span> ROOT.EventHistogram.Read(f, <span class="stringliteral">&quot;x&quot;</span>)</div>
-<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>    f.Close()</div>
+<div class="foldopen" id="foldopen00201" data-start="" data-end="">
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno"><a class="line" href="namespacetest__event__histogram.html#a8ee1102e7232d50679ffffaa88984f63">  201</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacetest__event__histogram.html#a8ee1102e7232d50679ffffaa88984f63">test_hadd_of_different_settings_is_refused</a>(root_with_shipdata, tmp_path):</div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>    ROOT = root_with_shipdata</div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>    paths = []</div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>    <span class="keywordflow">for</span> i, covariance <span class="keywordflow">in</span> enumerate((<span class="keyword">True</span>, <span class="keyword">False</span>)):</div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>        h = <a class="code hl_class" href="classevent__histogram_1_1EventHistogram.html">EventHistogram</a>(<span class="stringliteral">&quot;x&quot;</span>, EDGES, covariance=covariance)</div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>        <a class="code hl_function" href="namespacetest__event__histogram.html#a36f39f9bf878fdda6f0624b6c1b106a7">fill</a>(h, <a class="code hl_function" href="namespacetest__event__histogram.html#a412d8d079290903a55507df1ceade99b">correlated_sample</a>(8 + i, 200), run=i)</div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>        paths.append(str(tmp_path / f<span class="stringliteral">&quot;part{i}.root&quot;</span>))</div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>        f = ROOT.TFile(paths[-1], <span class="stringliteral">&quot;RECREATE&quot;</span>)</div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>        h.to_root(f)</div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>        f.Close()</div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>    merged = str(tmp_path / <span class="stringliteral">&quot;merged.root&quot;</span>)</div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>    merger = ROOT.TFileMerger(<span class="keyword">False</span>)</div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>    merger.OutputFile(merged, <span class="stringliteral">&quot;RECREATE&quot;</span>)</div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>    <span class="keywordflow">for</span> path <span class="keywordflow">in</span> paths:</div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>        merger.AddFile(path)</div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>    <span class="keyword">assert</span> merger.Merge()</div>
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>    f = ROOT.TFile(merged)</div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>    <span class="keyword">with</span> pytest.raises(ValueError, match=<span class="stringliteral">&quot;different settings&quot;</span>):</div>
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>        EventHistogram.from_root(f, <span class="stringliteral">&quot;x&quot;</span>)</div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>    <span class="keyword">assert</span> <span class="keywordflow">not</span> ROOT.EventHistogram.Read(f, <span class="stringliteral">&quot;x&quot;</span>)</div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>    f.Close()</div>
 </div>
 <div class="ttc" id="aclassevent__histogram_1_1EventHistogram_html"><div class="ttname"><a href="classevent__histogram_1_1EventHistogram.html">event_histogram.EventHistogram</a></div><div class="ttdef"><b>Definition</b> <a href="event__histogram_8py_source.html#l00093">event_histogram.py:93</a></div></div>
 <div class="ttc" id="anamespacetest__event__histogram_html_a087d1c4f8d17d0f325df74772971903c"><div class="ttname"><a href="namespacetest__event__histogram.html#a087d1c4f8d17d0f325df74772971903c">test_event_histogram.test_naive_error_is_too_small_for_clones</a></div><div class="ttdeci">test_naive_error_is_too_small_for_clones()</div><div class="ttdef"><b>Definition</b> <a href="test__event__histogram_8py_source.html#l00056">test_event_histogram.py:56</a></div></div>
 <div class="ttc" id="anamespacetest__event__histogram_html_a2d0b11f1b378a771928b160b98e1e172"><div class="ttname"><a href="namespacetest__event__histogram.html#a2d0b11f1b378a771928b160b98e1e172">test_event_histogram.state</a></div><div class="ttdeci">state(h)</div><div class="ttdef"><b>Definition</b> <a href="test__event__histogram_8py_source.html#l00079">test_event_histogram.py:79</a></div></div>
 <div class="ttc" id="anamespacetest__event__histogram_html_a36f39f9bf878fdda6f0624b6c1b106a7"><div class="ttname"><a href="namespacetest__event__histogram.html#a36f39f9bf878fdda6f0624b6c1b106a7">test_event_histogram.fill</a></div><div class="ttdeci">fill(h, events, run=1)</div><div class="ttdef"><b>Definition</b> <a href="test__event__histogram_8py_source.html#l00024">test_event_histogram.py:24</a></div></div>
 <div class="ttc" id="anamespacetest__event__histogram_html_a412d8d079290903a55507df1ceade99b"><div class="ttname"><a href="namespacetest__event__histogram.html#a412d8d079290903a55507df1ceade99b">test_event_histogram.correlated_sample</a></div><div class="ttdeci">correlated_sample(seed, n_events, p_active=0.3, n_clones=20)</div><div class="ttdef"><b>Definition</b> <a href="test__event__histogram_8py_source.html#l00011">test_event_histogram.py:11</a></div></div>
-<div class="ttc" id="anamespacetest__event__histogram_html_a4538cbd263e6187d97221e41f3217ada"><div class="ttname"><a href="namespacetest__event__histogram.html#a4538cbd263e6187d97221e41f3217ada">test_event_histogram.root_with_shipdata</a></div><div class="ttdeci">root_with_shipdata()</div><div class="ttdef"><b>Definition</b> <a href="test__event__histogram_8py_source.html#l00152">test_event_histogram.py:152</a></div></div>
-<div class="ttc" id="anamespacetest__event__histogram_html_a6f8c14af93f4ca36660c12c6f46828e8"><div class="ttname"><a href="namespacetest__event__histogram.html#a6f8c14af93f4ca36660c12c6f46828e8">test_event_histogram.test_root_round_trip_and_cpp_agree</a></div><div class="ttdeci">test_root_round_trip_and_cpp_agree(root_with_shipdata, tmp_path)</div><div class="ttdef"><b>Definition</b> <a href="test__event__histogram_8py_source.html#l00159">test_event_histogram.py:159</a></div></div>
+<div class="ttc" id="anamespacetest__event__histogram_html_a6f8c14af93f4ca36660c12c6f46828e8"><div class="ttname"><a href="namespacetest__event__histogram.html#a6f8c14af93f4ca36660c12c6f46828e8">test_event_histogram.test_root_round_trip_and_cpp_agree</a></div><div class="ttdeci">test_root_round_trip_and_cpp_agree(root_with_shipdata, tmp_path)</div><div class="ttdef"><b>Definition</b> <a href="test__event__histogram_8py_source.html#l00157">test_event_histogram.py:157</a></div></div>
 <div class="ttc" id="anamespacetest__event__histogram_html_a7df49286ed831780dbd431ca3eceaff3"><div class="ttname"><a href="namespacetest__event__histogram.html#a7df49286ed831780dbd431ca3eceaff3">test_event_histogram.fill_cpp</a></div><div class="ttdeci">fill_cpp(h, events, run=1)</div><div class="ttdef"><b>Definition</b> <a href="test__event__histogram_8py_source.html#l00032">test_event_histogram.py:32</a></div></div>
-<div class="ttc" id="anamespacetest__event__histogram_html_a8ee1102e7232d50679ffffaa88984f63"><div class="ttname"><a href="namespacetest__event__histogram.html#a8ee1102e7232d50679ffffaa88984f63">test_event_histogram.test_hadd_of_different_settings_is_refused</a></div><div class="ttdeci">test_hadd_of_different_settings_is_refused(root_with_shipdata, tmp_path)</div><div class="ttdef"><b>Definition</b> <a href="test__event__histogram_8py_source.html#l00203">test_event_histogram.py:203</a></div></div>
+<div class="ttc" id="anamespacetest__event__histogram_html_a8ee1102e7232d50679ffffaa88984f63"><div class="ttname"><a href="namespacetest__event__histogram.html#a8ee1102e7232d50679ffffaa88984f63">test_event_histogram.test_hadd_of_different_settings_is_refused</a></div><div class="ttdeci">test_hadd_of_different_settings_is_refused(root_with_shipdata, tmp_path)</div><div class="ttdef"><b>Definition</b> <a href="test__event__histogram_8py_source.html#l00201">test_event_histogram.py:201</a></div></div>
 <div class="ttc" id="anamespacetest__event__histogram_html_aa457cc8a82785dbb2f92673de73aa5dc"><div class="ttname"><a href="namespacetest__event__histogram.html#aa457cc8a82785dbb2f92673de73aa5dc">test_event_histogram.test_no_events_gives_zeros</a></div><div class="ttdeci">test_no_events_gives_zeros()</div><div class="ttdef"><b>Definition</b> <a href="test__event__histogram_8py_source.html#l00108">test_event_histogram.py:108</a></div></div>
 <div class="ttc" id="anamespacetest__event__histogram_html_ab536b70c60b8efec49d403fa789351cd"><div class="ttname"><a href="namespacetest__event__histogram.html#ab536b70c60b8efec49d403fa789351cd">test_event_histogram.test_open_event_is_an_error</a></div><div class="ttdeci">test_open_event_is_an_error()</div><div class="ttdef"><b>Definition</b> <a href="test__event__histogram_8py_source.html#l00135">test_event_histogram.py:135</a></div></div>
 <div class="ttc" id="anamespacetest__event__histogram_html_acb26eeced2b101934fd950f4ba9c2c54"><div class="ttname"><a href="namespacetest__event__histogram.html#acb26eeced2b101934fd950f4ba9c2c54">test_event_histogram.test_flows_are_kept_out_of_range</a></div><div class="ttdeci">test_flows_are_kept_out_of_range()</div><div class="ttdef"><b>Definition</b> <a href="test__event__histogram_8py_source.html#l00142">test_event_histogram.py:142</a></div></div>
@@ -375,6 +372,7 @@ $(document).ready(function(){initNavTree('test__event__histogram_8py_source.html
 <div class="ttc" id="anamespacetest__event__histogram_html_aebeb3b39336236b36a6f24a922dc63d2"><div class="ttname"><a href="namespacetest__event__histogram.html#aebeb3b39336236b36a6f24a922dc63d2">test_event_histogram.test_incompatible_merge_is_refused</a></div><div class="ttdeci">test_incompatible_merge_is_refused(kwargs)</div><div class="ttdef"><b>Definition</b> <a href="test__event__histogram_8py_source.html#l00089">test_event_histogram.py:89</a></div></div>
 <div class="ttc" id="anamespacetest__event__histogram_html_aec811b3738292443644c1d97e2fd462b"><div class="ttname"><a href="namespacetest__event__histogram.html#aec811b3738292443644c1d97e2fd462b">test_event_histogram.test_covariance_diagonal_is_variance</a></div><div class="ttdeci">test_covariance_diagonal_is_variance()</div><div class="ttdef"><b>Definition</b> <a href="test__event__histogram_8py_source.html#l00116">test_event_histogram.py:116</a></div></div>
 <div class="ttc" id="anamespacetest__event__histogram_html_af74c7a6bdf611a50cde3665195093026"><div class="ttname"><a href="namespacetest__event__histogram.html#af74c7a6bdf611a50cde3665195093026">test_event_histogram.test_bootstrap_reproduces_errors</a></div><div class="ttdeci">test_bootstrap_reproduces_errors()</div><div class="ttdef"><b>Definition</b> <a href="test__event__histogram_8py_source.html#l00122">test_event_histogram.py:122</a></div></div>
+<div class="ttc" id="anamespacetest__event__histogram_html_af84057bbcd790c4a55c51ac589b3237c"><div class="ttname"><a href="namespacetest__event__histogram.html#af84057bbcd790c4a55c51ac589b3237c">test_event_histogram.root_with_shipdata</a></div><div class="ttdeci">root_with_shipdata(root_with_shipdata)</div><div class="ttdef"><b>Definition</b> <a href="test__event__histogram_8py_source.html#l00151">test_event_histogram.py:151</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

@@ -3,7 +3,7 @@ var test__event__histogram_8py =
     [ "correlated_sample", "test__event__histogram_8py.html#a412d8d079290903a55507df1ceade99b", null ],
     [ "fill", "test__event__histogram_8py.html#a36f39f9bf878fdda6f0624b6c1b106a7", null ],
     [ "fill_cpp", "test__event__histogram_8py.html#a7df49286ed831780dbd431ca3eceaff3", null ],
-    [ "root_with_shipdata", "test__event__histogram_8py.html#a4538cbd263e6187d97221e41f3217ada", null ],
+    [ "root_with_shipdata", "test__event__histogram_8py.html#af84057bbcd790c4a55c51ac589b3237c", null ],
     [ "state", "test__event__histogram_8py.html#a2d0b11f1b378a771928b160b98e1e172", null ],
     [ "test_bootstrap_reproduces_errors", "test__event__histogram_8py.html#af74c7a6bdf611a50cde3665195093026", null ],
     [ "test_covariance_diagonal_is_variance", "test__event__histogram_8py.html#aec811b3738292443644c1d97e2fd462b", null ],

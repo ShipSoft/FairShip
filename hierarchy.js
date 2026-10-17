@@ -1,5 +1,6 @@
 var hierarchy =
 [
+    [ "split_provenance._Link", "classsplit__provenance_1_1__Link.html", null ],
     [ "AbsBField", null, [
       [ "genfit::FairShipFields", "classgenfit_1_1FairShipFields.html", null ]
     ] ],
@@ -10,6 +11,7 @@ var hierarchy =
     [ "hnl.constants", "classhnl_1_1constants.html", null ],
     [ "rpvsusy.constants", "classrpvsusy_1_1constants.html", null ],
     [ "darkphoton.DarkPhoton", "classdarkphoton_1_1DarkPhoton.html", null ],
+    [ "split_provenance.Desplit", "classsplit__provenance_1_1Desplit.html", null ],
     [ "dict", null, [
       [ "ShipGeoConfig.AttrDict", "classShipGeoConfig_1_1AttrDict.html", [
         [ "ShipGeoConfig.Config", "classShipGeoConfig_1_1Config.html", null ]
@@ -176,6 +178,8 @@ var hierarchy =
     [ "experimental.analysis_toolkit.selection_check", "classexperimental_1_1analysis__toolkit_1_1selection__check.html", null ],
     [ "shipDigiReco.ShipDigiReco", "classshipDigiReco_1_1ShipDigiReco.html", null ],
     [ "makeCascadePythia8.SignalEvents", "classmakeCascadePythia8_1_1SignalEvents.html", null ],
+    [ "ShipStack::SplitInfo", "structShipStack_1_1SplitInfo.html", null ],
+    [ "split_provenance.SplitProvenance", "classsplit__provenance_1_1SplitProvenance.html", null ],
     [ "MagneticTrackPropagator::State", "structMagneticTrackPropagator_1_1State.html", null ],
     [ "shipVertex.Task", "classshipVertex_1_1Task.html", null ],
     [ "shipVeto.Task", "classshipVeto_1_1Task.html", null ],
@@ -208,6 +212,7 @@ var hierarchy =
       [ "TEvtGenDecayer", "classTEvtGenDecayer.html", null ]
     ] ],
     [ "Veto", "classVeto.html", null ],
+    [ "exitHadronAbsorber::WeightHistory", "structexitHadronAbsorber_1_1WeightHistory.html", null ],
     [ "ABC", null, [
       [ "BaseDetector.BaseDetector", "classBaseDetector_1_1BaseDetector.html", [
         [ "MTCDetector.MTCDetector", "classMTCDetector_1_1MTCDetector.html", null ],

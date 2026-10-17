@@ -1,5 +1,6 @@
 var classShipStack =
 [
+    [ "SplitInfo", "structShipStack_1_1SplitInfo.html", "structShipStack_1_1SplitInfo" ],
     [ "ShipStack", "classShipStack.html#afedd004c79e0aeab913d4b279a3756e3", null ],
     [ "~ShipStack", "classShipStack.html#a56672a32bd10fec597f73b081d17721f", null ],
     [ "ShipStack", "classShipStack.html#acb14dc912ecb572365e033ce6a2a2bab", null ],
@@ -26,6 +27,7 @@ var classShipStack =
     [ "SetCurrentTrack", "classShipStack.html#a345711e8f7c76e08aaa7716b9ec2fca9", null ],
     [ "SetEnergyCut", "classShipStack.html#ad75c5603b926d9741c4fdcf3c3757943", null ],
     [ "SetMinPoints", "classShipStack.html#ad2ad7a62a452b9eec68dd32e729479b7", null ],
+    [ "SetSplitSet", "classShipStack.html#aea5ad553bbcf72226a5ae9d4bfe0a223", null ],
     [ "SetSplitting", "classShipStack.html#a27dda73312655e40faea15f3e3292a53", null ],
     [ "StoreMothers", "classShipStack.html#a73a85c05c1693667e28c591665de0b89", null ],
     [ "StoreSecondaries", "classShipStack.html#a5c50e960fb20579bb8f220220610ec77", null ],
@@ -40,6 +42,7 @@ var classShipStack =
     [ "fNTracks", "classShipStack.html#a5baabd54b15eaede50ec34cf22544a71", null ],
     [ "fParticles", "classShipStack.html#aecc7a6d2821762610c5b8cf735d99cd1", null ],
     [ "fPointsPerTrack", "classShipStack.html#aa0e573a0e88900286a3ef984503e5440", null ],
+    [ "fSplitSets", "classShipStack.html#ae200b91052596d6eacd3a3037a4f6190", null ],
     [ "fSplitting", "classShipStack.html#ab7cf72e3ef4eed3af09a4b19eb0fe138", null ],
     [ "fStack", "classShipStack.html#ae5e8e4e126509a118d38a1a2ac46aeea", null ],
     [ "fStoreFlags", "classShipStack.html#ab18fb7a40bf033b54c7617e2db098fe1", null ],

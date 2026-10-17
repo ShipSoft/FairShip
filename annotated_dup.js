@@ -88,6 +88,11 @@ var annotated_dup =
     [ "SiliconTargetDetector", "namespaceSiliconTargetDetector.html", [
       [ "SiliconTargetDetector", "classSiliconTargetDetector_1_1SiliconTargetDetector.html", "classSiliconTargetDetector_1_1SiliconTargetDetector" ]
     ] ],
+    [ "split_provenance", "namespacesplit__provenance.html", [
+      [ "_Link", "classsplit__provenance_1_1__Link.html", null ],
+      [ "Desplit", "classsplit__provenance_1_1Desplit.html", "classsplit__provenance_1_1Desplit" ],
+      [ "SplitProvenance", "classsplit__provenance_1_1SplitProvenance.html", "classsplit__provenance_1_1SplitProvenance" ]
+    ] ],
     [ "strawtubesDetector", "namespacestrawtubesDetector.html", [
       [ "strawtubesDetector", "classstrawtubesDetector_1_1strawtubesDetector.html", "classstrawtubesDetector_1_1strawtubesDetector" ]
     ] ],
@@ -187,8 +192,8 @@ var annotated_dup =
     [ "UpstreamTaggerHit", "classUpstreamTaggerHit.html", "classUpstreamTaggerHit" ],
     [ "UpstreamTaggerPoint", "classUpstreamTaggerPoint.html", "classUpstreamTaggerPoint" ],
     [ "VectorMCPointSource", "classVectorMCPointSource.html", "classVectorMCPointSource" ],
-    [ "Veto", "classVeto.html", null ],
     [ "veto", "classveto.html", "classveto" ],
+    [ "Veto", "classVeto.html", null ],
     [ "vetoContFact", "classvetoContFact.html", "classvetoContFact" ],
     [ "vetoHit", "classvetoHit.html", "classvetoHit" ],
     [ "vetoHitOnTrack", "classvetoHitOnTrack.html", "classvetoHitOnTrack" ],

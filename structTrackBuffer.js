@@ -1,5 +1,6 @@
 var structTrackBuffer =
 [
+    [ "continuation", "structTrackBuffer.html#a3aa2abde0286ed916182bf45bacf11f6", null ],
     [ "e", "structTrackBuffer.html#ab58809fbaaf19dd4093d14caa0d0f2e0", null ],
     [ "parentID", "structTrackBuffer.html#a3fe69e804f05632bfdac87fc2c7f1e40", null ],
     [ "pdg", "structTrackBuffer.html#a56a37ba18ae2d353fa762f580ff8a141", null ],
@@ -9,6 +10,8 @@ var structTrackBuffer =
     [ "px", "structTrackBuffer.html#a98b13f1bc0880a94a71ec78e54d616df", null ],
     [ "py", "structTrackBuffer.html#a36e839e7b233707e7be3f754df7ca6b6", null ],
     [ "pz", "structTrackBuffer.html#a08c1af66e8d4a52ef7ec9e3dd6680b61", null ],
+    [ "splitRole", "structTrackBuffer.html#a1b007773749006d427fe66ab5ca0d4db", null ],
+    [ "splitSet", "structTrackBuffer.html#a317fd35294f9d46d109426be6409459d", null ],
     [ "t", "structTrackBuffer.html#a2fa4fb48462704230ab5ee31cbafcafe", null ],
     [ "weight", "structTrackBuffer.html#a78d78f89b63f557dfd153539991223f8", null ],
     [ "x", "structTrackBuffer.html#a253a2de70fce2a1873c55b56c8b39f2b", null ],
