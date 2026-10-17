@@ -96,17 +96,20 @@ def runTracking(candidates, trackingGeometry, fieldMap, strawHits, fit_vertex=Tr
     # Loop over seeds (e.g., from PatRec or Truth)
     for cand in candidates:
         cand["indices"].sort(key=lambda i: strawHits.at(i).at(8))
-        # This maps Truth indices -> Acts Container indices
+        # (ACTS measurement index, straw-hit index) pairs: the first is what
+        # the fitter reads, the second indexes strawHits for the caller.
         remapped_indices = align_candidate_indices(cand, acts_index_map, strawHits)
 
         filtered_indices = []
+        filtered_hit_indices = []
         seen_layers = set()
 
-        for idx in remapped_indices:
+        for idx, hit_idx in remapped_indices:
             gid = acts.getMeasurementGeoId(measurements, idx)
 
             if gid.layer not in seen_layers:
                 filtered_indices.append(idx)
+                filtered_hit_indices.append(hit_idx)
                 seen_layers.add(gid.layer)
 
         if len(filtered_indices) < MIN_HITS_PER_TRACK:
@@ -131,7 +134,7 @@ def runTracking(candidates, trackingGeometry, fieldMap, strawHits, fit_vertex=Tr
         tracks_after_fit = len(output_tracks)
 
         if tracks_after_fit > tracks_before_fit:
-            track_hit_indices_list.append(list(filtered_indices))
+            track_hit_indices_list.append(filtered_hit_indices)
 
     const_tracks = output_tracks.makeConst()
 
@@ -253,6 +256,11 @@ def build_acts_index_map(measurements, hit_count):
 
 
 def align_candidate_indices(cand, index_map, strawHits):
+    """Match the straw hits of a candidate to ACTS measurements.
+
+    Return (ACTS measurement index, straw-hit index) pairs. processMeasurements
+    groups hits by surface, so the two indices generally differ.
+    """
     aligned_indices = []
 
     for old_idx in cand["indices"]:
@@ -282,9 +290,9 @@ def align_candidate_indices(cand, index_map, strawHits):
 
         matching_indices = index_map.get(target_gid_value, [])
         if old_idx in matching_indices:
-            aligned_indices.append(old_idx)
+            aligned_indices.append((old_idx, old_idx))
         elif len(matching_indices) == 1:
-            aligned_indices.append(matching_indices[0])
+            aligned_indices.append((matching_indices[0], old_idx))
         elif matching_indices:
             logger.warning("Ambiguous: Straw %d, Layer %d -> Value %d", straw, acts_layer, target_gid_value)
 
