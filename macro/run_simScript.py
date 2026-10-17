@@ -8,7 +8,6 @@ import os
 import sys
 import uuid
 from argparse import ArgumentParser, Namespace
-from array import array
 from datetime import datetime
 from typing import cast
 
@@ -1190,30 +1189,10 @@ if options.newmudis:
 
     post_process(outFile, inputFile, options.firstEvent)
 elif options.mudis:
-    temp_filename = outFile.replace(".root", "_tmp.root")
+    from mudis_cross_section import add_cross_section
 
-    with (
-        ROOT.TFile.Open(outFile, "read") as f_outputfile,
-        ROOT.TFile.Open(temp_filename, "recreate") as f_temp,
-    ):
-        output_tree = f_outputfile["cbmsim"]
-        muondis_tree = ROOT.TChain("DIS")
-        for _f in inputFile:
-            muondis_tree.Add(_f)
-
-        new_tree = output_tree.CloneTree(0)
-
-        cross_section = array("f", [0.0])
-        cross_section_leaf = new_tree.Branch("CrossSection", cross_section, "CrossSection/F")
-
-        for output_event, muondis_event in zip(output_tree, muondis_tree):
-            mu = muondis_event.InMuon[0]
-            cross_section[0] = mu[10]
-            new_tree.Fill()
-
-        new_tree.Write("", ROOT.TObject.kOverwrite)
-
-    os.replace(temp_filename, outFile)
+    # MuDISGenerator reads only the first input file.
+    add_cross_section(outFile, inputFile if isinstance(inputFile, str) else inputFile[0], options.firstEvent)
     print("Successfully added DISCrossSection to the output file:", outFile)
 
 if options.command == "Genie":
