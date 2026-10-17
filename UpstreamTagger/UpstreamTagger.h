@@ -18,8 +18,10 @@ class TClonesArray;
 /**
  * @brief Upstream Background Tagger (UBT) detector
  *
- * The active plane uses the coarse regions from the UBT_DIGI simulation map.
- * Each region records whether it represents 20 x 20 or 40 x 40 mm^2
+ * The active plane is split into coarse regions, generated on the UBT box
+ * from the rule in geometry/UpstreamTagger_config.yaml (see
+ * shipDet_conf.configure_upstream_tagger). Each region records whether it
+ * represents 20 x 20 or 40 x 40 mm^2
  * polystyrene scintillator tiles. Optical photon production and transport
  * are deliberately not simulated here: an MC point stores the energy
  * deposited in a mapped region, identified by its copy number.

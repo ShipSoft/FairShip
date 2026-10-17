@@ -161,13 +161,14 @@ def set_upstream_tagger(c) -> None:
 
     Needs c.cave (with the ECN3 cavern), c.decayVolume.z0, c.muShield.z and c.muShield.length.
     """
-    # Upstream Tagger: polystyrene scintillator plane built from the regions in
+    # Upstream Tagger: polystyrene scintillator plane, split into regions
+    # generated on the box below from the rule in
     # geometry/UpstreamTagger_config.yaml. BoxZ is the space reserved by the
     # integration layout; the active thickness depends on the tile size.
     c.UpstreamTagger = AttrDict()
     # The plane spans x in [-1.7, 1.7] m and y from FloorMargin above the ECN3
-    # floor up to Top, covering the decay vessel entrance. The map in
-    # UpstreamTagger_config.yaml must cover the same area.
+    # floor up to Top, covering the decay vessel entrance. Its edges must lie
+    # on the edges of the 40 mm tiles (x, y = 2 + 4k cm).
     c.UpstreamTagger.Top = 1.7 * u.m
     # 2.4 cm above the ECN3 floor at -336.4 cm, so that the plane ends on a
     # 40 mm tile edge (y = 2 + 4k cm), at -334 cm

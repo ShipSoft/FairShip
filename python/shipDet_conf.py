@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
+import math
 import os
 from typing import Any
 
@@ -273,34 +274,167 @@ def configure_strawtubes(yaml_file: str, ship_geo) -> None:
     detectorList.append(strawtubes)
 
 
-def configure_upstream_tagger(yaml_file: str, upstream_tagger, ship_geo) -> None:
-    """Configure the UBT regions and their digitization parameters from the UBT map.
+def check_upstream_tagger_map(ubt_map, ubt_geo) -> None:
+    """Check that the UBT map covers exactly the UBT box of the geometry configuration.
 
-    The map read from ``yaml_file`` is kept in ``ship_geo.UpstreamTagger_geo``,
+    A generated map does by construction; this also checks a map stored with a
+    geometry, against the box stored with it. A box larger than the map would
+    leave a strip without tiles, a smaller one would stop ConstructGeometry.
+    """
+    tolerance = 1.0e-6  # cm
+    box = {
+        "x": (ubt_geo.BoxCenterX - ubt_geo.BoxX / 2.0, ubt_geo.BoxCenterX + ubt_geo.BoxX / 2.0),
+        "y": (ubt_geo.BoxCenterY - ubt_geo.BoxY / 2.0, ubt_geo.BoxCenterY + ubt_geo.BoxY / 2.0),
+    }
+    bounds = {axis: tuple(bound * u.cm for bound in ubt_map["bounds"][axis]) for axis in ("x", "y")}
+    for axis in ("x", "y"):
+        if any(abs(b - e) > tolerance * u.cm for b, e in zip(bounds[axis], box[axis])):
+            raise ValueError(
+                f"The UBT map bounds in {axis}, {bounds[axis]} cm, differ from the UBT box of the geometry"
+                f" configuration, {box[axis]} cm"
+            )
+
+    # The regions must tile the bounds: each inside them, no two overlapping,
+    # and together as large as them.
+    rectangles = []
+    for region in ubt_map["regions"]:
+        half_x, half_y = region["size_x"] * u.cm / 2.0, region["size_y"] * u.cm / 2.0
+        x, y = region["x"] * u.cm, region["y"] * u.cm
+        rectangle = (x - half_x, x + half_x, y - half_y, y + half_y)
+        if (
+            rectangle[0] < bounds["x"][0] - tolerance
+            or rectangle[1] > bounds["x"][1] + tolerance
+            or rectangle[2] < bounds["y"][0] - tolerance
+            or rectangle[3] > bounds["y"][1] + tolerance
+        ):
+            raise ValueError(f"UBT region {region['id']} extends outside the map bounds")
+        rectangles.append((region["id"], rectangle))
+    for i, (id_a, a) in enumerate(rectangles):
+        for id_b, b in rectangles[i + 1 :]:
+            if (
+                a[0] < b[1] - tolerance
+                and b[0] < a[1] - tolerance
+                and a[2] < b[3] - tolerance
+                and b[2] < a[3] - tolerance
+            ):
+                raise ValueError(f"UBT regions {id_a} and {id_b} overlap")
+    covered = sum((r[1] - r[0]) * (r[3] - r[2]) for _, r in rectangles)
+    area = (bounds["x"][1] - bounds["x"][0]) * (bounds["y"][1] - bounds["y"][0])
+    if abs(covered - area) > tolerance * area:
+        raise ValueError(f"The UBT regions cover {covered} cm2 of the {area} cm2 map: some of it has no tiles")
+
+
+def _axis_cells(low: float, high: float, size: float) -> list[tuple[float, float]]:
+    """(centre, size) of the cells of ``size`` centred on the beam axis, cut at [low, high]."""
+    first = math.floor((low + size / 2.0) / size + 1.0e-9)
+    last = math.ceil((high - size / 2.0) / size - 1.0e-9)
+    cells = []
+    for k in range(first, last + 1):
+        cell_low, cell_high = max(k * size - size / 2.0, low), min(k * size + size / 2.0, high)
+        if cell_high - cell_low > 1.0e-9:
+            cells.append(((cell_low + cell_high) / 2.0, cell_high - cell_low))
+    return cells
+
+
+def _small_tile_areas(rule) -> list[tuple[float, float, float, float]]:
+    """The areas of small tiles of the UBT rule, as (x low, x high, y low, y high) in cm."""
+    areas = []
+    for area in rule.get("small_tile_areas", []):
+        (x_low, x_high), (y_low, y_high) = (float(v) for v in area["x"]), (float(v) for v in area["y"])
+        if not (x_low < x_high and y_low < y_high):
+            raise ValueError(f"The UBT small-tile area {area} must have x and y ranges [low, high] with low < high")
+        areas.append((x_low, x_high, y_low, y_high))
+    return areas
+
+
+def generate_upstream_tagger_map(rule, ubt_geo) -> dict[str, Any]:
+    """Generate the UBT regions on the UBT box of the geometry configuration.
+
+    See the note in geometry/UpstreamTagger_config.yaml for the rule. The map
+    has the same form as the one stored with the geometry: kind, units, the
+    bounds of the box and the regions, all in cm.
+    """
+    if rule["kind"] != "simulation" or rule["units"] != "cm":
+        raise ValueError("The UBT map must be a simulation map expressed in cm")
+    bounds = {
+        "x": [(ubt_geo.BoxCenterX - ubt_geo.BoxX / 2.0) / u.cm, (ubt_geo.BoxCenterX + ubt_geo.BoxX / 2.0) / u.cm],
+        "y": [(ubt_geo.BoxCenterY - ubt_geo.BoxY / 2.0) / u.cm, (ubt_geo.BoxCenterY + ubt_geo.BoxY / 2.0) / u.cm],
+    }
+    size = rule["region_size"]
+    areas = _small_tile_areas(rule)
+    tolerance = 1.0e-9  # cm
+    regions = []
+    for y, size_y in _axis_cells(bounds["y"][0], bounds["y"][1], size):
+        for x, size_x in _axis_cells(bounds["x"][0], bounds["x"][1], size):
+            # A region lying inside a small-tile area has small tiles; an area
+            # covering only part of a region would cut it in two.
+            low_x, high_x, low_y, high_y = x - size_x / 2.0, x + size_x / 2.0, y - size_y / 2.0, y + size_y / 2.0
+            in_area = False
+            for area in areas:
+                overlap_x = min(high_x, area[1]) - max(low_x, area[0])
+                overlap_y = min(high_y, area[3]) - max(low_y, area[2])
+                if overlap_x <= tolerance or overlap_y <= tolerance:
+                    continue
+                if overlap_x < size_x - tolerance or overlap_y < size_y - tolerance:
+                    raise ValueError(
+                        f"The UBT small-tile area x {list(area[:2])}, y {list(area[2:])} cm covers only part of the"
+                        f" region at ({x}, {y}) cm: its edges must lie on region edges"
+                    )
+                in_area = True
+            tile = rule["small_tile_size"] if in_area else rule["large_tile_size"]
+            for centre, extent, axis in ((x, size_x, "x"), (y, size_y, "y")):
+                for edge in (centre - extent / 2.0, centre + extent / 2.0):
+                    tiles = (edge - rule["tile_edge_offset"]) / tile
+                    if abs(tiles - round(tiles)) > 1.0e-6:
+                        raise ValueError(
+                            f"The UBT region at ({x}, {y}) cm has an edge at {axis} = {edge} cm, off the grid of its"
+                            f" {tile} cm tiles: the UBT box, {bounds} cm, must end on a tile edge"
+                        )
+            regions.append(
+                {
+                    "id": len(regions),
+                    "x": x,
+                    "y": y,
+                    "size_x": size_x,
+                    "size_y": size_y,
+                    "constituent_tile_size": tile,
+                }
+            )
+    return {"kind": rule["kind"], "units": rule["units"], "bounds": bounds, "regions": regions}
+
+
+def configure_upstream_tagger(yaml_file: str, upstream_tagger, ship_geo) -> None:
+    """Configure the UBT regions and their digitization parameters.
+
+    The regions are generated from the rule in ``yaml_file`` on the UBT box of
+    ``ship_geo``, and the resulting map is kept in ``ship_geo.UpstreamTagger_geo``,
     so that it is saved with the geometry. A configuration read back from a
     geometry file (reconstruction, analysis, ``-g``) already has it: then the
     stored map is used, so that the regions and tile IDs are those of the
-    simulation, whatever the YAML file in the checkout says.
+    simulation, whatever the rule in the checkout says.
     """
     with open(yaml_file) as file:
-        config = yaml.safe_load(file)
-    # The parts of the map that change the detector, without its description.
-    checkout_map = {key: config[key] for key in ("kind", "units", "bounds", "regions")}
+        rule = yaml.safe_load(file)
 
     stored_map = ship_geo.get("UpstreamTagger_geo")
     if stored_map is None:
-        ship_geo.UpstreamTagger_geo = AttrDict(checkout_map)
-        ubt_map = checkout_map
+        ubt_map = generate_upstream_tagger_map(rule, ship_geo.UpstreamTagger)
+        ship_geo.UpstreamTagger_geo = AttrDict(ubt_map)
     else:
-        if dict(stored_map) != checkout_map:
+        # The rule of the checkout is only compared with the stored map: it may
+        # have changed since the simulation and no longer fit the stored box.
+        try:
+            differs = dict(stored_map) != generate_upstream_tagger_map(rule, ship_geo.UpstreamTagger)
+        except ValueError:
+            differs = True
+        if differs:
             print(
-                f"Warning: {yaml_file} differs from the UBT map stored with the geometry; "
-                "the stored map, used in the simulation, is used."
+                f"Warning: the UBT map generated from {yaml_file} differs from the one stored with the"
+                " geometry; the stored map, used in the simulation, is used."
             )
         ubt_map = stored_map
 
-    if ubt_map["kind"] != "simulation" or ubt_map["units"] != "cm":
-        raise ValueError("The UBT map must be a simulation map expressed in cm")
+    check_upstream_tagger_map(ubt_map, ship_geo.UpstreamTagger)
 
     regions = ubt_map["regions"]
     region_ids = [region["id"] for region in regions]
