@@ -17,6 +17,8 @@
 #include "DetectorHit.h"
 #include "MTCDetHit.h"
 #include "MTCDetPoint.h"
+#include "RecoTrack.h"
+#include "RecoVertex.h"
 #include "ShipMCTrack.h"
 #include "SiliconTargetHit.h"
 #include "SiliconTargetPoint.h"
@@ -62,6 +64,20 @@ void test_const_access(const ShipMCTrack& obj) {
 void test_const_access(const vetoHitOnTrack& obj) {
   [[maybe_unused]] auto dist = obj.GetDist();
   [[maybe_unused]] auto hitID = obj.GetHitID();
+}
+
+void test_const_access(const SHiP::RecoTrack& obj) {
+  [[maybe_unused]] auto px = obj.px();
+  [[maybe_unused]] auto charge = obj.charge();
+  [[maybe_unused]] const auto& cov = obj.GetCovarianceElements();
+  TVector3 position;
+  [[maybe_unused]] auto ok = obj.ExtrapolateToZ(0., position);
+}
+
+void test_const_access(const SHiP::RecoVertex& obj) {
+  [[maybe_unused]] auto z = obj.z();
+  [[maybe_unused]] const auto& ids = obj.trackIds();
+  [[maybe_unused]] auto doca = obj.doca();
 }
 
 void test_const_access(const vetoHit& obj) {
@@ -209,6 +225,10 @@ int main(int argc, char** argv) {
   if (test_vector_operations<ShipMCTrack>("ShipMCTrack")) passed++;
   total++;
   if (test_vector_operations<vetoHitOnTrack>("vetoHitOnTrack")) passed++;
+  total++;
+  if (test_vector_operations<SHiP::RecoTrack>("SHiP::RecoTrack")) passed++;
+  total++;
+  if (test_vector_operations<SHiP::RecoVertex>("SHiP::RecoVertex")) passed++;
 
   // Test Hit classes
   std::cout << "\n--- Hit Classes ---" << std::endl;
