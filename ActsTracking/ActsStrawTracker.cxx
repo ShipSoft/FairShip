@@ -7,6 +7,8 @@
 #include <algorithm>
 #include <array>
 #include <cmath>
+#include <limits>
+#include <numeric>
 #include <optional>
 #include <stdexcept>
 #include <utility>
@@ -36,7 +38,9 @@
 #include "ActsFrame.hpp"
 #include "ActsShipField.hpp"
 #include "ActsStrawGeometry.hpp"
+#include "StrawPatRec.hpp"
 #include "TGeoManager.h"
+#include "TVirtualMagField.h"
 
 namespace SHiP {
 
@@ -52,11 +56,34 @@ using DirectPropagator = Acts::Propagator<Stepper, Acts::DirectNavigator>;
 using KalmanFitter = Acts::KalmanFitter<DirectPropagator, Trajectory>;
 using Extrapolator = Acts::Propagator<Stepper, Acts::VoidNavigator>;
 
-/// Seed uncertainties of the track fit
-constexpr double kSeedSigmaLoc0 = 5 * u::mm;
-constexpr double kSeedSigmaLoc1 = 50 * u::mm;
-constexpr double kSeedSigmaAngle = 0.05;
-constexpr double kSeedRelativeSigmaP = 0.2;
+/// Seed uncertainties of the track fit, for a seed from the straight-line
+/// segments of the pattern recognition
+constexpr double kSeedSigmaLoc0 = 1 * u::mm;
+constexpr double kSeedSigmaLoc1 = 20 * u::mm;
+constexpr double kSeedSigmaAngle = 5e-3;
+constexpr double kSeedRelativeSigmaP = 0.3;
+/// Refits that re-resolve the left/right ambiguity and drop outliers
+constexpr int kMaxRefits = 3;
+/// Hits further than this many sigma from the fitted track are dropped
+constexpr double kOutlierPull = 5.;
+/// Step of the field integration along the track (cm)
+constexpr double kFieldStep = 5.;
+/// GeV per (T m) for a unit charge
+constexpr double kKick = 0.299792458;
+/// Highest seed momentum (GeV), for tracks with no measurable kink
+constexpr double kMaxSeedMomentum = 1000.;
+/// Fewest measurements a fitted track may keep
+constexpr int kMinFitMeasurements = 10;
+/// Ambiguity resolution between fitted tracks: the weight of a hit against
+/// the chi2 per degree of freedom when ranking them, the worst chi2 per
+/// degree of freedom accepted, and the largest fraction of the hits of the
+/// shorter of two tracks they may share
+constexpr double kTrackHitWeight = 0.5;
+constexpr double kMaxTrackChi2PerNdf = 5.;
+constexpr double kMaxSharedFraction = 0.25;
+/// Fewest hits on a track found by the pattern recognition. With fewer, the
+/// fit can absorb hits of different tracks into a low momentum.
+constexpr std::size_t kMinTrackHits = 20;
 // The time is not measured, so it is effectively left free
 constexpr double kSeedSigmaTime = 1e9;
 
@@ -71,8 +98,12 @@ constexpr double kPathLimit = 100 * u::m;
 
 struct StrawMeasurement {
   const Acts::Surface* surface;
+  const StrawWire* wire;
+  /// Unsigned drift distance and its variance, in ACTS units
   double driftRadius;
   double variance;
+  /// Side of the wire in the current fit
+  int sign{1};
 };
 
 /// Upper triangle of a symmetric matrix, row-major
@@ -223,9 +254,10 @@ double lineDistance(const Acts::Vector3& p1, const Acts::Vector3& d1,
 }  // namespace
 
 struct ActsStrawTracker::Impl {
-  Impl(const TGeoManager& geometry, TVirtualMagField* shipField)
+  Impl(const TGeoManager& geometry, TVirtualMagField* magField)
       : straws(geometry),
-        field(std::make_shared<ActsShipField>(shipField)),
+        shipField(magField),
+        field(std::make_shared<ActsShipField>(magField)),
         fitter(DirectPropagator(Stepper(field), Acts::DirectNavigator(),
                                 Acts::getDefaultLogger("Propagator",
                                                        Acts::Logging::WARNING)),
@@ -241,6 +273,50 @@ struct ActsStrawTracker::Impl {
         .connect<&Acts::GainMatrixUpdater::operator()<Trajectory>>(&updater);
     extensions.smoother
         .connect<&Acts::GainMatrixSmoother::operator()<Trajectory>>(&smoother);
+
+    // The magnet sits between stations 2 and 3
+    for (const auto& [id, wire] : straws.wires()) {
+      if (wire.station == 2) {
+        magnetStart = std::max(magnetStart, wire.z);
+      } else if (wire.station == 3) {
+        magnetEnd = std::min(magnetEnd, wire.z);
+      }
+    }
+    LineSegment axis;
+    const auto [integral, centre] = fieldIntegral(axis);
+    patRec.emplace(StrawPatRec::Config{}, centre, integral);
+  }
+
+  /// Hits for the pattern recognition, from measurement indices
+  std::vector<PatRecHit> patRecHits(const std::vector<Int_t>& indices) const;
+  /// Seed for the fit of a candidate, on the surface of its first hit
+  Acts::BoundTrackParameters seed(const TrackCandidate& candidate,
+                                  const StrawMeasurement& first) const;
+  /// Fit a candidate, refining the sides of the wires and dropping
+  /// outliers; returns the track index or -1
+  Int_t fit(const TrackCandidate& candidate,
+            const std::vector<PatRecHit>& hits);
+  /// One Kalman fit of the given measurements, appended to the tracks
+  std::optional<std::size_t> fitOnce(const std::vector<Int_t>& indices,
+                                     const Acts::BoundTrackParameters& start);
+
+  /// Integral of Bx along a straight line through the magnet (T m), and the
+  /// z of its centre (cm)
+  std::pair<double, double> fieldIntegral(const LineSegment& line) const {
+    double integral = 0.;
+    double moment = 0.;
+    for (double z = magnetStart; z < magnetEnd; z += kFieldStep) {
+      const double zMid = z + kFieldStep / 2.;
+      const double x[3] = {line.x(zMid), line.y(zMid), zMid};
+      double b[3] = {0., 0., 0.};
+      shipField->Field(x, b);
+      // kGauss to T, cm to m
+      const double bx = 0.1 * b[0] * 0.01 * kFieldStep;
+      integral += bx;
+      moment += bx * zMid;
+    }
+    return {integral, integral != 0. ? moment / integral
+                                     : 0.5 * (magnetStart + magnetEnd)};
   }
 
   const Acts::Surface* surfaceOf(const Acts::SourceLink& sourceLink) const {
@@ -253,7 +329,8 @@ struct ActsStrawTracker::Impl {
                  Trajectory::TrackStateProxy state) const {
     const auto& measurement = measurements.at(sourceLink.get<std::size_t>());
     state.allocateCalibrated(1);
-    state.template calibrated<1>()(0) = measurement.driftRadius;
+    state.template calibrated<1>()(0) =
+        measurement.sign * measurement.driftRadius;
     state.template calibratedCovariance<1>()(0, 0) = measurement.variance;
     state.setProjectorSubspaceIndices(std::array{Acts::eBoundLoc0});
     state.setUncalibratedSourceLink(Acts::SourceLink(sourceLink));
@@ -284,7 +361,11 @@ struct ActsStrawTracker::Impl {
   }
 
   ActsStrawGeometry straws;
+  TVirtualMagField* shipField;
   std::shared_ptr<const ActsShipField> field;
+  double magnetStart = -std::numeric_limits<double>::infinity();
+  double magnetEnd = std::numeric_limits<double>::infinity();
+  std::optional<StrawPatRec> patRec;
   KalmanFitter fitter;
   Extrapolator extrapolator;
   Acts::GainMatrixUpdater updater;
@@ -296,6 +377,8 @@ struct ActsStrawTracker::Impl {
   Acts::CalibrationContext cctx;
   std::vector<StrawMeasurement> measurements;
   TrackContainer tracks;
+  /// Measurements used in each track
+  std::vector<std::vector<Int_t>> trackMeasurements;
 };
 
 ActsStrawTracker::ActsStrawTracker(const TGeoManager* geometry,
@@ -311,56 +394,58 @@ ActsStrawTracker::~ActsStrawTracker() = default;
 void ActsStrawTracker::ClearEvent() {
   fImpl->measurements.clear();
   fImpl->tracks.clear();
+  fImpl->trackMeasurements.clear();
 }
 
 Int_t ActsStrawTracker::AddMeasurement(Int_t detectorId, Double_t driftRadius,
                                        Double_t resolution) {
   const Acts::Surface* surface = fImpl->straws.surface(detectorId);
-  if (surface == nullptr) {
+  const StrawWire* wire = fImpl->straws.wire(detectorId);
+  if (surface == nullptr || wire == nullptr) {
     return -1;
   }
   const double sigma = resolution * ActsFrame::kShipLength;
-  fImpl->measurements.push_back(
-      {surface, driftRadius * ActsFrame::kShipLength, sigma * sigma});
+  fImpl->measurements.push_back({surface, wire,
+                                 std::abs(driftRadius) * ActsFrame::kShipLength,
+                                 sigma * sigma});
   return static_cast<Int_t>(fImpl->measurements.size() - 1);
 }
 
-Int_t ActsStrawTracker::FitTrack(const std::vector<Int_t>& measurements,
-                                 const TVector3& seedPosition,
-                                 const TVector3& seedMomentum, Int_t charge) {
-  auto& impl = *fImpl;
-  if (measurements.empty() || charge == 0 || seedMomentum.Mag() <= 0.) {
-    return -1;
-  }
-  std::vector<Acts::SourceLink> sourceLinks;
-  std::vector<const Acts::Surface*> surfaces;
-  for (const Int_t index : measurements) {
-    if (index < 0 ||
-        static_cast<std::size_t>(index) >= impl.measurements.size()) {
+std::vector<PatRecHit> ActsStrawTracker::Impl::patRecHits(
+    const std::vector<Int_t>& indices) const {
+  std::vector<PatRecHit> hits;
+  hits.reserve(indices.size());
+  for (const Int_t index : indices) {
+    if (index < 0 || static_cast<std::size_t>(index) >= measurements.size()) {
       throw std::out_of_range("ActsStrawTracker: measurement out of range");
     }
-    sourceLinks.emplace_back(static_cast<std::size_t>(index));
-    surfaces.push_back(impl.measurements[index].surface);
+    const auto& m = measurements[index];
+    hits.push_back({index, m.wire, m.driftRadius / ActsFrame::kShipLength,
+                    std::sqrt(m.variance) / ActsFrame::kShipLength});
   }
+  return hits;
+}
 
-  // Seed on the surface of the first measurement
-  const Acts::Surface& seedSurface = *surfaces.front();
-  const Acts::Vector3 position = ActsFrame::positionToActs(
-      seedPosition.X(), seedPosition.Y(), seedPosition.Z());
-  const Acts::Vector3 momentum = ActsFrame::momentumToActs(
-      seedMomentum.X(), seedMomentum.Y(), seedMomentum.Z());
-  const Acts::Vector3 direction = momentum.normalized();
+Acts::BoundTrackParameters ActsStrawTracker::Impl::seed(
+    const TrackCandidate& candidate, const StrawMeasurement& first) const {
+  const LineSegment& line = candidate.upstream;
+  const double z = first.wire->z;
+  const Acts::Vector3 position =
+      ActsFrame::positionToActs(line.x(z), line.y(z), z);
+  const Acts::Vector3 direction =
+      (ActsFrame::toActsRotation() * Acts::Vector3(line.tx, line.ty, 1.))
+          .normalized();
   const auto hypothesis = Acts::ParticleHypothesis::muon();
-  const double qOverP =
-      hypothesis.qOverP(momentum.norm(), static_cast<double>(charge));
+  const double qOverP = hypothesis.qOverP(
+      candidate.momentum * u::GeV, static_cast<double>(candidate.charge));
 
-  // The seed is generally not on the straw, so take its point of closest
-  // approach and the local coordinates there
+  // Local coordinates at the point of closest approach to the first straw
+  const Acts::Surface& surface = *first.surface;
   const auto intersection =
-      seedSurface.intersect(impl.gctx, position, direction).closest();
+      surface.intersect(gctx, position, direction).closest();
   const Acts::Vector3 onSurface =
       intersection.isValid() ? intersection.position() : position;
-  auto local = seedSurface.globalToLocal(impl.gctx, onSurface, direction);
+  auto local = surface.globalToLocal(gctx, onSurface, direction);
   const Acts::Vector2 localPosition =
       local.ok() ? local.value() : Acts::Vector2::Zero();
 
@@ -374,27 +459,209 @@ Int_t ActsStrawTracker::FitTrack(const std::vector<Int_t>& measurements,
   sigmas << kSeedSigmaLoc0, kSeedSigmaLoc1, kSeedSigmaAngle, kSeedSigmaAngle,
       kSeedRelativeSigmaP * std::abs(qOverP), kSeedSigmaTime;
   const Acts::BoundMatrix covariance = sigmas.cwiseProduct(sigmas).asDiagonal();
-  const Acts::BoundTrackParameters seed(seedSurface.getSharedPtr(), parameters,
-                                        covariance, hypothesis);
+  return Acts::BoundTrackParameters(surface.getSharedPtr(), parameters,
+                                    covariance, hypothesis);
+}
 
-  Acts::PropagatorPlainOptions propagatorOptions(impl.gctx, impl.mctx);
-  Acts::KalmanFitterOptions<Trajectory> options(
-      impl.gctx, impl.mctx, std::cref(impl.cctx), impl.extensions,
-      propagatorOptions, &seedSurface);
+std::optional<std::size_t> ActsStrawTracker::Impl::fitOnce(
+    const std::vector<Int_t>& indices,
+    const Acts::BoundTrackParameters& start) {
+  std::vector<Acts::SourceLink> sourceLinks;
+  std::vector<const Acts::Surface*> surfaces;
+  for (const Int_t index : indices) {
+    sourceLinks.emplace_back(static_cast<std::size_t>(index));
+    surfaces.push_back(measurements[index].surface);
+  }
+  Acts::PropagatorPlainOptions propagatorOptions(gctx, mctx);
+  Acts::KalmanFitterOptions<Trajectory> options(gctx, mctx, std::cref(cctx),
+                                                extensions, propagatorOptions,
+                                                surfaces.front());
   options.referenceSurfaceStrategy = Acts::TrackExtrapolationStrategy::first;
 
-  const std::size_t nTracksBefore = impl.tracks.size();
-  auto result = impl.fitter.fit(sourceLinks.begin(), sourceLinks.end(), seed,
-                                options, surfaces, impl.tracks);
+  const std::size_t nTracksBefore = tracks.size();
+  auto result = fitter.fit(sourceLinks.begin(), sourceLinks.end(), start,
+                           options, surfaces, tracks);
   if (!result.ok() || !result.value().hasReferenceSurface()) {
     // A failed fit may leave a partial track behind. Drop it, so that track
     // indices stay contiguous.
-    while (impl.tracks.size() > nTracksBefore) {
-      impl.tracks.removeTrack(impl.tracks.size() - 1);
+    while (tracks.size() > nTracksBefore) {
+      tracks.removeTrack(tracks.size() - 1);
     }
-    return -1;
+    return std::nullopt;
   }
-  return static_cast<Int_t>(result.value().index());
+  return result.value().index();
+}
+
+Int_t ActsStrawTracker::Impl::fit(const TrackCandidate& candidate,
+                                  const std::vector<PatRecHit>& hits) {
+  // The measurements, ordered in z, with the sides of the wires from the
+  // segment fits
+  std::vector<std::pair<double, Int_t>> ordered;
+  for (const LineSegment* segment :
+       {&candidate.upstream, &candidate.downstream}) {
+    for (std::size_t k = 0; k < segment->hits.size(); ++k) {
+      const PatRecHit& hit = hits[segment->hits[k]];
+      measurements[hit.index].sign = segment->signs[k];
+      ordered.emplace_back(hit.wire->z, hit.index);
+    }
+  }
+  std::sort(ordered.begin(), ordered.end());
+  std::vector<Int_t> indices;
+  for (const auto& [z, index] : ordered) {
+    indices.push_back(index);
+  }
+
+  // Momentum from the kink, with the field integral along this track
+  TrackCandidate refined = candidate;
+  const auto [integral, centre] = fieldIntegral(candidate.upstream);
+  const double kink = candidate.downstream.ty - candidate.upstream.ty;
+  if (integral != 0. && kink != 0.) {
+    const LineSegment& up = candidate.upstream;
+    const double pz =
+        std::min(std::abs(kKick * integral / kink), kMaxSeedMomentum);
+    refined.momentum = pz * std::sqrt(1. + up.tx * up.tx + up.ty * up.ty);
+    refined.charge = kink / integral > 0. ? 1 : -1;
+  }
+  Acts::BoundTrackParameters start =
+      seed(refined, measurements[indices.front()]);
+
+  for (int refit = 0;; ++refit) {
+    if (static_cast<int>(indices.size()) < kMinFitMeasurements) {
+      return -1;
+    }
+    const auto track = fitOnce(indices, start);
+    if (!track) {
+      return -1;
+    }
+    // Check each hit against the fitted track: take the side of the wire it
+    // passes on, and drop hits that are too far from it
+    bool changed = false;
+    std::vector<std::pair<double, Int_t>> kept;
+    const auto proxy = tracks.getTrack(*track);
+    for (const auto state : proxy.trackStatesReversed()) {
+      if (!state.hasUncalibratedSourceLink() || !state.hasSmoothed()) {
+        continue;
+      }
+      const auto index = static_cast<Int_t>(
+          state.getUncalibratedSourceLink().template get<std::size_t>());
+      auto& m = measurements[index];
+      const double predicted = state.smoothed()[Acts::eBoundLoc0];
+      const double sigma =
+          std::sqrt(m.variance + state.smoothedCovariance()(Acts::eBoundLoc0,
+                                                            Acts::eBoundLoc0));
+      if (std::abs(std::abs(predicted) - m.driftRadius) >
+          kOutlierPull * sigma) {
+        changed = true;
+        continue;
+      }
+      const int side = predicted >= 0. ? 1 : -1;
+      if (side != m.sign && std::abs(predicted) > std::sqrt(m.variance)) {
+        m.sign = side;
+        changed = true;
+      }
+      kept.emplace_back(m.wire->z, index);
+    }
+    if (!changed || refit == kMaxRefits) {
+      trackMeasurements.push_back(indices);
+      return static_cast<Int_t>(*track);
+    }
+    // Refit from the fitted parameters, with the seed uncertainties so the
+    // previous fit does not bias the next
+    auto params = proxy.createParametersAtReference();
+    start = Acts::BoundTrackParameters(
+        params.referenceSurface().getSharedPtr(), params.parameters(),
+        seed(refined, measurements[indices.front()]).covariance(),
+        params.particleHypothesis());
+    tracks.removeTrack(*track);
+    std::sort(kept.begin(), kept.end());
+    indices.clear();
+    for (const auto& [z, index] : kept) {
+      indices.push_back(index);
+    }
+  }
+}
+
+Int_t ActsStrawTracker::FindTracks() {
+  auto& impl = *fImpl;
+  std::vector<Int_t> all(impl.measurements.size());
+  std::iota(all.begin(), all.end(), 0);
+  const auto hits = impl.patRecHits(all);
+  const auto candidates = impl.patRec->findTracks(hits);
+
+  // Fit every candidate, then resolve the ambiguities between the fitted
+  // tracks: best first, rejecting tracks that share too many hits with an
+  // accepted one or fit badly
+  struct Fitted {
+    std::size_t candidate;
+    double chi2PerNdf;
+    std::vector<Int_t> measurements;
+  };
+  std::vector<Fitted> fitted;
+  for (std::size_t i = 0; i < candidates.size(); ++i) {
+    const Int_t track = impl.fit(candidates[i], hits);
+    if (track < 0) {
+      continue;
+    }
+    const auto proxy = impl.tracks.getTrack(track);
+    if (proxy.nDoF() > 0) {
+      fitted.push_back(
+          {i, proxy.chi2() / proxy.nDoF(), impl.trackMeasurements[track]});
+    }
+  }
+  const auto rank = [](const Fitted& f) {
+    return f.chi2PerNdf -
+           kTrackHitWeight * static_cast<double>(f.measurements.size());
+  };
+  std::sort(fitted.begin(), fitted.end(),
+            [&](const auto& a, const auto& b) { return rank(a) < rank(b); });
+  std::vector<const Fitted*> accepted;
+  for (const auto& f : fitted) {
+    if (f.chi2PerNdf > kMaxTrackChi2PerNdf ||
+        f.measurements.size() < kMinTrackHits) {
+      continue;
+    }
+    const bool conflict =
+        std::any_of(accepted.begin(), accepted.end(), [&](const Fitted* a) {
+          int shared = 0;
+          for (const Int_t m : f.measurements) {
+            shared +=
+                std::count(a->measurements.begin(), a->measurements.end(), m);
+          }
+          const auto shorter =
+              std::min(f.measurements.size(), a->measurements.size());
+          return shared > kMaxSharedFraction * static_cast<double>(shorter);
+        });
+    if (!conflict) {
+      accepted.push_back(&f);
+    }
+  }
+  // Refit the accepted tracks into an empty container, in candidate order,
+  // so the track indices are contiguous
+  std::sort(accepted.begin(), accepted.end(),
+            [](const Fitted* a, const Fitted* b) {
+              return a->candidate < b->candidate;
+            });
+  impl.tracks.clear();
+  impl.trackMeasurements.clear();
+  for (const Fitted* f : accepted) {
+    impl.fit(candidates[f->candidate], hits);
+  }
+  return GetNTracks();
+}
+
+Int_t ActsStrawTracker::FitCandidate(const std::vector<Int_t>& measurements) {
+  auto& impl = *fImpl;
+  const auto hits = impl.patRecHits(measurements);
+  const auto candidate = impl.patRec->fitCandidate(hits);
+  return candidate ? impl.fit(*candidate, hits) : -1;
+}
+
+std::vector<Int_t> ActsStrawTracker::GetTrackMeasurements(Int_t track) const {
+  if (track < 0 ||
+      static_cast<std::size_t>(track) >= fImpl->trackMeasurements.size()) {
+    throw std::out_of_range("ActsStrawTracker: track index out of range");
+  }
+  return fImpl->trackMeasurements[track];
 }
 
 Int_t ActsStrawTracker::GetNTracks() const {
@@ -543,14 +810,9 @@ Bool_t ActsStrawTracker::FitVertex(const std::vector<Int_t>& tracks,
 Double_t ActsStrawTracker::DistanceToHit(Int_t track,
                                          const TVector3& hit) const {
   const auto& impl = *fImpl;
-  // Plane of constant z (SHiP), i.e. constant x (ACTS), centred on the hit
-  Acts::Transform3 transform = Acts::Transform3::Identity();
-  transform.linear().col(0) = Acts::Vector3::UnitY();
-  transform.linear().col(1) = Acts::Vector3::UnitZ();
-  transform.linear().col(2) = Acts::Vector3::UnitX();
-  transform.translation() =
-      ActsFrame::positionToActs(hit.X(), hit.Y(), hit.Z());
-  const auto plane = Acts::Surface::makeShared<Acts::PlaneSurface>(transform);
+  // Plane of constant z centred on the hit
+  const auto plane =
+      constantZPlane(ActsFrame::positionToActs(hit.X(), hit.Y(), hit.Z()));
 
   const auto result =
       impl.extrapolate(impl.extrapolator, impl.trackParameters(track), *plane);

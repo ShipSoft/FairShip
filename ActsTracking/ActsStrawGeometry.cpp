@@ -69,6 +69,7 @@ Acts::GeometryIdentifier geometryId(int detectorId) {
 
 struct Builder {
   std::unordered_map<int, std::shared_ptr<Acts::Surface>>& surfaces;
+  std::unordered_map<int, StrawWire>& wires;
   std::shared_ptr<const Acts::HomogeneousSurfaceMaterial> material;
 
   void visit(const TGeoVolume& volume, const TGeoHMatrix& parent) {
@@ -100,6 +101,15 @@ struct Builder {
     surface->assignSurfaceMaterial(material);
     surface->assignGeometryId(geometryId(detectorId));
     surfaces.emplace(detectorId, std::move(surface));
+
+    const Double_t* t = global.GetTranslation();
+    const Double_t* r = global.GetRotationMatrix();
+    // The tube axis is the local z axis, i.e. the third column
+    wires.emplace(
+        detectorId,
+        StrawWire{detectorId, detectorId / 1000000, detectorId / 100000 % 10,
+                  detectorId / 10000 % 10, t[0], t[1], t[2], r[2], r[5], r[8],
+                  tube->GetRmin(), tube->GetDZ()});
   }
 };
 
@@ -110,7 +120,7 @@ ActsStrawGeometry::ActsStrawGeometry(const TGeoManager& geometry) {
   if (top == nullptr) {
     throw std::invalid_argument("ActsStrawGeometry: no geometry loaded");
   }
-  Builder builder{m_surfaces, strawMaterial()};
+  Builder builder{m_surfaces, m_wires, strawMaterial()};
   builder.visit(*top, TGeoHMatrix());
   if (m_surfaces.empty()) {
     throw std::runtime_error("ActsStrawGeometry: no straws in the geometry");
@@ -120,6 +130,11 @@ ActsStrawGeometry::ActsStrawGeometry(const TGeoManager& geometry) {
 const Acts::Surface* ActsStrawGeometry::surface(int detectorId) const {
   const auto it = m_surfaces.find(detectorId);
   return it == m_surfaces.end() ? nullptr : it->second.get();
+}
+
+const StrawWire* ActsStrawGeometry::wire(int detectorId) const {
+  const auto it = m_wires.find(detectorId);
+  return it == m_wires.end() ? nullptr : &it->second;
 }
 
 }  // namespace SHiP

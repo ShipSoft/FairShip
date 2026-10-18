@@ -285,8 +285,9 @@ class ShipDigiReco:
         Returns (fitted tracks, vertices, per-track hit indices into
         self.strawHits).
         """
-        if global_variables.patRec == "Truth":
-            # MC truth seeding needs no pattern recognition, only smeared hits
+        if global_variables.patRec in ("Truth", "Segments"):
+            # Truth hit assignment, or the ACTS tracker's own pattern
+            # recognition, need only the smeared hits
             candidates = None
             if global_variables.withT0:
                 self.SmearedHits = self.strawtubes.withT0Estimate()
@@ -311,22 +312,16 @@ class ShipDigiReco:
                     view=digi.GetViewNumber(),
                     layer=digi.GetLayerNumber(),
                     track_id=point.GetTrackID(),
-                    x=point.GetX(),
-                    y=point.GetY(),
-                    z=point.GetZ(),
+                    z=sm["z"],
                     drift=sm["dist"],
-                    xtop=sm["xtop"],
-                    ytop=sm["ytop"],
-                    xbot=sm["xbot"],
-                    ybot=sm["ybot"],
                 )
             )
             self.strawHitToDigi.append(digiHit)
             digi_to_straw[digiHit] = k
 
-        if candidates is None:
+        if global_variables.patRec == "Truth":
             candidates = self._truthCandidates()
-        else:
+        elif candidates is not None:
             # Candidate hit indices refer to digi hits; remap them to positions
             # in self.strawHits as expected by runTracking.
             for cand in candidates:
@@ -341,40 +336,21 @@ class ShipDigiReco:
         )
 
     def _truthCandidates(self) -> list[dict]:
-        """Build track candidates from MC truth: one per MC track with straw hits."""
-        candidates = []
-        # Bucket the straw hits by MC track in one pass
+        """Build track candidates from MC truth: the straw hits of each charged MC track.
+
+        Only the hit assignment comes from the truth; the fit starts from the
+        hits alone, as for any other pattern recognition.
+        """
         hits_by_track = defaultdict(list)
         for i, h in enumerate(self.strawHits):
             hits_by_track[h.track_id].append(i)
-        for trID, tr in enumerate(self.sTree.MCTrack):
-            indices = hits_by_track.get(trID)
-            if not indices:
-                continue
-            # Sort by z to find the first straw hit; runTracking keeps one hit
-            # per straw layer
-            indices.sort(key=lambda idx: self.strawHits[idx].z)
-            first_hit = self.strawHits[indices[0]]
-
-            # Seed position from the first straw hit truth
-            pos = ROOT.TVector3(first_hit.x, first_hit.y, first_hit.z)
-
-            # Momentum from MCTrack
-            mom = ROOT.TVector3(tr.GetPx(), tr.GetPy(), tr.GetPz())
-
-            particle = self.PDG.GetParticle(tr.GetPdgCode())
+        candidates = []
+        for trID, indices in sorted(hits_by_track.items()):
+            particle = self.PDG.GetParticle(self.sTree.MCTrack[trID].GetPdgCode()) if trID >= 0 else None
             # PyROOT returns a null proxy, not None, for an unknown PDG code
-            if not particle:
-                logger.warning("Skipping MCTrack %d with unknown PDG code %d", trID, tr.GetPdgCode())
+            if not particle or particle.Charge() == 0:
                 continue
-            charge = particle.Charge() / 3.0
-            # A neutral or momentum-less seed has no q/p to start the fit from;
-            # neutrals only reach here via the odd stray straw hit.
-            if charge == 0.0 or mom.Mag() <= 0:
-                logger.debug("Skipping unseedable MCTrack %d (pdg %d)", trID, tr.GetPdgCode())
-                continue
-
-            candidates.append({"pos": pos, "mom": mom, "indices": indices, "charge": charge})
+            candidates.append({"indices": indices})
         return candidates
 
     def digitize(self) -> None:

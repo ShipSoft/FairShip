@@ -131,3 +131,17 @@ set_tests_properties(
         WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
         ENVIRONMENT "PYTHONPATH=${CMAKE_SOURCE_DIR}/python:$ENV{PYTHONPATH}"
 )
+
+# Straw pattern recognition, against the ACTS straw surfaces
+if(TARGET ShipActsTracking)
+    add_executable(testStrawPatRec test_straw_patrec.cxx)
+    target_link_libraries(
+        testStrawPatRec
+        ShipActsTracking
+        Acts::Core
+        FairRoot::Base
+        genfit2
+        FairLogger::FairLogger
+    )
+    add_test(NAME StrawPatRec COMMAND testStrawPatRec)
+endif()

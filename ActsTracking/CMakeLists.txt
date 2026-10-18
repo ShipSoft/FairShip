@@ -9,5 +9,8 @@ ship_add_library(
   LINKDEF LinkDef.h
   DEPENDENCIES ShipData Geom Core
 )
-target_sources(ShipActsTracking PRIVATE ActsShipField.cpp ActsStrawGeometry.cpp)
+target_sources(
+    ShipActsTracking
+    PRIVATE ActsShipField.cpp ActsStrawGeometry.cpp StrawPatRec.cpp
+)
 target_link_libraries(ShipActsTracking PRIVATE Acts::Core ROOT::Geom)

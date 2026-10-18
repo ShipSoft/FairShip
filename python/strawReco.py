@@ -27,42 +27,27 @@ NO_VETO_MATCH = (-1, 99999.0)
 
 @dataclass(frozen=True)
 class StrawHit:
-    """A smeared straw hit, with the MC truth needed for seeding and links."""
+    """A smeared straw hit.
+
+    The drift distance is unsigned: which side of the wire the track passed
+    on is resolved in the fit. The MC track ID is only used for the MC link
+    and for truth seeding.
+    """
 
     detector_id: int
     station: int
     view: int
     layer: int
     track_id: int
-    # MC truth position (cm)
-    x: float
-    y: float
+    # z of the hit (cm)
     z: float
     # Smeared drift distance (cm)
     drift: float
-    # Wire end points in x and y (cm)
-    xtop: float
-    ytop: float
-    xbot: float
-    ybot: float
 
     @property
     def layer_key(self) -> tuple[int, int, int]:
         """The straw layer, which can hold at most one hit of a track."""
         return (self.station, self.view, self.layer)
-
-    def drift_sign(self) -> float:
-        """Side of the wire the track passed on, taken from the MC truth.
-
-        This resolves the left/right ambiguity with truth information. It
-        should be replaced by a refit that uses the residuals.
-        """
-        wire_x = (self.xtop + self.xbot) / 2.0
-        wire_y = (self.ytop + self.ybot) / 2.0
-        # Normal to the wire in the x-y plane
-        nx = -(self.ybot - self.ytop)
-        ny = self.xbot - self.xtop
-        return 1.0 if (self.x - wire_x) * nx + (self.y - wire_y) * ny > 0 else -1.0
 
 
 def make_tracker(geometry, field):
@@ -75,20 +60,23 @@ def make_tracker(geometry, field):
 
 
 def runTracking(tracker, candidates, hits, resolution, fit_vertex=True):
-    """Fit track candidates and, if the event qualifies, their vertex.
+    """Find or fit tracks and, if the event qualifies, fit their vertex.
 
-    ``candidates`` are dicts with ``pos``, ``mom`` (TVector3, SHiP frame),
-    ``charge`` and ``indices`` into ``hits``. Each candidate's indices are
-    sorted by hit z in place.
+    With ``candidates`` None, the tracker's own pattern recognition finds
+    the tracks. Otherwise ``candidates`` are dicts with ``indices`` into
+    ``hits`` (sorted by hit z in place), and each is fitted on its own.
 
     Returns the fitted tracks (``SHiP::RecoTrack``, in the order of the
     tracker's track indices), the fitted vertices (``SHiP::RecoVertex``) and,
     per fitted track, the indices into ``hits`` that were used in the fit.
     """
     tracker.ClearEvent()
-    measurements = [tracker.AddMeasurement(h.detector_id, h.drift_sign() * h.drift, resolution) for h in hits]
+    measurements = [tracker.AddMeasurement(h.detector_id, h.drift, resolution) for h in hits]
+    hit_of_measurement = {m: i for i, m in enumerate(measurements) if m >= 0}
 
-    track_hit_indices = []
+    if candidates is None:
+        tracker.FindTracks()
+        candidates = []
     for cand in candidates:
         cand["indices"].sort(key=lambda i: hits[i].z)
 
@@ -107,12 +95,12 @@ def runTracking(tracker, candidates, hits, resolution, fit_vertex=True):
             logger.debug("Skipping track with too few hits: %d", len(used))
             continue
 
-        track_measurements = ROOT.std.vector("int")([measurements[i] for i in used])
-        track = tracker.FitTrack(track_measurements, cand["pos"], cand["mom"], round(cand["charge"]))
-        if track >= 0:
-            track_hit_indices.append(used)
+        tracker.FitCandidate(ROOT.std.vector("int")([measurements[i] for i in used]))
 
     tracks = [tracker.GetTrack(i) for i in range(tracker.GetNTracks())]
+    track_hit_indices = [
+        [hit_of_measurement[m] for m in tracker.GetTrackMeasurements(i)] for i in range(tracker.GetNTracks())
+    ]
 
     good = [
         i
