@@ -50,6 +50,11 @@ parser.add_argument(
     action="store_true",
     help="Count secondaries as reconstructible too (needed for samples such as HNL decays)",
 )
+parser.add_argument(
+    "--strawPurity",
+    action="store_true",
+    help="Attribute hits to every MC track crossing the straw (for busy events, where tracks share straws)",
+)
 parser.add_argument("--skipSim", action="store_true", help="Reuse an existing simulation output with this tag")
 parser.add_argument("--skipReco", action="store_true", help="Reuse an existing reconstruction output")
 parser.add_argument("--tag", default="benchmark", help="Output file tag (default: benchmark)")
@@ -192,7 +197,9 @@ print("=" * 60)
 
 import tracking_benchmark
 
-bench = tracking_benchmark.TrackingBenchmark(sim_file, reco_file, geo_file, primary_only=not options.allTracks)
+bench = tracking_benchmark.TrackingBenchmark(
+    sim_file, reco_file, geo_file, primary_only=not options.allTracks, straw_purity=options.strawPurity
+)
 bench.compute_metrics()
 bench.print_summary()
 bench.save_json(json_file)

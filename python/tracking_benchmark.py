@@ -79,6 +79,10 @@ class TrackingBenchmark:
         Count only primary particles as reconstructible. Set to False for
         samples whose tracks of interest are secondaries, such as HNL
         daughters.
+    straw_purity : bool
+        Attribute a hit to every MC track that crossed its straw, not only to
+        the one whose hit was recorded (the earliest). In busy events tracks
+        share straws, and a correct track would otherwise look impure.
     """
 
     def __init__(
@@ -90,11 +94,15 @@ class TrackingBenchmark:
         min_hits: int = 25,
         min_stations: int = 3,
         primary_only: bool = True,
+        straw_purity: bool = False,
     ) -> None:
         self.purity_cut = purity_cut
         self.min_hits = min_hits
         self.min_stations = min_stations
         self.primary_only = primary_only
+        self.straw_purity = straw_purity
+        # Per event: MC tracks that crossed each straw
+        self._straw_crossers: dict[int, set[int]] = {}
 
         self.f_sim = ROOT.TFile.Open(sim_file, "read")
         self.sim_tree = self.f_sim["cbmsim"]
@@ -207,8 +215,14 @@ class TrackingBenchmark:
         track_counts: dict[int, int] = {}
         n_hits = 0
         for idx in hit_indices:
-            mc_id = self.sim_tree.strawtubesPoint[idx].GetTrackID()
-            track_counts[mc_id] = track_counts.get(mc_id, 0) + 1
+            point = self.sim_tree.strawtubesPoint[idx]
+            owners = (
+                self._straw_crossers.get(point.GetDetectorID(), {point.GetTrackID()})
+                if self.straw_purity
+                else (point.GetTrackID(),)
+            )
+            for mc_id in owners:
+                track_counts[mc_id] = track_counts.get(mc_id, 0) + 1
             n_hits += 1
 
         if not track_counts:
@@ -451,6 +465,9 @@ class TrackingBenchmark:
             self.sim_tree.GetEvent(i_event)
             self.reco_tree.GetEvent(i_event)
             self._straw_index = self._build_straw_index()
+            self._straw_crossers = defaultdict(set)
+            for point in self.sim_tree.strawtubesPoint:
+                self._straw_crossers[point.GetDetectorID()].add(point.GetTrackID())
 
             # Find reconstructible MC particles
             reconstructible_ids: set[int] = set()
@@ -489,7 +506,9 @@ class TrackingBenchmark:
                 mc_id = self.reco_tree.fitTrack2MC[i_reco]
 
                 # Recompute purity to apply our cut
-                frac, _dominant_id = self._fracMCsame(i_reco)
+                frac, dominant_id = self._fracMCsame(i_reco)
+                if self.straw_purity:
+                    mc_id = dominant_id
 
                 if frac < self.purity_cut:
                     # Ghost track
