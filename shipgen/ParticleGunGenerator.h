@@ -83,6 +83,8 @@ class ParticleGunGenerator : public SHiP::Generator {
 
   void SetPDGType(int pdgid) { m_pdgid = pdgid; };
   void SetMultiplicity(int mult) { m_mult = mult; };
+  /// Give all particles of an event the same vertex, drawn once per event
+  void SetCommonVertex(bool flag) { m_commonVertex = flag; };
   int GenPDGType() const;
   int GetMultiplicity() { return m_mult; };
 
@@ -174,6 +176,7 @@ class ParticleGunGenerator : public SHiP::Generator {
   std::vector<Double32_t> fMomentumPars;
   std::vector<Double32_t> fVertexPars;
   int m_mult{1};
+  bool m_commonVertex{false};
   int m_pdgid{0};
 };
 

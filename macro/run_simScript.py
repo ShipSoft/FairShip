@@ -158,6 +158,18 @@ pg_parser.add_argument(
     "--Dy", dest="Dy", type=float, help="size of the full uniform spread of PG ypos: (Vy - Dy/2, Vy + Dy/2)"
 )
 pg_parser.add_argument(
+    "--Dz",
+    dest="Dz",
+    type=float,
+    default=0,
+    help="size of the full uniform spread of PG zpos: (Vz - Dz/2, Vz + Dz/2), with --smearMode uniform3d",
+)
+pg_parser.add_argument(
+    "--commonVertex",
+    action="store_true",
+    help="give all particles of an event the same vertex (with --multiplePG, drawn once per event)",
+)
+pg_parser.add_argument(
     "--momentumModel", dest="momentumModel", default=0, type=int, help="Select a model to generate the momentum with"
 )
 pg_parser.add_argument(
@@ -807,14 +819,15 @@ if options.command == "PG":
     if options.bothCharges:
         myPgun.SetBothCharges(True, options.chargeFraction)
     if options.multiplePG:
-        # multiple PG sources in the x-y plane; z is always the same!
-        myPgun.SetVertexModel(
-            options.smearMode,
-            [options.Vx * u.cm, options.Dx * u.cm, options.Vy * u.cm, options.Dy * u.cm, options.Vz * u.cm],
-        )
+        # multiple PG sources in the x-y plane, or in a volume with uniform3d
+        vertex_pars = [options.Vx * u.cm, options.Dx * u.cm, options.Vy * u.cm, options.Dy * u.cm, options.Vz * u.cm]
+        if options.smearMode == "uniform3d":
+            vertex_pars.append(options.Dz * u.cm)
+        myPgun.SetVertexModel(options.smearMode, vertex_pars)
     else:
         # point source
         myPgun.SetVertexModel(options.smearMode, [options.Vx * u.cm, 0.0, options.Vy * u.cm, 0.0, options.Vz * u.cm])
+    myPgun.SetCommonVertex(options.commonVertex)
     if options.momentumModel > 0:
         myPgun.SetMomentumModel(options.momentumModel, options.modelPar)
     if options.histoFile:
