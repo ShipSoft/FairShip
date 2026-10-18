@@ -14,6 +14,9 @@ from __future__ import annotations
 import json
 import logging
 import math
+from array import array
+from collections import defaultdict
+from itertools import combinations
 from typing import Any
 
 import ROOT
@@ -72,6 +75,10 @@ class TrackingBenchmark:
         Minimum number of straw hits for reconstructibility.
     min_stations : int
         Minimum number of tracking stations crossed for reconstructibility.
+    primary_only : bool
+        Count only primary particles as reconstructible. Set to False for
+        samples whose tracks of interest are secondaries, such as HNL
+        daughters.
     """
 
     def __init__(
@@ -82,10 +89,12 @@ class TrackingBenchmark:
         purity_cut: float = 0.70,
         min_hits: int = 25,
         min_stations: int = 3,
+        primary_only: bool = True,
     ) -> None:
         self.purity_cut = purity_cut
         self.min_hits = min_hits
         self.min_stations = min_stations
+        self.primary_only = primary_only
 
         self.f_sim = ROOT.TFile.Open(sim_file, "read")
         self.sim_tree = self.f_sim["cbmsim"]
@@ -136,14 +145,14 @@ class TrackingBenchmark:
     def _is_reconstructible(self, mc_track_id: int) -> bool:
         """Check if an MC particle meets reconstructibility criteria.
 
-        A particle is reconstructible if it is a charged primary with
-        hits in >= min_stations tracking stations and >= min_hits total
-        straw hits. This matches the cuts in shipDigiReco.findTracks().
+        A particle is reconstructible if it is charged (and primary, unless
+        primary_only is False) with hits in >= min_stations tracking stations
+        and >= min_hits total straw hits.
         """
         mc_track = self.sim_tree.MCTrack[mc_track_id]
 
         # Must be primary (no mother)
-        if mc_track.GetMotherId() >= 0:
+        if self.primary_only and mc_track.GetMotherId() >= 0:
             return False
 
         # Must be charged
@@ -208,6 +217,131 @@ class TrackingBenchmark:
         tmax = max(track_counts, key=track_counts.__getitem__)
         frac = track_counts[tmax] / n_hits if n_hits > 0 else 0.0
         return frac, tmax
+
+    @staticmethod
+    def _fraction(k: int, n: int) -> dict[str, Any]:
+        return {
+            "value": _round_or_none(k / n if n > 0 else None),
+            "uncertainty": _round_or_none(wilson_interval(k, n)),
+            "compare": "statistical",
+        }
+
+    @staticmethod
+    def _width(histogram) -> dict[str, Any]:
+        """Half-width of the central 68% of a distribution, robust to tails."""
+        if histogram.GetEntries() < 10:
+            return {"value": None, "compare": "statistical"}
+        probabilities = array("d", [0.16, 0.5, 0.84])
+        quantiles = array("d", [0.0, 0.0, 0.0])
+        histogram.GetQuantiles(3, quantiles, probabilities)
+        return {
+            "value": round((quantiles[2] - quantiles[0]) / 2, 6),
+            "median": round(quantiles[1], 6),
+            "rms": round(histogram.GetRMS(), 6),
+            "compare": "statistical",
+        }
+
+    def _rates(self, stats: dict[str, int]) -> dict[str, Any]:
+        """Efficiency, clone and ghost rates and vertex efficiency of a subset of events."""
+        return {
+            "n_events": {"value": stats["n_events"], "compare": "exact"},
+            "n_reconstructible": {"value": stats["n_reconstructible"], "compare": "exact"},
+            "efficiency": self._fraction(stats["n_matched_mc"], stats["n_reconstructible"]),
+            "clone_rate": self._fraction(stats["n_clone_reco"], stats["n_matched_reco"]),
+            "ghost_rate": self._fraction(stats["n_total_reco"] - stats["n_matched_reco"], stats["n_total_reco"]),
+            "vertex_efficiency": self._fraction(stats["n_found_vertices"], stats["n_truth_vertices"]),
+        }
+
+    def _vertex_metrics(self, stats: dict[str, Any]) -> dict[str, Any]:
+        self._vertex_histos = {name: stats[name] for name in stats if name.startswith("h_")}
+        return {
+            "n_truth_vertices": {"value": stats["n_truth_vertices"], "compare": "exact"},
+            "n_candidates": {"value": stats["n_candidates"], "compare": "exact"},
+            # truth vertices with at least one matched two-track candidate
+            "vertex_efficiency": self._fraction(stats["n_found_vertices"], stats["n_truth_vertices"]),
+            # opposite-charge pairs of reconstructible tracks with a candidate
+            "pair_efficiency": self._fraction(stats["n_matched_candidates"], stats["n_findable_pairs"]),
+            # candidates that are not a distinct true pair: fakes and duplicates
+            "fake_rate": self._fraction(stats["n_candidates"] - stats["n_matched_candidates"], stats["n_candidates"]),
+            "vertex_dx_width": self._width(stats["h_vtx_dx"]),
+            "vertex_dy_width": self._width(stats["h_vtx_dy"]),
+            "vertex_dz_width": self._width(stats["h_vtx_dz"]),
+            "mass_rel_width": self._width(stats["h_mass_rel"]),
+            "doca": self._width(stats["h_doca"]),
+        }
+
+    def _truth_charge(self, mc_track_id: int) -> float:
+        particle = self.PDG.GetParticle(self.sim_tree.MCTrack[mc_track_id].GetPdgCode())
+        return particle.Charge() / 3.0 if particle else 0.0
+
+    def _truth_vertices(self, reconstructible_ids: set[int]) -> dict[tuple, list[int]]:
+        """Group reconstructible MC tracks by their production vertex.
+
+        Only vertices with at least one opposite-charge pair of
+        reconstructible tracks are returned, as only those can give a
+        two-track vertex candidate.
+        """
+        groups: dict[tuple, list[int]] = defaultdict(list)
+        for mc_id in reconstructible_ids:
+            mc = self.sim_tree.MCTrack[mc_id]
+            key = (round(mc.GetStartX(), 3), round(mc.GetStartY(), 3), round(mc.GetStartZ(), 3))
+            groups[key].append(mc_id)
+        return {key: ids for key, ids in groups.items() if self._opposite_pairs(ids)}
+
+    def _opposite_pairs(self, mc_ids: list[int]) -> list[tuple[int, int]]:
+        return [(a, b) for a, b in combinations(mc_ids, 2) if self._truth_charge(a) * self._truth_charge(b) < 0]
+
+    def _evaluate_vertices(self, reconstructible_ids: set[int], stats: dict[str, Any]) -> None:
+        """Match this event's vertex candidates (Particles) to MC truth vertices.
+
+        A candidate is matched if both daughters pass the purity cut, belong
+        to different MC tracks, and those come from the same truth vertex.
+        Updates the counters and histograms in ``stats``.
+        """
+        truth = self._truth_vertices(reconstructible_ids)
+        vertex_of = {mc_id: key for key, ids in truth.items() for mc_id in ids}
+        stats["n_truth_vertices"] += len(truth)
+        stats["n_findable_pairs"] += sum(len(self._opposite_pairs(ids)) for ids in truth.values())
+
+        found_vertices: set[tuple] = set()
+        found_pairs: set[frozenset[int]] = set()
+        particles = getattr(self.reco_tree, "Particles", None)
+        for particle in particles if particles is not None else []:
+            stats["n_candidates"] += 1
+            stats["h_doca"].Fill(particle.GetDoca())
+            mc_ids = []
+            for i in range(2):
+                frac, mc_id = self._fracMCsame(particle.GetDaughter(i))
+                if frac >= self.purity_cut:
+                    mc_ids.append(mc_id)
+            if len(mc_ids) != 2 or mc_ids[0] == mc_ids[1]:
+                continue
+            key = vertex_of.get(mc_ids[0])
+            pair = frozenset(mc_ids)
+            if key is None or vertex_of.get(mc_ids[1]) != key or pair in found_pairs:
+                continue
+            found_pairs.add(pair)
+            found_vertices.add(key)
+
+            vertex = ROOT.TLorentzVector()
+            particle.ProductionVertex(vertex)
+            stats["h_vtx_dx"].Fill(vertex.X() - key[0])
+            stats["h_vtx_dy"].Fill(vertex.Y() - key[1])
+            stats["h_vtx_dz"].Fill(vertex.Z() - key[2])
+
+            # Pair mass with the masses the reconstruction assumed, against
+            # the true pair mass
+            p_reco = particle.GetMomentum()
+            p_true = ROOT.TLorentzVector()
+            for mc_id in mc_ids:
+                mc_p = ROOT.TLorentzVector()
+                self.sim_tree.MCTrack[mc_id].Get4Momentum(mc_p)
+                p_true += mc_p
+            if p_true.M() > 0:
+                stats["h_mass_rel"].Fill((p_reco.M() - p_true.M()) / p_true.M())
+
+        stats["n_matched_candidates"] += len(found_pairs)
+        stats["n_found_vertices"] += len(found_vertices)
 
     def compute_metrics(self) -> dict[str, Any]:
         """Run the full benchmark analysis over all events.
@@ -299,8 +433,19 @@ class TrackingBenchmark:
         n_wrong_charge = 0
 
         acts_mode = uses_acts(self.reco_tree)
-        if acts_mode:
-            logger.info("ACTS tracks: charge-identification metrics unavailable (no charge accessor)")
+
+        # Per event multiplicity (number of reconstructible tracks)
+        by_multiplicity: dict[int, dict[str, int]] = defaultdict(lambda: defaultdict(int))
+        vertex_stats: dict[str, Any] = defaultdict(int)
+        vertex_stats["h_vtx_dx"] = ROOT.TH1D("h_vtx_dx", "Vertex x;x_{reco} #minus x_{truth} [cm];Entries", 200, -5, 5)
+        vertex_stats["h_vtx_dy"] = ROOT.TH1D("h_vtx_dy", "Vertex y;y_{reco} #minus y_{truth} [cm];Entries", 200, -5, 5)
+        vertex_stats["h_vtx_dz"] = ROOT.TH1D(
+            "h_vtx_dz", "Vertex z;z_{reco} #minus z_{truth} [cm];Entries", 200, -200, 200
+        )
+        vertex_stats["h_doca"] = ROOT.TH1D("h_doca", "Vertex candidate DOCA;DOCA [cm];Entries", 200, 0, 10)
+        vertex_stats["h_mass_rel"] = ROOT.TH1D(
+            "h_mass_rel", "Pair mass;(m_{reco} #minus m_{truth}) / m_{truth};Entries", 200, -0.5, 0.5
+        )
 
         for i_event in range(n_events):
             self.sim_tree.GetEvent(i_event)
@@ -318,6 +463,7 @@ class TrackingBenchmark:
                         h_p_truth.Fill(p_truth)
 
             n_reconstructible += len(reconstructible_ids)
+            counts_before = (n_matched_mc, n_total_reco, n_matched_reco, n_clone_reco)
 
             # Match reco tracks to MC
             reco_tracks = get_tracks(self.reco_tree)
@@ -382,19 +528,18 @@ class TrackingBenchmark:
 
                         h_p_matched.Fill(p_truth)
 
-                        # Charge identification (ACTS tracks expose no charge)
-                        if not acts_mode:
-                            q_reco = track.getFittedState().getCharge()
-                            mc_pdg = self.sim_tree.MCTrack[mc_id].GetPdgCode()
-                            mc_particle = self.PDG.GetParticle(mc_pdg)
-                            if mc_particle:
-                                q_truth = mc_particle.Charge() / 3.0
-                                if q_reco * q_truth > 0:
-                                    n_correct_charge += 1
-                                    h_p_correct_charge.Fill(p_truth)
-                                else:
-                                    n_wrong_charge += 1
-                                    h_p_wrong_charge.Fill(p_truth)
+                        # Charge identification
+                        q_reco = track.charge() if acts_mode else track.getFittedState().getCharge()
+                        mc_pdg = self.sim_tree.MCTrack[mc_id].GetPdgCode()
+                        mc_particle = self.PDG.GetParticle(mc_pdg)
+                        if mc_particle:
+                            q_truth = mc_particle.Charge() / 3.0
+                            if q_reco * q_truth > 0:
+                                n_correct_charge += 1
+                                h_p_correct_charge.Fill(p_truth)
+                            else:
+                                n_wrong_charge += 1
+                                h_p_wrong_charge.Fill(p_truth)
 
                     # Per-hit unbiased residuals and pulls
                     if acts_mode:
@@ -424,6 +569,23 @@ class TrackingBenchmark:
                                 continue
 
             n_matched_mc += len(matched_mc_this_event)
+
+            bin_stats = by_multiplicity[len(reconstructible_ids)]
+            bin_stats["n_events"] += 1
+            bin_stats["n_reconstructible"] += len(reconstructible_ids)
+            counts_after = (n_matched_mc, n_total_reco, n_matched_reco, n_clone_reco)
+            for name, before, after in zip(
+                ("n_matched_mc", "n_total_reco", "n_matched_reco", "n_clone_reco"),
+                counts_before,
+                counts_after,
+                strict=True,
+            ):
+                bin_stats[name] += after - before
+
+            vertices_before = (vertex_stats["n_truth_vertices"], vertex_stats["n_found_vertices"])
+            self._evaluate_vertices(reconstructible_ids, vertex_stats)
+            bin_stats["n_truth_vertices"] += vertex_stats["n_truth_vertices"] - vertices_before[0]
+            bin_stats["n_found_vertices"] += vertex_stats["n_found_vertices"] - vertices_before[1]
 
         # Compute metrics (None when denominator is zero)
         n_ghost_reco = n_total_reco - n_matched_reco
@@ -549,7 +711,12 @@ class TrackingBenchmark:
                 },
                 "n_correct_charge": {"value": int(n_correct_charge), "compare": "exact"},
                 "n_wrong_charge": {"value": int(n_wrong_charge), "compare": "exact"},
-            }
+            },
+            "tracking_benchmark_by_multiplicity": {
+                str(multiplicity): self._rates(by_multiplicity[multiplicity])
+                for multiplicity in sorted(by_multiplicity)
+            },
+            "vertexing_benchmark": self._vertex_metrics(vertex_stats),
         }
 
         self._histos = {
@@ -579,7 +746,7 @@ class TrackingBenchmark:
     def save_histograms(self, output_path: str) -> None:
         """Save detailed histograms to a ROOT file."""
         f_out = ROOT.TFile.Open(output_path, "recreate")
-        for name, hist in self._histos.items():
+        for name, hist in {**self._histos, **getattr(self, "_vertex_histos", {})}.items():
             hist.Write(name)
         f_out.Close()
         print(f"Histograms saved to {output_path}")
@@ -621,6 +788,20 @@ class TrackingBenchmark:
             f"  Charge-ID eff:    {fmt(m['charge_id_efficiency']['value'], m['charge_id_efficiency']['uncertainty'])}"
         )
         print(f"  Correct/wrong:    {m['n_correct_charge']['value']}/{m['n_wrong_charge']['value']}")
+        v = self.metrics["vertexing_benchmark"]
+        print(f"  Truth vertices:   {v['n_truth_vertices']['value']} (candidates: {v['n_candidates']['value']})")
+        for name in ("vertex_efficiency", "pair_efficiency", "fake_rate"):
+            print(f"  {name + ':':18}{fmt(v[name]['value'], v[name]['uncertainty'])}")
+        for name in ("vertex_dx_width", "vertex_dy_width", "vertex_dz_width", "mass_rel_width", "doca"):
+            print(f"  {name + ':':18}{v[name]['value']}")
+        print("  By multiplicity (efficiency, ghost rate, vertex efficiency):")
+        for multiplicity, b in self.metrics["tracking_benchmark_by_multiplicity"].items():
+            print(
+                f"    {multiplicity:>3} tracks, {b['n_events']['value']:>5} events: "
+                f"{fmt(b['efficiency']['value'], b['efficiency']['uncertainty'], '.3f')}, "
+                f"{fmt(b['ghost_rate']['value'], b['ghost_rate']['uncertainty'], '.3f')}, "
+                f"{fmt(b['vertex_efficiency']['value'], b['vertex_efficiency']['uncertainty'], '.3f')}"
+            )
         print("==================================\n")
 
     def __del__(self) -> None:
