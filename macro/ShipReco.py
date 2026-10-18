@@ -65,10 +65,11 @@ parser.add_argument(
     help="Options for pattern recognition. \n\
            FH                        : Hough transform.\n\
            AR                        : Artificial retina.\n\
-           Truth                     : MC truth seeding -- for simulation only, requires --trackFitter acts.\n\
+           Truth                     : MC truth hit assignment -- for simulation only, requires --trackFitter acts.\n\
+           Segments                  : drift-circle segments matched across the magnet, requires --trackFitter acts.\n\
       TemplateMatching               : Tracks are searched for based on the template: track seed + hits within a window around the seed.",
     required=False,
-    choices=["FH", "AR", "TemplateMatching", "Truth"],
+    choices=["FH", "AR", "TemplateMatching", "Truth", "Segments"],
     default="AR",
 )
 parser.add_argument(
@@ -91,8 +92,8 @@ parser.add_argument(
     action="store_true",
 )
 options = parser.parse_args()
-if options.patRec == "Truth" and options.trackFitter != "acts":
-    parser.error("--patRec Truth requires --trackFitter acts")
+if options.patRec in ("Truth", "Segments") and options.trackFitter != "acts":
+    parser.error(f"--patRec {options.patRec} requires --trackFitter acts")
 vertexing = not options.noVertexing
 
 
