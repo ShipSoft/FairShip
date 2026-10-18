@@ -15,6 +15,8 @@ environments:
     - https://pypi.org/simple
     packages:
       linux-64:
+      - conda: https://conda.anaconda.org/conda-forge/linux-64/acts-core-48.2.0-np2h3377b24_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/linux-64/eigen-5.0.1-h19c2612_3.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/faircmakemodules-1.0.0-h98f672e_0.conda
       - conda: https://prefix.dev/conda-forge/linux-64/_openmp_mutex-4.5-8_kmp_llvm.conda
       - conda: https://prefix.dev/conda-forge/linux-64/alsa-lib-1.2.16.1-h7cc23a3_1.conda
@@ -62,7 +64,6 @@ environments:
       - conda: https://prefix.dev/conda-forge/linux-64/dbus-1.16.2-he8c428d_2.conda
       - conda: https://prefix.dev/conda-forge/linux-64/debugpy-1.8.22-py313h901f96d_0.conda
       - conda: https://prefix.dev/conda-forge/linux-64/double-conversion-3.4.0-hecca717_0.conda
-      - conda: https://prefix.dev/conda-forge/linux-64/eigen-3.4.0-h54a6638_2.conda
       - conda: https://prefix.dev/conda-forge/linux-64/epoxy-1.5.10-hb03c661_2.conda
       - conda: https://prefix.dev/conda-forge/linux-64/evtgen-2.2.3-h3f2d84a_1.conda
       - conda: https://prefix.dev/conda-forge/linux-64/expat-2.8.5-hd2095e1_0.conda
@@ -419,7 +420,6 @@ environments:
       - conda: https://prefix.dev/conda-forge/noarch/webencodings-0.5.1-pyhd8ed1ab_3.conda
       - conda: https://prefix.dev/conda-forge/noarch/websocket-client-1.9.2-pyh5ded981_1.conda
       - conda: https://prefix.dev/conda-forge/noarch/zipp-4.1.0-pyhcf101f3_0.conda
-      - conda: https://prefix.dev/ship-experiment/stable/linux-64/acts-ship-0.0.0.dev20260813+99440c4-ha28ff26_6.conda
       - conda: https://prefix.dev/ship-experiment/stable/linux-64/fairroot-19.0.1-ha28ff26_15.conda
       - conda: https://prefix.dev/ship-experiment/stable/linux-64/geant3-4.5-ha28ff26_8.conda
       - conda: https://prefix.dev/ship-experiment/stable/linux-64/genfit-2.3.0-ha28ff26_15.conda
@@ -435,6 +435,8 @@ environments:
     - https://pypi.org/simple
     packages:
       linux-64:
+      - conda: https://conda.anaconda.org/conda-forge/linux-64/acts-core-48.2.0-np2h3377b24_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/linux-64/eigen-5.0.1-h19c2612_3.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/faircmakemodules-1.0.0-h98f672e_0.conda
       - conda: https://prefix.dev/conda-forge/linux-64/_openmp_mutex-4.5-8_kmp_llvm.conda
       - conda: https://prefix.dev/conda-forge/linux-64/alsa-lib-1.2.16.1-h7cc23a3_1.conda
@@ -485,7 +487,6 @@ environments:
       - conda: https://prefix.dev/conda-forge/linux-64/dbus-1.16.2-he8c428d_2.conda
       - conda: https://prefix.dev/conda-forge/linux-64/debugpy-1.8.22-py313h901f96d_0.conda
       - conda: https://prefix.dev/conda-forge/linux-64/double-conversion-3.4.0-hecca717_0.conda
-      - conda: https://prefix.dev/conda-forge/linux-64/eigen-3.4.0-h54a6638_2.conda
       - conda: https://prefix.dev/conda-forge/linux-64/epoxy-1.5.10-hb03c661_2.conda
       - conda: https://prefix.dev/conda-forge/linux-64/evtgen-2.2.3-h3f2d84a_1.conda
       - conda: https://prefix.dev/conda-forge/linux-64/expat-2.8.5-hd2095e1_0.conda
@@ -855,7 +856,6 @@ environments:
       - conda: https://prefix.dev/conda-forge/noarch/webencodings-0.5.1-pyhd8ed1ab_3.conda
       - conda: https://prefix.dev/conda-forge/noarch/websocket-client-1.9.2-pyh5ded981_1.conda
       - conda: https://prefix.dev/conda-forge/noarch/zipp-4.1.0-pyhcf101f3_0.conda
-      - conda: https://prefix.dev/ship-experiment/stable/linux-64/acts-ship-0.0.0.dev20260813+99440c4-ha28ff26_6.conda
       - conda: https://prefix.dev/ship-experiment/stable/linux-64/fairroot-19.0.1-ha28ff26_15.conda
       - conda: https://prefix.dev/ship-experiment/stable/linux-64/geant3-4.5-ha28ff26_8.conda
       - conda: https://prefix.dev/ship-experiment/stable/linux-64/genfit-2.3.0-ha28ff26_15.conda
@@ -868,6 +868,29 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/66/65/08d3a5039b565231c501b31d1a973d4222e9803c03b2c31a9c08bdec3e30/cpplint-2.0.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/a0/36/443b700f54a585cf8ed4e76d8ad08b12df6914f8782a2788ecd0d8491519/types_tabulate-0.10.0.20260508-py3-none-any.whl
 packages:
+- conda: https://conda.anaconda.org/conda-forge/linux-64/acts-core-48.2.0-np2h3377b24_0.conda
+  sha256: 3410f49a0e52139749e64fed9dea7581879d6418d4a90e03b8b0035ab47d932f
+  md5: cc7049757df2ab1ec7cfafa9afd95bc1
+  depends:
+  - __glibc >=2.17,<3.0.a0
+  - libstdcxx >=15
+  - libgcc >=15
+  - libboost >=1.90.0,<1.91.0a0
+  license: MPL-2.0
+  license_family: MOZILLA
+  purls: []
+  run_exports: {}
+  size: 3954221
+  timestamp: 1792349554292
+- conda: https://conda.anaconda.org/conda-forge/linux-64/eigen-5.0.1-h19c2612_3.conda
+  sha256: e134dba3ad3523573d5902ff1222a4033372089ea31efa99e6adaf0aa18f904a
+  md5: cf1f7131e9055f06f07a834091f44ca4
+  license: MPL-2.0
+  license_family: MOZILLA
+  purls: []
+  run_exports: {}
+  size: 1311719
+  timestamp: 1788951264833
 - conda: https://conda.anaconda.org/conda-forge/noarch/faircmakemodules-1.0.0-h98f672e_0.conda
   sha256: 2634b440823429b61cde095e1b0135aace6302238ab783049cac92c6922e4bcb
   md5: a0719b28c2a63aa871a65bfc7091ff7c
@@ -1718,19 +1741,6 @@ packages:
     - double-conversion >=3.4.0,<3.5.0a0
   size: 71809
   timestamp: 1765193127016
-- conda: https://prefix.dev/conda-forge/linux-64/eigen-3.4.0-h54a6638_2.conda
-  sha256: a627704a4dc57459dbcdec8296c3f7f1801e53d441b7cadb56a2caa57920a5b3
-  md5: 00f77958419a22c6a41568c6decd4719
-  depends:
-  - libstdcxx >=14
-  - libgcc >=14
-  - __glibc >=2.17,<3.0.a0
-  license: MPL-2.0
-  license_family: MOZILLA
-  purls: []
-  run_exports: {}
-  size: 1173190
-  timestamp: 1771922274213
 - conda: https://prefix.dev/conda-forge/linux-64/epoxy-1.5.10-hb03c661_2.conda
   sha256: a5b51e491fec22bcc1765f5b2c8fff8a97428e9a5a7ee6730095fb9d091b0747
   md5: 057083b06ccf1c2778344b6dabace38b
@@ -4400,8 +4410,7 @@ packages:
   license: LGPL-3.0-only
   license_family: LGPL
   purls:
-  - pkg:pypi/pyside6?source=hash-mapping
-  - pkg:pypi/shiboken6?source=hash-mapping
+  - pkg:pypi/pyside6?source=compressed-mapping
   run_exports: {}
   size: 13947145
   timestamp: 1788745031498
@@ -6588,7 +6597,7 @@ packages:
   license: MIT
   license_family: MIT
   purls:
-  - pkg:pypi/jsonschema?source=hash-mapping
+  - pkg:pypi/jsonschema?source=compressed-mapping
   run_exports: {}
   size: 82084
   timestamp: 1787579299493
@@ -6639,7 +6648,7 @@ packages:
   - nodejs >=22
   license: Apache-2.0 AND BSD-2-Clause AND BSD-3-Clause AND ISC AND MIT
   purls:
-  - pkg:pypi/jupyter-builder?source=hash-mapping
+  - pkg:pypi/jupyter-builder?source=compressed-mapping
   run_exports: {}
   size: 888064
   timestamp: 1788566563939
@@ -6692,7 +6701,7 @@ packages:
   license: BSD-3-Clause
   license_family: BSD
   purls:
-  - pkg:pypi/jupyter-client?source=hash-mapping
+  - pkg:pypi/jupyter-client?source=compressed-mapping
   run_exports: {}
   size: 118962
   timestamp: 1787929615607
@@ -7060,7 +7069,7 @@ packages:
   license: BSD-3-Clause
   license_family: BSD
   purls:
-  - pkg:pypi/nbclient?source=hash-mapping
+  - pkg:pypi/nbclient?source=compressed-mapping
   run_exports: {}
   size: 29971
   timestamp: 1788212974885
@@ -7108,7 +7117,7 @@ packages:
   license: BSD-3-Clause
   license_family: BSD
   purls:
-  - pkg:pypi/nbformat?source=hash-mapping
+  - pkg:pypi/nbformat?source=compressed-mapping
   run_exports: {}
   size: 107750
   timestamp: 1787133512599
@@ -7511,7 +7520,7 @@ packages:
   license: BSD-3-Clause
   license_family: BSD
   purls:
-  - pkg:pypi/fastjsonschema?source=hash-mapping
+  - pkg:pypi/fastjsonschema?source=compressed-mapping
   run_exports: {}
   size: 254446
   timestamp: 1786892280524
@@ -7535,7 +7544,7 @@ packages:
   license: BSD-2-Clause
   license_family: BSD
   purls:
-  - pkg:pypi/python-json-logger?source=hash-mapping
+  - pkg:pypi/python-json-logger?source=compressed-mapping
   run_exports: {}
   size: 19367
   timestamp: 1786872772907
@@ -8042,7 +8051,7 @@ packages:
   license: Apache-2.0
   license_family: APACHE
   purls:
-  - pkg:pypi/websocket-client?source=hash-mapping
+  - pkg:pypi/websocket-client?source=compressed-mapping
   run_exports: {}
   size: 78254
   timestamp: 1788531123810
@@ -8059,26 +8068,6 @@ packages:
   run_exports: {}
   size: 24190
   timestamp: 1779159948016
-- conda: https://prefix.dev/ship-experiment/stable/linux-64/acts-ship-0.0.0.dev20260813+99440c4-ha28ff26_6.conda
-  sha256: 92b13b31179fdc61bea88b6391bf72cf259f992de5d2eb39bae9908733768b79
-  md5: ae9cc7fffb1be93e0b8bfd0bce96c307
-  depends:
-  - python 3.13.*
-  - hepmc3 <3.3.1
-  - libstdcxx >=16
-  - libgcc >=16
-  - __glibc >=2.17,<3.0.a0
-  - root_cxx_standard ==23
-  - python_abi 3.13.* *_cp313
-  - libboost >=1.90.0,<1.91.0a0
-  - tbb >=2023.1.0
-  - root_base >=6.40.2,<6.40.3.0a0
-  license: MPL-2.0
-  run_exports:
-    weak:
-    - acts-ship >=0.0.0.dev20260813+99440c4,<0.1.0a0
-  size: 22271267
-  timestamp: 1790196577440
 - conda: https://prefix.dev/ship-experiment/stable/linux-64/fairroot-19.0.1-ha28ff26_15.conda
   sha256: c414256418e094d0bc42f345f51ab6f1fa240edf865d172a112e9bce74af94e8
   md5: f3901c1c1b399338811b52567e670806

@@ -25,13 +25,17 @@ faircmakemodules = { version = ">=1.0", channel = "conda-forge" }
 # fairlogger is on conda-forge but is not in fairroot's runtime deps —
 # keep it explicit so CMake's find_package(FairLogger) resolves.
 fairlogger = ">=2.3"
-# Eigen is header-only, so its conda package has no run_export and is not pulled
-# in transitively by acts-ship/genfit. acts-ship's CMake config requires
-# Eigen3 3.4.0 EXACT, so pin to 3.4.x (conda-forge is the only source).
-eigen = "3.4.*"
+# Eigen is header-only, so its conda package has no run_export, and acts-core
+# does not depend on it. acts-core's CMake config requires the Eigen it was
+# built against EXACTLY (5.0.1 for 48.2.0), so pin to that version.
+eigen = "==5.0.1"
+# Upstream ACTS (Core only) for the ACTS track fitter in ActsTracking/. CMake
+# requires the 48 major version.
+acts-core = "48.*"
 
 # Python (conda-forge)
-# acts-ship requires python 3.13, so the whole env is pinned to 3.13.
+# Pinned to 3.13 for acts-ship, which is no longer used; relaxing the pin is a
+# separate change.
 python = "3.13.*"
 numpy = "*"
 scipy = "*"
@@ -47,8 +51,6 @@ geant4-vmc = ">=6.7"
 fairroot = ">=19.0"
 genfit = ">=2.3"
 rootegpythia6 = "*"
-# SHiP fork of ACTS; used at reco time via `import acts` (python/strawReco.py).
-acts-ship = "*"
 # Physics-metrics extraction/comparison CLIs used by the ci-* tasks.
 ship-ci-metrics = "*"
 # tauolapp and photospp are runtime-only (not needed for build)
@@ -58,10 +60,11 @@ ship-ci-metrics = "*"
 cmake = ">=3.27"
 ninja = "*"
 cxx-compiler = "*"
-# Boost headers for the FairShip build. acts-ship depends on the runtime
+# Boost headers for the FairShip build. acts-core depends on the runtime
 # libboost, but libboost-headers carries no run_exports, so the headers are
-# never pulled in transitively. The version follows acts-ship's
-# `libboost >=1.90.0` via libboost-devel's exact-match dependency on libboost.
+# never pulled in transitively. The version follows acts-core's
+# `libboost >=1.90.0,<1.91` via libboost-devel's exact-match dependency on
+# libboost, which also satisfies acts-core's CMake check for Boost 1.90.0.
 libboost-devel = "*"
 
 # Static analysis

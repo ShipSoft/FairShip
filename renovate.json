@@ -3,7 +3,7 @@
   "extends": ["local>ShipSoft/.github"],
   "packageRules": [
     {
-      "description": "Eigen is pinned to 3.4.x because acts-ship requires Eigen 3.4.0 EXACT",
+      "description": "Eigen is pinned to the version acts-core was built against, which its CMake config requires EXACTLY",
       "matchManagers": ["pixi"],
       "matchPackageNames": ["eigen"],
       "enabled": false
