@@ -557,7 +557,8 @@ class ShipDigiReco:
             mom = ROOT.TVector3(tr.GetPx(), tr.GetPy(), tr.GetPz())
 
             particle = self.PDG.GetParticle(tr.GetPdgCode())
-            if particle is None:
+            # PyROOT returns a null proxy, not None, for an unknown PDG code
+            if not particle:
                 logger.warning("Skipping MCTrack %d with unknown PDG code %d", trID, tr.GetPdgCode())
                 continue
             charge = particle.Charge() / 3.0
