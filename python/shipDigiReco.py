@@ -2,12 +2,10 @@
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
 import logging
-import os
 from array import array
 from collections import Counter, defaultdict
 
 import global_variables
-import numpy as np
 import ROOT
 import rootUtils as ut
 import shipPatRec
@@ -21,52 +19,13 @@ from detectors.strawtubesDetector import strawtubesDetector
 from detectors.timeDetector import timeDetector
 from detectors.UpstreamTaggerDetector import UBTGeometryMismatch, UpstreamTaggerDetector
 from recoConstants import MIN_HITS_PER_TRACK
+from strawReco import StrawHit, calculateSBTDOCA, make_tracker, runTracking
 
 logger = logging.getLogger(__name__)
 
 
 # Minimum number of stations a candidate has to cross to be fittable.
 MIN_STATIONS_CROSSED = 3
-
-
-def _cov_element(cov, row, col):
-    """Read one element of an ACTS vertex-track covariance.
-
-    The binding hands back a numpy array, but an unfitted track has no
-    covariance at all. Missing or unindexable data reads as zero.
-    """
-    if cov is None:
-        return 0.0
-    try:
-        return cov[row, col]
-    except (TypeError, IndexError, KeyError):
-        pass
-    try:
-        return cov[row][col]
-    except (TypeError, IndexError, KeyError):
-        return 0.0
-
-
-def _track_vector(track, name, fallback):
-    """Return an ACTS vertex-track 3-vector as a numpy array.
-
-    Falls back to ``fallback`` when the preferred attribute is unset, and to
-    the origin when neither is available.
-    """
-    value = getattr(track, name, None)
-    if value is None:
-        value = getattr(track, fallback, None)
-    if value is None:
-        value = (0.0, 0.0, 0.0)
-    return np.array(value, dtype=float)
-
-
-def _extrapolate_to_x(point, direction, x_target):
-    """Propagate a straight line to a plane of constant x, or None if parallel."""
-    dx = direction[0]
-    if abs(dx) < 1e-12:
-        return None
-    return point + direction * ((x_target - point[0]) / dx)
 
 
 class ShipDigiReco:
@@ -98,9 +57,9 @@ class ShipDigiReco:
             # ACTS event model: fitted tracks, vertices and candidate particles
             self.fPartArray = ROOT.std.vector("ShipParticle")()
             self.Particles = self.recoTree.Branch("Particles", self.fPartArray, 32000, -1)
-            self.fACTSArray = ROOT.std.vector("ActsExamples::RecoTrack")()
+            self.fACTSArray = ROOT.std.vector("SHiP::RecoTrack")()
             self.fitACTSTracks = self.recoTree.Branch("RecoTracks", self.fACTSArray, 32000, -1)
-            self.fACTSVertexArray = ROOT.std.vector("ActsExamples::RecoVertex")()
+            self.fACTSVertexArray = ROOT.std.vector("SHiP::RecoVertex")()
             self.fitACTSVertices = self.recoTree.Branch("RecoVertices", self.fACTSVertexArray, 32000, -1)
             self.fitTrack2MC = ROOT.std.vector("int")()
             self.mcLink = self.recoTree.Branch("fitTrack2MC", self.fitTrack2MC, 32000, -1)
@@ -108,8 +67,8 @@ class ShipDigiReco:
             self.goodTracksBranch = self.recoTree.Branch("goodTracks", self.goodTracksVect, 32000, -1)
             self.fTrackletsArray = ROOT.std.vector("Tracklet")()
             self.Tracklets = self.recoTree.Branch("Tracklets", self.fTrackletsArray, 32000, -1)
-            # per-hit vectors handed to ACTS event data (not persisted)
-            self.strawHits = ROOT.std.vector(ROOT.std.vector("float"))()
+            # smeared straw hits of the current event, as strawReco.StrawHit
+            self.strawHits: list[StrawHit] = []
         else:
             # fitted tracks
             # Must use pointer storage: genfit::Track has circular references with TrackPoint
@@ -162,23 +121,8 @@ class ShipDigiReco:
         self.sTree.GetEvent(0)
         #
         if self.trackFitter == "acts":
-            # imported lazily so a GenFit run never touches ACTS
-            import acts
-            import acts.examples
-
-            # set up ACTS tracking geometry and magnetic field
-            cfg = acts.examples.StrawtubeDetector.Config()
-            self.detector = acts.examples.StrawtubeDetector(cfg)
-            self.trackingGeometry = self.detector.trackingGeometry()
-
-            # read the root file containing the spectrometer B field
-            field_map_path = os.path.abspath(
-                os.path.join(os.path.dirname(__file__), "..", global_variables.ShipGeo.Bfield.fieldMap)
-            )
-            if not os.path.exists(field_map_path):
-                raise FileNotFoundError(f"ACTS magnetic field map not found: {field_map_path}")
-            uu = acts.UnitConstants
-            self.actsFieldMap = acts.createShipFieldProvider(field_map_path, uu.T)
+            # straw surfaces from the loaded geometry, and the simulation field
+            self.actsTracker = make_tracker(ROOT.gGeoManager, global_variables.fieldMaker.getGlobalField())
         else:
             # init geometry and mag. field
             self.geoMat = ROOT.genfit.TGeoMaterialInterface()
@@ -240,11 +184,6 @@ class ShipDigiReco:
         Fills the RecoTracks/RecoVertices/Particles branches, the MC link
         and Tracklets, and the SBT veto links.
         """
-        import acts
-        import acts.examples
-        from strawReco import calculateSBTDOCA
-
-        geo_ctx = acts.GeometryContext()
         self.fACTSArray.clear()
         self.fACTSVertexArray.clear()
         self.fitTrack2MC.clear()
@@ -252,187 +191,55 @@ class ShipDigiReco:
         self.fPartArray.clear()
         self.fTrackletsArray.clear()
 
-        output_tracks, vertices, track_hit_indices = self.actsTracks()
+        tracks, vertices, track_hit_indices = self.actsTracks()
 
-        vector_ptr = ROOT.addressof(self.fACTSArray)
-        vertex_vector_ptr = ROOT.addressof(self.fACTSVertexArray)
+        for track, hit_indices in zip(tracks, track_hit_indices, strict=True):
+            self.fACTSArray.push_back(track)
 
-        for i, (_, hit_indices) in enumerate(zip(output_tracks, track_hit_indices, strict=True)):
-            acts.examples.pushRecoTrack(vector_ptr, geo_ctx, i, output_tracks)
-
-            nmeas = output_tracks.ndf[i]
+            nmeas = track.nDoF()
             if nmeas > 0:
                 global_variables.h["nmeas"].Fill(nmeas)
-                global_variables.h["chi2"].Fill(output_tracks.chi2[i] / nmeas)
+                global_variables.h["chi2"].Fill(track.chi2() / nmeas)
 
             # Save MC link: majority MC track over the hits used in the fit
-            track_ids = []
-            for index in hit_indices:
-                if 0 <= index < len(self.strawHits):
-                    ahit = self.strawHits[index]
-                    track_ids.append(int(ahit[5]))
-
-            _frac, tmax = self.fracMCsame(track_ids)
+            _frac, tmax = self.fracMCsame([self.strawHits[i].track_id for i in hit_indices])
             self.fitTrack2MC.push_back(tmax)
 
             # Save digi-hit indices of the fitted track
             indices_vector = ROOT.std.vector("unsigned int")()
             for index in hit_indices:
-                if 0 <= index < len(self.strawHitToDigi):
-                    indices_vector.push_back(self.strawHitToDigi[index])
+                indices_vector.push_back(self.strawHitToDigi[index])
+            self.fTrackletsArray.push_back(ROOT.Tracklet(1, indices_vector))
 
-            aTracklet = ROOT.Tracklet(1, indices_vector)
-            self.fTrackletsArray.push_back(aTracklet)
-
-        n_good_tracks = self.findGoodActsTracks(output_tracks)
-
-        # acts-ship only exposes a process-global "last extracted params"
-        # pointer, so it can be attributed to a vertex unambiguously only when
-        # the event holds a single one.
-        input_addr = 0
-        if len(vertices) == 1 and hasattr(acts, "get_last_extracted_params_addr"):
-            try:
-                input_addr = int(acts.get_last_extracted_params_addr())
-            except (TypeError, ValueError):
-                logger.warning("Could not read the ACTS extracted-parameters address", exc_info=True)
+        n_good_tracks = self.findGoodActsTracks()
 
         for vtx in vertices:
-            acts.pushRecoVertex(vertex_vector_ptr, vtx, output_tracks, input_addr)
-
-            vtx_tracks = vtx.tracks()
+            self.fACTSVertexArray.push_back(vtx)
 
             # Create a ShipParticle from the vertex fit from 2 track vertices
-            if len(vtx_tracks) != 2:
-                logger.debug("Skipping vertex with %d tracks (expected 2)", len(vtx_tracks))
+            if len(vtx.trackIds()) != 2:
+                logger.debug("Skipping vertex with %d tracks (expected 2)", len(vtx.trackIds()))
                 continue
-
-            vertex_pos = vtx.position()
-
-            # ACTS reco frame is in mm, the SHiP frame in cm
-            length_scale = 0.1  # mm -> cm
-            area_scale = 0.01  # mm^2 -> cm^2 (covariances)
-
-            # Scale units to cm and rotate
-            vx = ROOT.TVector3(
-                -vertex_pos[2] * length_scale, vertex_pos[1] * length_scale, vertex_pos[0] * length_scale
-            )
-
-            t1 = int(vtx_tracks[0].trackIndex)
-            t2 = int(vtx_tracks[1].trackIndex)
-
-            mom_daughter1 = tuple(vtx_tracks[0].momentum) if vtx_tracks[0].momentum is not None else (0.0, 0.0, 0.0)
-            mom_daughter2 = tuple(vtx_tracks[1].momentum) if vtx_tracks[1].momentum is not None else (0.0, 0.0, 0.0)
-            px_mother = mom_daughter1[0] + mom_daughter2[0]
-            py_mother = mom_daughter1[1] + mom_daughter2[1]
-            pz_mother = mom_daughter1[2] + mom_daughter2[2]
-            # Rotate into SHiP frame
-            P = ROOT.TLorentzVector(-pz_mother, py_mother, px_mother, 0)
-
-            acts_covV = vtx.covariance()  # 3x3 Eigen matrix in mm^2 (ACTS reco frame)
-            covV = ROOT.TMatrixDSym(3)
-
-            covV[0][0] = acts_covV[2, 2] * area_scale
-            covV[1][1] = acts_covV[1, 1] * area_scale
-            covV[2][2] = acts_covV[0, 0] * area_scale
-
-            covV[0][1] = -acts_covV[1, 2] * area_scale
-            covV[1][0] = covV[0][1]
-
-            covV[0][2] = -acts_covV[0, 2] * area_scale
-            covV[2][0] = covV[0][2]
-
-            covV[1][2] = acts_covV[0, 1] * area_scale
-            covV[2][1] = covV[1][2]
-
-            cov_daughter1 = getattr(vtx_tracks[0], "covariance", None)
-            cov_daughter2 = getattr(vtx_tracks[1], "covariance", None)
-
-            raw_covP = ROOT.TMatrixDSym(3)
-            for ii in range(3):
-                for jj in range(3):
-                    raw_covP[ii][jj] = _cov_element(cov_daughter1, ii + 3, jj + 3) + _cov_element(
-                        cov_daughter2, ii + 3, jj + 3
-                    )
-
-            covP = ROOT.TMatrixDSym(3)
-            covP[0][0] = raw_covP[2][2]
-            covP[1][1] = raw_covP[1][1]
-            covP[2][2] = raw_covP[0][0]
-
-            covP[0][1] = -raw_covP[1][2]
-            covP[1][0] = covP[0][1]
-
-            covP[0][2] = -raw_covP[0][2]
-            covP[2][0] = covP[0][2]
-
-            covP[1][2] = raw_covP[0][1]
-            covP[2][1] = covP[1][2]
-
-            vertex_position_4d = ROOT.TLorentzVector(vx, 0.0)
-
+            t1, t2 = vtx.trackIds()
+            P = ROOT.TLorentzVector(sum(vtx.trackPx()), sum(vtx.trackPy()), sum(vtx.trackPz()), 0)
+            vertex_position_4d = ROOT.TLorentzVector(vtx.x(), vtx.y(), vtx.z(), 0.0)
             particle = ROOT.ShipParticle(9900015, 0, -1, -1, t1, t2, P, vertex_position_4d)
-            covV_list = [covV[0][0], covV[0][1], covV[0][2], covV[1][1], covV[1][2], covV[2][2]]
 
             # ShipParticle::SetCovP takes the upper triangle of the 4x4 (px, py,
             # pz, E) covariance, in the order (0,0), (0,1), (0,2), (0,3), (1,1),
             # (1,2), (1,3), (2,2), (2,3), (3,3). The ACTS vertex fit gives only
             # the 3x3 momentum block, so the four energy entries stay zero.
-            covP_list = [covP[0][0], covP[0][1], covP[0][2], 0.0, covP[1][1], covP[1][2], 0.0, covP[2][2], 0.0, 0.0]
-
-            # Track extrapolation and DOCA calculation, preferring the
-            # pre-fit track state where the vertex fit kept one
-            p1 = _track_vector(vtx_tracks[0], "originalPosition", "position")
-            p2 = _track_vector(vtx_tracks[1], "originalPosition", "position")
-            d1 = _track_vector(vtx_tracks[0], "originalMomentum", "momentum")
-            d2 = _track_vector(vtx_tracks[1], "originalMomentum", "momentum")
-
-            # normalize direction
-            n1 = np.linalg.norm(d1)
-            n2 = np.linalg.norm(d2)
-            if not (n1 > 0 and n2 > 0):
-                # Without a direction for both daughters the DOCA below collapses
-                # to zero, i.e. a perfect vertex, which would sail through every
-                # signal selection. Drop the candidate instead, as the GenFit
-                # path does when the extrapolation to the fitted vertex fails.
-                logger.warning("Skipping ACTS vertex candidate: daughter track without momentum")
-                continue
-            d1 = d1 / n1
-            d2 = d2 / n2
-
-            # target plane x in ACTS frame (mm)
-            target_x = float(vtx.position()[0])
-
-            p1_x_tmp = _extrapolate_to_x(p1, d1, target_x)
-            p1_x = p1_x_tmp if p1_x_tmp is not None else p1
-            p2_x_tmp = _extrapolate_to_x(p2, d2, target_x)
-            p2_x = p2_x_tmp if p2_x_tmp is not None else p2
-            delta = p1_x - p2_x
-            n = np.cross(d1, d2)
-            n_norm = np.linalg.norm(n)
-            if n_norm > 1e-12:
-                doca_mm = abs(np.dot(delta, n)) / n_norm
-            else:
-                # Nearly parallel tracks: perpendicular component of delta
-                # (d1 is a unit vector, so no further normalisation is needed).
-                doca_mm = np.linalg.norm(np.cross(delta, d1))
-            doca = float(doca_mm) / 10.0  # mm -> cm
-
-            particle.SetCovP(covP_list)
-            particle.SetCovV(covV_list)
-            particle.SetDoca(doca)
+            covP = [a + b for a, b in zip(*(vtx.GetTrackMomentumCovariance(i) for i in range(2)), strict=True)]
+            particle.SetCovP([covP[0], covP[1], covP[2], 0.0, covP[3], covP[4], 0.0, covP[5], 0.0, 0.0])
+            particle.SetCovV(list(vtx.GetCovarianceElements()))
+            particle.SetDoca(vtx.doca())
             self.fPartArray.push_back(particle)
 
         if hasattr(self, "digiSBT"):
             # As in the GenFit linkVetoOnTracks, the veto links are built for the
             # selected tracks only: entry k of the VetoHitOnTrack branch belongs
             # to track goodTracks[k], and its hitID indexes the SBT digi hits.
-            veto_results = calculateSBTDOCA(
-                output_tracks,
-                self.digiSBT.det,
-                self.trackingGeometry,
-                self.actsFieldMap,
-                selected_indices=list(self.goodTracksVect),
-            )
+            veto_results = calculateSBTDOCA(self.actsTracker, self.digiSBT.det, list(self.goodTracksVect))
             self.vetoHitOnTrackArray.clear()
             for hitID, distMin in veto_results:
                 self.vetoHitOnTrackArray.push_back(ROOT.vetoHitOnTrack(hitID, float(distMin)))
@@ -459,13 +266,11 @@ class ShipDigiReco:
                 )
 
     def actsTracks(self) -> tuple:
-        """Build per-hit ACTS event data and fit track candidates with ACTS.
+        """Collect this event's straw hits and fit track candidates with ACTS.
 
-        Returns (fitted track container, vertices, per-track hit indices into
+        Returns (fitted tracks, vertices, per-track hit indices into
         self.strawHits).
         """
-        from strawReco import runTracking
-
         if global_variables.patRec == "Truth":
             # MC truth seeding needs no pattern recognition, only smeared hits
             candidates = None
@@ -476,36 +281,32 @@ class ShipDigiReco:
         else:
             candidates = self.findTracks()
 
-        # Build the flat per-hit vectors handed to ACTS from this event's
-        # smeared hits (single smearing, done above or inside findTracks).
-        # Structure of hit vector (detector [straw=0], station, layer, view,
-        # straw, track_id, x, y, z, t, E, drift, wire-xtop, ytop, xbot, ybot)
-        self.strawHits.clear()
+        # Collect the hits from this event's smeared hits (single smearing,
+        # done above or inside findTracks).
+        self.strawHits = []
         self.strawHitToDigi = []
         digi_to_straw = {}
         for k, sm in enumerate(self.SmearedHits):
             digiHit = int(sm["digiHit"])
-            station = self.strawtubes.det[digiHit].GetStationNumber()
-            view = self.strawtubes.det[digiHit].GetViewNumber()
-            layer = self.strawtubes.det[digiHit].GetLayerNumber()
-            straw = self.strawtubes.det[digiHit].GetStrawNumber()
-            time = self.strawtubes.det[digiHit].GetTDC()
-            drift = sm["dist"]
-            xtop = sm["xtop"]
-            ytop = sm["ytop"]
-            xbot = sm["xbot"]
-            ybot = sm["ybot"]
+            digi = self.strawtubes.det[digiHit]
             point = self.sTree.strawtubesPoint[digiHit]
-            trID = point.GetTrackID()
-            x = point.GetX()
-            y = point.GetY()
-            z = point.GetZ()
-            deltaE = point.GetEnergyLoss()
-
-            iHit = ROOT.std.vector("float")()
-            for value in (0, station, layer, view, straw, trID, x, y, z, time, deltaE, drift, xtop, ytop, xbot, ybot):
-                iHit.push_back(value)
-            self.strawHits.push_back(iHit)
+            self.strawHits.append(
+                StrawHit(
+                    detector_id=digi.GetDetectorID(),
+                    station=digi.GetStationNumber(),
+                    view=digi.GetViewNumber(),
+                    layer=digi.GetLayerNumber(),
+                    track_id=point.GetTrackID(),
+                    x=point.GetX(),
+                    y=point.GetY(),
+                    z=point.GetZ(),
+                    drift=sm["dist"],
+                    xtop=sm["xtop"],
+                    ytop=sm["ytop"],
+                    xbot=sm["xbot"],
+                    ybot=sm["ybot"],
+                )
+            )
             self.strawHitToDigi.append(digiHit)
             digi_to_straw[digiHit] = k
 
@@ -518,40 +319,31 @@ class ShipDigiReco:
                 cand["indices"] = [digi_to_straw[i] for i in cand["indices"] if i in digi_to_straw]
 
         return runTracking(
+            self.actsTracker,
             candidates,
-            self.trackingGeometry,
-            self.actsFieldMap,
             self.strawHits,
+            self.sigma_spatial,
             fit_vertex=global_variables.vertexing,
         )
 
     def _truthCandidates(self) -> list[dict]:
         """Build track candidates from MC truth: one per MC track with straw hits."""
         candidates = []
-        # Bucket the straw hits by MC track in one pass; iHit[5] is the track ID
+        # Bucket the straw hits by MC track in one pass
         hits_by_track = defaultdict(list)
         for i, h in enumerate(self.strawHits):
-            hits_by_track[int(h[5])].append(i)
+            hits_by_track[h.track_id].append(i)
         for trID, tr in enumerate(self.sTree.MCTrack):
             indices = hits_by_track.get(trID)
             if not indices:
                 continue
-            unique_indices = []
-            seen_layers = set()
-            # Sort indices by Z-position to find the first straw hit; iHit[8] is Z
-            indices.sort(key=lambda idx: self.strawHits[idx][8])
-            for idx in indices:
-                h = self.strawHits[idx]
-                # Keep only one straw per unique station/layer/view combination:
-                # the Kalman filter can't handle more than 1 measurement per acts layer
-                layer_key = (int(h[1]), int(h[2]), int(h[3]))
-                if layer_key not in seen_layers:
-                    unique_indices.append(idx)
-                    seen_layers.add(layer_key)
-            first_hit = self.strawHits[unique_indices[0]]
+            # Sort by z to find the first straw hit; runTracking keeps one hit
+            # per straw layer
+            indices.sort(key=lambda idx: self.strawHits[idx].z)
+            first_hit = self.strawHits[indices[0]]
 
-            # Seed position from the first straw hit truth (indices 6, 7, 8)
-            pos = ROOT.TVector3(first_hit[6], first_hit[7], first_hit[8])
+            # Seed position from the first straw hit truth
+            pos = ROOT.TVector3(first_hit.x, first_hit.y, first_hit.z)
 
             # Momentum from MCTrack
             mom = ROOT.TVector3(tr.GetPx(), tr.GetPy(), tr.GetPz())
@@ -562,14 +354,13 @@ class ShipDigiReco:
                 logger.warning("Skipping MCTrack %d with unknown PDG code %d", trID, tr.GetPdgCode())
                 continue
             charge = particle.Charge() / 3.0
-            # A neutral seed has q/p = 0, and strawReco.make_seed divides by the
-            # momentum magnitude to get its q/p uncertainty. Neither case can be
-            # seeded; neutrals only reach here via the odd stray straw hit.
+            # A neutral or momentum-less seed has no q/p to start the fit from;
+            # neutrals only reach here via the odd stray straw hit.
             if charge == 0.0 or mom.Mag() <= 0:
                 logger.debug("Skipping unseedable MCTrack %d (pdg %d)", trID, tr.GetPdgCode())
                 continue
 
-            candidates.append({"pos": pos, "mom": mom, "indices": unique_indices, "charge": charge})
+            candidates.append({"pos": pos, "mom": mom, "indices": indices, "charge": charge})
         return candidates
 
     def digitize(self) -> None:
@@ -923,27 +714,21 @@ class ShipDigiReco:
                 nGoodTracks += 1
         return nGoodTracks
 
-    def findGoodActsTracks(self, output_tracks) -> int:
+    def findGoodActsTracks(self) -> int:
         """ACTS counterpart of findGoodTracks.
 
         Applies the same chi2/ndf < 50 criterion as the GenFit selection, so the
         goodTracks branch means the same thing whichever fitter produced the
-        file. A usable reference surface stands in for GenFit's isFitConverged:
-        only successful ACTS fits are persisted in the first place, but a track
-        without a reference surface cannot be extrapolated either.
+        file. Only converged ACTS fits are persisted, which stands in for
+        GenFit's isFitConverged.
         """
         self.goodTracksVect.clear()
         nGoodTracks = 0
-        n_persisted = len(self.fACTSArray)
-        for i, track in enumerate(output_tracks):
-            if i >= n_persisted:
-                break
-            if not track.referenceSurface:
-                continue
-            ndf = output_tracks.ndf[i]
+        for i, track in enumerate(self.fACTSArray):
+            ndf = track.nDoF()
             if ndf <= 0:
                 continue
-            chi2 = output_tracks.chi2[i] / ndf
+            chi2 = track.chi2() / ndf
             if chi2 < 50 and not chi2 < 0:
                 self.goodTracksVect.push_back(i)
                 nGoodTracks += 1
