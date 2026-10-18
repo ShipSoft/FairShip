@@ -4,17 +4,15 @@
 """ACTS-based straw tracker reconstruction utilities.
 
 Fit straw-tube track candidates and vertices with ACTS, and extrapolate
-fitted tracks to SBT hits for veto matching. Positions are converted from
-the SHiP frame (cm, z along the beam) to the ACTS reco frame (mm, rotated
-x -> -z) at the boundaries of this module.
+fitted tracks to SBT hits for veto matching. The fitting itself is done by
+the C++ ``SHiP::ActsStrawTracker``; everything here is in the SHiP frame
+(cm, GeV).
 """
 
 import logging
-from collections import defaultdict
+from dataclasses import dataclass
 
-import acts
-import acts.examples
-import numpy as np
+import ROOT
 from recoConstants import MIN_HITS_PER_TRACK
 
 logger = logging.getLogger(__name__)
@@ -26,281 +24,136 @@ MAX_CHI2_NDF = 25.0
 MIN_VERTEX_TRACKS = 2
 MAX_VERTEX_TRACKS = 4
 
-
-def make_seed(pos, mom, charge, surface, geo_ctx):
-    sigma_drift = 5.0  # 5mm uncertainty
-    sigma_long = 50.0  # 50mm uncertainty
-    sigma_phi = 0.05  # 50 mrad
-    sigma_theta = 0.05  # 50 mrad
-    sigma_qp = 0.2 / mom.Mag()  # 20% relative error on q/p
-    sigma_time = 1e9  # deweight time parameter, as unused
-
-    cov = (
-        np.diag([sigma_drift**2, sigma_long**2, sigma_phi**2, sigma_theta**2, sigma_qp**2, sigma_time**2])
-        .flatten()
-        .tolist()
-    )
-
-    return acts.createTrackParameters(
-        pos.Z() * 10, pos.Y() * 10, pos.X() * -10, mom.Z(), mom.Y(), -mom.X(), charge, surface, cov, geo_ctx
-    )
+# Distance reported for tracks with no SBT match, as in the GenFit path
+NO_VETO_MATCH = (-1, 99999.0)
 
 
-def runTracking(candidates, trackingGeometry, fieldMap, strawHits, fit_vertex=True):
+@dataclass(frozen=True)
+class StrawHit:
+    """A smeared straw hit, with the MC truth needed for seeding and links."""
+
+    detector_id: int
+    station: int
+    view: int
+    layer: int
+    track_id: int
+    # MC truth position (cm)
+    x: float
+    y: float
+    z: float
+    # Smeared drift distance (cm)
+    drift: float
+    # Wire end points in x and y (cm)
+    xtop: float
+    ytop: float
+    xbot: float
+    ybot: float
+
+    @property
+    def layer_key(self) -> tuple[int, int, int]:
+        """The straw layer, which can hold at most one hit of a track."""
+        return (self.station, self.view, self.layer)
+
+    def drift_sign(self) -> float:
+        """Side of the wire the track passed on, taken from the MC truth.
+
+        This resolves the left/right ambiguity with truth information. It
+        should be replaced by a refit that uses the residuals.
+        """
+        wire_x = (self.xtop + self.xbot) / 2.0
+        wire_y = (self.ytop + self.ybot) / 2.0
+        # Normal to the wire in the x-y plane
+        nx = -(self.ybot - self.ytop)
+        ny = self.xbot - self.xtop
+        return 1.0 if (self.x - wire_x) * nx + (self.y - wire_y) * ny > 0 else -1.0
+
+
+def make_tracker(geometry, field):
+    """Create the ACTS straw tracker for the loaded geometry and field."""
+    if not hasattr(ROOT.SHiP, "ActsStrawTracker"):
+        raise RuntimeError("FairShip was built without ACTS, so the ACTS track fitter is not available")
+    tracker = ROOT.SHiP.ActsStrawTracker(geometry, field)
+    logger.info("ACTS straw tracker built with %d straws", tracker.GetNStraws())
+    return tracker
+
+
+def runTracking(tracker, candidates, hits, resolution, fit_vertex=True):
+    """Fit track candidates and, if the event qualifies, their vertex.
+
+    ``candidates`` are dicts with ``pos``, ``mom`` (TVector3, SHiP frame),
+    ``charge`` and ``indices`` into ``hits``. Each candidate's indices are
+    sorted by hit z in place.
+
+    Returns the fitted tracks (``SHiP::RecoTrack``, in the order of the
+    tracker's track indices), the fitted vertices (``SHiP::RecoVertex``) and,
+    per fitted track, the indices into ``hits`` that were used in the fit.
     """
-    Fit tracks in the Reco frame using truth, or patrec seeds,
-    fit vertices if tracks meet criteria
+    tracker.ClearEvent()
+    measurements = [tracker.AddMeasurement(h.detector_id, h.drift_sign() * h.drift, resolution) for h in hits]
 
-    Mutates its arguments in place: each vector in ``strawHits`` gains the
-    drift-side sign as element 16 (appended only once, so repeated calls on the
-    same vectors are safe), and every ``cand["indices"]`` is sorted by hit z.
-    """
-
-    # Setup geo context
-    geo_ctx = acts.GeometryContext()
-
-    # Hacky way of solving left/right drift ambiguity issue,
-    # move to performing a refit, making use of the residuals
-    # rather than using true hit info
-    for hit_idx in range(len(strawHits)):
-        iHit = strawHits[hit_idx]
-
-        dx = iHit[14] - iHit[12]  # xbot - xtop
-        dy = iHit[15] - iHit[13]  # ybot - ytop
-
-        wire_x = (iHit[12] + iHit[14]) / 2.0
-        wire_y = (iHit[13] + iHit[15]) / 2.0
-        vec_to_hit_x = iHit[6] - wire_x
-        vec_to_hit_y = iHit[7] - wire_y
-
-        nx = -dy
-        ny = dx
-
-        dot_product = vec_to_hit_x * nx + vec_to_hit_y * ny
-
-        sign = 1.0 if dot_product > 0 else -1.0
-
-        # Append sign as index 16, unless a previous call already did so
-        if iHit.size() > 16:
-            iHit[16] = sign
-        else:
-            iHit.push_back(sign)
-
-    measurements = acts.processMeasurements(strawHits, trackingGeometry)
-    acts_index_map = build_acts_index_map(measurements, strawHits)
-    # Setup output containers
-    output_tracks = acts.examples.TrackContainer()
-
-    track_hit_indices_list = []
-
-    # Loop over seeds (e.g., from PatRec or Truth)
+    track_hit_indices = []
     for cand in candidates:
-        cand["indices"].sort(key=lambda i: strawHits.at(i).at(8))
-        # (ACTS measurement index, straw-hit index) pairs: the first is what
-        # the fitter reads, the second indexes strawHits for the caller.
-        remapped_indices = align_candidate_indices(cand, acts_index_map)
+        cand["indices"].sort(key=lambda i: hits[i].z)
 
-        filtered_indices = []
-        filtered_hit_indices = []
+        # The Kalman filter takes at most one measurement per straw layer
+        used = []
         seen_layers = set()
+        for idx in cand["indices"]:
+            if measurements[idx] < 0:
+                logger.warning("No ACTS surface for straw %d", hits[idx].detector_id)
+                continue
+            if hits[idx].layer_key not in seen_layers:
+                used.append(idx)
+                seen_layers.add(hits[idx].layer_key)
 
-        for idx, hit_idx in remapped_indices:
-            gid = acts.getMeasurementGeoId(measurements, idx)
-
-            if gid.layer not in seen_layers:
-                filtered_indices.append(idx)
-                filtered_hit_indices.append(hit_idx)
-                seen_layers.add(gid.layer)
-
-        if len(filtered_indices) < MIN_HITS_PER_TRACK:
-            logger.debug("Skipping track with too few hits: %d", len(filtered_indices))
+        if len(used) < MIN_HITS_PER_TRACK:
+            logger.debug("Skipping track with too few hits: %d", len(used))
             continue
 
-        first_idx = filtered_indices[0]
+        track_measurements = ROOT.std.vector("int")([measurements[i] for i in used])
+        track = tracker.FitTrack(track_measurements, cand["pos"], cand["mom"], round(cand["charge"]))
+        if track >= 0:
+            track_hit_indices.append(used)
 
-        geo_id = acts.getMeasurementGeoId(measurements, first_idx)
+    tracks = [tracker.GetTrack(i) for i in range(tracker.GetNTracks())]
 
-        target_surface = acts.getSurface(trackingGeometry, geo_id)
-        if not target_surface:
-            logger.warning("Could not find surface for GeoID: %s", geo_id)
-            continue
-
-        initial_params = make_seed(cand["pos"], cand["mom"], cand["charge"], target_surface, geo_ctx)
-
-        tracks_before_fit = len(output_tracks)
-
-        acts.fitTrack(measurements, filtered_indices, initial_params, output_tracks, trackingGeometry, fieldMap)
-
-        tracks_after_fit = len(output_tracks)
-
-        if tracks_after_fit > tracks_before_fit:
-            track_hit_indices_list.append(filtered_hit_indices)
-
-    const_tracks = output_tracks.makeConst()
+    good = [
+        i
+        for i, track in enumerate(tracks)
+        if track.nMeasurements() >= MIN_HITS_PER_TRACK
+        and track.nDoF() > 0
+        and track.chi2() / track.nDoF() <= MAX_CHI2_NDF
+    ]
+    has_pos = any(tracks[i].charge() > 0 for i in good)
+    has_neg = any(tracks[i].charge() < 0 for i in good)
 
     vertices = []
+    if fit_vertex and MIN_VERTEX_TRACKS <= len(good) <= MAX_VERTEX_TRACKS and has_pos and has_neg:
+        vertex = ROOT.SHiP.RecoVertex()
+        if tracker.FitVertex(ROOT.std.vector("int")(good), vertex):
+            vertices.append(vertex)
+        else:
+            logger.debug("Vertex fit failed for tracks %s", good)
 
-    good_proxies = []
-    for i, track in enumerate(const_tracks):
-        if not track.referenceSurface:
-            continue
-
-        track_chi2 = const_tracks.chi2[i]
-        track_ndf = const_tracks.ndf[i]
-
-        chi2_ndf = track_chi2 / track_ndf if track_ndf > 0 else float("inf")
-
-        if track.nMeasurements >= MIN_HITS_PER_TRACK and chi2_ndf <= MAX_CHI2_NDF:
-            good_proxies.append(track)
-
-    # Check for at least one positive and one negative track
-
-    has_pos = any(t.parameters[4] > 0 for t in good_proxies)
-    has_neg = any(t.parameters[4] < 0 for t in good_proxies)
-
-    if fit_vertex and MIN_VERTEX_TRACKS <= len(good_proxies) <= MAX_VERTEX_TRACKS and has_pos and has_neg:
-        vertices = acts.fitVertex(good_proxies, fieldMap, geo_ctx, trackingGeometry)
-
-    return const_tracks, vertices, track_hit_indices_list
+    return tracks, vertices, track_hit_indices
 
 
-def calculateSBTDOCA(output_tracks, sbt_digis, trackingGeometry, fieldMap, selected_indices=None):
-    """
-    Extrapolates fitted tracks to the X-plane (Reco frame) of SBT hits.
+def calculateSBTDOCA(tracker, sbt_digis, selected_indices):
+    """Match fitted tracks to SBT hits.
 
-    Returns one ``(hitID, distMin)`` per selected track, in ascending
-    container order, so element ``k`` of the result corresponds to
-    ``selected_indices[k]``. ``selected_indices`` defaults to every track.
-    ``distMin`` is in centimetres (ROOT geometry units) to match the GenFit
+    Each track is extrapolated to the plane of constant z through every SBT
+    hit. Returns one ``(hitID, distMin)`` per entry of ``selected_indices``,
+    with the distance in cm, to match the GenFit
     ShipDigiReco.findVetoHitOnTrack; tracks with no match get
-    ``(-1, 99999.0)``, the same sentinel that path uses.
+    ``NO_VETO_MATCH``.
     """
-
-    nav_cfg = acts.Navigator.Config()
-
-    nav_cfg.trackingGeometry = trackingGeometry
-
-    navigator = acts.Navigator(nav_cfg)
-
-    stepper = acts.EigenStepper(fieldMap)
-    propagator = acts.Propagator(stepper, navigator)
-
-    geo_ctx = acts.GeometryContext()
-    mag_ctx = acts.MagneticFieldContext()
-
-    event_parameters_array = output_tracks.parameters  # shape (N, 6)
-    event_covariance_array = output_tracks.covariance  # shape (N, 6, 6)
-
-    selected = None if selected_indices is None else {int(i) for i in selected_indices}
-
-    # The target planes depend only on the SBT hits, so build them once and
-    # reuse them for every track. s_idx keeps indexing sbt_digis.
-    normal_arr = np.array([1.0, 0.0, 0.0])
-    target_surfaces = [
-        (
-            s_idx,
-            acts.createPlaneSurface(
-                np.array([sbt_hit.GetZ() * 10.0, sbt_hit.GetY() * 10.0, -sbt_hit.GetX() * 10.0]), normal_arr
-            ),
-        )
-        for s_idx, sbt_hit in enumerate(sbt_digis)
-    ]
-
+    hits = [ROOT.TVector3(hit.GetX(), hit.GetY(), hit.GetZ()) for hit in sbt_digis]
     veto_results = []
-    for _t_idx, track in enumerate(output_tracks):
-        if selected is not None and _t_idx not in selected:
-            continue
-
-        distMin = 99999.0
-        hitID = -1
-
-        # A track without a reference surface cannot be extrapolated, but it
-        # still gets a placeholder so the results stay aligned with the
-        # selected tracks.
-        if track.referenceSurface:
-            track_params_numpy = event_parameters_array[_t_idx]
-            track_covariance_numpy = event_covariance_array[_t_idx]
-
-            start_params = acts.examples.makeBoundTrackParameters(
-                track.referenceSurface, track_params_numpy, track_covariance_numpy
-            )
-
-            for s_idx, target_surface in target_surfaces:
-                res_params = acts.extrapolateTrack(propagator, start_params, target_surface, geo_ctx, mag_ctx)
-
-                if res_params is not None:
-                    # The target plane is centred on the SBT hit, so the local
-                    # bound parameters give the in-plane distance to the hit
-                    # directly (equivalent to the Y-Z distance on the X plane).
-                    local_params = np.asarray(res_params.parameters)
-                    doca = float(np.hypot(local_params[0], local_params[1])) / 10.0  # mm -> cm
-
-                    if doca < distMin:
-                        distMin = doca
-                        hitID = s_idx
-
+    for track in selected_indices:
+        hitID, distMin = NO_VETO_MATCH
+        for s_idx, hit in enumerate(hits):
+            doca = tracker.DistanceToHit(int(track), hit)
+            if 0 <= doca < distMin:
+                hitID, distMin = s_idx, doca
         veto_results.append((hitID, distMin))
-
     return veto_results
-
-
-def straw_geometry_id(hit):
-    """Return the ACTS GeometryIdentifier value of a straw hit.
-
-    This is the numbering of the acts-ship StrawtubeDetector geometry, as
-    SHiPMeasurementProvider assigns it: the whole spectrometer is volume 1,
-    and its layers are numbered consecutively with 16 per station, 4 per view
-    and 2 per layer, offset so that station 1 / view 0 / layer 0 is 2.
-    """
-    station, layer, view, straw = (int(hit[i]) for i in range(1, 5))
-    gid = acts.GeometryIdentifier()
-    gid.volume = 1
-    gid.layer = 16 * station + 4 * view + 2 * layer - 14
-    gid.sensitive = straw
-    return gid.value
-
-
-def match_hits_to_measurements(hit_gids, measurement_gids):
-    """Map straw-hit indices to ACTS measurement indices by geometry ID.
-
-    processMeasurements makes one measurement per straw hit, ordered by
-    surface and, within a surface, in hit order; it drops all hits of a
-    surface it cannot find. So the k-th hit on a straw belongs to the k-th
-    measurement on it. Hits without a measurement are left out.
-    """
-    measurements_by_gid = defaultdict(list)
-    for index, gid in enumerate(measurement_gids):
-        measurements_by_gid[gid].append(index)
-    hits_by_gid = defaultdict(list)
-    for index, gid in enumerate(hit_gids):
-        hits_by_gid[gid].append(index)
-    hit_to_measurement = {}
-    for gid, hits in hits_by_gid.items():
-        matched = measurements_by_gid.get(gid, [])
-        if matched and len(matched) != len(hits):
-            logger.warning(
-                "Straw with geometry ID %s has %d hits but %d ACTS measurements; skipping them",
-                gid,
-                len(hits),
-                len(matched),
-            )
-            continue
-        hit_to_measurement.update(zip(hits, matched, strict=False))
-    return hit_to_measurement
-
-
-def build_acts_index_map(measurements, strawHits):
-    """Map each straw-hit index to the index of its ACTS measurement."""
-    measurement_gids = []
-    # There is at most one measurement per hit; the container has no len().
-    for index in range(len(strawHits)):
-        try:
-            measurement_gids.append(acts.getMeasurementGeoId(measurements, index).value)
-        except IndexError:
-            break
-    return match_hits_to_measurements([straw_geometry_id(hit) for hit in strawHits], measurement_gids)
-
-
-def align_candidate_indices(cand, hit_to_measurement):
-    """Return (ACTS measurement index, straw-hit index) pairs for a candidate."""
-    return [(hit_to_measurement[index], index) for index in cand["indices"] if index in hit_to_measurement]
