@@ -11,6 +11,7 @@ the C++ ``SHiP::ActsStrawTracker``; everything here is in the SHiP frame
 
 import logging
 from dataclasses import dataclass
+from itertools import combinations
 
 import ROOT
 from recoConstants import MIN_HITS_PER_TRACK
@@ -19,10 +20,6 @@ logger = logging.getLogger(__name__)
 
 # Track-quality cut for the tracks handed to the vertex fit.
 MAX_CHI2_NDF = 25.0
-
-# Number of good tracks the vertex fit is run for.
-MIN_VERTEX_TRACKS = 2
-MAX_VERTEX_TRACKS = 4
 
 # Distance reported for tracks with no SBT match, as in the GenFit path
 NO_VETO_MATCH = (-1, 99999.0)
@@ -124,16 +121,18 @@ def runTracking(tracker, candidates, hits, resolution, fit_vertex=True):
         and track.nDoF() > 0
         and track.chi2() / track.nDoF() <= MAX_CHI2_NDF
     ]
-    has_pos = any(tracks[i].charge() > 0 for i in good)
-    has_neg = any(tracks[i].charge() < 0 for i in good)
-
+    # A two-track vertex for every opposite-charge pair of good tracks, as in
+    # the GenFit vertexing
     vertices = []
-    if fit_vertex and MIN_VERTEX_TRACKS <= len(good) <= MAX_VERTEX_TRACKS and has_pos and has_neg:
-        vertex = ROOT.SHiP.RecoVertex()
-        if tracker.FitVertex(ROOT.std.vector("int")(good), vertex):
-            vertices.append(vertex)
-        else:
-            logger.debug("Vertex fit failed for tracks %s", good)
+    if fit_vertex:
+        for i, j in combinations(good, 2):
+            if tracks[i].charge() * tracks[j].charge() >= 0:
+                continue
+            vertex = ROOT.SHiP.RecoVertex()
+            if tracker.FitVertex(ROOT.std.vector("int")([i, j]), vertex):
+                vertices.append(vertex)
+            else:
+                logger.debug("Vertex fit failed for tracks %d and %d", i, j)
 
     return tracks, vertices, track_hit_indices
 

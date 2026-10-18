@@ -22,23 +22,17 @@
 #include "Acts/EventData/VectorTrackContainer.hpp"
 #include "Acts/Geometry/GeometryContext.hpp"
 #include "Acts/MagneticField/MagneticFieldContext.hpp"
-#include "Acts/MagneticField/NullBField.hpp"
 #include "Acts/Propagator/DirectNavigator.hpp"
 #include "Acts/Propagator/EigenStepper.hpp"
 #include "Acts/Propagator/Propagator.hpp"
 #include "Acts/Propagator/VoidNavigator.hpp"
-#include "Acts/Surfaces/PerigeeSurface.hpp"
 #include "Acts/Surfaces/PlaneSurface.hpp"
 #include "Acts/TrackFitting/GainMatrixSmoother.hpp"
 #include "Acts/TrackFitting/GainMatrixUpdater.hpp"
 #include "Acts/TrackFitting/KalmanFitter.hpp"
 #include "Acts/Utilities/CalibrationContext.hpp"
 #include "Acts/Utilities/Logger.hpp"
-#include "Acts/Vertexing/FullBilloirVertexFitter.hpp"
-#include "Acts/Vertexing/HelicalTrackLinearizer.hpp"
-#include "Acts/Vertexing/TrackAtVertex.hpp"
-#include "Acts/Vertexing/Vertex.hpp"
-#include "Acts/Vertexing/VertexingOptions.hpp"
+#include "Acts/Utilities/UnitVectors.hpp"
 #include "ActsFrame.hpp"
 #include "ActsShipField.hpp"
 #include "ActsStrawGeometry.hpp"
@@ -69,8 +63,9 @@ constexpr double kSeedSigmaTime = 1e9;
 /// Range of the vertex seed along the beam (ACTS x)
 constexpr double kVertexSeedMinX = 20 * u::m;
 constexpr double kVertexSeedMaxX = 90 * u::m;
-/// Field below which the vertex fit treats tracks as straight lines
-constexpr double kNegligibleField = 1e-6 * u::T;
+/// Iterations and convergence of the vertex seed
+constexpr int kVertexIterations = 10;
+constexpr double kVertexTolerance = 0.1 * u::mm;
 
 constexpr double kPathLimit = 100 * u::m;
 
@@ -153,24 +148,65 @@ Acts::SquareMatrix3 shipMomentumCovariance(
   return jacobian * params.covariance().value() * jacobian.transpose();
 }
 
-/// Closest point between two lines, or the projection for parallel lines
-Acts::Vector3 vertexSeed(const std::vector<Acts::BoundTrackParameters>& tracks,
-                         const Acts::GeometryContext& gctx) {
+/// A straight line: a point and a unit direction
+using Tangent = std::pair<Acts::Vector3, Acts::Vector3>;
+
+/// Tangent of a track with the given bound parameters on a surface
+Tangent tangent(const Acts::Surface& surface, const Acts::BoundVector& params,
+                const Acts::GeometryContext& gctx) {
+  const Acts::Vector3 direction = Acts::makeDirectionFromPhiTheta(
+      params[Acts::eBoundPhi], params[Acts::eBoundTheta]);
+  return {surface.localToGlobal(
+              gctx,
+              Acts::Vector2(params[Acts::eBoundLoc0], params[Acts::eBoundLoc1]),
+              direction),
+          direction};
+}
+
+std::vector<Tangent> tangents(
+    const std::vector<Acts::BoundTrackParameters>& tracks,
+    const Acts::GeometryContext& gctx) {
+  std::vector<Tangent> lines;
+  for (const auto& track : tracks) {
+    lines.push_back(
+        tangent(track.referenceSurface(), track.parameters(), gctx));
+  }
+  return lines;
+}
+
+/// The point closest to a set of lines, in the least-squares sense
+Acts::Vector3 closestPoint(const std::vector<Tangent>& lines) {
   Acts::SquareMatrix3 a = Acts::SquareMatrix3::Zero();
   Acts::Vector3 b = Acts::Vector3::Zero();
-  for (const auto& track : tracks) {
-    const Acts::Vector3 direction = track.direction();
+  for (const auto& [position, direction] : lines) {
     const Acts::SquareMatrix3 projection =
         Acts::SquareMatrix3::Identity() - direction * direction.transpose();
     a += projection;
-    b += projection * track.position(gctx);
+    b += projection * position;
   }
-  Acts::Vector3 seed = a.colPivHouseholderQr().solve(b);
+  return a.colPivHouseholderQr().solve(b);
+}
+
+/// Starting point of the vertex fit: the closest point of the straight
+/// tracks, kept within the range along the beam where vertices are
+Acts::Vector3 vertexSeed(const std::vector<Acts::BoundTrackParameters>& tracks,
+                         const Acts::GeometryContext& gctx) {
+  Acts::Vector3 seed = closestPoint(tangents(tracks, gctx));
   if (!seed.allFinite()) {
     seed = Acts::Vector3(0.5 * (kVertexSeedMinX + kVertexSeedMaxX), 0., 0.);
   }
   seed.x() = std::clamp(seed.x(), kVertexSeedMinX, kVertexSeedMaxX);
   return seed;
+}
+
+/// Plane of constant z (SHiP), i.e. constant x (ACTS), through a point
+std::shared_ptr<Acts::PlaneSurface> constantZPlane(const Acts::Vector3& point) {
+  Acts::Transform3 transform = Acts::Transform3::Identity();
+  transform.linear().col(0) = Acts::Vector3::UnitY();
+  transform.linear().col(1) = Acts::Vector3::UnitZ();
+  transform.linear().col(2) = Acts::Vector3::UnitX();
+  transform.translation() = point;
+  return Acts::Surface::makeShared<Acts::PlaneSurface>(transform);
 }
 
 /// Distance of closest approach between two straight lines
@@ -412,93 +448,94 @@ Bool_t ActsStrawTracker::FitVertex(const std::vector<Int_t>& tracks,
   for (const Int_t track : tracks) {
     fitted.push_back(impl.trackParameters(track));
   }
-  const Acts::Vector3 seed = vertexSeed(fitted, impl.gctx);
 
-  // Where the field at the seed is negligible, the helical linearisation is
-  // ill-defined, so treat the tracks as straight lines there
-  std::shared_ptr<const Acts::MagneticFieldProvider> field = impl.field;
-  auto cache = field->makeCache(impl.mctx);
-  const auto seedField = field->getField(seed, cache);
-  if (seedField.ok() && seedField.value().norm() < kNegligibleField) {
-    field = std::make_shared<Acts::NullBField>();
-  }
-  auto propagator = std::make_shared<Extrapolator>(
-      Stepper(field), Acts::VoidNavigator(),
-      Acts::getDefaultLogger("VertexPropagator", Acts::Logging::WARNING));
-
-  // Start the fit from the track parameters at the seed
-  const auto seedSurface =
-      Acts::Surface::makeShared<Acts::PerigeeSurface>(seed);
-  std::vector<Acts::BoundTrackParameters> atSeed;
-  for (const auto& params : fitted) {
-    auto extrapolated = impl.extrapolate(*propagator, params, *seedSurface);
-    if (!extrapolated) {
+  // As in the GenFit vertexing: start from the closest approach of the
+  // straight tracks, then extrapolate them through the field to the plane of
+  // constant z through the current estimate, and take the closest approach
+  // of their tangents there, until it no longer moves
+  Acts::Vector3 point = vertexSeed(fitted, impl.gctx);
+  std::vector<Acts::BoundTrackParameters> atPlane;
+  for (int iteration = 0; iteration < kVertexIterations; ++iteration) {
+    const auto plane = constantZPlane(point);
+    atPlane.clear();
+    for (const auto& params : fitted) {
+      auto extrapolated = impl.extrapolate(impl.extrapolator, params, *plane);
+      if (!extrapolated) {
+        return false;
+      }
+      atPlane.push_back(std::move(*extrapolated));
+    }
+    const Acts::Vector3 next = closestPoint(tangents(atPlane, impl.gctx));
+    if (!next.allFinite()) {
       return false;
     }
-    atSeed.push_back(std::move(*extrapolated));
+    const double step = (next - point).norm();
+    point = next;
+    if (step < kVertexTolerance) {
+      break;
+    }
   }
 
-  Acts::HelicalTrackLinearizer::Config linearizerConfig;
-  linearizerConfig.bField = field;
-  linearizerConfig.propagator = propagator;
-  linearizerConfig.targetTolerance = 1e-4;
-  const Acts::HelicalTrackLinearizer linearizer(linearizerConfig);
-
-  Acts::FullBilloirVertexFitter::Config fitterConfig;
-  fitterConfig.maxIterations = 200;
-  fitterConfig.extractParameters
-      .connect<&Acts::InputTrack::extractParameters>();
-  fitterConfig.trackLinearizer
-      .connect<&Acts::HelicalTrackLinearizer::linearizeTrack>(&linearizer);
-  const Acts::FullBilloirVertexFitter fitter(
-      fitterConfig,
-      Acts::getDefaultLogger("VertexFitter", Acts::Logging::WARNING));
-
-  std::vector<Acts::InputTrack> inputTracks;
-  for (const auto& params : atSeed) {
-    inputTracks.emplace_back(&params);
+  // Covariance of the vertex (and of the DOCA) from the covariances of the
+  // tangents' positions and directions on the plane, by linear propagation
+  // with numerical derivatives
+  const auto base = tangents(atPlane, impl.gctx);
+  const int nPar = 4;  // loc0, loc1, phi, theta
+  const int n = static_cast<int>(atPlane.size());
+  Eigen::MatrixXd jacobian = Eigen::MatrixXd::Zero(4, nPar * n);
+  Eigen::MatrixXd covariance = Eigen::MatrixXd::Zero(nPar * n, nPar * n);
+  const bool twoTracks = n == 2;
+  const double baseDoca = twoTracks
+                              ? lineDistance(base[0].first, base[0].second,
+                                             base[1].first, base[1].second)
+                              : 0.;
+  for (int i = 0; i < n; ++i) {
+    const auto& cov = atPlane[i].covariance().value();
+    covariance.block(nPar * i, nPar * i, nPar, nPar) =
+        cov.topLeftCorner(nPar, nPar);
+    for (int k = 0; k < nPar; ++k) {
+      const double epsilon = std::max(1e-3 * std::sqrt(cov(k, k)), 1e-12);
+      Acts::BoundVector shifted = atPlane[i].parameters();
+      shifted[k] += epsilon;
+      auto lines = base;
+      lines[i] = tangent(atPlane[i].referenceSurface(), shifted, impl.gctx);
+      jacobian.block(0, nPar * i + k, 3, 1) =
+          (closestPoint(lines) - point) / epsilon;
+      if (twoTracks) {
+        jacobian(3, nPar * i + k) =
+            (lineDistance(lines[0].first, lines[0].second, lines[1].first,
+                          lines[1].second) -
+             baseDoca) /
+            epsilon;
+      }
+    }
   }
-  // A loose constraint at the seed only sets the starting point of the fit
-  Acts::Vertex constraint(seed);
-  constraint.setFullCovariance(Acts::SquareMatrix4::Identity() * 1e6);
-  const Acts::VertexingOptions vertexingOptions(impl.gctx, impl.mctx,
-                                                constraint);
-  auto fieldCache = field->makeCache(impl.mctx);
-  const auto result = fitter.fit(inputTracks, vertexingOptions, fieldCache);
-  if (!result.ok()) {
-    return false;
-  }
-  const Acts::Vertex& fittedVertex = result.value();
+  const Eigen::MatrixXd propagated =
+      jacobian * covariance * jacobian.transpose();
+  const Acts::SquareMatrix3 actsCovariance = propagated.topLeftCorner(3, 3);
 
   const Acts::RotationMatrix3 rotation = ActsFrame::toShipRotation();
-  const Acts::Vector3 position =
-      ActsFrame::positionToShip(fittedVertex.position());
+  const Acts::Vector3 position = ActsFrame::positionToShip(point);
   const Acts::SquareMatrix3 positionCovariance =
-      rotation * fittedVertex.covariance() * rotation.transpose() /
+      rotation * actsCovariance * rotation.transpose() /
       (ActsFrame::kShipLength * ActsFrame::kShipLength);
-  const auto [chi2, nDoF] = fittedVertex.fitQuality();
+  // Fit quality: the DOCA against its uncertainty for two tracks
+  const double docaVariance = propagated(3, 3);
+  const double chi2 =
+      twoTracks && docaVariance > 0. ? baseDoca * baseDoca / docaVariance : 0.;
   vertex = RecoVertex(TVector3(position.x(), position.y(), position.z()),
-                      upperTriangle<3>(positionCovariance), chi2, nDoF);
+                      upperTriangle<3>(positionCovariance), chi2,
+                      twoTracks ? 1. : 2. * n - 3.);
 
-  for (const auto& trackAtVertex : fittedVertex.tracks()) {
-    const auto* original =
-        trackAtVertex.originalParams.as<Acts::BoundTrackParameters>();
-    const auto index = static_cast<std::size_t>(original - atSeed.data());
-    if (original == nullptr || index >= atSeed.size()) {
-      return false;
-    }
-    const auto& params = trackAtVertex.fittedParams;
-    const Acts::Vector3 momentum = ActsFrame::momentumToShip(params.momentum());
-    vertex.AddTrack(tracks[index],
+  for (int i = 0; i < n; ++i) {
+    const Acts::Vector3 momentum =
+        ActsFrame::momentumToShip(atPlane[i].momentum());
+    vertex.AddTrack(tracks[i],
                     TVector3(momentum.x(), momentum.y(), momentum.z()),
-                    upperTriangle<3>(shipMomentumCovariance(params)));
+                    upperTriangle<3>(shipMomentumCovariance(atPlane[i])));
   }
-
-  if (atSeed.size() == 2) {
-    const double doca =
-        lineDistance(atSeed[0].position(impl.gctx), atSeed[0].direction(),
-                     atSeed[1].position(impl.gctx), atSeed[1].direction());
-    vertex.SetDoca(doca / ActsFrame::kShipLength);
+  if (twoTracks) {
+    vertex.SetDoca(baseDoca / ActsFrame::kShipLength);
   }
   return true;
 }

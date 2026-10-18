@@ -2,10 +2,12 @@
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
 import logging
+import math
 from array import array
 from collections import Counter, defaultdict
 
 import global_variables
+import numpy as np
 import ROOT
 import rootUtils as ut
 import shipPatRec
@@ -26,6 +28,9 @@ logger = logging.getLogger(__name__)
 
 # Minimum number of stations a candidate has to cross to be fittable.
 MIN_STATIONS_CROSSED = 3
+
+# Mass assumed for the daughters of ACTS vertex candidates (GeV)
+MUON_MASS = 0.1056583755
 
 
 class ShipDigiReco:
@@ -221,16 +226,25 @@ class ShipDigiReco:
                 logger.debug("Skipping vertex with %d tracks (expected 2)", len(vtx.trackIds()))
                 continue
             t1, t2 = vtx.trackIds()
-            P = ROOT.TLorentzVector(sum(vtx.trackPx()), sum(vtx.trackPy()), sum(vtx.trackPz()), 0)
+            # The daughters are taken to be muons, as in the GenFit vertexing
+            P = ROOT.TLorentzVector()
+            covP = np.zeros((4, 4))
+            for i in range(2):
+                p = np.array([vtx.trackPx()[i], vtx.trackPy()[i], vtx.trackPz()[i]])
+                energy = math.hypot(np.linalg.norm(p), MUON_MASS)
+                P += ROOT.TLorentzVector(float(p[0]), float(p[1]), float(p[2]), energy)
+                cov = np.zeros((3, 3))
+                cov[np.triu_indices(3)] = list(vtx.GetTrackMomentumCovariance(i))
+                cov = cov + np.triu(cov, 1).T
+                # (px, py, pz, E) from (px, py, pz)
+                jacobian = np.vstack([np.eye(3), p / energy])
+                covP += jacobian @ cov @ jacobian.T
             vertex_position_4d = ROOT.TLorentzVector(vtx.x(), vtx.y(), vtx.z(), 0.0)
             particle = ROOT.ShipParticle(9900015, 0, -1, -1, t1, t2, P, vertex_position_4d)
 
             # ShipParticle::SetCovP takes the upper triangle of the 4x4 (px, py,
-            # pz, E) covariance, in the order (0,0), (0,1), (0,2), (0,3), (1,1),
-            # (1,2), (1,3), (2,2), (2,3), (3,3). The ACTS vertex fit gives only
-            # the 3x3 momentum block, so the four energy entries stay zero.
-            covP = [a + b for a, b in zip(*(vtx.GetTrackMomentumCovariance(i) for i in range(2)), strict=True)]
-            particle.SetCovP([covP[0], covP[1], covP[2], 0.0, covP[3], covP[4], 0.0, covP[5], 0.0, 0.0])
+            # pz, E) covariance, row by row.
+            particle.SetCovP(list(covP[np.triu_indices(4)]))
             particle.SetCovV(list(vtx.GetCovarianceElements()))
             particle.SetDoca(vtx.doca())
             self.fPartArray.push_back(particle)
