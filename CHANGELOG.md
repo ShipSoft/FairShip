@@ -107,6 +107,7 @@ it in future.
 
 * Remove the SplitCal calorimeter (`splitcal`, `splitcalPoint`, `splitcalHit`, `splitcalCluster`, `splitcalDetector.py`, `ship_geo.SplitCal`, `ship_geo.EcalOption`). The `kSplitCal` detector ID slot is reused by `kCaloScoringPlane`. The muon stations and filters (`ship_geo.MuonStation*`, `ship_geo.MuonFilter*`, `ship_geo.Muon`), which had no geometry, are removed as well, and `ship_geo.HcalOption` (unused) with them; the scoring plane is now the downstream reference for the Genie generation window, the event display and `CMBG_conf`. `TrackExtrapolateTool` now switches from Runge-Kutta to linear extrapolation at the scoring plane. Code that needs the particles arriving at the former SplitCal position should use `ship_geo.CaloScoringPlane` and its `CaloScoringPlanePoint` (MC truth) instead; the calorimeter hits, clustering and digitisation (`splitcalHit`, `splitcalCluster`) have no direct replacement.
 * `UpstreamTaggerHit` constructor with Gaussian position smearing and the `UpstreamTagger.PositionResolution` parameter; hit positions now come from the tile the hit lands in
+* Remove the standalone ACTS chain (`macro/run_ACTSTracking.py`, `python/convertToACTS.py`, `python/ACTSReco.py` and the `SiliconTarget`/`MTC`/`StrawTracker` digitisation configs). It used `SiTargetBuilder`, `MTCBuilder`, `SHiPTrackWriter` and `MagneticFieldMapXyz` options that the current `acts-ship` package no longer has, so it did not run. ACTS fitting is still available through `ShipReco.py --trackFitter acts`.
 
 ## 26.09 - 2026-09-15
 

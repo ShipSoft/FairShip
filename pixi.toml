@@ -47,7 +47,7 @@ geant4-vmc = ">=6.7"
 fairroot = ">=19.0"
 genfit = ">=2.3"
 rootegpythia6 = "*"
-# SHiP fork of ACTS; used at reco time via `import acts` (python/ACTSReco.py).
+# SHiP fork of ACTS; used at reco time via `import acts` (python/strawReco.py).
 acts-ship = "*"
 # Physics-metrics extraction/comparison CLIs used by the ci-* tasks.
 ship-ci-metrics = "*"
