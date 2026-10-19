@@ -661,9 +661,18 @@ def configure(run, ship_geo, geofile: str | None = None):
 
     sp = ship_geo.UpstreamTaggerScoringPlane
     ubt_scoring_plane = ROOT.UpstreamTaggerScoringPlane("UpstreamTaggerScoringPlane", ROOT.kTRUE)
-    ubt_scoring_plane.SetPlaneThickness(sp.Z)
-    for plane in (sp.DecayVessel, sp.MuonShield):
-        ubt_scoring_plane.AddPlane(plane.CenterX, plane.CenterY, plane.z, plane.X, plane.Y, plane.MuonsOnly)
+    # Planes 1 and 2, in this order: the plane number is the point detector ID.
+    for number, plane in enumerate((sp.DecayVessel, sp.MuonShield), start=1):
+        ubt_scoring_plane.AddPlane(
+            f"UpstreamTaggerScoringPlane{number}",
+            plane.CenterX,
+            plane.CenterY,
+            plane.z,
+            plane.X,
+            plane.Y,
+            sp.Z,
+            [13] if plane.MuonsOnly else [],
+        )
     detectorList.append(ubt_scoring_plane)
 
     timeDet = ROOT.TimeDet("TimeDet", ROOT.kTRUE)

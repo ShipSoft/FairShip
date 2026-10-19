@@ -8,7 +8,7 @@
 #include "DetectorPoint.h"
 
 /**
- * @brief Track crossing of the vacuum scoring plane downstream of the UBT
+ * @brief Track crossing of one of the vacuum scoring planes around the UBT
  *
  * Position, momentum and time are those at the end of the track's first step
  * in the plane.

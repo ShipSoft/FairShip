@@ -6,6 +6,6 @@ ship_add_library(
   SOURCES UpstreamTagger.cxx UpstreamTaggerPoint.cxx UpstreamTaggerHit.cxx
           UpstreamTaggerScoringPlane.cxx UpstreamTaggerScoringPoint.cxx
   LINKDEF LinkDef.h
-  EXTRA_DICT_HEADERS ${CMAKE_SOURCE_DIR}/Detector/Detector.h
+  EXTRA_DICT_HEADERS ${CMAKE_SOURCE_DIR}/Detector/Detector.h ${CMAKE_SOURCE_DIR}/Detector/ScoringPlane.h
   DEPENDENCIES Base ShipData FairLogger::FairLogger Detector
 )
