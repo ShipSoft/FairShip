@@ -112,10 +112,21 @@ class UpstreamTaggerDetector(BaseDetector):
     def tile_id(self, position: ROOT.TVector3, tile_size: float) -> int:
         """Return a stable unique ID for a constituent tile.
 
-        The low part is the row-major index of the tile's lower-left cell on
-        the global 2 cm UBT grid. Separate 90000-ID namespaces are used for
-        each tile-size multiple, preventing a 2 cm tile and a 4 cm tile with
-        the same lower-left grid cell from receiving the same ID.
+        The tile is identified by its lower-left cell on the tile-ID grid, the
+        grid of the smallest tile side (2 cm) over the tile grid bounds, with
+        ``columns`` x ``rows`` cells:
+
+            tile ID = (tile side / grid size - 1) * columns * rows + row * columns + column
+
+        So each tile side has its own range of ``columns * rows`` IDs, and a
+        2 cm and a 4 cm tile with the same lower-left cell get different IDs.
+        For the default geometry (340 x 504 cm2, 170 x 252 cells), the range
+        of 2 cm tiles is [0, 42840) and that of 4 cm tiles [42840, 85680). The
+        stride follows the UBT box, so decoding an ID needs the grid of its
+        geometry:
+
+            side_index, cell = divmod(tile_id, columns * rows)
+            row, column = divmod(cell, columns)
         """
         column = round((position.X() - tile_size / 2.0 - self._grid_x[0]) / self._grid_size)
         row = round((position.Y() - tile_size / 2.0 - self._grid_y[0]) / self._grid_size)
