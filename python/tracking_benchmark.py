@@ -241,16 +241,38 @@ class TrackingBenchmark:
         }
 
     @staticmethod
-    def _width(histogram) -> dict[str, Any]:
-        """Half-width of the central 68% of a distribution, robust to tails."""
+    def _width(histogram, n_replicas: int = 200) -> dict[str, Any]:
+        """Half-width of the central 68% of a distribution, robust to tails.
+
+        The uncertainty is the spread of the half-width over Poisson
+        replicas of the histogram (a bootstrap of the entries).
+        """
         if histogram.GetEntries() < 10:
             return {"value": None, "compare": "statistical"}
         probabilities = array("d", [0.16, 0.5, 0.84])
-        quantiles = array("d", [0.0, 0.0, 0.0])
-        histogram.GetQuantiles(3, quantiles, probabilities)
+
+        def quantiles(h):
+            q = array("d", [0.0, 0.0, 0.0])
+            h.GetQuantiles(3, q, probabilities)
+            return q
+
+        q = quantiles(histogram)
+        width = (q[2] - q[0]) / 2
+        rng = ROOT.TRandom3(12345)
+        replica = histogram.Clone(f"{histogram.GetName()}_replica")
+        replica.SetDirectory(0)
+        widths = []
+        for _ in range(n_replicas):
+            for i in range(histogram.GetNbinsX() + 2):
+                replica.SetBinContent(i, rng.Poisson(histogram.GetBinContent(i)))
+            r = quantiles(replica)
+            widths.append((r[2] - r[0]) / 2)
+        mean = sum(widths) / n_replicas
+        spread = math.sqrt(sum((w - mean) ** 2 for w in widths) / (n_replicas - 1))
         return {
-            "value": round((quantiles[2] - quantiles[0]) / 2, 6),
-            "median": round(quantiles[1], 6),
+            "value": round(width, 6),
+            "uncertainty": round(spread, 6),
+            "median": round(q[1], 6),
             "rms": round(histogram.GetRMS(), 6),
             "compare": "statistical",
         }
@@ -451,14 +473,14 @@ class TrackingBenchmark:
         # Per event multiplicity (number of reconstructible tracks)
         by_multiplicity: dict[int, dict[str, int]] = defaultdict(lambda: defaultdict(int))
         vertex_stats: dict[str, Any] = defaultdict(int)
-        vertex_stats["h_vtx_dx"] = ROOT.TH1D("h_vtx_dx", "Vertex x;x_{reco} #minus x_{truth} [cm];Entries", 200, -5, 5)
-        vertex_stats["h_vtx_dy"] = ROOT.TH1D("h_vtx_dy", "Vertex y;y_{reco} #minus y_{truth} [cm];Entries", 200, -5, 5)
+        vertex_stats["h_vtx_dx"] = ROOT.TH1D("h_vtx_dx", "Vertex x;x_{reco} #minus x_{truth} [cm];Entries", 1000, -5, 5)
+        vertex_stats["h_vtx_dy"] = ROOT.TH1D("h_vtx_dy", "Vertex y;y_{reco} #minus y_{truth} [cm];Entries", 1000, -5, 5)
         vertex_stats["h_vtx_dz"] = ROOT.TH1D(
-            "h_vtx_dz", "Vertex z;z_{reco} #minus z_{truth} [cm];Entries", 200, -200, 200
+            "h_vtx_dz", "Vertex z;z_{reco} #minus z_{truth} [cm];Entries", 1000, -200, 200
         )
         vertex_stats["h_doca"] = ROOT.TH1D("h_doca", "Vertex candidate DOCA;DOCA [cm];Entries", 200, 0, 10)
         vertex_stats["h_mass_rel"] = ROOT.TH1D(
-            "h_mass_rel", "Pair mass;(m_{reco} #minus m_{truth}) / m_{truth};Entries", 200, -0.5, 0.5
+            "h_mass_rel", "Pair mass;(m_{reco} #minus m_{truth}) / m_{truth};Entries", 1000, -0.5, 0.5
         )
 
         for i_event in range(n_events):
