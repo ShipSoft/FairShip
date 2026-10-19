@@ -1,7 +1,5 @@
 var NAVTREEINDEX30 =
 {
-"namespacestudy__thinTarget.html#a32297dc133cd2f024927c6e1e1eef1ba":[8,0,115,3],
-"namespacestudy__thinTarget.html#a39aa964b0e7234068dd84e1db8e82ed0":[8,0,115,28],
 "namespacestudy__thinTarget.html#a3fab425bc732ad707186e2238c85eb8d":[8,0,115,16],
 "namespacestudy__thinTarget.html#a4688ef8907b6eb071771ca870fad938a":[8,0,115,42],
 "namespacestudy__thinTarget.html#a46a2c36f58cdfbc3bcad456445df083d":[8,0,115,1],
@@ -249,5 +247,7 @@ var NAVTREEINDEX30 =
 "pythia8__conf__utils_8py.html#ac3cc6b58962bc0ff9d48e7317dd512f5":[10,0,12,27,17],
 "pythia8__conf__utils_8py.html#ade00ce3cb2e966baa84b24ed0f591bec":[10,0,12,27,8],
 "pythia8__conf__utils_8py.html#af4c096d7b903bbbb76b9828e32e521a0":[10,0,12,27,7],
-"pythia8__conf__utils_8py.html#af6878ec49546de3b11ddc0c54ce1fcce":[10,0,12,27,5]
+"pythia8__conf__utils_8py.html#af6878ec49546de3b11ddc0c54ce1fcce":[10,0,12,27,5],
+"pythia8__conf__utils_8py_source.html":[10,0,12,27],
+"pythia8darkphoton__conf_8py.html":[10,0,12,28]
 };

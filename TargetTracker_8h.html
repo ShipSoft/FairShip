@@ -17,6 +17,10 @@
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="ship-doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -24,6 +28,7 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr id="projectrow">
+  <td id="projectlogo"><img alt="Logo" src="ship-symbol-white.png"/></td>
   <td id="projectalign">
    <div id="projectname">FairShip
    </div>
@@ -99,50 +104,12 @@ $(document).ready(function(){initNavTree('TargetTracker_8h.html',''); initResiza
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for TargetTracker.h:</div>
 <div class="dyncontent">
-<div class="center"><img src="TargetTracker_8h__incl.png" border="0" usemap="#aSND_2EmulsionTarget_2TargetTracker_8h" alt=""/></div>
-<map name="aSND_2EmulsionTarget_2TargetTracker_8h" id="aSND_2EmulsionTarget_2TargetTracker_8h">
-<area shape="rect" title=" " alt="" coords="639,5,794,45"/>
-<area shape="rect" href="Detector_8h.html" title=" " alt="" coords="545,93,635,119"/>
-<area shape="poly" title=" " alt="" coords="687,48,621,88,619,84,685,43"/>
-<area shape="rect" href="TTPoint_8h.html" title=" " alt="" coords="803,93,886,119"/>
-<area shape="poly" title=" " alt="" coords="749,43,816,84,813,88,746,48"/>
-<area shape="rect" title=" " alt="" coords="560,167,620,192"/>
-<area shape="poly" title=" " alt="" coords="593,119,593,153,587,153,587,119"/>
-<area shape="rect" title=" " alt="" coords="488,240,551,265"/>
-<area shape="poly" title=" " alt="" coords="582,120,550,168,528,227,523,226,545,165,578,117"/>
-<area shape="rect" href="DetectorPoint_8h.html" title=" " alt="" coords="882,167,1005,192"/>
-<area shape="poly" title=" " alt="" coords="635,114,873,161,872,167,634,119"/>
-<area shape="rect" title=" " alt="" coords="799,240,890,265"/>
-<area shape="poly" title=" " alt="" coords="602,117,636,152,685,190,736,215,788,234,786,239,734,220,682,194,633,156,598,121"/>
-<area shape="rect" title=" " alt="" coords="695,167,807,192"/>
-<area shape="poly" title=" " alt="" coords="617,116,714,159,711,163,615,121"/>
-<area shape="rect" title=" " alt="" coords="5,167,148,192"/>
-<area shape="poly" title=" " alt="" coords="545,116,162,169,161,164,545,111"/>
-<area shape="rect" href="ISTLPointContainer_8h.html" title=" " alt="" coords="328,167,484,192"/>
-<area shape="poly" title=" " alt="" coords="561,121,450,164,448,159,559,116"/>
-<area shape="rect" title=" " alt="" coords="173,167,303,192"/>
-<area shape="poly" title=" " alt="" coords="546,119,309,167,308,161,545,114"/>
-<area shape="rect" title=" " alt="" coords="914,240,970,265"/>
-<area shape="poly" title=" " alt="" coords="946,192,945,227,940,226,940,192"/>
-<area shape="rect" title=" " alt="" coords="995,240,1105,265"/>
-<area shape="poly" title=" " alt="" coords="962,190,1023,230,1020,235,959,194"/>
-<area shape="poly" title=" " alt="" coords="929,194,873,234,870,230,926,190"/>
-<area shape="poly" title=" " alt="" coords="426,190,491,230,488,235,423,194"/>
-<area shape="rect" title=" " alt="" coords="351,240,461,265"/>
-<area shape="poly" title=" " alt="" coords="409,192,409,226,403,226,403,192"/>
-<area shape="poly" title=" " alt="" coords="862,117,918,156,915,161,859,121"/>
-<area shape="poly" title=" " alt="" coords="847,119,847,226,842,226,842,119"/>
-</map>
+<div class="center"><iframe scrolling="no" frameborder="0" src="TargetTracker_8h__incl.svg" width="1111" height="271"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><img src="TargetTracker_8h__dep__incl.png" border="0" usemap="#aSND_2EmulsionTarget_2TargetTracker_8hdep" alt=""/></div>
-<map name="aSND_2EmulsionTarget_2TargetTracker_8hdep" id="aSND_2EmulsionTarget_2TargetTracker_8hdep">
-<area shape="rect" title=" " alt="" coords="5,5,160,45"/>
-<area shape="rect" href="TargetTracker_8cxx.html" title=" " alt="" coords="5,93,160,133"/>
-<area shape="poly" title=" " alt="" coords="85,59,85,93,80,93,80,59"/>
-</map>
+<div class="center"><iframe scrolling="no" frameborder="0" src="TargetTracker_8h__dep__incl.svg" width="166" height="139"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 <p><a href="TargetTracker_8h_source.html">Go to the source code of this file.</a></p>
@@ -154,12 +121,43 @@ Classes</h2></td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->
-<!-- start footer part -->
+<!-- SHiP Doxygen theme footer. Version-independent: only standard Doxygen
+     placeholders are used, so it works with Doxygen 1.9.x and 1.1x alike. -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_32113a12037a3d9f3997febc88bd6396.html">SND</a></li><li class="navelem"><a class="el" href="dir_90be3bb8f624eef7052d00c097ddfa32.html">EmulsionTarget</a></li><li class="navelem"><a class="el" href="TargetTracker_8h.html">TargetTracker.h</a></li>
-    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html">Doxygen</a> 1.9.8</li>
   </ul>
 </div>
+<!-- SHiP theme: scripts (doxygen-awesome extensions) -->
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript">
+  DoxygenAwesomeDarkModeToggle.init();
+  DoxygenAwesomeFragmentCopyButton.init();
+  DoxygenAwesomeParagraphLink.init();
+  DoxygenAwesomeInteractiveToc.init();
+  DoxygenAwesomeTabs.init();
+  /* favicon + collaboration footer line (no HTML_HEADER needed) */
+  (function () {
+    var rel = "";
+    var link = document.createElement("link");
+    link.rel = "icon"; link.type = "image/png"; link.sizes = "192x192";
+    link.href = rel + "favicon-192.png";
+    document.head.appendChild(link);
+    var footer = document.createElement("div");
+    footer.className = "ship-footer";
+    footer.innerHTML =
+      '<span>&copy; CERN for the benefit of the SHiP Collaboration</span>' +
+      '<a href="https://shipsoft.github.io/Documentation/">SHiP Software documentation</a>' +
+      '<a href="https://github.com/ShipSoft">github.com/ShipSoft</a>' +
+      '<a href="https://ship.web.cern.ch/">ship.web.cern.ch</a>';
+    var content = document.getElementById("doc-content") || document.body;
+    content.appendChild(footer);
+  })();
+</script>
 </body>
 </html>

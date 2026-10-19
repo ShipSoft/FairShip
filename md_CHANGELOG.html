@@ -17,6 +17,10 @@
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="ship-doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -24,6 +28,7 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr id="projectrow">
+  <td id="projectlogo"><img alt="Logo" src="ship-symbol-white.png"/></td>
   <td id="projectalign">
    <div id="projectname">FairShip
    </div>
@@ -142,6 +147,7 @@ Fixed</h2>
 <li>The vectors stored in the reconstruction tree now have compiled ROOT dictionaries: <code>FitTracks</code> (<code>std::vector&lt;genfit::Track*&gt;</code>), <code>digiSBT2MC</code> (<code>std::vector&lt;std::vector&lt;int&gt;&gt;</code>), <code>Particles</code> and the digitised hits and tracklets of strawtubes, veto, <a class="el" href="classTimeDet.html">TimeDet</a>, <a class="el" href="classUpstreamTagger.html" title="Upstream Background Tagger (UBT) detector.">UpstreamTagger</a>, MTC and silicon target. Without them ROOT has Cling generate their destructors at run time. With ROOT 6.40, a script that read the reconstruction tree and had created an object of a new template type from Python (e.g. <code>genfit::SharedPlanePtr</code>) segfaulted at exit, when ROOT deleted these branches. Files written before can still be read.</li>
 <li><code><a class="el" href="run__fixedTarget_8py.html">run_fixedTarget.py</a> -C</code>/<code>-B</code> stops with an error when <code><a class="el" href="classFixedTargetGenerator.html#a03500249963f1da62224d1596e890fdc">FixedTargetGenerator::InitForCharmOrBeauty</a></code> rejects the input file, for example one without the POT histogram <code>2</code>. The return value was ignored, so the run went on with no input tree and segfaulted on the first event.</li>
 <li>The pixi environment sets <code>EOSSHIP</code> to <code>root://eospublic.cern.ch/</code> unless it is already set, as the aliBuild environment did. Without it, <code><a class="el" href="run__simScript_8py.html">run_simScript.py</a></code> with its default configuration failed to open the charm cascade input (<code>OSError: Failed to open file $EOSSHIP/eos/...</code>), and so did the other defaults read from <code>/eos/experiment/ship</code>.</li>
+<li><code><a class="el" href="namespaceTrackExtrapolateTool.html#ac357e10f3671079a5b9c5706b564b421">TrackExtrapolateTool.extrapolateToPlane</a></code> extrapolates again (#671). It called GENFIT with two <code>TVector3</code>, which no overload accepts, and caught the <code>TypeError</code>, so it never extrapolated: the event display drew fitted tracks as straight lines and <a class="el" href="namespaceShipAna.html">ShipAna</a>'s <code>extrapTimeDetX/Y</code> stayed empty. It now also takes the charge from the fit instead of from the sign of the seed's PDG code, which bent tracks whose charge the fit had flipped the wrong way in the spectrometer magnet.</li>
 <li><code><a class="el" href="tracking__benchmark_8py.html">tracking_benchmark.py</a></code> skips track points without fitter info instead of stopping. <code>TrackPoint::getFitterInfo</code> returns a null pointer for such a point, which PyROOT gives as an object that is falsy but not <code>None</code>, so the <code>is None</code> check never skipped it and <code>getResidual()</code> raised <code>ReferenceError</code>, which the <code>except</code> clause does not catch: <code><a class="el" href="run__tracking__benchmark_8py.html">run_tracking_benchmark.py</a></code> aborted in its metrics phase once a sample contained such a point. On linux-aarch64 that happened already with CI's settings (<code>-n 200 --seed 42</code>) and with <code>-n 1000</code>; CI's linux-64 runs have not hit it so far.</li>
 <li>HNL decay channels with a self-conjugate daughter (pi0, eta, rho0, omega, eta', phi, eta_c) no longer abort the simulation. <code><a class="el" href="namespacereadDecayTable.html#a7b20cc3e8df553c9dfbb68addb0e2665">readDecayTable.addHNLdecayChannels</a></code> adds every enabled channel a second time, charge conjugated, and keeps a daughter's code when <code>TDatabasePDG</code> has no antiparticle for it. Since 26.03 that lookup was tested with <code>is not None</code>, which is always true, because PyROOT returns a null pointer (falsy, but not <code>None</code>) for an unknown code. The conjugate channel therefore carried codes such as -111, which <a class="el" href="namespacePythia8.html">Pythia8</a> accepts and Geant4 rejects, ending the run at the first such decay. The default channel, N -&gt; pi+ mu-, was not affected.</li>
 <li>The checks for unknown PDG codes added in 26.06 (<code>assert p is not None, "Unknown PDG: ..."</code>) could never fire, so an unknown code still ended in <code>ReferenceError: attempt to access a null-pointer</code>. They now use <code><a class="el" href="namespacerootUtils.html#a6fa7b470c587fa9daf3ee30c2b2be4e3">rootUtils.get_particle</a></code>, which raises <code>ValueError</code> with the code. For the same reason <code>DrawCharmTracks</code> in the event display and the charge check in <code><a class="el" href="tracking__benchmark_8py.html">tracking_benchmark.py</a></code> now skip particles with unknown codes instead of failing, and <code><a class="el" href="configGenieGenerator_8py.html">configGenieGenerator.py</a></code> reports a missing <code>volNuTauMudet_1</code> as intended.</li>
@@ -1101,11 +1107,42 @@ Removed</h2>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
-<!-- start footer part -->
+<!-- SHiP Doxygen theme footer. Version-independent: only standard Doxygen
+     placeholders are used, so it works with Doxygen 1.9.x and 1.1x alike. -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html">Doxygen</a> 1.9.8</li>
   </ul>
 </div>
+<!-- SHiP theme: scripts (doxygen-awesome extensions) -->
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript">
+  DoxygenAwesomeDarkModeToggle.init();
+  DoxygenAwesomeFragmentCopyButton.init();
+  DoxygenAwesomeParagraphLink.init();
+  DoxygenAwesomeInteractiveToc.init();
+  DoxygenAwesomeTabs.init();
+  /* favicon + collaboration footer line (no HTML_HEADER needed) */
+  (function () {
+    var rel = "";
+    var link = document.createElement("link");
+    link.rel = "icon"; link.type = "image/png"; link.sizes = "192x192";
+    link.href = rel + "favicon-192.png";
+    document.head.appendChild(link);
+    var footer = document.createElement("div");
+    footer.className = "ship-footer";
+    footer.innerHTML =
+      '<span>&copy; CERN for the benefit of the SHiP Collaboration</span>' +
+      '<a href="https://shipsoft.github.io/Documentation/">SHiP Software documentation</a>' +
+      '<a href="https://github.com/ShipSoft">github.com/ShipSoft</a>' +
+      '<a href="https://ship.web.cern.ch/">ship.web.cern.ch</a>';
+    var content = document.getElementById("doc-content") || document.body;
+    content.appendChild(footer);
+  })();
+</script>
 </body>
 </html>

@@ -1,6 +1,5 @@
 var NAVTREEINDEX20 =
 {
-"make__nTuple__SBT_8py.html#a66c4f51ed7c88d8a4a2c520ffad8812d":[10,0,8,1,2],
 "make__nTuple__SBT_8py.html#a7050b04ba92c631cf6be0da28730a2de":[10,0,8,1,39],
 "make__nTuple__SBT_8py.html#a740911fa9e8ed96e446b67390de2a688":[10,0,8,1,37],
 "make__nTuple__SBT_8py.html#a7fc553485c3320721d1abb6ed326eb0b":[10,0,8,1,47],
@@ -249,5 +248,6 @@ var NAVTREEINDEX20 =
 "md_shipgen_2genie__config_2README.html#autotoc_md132":[7,2],
 "md_shipgen_2genie__config_2README.html#autotoc_md133":[7,3],
 "mergeMbias_8py.html":[10,0,7,19],
-"mergeMbias_8py.html#a0137456fbeb14265ba293b2aa7d2eace":[10,0,7,19,4]
+"mergeMbias_8py.html#a0137456fbeb14265ba293b2aa7d2eace":[10,0,7,19,4],
+"mergeMbias_8py.html#a0244ff4c77d46f894a0360086f22f7b7":[10,0,7,19,3]
 };

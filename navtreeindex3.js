@@ -1,6 +1,5 @@
 var NAVTREEINDEX3 =
 {
-"classCosmicsGenerator.html#aa917ee4c24f40eddc2ce3dacb88ee318":[9,0,33,3],
 "classCosmicsGenerator.html#aab375f933193b16006ddc7cd9a6a0241":[9,0,33,13],
 "classCosmicsGenerator.html#ab53157e341f5dd3de8259deb3241f8f2":[9,0,33,30],
 "classCosmicsGenerator.html#ab77bc24ca06682bbb854be5bc27c9eb6":[9,0,33,5],
@@ -249,5 +248,6 @@ var NAVTREEINDEX3 =
 "classFixedTargetGenerator.html#aeec968d13bb7848f39f86d2f979b609f":[9,0,39,20],
 "classFixedTargetGenerator.html#af02a4e8be2c082f7cedded68b5d017b3":[9,0,39,25],
 "classFixedTargetGenerator.html#af312d512426bbf7ce0f43ab437805532":[9,0,39,71],
-"classFixedTargetGenerator.html#af85bdfe27103173208bfe7b8679356cd":[9,0,39,12]
+"classFixedTargetGenerator.html#af85bdfe27103173208bfe7b8679356cd":[9,0,39,12],
+"classFixedTargetGenerator.html#afd1b343c2008fc9157b3c9f542d253c6":[9,0,39,55]
 };

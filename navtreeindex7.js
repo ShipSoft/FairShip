@@ -1,6 +1,5 @@
 var NAVTREEINDEX7 =
 {
-"classSHiP_1_1Detector.html#a0f51e2d392c158d28d09fc71e9ef6a88":[9,0,14,0,28],
 "classSHiP_1_1Detector.html#a0f51e2d392c158d28d09fc71e9ef6a88":[8,0,90,0,28],
 "classSHiP_1_1Detector.html#a103ca9a2efe245ed360682958561bbf7":[9,0,14,0,17],
 "classSHiP_1_1Detector.html#a103ca9a2efe245ed360682958561bbf7":[8,0,90,0,17],
@@ -26,16 +25,16 @@ var NAVTREEINDEX7 =
 "classSHiP_1_1Detector.html#a60d7cc6fa01943cd54c7d3adf860de2f":[9,0,14,0,1],
 "classSHiP_1_1Detector.html#a73510d2ac4e0508cd8297620923db8e4":[8,0,90,0,22],
 "classSHiP_1_1Detector.html#a73510d2ac4e0508cd8297620923db8e4":[9,0,14,0,22],
-"classSHiP_1_1Detector.html#a747f5556fed3cfe08dafa0bf9bb2fd0b":[8,0,90,0,2],
 "classSHiP_1_1Detector.html#a747f5556fed3cfe08dafa0bf9bb2fd0b":[9,0,14,0,2],
-"classSHiP_1_1Detector.html#a77ac86b73dcf5b1be0e92126d3066bd3":[8,0,90,0,10],
+"classSHiP_1_1Detector.html#a747f5556fed3cfe08dafa0bf9bb2fd0b":[8,0,90,0,2],
 "classSHiP_1_1Detector.html#a77ac86b73dcf5b1be0e92126d3066bd3":[9,0,14,0,10],
-"classSHiP_1_1Detector.html#a78339fc1b4c1176cad213a5d731b73da":[8,0,90,0,3],
+"classSHiP_1_1Detector.html#a77ac86b73dcf5b1be0e92126d3066bd3":[8,0,90,0,10],
 "classSHiP_1_1Detector.html#a78339fc1b4c1176cad213a5d731b73da":[9,0,14,0,3],
+"classSHiP_1_1Detector.html#a78339fc1b4c1176cad213a5d731b73da":[8,0,90,0,3],
 "classSHiP_1_1Detector.html#a94e52e645171521d81764edbac5d5524":[8,0,90,0,5],
 "classSHiP_1_1Detector.html#a94e52e645171521d81764edbac5d5524":[9,0,14,0,5],
-"classSHiP_1_1Detector.html#a96156a84cbcc42b254255847291d255b":[8,0,90,0,15],
 "classSHiP_1_1Detector.html#a96156a84cbcc42b254255847291d255b":[9,0,14,0,15],
+"classSHiP_1_1Detector.html#a96156a84cbcc42b254255847291d255b":[8,0,90,0,15],
 "classSHiP_1_1Detector.html#a97ab161eb00fb79673c501a571781c39":[9,0,14,0,20],
 "classSHiP_1_1Detector.html#a97ab161eb00fb79673c501a571781c39":[8,0,90,0,20],
 "classSHiP_1_1Detector.html#a9885b9592a20ae576f27735098c33952":[9,0,14,0,4],
@@ -249,5 +248,6 @@ var NAVTREEINDEX7 =
 "classSciFiMapping_1_1SciFiMapping.html#aca292dfd2152ad7249fe29c4bba93c37":[9,0,13,0,16],
 "classSciFiMapping_1_1SciFiMapping.html#aca292dfd2152ad7249fe29c4bba93c37":[8,0,89,0,16],
 "classSciFiMapping_1_1SciFiMapping.html#ae63286d8eef8567fe7beb3c861948b76":[9,0,13,0,1],
-"classSciFiMapping_1_1SciFiMapping.html#ae63286d8eef8567fe7beb3c861948b76":[8,0,89,0,1]
+"classSciFiMapping_1_1SciFiMapping.html#ae63286d8eef8567fe7beb3c861948b76":[8,0,89,0,1],
+"classSciFiMapping_1_1SciFiMapping.html#afb1f0396eb16b14145232fbb8bb0820f":[8,0,89,0,9]
 };

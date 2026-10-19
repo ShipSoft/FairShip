@@ -17,6 +17,10 @@
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="ship-doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -24,6 +28,7 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr id="projectrow">
+  <td id="projectlogo"><img alt="Logo" src="ship-symbol-white.png"/></td>
   <td id="projectalign">
    <div id="projectname">FairShip
    </div>
@@ -106,52 +111,12 @@ $(document).ready(function(){initNavTree('GenieGenerator_8h.html',''); initResiz
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for GenieGenerator.h:</div>
 <div class="dyncontent">
-<div class="center"><img src="GenieGenerator_8h__incl.png" border="0" usemap="#ashipgen_2GenieGenerator_8h" alt=""/></div>
-<map name="ashipgen_2GenieGenerator_8h" id="ashipgen_2GenieGenerator_8h">
-<area shape="rect" title=" " alt="" coords="544,5,735,31"/>
-<area shape="rect" title=" " alt="" coords="5,152,105,177"/>
-<area shape="poly" title=" " alt="" coords="574,33,464,54,341,81,212,117,103,150,102,145,210,112,340,76,463,49,573,28"/>
-<area shape="rect" href="Generator_8h.html" title=" " alt="" coords="353,79,451,104"/>
-<area shape="poly" title=" " alt="" coords="602,33,454,77,453,72,600,28"/>
-<area shape="rect" title=" " alt="" coords="776,152,839,177"/>
-<area shape="poly" title=" " alt="" coords="595,33,559,46,528,62,517,71,511,81,510,91,516,102,542,127,567,142,594,148,622,149,685,145,722,145,763,149,762,155,722,150,686,150,622,154,593,153,565,147,538,132,512,106,505,92,506,79,513,68,525,58,557,41,593,28"/>
-<area shape="rect" title=" " alt="" coords="526,79,585,104"/>
-<area shape="poly" title=" " alt="" coords="628,33,581,72,578,67,624,29"/>
-<area shape="rect" title=" " alt="" coords="609,79,669,104"/>
-<area shape="poly" title=" " alt="" coords="642,31,642,65,637,65,637,31"/>
-<area shape="rect" title=" " alt="" coords="693,79,753,104"/>
-<area shape="poly" title=" " alt="" coords="655,29,701,67,697,72,651,33"/>
-<area shape="rect" title=" " alt="" coords="777,79,856,104"/>
-<area shape="poly" title=" " alt="" coords="669,28,776,71,774,76,667,33"/>
-<area shape="rect" title=" " alt="" coords="881,79,950,104"/>
-<area shape="poly" title=" " alt="" coords="684,28,868,75,867,80,683,33"/>
-<area shape="rect" title=" " alt="" coords="974,79,1065,104"/>
-<area shape="poly" title=" " alt="" coords="703,28,961,76,960,81,702,33"/>
-<area shape="poly" title=" " alt="" coords="353,105,119,153,118,148,352,100"/>
-<area shape="rect" title=" " alt="" coords="129,152,192,177"/>
-<area shape="poly" title=" " alt="" coords="364,107,206,153,205,148,362,101"/>
-<area shape="rect" title=" " alt="" coords="217,152,291,177"/>
-<area shape="poly" title=" " alt="" coords="379,106,292,148,289,144,377,102"/>
-<area shape="rect" title=" " alt="" coords="315,152,374,177"/>
-<area shape="poly" title=" " alt="" coords="395,106,365,143,361,139,390,103"/>
-<area shape="rect" title=" " alt="" coords="399,152,523,177"/>
-<area shape="poly" title=" " alt="" coords="414,103,445,140,441,143,410,106"/>
-<area shape="rect" title=" " alt="" coords="547,152,607,177"/>
-<area shape="poly" title=" " alt="" coords="431,102,536,144,534,149,429,106"/>
-<area shape="poly" title=" " alt="" coords="452,98,470,101,615,123,763,149,762,154,615,128,470,107,451,104"/>
-<area shape="rect" title=" " alt="" coords="631,152,752,177"/>
-<area shape="poly" title=" " alt="" coords="449,101,632,146,631,151,448,107"/>
-</map>
+<div class="center"><iframe scrolling="no" frameborder="0" src="GenieGenerator_8h__incl.svg" width="1071" height="183"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><img src="GenieGenerator_8h__dep__incl.png" border="0" usemap="#ashipgen_2GenieGenerator_8hdep" alt=""/></div>
-<map name="ashipgen_2GenieGenerator_8hdep" id="ashipgen_2GenieGenerator_8hdep">
-<area shape="rect" title=" " alt="" coords="13,5,204,31"/>
-<area shape="rect" href="GenieGenerator_8cxx.html" title=" " alt="" coords="5,79,212,104"/>
-<area shape="poly" title=" " alt="" coords="111,44,111,79,106,79,106,44"/>
-</map>
+<div class="center"><iframe scrolling="no" frameborder="0" src="GenieGenerator_8h__dep__incl.svg" width="218" height="110"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 <p><a href="GenieGenerator_8h_source.html">Go to the source code of this file.</a></p>
@@ -163,12 +128,43 @@ Classes</h2></td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->
-<!-- start footer part -->
+<!-- SHiP Doxygen theme footer. Version-independent: only standard Doxygen
+     placeholders are used, so it works with Doxygen 1.9.x and 1.1x alike. -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_077298d11411e0d78a9900d1a8de44bb.html">shipgen</a></li><li class="navelem"><a class="el" href="GenieGenerator_8h.html">GenieGenerator.h</a></li>
-    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html">Doxygen</a> 1.9.8</li>
   </ul>
 </div>
+<!-- SHiP theme: scripts (doxygen-awesome extensions) -->
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript">
+  DoxygenAwesomeDarkModeToggle.init();
+  DoxygenAwesomeFragmentCopyButton.init();
+  DoxygenAwesomeParagraphLink.init();
+  DoxygenAwesomeInteractiveToc.init();
+  DoxygenAwesomeTabs.init();
+  /* favicon + collaboration footer line (no HTML_HEADER needed) */
+  (function () {
+    var rel = "";
+    var link = document.createElement("link");
+    link.rel = "icon"; link.type = "image/png"; link.sizes = "192x192";
+    link.href = rel + "favicon-192.png";
+    document.head.appendChild(link);
+    var footer = document.createElement("div");
+    footer.className = "ship-footer";
+    footer.innerHTML =
+      '<span>&copy; CERN for the benefit of the SHiP Collaboration</span>' +
+      '<a href="https://shipsoft.github.io/Documentation/">SHiP Software documentation</a>' +
+      '<a href="https://github.com/ShipSoft">github.com/ShipSoft</a>' +
+      '<a href="https://ship.web.cern.ch/">ship.web.cern.ch</a>';
+    var content = document.getElementById("doc-content") || document.body;
+    content.appendChild(footer);
+  })();
+</script>
 </body>
 </html>

@@ -1,6 +1,5 @@
 var NAVTREEINDEX6 =
 {
-"classMuonPath.html#a2108a17cbf272a2ef36be54f453d7f5c":[9,0,54,17],
 "classMuonPath.html#a265d47c78a45429761cacdddf6f9b902":[9,0,54,6],
 "classMuonPath.html#a2eb3644b98582919befa47ba44b9fbda":[9,0,54,40],
 "classMuonPath.html#a348653c6577520d09e37054fc832f8c0":[9,0,54,31],
@@ -249,5 +248,6 @@ var NAVTREEINDEX6 =
 "classSHiP_1_1Detector.html":[9,0,14,0],
 "classSHiP_1_1Detector.html":[8,0,90,0],
 "classSHiP_1_1Detector.html#a03d8c93853fa437a2adc466863c6b39e":[9,0,14,0,6],
-"classSHiP_1_1Detector.html#a03d8c93853fa437a2adc466863c6b39e":[8,0,90,0,6]
+"classSHiP_1_1Detector.html#a03d8c93853fa437a2adc466863c6b39e":[8,0,90,0,6],
+"classSHiP_1_1Detector.html#a0f51e2d392c158d28d09fc71e9ef6a88":[9,0,14,0,28]
 };

@@ -1,6 +1,5 @@
 var NAVTREEINDEX5 =
 {
-"classMagneticTrackPropagator.html#adf5717450a0bd8f563850cf1672b3589":[9,0,44,33],
 "classMagneticTrackPropagator.html#ae3d9ce82c1da5c84bd940e800c967b94":[9,0,44,34],
 "classMagneticTrackPropagator.html#af59473689b70c6654f5d25da5a2bc2e1":[9,0,44,23],
 "classMagneticTrackPropagator.html#afbf26c8200e3d88eae0a1937c686c8de":[9,0,44,6],
@@ -249,5 +248,6 @@ var NAVTREEINDEX5 =
 "classMuonPath.html#a1573e76c8172ba86019671d2d8d20aeb":[9,0,54,8],
 "classMuonPath.html#a165cff6500be27ef9f035c46adeabedb":[9,0,54,7],
 "classMuonPath.html#a1c91672bd6f673ecf8593fc589723ad1":[9,0,54,29],
-"classMuonPath.html#a209a7da79b6ff9317342640cd9921c00":[9,0,54,20]
+"classMuonPath.html#a209a7da79b6ff9317342640cd9921c00":[9,0,54,20],
+"classMuonPath.html#a2108a17cbf272a2ef36be54f453d7f5c":[9,0,54,17]
 };

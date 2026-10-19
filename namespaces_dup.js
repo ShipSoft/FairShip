@@ -2006,7 +2006,6 @@ var namespaces_dup =
     ] ],
     [ "timeDetector", "namespacetimeDetector.html", "namespacetimeDetector" ],
     [ "TrackExtrapolateTool", "namespaceTrackExtrapolateTool.html", [
-      [ "cmp", "namespaceTrackExtrapolateTool.html#ab8db142297238572f1496a88dcb73c28", null ],
       [ "extrapolateToPlane", "namespaceTrackExtrapolateTool.html#ac357e10f3671079a5b9c5706b564b421", null ],
       [ "minNdf", "namespaceTrackExtrapolateTool.html#a88649c5e9feda4744213d5c7a41a94ad", null ],
       [ "parallelToZ", "namespaceTrackExtrapolateTool.html#a1104e7a5752dd65cba8fc8bdb76a5ce5", null ],

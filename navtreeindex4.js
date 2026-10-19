@@ -1,6 +1,5 @@
 var NAVTREEINDEX4 =
 {
-"classFixedTargetGenerator.html#afd1b343c2008fc9157b3c9f542d253c6":[9,0,39,55],
 "classGenieGenerator.html":[9,0,40],
 "classGenieGenerator.html#a01759541ce4780b57223e11022bd1da3":[9,0,40,57],
 "classGenieGenerator.html#a0b934c83601ea29b2d32f9a2635ec686":[9,0,40,61],
@@ -213,10 +212,10 @@ var NAVTREEINDEX4 =
 "classMTCDetector.html#afd86dacd0abbb9628d302fa9e1bfb1f6":[9,0,46,11],
 "classMTCDetector_1_1MTCDetector.html":[9,0,10,0],
 "classMTCDetector_1_1MTCDetector.html":[8,0,63,0],
-"classMTCDetector_1_1MTCDetector.html#a3335d6637ba8bd1aeb19d80362102a41":[9,0,10,0,2],
 "classMTCDetector_1_1MTCDetector.html#a3335d6637ba8bd1aeb19d80362102a41":[8,0,63,0,2],
-"classMTCDetector_1_1MTCDetector.html#ad5ec895e4f4d4e64aad5e9c3f7d02e43":[9,0,10,0,1],
+"classMTCDetector_1_1MTCDetector.html#a3335d6637ba8bd1aeb19d80362102a41":[9,0,10,0,2],
 "classMTCDetector_1_1MTCDetector.html#ad5ec895e4f4d4e64aad5e9c3f7d02e43":[8,0,63,0,1],
+"classMTCDetector_1_1MTCDetector.html#ad5ec895e4f4d4e64aad5e9c3f7d02e43":[9,0,10,0,1],
 "classMTCDetector_1_1MTCDetector.html#ae32ebaee7612743e9fc980c8dda59ee1":[9,0,10,0,0],
 "classMTCDetector_1_1MTCDetector.html#ae32ebaee7612743e9fc980c8dda59ee1":[8,0,63,0,0],
 "classMTCDetector_1_1MTCDetector.html#af79a6492f3950720f095380683b6da31":[9,0,10,0,3],
@@ -249,5 +248,6 @@ var NAVTREEINDEX4 =
 "classMagneticTrackPropagator.html#aaec9af39259af48c6f4e4d4d0033e08b":[9,0,44,32],
 "classMagneticTrackPropagator.html#abcb13114ed52704c5cef5dd945d020ff":[9,0,44,5],
 "classMagneticTrackPropagator.html#adbb467b91b474f87eafe560efab5f109":[9,0,44,26],
-"classMagneticTrackPropagator.html#adc0f9e4c4aa4a04974d63f59359ac4c5":[9,0,44,18]
+"classMagneticTrackPropagator.html#adc0f9e4c4aa4a04974d63f59359ac4c5":[9,0,44,18],
+"classMagneticTrackPropagator.html#adf5717450a0bd8f563850cf1672b3589":[9,0,44,33]
 };

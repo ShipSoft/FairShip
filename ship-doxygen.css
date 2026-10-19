@@ -1,0 +1,429 @@
+/* ==========================================================================
+   SHiP Software documentation — Doxygen theme
+   --------------------------------------------------------------------------
+   Loaded AFTER doxygen-awesome.css (+ sidebar-only variants). It maps the
+   SHiP tokens — the same values as the Zensical theme — onto the variables
+   doxygen-awesome exposes, and restyles the title area as a CERN-blue band
+   carrying the white SHiP wheel.
+
+   Dark mode: the toggle (doxygen-awesome-darkmode-toggle.js) sets
+   html.dark-mode / html.light-mode; without a stored choice the OS setting
+   applies, so dark values are declared both ways.
+   ========================================================================== */
+
+/* ---- Light ---------------------------------------------------------------- */
+html {
+  --ship-blue:           #0033a0;   /* CERN blue, Pantone 286 C */
+  --ship-blue-deep:      #00226e;
+  --ship-blue-soft:      #335cb3;
+  --ship-blue-tint:      #e8eef9;
+  --ship-accent:         #b4420f;
+
+  --ship-surface:        #ffffff;
+  --ship-surface-raised: #f4f6fa;
+  --ship-surface-code:   #eef1f6;
+  --ship-ink:            #10223f;
+  --ship-ink-muted:      #4f5d73;
+  --ship-border:         #c9d1de;
+  --ship-hairline:       #e3e8f0;
+
+  --ship-success:        #1d6b3a;
+  --ship-warning:        #8a5a00;
+  --ship-danger:         #b3261e;
+
+  /* doxygen-awesome variables */
+  --primary-color:       var(--ship-blue);
+  --primary-dark-color:  var(--ship-blue-deep);
+  --primary-light-color: var(--ship-blue-soft);
+  --on-primary-color:    #ffffff;
+  --link-color:          var(--ship-blue);
+
+  --page-background-color:           var(--ship-surface);
+  --page-foreground-color:           var(--ship-ink);
+  --page-secondary-foreground-color: var(--ship-ink-muted);
+  --separator-color:                 var(--ship-hairline);
+  --side-nav-background:             var(--ship-surface-raised);
+  --code-background:                 var(--ship-surface-code);
+  --fragment-background:             var(--ship-surface-code);
+  --fragment-foreground:             var(--ship-ink);
+  --fragment-linenumber-background:  #e4e9f1;
+  --fragment-linenumber-border:      var(--ship-border);
+  --fragment-linenumber-color:       var(--ship-ink-muted);
+  --tablehead-background:            var(--ship-surface-raised);
+  --blockquote-background:           var(--ship-surface-raised);
+  --blockquote-foreground:           var(--ship-ink-muted);
+  --odd-color:                       rgba(16, 34, 63, 0.03);
+  --menu-selected-background:        rgba(0, 51, 160, 0.08);
+
+  --header-background: var(--ship-blue);
+  --header-foreground: #ffffff;
+  /* in the sidebar-only layout the search field sits on the side nav, not on the blue band */
+  --searchbar-background: var(--ship-surface);
+  --searchbar-foreground: var(--ship-ink);
+  --searchbar-border-radius: 4px;
+
+  /* admonition families: blue / amber / red / green / grey */
+  --note-color:            var(--ship-blue-tint);
+  --note-color-dark:       var(--ship-blue);
+  --note-color-darker:     #10223f;
+  --warning-color:         #fdf3dc;
+  --warning-color-dark:    #c98a00;
+  --warning-color-darker:  #5a3b00;
+  --bug-color:             #fbe4e2;
+  --bug-color-dark:        var(--ship-danger);
+  --bug-color-darker:      #6f140f;
+  --invariant-color:       #e1f3e8;
+  --invariant-color-dark:  var(--ship-success);
+  --invariant-color-darker:#124426;
+  --todo-color:            var(--ship-blue-tint);
+  --todo-color-dark:       var(--ship-blue-soft);
+  --todo-color-darker:     #10223f;
+  --deprecated-color:      #eef0f4;
+  --deprecated-color-dark: #5b6269;
+  --deprecated-color-darker:#2f353c;
+
+  /* shape & type */
+  --border-radius-large:  6px;
+  --border-radius-medium: 4px;
+  --border-radius-small:  3px;
+  --box-shadow: 0 1px 2px rgba(16, 34, 63, 0.08);
+
+  --font-family: "Source Sans 3", "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-family-monospace: "Source Code Pro", ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  --page-font-size: 16px;
+  --navigation-font-size: 14px;
+  --toc-font-size: 13px;
+  --code-font-size: 13.5px;
+  --title-font-size: 20px;
+  --content-line-height: 26px;
+  --content-maxwidth: 1080px;
+}
+
+/* ---- Dark ----------------------------------------------------------------- */
+@media (prefers-color-scheme: dark) {
+  html:not(.light-mode) {
+    --ship-blue-soft:      #8db0ff;
+    --ship-blue-tint:      #182440;
+    --ship-accent:         #ffa26b;
+    --ship-surface:        #0d1526;
+    --ship-surface-raised: #141f36;
+    --ship-surface-code:   #182440;
+    --ship-ink:            #e6ebf4;
+    --ship-ink-muted:      #a3afc4;
+    --ship-border:         #2b3a57;
+    --ship-hairline:       #1f2c47;
+    --ship-success:        #6fd49a;
+    --ship-warning:        #f5c451;
+    --ship-danger:         #ff8a80;
+
+    --primary-color:       var(--ship-blue-soft);
+    --primary-dark-color:  #b7cdff;
+    --primary-light-color: #5d86d6;
+    --link-color:          var(--ship-blue-soft);
+    /* doxygen-awesome sets these in its own dark rules, so map them again */
+    --page-background-color:            var(--ship-surface);
+    --page-foreground-color:            var(--ship-ink);
+    --page-secondary-foreground-color:  var(--ship-ink-muted);
+    --separator-color:                  var(--ship-hairline);
+    --side-nav-background:              var(--ship-surface-raised);
+    --code-background:                  var(--ship-surface-code);
+    --fragment-background:              var(--ship-surface-code);
+    --fragment-foreground:              var(--ship-ink);
+    --fragment-linenumber-border:       var(--ship-border);
+    --fragment-linenumber-color:        var(--ship-ink-muted);
+    --tablehead-background:             var(--ship-surface-raised);
+    --blockquote-background:            var(--ship-surface-raised);
+    --blockquote-foreground:            var(--ship-ink-muted);
+    --header-background:   var(--ship-blue-deep);
+    --fragment-linenumber-background: #121b30;
+    --odd-color:           rgba(255, 255, 255, 0.03);
+    --menu-selected-background: rgba(141, 176, 255, 0.12);
+    --box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+
+    --note-color:            #152a4d;
+    --note-color-dark:       #8db0ff;
+    --note-color-darker:     #dbe6ff;
+    --warning-color:         #3a2b06;
+    --warning-color-dark:    #f5c451;
+    --warning-color-darker:  #fbe3a3;
+    --bug-color:             #3a1715;
+    --bug-color-dark:        #ff8a80;
+    --bug-color-darker:      #ffd1cc;
+    --invariant-color:       #15301f;
+    --invariant-color-dark:  #6fd49a;
+    --invariant-color-darker:#c8f1d7;
+    --todo-color:            #152a4d;
+    --todo-color-dark:       #8db0ff;
+    --todo-color-darker:     #dbe6ff;
+    --deprecated-color:      #252c3a;
+    --deprecated-color-dark: #8a95a8;
+    --deprecated-color-darker:#c6cdd9;
+  }
+}
+
+html.dark-mode {
+  --ship-blue-soft:      #8db0ff;
+  --ship-blue-tint:      #182440;
+  --ship-accent:         #ffa26b;
+  --ship-surface:        #0d1526;
+  --ship-surface-raised: #141f36;
+  --ship-surface-code:   #182440;
+  --ship-ink:            #e6ebf4;
+  --ship-ink-muted:      #a3afc4;
+  --ship-border:         #2b3a57;
+  --ship-hairline:       #1f2c47;
+  --ship-success:        #6fd49a;
+  --ship-warning:        #f5c451;
+  --ship-danger:         #ff8a80;
+
+  --primary-color:       var(--ship-blue-soft);
+  --primary-dark-color:  #b7cdff;
+  --primary-light-color: #5d86d6;
+  --link-color:          var(--ship-blue-soft);
+  /* doxygen-awesome sets these in its own dark rules, so map them again */
+  --page-background-color:            var(--ship-surface);
+  --page-foreground-color:            var(--ship-ink);
+  --page-secondary-foreground-color:  var(--ship-ink-muted);
+  --separator-color:                  var(--ship-hairline);
+  --side-nav-background:              var(--ship-surface-raised);
+  --code-background:                  var(--ship-surface-code);
+  --fragment-background:              var(--ship-surface-code);
+  --fragment-foreground:              var(--ship-ink);
+  --fragment-linenumber-border:       var(--ship-border);
+  --fragment-linenumber-color:        var(--ship-ink-muted);
+  --tablehead-background:             var(--ship-surface-raised);
+  --blockquote-background:            var(--ship-surface-raised);
+  --blockquote-foreground:            var(--ship-ink-muted);
+  --header-background:   var(--ship-blue-deep);
+  --fragment-linenumber-background: #121b30;
+  --odd-color:           rgba(255, 255, 255, 0.03);
+  --menu-selected-background: rgba(141, 176, 255, 0.12);
+  --box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+
+  --note-color:            #152a4d;
+  --note-color-dark:       #8db0ff;
+  --note-color-darker:     #dbe6ff;
+  --warning-color:         #3a2b06;
+  --warning-color-dark:    #f5c451;
+  --warning-color-darker:  #fbe3a3;
+  --bug-color:             #3a1715;
+  --bug-color-dark:        #ff8a80;
+  --bug-color-darker:      #ffd1cc;
+  --invariant-color:       #15301f;
+  --invariant-color-dark:  #6fd49a;
+  --invariant-color-darker:#c8f1d7;
+  --todo-color:            #152a4d;
+  --todo-color-dark:       #8db0ff;
+  --todo-color-darker:     #dbe6ff;
+  --deprecated-color:      #252c3a;
+  --deprecated-color-dark: #8a95a8;
+  --deprecated-color-darker:#c6cdd9;
+}
+
+/* ---- Title band: CERN blue with the white wheel -------------------------- */
+#titlearea {
+  background: var(--header-background);
+  color: var(--header-foreground);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+#titlearea table,
+#titlearea tr {
+  height: 56px;
+}
+
+#projectlogo {
+  padding: 0 0 0 calc(var(--spacing-large) - 2px);
+}
+
+#projectlogo img {
+  height: 34px;
+  width: auto;
+  display: block;
+}
+
+#projectname {
+  color: var(--header-foreground);
+  font-family: var(--font-family);
+  font-size: var(--title-font-size);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  line-height: 1.2;
+}
+
+#projectnumber {
+  color: rgba(255, 255, 255, 0.78);
+  font-weight: 400;
+  font-size: 13px;
+}
+
+#projectbrief {
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 13px;
+}
+
+/* search field */
+#MSearchBox {
+  background: var(--searchbar-background);
+  border: 1px solid var(--ship-border);
+  box-shadow: none;
+}
+
+#MSearchBox:focus-within {
+  border-color: var(--primary-color);
+}
+
+#MSearchField {
+  color: var(--searchbar-foreground);
+  font-family: var(--font-family);
+}
+
+#MSearchField::placeholder {
+  color: var(--ship-ink-muted);
+}
+
+/* the "wheel" placed in the sidebar-only layout gets the same treatment */
+@media screen and (min-width: 768px) {
+  #side-nav #titlearea {
+    border-radius: 0;
+  }
+}
+
+/* ---- Main navigation / tabs ---------------------------------------------- */
+.sm-dox {
+  background: var(--page-background-color);
+  border-bottom: 1px solid var(--separator-color);
+}
+
+.sm-dox a,
+.sm-dox a:focus,
+.sm-dox a:active,
+.sm-dox a:hover,
+.sm-dox a.highlighted {
+  font-family: var(--font-family);
+  font-size: var(--navigation-font-size);
+  font-weight: 500;
+}
+
+/* ---- Content ------------------------------------------------------------- */
+h1, h2, h3, h4, h5, h6,
+.title,
+div.headertitle .title {
+  font-family: var(--font-family);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--page-foreground-color);
+}
+
+div.contents h2.groupheader,
+h2.groupheader {
+  border-bottom: 1px solid var(--separator-color);
+  color: var(--page-foreground-color);
+}
+
+a:link, a:visited {
+  text-decoration: underline;
+  text-decoration-color: rgba(0, 51, 160, 0.3);
+  text-underline-offset: 0.15em;
+}
+
+html.dark-mode a:link,
+html.dark-mode a:visited {
+  text-decoration-color: rgba(141, 176, 255, 0.35);
+}
+
+a:hover {
+  text-decoration-color: currentColor;
+}
+
+.contents .memtitle,
+.memname,
+.memproto,
+td.memItemLeft, td.memItemRight,
+td.memTemplParams, td.memTemplItemLeft, td.memTemplItemRight,
+.paramname, .paramtype,
+a.el {
+  text-decoration: none;
+}
+
+/* member blocks: hairline, light raised head */
+.memitem {
+  box-shadow: none;
+  border: 1px solid var(--separator-color);
+  border-radius: var(--border-radius-medium);
+}
+
+.memtitle {
+  background: var(--ship-surface-raised);
+  border: 1px solid var(--separator-color);
+  border-bottom: none;
+}
+
+.memproto {
+  background: var(--ship-surface-raised);
+}
+
+/* code fragments */
+div.fragment, pre.fragment {
+  border: 1px solid var(--separator-color);
+  border-radius: var(--border-radius-medium);
+}
+
+/* tables */
+table.doxtable th,
+table.markdownTable th {
+  background: var(--tablehead-background);
+  font-weight: 600;
+}
+
+/* directory / class index rows */
+.directory tr.even {
+  background: var(--odd-color);
+}
+
+/* ---- Side nav tree ------------------------------------------------------- */
+#nav-tree .selected {
+  background: var(--menu-selected-background);
+  border-left: 3px solid var(--primary-color);
+}
+
+#nav-tree .selected a {
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
+#nav-tree .label {
+  font-family: var(--font-family);
+}
+
+/* ---- Focus ring: solid, 3:1 on every surface ------------------------------ */
+:is(a, button, input, select, summary):focus-visible {
+  outline: 2px solid var(--ship-accent);
+  outline-offset: 2px;
+}
+
+/* on the blue band the orange ring would sit at 1.9:1 — use white there (10.6:1) */
+#titlearea :focus-visible {
+  outline-color: #ffffff;
+}
+
+/* ---- Footer -------------------------------------------------------------- */
+.ship-footer {
+  margin: var(--spacing-xlarge) 0 0;
+  padding: var(--spacing-large) var(--spacing-xlarge);
+  border-top: 1px solid var(--separator-color);
+  color: var(--page-secondary-foreground-color);
+  font-size: var(--toc-font-size);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-small) var(--spacing-xlarge);
+  align-items: center;
+}
+
+.ship-footer a {
+  color: inherit;
+}
+
+address.footer {
+  display: none;   /* replaced by .ship-footer in footer.html */
+}
