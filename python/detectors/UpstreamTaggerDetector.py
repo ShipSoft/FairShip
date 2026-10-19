@@ -72,9 +72,15 @@ class UpstreamTaggerDetector(BaseDetector):
     @staticmethod
     def _load_adc_response_maps(path: str, tile_sizes: set[float]) -> dict[float, ROOT.TH2D]:
         """Load the ADC/MeV vs local position (mm) TH2D for each tile size (cm)."""
-        response_file = ROOT.TFile.Open(path)
-        if not response_file or response_file.IsZombie():
-            raise OSError(f"Cannot open UBT ADC response map file: {path}")
+        # PyROOT raises OSError when the file cannot be opened, also when it is
+        # not a ROOT file, e.g. a Git LFS pointer that was not fetched.
+        try:
+            response_file = ROOT.TFile.Open(path)
+        except OSError as error:
+            raise OSError(
+                f"Cannot open the UBT ADC response map file {path}; it is stored with Git LFS, so run `git lfs pull`"
+                " if it has not been fetched"
+            ) from error
         maps = {}
         for tile_size in tile_sizes:
             name = f"adc_per_mev_{round(10.0 * tile_size)}mm"
