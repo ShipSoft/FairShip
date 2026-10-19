@@ -20,8 +20,19 @@ class _FiredTile:
     signals: list[float] = field(default_factory=list)  # unrounded ADC signal of each point
 
 
+class UBTGeometryMismatch(Exception):
+    """The UBT points of a geometry cannot be digitized with its UBT map."""
+
+
 class UpstreamTaggerDetector(BaseDetector):
+    # Prefix of the region volumes, UpstreamTaggerRegion<id>_<tile size>cm
+    # (see UpstreamTagger::ConstructGeometry).
+    REGION_VOLUME_PREFIX = "UpstreamTaggerRegion"
+
     def __init__(self, name, intree, outtree=None, mcBranchName=None) -> None:
+        # Before creating any output branch, so that a UBT that cannot be
+        # digitized leaves none.
+        self.validate_stored_geometry(ROOT.gGeoManager, global_variables.ShipGeo.UpstreamTagger)
         super().__init__(name, intree, mcBranchName=mcBranchName, outtree=outtree)
         # Parallel to the MC link: for each hit, the unrounded ADC signal of
         # each of its MC points, in the same order as the point indices.
@@ -62,6 +73,36 @@ class UpstreamTaggerDetector(BaseDetector):
         self._adc_response_maps = self._load_adc_response_maps(
             ubt_geo.ADCResponseMapFile, set(self._tile_sizes.values())
         )
+
+    @classmethod
+    def validate_stored_geometry(cls, geo_manager, ubt_geo) -> None:
+        """Raise UBTGeometryMismatch if the UBT points of this geometry cannot be digitized.
+
+        The decision is taken from the simulated geometry, not from the
+        configuration, which configure replaces for old geometry files. A
+        geometry without any UBT region volume predates the scintillator UBT:
+        its UBT was a vacuum box, whose detector IDs are not region IDs.
+        Otherwise every region of the UBT map must have its volume, with the
+        same tile size.
+        """
+        if not geo_manager:
+            raise RuntimeError("Load the geometry of the simulation (FAIRGeom) before digitizing the UBT")
+        volumes = {}  # region ID -> tile size suffix, e.g. "4cm"
+        for volume in geo_manager.GetListOfVolumes():
+            name = volume.GetName()
+            if name.startswith(cls.REGION_VOLUME_PREFIX):
+                region, _, size = name[len(cls.REGION_VOLUME_PREFIX) :].partition("_")
+                volumes[int(region)] = size
+        if not volumes:
+            raise UBTGeometryMismatch(
+                "the geometry has no UBT region volumes: it predates the scintillator UBT (a vacuum box)"
+            )
+        expected = {int(region): f"{round(float(size))}cm" for region, size in ubt_geo.RegionTileSize.items()}
+        differing = sorted(r for r in expected.keys() | volumes.keys() if expected.get(r) != volumes.get(r))
+        if differing:
+            raise UBTGeometryMismatch(
+                f"{len(differing)} UBT regions of the geometry differ from the UBT map, e.g. {differing[:5]}"
+            )
 
     def delete(self) -> None:
         """Clear the hit, MC link and per-point ADC containers."""

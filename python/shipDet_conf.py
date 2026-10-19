@@ -497,9 +497,17 @@ def configure(run, ship_geo, geofile: str | None = None):
     if not hasattr(ship_geo, "UpstreamTaggerScoringPlane") or not hasattr(
         getattr(ship_geo, "UpstreamTagger", None), "SmallTileZ"
     ):
-        # The old UBT (a vacuum box) can no longer be built: use the current
-        # UBT and scoring planes, placed from this geometry's decay vessel and
-        # muon shield.
+        # A geometry from before the scintillator UBT: its UBT was a vacuum box,
+        # which can no longer be built.
+        if geofile:
+            raise ValueError(
+                f"{geofile} has the UBT of before the scintillator tiles (a vacuum box), which cannot be built"
+                " any more, so it cannot be used with -g: write a new geometry file"
+            )
+        # Use the current UBT and scoring planes, placed from this geometry's
+        # decay vessel and muon shield, so that the other detectors can be
+        # used; the UBT points of such a file are not digitized (see
+        # UpstreamTaggerDetector.validate_stored_geometry).
         geometry_config.set_upstream_tagger(ship_geo)
 
     # -----Create media-------------------------------------------------
