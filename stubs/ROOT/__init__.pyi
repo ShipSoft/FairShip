@@ -52,7 +52,6 @@ kPink: int
 # Constants — booleans / severity
 # ---------------------------------------------------------------------------
 kTRUE: bool
-nullptr: Any
 # Class template: TParameter("Long64_t")(name, value, mergemode)
 TParameter: Any
 kFALSE: bool
