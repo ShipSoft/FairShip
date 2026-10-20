@@ -27,7 +27,13 @@ UpstreamTaggerHit::UpstreamTaggerHit()
 UpstreamTaggerHit::UpstreamTaggerHit(UpstreamTaggerPoint* p, Double_t t0,
                                      const TVector3& digitizedPosition,
                                      Double_t time_res)
-    : SHiP::DetectorHit(), fTileID(-1), fTriggered(kFALSE) {
+    : SHiP::DetectorHit(),
+      fX(0.),
+      fY(0.),
+      fZ(0.),
+      fTime(0.),
+      fTileID(-1),
+      fTriggered(kFALSE) {
   if (!p) {
     LOG(error) << "UpstreamTaggerHit: null UpstreamTaggerPoint pointer";
     return;
