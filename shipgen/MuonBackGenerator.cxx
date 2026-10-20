@@ -365,27 +365,25 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
   }
   auto [dx, dy] = CalculateBeamOffset(fsmearBeam, fPaintBeam);
   if (id == -1) {
+    // --MuonBackFromOrigin: the input event starts again at its production
+    // vertices, moved by the beam offset, and only the scored tracks are
+    // transported.
     for (int i = 0; i < getMCTrackSize(); i++) {
       auto* track = getMCTrack(i);
-      px = track->GetPx();
-      py = track->GetPy();
-      pz = track->GetPz();
+      Double_t tpx = track->GetPx();
+      Double_t tpy = track->GetPy();
       if (fPhiRandomize) {
         double phi_random = gRandom->Uniform(0., 2 * TMath::Pi());
         Double_t pt = track->GetPt();
-        px = pt * TMath::Cos(phi_random);
-        py = pt * TMath::Sin(phi_random);
+        tpx = pt * TMath::Cos(phi_random);
+        tpy = pt * TMath::Sin(phi_random);
       }
-      vx = track->GetStartX() + dx;
-      vy = track->GetStartY() + dy;
-      vz = track->GetStartZ();
-      tof = track->GetStartT() / 1E9;  // convert back from ns to sec;
-      e = track->GetEnergy();
-      // Only the scored tracks are transported.
-      const Bool_t wanttracking = muList.contains(i);
       IncrementCounter("transported_tracks");
-      cpg->AddTrack(track->GetPdgCode(), px, py, pz, vx, vy, vz,
-                    track->GetMotherId(), wanttracking, e, tof,
+      cpg->AddTrack(track->GetPdgCode(), tpx, tpy, track->GetPz(),
+                    track->GetStartX() + dx, track->GetStartY() + dy,
+                    track->GetStartZ(), track->GetMotherId(),
+                    muList.contains(i), track->GetEnergy(),
+                    track->GetStartT() / 1E9,  // convert back from ns to sec
                     track->GetWeight(), (TMCProcess)track->GetProcID());
     }
   } else {
