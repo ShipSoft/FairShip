@@ -24,7 +24,9 @@ class TClonesArray;
  * represents 20 x 20 or 40 x 40 mm^2
  * polystyrene scintillator tiles. Optical photon production and transport
  * are deliberately not simulated here: an MC point stores the energy
- * deposited in a mapped region, identified by its copy number.
+ * deposited in a mapped region, identified by its copy number. Only points of
+ * tracks entering a region count towards keeping their track in MCTrack, not
+ * those of secondaries created in the plastic.
  */
 
 class UpstreamTagger : public SHiP::Detector<UpstreamTaggerPoint> {
@@ -92,6 +94,8 @@ class UpstreamTagger : public SHiP::Detector<UpstreamTaggerPoint> {
   Double_t fCenterX = 0.;        //! detector centre x
   Double_t fCenterY = 0.;        //! detector centre y
   Double_t fEnvelopeZ = 0.;      //! allocated longitudinal space
+  Bool_t fEntered =
+      kFALSE;  //! current track entered the region (not born in it)
 
   UpstreamTagger(const UpstreamTagger&) = delete;
   UpstreamTagger& operator=(const UpstreamTagger&) = delete;
