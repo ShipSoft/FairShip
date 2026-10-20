@@ -224,8 +224,10 @@ ap.add_argument(
 )
 ap.add_argument(
     "--AddMuonShieldField",
-    help="Whether or not to add the muon shield magnetic field. Default set to False.",
-    default=False,
+    help="Whether or not to add the muon shield magnetic field, including the field of the hadron absorber. "
+    "Default set to True: MuonBack continues the scored tracks from the scoring plane, so the field up to the "
+    "plane has to be simulated here.",
+    default=True,
     action=argparse.BooleanOptionalAction,
 )
 ap.add_argument(
