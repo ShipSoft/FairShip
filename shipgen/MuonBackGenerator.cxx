@@ -347,12 +347,12 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
     for (int i = 0; i < getMCTrackSize(); i++) {
       auto* track = getMCTrack(i);
       IncrementCounter("transported_tracks");
-      cpg->AddTrack(track->GetPdgCode(), track->GetPx(), track->GetPy(),
-                    track->GetPz(), track->GetStartX(), track->GetStartY(),
-                    track->GetStartZ(), track->GetMotherId(), false,
-                    track->GetEnergy(),
-                    track->GetStartT() / 1E9,  // convert back from ns to sec
-                    track->GetWeight(), (TMCProcess)track->GetProcID());
+      cpg->AddTrack(
+          track->GetPdgCode(), track->GetPx(), track->GetPy(), track->GetPz(),
+          track->GetStartX(), track->GetStartY(), track->GetStartZ(),
+          track->GetMotherId(), false, track->GetEnergy(),
+          track->GetStartT() / ShipUnit::s,  // ns to s, as AddTrack expects
+          track->GetWeight(), (TMCProcess)track->GetProcID());
     }
     // Each scored track is then added again as it entered the plane, as a
     // daughter of its origin entry, and only that copy is tracked. Sorted, so
@@ -369,7 +369,7 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
       IncrementCounter("plane_copies");
       cpg->AddTrack(track->GetPdgCode(), v->GetPx(), v->GetPy(), v->GetPz(),
                     v->GetX(), v->GetY(), v->GetZ(), i, true, e,
-                    v->GetTime() / 1E9,  // convert back from ns to sec
+                    v->GetTime() / ShipUnit::s,  // ns to s, as AddTrack expects
                     track->GetWeight(), kPTransportation);
     }
     return kTRUE;
@@ -385,12 +385,12 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
       Double_t tpy = track->GetPy();
       if (fPhiRandomize) RandomizePhi(tpx, tpy);
       IncrementCounter("transported_tracks");
-      cpg->AddTrack(track->GetPdgCode(), tpx, tpy, track->GetPz(),
-                    track->GetStartX() + dx, track->GetStartY() + dy,
-                    track->GetStartZ(), track->GetMotherId(),
-                    muList.contains(i), track->GetEnergy(),
-                    track->GetStartT() / 1E9,  // convert back from ns to sec
-                    track->GetWeight(), (TMCProcess)track->GetProcID());
+      cpg->AddTrack(
+          track->GetPdgCode(), tpx, tpy, track->GetPz(),
+          track->GetStartX() + dx, track->GetStartY() + dy, track->GetStartZ(),
+          track->GetMotherId(), muList.contains(i), track->GetEnergy(),
+          track->GetStartT() / ShipUnit::s,  // ns to s, as AddTrack expects
+          track->GetWeight(), (TMCProcess)track->GetProcID());
     }
   } else {
     vx += dx / 100.;
