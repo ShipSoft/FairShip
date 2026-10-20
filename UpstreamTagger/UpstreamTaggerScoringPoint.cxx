@@ -16,5 +16,15 @@ UpstreamTaggerScoringPoint::~UpstreamTaggerScoringPoint() = default;
 // -------------------------------------------------------------------------
 
 void UpstreamTaggerScoringPoint::extraPrintInfo() const {
-  LOG(info) << "This is the scoring plane downstream of the upstream tagger";
+  // Plane numbers as set in shipDet_conf.configure
+  switch (GetDetectorID()) {
+    case 1:
+      LOG(info) << "UBT scoring plane 1, at the decay vessel entrance";
+      break;
+    case 2:
+      LOG(info) << "UBT scoring plane 2, behind the muon shield (muons only)";
+      break;
+    default:
+      LOG(info) << "UBT scoring plane " << GetDetectorID();
+  }
 }
