@@ -73,6 +73,11 @@ class UpstreamTaggerDetector(BaseDetector):
                     f" {self._grid_size} cm"
                 )
             self._id_offsets[tile_size] = (multiple - 1) * self._columns * self._rows
+        # For each tile side, the number of its tiles along x and y
+        self._tile_counts = {
+            tile_size: (self._tile_count(*self._grid_x, tile_size), self._tile_count(*self._grid_y, tile_size))
+            for tile_size in set(self._tile_sizes.values())
+        }
 
         self._adc_response_maps = self._load_adc_response_maps(
             ubt_geo.ADCResponseMapFile, set(self._tile_sizes.values())
@@ -137,17 +142,20 @@ class UpstreamTaggerDetector(BaseDetector):
         response_file.Close()
         return maps
 
-    def get_constituent_tile_size(self, detector_id: int) -> float:
-        """Return the side length for the tiles represented by a region hit."""
-        return self._tile_sizes[detector_id]
-
     @staticmethod
-    def _tile_center(coordinate: float, grid_origin: float, grid_end: float, tile_size: float) -> float:
-        """Return the globally aligned tile center containing coordinate."""
-        coordinate = min(max(coordinate, grid_origin), math.nextafter(grid_end, grid_origin))
+    def _tile_count(grid_origin: float, grid_end: float, tile_size: float) -> int:
+        """Return the number of tiles of tile_size along a tile grid axis."""
         tile_count = round((grid_end - grid_origin) / tile_size)
         if tile_count <= 0:
             raise ValueError(f"Invalid UBT tile grid [{grid_origin}, {grid_end}] with tile size {tile_size}")
+        return tile_count
+
+    @staticmethod
+    def _tile_center(
+        coordinate: float, grid_origin: float, grid_end: float, tile_size: float, tile_count: int
+    ) -> float:
+        """Return the globally aligned tile center containing coordinate."""
+        coordinate = min(max(coordinate, grid_origin), math.nextafter(grid_end, grid_origin))
         # At the positive boundary, floating-point subtraction and division
         # can round nextafter(grid_end, grid_origin) back to an exact quotient
         # of tile_count. Cap the result so the last valid tile is selected.
@@ -156,8 +164,9 @@ class UpstreamTaggerDetector(BaseDetector):
 
     def digitized_position(self, point, tile_size: float) -> ROOT.TVector3:
         """Map an MC point to the center of its 2x2 or 4x4 cm2 tile."""
-        x = self._tile_center(point.GetX(), self._grid_x[0], self._grid_x[1], tile_size)
-        y = self._tile_center(point.GetY(), self._grid_y[0], self._grid_y[1], tile_size)
+        columns, rows = self._tile_counts[tile_size]
+        x = self._tile_center(point.GetX(), self._grid_x[0], self._grid_x[1], tile_size, columns)
+        y = self._tile_center(point.GetY(), self._grid_y[0], self._grid_y[1], tile_size, rows)
         return ROOT.TVector3(x, y, self._z)
 
     def tile_id(self, position: ROOT.TVector3, tile_size: float) -> int:
