@@ -1418,6 +1418,7 @@ class UpstreamTaggerScoringPlane:  # Partial stub
         sizeY: float,
         sizeZ: float,
         absPdgCodes: list[int] = ...,
+        keepTracks: bool = ...,
     ) -> None: ...
     def GetName(self) -> str: ...
 

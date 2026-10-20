@@ -686,6 +686,7 @@ def configure(run, ship_geo, geofile: str | None = None):
             plane.Y,
             sp.Z,
             [13] if plane.MuonsOnly else [],
+            plane.get("KeepTracks", True),  # absent in geometry files written before it
         )
     detectorList.append(ubt_scoring_plane)
 

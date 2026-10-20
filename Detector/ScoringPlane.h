@@ -41,6 +41,11 @@ namespace SHiP {
  * The point detector ID is the copy number of the plane: its index + 1, in
  * the order the planes were added. A plane can be restricted to some species,
  * given by their absolute PDG codes.
+ *
+ * A point counts towards keeping its track in MCTrack (ShipStack::AddPoint,
+ * MCTracksWithHitsOnly) unless the plane is added with keepTracks = false;
+ * then the points of tracks that are not kept for another reason get track
+ * ID -2, as for other secondaries below the energy cut.
  */
 template <typename PointType>
 class ScoringPlane : public Detector<PointType> {
@@ -48,12 +53,14 @@ class ScoringPlane : public Detector<PointType> {
   using Detector<PointType>::Detector;
 
   /** Adds a plane: the name of its volume, its centre and full sizes (cm),
-   * and, if not empty, the absolute PDG codes of the only particles it
-   * records */
+   * if not empty the absolute PDG codes of the only particles it records,
+   * and whether its points keep their tracks in MCTrack */
   void AddPlane(const char* name, Double_t x, Double_t y, Double_t z,
                 Double_t sizeX, Double_t sizeY, Double_t sizeZ,
-                const std::vector<Int_t>& absPdgCodes = {}) {
-    fPlanes.push_back({name, x, y, z, sizeX, sizeY, sizeZ, absPdgCodes});
+                const std::vector<Int_t>& absPdgCodes = {},
+                Bool_t keepTracks = kTRUE) {
+    fPlanes.push_back(
+        {name, x, y, z, sizeX, sizeY, sizeZ, absPdgCodes, keepTracks});
   }
 
   Bool_t ProcessHits(FairVolume* /*vol*/ = nullptr) override {
@@ -89,8 +96,10 @@ class ScoringPlane : public Detector<PointType> {
     // run_simScript.py). With the default MCTracksWithEnergyCutOnly,
     // secondaries below the energy cut are dropped and their points get track
     // ID -2.
-    ShipStack* stack = dynamic_cast<ShipStack*>(gMC->GetStack());
-    stack->AddPoint(static_cast<DetectorId>(this->GetDetId()));
+    if (fPlanes[copyNo - 1].keepTracks) {
+      ShipStack* stack = dynamic_cast<ShipStack*>(gMC->GetStack());
+      stack->AddPoint(static_cast<DetectorId>(this->GetDetId()));
+    }
     return kTRUE;
   }
 
@@ -133,6 +142,7 @@ class ScoringPlane : public Detector<PointType> {
     Double_t x, y, z;                // centre (cm)
     Double_t sizeX, sizeY, sizeZ;    // full sizes (cm)
     std::vector<Int_t> absPdgCodes;  // if not empty, the only species recorded
+    Bool_t keepTracks;               // points keep their tracks in MCTrack
   };
   std::vector<Plane> fPlanes;  //! planes, detector ID = index + 1
 };

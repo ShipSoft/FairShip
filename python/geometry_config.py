@@ -207,6 +207,12 @@ def set_upstream_tagger(c) -> None:
     dv.CenterY = 0.0 * u.m
     dv.z = c.decayVolume.z0 - c.UpstreamTaggerScoringPlane.Z / 2.0
     dv.MuonsOnly = False
+    # Its points do not keep their tracks in MCTrack (with MCTracksWithHitsOnly,
+    # as in --MuonBack): it sees every soft photon and electron from the
+    # shield and the cavern, which would otherwise all be kept, about 26 % more
+    # MCTracks in a muon-background sample. Points of tracks not kept for
+    # another reason get track ID -2.
+    dv.KeepTracks = False
     # Plane 2, muons only: ShieldGap downstream of the muon shield. It spans x
     # between the closest ECN3 side wall and its mirror image, and y from the
     # ECN3 floor up to Top.
@@ -219,6 +225,7 @@ def set_upstream_tagger(c) -> None:
     ms.CenterY = (ms.Top + c.cave.ECN3FloorY) / 2.0  # 0.918 m
     ms.z = c.muShield.z + c.muShield.length + ms.ShieldGap
     ms.MuonsOnly = True
+    ms.KeepTracks = True  # muons only: their points keep their tracks
 
 
 def create_config(
