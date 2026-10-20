@@ -6,5 +6,9 @@ var dir_fad65dc12642af85d79633a04051eba1 =
     [ "UpstreamTaggerHit.cxx", "UpstreamTaggerHit_8cxx.html", null ],
     [ "UpstreamTaggerHit.h", "UpstreamTaggerHit_8h.html", "UpstreamTaggerHit_8h" ],
     [ "UpstreamTaggerPoint.cxx", "UpstreamTaggerPoint_8cxx.html", null ],
-    [ "UpstreamTaggerPoint.h", "UpstreamTaggerPoint_8h.html", "UpstreamTaggerPoint_8h" ]
+    [ "UpstreamTaggerPoint.h", "UpstreamTaggerPoint_8h.html", "UpstreamTaggerPoint_8h" ],
+    [ "UpstreamTaggerScoringPlane.cxx", "UpstreamTaggerScoringPlane_8cxx.html", null ],
+    [ "UpstreamTaggerScoringPlane.h", "UpstreamTaggerScoringPlane_8h.html", "UpstreamTaggerScoringPlane_8h" ],
+    [ "UpstreamTaggerScoringPoint.cxx", "UpstreamTaggerScoringPoint_8cxx.html", null ],
+    [ "UpstreamTaggerScoringPoint.h", "UpstreamTaggerScoringPoint_8h.html", "UpstreamTaggerScoringPoint_8h" ]
 ];

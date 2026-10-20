@@ -5,5 +5,6 @@ var dir_f05c576c93f29c0a89698681fa56d8ab =
     [ "DetectorHit.h", "DetectorHit_8h.html", "DetectorHit_8h" ],
     [ "DetectorPoint.cxx", "DetectorPoint_8cxx.html", null ],
     [ "DetectorPoint.h", "DetectorPoint_8h.html", "DetectorPoint_8h" ],
-    [ "LinkDef.h", "Detector_2LinkDef_8h.html", null ]
+    [ "LinkDef.h", "Detector_2LinkDef_8h.html", null ],
+    [ "ScoringPlane.h", "ScoringPlane_8h.html", "ScoringPlane_8h" ]
 ];

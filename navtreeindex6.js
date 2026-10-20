@@ -1,5 +1,15 @@
 var NAVTREEINDEX6 =
 {
+"classMuonBackGenerator.html#afd951213da12a75e33dc245f19488c65":[9,0,53,33],
+"classMuonPath.html":[9,0,54],
+"classMuonPath.html#a00fcd85ffaa15075b5fa246c89bf88d9":[9,0,54,38],
+"classMuonPath.html#a02f5ec69eee1c157041901993b2f7d87":[9,0,54,18],
+"classMuonPath.html#a13ba22262a51c15d8db45d91f7a02183":[9,0,54,48],
+"classMuonPath.html#a1573e76c8172ba86019671d2d8d20aeb":[9,0,54,8],
+"classMuonPath.html#a165cff6500be27ef9f035c46adeabedb":[9,0,54,7],
+"classMuonPath.html#a1c91672bd6f673ecf8593fc589723ad1":[9,0,54,29],
+"classMuonPath.html#a209a7da79b6ff9317342640cd9921c00":[9,0,54,20],
+"classMuonPath.html#a2108a17cbf272a2ef36be54f453d7f5c":[9,0,54,17],
 "classMuonPath.html#a265d47c78a45429761cacdddf6f9b902":[9,0,54,6],
 "classMuonPath.html#a2eb3644b98582919befa47ba44b9fbda":[9,0,54,40],
 "classMuonPath.html#a348653c6577520d09e37054fc832f8c0":[9,0,54,31],
@@ -239,15 +249,5 @@ var NAVTREEINDEX6 =
 "classPythia8Generator.html#af56b43879aa68df1f93d3fa5d7309244":[9,0,60,25],
 "classPythia8Generator.html#af6c553dba17223a063a3fa9a700d9869":[9,0,60,32],
 "classPythia8Generator.html#af9b0d7cc138e3e2cc6b19ead232a248a":[9,0,60,50],
-"classSBTDetector_1_1SBTDetector.html":[9,0,12,0],
-"classSBTDetector_1_1SBTDetector.html":[8,0,88,0],
-"classSBTDetector_1_1SBTDetector.html#ad9f86da14fd0c2904d6324e83973e26c":[9,0,12,0,0],
-"classSBTDetector_1_1SBTDetector.html#ad9f86da14fd0c2904d6324e83973e26c":[8,0,88,0,0],
-"classSBTDetector_1_1SBTDetector.html#addad85128a94a0bb4536533125dab960":[9,0,12,0,1],
-"classSBTDetector_1_1SBTDetector.html#addad85128a94a0bb4536533125dab960":[8,0,88,0,1],
-"classSHiP_1_1Detector.html":[9,0,14,0],
-"classSHiP_1_1Detector.html":[8,0,90,0],
-"classSHiP_1_1Detector.html#a03d8c93853fa437a2adc466863c6b39e":[9,0,14,0,6],
-"classSHiP_1_1Detector.html#a03d8c93853fa437a2adc466863c6b39e":[8,0,90,0,6],
-"classSHiP_1_1Detector.html#a0f51e2d392c158d28d09fc71e9ef6a88":[9,0,14,0,28]
+"classSBTDetector_1_1SBTDetector.html":[9,0,12,0]
 };

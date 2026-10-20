@@ -63,6 +63,7 @@ var annotated_dup =
       [ "DetectorHit", "classSHiP_1_1DetectorHit.html", "classSHiP_1_1DetectorHit" ],
       [ "DetectorPoint", "classSHiP_1_1DetectorPoint.html", "classSHiP_1_1DetectorPoint" ],
       [ "Generator", "classSHiP_1_1Generator.html", "classSHiP_1_1Generator" ],
+      [ "ScoringPlane", "classSHiP_1_1ScoringPlane.html", "classSHiP_1_1ScoringPlane" ],
       [ "TTreeGenerator", "classSHiP_1_1TTreeGenerator.html", "classSHiP_1_1TTreeGenerator" ]
     ] ],
     [ "shipDigiReco", "namespaceshipDigiReco.html", [
@@ -117,6 +118,8 @@ var annotated_dup =
       [ "TrackingBenchmark", "classtracking__benchmark_1_1TrackingBenchmark.html", "classtracking__benchmark_1_1TrackingBenchmark" ]
     ] ],
     [ "UpstreamTaggerDetector", "namespaceUpstreamTaggerDetector.html", [
+      [ "_FiredTile", "classUpstreamTaggerDetector_1_1__FiredTile.html", null ],
+      [ "UBTGeometryMismatch", "classUpstreamTaggerDetector_1_1UBTGeometryMismatch.html", null ],
       [ "UpstreamTaggerDetector", "classUpstreamTaggerDetector_1_1UpstreamTaggerDetector.html", "classUpstreamTaggerDetector_1_1UpstreamTaggerDetector" ]
     ] ],
     [ "CaloScoringPlane", "classCaloScoringPlane.html", "classCaloScoringPlane" ],
@@ -193,9 +196,11 @@ var annotated_dup =
     [ "UpstreamTagger", "classUpstreamTagger.html", "classUpstreamTagger" ],
     [ "UpstreamTaggerHit", "classUpstreamTaggerHit.html", "classUpstreamTaggerHit" ],
     [ "UpstreamTaggerPoint", "classUpstreamTaggerPoint.html", "classUpstreamTaggerPoint" ],
+    [ "UpstreamTaggerScoringPlane", "classUpstreamTaggerScoringPlane.html", "classUpstreamTaggerScoringPlane" ],
+    [ "UpstreamTaggerScoringPoint", "classUpstreamTaggerScoringPoint.html", "classUpstreamTaggerScoringPoint" ],
     [ "VectorMCPointSource", "classVectorMCPointSource.html", "classVectorMCPointSource" ],
-    [ "veto", "classveto.html", "classveto" ],
     [ "Veto", "classVeto.html", null ],
+    [ "veto", "classveto.html", "classveto" ],
     [ "vetoContFact", "classvetoContFact.html", "classvetoContFact" ],
     [ "vetoHit", "classvetoHit.html", "classvetoHit" ],
     [ "vetoHitOnTrack", "classvetoHitOnTrack.html", "classvetoHitOnTrack" ],

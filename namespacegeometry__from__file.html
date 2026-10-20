@@ -362,20 +362,20 @@ The detectors take their parameters from the YAML files, so if these changed
 since the geometry file was written, the parameters would not match the
 stored geometry.
 </pre> 
-<p class="definition">Definition at line <a class="el" href="geometry__from__file_8py_source.html#l00220">220</a> of file <a class="el" href="geometry__from__file_8py_source.html">geometry_from_file.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  220</span><span class="keyword">def </span>check_yaml_configs(stored: dict[str, Any], ship_geo: Any) -&gt; <span class="keywordtype">None</span>:</div>
-<div class="line"><span class="lineno">  221</span>    <span class="stringliteral">&quot;&quot;&quot;Check that the YAML files still give the configuration stored with the geometry.</span></div>
-<div class="line"><span class="lineno">  222</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  223</span><span class="stringliteral">    The detectors take their parameters from the YAML files, so if these changed</span></div>
-<div class="line"><span class="lineno">  224</span><span class="stringliteral">    since the geometry file was written, the parameters would not match the</span></div>
-<div class="line"><span class="lineno">  225</span><span class="stringliteral">    stored geometry.</span></div>
-<div class="line"><span class="lineno">  226</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  227</span>    changed = [YAML_CONFIGS[key] <span class="keywordflow">for</span> key, value <span class="keywordflow">in</span> stored.items() <span class="keywordflow">if</span> dict(ship_geo.get(key, {})) != dict(value)]</div>
-<div class="line"><span class="lineno">  228</span>    <span class="keywordflow">if</span> changed:</div>
-<div class="line"><span class="lineno">  229</span>        <span class="keywordflow">raise</span> ValueError(</div>
-<div class="line"><span class="lineno">  230</span>            f<span class="stringliteral">&quot;geometry/{&#39;, geometry/&#39;.join(changed)} changed since the geometry file was written, so the detector&quot;</span></div>
-<div class="line"><span class="lineno">  231</span>            <span class="stringliteral">&quot; parameters would not match the stored geometry: write a new geometry file&quot;</span></div>
-<div class="line"><span class="lineno">  232</span>        )</div>
+<p class="definition">Definition at line <a class="el" href="geometry__from__file_8py_source.html#l00223">223</a> of file <a class="el" href="geometry__from__file_8py_source.html">geometry_from_file.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  223</span><span class="keyword">def </span>check_yaml_configs(stored: dict[str, Any], ship_geo: Any) -&gt; <span class="keywordtype">None</span>:</div>
+<div class="line"><span class="lineno">  224</span>    <span class="stringliteral">&quot;&quot;&quot;Check that the YAML files still give the configuration stored with the geometry.</span></div>
+<div class="line"><span class="lineno">  225</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  226</span><span class="stringliteral">    The detectors take their parameters from the YAML files, so if these changed</span></div>
+<div class="line"><span class="lineno">  227</span><span class="stringliteral">    since the geometry file was written, the parameters would not match the</span></div>
+<div class="line"><span class="lineno">  228</span><span class="stringliteral">    stored geometry.</span></div>
+<div class="line"><span class="lineno">  229</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  230</span>    changed = [YAML_CONFIGS[key] <span class="keywordflow">for</span> key, value <span class="keywordflow">in</span> stored.items() <span class="keywordflow">if</span> dict(ship_geo.get(key, {})) != dict(value)]</div>
+<div class="line"><span class="lineno">  231</span>    <span class="keywordflow">if</span> changed:</div>
+<div class="line"><span class="lineno">  232</span>        <span class="keywordflow">raise</span> ValueError(</div>
+<div class="line"><span class="lineno">  233</span>            f<span class="stringliteral">&quot;geometry/{&#39;, geometry/&#39;.join(changed)} changed since the geometry file was written, so the detector&quot;</span></div>
+<div class="line"><span class="lineno">  234</span>            <span class="stringliteral">&quot; parameters would not match the stored geometry: write a new geometry file&quot;</span></div>
+<div class="line"><span class="lineno">  235</span>        )</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -433,12 +433,12 @@ module is imported, as it is by shipDet_conf.
       </table>
 </div><div class="memdoc">
 <pre class="fragment">The parts of the stored configuration that the YAML files will overwrite.</pre> 
-<p class="definition">Definition at line <a class="el" href="geometry__from__file_8py_source.html#l00215">215</a> of file <a class="el" href="geometry__from__file_8py_source.html">geometry_from_file.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  215</span><span class="keyword">def </span>stored_yaml_configs(ship_geo: Any) -&gt; dict[str, Any]:</div>
-<div class="line"><span class="lineno">  216</span>    <span class="stringliteral">&quot;&quot;&quot;The parts of the stored configuration that the YAML files will overwrite.&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  217</span>    <span class="keywordflow">return</span> {key: ship_geo[key] <span class="keywordflow">for</span> key <span class="keywordflow">in</span> YAML_CONFIGS <span class="keywordflow">if</span> key <span class="keywordflow">in</span> ship_geo}</div>
-<div class="line"><span class="lineno">  218</span> </div>
-<div class="line"><span class="lineno">  219</span> </div>
+<p class="definition">Definition at line <a class="el" href="geometry__from__file_8py_source.html#l00218">218</a> of file <a class="el" href="geometry__from__file_8py_source.html">geometry_from_file.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  218</span><span class="keyword">def </span>stored_yaml_configs(ship_geo: Any) -&gt; dict[str, Any]:</div>
+<div class="line"><span class="lineno">  219</span>    <span class="stringliteral">&quot;&quot;&quot;The parts of the stored configuration that the YAML files will overwrite.&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  220</span>    <span class="keywordflow">return</span> {key: ship_geo[key] <span class="keywordflow">for</span> key <span class="keywordflow">in</span> YAML_CONFIGS <span class="keywordflow">if</span> key <span class="keywordflow">in</span> ship_geo}</div>
+<div class="line"><span class="lineno">  221</span> </div>
+<div class="line"><span class="lineno">  222</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -570,7 +570,10 @@ module is imported, as it is by shipDet_conf.
 <div class="line"><span class="lineno">    2</span>    <span class="stringliteral">&quot;mtc_geo&quot;</span>: <span class="stringliteral">&quot;MTC_config.yaml&quot;</span>,</div>
 <div class="line"><span class="lineno">    3</span>    <span class="stringliteral">&quot;SiliconTarget_geo&quot;</span>: <span class="stringliteral">&quot;SiliconTarget_config.yaml&quot;</span>,</div>
 <div class="line"><span class="lineno">    4</span>    <span class="stringliteral">&quot;strawtubes_geo&quot;</span>: <span class="stringliteral">&quot;strawtubes_config.yaml&quot;</span>,</div>
-<div class="line"><span class="lineno">    5</span>}</div>
+<div class="line"><span class="lineno">    5</span>    <span class="comment"># configure uses the stored UBT map when there is one, so this only fails</span></div>
+<div class="line"><span class="lineno">    6</span>    <span class="comment"># if it read UpstreamTagger_config.yaml instead.</span></div>
+<div class="line"><span class="lineno">    7</span>    <span class="stringliteral">&quot;UpstreamTagger_geo&quot;</span>: <span class="stringliteral">&quot;UpstreamTagger_config.yaml&quot;</span>,</div>
+<div class="line"><span class="lineno">    8</span>}</div>
 </div><!-- fragment -->
 <p class="definition">Definition at line <a class="el" href="geometry__from__file_8py_source.html#l00208">208</a> of file <a class="el" href="geometry__from__file_8py_source.html">geometry_from_file.py</a>.</p>
 

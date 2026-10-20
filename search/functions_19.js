@@ -60,8 +60,9 @@ var searchData=
   ['_7ettreegenerator_57',['~TTreeGenerator',['../classSHiP_1_1TTreeGenerator.html#acbbae97a7e64bfc7209e23f1242f986b',1,'SHiP::TTreeGenerator']]],
   ['_7eupstreamtaggerhit_58',['~UpstreamTaggerHit',['../classUpstreamTaggerHit.html#a4ac78d61179ebce9b658e1da8f340731',1,'UpstreamTaggerHit']]],
   ['_7eupstreamtaggerpoint_59',['~UpstreamTaggerPoint',['../classUpstreamTaggerPoint.html#a8994f0dbb27905c8e96e369db3950352',1,'UpstreamTaggerPoint']]],
-  ['_7evetocontfact_60',['~vetoContFact',['../classvetoContFact.html#afea1ad9e87f4b3bc79b52d587c2b2bbb',1,'vetoContFact']]],
-  ['_7evetohit_61',['~vetoHit',['../classvetoHit.html#a828ea536942cb85ffa5718eeba44b5c3',1,'vetoHit']]],
-  ['_7evetohitontrack_62',['~vetoHitOnTrack',['../classvetoHitOnTrack.html#a07895455585d3864d5ef096792237a91',1,'vetoHitOnTrack']]],
-  ['_7evetopoint_63',['~vetoPoint',['../classvetoPoint.html#a459c3518715febac7e00298ed886f50c',1,'vetoPoint']]]
+  ['_7eupstreamtaggerscoringpoint_60',['~UpstreamTaggerScoringPoint',['../classUpstreamTaggerScoringPoint.html#a096da07e5b1d732527bc1e171a9b8d7b',1,'UpstreamTaggerScoringPoint']]],
+  ['_7evetocontfact_61',['~vetoContFact',['../classvetoContFact.html#afea1ad9e87f4b3bc79b52d587c2b2bbb',1,'vetoContFact']]],
+  ['_7evetohit_62',['~vetoHit',['../classvetoHit.html#a828ea536942cb85ffa5718eeba44b5c3',1,'vetoHit']]],
+  ['_7evetohitontrack_63',['~vetoHitOnTrack',['../classvetoHitOnTrack.html#a07895455585d3864d5ef096792237a91',1,'vetoHitOnTrack']]],
+  ['_7evetopoint_64',['~vetoPoint',['../classvetoPoint.html#a459c3518715febac7e00298ed886f50c',1,'vetoPoint']]]
 ];

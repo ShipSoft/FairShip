@@ -103,6 +103,10 @@ $(document).ready(function(){initNavTree('namespacegeometry__config.html',''); i
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:a23fa4639bd7834b2b245271c5c1dcd3c" id="r_a23fa4639bd7834b2b245271c5c1dcd3c"><td class="memItemLeft" align="right" valign="top">None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegeometry__config.html#a23fa4639bd7834b2b245271c5c1dcd3c">set_ecn3_cavern</a> (c)</td></tr>
+<tr class="separator:a23fa4639bd7834b2b245271c5c1dcd3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a68f8dfd6b8fc305422b155a63db0bdec" id="r_a68f8dfd6b8fc305422b155a63db0bdec"><td class="memItemLeft" align="right" valign="top">None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegeometry__config.html#a68f8dfd6b8fc305422b155a63db0bdec">set_upstream_tagger</a> (c)</td></tr>
+<tr class="separator:a68f8dfd6b8fc305422b155a63db0bdec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a14c64c715c02fde546cf42f7c9d6f09f" id="r_a14c64c715c02fde546cf42f7c9d6f09f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegeometry__config.html#a14c64c715c02fde546cf42f7c9d6f09f">create_config</a> (str DecayVolumeMedium=&quot;helium&quot;, float Yheight=6.0, int strawDesign=10, str shieldName=&quot;TRY_2025&quot;, int nuTargetPassive=1, bool SND=True, SND_design=None, TARGET_YAML=None)</td></tr>
 <tr class="separator:a14c64c715c02fde546cf42f7c9d6f09f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -188,274 +192,393 @@ Args:
 Returns:
     Config: Geometry configuration object
 </pre> 
-<p class="definition">Definition at line <a class="el" href="geometry__config_8py_source.html#l00146">146</a> of file <a class="el" href="geometry__config_8py_source.html">geometry_config.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  155</span>):</div>
-<div class="line"><span class="lineno">  156</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  157</span><span class="stringliteral">    Create geometry configuration with specified parameters.</span></div>
-<div class="line"><span class="lineno">  158</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  159</span><span class="stringliteral">    Args:</span></div>
-<div class="line"><span class="lineno">  160</span><span class="stringliteral">        DecayVolumeMedium: Medium in decay volume (&quot;helium&quot; or &quot;vacuums&quot;), default: &quot;helium&quot;</span></div>
-<div class="line"><span class="lineno">  161</span><span class="stringliteral">        Yheight: Height of vacuum tank in meters, default: 6.0</span></div>
-<div class="line"><span class="lineno">  162</span><span class="stringliteral">        strawDesign: Straw tube design (4=Aluminium frame, 10=steel frame), default: 10</span></div>
-<div class="line"><span class="lineno">  163</span><span class="stringliteral">        shieldName: Name of shield configuration, default: &quot;TRY_2025&quot;</span></div>
-<div class="line"><span class="lineno">  164</span><span class="stringliteral">        nuTargetPassive: Target type (0=with active layers, 1=only passive), default: 1</span></div>
-<div class="line"><span class="lineno">  165</span><span class="stringliteral">        SND: Enable SND detector, default: True</span></div>
-<div class="line"><span class="lineno">  166</span><span class="stringliteral">        SND_design: SND design options (list of design numbers), default: [2]</span></div>
-<div class="line"><span class="lineno">  167</span><span class="stringliteral">        TARGET_YAML: Path to target YAML configuration file, default: &quot;$FAIRSHIP/geometry/target_config.yaml&quot;</span></div>
-<div class="line"><span class="lineno">  168</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  169</span><span class="stringliteral">    Returns:</span></div>
-<div class="line"><span class="lineno">  170</span><span class="stringliteral">        Config: Geometry configuration object</span></div>
-<div class="line"><span class="lineno">  171</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  172</span>    <span class="comment"># Set defaults for mutable parameters</span></div>
-<div class="line"><span class="lineno">  173</span>    <span class="keywordflow">if</span> SND_design <span class="keywordflow">is</span> <span class="keywordtype">None</span>:</div>
-<div class="line"><span class="lineno">  174</span>        SND_design = [2]</div>
-<div class="line"><span class="lineno">  175</span>    <span class="keywordflow">if</span> TARGET_YAML <span class="keywordflow">is</span> <span class="keywordtype">None</span>:</div>
-<div class="line"><span class="lineno">  176</span>        TARGET_YAML = os.path.expandvars(<span class="stringliteral">&quot;$FAIRSHIP/geometry/target_config.yaml&quot;</span>)</div>
-<div class="line"><span class="lineno">  177</span> </div>
-<div class="line"><span class="lineno">  178</span>    <span class="comment"># Create configuration object</span></div>
-<div class="line"><span class="lineno">  179</span>    c = Config()</div>
-<div class="line"><span class="lineno">  180</span>    c.DecayVolumeMedium = DecayVolumeMedium</div>
-<div class="line"><span class="lineno">  181</span>    c.SND = SND</div>
-<div class="line"><span class="lineno">  182</span>    <span class="comment"># Ensure SND_design is always a list</span></div>
-<div class="line"><span class="lineno">  183</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> isinstance(SND_design, list):</div>
-<div class="line"><span class="lineno">  184</span>        SND_design = [SND_design]</div>
-<div class="line"><span class="lineno">  185</span>    c.SND_design = SND_design</div>
-<div class="line"><span class="lineno">  186</span>    c.target_yaml = TARGET_YAML</div>
-<div class="line"><span class="lineno">  187</span>    print(<span class="stringliteral">&quot;Info: Target using configuration:&quot;</span>, c.target_yaml)</div>
-<div class="line"><span class="lineno">  188</span> </div>
-<div class="line"><span class="lineno">  189</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> shieldName:</div>
-<div class="line"><span class="lineno">  190</span>        <span class="keywordflow">raise</span> ValueError(<span class="stringliteral">&quot;shieldName must not be empty!&quot;</span>)</div>
-<div class="line"><span class="lineno">  191</span> </div>
-<div class="line"><span class="lineno">  192</span>    c.shieldName = shieldName</div>
-<div class="line"><span class="lineno">  193</span>    c.SC_mag = shield_db[shieldName][<span class="stringliteral">&quot;hybrid&quot;</span>]</div>
-<div class="line"><span class="lineno">  194</span> </div>
-<div class="line"><span class="lineno">  195</span>    <span class="comment"># global strawDesign, Yheight</span></div>
-<div class="line"><span class="lineno">  196</span>    c.Yheight = Yheight * u.m</div>
-<div class="line"><span class="lineno">  197</span>    extraVesselLength = 10 * u.m</div>
-<div class="line"><span class="lineno">  198</span>    windowBulge = 25 * u.cm</div>
-<div class="line"><span class="lineno">  199</span>    c.strawDesign = strawDesign</div>
-<div class="line"><span class="lineno">  200</span>    c.magnetDesign = 4</div>
-<div class="line"><span class="lineno">  201</span>    <span class="comment"># cave parameters</span></div>
-<div class="line"><span class="lineno">  202</span>    c.cave = AttrDict()</div>
-<div class="line"><span class="lineno">  203</span>    c.cave.floorHeightMuonShield = 5 * u.m</div>
-<div class="line"><span class="lineno">  204</span>    c.cave.floorHeightTankA = 4.2 * u.m</div>
-<div class="line"><span class="lineno">  205</span>    <span class="keywordflow">if</span> strawDesign == 10:</div>
-<div class="line"><span class="lineno">  206</span>        c.cave.floorHeightMuonShield = c.cave.floorHeightTankA  <span class="comment"># avoid the gap, for 2018 geometry</span></div>
-<div class="line"><span class="lineno">  207</span>    c.cave.floorHeightTankB = 2 * u.m</div>
-<div class="line"><span class="lineno">  208</span>    <span class="comment"># ECN3 cavern, see passive/ShipCave.cxx</span></div>
-<div class="line"><span class="lineno">  209</span>    c.cave.TCC8_length = 170 * u.m</div>
-<div class="line"><span class="lineno">  210</span>    c.cave.ECN3_length = 100.81 * u.m  <span class="comment"># step and hall, up to the end wall at 122.18 m</span></div>
-<div class="line"><span class="lineno">  211</span>    c.cave.stair_step_length = 0.82 * u.m</div>
-<div class="line"><span class="lineno">  212</span>    <span class="comment"># End of the TCC8 floor (integration layout 2026-0.1); the stair step that follows is</span></div>
-<div class="line"><span class="lineno">  213</span>    <span class="comment"># centred on the gap between M4 and S5</span></div>
-<div class="line"><span class="lineno">  214</span>    c.cave.z_transition = 21.37 * u.m</div>
-<div class="line"><span class="lineno">  215</span>    c.cave.zEnd = c.cave.z_transition + c.cave.ECN3_length  <span class="comment"># downstream ECN3 wall</span></div>
-<div class="line"><span class="lineno">  216</span> </div>
-<div class="line"><span class="lineno">  217</span>    <span class="keyword">with</span> open(c.target_yaml) <span class="keyword">as</span> file:</div>
-<div class="line"><span class="lineno">  218</span>        targetconfig = yaml.safe_load(file)</div>
-<div class="line"><span class="lineno">  219</span>        c.target = AttrDict(targetconfig[<span class="stringliteral">&quot;target&quot;</span>])</div>
-<div class="line"><span class="lineno">  220</span>    <span class="keywordflow">if</span> <span class="stringliteral">&quot;version&quot;</span> <span class="keywordflow">not</span> <span class="keywordflow">in</span> c.target:</div>
-<div class="line"><span class="lineno">  221</span>        c.target.version = 1  <span class="comment"># legacy design</span></div>
-<div class="line"><span class="lineno">  222</span> </div>
-<div class="line"><span class="lineno">  223</span>    c.target.slices_length = []</div>
-<div class="line"><span class="lineno">  224</span>    c.target.slices_gap = []</div>
-<div class="line"><span class="lineno">  225</span>    c.target.slices_material = []</div>
-<div class="line"><span class="lineno">  226</span> </div>
-<div class="line"><span class="lineno">  227</span>    <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(c.target.Nplates):</div>
-<div class="line"><span class="lineno">  228</span>        <span class="keywordflow">for</span> j <span class="keywordflow">in</span> range(c.target.N[i]):</div>
-<div class="line"><span class="lineno">  229</span>            <span class="keywordflow">if</span> len(c.target.L) == 1:</div>
-<div class="line"><span class="lineno">  230</span>                c.target.slices_length.append(c.target.L[0])</div>
-<div class="line"><span class="lineno">  231</span>            <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  232</span>                c.target.slices_length.append(c.target.L[i])</div>
-<div class="line"><span class="lineno">  233</span>            <span class="keywordflow">if</span> len(c.target.G) == 1:</div>
-<div class="line"><span class="lineno">  234</span>                c.target.slices_gap.append(c.target.G[0])</div>
-<div class="line"><span class="lineno">  235</span>            <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  236</span>                c.target.slices_gap.append(c.target.G[i])</div>
-<div class="line"><span class="lineno">  237</span>            <span class="keywordflow">if</span> len(c.target.M) == 1:</div>
-<div class="line"><span class="lineno">  238</span>                c.target.slices_material.append(c.target.M[0])</div>
-<div class="line"><span class="lineno">  239</span>            <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  240</span>                c.target.slices_material.append(c.target.M[i])</div>
-<div class="line"><span class="lineno">  241</span>    <span class="comment"># Last gap should be 0...</span></div>
-<div class="line"><span class="lineno">  242</span>    c.target.slices_gap[c.target.nS - 1] = 0</div>
-<div class="line"><span class="lineno">  243</span>    print(c.target.slices_material, c.target.slices_length, c.target.slices_gap)</div>
-<div class="line"><span class="lineno">  244</span> </div>
-<div class="line"><span class="lineno">  245</span>    target_length = 0</div>
-<div class="line"><span class="lineno">  246</span>    <span class="keywordflow">for</span> width, gap <span class="keywordflow">in</span> zip(c.target.slices_length, c.target.slices_gap):</div>
-<div class="line"><span class="lineno">  247</span>        target_length += width + gap</div>
-<div class="line"><span class="lineno">  248</span>    c.target.length = target_length</div>
-<div class="line"><span class="lineno">  249</span>    <span class="comment"># interaction point, start of target</span></div>
-<div class="line"><span class="lineno">  250</span> </div>
-<div class="line"><span class="lineno">  251</span>    c.target.z0 = 0  <span class="comment"># Origin of SHiP coordinate system</span></div>
-<div class="line"><span class="lineno">  252</span>    c.target.z = c.target.z0 + c.target.length / 2.0</div>
-<div class="line"><span class="lineno">  253</span> </div>
-<div class="line"><span class="lineno">  254</span>    c.hadronAbsorber = AttrDict()</div>
-<div class="line"><span class="lineno">  255</span> </div>
-<div class="line"><span class="lineno">  256</span>    <span class="comment"># Downstream elements are positioned using the nominal length of the</span></div>
-<div class="line"><span class="lineno">  257</span>    <span class="comment"># legacy target so that they stay put when a different (e.g. shorter)</span></div>
-<div class="line"><span class="lineno">  258</span>    <span class="comment"># target design is selected. This is the single authoritative value for the</span></div>
-<div class="line"><span class="lineno">  259</span>    <span class="comment"># fixed length; it is passed to ShipTargetStation (SetShieldingReferenceLength)</span></div>
-<div class="line"><span class="lineno">  260</span>    <span class="comment"># so the proximity shielding stays independent of the actual target length.</span></div>
-<div class="line"><span class="lineno">  261</span>    c.target.length_fixed = 158.64 * u.cm</div>
+<p class="definition">Definition at line <a class="el" href="geometry__config_8py_source.html#l00231">231</a> of file <a class="el" href="geometry__config_8py_source.html">geometry_config.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  240</span>):</div>
+<div class="line"><span class="lineno">  241</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  242</span><span class="stringliteral">    Create geometry configuration with specified parameters.</span></div>
+<div class="line"><span class="lineno">  243</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  244</span><span class="stringliteral">    Args:</span></div>
+<div class="line"><span class="lineno">  245</span><span class="stringliteral">        DecayVolumeMedium: Medium in decay volume (&quot;helium&quot; or &quot;vacuums&quot;), default: &quot;helium&quot;</span></div>
+<div class="line"><span class="lineno">  246</span><span class="stringliteral">        Yheight: Height of vacuum tank in meters, default: 6.0</span></div>
+<div class="line"><span class="lineno">  247</span><span class="stringliteral">        strawDesign: Straw tube design (4=Aluminium frame, 10=steel frame), default: 10</span></div>
+<div class="line"><span class="lineno">  248</span><span class="stringliteral">        shieldName: Name of shield configuration, default: &quot;TRY_2025&quot;</span></div>
+<div class="line"><span class="lineno">  249</span><span class="stringliteral">        nuTargetPassive: Target type (0=with active layers, 1=only passive), default: 1</span></div>
+<div class="line"><span class="lineno">  250</span><span class="stringliteral">        SND: Enable SND detector, default: True</span></div>
+<div class="line"><span class="lineno">  251</span><span class="stringliteral">        SND_design: SND design options (list of design numbers), default: [2]</span></div>
+<div class="line"><span class="lineno">  252</span><span class="stringliteral">        TARGET_YAML: Path to target YAML configuration file, default: &quot;$FAIRSHIP/geometry/target_config.yaml&quot;</span></div>
+<div class="line"><span class="lineno">  253</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  254</span><span class="stringliteral">    Returns:</span></div>
+<div class="line"><span class="lineno">  255</span><span class="stringliteral">        Config: Geometry configuration object</span></div>
+<div class="line"><span class="lineno">  256</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  257</span>    <span class="comment"># Set defaults for mutable parameters</span></div>
+<div class="line"><span class="lineno">  258</span>    <span class="keywordflow">if</span> SND_design <span class="keywordflow">is</span> <span class="keywordtype">None</span>:</div>
+<div class="line"><span class="lineno">  259</span>        SND_design = [2]</div>
+<div class="line"><span class="lineno">  260</span>    <span class="keywordflow">if</span> TARGET_YAML <span class="keywordflow">is</span> <span class="keywordtype">None</span>:</div>
+<div class="line"><span class="lineno">  261</span>        TARGET_YAML = os.path.expandvars(<span class="stringliteral">&quot;$FAIRSHIP/geometry/target_config.yaml&quot;</span>)</div>
 <div class="line"><span class="lineno">  262</span> </div>
-<div class="line"><span class="lineno">  263</span>    c.hadronAbsorber.z = (</div>
-<div class="line"><span class="lineno">  264</span>        c.target.z0</div>
-<div class="line"><span class="lineno">  265</span>        + c.target.length_fixed</div>
-<div class="line"><span class="lineno">  266</span>        + 96.1 * u.mm  <span class="comment"># Distance between target and proximity shielding</span></div>
-<div class="line"><span class="lineno">  267</span>        + 250 * u.mm  <span class="comment"># Thickness of proximity shielding</span></div>
-<div class="line"><span class="lineno">  268</span>        + 207.5 * u.mm  <span class="comment"># Distance between hadron absorber and proximity shielding</span></div>
-<div class="line"><span class="lineno">  269</span>    )  <span class="comment"># front face of the magnetised hadron stopper at 2.14 m (integration layout 2026-0.1)</span></div>
-<div class="line"><span class="lineno">  270</span> </div>
-<div class="line"><span class="lineno">  271</span>    <span class="comment"># DEFINITION OF THE MUON SHIELD</span></div>
-<div class="line"><span class="lineno">  272</span>    c.muShield = AttrDict()</div>
+<div class="line"><span class="lineno">  263</span>    <span class="comment"># Create configuration object</span></div>
+<div class="line"><span class="lineno">  264</span>    c = Config()</div>
+<div class="line"><span class="lineno">  265</span>    c.DecayVolumeMedium = DecayVolumeMedium</div>
+<div class="line"><span class="lineno">  266</span>    c.SND = SND</div>
+<div class="line"><span class="lineno">  267</span>    <span class="comment"># Ensure SND_design is always a list</span></div>
+<div class="line"><span class="lineno">  268</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> isinstance(SND_design, list):</div>
+<div class="line"><span class="lineno">  269</span>        SND_design = [SND_design]</div>
+<div class="line"><span class="lineno">  270</span>    c.SND_design = SND_design</div>
+<div class="line"><span class="lineno">  271</span>    c.target_yaml = TARGET_YAML</div>
+<div class="line"><span class="lineno">  272</span>    print(<span class="stringliteral">&quot;Info: Target using configuration:&quot;</span>, c.target_yaml)</div>
 <div class="line"><span class="lineno">  273</span> </div>
-<div class="line"><span class="lineno">  274</span>    c.muShield.z = c.hadronAbsorber.z</div>
-<div class="line"><span class="lineno">  275</span> </div>
-<div class="line"><span class="lineno">  276</span>    params = shield_db[shieldName][<span class="stringliteral">&quot;params&quot;</span>]</div>
-<div class="line"><span class="lineno">  277</span>    c.muShield.params = params</div>
-<div class="line"><span class="lineno">  278</span> </div>
-<div class="line"><span class="lineno">  279</span>    <span class="comment"># MS length</span></div>
-<div class="line"><span class="lineno">  280</span>    c.muShield.length = sum(line[0] + line[1] * 2 <span class="keywordflow">for</span> line <span class="keywordflow">in</span> params)</div>
-<div class="line"><span class="lineno">  281</span>    c.muShield.nMagnets = len(params)</div>
-<div class="line"><span class="lineno">  282</span> </div>
-<div class="line"><span class="lineno">  283</span>    c.muShield.Zgap = []</div>
-<div class="line"><span class="lineno">  284</span>    c.muShield.half_length = []</div>
-<div class="line"><span class="lineno">  285</span>    c.muShield.Entrance = []</div>
-<div class="line"><span class="lineno">  286</span> </div>
-<div class="line"><span class="lineno">  287</span>    <span class="keywordflow">for</span> line <span class="keywordflow">in</span> params:</div>
-<div class="line"><span class="lineno">  288</span>        c.muShield.Zgap.append(line[0])</div>
-<div class="line"><span class="lineno">  289</span>        c.muShield.half_length.append(line[1])</div>
-<div class="line"><span class="lineno">  290</span> </div>
-<div class="line"><span class="lineno">  291</span>    <span class="comment"># Compute Z position for each magnet</span></div>
-<div class="line"><span class="lineno">  292</span>    <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(len(c.muShield.Zgap)):</div>
-<div class="line"><span class="lineno">  293</span>        <span class="keywordflow">if</span> i == 0:</div>
-<div class="line"><span class="lineno">  294</span>            <span class="comment"># First magnet uses the initial offset</span></div>
-<div class="line"><span class="lineno">  295</span>            c.muShield.Entrance.append(c.muShield.z + c.muShield.Zgap[i])</div>
-<div class="line"><span class="lineno">  296</span>        <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  297</span>            <span class="comment"># Subsequent magnets are placed relative to the previous one</span></div>
-<div class="line"><span class="lineno">  298</span>            c.muShield.Entrance.append(</div>
-<div class="line"><span class="lineno">  299</span>                c.muShield.Entrance[i - 1] + c.muShield.half_length[i - 1] * 2 + c.muShield.Zgap[i]</div>
-<div class="line"><span class="lineno">  300</span>            )</div>
-<div class="line"><span class="lineno">  301</span>    <span class="comment"># Flatten the params list</span></div>
-<div class="line"><span class="lineno">  302</span>    c.muShield.params = [item <span class="keywordflow">for</span> sublist <span class="keywordflow">in</span> params <span class="keywordflow">for</span> item <span class="keywordflow">in</span> sublist]</div>
-<div class="line"><span class="lineno">  303</span> </div>
-<div class="line"><span class="lineno">  304</span>    c.decayVolume = AttrDict()</div>
-<div class="line"><span class="lineno">  305</span> </div>
-<div class="line"><span class="lineno">  306</span>    <span class="comment"># target absorber muon shield setup, decayVolume.length = nominal EOI length, only kept to define z=0</span></div>
-<div class="line"><span class="lineno">  307</span>    c.decayVolume.length = 50 * u.m</div>
+<div class="line"><span class="lineno">  274</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> shieldName:</div>
+<div class="line"><span class="lineno">  275</span>        <span class="keywordflow">raise</span> ValueError(<span class="stringliteral">&quot;shieldName must not be empty!&quot;</span>)</div>
+<div class="line"><span class="lineno">  276</span> </div>
+<div class="line"><span class="lineno">  277</span>    c.shieldName = shieldName</div>
+<div class="line"><span class="lineno">  278</span>    c.SC_mag = shield_db[shieldName][<span class="stringliteral">&quot;hybrid&quot;</span>]</div>
+<div class="line"><span class="lineno">  279</span> </div>
+<div class="line"><span class="lineno">  280</span>    <span class="comment"># global strawDesign, Yheight</span></div>
+<div class="line"><span class="lineno">  281</span>    c.Yheight = Yheight * u.m</div>
+<div class="line"><span class="lineno">  282</span>    extraVesselLength = 10 * u.m</div>
+<div class="line"><span class="lineno">  283</span>    windowBulge = 25 * u.cm</div>
+<div class="line"><span class="lineno">  284</span>    c.strawDesign = strawDesign</div>
+<div class="line"><span class="lineno">  285</span>    c.magnetDesign = 4</div>
+<div class="line"><span class="lineno">  286</span>    <span class="comment"># cave parameters</span></div>
+<div class="line"><span class="lineno">  287</span>    c.cave = AttrDict()</div>
+<div class="line"><span class="lineno">  288</span>    c.cave.floorHeightMuonShield = 5 * u.m</div>
+<div class="line"><span class="lineno">  289</span>    c.cave.floorHeightTankA = 4.2 * u.m</div>
+<div class="line"><span class="lineno">  290</span>    <span class="keywordflow">if</span> strawDesign == 10:</div>
+<div class="line"><span class="lineno">  291</span>        c.cave.floorHeightMuonShield = c.cave.floorHeightTankA  <span class="comment"># avoid the gap, for 2018 geometry</span></div>
+<div class="line"><span class="lineno">  292</span>    c.cave.floorHeightTankB = 2 * u.m</div>
+<div class="line"><span class="lineno">  293</span>    <span class="comment"># ECN3 cavern, see passive/ShipCave.cxx</span></div>
+<div class="line"><span class="lineno">  294</span>    c.cave.TCC8_length = 170 * u.m</div>
+<div class="line"><span class="lineno">  295</span>    c.cave.ECN3_length = 100.81 * u.m  <span class="comment"># step and hall, up to the end wall at 122.18 m</span></div>
+<div class="line"><span class="lineno">  296</span>    c.cave.stair_step_length = 0.82 * u.m</div>
+<div class="line"><span class="lineno">  297</span>    <span class="comment"># End of the TCC8 floor (integration layout 2026-0.1); the stair step that follows is</span></div>
+<div class="line"><span class="lineno">  298</span>    <span class="comment"># centred on the gap between M4 and S5</span></div>
+<div class="line"><span class="lineno">  299</span>    c.cave.z_transition = 21.37 * u.m</div>
+<div class="line"><span class="lineno">  300</span>    c.cave.zEnd = c.cave.z_transition + c.cave.ECN3_length  <span class="comment"># downstream ECN3 wall</span></div>
+<div class="line"><span class="lineno">  301</span>    set_ecn3_cavern(c)</div>
+<div class="line"><span class="lineno">  302</span> </div>
+<div class="line"><span class="lineno">  303</span>    <span class="keyword">with</span> open(c.target_yaml) <span class="keyword">as</span> file:</div>
+<div class="line"><span class="lineno">  304</span>        targetconfig = yaml.safe_load(file)</div>
+<div class="line"><span class="lineno">  305</span>        c.target = AttrDict(targetconfig[<span class="stringliteral">&quot;target&quot;</span>])</div>
+<div class="line"><span class="lineno">  306</span>    <span class="keywordflow">if</span> <span class="stringliteral">&quot;version&quot;</span> <span class="keywordflow">not</span> <span class="keywordflow">in</span> c.target:</div>
+<div class="line"><span class="lineno">  307</span>        c.target.version = 1  <span class="comment"># legacy design</span></div>
 <div class="line"><span class="lineno">  308</span> </div>
-<div class="line"><span class="lineno">  309</span>    <span class="comment"># make z coordinates for the decay volume and tracking stations relative to T4z</span></div>
-<div class="line"><span class="lineno">  310</span>    <span class="comment"># eventually, the only parameter which needs to be changed when the active shielding length changes.</span></div>
-<div class="line"><span class="lineno">  311</span>    c.z = 89.72 * u.m  <span class="comment"># mid-plane of the spectrometer magnet (integration layout 2026-0.1)</span></div>
-<div class="line"><span class="lineno">  312</span>    c.decayVolume.z = c.z - 31.450 * u.m  <span class="comment"># Relative position of decay vessel centre to spectrometer magnet</span></div>
-<div class="line"><span class="lineno">  313</span>    c.decayVolume.z0 = c.decayVolume.z - c.decayVolume.length / 2.0</div>
-<div class="line"><span class="lineno">  314</span>    veto_yaml = os.path.expandvars(f<span class="stringliteral">&quot;$FAIRSHIP/geometry/veto_config_{DecayVolumeMedium}.yaml&quot;</span>)</div>
-<div class="line"><span class="lineno">  315</span>    <span class="keyword">with</span> open(veto_yaml) <span class="keyword">as</span> f:</div>
-<div class="line"><span class="lineno">  316</span>        veto_config = yaml.safe_load(f)</div>
-<div class="line"><span class="lineno">  317</span>    c.decayVolume.xEndInner = veto_config[<span class="stringliteral">&quot;xendInner&quot;</span>] * u.cm</div>
-<div class="line"><span class="lineno">  318</span>    c.decayVolume.yEndInner = veto_config[<span class="stringliteral">&quot;yendInner&quot;</span>] * u.cm</div>
-<div class="line"><span class="lineno">  319</span> </div>
-<div class="line"><span class="lineno">  320</span>    c.chambers = AttrDict()</div>
-<div class="line"><span class="lineno">  321</span>    magnetIncrease = 100.0 * u.cm</div>
-<div class="line"><span class="lineno">  322</span> </div>
-<div class="line"><span class="lineno">  323</span>    <span class="keywordflow">if</span> strawDesign != 4 <span class="keywordflow">and</span> strawDesign != 10:</div>
-<div class="line"><span class="lineno">  324</span>        <span class="keywordflow">raise</span> ValueError(f<span class="stringliteral">&quot;straw design {strawDesign} is not supported, use strawDesign = 4 or 10&quot;</span>)</div>
-<div class="line"><span class="lineno">  325</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  326</span>        c.chambers.Tub1length = 2.5 * u.m</div>
-<div class="line"><span class="lineno">  327</span>        c.chambers.Tub2length = 17.68 * u.m + extraVesselLength / 2.0</div>
-<div class="line"><span class="lineno">  328</span>        c.chambers.Tub3length = 0.8 * u.m</div>
-<div class="line"><span class="lineno">  329</span>        c.chambers.Tub4length = 2.0 * u.m + magnetIncrease / 2.0</div>
-<div class="line"><span class="lineno">  330</span>        c.chambers.Tub5length = 0.8 * u.m</div>
-<div class="line"><span class="lineno">  331</span>        c.chambers.Tub6length = 0.1 * u.m + windowBulge / 2.0</div>
-<div class="line"><span class="lineno">  332</span>        c.chambers.Rmin = 245.0 * u.cm</div>
-<div class="line"><span class="lineno">  333</span>        c.chambers.Rmax = 250.0 * u.cm</div>
-<div class="line"><span class="lineno">  334</span> </div>
-<div class="line"><span class="lineno">  335</span>        c.xMax = 2 * u.m  <span class="comment"># max horizontal width at T4</span></div>
-<div class="line"><span class="lineno">  336</span>        TrGap = 2 * u.m  <span class="comment"># Distance between Tr1/2 and Tr3/4</span></div>
-<div class="line"><span class="lineno">  337</span>        TrMagGap = 3.5 * u.m  <span class="comment"># Distance from spectrometer magnet centre to the next tracking stations</span></div>
-<div class="line"><span class="lineno">  338</span>        <span class="comment">#</span></div>
-<div class="line"><span class="lineno">  339</span>        z4 = c.z + TrMagGap + TrGap</div>
-<div class="line"><span class="lineno">  340</span>        c.TrackStation4 = AttrDict(z=z4)</div>
-<div class="line"><span class="lineno">  341</span>        z3 = c.z + TrMagGap</div>
-<div class="line"><span class="lineno">  342</span>        c.TrackStation3 = AttrDict(z=z3)</div>
-<div class="line"><span class="lineno">  343</span>        z2 = c.z - TrMagGap</div>
-<div class="line"><span class="lineno">  344</span>        c.TrackStation2 = AttrDict(z=z2)</div>
-<div class="line"><span class="lineno">  345</span>        z1 = c.z - TrMagGap - TrGap</div>
-<div class="line"><span class="lineno">  346</span>        c.TrackStation1 = AttrDict(z=z1)</div>
-<div class="line"><span class="lineno">  347</span> </div>
-<div class="line"><span class="lineno">  348</span>        <span class="comment"># positions and lengths of vacuum tube segments (for backward compatibility)</span></div>
-<div class="line"><span class="lineno">  349</span>        <span class="comment"># Chamber1.z is the downstream end of Tub1, so consumers can take z - Tub1length to get the decay-vessel entrance.</span></div>
-<div class="line"><span class="lineno">  350</span>        c.Chamber1 = AttrDict(z=c.decayVolume.z0 + c.chambers.Tub1length)</div>
-<div class="line"><span class="lineno">  351</span>        c.Chamber6 = AttrDict(z=z4 + 30.0 * u.cm + windowBulge / 2.0)</div>
-<div class="line"><span class="lineno">  352</span> </div>
-<div class="line"><span class="lineno">  353</span>    c.Bfield = AttrDict()</div>
-<div class="line"><span class="lineno">  354</span>    c.Bfield.z = c.z</div>
-<div class="line"><span class="lineno">  355</span>    c.Bfield.max = 0  <span class="comment"># 1.4361*u.kilogauss  # was 1.15 in EOI</span></div>
-<div class="line"><span class="lineno">  356</span>    c.Bfield.y = c.Yheight</div>
-<div class="line"><span class="lineno">  357</span>    c.Bfield.x = 2.4 * u.m</div>
-<div class="line"><span class="lineno">  358</span>    c.Bfield.fieldMap = <span class="stringliteral">&quot;files/2026_07_02_MainSpectrometerField_V21_2455.root&quot;</span></div>
-<div class="line"><span class="lineno">  359</span>    <span class="keywordflow">if</span> c.magnetDesign &gt; 3:  <span class="comment"># MISIS design</span></div>
-<div class="line"><span class="lineno">  360</span>        c.Bfield.YokeWidth = 0.8 * u.m  <span class="comment"># full width       200.*cm</span></div>
-<div class="line"><span class="lineno">  361</span>        c.Bfield.YokeDepth = 1.4 * u.m  <span class="comment"># half length      200 *cm;</span></div>
-<div class="line"><span class="lineno">  362</span>        c.Bfield.CoilThick = 25.0 * u.cm  <span class="comment"># thickness</span></div>
-<div class="line"><span class="lineno">  363</span>        c.Bfield.x = 2.2 * u.m  <span class="comment"># half apertures</span></div>
-<div class="line"><span class="lineno">  364</span>        c.Bfield.y = 3.5 * u.m</div>
-<div class="line"><span class="lineno">  365</span> </div>
-<div class="line"><span class="lineno">  366</span>    <span class="comment"># TimeDet</span></div>
-<div class="line"><span class="lineno">  367</span>    c.TimeDet = AttrDict()</div>
-<div class="line"><span class="lineno">  368</span>    c.TimeDet.dzBarRow = 1.2 * u.cm</div>
-<div class="line"><span class="lineno">  369</span>    c.TimeDet.dzBarCol = 9.0 * u.cm</div>
-<div class="line"><span class="lineno">  370</span>    c.TimeDet.zBar = 1 * u.cm</div>
-<div class="line"><span class="lineno">  371</span>    c.TimeDet.DZ = (c.TimeDet.dzBarRow + c.TimeDet.dzBarCol + c.TimeDet.zBar) / 2</div>
-<div class="line"><span class="lineno">  372</span>    c.TimeDet.DX = 275 * u.cm</div>
-<div class="line"><span class="lineno">  373</span>    c.TimeDet.DY = 325 * u.cm</div>
-<div class="line"><span class="lineno">  374</span>    <span class="comment"># First bar row, placed so that the front face of the timing detector is 37.87 m</span></div>
-<div class="line"><span class="lineno">  375</span>    <span class="comment"># downstream of the decay vessel centre, i.e. at 96.14 m (integration layout 2026-0.1)</span></div>
-<div class="line"><span class="lineno">  376</span>    c.TimeDet.z = 37.870 * u.m + c.decayVolume.z + c.TimeDet.zBar / 2</div>
-<div class="line"><span class="lineno">  377</span> </div>
-<div class="line"><span class="lineno">  378</span>    <span class="comment"># CaloScoringPlane: ideal (vacuum) plane where the calorimeter entrance window sits.</span></div>
-<div class="line"><span class="lineno">  379</span>    <span class="comment"># Every track entering it is scored.</span></div>
-<div class="line"><span class="lineno">  380</span>    c.CaloScoringPlane = AttrDict()</div>
-<div class="line"><span class="lineno">  381</span>    c.CaloScoringPlane.DX = 4 * u.m  <span class="comment"># full width  (former SplitCal 2*XMax)</span></div>
-<div class="line"><span class="lineno">  382</span>    c.CaloScoringPlane.DY = 6 * u.m  <span class="comment"># full height (former SplitCal 2*YMax)</span></div>
-<div class="line"><span class="lineno">  383</span>    c.CaloScoringPlane.DZ = 1 * u.mm  <span class="comment"># full thickness</span></div>
-<div class="line"><span class="lineno">  384</span>    <span class="comment"># Centre of the plane; its upstream face is the ECAL front face, 38.90 m downstream of the</span></div>
-<div class="line"><span class="lineno">  385</span>    <span class="comment"># decay vessel centre, i.e. at 97.17 m (integration layout 2026-0.1)</span></div>
-<div class="line"><span class="lineno">  386</span>    c.CaloScoringPlane.z = 38.900 * u.m + c.decayVolume.z + c.CaloScoringPlane.DZ / 2</div>
-<div class="line"><span class="lineno">  387</span>    <span class="keywordflow">if</span> c.CaloScoringPlane.z + c.CaloScoringPlane.DZ / 2 &gt;= c.cave.zEnd:</div>
-<div class="line"><span class="lineno">  388</span>        <span class="keywordflow">raise</span> ValueError(</div>
-<div class="line"><span class="lineno">  389</span>            f<span class="stringliteral">&quot;CaloScoringPlane ends at z = {c.CaloScoringPlane.z + c.CaloScoringPlane.DZ / 2} cm, &quot;</span></div>
-<div class="line"><span class="lineno">  390</span>            f<span class="stringliteral">&quot;beyond the downstream ECN3 wall at {c.cave.zEnd} cm&quot;</span></div>
-<div class="line"><span class="lineno">  391</span>        )</div>
-<div class="line"><span class="lineno">  392</span> </div>
-<div class="line"><span class="lineno">  393</span>    c.hadronAbsorber.WithConstField = shield_db[shieldName][<span class="stringliteral">&quot;WithConstField&quot;</span>]</div>
-<div class="line"><span class="lineno">  394</span>    c.muShield.WithConstField = shield_db[shieldName][<span class="stringliteral">&quot;WithConstField&quot;</span>]</div>
-<div class="line"><span class="lineno">  395</span> </div>
-<div class="line"><span class="lineno">  396</span>    <span class="comment"># for the digitizing step</span></div>
-<div class="line"><span class="lineno">  397</span>    c.strawtubesDigi = AttrDict()</div>
-<div class="line"><span class="lineno">  398</span>    c.strawtubesDigi.v_drift = 1.0 / (30 * u.ns / u.mm)  <span class="comment"># for baseline NA62 5mm radius straws)</span></div>
-<div class="line"><span class="lineno">  399</span>    c.strawtubesDigi.sigma_spatial = 0.012 * u.cm  <span class="comment"># according to Massi&#39;s TP section</span></div>
-<div class="line"><span class="lineno">  400</span> </div>
-<div class="line"><span class="lineno">  401</span>    <span class="comment"># CAMM - For Nu tau detector, keep only these parameters which are used by others...</span></div>
-<div class="line"><span class="lineno">  402</span>    c.tauMudet = AttrDict()</div>
-<div class="line"><span class="lineno">  403</span>    c.tauMudet.Ztot = 3 * u.m  <span class="comment"># space allocated to Muon spectrometer</span></div>
-<div class="line"><span class="lineno">  404</span>    c.tauMudet.zMudetC = c.muShield.z + c.muShield.length / 2.0 - c.tauMudet.Ztot / 2.0 - 70 * u.cm</div>
+<div class="line"><span class="lineno">  309</span>    c.target.slices_length = []</div>
+<div class="line"><span class="lineno">  310</span>    c.target.slices_gap = []</div>
+<div class="line"><span class="lineno">  311</span>    c.target.slices_material = []</div>
+<div class="line"><span class="lineno">  312</span> </div>
+<div class="line"><span class="lineno">  313</span>    <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(c.target.Nplates):</div>
+<div class="line"><span class="lineno">  314</span>        <span class="keywordflow">for</span> j <span class="keywordflow">in</span> range(c.target.N[i]):</div>
+<div class="line"><span class="lineno">  315</span>            <span class="keywordflow">if</span> len(c.target.L) == 1:</div>
+<div class="line"><span class="lineno">  316</span>                c.target.slices_length.append(c.target.L[0])</div>
+<div class="line"><span class="lineno">  317</span>            <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  318</span>                c.target.slices_length.append(c.target.L[i])</div>
+<div class="line"><span class="lineno">  319</span>            <span class="keywordflow">if</span> len(c.target.G) == 1:</div>
+<div class="line"><span class="lineno">  320</span>                c.target.slices_gap.append(c.target.G[0])</div>
+<div class="line"><span class="lineno">  321</span>            <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  322</span>                c.target.slices_gap.append(c.target.G[i])</div>
+<div class="line"><span class="lineno">  323</span>            <span class="keywordflow">if</span> len(c.target.M) == 1:</div>
+<div class="line"><span class="lineno">  324</span>                c.target.slices_material.append(c.target.M[0])</div>
+<div class="line"><span class="lineno">  325</span>            <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  326</span>                c.target.slices_material.append(c.target.M[i])</div>
+<div class="line"><span class="lineno">  327</span>    <span class="comment"># Last gap should be 0...</span></div>
+<div class="line"><span class="lineno">  328</span>    c.target.slices_gap[c.target.nS - 1] = 0</div>
+<div class="line"><span class="lineno">  329</span>    print(c.target.slices_material, c.target.slices_length, c.target.slices_gap)</div>
+<div class="line"><span class="lineno">  330</span> </div>
+<div class="line"><span class="lineno">  331</span>    target_length = 0</div>
+<div class="line"><span class="lineno">  332</span>    <span class="keywordflow">for</span> width, gap <span class="keywordflow">in</span> zip(c.target.slices_length, c.target.slices_gap):</div>
+<div class="line"><span class="lineno">  333</span>        target_length += width + gap</div>
+<div class="line"><span class="lineno">  334</span>    c.target.length = target_length</div>
+<div class="line"><span class="lineno">  335</span>    <span class="comment"># interaction point, start of target</span></div>
+<div class="line"><span class="lineno">  336</span> </div>
+<div class="line"><span class="lineno">  337</span>    c.target.z0 = 0  <span class="comment"># Origin of SHiP coordinate system</span></div>
+<div class="line"><span class="lineno">  338</span>    c.target.z = c.target.z0 + c.target.length / 2.0</div>
+<div class="line"><span class="lineno">  339</span> </div>
+<div class="line"><span class="lineno">  340</span>    c.hadronAbsorber = AttrDict()</div>
+<div class="line"><span class="lineno">  341</span> </div>
+<div class="line"><span class="lineno">  342</span>    <span class="comment"># Downstream elements are positioned using the nominal length of the</span></div>
+<div class="line"><span class="lineno">  343</span>    <span class="comment"># legacy target so that they stay put when a different (e.g. shorter)</span></div>
+<div class="line"><span class="lineno">  344</span>    <span class="comment"># target design is selected. This is the single authoritative value for the</span></div>
+<div class="line"><span class="lineno">  345</span>    <span class="comment"># fixed length; it is passed to ShipTargetStation (SetShieldingReferenceLength)</span></div>
+<div class="line"><span class="lineno">  346</span>    <span class="comment"># so the proximity shielding stays independent of the actual target length.</span></div>
+<div class="line"><span class="lineno">  347</span>    c.target.length_fixed = 158.64 * u.cm</div>
+<div class="line"><span class="lineno">  348</span> </div>
+<div class="line"><span class="lineno">  349</span>    c.hadronAbsorber.z = (</div>
+<div class="line"><span class="lineno">  350</span>        c.target.z0</div>
+<div class="line"><span class="lineno">  351</span>        + c.target.length_fixed</div>
+<div class="line"><span class="lineno">  352</span>        + 96.1 * u.mm  <span class="comment"># Distance between target and proximity shielding</span></div>
+<div class="line"><span class="lineno">  353</span>        + 250 * u.mm  <span class="comment"># Thickness of proximity shielding</span></div>
+<div class="line"><span class="lineno">  354</span>        + 207.5 * u.mm  <span class="comment"># Distance between hadron absorber and proximity shielding</span></div>
+<div class="line"><span class="lineno">  355</span>    )  <span class="comment"># front face of the magnetised hadron stopper at 2.14 m (integration layout 2026-0.1)</span></div>
+<div class="line"><span class="lineno">  356</span> </div>
+<div class="line"><span class="lineno">  357</span>    <span class="comment"># DEFINITION OF THE MUON SHIELD</span></div>
+<div class="line"><span class="lineno">  358</span>    c.muShield = AttrDict()</div>
+<div class="line"><span class="lineno">  359</span> </div>
+<div class="line"><span class="lineno">  360</span>    c.muShield.z = c.hadronAbsorber.z</div>
+<div class="line"><span class="lineno">  361</span> </div>
+<div class="line"><span class="lineno">  362</span>    params = shield_db[shieldName][<span class="stringliteral">&quot;params&quot;</span>]</div>
+<div class="line"><span class="lineno">  363</span>    c.muShield.params = params</div>
+<div class="line"><span class="lineno">  364</span> </div>
+<div class="line"><span class="lineno">  365</span>    <span class="comment"># MS length</span></div>
+<div class="line"><span class="lineno">  366</span>    c.muShield.length = sum(line[0] + line[1] * 2 <span class="keywordflow">for</span> line <span class="keywordflow">in</span> params)</div>
+<div class="line"><span class="lineno">  367</span>    c.muShield.nMagnets = len(params)</div>
+<div class="line"><span class="lineno">  368</span> </div>
+<div class="line"><span class="lineno">  369</span>    c.muShield.Zgap = []</div>
+<div class="line"><span class="lineno">  370</span>    c.muShield.half_length = []</div>
+<div class="line"><span class="lineno">  371</span>    c.muShield.Entrance = []</div>
+<div class="line"><span class="lineno">  372</span> </div>
+<div class="line"><span class="lineno">  373</span>    <span class="keywordflow">for</span> line <span class="keywordflow">in</span> params:</div>
+<div class="line"><span class="lineno">  374</span>        c.muShield.Zgap.append(line[0])</div>
+<div class="line"><span class="lineno">  375</span>        c.muShield.half_length.append(line[1])</div>
+<div class="line"><span class="lineno">  376</span> </div>
+<div class="line"><span class="lineno">  377</span>    <span class="comment"># Compute Z position for each magnet</span></div>
+<div class="line"><span class="lineno">  378</span>    <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(len(c.muShield.Zgap)):</div>
+<div class="line"><span class="lineno">  379</span>        <span class="keywordflow">if</span> i == 0:</div>
+<div class="line"><span class="lineno">  380</span>            <span class="comment"># First magnet uses the initial offset</span></div>
+<div class="line"><span class="lineno">  381</span>            c.muShield.Entrance.append(c.muShield.z + c.muShield.Zgap[i])</div>
+<div class="line"><span class="lineno">  382</span>        <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  383</span>            <span class="comment"># Subsequent magnets are placed relative to the previous one</span></div>
+<div class="line"><span class="lineno">  384</span>            c.muShield.Entrance.append(</div>
+<div class="line"><span class="lineno">  385</span>                c.muShield.Entrance[i - 1] + c.muShield.half_length[i - 1] * 2 + c.muShield.Zgap[i]</div>
+<div class="line"><span class="lineno">  386</span>            )</div>
+<div class="line"><span class="lineno">  387</span>    <span class="comment"># Flatten the params list</span></div>
+<div class="line"><span class="lineno">  388</span>    c.muShield.params = [item <span class="keywordflow">for</span> sublist <span class="keywordflow">in</span> params <span class="keywordflow">for</span> item <span class="keywordflow">in</span> sublist]</div>
+<div class="line"><span class="lineno">  389</span> </div>
+<div class="line"><span class="lineno">  390</span>    c.decayVolume = AttrDict()</div>
+<div class="line"><span class="lineno">  391</span> </div>
+<div class="line"><span class="lineno">  392</span>    <span class="comment"># target absorber muon shield setup, decayVolume.length = nominal EOI length, only kept to define z=0</span></div>
+<div class="line"><span class="lineno">  393</span>    c.decayVolume.length = 50 * u.m</div>
+<div class="line"><span class="lineno">  394</span> </div>
+<div class="line"><span class="lineno">  395</span>    <span class="comment"># make z coordinates for the decay volume and tracking stations relative to T4z</span></div>
+<div class="line"><span class="lineno">  396</span>    <span class="comment"># eventually, the only parameter which needs to be changed when the active shielding length changes.</span></div>
+<div class="line"><span class="lineno">  397</span>    c.z = 89.72 * u.m  <span class="comment"># mid-plane of the spectrometer magnet (integration layout 2026-0.1)</span></div>
+<div class="line"><span class="lineno">  398</span>    c.decayVolume.z = c.z - 31.450 * u.m  <span class="comment"># Relative position of decay vessel centre to spectrometer magnet</span></div>
+<div class="line"><span class="lineno">  399</span>    c.decayVolume.z0 = c.decayVolume.z - c.decayVolume.length / 2.0</div>
+<div class="line"><span class="lineno">  400</span>    veto_yaml = os.path.expandvars(f<span class="stringliteral">&quot;$FAIRSHIP/geometry/veto_config_{DecayVolumeMedium}.yaml&quot;</span>)</div>
+<div class="line"><span class="lineno">  401</span>    <span class="keyword">with</span> open(veto_yaml) <span class="keyword">as</span> f:</div>
+<div class="line"><span class="lineno">  402</span>        veto_config = yaml.safe_load(f)</div>
+<div class="line"><span class="lineno">  403</span>    c.decayVolume.xEndInner = veto_config[<span class="stringliteral">&quot;xendInner&quot;</span>] * u.cm</div>
+<div class="line"><span class="lineno">  404</span>    c.decayVolume.yEndInner = veto_config[<span class="stringliteral">&quot;yendInner&quot;</span>] * u.cm</div>
 <div class="line"><span class="lineno">  405</span> </div>
-<div class="line"><span class="lineno">  406</span>    <span class="comment"># Upstream Tagger</span></div>
-<div class="line"><span class="lineno">  407</span>    <span class="comment"># UpstreamTagger (UBT) - Simplified scoring plane</span></div>
-<div class="line"><span class="lineno">  408</span>    <span class="comment"># Note: UBT is implemented as a simple vacuum box</span></div>
-<div class="line"><span class="lineno">  409</span>    <span class="comment"># Legacy RPC parameters have been removed as they are not used in the current implementation</span></div>
-<div class="line"><span class="lineno">  410</span>    c.UpstreamTagger = AttrDict()</div>
-<div class="line"><span class="lineno">  411</span>    c.UpstreamTagger.BoxX = 4.4 * u.m  <span class="comment"># X dimension (width)</span></div>
-<div class="line"><span class="lineno">  412</span>    c.UpstreamTagger.BoxY = 6.4 * u.m  <span class="comment"># Y dimension (height)</span></div>
-<div class="line"><span class="lineno">  413</span>    c.UpstreamTagger.BoxZ = 16.0 * u.cm  <span class="comment"># Z dimension (thickness)</span></div>
-<div class="line"><span class="lineno">  414</span>    c.UpstreamTagger.Z_Position = -25.400 * u.m + c.decayVolume.z  <span class="comment"># Relative position of UBT to decay vessel centre</span></div>
-<div class="line"><span class="lineno">  415</span>    c.UpstreamTagger.PositionResolution = 1.0 * u.cm  <span class="comment"># Position smearing resolution</span></div>
-<div class="line"><span class="lineno">  416</span>    c.UpstreamTagger.TimeResolution = 0.3  <span class="comment"># Time resolution in ns</span></div>
-<div class="line"><span class="lineno">  417</span> </div>
-<div class="line"><span class="lineno">  418</span>    <span class="comment"># Store parameters that might be needed for reference</span></div>
-<div class="line"><span class="lineno">  419</span>    c.nuTargetPassive = nuTargetPassive</div>
+<div class="line"><span class="lineno">  406</span>    c.chambers = AttrDict()</div>
+<div class="line"><span class="lineno">  407</span>    magnetIncrease = 100.0 * u.cm</div>
+<div class="line"><span class="lineno">  408</span> </div>
+<div class="line"><span class="lineno">  409</span>    <span class="keywordflow">if</span> strawDesign != 4 <span class="keywordflow">and</span> strawDesign != 10:</div>
+<div class="line"><span class="lineno">  410</span>        <span class="keywordflow">raise</span> ValueError(f<span class="stringliteral">&quot;straw design {strawDesign} is not supported, use strawDesign = 4 or 10&quot;</span>)</div>
+<div class="line"><span class="lineno">  411</span>    <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  412</span>        c.chambers.Tub1length = 2.5 * u.m</div>
+<div class="line"><span class="lineno">  413</span>        c.chambers.Tub2length = 17.68 * u.m + extraVesselLength / 2.0</div>
+<div class="line"><span class="lineno">  414</span>        c.chambers.Tub3length = 0.8 * u.m</div>
+<div class="line"><span class="lineno">  415</span>        c.chambers.Tub4length = 2.0 * u.m + magnetIncrease / 2.0</div>
+<div class="line"><span class="lineno">  416</span>        c.chambers.Tub5length = 0.8 * u.m</div>
+<div class="line"><span class="lineno">  417</span>        c.chambers.Tub6length = 0.1 * u.m + windowBulge / 2.0</div>
+<div class="line"><span class="lineno">  418</span>        c.chambers.Rmin = 245.0 * u.cm</div>
+<div class="line"><span class="lineno">  419</span>        c.chambers.Rmax = 250.0 * u.cm</div>
 <div class="line"><span class="lineno">  420</span> </div>
-<div class="line"><span class="lineno">  421</span>    <span class="keywordflow">return</span> c</div>
+<div class="line"><span class="lineno">  421</span>        c.xMax = 2 * u.m  <span class="comment"># max horizontal width at T4</span></div>
+<div class="line"><span class="lineno">  422</span>        TrGap = 2 * u.m  <span class="comment"># Distance between Tr1/2 and Tr3/4</span></div>
+<div class="line"><span class="lineno">  423</span>        TrMagGap = 3.5 * u.m  <span class="comment"># Distance from spectrometer magnet centre to the next tracking stations</span></div>
+<div class="line"><span class="lineno">  424</span>        <span class="comment">#</span></div>
+<div class="line"><span class="lineno">  425</span>        z4 = c.z + TrMagGap + TrGap</div>
+<div class="line"><span class="lineno">  426</span>        c.TrackStation4 = AttrDict(z=z4)</div>
+<div class="line"><span class="lineno">  427</span>        z3 = c.z + TrMagGap</div>
+<div class="line"><span class="lineno">  428</span>        c.TrackStation3 = AttrDict(z=z3)</div>
+<div class="line"><span class="lineno">  429</span>        z2 = c.z - TrMagGap</div>
+<div class="line"><span class="lineno">  430</span>        c.TrackStation2 = AttrDict(z=z2)</div>
+<div class="line"><span class="lineno">  431</span>        z1 = c.z - TrMagGap - TrGap</div>
+<div class="line"><span class="lineno">  432</span>        c.TrackStation1 = AttrDict(z=z1)</div>
+<div class="line"><span class="lineno">  433</span> </div>
+<div class="line"><span class="lineno">  434</span>        <span class="comment"># positions and lengths of vacuum tube segments (for backward compatibility)</span></div>
+<div class="line"><span class="lineno">  435</span>        <span class="comment"># Chamber1.z is the downstream end of Tub1, so consumers can take z - Tub1length to get the decay-vessel entrance.</span></div>
+<div class="line"><span class="lineno">  436</span>        c.Chamber1 = AttrDict(z=c.decayVolume.z0 + c.chambers.Tub1length)</div>
+<div class="line"><span class="lineno">  437</span>        c.Chamber6 = AttrDict(z=z4 + 30.0 * u.cm + windowBulge / 2.0)</div>
+<div class="line"><span class="lineno">  438</span> </div>
+<div class="line"><span class="lineno">  439</span>    c.Bfield = AttrDict()</div>
+<div class="line"><span class="lineno">  440</span>    c.Bfield.z = c.z</div>
+<div class="line"><span class="lineno">  441</span>    c.Bfield.max = 0  <span class="comment"># 1.4361*u.kilogauss  # was 1.15 in EOI</span></div>
+<div class="line"><span class="lineno">  442</span>    c.Bfield.y = c.Yheight</div>
+<div class="line"><span class="lineno">  443</span>    c.Bfield.x = 2.4 * u.m</div>
+<div class="line"><span class="lineno">  444</span>    c.Bfield.fieldMap = <span class="stringliteral">&quot;files/2026_07_02_MainSpectrometerField_V21_2455.root&quot;</span></div>
+<div class="line"><span class="lineno">  445</span>    <span class="keywordflow">if</span> c.magnetDesign &gt; 3:  <span class="comment"># MISIS design</span></div>
+<div class="line"><span class="lineno">  446</span>        c.Bfield.YokeWidth = 0.8 * u.m  <span class="comment"># full width       200.*cm</span></div>
+<div class="line"><span class="lineno">  447</span>        c.Bfield.YokeDepth = 1.4 * u.m  <span class="comment"># half length      200 *cm;</span></div>
+<div class="line"><span class="lineno">  448</span>        c.Bfield.CoilThick = 25.0 * u.cm  <span class="comment"># thickness</span></div>
+<div class="line"><span class="lineno">  449</span>        c.Bfield.x = 2.2 * u.m  <span class="comment"># half apertures</span></div>
+<div class="line"><span class="lineno">  450</span>        c.Bfield.y = 3.5 * u.m</div>
+<div class="line"><span class="lineno">  451</span> </div>
+<div class="line"><span class="lineno">  452</span>    <span class="comment"># TimeDet</span></div>
+<div class="line"><span class="lineno">  453</span>    c.TimeDet = AttrDict()</div>
+<div class="line"><span class="lineno">  454</span>    c.TimeDet.dzBarRow = 1.2 * u.cm</div>
+<div class="line"><span class="lineno">  455</span>    c.TimeDet.dzBarCol = 9.0 * u.cm</div>
+<div class="line"><span class="lineno">  456</span>    c.TimeDet.zBar = 1 * u.cm</div>
+<div class="line"><span class="lineno">  457</span>    c.TimeDet.DZ = (c.TimeDet.dzBarRow + c.TimeDet.dzBarCol + c.TimeDet.zBar) / 2</div>
+<div class="line"><span class="lineno">  458</span>    c.TimeDet.DX = 275 * u.cm</div>
+<div class="line"><span class="lineno">  459</span>    c.TimeDet.DY = 325 * u.cm</div>
+<div class="line"><span class="lineno">  460</span>    <span class="comment"># First bar row, placed so that the front face of the timing detector is 37.87 m</span></div>
+<div class="line"><span class="lineno">  461</span>    <span class="comment"># downstream of the decay vessel centre, i.e. at 96.14 m (integration layout 2026-0.1)</span></div>
+<div class="line"><span class="lineno">  462</span>    c.TimeDet.z = 37.870 * u.m + c.decayVolume.z + c.TimeDet.zBar / 2</div>
+<div class="line"><span class="lineno">  463</span> </div>
+<div class="line"><span class="lineno">  464</span>    <span class="comment"># CaloScoringPlane: ideal (vacuum) plane where the calorimeter entrance window sits.</span></div>
+<div class="line"><span class="lineno">  465</span>    <span class="comment"># Every track entering it is scored.</span></div>
+<div class="line"><span class="lineno">  466</span>    c.CaloScoringPlane = AttrDict()</div>
+<div class="line"><span class="lineno">  467</span>    c.CaloScoringPlane.DX = 4 * u.m  <span class="comment"># full width  (former SplitCal 2*XMax)</span></div>
+<div class="line"><span class="lineno">  468</span>    c.CaloScoringPlane.DY = 6 * u.m  <span class="comment"># full height (former SplitCal 2*YMax)</span></div>
+<div class="line"><span class="lineno">  469</span>    c.CaloScoringPlane.DZ = 1 * u.mm  <span class="comment"># full thickness</span></div>
+<div class="line"><span class="lineno">  470</span>    <span class="comment"># Centre of the plane; its upstream face is the ECAL front face, 38.90 m downstream of the</span></div>
+<div class="line"><span class="lineno">  471</span>    <span class="comment"># decay vessel centre, i.e. at 97.17 m (integration layout 2026-0.1)</span></div>
+<div class="line"><span class="lineno">  472</span>    c.CaloScoringPlane.z = 38.900 * u.m + c.decayVolume.z + c.CaloScoringPlane.DZ / 2</div>
+<div class="line"><span class="lineno">  473</span>    <span class="keywordflow">if</span> c.CaloScoringPlane.z + c.CaloScoringPlane.DZ / 2 &gt;= c.cave.zEnd:</div>
+<div class="line"><span class="lineno">  474</span>        <span class="keywordflow">raise</span> ValueError(</div>
+<div class="line"><span class="lineno">  475</span>            f<span class="stringliteral">&quot;CaloScoringPlane ends at z = {c.CaloScoringPlane.z + c.CaloScoringPlane.DZ / 2} cm, &quot;</span></div>
+<div class="line"><span class="lineno">  476</span>            f<span class="stringliteral">&quot;beyond the downstream ECN3 wall at {c.cave.zEnd} cm&quot;</span></div>
+<div class="line"><span class="lineno">  477</span>        )</div>
+<div class="line"><span class="lineno">  478</span> </div>
+<div class="line"><span class="lineno">  479</span>    c.hadronAbsorber.WithConstField = shield_db[shieldName][<span class="stringliteral">&quot;WithConstField&quot;</span>]</div>
+<div class="line"><span class="lineno">  480</span>    c.muShield.WithConstField = shield_db[shieldName][<span class="stringliteral">&quot;WithConstField&quot;</span>]</div>
+<div class="line"><span class="lineno">  481</span> </div>
+<div class="line"><span class="lineno">  482</span>    <span class="comment"># for the digitizing step</span></div>
+<div class="line"><span class="lineno">  483</span>    c.strawtubesDigi = AttrDict()</div>
+<div class="line"><span class="lineno">  484</span>    c.strawtubesDigi.v_drift = 1.0 / (30 * u.ns / u.mm)  <span class="comment"># for baseline NA62 5mm radius straws)</span></div>
+<div class="line"><span class="lineno">  485</span>    c.strawtubesDigi.sigma_spatial = 0.012 * u.cm  <span class="comment"># according to Massi&#39;s TP section</span></div>
+<div class="line"><span class="lineno">  486</span> </div>
+<div class="line"><span class="lineno">  487</span>    <span class="comment"># CAMM - For Nu tau detector, keep only these parameters which are used by others...</span></div>
+<div class="line"><span class="lineno">  488</span>    c.tauMudet = AttrDict()</div>
+<div class="line"><span class="lineno">  489</span>    c.tauMudet.Ztot = 3 * u.m  <span class="comment"># space allocated to Muon spectrometer</span></div>
+<div class="line"><span class="lineno">  490</span>    c.tauMudet.zMudetC = c.muShield.z + c.muShield.length / 2.0 - c.tauMudet.Ztot / 2.0 - 70 * u.cm</div>
+<div class="line"><span class="lineno">  491</span> </div>
+<div class="line"><span class="lineno">  492</span>    set_upstream_tagger(c)</div>
+<div class="line"><span class="lineno">  493</span> </div>
+<div class="line"><span class="lineno">  494</span>    <span class="comment"># Store parameters that might be needed for reference</span></div>
+<div class="line"><span class="lineno">  495</span>    c.nuTargetPassive = nuTargetPassive</div>
+<div class="line"><span class="lineno">  496</span> </div>
+<div class="line"><span class="lineno">  497</span>    <span class="keywordflow">return</span> c</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a23fa4639bd7834b2b245271c5c1dcd3c" name="a23fa4639bd7834b2b245271c5c1dcd3c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a23fa4639bd7834b2b245271c5c1dcd3c">&#9670;&#160;</a></span>set_ecn3_cavern()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"> None geometry_config.set_ecn3_cavern </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>c</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<pre class="fragment">Set in c.cave the ECN3 hall cross-section used to place the UBT and its scoring planes.</pre> 
+<p class="definition">Definition at line <a class="el" href="geometry__config_8py_source.html#l00146">146</a> of file <a class="el" href="geometry__config_8py_source.html">geometry_config.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  146</span><span class="keyword">def </span>set_ecn3_cavern(c) -&gt; None:</div>
+<div class="line"><span class="lineno">  147</span>    <span class="stringliteral">&quot;&quot;&quot;Set in c.cave the ECN3 hall cross-section used to place the UBT and its scoring planes.&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  148</span>    <span class="comment"># ECN3 hall cross-section, used to place the UBT and its scoring planes:</span></div>
+<div class="line"><span class="lineno">  149</span>    <span class="comment"># the inner concrete surfaces of the CAD model, as in</span></div>
+<div class="line"><span class="lineno">  150</span>    <span class="comment"># passive/ShipCavernLayout.h (tests/test_cavern_layout.py checks that they</span></div>
+<div class="line"><span class="lineno">  151</span>    <span class="comment"># agree). Beam axis at x = y = 0.</span></div>
+<div class="line"><span class="lineno">  152</span>    c.cave.ECN3LeftX = -4.566 * u.m</div>
+<div class="line"><span class="lineno">  153</span>    c.cave.ECN3RightX = 11.434 * u.m</div>
+<div class="line"><span class="lineno">  154</span>    c.cave.ECN3FloorY = -3.364 * u.m</div>
+<div class="line"><span class="lineno">  155</span>    <span class="comment"># Side wall closest to the beam axis: the -x wall at x = -4.566 m</span></div>
+<div class="line"><span class="lineno">  156</span>    c.cave.ECN3WallDistance = min(-c.cave.ECN3LeftX, c.cave.ECN3RightX)</div>
+<div class="line"><span class="lineno">  157</span> </div>
+<div class="line"><span class="lineno">  158</span> </div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a68f8dfd6b8fc305422b155a63db0bdec" name="a68f8dfd6b8fc305422b155a63db0bdec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a68f8dfd6b8fc305422b155a63db0bdec">&#9670;&#160;</a></span>set_upstream_tagger()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"> None geometry_config.set_upstream_tagger </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>c</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<pre class="fragment">Set the UBT (c.UpstreamTagger) and its scoring planes (c.UpstreamTaggerScoringPlane).
+
+Needs c.cave (with the ECN3 cavern), c.decayVolume.z0, c.muShield.z and c.muShield.length.
+</pre> 
+<p class="definition">Definition at line <a class="el" href="geometry__config_8py_source.html#l00159">159</a> of file <a class="el" href="geometry__config_8py_source.html">geometry_config.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  159</span><span class="keyword">def </span>set_upstream_tagger(c) -&gt; None:</div>
+<div class="line"><span class="lineno">  160</span>    <span class="stringliteral">&quot;&quot;&quot;Set the UBT (c.UpstreamTagger) and its scoring planes (c.UpstreamTaggerScoringPlane).</span></div>
+<div class="line"><span class="lineno">  161</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  162</span><span class="stringliteral">    Needs c.cave (with the ECN3 cavern), c.decayVolume.z0, c.muShield.z and c.muShield.length.</span></div>
+<div class="line"><span class="lineno">  163</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  164</span>    <span class="comment"># Upstream Tagger: polystyrene scintillator plane, split into regions</span></div>
+<div class="line"><span class="lineno">  165</span>    <span class="comment"># generated on the box below from the rule in</span></div>
+<div class="line"><span class="lineno">  166</span>    <span class="comment"># geometry/UpstreamTagger_config.yaml. BoxZ is the space reserved by the</span></div>
+<div class="line"><span class="lineno">  167</span>    <span class="comment"># integration layout; the active thickness depends on the tile size.</span></div>
+<div class="line"><span class="lineno">  168</span>    c.UpstreamTagger = AttrDict()</div>
+<div class="line"><span class="lineno">  169</span>    <span class="comment"># The plane spans x in [-1.7, 1.7] m and y from FloorMargin above the ECN3</span></div>
+<div class="line"><span class="lineno">  170</span>    <span class="comment"># floor up to Top, covering the decay vessel entrance. Its edges must lie</span></div>
+<div class="line"><span class="lineno">  171</span>    <span class="comment"># on the edges of the 40 mm tiles (x, y = 2 + 4k cm).</span></div>
+<div class="line"><span class="lineno">  172</span>    c.UpstreamTagger.Top = 1.7 * u.m</div>
+<div class="line"><span class="lineno">  173</span>    <span class="comment"># 2.4 cm above the ECN3 floor at -336.4 cm, so that the plane ends on a</span></div>
+<div class="line"><span class="lineno">  174</span>    <span class="comment"># 40 mm tile edge (y = 2 + 4k cm), at -334 cm</span></div>
+<div class="line"><span class="lineno">  175</span>    c.UpstreamTagger.FloorMargin = 2.4 * u.cm</div>
+<div class="line"><span class="lineno">  176</span>    c.UpstreamTagger.BoxX = 3.4 * u.m  <span class="comment"># X extent of detector map</span></div>
+<div class="line"><span class="lineno">  177</span>    c.UpstreamTagger.BoxY = c.UpstreamTagger.Top - c.cave.ECN3FloorY - c.UpstreamTagger.FloorMargin  <span class="comment"># 5.04 m</span></div>
+<div class="line"><span class="lineno">  178</span>    c.UpstreamTagger.BoxCenterX = 0.0 * u.m</div>
+<div class="line"><span class="lineno">  179</span>    c.UpstreamTagger.BoxCenterY = (</div>
+<div class="line"><span class="lineno">  180</span>        c.UpstreamTagger.Top + c.cave.ECN3FloorY + c.UpstreamTagger.FloorMargin</div>
+<div class="line"><span class="lineno">  181</span>    ) / 2.0  <span class="comment"># -0.82 m</span></div>
+<div class="line"><span class="lineno">  182</span>    c.UpstreamTagger.BoxZ = 16.0 * u.cm  <span class="comment"># Z dimension (thickness)</span></div>
+<div class="line"><span class="lineno">  183</span>    <span class="comment"># Tile thickness for each tile side (cm) of UpstreamTagger_config.yaml:</span></div>
+<div class="line"><span class="lineno">  184</span>    <span class="comment"># 20 x 20 mm2 tiles are 5 mm thick, 40 x 40 mm2 tiles 10 mm. These are the</span></div>
+<div class="line"><span class="lineno">  185</span>    <span class="comment"># only tile sizes of the UBT: if small_tile_size or large_tile_size in the</span></div>
+<div class="line"><span class="lineno">  186</span>    <span class="comment"># YAML is changed to anything other than 2 or 4 cm, the thickness of the</span></div>
+<div class="line"><span class="lineno">  187</span>    <span class="comment"># new size has to be added here.</span></div>
+<div class="line"><span class="lineno">  188</span>    c.UpstreamTagger.TileThickness = {2: 0.5 * u.cm, 4: 1.0 * u.cm}</div>
+<div class="line"><span class="lineno">  189</span>    <span class="comment"># Gap between the back of the UBT envelope and the decay vessel entrance</span></div>
+<div class="line"><span class="lineno">  190</span>    c.UpstreamTagger.DecayVesselGap = 32.0 * u.cm</div>
+<div class="line"><span class="lineno">  191</span>    <span class="comment"># Centre (z) and front face (z0) of the UBT envelope</span></div>
+<div class="line"><span class="lineno">  192</span>    c.UpstreamTagger.z = c.decayVolume.z0 - c.UpstreamTagger.DecayVesselGap - c.UpstreamTagger.BoxZ / 2.0</div>
+<div class="line"><span class="lineno">  193</span>    c.UpstreamTagger.z0 = c.UpstreamTagger.z - c.UpstreamTagger.BoxZ / 2.0</div>
+<div class="line"><span class="lineno">  194</span>    c.UpstreamTagger.TimeResolution = 0.3  <span class="comment"># Time resolution in ns</span></div>
+<div class="line"><span class="lineno">  195</span>    c.UpstreamTagger.ADCTriggerThreshold = 100</div>
+<div class="line"><span class="lineno">  196</span> </div>
+<div class="line"><span class="lineno">  197</span>    <span class="comment"># Thin vacuum scoring planes. They record every track entering them,</span></div>
+<div class="line"><span class="lineno">  198</span>    <span class="comment"># without energy deposit; the point detID is the plane number.</span></div>
+<div class="line"><span class="lineno">  199</span>    c.UpstreamTaggerScoringPlane = AttrDict()</div>
+<div class="line"><span class="lineno">  200</span>    c.UpstreamTaggerScoringPlane.Z = 1.0 * u.mm  <span class="comment"># thickness</span></div>
+<div class="line"><span class="lineno">  201</span>    <span class="comment"># Plane 1, all particles: on the decay vessel entrance, centred on the</span></div>
+<div class="line"><span class="lineno">  202</span>    <span class="comment"># beam axis, with y from the ECN3 floor to its mirror image.</span></div>
+<div class="line"><span class="lineno">  203</span>    dv = c.UpstreamTaggerScoringPlane.DecayVessel = AttrDict()</div>
+<div class="line"><span class="lineno">  204</span>    dv.X = 4.4 * u.m</div>
+<div class="line"><span class="lineno">  205</span>    dv.Y = -2.0 * c.cave.ECN3FloorY  <span class="comment"># 6.728 m</span></div>
+<div class="line"><span class="lineno">  206</span>    dv.CenterX = 0.0 * u.m</div>
+<div class="line"><span class="lineno">  207</span>    dv.CenterY = 0.0 * u.m</div>
+<div class="line"><span class="lineno">  208</span>    dv.z = c.decayVolume.z0 - c.UpstreamTaggerScoringPlane.Z / 2.0</div>
+<div class="line"><span class="lineno">  209</span>    dv.MuonsOnly = <span class="keyword">False</span></div>
+<div class="line"><span class="lineno">  210</span>    <span class="comment"># Its points do not keep their tracks in MCTrack (with MCTracksWithHitsOnly,</span></div>
+<div class="line"><span class="lineno">  211</span>    <span class="comment"># as in --MuonBack): it sees every soft photon and electron from the</span></div>
+<div class="line"><span class="lineno">  212</span>    <span class="comment"># shield and the cavern, which would otherwise all be kept, about 26 % more</span></div>
+<div class="line"><span class="lineno">  213</span>    <span class="comment"># MCTracks in a muon-background sample. Points of tracks not kept for</span></div>
+<div class="line"><span class="lineno">  214</span>    <span class="comment"># another reason get track ID -2.</span></div>
+<div class="line"><span class="lineno">  215</span>    dv.KeepTracks = <span class="keyword">False</span></div>
+<div class="line"><span class="lineno">  216</span>    <span class="comment"># Plane 2, muons only: ShieldGap downstream of the muon shield. It spans x</span></div>
+<div class="line"><span class="lineno">  217</span>    <span class="comment"># between the closest ECN3 side wall and its mirror image, and y from the</span></div>
+<div class="line"><span class="lineno">  218</span>    <span class="comment"># ECN3 floor up to Top.</span></div>
+<div class="line"><span class="lineno">  219</span>    ms = c.UpstreamTaggerScoringPlane.MuonShield = AttrDict()</div>
+<div class="line"><span class="lineno">  220</span>    ms.Top = 5.2 * u.m</div>
+<div class="line"><span class="lineno">  221</span>    ms.ShieldGap = 10.0 * u.cm</div>
+<div class="line"><span class="lineno">  222</span>    ms.X = 2.0 * c.cave.ECN3WallDistance  <span class="comment"># 9.132 m</span></div>
+<div class="line"><span class="lineno">  223</span>    ms.Y = ms.Top - c.cave.ECN3FloorY  <span class="comment"># 8.564 m</span></div>
+<div class="line"><span class="lineno">  224</span>    ms.CenterX = 0.0 * u.m</div>
+<div class="line"><span class="lineno">  225</span>    ms.CenterY = (ms.Top + c.cave.ECN3FloorY) / 2.0  <span class="comment"># 0.918 m</span></div>
+<div class="line"><span class="lineno">  226</span>    ms.z = c.muShield.z + c.muShield.length + ms.ShieldGap</div>
+<div class="line"><span class="lineno">  227</span>    ms.MuonsOnly = <span class="keyword">True</span></div>
+<div class="line"><span class="lineno">  228</span>    ms.KeepTracks = <span class="keyword">True</span>  <span class="comment"># muons only: their points keep their tracks</span></div>
+<div class="line"><span class="lineno">  229</span> </div>
+<div class="line"><span class="lineno">  230</span> </div>
 </div><!-- fragment -->
 </div>
 </div>

@@ -17,6 +17,7 @@ var test__data__class__io_8cxx =
     [ "test_const_access", "test__data__class__io_8cxx.html#a11c4fcc28055ef2cd649fca49655c1b6", null ],
     [ "test_const_access", "test__data__class__io_8cxx.html#abd1524373425ca101ae2069172ff7bd0", null ],
     [ "test_const_access", "test__data__class__io_8cxx.html#a8a460663194035936bfd0895c837dde2", null ],
+    [ "test_const_access", "test__data__class__io_8cxx.html#aae4156e14fd95967711ec412504f2b28", null ],
     [ "test_const_access", "test__data__class__io_8cxx.html#a8787dbb991369d83bdb2af7a07f4792e", null ],
     [ "test_const_access", "test__data__class__io_8cxx.html#a0f8c3e7da362f42cd1b21fd34e1cd0c4", null ],
     [ "test_const_access", "test__data__class__io_8cxx.html#a80182fe1f94eb90e15572fdaee09ade3", null ],

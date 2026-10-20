@@ -10,8 +10,7 @@ var searchData=
   ['um_7',['um',['../namespaceshipunit.html#a266d8161500fa2769e26c7ad8c9283f6',1,'shipunit.um'],['../namespaceShipUnit.html#a19c69dc056a268aa660dfce12af29f39',1,'ShipUnit::um']]],
   ['universe_5fmean_5fdensity_8',['universe_mean_density',['../namespaceshipunit.html#a794ecefd028b1ef42d1c84a631f3bb0c',1,'shipunit.universe_mean_density'],['../namespacehepunit.html#a47c3a12297f05313dc856385bfa405cf',1,'hepunit.universe_mean_density']]],
   ['upperironthick_9',['upperIronThick',['../classMTCDetector.html#a5d95ddbeca95c7a451da9e8b6af18e10',1,'MTCDetector']]],
-  ['upstreamtagger_5ffulldet_10',['UpstreamTagger_fulldet',['../classUpstreamTagger.html#ace5dfc966f197ffd412ca998dac78ec1',1,'UpstreamTagger']]],
-  ['upstreamtaggerdetector_11',['upstreamTaggerDetector',['../classshipDigiReco_1_1ShipDigiReco.html#a730348eb662b22ed5b755ae782a92bcf',1,'shipDigiReco::ShipDigiReco']]],
-  ['usedinputfiles_12',['usedInputFiles',['../namespacerun__simScript.html#a37c103c6ae06010e41e8c513b9a45096',1,'run_simScript']]],
-  ['user_13',['user',['../namespacerun__reco.html#a006fd0bc278889d0f639c7efd723348f',1,'run_reco']]]
+  ['upstreamtaggerdetector_10',['upstreamTaggerDetector',['../classshipDigiReco_1_1ShipDigiReco.html#a730348eb662b22ed5b755ae782a92bcf',1,'shipDigiReco::ShipDigiReco']]],
+  ['usedinputfiles_11',['usedInputFiles',['../namespacerun__simScript.html#a37c103c6ae06010e41e8c513b9a45096',1,'run_simScript']]],
+  ['user_12',['user',['../namespacerun__reco.html#a006fd0bc278889d0f639c7efd723348f',1,'run_reco']]]
 ];

@@ -217,6 +217,8 @@ var NAVTREEINDEX0 =
 "SciFiMapping_8py.html#ae7b45f62289f6f7a88b886ce3111eaea":[10,0,12,34,19],
 "SciFiMapping_8py.html#afd115a916bc26005c27a865d524cd352":[10,0,12,34,15],
 "SciFiMapping_8py_source.html":[10,0,12,34],
+"ScoringPlane_8h.html":[10,0,1,6],
+"ScoringPlane_8h_source.html":[10,0,1,6],
 "ShipAna_8py.html":[10,0,7,26],
 "ShipAna_8py.html#a003c9a52b06378eb1e2738942a5a00a0":[10,0,7,26,34],
 "ShipAna_8py.html#a02a40c51d86f2bb079d5d8018e56f028":[10,0,7,26,21],
@@ -247,7 +249,5 @@ var NAVTREEINDEX0 =
 "ShipAna_8py.html#a67771fc1158b28ea30e895d26a00dfdd":[10,0,7,26,48],
 "ShipAna_8py.html#a68e11b162bfe00be318b9bc149895b93":[10,0,7,26,10],
 "ShipAna_8py.html#a6a821359f5bb97c0c4c040adbc4cdca3":[10,0,7,26,18],
-"ShipAna_8py.html#a700ab637b54a36857a04bf4570626534":[10,0,7,26,20],
-"ShipAna_8py.html#a7c6176c9bd251d2e60a14b3cfd89b883":[10,0,7,26,47],
-"ShipAna_8py.html#a83c34068270eedb72f140ca4d2869513":[10,0,7,26,32]
+"ShipAna_8py.html#a700ab637b54a36857a04bf4570626534":[10,0,7,26,20]
 };

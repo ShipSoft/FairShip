@@ -26,5 +26,6 @@ var searchData=
   ['ktimedet_23',['kTimeDet',['../ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680afd52b7ba84b4518f53baf1a0ef357d87',1,'ShipDetectorList.h']]],
   ['ktrstation_24',['kTRSTATION',['../ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680a3a5f17af29cf4a80d9e20f448c7fc96d',1,'ShipDetectorList.h']]],
   ['kupstreamtagger_25',['kUpstreamTagger',['../ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680a2f144cb97461008fcd3693cc5555461f',1,'ShipDetectorList.h']]],
-  ['kveto_26',['kVETO',['../ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680aa289a1b27d8c77391b88e9a794da84c2',1,'ShipDetectorList.h']]]
+  ['kupstreamtaggerscoringplane_26',['kUpstreamTaggerScoringPlane',['../ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680a7dab255937fa6a88fcb024184485bbc5',1,'ShipDetectorList.h']]],
+  ['kveto_27',['kVETO',['../ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680aa289a1b27d8c77391b88e9a794da84c2',1,'ShipDetectorList.h']]]
 ];

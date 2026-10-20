@@ -1,5 +1,6 @@
 var hierarchy =
 [
+    [ "UpstreamTaggerDetector._FiredTile", "classUpstreamTaggerDetector_1_1__FiredTile.html", null ],
     [ "split_provenance._Link", "classsplit__provenance_1_1__Link.html", null ],
     [ "AbsBField", null, [
       [ "genfit::FairShipFields", "classgenfit_1_1FairShipFields.html", null ]
@@ -21,6 +22,9 @@ var hierarchy =
     [ "experimental.analysis_toolkit.event_inspector", "classexperimental_1_1analysis__toolkit_1_1event__inspector.html", null ],
     [ "event_histogram.EventHistogram", "classevent__histogram_1_1EventHistogram.html", null ],
     [ "EventHistogram", "classEventHistogram.html", null ],
+    [ "Exception", null, [
+      [ "UpstreamTaggerDetector.UBTGeometryMismatch", "classUpstreamTaggerDetector_1_1UBTGeometryMismatch.html", null ]
+    ] ],
     [ "FairContFact", null, [
       [ "ShipPassiveContFact", "classShipPassiveContFact.html", null ],
       [ "strawtubesContFact", "classstrawtubesContFact.html", null ],
@@ -30,9 +34,7 @@ var hierarchy =
       [ "VectorMCPointSource< PointType >", "classVectorMCPointSource.html", null ]
     ] ],
     [ "FairDetector", null, [
-      [ "SHiP::Detector< CaloScoringPlanePoint >", "classSHiP_1_1Detector.html", [
-        [ "CaloScoringPlane", "classCaloScoringPlane.html", null ]
-      ] ],
+      [ "SHiP::Detector< CaloScoringPlanePoint >", "classSHiP_1_1Detector.html", null ],
       [ "SHiP::Detector< MTCDetPoint >", "classSHiP_1_1Detector.html", [
         [ "MTCDetector", "classMTCDetector.html", null ]
       ] ],
@@ -51,6 +53,7 @@ var hierarchy =
       [ "SHiP::Detector< UpstreamTaggerPoint >", "classSHiP_1_1Detector.html", [
         [ "UpstreamTagger", "classUpstreamTagger.html", null ]
       ] ],
+      [ "SHiP::Detector< UpstreamTaggerScoringPoint >", "classSHiP_1_1Detector.html", null ],
       [ "SHiP::Detector< vetoPoint >", "classSHiP_1_1Detector.html", [
         [ "exitHadronAbsorber", "classexitHadronAbsorber.html", null ],
         [ "veto", "classveto.html", null ]
@@ -58,7 +61,15 @@ var hierarchy =
       [ "SHiP::Detector< strawtubesPoint >", "classSHiP_1_1Detector.html", [
         [ "strawtubes", "classstrawtubes.html", null ]
       ] ],
-      [ "SHiP::Detector< PointType >", "classSHiP_1_1Detector.html", null ]
+      [ "SHiP::Detector< PointType >", "classSHiP_1_1Detector.html", [
+        [ "SHiP::ScoringPlane< CaloScoringPlanePoint >", "classSHiP_1_1ScoringPlane.html", [
+          [ "CaloScoringPlane", "classCaloScoringPlane.html", null ]
+        ] ],
+        [ "SHiP::ScoringPlane< UpstreamTaggerScoringPoint >", "classSHiP_1_1ScoringPlane.html", [
+          [ "UpstreamTaggerScoringPlane", "classUpstreamTaggerScoringPlane.html", null ]
+        ] ],
+        [ "SHiP::ScoringPlane< PointType >", "classSHiP_1_1ScoringPlane.html", null ]
+      ] ]
     ] ],
     [ "FairField", null, [
       [ "ShipBellField", "classShipBellField.html", null ],
@@ -100,6 +111,7 @@ var hierarchy =
         [ "TargetPoint", "classTargetPoint.html", null ],
         [ "TimeDetPoint", "classTimeDetPoint.html", null ],
         [ "UpstreamTaggerPoint", "classUpstreamTaggerPoint.html", null ],
+        [ "UpstreamTaggerScoringPoint", "classUpstreamTaggerScoringPoint.html", null ],
         [ "strawtubesPoint", "classstrawtubesPoint.html", null ],
         [ "vetoPoint", "classvetoPoint.html", null ]
       ] ]
@@ -141,6 +153,7 @@ var hierarchy =
       [ "SHiP::Detector< TTPoint >", "classSHiP_1_1Detector.html", null ],
       [ "SHiP::Detector< TimeDetPoint >", "classSHiP_1_1Detector.html", null ],
       [ "SHiP::Detector< UpstreamTaggerPoint >", "classSHiP_1_1Detector.html", null ],
+      [ "SHiP::Detector< UpstreamTaggerScoringPoint >", "classSHiP_1_1Detector.html", null ],
       [ "SHiP::Detector< vetoPoint >", "classSHiP_1_1Detector.html", null ],
       [ "SHiP::Detector< strawtubesPoint >", "classSHiP_1_1Detector.html", null ],
       [ "SHiP::Detector< PointType >", "classSHiP_1_1Detector.html", null ]
@@ -160,12 +173,14 @@ var hierarchy =
     [ "MuonPath", "classMuonPath.html", null ],
     [ "MuGeoProcessor::MuonWeights", "structMuGeoProcessor_1_1MuonWeights.html", null ],
     [ "ParticleGunParticle", "structParticleGunParticle.html", null ],
+    [ "SHiP::ScoringPlane< PointType >::Plane", "structSHiP_1_1ScoringPlane_1_1Plane.html", null ],
     [ "ROOT.pyFairModule", null, [
       [ "study_GammaConv.Block", "classstudy__GammaConv_1_1Block.html", null ],
       [ "study_muMSC.Block", "classstudy__muMSC_1_1Block.html", null ],
       [ "study_thinTarget.Block", "classstudy__thinTarget_1_1Block.html", null ]
     ] ],
     [ "makeCascadePythia8.PythiaFactory", "classmakeCascadePythia8_1_1PythiaFactory.html", null ],
+    [ "UpstreamTagger::Region", "structUpstreamTagger_1_1Region.html", null ],
     [ "Pythia8::RndmEngine", null, [
       [ "PyTr1Rng", "classPyTr1Rng.html", null ],
       [ "PyTr3Rng", "classPyTr3Rng.html", null ]

@@ -1,7 +1,17 @@
 <map id="SHiP::Detector&lt; PointType &gt;" name="SHiP::Detector&lt; PointType &gt;">
-<area shape="rect" id="Node000001" title=" " alt="" coords="25,79,234,104"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="5,5,107,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="80,38,119,77,116,80,76,42"/>
-<area shape="rect" id="Node000003" href="$classISTLPointContainer.html" title="Interface for detectors using STL containers (std::vector) for MC points." alt="" coords="131,5,277,31"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="184,42,143,80,140,77,180,38"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="199,77,408,102"/>
+<area shape="rect" id="Node000004" href="$classSHiP_1_1ScoringPlane.html" title=" " alt="" coords="477,5,675,45"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="371,71,489,43,491,48,373,76"/>
+<area shape="rect" id="Node000006" href="$classSHiP_1_1ScoringPlane.html" title=" " alt="" coords="456,69,696,109"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="422,87,456,87,456,92,422,92"/>
+<area shape="rect" id="Node000008" href="$classSHiP_1_1ScoringPlane.html" title="Thin vacuum planes that record every track entering them." alt="" coords="504,133,648,173"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="372,103,504,134,503,139,371,108"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="27,51,129,77"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="143,69,199,75,198,80,142,74"/>
+<area shape="rect" id="Node000003" href="$classISTLPointContainer.html" title="Interface for detectors using STL containers (std::vector) for MC points." alt="" coords="5,101,151,126"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="164,102,198,98,199,103,165,107"/>
+<area shape="rect" id="Node000005" href="$classCaloScoringPlane.html" title="Ideal scoring plane downstream of the timing detector." alt="" coords="783,13,918,38"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="689,23,783,23,783,28,689,28"/>
+<area shape="rect" id="Node000007" href="$classUpstreamTaggerScoringPlane.html" title="Thin vacuum scoring planes around the UBT." alt="" coords="744,77,957,102"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="710,87,744,87,744,92,710,92"/>
 </map>
