@@ -2,6 +2,7 @@
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
 import math
+import re
 from dataclasses import dataclass, field
 from typing import Any
 
@@ -25,9 +26,12 @@ class UBTGeometryMismatch(Exception):
 
 
 class UpstreamTaggerDetector(BaseDetector):
-    # Prefix of the region volumes, UpstreamTaggerRegion<id>_<tile size>cm
-    # (see UpstreamTagger::ConstructGeometry).
-    REGION_VOLUME_PREFIX = "UpstreamTaggerRegion"
+    # The UBT assembly: its daughter nodes are the regions, with the region ID
+    # as copy number, in volumes named UpstreamTaggerRegion_<tile size>cm_<shape>
+    # (see UpstreamTagger::ConstructGeometry). Geometry files with one volume
+    # per region name them UpstreamTaggerRegion<id>_<tile size>cm.
+    ASSEMBLY_VOLUME = "Upstream_Tagger"
+    REGION_VOLUME_PATTERN = re.compile(r"UpstreamTaggerRegion\d*_(\d+)cm(?:_|$)")
 
     def __init__(self, name, intree, outtree=None, mcBranchName=None) -> None:
         # Before creating any output branch, so that a UBT that cannot be
@@ -80,22 +84,22 @@ class UpstreamTaggerDetector(BaseDetector):
 
         The decision is taken from the simulated geometry, not from the
         configuration, which configure replaces for old geometry files. A
-        geometry without any UBT region volume predates the scintillator UBT:
-        its UBT was a vacuum box, whose detector IDs are not region IDs.
-        Otherwise every region of the UBT map must have its volume, with the
-        same tile size.
+        geometry without any UBT region predates the scintillator UBT: its UBT
+        was a vacuum box, whose detector IDs are not region IDs. Otherwise
+        every region of the UBT map must be placed, with the same tile size.
         """
         if not geo_manager:
             raise RuntimeError("Load the geometry of the simulation (FAIRGeom) before digitizing the UBT")
         volumes = {}  # region ID -> tile size suffix, e.g. "4cm"
-        for volume in geo_manager.GetListOfVolumes():
-            name = volume.GetName()
-            if name.startswith(cls.REGION_VOLUME_PREFIX):
-                region, _, size = name[len(cls.REGION_VOLUME_PREFIX) :].partition("_")
-                volumes[int(region)] = size
+        assembly = geo_manager.GetVolume(cls.ASSEMBLY_VOLUME)
+        nodes = assembly.GetNodes() if assembly else None
+        for node in nodes or []:
+            match = cls.REGION_VOLUME_PATTERN.match(node.GetVolume().GetName())
+            if match:
+                volumes[node.GetNumber()] = f"{match.group(1)}cm"
         if not volumes:
             raise UBTGeometryMismatch(
-                "the geometry has no UBT region volumes: it predates the scintillator UBT (a vacuum box)"
+                "the geometry has no UBT regions: it predates the scintillator UBT (a vacuum box)"
             )
         expected = {int(region): f"{round(float(size))}cm" for region, size in ubt_geo.RegionTileSize.items()}
         differing = sorted(r for r in expected.keys() | volumes.keys() if expected.get(r) != volumes.get(r))
