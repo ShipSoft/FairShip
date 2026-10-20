@@ -17,9 +17,13 @@ For each geometry, the run with -g must give the same hits as the run that
 built it, and must write the same geometry file. To show that particles are
 really transported through the stored geometry and not through the one the
 run builds, events on a copy of geometry B with tracking station 1 moved by
-2 cm must give other straw tube hits. Finally, -g must be refused together
-with a geometry option, for a file without a geometry, and for a geometry that
-lacks volumes the code builds from the stored configuration.
+2 cm must give other straw tube hits. A copy of geometry B without the corner
+ribs of the SBT support, as from an SBT of another design, must be accepted
+with a warning that names them. Finally, -g must be refused together with a
+geometry option, for a file without a geometry, for a geometry that lacks
+sensitive volumes the code builds from the stored configuration (geometry B
+with the configuration of A, and B without the LiScX cells of the SBT), and for
+a geometry that lacks a volume with a magnetic field (A without the MTC iron).
 """
 
 import argparse
@@ -34,6 +38,10 @@ FAIRSHIP = os.environ.get("FAIRSHIP", os.path.dirname(os.path.dirname(HERE)))
 SIM = os.path.join(FAIRSHIP, "macro", "run_simScript.py")
 SEED = "42"
 MOVED_NODE, MOVED_DZ = "Tr1_1", 2.0  # tracking station 1, cm
+# Volumes to remove from copies of the geometry files; a trailing * matches a prefix.
+PASSIVE_VOLUMES = "CornerRib_*"  # assemblies of the SBT support (veto::GeoCornerRib), passive
+SENSITIVE_VOLUMES = "LiScX_*"  # SBT cells, sensitive
+FIELD_VOLUME = "MTC_iron"  # magnetised iron of the MTC, geometry A
 
 
 def muon_gun(n_events: int) -> list[str]:
@@ -67,6 +75,44 @@ def move_node(source: str, target: str, node_name: str, dz: float) -> None:
     node = geometry.GetTopVolume().GetNode(node_name)
     matrix = node.GetMatrix()
     matrix.SetDz(matrix.GetTranslation()[2] + dz)
+    out = ROOT.TFile.Open(target, "RECREATE")
+    out.WriteTObject(geometry, "FAIRGeom")
+    out.WriteObject(ROOT.std.string(ship_geo), "ShipGeo")
+    out.Close()
+
+
+def remove_volumes(source: str, target: str, pattern: str) -> None:
+    """Copy a geometry file without the volumes matching pattern and their placements (run in its own process)."""
+    import ROOT
+
+    def matches(name: str) -> bool:
+        return name.startswith(pattern[:-1]) if pattern.endswith("*") else name == pattern
+
+    f = ROOT.TFile.Open(source)
+    geometry = f.Get("FAIRGeom")
+    ship_geo = str(f.Get("ShipGeo"))
+    f.Close()
+    volumes = geometry.GetListOfVolumes()
+    removed = [volume for volume in volumes if matches(volume.GetName())]
+    if not removed:
+        raise SystemExit(f"no volume {pattern} in {source}")
+    n_nodes = 0
+    for mother in volumes:
+        nodes = [mother.GetNode(i) for i in range(mother.GetNdaughters())]
+        gone = [node for node in nodes if matches(node.GetVolume().GetName())]
+        for node in gone:
+            mother.RemoveNode(node)
+        if gone and mother.GetNdaughters():
+            mother.Voxelize("")  # RemoveNode only marks the voxels for a rebuild
+        n_nodes += len(gone)
+    for volume in removed:
+        volumes.Remove(volume)
+    # The name lookup of a geometry read back is built from this list, which
+    # must have no empty slots, and a volume's number is its index in it.
+    volumes.Compress()
+    for i, volume in enumerate(volumes):
+        volume.SetNumber(i)
+    print(f"removed {len(removed)} volume(s) {pattern} and {n_nodes} placement(s) of them")
     out = ROOT.TFile.Open(target, "RECREATE")
     out.WriteTObject(geometry, "FAIRGeom")
     out.WriteObject(ROOT.std.string(ship_geo), "ShipGeo")
@@ -140,6 +186,17 @@ class Runner:
         else:
             self.fail(f"{description} (exit code {result.returncode}, output: {output.strip()[-300:]})")
 
+    def copy_without(self, source: str, tag: str, pattern: str) -> str | None:
+        """Copy of a geometry file without the volumes matching pattern, None if it could not be written."""
+        target = self.path("geo", tag)
+        print(f"\n--- copy of {source} without the volumes {pattern}: {target}", flush=True)
+        script = os.path.abspath(__file__)
+        rc = subprocess.run([sys.executable, script, "--remove-volumes", source, target, pattern]).returncode
+        if rc != 0:
+            self.fail(f"could not write {target}")
+            return None
+        return target
+
     def fail(self, message: str) -> None:
         print(f"FAILED: {message}", flush=True)
         self.failures.append(message)
@@ -148,6 +205,9 @@ class Runner:
 def main() -> int:
     if len(sys.argv) == 6 and sys.argv[1] == "--move-node":
         move_node(sys.argv[2], sys.argv[3], sys.argv[4], float(sys.argv[5]))
+        return 0
+    if len(sys.argv) == 5 and sys.argv[1] == "--remove-volumes":
+        remove_volumes(sys.argv[2], sys.argv[3], sys.argv[4])
         return 0
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("-n", "--nEvents", type=int, default=20, help="events per run (default 20)")
@@ -215,6 +275,14 @@ def main() -> int:
                 "--expect-different",
                 "strawtubesPoint",
             )
+        # Like an SBT of another design: support missing, sensitive cells unchanged.
+        no_ribs = r.copy_without(b_built, "B_no_ribs", PASSIVE_VOLUMES)
+        if no_ribs and r.simulate("B_no_ribs_load", ["-g", no_ribs], geometries["B"][1]):
+            r.check_log(
+                "a geometry without passive volumes the code builds is used, with a warning that names them",
+                "B_no_ribs_load",
+                f"passive volume(s) that the current code builds ({PASSIVE_VOLUMES[:-1]}",
+            )
 
     if os.path.exists(a_built):
         r.check_refused(
@@ -231,10 +299,26 @@ def main() -> int:
         mixed = r.path("geo", "B_with_config_A")
         replace_config(b_built, mixed, a_built)
         r.check_refused(
-            "-g is refused when the stored geometry lacks volumes the code builds (geometry B, configuration A)",
+            "-g is refused when the stored geometry lacks sensitive volumes the code builds (B, configuration A)",
             ["-g", mixed, "-o", args.workdir, "--tag", "refused", "--dry-run", *hnl_events(1)],
-            "that the current code builds",
+            "that the current code registers as sensitive",
         )
+    if os.path.exists(b_built):
+        no_cells = r.copy_without(b_built, "B_no_cells", SENSITIVE_VOLUMES)
+        if no_cells:
+            r.check_refused(
+                "-g is refused when the stored geometry lacks sensitive SBT cells",
+                ["-g", no_cells, "-o", args.workdir, "--tag", "refused", "--dry-run", *hnl_events(1)],
+                f"that the current code registers as sensitive ({SENSITIVE_VOLUMES[:-1]}",
+            )
+    if os.path.exists(a_built):
+        no_iron = r.copy_without(a_built, "A_no_iron", FIELD_VOLUME)
+        if no_iron:
+            r.check_refused(
+                "-g is refused when the stored geometry lacks a volume with a magnetic field",
+                ["-g", no_iron, "-o", args.workdir, "--tag", "refused", "--dry-run", *hnl_events(1)],
+                f"attaches a magnetic field ({FIELD_VOLUME})",
+            )
 
     print("\n=== Run times (s)")
     for tag, seconds in r.timings.items():

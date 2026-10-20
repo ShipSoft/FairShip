@@ -163,7 +163,7 @@ To simulate on the geometry of an earlier simulation, for example a standard geo
 python $FAIRSHIP/macro/run_simScript.py -g geo_my-simulation.root --tag my-second-simulation
 ```
 
-The detectors still build their geometry from the stored configuration, because building is also how they register their sensitive volumes and magnetic fields, which a geometry file does not keep; the stored geometry then replaces the built one. The run stops if the stored geometry lacks a volume or placement that the current code builds.
+The detectors still build their geometry from the stored configuration, because building is also how they register their sensitive volumes and magnetic fields, which a geometry file does not keep; the stored geometry then replaces the built one. The stored geometry may differ from the one the current code builds, for example a geometry written with an SBT of another design: the run stops only if it lacks a volume that the current code registers as sensitive (sensitive volumes are found by name) or to which it attaches a magnetic field, and prints the other differences as a warning. Volumes of the stored geometry that the current code does not build are passive.
 
 Alternatively, you can make use of the experimental `analysis_toolkit` to run a simple pre-selection check on the events. An example script can be found in `$FAIRSHIP/examples/analysis_example.py`.
 

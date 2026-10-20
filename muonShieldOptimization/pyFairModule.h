@@ -8,6 +8,8 @@
 struct _object;
 typedef _object PyObject;
 #include <stdexcept>
+#include <string>
+#include <vector>
 
 #include "FairModule.h"
 void call_python_method(PyObject* self, const char* method);
@@ -19,6 +21,11 @@ class pyFairModule : public FairModule {
   void ConstructGeometry() override {
     call_python_method(fSelf, "ConstructGeometry");
   }
+  /// Names of the volumes that the modules of this run registered as
+  /// sensitive so far, as FairDetector::Initialize() looks them up in the
+  /// geometry given to Geant4 (without a "#" copy suffix). Compiled, because
+  /// the list is thread_local, which the interpreter cannot reach reliably.
+  static std::vector<std::string> SensitiveVolumeNames();
 
  private:
   PyObject* fSelf;
