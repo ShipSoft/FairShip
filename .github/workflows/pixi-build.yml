@@ -186,11 +186,15 @@ jobs:
           path: build/
       - name: Muon-background smoke test
         run: pixi run --locked ci-sim-muonback
+      - name: Muon background from the scoring plane
+        run: pixi run --locked ci-sim-muonback-plane
       - name: Upload .root artifacts
         uses: actions/upload-artifact@v7
         with:
           name: root-files-muonback
-          path: sim_ci-muonback.root
+          path: |
+            sim_ci-muonback.root
+            sim_ci-muonback-plane.root
   run-geofile-loading:
     name: Simulation on a geometry from file
     needs: build

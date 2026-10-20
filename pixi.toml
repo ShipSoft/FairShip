@@ -135,6 +135,11 @@ cmd = "python .github/scripts/test_geofile_loading.py -n 20 -w geofile-loading-t
 [tasks.ci-sim-muonback]
 cmd = "python macro/run_simScript.py -n 5 -i 100 -f tests/data/muonback_smoke.root -S 42 -s 42 --MuonBack --FollowMuon --FastMuon --tag ci-muonback"
 
+# MuonBack on run_fixedTarget output: the muons have to continue from where
+# they entered the scoring plane behind the hadron absorber.
+[tasks.ci-sim-muonback-plane]
+cmd = "python macro/run_simScript.py -f tests/data/muonback_plane_smoke.root -S 42 -s 42 --MuonBack --FollowMuon --FastMuon --tag ci-muonback-plane && python tests/check_muonback_plane.py tests/data/muonback_plane_smoke.root sim_ci-muonback-plane.root --geo geo_ci-muonback-plane.root"
+
 # --- CI plot rendering tasks ---
 # Wrap ship-metrics-render (ship-ci-metrics) for each per-job output set. The
 # CI workflow invokes these after the corresponding sim/reco step. The
