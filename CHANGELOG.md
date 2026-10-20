@@ -19,6 +19,7 @@ it in future.
 ### Changed
 
 * The hit lists in `Tracklets` and `fitTrack2MC` now come from fitted states. They therefore leave out any surface that ACTS skipped. #1537
+* With `--MuonBackFromOrigin`, `FollowAllParticles()` no longer restarts the scored tracks where they left the scoring plane: like the muons, they start again at their production vertex. Starting at the plane is what the default `--MuonBack` replay does.
 
 ## 26.11 - 2026-11-26
 
