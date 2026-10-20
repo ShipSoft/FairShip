@@ -147,8 +147,9 @@ def set_ecn3_cavern(c) -> None:
     """Set in c.cave the ECN3 hall cross-section used to place the UBT and its scoring planes."""
     # ECN3 hall cross-section, used to place the UBT and its scoring planes:
     # the inner concrete surfaces of the CAD model, as in
-    # passive/ShipCavernLayout.h (tests/test_cavern_layout.py checks that they
-    # agree). Beam axis at x = y = 0.
+    # passive/ShipCavernLayout.h. They are copied so that geometry_config does
+    # not need ROOT; tests/test_cavern_layout.py compares them with the
+    # compiled constants. Beam axis at x = y = 0.
     c.cave.ECN3LeftX = -4.566 * u.m
     c.cave.ECN3RightX = 11.434 * u.m
     c.cave.ECN3FloorY = -3.364 * u.m
