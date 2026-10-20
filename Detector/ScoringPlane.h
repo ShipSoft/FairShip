@@ -70,9 +70,16 @@ class ScoringPlane : public Detector<PointType> {
     }
     Int_t copyNo = 0;
     gMC->CurrentVolID(copyNo);
+    if (copyNo < 1 || static_cast<size_t>(copyNo) > fPlanes.size()) {
+      LOG(fatal) << this->GetName() << ": copy number " << copyNo
+                 << " of the plane does not match any of the " << fPlanes.size()
+                 << " configured planes; the geometry differs from the "
+                    "configuration.";
+    }
+    const Plane& plane = fPlanes[copyNo - 1];
     TParticle* p = gMC->GetStack()->GetCurrentTrack();
     const Int_t pdgCode = p->GetPdgCode();
-    const std::vector<Int_t>& accepted = fPlanes[copyNo - 1].absPdgCodes;
+    const std::vector<Int_t>& accepted = plane.absPdgCodes;
     if (!accepted.empty() && std::find(accepted.begin(), accepted.end(),
                                        std::abs(pdgCode)) == accepted.end()) {
       return kFALSE;
@@ -96,7 +103,7 @@ class ScoringPlane : public Detector<PointType> {
     // run_simScript.py). With the default MCTracksWithEnergyCutOnly,
     // secondaries below the energy cut are dropped and their points get track
     // ID -2.
-    if (fPlanes[copyNo - 1].keepTracks) {
+    if (plane.keepTracks) {
       ShipStack* stack = dynamic_cast<ShipStack*>(gMC->GetStack());
       stack->AddPoint(static_cast<DetectorId>(this->GetDetId()));
     }
