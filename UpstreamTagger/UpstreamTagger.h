@@ -54,18 +54,17 @@ class UpstreamTagger : public SHiP::Detector<UpstreamTaggerPoint> {
     fCenterX = x;
     fCenterY = y;
   }
-  void SetMappedTileThicknesses(Double_t smallTileZ, Double_t largeTileZ) {
-    fSmallTileZ = smallTileZ;
-    fLargeTileZ = largeTileZ;
-  }
 
   /** Add one coarse simulation region from the UBT detector map.
-   * constituentTileSize is retained in centimetres so that the same detector
-   * ID can later select the 2 x 2 or 4 x 4 cm2 digitization response.
+   * constituentTileSize, the side of its tiles, is retained in centimetres so
+   * that the same detector ID can later select the digitization response of
+   * its tiles; thickness is that of its tiles.
    */
   void AddRegion(Int_t id, Double_t x, Double_t y, Double_t sizeX,
-                 Double_t sizeY, Double_t constituentTileSize) {
-    fRegions.push_back({id, x, y, sizeX, sizeY, constituentTileSize});
+                 Double_t sizeY, Double_t constituentTileSize,
+                 Double_t thickness) {
+    fRegions.push_back(
+        {id, x, y, sizeX, sizeY, constituentTileSize, thickness});
   }
 
   /**  Create the detector geometry */
@@ -83,6 +82,7 @@ class UpstreamTagger : public SHiP::Detector<UpstreamTaggerPoint> {
     Double_t sizeX;
     Double_t sizeY;
     Double_t constituentTileSize;
+    Double_t thickness;
   };
 
   // Sizes are set from the geometry configuration (python/geometry_config.py)
@@ -92,8 +92,6 @@ class UpstreamTagger : public SHiP::Detector<UpstreamTaggerPoint> {
   Double_t fCenterX = 0.;        //! detector centre x
   Double_t fCenterY = 0.;        //! detector centre y
   Double_t fEnvelopeZ = 0.;      //! allocated longitudinal space
-  Double_t fSmallTileZ = 0.;     //! 20 x 20 mm2 tile thickness
-  Double_t fLargeTileZ = 0.;     //! 40 x 40 mm2 tile thickness
 
   UpstreamTagger(const UpstreamTagger&) = delete;
   UpstreamTagger& operator=(const UpstreamTagger&) = delete;

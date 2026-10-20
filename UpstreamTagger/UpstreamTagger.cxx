@@ -6,6 +6,7 @@
 
 #include <cmath>
 #include <iostream>
+#include <map>
 
 #include "FairVolume.h"
 #include "ShipDetectorList.h"
@@ -92,41 +93,49 @@ void UpstreamTagger::ConstructGeometry() {
   if (fSizeX <= 0. || fSizeY <= 0. || fEnvelopeZ <= 0.) {
     Fatal("ConstructGeometry", "UBT box dimensions not set.");
   }
-  if (fSmallTileZ <= 0. || fLargeTileZ <= 0. || fSmallTileZ > fEnvelopeZ ||
-      fLargeTileZ > fEnvelopeZ) {
-    Fatal("ConstructGeometry", "Invalid UBT tile thicknesses.");
-  }
 
   fDetector = new TGeoVolumeAssembly("Upstream_Tagger");
 
-  Int_t smallRegions = 0;
-  Int_t bigRegions = 0;
+  std::map<Double_t, Int_t> regionsPerTileSize;
   for (const Region& region : fRegions) {
-    const Bool_t isSmall = region.constituentTileSize == 2.;
-    if (region.sizeX <= 0. || region.sizeY <= 0. ||
-        (!isSmall && region.constituentTileSize != 4.) ||
-        std::abs(region.x - fCenterX) + region.sizeX / 2. > fSizeX / 2. ||
+    if (region.sizeX <= 0. || region.sizeY <= 0.) {
+      Fatal("ConstructGeometry", "UBT region %d has a non-positive size.",
+            region.id);
+    }
+    if (region.thickness <= 0. || region.thickness > fEnvelopeZ) {
+      Fatal("ConstructGeometry",
+            "UBT region %d: the thickness %g cm of its %g cm tiles is not in "
+            "(0, %g] cm, the space reserved for the UBT.",
+            region.id, region.thickness, region.constituentTileSize,
+            fEnvelopeZ);
+    }
+    if (std::abs(region.x - fCenterX) + region.sizeX / 2. > fSizeX / 2. ||
         std::abs(region.y - fCenterY) + region.sizeY / 2. > fSizeY / 2.) {
-      Fatal("ConstructGeometry", "Invalid entry in the UBT detector map.");
+      Fatal("ConstructGeometry", "UBT region %d lies outside the UBT box.",
+            region.id);
     }
     const TString volumeName =
         TString::Format("UpstreamTaggerRegion%d_%dcm", region.id,
                         static_cast<Int_t>(region.constituentTileSize));
-    const Double_t regionThickness = isSmall ? fSmallTileZ : fLargeTileZ;
     TGeoVolume* regionVolume =
         gGeoManager->MakeBox(volumeName, scintillator, region.sizeX / 2.,
-                             region.sizeY / 2., regionThickness / 2.);
-    regionVolume->SetLineColor(isSmall ? kGreen + 2 : kBlue);
+                             region.sizeY / 2., region.thickness / 2.);
+    // A shade of blue per tile size in the event display.
+    regionVolume->SetLineColor(kBlue -
+                               static_cast<Int_t>(region.constituentTileSize));
     AddSensitiveVolume(regionVolume);
     fDetector->AddNode(regionVolume, region.id,
                        new TGeoTranslation(region.x, region.y, 0.));
-    smallRegions += isSmall;
-    bigRegions += !isSmall;
+    ++regionsPerTileSize[region.constituentTileSize];
   }
 
   top->AddNode(fDetector, 1, new TGeoTranslation(0., 0., det_zPos));
   cout << " Z Position (Upstream Tagger) " << det_zPos << ", "
-       << fRegions.size() << " mapped regions (" << smallRegions
-       << " with 20 x 20 mm2 tiles, " << bigRegions
-       << " with 40 x 40 mm2 tiles)" << endl;
+       << fRegions.size() << " mapped regions (";
+  for (auto it = regionsPerTileSize.begin(); it != regionsPerTileSize.end();
+       ++it) {
+    cout << (it == regionsPerTileSize.begin() ? "" : ", ") << it->second
+         << " with " << it->first << " cm tiles";
+  }
+  cout << ")" << endl;
 }

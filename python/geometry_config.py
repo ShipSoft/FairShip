@@ -180,8 +180,12 @@ def set_upstream_tagger(c) -> None:
         c.UpstreamTagger.Top + c.cave.ECN3FloorY + c.UpstreamTagger.FloorMargin
     ) / 2.0  # -0.82 m
     c.UpstreamTagger.BoxZ = 16.0 * u.cm  # Z dimension (thickness)
-    c.UpstreamTagger.SmallTileZ = 0.5 * u.cm  # 20 x 20 mm2 tile thickness
-    c.UpstreamTagger.LargeTileZ = 1.0 * u.cm  # 40 x 40 mm2 tile thickness
+    # Tile thickness for each tile side (cm) of UpstreamTagger_config.yaml:
+    # 20 x 20 mm2 tiles are 5 mm thick, 40 x 40 mm2 tiles 10 mm. These are the
+    # only tile sizes of the UBT: if small_tile_size or large_tile_size in the
+    # YAML is changed to anything other than 2 or 4 cm, the thickness of the
+    # new size has to be added here.
+    c.UpstreamTagger.TileThickness = {2: 0.5 * u.cm, 4: 1.0 * u.cm}
     # Gap between the back of the UBT envelope and the decay vessel entrance
     c.UpstreamTagger.DecayVesselGap = 32.0 * u.cm
     # Centre (z) and front face (z0) of the UBT envelope

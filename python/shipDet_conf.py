@@ -458,7 +458,20 @@ def configure_upstream_tagger(yaml_file: str, upstream_tagger, ship_geo) -> None
         os.environ["FAIRSHIP"], "geometry", "UpstreamTagger_adc_response.root"
     )
 
+    # Tile side (cm) -> thickness. A configuration read back from a file has
+    # the keys as strings, and one written before TileThickness has the
+    # thicknesses of the 20 and 40 mm tiles in SmallTileZ and LargeTileZ.
+    ubt_geo = ship_geo.UpstreamTagger
+    if "TileThickness" not in ubt_geo:
+        ubt_geo.TileThickness = {2: ubt_geo.SmallTileZ, 4: ubt_geo.LargeTileZ}
+    thicknesses = {float(size): thickness for size, thickness in ubt_geo.TileThickness.items()}
     for region in regions:
+        thickness = thicknesses.get(float(region["constituent_tile_size"]))
+        if thickness is None:
+            raise ValueError(
+                f"UBT region {region['id']} has {region['constituent_tile_size']} cm tiles, which have no thickness in"
+                f" UpstreamTagger.TileThickness (tile sides {sorted(thicknesses)} cm)"
+            )
         upstream_tagger.AddRegion(
             region["id"],
             region["x"] * u.cm,
@@ -466,6 +479,7 @@ def configure_upstream_tagger(yaml_file: str, upstream_tagger, ship_geo) -> None
             region["size_x"] * u.cm,
             region["size_y"] * u.cm,
             region["constituent_tile_size"],
+            thickness,
         )
 
 
@@ -494,8 +508,9 @@ def configure(run, ship_geo, geofile: str | None = None):
         # Placing the UBT needs the ECN3 floor and side walls: use those of the
         # cavern that ShipCave builds.
         geometry_config.set_ecn3_cavern(ship_geo)
-    if not hasattr(ship_geo, "UpstreamTaggerScoringPlane") or not hasattr(
-        getattr(ship_geo, "UpstreamTagger", None), "SmallTileZ"
+    ubt_geo = getattr(ship_geo, "UpstreamTagger", None)
+    if not hasattr(ship_geo, "UpstreamTaggerScoringPlane") or not (
+        hasattr(ubt_geo, "TileThickness") or hasattr(ubt_geo, "SmallTileZ")
     ):
         # A geometry from before the scintillator UBT: its UBT was a vacuum box,
         # which can no longer be built.
@@ -651,7 +666,6 @@ def configure(run, ship_geo, geofile: str | None = None):
         ship_geo.UpstreamTagger.BoxX, ship_geo.UpstreamTagger.BoxY, ship_geo.UpstreamTagger.BoxZ
     )
     upstreamTagger.SetBoxCenter(ship_geo.UpstreamTagger.BoxCenterX, ship_geo.UpstreamTagger.BoxCenterY)
-    upstreamTagger.SetMappedTileThicknesses(ship_geo.UpstreamTagger.SmallTileZ, ship_geo.UpstreamTagger.LargeTileZ)
     configure_upstream_tagger(
         os.path.join(os.environ["FAIRSHIP"], "geometry", "UpstreamTagger_config.yaml"),
         upstreamTagger,
