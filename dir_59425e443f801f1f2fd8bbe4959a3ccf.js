@@ -15,5 +15,6 @@ var dir_59425e443f801f1f2fd8bbe4959a3ccf =
     [ "test_signal_particle.py", "test__signal__particle_8py.html", "test__signal__particle_8py" ],
     [ "test_split_provenance.py", "test__split__provenance_8py.html", "test__split__provenance_8py" ],
     [ "test_split_set.cxx", "test__split__set_8cxx.html", "test__split__set_8cxx" ],
+    [ "test_straw_reco.py", "test__straw__reco_8py.html", "test__straw__reco_8py" ],
     [ "test_timedet_geometry.cxx", "test__timedet__geometry_8cxx.html", "test__timedet__geometry_8cxx" ]
 ];

@@ -223,6 +223,7 @@ var hierarchy =
       [ "vetoHitOnTrack", "classvetoHitOnTrack.html", null ]
     ] ],
     [ "TrackBuffer", "structTrackBuffer.html", null ],
+    [ "shipTrackAccess.TrackInfo", "classshipTrackAccess_1_1TrackInfo.html", null ],
     [ "tracking_benchmark.TrackingBenchmark", "classtracking__benchmark_1_1TrackingBenchmark.html", null ],
     [ "ShipFieldMaker::transformInfo", "structShipFieldMaker_1_1transformInfo.html", null ],
     [ "TVirtualMagField", null, [

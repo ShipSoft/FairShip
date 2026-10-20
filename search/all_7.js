@@ -63,8 +63,9 @@ var searchData=
   ['build_20from_20source_20recommended_60',['Build from source (recommended)',['../md_README.html#autotoc_md117',1,'']]],
   ['build_20system_61',['build system',['../md_CHANGELOG.html#autotoc_md76',1,'Build System'],['../md_CHANGELOG.html#autotoc_md80',1,'Build System'],['../md_CHANGELOG.html#autotoc_md85',1,'Build System']]],
   ['build_20system_20and_20dependencies_62',['Build System and Dependencies',['../md_CHANGELOG.html#autotoc_md67',1,'']]],
-  ['buildtrajectory_63',['BuildTrajectory',['../classMagneticTrackPropagator.html#abcb13114ed52704c5cef5dd945d020ff',1,'MagneticTrackPropagator']]],
-  ['built_20package_64',['Using the pre-built package',['../md_README.html#autotoc_md118',1,'']]],
-  ['by_5fntracks_65',['by_nTracks',['../namespacerun__tracking__scan.html#a7dae627e651fe3403db67ef0b7fafb6d',1,'run_tracking_scan']]],
-  ['by_5ftheta_66',['by_theta',['../namespacerun__tracking__scan.html#a6e4c94ffbbf35a49bcd16198b68facbe',1,'run_tracking_scan']]]
+  ['build_5facts_5findex_5fmap_63',['build_acts_index_map',['../namespacestrawReco.html#a9f70dbd8f01e4200ee1653144ab3ed6d',1,'strawReco']]],
+  ['buildtrajectory_64',['BuildTrajectory',['../classMagneticTrackPropagator.html#abcb13114ed52704c5cef5dd945d020ff',1,'MagneticTrackPropagator']]],
+  ['built_20package_65',['Using the pre-built package',['../md_README.html#autotoc_md118',1,'']]],
+  ['by_5fntracks_66',['by_nTracks',['../namespacerun__tracking__scan.html#a7dae627e651fe3403db67ef0b7fafb6d',1,'run_tracking_scan']]],
+  ['by_5ftheta_67',['by_theta',['../namespacerun__tracking__scan.html#a6e4c94ffbbf35a49bcd16198b68facbe',1,'run_tracking_scan']]]
 ];

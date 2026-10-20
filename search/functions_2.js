@@ -17,5 +17,6 @@ var searchData=
   ['brmesontodp_14',['brMesonToDP',['../namespacedpProductionRates.html#a4af6a641de251cc7f5e016751954a39d',1,'dpProductionRates']]],
   ['brmesontogammadp_15',['brMesonToGammaDP',['../namespacedpProductionRates.html#adec3f55d66baf8956b5bd0e43b950888',1,'dpProductionRates']]],
   ['brmesontomesondp_16',['brMesonToMesonDP',['../namespacedpProductionRates.html#a9edcc507e84f413f91c151573d2f2218',1,'dpProductionRates']]],
-  ['buildtrajectory_17',['BuildTrajectory',['../classMagneticTrackPropagator.html#abcb13114ed52704c5cef5dd945d020ff',1,'MagneticTrackPropagator']]]
+  ['build_5facts_5findex_5fmap_17',['build_acts_index_map',['../namespacestrawReco.html#a9f70dbd8f01e4200ee1653144ab3ed6d',1,'strawReco']]],
+  ['buildtrajectory_18',['BuildTrajectory',['../classMagneticTrackPropagator.html#abcb13114ed52704c5cef5dd945d020ff',1,'MagneticTrackPropagator']]]
 ];

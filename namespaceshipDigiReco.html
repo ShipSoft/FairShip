@@ -96,6 +96,7 @@ $(document).ready(function(){initNavTree('namespaceshipDigiReco.html',''); initR
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
+<a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">shipDigiReco Namespace Reference</div></div>
 </div><!--header-->
@@ -106,11 +107,203 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classshipDigiReco_1_1ShipDigiReco.html">ShipDigiReco</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:adb929464b901eae32747da7c1cf16b9a" id="r_adb929464b901eae32747da7c1cf16b9a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceshipDigiReco.html#adb929464b901eae32747da7c1cf16b9a">_cov_element</a> (cov, row, col)</td></tr>
+<tr class="separator:adb929464b901eae32747da7c1cf16b9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae2c8577a5753f0ee881ce0485c2cc761" id="r_ae2c8577a5753f0ee881ce0485c2cc761"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceshipDigiReco.html#ae2c8577a5753f0ee881ce0485c2cc761">_track_vector</a> (track, name, fallback)</td></tr>
+<tr class="separator:ae2c8577a5753f0ee881ce0485c2cc761"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a33d06066947fc3f7dacc86e3fca6fb7a" id="r_a33d06066947fc3f7dacc86e3fca6fb7a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceshipDigiReco.html#a33d06066947fc3f7dacc86e3fca6fb7a">_extrapolate_to_x</a> (point, direction, x_target)</td></tr>
+<tr class="separator:a33d06066947fc3f7dacc86e3fca6fb7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
 <tr class="memitem:a0c278bbffd4fe9af5ba2582232f8ff77" id="r_a0c278bbffd4fe9af5ba2582232f8ff77"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceshipDigiReco.html#a0c278bbffd4fe9af5ba2582232f8ff77">logger</a> = logging.getLogger(__name__)</td></tr>
 <tr class="separator:a0c278bbffd4fe9af5ba2582232f8ff77"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a85b530d54b4664f179384cf19272fbb4" id="r_a85b530d54b4664f179384cf19272fbb4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceshipDigiReco.html#a85b530d54b4664f179384cf19272fbb4">MIN_STATIONS_CROSSED</a> = 3</td></tr>
+<tr class="separator:a85b530d54b4664f179384cf19272fbb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="adb929464b901eae32747da7c1cf16b9a" name="adb929464b901eae32747da7c1cf16b9a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adb929464b901eae32747da7c1cf16b9a">&#9670;&#160;</a></span>_cov_element()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">shipDigiReco._cov_element </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>cov</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>row</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>col</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<pre class="fragment">Read one element of an ACTS vertex-track covariance.
+
+The binding hands back a numpy array, but an unfitted track has no
+covariance at all. Missing or unindexable data reads as zero.
+</pre> 
+<p class="definition">Definition at line <a class="el" href="shipDigiReco_8py_source.html#l00032">32</a> of file <a class="el" href="shipDigiReco_8py_source.html">shipDigiReco.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   32</span><span class="keyword">def </span>_cov_element(cov, row, col):</div>
+<div class="line"><span class="lineno">   33</span>    <span class="stringliteral">&quot;&quot;&quot;Read one element of an ACTS vertex-track covariance.</span></div>
+<div class="line"><span class="lineno">   34</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">   35</span><span class="stringliteral">    The binding hands back a numpy array, but an unfitted track has no</span></div>
+<div class="line"><span class="lineno">   36</span><span class="stringliteral">    covariance at all. Missing or unindexable data reads as zero.</span></div>
+<div class="line"><span class="lineno">   37</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   38</span>    <span class="keywordflow">if</span> cov <span class="keywordflow">is</span> <span class="keywordtype">None</span>:</div>
+<div class="line"><span class="lineno">   39</span>        <span class="keywordflow">return</span> 0.0</div>
+<div class="line"><span class="lineno">   40</span>    <span class="keywordflow">try</span>:</div>
+<div class="line"><span class="lineno">   41</span>        <span class="keywordflow">return</span> cov[row, col]</div>
+<div class="line"><span class="lineno">   42</span>    <span class="keywordflow">except</span> (TypeError, IndexError, KeyError):</div>
+<div class="line"><span class="lineno">   43</span>        <span class="keywordflow">pass</span></div>
+<div class="line"><span class="lineno">   44</span>    <span class="keywordflow">try</span>:</div>
+<div class="line"><span class="lineno">   45</span>        <span class="keywordflow">return</span> cov[row][col]</div>
+<div class="line"><span class="lineno">   46</span>    <span class="keywordflow">except</span> (TypeError, IndexError, KeyError):</div>
+<div class="line"><span class="lineno">   47</span>        <span class="keywordflow">return</span> 0.0</div>
+<div class="line"><span class="lineno">   48</span> </div>
+<div class="line"><span class="lineno">   49</span> </div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a33d06066947fc3f7dacc86e3fca6fb7a" name="a33d06066947fc3f7dacc86e3fca6fb7a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a33d06066947fc3f7dacc86e3fca6fb7a">&#9670;&#160;</a></span>_extrapolate_to_x()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">shipDigiReco._extrapolate_to_x </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>point</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>direction</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>x_target</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<pre class="fragment">Propagate a straight line to a plane of constant x, or None if parallel.</pre> 
+<p class="definition">Definition at line <a class="el" href="shipDigiReco_8py_source.html#l00064">64</a> of file <a class="el" href="shipDigiReco_8py_source.html">shipDigiReco.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   64</span><span class="keyword">def </span>_extrapolate_to_x(point, direction, x_target):</div>
+<div class="line"><span class="lineno">   65</span>    <span class="stringliteral">&quot;&quot;&quot;Propagate a straight line to a plane of constant x, or None if parallel.&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   66</span>    dx = direction[0]</div>
+<div class="line"><span class="lineno">   67</span>    <span class="keywordflow">if</span> abs(dx) &lt; 1e-12:</div>
+<div class="line"><span class="lineno">   68</span>        <span class="keywordflow">return</span> <span class="keywordtype">None</span></div>
+<div class="line"><span class="lineno">   69</span>    <span class="keywordflow">return</span> point + direction * ((x_target - point[0]) / dx)</div>
+<div class="line"><span class="lineno">   70</span> </div>
+<div class="line"><span class="lineno">   71</span> </div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="ae2c8577a5753f0ee881ce0485c2cc761" name="ae2c8577a5753f0ee881ce0485c2cc761"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae2c8577a5753f0ee881ce0485c2cc761">&#9670;&#160;</a></span>_track_vector()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">shipDigiReco._track_vector </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>track</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>fallback</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<pre class="fragment">Return an ACTS vertex-track 3-vector as a numpy array.
+
+Falls back to ``fallback`` when the preferred attribute is unset, and to
+the origin when neither is available.
+</pre> 
+<p class="definition">Definition at line <a class="el" href="shipDigiReco_8py_source.html#l00050">50</a> of file <a class="el" href="shipDigiReco_8py_source.html">shipDigiReco.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   50</span><span class="keyword">def </span>_track_vector(track, name, fallback):</div>
+<div class="line"><span class="lineno">   51</span>    <span class="stringliteral">&quot;&quot;&quot;Return an ACTS vertex-track 3-vector as a numpy array.</span></div>
+<div class="line"><span class="lineno">   52</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">   53</span><span class="stringliteral">    Falls back to ``fallback`` when the preferred attribute is unset, and to</span></div>
+<div class="line"><span class="lineno">   54</span><span class="stringliteral">    the origin when neither is available.</span></div>
+<div class="line"><span class="lineno">   55</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   56</span>    value = getattr(track, name, <span class="keywordtype">None</span>)</div>
+<div class="line"><span class="lineno">   57</span>    <span class="keywordflow">if</span> value <span class="keywordflow">is</span> <span class="keywordtype">None</span>:</div>
+<div class="line"><span class="lineno">   58</span>        value = getattr(track, fallback, <span class="keywordtype">None</span>)</div>
+<div class="line"><span class="lineno">   59</span>    <span class="keywordflow">if</span> value <span class="keywordflow">is</span> <span class="keywordtype">None</span>:</div>
+<div class="line"><span class="lineno">   60</span>        value = (0.0, 0.0, 0.0)</div>
+<div class="line"><span class="lineno">   61</span>    <span class="keywordflow">return</span> np.array(value, dtype=float)</div>
+<div class="line"><span class="lineno">   62</span> </div>
+<div class="line"><span class="lineno">   63</span> </div>
+</div><!-- fragment -->
+</div>
+</div>
 <h2 class="groupheader">Variable Documentation</h2>
 <a id="a0c278bbffd4fe9af5ba2582232f8ff77" name="a0c278bbffd4fe9af5ba2582232f8ff77"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0c278bbffd4fe9af5ba2582232f8ff77">&#9670;&#160;</a></span>logger</h2>
@@ -124,7 +317,23 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipDigiReco_8py_source.html#l00021">21</a> of file <a class="el" href="shipDigiReco_8py_source.html">shipDigiReco.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipDigiReco_8py_source.html#l00025">25</a> of file <a class="el" href="shipDigiReco_8py_source.html">shipDigiReco.py</a>.</p>
+
+</div>
+</div>
+<a id="a85b530d54b4664f179384cf19272fbb4" name="a85b530d54b4664f179384cf19272fbb4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a85b530d54b4664f179384cf19272fbb4">&#9670;&#160;</a></span>MIN_STATIONS_CROSSED</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int shipDigiReco.MIN_STATIONS_CROSSED = 3</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="shipDigiReco_8py_source.html#l00029">29</a> of file <a class="el" href="shipDigiReco_8py_source.html">shipDigiReco.py</a>.</p>
 
 </div>
 </div>

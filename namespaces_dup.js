@@ -1068,6 +1068,9 @@ var namespaces_dup =
       [ "PDGcode", "namespacereadDecayTable.html#a94bdd8639bf7a4e00cb64f1d4d0c820e", null ],
       [ "configuredDecays", "namespacereadDecayTable.html#ac7b78e10a0805dc3d04baed8475ec3d7", null ]
     ] ],
+    [ "recoConstants", "namespacerecoConstants.html", [
+      [ "MIN_HITS_PER_TRACK", "namespacerecoConstants.html#a109af16d599773d192fd0a73e6ba94c0", null ]
+    ] ],
     [ "rootUtils", "namespacerootUtils.html", [
       [ "assignClonesArrayItem", "namespacerootUtils.html#ae9fb99014f636adbd119f23c5eaf6b5f", null ],
       [ "bookCanvas", "namespacerootUtils.html#aea2713c1fd3249a6dd7ea82c6ccc8ef5", null ],
@@ -1579,6 +1582,7 @@ var namespaces_dup =
       [ "RedoVertexing", "namespaceShipAna.html#a365f177c7bf68e9ef076d53d9eef85b6", null ],
       [ "VertexError", "namespaceShipAna.html#a199566e2c0d9990d581ac26bbb87cbad", null ],
       [ "action", "namespaceShipAna.html#afdad0a04c8dad7eb3e3d7b6d9b17a138", null ],
+      [ "actsMode", "namespaceShipAna.html#afc35235dbf0603e9cecc3516d3b64026", null ],
       [ "bfield", "namespaceShipAna.html#a1f85359f38d72674b0a60c4e12683bfe", null ],
       [ "chi2CutOff", "namespaceShipAna.html#ab9849a92f94b1776590ae98542810c63", null ],
       [ "default", "namespaceShipAna.html#a6a821359f5bb97c0c4c040adbc4cdca3", null ],
@@ -1720,6 +1724,7 @@ var namespaces_dup =
       [ "ShipGeo", "namespaceShipReco.html#a57399f382942ed9788d85f3c9951cdeb", null ],
       [ "sink", "namespaceShipReco.html#a7adf1c90f5639c5887ba1d602f4b2f81", null ],
       [ "tmp", "namespaceShipReco.html#ac8b44ebebde083d26d062978f205ead9", null ],
+      [ "trackFitter", "namespaceShipReco.html#a10ff7da532c2440cc9aa03a46cf8f270", null ],
       [ "type", "namespaceShipReco.html#a9a338a5daf2d5cc378b238f64e270e9a", null ],
       [ "vertexing", "namespaceShipReco.html#a49d6219219d01a1d3260df48c2a40c09", null ],
       [ "withHists", "namespaceShipReco.html#a4cc8c323c3b85bdbb198ab178da862b7", null ],
@@ -1747,6 +1752,23 @@ var namespaces_dup =
       [ "options", "namespaceshipStrawTracking.html#a227a906d2ad0b9acf995e73827e33015", null ],
       [ "parser", "namespaceshipStrawTracking.html#a6f1c8ab4a8627d83bd87a950231721c6", null ],
       [ "required", "namespaceshipStrawTracking.html#a33f41ada450d677435ffd880e7462d3a", null ]
+    ] ],
+    [ "shipTrackAccess", "namespaceshipTrackAccess.html", "namespaceshipTrackAccess" ],
+    [ "ShipUnit", "namespaceShipUnit.html", [
+      [ "c_light", "namespaceShipUnit.html#aa5c80d1a788735fe9fd41b509583437b", null ],
+      [ "cm", "namespaceShipUnit.html#a265f40d0ffca1af0d38fe9a050c98bcf", null ],
+      [ "gauss", "namespaceShipUnit.html#a334f58e18b995ee78fa96a1c69c0bfba", null ],
+      [ "GeV", "namespaceShipUnit.html#aed43d63d5e6d980f22bc345f7a562011", null ],
+      [ "keV", "namespaceShipUnit.html#ad57422e4724115feacf1cabfb637e3a5", null ],
+      [ "kilogauss", "namespaceShipUnit.html#aeb2434130d4f4fe7921aa564c2965294", null ],
+      [ "km", "namespaceShipUnit.html#a6913b7e3b62fb09e1a1fcdb3a1f7c258", null ],
+      [ "m", "namespaceShipUnit.html#a7b82ae8775009208066598546951dd22", null ],
+      [ "MeV", "namespaceShipUnit.html#a355ccfd81a9820e7e0df4c8f7ca6bbb8", null ],
+      [ "mm", "namespaceShipUnit.html#a644590da60ab4efe07fbda3a260e5407", null ],
+      [ "ns", "namespaceShipUnit.html#ac17805e2154634b45e0493e800208b29", null ],
+      [ "s", "namespaceShipUnit.html#af5da50ee86db44fd81351c6c3a3dcf06", null ],
+      [ "tesla", "namespaceShipUnit.html#adae44b3580098be2b6f2c6d514dc72dd", null ],
+      [ "um", "namespaceShipUnit.html#a19c69dc056a268aa660dfce12af29f39", null ]
     ] ],
     [ "shipunit", "namespaceshipunit.html", [
       [ "alpha_rcl2", "namespaceshipunit.html#a561928bad4973c63197de654cd92f007", null ],
@@ -1894,22 +1916,6 @@ var namespaces_dup =
       [ "watt", "namespaceshipunit.html#a86f9ba53297f60184e521655c576baaf", null ],
       [ "weber", "namespaceshipunit.html#a0ef5d6a33e15f4c4fa62fb17c0bce1b2", null ]
     ] ],
-    [ "ShipUnit", "namespaceShipUnit.html", [
-      [ "c_light", "namespaceShipUnit.html#aa5c80d1a788735fe9fd41b509583437b", null ],
-      [ "cm", "namespaceShipUnit.html#a265f40d0ffca1af0d38fe9a050c98bcf", null ],
-      [ "gauss", "namespaceShipUnit.html#a334f58e18b995ee78fa96a1c69c0bfba", null ],
-      [ "GeV", "namespaceShipUnit.html#aed43d63d5e6d980f22bc345f7a562011", null ],
-      [ "keV", "namespaceShipUnit.html#ad57422e4724115feacf1cabfb637e3a5", null ],
-      [ "kilogauss", "namespaceShipUnit.html#aeb2434130d4f4fe7921aa564c2965294", null ],
-      [ "km", "namespaceShipUnit.html#a6913b7e3b62fb09e1a1fcdb3a1f7c258", null ],
-      [ "m", "namespaceShipUnit.html#a7b82ae8775009208066598546951dd22", null ],
-      [ "MeV", "namespaceShipUnit.html#a355ccfd81a9820e7e0df4c8f7ca6bbb8", null ],
-      [ "mm", "namespaceShipUnit.html#a644590da60ab4efe07fbda3a260e5407", null ],
-      [ "ns", "namespaceShipUnit.html#ac17805e2154634b45e0493e800208b29", null ],
-      [ "s", "namespaceShipUnit.html#af5da50ee86db44fd81351c6c3a3dcf06", null ],
-      [ "tesla", "namespaceShipUnit.html#adae44b3580098be2b6f2c6d514dc72dd", null ],
-      [ "um", "namespaceShipUnit.html#a19c69dc056a268aa660dfce12af29f39", null ]
-    ] ],
     [ "shipVertex", "namespaceshipVertex.html", "namespaceshipVertex" ],
     [ "shipVeto", "namespaceshipVeto.html", "namespaceshipVeto" ],
     [ "SiliconTargetDetector", "namespaceSiliconTargetDetector.html", "namespaceSiliconTargetDetector" ],
@@ -1929,6 +1935,19 @@ var namespaces_dup =
     [ "split_weight_uncertainties_rdf", "namespacesplit__weight__uncertainties__rdf.html", [
       [ "complete_element_class", "namespacesplit__weight__uncertainties__rdf.html#af99313e5abf9234b30d6d34976fcfaf2", null ],
       [ "main", "namespacesplit__weight__uncertainties__rdf.html#a9bba3b650c2f8d18b977c5e469d2c373", null ]
+    ] ],
+    [ "strawReco", "namespacestrawReco.html", [
+      [ "align_candidate_indices", "namespacestrawReco.html#af203c9ecb7afe505f0712b835d17a07f", null ],
+      [ "build_acts_index_map", "namespacestrawReco.html#a9f70dbd8f01e4200ee1653144ab3ed6d", null ],
+      [ "calculateSBTDOCA", "namespacestrawReco.html#a482e2b1ce4d89d69726df562eb679f41", null ],
+      [ "make_seed", "namespacestrawReco.html#a234e8885971415b51945fae7049b09b7", null ],
+      [ "match_hits_to_measurements", "namespacestrawReco.html#a3d325a83cbe827e5c876b62bbfe671e3", null ],
+      [ "runTracking", "namespacestrawReco.html#a8edaa181260901c1ee58a05b9da75677", null ],
+      [ "straw_geometry_id", "namespacestrawReco.html#a2f98599e596ed2c9d8fcb1385def027a", null ],
+      [ "logger", "namespacestrawReco.html#ad4004df017c32da0552f36a210a53dd3", null ],
+      [ "MAX_CHI2_NDF", "namespacestrawReco.html#a65093fdf26a73e777949810e32d8005d", null ],
+      [ "MAX_VERTEX_TRACKS", "namespacestrawReco.html#a6153eec9efdc1aca350a110be3a94efc", null ],
+      [ "MIN_VERTEX_TRACKS", "namespacestrawReco.html#a882110affe7a304d7f4d60242c138a8b", null ]
     ] ],
     [ "strawtubesDetector", "namespacestrawtubesDetector.html", "namespacestrawtubesDetector" ],
     [ "study_GammaConv", "namespacestudy__GammaConv.html", "namespacestudy__GammaConv" ],
@@ -2031,6 +2050,13 @@ var namespaces_dup =
       [ "test_pruning_does_not_change_the_answer", "namespacetest__split__provenance.html#abc4de2e78fdad5f4c901949f9c80bb49", null ],
       [ "G4", "namespacetest__split__provenance.html#a693a413e0f44dbcba32ddae90e26de30", null ],
       [ "PRUNED", "namespacetest__split__provenance.html#a32ae21fa0c40d77990c37ffe8f999f46", null ]
+    ] ],
+    [ "test_straw_reco", "namespacetest__straw__reco.html", [
+      [ "test_candidate_keeps_straw_hit_indices", "namespacetest__straw__reco.html#a79b0e6e32ea21e231549bf518c4520d4", null ],
+      [ "test_count_mismatch_on_a_straw_is_skipped", "namespacetest__straw__reco.html#acf3d86231a22a5ad4754104f560a861a", null ],
+      [ "test_hits_follow_measurements_grouped_by_straw", "namespacetest__straw__reco.html#a4f843f007059561e9ba2927de13a78fc", null ],
+      [ "test_hits_on_dropped_surfaces_are_left_out", "namespacetest__straw__reco.html#a854cc38f5c3af0119b4e2064c7ff7138", null ],
+      [ "test_straw_geometry_id_layer_numbering", "namespacetest__straw__reco.html#af70efbf69ef551288b25e56829647ad0", null ]
     ] ],
     [ "timeDetector", "namespacetimeDetector.html", "namespacetimeDetector" ],
     [ "TrackExtrapolateTool", "namespaceTrackExtrapolateTool.html", [

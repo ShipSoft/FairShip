@@ -138,7 +138,7 @@ Public Attributes</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="shipVeto_8py_source.html#l00010">10</a> of file <a class="el" href="shipVeto_8py_source.html">shipVeto.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipVeto_8py_source.html#l00011">11</a> of file <a class="el" href="shipVeto_8py_source.html">shipVeto.py</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="aa2243b390878567f83ef755d8d1fbbd5" name="aa2243b390878567f83ef755d8d1fbbd5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa2243b390878567f83ef755d8d1fbbd5">&#9670;&#160;</a></span>__init__()</h2>
@@ -166,15 +166,15 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipVeto_8py_source.html#l00013">13</a> of file <a class="el" href="shipVeto_8py_source.html">shipVeto.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   13</span>    <span class="keyword">def </span>__init__(self, t) -&gt; None:</div>
-<div class="line"><span class="lineno">   14</span>        self.SBTefficiency = 0.99  <span class="comment"># Surrounding Background tagger: 99% efficiency picked up from TP</span></div>
-<div class="line"><span class="lineno">   15</span>        self.UBTefficiency = 0.9  <span class="comment"># Upstream background tagger</span></div>
-<div class="line"><span class="lineno">   16</span>        self.random = ROOT.TRandom3()</div>
-<div class="line"><span class="lineno">   17</span>        self.random.SetSeed(13)</div>
-<div class="line"><span class="lineno">   18</span>        self.detList = self.detMap()</div>
-<div class="line"><span class="lineno">   19</span>        self.sTree = t</div>
-<div class="line"><span class="lineno">   20</span> </div>
+<p class="definition">Definition at line <a class="el" href="shipVeto_8py_source.html#l00014">14</a> of file <a class="el" href="shipVeto_8py_source.html">shipVeto.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   14</span>    <span class="keyword">def </span>__init__(self, t) -&gt; None:</div>
+<div class="line"><span class="lineno">   15</span>        self.SBTefficiency = 0.99  <span class="comment"># Surrounding Background tagger: 99% efficiency picked up from TP</span></div>
+<div class="line"><span class="lineno">   16</span>        self.UBTefficiency = 0.9  <span class="comment"># Upstream background tagger</span></div>
+<div class="line"><span class="lineno">   17</span>        self.random = ROOT.TRandom3()</div>
+<div class="line"><span class="lineno">   18</span>        self.random.SetSeed(13)</div>
+<div class="line"><span class="lineno">   19</span>        self.detList = self.detMap()</div>
+<div class="line"><span class="lineno">   20</span>        self.sTree = t</div>
+<div class="line"><span class="lineno">   21</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -195,16 +195,16 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipVeto_8py_source.html#l00021">21</a> of file <a class="el" href="shipVeto_8py_source.html">shipVeto.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   21</span>    <span class="keyword">def </span>detMap(self):</div>
-<div class="line"><span class="lineno">   22</span>        fGeo = ROOT.gGeoManager</div>
-<div class="line"><span class="lineno">   23</span>        detList = {}</div>
-<div class="line"><span class="lineno">   24</span>        <span class="keywordflow">for</span> v <span class="keywordflow">in</span> fGeo.GetListOfVolumes():</div>
-<div class="line"><span class="lineno">   25</span>            nm = v.GetName()</div>
-<div class="line"><span class="lineno">   26</span>            i = fGeo.FindVolumeFast(nm).GetNumber()</div>
-<div class="line"><span class="lineno">   27</span>            detList[i] = nm</div>
-<div class="line"><span class="lineno">   28</span>        <span class="keywordflow">return</span> detList</div>
-<div class="line"><span class="lineno">   29</span> </div>
+<p class="definition">Definition at line <a class="el" href="shipVeto_8py_source.html#l00022">22</a> of file <a class="el" href="shipVeto_8py_source.html">shipVeto.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   22</span>    <span class="keyword">def </span>detMap(self):</div>
+<div class="line"><span class="lineno">   23</span>        fGeo = ROOT.gGeoManager</div>
+<div class="line"><span class="lineno">   24</span>        detList = {}</div>
+<div class="line"><span class="lineno">   25</span>        <span class="keywordflow">for</span> v <span class="keywordflow">in</span> fGeo.GetListOfVolumes():</div>
+<div class="line"><span class="lineno">   26</span>            nm = v.GetName()</div>
+<div class="line"><span class="lineno">   27</span>            i = fGeo.FindVolumeFast(nm).GetNumber()</div>
+<div class="line"><span class="lineno">   28</span>            detList[i] = nm</div>
+<div class="line"><span class="lineno">   29</span>        <span class="keywordflow">return</span> detList</div>
+<div class="line"><span class="lineno">   30</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -234,64 +234,64 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipVeto_8py_source.html#l00112">112</a> of file <a class="el" href="shipVeto_8py_source.html">shipVeto.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  112</span>    <span class="keyword">def </span>fiducialCheck(self, aPoint):</div>
-<div class="line"><span class="lineno">  113</span>        nav = ROOT.gGeoManager.GetCurrentNavigator()</div>
-<div class="line"><span class="lineno">  114</span>        phi = 0.0</div>
-<div class="line"><span class="lineno">  115</span>        nSteps = 36</div>
-<div class="line"><span class="lineno">  116</span>        delPhi = 2.0 * ROOT.TMath.Pi() / nSteps</div>
-<div class="line"><span class="lineno">  117</span>        distmin = 1e10</div>
-<div class="line"><span class="lineno">  118</span>        nav.SetCurrentPoint(aPoint.x(), aPoint.y(), aPoint.z())</div>
-<div class="line"><span class="lineno">  119</span>        cNode = <span class="stringliteral">&quot;outside&quot;</span></div>
-<div class="line"><span class="lineno">  120</span>        aNode = nav.FindNode()</div>
-<div class="line"><span class="lineno">  121</span>        <span class="keywordflow">if</span> aNode:</div>
-<div class="line"><span class="lineno">  122</span>            cNode = aNode.GetName()</div>
-<div class="line"><span class="lineno">  123</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> cNode.startswith(<span class="stringliteral">&quot;decay_medium&quot;</span>):</div>
-<div class="line"><span class="lineno">  124</span>            distmin = 0.0</div>
-<div class="line"><span class="lineno">  125</span>        <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  126</span>            <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(nSteps):</div>
-<div class="line"><span class="lineno">  127</span>                <span class="comment"># set direction</span></div>
-<div class="line"><span class="lineno">  128</span>                xDir = ROOT.TMath.Sin(phi)</div>
-<div class="line"><span class="lineno">  129</span>                yDir = ROOT.TMath.Cos(phi)</div>
-<div class="line"><span class="lineno">  130</span>                nav.SetCurrentPoint(aPoint.x(), aPoint.y(), aPoint.z())</div>
-<div class="line"><span class="lineno">  131</span>                cNode = nav.FindNode().GetName()</div>
-<div class="line"><span class="lineno">  132</span>                nav.SetCurrentDirection(xDir, yDir, 0.0)</div>
-<div class="line"><span class="lineno">  133</span>                nav.FindNextBoundaryAndStep()</div>
-<div class="line"><span class="lineno">  134</span>                x, y = nav.GetCurrentPoint()[0], nav.GetCurrentPoint()[1]</div>
-<div class="line"><span class="lineno">  135</span>                <span class="keywordflow">if</span> cNode != nav.GetCurrentNode().GetName():</div>
-<div class="line"><span class="lineno">  136</span>                    dist = ROOT.TMath.Sqrt((aPoint.x() - x) ** 2 + (aPoint.y() - y) ** 2)</div>
-<div class="line"><span class="lineno">  137</span>                    <span class="keywordflow">if</span> dist &lt; distmin:</div>
-<div class="line"><span class="lineno">  138</span>                        distmin = dist</div>
-<div class="line"><span class="lineno">  139</span>                phi += delPhi</div>
-<div class="line"><span class="lineno">  140</span>            <span class="comment"># distance to Tr1_x1</span></div>
-<div class="line"><span class="lineno">  141</span>            nav.cd(<span class="stringliteral">&quot;/Tr1_1&quot;</span>)</div>
-<div class="line"><span class="lineno">  142</span>            shape = nav.GetCurrentNode().GetVolume().GetShape()</div>
-<div class="line"><span class="lineno">  143</span>            origin = array(<span class="stringliteral">&quot;d&quot;</span>, [0, 0, shape.GetDZ()])</div>
-<div class="line"><span class="lineno">  144</span>            master = array(<span class="stringliteral">&quot;d&quot;</span>, [0, 0, 0])</div>
-<div class="line"><span class="lineno">  145</span>            nav.LocalToMaster(origin, master)</div>
-<div class="line"><span class="lineno">  146</span>            dist = master[2] - aPoint.z()</div>
-<div class="line"><span class="lineno">  147</span>            <span class="keywordflow">if</span> dist &lt; distmin:</div>
-<div class="line"><span class="lineno">  148</span>                distmin = dist</div>
-<div class="line"><span class="lineno">  149</span>                <span class="comment"># distance to straw veto:</span></div>
-<div class="line"><span class="lineno">  150</span>            nav.cd(<span class="stringliteral">&quot;/Veto_5&quot;</span>)</div>
-<div class="line"><span class="lineno">  151</span>            shape = nav.GetCurrentNode().GetVolume().GetShape()</div>
-<div class="line"><span class="lineno">  152</span>            origin = array(<span class="stringliteral">&quot;d&quot;</span>, [0, 0, shape.GetDZ()])</div>
-<div class="line"><span class="lineno">  153</span>            master = array(<span class="stringliteral">&quot;d&quot;</span>, [0, 0, 0])</div>
-<div class="line"><span class="lineno">  154</span>            nav.LocalToMaster(origin, master)</div>
-<div class="line"><span class="lineno">  155</span>            dist = aPoint.z() - master[2]</div>
-<div class="line"><span class="lineno">  156</span>            <span class="keywordflow">if</span> dist &lt; distmin:</div>
-<div class="line"><span class="lineno">  157</span>                distmin = dist</div>
-<div class="line"><span class="lineno">  158</span>        <span class="keywordflow">return</span> distmin</div>
-<div class="line"><span class="lineno">  159</span> </div>
-<div class="line"><span class="lineno">  160</span> </div>
-<div class="line"><span class="lineno">  161</span><span class="comment"># usage</span></div>
-<div class="line"><span class="lineno">  162</span><span class="comment"># import shipVeto</span></div>
-<div class="line"><span class="lineno">  163</span><span class="comment"># veto = shipVeto.Task(sTree)</span></div>
-<div class="line"><span class="lineno">  164</span><span class="comment"># veto,w = veto.SBT_decision()</span></div>
-<div class="line"><span class="lineno">  165</span><span class="comment"># or for plastic veto,w = veto.SBT_decision(detector=&#39;plastic&#39;)</span></div>
-<div class="line"><span class="lineno">  166</span><span class="comment"># if veto: continue # reject event</span></div>
-<div class="line"><span class="lineno">  167</span><span class="comment"># or</span></div>
-<div class="line"><span class="lineno">  168</span><span class="comment"># continue using weight w</span></div>
+<p class="definition">Definition at line <a class="el" href="shipVeto_8py_source.html#l00114">114</a> of file <a class="el" href="shipVeto_8py_source.html">shipVeto.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  114</span>    <span class="keyword">def </span>fiducialCheck(self, aPoint):</div>
+<div class="line"><span class="lineno">  115</span>        nav = ROOT.gGeoManager.GetCurrentNavigator()</div>
+<div class="line"><span class="lineno">  116</span>        phi = 0.0</div>
+<div class="line"><span class="lineno">  117</span>        nSteps = 36</div>
+<div class="line"><span class="lineno">  118</span>        delPhi = 2.0 * ROOT.TMath.Pi() / nSteps</div>
+<div class="line"><span class="lineno">  119</span>        distmin = 1e10</div>
+<div class="line"><span class="lineno">  120</span>        nav.SetCurrentPoint(aPoint.x(), aPoint.y(), aPoint.z())</div>
+<div class="line"><span class="lineno">  121</span>        cNode = <span class="stringliteral">&quot;outside&quot;</span></div>
+<div class="line"><span class="lineno">  122</span>        aNode = nav.FindNode()</div>
+<div class="line"><span class="lineno">  123</span>        <span class="keywordflow">if</span> aNode:</div>
+<div class="line"><span class="lineno">  124</span>            cNode = aNode.GetName()</div>
+<div class="line"><span class="lineno">  125</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> cNode.startswith(<span class="stringliteral">&quot;decay_medium&quot;</span>):</div>
+<div class="line"><span class="lineno">  126</span>            distmin = 0.0</div>
+<div class="line"><span class="lineno">  127</span>        <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  128</span>            <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(nSteps):</div>
+<div class="line"><span class="lineno">  129</span>                <span class="comment"># set direction</span></div>
+<div class="line"><span class="lineno">  130</span>                xDir = ROOT.TMath.Sin(phi)</div>
+<div class="line"><span class="lineno">  131</span>                yDir = ROOT.TMath.Cos(phi)</div>
+<div class="line"><span class="lineno">  132</span>                nav.SetCurrentPoint(aPoint.x(), aPoint.y(), aPoint.z())</div>
+<div class="line"><span class="lineno">  133</span>                cNode = nav.FindNode().GetName()</div>
+<div class="line"><span class="lineno">  134</span>                nav.SetCurrentDirection(xDir, yDir, 0.0)</div>
+<div class="line"><span class="lineno">  135</span>                nav.FindNextBoundaryAndStep()</div>
+<div class="line"><span class="lineno">  136</span>                x, y = nav.GetCurrentPoint()[0], nav.GetCurrentPoint()[1]</div>
+<div class="line"><span class="lineno">  137</span>                <span class="keywordflow">if</span> cNode != nav.GetCurrentNode().GetName():</div>
+<div class="line"><span class="lineno">  138</span>                    dist = ROOT.TMath.Sqrt((aPoint.x() - x) ** 2 + (aPoint.y() - y) ** 2)</div>
+<div class="line"><span class="lineno">  139</span>                    <span class="keywordflow">if</span> dist &lt; distmin:</div>
+<div class="line"><span class="lineno">  140</span>                        distmin = dist</div>
+<div class="line"><span class="lineno">  141</span>                phi += delPhi</div>
+<div class="line"><span class="lineno">  142</span>            <span class="comment"># distance to Tr1_x1</span></div>
+<div class="line"><span class="lineno">  143</span>            nav.cd(<span class="stringliteral">&quot;/Tr1_1&quot;</span>)</div>
+<div class="line"><span class="lineno">  144</span>            shape = nav.GetCurrentNode().GetVolume().GetShape()</div>
+<div class="line"><span class="lineno">  145</span>            origin = array(<span class="stringliteral">&quot;d&quot;</span>, [0, 0, shape.GetDZ()])</div>
+<div class="line"><span class="lineno">  146</span>            master = array(<span class="stringliteral">&quot;d&quot;</span>, [0, 0, 0])</div>
+<div class="line"><span class="lineno">  147</span>            nav.LocalToMaster(origin, master)</div>
+<div class="line"><span class="lineno">  148</span>            dist = master[2] - aPoint.z()</div>
+<div class="line"><span class="lineno">  149</span>            <span class="keywordflow">if</span> dist &lt; distmin:</div>
+<div class="line"><span class="lineno">  150</span>                distmin = dist</div>
+<div class="line"><span class="lineno">  151</span>                <span class="comment"># distance to straw veto:</span></div>
+<div class="line"><span class="lineno">  152</span>            nav.cd(<span class="stringliteral">&quot;/Veto_5&quot;</span>)</div>
+<div class="line"><span class="lineno">  153</span>            shape = nav.GetCurrentNode().GetVolume().GetShape()</div>
+<div class="line"><span class="lineno">  154</span>            origin = array(<span class="stringliteral">&quot;d&quot;</span>, [0, 0, shape.GetDZ()])</div>
+<div class="line"><span class="lineno">  155</span>            master = array(<span class="stringliteral">&quot;d&quot;</span>, [0, 0, 0])</div>
+<div class="line"><span class="lineno">  156</span>            nav.LocalToMaster(origin, master)</div>
+<div class="line"><span class="lineno">  157</span>            dist = aPoint.z() - master[2]</div>
+<div class="line"><span class="lineno">  158</span>            <span class="keywordflow">if</span> dist &lt; distmin:</div>
+<div class="line"><span class="lineno">  159</span>                distmin = dist</div>
+<div class="line"><span class="lineno">  160</span>        <span class="keywordflow">return</span> distmin</div>
+<div class="line"><span class="lineno">  161</span> </div>
+<div class="line"><span class="lineno">  162</span> </div>
+<div class="line"><span class="lineno">  163</span><span class="comment"># usage</span></div>
+<div class="line"><span class="lineno">  164</span><span class="comment"># import shipVeto</span></div>
+<div class="line"><span class="lineno">  165</span><span class="comment"># veto = shipVeto.Task(sTree)</span></div>
+<div class="line"><span class="lineno">  166</span><span class="comment"># veto,w = veto.SBT_decision()</span></div>
+<div class="line"><span class="lineno">  167</span><span class="comment"># or for plastic veto,w = veto.SBT_decision(detector=&#39;plastic&#39;)</span></div>
+<div class="line"><span class="lineno">  168</span><span class="comment"># if veto: continue # reject event</span></div>
+<div class="line"><span class="lineno">  169</span><span class="comment"># or</span></div>
+<div class="line"><span class="lineno">  170</span><span class="comment"># continue using weight w</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -321,13 +321,13 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipVeto_8py_source.html#l00106">106</a> of file <a class="el" href="shipVeto_8py_source.html">shipVeto.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  106</span>    <span class="keyword">def </span>fiducialCheckSignal(self, n):</div>
-<div class="line"><span class="lineno">  107</span>        hnl = self.sTree.Particles[n]</div>
-<div class="line"><span class="lineno">  108</span>        aPoint = ROOT.TVector3(hnl.Vx(), hnl.Vy(), hnl.Vz())</div>
-<div class="line"><span class="lineno">  109</span>        distmin = self.fiducialCheck(aPoint)</div>
-<div class="line"><span class="lineno">  110</span>        <span class="keywordflow">return</span> distmin</div>
-<div class="line"><span class="lineno">  111</span> </div>
+<p class="definition">Definition at line <a class="el" href="shipVeto_8py_source.html#l00108">108</a> of file <a class="el" href="shipVeto_8py_source.html">shipVeto.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  108</span>    <span class="keyword">def </span>fiducialCheckSignal(self, n):</div>
+<div class="line"><span class="lineno">  109</span>        hnl = self.sTree.Particles[n]</div>
+<div class="line"><span class="lineno">  110</span>        aPoint = ROOT.TVector3(hnl.Vx(), hnl.Vy(), hnl.Vz())</div>
+<div class="line"><span class="lineno">  111</span>        distmin = self.fiducialCheck(aPoint)</div>
+<div class="line"><span class="lineno">  112</span>        <span class="keywordflow">return</span> distmin</div>
+<div class="line"><span class="lineno">  113</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -363,39 +363,39 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipVeto_8py_source.html#l00036">36</a> of file <a class="el" href="shipVeto_8py_source.html">shipVeto.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   36</span>    <span class="keyword">def </span>SBT_decision(self, mcParticle=None, detector=&quot;liquid&quot;) -&gt; tuple[bool, float, int]:</div>
-<div class="line"><span class="lineno">   37</span>        <span class="comment"># if mcParticle &gt;0, only count hits with this particle</span></div>
-<div class="line"><span class="lineno">   38</span>        <span class="comment"># if mcParticle &lt;0, do not count hits with this particle</span></div>
-<div class="line"><span class="lineno">   39</span>        hitSegments = 0</div>
-<div class="line"><span class="lineno">   40</span>        index = -1</div>
-<div class="line"><span class="lineno">   41</span>        fdetector = detector == <span class="stringliteral">&quot;liquid&quot;</span></div>
-<div class="line"><span class="lineno">   42</span>        <span class="keywordflow">for</span> aDigi <span class="keywordflow">in</span> self.sTree.Digi_SBTHits:</div>
-<div class="line"><span class="lineno">   43</span>            index += 1</div>
-<div class="line"><span class="lineno">   44</span>            detID = aDigi.GetDetectorID()</div>
-<div class="line"><span class="lineno">   45</span>            <span class="keywordflow">if</span> fdetector <span class="keywordflow">and</span> detID &gt; 999999:</div>
-<div class="line"><span class="lineno">   46</span>                <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">   47</span>            <span class="keywordflow">if</span> <span class="keywordflow">not</span> fdetector <span class="keywordflow">and</span> <span class="keywordflow">not</span> detID &gt; 999999:</div>
-<div class="line"><span class="lineno">   48</span>                <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">   49</span>            <span class="keywordflow">if</span> mcParticle:</div>
-<div class="line"><span class="lineno">   50</span>                contributors = list(self.sTree.digiSBT2MC[index])</div>
-<div class="line"><span class="lineno">   51</span>                <span class="keywordflow">if</span> mcParticle &gt; 0:</div>
-<div class="line"><span class="lineno">   52</span>                    <span class="comment"># only count hits from this particle: skip if it is absent</span></div>
-<div class="line"><span class="lineno">   53</span>                    <span class="keywordflow">if</span> mcParticle <span class="keywordflow">not</span> <span class="keywordflow">in</span> contributors:</div>
-<div class="line"><span class="lineno">   54</span>                        <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">   55</span>                <span class="keywordflow">elif</span> mcParticle &lt; 0:</div>
-<div class="line"><span class="lineno">   56</span>                    <span class="comment"># do not count hits from this particle: skip if it is present</span></div>
-<div class="line"><span class="lineno">   57</span>                    <span class="keywordflow">if</span> abs(mcParticle) <span class="keywordflow">in</span> contributors:</div>
-<div class="line"><span class="lineno">   58</span>                        <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">   59</span>            aDigi.GetXYZ()</div>
-<div class="line"><span class="lineno">   60</span>            aDigi.GetEloss()</div>
-<div class="line"><span class="lineno">   61</span>            <span class="keywordflow">if</span> aDigi.isValid():</div>
-<div class="line"><span class="lineno">   62</span>                hitSegments += 1  <span class="comment"># threshold of 45 MeV per segment</span></div>
-<div class="line"><span class="lineno">   63</span>        w = (1 - self.SBTefficiency) ** hitSegments</div>
-<div class="line"><span class="lineno">   64</span>        veto = self.random.Rndm() &gt; w</div>
-<div class="line"><span class="lineno">   65</span>        <span class="comment"># print &#39;SBT :&#39;,hitSegments</span></div>
-<div class="line"><span class="lineno">   66</span>        <span class="keywordflow">return</span> veto, w, hitSegments</div>
-<div class="line"><span class="lineno">   67</span> </div>
+<p class="definition">Definition at line <a class="el" href="shipVeto_8py_source.html#l00037">37</a> of file <a class="el" href="shipVeto_8py_source.html">shipVeto.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   37</span>    <span class="keyword">def </span>SBT_decision(self, mcParticle=None, detector=&quot;liquid&quot;) -&gt; tuple[bool, float, int]:</div>
+<div class="line"><span class="lineno">   38</span>        <span class="comment"># if mcParticle &gt;0, only count hits with this particle</span></div>
+<div class="line"><span class="lineno">   39</span>        <span class="comment"># if mcParticle &lt;0, do not count hits with this particle</span></div>
+<div class="line"><span class="lineno">   40</span>        hitSegments = 0</div>
+<div class="line"><span class="lineno">   41</span>        index = -1</div>
+<div class="line"><span class="lineno">   42</span>        fdetector = detector == <span class="stringliteral">&quot;liquid&quot;</span></div>
+<div class="line"><span class="lineno">   43</span>        <span class="keywordflow">for</span> aDigi <span class="keywordflow">in</span> self.sTree.Digi_SBTHits:</div>
+<div class="line"><span class="lineno">   44</span>            index += 1</div>
+<div class="line"><span class="lineno">   45</span>            detID = aDigi.GetDetectorID()</div>
+<div class="line"><span class="lineno">   46</span>            <span class="keywordflow">if</span> fdetector <span class="keywordflow">and</span> detID &gt; 999999:</div>
+<div class="line"><span class="lineno">   47</span>                <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">   48</span>            <span class="keywordflow">if</span> <span class="keywordflow">not</span> fdetector <span class="keywordflow">and</span> <span class="keywordflow">not</span> detID &gt; 999999:</div>
+<div class="line"><span class="lineno">   49</span>                <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">   50</span>            <span class="keywordflow">if</span> mcParticle:</div>
+<div class="line"><span class="lineno">   51</span>                contributors = list(self.sTree.digiSBT2MC[index])</div>
+<div class="line"><span class="lineno">   52</span>                <span class="keywordflow">if</span> mcParticle &gt; 0:</div>
+<div class="line"><span class="lineno">   53</span>                    <span class="comment"># only count hits from this particle: skip if it is absent</span></div>
+<div class="line"><span class="lineno">   54</span>                    <span class="keywordflow">if</span> mcParticle <span class="keywordflow">not</span> <span class="keywordflow">in</span> contributors:</div>
+<div class="line"><span class="lineno">   55</span>                        <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">   56</span>                <span class="keywordflow">elif</span> mcParticle &lt; 0:</div>
+<div class="line"><span class="lineno">   57</span>                    <span class="comment"># do not count hits from this particle: skip if it is present</span></div>
+<div class="line"><span class="lineno">   58</span>                    <span class="keywordflow">if</span> abs(mcParticle) <span class="keywordflow">in</span> contributors:</div>
+<div class="line"><span class="lineno">   59</span>                        <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">   60</span>            aDigi.GetXYZ()</div>
+<div class="line"><span class="lineno">   61</span>            aDigi.GetEloss()</div>
+<div class="line"><span class="lineno">   62</span>            <span class="keywordflow">if</span> aDigi.isValid():</div>
+<div class="line"><span class="lineno">   63</span>                hitSegments += 1  <span class="comment"># threshold of 45 MeV per segment</span></div>
+<div class="line"><span class="lineno">   64</span>        w = (1 - self.SBTefficiency) ** hitSegments</div>
+<div class="line"><span class="lineno">   65</span>        veto = self.random.Rndm() &gt; w</div>
+<div class="line"><span class="lineno">   66</span>        <span class="comment"># print &#39;SBT :&#39;,hitSegments</span></div>
+<div class="line"><span class="lineno">   67</span>        <span class="keywordflow">return</span> veto, w, hitSegments</div>
+<div class="line"><span class="lineno">   68</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -425,10 +425,10 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipVeto_8py_source.html#l00033">33</a> of file <a class="el" href="shipVeto_8py_source.html">shipVeto.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   33</span>    <span class="keyword">def </span>SBT_liquid_decision(self, mcParticle=None) -&gt; tuple[bool, float, int]:</div>
-<div class="line"><span class="lineno">   34</span>        <span class="keywordflow">return</span> self.SBT_decision(mcParticle, detector=<span class="stringliteral">&quot;liquid&quot;</span>)</div>
-<div class="line"><span class="lineno">   35</span> </div>
+<p class="definition">Definition at line <a class="el" href="shipVeto_8py_source.html#l00034">34</a> of file <a class="el" href="shipVeto_8py_source.html">shipVeto.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   34</span>    <span class="keyword">def </span>SBT_liquid_decision(self, mcParticle=None) -&gt; tuple[bool, float, int]:</div>
+<div class="line"><span class="lineno">   35</span>        <span class="keywordflow">return</span> self.SBT_decision(mcParticle, detector=<span class="stringliteral">&quot;liquid&quot;</span>)</div>
+<div class="line"><span class="lineno">   36</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -458,10 +458,10 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipVeto_8py_source.html#l00030">30</a> of file <a class="el" href="shipVeto_8py_source.html">shipVeto.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   30</span>    <span class="keyword">def </span>SBT_plastic_decision(self, mcParticle=None) -&gt; tuple[bool, float, int]:</div>
-<div class="line"><span class="lineno">   31</span>        <span class="keywordflow">return</span> self.SBT_decision(mcParticle, detector=<span class="stringliteral">&quot;plastic&quot;</span>)</div>
-<div class="line"><span class="lineno">   32</span> </div>
+<p class="definition">Definition at line <a class="el" href="shipVeto_8py_source.html#l00031">31</a> of file <a class="el" href="shipVeto_8py_source.html">shipVeto.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   31</span>    <span class="keyword">def </span>SBT_plastic_decision(self, mcParticle=None) -&gt; tuple[bool, float, int]:</div>
+<div class="line"><span class="lineno">   32</span>        <span class="keywordflow">return</span> self.SBT_decision(mcParticle, detector=<span class="stringliteral">&quot;plastic&quot;</span>)</div>
+<div class="line"><span class="lineno">   33</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -491,29 +491,30 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipVeto_8py_source.html#l00084">84</a> of file <a class="el" href="shipVeto_8py_source.html">shipVeto.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   84</span>    <span class="keyword">def </span>Track_decision(self, mcParticle=None) -&gt; tuple[bool, int | float, int]:</div>
-<div class="line"><span class="lineno">   85</span>        nMultCon = 0</div>
-<div class="line"><span class="lineno">   86</span>        k = -1</div>
-<div class="line"><span class="lineno">   87</span>        <span class="keywordflow">for</span> aTrack <span class="keywordflow">in</span> self.sTree.FitTracks:</div>
-<div class="line"><span class="lineno">   88</span>            k += 1</div>
-<div class="line"><span class="lineno">   89</span>            <span class="keywordflow">if</span> mcParticle:</div>
-<div class="line"><span class="lineno">   90</span>                <span class="keywordflow">if</span> mcParticle &gt; 0 <span class="keywordflow">and</span> mcParticle != self.sTree.fitTrack2MC[k]:</div>
-<div class="line"><span class="lineno">   91</span>                    <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">   92</span>                <span class="keywordflow">if</span> mcParticle &lt; 0 <span class="keywordflow">and</span> abs(mcParticle) == self.sTree.fitTrack2MC[k]:</div>
+<p class="definition">Definition at line <a class="el" href="shipVeto_8py_source.html#l00085">85</a> of file <a class="el" href="shipVeto_8py_source.html">shipVeto.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   85</span>    <span class="keyword">def </span>Track_decision(self, mcParticle=None) -&gt; tuple[bool, int | float, int]:</div>
+<div class="line"><span class="lineno">   86</span>        nMultCon = 0</div>
+<div class="line"><span class="lineno">   87</span>        k = -1</div>
+<div class="line"><span class="lineno">   88</span>        acts_tracks = uses_acts(self.sTree)</div>
+<div class="line"><span class="lineno">   89</span>        <span class="keywordflow">for</span> aTrack <span class="keywordflow">in</span> get_tracks(self.sTree):</div>
+<div class="line"><span class="lineno">   90</span>            k += 1</div>
+<div class="line"><span class="lineno">   91</span>            <span class="keywordflow">if</span> mcParticle:</div>
+<div class="line"><span class="lineno">   92</span>                <span class="keywordflow">if</span> mcParticle &gt; 0 <span class="keywordflow">and</span> mcParticle != self.sTree.fitTrack2MC[k]:</div>
 <div class="line"><span class="lineno">   93</span>                    <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">   94</span>            fstatus = aTrack.getFitStatus()</div>
-<div class="line"><span class="lineno">   95</span>            <span class="keywordflow">if</span> <span class="keywordflow">not</span> fstatus.isFitConverged():</div>
-<div class="line"><span class="lineno">   96</span>                <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">   97</span>            <span class="keywordflow">if</span> fstatus.getNdf() &lt; 25:</div>
+<div class="line"><span class="lineno">   94</span>                <span class="keywordflow">if</span> mcParticle &lt; 0 <span class="keywordflow">and</span> abs(mcParticle) == self.sTree.fitTrack2MC[k]:</div>
+<div class="line"><span class="lineno">   95</span>                    <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">   96</span>            info = track_info(aTrack, acts_tracks)</div>
+<div class="line"><span class="lineno">   97</span>            <span class="keywordflow">if</span> <span class="keywordflow">not</span> info.converged:</div>
 <div class="line"><span class="lineno">   98</span>                <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">   99</span>            nMultCon += 1</div>
-<div class="line"><span class="lineno">  100</span>        w = 1.0</div>
-<div class="line"><span class="lineno">  101</span>        veto = nMultCon &gt; 2</div>
-<div class="line"><span class="lineno">  102</span>        <span class="keywordflow">if</span> veto:</div>
-<div class="line"><span class="lineno">  103</span>            w = 0.0</div>
-<div class="line"><span class="lineno">  104</span>        <span class="keywordflow">return</span> veto, w, nMultCon</div>
-<div class="line"><span class="lineno">  105</span> </div>
+<div class="line"><span class="lineno">   99</span>            <span class="keywordflow">if</span> info.ndf &lt; 25:</div>
+<div class="line"><span class="lineno">  100</span>                <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  101</span>            nMultCon += 1</div>
+<div class="line"><span class="lineno">  102</span>        w = 1.0</div>
+<div class="line"><span class="lineno">  103</span>        veto = nMultCon &gt; 2</div>
+<div class="line"><span class="lineno">  104</span>        <span class="keywordflow">if</span> veto:</div>
+<div class="line"><span class="lineno">  105</span>            w = 0.0</div>
+<div class="line"><span class="lineno">  106</span>        <span class="keywordflow">return</span> veto, w, nMultCon</div>
+<div class="line"><span class="lineno">  107</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -543,23 +544,23 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipVeto_8py_source.html#l00068">68</a> of file <a class="el" href="shipVeto_8py_source.html">shipVeto.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   68</span>    <span class="keyword">def </span>UBT_decision(self, mcParticle=None) -&gt; tuple[bool, float, int]:</div>
-<div class="line"><span class="lineno">   69</span>        nHits = 0</div>
-<div class="line"><span class="lineno">   70</span>        mom = ROOT.TVector3()</div>
-<div class="line"><span class="lineno">   71</span>        <span class="keywordflow">for</span> ahit <span class="keywordflow">in</span> self.sTree.UpstreamTaggerPoint:</div>
-<div class="line"><span class="lineno">   72</span>            <span class="keywordflow">if</span> mcParticle:</div>
-<div class="line"><span class="lineno">   73</span>                <span class="keywordflow">if</span> mcParticle &gt; 0 <span class="keywordflow">and</span> mcParticle != ahit.GetTrackID():</div>
-<div class="line"><span class="lineno">   74</span>                    <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">   75</span>                <span class="keywordflow">if</span> mcParticle &lt; 0 <span class="keywordflow">and</span> abs(mcParticle) == ahit.GetTrackID():</div>
-<div class="line"><span class="lineno">   76</span>                    <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">   77</span>            ahit.Momentum(mom)</div>
-<div class="line"><span class="lineno">   78</span>            <span class="keywordflow">if</span> mom.Mag() &gt; 0.1:</div>
-<div class="line"><span class="lineno">   79</span>                nHits += 1</div>
-<div class="line"><span class="lineno">   80</span>        w = (1 - self.UBTefficiency) ** nHits</div>
-<div class="line"><span class="lineno">   81</span>        veto = self.random.Rndm() &gt; w</div>
-<div class="line"><span class="lineno">   82</span>        <span class="keywordflow">return</span> veto, w, nHits</div>
-<div class="line"><span class="lineno">   83</span> </div>
+<p class="definition">Definition at line <a class="el" href="shipVeto_8py_source.html#l00069">69</a> of file <a class="el" href="shipVeto_8py_source.html">shipVeto.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   69</span>    <span class="keyword">def </span>UBT_decision(self, mcParticle=None) -&gt; tuple[bool, float, int]:</div>
+<div class="line"><span class="lineno">   70</span>        nHits = 0</div>
+<div class="line"><span class="lineno">   71</span>        mom = ROOT.TVector3()</div>
+<div class="line"><span class="lineno">   72</span>        <span class="keywordflow">for</span> ahit <span class="keywordflow">in</span> self.sTree.UpstreamTaggerPoint:</div>
+<div class="line"><span class="lineno">   73</span>            <span class="keywordflow">if</span> mcParticle:</div>
+<div class="line"><span class="lineno">   74</span>                <span class="keywordflow">if</span> mcParticle &gt; 0 <span class="keywordflow">and</span> mcParticle != ahit.GetTrackID():</div>
+<div class="line"><span class="lineno">   75</span>                    <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">   76</span>                <span class="keywordflow">if</span> mcParticle &lt; 0 <span class="keywordflow">and</span> abs(mcParticle) == ahit.GetTrackID():</div>
+<div class="line"><span class="lineno">   77</span>                    <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">   78</span>            ahit.Momentum(mom)</div>
+<div class="line"><span class="lineno">   79</span>            <span class="keywordflow">if</span> mom.Mag() &gt; 0.1:</div>
+<div class="line"><span class="lineno">   80</span>                nHits += 1</div>
+<div class="line"><span class="lineno">   81</span>        w = (1 - self.UBTefficiency) ** nHits</div>
+<div class="line"><span class="lineno">   82</span>        veto = self.random.Rndm() &gt; w</div>
+<div class="line"><span class="lineno">   83</span>        <span class="keywordflow">return</span> veto, w, nHits</div>
+<div class="line"><span class="lineno">   84</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -576,7 +577,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipVeto_8py_source.html#l00018">18</a> of file <a class="el" href="shipVeto_8py_source.html">shipVeto.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipVeto_8py_source.html#l00019">19</a> of file <a class="el" href="shipVeto_8py_source.html">shipVeto.py</a>.</p>
 
 </div>
 </div>
@@ -592,7 +593,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipVeto_8py_source.html#l00016">16</a> of file <a class="el" href="shipVeto_8py_source.html">shipVeto.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipVeto_8py_source.html#l00017">17</a> of file <a class="el" href="shipVeto_8py_source.html">shipVeto.py</a>.</p>
 
 </div>
 </div>
@@ -608,7 +609,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipVeto_8py_source.html#l00014">14</a> of file <a class="el" href="shipVeto_8py_source.html">shipVeto.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipVeto_8py_source.html#l00015">15</a> of file <a class="el" href="shipVeto_8py_source.html">shipVeto.py</a>.</p>
 
 </div>
 </div>
@@ -624,7 +625,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipVeto_8py_source.html#l00019">19</a> of file <a class="el" href="shipVeto_8py_source.html">shipVeto.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipVeto_8py_source.html#l00020">20</a> of file <a class="el" href="shipVeto_8py_source.html">shipVeto.py</a>.</p>
 
 </div>
 </div>
@@ -640,7 +641,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipVeto_8py_source.html#l00015">15</a> of file <a class="el" href="shipVeto_8py_source.html">shipVeto.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipVeto_8py_source.html#l00016">16</a> of file <a class="el" href="shipVeto_8py_source.html">shipVeto.py</a>.</p>
 
 </div>
 </div>

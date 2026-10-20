@@ -17,5 +17,6 @@ var searchData=
   ['useinputfile_14',['useInputFile',['../namespacerun__simScript.html#ae07723b016830ea988bc9eb4ee9e2fcc',1,'run_simScript']]],
   ['userandom1_15',['userandom1',['../classDPPythia8Generator.html#ab4c1edc6b0d596bb683bf06696a3cdba',1,'DPPythia8Generator::UseRandom1()'],['../classFixedTargetGenerator.html#a19a2c4d106fac196fa4f874edc09c3b9',1,'FixedTargetGenerator::UseRandom1()'],['../classHNLPythia8Generator.html#af5c3daa98bc8428d66a7569e3c60c0f9',1,'HNLPythia8Generator::UseRandom1()'],['../classPythia8Generator.html#aceb1443f87222964e0d7885b23d85549',1,'Pythia8Generator::UseRandom1()']]],
   ['userandom3_16',['userandom3',['../classDPPythia8Generator.html#a31ea29b3c84e6554163ae50efcbba2fa',1,'DPPythia8Generator::UseRandom3()'],['../classFixedTargetGenerator.html#add0415acba00e5580114d0339ca14458',1,'FixedTargetGenerator::UseRandom3()'],['../classHNLPythia8Generator.html#a10cfa18bf9fcef7c426880b02a6aeb8e',1,'HNLPythia8Generator::UseRandom3()'],['../classPythia8Generator.html#aa66765891a7fd1913ef0c20334847dc7',1,'Pythia8Generator::UseRandom3()']]],
-  ['usesymmetry_17',['UseSymmetry',['../classShipBFieldMap.html#a8ce60bff834f49ad519b0d381bae4333',1,'ShipBFieldMap']]]
+  ['uses_5facts_17',['uses_acts',['../namespaceshipTrackAccess.html#a0249a635f725f749dfd31a99b23239ee',1,'shipTrackAccess']]],
+  ['usesymmetry_18',['UseSymmetry',['../classShipBFieldMap.html#a8ce60bff834f49ad519b0d381bae4333',1,'ShipBFieldMap']]]
 ];

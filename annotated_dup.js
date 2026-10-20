@@ -80,6 +80,9 @@ var annotated_dup =
       [ "MuonDISInBranches", "structShipMuDIS_1_1MuonDISInBranches.html", "structShipMuDIS_1_1MuonDISInBranches" ],
       [ "MuonInBranches", "structShipMuDIS_1_1MuonInBranches.html", "structShipMuDIS_1_1MuonInBranches" ]
     ] ],
+    [ "shipTrackAccess", "namespaceshipTrackAccess.html", [
+      [ "TrackInfo", "classshipTrackAccess_1_1TrackInfo.html", null ]
+    ] ],
     [ "shipVertex", "namespaceshipVertex.html", [
       [ "Task", "classshipVertex_1_1Task.html", "classshipVertex_1_1Task" ]
     ] ],
@@ -199,8 +202,8 @@ var annotated_dup =
     [ "UpstreamTaggerScoringPlane", "classUpstreamTaggerScoringPlane.html", "classUpstreamTaggerScoringPlane" ],
     [ "UpstreamTaggerScoringPoint", "classUpstreamTaggerScoringPoint.html", "classUpstreamTaggerScoringPoint" ],
     [ "VectorMCPointSource", "classVectorMCPointSource.html", "classVectorMCPointSource" ],
-    [ "Veto", "classVeto.html", null ],
     [ "veto", "classveto.html", "classveto" ],
+    [ "Veto", "classVeto.html", null ],
     [ "vetoContFact", "classvetoContFact.html", "classvetoContFact" ],
     [ "vetoHit", "classvetoHit.html", "classvetoHit" ],
     [ "vetoHitOnTrack", "classvetoHitOnTrack.html", "classvetoHitOnTrack" ],

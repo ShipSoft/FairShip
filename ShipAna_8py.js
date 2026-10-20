@@ -16,6 +16,7 @@ var ShipAna_8py =
     [ "RedoVertexing", "ShipAna_8py.html#a365f177c7bf68e9ef076d53d9eef85b6", null ],
     [ "VertexError", "ShipAna_8py.html#a199566e2c0d9990d581ac26bbb87cbad", null ],
     [ "action", "ShipAna_8py.html#afdad0a04c8dad7eb3e3d7b6d9b17a138", null ],
+    [ "actsMode", "ShipAna_8py.html#afc35235dbf0603e9cecc3516d3b64026", null ],
     [ "bfield", "ShipAna_8py.html#a1f85359f38d72674b0a60c4e12683bfe", null ],
     [ "chi2CutOff", "ShipAna_8py.html#ab9849a92f94b1776590ae98542810c63", null ],
     [ "default", "ShipAna_8py.html#a6a821359f5bb97c0c4c040adbc4cdca3", null ],
