@@ -28,6 +28,17 @@
 
 using ShipUnit::cm;
 using ShipUnit::mm;
+
+namespace {
+// Turn (px, py) to a random azimuth, keeping the transverse momentum.
+template <typename T>
+void RandomizePhi(T& px, T& py) {
+  const double phi_random = gRandom->Uniform(0., 2 * TMath::Pi());
+  const Double_t pt = TMath::Sqrt(px * px + py * py);
+  px = pt * TMath::Cos(phi_random);
+  py = pt * TMath::Sin(phi_random);
+}
+}  // namespace
 // read events from Pythia8/Geant4 base simulation (only target + hadron
 // absorber
 
@@ -372,12 +383,7 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
       auto* track = getMCTrack(i);
       Double_t tpx = track->GetPx();
       Double_t tpy = track->GetPy();
-      if (fPhiRandomize) {
-        double phi_random = gRandom->Uniform(0., 2 * TMath::Pi());
-        Double_t pt = track->GetPt();
-        tpx = pt * TMath::Cos(phi_random);
-        tpy = pt * TMath::Sin(phi_random);
-      }
+      if (fPhiRandomize) RandomizePhi(tpx, tpy);
       IncrementCounter("transported_tracks");
       cpg->AddTrack(track->GetPdgCode(), tpx, tpy, track->GetPz(),
                     track->GetStartX() + dx, track->GetStartY() + dy,
@@ -389,12 +395,7 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
   } else {
     vx += dx / 100.;
     vy += dy / 100.;
-    if (fPhiRandomize) {
-      double phi_random = gRandom->Uniform(0., 2 * TMath::Pi());
-      Double_t pt = TMath::Sqrt(px * px + py * py);
-      px = pt * TMath::Cos(phi_random);
-      py = pt * TMath::Sin(phi_random);
-    }
+    if (fPhiRandomize) RandomizePhi(px, py);
     IncrementCounter("accepted_entries");
     IncrementCounter("selected_muons");
     cpg->AddTrack(static_cast<int>(pythiaid), px, py, pz, vx * 100., vy * 100.,
