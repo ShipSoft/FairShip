@@ -11,6 +11,7 @@ var rootUtils_8py =
     [ "is_known_particle", "rootUtils_8py.html#a135d7bfa10a1e034374497fd828da1b9", null ],
     [ "readHists", "rootUtils_8py.html#a61db3e66b871a770b6bc264b9e3ac33e", null ],
     [ "reportError", "rootUtils_8py.html#ab807114738eb9dfb5fef001e2fa9bc54", null ],
+    [ "stage1AbsorberFieldOff", "rootUtils_8py.html#a466b284f4fe9af02843158cc76250935", null ],
     [ "writeHists", "rootUtils_8py.html#a4288202f324fd0dae890c6208e1b9deb", null ],
     [ "_error_log", "rootUtils_8py.html#af04f8d0c34113948aacb4ce59163ce02", null ]
 ];

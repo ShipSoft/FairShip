@@ -131,6 +131,12 @@ var namespaces_dup =
       [ "resolve_order", "namespacecanonicaliseFieldMap.html#aee39c64be201696ec81ad442db44ea4d", null ],
       [ "DIVERGENCE_MARGIN", "namespacecanonicaliseFieldMap.html#a66fbe4aa79e85762d10a11abcc0a2c7e", null ]
     ] ],
+    [ "check_muonback_plane", "namespacecheck__muonback__plane.html", [
+      [ "close", "namespacecheck__muonback__plane.html#a0c90849dbd2e313477de0d28da899464", null ],
+      [ "input_muons", "namespacecheck__muonback__plane.html#ad8a0e67815b6b34d25a66f136d48efbe", null ],
+      [ "main", "namespacecheck__muonback__plane.html#ab54bb1e6c24fc3fe29ca558a8601f370", null ],
+      [ "TOL", "namespacecheck__muonback__plane.html#a36d742e5474dc34d7ca7cfe9adb47a14", null ]
+    ] ],
     [ "checkMagFields", "namespacecheckMagFields.html", [
       [ "run", "namespacecheckMagFields.html#a65e69e17f1b05eb283a8bb6d5d695249", null ]
     ] ],
@@ -1074,6 +1080,7 @@ var namespaces_dup =
       [ "is_known_particle", "namespacerootUtils.html#a135d7bfa10a1e034374497fd828da1b9", null ],
       [ "readHists", "namespacerootUtils.html#a61db3e66b871a770b6bc264b9e3ac33e", null ],
       [ "reportError", "namespacerootUtils.html#ab807114738eb9dfb5fef001e2fa9bc54", null ],
+      [ "stage1AbsorberFieldOff", "namespacerootUtils.html#a466b284f4fe9af02843158cc76250935", null ],
       [ "writeHists", "namespacerootUtils.html#a4288202f324fd0dae890c6208e1b9deb", null ],
       [ "_error_log", "namespacerootUtils.html#af04f8d0c34113948aacb4ce59163ce02", null ]
     ] ],
@@ -1267,6 +1274,7 @@ var namespaces_dup =
       [ "fin", "namespacerun__simScript.html#acd3b74009edf7034331bd5acb8a5169e", null ],
       [ "float", "namespacerun__simScript.html#ae49febd49d327dfcdf13f395786856a3", null ],
       [ "fout", "namespacerun__simScript.html#a220cc43c43bf49500c5fdd5a4e9b8e44", null ],
+      [ "fromStage1", "namespacerun__simScript.html#a692123a1e3d2ed650731905b5309d3d4", null ],
       [ "fSink", "namespacerun__simScript.html#a93ba36fd021df754186946c4f0364058", null ],
       [ "fStack", "namespacerun__simScript.html#abe0f6f27c11e27c01a9ffffa37571906", null ],
       [ "generator", "namespacerun__simScript.html#a02102a7960adc8fef03efc124ebd545d", null ],
@@ -1304,6 +1312,7 @@ var namespaces_dup =
       [ "MCTracksWithEnergyCutOnly", "namespacerun__simScript.html#a72b9287fd77d5afe831004b5c07cc441", null ],
       [ "MCTracksWithHitsOnly", "namespacerun__simScript.html#a1787db151d7f5b198dc03543fd7b3189", null ],
       [ "MCTracksWithHitsOrEnergyCut", "namespacerun__simScript.html#a324d5620e02a104287e12097df596e9c", null ],
+      [ "message", "namespacerun__simScript.html#acb7df520cd2aaddd4adc5ef5ab2a0c3f", null ],
       [ "modules", "namespacerun__simScript.html#ae7848712849353a6eff11d829f0e5db5", null ],
       [ "motherMode", "namespacerun__simScript.html#aa50adad008f61ff145cdacf48b1753ac", null ],
       [ "mu", "namespacerun__simScript.html#aaefe89450d8f306a2fdac45154ec0fb6", null ],
@@ -1319,6 +1328,8 @@ var namespaces_dup =
       [ "nEvents", "namespacerun__simScript.html#ac224f2a2d08b71115bf77bb3b3f3dea3", null ],
       [ "new_tree", "namespacerun__simScript.html#a4435f2e074882181ff7ce09cef9ef113", null ],
       [ "newFileSummary", "namespacerun__simScript.html#aa57c176f480c3a1677f8c1f444598de6", null ],
+      [ "noField", "namespacerun__simScript.html#ab58c68f3dcf03d35e25e587fbd99c381", null ],
+      [ "noSummary", "namespacerun__simScript.html#ad9a56047450af617bfc899d747a05852", null ],
       [ "Ntuplegen", "namespacerun__simScript.html#ab93e824396c27419daefc1d01f0ab022", null ],
       [ "obj", "namespacerun__simScript.html#ad89392286feabdc2ca66e8ed78ce0972", null ],
       [ "onlyWithField", "namespacerun__simScript.html#a3af0fa92df9a96ee2384713287c1d247", null ],
@@ -1349,6 +1360,7 @@ var namespaces_dup =
       [ "ship_geo", "namespacerun__simScript.html#a151c419ab07f58189111d09a490975f5", null ],
       [ "sink", "namespacerun__simScript.html#ab28fa4e0bc561176e536feeece39e2d5", null ],
       [ "SND_design", "namespacerun__simScript.html#abfc0d3d48b6d07dad5d8363b594beef6", null ],
+      [ "startAtPlane", "namespacerun__simScript.html#adb363979bd17b8fa8d8ef9ad40cbf30a", null ],
       [ "sTree", "namespacerun__simScript.html#a2229f460fba4042a721114eda7d66190", null ],
       [ "subparsers", "namespacerun__simScript.html#ae7ab5ab47fdc0841c3b3bd17bc4df157", null ],
       [ "t", "namespacerun__simScript.html#aa64a07cb12f14b8bc744fb15cbb39d7b", null ],
@@ -1736,22 +1748,6 @@ var namespaces_dup =
       [ "parser", "namespaceshipStrawTracking.html#a6f1c8ab4a8627d83bd87a950231721c6", null ],
       [ "required", "namespaceshipStrawTracking.html#a33f41ada450d677435ffd880e7462d3a", null ]
     ] ],
-    [ "ShipUnit", "namespaceShipUnit.html", [
-      [ "c_light", "namespaceShipUnit.html#aa5c80d1a788735fe9fd41b509583437b", null ],
-      [ "cm", "namespaceShipUnit.html#a265f40d0ffca1af0d38fe9a050c98bcf", null ],
-      [ "gauss", "namespaceShipUnit.html#a334f58e18b995ee78fa96a1c69c0bfba", null ],
-      [ "GeV", "namespaceShipUnit.html#aed43d63d5e6d980f22bc345f7a562011", null ],
-      [ "keV", "namespaceShipUnit.html#ad57422e4724115feacf1cabfb637e3a5", null ],
-      [ "kilogauss", "namespaceShipUnit.html#aeb2434130d4f4fe7921aa564c2965294", null ],
-      [ "km", "namespaceShipUnit.html#a6913b7e3b62fb09e1a1fcdb3a1f7c258", null ],
-      [ "m", "namespaceShipUnit.html#a7b82ae8775009208066598546951dd22", null ],
-      [ "MeV", "namespaceShipUnit.html#a355ccfd81a9820e7e0df4c8f7ca6bbb8", null ],
-      [ "mm", "namespaceShipUnit.html#a644590da60ab4efe07fbda3a260e5407", null ],
-      [ "ns", "namespaceShipUnit.html#ac17805e2154634b45e0493e800208b29", null ],
-      [ "s", "namespaceShipUnit.html#af5da50ee86db44fd81351c6c3a3dcf06", null ],
-      [ "tesla", "namespaceShipUnit.html#adae44b3580098be2b6f2c6d514dc72dd", null ],
-      [ "um", "namespaceShipUnit.html#a19c69dc056a268aa660dfce12af29f39", null ]
-    ] ],
     [ "shipunit", "namespaceshipunit.html", [
       [ "alpha_rcl2", "namespaceshipunit.html#a561928bad4973c63197de654cd92f007", null ],
       [ "ampere", "namespaceshipunit.html#a899bfcfc1e198fac90b788905bcf91b3", null ],
@@ -1898,9 +1894,28 @@ var namespaces_dup =
       [ "watt", "namespaceshipunit.html#a86f9ba53297f60184e521655c576baaf", null ],
       [ "weber", "namespaceshipunit.html#a0ef5d6a33e15f4c4fa62fb17c0bce1b2", null ]
     ] ],
+    [ "ShipUnit", "namespaceShipUnit.html", [
+      [ "c_light", "namespaceShipUnit.html#aa5c80d1a788735fe9fd41b509583437b", null ],
+      [ "cm", "namespaceShipUnit.html#a265f40d0ffca1af0d38fe9a050c98bcf", null ],
+      [ "gauss", "namespaceShipUnit.html#a334f58e18b995ee78fa96a1c69c0bfba", null ],
+      [ "GeV", "namespaceShipUnit.html#aed43d63d5e6d980f22bc345f7a562011", null ],
+      [ "keV", "namespaceShipUnit.html#ad57422e4724115feacf1cabfb637e3a5", null ],
+      [ "kilogauss", "namespaceShipUnit.html#aeb2434130d4f4fe7921aa564c2965294", null ],
+      [ "km", "namespaceShipUnit.html#a6913b7e3b62fb09e1a1fcdb3a1f7c258", null ],
+      [ "m", "namespaceShipUnit.html#a7b82ae8775009208066598546951dd22", null ],
+      [ "MeV", "namespaceShipUnit.html#a355ccfd81a9820e7e0df4c8f7ca6bbb8", null ],
+      [ "mm", "namespaceShipUnit.html#a644590da60ab4efe07fbda3a260e5407", null ],
+      [ "ns", "namespaceShipUnit.html#ac17805e2154634b45e0493e800208b29", null ],
+      [ "s", "namespaceShipUnit.html#af5da50ee86db44fd81351c6c3a3dcf06", null ],
+      [ "tesla", "namespaceShipUnit.html#adae44b3580098be2b6f2c6d514dc72dd", null ],
+      [ "um", "namespaceShipUnit.html#a19c69dc056a268aa660dfce12af29f39", null ]
+    ] ],
     [ "shipVertex", "namespaceshipVertex.html", "namespaceshipVertex" ],
     [ "shipVeto", "namespaceshipVeto.html", "namespaceshipVeto" ],
     [ "SiliconTargetDetector", "namespaceSiliconTargetDetector.html", "namespaceSiliconTargetDetector" ],
+    [ "skim_muonback_plane_smoke", "namespaceskim__muonback__plane__smoke.html", [
+      [ "main", "namespaceskim__muonback__plane__smoke.html#ae288d2ad6562289ee5767744f35eef1f", null ]
+    ] ],
     [ "skim_muonback_smoke", "namespaceskim__muonback__smoke.html", [
       [ "main", "namespaceskim__muonback__smoke.html#acd265e66314c1a63a4f8d835f99a00f0", null ]
     ] ],

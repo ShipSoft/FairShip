@@ -286,6 +286,16 @@ Variables</h2></td></tr>
 <tr class="separator:ab93e824396c27419daefc1d01f0ab022"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a51f8d075e114482748afb54eb1de165e" id="r_a51f8d075e114482748afb54eb1de165e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__simScript.html#a51f8d075e114482748afb54eb1de165e">isNew</a></td></tr>
 <tr class="separator:a51f8d075e114482748afb54eb1de165e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a692123a1e3d2ed650731905b5309d3d4" id="r_a692123a1e3d2ed650731905b5309d3d4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__simScript.html#a692123a1e3d2ed650731905b5309d3d4">fromStage1</a> = ut.checkForBranch(<a class="el" href="namespacerun__simScript.html#a65fca546a6def5dfc16a44c8b410412e">inputFile</a>, &quot;MCTrack&quot;)</td></tr>
+<tr class="separator:a692123a1e3d2ed650731905b5309d3d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adb363979bd17b8fa8d8ef9ad40cbf30a" id="r_adb363979bd17b8fa8d8ef9ad40cbf30a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__simScript.html#adb363979bd17b8fa8d8ef9ad40cbf30a">startAtPlane</a> = <a class="el" href="namespacerun__simScript.html#a692123a1e3d2ed650731905b5309d3d4">fromStage1</a> and not options.muonBackFromOrigin</td></tr>
+<tr class="separator:adb363979bd17b8fa8d8ef9ad40cbf30a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad9a56047450af617bfc899d747a05852" id="r_ad9a56047450af617bfc899d747a05852"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__simScript.html#ad9a56047450af617bfc899d747a05852">noSummary</a></td></tr>
+<tr class="separator:ad9a56047450af617bfc899d747a05852"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab58c68f3dcf03d35e25e587fbd99c381" id="r_ab58c68f3dcf03d35e25e587fbd99c381"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__simScript.html#ab58c68f3dcf03d35e25e587fbd99c381">noField</a></td></tr>
+<tr class="separator:ab58c68f3dcf03d35e25e587fbd99c381"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acb7df520cd2aaddd4adc5ef5ab2a0c3f" id="r_acb7df520cd2aaddd4adc5ef5ab2a0c3f"><td class="memItemLeft" align="right" valign="top">tuple&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__simScript.html#acb7df520cd2aaddd4adc5ef5ab2a0c3f">message</a></td></tr>
+<tr class="separator:acb7df520cd2aaddd4adc5ef5ab2a0c3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9e10d5e03626a8eddef270b96e65bd76" id="r_a9e10d5e03626a8eddef270b96e65bd76"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__simScript.html#a9e10d5e03626a8eddef270b96e65bd76">MuonBackgen</a> = ROOT.MuonBackGenerator()</td></tr>
 <tr class="separator:a9e10d5e03626a8eddef270b96e65bd76"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af0d4ea6c5c1d66bad312d085d2391291" id="r_af0d4ea6c5c1d66bad312d085d2391291"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__simScript.html#af0d4ea6c5c1d66bad312d085d2391291">fastMuon</a></td></tr>
@@ -435,13 +445,13 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01333">1333</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno"> 1333</span><span class="keyword">def </span>checkOverlapsWithGeant4() -&gt; None:</div>
-<div class="line"><span class="lineno"> 1334</span>    <span class="comment"># after /run/initialize, but prints warning messages, problems with TGeo volume</span></div>
-<div class="line"><span class="lineno"> 1335</span>    mygMC = ROOT.TGeant4.GetMC()</div>
-<div class="line"><span class="lineno"> 1336</span>    mygMC.ProcessGeantCommand(<span class="stringliteral">&quot;/geometry/test/recursion_start 0&quot;</span>)</div>
-<div class="line"><span class="lineno"> 1337</span>    mygMC.ProcessGeantCommand(<span class="stringliteral">&quot;/geometry/test/recursion_depth 2&quot;</span>)</div>
-<div class="line"><span class="lineno"> 1338</span>    mygMC.ProcessGeantCommand(<span class="stringliteral">&quot;/geometry/test/run&quot;</span>)</div>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01389">1389</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno"> 1389</span><span class="keyword">def </span>checkOverlapsWithGeant4() -&gt; None:</div>
+<div class="line"><span class="lineno"> 1390</span>    <span class="comment"># after /run/initialize, but prints warning messages, problems with TGeo volume</span></div>
+<div class="line"><span class="lineno"> 1391</span>    mygMC = ROOT.TGeant4.GetMC()</div>
+<div class="line"><span class="lineno"> 1392</span>    mygMC.ProcessGeantCommand(<span class="stringliteral">&quot;/geometry/test/recursion_start 0&quot;</span>)</div>
+<div class="line"><span class="lineno"> 1393</span>    mygMC.ProcessGeantCommand(<span class="stringliteral">&quot;/geometry/test/recursion_depth 2&quot;</span>)</div>
+<div class="line"><span class="lineno"> 1394</span>    mygMC.ProcessGeantCommand(<span class="stringliteral">&quot;/geometry/test/run&quot;</span>)</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -464,54 +474,59 @@ Variables</h2></td></tr>
 Keeps a list of the input files so that the total
 provenance of the events can be traced back to the sim files.
 </pre> 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01255">1255</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno"> 1255</span><span class="keyword">def </span>mergeFileSummary(inFiles: list[str] | str) -&gt; dict:</div>
-<div class="line"><span class="lineno"> 1256</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno"> 1257</span><span class="stringliteral">    Make a file summary for the output.</span></div>
-<div class="line"><span class="lineno"> 1258</span><span class="stringliteral">    Keeps a list of the input files so that the total</span></div>
-<div class="line"><span class="lineno"> 1259</span><span class="stringliteral">    provenance of the events can be traced back to the sim files.</span></div>
-<div class="line"><span class="lineno"> 1260</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno"> 1261</span>    <span class="keywordflow">if</span> isinstance(inFiles, str):</div>
-<div class="line"><span class="lineno"> 1262</span>        inFiles = [inFiles]</div>
-<div class="line"><span class="lineno"> 1263</span> </div>
-<div class="line"><span class="lineno"> 1264</span>    energyCuts = []</div>
-<div class="line"><span class="lineno"> 1265</span>    prodSites = []</div>
-<div class="line"><span class="lineno"> 1266</span>    poTperFile = []</div>
-<div class="line"><span class="lineno"> 1267</span>    mergedFSR: dict = {</div>
-<div class="line"><span class="lineno"> 1268</span>        <span class="stringliteral">&quot;PoT&quot;</span>: 0,</div>
-<div class="line"><span class="lineno"> 1269</span>        <span class="stringliteral">&quot;EnergyCut&quot;</span>: [],</div>
-<div class="line"><span class="lineno"> 1270</span>        <span class="stringliteral">&quot;prodSite&quot;</span>: [],</div>
-<div class="line"><span class="lineno"> 1271</span>        <span class="stringliteral">&quot;inputFiles&quot;</span>: [],</div>
-<div class="line"><span class="lineno"> 1272</span>        <span class="stringliteral">&quot;PoTperFile&quot;</span>: [],</div>
-<div class="line"><span class="lineno"> 1273</span>        <span class="stringliteral">&quot;date&quot;</span>: datetime.today().strftime(<span class="stringliteral">&quot;%Y-%m-%d&quot;</span>),</div>
-<div class="line"><span class="lineno"> 1274</span>    }</div>
-<div class="line"><span class="lineno"> 1275</span>    <span class="keywordflow">for</span> _f <span class="keywordflow">in</span> inFiles:</div>
-<div class="line"><span class="lineno"> 1276</span>        mergedFSR[<span class="stringliteral">&quot;inputFiles&quot;</span>].append(_f)</div>
-<div class="line"><span class="lineno"> 1277</span>        <span class="comment"># The recorded path keeps any $EOSSHIP/$FAIRSHIP prefix for portability,</span></div>
-<div class="line"><span class="lineno"> 1278</span>        <span class="comment"># but ROOT needs it expanded to open the file.</span></div>
-<div class="line"><span class="lineno"> 1279</span>        path = os.path.expandvars(_f)</div>
-<div class="line"><span class="lineno"> 1280</span>        <span class="keywordflow">try</span>:</div>
-<div class="line"><span class="lineno"> 1281</span>            <span class="keyword">with</span> ROOT.TFile.Open(path, <span class="stringliteral">&quot;READ&quot;</span>) <span class="keyword">as</span> _of:</div>
-<div class="line"><span class="lineno"> 1282</span>                key_names = [_k.GetName() <span class="keywordflow">for</span> _k <span class="keywordflow">in</span> _of.GetListOfKeys()]</div>
-<div class="line"><span class="lineno"> 1283</span>                <span class="keywordflow">if</span> <span class="stringliteral">&quot;FileSummary&quot;</span> <span class="keywordflow">in</span> key_names:</div>
-<div class="line"><span class="lineno"> 1284</span>                    fsr = json.loads(str(_of.Get(<span class="stringliteral">&quot;FileSummary&quot;</span>)))</div>
-<div class="line"><span class="lineno"> 1285</span>                    mergedFSR[<span class="stringliteral">&quot;PoT&quot;</span>] += fsr[<span class="stringliteral">&quot;PoT&quot;</span>]</div>
-<div class="line"><span class="lineno"> 1286</span>                    energyCuts.append(fsr[<span class="stringliteral">&quot;EnergyCut&quot;</span>])</div>
-<div class="line"><span class="lineno"> 1287</span>                    prodSites.append(fsr[<span class="stringliteral">&quot;prodSite&quot;</span>])</div>
-<div class="line"><span class="lineno"> 1288</span>                    poTperFile.append(fsr[<span class="stringliteral">&quot;PoT&quot;</span>])</div>
-<div class="line"><span class="lineno"> 1289</span>                <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno"> 1290</span>                    print(f<span class="stringliteral">&quot;[WARNING] No FileSummary in {_f}&quot;</span>)</div>
-<div class="line"><span class="lineno"> 1291</span>        <span class="keywordflow">except</span> OSError:</div>
-<div class="line"><span class="lineno"> 1292</span>            <span class="comment"># PyROOT raises instead of returning a null file. A summary is not</span></div>
-<div class="line"><span class="lineno"> 1293</span>            <span class="comment"># worth losing a simulation that has already run to completion.</span></div>
-<div class="line"><span class="lineno"> 1294</span>            print(f<span class="stringliteral">&quot;[WARNING] Could not open {path} to read its FileSummary&quot;</span>)</div>
-<div class="line"><span class="lineno"> 1295</span> </div>
-<div class="line"><span class="lineno"> 1296</span>    mergedFSR[<span class="stringliteral">&quot;EnergyCut&quot;</span>] = list(set(energyCuts))  <span class="comment"># Just get unique values</span></div>
-<div class="line"><span class="lineno"> 1297</span>    mergedFSR[<span class="stringliteral">&quot;prodSite&quot;</span>] = list(set(prodSites))</div>
-<div class="line"><span class="lineno"> 1298</span>    mergedFSR[<span class="stringliteral">&quot;PoTperFile&quot;</span>] = list(set(poTperFile))</div>
-<div class="line"><span class="lineno"> 1299</span>    <span class="keywordflow">return</span> mergedFSR</div>
-<div class="line"><span class="lineno"> 1300</span> </div>
-<div class="line"><span class="lineno"> 1301</span> </div>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01306">1306</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno"> 1306</span><span class="keyword">def </span>mergeFileSummary(inFiles: list[str] | str) -&gt; dict:</div>
+<div class="line"><span class="lineno"> 1307</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno"> 1308</span><span class="stringliteral">    Make a file summary for the output.</span></div>
+<div class="line"><span class="lineno"> 1309</span><span class="stringliteral">    Keeps a list of the input files so that the total</span></div>
+<div class="line"><span class="lineno"> 1310</span><span class="stringliteral">    provenance of the events can be traced back to the sim files.</span></div>
+<div class="line"><span class="lineno"> 1311</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno"> 1312</span>    <span class="keywordflow">if</span> isinstance(inFiles, str):</div>
+<div class="line"><span class="lineno"> 1313</span>        inFiles = [inFiles]</div>
+<div class="line"><span class="lineno"> 1314</span> </div>
+<div class="line"><span class="lineno"> 1315</span>    energyCuts = []</div>
+<div class="line"><span class="lineno"> 1316</span>    prodSites = []</div>
+<div class="line"><span class="lineno"> 1317</span>    poTperFile = []</div>
+<div class="line"><span class="lineno"> 1318</span>    mergedFSR: dict = {</div>
+<div class="line"><span class="lineno"> 1319</span>        <span class="stringliteral">&quot;PoT&quot;</span>: 0,</div>
+<div class="line"><span class="lineno"> 1320</span>        <span class="stringliteral">&quot;EnergyCut&quot;</span>: [],</div>
+<div class="line"><span class="lineno"> 1321</span>        <span class="stringliteral">&quot;prodSite&quot;</span>: [],</div>
+<div class="line"><span class="lineno"> 1322</span>        <span class="stringliteral">&quot;inputFiles&quot;</span>: [],</div>
+<div class="line"><span class="lineno"> 1323</span>        <span class="stringliteral">&quot;PoTperFile&quot;</span>: [],</div>
+<div class="line"><span class="lineno"> 1324</span>        <span class="stringliteral">&quot;date&quot;</span>: datetime.today().strftime(<span class="stringliteral">&quot;%Y-%m-%d&quot;</span>),</div>
+<div class="line"><span class="lineno"> 1325</span>    }</div>
+<div class="line"><span class="lineno"> 1326</span>    <span class="keywordflow">for</span> _f <span class="keywordflow">in</span> inFiles:</div>
+<div class="line"><span class="lineno"> 1327</span>        mergedFSR[<span class="stringliteral">&quot;inputFiles&quot;</span>].append(_f)</div>
+<div class="line"><span class="lineno"> 1328</span>        <span class="comment"># The recorded path keeps any $EOSSHIP/$FAIRSHIP prefix for portability,</span></div>
+<div class="line"><span class="lineno"> 1329</span>        <span class="comment"># but ROOT needs it expanded to open the file.</span></div>
+<div class="line"><span class="lineno"> 1330</span>        path = os.path.expandvars(_f)</div>
+<div class="line"><span class="lineno"> 1331</span>        <span class="keywordflow">try</span>:</div>
+<div class="line"><span class="lineno"> 1332</span>            <span class="keyword">with</span> ROOT.TFile.Open(path, <span class="stringliteral">&quot;READ&quot;</span>) <span class="keyword">as</span> _of:</div>
+<div class="line"><span class="lineno"> 1333</span>                key_names = [_k.GetName() <span class="keywordflow">for</span> _k <span class="keywordflow">in</span> _of.GetListOfKeys()]</div>
+<div class="line"><span class="lineno"> 1334</span>                <span class="keywordflow">if</span> <span class="stringliteral">&quot;FileSummary&quot;</span> <span class="keywordflow">in</span> key_names:</div>
+<div class="line"><span class="lineno"> 1335</span>                    fsr = json.loads(str(_of.Get(<span class="stringliteral">&quot;FileSummary&quot;</span>)))</div>
+<div class="line"><span class="lineno"> 1336</span>                    <span class="comment"># Only merged productions have these; the summary of a</span></div>
+<div class="line"><span class="lineno"> 1337</span>                    <span class="comment"># raw run_fixedTarget.py output records its arguments.</span></div>
+<div class="line"><span class="lineno"> 1338</span>                    <span class="keywordflow">if</span> <span class="keywordflow">not</span> all(k <span class="keywordflow">in</span> fsr <span class="keywordflow">for</span> k <span class="keywordflow">in</span> (<span class="stringliteral">&quot;PoT&quot;</span>, <span class="stringliteral">&quot;EnergyCut&quot;</span>, <span class="stringliteral">&quot;prodSite&quot;</span>)):</div>
+<div class="line"><span class="lineno"> 1339</span>                        print(f<span class="stringliteral">&quot;[WARNING] No PoT, EnergyCut or prodSite in the FileSummary of {_f}&quot;</span>)</div>
+<div class="line"><span class="lineno"> 1340</span>                        <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno"> 1341</span>                    mergedFSR[<span class="stringliteral">&quot;PoT&quot;</span>] += fsr[<span class="stringliteral">&quot;PoT&quot;</span>]</div>
+<div class="line"><span class="lineno"> 1342</span>                    energyCuts.append(fsr[<span class="stringliteral">&quot;EnergyCut&quot;</span>])</div>
+<div class="line"><span class="lineno"> 1343</span>                    prodSites.append(fsr[<span class="stringliteral">&quot;prodSite&quot;</span>])</div>
+<div class="line"><span class="lineno"> 1344</span>                    poTperFile.append(fsr[<span class="stringliteral">&quot;PoT&quot;</span>])</div>
+<div class="line"><span class="lineno"> 1345</span>                <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno"> 1346</span>                    print(f<span class="stringliteral">&quot;[WARNING] No FileSummary in {_f}&quot;</span>)</div>
+<div class="line"><span class="lineno"> 1347</span>        <span class="keywordflow">except</span> OSError:</div>
+<div class="line"><span class="lineno"> 1348</span>            <span class="comment"># PyROOT raises instead of returning a null file. A summary is not</span></div>
+<div class="line"><span class="lineno"> 1349</span>            <span class="comment"># worth losing a simulation that has already run to completion.</span></div>
+<div class="line"><span class="lineno"> 1350</span>            print(f<span class="stringliteral">&quot;[WARNING] Could not open {path} to read its FileSummary&quot;</span>)</div>
+<div class="line"><span class="lineno"> 1351</span> </div>
+<div class="line"><span class="lineno"> 1352</span>    mergedFSR[<span class="stringliteral">&quot;EnergyCut&quot;</span>] = list(set(energyCuts))  <span class="comment"># Just get unique values</span></div>
+<div class="line"><span class="lineno"> 1353</span>    mergedFSR[<span class="stringliteral">&quot;prodSite&quot;</span>] = list(set(prodSites))</div>
+<div class="line"><span class="lineno"> 1354</span>    mergedFSR[<span class="stringliteral">&quot;PoTperFile&quot;</span>] = list(set(poTperFile))</div>
+<div class="line"><span class="lineno"> 1355</span>    <span class="keywordflow">return</span> mergedFSR</div>
+<div class="line"><span class="lineno"> 1356</span> </div>
+<div class="line"><span class="lineno"> 1357</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -556,11 +571,11 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01329">1329</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno"> 1329</span><span class="keyword">def </span>visualizeMagFields() -&gt; None:</div>
-<div class="line"><span class="lineno"> 1330</span>    <a class="code hl_function" href="namespacecheckMagFields.html#a65e69e17f1b05eb283a8bb6d5d695249">checkMagFields.run</a>()</div>
-<div class="line"><span class="lineno"> 1331</span> </div>
-<div class="line"><span class="lineno"> 1332</span> </div>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01385">1385</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno"> 1385</span><span class="keyword">def </span>visualizeMagFields() -&gt; None:</div>
+<div class="line"><span class="lineno"> 1386</span>    <a class="code hl_function" href="namespacecheckMagFields.html#a65e69e17f1b05eb283a8bb6d5d695249">checkMagFields.run</a>()</div>
+<div class="line"><span class="lineno"> 1387</span> </div>
+<div class="line"><span class="lineno"> 1388</span> </div>
 <div class="ttc" id="anamespacecheckMagFields_html_a65e69e17f1b05eb283a8bb6d5d695249"><div class="ttname"><a href="namespacecheckMagFields.html#a65e69e17f1b05eb283a8bb6d5d695249">checkMagFields.run</a></div><div class="ttdeci">run()</div><div class="ttdef"><b>Definition</b> <a href="checkMagFields_8py_source.html#l00011">checkMagFields.py:11</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -594,7 +609,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00901">901</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00918">918</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -610,7 +625,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00445">445</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00462">462</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -626,7 +641,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01155">1155</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01206">1206</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -674,7 +689,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00399">399</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00416">416</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -690,7 +705,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01146">1146</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01197">1197</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -706,7 +721,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00966">966</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01017">1017</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -722,7 +737,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01207">1207</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01258">1258</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -738,7 +753,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01208">1208</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01259">1259</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -754,7 +769,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01094">1094</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01145">1145</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -818,7 +833,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00826">826</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00843">843</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -834,7 +849,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01144">1144</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01195">1195</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -850,7 +865,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01011">1011</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01062">1062</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -866,7 +881,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00767">767</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00784">784</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -882,7 +897,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01054">1054</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01105">1105</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -898,7 +913,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01224">1224</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01275">1275</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -914,7 +929,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01234">1234</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01285">1285</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -930,7 +945,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00955">955</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01006">1006</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -946,7 +961,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01083">1083</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01134">1134</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -962,7 +977,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01047">1047</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01098">1098</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -978,7 +993,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01046">1046</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01097">1097</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -994,7 +1009,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01245">1245</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01296">1296</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -1010,7 +1025,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01117">1117</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01168">1168</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -1042,7 +1057,23 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01125">1125</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01176">1176</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+
+</div>
+</div>
+<a id="a692123a1e3d2ed650731905b5309d3d4" name="a692123a1e3d2ed650731905b5309d3d4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a692123a1e3d2ed650731905b5309d3d4">&#9670;&#160;</a></span>fromStage1</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">run_simScript.fromStage1 = ut.checkForBranch(<a class="el" href="namespacerun__simScript.html#a65fca546a6def5dfc16a44c8b410412e">inputFile</a>, &quot;MCTrack&quot;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00947">947</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -1058,7 +1089,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01126">1126</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01177">1177</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -1074,7 +1105,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01007">1007</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01058">1058</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -1090,7 +1121,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00895">895</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00912">912</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -1106,7 +1137,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00861">861</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00878">878</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -1138,7 +1169,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00858">858</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00875">875</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -1154,7 +1185,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00860">860</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00877">877</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -1170,7 +1201,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00523">523</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00540">540</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -1186,7 +1217,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01073">1073</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01124">1124</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -1202,7 +1233,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00514">514</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00531">531</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -1218,7 +1249,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00575">575</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00592">592</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -1234,7 +1265,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00558">558</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00575">575</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -1255,7 +1286,7 @@ provenance of the events can be traced back to the sim files.
 <div class="line"><span class="lineno">    4</span>        <span class="keywordflow">if</span> getattr(probe, dest) <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span></div>
 <div class="line"><span class="lineno">    5</span>    ]</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00516">516</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00533">533</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -1271,7 +1302,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01006">1006</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01057">1057</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -1287,7 +1318,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01225">1225</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01276">1276</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -1303,7 +1334,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01237">1237</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01288">1288</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -1335,7 +1366,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00804">804</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00821">821</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -1351,7 +1382,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00805">805</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00822">822</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -1367,7 +1398,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00816">816</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00833">833</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -1383,7 +1414,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00806">806</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00823">823</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -1399,7 +1430,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00807">807</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00824">824</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -1415,7 +1446,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00808">808</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00825">825</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -1463,7 +1494,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01223">1223</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01274">1274</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -1514,7 +1545,7 @@ provenance of the events can be traced back to the sim files.
 <div class="line"><span class="lineno">    2</span>        inputFile, <span class="stringliteral">&quot;PlaneHAPoint&quot;</span></div>
 <div class="line"><span class="lineno">    3</span>    )</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00919">919</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00936">936</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -1530,7 +1561,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01063">1063</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01114">1114</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -1546,7 +1577,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00709">709</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00726">726</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -1562,7 +1593,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00714">714</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00731">731</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -1578,7 +1609,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00715">715</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00732">732</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -1646,6 +1677,26 @@ provenance of the events can be traced back to the sim files.
 
 </div>
 </div>
+<a id="acb7df520cd2aaddd4adc5ef5ab2a0c3f" name="acb7df520cd2aaddd4adc5ef5ab2a0c3f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acb7df520cd2aaddd4adc5ef5ab2a0c3f">&#9670;&#160;</a></span>message</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">tuple run_simScript.message</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line"><span class="lineno">    1</span>=  (</div>
+<div class="line"><span class="lineno">    2</span>                <span class="stringliteral">&quot;run_fixedTarget input simulated without the hadron absorber field (--no-AddMuonShieldField), but &quot;</span></div>
+<div class="line"><span class="lineno">    3</span>                f<span class="stringliteral">&quot;the tracks now continue from the scoring plane: {&#39;, &#39;.join(noField)}&quot;</span></div>
+<div class="line"><span class="lineno">    4</span>            )</div>
+</div><!-- fragment -->
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00963">963</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+
+</div>
+</div>
 <a id="ae7848712849353a6eff11d829f0e5db5" name="ae7848712849353a6eff11d829f0e5db5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae7848712849353a6eff11d829f0e5db5">&#9670;&#160;</a></span>modules</h2>
 
@@ -1658,7 +1709,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00647">647</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00664">664</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -1674,7 +1725,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00464">464</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00481">481</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -1690,7 +1741,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01211">1211</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01262">1262</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -1706,7 +1757,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00840">840</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00857">857</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -1722,7 +1773,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00840">840</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00857">857</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -1738,7 +1789,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00929">929</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00970">970</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -1754,7 +1805,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01201">1201</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01252">1252</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -1770,7 +1821,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00780">780</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00797">797</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -1786,7 +1837,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00973">973</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01024">1024</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -1802,7 +1853,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01134">1134</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01185">1185</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -1818,7 +1869,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00415">415</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00432">432</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -1834,7 +1885,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00848">848</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00865">865</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -1850,7 +1901,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00440">440</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00457">457</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -1866,7 +1917,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01205">1205</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01256">1256</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -1882,7 +1933,39 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01302">1302</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01358">1358</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+
+</div>
+</div>
+<a id="ab58c68f3dcf03d35e25e587fbd99c381" name="ab58c68f3dcf03d35e25e587fbd99c381"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab58c68f3dcf03d35e25e587fbd99c381">&#9670;&#160;</a></span>noField</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">run_simScript.noField</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00959">959</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+
+</div>
+</div>
+<a id="ad9a56047450af617bfc899d747a05852" name="ad9a56047450af617bfc899d747a05852"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad9a56047450af617bfc899d747a05852">&#9670;&#160;</a></span>noSummary</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">run_simScript.noSummary</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00959">959</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -1898,7 +1981,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00908">908</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00925">925</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -1914,7 +1997,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01175">1175</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01226">1226</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -1930,7 +2013,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01053">1053</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01104">1104</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -1946,7 +2029,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00467">467</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00484">484</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -1962,7 +2045,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00437">437</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00454">454</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -1978,7 +2061,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00616">616</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00633">633</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -1994,7 +2077,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01200">1200</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01251">1251</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -2010,7 +2093,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00756">756</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00773">773</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -2026,7 +2109,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00650">650</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00667">667</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -2042,7 +2125,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00623">623</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00640">640</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -2058,7 +2141,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01064">1064</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01115">1115</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -2094,7 +2177,7 @@ provenance of the events can be traced back to the sim files.
 <div class="line"><span class="lineno">    3</span>        )</div>
 <div class="ttc" id="anamespacepythia8darkphoton__conf_html_acd520394960a5dfa80c744de77b559f4"><div class="ttname"><a href="namespacepythia8darkphoton__conf.html#acd520394960a5dfa80c744de77b559f4">pythia8darkphoton_conf.configure</a></div><div class="ttdeci">configure(P8gen, mass, epsilon, inclusive, motherMode, deepCopy=False, debug=True)</div><div class="ttdef"><b>Definition</b> <a href="pythia8darkphoton__conf_8py_source.html#l00070">pythia8darkphoton_conf.py:70</a></div></div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00698">698</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00715">715</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -2110,7 +2193,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00885">885</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00902">902</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -2142,7 +2225,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01132">1132</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01183">1183</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -2158,7 +2241,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00649">649</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00666">666</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -2174,7 +2257,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00515">515</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00532">532</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -2190,7 +2273,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00605">605</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00622">622</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -2206,7 +2289,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01185">1185</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01236">1236</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -2222,7 +2305,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01186">1186</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01237">1237</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -2238,7 +2321,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00641">641</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00658">658</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -2254,7 +2337,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01093">1093</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01144">1144</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -2270,7 +2353,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00633">633</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00650">650</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -2291,7 +2374,7 @@ provenance of the events can be traced back to the sim files.
 <div class="line"><span class="lineno">    4</span>    <span class="keywordflow">else</span> str(options.run_number <span class="keywordflow">if</span> options.run_number <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span> <span class="keywordflow">else</span> uuid.uuid4())</div>
 <div class="line"><span class="lineno">    5</span>)</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00609">609</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00626">626</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -2307,7 +2390,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00548">548</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00565">565</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -2323,7 +2406,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01229">1229</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01280">1280</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -2339,7 +2422,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00571">571</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00588">588</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -2355,7 +2438,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00637">637</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00654">654</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -2371,7 +2454,23 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00447">447</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00464">464</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+
+</div>
+</div>
+<a id="adb363979bd17b8fa8d8ef9ad40cbf30a" name="adb363979bd17b8fa8d8ef9ad40cbf30a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adb363979bd17b8fa8d8ef9ad40cbf30a">&#9670;&#160;</a></span>startAtPlane</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">run_simScript.startAtPlane = <a class="el" href="namespacerun__simScript.html#a692123a1e3d2ed650731905b5309d3d4">fromStage1</a> and not options.muonBackFromOrigin</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00948">948</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -2387,7 +2486,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01129">1129</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01180">1180</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -2419,7 +2518,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01124">1124</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01175">1175</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -2435,7 +2534,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01116">1116</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01167">1167</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -2451,7 +2550,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01194">1194</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01245">1245</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -2467,7 +2566,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00755">755</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00772">772</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -2483,7 +2582,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00501">501</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00518">518</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -2499,7 +2598,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00507">507</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00524">524</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -2547,7 +2646,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00498">498</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00515">515</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -2579,7 +2678,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00629">629</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00646">646</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -2595,7 +2694,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01115">1115</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01166">1166</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -2611,7 +2710,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01028">1028</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l01079">1079</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -2659,7 +2758,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00770">770</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00787">787</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -2675,7 +2774,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00710">710</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00727">727</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -2691,7 +2790,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00770">770</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00787">787</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -2707,7 +2806,7 @@ provenance of the events can be traced back to the sim files.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00770">770</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00787">787</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
