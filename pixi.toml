@@ -140,6 +140,12 @@ cmd = "python macro/run_simScript.py -n 5 -i 100 -f tests/data/muonback_smoke.ro
 [tasks.ci-sim-muonback-plane]
 cmd = "python macro/run_simScript.py -f tests/data/muonback_plane_smoke.root -S 42 -s 42 --MuonBack --FollowMuon --FastMuon --tag ci-muonback-plane && python tests/check_muonback_plane.py tests/data/muonback_plane_smoke.root sim_ci-muonback-plane.root --geo geo_ci-muonback-plane.root"
 
+# The same input with --MuonBackFromOrigin: the muons start again at their
+# production vertex, as before the start-at-plane replay. No smearing or
+# painting, so that the start points can be compared with the input.
+[tasks.ci-sim-muonback-origin]
+cmd = "python macro/run_simScript.py -f tests/data/muonback_plane_smoke.root -S 42 -s 42 --MuonBack --MuonBackFromOrigin --SmearBeam 0 --PaintBeam 0 --FollowMuon --FastMuon --tag ci-muonback-origin && python tests/check_muonback_plane.py tests/data/muonback_plane_smoke.root sim_ci-muonback-origin.root --from-origin"
+
 # --- CI plot rendering tasks ---
 # Wrap ship-metrics-render (ship-ci-metrics) for each per-job output set. The
 # CI workflow invokes these after the corresponding sim/reco step. The
