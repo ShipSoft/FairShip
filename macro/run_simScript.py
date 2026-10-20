@@ -1282,6 +1282,11 @@ def mergeFileSummary(inFiles: list[str] | str) -> dict:
                 key_names = [_k.GetName() for _k in _of.GetListOfKeys()]
                 if "FileSummary" in key_names:
                     fsr = json.loads(str(_of.Get("FileSummary")))
+                    # Only merged productions have these; the summary of a
+                    # raw run_fixedTarget.py output records its arguments.
+                    if not all(k in fsr for k in ("PoT", "EnergyCut", "prodSite")):
+                        print(f"[WARNING] No PoT, EnergyCut or prodSite in the FileSummary of {_f}")
+                        continue
                     mergedFSR["PoT"] += fsr["PoT"]
                     energyCuts.append(fsr["EnergyCut"])
                     prodSites.append(fsr["prodSite"])
