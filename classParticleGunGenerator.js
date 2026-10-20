@@ -23,6 +23,7 @@ var classParticleGunGenerator =
     [ "PrintVertexModels", "classParticleGunGenerator.html#a3f7f4efa8ece507118df2212b13dd02c", null ],
     [ "ReadEvent", "classParticleGunGenerator.html#a64fdf96e162d35050f62872b586c01ab", null ],
     [ "SetBothCharges", "classParticleGunGenerator.html#a8f9b287cba85a0780212a06ef29f14ef", null ],
+    [ "SetCommonVertex", "classParticleGunGenerator.html#a89c1c20f8d77296e51041c748c17e840", null ],
     [ "SetCosTheta", "classParticleGunGenerator.html#af46eadbf6750f56b13d5a85b517ddc80", null ],
     [ "SetDebug", "classParticleGunGenerator.html#ae30c52133ef04c7161cc6b48292817c8", null ],
     [ "SetEkinRange", "classParticleGunGenerator.html#ac6919ffe859eee386d60196eee378b35", null ],
@@ -72,6 +73,7 @@ var classParticleGunGenerator =
     [ "fYRangeIsSet", "classParticleGunGenerator.html#aaddc9242ce0e2c7666849178449c0f4c", null ],
     [ "m_bothCharges", "classParticleGunGenerator.html#a9894678ecde83718d47f6d99724bd132", null ],
     [ "m_chargeFraction", "classParticleGunGenerator.html#af0dd10962f933520857629474c0cc8d5", null ],
+    [ "m_commonVertex", "classParticleGunGenerator.html#a24fe6f907c3ad9265be2aa05b840ab76", null ],
     [ "m_mult", "classParticleGunGenerator.html#a72045cb7362c430468aa23036382d90b", null ],
     [ "m_pdgid", "classParticleGunGenerator.html#a1f03e9e952bb88981cf351a917a6cab5", null ]
 ];

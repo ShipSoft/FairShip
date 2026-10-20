@@ -532,11 +532,11 @@ $(document).ready(function(){initNavTree('exitHadronAbsorber_8cxx_source.html','
 <div class="line"><a id="l00417" name="l00417"></a><span class="lineno">  417</span>  <span class="comment">// particles in kHistogrammed</span></div>
 <div class="line"><a id="l00418" name="l00418"></a><span class="lineno">  418</span>  TDatabasePDG* PDG = TDatabasePDG::Instance();</div>
 <div class="line"><a id="l00419" name="l00419"></a><span class="lineno">  419</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; particle : kHistogrammed) {</div>
-<div class="line"><a id="l00420" name="l00420"></a><span class="lineno">  420</span>    <span class="keywordflow">for</span> (Int_t sign : {1, -1}) {</div>
-<div class="line"><a id="l00421" name="l00421"></a><span class="lineno">  421</span>      <span class="keywordflow">if</span> (sign &lt; 0 &amp;&amp; !particle.withAntiparticle) {</div>
+<div class="line"><a id="l00420" name="l00420"></a><span class="lineno">  420</span>    <span class="keywordflow">for</span> (Int_t <a class="code hl_variable" href="ActsStrawTracker_8cxx.html#abbeb8ae63622a7fef0b5a56bb91a1682">sign</a> : {1, -1}) {</div>
+<div class="line"><a id="l00421" name="l00421"></a><span class="lineno">  421</span>      <span class="keywordflow">if</span> (<a class="code hl_variable" href="ActsStrawTracker_8cxx.html#abbeb8ae63622a7fef0b5a56bb91a1682">sign</a> &lt; 0 &amp;&amp; !particle.withAntiparticle) {</div>
 <div class="line"><a id="l00422" name="l00422"></a><span class="lineno">  422</span>        <span class="keywordflow">continue</span>;</div>
 <div class="line"><a id="l00423" name="l00423"></a><span class="lineno">  423</span>      }</div>
-<div class="line"><a id="l00424" name="l00424"></a><span class="lineno">  424</span>      <span class="keyword">const</span> Int_t idw = sign * particle.pdg;</div>
+<div class="line"><a id="l00424" name="l00424"></a><span class="lineno">  424</span>      <span class="keyword">const</span> Int_t idw = <a class="code hl_variable" href="ActsStrawTracker_8cxx.html#abbeb8ae63622a7fef0b5a56bb91a1682">sign</a> * particle.pdg;</div>
 <div class="line"><a id="l00425" name="l00425"></a><span class="lineno">  425</span>      <span class="keyword">const</span> Int_t idhnu = HistogramId(idw);</div>
 <div class="line"><a id="l00426" name="l00426"></a><span class="lineno">  426</span>      TString name = PDG-&gt;GetParticle(idw)-&gt;GetName();</div>
 <div class="line"><a id="l00427" name="l00427"></a><span class="lineno">  427</span>      TString title = name;</div>
@@ -941,11 +941,11 @@ $(document).ready(function(){initNavTree('exitHadronAbsorber_8cxx_source.html','
 <div class="line"><a id="l00812" name="l00812"></a><span class="lineno">  812</span>    }</div>
 <div class="line"><a id="l00813" name="l00813"></a><span class="lineno">  813</span>  }</div>
 <div class="line"><a id="l00814" name="l00814"></a><span class="lineno">  814</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; particle : kHistogrammed) {</div>
-<div class="line"><a id="l00815" name="l00815"></a><span class="lineno">  815</span>    <span class="keywordflow">for</span> (Int_t sign : {1, -1}) {</div>
-<div class="line"><a id="l00816" name="l00816"></a><span class="lineno">  816</span>      <span class="keywordflow">if</span> (sign &lt; 0 &amp;&amp; !particle.withAntiparticle) {</div>
+<div class="line"><a id="l00815" name="l00815"></a><span class="lineno">  815</span>    <span class="keywordflow">for</span> (Int_t <a class="code hl_variable" href="ActsStrawTracker_8cxx.html#abbeb8ae63622a7fef0b5a56bb91a1682">sign</a> : {1, -1}) {</div>
+<div class="line"><a id="l00816" name="l00816"></a><span class="lineno">  816</span>      <span class="keywordflow">if</span> (<a class="code hl_variable" href="ActsStrawTracker_8cxx.html#abbeb8ae63622a7fef0b5a56bb91a1682">sign</a> &lt; 0 &amp;&amp; !particle.withAntiparticle) {</div>
 <div class="line"><a id="l00817" name="l00817"></a><span class="lineno">  817</span>        <span class="keywordflow">continue</span>;</div>
 <div class="line"><a id="l00818" name="l00818"></a><span class="lineno">  818</span>      }</div>
-<div class="line"><a id="l00819" name="l00819"></a><span class="lineno">  819</span>      <span class="keyword">const</span> Int_t idhnu = HistogramId(sign * particle.pdg);</div>
+<div class="line"><a id="l00819" name="l00819"></a><span class="lineno">  819</span>      <span class="keyword">const</span> Int_t idhnu = HistogramId(<a class="code hl_variable" href="ActsStrawTracker_8cxx.html#abbeb8ae63622a7fef0b5a56bb91a1682">sign</a> * particle.pdg);</div>
 <div class="line"><a id="l00820" name="l00820"></a><span class="lineno">  820</span>      TString key = <a class="code hl_variable" href="classexitHadronAbsorber.html#abad68307a244613567d1fc695117984f">fVetoName</a>;</div>
 <div class="line"><a id="l00821" name="l00821"></a><span class="lineno">  821</span>      key += idhnu;</div>
 <div class="line"><a id="l00822" name="l00822"></a><span class="lineno">  822</span>      TSeqCollection* fileList = gROOT-&gt;GetListOfFiles();</div>
@@ -1083,6 +1083,7 @@ $(document).ready(function(){initNavTree('exitHadronAbsorber_8cxx_source.html','
 <div class="line"><a id="l00950" name="l00950"></a><span class="lineno">  950</span>  FairRootManager::Instance()-&gt;RegisterAny(name.Data(), <a class="code hl_variable" href="classSHiP_1_1Detector.html#a15abb9db813d378f7c19b79bc53cac88">fDetPoints</a>, kTRUE);</div>
 <div class="line"><a id="l00951" name="l00951"></a><span class="lineno">  951</span>}</div>
 </div>
+<div class="ttc" id="aActsStrawTracker_8cxx_html_abbeb8ae63622a7fef0b5a56bb91a1682"><div class="ttname"><a href="ActsStrawTracker_8cxx.html#abbeb8ae63622a7fef0b5a56bb91a1682">sign</a></div><div class="ttdeci">int sign</div><div class="ttdoc">Side of the wire in the current fit.</div><div class="ttdef"><b>Definition</b> <a href="ActsStrawTracker_8cxx_source.html#l00106">ActsStrawTracker.cxx:106</a></div></div>
 <div class="ttc" id="aShipBellField_8cxx_html_a9842927f33236414d34831f59ed1c28f"><div class="ttname"><a href="ShipBellField_8cxx.html#a9842927f33236414d34831f59ed1c28f">cm</a></div><div class="ttdeci">constexpr Double_t cm</div><div class="ttdef"><b>Definition</b> <a href="ShipBellField_8cxx_source.html#l00024">ShipBellField.cxx:24</a></div></div>
 <div class="ttc" id="aShipBellField_8cxx_html_ae0699ca79e23818d99b9ee18334a9325"><div class="ttname"><a href="ShipBellField_8cxx.html#ae0699ca79e23818d99b9ee18334a9325">m</a></div><div class="ttdeci">constexpr Double_t m</div><div class="ttdef"><b>Definition</b> <a href="ShipBellField_8cxx_source.html#l00025">ShipBellField.cxx:25</a></div></div>
 <div class="ttc" id="aShipDetectorList_8h_html"><div class="ttname"><a href="ShipDetectorList_8h.html">ShipDetectorList.h</a></div></div>

@@ -96,7 +96,8 @@ $(document).ready(function(){initNavTree('namespaceSHiP.html',''); initResizable
 <div class="header">
   <div class="summary">
 <a href="#namespaces">Namespaces</a> &#124;
-<a href="#nested-classes">Classes</a>  </div>
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">SHiP Namespace Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -122,6 +123,10 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSHiP_1_1Generator.html">Generator</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSHiP_1_1LineSegment.html">LineSegment</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSHiP_1_1PatRecHit.html">PatRecHit</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSHiP_1_1RecoTrack.html">RecoTrack</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSHiP_1_1RecoVertex.html">RecoVertex</a></td></tr>
@@ -129,10 +134,62 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSHiP_1_1ScoringPlane.html">ScoringPlane</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Thin vacuum planes that record every track entering them.  <a href="classSHiP_1_1ScoringPlane.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSHiP_1_1StrawPatRec.html">StrawPatRec</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSHiP_1_1StrawWire.html">StrawWire</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A straw wire in the <a class="el" href="namespaceSHiP.html">SHiP</a> frame (cm), for pattern recognition.  <a href="structSHiP_1_1StrawWire.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSHiP_1_1TrackCandidate.html">TrackCandidate</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSHiP_1_1TTreeGenerator.html">TTreeGenerator</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A FairRoot generator that reads particle data from ROOT TTrees.  <a href="classSHiP_1_1TTreeGenerator.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:a9317b681d7c278bf6ecebb3d43564cda" id="r_a9317b681d7c278bf6ecebb3d43564cda"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceSHiP.html#a9317b681d7c278bf6ecebb3d43564cda">signedWireDistance</a> (const <a class="el" href="structSHiP_1_1LineSegment.html">LineSegment</a> &amp;line, const <a class="el" href="structSHiP_1_1StrawWire.html">StrawWire</a> &amp;<a class="el" href="ActsStrawTracker_8cxx.html#a2f946958ddce2ad16be2780db631565c">wire</a>)</td></tr>
+<tr class="separator:a9317b681d7c278bf6ecebb3d43564cda"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="a9317b681d7c278bf6ecebb3d43564cda" name="a9317b681d7c278bf6ecebb3d43564cda"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9317b681d7c278bf6ecebb3d43564cda">&#9670;&#160;</a></span>signedWireDistance()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double SHiP::signedWireDistance </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structSHiP_1_1LineSegment.html">LineSegment</a> &amp;&#160;</td>
+          <td class="paramname"><em>line</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structSHiP_1_1StrawWire.html">StrawWire</a> &amp;&#160;</td>
+          <td class="paramname"><em>wire</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Signed distance of closest approach between a straight track and a wire, with the sign convention of the ACTS straw surface (loc0) </p>
+
+<p class="definition">Definition at line <a class="el" href="StrawPatRec_8cpp_source.html#l00261">261</a> of file <a class="el" href="StrawPatRec_8cpp_source.html">StrawPatRec.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  261</span>                                                                          {</div>
+<div class="line"><span class="lineno">  262</span>  <span class="keyword">const</span> Eigen::Vector3d p(line.<a class="code hl_function" href="structSHiP_1_1LineSegment.html#aa84609c7a50b5e879c3ef3a16ded1621">x</a>(<a class="code hl_variable" href="ActsStrawTracker_8cxx.html#a2f946958ddce2ad16be2780db631565c">wire</a>.z), line.<a class="code hl_function" href="structSHiP_1_1LineSegment.html#a682afebfd3b1e9b173a5c457b9bdd053">y</a>(<a class="code hl_variable" href="ActsStrawTracker_8cxx.html#a2f946958ddce2ad16be2780db631565c">wire</a>.z), <a class="code hl_variable" href="ActsStrawTracker_8cxx.html#a2f946958ddce2ad16be2780db631565c">wire</a>.z);</div>
+<div class="line"><span class="lineno">  263</span>  <span class="keyword">const</span> Eigen::Vector3d c(<a class="code hl_variable" href="ActsStrawTracker_8cxx.html#a2f946958ddce2ad16be2780db631565c">wire</a>.x, <a class="code hl_variable" href="ActsStrawTracker_8cxx.html#a2f946958ddce2ad16be2780db631565c">wire</a>.y, <a class="code hl_variable" href="ActsStrawTracker_8cxx.html#a2f946958ddce2ad16be2780db631565c">wire</a>.z);</div>
+<div class="line"><span class="lineno">  264</span>  <span class="keywordflow">return</span> (p - c).dot(signDirection(line, <a class="code hl_variable" href="ActsStrawTracker_8cxx.html#a2f946958ddce2ad16be2780db631565c">wire</a>));</div>
+<div class="line"><span class="lineno">  265</span>}</div>
+<div class="ttc" id="aActsStrawTracker_8cxx_html_a2f946958ddce2ad16be2780db631565c"><div class="ttname"><a href="ActsStrawTracker_8cxx.html#a2f946958ddce2ad16be2780db631565c">wire</a></div><div class="ttdeci">const StrawWire * wire</div><div class="ttdef"><b>Definition</b> <a href="ActsStrawTracker_8cxx_source.html#l00101">ActsStrawTracker.cxx:101</a></div></div>
+<div class="ttc" id="astructSHiP_1_1LineSegment_html_a682afebfd3b1e9b173a5c457b9bdd053"><div class="ttname"><a href="structSHiP_1_1LineSegment.html#a682afebfd3b1e9b173a5c457b9bdd053">SHiP::LineSegment::y</a></div><div class="ttdeci">double y(double z) const</div><div class="ttdef"><b>Definition</b> <a href="StrawPatRec_8hpp_source.html#l00037">StrawPatRec.hpp:37</a></div></div>
+<div class="ttc" id="astructSHiP_1_1LineSegment_html_aa84609c7a50b5e879c3ef3a16ded1621"><div class="ttname"><a href="structSHiP_1_1LineSegment.html#aa84609c7a50b5e879c3ef3a16ded1621">SHiP::LineSegment::x</a></div><div class="ttdeci">double x(double z) const</div><div class="ttdef"><b>Definition</b> <a href="StrawPatRec_8hpp_source.html#l00036">StrawPatRec.hpp:36</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- SHiP Doxygen theme footer. Version-independent: only standard Doxygen

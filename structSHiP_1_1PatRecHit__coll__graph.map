@@ -1,0 +1,5 @@
+<map id="SHiP::PatRecHit" name="SHiP::PatRecHit">
+<area shape="rect" id="Node000001" title=" " alt="" coords="7,93,130,119"/>
+<area shape="rect" id="Node000002" href="$structSHiP_1_1StrawWire.html" title="A straw wire in the SHiP frame (cm), for pattern recognition." alt="" coords="5,5,132,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="71,45,71,93,66,93,66,45"/>
+</map>

@@ -1,20 +1,20 @@
 var searchData=
 [
-  ['y_0',['y',['../structTrackBuffer.html#a76e3d69f5306d69c9cbcb3254f020dd5',1,'TrackBuffer::y'],['../namespacemakeMuonEM.html#a0d25cc9a190d0bdc64fa5cc1d7533039',1,'makeMuonEM.y'],['../namespacemake__nTuple__Tr.html#a3562a98b75521c312dbf74ba57ba9332',1,'make_nTuple_Tr.y'],['../namespacemake__nTuple__SBT.html#ab46e9a5e01d6b550aa7a5315ba9d81cf',1,'make_nTuple_SBT.y'],['../namespacerun__tracking__scan.html#a60149f5e9c7fe53ba27d5ee50faa64de',1,'run_tracking_scan.y'],['../structSHiP_1_1ScoringPlane_1_1Plane.html#ad7396771aa8fdd06b29f0b3a1a798084',1,'SHiP::ScoringPlane::Plane::y'],['../structParticleGunParticle.html#a9656861b789d19e0da8a2320cbc1af83',1,'ParticleGunParticle::Y'],['../classstrawReco_1_1StrawHit.html#aba19c3e669d53c59fca9c13233341b8c',1,'strawReco.StrawHit.y'],['../structUpstreamTagger_1_1Region.html#ae6e79075ef0f864b405bc83cb7a1f7ea',1,'UpstreamTagger::Region::y'],['../classCosmicsGenerator.html#a6be8f1021db23a5cffe07bdef2a9f49e',1,'CosmicsGenerator::y'],['../classSHiP_1_1RecoTrack.html#a98520743168521d4f2c176e3ca14be9d',1,'SHiP::RecoTrack::y()'],['../classSHiP_1_1RecoVertex.html#a8b39e404799c3924f69a4ee7ed79a33f',1,'SHiP::RecoVertex::y()']]],
-  ['y0_5f_1',['y0_',['../structShipFieldMaker_1_1transformInfo.html#a1662a7308aec75088911268cf82c3169',1,'ShipFieldMaker::transformInfo']]],
-  ['y_5fdata_2',['y_data',['../classshipVertex_1_1Task.html#a8ca5c8775cc4a7b23568c0eeee8ec0a7',1,'shipVertex::Task']]],
-  ['yaml_5fconfigs_3',['YAML_CONFIGS',['../namespacegeometry__from__file.html#a95cd91ab64400027db0202d9acb2c451',1,'geometry_from_file']]],
-  ['yandexprod_4',['YandexProd',['../namespacecompactingBackgroundProduction.html#a708e024acb290e4040ca0976c1be15f0',1,'compactingBackgroundProduction']]],
-  ['yaxis_5',['yAxis',['../classShipBFieldMap.html#a861764baf5e15176bc69c9942c2a9c65a2a92b59da7fcc9aa9e15dcd556326087',1,'ShipBFieldMap']]],
-  ['ybeam_6',['ybeam',['../namespacerunPythia8.html#a0773b179ce66354584f56325e5da1bc0',1,'runPythia8.yBeam(float Mproton=0.938272081, float pbeam=400.0)'],['../namespacerunPythia8.html#a5b3558b48027106d182fd3d46514884a',1,'runPythia8.ybeam']]],
-  ['ybot_7',['ybot',['../classstrawReco_1_1StrawHit.html#a1df2faba58cb03c487ae9cc092e0233b',1,'strawReco::StrawHit']]],
+  ['y_0',['y',['../structSHiP_1_1ScoringPlane_1_1Plane.html#ad7396771aa8fdd06b29f0b3a1a798084',1,'SHiP::ScoringPlane::Plane::y'],['../namespacemake__nTuple__Tr.html#a3562a98b75521c312dbf74ba57ba9332',1,'make_nTuple_Tr.y'],['../namespacemake__nTuple__SBT.html#ab46e9a5e01d6b550aa7a5315ba9d81cf',1,'make_nTuple_SBT.y'],['../namespacerun__tracking__scan.html#a60149f5e9c7fe53ba27d5ee50faa64de',1,'run_tracking_scan.y'],['../namespacemakeMuonEM.html#a0d25cc9a190d0bdc64fa5cc1d7533039',1,'makeMuonEM.y'],['../structSHiP_1_1StrawWire.html#a17bd708de986cbc7e1200a0c650b1244',1,'SHiP::StrawWire::y'],['../structParticleGunParticle.html#a9656861b789d19e0da8a2320cbc1af83',1,'ParticleGunParticle::Y'],['../classSHiP_1_1RecoTrack.html#a98520743168521d4f2c176e3ca14be9d',1,'SHiP::RecoTrack::y()'],['../structTrackBuffer.html#a76e3d69f5306d69c9cbcb3254f020dd5',1,'TrackBuffer::y'],['../classCosmicsGenerator.html#a6be8f1021db23a5cffe07bdef2a9f49e',1,'CosmicsGenerator::y'],['../structUpstreamTagger_1_1Region.html#ae6e79075ef0f864b405bc83cb7a1f7ea',1,'UpstreamTagger::Region::y'],['../structSHiP_1_1LineSegment.html#a682afebfd3b1e9b173a5c457b9bdd053',1,'SHiP::LineSegment::y()'],['../classSHiP_1_1RecoVertex.html#a8b39e404799c3924f69a4ee7ed79a33f',1,'SHiP::RecoVertex::y()']]],
+  ['y0_1',['y0',['../structSHiP_1_1LineSegment.html#a0cfb009144a5f48515e59b2762b22f7d',1,'SHiP::LineSegment']]],
+  ['y0_5f_2',['y0_',['../structShipFieldMaker_1_1transformInfo.html#a1662a7308aec75088911268cf82c3169',1,'ShipFieldMaker::transformInfo']]],
+  ['y_5fdata_3',['y_data',['../classshipVertex_1_1Task.html#a8ca5c8775cc4a7b23568c0eeee8ec0a7',1,'shipVertex::Task']]],
+  ['yaml_5fconfigs_4',['YAML_CONFIGS',['../namespacegeometry__from__file.html#a95cd91ab64400027db0202d9acb2c451',1,'geometry_from_file']]],
+  ['yandexprod_5',['YandexProd',['../namespacecompactingBackgroundProduction.html#a708e024acb290e4040ca0976c1be15f0',1,'compactingBackgroundProduction']]],
+  ['yaxis_6',['yAxis',['../classShipBFieldMap.html#a861764baf5e15176bc69c9942c2a9c65a2a92b59da7fcc9aa9e15dcd556326087',1,'ShipBFieldMap']]],
+  ['ybeam_7',['ybeam',['../namespacerunPythia8.html#a0773b179ce66354584f56325e5da1bc0',1,'runPythia8.yBeam(float Mproton=0.938272081, float pbeam=400.0)'],['../namespacerunPythia8.html#a5b3558b48027106d182fd3d46514884a',1,'runPythia8.ybeam']]],
   ['ybox_8',['yBox',['../classCosmicsGenerator.html#a7cdf63ffe46b0356831c2da709a4b7f9',1,'CosmicsGenerator']]],
   ['ych_9',['Ych',['../classMTCDetHit.html#a71b4a82c51ae60fe4fc20824941dc37f',1,'MTCDetHit']]],
   ['ydimension_10',['YDimension',['../classTarget.html#abc600f1cb78ffac7595bbf362ca151ea',1,'Target']]],
   ['ydistance_11',['Ydistance',['../classTarget.html#a0765eab67cf5bc8c4494ead7cda06f47',1,'Target']]],
   ['yerr_12',['yerr',['../namespacerun__tracking__scan.html#a6feb5bf3bdbb315302698f6eed2645ed',1,'run_tracking_scan']]],
   ['ylabel_13',['ylabel',['../namespacerun__tracking__scan.html#a0912598ede2f37a6dc4145e538995188',1,'run_tracking_scan']]],
-  ['ymax_14',['ymax',['../classfieldMapTools_1_1MapRange.html#a0e16076690b57fb0dfd87631e0e1855f',1,'fieldMapTools.MapRange.yMax'],['../classfieldMapTools_1_1MapRange.html#a026d4b4cabe270fd7557235372b78056',1,'fieldMapTools.MapRange.yMax'],['../namespacerun__tracking__scan.html#a004845ad931ee55e7b2676252752214e',1,'run_tracking_scan.ymax']]],
+  ['ymax_14',['ymax',['../namespacerun__tracking__scan.html#a004845ad931ee55e7b2676252752214e',1,'run_tracking_scan.ymax'],['../classfieldMapTools_1_1MapRange.html#a0e16076690b57fb0dfd87631e0e1855f',1,'fieldMapTools.MapRange.yMax'],['../classfieldMapTools_1_1MapRange.html#a026d4b4cabe270fd7557235372b78056',1,'fieldMapTools.MapRange.yMax']]],
   ['ymax_5f_15',['yMax_',['../classShipBFieldMap.html#ad8a1a4c88b21f29339f361d341ba1304',1,'ShipBFieldMap']]],
   ['ymin_16',['ymin',['../classfieldMapTools_1_1MapRange.html#a16b8c509fae01607b6a9334e78538de5',1,'fieldMapTools.MapRange.yMin'],['../namespacerun__tracking__scan.html#a6bbc2e553dfe383f68e41f91e0e86101',1,'run_tracking_scan.ymin'],['../classfieldMapTools_1_1MapRange.html#ae1d430e12a2ea2d9297a2958f08af646',1,'fieldMapTools.MapRange.yMin']]],
   ['ymin_5f_17',['yMin_',['../classShipBFieldMap.html#a4529066c7dca47ed195f98f923f7c30c',1,'ShipBFieldMap']]],
@@ -24,6 +24,5 @@ var searchData=
   ['yokewidth_21',['YokeWidth',['../classShipMagnet.html#a3d8c2575a8a1c3b31ee82dfc84d2ed9d',1,'ShipMagnet']]],
   ['yrange_5f_22',['yRange_',['../classShipBFieldMap.html#ad8b711298e1abff445205e57306242e1',1,'ShipBFieldMap']]],
   ['yspace_23',['ySpace',['../namespaceadd__noise__to__field.html#a8ad10ab502ec765188f76b5c1b807f90',1,'add_noise_to_field']]],
-  ['ytop_24',['ytop',['../classstrawReco_1_1StrawHit.html#a5151f599bba6bc76621009c758e5c76d',1,'strawReco::StrawHit']]],
-  ['yvessel_25',['Yvessel',['../classGenieGenerator.html#afcf19e34d58e8d82a19c9a03368f0b4a',1,'GenieGenerator']]]
+  ['yvessel_24',['Yvessel',['../classGenieGenerator.html#afcf19e34d58e8d82a19c9a03368f0b4a',1,'GenieGenerator']]]
 ];

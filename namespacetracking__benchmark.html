@@ -160,12 +160,12 @@ establish a GenFit baseline and later measure ACTS performance.
 </table>
 </div><div class="memdoc">
 <pre class="fragment">Round a value, passing through None unchanged.</pre> 
-<p class="definition">Definition at line <a class="el" href="tracking__benchmark_8py_source.html#l00053">53</a> of file <a class="el" href="tracking__benchmark_8py_source.html">tracking_benchmark.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   53</span><span class="keyword">def </span>_round_or_none(value: float | <span class="keywordtype">None</span>, ndigits: int = 6) -&gt; float | <span class="keywordtype">None</span>:</div>
-<div class="line"><span class="lineno">   54</span>    <span class="stringliteral">&quot;&quot;&quot;Round a value, passing through None unchanged.&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   55</span>    <span class="keywordflow">return</span> round(value, ndigits) <span class="keywordflow">if</span> value <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span> <span class="keywordflow">else</span> <span class="keywordtype">None</span></div>
-<div class="line"><span class="lineno">   56</span> </div>
-<div class="line"><span class="lineno">   57</span> </div>
+<p class="definition">Definition at line <a class="el" href="tracking__benchmark_8py_source.html#l00056">56</a> of file <a class="el" href="tracking__benchmark_8py_source.html">tracking_benchmark.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   56</span><span class="keyword">def </span>_round_or_none(value: float | <span class="keywordtype">None</span>, ndigits: int = 6) -&gt; float | <span class="keywordtype">None</span>:</div>
+<div class="line"><span class="lineno">   57</span>    <span class="stringliteral">&quot;&quot;&quot;Round a value, passing through None unchanged.&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   58</span>    <span class="keywordflow">return</span> round(value, ndigits) <span class="keywordflow">if</span> value <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span> <span class="keywordflow">else</span> <span class="keywordtype">None</span></div>
+<div class="line"><span class="lineno">   59</span> </div>
+<div class="line"><span class="lineno">   60</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -209,32 +209,32 @@ float or None
     Half-width of the 68% Wilson score interval (~1 sigma),
     or None if n == 0 (undefined proportion).
 </pre> 
-<p class="definition">Definition at line <a class="el" href="tracking__benchmark_8py_source.html#l00028">28</a> of file <a class="el" href="tracking__benchmark_8py_source.html">tracking_benchmark.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   28</span><span class="keyword">def </span>wilson_interval(k: int, n: int) -&gt; float | <span class="keywordtype">None</span>:</div>
-<div class="line"><span class="lineno">   29</span>    <span class="stringliteral">&quot;&quot;&quot;Wilson score interval half-width for a binomial proportion.</span></div>
-<div class="line"><span class="lineno">   30</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">   31</span><span class="stringliteral">    Parameters</span></div>
-<div class="line"><span class="lineno">   32</span><span class="stringliteral">    ----------</span></div>
-<div class="line"><span class="lineno">   33</span><span class="stringliteral">    k : int</span></div>
-<div class="line"><span class="lineno">   34</span><span class="stringliteral">        Number of successes.</span></div>
-<div class="line"><span class="lineno">   35</span><span class="stringliteral">    n : int</span></div>
-<div class="line"><span class="lineno">   36</span><span class="stringliteral">        Number of trials.</span></div>
-<div class="line"><span class="lineno">   37</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">   38</span><span class="stringliteral">    Returns</span></div>
-<div class="line"><span class="lineno">   39</span><span class="stringliteral">    -------</span></div>
-<div class="line"><span class="lineno">   40</span><span class="stringliteral">    float or None</span></div>
-<div class="line"><span class="lineno">   41</span><span class="stringliteral">        Half-width of the 68% Wilson score interval (~1 sigma),</span></div>
-<div class="line"><span class="lineno">   42</span><span class="stringliteral">        or None if n == 0 (undefined proportion).</span></div>
-<div class="line"><span class="lineno">   43</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   44</span>    <span class="keywordflow">if</span> n == 0:</div>
-<div class="line"><span class="lineno">   45</span>        <span class="keywordflow">return</span> <span class="keywordtype">None</span></div>
-<div class="line"><span class="lineno">   46</span>    z = 1.0  <span class="comment"># 1-sigma</span></div>
-<div class="line"><span class="lineno">   47</span>    p = k / n</div>
-<div class="line"><span class="lineno">   48</span>    denom = 1 + z**2 / n</div>
-<div class="line"><span class="lineno">   49</span>    spread = z * math.sqrt(p * (1 - p) / n + z**2 / (4 * n**2)) / denom</div>
-<div class="line"><span class="lineno">   50</span>    <span class="keywordflow">return</span> spread</div>
-<div class="line"><span class="lineno">   51</span> </div>
-<div class="line"><span class="lineno">   52</span> </div>
+<p class="definition">Definition at line <a class="el" href="tracking__benchmark_8py_source.html#l00031">31</a> of file <a class="el" href="tracking__benchmark_8py_source.html">tracking_benchmark.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   31</span><span class="keyword">def </span>wilson_interval(k: int, n: int) -&gt; float | <span class="keywordtype">None</span>:</div>
+<div class="line"><span class="lineno">   32</span>    <span class="stringliteral">&quot;&quot;&quot;Wilson score interval half-width for a binomial proportion.</span></div>
+<div class="line"><span class="lineno">   33</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">   34</span><span class="stringliteral">    Parameters</span></div>
+<div class="line"><span class="lineno">   35</span><span class="stringliteral">    ----------</span></div>
+<div class="line"><span class="lineno">   36</span><span class="stringliteral">    k : int</span></div>
+<div class="line"><span class="lineno">   37</span><span class="stringliteral">        Number of successes.</span></div>
+<div class="line"><span class="lineno">   38</span><span class="stringliteral">    n : int</span></div>
+<div class="line"><span class="lineno">   39</span><span class="stringliteral">        Number of trials.</span></div>
+<div class="line"><span class="lineno">   40</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">   41</span><span class="stringliteral">    Returns</span></div>
+<div class="line"><span class="lineno">   42</span><span class="stringliteral">    -------</span></div>
+<div class="line"><span class="lineno">   43</span><span class="stringliteral">    float or None</span></div>
+<div class="line"><span class="lineno">   44</span><span class="stringliteral">        Half-width of the 68% Wilson score interval (~1 sigma),</span></div>
+<div class="line"><span class="lineno">   45</span><span class="stringliteral">        or None if n == 0 (undefined proportion).</span></div>
+<div class="line"><span class="lineno">   46</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   47</span>    <span class="keywordflow">if</span> n == 0:</div>
+<div class="line"><span class="lineno">   48</span>        <span class="keywordflow">return</span> <span class="keywordtype">None</span></div>
+<div class="line"><span class="lineno">   49</span>    z = 1.0  <span class="comment"># 1-sigma</span></div>
+<div class="line"><span class="lineno">   50</span>    p = k / n</div>
+<div class="line"><span class="lineno">   51</span>    denom = 1 + z**2 / n</div>
+<div class="line"><span class="lineno">   52</span>    spread = z * math.sqrt(p * (1 - p) / n + z**2 / (4 * n**2)) / denom</div>
+<div class="line"><span class="lineno">   53</span>    <span class="keywordflow">return</span> spread</div>
+<div class="line"><span class="lineno">   54</span> </div>
+<div class="line"><span class="lineno">   55</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -251,7 +251,7 @@ float or None
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tracking__benchmark_8py_source.html#l00025">25</a> of file <a class="el" href="tracking__benchmark_8py_source.html">tracking_benchmark.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tracking__benchmark_8py_source.html#l00028">28</a> of file <a class="el" href="tracking__benchmark_8py_source.html">tracking_benchmark.py</a>.</p>
 
 </div>
 </div>

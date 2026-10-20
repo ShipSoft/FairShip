@@ -17,8 +17,14 @@ var namespaceSHiP =
     [ "DetectorHit", "classSHiP_1_1DetectorHit.html", "classSHiP_1_1DetectorHit" ],
     [ "DetectorPoint", "classSHiP_1_1DetectorPoint.html", "classSHiP_1_1DetectorPoint" ],
     [ "Generator", "classSHiP_1_1Generator.html", "classSHiP_1_1Generator" ],
+    [ "LineSegment", "structSHiP_1_1LineSegment.html", "structSHiP_1_1LineSegment" ],
+    [ "PatRecHit", "structSHiP_1_1PatRecHit.html", "structSHiP_1_1PatRecHit" ],
     [ "RecoTrack", "classSHiP_1_1RecoTrack.html", "classSHiP_1_1RecoTrack" ],
     [ "RecoVertex", "classSHiP_1_1RecoVertex.html", "classSHiP_1_1RecoVertex" ],
     [ "ScoringPlane", "classSHiP_1_1ScoringPlane.html", "classSHiP_1_1ScoringPlane" ],
-    [ "TTreeGenerator", "classSHiP_1_1TTreeGenerator.html", "classSHiP_1_1TTreeGenerator" ]
+    [ "StrawPatRec", "classSHiP_1_1StrawPatRec.html", "classSHiP_1_1StrawPatRec" ],
+    [ "StrawWire", "structSHiP_1_1StrawWire.html", "structSHiP_1_1StrawWire" ],
+    [ "TrackCandidate", "structSHiP_1_1TrackCandidate.html", "structSHiP_1_1TrackCandidate" ],
+    [ "TTreeGenerator", "classSHiP_1_1TTreeGenerator.html", "classSHiP_1_1TTreeGenerator" ],
+    [ "signedWireDistance", "namespaceSHiP.html#a9317b681d7c278bf6ecebb3d43564cda", null ]
 ];

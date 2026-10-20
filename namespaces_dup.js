@@ -1340,6 +1340,7 @@ var namespaces_dup =
       [ "trajFilter", "namespacerun__simScript.html#abb91726f585a0ba37957110e3883be6a", null ],
       [ "type", "namespacerun__simScript.html#adfb7a695088d9373dc7c795b7d8abb52", null ],
       [ "usedInputFiles", "namespacerun__simScript.html#a37c103c6ae06010e41e8c513b9a45096", null ],
+      [ "vertex_pars", "namespacerun__simScript.html#a8b2637a9a889581a8e226b0d24177fc6", null ],
       [ "z", "namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed", null ],
       [ "z_end", "namespacerun__simScript.html#a79e45ce98ca051f0fab9a6eeebbb1f23", null ],
       [ "zDV", "namespacerun__simScript.html#aa52a3b35fc9639050ea8dcf392b88abe", null ],

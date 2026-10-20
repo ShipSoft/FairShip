@@ -1,3 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$structUpstreamTagger_1_1Region.html" title="z&#45;position of the active tile plane" alt="" coords="5,5,188,31"/>
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,5,225,31"/>
+<area shape="rect" id="Node000001" href="$classShipFieldMaker.html" title="Creates various magnetic fields and assigns them to geometry regions." alt="" coords="273,5,395,31"/>
+<area shape="poly" id="edge108_Node000000_Node000001" title=" " alt="" coords="239,15,273,15,273,21,239,21"/>
 </map>

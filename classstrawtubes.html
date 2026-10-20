@@ -527,8 +527,8 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  258</span>  rmax = <a class="code hl_variable" href="classstrawtubes.html#a2c3b2535c871522868dc3f32d3b9a68c">f_wire_thickness</a> / 2.;</div>
 <div class="line"><span class="lineno">  259</span>  TGeoTube* wire_tube =</div>
 <div class="line"><span class="lineno">  260</span>      <span class="keyword">new</span> TGeoTube(<span class="stringliteral">&quot;wire&quot;</span>, rmin, rmax, straw_length - 4. * eps);</div>
-<div class="line"><span class="lineno">  261</span>  TGeoVolume* wire = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;wire&quot;</span>, wire_tube, tungsten);</div>
-<div class="line"><span class="lineno">  262</span>  wire-&gt;SetLineColor(6);</div>
+<div class="line"><span class="lineno">  261</span>  TGeoVolume* <a class="code hl_variable" href="ActsStrawTracker_8cxx.html#a2f946958ddce2ad16be2780db631565c">wire</a> = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;wire&quot;</span>, wire_tube, tungsten);</div>
+<div class="line"><span class="lineno">  262</span>  <a class="code hl_variable" href="ActsStrawTracker_8cxx.html#a2f946958ddce2ad16be2780db631565c">wire</a>-&gt;SetLineColor(6);</div>
 <div class="line"><span class="lineno">  263</span> </div>
 <div class="line"><span class="lineno">  264</span>  <span class="comment">// Tracking stations</span></div>
 <div class="line"><span class="lineno">  265</span>  <span class="comment">// statnb = station number; vnb = view number; lnb = layer number; snb = straw</span></div>
@@ -654,7 +654,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  385</span>          layerbox-&gt;AddNode(</div>
 <div class="line"><span class="lineno">  386</span>              gas, statnb * 1e6 + vnb * 1e5 + lnb * 1e4 + 2e3 + snb, h6s);</div>
 <div class="line"><span class="lineno">  387</span>          layerbox-&gt;AddNode(</div>
-<div class="line"><span class="lineno">  388</span>              wire, statnb * 1e6 + vnb * 1e5 + lnb * 1e4 + 3e3 + snb, h6s);</div>
+<div class="line"><span class="lineno">  388</span>              <a class="code hl_variable" href="ActsStrawTracker_8cxx.html#a2f946958ddce2ad16be2780db631565c">wire</a>, statnb * 1e6 + vnb * 1e5 + lnb * 1e4 + 3e3 + snb, h6s);</div>
 <div class="line"><span class="lineno">  389</span>          <span class="comment">// End of straw loop</span></div>
 <div class="line"><span class="lineno">  390</span>        }</div>
 <div class="line"><span class="lineno">  391</span> </div>
@@ -678,7 +678,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  409</span>              statnb * 1e6 + vnb * 1e5 + lnb * 1e4 + 2e3 + straws_per_layer + 1,</div>
 <div class="line"><span class="lineno">  410</span>              h6s);</div>
 <div class="line"><span class="lineno">  411</span>          layerbox-&gt;AddNode(</div>
-<div class="line"><span class="lineno">  412</span>              wire,</div>
+<div class="line"><span class="lineno">  412</span>              <a class="code hl_variable" href="ActsStrawTracker_8cxx.html#a2f946958ddce2ad16be2780db631565c">wire</a>,</div>
 <div class="line"><span class="lineno">  413</span>              statnb * 1e6 + vnb * 1e5 + lnb * 1e4 + 3e3 + straws_per_layer + 1,</div>
 <div class="line"><span class="lineno">  414</span>              h6s);</div>
 <div class="line"><span class="lineno">  415</span>        }</div>
@@ -689,6 +689,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  420</span>    <span class="comment">// End of tracking station loop</span></div>
 <div class="line"><span class="lineno">  421</span>  }</div>
 <div class="line"><span class="lineno">  422</span>}</div>
+<div class="ttc" id="aActsStrawTracker_8cxx_html_a2f946958ddce2ad16be2780db631565c"><div class="ttname"><a href="ActsStrawTracker_8cxx.html#a2f946958ddce2ad16be2780db631565c">wire</a></div><div class="ttdeci">const StrawWire * wire</div><div class="ttdef"><b>Definition</b> <a href="ActsStrawTracker_8cxx_source.html#l00101">ActsStrawTracker.cxx:101</a></div></div>
 <div class="ttc" id="aclassstrawtubes_html_a14acb5455a4ee380c98f82739f249267"><div class="ttname"><a href="classstrawtubes.html#a14acb5455a4ee380c98f82739f249267">strawtubes::f_aperture_width</a></div><div class="ttdeci">Double_t f_aperture_width</div><div class="ttdoc">z-position of tracking station 4</div><div class="ttdef"><b>Definition</b> <a href="strawtubes_8h_source.html#l00068">strawtubes.h:68</a></div></div>
 <div class="ttc" id="aclassstrawtubes_html_a150665aba5f021b053f06b1259e8ccd2"><div class="ttname"><a href="classstrawtubes.html#a150665aba5f021b053f06b1259e8ccd2">strawtubes::f_inner_straw_diameter</a></div><div class="ttdeci">Double_t f_inner_straw_diameter</div><div class="ttdoc">Aperture height (y)</div><div class="ttdef"><b>Definition</b> <a href="strawtubes_8h_source.html#l00070">strawtubes.h:70</a></div></div>
 <div class="ttc" id="aclassstrawtubes_html_a1b49204ad2db574995f7a5f5b3116e54"><div class="ttname"><a href="classstrawtubes.html#a1b49204ad2db574995f7a5f5b3116e54">strawtubes::f_station_length</a></div><div class="ttdeci">Double_t f_station_length</div><div class="ttdoc">Station envelope height (y)</div><div class="ttdef"><b>Definition</b> <a href="strawtubes_8h_source.html#l00081">strawtubes.h:81</a></div></div>
@@ -1016,7 +1017,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  186</span>  <a class="code hl_variable" href="classstrawtubes.html#a1b49204ad2db574995f7a5f5b3116e54">f_station_length</a> = <a class="code hl_variable" href="namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed">z</a>;  </div>
 <div class="line"><span class="lineno">  187</span>}</div>
 <div class="ttc" id="anamespacerun__fixedTarget_html_a68f8e54ebe34ed88a1aff4505c32be7c"><div class="ttname"><a href="namespacerun__fixedTarget.html#a68f8e54ebe34ed88a1aff4505c32be7c">run_fixedTarget.x</a></div><div class="ttdeci">x</div><div class="ttdef"><b>Definition</b> <a href="run__fixedTarget_8py_source.html#l00705">run_fixedTarget.py:705</a></div></div>
-<div class="ttc" id="anamespacerun__simScript_html_a90c25390918b8dd5a6f17d8efa00c9ed"><div class="ttname"><a href="namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed">run_simScript.z</a></div><div class="ttdeci">z</div><div class="ttdef"><b>Definition</b> <a href="run__simScript_8py_source.html#l00787">run_simScript.py:787</a></div></div>
+<div class="ttc" id="anamespacerun__simScript_html_a90c25390918b8dd5a6f17d8efa00c9ed"><div class="ttname"><a href="namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed">run_simScript.z</a></div><div class="ttdeci">z</div><div class="ttdef"><b>Definition</b> <a href="run__simScript_8py_source.html#l00799">run_simScript.py:799</a></div></div>
 <div class="ttc" id="anamespacerun__tracking__scan_html_a60149f5e9c7fe53ba27d5ee50faa64de"><div class="ttname"><a href="namespacerun__tracking__scan.html#a60149f5e9c7fe53ba27d5ee50faa64de">run_tracking_scan.y</a></div><div class="ttdeci">y</div><div class="ttdef"><b>Definition</b> <a href="run__tracking__scan_8py_source.html#l00327">run_tracking_scan.py:327</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -1364,14 +1365,14 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  486</span>  layer += vnb;</div>
 <div class="line"><span class="lineno">  487</span>  layer += lnb;</div>
 <div class="line"><span class="lineno">  488</span>  layer += <span class="stringliteral">&quot;0000&quot;</span>;</div>
-<div class="line"><span class="lineno">  489</span>  TString wire = <span class="stringliteral">&quot;wire_&quot;</span>;</div>
-<div class="line"><span class="lineno">  490</span>  wire += fDetectorID + 1e3;</div>
+<div class="line"><span class="lineno">  489</span>  TString <a class="code hl_variable" href="ActsStrawTracker_8cxx.html#a2f946958ddce2ad16be2780db631565c">wire</a> = <span class="stringliteral">&quot;wire_&quot;</span>;</div>
+<div class="line"><span class="lineno">  490</span>  <a class="code hl_variable" href="ActsStrawTracker_8cxx.html#a2f946958ddce2ad16be2780db631565c">wire</a> += fDetectorID + 1e3;</div>
 <div class="line"><span class="lineno">  491</span>  TString <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a5296266b8955872e3259622e903275de">path</a> = <span class="stringliteral">&quot;/&quot;</span>;</div>
 <div class="line"><span class="lineno">  492</span>  <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a5296266b8955872e3259622e903275de">path</a> += stat;</div>
 <div class="line"><span class="lineno">  493</span>  <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a5296266b8955872e3259622e903275de">path</a> += <span class="stringliteral">&quot;/&quot;</span>;</div>
 <div class="line"><span class="lineno">  494</span>  <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a5296266b8955872e3259622e903275de">path</a> += layer;</div>
 <div class="line"><span class="lineno">  495</span>  <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a5296266b8955872e3259622e903275de">path</a> += <span class="stringliteral">&quot;/&quot;</span>;</div>
-<div class="line"><span class="lineno">  496</span>  <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a5296266b8955872e3259622e903275de">path</a> += wire;</div>
+<div class="line"><span class="lineno">  496</span>  <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a5296266b8955872e3259622e903275de">path</a> += <a class="code hl_variable" href="ActsStrawTracker_8cxx.html#a2f946958ddce2ad16be2780db631565c">wire</a>;</div>
 <div class="line"><span class="lineno">  497</span>  Bool_t <a class="code hl_variable" href="namespacemakeDecay.html#a8ae49156f9341ca95732cc2c31159dda">rc</a> = nav-&gt;cd(path);</div>
 <div class="line"><span class="lineno">  498</span>  <span class="keywordflow">if</span> (!rc) {</div>
 <div class="line"><span class="lineno">  499</span>    LOG(warning) &lt;&lt; <span class="stringliteral">&quot;strawtubes::StrawDecode, TGeoNavigator failed&quot;</span> &lt;&lt; <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a5296266b8955872e3259622e903275de">path</a>;</div>

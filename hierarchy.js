@@ -11,6 +11,7 @@ var hierarchy =
     [ "ShipMuDIS::CBMSimBranches", "structShipMuDIS_1_1CBMSimBranches.html", null ],
     [ "hnl.CKMmatrix", "classhnl_1_1CKMmatrix.html", null ],
     [ "Co3Rng", "classCo3Rng.html", null ],
+    [ "SHiP::StrawPatRec::Config", "structSHiP_1_1StrawPatRec_1_1Config.html", null ],
     [ "hnl.constants", "classhnl_1_1constants.html", null ],
     [ "rpvsusy.constants", "classrpvsusy_1_1constants.html", null ],
     [ "darkphoton.DarkPhoton", "classdarkphoton_1_1DarkPhoton.html", null ],
@@ -163,6 +164,7 @@ var hierarchy =
       [ "SHiP::Detector< strawtubesPoint >", "classSHiP_1_1Detector.html", null ],
       [ "SHiP::Detector< PointType >", "classSHiP_1_1Detector.html", null ]
     ] ],
+    [ "SHiP::LineSegment", "structSHiP_1_1LineSegment.html", null ],
     [ "Acts::MagneticFieldProvider", null, [
       [ "SHiP::ActsShipField", "classSHiP_1_1ActsShipField.html", null ]
     ] ],
@@ -181,6 +183,7 @@ var hierarchy =
     [ "MuonPath", "classMuonPath.html", null ],
     [ "MuGeoProcessor::MuonWeights", "structMuGeoProcessor_1_1MuonWeights.html", null ],
     [ "ParticleGunParticle", "structParticleGunParticle.html", null ],
+    [ "SHiP::PatRecHit", "structSHiP_1_1PatRecHit.html", null ],
     [ "SHiP::ScoringPlane< PointType >::Plane", "structSHiP_1_1ScoringPlane_1_1Plane.html", null ],
     [ "ROOT.pyFairModule", null, [
       [ "study_GammaConv.Block", "classstudy__GammaConv_1_1Block.html", null ],
@@ -205,6 +208,8 @@ var hierarchy =
     [ "split_provenance.SplitProvenance", "classsplit__provenance_1_1SplitProvenance.html", null ],
     [ "MagneticTrackPropagator::State", "structMagneticTrackPropagator_1_1State.html", null ],
     [ "strawReco.StrawHit", "classstrawReco_1_1StrawHit.html", null ],
+    [ "SHiP::StrawPatRec", "classSHiP_1_1StrawPatRec.html", null ],
+    [ "SHiP::StrawWire", "structSHiP_1_1StrawWire.html", null ],
     [ "shipVertex.Task", "classshipVertex_1_1Task.html", null ],
     [ "shipVeto.Task", "classshipVeto_1_1Task.html", null ],
     [ "TG4RunConfiguration", null, [
@@ -234,6 +239,7 @@ var hierarchy =
       [ "vetoHitOnTrack", "classvetoHitOnTrack.html", null ]
     ] ],
     [ "TrackBuffer", "structTrackBuffer.html", null ],
+    [ "SHiP::TrackCandidate", "structSHiP_1_1TrackCandidate.html", null ],
     [ "shipTrackAccess.TrackInfo", "classshipTrackAccess_1_1TrackInfo.html", null ],
     [ "tracking_benchmark.TrackingBenchmark", "classtracking__benchmark_1_1TrackingBenchmark.html", null ],
     [ "ShipFieldMaker::transformInfo", "structShipFieldMaker_1_1transformInfo.html", null ],

@@ -104,6 +104,8 @@ $(document).ready(function(){initNavTree('ActsStrawTracker_8cxx.html',''); initR
 <code>#include &lt;algorithm&gt;</code><br />
 <code>#include &lt;array&gt;</code><br />
 <code>#include &lt;cmath&gt;</code><br />
+<code>#include &lt;limits&gt;</code><br />
+<code>#include &lt;numeric&gt;</code><br />
 <code>#include &lt;optional&gt;</code><br />
 <code>#include &lt;stdexcept&gt;</code><br />
 <code>#include &lt;utility&gt;</code><br />
@@ -118,31 +120,27 @@ $(document).ready(function(){initNavTree('ActsStrawTracker_8cxx.html',''); initR
 <code>#include &quot;Acts/EventData/VectorTrackContainer.hpp&quot;</code><br />
 <code>#include &quot;Acts/Geometry/GeometryContext.hpp&quot;</code><br />
 <code>#include &quot;Acts/MagneticField/MagneticFieldContext.hpp&quot;</code><br />
-<code>#include &quot;Acts/MagneticField/NullBField.hpp&quot;</code><br />
 <code>#include &quot;Acts/Propagator/DirectNavigator.hpp&quot;</code><br />
 <code>#include &quot;Acts/Propagator/EigenStepper.hpp&quot;</code><br />
 <code>#include &quot;Acts/Propagator/Propagator.hpp&quot;</code><br />
 <code>#include &quot;Acts/Propagator/VoidNavigator.hpp&quot;</code><br />
-<code>#include &quot;Acts/Surfaces/PerigeeSurface.hpp&quot;</code><br />
 <code>#include &quot;Acts/Surfaces/PlaneSurface.hpp&quot;</code><br />
 <code>#include &quot;Acts/TrackFitting/GainMatrixSmoother.hpp&quot;</code><br />
 <code>#include &quot;Acts/TrackFitting/GainMatrixUpdater.hpp&quot;</code><br />
 <code>#include &quot;Acts/TrackFitting/KalmanFitter.hpp&quot;</code><br />
 <code>#include &quot;Acts/Utilities/CalibrationContext.hpp&quot;</code><br />
 <code>#include &quot;Acts/Utilities/Logger.hpp&quot;</code><br />
-<code>#include &quot;Acts/Vertexing/FullBilloirVertexFitter.hpp&quot;</code><br />
-<code>#include &quot;Acts/Vertexing/HelicalTrackLinearizer.hpp&quot;</code><br />
-<code>#include &quot;Acts/Vertexing/TrackAtVertex.hpp&quot;</code><br />
-<code>#include &quot;Acts/Vertexing/Vertex.hpp&quot;</code><br />
-<code>#include &quot;Acts/Vertexing/VertexingOptions.hpp&quot;</code><br />
+<code>#include &quot;Acts/Utilities/UnitVectors.hpp&quot;</code><br />
 <code>#include &quot;<a class="el" href="ActsFrame_8hpp_source.html">ActsFrame.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="ActsShipField_8hpp_source.html">ActsShipField.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="ActsStrawGeometry_8hpp_source.html">ActsStrawGeometry.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="StrawPatRec_8hpp_source.html">StrawPatRec.hpp</a>&quot;</code><br />
 <code>#include &quot;TGeoManager.h&quot;</code><br />
+<code>#include &quot;TVirtualMagField.h&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for ActsStrawTracker.cxx:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="ActsStrawTracker_8cxx__incl.svg" width="8044" height="286"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="ActsStrawTracker_8cxx__incl.svg" width="7163" height="286"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 <p><a href="ActsStrawTracker_8cxx_source.html">Go to the source code of this file.</a></p>
@@ -170,8 +168,29 @@ Namespaces</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00079">79</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
+<p>Unsigned drift distance and its variance, in ACTS units. </p>
 
+<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00103">103</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
+
+</div>
+</div>
+<a id="abbeb8ae63622a7fef0b5a56bb91a1682" name="abbeb8ae63622a7fef0b5a56bb91a1682"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abbeb8ae63622a7fef0b5a56bb91a1682">&#9670;&#160;</a></span>sign</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int sign {1}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Side of the wire in the current fit. </p>
+
+<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00106">106</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  106</span>{1};</div>
+</div><!-- fragment -->
 </div>
 </div>
 <a id="aec5af89e65310252ed8c44356bcf9a02" name="aec5af89e65310252ed8c44356bcf9a02"></a>
@@ -186,7 +205,7 @@ Namespaces</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00078">78</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00100">100</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
 
 </div>
 </div>
@@ -202,7 +221,23 @@ Namespaces</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00080">80</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00104">104</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
+
+</div>
+</div>
+<a id="a2f946958ddce2ad16be2780db631565c" name="a2f946958ddce2ad16be2780db631565c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2f946958ddce2ad16be2780db631565c">&#9670;&#160;</a></span>wire</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const StrawWire* wire</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00101">101</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
 
 </div>
 </div>

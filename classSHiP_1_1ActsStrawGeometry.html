@@ -111,6 +111,11 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:adf445c04db4c9ac8944f4bc14e49217a" id="r_adf445c04db4c9ac8944f4bc14e49217a"><td class="memItemLeft" align="right" valign="top">const Acts::Surface *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSHiP_1_1ActsStrawGeometry.html#adf445c04db4c9ac8944f4bc14e49217a">surface</a> (int detectorId) const</td></tr>
 <tr class="memdesc:adf445c04db4c9ac8944f4bc14e49217a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The straw surface for a strawtubes detector ID, or nullptr if unknown.  <br /></td></tr>
 <tr class="separator:adf445c04db4c9ac8944f4bc14e49217a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a364ff3dc0ac66ad56d2c240bdef77815" id="r_a364ff3dc0ac66ad56d2c240bdef77815"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structSHiP_1_1StrawWire.html">StrawWire</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSHiP_1_1ActsStrawGeometry.html#a364ff3dc0ac66ad56d2c240bdef77815">wire</a> (int detectorId) const</td></tr>
+<tr class="memdesc:a364ff3dc0ac66ad56d2c240bdef77815"><td class="mdescLeft">&#160;</td><td class="mdescRight">The wire for a strawtubes detector ID, or nullptr if unknown.  <br /></td></tr>
+<tr class="separator:a364ff3dc0ac66ad56d2c240bdef77815"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4ad1d7f39265bdfcf1bb11471499b0f3" id="r_a4ad1d7f39265bdfcf1bb11471499b0f3"><td class="memItemLeft" align="right" valign="top">const std::unordered_map&lt; int, <a class="el" href="structSHiP_1_1StrawWire.html">StrawWire</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSHiP_1_1ActsStrawGeometry.html#a4ad1d7f39265bdfcf1bb11471499b0f3">wires</a> () const</td></tr>
+<tr class="separator:a4ad1d7f39265bdfcf1bb11471499b0f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1bd8be3f87398633f381142173fa448f" id="r_a1bd8be3f87398633f381142173fa448f"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSHiP_1_1ActsStrawGeometry.html#a1bd8be3f87398633f381142173fa448f">size</a> () const</td></tr>
 <tr class="separator:a1bd8be3f87398633f381142173fa448f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -118,12 +123,14 @@ Public Member Functions</h2></td></tr>
 Private Attributes</h2></td></tr>
 <tr class="memitem:a408f8e566938017e46ff91c9016c0eaf" id="r_a408f8e566938017e46ff91c9016c0eaf"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; int, std::shared_ptr&lt; Acts::Surface &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSHiP_1_1ActsStrawGeometry.html#a408f8e566938017e46ff91c9016c0eaf">m_surfaces</a></td></tr>
 <tr class="separator:a408f8e566938017e46ff91c9016c0eaf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf89267148134a2f593c14e36f15d07c" id="r_acf89267148134a2f593c14e36f15d07c"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; int, <a class="el" href="structSHiP_1_1StrawWire.html">StrawWire</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSHiP_1_1ActsStrawGeometry.html#acf89267148134a2f593c14e36f15d07c">m_wires</a></td></tr>
+<tr class="separator:acf89267148134a2f593c14e36f15d07c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>ACTS straw surfaces of the strawtubes spectrometer.</p>
 <p>Built from the "straw" volumes of the loaded TGeo geometry, so the surfaces follow the geometry the event was simulated with. Each straw is looked up by its strawtubes detector ID. </p>
 
-<p class="definition">Definition at line <a class="el" href="ActsStrawGeometry_8hpp_source.html#l00022">22</a> of file <a class="el" href="ActsStrawGeometry_8hpp_source.html">ActsStrawGeometry.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ActsStrawGeometry_8hpp_source.html#l00038">38</a> of file <a class="el" href="ActsStrawGeometry_8hpp_source.html">ActsStrawGeometry.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a1ac57b0df32e7a258ba03e8d259df0cb" name="a1ac57b0df32e7a258ba03e8d259df0cb"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1ac57b0df32e7a258ba03e8d259df0cb">&#9670;&#160;</a></span>ActsStrawGeometry()</h2>
@@ -149,19 +156,20 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ActsStrawGeometry_8cpp_source.html#l00108">108</a> of file <a class="el" href="ActsStrawGeometry_8cpp_source.html">ActsStrawGeometry.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  108</span>                                                                {</div>
-<div class="line"><span class="lineno">  109</span>  <span class="keyword">const</span> TGeoVolume* <a class="code hl_variable" href="namespaceeventDisplay.html#adedb83676a54edf1159c60c4e308ea97">top</a> = geometry.GetTopVolume();</div>
-<div class="line"><span class="lineno">  110</span>  <span class="keywordflow">if</span> (top == <span class="keyword">nullptr</span>) {</div>
-<div class="line"><span class="lineno">  111</span>    <span class="keywordflow">throw</span> std::invalid_argument(<span class="stringliteral">&quot;ActsStrawGeometry: no geometry loaded&quot;</span>);</div>
-<div class="line"><span class="lineno">  112</span>  }</div>
-<div class="line"><span class="lineno">  113</span>  Builder builder{<a class="code hl_variable" href="classSHiP_1_1ActsStrawGeometry.html#a408f8e566938017e46ff91c9016c0eaf">m_surfaces</a>, strawMaterial()};</div>
-<div class="line"><span class="lineno">  114</span>  builder.visit(*top, TGeoHMatrix());</div>
-<div class="line"><span class="lineno">  115</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classSHiP_1_1ActsStrawGeometry.html#a408f8e566938017e46ff91c9016c0eaf">m_surfaces</a>.empty()) {</div>
-<div class="line"><span class="lineno">  116</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;ActsStrawGeometry: no straws in the geometry&quot;</span>);</div>
-<div class="line"><span class="lineno">  117</span>  }</div>
-<div class="line"><span class="lineno">  118</span>}</div>
-<div class="ttc" id="aclassSHiP_1_1ActsStrawGeometry_html_a408f8e566938017e46ff91c9016c0eaf"><div class="ttname"><a href="classSHiP_1_1ActsStrawGeometry.html#a408f8e566938017e46ff91c9016c0eaf">SHiP::ActsStrawGeometry::m_surfaces</a></div><div class="ttdeci">std::unordered_map&lt; int, std::shared_ptr&lt; Acts::Surface &gt; &gt; m_surfaces</div><div class="ttdef"><b>Definition</b> <a href="ActsStrawGeometry_8hpp_source.html#l00031">ActsStrawGeometry.hpp:31</a></div></div>
+<p class="definition">Definition at line <a class="el" href="ActsStrawGeometry_8cpp_source.html#l00118">118</a> of file <a class="el" href="ActsStrawGeometry_8cpp_source.html">ActsStrawGeometry.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  118</span>                                                                {</div>
+<div class="line"><span class="lineno">  119</span>  <span class="keyword">const</span> TGeoVolume* <a class="code hl_variable" href="namespaceeventDisplay.html#adedb83676a54edf1159c60c4e308ea97">top</a> = geometry.GetTopVolume();</div>
+<div class="line"><span class="lineno">  120</span>  <span class="keywordflow">if</span> (top == <span class="keyword">nullptr</span>) {</div>
+<div class="line"><span class="lineno">  121</span>    <span class="keywordflow">throw</span> std::invalid_argument(<span class="stringliteral">&quot;ActsStrawGeometry: no geometry loaded&quot;</span>);</div>
+<div class="line"><span class="lineno">  122</span>  }</div>
+<div class="line"><span class="lineno">  123</span>  Builder builder{<a class="code hl_variable" href="classSHiP_1_1ActsStrawGeometry.html#a408f8e566938017e46ff91c9016c0eaf">m_surfaces</a>, <a class="code hl_variable" href="classSHiP_1_1ActsStrawGeometry.html#acf89267148134a2f593c14e36f15d07c">m_wires</a>, strawMaterial()};</div>
+<div class="line"><span class="lineno">  124</span>  builder.visit(*top, TGeoHMatrix());</div>
+<div class="line"><span class="lineno">  125</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classSHiP_1_1ActsStrawGeometry.html#a408f8e566938017e46ff91c9016c0eaf">m_surfaces</a>.empty()) {</div>
+<div class="line"><span class="lineno">  126</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;ActsStrawGeometry: no straws in the geometry&quot;</span>);</div>
+<div class="line"><span class="lineno">  127</span>  }</div>
+<div class="line"><span class="lineno">  128</span>}</div>
+<div class="ttc" id="aclassSHiP_1_1ActsStrawGeometry_html_a408f8e566938017e46ff91c9016c0eaf"><div class="ttname"><a href="classSHiP_1_1ActsStrawGeometry.html#a408f8e566938017e46ff91c9016c0eaf">SHiP::ActsStrawGeometry::m_surfaces</a></div><div class="ttdeci">std::unordered_map&lt; int, std::shared_ptr&lt; Acts::Surface &gt; &gt; m_surfaces</div><div class="ttdef"><b>Definition</b> <a href="ActsStrawGeometry_8hpp_source.html#l00050">ActsStrawGeometry.hpp:50</a></div></div>
+<div class="ttc" id="aclassSHiP_1_1ActsStrawGeometry_html_acf89267148134a2f593c14e36f15d07c"><div class="ttname"><a href="classSHiP_1_1ActsStrawGeometry.html#acf89267148134a2f593c14e36f15d07c">SHiP::ActsStrawGeometry::m_wires</a></div><div class="ttdeci">std::unordered_map&lt; int, StrawWire &gt; m_wires</div><div class="ttdef"><b>Definition</b> <a href="ActsStrawGeometry_8hpp_source.html#l00051">ActsStrawGeometry.hpp:51</a></div></div>
 <div class="ttc" id="anamespaceeventDisplay_html_adedb83676a54edf1159c60c4e308ea97"><div class="ttname"><a href="namespaceeventDisplay.html#adedb83676a54edf1159c60c4e308ea97">eventDisplay.top</a></div><div class="ttdeci">top</div><div class="ttdef"><b>Definition</b> <a href="eventDisplay_8py_source.html#l01272">eventDisplay.py:1272</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -190,8 +198,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ActsStrawGeometry_8hpp_source.html#l00028">28</a> of file <a class="el" href="ActsStrawGeometry_8hpp_source.html">ActsStrawGeometry.hpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   28</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classSHiP_1_1ActsStrawGeometry.html#a408f8e566938017e46ff91c9016c0eaf">m_surfaces</a>.size(); }</div>
+<p class="definition">Definition at line <a class="el" href="ActsStrawGeometry_8hpp_source.html#l00047">47</a> of file <a class="el" href="ActsStrawGeometry_8hpp_source.html">ActsStrawGeometry.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   47</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classSHiP_1_1ActsStrawGeometry.html#a408f8e566938017e46ff91c9016c0eaf">m_surfaces</a>.size(); }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -213,11 +221,65 @@ Private Attributes</h2></td></tr>
 
 <p>The straw surface for a strawtubes detector ID, or nullptr if unknown. </p>
 
-<p class="definition">Definition at line <a class="el" href="ActsStrawGeometry_8cpp_source.html#l00120">120</a> of file <a class="el" href="ActsStrawGeometry_8cpp_source.html">ActsStrawGeometry.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  120</span>                                                                  {</div>
-<div class="line"><span class="lineno">  121</span>  <span class="keyword">const</span> <span class="keyword">auto</span> it = <a class="code hl_variable" href="classSHiP_1_1ActsStrawGeometry.html#a408f8e566938017e46ff91c9016c0eaf">m_surfaces</a>.find(detectorId);</div>
-<div class="line"><span class="lineno">  122</span>  <span class="keywordflow">return</span> it == <a class="code hl_variable" href="classSHiP_1_1ActsStrawGeometry.html#a408f8e566938017e46ff91c9016c0eaf">m_surfaces</a>.end() ? nullptr : it-&gt;second.get();</div>
-<div class="line"><span class="lineno">  123</span>}</div>
+<p class="definition">Definition at line <a class="el" href="ActsStrawGeometry_8cpp_source.html#l00130">130</a> of file <a class="el" href="ActsStrawGeometry_8cpp_source.html">ActsStrawGeometry.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  130</span>                                                                  {</div>
+<div class="line"><span class="lineno">  131</span>  <span class="keyword">const</span> <span class="keyword">auto</span> it = <a class="code hl_variable" href="classSHiP_1_1ActsStrawGeometry.html#a408f8e566938017e46ff91c9016c0eaf">m_surfaces</a>.find(detectorId);</div>
+<div class="line"><span class="lineno">  132</span>  <span class="keywordflow">return</span> it == <a class="code hl_variable" href="classSHiP_1_1ActsStrawGeometry.html#a408f8e566938017e46ff91c9016c0eaf">m_surfaces</a>.end() ? nullptr : it-&gt;second.get();</div>
+<div class="line"><span class="lineno">  133</span>}</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a364ff3dc0ac66ad56d2c240bdef77815" name="a364ff3dc0ac66ad56d2c240bdef77815"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a364ff3dc0ac66ad56d2c240bdef77815">&#9670;&#160;</a></span>wire()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="structSHiP_1_1StrawWire.html">StrawWire</a> * SHiP::ActsStrawGeometry::wire </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>detectorId</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The wire for a strawtubes detector ID, or nullptr if unknown. </p>
+
+<p class="definition">Definition at line <a class="el" href="ActsStrawGeometry_8cpp_source.html#l00135">135</a> of file <a class="el" href="ActsStrawGeometry_8cpp_source.html">ActsStrawGeometry.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  135</span>                                                             {</div>
+<div class="line"><span class="lineno">  136</span>  <span class="keyword">const</span> <span class="keyword">auto</span> it = <a class="code hl_variable" href="classSHiP_1_1ActsStrawGeometry.html#acf89267148134a2f593c14e36f15d07c">m_wires</a>.find(detectorId);</div>
+<div class="line"><span class="lineno">  137</span>  <span class="keywordflow">return</span> it == <a class="code hl_variable" href="classSHiP_1_1ActsStrawGeometry.html#acf89267148134a2f593c14e36f15d07c">m_wires</a>.end() ? nullptr : &amp;it-&gt;second;</div>
+<div class="line"><span class="lineno">  138</span>}</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a4ad1d7f39265bdfcf1bb11471499b0f3" name="a4ad1d7f39265bdfcf1bb11471499b0f3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4ad1d7f39265bdfcf1bb11471499b0f3">&#9670;&#160;</a></span>wires()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::unordered_map&lt; int, <a class="el" href="structSHiP_1_1StrawWire.html">StrawWire</a> &gt; &amp; SHiP::ActsStrawGeometry::wires </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="ActsStrawGeometry_8hpp_source.html#l00046">46</a> of file <a class="el" href="ActsStrawGeometry_8hpp_source.html">ActsStrawGeometry.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   46</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classSHiP_1_1ActsStrawGeometry.html#acf89267148134a2f593c14e36f15d07c">m_wires</a>; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -242,7 +304,31 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ActsStrawGeometry_8hpp_source.html#l00031">31</a> of file <a class="el" href="ActsStrawGeometry_8hpp_source.html">ActsStrawGeometry.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ActsStrawGeometry_8hpp_source.html#l00050">50</a> of file <a class="el" href="ActsStrawGeometry_8hpp_source.html">ActsStrawGeometry.hpp</a>.</p>
+
+</div>
+</div>
+<a id="acf89267148134a2f593c14e36f15d07c" name="acf89267148134a2f593c14e36f15d07c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acf89267148134a2f593c14e36f15d07c">&#9670;&#160;</a></span>m_wires</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unordered_map&lt;int, <a class="el" href="structSHiP_1_1StrawWire.html">StrawWire</a>&gt; SHiP::ActsStrawGeometry::m_wires</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="ActsStrawGeometry_8hpp_source.html#l00051">51</a> of file <a class="el" href="ActsStrawGeometry_8hpp_source.html">ActsStrawGeometry.hpp</a>.</p>
 
 </div>
 </div>

@@ -1,0 +1,5 @@
+<map id="SHiP::TrackCandidate" name="SHiP::TrackCandidate">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,108,165,133"/>
+<area shape="rect" id="Node000002" href="$structSHiP_1_1LineSegment.html" title=" " alt="" coords="13,5,158,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="88,45,88,108,83,108,83,45"/>
+</map>

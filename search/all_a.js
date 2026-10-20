@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['e_0',['e',['../classDISparticle.html#aea56345d0c04a5d18c73c6b1ff752c3a',1,'DISparticle::E'],['../namespacemakeMuonEM.html#a2f541edec5da16cf64dcce3ea03d80c8',1,'makeMuonEM.E'],['../structTrackBuffer.html#ab58809fbaaf19dd4093d14caa0d0f2e0',1,'TrackBuffer::e']]],
+  ['e_0',['e',['../structTrackBuffer.html#ab58809fbaaf19dd4093d14caa0d0f2e0',1,'TrackBuffer::e'],['../namespacemakeMuonEM.html#a2f541edec5da16cf64dcce3ea03d80c8',1,'makeMuonEM.E'],['../classDISparticle.html#aea56345d0c04a5d18c73c6b1ff752c3a',1,'DISparticle::E']]],
   ['e13_1',['e13',['../namespacerun__fixedTarget.html#a05d4d5d811ac982fb950c0e77dff935b',1,'run_fixedTarget.e13'],['../namespacemakeDecay.html#ae036a600a0fe461ba6d63d7c5a7d1eb0',1,'makeDecay.e13']]],
   ['e_5fsi_2',['e_si',['../namespaceshipunit.html#aa4f540f7dedc6234c8b6620bc2c1fb07',1,'shipunit.e_SI'],['../namespacehepunit.html#af875140c15decb3950dea5e4b73f9212',1,'hepunit.e_SI']]],
   ['e_5fsquared_3',['e_squared',['../namespaceshipunit.html#a4674e521cd11cd1285bd45539a4a5322',1,'shipunit.e_squared'],['../namespacehepunit.html#acd336a10b0bd5eb9bb2286a9534c3a49',1,'hepunit.e_squared']]],
@@ -121,7 +121,7 @@ var searchData=
   ['extractneutrinosandupdateweight_118',['extractNeutrinosAndUpdateWeight',['../namespaceextractNeutrinosAndUpdateWeight.html',1,'']]],
   ['extractneutrinosandupdateweight_2epy_119',['extractNeutrinosAndUpdateWeight.py',['../extractNeutrinosAndUpdateWeight_8py.html',1,'']]],
   ['extractrareevents_120',['extractRareEvents',['../namespaceana__ShipMuon.html#a8c6da2deece5c2a993970f8b4781b466',1,'ana_ShipMuon']]],
-  ['extrapolate_121',['extrapolate',['../structSHiP_1_1ActsStrawTracker_1_1Impl.html#a4ce185815dd7b1be902233cbc15cc473',1,'SHiP::ActsStrawTracker::Impl::extrapolate()'],['../classMagneticTrackPropagator.html#a6d64df253d6ad0a0aeabfdf60c2f6649',1,'MagneticTrackPropagator::Extrapolate()']]],
+  ['extrapolate_121',['extrapolate',['../classMagneticTrackPropagator.html#a6d64df253d6ad0a0aeabfdf60c2f6649',1,'MagneticTrackPropagator::Extrapolate()'],['../structSHiP_1_1ActsStrawTracker_1_1Impl.html#a4ce185815dd7b1be902233cbc15cc473',1,'SHiP::ActsStrawTracker::Impl::extrapolate()']]],
   ['extrapolatetoplane_122',['extrapolatetoplane',['../namespaceTrackExtrapolateTool.html#ac357e10f3671079a5b9c5706b564b421',1,'TrackExtrapolateTool.extrapolateToPlane()'],['../namespaceshipStrawTracking.html#adc66dfda583a285e93e3230b61844e05',1,'shipStrawTracking.extrapolateToPlane()']]],
   ['extrapolatetoz_123',['ExtrapolateToZ',['../classSHiP_1_1RecoTrack.html#aa0f5fc6c4814615935db2c83ff7d87bd',1,'SHiP::RecoTrack']]],
   ['extrapolator_124',['extrapolator',['../structSHiP_1_1ActsStrawTracker_1_1Impl.html#a76d7bd8a73752e21f14b088150696217',1,'SHiP::ActsStrawTracker::Impl']]],

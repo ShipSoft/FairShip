@@ -125,8 +125,14 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ac348b6d85568897d9755a89882a8b6e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9f4bf5bcef6df04c345c92635b152b9c" id="r_a9f4bf5bcef6df04c345c92635b152b9c"><td class="memItemLeft" align="right" valign="top">Int_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSHiP_1_1ActsStrawTracker.html#a9f4bf5bcef6df04c345c92635b152b9c">AddMeasurement</a> (Int_t detectorId, Double_t <a class="el" href="ActsStrawTracker_8cxx.html#ae5cb94dca8dcbe66ddd6800d2af1c1f4">driftRadius</a>, Double_t resolution)</td></tr>
 <tr class="separator:a9f4bf5bcef6df04c345c92635b152b9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5a5a96883108b6e6a6552bb8f18bea63" id="r_a5a5a96883108b6e6a6552bb8f18bea63"><td class="memItemLeft" align="right" valign="top">Int_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSHiP_1_1ActsStrawTracker.html#a5a5a96883108b6e6a6552bb8f18bea63">FitTrack</a> (const std::vector&lt; Int_t &gt; &amp;measurements, const TVector3 &amp;seedPosition, const TVector3 &amp;seedMomentum, Int_t charge)</td></tr>
-<tr class="separator:a5a5a96883108b6e6a6552bb8f18bea63"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a65160d2483b6e28a7ec6a91eaef11b6c" id="r_a65160d2483b6e28a7ec6a91eaef11b6c"><td class="memItemLeft" align="right" valign="top">Int_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSHiP_1_1ActsStrawTracker.html#a65160d2483b6e28a7ec6a91eaef11b6c">FindTracks</a> ()</td></tr>
+<tr class="memdesc:a65160d2483b6e28a7ec6a91eaef11b6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find and fit all tracks among the measurements; returns their number.  <br /></td></tr>
+<tr class="separator:a65160d2483b6e28a7ec6a91eaef11b6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a117d637b30c8178c434299928d77c70b" id="r_a117d637b30c8178c434299928d77c70b"><td class="memItemLeft" align="right" valign="top">Int_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSHiP_1_1ActsStrawTracker.html#a117d637b30c8178c434299928d77c70b">FitCandidate</a> (const std::vector&lt; Int_t &gt; &amp;measurements)</td></tr>
+<tr class="separator:a117d637b30c8178c434299928d77c70b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d24a66886ec9aacf5f5353d393cf523" id="r_a4d24a66886ec9aacf5f5353d393cf523"><td class="memItemLeft" align="right" valign="top">std::vector&lt; Int_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSHiP_1_1ActsStrawTracker.html#a4d24a66886ec9aacf5f5353d393cf523">GetTrackMeasurements</a> (Int_t track) const</td></tr>
+<tr class="memdesc:a4d24a66886ec9aacf5f5353d393cf523"><td class="mdescLeft">&#160;</td><td class="mdescRight">Measurements used in the fit of a track.  <br /></td></tr>
+<tr class="separator:a4d24a66886ec9aacf5f5353d393cf523"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a50589b423d08a84f710381d0ae0fe466" id="r_a50589b423d08a84f710381d0ae0fe466"><td class="memItemLeft" align="right" valign="top">Int_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSHiP_1_1ActsStrawTracker.html#a50589b423d08a84f710381d0ae0fe466">GetNTracks</a> () const</td></tr>
 <tr class="separator:a50589b423d08a84f710381d0ae0fe466"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aac0fb9ac3ca074b8de16b19256546afc" id="r_aac0fb9ac3ca074b8de16b19256546afc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSHiP_1_1RecoTrack.html">RecoTrack</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSHiP_1_1ActsStrawTracker.html#aac0fb9ac3ca074b8de16b19256546afc">GetTrack</a> (Int_t track) const</td></tr>
@@ -146,10 +152,10 @@ Private Attributes</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Straw tracker track and vertex fitting with ACTS.</p>
-<p>Fits track candidates from pattern recognition (or MC truth) with the ACTS Kalman filter, fits vertices with the Billoir vertex fitter and extrapolates fitted tracks to arbitrary planes. All inputs and outputs are in the <a class="el" href="namespaceSHiP.html">SHiP</a> frame (cm, GeV); ACTS is an implementation detail.</p>
-<p>Usage per event: <a class="el" href="classSHiP_1_1ActsStrawTracker.html#ac348b6d85568897d9755a89882a8b6e5" title="Forget the measurements and tracks of the previous event.">ClearEvent()</a>, <a class="el" href="classSHiP_1_1ActsStrawTracker.html#a9f4bf5bcef6df04c345c92635b152b9c">AddMeasurement()</a> for each straw hit, then <a class="el" href="classSHiP_1_1ActsStrawTracker.html#a5a5a96883108b6e6a6552bb8f18bea63">FitTrack()</a> for each candidate, then <a class="el" href="classSHiP_1_1ActsStrawTracker.html#aac0fb9ac3ca074b8de16b19256546afc">GetTrack()</a>/FitVertex()/DistanceToHit(). </p>
+<p>Finds tracks with its own pattern recognition (<a class="el" href="classSHiP_1_1StrawPatRec.html">StrawPatRec</a>), or fits track candidates from another pattern recognition (or MC truth), with the ACTS Kalman filter; the left/right ambiguity of each straw hit is resolved in the fit. Also fits vertices with the Billoir vertex fitter and extrapolates fitted tracks to arbitrary planes. All inputs and outputs are in the <a class="el" href="namespaceSHiP.html">SHiP</a> frame (cm, GeV); ACTS is an implementation detail.</p>
+<p>Usage per event: <a class="el" href="classSHiP_1_1ActsStrawTracker.html#ac348b6d85568897d9755a89882a8b6e5" title="Forget the measurements and tracks of the previous event.">ClearEvent()</a>, <a class="el" href="classSHiP_1_1ActsStrawTracker.html#a9f4bf5bcef6df04c345c92635b152b9c">AddMeasurement()</a> for each straw hit, then <a class="el" href="classSHiP_1_1ActsStrawTracker.html#a65160d2483b6e28a7ec6a91eaef11b6c" title="Find and fit all tracks among the measurements; returns their number.">FindTracks()</a> or <a class="el" href="classSHiP_1_1ActsStrawTracker.html#a117d637b30c8178c434299928d77c70b">FitCandidate()</a> for each candidate, then <a class="el" href="classSHiP_1_1ActsStrawTracker.html#aac0fb9ac3ca074b8de16b19256546afc">GetTrack()</a>/FitVertex()/DistanceToHit(). </p>
 
-<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8h_source.html#l00030">30</a> of file <a class="el" href="ActsStrawTracker_8h_source.html">ActsStrawTracker.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8h_source.html#l00033">33</a> of file <a class="el" href="ActsStrawTracker_8h_source.html">ActsStrawTracker.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ab4990995cef8689c2d97297a699a3349" name="ab4990995cef8689c2d97297a699a3349"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab4990995cef8689c2d97297a699a3349">&#9670;&#160;</a></span>ActsStrawTracker() <span class="overload">[1/2]</span></h2>
@@ -179,14 +185,14 @@ Private Attributes</h2></td></tr>
 <p>Build the straw surfaces from <code>geometry</code> and use <code>field</code> for the fit.</p>
 <p>Neither is owned; both must outlive the tracker. </p>
 
-<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00265">265</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  266</span>                                                            {</div>
-<div class="line"><span class="lineno">  267</span>  <span class="keywordflow">if</span> (geometry == <span class="keyword">nullptr</span>) {</div>
-<div class="line"><span class="lineno">  268</span>    <span class="keywordflow">throw</span> std::invalid_argument(<span class="stringliteral">&quot;ActsStrawTracker: geometry is null&quot;</span>);</div>
-<div class="line"><span class="lineno">  269</span>  }</div>
-<div class="line"><span class="lineno">  270</span>  <a class="code hl_variable" href="classSHiP_1_1ActsStrawTracker.html#a58a5d971ff31022dd77620988b73681c">fImpl</a> = std::make_unique&lt;Impl&gt;(*geometry, field);</div>
-<div class="line"><span class="lineno">  271</span>}</div>
-<div class="ttc" id="aclassSHiP_1_1ActsStrawTracker_html_a58a5d971ff31022dd77620988b73681c"><div class="ttname"><a href="classSHiP_1_1ActsStrawTracker.html#a58a5d971ff31022dd77620988b73681c">SHiP::ActsStrawTracker::fImpl</a></div><div class="ttdeci">std::unique_ptr&lt; Impl &gt; fImpl</div><div class="ttdef"><b>Definition</b> <a href="ActsStrawTracker_8h_source.html#l00078">ActsStrawTracker.h:78</a></div></div>
+<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00384">384</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  385</span>                                                            {</div>
+<div class="line"><span class="lineno">  386</span>  <span class="keywordflow">if</span> (geometry == <span class="keyword">nullptr</span>) {</div>
+<div class="line"><span class="lineno">  387</span>    <span class="keywordflow">throw</span> std::invalid_argument(<span class="stringliteral">&quot;ActsStrawTracker: geometry is null&quot;</span>);</div>
+<div class="line"><span class="lineno">  388</span>  }</div>
+<div class="line"><span class="lineno">  389</span>  <a class="code hl_variable" href="classSHiP_1_1ActsStrawTracker.html#a58a5d971ff31022dd77620988b73681c">fImpl</a> = std::make_unique&lt;Impl&gt;(*geometry, field);</div>
+<div class="line"><span class="lineno">  390</span>}</div>
+<div class="ttc" id="aclassSHiP_1_1ActsStrawTracker_html_a58a5d971ff31022dd77620988b73681c"><div class="ttname"><a href="classSHiP_1_1ActsStrawTracker.html#a58a5d971ff31022dd77620988b73681c">SHiP::ActsStrawTracker::fImpl</a></div><div class="ttdeci">std::unique_ptr&lt; Impl &gt; fImpl</div><div class="ttdef"><b>Definition</b> <a href="ActsStrawTracker_8h_source.html#l00084">ActsStrawTracker.h:84</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -274,21 +280,24 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Add a straw measurement and return its index.</p>
-<p><code>driftRadius</code> is the signed distance of the track from the wire in cm; its sign resolves the left/right ambiguity. Returns -1 if the detector ID does not belong to a straw. </p>
+<p><code>driftRadius</code> is the (unsigned) drift distance in cm and <code>resolution</code> its uncertainty. Returns -1 if the detector ID does not belong to a straw. </p>
 
-<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00280">280</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  281</span>                                                            {</div>
-<div class="line"><span class="lineno">  282</span>  <span class="keyword">const</span> Acts::Surface* <a class="code hl_variable" href="ActsStrawTracker_8cxx.html#aec5af89e65310252ed8c44356bcf9a02">surface</a> = <a class="code hl_variable" href="classSHiP_1_1ActsStrawTracker.html#a58a5d971ff31022dd77620988b73681c">fImpl</a>-&gt;straws.surface(detectorId);</div>
-<div class="line"><span class="lineno">  283</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="ActsStrawTracker_8cxx.html#aec5af89e65310252ed8c44356bcf9a02">surface</a> == <span class="keyword">nullptr</span>) {</div>
-<div class="line"><span class="lineno">  284</span>    <span class="keywordflow">return</span> -1;</div>
-<div class="line"><span class="lineno">  285</span>  }</div>
-<div class="line"><span class="lineno">  286</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> <a class="code hl_variable" href="namespacerunPythia8.html#aa6ccf15df5382fe526735a07d97d3cd4">sigma</a> = resolution * <a class="code hl_variable" href="namespaceSHiP_1_1ActsFrame.html#ae2c5b2d2a4d15fdbb38277d87b84d59f">ActsFrame::kShipLength</a>;</div>
-<div class="line"><span class="lineno">  287</span>  <a class="code hl_variable" href="classSHiP_1_1ActsStrawTracker.html#a58a5d971ff31022dd77620988b73681c">fImpl</a>-&gt;measurements.push_back(</div>
-<div class="line"><span class="lineno">  288</span>      {<a class="code hl_variable" href="ActsStrawTracker_8cxx.html#aec5af89e65310252ed8c44356bcf9a02">surface</a>, <a class="code hl_variable" href="ActsStrawTracker_8cxx.html#ae5cb94dca8dcbe66ddd6800d2af1c1f4">driftRadius</a> * <a class="code hl_variable" href="namespaceSHiP_1_1ActsFrame.html#ae2c5b2d2a4d15fdbb38277d87b84d59f">ActsFrame::kShipLength</a>, <a class="code hl_variable" href="namespacerunPythia8.html#aa6ccf15df5382fe526735a07d97d3cd4">sigma</a> * <a class="code hl_variable" href="namespacerunPythia8.html#aa6ccf15df5382fe526735a07d97d3cd4">sigma</a>});</div>
-<div class="line"><span class="lineno">  289</span>  <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>Int_t<span class="keyword">&gt;</span>(<a class="code hl_variable" href="classSHiP_1_1ActsStrawTracker.html#a58a5d971ff31022dd77620988b73681c">fImpl</a>-&gt;measurements.size() - 1);</div>
-<div class="line"><span class="lineno">  290</span>}</div>
-<div class="ttc" id="aActsStrawTracker_8cxx_html_ae5cb94dca8dcbe66ddd6800d2af1c1f4"><div class="ttname"><a href="ActsStrawTracker_8cxx.html#ae5cb94dca8dcbe66ddd6800d2af1c1f4">driftRadius</a></div><div class="ttdeci">double driftRadius</div><div class="ttdef"><b>Definition</b> <a href="ActsStrawTracker_8cxx_source.html#l00079">ActsStrawTracker.cxx:79</a></div></div>
-<div class="ttc" id="aActsStrawTracker_8cxx_html_aec5af89e65310252ed8c44356bcf9a02"><div class="ttname"><a href="ActsStrawTracker_8cxx.html#aec5af89e65310252ed8c44356bcf9a02">surface</a></div><div class="ttdeci">const Acts::Surface * surface</div><div class="ttdef"><b>Definition</b> <a href="ActsStrawTracker_8cxx_source.html#l00078">ActsStrawTracker.cxx:78</a></div></div>
+<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00400">400</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  401</span>                                                            {</div>
+<div class="line"><span class="lineno">  402</span>  <span class="keyword">const</span> Acts::Surface* <a class="code hl_variable" href="ActsStrawTracker_8cxx.html#aec5af89e65310252ed8c44356bcf9a02">surface</a> = <a class="code hl_variable" href="classSHiP_1_1ActsStrawTracker.html#a58a5d971ff31022dd77620988b73681c">fImpl</a>-&gt;straws.surface(detectorId);</div>
+<div class="line"><span class="lineno">  403</span>  <span class="keyword">const</span> StrawWire* <a class="code hl_variable" href="ActsStrawTracker_8cxx.html#a2f946958ddce2ad16be2780db631565c">wire</a> = <a class="code hl_variable" href="classSHiP_1_1ActsStrawTracker.html#a58a5d971ff31022dd77620988b73681c">fImpl</a>-&gt;straws.wire(detectorId);</div>
+<div class="line"><span class="lineno">  404</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="ActsStrawTracker_8cxx.html#aec5af89e65310252ed8c44356bcf9a02">surface</a> == <span class="keyword">nullptr</span> || <a class="code hl_variable" href="ActsStrawTracker_8cxx.html#a2f946958ddce2ad16be2780db631565c">wire</a> == <span class="keyword">nullptr</span>) {</div>
+<div class="line"><span class="lineno">  405</span>    <span class="keywordflow">return</span> -1;</div>
+<div class="line"><span class="lineno">  406</span>  }</div>
+<div class="line"><span class="lineno">  407</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> <a class="code hl_variable" href="namespacerunPythia8.html#aa6ccf15df5382fe526735a07d97d3cd4">sigma</a> = resolution * <a class="code hl_variable" href="namespaceSHiP_1_1ActsFrame.html#ae2c5b2d2a4d15fdbb38277d87b84d59f">ActsFrame::kShipLength</a>;</div>
+<div class="line"><span class="lineno">  408</span>  <a class="code hl_variable" href="classSHiP_1_1ActsStrawTracker.html#a58a5d971ff31022dd77620988b73681c">fImpl</a>-&gt;measurements.push_back({<a class="code hl_variable" href="ActsStrawTracker_8cxx.html#aec5af89e65310252ed8c44356bcf9a02">surface</a>, <a class="code hl_variable" href="ActsStrawTracker_8cxx.html#a2f946958ddce2ad16be2780db631565c">wire</a>,</div>
+<div class="line"><span class="lineno">  409</span>                                 std::abs(<a class="code hl_variable" href="ActsStrawTracker_8cxx.html#ae5cb94dca8dcbe66ddd6800d2af1c1f4">driftRadius</a>) * <a class="code hl_variable" href="namespaceSHiP_1_1ActsFrame.html#ae2c5b2d2a4d15fdbb38277d87b84d59f">ActsFrame::kShipLength</a>,</div>
+<div class="line"><span class="lineno">  410</span>                                 <a class="code hl_variable" href="namespacerunPythia8.html#aa6ccf15df5382fe526735a07d97d3cd4">sigma</a> * <a class="code hl_variable" href="namespacerunPythia8.html#aa6ccf15df5382fe526735a07d97d3cd4">sigma</a>});</div>
+<div class="line"><span class="lineno">  411</span>  <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>Int_t<span class="keyword">&gt;</span>(<a class="code hl_variable" href="classSHiP_1_1ActsStrawTracker.html#a58a5d971ff31022dd77620988b73681c">fImpl</a>-&gt;measurements.size() - 1);</div>
+<div class="line"><span class="lineno">  412</span>}</div>
+<div class="ttc" id="aActsStrawTracker_8cxx_html_a2f946958ddce2ad16be2780db631565c"><div class="ttname"><a href="ActsStrawTracker_8cxx.html#a2f946958ddce2ad16be2780db631565c">wire</a></div><div class="ttdeci">const StrawWire * wire</div><div class="ttdef"><b>Definition</b> <a href="ActsStrawTracker_8cxx_source.html#l00101">ActsStrawTracker.cxx:101</a></div></div>
+<div class="ttc" id="aActsStrawTracker_8cxx_html_ae5cb94dca8dcbe66ddd6800d2af1c1f4"><div class="ttname"><a href="ActsStrawTracker_8cxx.html#ae5cb94dca8dcbe66ddd6800d2af1c1f4">driftRadius</a></div><div class="ttdeci">double driftRadius</div><div class="ttdoc">Unsigned drift distance and its variance, in ACTS units.</div><div class="ttdef"><b>Definition</b> <a href="ActsStrawTracker_8cxx_source.html#l00103">ActsStrawTracker.cxx:103</a></div></div>
+<div class="ttc" id="aActsStrawTracker_8cxx_html_aec5af89e65310252ed8c44356bcf9a02"><div class="ttname"><a href="ActsStrawTracker_8cxx.html#aec5af89e65310252ed8c44356bcf9a02">surface</a></div><div class="ttdeci">const Acts::Surface * surface</div><div class="ttdef"><b>Definition</b> <a href="ActsStrawTracker_8cxx_source.html#l00100">ActsStrawTracker.cxx:100</a></div></div>
 <div class="ttc" id="anamespaceSHiP_1_1ActsFrame_html_ae2c5b2d2a4d15fdbb38277d87b84d59f"><div class="ttname"><a href="namespaceSHiP_1_1ActsFrame.html#ae2c5b2d2a4d15fdbb38277d87b84d59f">SHiP::ActsFrame::kShipLength</a></div><div class="ttdeci">constexpr double kShipLength</div><div class="ttdoc">Length unit of the SHiP frame, in ACTS units.</div><div class="ttdef"><b>Definition</b> <a href="ActsFrame_8hpp_source.html#l00036">ActsFrame.hpp:36</a></div></div>
 <div class="ttc" id="anamespacerunPythia8_html_aa6ccf15df5382fe526735a07d97d3cd4"><div class="ttname"><a href="namespacerunPythia8.html#aa6ccf15df5382fe526735a07d97d3cd4">runPythia8.sigma</a></div><div class="ttdeci">dict sigma</div><div class="ttdef"><b>Definition</b> <a href="runPythia8_8py_source.html#l00187">runPythia8.py:187</a></div></div>
 </div><!-- fragment -->
@@ -311,11 +320,12 @@ Private Attributes</h2></td></tr>
 
 <p>Forget the measurements and tracks of the previous event. </p>
 
-<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00275">275</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  275</span>                                  {</div>
-<div class="line"><span class="lineno">  276</span>  <a class="code hl_variable" href="classSHiP_1_1ActsStrawTracker.html#a58a5d971ff31022dd77620988b73681c">fImpl</a>-&gt;measurements.clear();</div>
-<div class="line"><span class="lineno">  277</span>  <a class="code hl_variable" href="classSHiP_1_1ActsStrawTracker.html#a58a5d971ff31022dd77620988b73681c">fImpl</a>-&gt;tracks.clear();</div>
-<div class="line"><span class="lineno">  278</span>}</div>
+<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00394">394</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  394</span>                                  {</div>
+<div class="line"><span class="lineno">  395</span>  <a class="code hl_variable" href="classSHiP_1_1ActsStrawTracker.html#a58a5d971ff31022dd77620988b73681c">fImpl</a>-&gt;measurements.clear();</div>
+<div class="line"><span class="lineno">  396</span>  <a class="code hl_variable" href="classSHiP_1_1ActsStrawTracker.html#a58a5d971ff31022dd77620988b73681c">fImpl</a>-&gt;tracks.clear();</div>
+<div class="line"><span class="lineno">  397</span>  <a class="code hl_variable" href="classSHiP_1_1ActsStrawTracker.html#a58a5d971ff31022dd77620988b73681c">fImpl</a>-&gt;trackMeasurements.clear();</div>
+<div class="line"><span class="lineno">  398</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -346,148 +356,144 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Distance in cm between a hit and a fitted track at the plane of constant z through the hit, or -1 if the extrapolation fails </p>
 
-<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00506">506</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  507</span>                                                                    {</div>
-<div class="line"><span class="lineno">  508</span>  <span class="keyword">const</span> <span class="keyword">auto</span>&amp; impl = *<a class="code hl_variable" href="classSHiP_1_1ActsStrawTracker.html#a58a5d971ff31022dd77620988b73681c">fImpl</a>;</div>
-<div class="line"><span class="lineno">  509</span>  <span class="comment">// Plane of constant z (SHiP), i.e. constant x (ACTS), centred on the hit</span></div>
-<div class="line"><span class="lineno">  510</span>  Acts::Transform3 transform = Acts::Transform3::Identity();</div>
-<div class="line"><span class="lineno">  511</span>  transform.linear().col(0) = Acts::Vector3::UnitY();</div>
-<div class="line"><span class="lineno">  512</span>  transform.linear().col(1) = Acts::Vector3::UnitZ();</div>
-<div class="line"><span class="lineno">  513</span>  transform.linear().col(2) = Acts::Vector3::UnitX();</div>
-<div class="line"><span class="lineno">  514</span>  transform.translation() =</div>
-<div class="line"><span class="lineno">  515</span>      <a class="code hl_function" href="namespaceSHiP_1_1ActsFrame.html#aa289858ebacbeabf87471ccf21dc0104">ActsFrame::positionToActs</a>(hit.X(), hit.Y(), hit.Z());</div>
-<div class="line"><span class="lineno">  516</span>  <span class="keyword">const</span> <span class="keyword">auto</span> plane = Acts::Surface::makeShared&lt;Acts::PlaneSurface&gt;(transform);</div>
-<div class="line"><span class="lineno">  517</span> </div>
-<div class="line"><span class="lineno">  518</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespacerun__tracking__scan.html#aefd0a105108077accad31b51b4f0647e">result</a> =</div>
-<div class="line"><span class="lineno">  519</span>      impl.extrapolate(impl.extrapolator, impl.trackParameters(track), *plane);</div>
-<div class="line"><span class="lineno">  520</span>  <span class="keywordflow">if</span> (!result) {</div>
-<div class="line"><span class="lineno">  521</span>    <span class="keywordflow">return</span> -1.;</div>
-<div class="line"><span class="lineno">  522</span>  }</div>
-<div class="line"><span class="lineno">  523</span>  <span class="keyword">const</span> <span class="keyword">auto</span>&amp; <a class="code hl_variable" href="namespaceana__ShipMuon.html#aca3f5e85758a67e98544d3bd0d4cb8ce">local</a> = <a class="code hl_variable" href="namespacerun__tracking__scan.html#aefd0a105108077accad31b51b4f0647e">result</a>-&gt;parameters();</div>
-<div class="line"><span class="lineno">  524</span>  <span class="keywordflow">return</span> std::hypot(local[Acts::eBoundLoc0], local[Acts::eBoundLoc1]) /</div>
-<div class="line"><span class="lineno">  525</span>         <a class="code hl_variable" href="namespaceSHiP_1_1ActsFrame.html#ae2c5b2d2a4d15fdbb38277d87b84d59f">ActsFrame::kShipLength</a>;</div>
-<div class="line"><span class="lineno">  526</span>}</div>
+<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00810">810</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  811</span>                                                                    {</div>
+<div class="line"><span class="lineno">  812</span>  <span class="keyword">const</span> <span class="keyword">auto</span>&amp; impl = *<a class="code hl_variable" href="classSHiP_1_1ActsStrawTracker.html#a58a5d971ff31022dd77620988b73681c">fImpl</a>;</div>
+<div class="line"><span class="lineno">  813</span>  <span class="comment">// Plane of constant z centred on the hit</span></div>
+<div class="line"><span class="lineno">  814</span>  <span class="keyword">const</span> <span class="keyword">auto</span> plane =</div>
+<div class="line"><span class="lineno">  815</span>      constantZPlane(<a class="code hl_function" href="namespaceSHiP_1_1ActsFrame.html#aa289858ebacbeabf87471ccf21dc0104">ActsFrame::positionToActs</a>(hit.X(), hit.Y(), hit.Z()));</div>
+<div class="line"><span class="lineno">  816</span> </div>
+<div class="line"><span class="lineno">  817</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespacerun__tracking__scan.html#aefd0a105108077accad31b51b4f0647e">result</a> =</div>
+<div class="line"><span class="lineno">  818</span>      impl.extrapolate(impl.extrapolator, impl.trackParameters(track), *plane);</div>
+<div class="line"><span class="lineno">  819</span>  <span class="keywordflow">if</span> (!result) {</div>
+<div class="line"><span class="lineno">  820</span>    <span class="keywordflow">return</span> -1.;</div>
+<div class="line"><span class="lineno">  821</span>  }</div>
+<div class="line"><span class="lineno">  822</span>  <span class="keyword">const</span> <span class="keyword">auto</span>&amp; <a class="code hl_variable" href="namespaceana__ShipMuon.html#aca3f5e85758a67e98544d3bd0d4cb8ce">local</a> = <a class="code hl_variable" href="namespacerun__tracking__scan.html#aefd0a105108077accad31b51b4f0647e">result</a>-&gt;parameters();</div>
+<div class="line"><span class="lineno">  823</span>  <span class="keywordflow">return</span> std::hypot(local[Acts::eBoundLoc0], local[Acts::eBoundLoc1]) /</div>
+<div class="line"><span class="lineno">  824</span>         <a class="code hl_variable" href="namespaceSHiP_1_1ActsFrame.html#ae2c5b2d2a4d15fdbb38277d87b84d59f">ActsFrame::kShipLength</a>;</div>
+<div class="line"><span class="lineno">  825</span>}</div>
 <div class="ttc" id="anamespaceSHiP_1_1ActsFrame_html_aa289858ebacbeabf87471ccf21dc0104"><div class="ttname"><a href="namespaceSHiP_1_1ActsFrame.html#aa289858ebacbeabf87471ccf21dc0104">SHiP::ActsFrame::positionToActs</a></div><div class="ttdeci">Acts::Vector3 positionToActs(double x, double y, double z)</div><div class="ttdef"><b>Definition</b> <a href="ActsFrame_8hpp_source.html#l00038">ActsFrame.hpp:38</a></div></div>
 <div class="ttc" id="anamespaceana__ShipMuon_html_aca3f5e85758a67e98544d3bd0d4cb8ce"><div class="ttname"><a href="namespaceana__ShipMuon.html#aca3f5e85758a67e98544d3bd0d4cb8ce">ana_ShipMuon.local</a></div><div class="ttdeci">bool local</div><div class="ttdef"><b>Definition</b> <a href="ana__ShipMuon_8py_source.html#l00013">ana_ShipMuon.py:13</a></div></div>
 <div class="ttc" id="anamespacerun__tracking__scan_html_aefd0a105108077accad31b51b4f0647e"><div class="ttname"><a href="namespacerun__tracking__scan.html#aefd0a105108077accad31b51b4f0647e">run_tracking_scan.result</a></div><div class="ttdeci">result</div><div class="ttdef"><b>Definition</b> <a href="run__tracking__scan_8py_source.html#l00156">run_tracking_scan.py:156</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="a5a5a96883108b6e6a6552bb8f18bea63" name="a5a5a96883108b6e6a6552bb8f18bea63"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5a5a96883108b6e6a6552bb8f18bea63">&#9670;&#160;</a></span>FitTrack()</h2>
+<a id="a65160d2483b6e28a7ec6a91eaef11b6c" name="a65160d2483b6e28a7ec6a91eaef11b6c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a65160d2483b6e28a7ec6a91eaef11b6c">&#9670;&#160;</a></span>FindTracks()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">Int_t SHiP::ActsStrawTracker::FitTrack </td>
+          <td class="memname">Int_t SHiP::ActsStrawTracker::FindTracks </td>
           <td>(</td>
-          <td class="paramtype">const std::vector&lt; Int_t &gt; &amp;&#160;</td>
-          <td class="paramname"><em>measurements</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
-          <td class="paramtype">const TVector3 &amp;&#160;</td>
-          <td class="paramname"><em>seedPosition</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const TVector3 &amp;&#160;</td>
-          <td class="paramname"><em>seedMomentum</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Int_t&#160;</td>
-          <td class="paramname"><em>charge</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Fit a track candidate and return the index of the fitted track.</p>
-<p><code>measurements</code> are indices returned by AddMeasurement, ordered along the track, with at most one per straw layer. The seed position and momentum are in cm and GeV. Returns -1 if the fit fails. </p>
 
-<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00292">292</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  294</span>                                                                             {</div>
-<div class="line"><span class="lineno">  295</span>  <span class="keyword">auto</span>&amp; impl = *<a class="code hl_variable" href="classSHiP_1_1ActsStrawTracker.html#a58a5d971ff31022dd77620988b73681c">fImpl</a>;</div>
-<div class="line"><span class="lineno">  296</span>  <span class="keywordflow">if</span> (measurements.empty() || charge == 0 || seedMomentum.Mag() &lt;= 0.) {</div>
-<div class="line"><span class="lineno">  297</span>    <span class="keywordflow">return</span> -1;</div>
-<div class="line"><span class="lineno">  298</span>  }</div>
-<div class="line"><span class="lineno">  299</span>  std::vector&lt;Acts::SourceLink&gt; sourceLinks;</div>
-<div class="line"><span class="lineno">  300</span>  std::vector&lt;const Acts::Surface*&gt; <a class="code hl_variable" href="ActsStrawGeometry_8cpp.html#a399326f6b8137d5eed0078142708b040">surfaces</a>;</div>
-<div class="line"><span class="lineno">  301</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> Int_t index : measurements) {</div>
-<div class="line"><span class="lineno">  302</span>    <span class="keywordflow">if</span> (index &lt; 0 ||</div>
-<div class="line"><span class="lineno">  303</span>        <span class="keyword">static_cast&lt;</span>std::size_t<span class="keyword">&gt;</span>(index) &gt;= impl.measurements.size()) {</div>
-<div class="line"><span class="lineno">  304</span>      <span class="keywordflow">throw</span> std::out_of_range(<span class="stringliteral">&quot;ActsStrawTracker: measurement out of range&quot;</span>);</div>
-<div class="line"><span class="lineno">  305</span>    }</div>
-<div class="line"><span class="lineno">  306</span>    sourceLinks.emplace_back(<span class="keyword">static_cast&lt;</span>std::size_t<span class="keyword">&gt;</span>(index));</div>
-<div class="line"><span class="lineno">  307</span>    <a class="code hl_variable" href="ActsStrawGeometry_8cpp.html#a399326f6b8137d5eed0078142708b040">surfaces</a>.push_back(impl.measurements[index].surface);</div>
-<div class="line"><span class="lineno">  308</span>  }</div>
-<div class="line"><span class="lineno">  309</span> </div>
-<div class="line"><span class="lineno">  310</span>  <span class="comment">// Seed on the surface of the first measurement</span></div>
-<div class="line"><span class="lineno">  311</span>  <span class="keyword">const</span> Acts::Surface&amp; seedSurface = *<a class="code hl_variable" href="ActsStrawGeometry_8cpp.html#a399326f6b8137d5eed0078142708b040">surfaces</a>.front();</div>
-<div class="line"><span class="lineno">  312</span>  <span class="keyword">const</span> Acts::Vector3 position = <a class="code hl_function" href="namespaceSHiP_1_1ActsFrame.html#aa289858ebacbeabf87471ccf21dc0104">ActsFrame::positionToActs</a>(</div>
-<div class="line"><span class="lineno">  313</span>      seedPosition.X(), seedPosition.Y(), seedPosition.Z());</div>
-<div class="line"><span class="lineno">  314</span>  <span class="keyword">const</span> Acts::Vector3 <a class="code hl_variable" href="namespacestudy__GammaConv.html#ae7cafac6179ebc8cb6564e8cfc465345">momentum</a> = <a class="code hl_function" href="namespaceSHiP_1_1ActsFrame.html#accbf927cde5580565aed8fa57d1d713f">ActsFrame::momentumToActs</a>(</div>
-<div class="line"><span class="lineno">  315</span>      seedMomentum.X(), seedMomentum.Y(), seedMomentum.Z());</div>
-<div class="line"><span class="lineno">  316</span>  <span class="keyword">const</span> Acts::Vector3 direction = <a class="code hl_variable" href="namespacestudy__GammaConv.html#ae7cafac6179ebc8cb6564e8cfc465345">momentum</a>.normalized();</div>
-<div class="line"><span class="lineno">  317</span>  <span class="keyword">const</span> <span class="keyword">auto</span> hypothesis = Acts::ParticleHypothesis::muon();</div>
-<div class="line"><span class="lineno">  318</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> qOverP =</div>
-<div class="line"><span class="lineno">  319</span>      hypothesis.qOverP(<a class="code hl_variable" href="namespacestudy__GammaConv.html#ae7cafac6179ebc8cb6564e8cfc465345">momentum</a>.norm(), <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(charge));</div>
-<div class="line"><span class="lineno">  320</span> </div>
-<div class="line"><span class="lineno">  321</span>  <span class="comment">// The seed is generally not on the straw, so take its point of closest</span></div>
-<div class="line"><span class="lineno">  322</span>  <span class="comment">// approach and the local coordinates there</span></div>
-<div class="line"><span class="lineno">  323</span>  <span class="keyword">const</span> <span class="keyword">auto</span> intersection =</div>
-<div class="line"><span class="lineno">  324</span>      seedSurface.intersect(impl.gctx, position, direction).closest();</div>
-<div class="line"><span class="lineno">  325</span>  <span class="keyword">const</span> Acts::Vector3 onSurface =</div>
-<div class="line"><span class="lineno">  326</span>      intersection.isValid() ? intersection.position() : position;</div>
-<div class="line"><span class="lineno">  327</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespaceana__ShipMuon.html#aca3f5e85758a67e98544d3bd0d4cb8ce">local</a> = seedSurface.globalToLocal(impl.gctx, onSurface, direction);</div>
-<div class="line"><span class="lineno">  328</span>  <span class="keyword">const</span> Acts::Vector2 localPosition =</div>
-<div class="line"><span class="lineno">  329</span>      <a class="code hl_variable" href="namespaceana__ShipMuon.html#aca3f5e85758a67e98544d3bd0d4cb8ce">local</a>.ok() ? <a class="code hl_variable" href="namespaceana__ShipMuon.html#aca3f5e85758a67e98544d3bd0d4cb8ce">local</a>.value() : Acts::Vector2::Zero();</div>
-<div class="line"><span class="lineno">  330</span> </div>
-<div class="line"><span class="lineno">  331</span>  Acts::BoundVector parameters = Acts::BoundVector::Zero();</div>
-<div class="line"><span class="lineno">  332</span>  parameters[Acts::eBoundLoc0] = localPosition[0];</div>
-<div class="line"><span class="lineno">  333</span>  parameters[Acts::eBoundLoc1] = localPosition[1];</div>
-<div class="line"><span class="lineno">  334</span>  parameters[Acts::eBoundPhi] = Acts::VectorHelpers::phi(direction);</div>
-<div class="line"><span class="lineno">  335</span>  parameters[Acts::eBoundTheta] = Acts::VectorHelpers::theta(direction);</div>
-<div class="line"><span class="lineno">  336</span>  parameters[Acts::eBoundQOverP] = qOverP;</div>
-<div class="line"><span class="lineno">  337</span>  Acts::BoundVector sigmas;</div>
-<div class="line"><span class="lineno">  338</span>  sigmas &lt;&lt; kSeedSigmaLoc0, kSeedSigmaLoc1, kSeedSigmaAngle, kSeedSigmaAngle,</div>
-<div class="line"><span class="lineno">  339</span>      kSeedRelativeSigmaP * std::abs(qOverP), kSeedSigmaTime;</div>
-<div class="line"><span class="lineno">  340</span>  <span class="keyword">const</span> Acts::BoundMatrix covariance = sigmas.cwiseProduct(sigmas).asDiagonal();</div>
-<div class="line"><span class="lineno">  341</span>  <span class="keyword">const</span> Acts::BoundTrackParameters <a class="code hl_variable" href="namespacerun__fixedTarget.html#a0c69a894251ef9de75b9a06ec7d12804">seed</a>(seedSurface.getSharedPtr(), parameters,</div>
-<div class="line"><span class="lineno">  342</span>                                        covariance, hypothesis);</div>
-<div class="line"><span class="lineno">  343</span> </div>
-<div class="line"><span class="lineno">  344</span>  Acts::PropagatorPlainOptions propagatorOptions(impl.gctx, impl.mctx);</div>
-<div class="line"><span class="lineno">  345</span>  Acts::KalmanFitterOptions&lt;Trajectory&gt; <a class="code hl_variable" href="namespaceeventDisplay.html#a6820b8d5176d609cefecb49b8176516a">options</a>(</div>
-<div class="line"><span class="lineno">  346</span>      impl.gctx, impl.mctx, std::cref(impl.cctx), impl.extensions,</div>
-<div class="line"><span class="lineno">  347</span>      propagatorOptions, &amp;seedSurface);</div>
-<div class="line"><span class="lineno">  348</span>  <a class="code hl_variable" href="namespaceeventDisplay.html#a6820b8d5176d609cefecb49b8176516a">options</a>.referenceSurfaceStrategy = Acts::TrackExtrapolationStrategy::first;</div>
-<div class="line"><span class="lineno">  349</span> </div>
-<div class="line"><span class="lineno">  350</span>  <span class="keyword">const</span> std::size_t nTracksBefore = impl.tracks.size();</div>
-<div class="line"><span class="lineno">  351</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacerun__tracking__scan.html#aefd0a105108077accad31b51b4f0647e">result</a> = impl.fitter.fit(sourceLinks.begin(), sourceLinks.end(), seed,</div>
-<div class="line"><span class="lineno">  352</span>                                options, <a class="code hl_variable" href="ActsStrawGeometry_8cpp.html#a399326f6b8137d5eed0078142708b040">surfaces</a>, impl.tracks);</div>
-<div class="line"><span class="lineno">  353</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="namespacerun__tracking__scan.html#aefd0a105108077accad31b51b4f0647e">result</a>.ok() || !<a class="code hl_variable" href="namespacerun__tracking__scan.html#aefd0a105108077accad31b51b4f0647e">result</a>.value().hasReferenceSurface()) {</div>
-<div class="line"><span class="lineno">  354</span>    <span class="comment">// A failed fit may leave a partial track behind. Drop it, so that track</span></div>
-<div class="line"><span class="lineno">  355</span>    <span class="comment">// indices stay contiguous.</span></div>
-<div class="line"><span class="lineno">  356</span>    <span class="keywordflow">while</span> (impl.tracks.size() &gt; nTracksBefore) {</div>
-<div class="line"><span class="lineno">  357</span>      impl.tracks.removeTrack(impl.tracks.size() - 1);</div>
-<div class="line"><span class="lineno">  358</span>    }</div>
-<div class="line"><span class="lineno">  359</span>    <span class="keywordflow">return</span> -1;</div>
-<div class="line"><span class="lineno">  360</span>  }</div>
-<div class="line"><span class="lineno">  361</span>  <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>Int_t<span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespacerun__tracking__scan.html#aefd0a105108077accad31b51b4f0647e">result</a>.value().index());</div>
-<div class="line"><span class="lineno">  362</span>}</div>
-<div class="ttc" id="aActsStrawGeometry_8cpp_html_a399326f6b8137d5eed0078142708b040"><div class="ttname"><a href="ActsStrawGeometry_8cpp.html#a399326f6b8137d5eed0078142708b040">surfaces</a></div><div class="ttdeci">std::unordered_map&lt; int, std::shared_ptr&lt; Acts::Surface &gt; &gt; &amp; surfaces</div><div class="ttdef"><b>Definition</b> <a href="ActsStrawGeometry_8cpp_source.html#l00071">ActsStrawGeometry.cpp:71</a></div></div>
-<div class="ttc" id="anamespaceSHiP_1_1ActsFrame_html_accbf927cde5580565aed8fa57d1d713f"><div class="ttname"><a href="namespaceSHiP_1_1ActsFrame.html#accbf927cde5580565aed8fa57d1d713f">SHiP::ActsFrame::momentumToActs</a></div><div class="ttdeci">Acts::Vector3 momentumToActs(double px, double py, double pz)</div><div class="ttdef"><b>Definition</b> <a href="ActsFrame_8hpp_source.html#l00046">ActsFrame.hpp:46</a></div></div>
-<div class="ttc" id="anamespaceeventDisplay_html_a6820b8d5176d609cefecb49b8176516a"><div class="ttname"><a href="namespaceeventDisplay.html#a6820b8d5176d609cefecb49b8176516a">eventDisplay.options</a></div><div class="ttdeci">options</div><div class="ttdef"><b>Definition</b> <a href="eventDisplay_8py_source.html#l00132">eventDisplay.py:132</a></div></div>
-<div class="ttc" id="anamespacerun__fixedTarget_html_a0c69a894251ef9de75b9a06ec7d12804"><div class="ttname"><a href="namespacerun__fixedTarget.html#a0c69a894251ef9de75b9a06ec7d12804">run_fixedTarget.seed</a></div><div class="ttdeci">seed</div><div class="ttdef"><b>Definition</b> <a href="run__fixedTarget_8py_source.html#l00362">run_fixedTarget.py:362</a></div></div>
-<div class="ttc" id="anamespacestudy__GammaConv_html_ae7cafac6179ebc8cb6564e8cfc465345"><div class="ttname"><a href="namespacestudy__GammaConv.html#ae7cafac6179ebc8cb6564e8cfc465345">study_GammaConv.momentum</a></div><div class="ttdeci">momentum</div><div class="ttdef"><b>Definition</b> <a href="study__GammaConv_8py_source.html#l00042">study_GammaConv.py:42</a></div></div>
+<p>Find and fit all tracks among the measurements; returns their number. </p>
+
+<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00584">584</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  584</span>                                   {</div>
+<div class="line"><span class="lineno">  585</span>  <span class="keyword">auto</span>&amp; impl = *<a class="code hl_variable" href="classSHiP_1_1ActsStrawTracker.html#a58a5d971ff31022dd77620988b73681c">fImpl</a>;</div>
+<div class="line"><span class="lineno">  586</span>  std::vector&lt;Int_t&gt; all(impl.measurements.size());</div>
+<div class="line"><span class="lineno">  587</span>  std::iota(all.begin(), all.end(), 0);</div>
+<div class="line"><span class="lineno">  588</span>  <span class="keyword">const</span> <span class="keyword">auto</span> hits = impl.patRecHits(all);</div>
+<div class="line"><span class="lineno">  589</span>  <span class="keyword">const</span> <span class="keyword">auto</span> candidates = impl.patRec-&gt;findTracks(hits);</div>
+<div class="line"><span class="lineno">  590</span> </div>
+<div class="line"><span class="lineno">  591</span>  <span class="comment">// Fit every candidate, then resolve the ambiguities between the fitted</span></div>
+<div class="line"><span class="lineno">  592</span>  <span class="comment">// tracks: best first, rejecting tracks that share too many hits with an</span></div>
+<div class="line"><span class="lineno">  593</span>  <span class="comment">// accepted one or fit badly</span></div>
+<div class="line"><span class="lineno">  594</span>  <span class="keyword">struct </span>Fitted {</div>
+<div class="line"><span class="lineno">  595</span>    std::size_t <a class="code hl_variable" href="namespaceeventDisplay.html#a73fd0f3a2dae7cace5750a4973039f53">candidate</a>;</div>
+<div class="line"><span class="lineno">  596</span>    <span class="keywordtype">double</span> chi2PerNdf;</div>
+<div class="line"><span class="lineno">  597</span>    std::vector&lt;Int_t&gt; measurements;</div>
+<div class="line"><span class="lineno">  598</span>  };</div>
+<div class="line"><span class="lineno">  599</span>  std::vector&lt;Fitted&gt; fitted;</div>
+<div class="line"><span class="lineno">  600</span>  <span class="keywordflow">for</span> (std::size_t i = 0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt; candidates.size(); ++<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>) {</div>
+<div class="line"><span class="lineno">  601</span>    <span class="keyword">const</span> Int_t track = impl.fit(candidates[i], hits);</div>
+<div class="line"><span class="lineno">  602</span>    <span class="keywordflow">if</span> (track &lt; 0) {</div>
+<div class="line"><span class="lineno">  603</span>      <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">  604</span>    }</div>
+<div class="line"><span class="lineno">  605</span>    <span class="keyword">const</span> <span class="keyword">auto</span> proxy = impl.tracks.getTrack(track);</div>
+<div class="line"><span class="lineno">  606</span>    <span class="keywordflow">if</span> (proxy.nDoF() &gt; 0) {</div>
+<div class="line"><span class="lineno">  607</span>      fitted.push_back(</div>
+<div class="line"><span class="lineno">  608</span>          {<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>, proxy.chi2() / proxy.nDoF(), impl.trackMeasurements[track]});</div>
+<div class="line"><span class="lineno">  609</span>    }</div>
+<div class="line"><span class="lineno">  610</span>  }</div>
+<div class="line"><span class="lineno">  611</span>  <span class="keyword">const</span> <span class="keyword">auto</span> rank = [](<span class="keyword">const</span> Fitted&amp; <a class="code hl_variable" href="namespacerun__tracking__scan.html#aebca261c698426e065606174ee0bbf03">f</a>) {</div>
+<div class="line"><span class="lineno">  612</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="namespacerun__tracking__scan.html#aebca261c698426e065606174ee0bbf03">f</a>.chi2PerNdf -</div>
+<div class="line"><span class="lineno">  613</span>           kTrackHitWeight * <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespacerun__tracking__scan.html#aebca261c698426e065606174ee0bbf03">f</a>.measurements.size());</div>
+<div class="line"><span class="lineno">  614</span>  };</div>
+<div class="line"><span class="lineno">  615</span>  std::sort(fitted.begin(), fitted.end(),</div>
+<div class="line"><span class="lineno">  616</span>            [&amp;](<span class="keyword">const</span> <span class="keyword">auto</span>&amp; a, <span class="keyword">const</span> <span class="keyword">auto</span>&amp; b) { return rank(a) &lt; rank(b); });</div>
+<div class="line"><span class="lineno">  617</span>  std::vector&lt;const Fitted*&gt; accepted;</div>
+<div class="line"><span class="lineno">  618</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; f : fitted) {</div>
+<div class="line"><span class="lineno">  619</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacerun__tracking__scan.html#aebca261c698426e065606174ee0bbf03">f</a>.chi2PerNdf &gt; kMaxTrackChi2PerNdf ||</div>
+<div class="line"><span class="lineno">  620</span>        <a class="code hl_variable" href="namespacerun__tracking__scan.html#aebca261c698426e065606174ee0bbf03">f</a>.measurements.size() &lt; kMinTrackHits) {</div>
+<div class="line"><span class="lineno">  621</span>      <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">  622</span>    }</div>
+<div class="line"><span class="lineno">  623</span>    <span class="keyword">const</span> <span class="keywordtype">bool</span> conflict =</div>
+<div class="line"><span class="lineno">  624</span>        std::any_of(accepted.begin(), accepted.end(), [&amp;](<span class="keyword">const</span> Fitted* a) {</div>
+<div class="line"><span class="lineno">  625</span>          int shared = 0;</div>
+<div class="line"><span class="lineno">  626</span>          for (const Int_t m : f.measurements) {</div>
+<div class="line"><span class="lineno">  627</span>            shared +=</div>
+<div class="line"><span class="lineno">  628</span>                std::count(a-&gt;measurements.begin(), a-&gt;measurements.end(), m);</div>
+<div class="line"><span class="lineno">  629</span>          }</div>
+<div class="line"><span class="lineno">  630</span>          <span class="keyword">const</span> <span class="keyword">auto</span> shorter =</div>
+<div class="line"><span class="lineno">  631</span>              std::min(<a class="code hl_variable" href="namespacerun__tracking__scan.html#aebca261c698426e065606174ee0bbf03">f</a>.measurements.size(), a-&gt;measurements.size());</div>
+<div class="line"><span class="lineno">  632</span>          <span class="keywordflow">return</span> shared &gt; kMaxSharedFraction * <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(shorter);</div>
+<div class="line"><span class="lineno">  633</span>        });</div>
+<div class="line"><span class="lineno">  634</span>    <span class="keywordflow">if</span> (!conflict) {</div>
+<div class="line"><span class="lineno">  635</span>      accepted.push_back(&amp;f);</div>
+<div class="line"><span class="lineno">  636</span>    }</div>
+<div class="line"><span class="lineno">  637</span>  }</div>
+<div class="line"><span class="lineno">  638</span>  <span class="comment">// Refit the accepted tracks into an empty container, in candidate order,</span></div>
+<div class="line"><span class="lineno">  639</span>  <span class="comment">// so the track indices are contiguous</span></div>
+<div class="line"><span class="lineno">  640</span>  std::sort(accepted.begin(), accepted.end(),</div>
+<div class="line"><span class="lineno">  641</span>            [](<span class="keyword">const</span> Fitted* a, <span class="keyword">const</span> Fitted* b) {</div>
+<div class="line"><span class="lineno">  642</span>              return a-&gt;candidate &lt; b-&gt;candidate;</div>
+<div class="line"><span class="lineno">  643</span>            });</div>
+<div class="line"><span class="lineno">  644</span>  impl.tracks.clear();</div>
+<div class="line"><span class="lineno">  645</span>  impl.trackMeasurements.clear();</div>
+<div class="line"><span class="lineno">  646</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> Fitted* f : accepted) {</div>
+<div class="line"><span class="lineno">  647</span>    impl.fit(candidates[<a class="code hl_variable" href="namespacerun__tracking__scan.html#aebca261c698426e065606174ee0bbf03">f</a>-&gt;candidate], hits);</div>
+<div class="line"><span class="lineno">  648</span>  }</div>
+<div class="line"><span class="lineno">  649</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="classSHiP_1_1ActsStrawTracker.html#a50589b423d08a84f710381d0ae0fe466">GetNTracks</a>();</div>
+<div class="line"><span class="lineno">  650</span>}</div>
+<div class="ttc" id="aclassSHiP_1_1ActsStrawTracker_html_a50589b423d08a84f710381d0ae0fe466"><div class="ttname"><a href="classSHiP_1_1ActsStrawTracker.html#a50589b423d08a84f710381d0ae0fe466">SHiP::ActsStrawTracker::GetNTracks</a></div><div class="ttdeci">Int_t GetNTracks() const</div><div class="ttdef"><b>Definition</b> <a href="ActsStrawTracker_8cxx_source.html#l00667">ActsStrawTracker.cxx:667</a></div></div>
+<div class="ttc" id="anamespaceShipAna_html_aa4bf87f4d17f9d38b1d8f4d009bb54b3"><div class="ttname"><a href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">ShipAna.i</a></div><div class="ttdeci">int i</div><div class="ttdef"><b>Definition</b> <a href="ShipAna_8py_source.html#l00108">ShipAna.py:108</a></div></div>
+<div class="ttc" id="anamespaceeventDisplay_html_a73fd0f3a2dae7cace5750a4973039f53"><div class="ttname"><a href="namespaceeventDisplay.html#a73fd0f3a2dae7cace5750a4973039f53">eventDisplay.candidate</a></div><div class="ttdeci">candidate</div><div class="ttdef"><b>Definition</b> <a href="eventDisplay_8py_source.html#l00143">eventDisplay.py:143</a></div></div>
+<div class="ttc" id="anamespacerun__tracking__scan_html_aebca261c698426e065606174ee0bbf03"><div class="ttname"><a href="namespacerun__tracking__scan.html#aebca261c698426e065606174ee0bbf03">run_tracking_scan.f</a></div><div class="ttdeci">f</div><div class="ttdef"><b>Definition</b> <a href="run__tracking__scan_8py_source.html#l00204">run_tracking_scan.py:204</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a117d637b30c8178c434299928d77c70b" name="a117d637b30c8178c434299928d77c70b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a117d637b30c8178c434299928d77c70b">&#9670;&#160;</a></span>FitCandidate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Int_t SHiP::ActsStrawTracker::FitCandidate </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; Int_t &gt; &amp;&#160;</td>
+          <td class="paramname"><em>measurements</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Fit the measurements of one track candidate (indices returned by AddMeasurement), and return the index of the fitted track, or -1 if the candidate cannot be fitted. Measurements that do not fit the track are dropped. </p>
+
+<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00652">652</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  652</span>                                                                         {</div>
+<div class="line"><span class="lineno">  653</span>  <span class="keyword">auto</span>&amp; impl = *<a class="code hl_variable" href="classSHiP_1_1ActsStrawTracker.html#a58a5d971ff31022dd77620988b73681c">fImpl</a>;</div>
+<div class="line"><span class="lineno">  654</span>  <span class="keyword">const</span> <span class="keyword">auto</span> hits = impl.patRecHits(measurements);</div>
+<div class="line"><span class="lineno">  655</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespaceeventDisplay.html#a73fd0f3a2dae7cace5750a4973039f53">candidate</a> = impl.patRec-&gt;fitCandidate(hits);</div>
+<div class="line"><span class="lineno">  656</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="namespaceeventDisplay.html#a73fd0f3a2dae7cace5750a4973039f53">candidate</a> ? impl.fit(*candidate, hits) : -1;</div>
+<div class="line"><span class="lineno">  657</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -516,114 +522,117 @@ Private Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Fit a vertex to the given tracks (indices returned by FitTrack).</p>
+<p>Fit a vertex to the given tracks (track indices).</p>
 <p>Track IDs in <code>vertex</code> are the indices passed in. Returns false if the fit fails. </p>
 
-<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00405">405</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  406</span>                                                             {</div>
-<div class="line"><span class="lineno">  407</span>  <span class="keyword">const</span> <span class="keyword">auto</span>&amp; impl = *<a class="code hl_variable" href="classSHiP_1_1ActsStrawTracker.html#a58a5d971ff31022dd77620988b73681c">fImpl</a>;</div>
-<div class="line"><span class="lineno">  408</span>  <span class="keywordflow">if</span> (tracks.size() &lt; 2) {</div>
-<div class="line"><span class="lineno">  409</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  410</span>  }</div>
-<div class="line"><span class="lineno">  411</span>  std::vector&lt;Acts::BoundTrackParameters&gt; fitted;</div>
-<div class="line"><span class="lineno">  412</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> Int_t track : tracks) {</div>
-<div class="line"><span class="lineno">  413</span>    fitted.push_back(impl.trackParameters(track));</div>
-<div class="line"><span class="lineno">  414</span>  }</div>
-<div class="line"><span class="lineno">  415</span>  <span class="keyword">const</span> Acts::Vector3 <a class="code hl_variable" href="namespacerun__fixedTarget.html#a0c69a894251ef9de75b9a06ec7d12804">seed</a> = vertexSeed(fitted, impl.gctx);</div>
-<div class="line"><span class="lineno">  416</span> </div>
-<div class="line"><span class="lineno">  417</span>  <span class="comment">// Where the field at the seed is negligible, the helical linearisation is</span></div>
-<div class="line"><span class="lineno">  418</span>  <span class="comment">// ill-defined, so treat the tracks as straight lines there</span></div>
-<div class="line"><span class="lineno">  419</span>  std::shared_ptr&lt;const Acts::MagneticFieldProvider&gt; field = impl.field;</div>
-<div class="line"><span class="lineno">  420</span>  <span class="keyword">auto</span> cache = field-&gt;makeCache(impl.mctx);</div>
-<div class="line"><span class="lineno">  421</span>  <span class="keyword">const</span> <span class="keyword">auto</span> seedField = field-&gt;getField(seed, cache);</div>
-<div class="line"><span class="lineno">  422</span>  <span class="keywordflow">if</span> (seedField.ok() &amp;&amp; seedField.value().norm() &lt; kNegligibleField) {</div>
-<div class="line"><span class="lineno">  423</span>    field = std::make_shared&lt;Acts::NullBField&gt;();</div>
-<div class="line"><span class="lineno">  424</span>  }</div>
-<div class="line"><span class="lineno">  425</span>  <span class="keyword">auto</span> propagator = std::make_shared&lt;Extrapolator&gt;(</div>
-<div class="line"><span class="lineno">  426</span>      Stepper(field), Acts::VoidNavigator(),</div>
-<div class="line"><span class="lineno">  427</span>      Acts::getDefaultLogger(<span class="stringliteral">&quot;VertexPropagator&quot;</span>, Acts::Logging::WARNING));</div>
-<div class="line"><span class="lineno">  428</span> </div>
-<div class="line"><span class="lineno">  429</span>  <span class="comment">// Start the fit from the track parameters at the seed</span></div>
-<div class="line"><span class="lineno">  430</span>  <span class="keyword">const</span> <span class="keyword">auto</span> seedSurface =</div>
-<div class="line"><span class="lineno">  431</span>      Acts::Surface::makeShared&lt;Acts::PerigeeSurface&gt;(seed);</div>
-<div class="line"><span class="lineno">  432</span>  std::vector&lt;Acts::BoundTrackParameters&gt; atSeed;</div>
-<div class="line"><span class="lineno">  433</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; params : fitted) {</div>
-<div class="line"><span class="lineno">  434</span>    <span class="keyword">auto</span> extrapolated = impl.extrapolate(*propagator, params, *seedSurface);</div>
-<div class="line"><span class="lineno">  435</span>    <span class="keywordflow">if</span> (!extrapolated) {</div>
-<div class="line"><span class="lineno">  436</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  437</span>    }</div>
-<div class="line"><span class="lineno">  438</span>    atSeed.push_back(std::move(*extrapolated));</div>
-<div class="line"><span class="lineno">  439</span>  }</div>
-<div class="line"><span class="lineno">  440</span> </div>
-<div class="line"><span class="lineno">  441</span>  Acts::HelicalTrackLinearizer::Config linearizerConfig;</div>
-<div class="line"><span class="lineno">  442</span>  linearizerConfig.bField = field;</div>
-<div class="line"><span class="lineno">  443</span>  linearizerConfig.propagator = propagator;</div>
-<div class="line"><span class="lineno">  444</span>  linearizerConfig.targetTolerance = 1e-4;</div>
-<div class="line"><span class="lineno">  445</span>  <span class="keyword">const</span> Acts::HelicalTrackLinearizer linearizer(linearizerConfig);</div>
-<div class="line"><span class="lineno">  446</span> </div>
-<div class="line"><span class="lineno">  447</span>  Acts::FullBilloirVertexFitter::Config fitterConfig;</div>
-<div class="line"><span class="lineno">  448</span>  fitterConfig.maxIterations = 200;</div>
-<div class="line"><span class="lineno">  449</span>  fitterConfig.extractParameters</div>
-<div class="line"><span class="lineno">  450</span>      .connect&lt;&amp;Acts::InputTrack::extractParameters&gt;();</div>
-<div class="line"><span class="lineno">  451</span>  fitterConfig.trackLinearizer</div>
-<div class="line"><span class="lineno">  452</span>      .connect&lt;&amp;Acts::HelicalTrackLinearizer::linearizeTrack&gt;(&amp;linearizer);</div>
-<div class="line"><span class="lineno">  453</span>  <span class="keyword">const</span> Acts::FullBilloirVertexFitter fitter(</div>
-<div class="line"><span class="lineno">  454</span>      fitterConfig,</div>
-<div class="line"><span class="lineno">  455</span>      Acts::getDefaultLogger(<span class="stringliteral">&quot;VertexFitter&quot;</span>, Acts::Logging::WARNING));</div>
-<div class="line"><span class="lineno">  456</span> </div>
-<div class="line"><span class="lineno">  457</span>  std::vector&lt;Acts::InputTrack&gt; inputTracks;</div>
-<div class="line"><span class="lineno">  458</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; params : atSeed) {</div>
-<div class="line"><span class="lineno">  459</span>    inputTracks.emplace_back(&amp;params);</div>
-<div class="line"><span class="lineno">  460</span>  }</div>
-<div class="line"><span class="lineno">  461</span>  <span class="comment">// A loose constraint at the seed only sets the starting point of the fit</span></div>
-<div class="line"><span class="lineno">  462</span>  Acts::Vertex constraint(seed);</div>
-<div class="line"><span class="lineno">  463</span>  constraint.setFullCovariance(Acts::SquareMatrix4::Identity() * 1e6);</div>
-<div class="line"><span class="lineno">  464</span>  <span class="keyword">const</span> Acts::VertexingOptions vertexingOptions(impl.gctx, impl.mctx,</div>
-<div class="line"><span class="lineno">  465</span>                                                constraint);</div>
-<div class="line"><span class="lineno">  466</span>  <span class="keyword">auto</span> fieldCache = field-&gt;makeCache(impl.mctx);</div>
-<div class="line"><span class="lineno">  467</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespacerun__tracking__scan.html#aefd0a105108077accad31b51b4f0647e">result</a> = fitter.fit(inputTracks, vertexingOptions, fieldCache);</div>
-<div class="line"><span class="lineno">  468</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="namespacerun__tracking__scan.html#aefd0a105108077accad31b51b4f0647e">result</a>.ok()) {</div>
-<div class="line"><span class="lineno">  469</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  470</span>  }</div>
-<div class="line"><span class="lineno">  471</span>  <span class="keyword">const</span> Acts::Vertex&amp; fittedVertex = <a class="code hl_variable" href="namespacerun__tracking__scan.html#aefd0a105108077accad31b51b4f0647e">result</a>.value();</div>
-<div class="line"><span class="lineno">  472</span> </div>
-<div class="line"><span class="lineno">  473</span>  <span class="keyword">const</span> Acts::RotationMatrix3 rotation = <a class="code hl_function" href="namespaceSHiP_1_1ActsFrame.html#a2a3aee2ed76aec992c66f8aee17711f1">ActsFrame::toShipRotation</a>();</div>
-<div class="line"><span class="lineno">  474</span>  <span class="keyword">const</span> Acts::Vector3 position =</div>
-<div class="line"><span class="lineno">  475</span>      <a class="code hl_function" href="namespaceSHiP_1_1ActsFrame.html#a917736bca928342e572d413953f6624a">ActsFrame::positionToShip</a>(fittedVertex.position());</div>
-<div class="line"><span class="lineno">  476</span>  <span class="keyword">const</span> Acts::SquareMatrix3 positionCovariance =</div>
-<div class="line"><span class="lineno">  477</span>      rotation * fittedVertex.covariance() * rotation.transpose() /</div>
-<div class="line"><span class="lineno">  478</span>      (<a class="code hl_variable" href="namespaceSHiP_1_1ActsFrame.html#ae2c5b2d2a4d15fdbb38277d87b84d59f">ActsFrame::kShipLength</a> * <a class="code hl_variable" href="namespaceSHiP_1_1ActsFrame.html#ae2c5b2d2a4d15fdbb38277d87b84d59f">ActsFrame::kShipLength</a>);</div>
-<div class="line"><span class="lineno">  479</span>  <span class="keyword">const</span> <span class="keyword">auto</span> [chi2, nDoF] = fittedVertex.fitQuality();</div>
-<div class="line"><span class="lineno">  480</span>  vertex = RecoVertex(TVector3(position.x(), position.y(), position.z()),</div>
-<div class="line"><span class="lineno">  481</span>                      upperTriangle&lt;3&gt;(positionCovariance), chi2, nDoF);</div>
-<div class="line"><span class="lineno">  482</span> </div>
-<div class="line"><span class="lineno">  483</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; trackAtVertex : fittedVertex.tracks()) {</div>
-<div class="line"><span class="lineno">  484</span>    <span class="keyword">const</span> <span class="keyword">auto</span>* original =</div>
-<div class="line"><span class="lineno">  485</span>        trackAtVertex.originalParams.as&lt;Acts::BoundTrackParameters&gt;();</div>
-<div class="line"><span class="lineno">  486</span>    <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a1391b7407359c40dbacead1473f5a96b">index</a> = <span class="keyword">static_cast&lt;</span>std::size_t<span class="keyword">&gt;</span>(original - atSeed.data());</div>
-<div class="line"><span class="lineno">  487</span>    <span class="keywordflow">if</span> (original == <span class="keyword">nullptr</span> || index &gt;= atSeed.size()) {</div>
-<div class="line"><span class="lineno">  488</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  489</span>    }</div>
-<div class="line"><span class="lineno">  490</span>    <span class="keyword">const</span> <span class="keyword">auto</span>&amp; <a class="code hl_variable" href="namespacerun__fixedTarget.html#ad83c31f0696cc6c2129af09325c7ef08">params</a> = trackAtVertex.fittedParams;</div>
-<div class="line"><span class="lineno">  491</span>    <span class="keyword">const</span> Acts::Vector3 <a class="code hl_variable" href="namespacestudy__GammaConv.html#ae7cafac6179ebc8cb6564e8cfc465345">momentum</a> = <a class="code hl_function" href="namespaceSHiP_1_1ActsFrame.html#a280a38e894f6c0effd73bc08e5e620cb">ActsFrame::momentumToShip</a>(<a class="code hl_variable" href="namespacerun__fixedTarget.html#ad83c31f0696cc6c2129af09325c7ef08">params</a>.momentum());</div>
-<div class="line"><span class="lineno">  492</span>    vertex.AddTrack(tracks[index],</div>
-<div class="line"><span class="lineno">  493</span>                    TVector3(<a class="code hl_variable" href="namespacestudy__GammaConv.html#ae7cafac6179ebc8cb6564e8cfc465345">momentum</a>.x(), <a class="code hl_variable" href="namespacestudy__GammaConv.html#ae7cafac6179ebc8cb6564e8cfc465345">momentum</a>.y(), <a class="code hl_variable" href="namespacestudy__GammaConv.html#ae7cafac6179ebc8cb6564e8cfc465345">momentum</a>.z()),</div>
-<div class="line"><span class="lineno">  494</span>                    upperTriangle&lt;3&gt;(shipMomentumCovariance(params)));</div>
-<div class="line"><span class="lineno">  495</span>  }</div>
-<div class="line"><span class="lineno">  496</span> </div>
-<div class="line"><span class="lineno">  497</span>  <span class="keywordflow">if</span> (atSeed.size() == 2) {</div>
-<div class="line"><span class="lineno">  498</span>    <span class="keyword">const</span> <span class="keywordtype">double</span> doca =</div>
-<div class="line"><span class="lineno">  499</span>        lineDistance(atSeed[0].position(impl.gctx), atSeed[0].direction(),</div>
-<div class="line"><span class="lineno">  500</span>                     atSeed[1].position(impl.gctx), atSeed[1].direction());</div>
-<div class="line"><span class="lineno">  501</span>    vertex.SetDoca(doca / <a class="code hl_variable" href="namespaceSHiP_1_1ActsFrame.html#ae2c5b2d2a4d15fdbb38277d87b84d59f">ActsFrame::kShipLength</a>);</div>
-<div class="line"><span class="lineno">  502</span>  }</div>
-<div class="line"><span class="lineno">  503</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  504</span>}</div>
+<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00708">708</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  709</span>                                                             {</div>
+<div class="line"><span class="lineno">  710</span>  <span class="keyword">const</span> <span class="keyword">auto</span>&amp; impl = *<a class="code hl_variable" href="classSHiP_1_1ActsStrawTracker.html#a58a5d971ff31022dd77620988b73681c">fImpl</a>;</div>
+<div class="line"><span class="lineno">  711</span>  <span class="keywordflow">if</span> (tracks.size() &lt; 2) {</div>
+<div class="line"><span class="lineno">  712</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  713</span>  }</div>
+<div class="line"><span class="lineno">  714</span>  std::vector&lt;Acts::BoundTrackParameters&gt; fitted;</div>
+<div class="line"><span class="lineno">  715</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> Int_t track : tracks) {</div>
+<div class="line"><span class="lineno">  716</span>    fitted.push_back(impl.trackParameters(track));</div>
+<div class="line"><span class="lineno">  717</span>  }</div>
+<div class="line"><span class="lineno">  718</span> </div>
+<div class="line"><span class="lineno">  719</span>  <span class="comment">// As in the GenFit vertexing: start from the closest approach of the</span></div>
+<div class="line"><span class="lineno">  720</span>  <span class="comment">// straight tracks, then extrapolate them through the field to the plane of</span></div>
+<div class="line"><span class="lineno">  721</span>  <span class="comment">// constant z through the current estimate, and take the closest approach</span></div>
+<div class="line"><span class="lineno">  722</span>  <span class="comment">// of their tangents there, until it no longer moves</span></div>
+<div class="line"><span class="lineno">  723</span>  Acts::Vector3 point = vertexSeed(fitted, impl.gctx);</div>
+<div class="line"><span class="lineno">  724</span>  std::vector&lt;Acts::BoundTrackParameters&gt; atPlane;</div>
+<div class="line"><span class="lineno">  725</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> iteration = 0; iteration &lt; kVertexIterations; ++iteration) {</div>
+<div class="line"><span class="lineno">  726</span>    <span class="keyword">const</span> <span class="keyword">auto</span> plane = constantZPlane(point);</div>
+<div class="line"><span class="lineno">  727</span>    atPlane.clear();</div>
+<div class="line"><span class="lineno">  728</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; params : fitted) {</div>
+<div class="line"><span class="lineno">  729</span>      <span class="keyword">auto</span> extrapolated = impl.extrapolate(impl.extrapolator, params, *plane);</div>
+<div class="line"><span class="lineno">  730</span>      <span class="keywordflow">if</span> (!extrapolated) {</div>
+<div class="line"><span class="lineno">  731</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  732</span>      }</div>
+<div class="line"><span class="lineno">  733</span>      atPlane.push_back(std::move(*extrapolated));</div>
+<div class="line"><span class="lineno">  734</span>    }</div>
+<div class="line"><span class="lineno">  735</span>    <span class="keyword">const</span> Acts::Vector3 next = closestPoint(tangents(atPlane, impl.gctx));</div>
+<div class="line"><span class="lineno">  736</span>    <span class="keywordflow">if</span> (!next.allFinite()) {</div>
+<div class="line"><span class="lineno">  737</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  738</span>    }</div>
+<div class="line"><span class="lineno">  739</span>    <span class="keyword">const</span> <span class="keywordtype">double</span> <a class="code hl_variable" href="namespaceadd__noise__to__field.html#a96cf5cc2cc008d7422009cb2ad93cb51">step</a> = (next - point).norm();</div>
+<div class="line"><span class="lineno">  740</span>    point = next;</div>
+<div class="line"><span class="lineno">  741</span>    <span class="keywordflow">if</span> (step &lt; kVertexTolerance) {</div>
+<div class="line"><span class="lineno">  742</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  743</span>    }</div>
+<div class="line"><span class="lineno">  744</span>  }</div>
+<div class="line"><span class="lineno">  745</span> </div>
+<div class="line"><span class="lineno">  746</span>  <span class="comment">// Covariance of the vertex (and of the DOCA) from the covariances of the</span></div>
+<div class="line"><span class="lineno">  747</span>  <span class="comment">// tangents&#39; positions and directions on the plane, by linear propagation</span></div>
+<div class="line"><span class="lineno">  748</span>  <span class="comment">// with numerical derivatives</span></div>
+<div class="line"><span class="lineno">  749</span>  <span class="keyword">const</span> <span class="keyword">auto</span> base = tangents(atPlane, impl.gctx);</div>
+<div class="line"><span class="lineno">  750</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> nPar = 4;  <span class="comment">// loc0, loc1, phi, theta</span></div>
+<div class="line"><span class="lineno">  751</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> <a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a> = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(atPlane.size());</div>
+<div class="line"><span class="lineno">  752</span>  Eigen::MatrixXd jacobian = Eigen::MatrixXd::Zero(4, nPar * n);</div>
+<div class="line"><span class="lineno">  753</span>  Eigen::MatrixXd covariance = Eigen::MatrixXd::Zero(nPar * n, nPar * n);</div>
+<div class="line"><span class="lineno">  754</span>  <span class="keyword">const</span> <span class="keywordtype">bool</span> twoTracks = <a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a> == 2;</div>
+<div class="line"><span class="lineno">  755</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> baseDoca = twoTracks</div>
+<div class="line"><span class="lineno">  756</span>                              ? lineDistance(base[0].first, base[0].second,</div>
+<div class="line"><span class="lineno">  757</span>                                             base[1].first, base[1].second)</div>
+<div class="line"><span class="lineno">  758</span>                              : 0.;</div>
+<div class="line"><span class="lineno">  759</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt; <a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a>; ++<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>) {</div>
+<div class="line"><span class="lineno">  760</span>    <span class="keyword">const</span> <span class="keyword">auto</span>&amp; cov = atPlane[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>].covariance().value();</div>
+<div class="line"><span class="lineno">  761</span>    covariance.block(nPar * i, nPar * i, nPar, nPar) =</div>
+<div class="line"><span class="lineno">  762</span>        cov.topLeftCorner(nPar, nPar);</div>
+<div class="line"><span class="lineno">  763</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> k = 0; <a class="code hl_variable" href="namespacerunPythia8.html#a4cd74a33c53eaeef70fcb6b448b9b285">k</a> &lt; nPar; ++<a class="code hl_variable" href="namespacerunPythia8.html#a4cd74a33c53eaeef70fcb6b448b9b285">k</a>) {</div>
+<div class="line"><span class="lineno">  764</span>      <span class="keyword">const</span> <span class="keywordtype">double</span> epsilon = std::max(1e-3 * std::sqrt(cov(k, k)), 1e-12);</div>
+<div class="line"><span class="lineno">  765</span>      Acts::BoundVector shifted = atPlane[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>].parameters();</div>
+<div class="line"><span class="lineno">  766</span>      shifted[<a class="code hl_variable" href="namespacerunPythia8.html#a4cd74a33c53eaeef70fcb6b448b9b285">k</a>] += epsilon;</div>
+<div class="line"><span class="lineno">  767</span>      <span class="keyword">auto</span> lines = base;</div>
+<div class="line"><span class="lineno">  768</span>      lines[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>] = tangent(atPlane[i].referenceSurface(), shifted, impl.gctx);</div>
+<div class="line"><span class="lineno">  769</span>      jacobian.block(0, nPar * i + k, 3, 1) =</div>
+<div class="line"><span class="lineno">  770</span>          (closestPoint(lines) - point) / epsilon;</div>
+<div class="line"><span class="lineno">  771</span>      <span class="keywordflow">if</span> (twoTracks) {</div>
+<div class="line"><span class="lineno">  772</span>        jacobian(3, nPar * i + k) =</div>
+<div class="line"><span class="lineno">  773</span>            (lineDistance(lines[0].first, lines[0].second, lines[1].first,</div>
+<div class="line"><span class="lineno">  774</span>                          lines[1].second) -</div>
+<div class="line"><span class="lineno">  775</span>             baseDoca) /</div>
+<div class="line"><span class="lineno">  776</span>            epsilon;</div>
+<div class="line"><span class="lineno">  777</span>      }</div>
+<div class="line"><span class="lineno">  778</span>    }</div>
+<div class="line"><span class="lineno">  779</span>  }</div>
+<div class="line"><span class="lineno">  780</span>  <span class="keyword">const</span> Eigen::MatrixXd propagated =</div>
+<div class="line"><span class="lineno">  781</span>      jacobian * covariance * jacobian.transpose();</div>
+<div class="line"><span class="lineno">  782</span>  <span class="keyword">const</span> Acts::SquareMatrix3 actsCovariance = propagated.topLeftCorner(3, 3);</div>
+<div class="line"><span class="lineno">  783</span> </div>
+<div class="line"><span class="lineno">  784</span>  <span class="keyword">const</span> Acts::RotationMatrix3 rotation = <a class="code hl_function" href="namespaceSHiP_1_1ActsFrame.html#a2a3aee2ed76aec992c66f8aee17711f1">ActsFrame::toShipRotation</a>();</div>
+<div class="line"><span class="lineno">  785</span>  <span class="keyword">const</span> Acts::Vector3 position = <a class="code hl_function" href="namespaceSHiP_1_1ActsFrame.html#a917736bca928342e572d413953f6624a">ActsFrame::positionToShip</a>(point);</div>
+<div class="line"><span class="lineno">  786</span>  <span class="keyword">const</span> Acts::SquareMatrix3 positionCovariance =</div>
+<div class="line"><span class="lineno">  787</span>      rotation * actsCovariance * rotation.transpose() /</div>
+<div class="line"><span class="lineno">  788</span>      (<a class="code hl_variable" href="namespaceSHiP_1_1ActsFrame.html#ae2c5b2d2a4d15fdbb38277d87b84d59f">ActsFrame::kShipLength</a> * <a class="code hl_variable" href="namespaceSHiP_1_1ActsFrame.html#ae2c5b2d2a4d15fdbb38277d87b84d59f">ActsFrame::kShipLength</a>);</div>
+<div class="line"><span class="lineno">  789</span>  <span class="comment">// Fit quality: the DOCA against its uncertainty for two tracks</span></div>
+<div class="line"><span class="lineno">  790</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> docaVariance = propagated(3, 3);</div>
+<div class="line"><span class="lineno">  791</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> chi2 =</div>
+<div class="line"><span class="lineno">  792</span>      twoTracks &amp;&amp; docaVariance &gt; 0. ? baseDoca * baseDoca / docaVariance : 0.;</div>
+<div class="line"><span class="lineno">  793</span>  vertex = RecoVertex(TVector3(position.x(), position.y(), position.z()),</div>
+<div class="line"><span class="lineno">  794</span>                      upperTriangle&lt;3&gt;(positionCovariance), chi2,</div>
+<div class="line"><span class="lineno">  795</span>                      twoTracks ? 1. : 2. * <a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a> - 3.);</div>
+<div class="line"><span class="lineno">  796</span> </div>
+<div class="line"><span class="lineno">  797</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt; <a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a>; ++<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>) {</div>
+<div class="line"><span class="lineno">  798</span>    <span class="keyword">const</span> Acts::Vector3 <a class="code hl_variable" href="namespacestudy__GammaConv.html#ae7cafac6179ebc8cb6564e8cfc465345">momentum</a> =</div>
+<div class="line"><span class="lineno">  799</span>        <a class="code hl_function" href="namespaceSHiP_1_1ActsFrame.html#a280a38e894f6c0effd73bc08e5e620cb">ActsFrame::momentumToShip</a>(atPlane[i].<a class="code hl_variable" href="namespacestudy__GammaConv.html#ae7cafac6179ebc8cb6564e8cfc465345">momentum</a>());</div>
+<div class="line"><span class="lineno">  800</span>    vertex.AddTrack(tracks[i],</div>
+<div class="line"><span class="lineno">  801</span>                    TVector3(<a class="code hl_variable" href="namespacestudy__GammaConv.html#ae7cafac6179ebc8cb6564e8cfc465345">momentum</a>.x(), <a class="code hl_variable" href="namespacestudy__GammaConv.html#ae7cafac6179ebc8cb6564e8cfc465345">momentum</a>.y(), <a class="code hl_variable" href="namespacestudy__GammaConv.html#ae7cafac6179ebc8cb6564e8cfc465345">momentum</a>.z()),</div>
+<div class="line"><span class="lineno">  802</span>                    upperTriangle&lt;3&gt;(shipMomentumCovariance(atPlane[i])));</div>
+<div class="line"><span class="lineno">  803</span>  }</div>
+<div class="line"><span class="lineno">  804</span>  <span class="keywordflow">if</span> (twoTracks) {</div>
+<div class="line"><span class="lineno">  805</span>    vertex.SetDoca(baseDoca / <a class="code hl_variable" href="namespaceSHiP_1_1ActsFrame.html#ae2c5b2d2a4d15fdbb38277d87b84d59f">ActsFrame::kShipLength</a>);</div>
+<div class="line"><span class="lineno">  806</span>  }</div>
+<div class="line"><span class="lineno">  807</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  808</span>}</div>
 <div class="ttc" id="anamespaceSHiP_1_1ActsFrame_html_a280a38e894f6c0effd73bc08e5e620cb"><div class="ttname"><a href="namespaceSHiP_1_1ActsFrame.html#a280a38e894f6c0effd73bc08e5e620cb">SHiP::ActsFrame::momentumToShip</a></div><div class="ttdeci">Acts::Vector3 momentumToShip(const Acts::Vector3 &amp;momentum)</div><div class="ttdef"><b>Definition</b> <a href="ActsFrame_8hpp_source.html#l00051">ActsFrame.hpp:51</a></div></div>
 <div class="ttc" id="anamespaceSHiP_1_1ActsFrame_html_a2a3aee2ed76aec992c66f8aee17711f1"><div class="ttname"><a href="namespaceSHiP_1_1ActsFrame.html#a2a3aee2ed76aec992c66f8aee17711f1">SHiP::ActsFrame::toShipRotation</a></div><div class="ttdeci">Acts::RotationMatrix3 toShipRotation()</div><div class="ttdoc">Rotation taking ACTS-frame vectors to the SHiP frame.</div><div class="ttdef"><b>Definition</b> <a href="ActsFrame_8hpp_source.html#l00022">ActsFrame.hpp:22</a></div></div>
 <div class="ttc" id="anamespaceSHiP_1_1ActsFrame_html_a917736bca928342e572d413953f6624a"><div class="ttname"><a href="namespaceSHiP_1_1ActsFrame.html#a917736bca928342e572d413953f6624a">SHiP::ActsFrame::positionToShip</a></div><div class="ttdeci">Acts::Vector3 positionToShip(const Acts::Vector3 &amp;position)</div><div class="ttdef"><b>Definition</b> <a href="ActsFrame_8hpp_source.html#l00042">ActsFrame.hpp:42</a></div></div>
-<div class="ttc" id="anamespacemake__nTuple__SBT_html_a1391b7407359c40dbacead1473f5a96b"><div class="ttname"><a href="namespacemake__nTuple__SBT.html#a1391b7407359c40dbacead1473f5a96b">make_nTuple_SBT.index</a></div><div class="ttdeci">int index</div><div class="ttdef"><b>Definition</b> <a href="make__nTuple__SBT_8py_source.html#l00291">make_nTuple_SBT.py:291</a></div></div>
-<div class="ttc" id="anamespacerun__fixedTarget_html_ad83c31f0696cc6c2129af09325c7ef08"><div class="ttname"><a href="namespacerun__fixedTarget.html#ad83c31f0696cc6c2129af09325c7ef08">run_fixedTarget.params</a></div><div class="ttdeci">params</div><div class="ttdef"><b>Definition</b> <a href="run__fixedTarget_8py_source.html#l00464">run_fixedTarget.py:464</a></div></div>
+<div class="ttc" id="anamespaceadd__noise__to__field_html_a96cf5cc2cc008d7422009cb2ad93cb51"><div class="ttname"><a href="namespaceadd__noise__to__field.html#a96cf5cc2cc008d7422009cb2ad93cb51">add_noise_to_field.step</a></div><div class="ttdeci">step</div><div class="ttdef"><b>Definition</b> <a href="add__noise__to__field_8py_source.html#l00082">add_noise_to_field.py:82</a></div></div>
+<div class="ttc" id="anamespacemakeDecay_html_af2fe9da99a6c13f5bdd6d42663620c39"><div class="ttname"><a href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">makeDecay.n</a></div><div class="ttdeci">int n</div><div class="ttdef"><b>Definition</b> <a href="makeDecay_8py_source.html#l00089">makeDecay.py:89</a></div></div>
+<div class="ttc" id="anamespacerunPythia8_html_a4cd74a33c53eaeef70fcb6b448b9b285"><div class="ttname"><a href="namespacerunPythia8.html#a4cd74a33c53eaeef70fcb6b448b9b285">runPythia8.k</a></div><div class="ttdeci">int k</div><div class="ttdef"><b>Definition</b> <a href="runPythia8_8py_source.html#l00168">runPythia8.py:168</a></div></div>
+<div class="ttc" id="anamespacestudy__GammaConv_html_ae7cafac6179ebc8cb6564e8cfc465345"><div class="ttname"><a href="namespacestudy__GammaConv.html#ae7cafac6179ebc8cb6564e8cfc465345">study_GammaConv.momentum</a></div><div class="ttdeci">momentum</div><div class="ttdef"><b>Definition</b> <a href="study__GammaConv_8py_source.html#l00042">study_GammaConv.py:42</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -644,10 +653,10 @@ Private Attributes</h2></td></tr>
 
 <p>Number of straws found in the geometry. </p>
 
-<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00528">528</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  528</span>                                         {</div>
-<div class="line"><span class="lineno">  529</span>  <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>Int_t<span class="keyword">&gt;</span>(<a class="code hl_variable" href="classSHiP_1_1ActsStrawTracker.html#a58a5d971ff31022dd77620988b73681c">fImpl</a>-&gt;straws.size());</div>
-<div class="line"><span class="lineno">  530</span>}</div>
+<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00827">827</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  827</span>                                         {</div>
+<div class="line"><span class="lineno">  828</span>  <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>Int_t<span class="keyword">&gt;</span>(<a class="code hl_variable" href="classSHiP_1_1ActsStrawTracker.html#a58a5d971ff31022dd77620988b73681c">fImpl</a>-&gt;straws.size());</div>
+<div class="line"><span class="lineno">  829</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -666,10 +675,10 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00364">364</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  364</span>                                         {</div>
-<div class="line"><span class="lineno">  365</span>  <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>Int_t<span class="keyword">&gt;</span>(<a class="code hl_variable" href="classSHiP_1_1ActsStrawTracker.html#a58a5d971ff31022dd77620988b73681c">fImpl</a>-&gt;tracks.size());</div>
-<div class="line"><span class="lineno">  366</span>}</div>
+<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00667">667</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  667</span>                                         {</div>
+<div class="line"><span class="lineno">  668</span>  <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>Int_t<span class="keyword">&gt;</span>(<a class="code hl_variable" href="classSHiP_1_1ActsStrawTracker.html#a58a5d971ff31022dd77620988b73681c">fImpl</a>-&gt;tracks.size());</div>
+<div class="line"><span class="lineno">  669</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -689,45 +698,75 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00368">368</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  368</span>                                                      {</div>
-<div class="line"><span class="lineno">  369</span>  <span class="keyword">const</span> <span class="keyword">auto</span>&amp; impl = *<a class="code hl_variable" href="classSHiP_1_1ActsStrawTracker.html#a58a5d971ff31022dd77620988b73681c">fImpl</a>;</div>
-<div class="line"><span class="lineno">  370</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespacerun__fixedTarget.html#ad83c31f0696cc6c2129af09325c7ef08">params</a> = impl.trackParameters(track);</div>
-<div class="line"><span class="lineno">  371</span>  <span class="keyword">const</span> <span class="keyword">auto</span> proxy = impl.tracks.getTrack(track);</div>
-<div class="line"><span class="lineno">  372</span> </div>
-<div class="line"><span class="lineno">  373</span>  std::vector&lt;Double_t&gt; residuals;</div>
-<div class="line"><span class="lineno">  374</span>  std::vector&lt;Double_t&gt; pulls;</div>
-<div class="line"><span class="lineno">  375</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> state : proxy.trackStatesReversed()) {</div>
-<div class="line"><span class="lineno">  376</span>    <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespacetest__event__histogram.html#a2d0b11f1b378a771928b160b98e1e172">state</a>.hasCalibrated() || !<a class="code hl_function" href="namespacetest__event__histogram.html#a2d0b11f1b378a771928b160b98e1e172">state</a>.hasSmoothed()) {</div>
-<div class="line"><span class="lineno">  377</span>      <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">  378</span>    }</div>
-<div class="line"><span class="lineno">  379</span>    <span class="keyword">const</span> <span class="keywordtype">double</span> measured = <a class="code hl_function" href="namespacetest__event__histogram.html#a2d0b11f1b378a771928b160b98e1e172">state</a>.template calibrated&lt;1&gt;()(0);</div>
-<div class="line"><span class="lineno">  380</span>    <span class="keyword">const</span> <span class="keywordtype">double</span> <a class="code hl_variable" href="ActsStrawTracker_8cxx.html#a15a0c65c166603403af08bd98b38f7fd">variance</a> = <a class="code hl_function" href="namespacetest__event__histogram.html#a2d0b11f1b378a771928b160b98e1e172">state</a>.template calibratedCovariance&lt;1&gt;()(0, 0);</div>
-<div class="line"><span class="lineno">  381</span>    <span class="keyword">const</span> <span class="keywordtype">double</span> smoothed = <a class="code hl_function" href="namespacetest__event__histogram.html#a2d0b11f1b378a771928b160b98e1e172">state</a>.smoothed()[Acts::eBoundLoc0];</div>
-<div class="line"><span class="lineno">  382</span>    <span class="keyword">const</span> <span class="keywordtype">double</span> smoothedVariance =</div>
-<div class="line"><span class="lineno">  383</span>        <a class="code hl_function" href="namespacetest__event__histogram.html#a2d0b11f1b378a771928b160b98e1e172">state</a>.smoothedCovariance()(Acts::eBoundLoc0, Acts::eBoundLoc0);</div>
-<div class="line"><span class="lineno">  384</span>    <span class="keyword">const</span> <span class="keywordtype">double</span> residual = measured - smoothed;</div>
-<div class="line"><span class="lineno">  385</span>    <span class="comment">// Residuals of smoothed states have variance V - HCH^T</span></div>
-<div class="line"><span class="lineno">  386</span>    <span class="keyword">const</span> <span class="keywordtype">double</span> residualVariance = <a class="code hl_variable" href="ActsStrawTracker_8cxx.html#a15a0c65c166603403af08bd98b38f7fd">variance</a> - smoothedVariance;</div>
-<div class="line"><span class="lineno">  387</span>    residuals.push_back(residual / <a class="code hl_variable" href="namespaceSHiP_1_1ActsFrame.html#ae2c5b2d2a4d15fdbb38277d87b84d59f">ActsFrame::kShipLength</a>);</div>
-<div class="line"><span class="lineno">  388</span>    pulls.push_back(</div>
-<div class="line"><span class="lineno">  389</span>        residualVariance &gt; 0. ? residual / std::sqrt(residualVariance) : 0.);</div>
-<div class="line"><span class="lineno">  390</span>  }</div>
-<div class="line"><span class="lineno">  391</span>  std::reverse(residuals.begin(), residuals.end());</div>
-<div class="line"><span class="lineno">  392</span>  std::reverse(pulls.begin(), pulls.end());</div>
-<div class="line"><span class="lineno">  393</span> </div>
-<div class="line"><span class="lineno">  394</span>  <span class="keyword">const</span> Acts::Vector3 position =</div>
-<div class="line"><span class="lineno">  395</span>      <a class="code hl_function" href="namespaceSHiP_1_1ActsFrame.html#a917736bca928342e572d413953f6624a">ActsFrame::positionToShip</a>(<a class="code hl_variable" href="namespacerun__fixedTarget.html#ad83c31f0696cc6c2129af09325c7ef08">params</a>.position(impl.gctx));</div>
-<div class="line"><span class="lineno">  396</span>  <span class="keyword">const</span> Acts::Vector3 <a class="code hl_variable" href="namespacestudy__GammaConv.html#ae7cafac6179ebc8cb6564e8cfc465345">momentum</a> = <a class="code hl_function" href="namespaceSHiP_1_1ActsFrame.html#a280a38e894f6c0effd73bc08e5e620cb">ActsFrame::momentumToShip</a>(<a class="code hl_variable" href="namespacerun__fixedTarget.html#ad83c31f0696cc6c2129af09325c7ef08">params</a>.momentum());</div>
-<div class="line"><span class="lineno">  397</span>  <span class="keywordflow">return</span> RecoTrack(TVector3(position.x(), position.y(), position.z()),</div>
-<div class="line"><span class="lineno">  398</span>                   TVector3(<a class="code hl_variable" href="namespacestudy__GammaConv.html#ae7cafac6179ebc8cb6564e8cfc465345">momentum</a>.x(), <a class="code hl_variable" href="namespacestudy__GammaConv.html#ae7cafac6179ebc8cb6564e8cfc465345">momentum</a>.y(), <a class="code hl_variable" href="namespacestudy__GammaConv.html#ae7cafac6179ebc8cb6564e8cfc465345">momentum</a>.z()),</div>
-<div class="line"><span class="lineno">  399</span>                   <span class="keyword">static_cast&lt;</span>Int_t<span class="keyword">&gt;</span>(std::lround(<a class="code hl_variable" href="namespacerun__fixedTarget.html#ad83c31f0696cc6c2129af09325c7ef08">params</a>.charge())),</div>
-<div class="line"><span class="lineno">  400</span>                   upperTriangle&lt;6&gt;(shipCovariance(params, impl.gctx)),</div>
-<div class="line"><span class="lineno">  401</span>                   proxy.chi2(), proxy.nDoF(), proxy.nMeasurements(),</div>
-<div class="line"><span class="lineno">  402</span>                   std::move(residuals), std::move(pulls));</div>
-<div class="line"><span class="lineno">  403</span>}</div>
-<div class="ttc" id="aActsStrawTracker_8cxx_html_a15a0c65c166603403af08bd98b38f7fd"><div class="ttname"><a href="ActsStrawTracker_8cxx.html#a15a0c65c166603403af08bd98b38f7fd">variance</a></div><div class="ttdeci">double variance</div><div class="ttdef"><b>Definition</b> <a href="ActsStrawTracker_8cxx_source.html#l00080">ActsStrawTracker.cxx:80</a></div></div>
+<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00671">671</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  671</span>                                                      {</div>
+<div class="line"><span class="lineno">  672</span>  <span class="keyword">const</span> <span class="keyword">auto</span>&amp; impl = *<a class="code hl_variable" href="classSHiP_1_1ActsStrawTracker.html#a58a5d971ff31022dd77620988b73681c">fImpl</a>;</div>
+<div class="line"><span class="lineno">  673</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespacerun__fixedTarget.html#ad83c31f0696cc6c2129af09325c7ef08">params</a> = impl.trackParameters(track);</div>
+<div class="line"><span class="lineno">  674</span>  <span class="keyword">const</span> <span class="keyword">auto</span> proxy = impl.tracks.getTrack(track);</div>
+<div class="line"><span class="lineno">  675</span> </div>
+<div class="line"><span class="lineno">  676</span>  std::vector&lt;Double_t&gt; residuals;</div>
+<div class="line"><span class="lineno">  677</span>  std::vector&lt;Double_t&gt; pulls;</div>
+<div class="line"><span class="lineno">  678</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> state : proxy.trackStatesReversed()) {</div>
+<div class="line"><span class="lineno">  679</span>    <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespacetest__event__histogram.html#a2d0b11f1b378a771928b160b98e1e172">state</a>.hasCalibrated() || !<a class="code hl_function" href="namespacetest__event__histogram.html#a2d0b11f1b378a771928b160b98e1e172">state</a>.hasSmoothed()) {</div>
+<div class="line"><span class="lineno">  680</span>      <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">  681</span>    }</div>
+<div class="line"><span class="lineno">  682</span>    <span class="keyword">const</span> <span class="keywordtype">double</span> measured = <a class="code hl_function" href="namespacetest__event__histogram.html#a2d0b11f1b378a771928b160b98e1e172">state</a>.template calibrated&lt;1&gt;()(0);</div>
+<div class="line"><span class="lineno">  683</span>    <span class="keyword">const</span> <span class="keywordtype">double</span> <a class="code hl_variable" href="ActsStrawTracker_8cxx.html#a15a0c65c166603403af08bd98b38f7fd">variance</a> = <a class="code hl_function" href="namespacetest__event__histogram.html#a2d0b11f1b378a771928b160b98e1e172">state</a>.template calibratedCovariance&lt;1&gt;()(0, 0);</div>
+<div class="line"><span class="lineno">  684</span>    <span class="keyword">const</span> <span class="keywordtype">double</span> smoothed = <a class="code hl_function" href="namespacetest__event__histogram.html#a2d0b11f1b378a771928b160b98e1e172">state</a>.smoothed()[Acts::eBoundLoc0];</div>
+<div class="line"><span class="lineno">  685</span>    <span class="keyword">const</span> <span class="keywordtype">double</span> smoothedVariance =</div>
+<div class="line"><span class="lineno">  686</span>        <a class="code hl_function" href="namespacetest__event__histogram.html#a2d0b11f1b378a771928b160b98e1e172">state</a>.smoothedCovariance()(Acts::eBoundLoc0, Acts::eBoundLoc0);</div>
+<div class="line"><span class="lineno">  687</span>    <span class="keyword">const</span> <span class="keywordtype">double</span> residual = measured - smoothed;</div>
+<div class="line"><span class="lineno">  688</span>    <span class="comment">// Residuals of smoothed states have variance V - HCH^T</span></div>
+<div class="line"><span class="lineno">  689</span>    <span class="keyword">const</span> <span class="keywordtype">double</span> residualVariance = <a class="code hl_variable" href="ActsStrawTracker_8cxx.html#a15a0c65c166603403af08bd98b38f7fd">variance</a> - smoothedVariance;</div>
+<div class="line"><span class="lineno">  690</span>    residuals.push_back(residual / <a class="code hl_variable" href="namespaceSHiP_1_1ActsFrame.html#ae2c5b2d2a4d15fdbb38277d87b84d59f">ActsFrame::kShipLength</a>);</div>
+<div class="line"><span class="lineno">  691</span>    pulls.push_back(</div>
+<div class="line"><span class="lineno">  692</span>        residualVariance &gt; 0. ? residual / std::sqrt(residualVariance) : 0.);</div>
+<div class="line"><span class="lineno">  693</span>  }</div>
+<div class="line"><span class="lineno">  694</span>  std::reverse(residuals.begin(), residuals.end());</div>
+<div class="line"><span class="lineno">  695</span>  std::reverse(pulls.begin(), pulls.end());</div>
+<div class="line"><span class="lineno">  696</span> </div>
+<div class="line"><span class="lineno">  697</span>  <span class="keyword">const</span> Acts::Vector3 position =</div>
+<div class="line"><span class="lineno">  698</span>      <a class="code hl_function" href="namespaceSHiP_1_1ActsFrame.html#a917736bca928342e572d413953f6624a">ActsFrame::positionToShip</a>(<a class="code hl_variable" href="namespacerun__fixedTarget.html#ad83c31f0696cc6c2129af09325c7ef08">params</a>.position(impl.gctx));</div>
+<div class="line"><span class="lineno">  699</span>  <span class="keyword">const</span> Acts::Vector3 <a class="code hl_variable" href="namespacestudy__GammaConv.html#ae7cafac6179ebc8cb6564e8cfc465345">momentum</a> = <a class="code hl_function" href="namespaceSHiP_1_1ActsFrame.html#a280a38e894f6c0effd73bc08e5e620cb">ActsFrame::momentumToShip</a>(<a class="code hl_variable" href="namespacerun__fixedTarget.html#ad83c31f0696cc6c2129af09325c7ef08">params</a>.momentum());</div>
+<div class="line"><span class="lineno">  700</span>  <span class="keywordflow">return</span> RecoTrack(TVector3(position.x(), position.y(), position.z()),</div>
+<div class="line"><span class="lineno">  701</span>                   TVector3(<a class="code hl_variable" href="namespacestudy__GammaConv.html#ae7cafac6179ebc8cb6564e8cfc465345">momentum</a>.x(), <a class="code hl_variable" href="namespacestudy__GammaConv.html#ae7cafac6179ebc8cb6564e8cfc465345">momentum</a>.y(), <a class="code hl_variable" href="namespacestudy__GammaConv.html#ae7cafac6179ebc8cb6564e8cfc465345">momentum</a>.z()),</div>
+<div class="line"><span class="lineno">  702</span>                   <span class="keyword">static_cast&lt;</span>Int_t<span class="keyword">&gt;</span>(std::lround(<a class="code hl_variable" href="namespacerun__fixedTarget.html#ad83c31f0696cc6c2129af09325c7ef08">params</a>.charge())),</div>
+<div class="line"><span class="lineno">  703</span>                   upperTriangle&lt;6&gt;(shipCovariance(params, impl.gctx)),</div>
+<div class="line"><span class="lineno">  704</span>                   proxy.chi2(), proxy.nDoF(), proxy.nMeasurements(),</div>
+<div class="line"><span class="lineno">  705</span>                   std::move(residuals), std::move(pulls));</div>
+<div class="line"><span class="lineno">  706</span>}</div>
+<div class="ttc" id="aActsStrawTracker_8cxx_html_a15a0c65c166603403af08bd98b38f7fd"><div class="ttname"><a href="ActsStrawTracker_8cxx.html#a15a0c65c166603403af08bd98b38f7fd">variance</a></div><div class="ttdeci">double variance</div><div class="ttdef"><b>Definition</b> <a href="ActsStrawTracker_8cxx_source.html#l00104">ActsStrawTracker.cxx:104</a></div></div>
+<div class="ttc" id="anamespacerun__fixedTarget_html_ad83c31f0696cc6c2129af09325c7ef08"><div class="ttname"><a href="namespacerun__fixedTarget.html#ad83c31f0696cc6c2129af09325c7ef08">run_fixedTarget.params</a></div><div class="ttdeci">params</div><div class="ttdef"><b>Definition</b> <a href="run__fixedTarget_8py_source.html#l00464">run_fixedTarget.py:464</a></div></div>
 <div class="ttc" id="anamespacetest__event__histogram_html_a2d0b11f1b378a771928b160b98e1e172"><div class="ttname"><a href="namespacetest__event__histogram.html#a2d0b11f1b378a771928b160b98e1e172">test_event_histogram.state</a></div><div class="ttdeci">state(h)</div><div class="ttdef"><b>Definition</b> <a href="test__event__histogram_8py_source.html#l00079">test_event_histogram.py:79</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a4d24a66886ec9aacf5f5353d393cf523" name="a4d24a66886ec9aacf5f5353d393cf523"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4d24a66886ec9aacf5f5353d393cf523">&#9670;&#160;</a></span>GetTrackMeasurements()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; Int_t &gt; SHiP::ActsStrawTracker::GetTrackMeasurements </td>
+          <td>(</td>
+          <td class="paramtype">Int_t&#160;</td>
+          <td class="paramname"><em>track</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Measurements used in the fit of a track. </p>
+
+<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00659">659</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  659</span>                                                                         {</div>
+<div class="line"><span class="lineno">  660</span>  <span class="keywordflow">if</span> (track &lt; 0 ||</div>
+<div class="line"><span class="lineno">  661</span>      <span class="keyword">static_cast&lt;</span>std::size_t<span class="keyword">&gt;</span>(track) &gt;= <a class="code hl_variable" href="classSHiP_1_1ActsStrawTracker.html#a58a5d971ff31022dd77620988b73681c">fImpl</a>-&gt;trackMeasurements.size()) {</div>
+<div class="line"><span class="lineno">  662</span>    <span class="keywordflow">throw</span> std::out_of_range(<span class="stringliteral">&quot;ActsStrawTracker: track index out of range&quot;</span>);</div>
+<div class="line"><span class="lineno">  663</span>  }</div>
+<div class="line"><span class="lineno">  664</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="classSHiP_1_1ActsStrawTracker.html#a58a5d971ff31022dd77620988b73681c">fImpl</a>-&gt;trackMeasurements[track];</div>
+<div class="line"><span class="lineno">  665</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -778,7 +817,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8h_source.html#l00078">78</a> of file <a class="el" href="ActsStrawTracker_8h_source.html">ActsStrawTracker.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8h_source.html#l00084">84</a> of file <a class="el" href="ActsStrawTracker_8h_source.html">ActsStrawTracker.h</a>.</p>
 
 </div>
 </div>

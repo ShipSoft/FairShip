@@ -1,8 +1,13 @@
 var structSHiP_1_1ActsStrawTracker_1_1Impl =
 [
-    [ "Impl", "structSHiP_1_1ActsStrawTracker_1_1Impl.html#ad70cce66cdc5e5a8e8e3335f29d2fc9c", null ],
+    [ "Impl", "structSHiP_1_1ActsStrawTracker_1_1Impl.html#a24be7d8f5eba14411a20b796be1fb434", null ],
     [ "calibrate", "structSHiP_1_1ActsStrawTracker_1_1Impl.html#a7b0fca7c71ed78c50cfe84fbe4b467ac", null ],
     [ "extrapolate", "structSHiP_1_1ActsStrawTracker_1_1Impl.html#a4ce185815dd7b1be902233cbc15cc473", null ],
+    [ "fieldIntegral", "structSHiP_1_1ActsStrawTracker_1_1Impl.html#a1c46bbe3e642b143cd377c09e8096759", null ],
+    [ "fit", "structSHiP_1_1ActsStrawTracker_1_1Impl.html#a9739bce7880ce217423cdcd2a4752e11", null ],
+    [ "fitOnce", "structSHiP_1_1ActsStrawTracker_1_1Impl.html#a7d1ccb2129d57077d71c326c74063e64", null ],
+    [ "patRecHits", "structSHiP_1_1ActsStrawTracker_1_1Impl.html#a5bb7e3d854efe3cbaea0ee2a9c83d4d7", null ],
+    [ "seed", "structSHiP_1_1ActsStrawTracker_1_1Impl.html#ac015b7a500daef23e3270394401636e0", null ],
     [ "surfaceOf", "structSHiP_1_1ActsStrawTracker_1_1Impl.html#a8b438291224c6d9b9929c8a07c5c1566", null ],
     [ "trackParameters", "structSHiP_1_1ActsStrawTracker_1_1Impl.html#aa7b8e499073defaf85983f93e85c5050", null ],
     [ "cctx", "structSHiP_1_1ActsStrawTracker_1_1Impl.html#a5376bdcd4659257e15c6a393636e27a1", null ],
@@ -11,10 +16,15 @@ var structSHiP_1_1ActsStrawTracker_1_1Impl =
     [ "field", "structSHiP_1_1ActsStrawTracker_1_1Impl.html#a5e02608b762da144968c95eb207d1685", null ],
     [ "fitter", "structSHiP_1_1ActsStrawTracker_1_1Impl.html#ac0d048cecc57489fd24223dc717576b0", null ],
     [ "gctx", "structSHiP_1_1ActsStrawTracker_1_1Impl.html#a57359d735f0a2eaa772a51aa4baed40e", null ],
+    [ "magnetEnd", "structSHiP_1_1ActsStrawTracker_1_1Impl.html#a5987b16b660cdb4453a2717fcef3849c", null ],
+    [ "magnetStart", "structSHiP_1_1ActsStrawTracker_1_1Impl.html#a4c6caa7a9ce37fe529254a423b6ea266", null ],
     [ "mctx", "structSHiP_1_1ActsStrawTracker_1_1Impl.html#acb0fd73ef6de21cc48e6fc7f0a9c0b78", null ],
     [ "measurements", "structSHiP_1_1ActsStrawTracker_1_1Impl.html#af34202a29410e136d731940318feaa3b", null ],
+    [ "patRec", "structSHiP_1_1ActsStrawTracker_1_1Impl.html#aa36df547191d5e015472f8c937e2a62d", null ],
+    [ "shipField", "structSHiP_1_1ActsStrawTracker_1_1Impl.html#adaed0cbd3cf70cfb72b28da692619c4f", null ],
     [ "smoother", "structSHiP_1_1ActsStrawTracker_1_1Impl.html#a09c7cc4ace025dded3895b72b014b967", null ],
     [ "straws", "structSHiP_1_1ActsStrawTracker_1_1Impl.html#ad05e86dd28819bbb17b87fd741b4c971", null ],
+    [ "trackMeasurements", "structSHiP_1_1ActsStrawTracker_1_1Impl.html#a0da100fce69ecb63c1c5173e4927f1c3", null ],
     [ "tracks", "structSHiP_1_1ActsStrawTracker_1_1Impl.html#a3fc72f4dd2046b4ad4f02e5cc7220521", null ],
     [ "updater", "structSHiP_1_1ActsStrawTracker_1_1Impl.html#af3ddfcb32941dbb18059041a93329132", null ]
 ];
