@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
+import json
 import os
 import sys
 from collections import Counter
@@ -210,6 +211,27 @@ def checkForBranch(inFile, branchName) -> bool:
     else:
         print("ERROR CheckForBranch: File must be either a string or list of files")
         os._exit(1)
+
+
+def stage1AbsorberFieldOff(inFile) -> tuple[list[str], list[str]]:
+    """Check the FileSummary that run_fixedTarget.py writes for the hadron absorber field.
+
+    Returns the files without a FileSummary, and the files simulated with a hadron
+    absorber but without its field.
+    """
+    fileList = [inFile] if isinstance(inFile, str) else list(inFile)
+    noSummary, noField = [], []
+    for _f in fileList:
+        with ROOT.TFile.Open(_f) as f:
+            summary = f.Get("FileSummary")
+            if not summary:
+                noSummary.append(_f)
+                continue
+            fsr = json.loads(str(summary))
+        hasAbsorber = fsr.get("AddMuonShield") or fsr.get("AddHadronAbsorberOnly")
+        if hasAbsorber and not fsr.get("AddMuonShieldField"):
+            noField.append(_f)
+    return noSummary, noField
 
 
 def is_known_particle(code: int | str) -> bool:

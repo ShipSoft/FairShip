@@ -229,7 +229,24 @@ parser.add_argument(
     help="Only transport muons for a fast muon only background estimate",
     action="store_true",
 )
-parser.add_argument("--phiRandom", help="only relevant for muon background generator, random phi", action="store_true")
+parser.add_argument(
+    "--MuonBackFromOrigin",
+    dest="muonBackFromOrigin",
+    help="MuonBack with run_fixedTarget input: start the scored tracks at their production vertex instead of where "
+    "they entered the scoring plane. Biased, as the path to the plane is simulated twice; only for validation",
+    action="store_true",
+)
+parser.add_argument(
+    "--MuonBackAllowNoAbsorberField",
+    dest="muonBackAllowNoAbsorberField",
+    help="MuonBack: accept run_fixedTarget input that was simulated without the hadron absorber field",
+    action="store_true",
+)
+parser.add_argument(
+    "--phiRandom",
+    help="only relevant for muon background generator, random phi (not with run_fixedTarget input)",
+    action="store_true",
+)
 parser.add_argument(
     "--SmearBeam", dest="SmearBeam", help="Standard deviation of beam smearing [cm]", default=0.8, type=float
 )
@@ -926,10 +943,36 @@ if options.muonback:
         print("INFO: Processing a file from the old production - setting target z offset to 70.845m")
         primGen.SetTarget(ship_geo.target.z0 + 70.845 * u.m, 0.0)
     #
+    # run_fixedTarget output (cbmsim) rather than a legacy pythia8-Geant4 ntuple
+    fromStage1 = ut.checkForBranch(inputFile, "MCTrack")
+    startAtPlane = fromStage1 and not options.muonBackFromOrigin
+    if startAtPlane:
+        # The scored tracks continue from the scoring plane, so the first stage must have
+        # simulated the absorber with its field, and it already smeared and painted the beam.
+        if options.phiRandom:
+            raise ValueError(
+                "--phiRandom is not supported with run_fixedTarget input: the hadron absorber field breaks the "
+                "symmetry. Use --MuonBackFromOrigin to reproduce the old behaviour."
+            )
+        if options.SmearBeam != parser.get_default("SmearBeam") or options.PaintBeam != parser.get_default("PaintBeam"):
+            print("WARNING: --SmearBeam/--PaintBeam ignored, run_fixedTarget already applied the beam profile")
+        noSummary, noField = ut.stage1AbsorberFieldOff(inputFile)
+        if noSummary:
+            print(f"WARNING: no FileSummary, cannot check the hadron absorber field of: {', '.join(noSummary)}")
+        if noField:
+            message = (
+                "run_fixedTarget input simulated without the hadron absorber field (--no-AddMuonShieldField), but "
+                f"the tracks now continue from the scoring plane: {', '.join(noField)}"
+            )
+            if not options.muonBackAllowNoAbsorberField:
+                raise ValueError(message + ". Pass --MuonBackAllowNoAbsorberField to accept it.")
+            print("WARNING: " + message)
     MuonBackgen = ROOT.MuonBackGenerator()
-    # MuonBackgen.FollowAllParticles() # will follow all particles after hadron absorber, not only muons
+    # MuonBackgen.FollowAllParticles() # also start non-muons that crossed the scoring plane
     if not MuonBackgen.Init(inputFile, options.firstEvent):
         raise RuntimeError(f"Failed to initialize MuonBackGenerator from input: {inputFile}")
+    if options.muonBackFromOrigin:
+        MuonBackgen.SetStartFromOrigin()
     MuonBackgen.SetPaintRadius(options.PaintBeam * u.cm)
     MuonBackgen.SetSmearBeam(options.SmearBeam * u.cm)
     MuonBackgen.SetPhiRandomize(options.phiRandom)
@@ -941,16 +984,24 @@ if options.muonback:
         MuonBackgen.GetNevents() if options.nEvents == -1 else min(options.nEvents, MuonBackgen.GetNevents())
     )
     MCTracksWithHitsOnly = True  # otherwise, output file becomes too big
-    print(
-        "Process ",
-        options.nEvents,
-        " from input file, with 𝜎 = ",
-        options.PaintBeam,
-        ", with smear radius r = ",
-        options.SmearBeam * u.cm,
-        "with MCTracksWithHitsOnly",
-        MCTracksWithHitsOnly,
-    )
+    if startAtPlane:
+        print(
+            "Process ",
+            options.nEvents,
+            " from input file, starting at the scoring plane, with MCTracksWithHitsOnly",
+            MCTracksWithHitsOnly,
+        )
+    else:
+        print(
+            "Process ",
+            options.nEvents,
+            " from input file, with 𝜎 = ",
+            options.PaintBeam,
+            ", with smear radius r = ",
+            options.SmearBeam * u.cm,
+            "with MCTracksWithHitsOnly",
+            MCTracksWithHitsOnly,
+        )
     if options.followMuon:
         options.fastMuon = True
         modules["Veto"].SetFollowMuon()
