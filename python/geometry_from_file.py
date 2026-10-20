@@ -209,6 +209,9 @@ YAML_CONFIGS = {
     "mtc_geo": "MTC_config.yaml",
     "SiliconTarget_geo": "SiliconTarget_config.yaml",
     "strawtubes_geo": "strawtubes_config.yaml",
+    # configure uses the stored UBT map when there is one, so this only fails
+    # if it read UpstreamTagger_config.yaml instead.
+    "UpstreamTagger_geo": "UpstreamTagger_config.yaml",
 }
 
 

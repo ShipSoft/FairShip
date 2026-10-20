@@ -16,7 +16,7 @@ from detectors.SBTDetector import SBTDetector
 from detectors.SiliconTargetDetector import SiliconTargetDetector
 from detectors.strawtubesDetector import strawtubesDetector
 from detectors.timeDetector import timeDetector
-from detectors.UpstreamTaggerDetector import UpstreamTaggerDetector
+from detectors.UpstreamTaggerDetector import UBTGeometryMismatch, UpstreamTaggerDetector
 
 logger = logging.getLogger(__name__)
 
@@ -73,7 +73,12 @@ class ShipDigiReco:
         if self.sTree.GetBranch("TimeDetPoint"):
             self.timeDetector = timeDetector("TimeDet", self.sTree, outtree=self.recoTree)
         if self.sTree.GetBranch("UpstreamTaggerPoint"):
-            self.upstreamTaggerDetector = UpstreamTaggerDetector("UpstreamTagger", self.sTree, outtree=self.recoTree)
+            try:
+                self.upstreamTaggerDetector = UpstreamTaggerDetector(
+                    "UpstreamTagger", self.sTree, mcBranchName="digiUBT2MC", outtree=self.recoTree
+                )
+            except UBTGeometryMismatch as error:
+                logger.warning("%s: %s; the UBT is not digitized.", fgeo.GetName(), error)
 
         # for the digitizing step
         if hasattr(self, "strawtubes"):

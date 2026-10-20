@@ -5,32 +5,23 @@
 #ifndef CALOSCORINGPLANE_CALOSCORINGPLANE_H_
 #define CALOSCORINGPLANE_CALOSCORINGPLANE_H_
 
-#include "Detector.h"
+#include "CaloScoringPlanePoint.h"
+#include "ScoringPlane.h"
 #include "ShipUnit.h"
-
-class CaloScoringPlanePoint;
-class FairVolume;
 
 /**
  * @brief Ideal scoring plane downstream of the timing detector.
  *
  * Replaces the former SplitCal calorimeter. The plane is a thin vacuum box
- * placed where the SplitCal front face used to be. Every track *entering*
- * the box produces one CaloScoringPlanePoint holding the MC-truth position,
- * momentum, time and PDG code. ProcessHits runs after the step that
- * enters the box, so these are the values at the end of that step, i.e. at
- * the exit face for a particle crossing the plane. No energy deposit is
- * required (the medium is vacuum), so neutral particles are recorded too.
- *
- * A track crossing the plane twice (e.g. back-scattered) gives two points;
- * the sign of Pz tells the direction.
+ * placed where the SplitCal front face used to be, recording a
+ * CaloScoringPlanePoint for every track entering it (see SHiP::ScoringPlane
+ * for what a point holds). Its node in the top volume is
+ * "CaloScoringPlane_1".
  */
-class CaloScoringPlane : public SHiP::Detector<CaloScoringPlanePoint> {
+class CaloScoringPlane : public SHiP::ScoringPlane<CaloScoringPlanePoint> {
  public:
   CaloScoringPlane(const char* Name, Bool_t Active);
   CaloScoringPlane();
-
-  Bool_t ProcessHits(FairVolume* v = nullptr) override;
 
   /** Centre of the plane in global z (cm). */
   void SetZposition(Double_t z) { fZPos = z; }

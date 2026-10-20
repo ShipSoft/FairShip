@@ -26,6 +26,7 @@
 #include "TimeDetPoint.h"
 #include "UpstreamTaggerHit.h"
 #include "UpstreamTaggerPoint.h"
+#include "UpstreamTaggerScoringPoint.h"
 #include "strawtubesHit.h"
 #include "strawtubesPoint.h"
 #include "vetoHit.h"
@@ -134,9 +135,16 @@ void test_const_access(const UpstreamTaggerHit& obj) {
   [[maybe_unused]] auto y = obj.GetY();
   [[maybe_unused]] auto z = obj.GetZ();
   [[maybe_unused]] auto time = obj.GetTime();
+  [[maybe_unused]] auto adc = obj.GetADC();
+  [[maybe_unused]] auto tileID = obj.GetTileID();
+  [[maybe_unused]] auto triggered = obj.IsTriggered();
 }
 
 void test_const_access(const UpstreamTaggerPoint& obj) {
+  [[maybe_unused]] auto pdg = obj.PdgCode();
+}
+
+void test_const_access(const UpstreamTaggerScoringPoint& obj) {
   [[maybe_unused]] auto pdg = obj.PdgCode();
 }
 
@@ -235,6 +243,10 @@ int main(int argc, char** argv) {
   if (test_vector_operations<TimeDetPoint>("TimeDetPoint")) passed++;
   total++;
   if (test_vector_operations<UpstreamTaggerPoint>("UpstreamTaggerPoint"))
+    passed++;
+  total++;
+  if (test_vector_operations<UpstreamTaggerScoringPoint>(
+          "UpstreamTaggerScoringPoint"))
     passed++;
   total++;
   if (test_vector_operations<TTPoint>("TTPoint")) passed++;

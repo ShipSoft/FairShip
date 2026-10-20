@@ -17,5 +17,6 @@
 #pragma link C++ class std::vector<ShipParticle>+;
 #pragma link C++ class std::vector<genfit::Track*>+;
 #pragma link C++ class std::vector<std::vector<int>>+;
+#pragma link C++ class std::vector<std::vector<float>>+;
 
 #endif

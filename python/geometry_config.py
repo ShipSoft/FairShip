@@ -143,6 +143,91 @@ shield_db = {
 }
 
 
+def set_ecn3_cavern(c) -> None:
+    """Set in c.cave the ECN3 hall cross-section used to place the UBT and its scoring planes."""
+    # ECN3 hall cross-section, used to place the UBT and its scoring planes:
+    # the inner concrete surfaces of the CAD model, as in
+    # passive/ShipCavernLayout.h (tests/test_cavern_layout.py checks that they
+    # agree). Beam axis at x = y = 0.
+    c.cave.ECN3LeftX = -4.566 * u.m
+    c.cave.ECN3RightX = 11.434 * u.m
+    c.cave.ECN3FloorY = -3.364 * u.m
+    # Side wall closest to the beam axis: the -x wall at x = -4.566 m
+    c.cave.ECN3WallDistance = min(-c.cave.ECN3LeftX, c.cave.ECN3RightX)
+
+
+def set_upstream_tagger(c) -> None:
+    """Set the UBT (c.UpstreamTagger) and its scoring planes (c.UpstreamTaggerScoringPlane).
+
+    Needs c.cave (with the ECN3 cavern), c.decayVolume.z0, c.muShield.z and c.muShield.length.
+    """
+    # Upstream Tagger: polystyrene scintillator plane, split into regions
+    # generated on the box below from the rule in
+    # geometry/UpstreamTagger_config.yaml. BoxZ is the space reserved by the
+    # integration layout; the active thickness depends on the tile size.
+    c.UpstreamTagger = AttrDict()
+    # The plane spans x in [-1.7, 1.7] m and y from FloorMargin above the ECN3
+    # floor up to Top, covering the decay vessel entrance. Its edges must lie
+    # on the edges of the 40 mm tiles (x, y = 2 + 4k cm).
+    c.UpstreamTagger.Top = 1.7 * u.m
+    # 2.4 cm above the ECN3 floor at -336.4 cm, so that the plane ends on a
+    # 40 mm tile edge (y = 2 + 4k cm), at -334 cm
+    c.UpstreamTagger.FloorMargin = 2.4 * u.cm
+    c.UpstreamTagger.BoxX = 3.4 * u.m  # X extent of detector map
+    c.UpstreamTagger.BoxY = c.UpstreamTagger.Top - c.cave.ECN3FloorY - c.UpstreamTagger.FloorMargin  # 5.04 m
+    c.UpstreamTagger.BoxCenterX = 0.0 * u.m
+    c.UpstreamTagger.BoxCenterY = (
+        c.UpstreamTagger.Top + c.cave.ECN3FloorY + c.UpstreamTagger.FloorMargin
+    ) / 2.0  # -0.82 m
+    c.UpstreamTagger.BoxZ = 16.0 * u.cm  # Z dimension (thickness)
+    # Tile thickness for each tile side (cm) of UpstreamTagger_config.yaml:
+    # 20 x 20 mm2 tiles are 5 mm thick, 40 x 40 mm2 tiles 10 mm. These are the
+    # only tile sizes of the UBT: if small_tile_size or large_tile_size in the
+    # YAML is changed to anything other than 2 or 4 cm, the thickness of the
+    # new size has to be added here.
+    c.UpstreamTagger.TileThickness = {2: 0.5 * u.cm, 4: 1.0 * u.cm}
+    # Gap between the back of the UBT envelope and the decay vessel entrance
+    c.UpstreamTagger.DecayVesselGap = 32.0 * u.cm
+    # Centre (z) and front face (z0) of the UBT envelope
+    c.UpstreamTagger.z = c.decayVolume.z0 - c.UpstreamTagger.DecayVesselGap - c.UpstreamTagger.BoxZ / 2.0
+    c.UpstreamTagger.z0 = c.UpstreamTagger.z - c.UpstreamTagger.BoxZ / 2.0
+    c.UpstreamTagger.TimeResolution = 0.3  # Time resolution in ns
+    c.UpstreamTagger.ADCTriggerThreshold = 100
+
+    # Thin vacuum scoring planes. They record every track entering them,
+    # without energy deposit; the point detID is the plane number.
+    c.UpstreamTaggerScoringPlane = AttrDict()
+    c.UpstreamTaggerScoringPlane.Z = 1.0 * u.mm  # thickness
+    # Plane 1, all particles: on the decay vessel entrance, centred on the
+    # beam axis, with y from the ECN3 floor to its mirror image.
+    dv = c.UpstreamTaggerScoringPlane.DecayVessel = AttrDict()
+    dv.X = 4.4 * u.m
+    dv.Y = -2.0 * c.cave.ECN3FloorY  # 6.728 m
+    dv.CenterX = 0.0 * u.m
+    dv.CenterY = 0.0 * u.m
+    dv.z = c.decayVolume.z0 - c.UpstreamTaggerScoringPlane.Z / 2.0
+    dv.MuonsOnly = False
+    # Its points do not keep their tracks in MCTrack (with MCTracksWithHitsOnly,
+    # as in --MuonBack): it sees every soft photon and electron from the
+    # shield and the cavern, which would otherwise all be kept, about 26 % more
+    # MCTracks in a muon-background sample. Points of tracks not kept for
+    # another reason get track ID -2.
+    dv.KeepTracks = False
+    # Plane 2, muons only: ShieldGap downstream of the muon shield. It spans x
+    # between the closest ECN3 side wall and its mirror image, and y from the
+    # ECN3 floor up to Top.
+    ms = c.UpstreamTaggerScoringPlane.MuonShield = AttrDict()
+    ms.Top = 5.2 * u.m
+    ms.ShieldGap = 10.0 * u.cm
+    ms.X = 2.0 * c.cave.ECN3WallDistance  # 9.132 m
+    ms.Y = ms.Top - c.cave.ECN3FloorY  # 8.564 m
+    ms.CenterX = 0.0 * u.m
+    ms.CenterY = (ms.Top + c.cave.ECN3FloorY) / 2.0  # 0.918 m
+    ms.z = c.muShield.z + c.muShield.length + ms.ShieldGap
+    ms.MuonsOnly = True
+    ms.KeepTracks = True  # muons only: their points keep their tracks
+
+
 def create_config(
     DecayVolumeMedium: str = "helium",
     Yheight: float = 6.0,
@@ -213,6 +298,7 @@ def create_config(
     # centred on the gap between M4 and S5
     c.cave.z_transition = 21.37 * u.m
     c.cave.zEnd = c.cave.z_transition + c.cave.ECN3_length  # downstream ECN3 wall
+    set_ecn3_cavern(c)
 
     with open(c.target_yaml) as file:
         targetconfig = yaml.safe_load(file)
@@ -403,17 +489,7 @@ def create_config(
     c.tauMudet.Ztot = 3 * u.m  # space allocated to Muon spectrometer
     c.tauMudet.zMudetC = c.muShield.z + c.muShield.length / 2.0 - c.tauMudet.Ztot / 2.0 - 70 * u.cm
 
-    # Upstream Tagger
-    # UpstreamTagger (UBT) - Simplified scoring plane
-    # Note: UBT is implemented as a simple vacuum box
-    # Legacy RPC parameters have been removed as they are not used in the current implementation
-    c.UpstreamTagger = AttrDict()
-    c.UpstreamTagger.BoxX = 4.4 * u.m  # X dimension (width)
-    c.UpstreamTagger.BoxY = 6.4 * u.m  # Y dimension (height)
-    c.UpstreamTagger.BoxZ = 16.0 * u.cm  # Z dimension (thickness)
-    c.UpstreamTagger.Z_Position = -25.400 * u.m + c.decayVolume.z  # Relative position of UBT to decay vessel centre
-    c.UpstreamTagger.PositionResolution = 1.0 * u.cm  # Position smearing resolution
-    c.UpstreamTagger.TimeResolution = 0.3  # Time resolution in ns
+    set_upstream_tagger(c)
 
     # Store parameters that might be needed for reference
     c.nuTargetPassive = nuTargetPassive
