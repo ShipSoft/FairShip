@@ -1,12 +1,5 @@
 var namespaces_dup =
 [
-    [ "ACTSReco", "namespaceACTSReco.html", [
-      [ "runTracking", "namespaceACTSReco.html#a5a6b305b26347c412e74c3bf7c0bb680", null ],
-      [ "currentPath", "namespaceACTSReco.html#aaad011aa4dbfc91687e4c37d0d3bc50e", null ],
-      [ "fgeo", "namespaceACTSReco.html#aff51101f260e205ff8f6b0f0926c757c", null ],
-      [ "ShipGeo", "namespaceACTSReco.html#a88c4fd607032ca29aaa7e2dcf9554f1c", null ],
-      [ "sourcePath", "namespaceACTSReco.html#a133e2ecfa0812c9dad82343683ae64de", null ]
-    ] ],
     [ "add_muonresponse", "namespaceadd__muonresponse.html", [
       [ "inspect_file", "namespaceadd__muonresponse.html#a379e276fffa8319443f49b2249b754f2", null ],
       [ "modify_file", "namespaceadd__muonresponse.html#a29b72ac3853266c162e109e30b028287", null ],
@@ -212,11 +205,6 @@ var namespaces_dup =
       [ "createTextMap", "namespaceconvertRALMap.html#a3fc83a2a7d80500e68ade077c1d2d61e", null ],
       [ "formatNumber", "namespaceconvertRALMap.html#a6ccc94556d4744636a48f5e3e967cd36", null ],
       [ "run", "namespaceconvertRALMap.html#a58a18ef491c14bf6d5b39d788b9cf9f9", null ]
-    ] ],
-    [ "convertToACTS", "namespaceconvertToACTS.html", [
-      [ "main", "namespaceconvertToACTS.html#abb41a5cf7ecd01213fd3f40fbb9a8ca9", null ],
-      [ "gErrorIgnoreLevel", "namespaceconvertToACTS.html#a33553589a15038ae28605f544a475772", null ],
-      [ "PDG", "namespaceconvertToACTS.html#a424dbe697cd784b823f4471dd26663e4", null ]
     ] ],
     [ "convertTreeToRNTuple", "namespaceconvertTreeToRNTuple.html", [
       [ "convert_tree_to_rntuple", "namespaceconvertTreeToRNTuple.html#a09a4ea912ab6ed66a66c0229e171ae17", null ],
@@ -1088,35 +1076,6 @@ var namespaces_dup =
       [ "_error_log", "namespacerootUtils.html#af04f8d0c34113948aacb4ce59163ce02", null ]
     ] ],
     [ "rpvsusy", "namespacerpvsusy.html", "namespacerpvsusy" ],
-    [ "run_ACTSTracking", "namespacerun__ACTSTracking.html", [
-      [ "action", "namespacerun__ACTSTracking.html#afb76210fc78f0dc6654161d27b5e3892", null ],
-      [ "choices", "namespacerun__ACTSTracking.html#a2be79bc84a594675cc05cc2ffb243d85", null ],
-      [ "default", "namespacerun__ACTSTracking.html#a0f1852307234764813c8d5b0b699edde", null ],
-      [ "dest", "namespacerun__ACTSTracking.html#a0446f743bb7c68a472aa8b14eb84afcc", null ],
-      [ "detector", "namespacerun__ACTSTracking.html#a704b24a2f1434d8e701691b181f73a67", null ],
-      [ "DQM", "namespacerun__ACTSTracking.html#ab4132b0575d937e226784acc7c66b0f5", null ],
-      [ "False", "namespacerun__ACTSTracking.html#a9c9f2b602a14afe7eada8b6cc9a1fbac", null ],
-      [ "fTree", "namespacerun__ACTSTracking.html#a2efd7eb3251602f46cf2987825ef6d17", null ],
-      [ "fullpath", "namespacerun__ACTSTracking.html#a419db05221da45d9cd440efeba752722", null ],
-      [ "geoFile", "namespacerun__ACTSTracking.html#a4528b9c9df0a87dbad855fe6cdd82d92", null ],
-      [ "help", "namespacerun__ACTSTracking.html#acfe3e7df7c0e44c4af0c43c1df5ab724", null ],
-      [ "inFile", "namespacerun__ACTSTracking.html#a5f50267a03dcbf057998ae2735e5540c", null ],
-      [ "inputFile", "namespacerun__ACTSTracking.html#a644639bb4a0262c985c8ad859245e831", null ],
-      [ "int", "namespacerun__ACTSTracking.html#ae2648259c10b1cdb180ebf92eb72690c", null ],
-      [ "minHits", "namespacerun__ACTSTracking.html#ad88454cbef3c98ab636f60341289f2b4", null ],
-      [ "minPt", "namespacerun__ACTSTracking.html#a5ec29eab8862cd79531eb8d33218d5d7", null ],
-      [ "nEvents", "namespacerun__ACTSTracking.html#ae53a95e20963a6302fd64e695c1c779a", null ],
-      [ "options", "namespacerun__ACTSTracking.html#af86a6db8f1fd628dc3d6af5bf54d03b2", null ],
-      [ "outFile", "namespacerun__ACTSTracking.html#a473bd60e069f89f4eb4d8588c08509b9", null ],
-      [ "outputDir", "namespacerun__ACTSTracking.html#ada17fddea233d5062ff3d42d82490ac5", null ],
-      [ "outputFile", "namespacerun__ACTSTracking.html#add83f453e6b2696958aff0de0969b1dc", null ],
-      [ "parser", "namespacerun__ACTSTracking.html#ab3edeeec030eb7825c70d6f4baf88acf", null ],
-      [ "realPR", "namespacerun__ACTSTracking.html#a9051dac2a237e6031ee6ccd557918504", null ],
-      [ "required", "namespacerun__ACTSTracking.html#ac6c206f04d89a3d97fd85d134a7b9ff2", null ],
-      [ "tmp", "namespacerun__ACTSTracking.html#a5fce0af33d0368e551b0c411e0aa7e9f", null ],
-      [ "type", "namespacerun__ACTSTracking.html#a1cc69da3f73bc5b9971b896610b3da48", null ],
-      [ "vertexing", "namespacerun__ACTSTracking.html#a023210aecd6147c1c4b5cdea80797442", null ]
-    ] ],
     [ "run_fixedTarget", "namespacerun__fixedTarget.html", [
       [ "get_work_dir", "namespacerun__fixedTarget.html#ace8e54c5ffd9284df4a7dde24a57c645", null ],
       [ "_ntuple", "namespacerun__fixedTarget.html#aed45e47bf61acf32c032a77a3cf9d035", null ],
@@ -1754,22 +1713,6 @@ var namespaces_dup =
       [ "required", "namespaceshipStrawTracking.html#a33f41ada450d677435ffd880e7462d3a", null ]
     ] ],
     [ "shipTrackAccess", "namespaceshipTrackAccess.html", "namespaceshipTrackAccess" ],
-    [ "ShipUnit", "namespaceShipUnit.html", [
-      [ "c_light", "namespaceShipUnit.html#aa5c80d1a788735fe9fd41b509583437b", null ],
-      [ "cm", "namespaceShipUnit.html#a265f40d0ffca1af0d38fe9a050c98bcf", null ],
-      [ "gauss", "namespaceShipUnit.html#a334f58e18b995ee78fa96a1c69c0bfba", null ],
-      [ "GeV", "namespaceShipUnit.html#aed43d63d5e6d980f22bc345f7a562011", null ],
-      [ "keV", "namespaceShipUnit.html#ad57422e4724115feacf1cabfb637e3a5", null ],
-      [ "kilogauss", "namespaceShipUnit.html#aeb2434130d4f4fe7921aa564c2965294", null ],
-      [ "km", "namespaceShipUnit.html#a6913b7e3b62fb09e1a1fcdb3a1f7c258", null ],
-      [ "m", "namespaceShipUnit.html#a7b82ae8775009208066598546951dd22", null ],
-      [ "MeV", "namespaceShipUnit.html#a355ccfd81a9820e7e0df4c8f7ca6bbb8", null ],
-      [ "mm", "namespaceShipUnit.html#a644590da60ab4efe07fbda3a260e5407", null ],
-      [ "ns", "namespaceShipUnit.html#ac17805e2154634b45e0493e800208b29", null ],
-      [ "s", "namespaceShipUnit.html#af5da50ee86db44fd81351c6c3a3dcf06", null ],
-      [ "tesla", "namespaceShipUnit.html#adae44b3580098be2b6f2c6d514dc72dd", null ],
-      [ "um", "namespaceShipUnit.html#a19c69dc056a268aa660dfce12af29f39", null ]
-    ] ],
     [ "shipunit", "namespaceshipunit.html", [
       [ "alpha_rcl2", "namespaceshipunit.html#a561928bad4973c63197de654cd92f007", null ],
       [ "ampere", "namespaceshipunit.html#a899bfcfc1e198fac90b788905bcf91b3", null ],
@@ -1916,6 +1859,22 @@ var namespaces_dup =
       [ "watt", "namespaceshipunit.html#a86f9ba53297f60184e521655c576baaf", null ],
       [ "weber", "namespaceshipunit.html#a0ef5d6a33e15f4c4fa62fb17c0bce1b2", null ]
     ] ],
+    [ "ShipUnit", "namespaceShipUnit.html", [
+      [ "c_light", "namespaceShipUnit.html#aa5c80d1a788735fe9fd41b509583437b", null ],
+      [ "cm", "namespaceShipUnit.html#a265f40d0ffca1af0d38fe9a050c98bcf", null ],
+      [ "gauss", "namespaceShipUnit.html#a334f58e18b995ee78fa96a1c69c0bfba", null ],
+      [ "GeV", "namespaceShipUnit.html#aed43d63d5e6d980f22bc345f7a562011", null ],
+      [ "keV", "namespaceShipUnit.html#ad57422e4724115feacf1cabfb637e3a5", null ],
+      [ "kilogauss", "namespaceShipUnit.html#aeb2434130d4f4fe7921aa564c2965294", null ],
+      [ "km", "namespaceShipUnit.html#a6913b7e3b62fb09e1a1fcdb3a1f7c258", null ],
+      [ "m", "namespaceShipUnit.html#a7b82ae8775009208066598546951dd22", null ],
+      [ "MeV", "namespaceShipUnit.html#a355ccfd81a9820e7e0df4c8f7ca6bbb8", null ],
+      [ "mm", "namespaceShipUnit.html#a644590da60ab4efe07fbda3a260e5407", null ],
+      [ "ns", "namespaceShipUnit.html#ac17805e2154634b45e0493e800208b29", null ],
+      [ "s", "namespaceShipUnit.html#af5da50ee86db44fd81351c6c3a3dcf06", null ],
+      [ "tesla", "namespaceShipUnit.html#adae44b3580098be2b6f2c6d514dc72dd", null ],
+      [ "um", "namespaceShipUnit.html#a19c69dc056a268aa660dfce12af29f39", null ]
+    ] ],
     [ "shipVertex", "namespaceshipVertex.html", "namespaceshipVertex" ],
     [ "shipVeto", "namespaceshipVeto.html", "namespaceshipVeto" ],
     [ "SiliconTargetDetector", "namespaceSiliconTargetDetector.html", "namespaceSiliconTargetDetector" ],
@@ -1936,19 +1895,7 @@ var namespaces_dup =
       [ "complete_element_class", "namespacesplit__weight__uncertainties__rdf.html#af99313e5abf9234b30d6d34976fcfaf2", null ],
       [ "main", "namespacesplit__weight__uncertainties__rdf.html#a9bba3b650c2f8d18b977c5e469d2c373", null ]
     ] ],
-    [ "strawReco", "namespacestrawReco.html", [
-      [ "align_candidate_indices", "namespacestrawReco.html#af203c9ecb7afe505f0712b835d17a07f", null ],
-      [ "build_acts_index_map", "namespacestrawReco.html#a9f70dbd8f01e4200ee1653144ab3ed6d", null ],
-      [ "calculateSBTDOCA", "namespacestrawReco.html#a482e2b1ce4d89d69726df562eb679f41", null ],
-      [ "make_seed", "namespacestrawReco.html#a234e8885971415b51945fae7049b09b7", null ],
-      [ "match_hits_to_measurements", "namespacestrawReco.html#a3d325a83cbe827e5c876b62bbfe671e3", null ],
-      [ "runTracking", "namespacestrawReco.html#a8edaa181260901c1ee58a05b9da75677", null ],
-      [ "straw_geometry_id", "namespacestrawReco.html#a2f98599e596ed2c9d8fcb1385def027a", null ],
-      [ "logger", "namespacestrawReco.html#ad4004df017c32da0552f36a210a53dd3", null ],
-      [ "MAX_CHI2_NDF", "namespacestrawReco.html#a65093fdf26a73e777949810e32d8005d", null ],
-      [ "MAX_VERTEX_TRACKS", "namespacestrawReco.html#a6153eec9efdc1aca350a110be3a94efc", null ],
-      [ "MIN_VERTEX_TRACKS", "namespacestrawReco.html#a882110affe7a304d7f4d60242c138a8b", null ]
-    ] ],
+    [ "strawReco", "namespacestrawReco.html", "namespacestrawReco" ],
     [ "strawtubesDetector", "namespacestrawtubesDetector.html", "namespacestrawtubesDetector" ],
     [ "study_GammaConv", "namespacestudy__GammaConv.html", "namespacestudy__GammaConv" ],
     [ "study_muMSC", "namespacestudy__muMSC.html", "namespacestudy__muMSC" ],
@@ -2051,13 +1998,7 @@ var namespaces_dup =
       [ "G4", "namespacetest__split__provenance.html#a693a413e0f44dbcba32ddae90e26de30", null ],
       [ "PRUNED", "namespacetest__split__provenance.html#a32ae21fa0c40d77990c37ffe8f999f46", null ]
     ] ],
-    [ "test_straw_reco", "namespacetest__straw__reco.html", [
-      [ "test_candidate_keeps_straw_hit_indices", "namespacetest__straw__reco.html#a79b0e6e32ea21e231549bf518c4520d4", null ],
-      [ "test_count_mismatch_on_a_straw_is_skipped", "namespacetest__straw__reco.html#acf3d86231a22a5ad4754104f560a861a", null ],
-      [ "test_hits_follow_measurements_grouped_by_straw", "namespacetest__straw__reco.html#a4f843f007059561e9ba2927de13a78fc", null ],
-      [ "test_hits_on_dropped_surfaces_are_left_out", "namespacetest__straw__reco.html#a854cc38f5c3af0119b4e2064c7ff7138", null ],
-      [ "test_straw_geometry_id_layer_numbering", "namespacetest__straw__reco.html#af70efbf69ef551288b25e56829647ad0", null ]
-    ] ],
+    [ "test_straw_reco", "namespacetest__straw__reco.html", "namespacetest__straw__reco" ],
     [ "timeDetector", "namespacetimeDetector.html", "namespacetimeDetector" ],
     [ "TrackExtrapolateTool", "namespaceTrackExtrapolateTool.html", [
       [ "extrapolateToPlane", "namespaceTrackExtrapolateTool.html#ac357e10f3671079a5b9c5706b564b421", null ],

@@ -1,8 +1,11 @@
 var test__straw__reco_8py =
 [
-    [ "test_candidate_keeps_straw_hit_indices", "test__straw__reco_8py.html#a79b0e6e32ea21e231549bf518c4520d4", null ],
-    [ "test_count_mismatch_on_a_straw_is_skipped", "test__straw__reco_8py.html#acf3d86231a22a5ad4754104f560a861a", null ],
-    [ "test_hits_follow_measurements_grouped_by_straw", "test__straw__reco_8py.html#a4f843f007059561e9ba2927de13a78fc", null ],
-    [ "test_hits_on_dropped_surfaces_are_left_out", "test__straw__reco_8py.html#a854cc38f5c3af0119b4e2064c7ff7138", null ],
-    [ "test_straw_geometry_id_layer_numbering", "test__straw__reco_8py.html#af70efbf69ef551288b25e56829647ad0", null ]
+    [ "test_straw_reco.FakeTrack", "classtest__straw__reco_1_1FakeTrack.html", "classtest__straw__reco_1_1FakeTrack" ],
+    [ "test_straw_reco.FakeTracker", "classtest__straw__reco_1_1FakeTracker.html", "classtest__straw__reco_1_1FakeTracker" ],
+    [ "candidate", "test__straw__reco_8py.html#a56b32135149e150ce3e28c7bc160590d", null ],
+    [ "make_hit", "test__straw__reco_8py.html#adad256f2fb45b3eed39fff3bbb4c8c98", null ],
+    [ "test_drift_sign_follows_the_side_of_the_wire", "test__straw__reco_8py.html#abf60cd9a4252e7d4f0d78f334c77f50d", null ],
+    [ "test_measurements_follow_hits_in_z_with_one_per_layer", "test__straw__reco_8py.html#adb09e47da71f606753624f68d6f77e4b", null ],
+    [ "test_too_few_hits_are_not_fitted", "test__straw__reco_8py.html#adbfdc0f1c313f0f6785c513d706204cb", null ],
+    [ "UNKNOWN_STRAW", "test__straw__reco_8py.html#a993b1f22aacb1286079fcb7ee9246da0", null ]
 ];

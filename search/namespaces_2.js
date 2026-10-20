@@ -14,6 +14,5 @@ var searchData=
   ['convertmisismap_11',['convertMisisMap',['../namespaceconvertMisisMap.html',1,'']]],
   ['convertnoisymap_12',['convertNoisyMap',['../namespaceconvertNoisyMap.html',1,'']]],
   ['convertralmap_13',['convertRALMap',['../namespaceconvertRALMap.html',1,'']]],
-  ['converttoacts_14',['convertToACTS',['../namespaceconvertToACTS.html',1,'']]],
-  ['converttreetorntuple_15',['convertTreeToRNTuple',['../namespaceconvertTreeToRNTuple.html',1,'']]]
+  ['converttreetorntuple_14',['convertTreeToRNTuple',['../namespaceconvertTreeToRNTuple.html',1,'']]]
 ];

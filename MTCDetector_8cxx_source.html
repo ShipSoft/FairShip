@@ -281,7 +281,7 @@ $(document).ready(function(){initNavTree('MTCDetector_8cxx_source.html',''); ini
 <div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>                                    Double_t z_shift, Double_t width,</div>
 <div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>                                    Double_t height, Double_t thickness,</div>
 <div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>                                    Double_t cellSizeX, Double_t cellSizeY,</div>
-<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>                                    TGeoMedium* material, Int_t color,</div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>                                    TGeoMedium* <a class="code hl_variable" href="ActsStrawGeometry_8cpp.html#ab28a4576d44aa77518d33e053ea2ca12">material</a>, Int_t color,</div>
 <div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>                                    Double_t transparency, Int_t LayerId) {</div>
 <div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>  modMotherVol-&gt;SetLineColor(color);</div>
 <div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>  modMotherVol-&gt;SetTransparency(transparency);</div>
@@ -291,7 +291,7 @@ $(document).ready(function(){initNavTree('MTCDetector_8cxx_source.html',''); ini
 <div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>  scint_volume-&gt;AddNode(scint_mat, 0, <span class="keyword">new</span> TGeoTranslation(0, 0, 0));</div>
 <div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>  <span class="keyword">auto</span> cell = <span class="keyword">new</span> TGeoBBox(Form(<span class="stringliteral">&quot;%s_cell&quot;</span>, name), cellSizeX / 2, cellSizeY / 2,</div>
 <div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>                           thickness / 2);</div>
-<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>  <span class="keyword">auto</span> cellVol = <span class="keyword">new</span> TGeoVolume(Form(<span class="stringliteral">&quot;%s_cell&quot;</span>, name), cell, material);</div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>  <span class="keyword">auto</span> cellVol = <span class="keyword">new</span> TGeoVolume(Form(<span class="stringliteral">&quot;%s_cell&quot;</span>, name), cell, <a class="code hl_variable" href="ActsStrawGeometry_8cpp.html#ab28a4576d44aa77518d33e053ea2ca12">material</a>);</div>
 <div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>  cellVol-&gt;SetLineColor(color);</div>
 <div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>  cellVol-&gt;SetTransparency(transparency);</div>
 <div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>  AddSensitiveVolume(cellVol);</div>
@@ -868,6 +868,7 @@ $(document).ready(function(){initNavTree('MTCDetector_8cxx_source.html',''); ini
 <div class="line"><a id="l00744" name="l00744"></a><span class="lineno">  744</span>  }</div>
 <div class="line"><a id="l00745" name="l00745"></a><span class="lineno">  745</span>}</div>
 </div>
+<div class="ttc" id="aActsStrawGeometry_8cpp_html_ab28a4576d44aa77518d33e053ea2ca12"><div class="ttname"><a href="ActsStrawGeometry_8cpp.html#ab28a4576d44aa77518d33e053ea2ca12">material</a></div><div class="ttdeci">std::shared_ptr&lt; const Acts::HomogeneousSurfaceMaterial &gt; material</div><div class="ttdef"><b>Definition</b> <a href="ActsStrawGeometry_8cpp_source.html#l00072">ActsStrawGeometry.cpp:72</a></div></div>
 <div class="ttc" id="aMTCDetPoint_8h_html"><div class="ttname"><a href="MTCDetPoint_8h.html">MTCDetPoint.h</a></div></div>
 <div class="ttc" id="aMTCDetector_8h_html"><div class="ttname"><a href="MTCDetector_8h.html">MTCDetector.h</a></div></div>
 <div class="ttc" id="aShipBellField_8cxx_html_ae0699ca79e23818d99b9ee18334a9325"><div class="ttname"><a href="ShipBellField_8cxx.html#ae0699ca79e23818d99b9ee18334a9325">m</a></div><div class="ttdeci">constexpr Double_t m</div><div class="ttdef"><b>Definition</b> <a href="ShipBellField_8cxx_source.html#l00025">ShipBellField.cxx:25</a></div></div>

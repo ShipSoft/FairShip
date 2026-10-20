@@ -37,9 +37,10 @@ var searchData=
   ['splitinfo_34',['SplitInfo',['../structShipStack_1_1SplitInfo.html',1,'ShipStack']]],
   ['splitprovenance_35',['SplitProvenance',['../classsplit__provenance_1_1SplitProvenance.html',1,'split_provenance']]],
   ['state_36',['State',['../structMagneticTrackPropagator_1_1State.html',1,'MagneticTrackPropagator']]],
-  ['strawtubes_37',['strawtubes',['../classstrawtubes.html',1,'']]],
-  ['strawtubescontfact_38',['strawtubesContFact',['../classstrawtubesContFact.html',1,'']]],
-  ['strawtubesdetector_39',['strawtubesDetector',['../classstrawtubesDetector_1_1strawtubesDetector.html',1,'strawtubesDetector']]],
-  ['strawtubeshit_40',['strawtubesHit',['../classstrawtubesHit.html',1,'']]],
-  ['strawtubespoint_41',['strawtubesPoint',['../classstrawtubesPoint.html',1,'']]]
+  ['strawhit_37',['StrawHit',['../classstrawReco_1_1StrawHit.html',1,'strawReco']]],
+  ['strawtubes_38',['strawtubes',['../classstrawtubes.html',1,'']]],
+  ['strawtubescontfact_39',['strawtubesContFact',['../classstrawtubesContFact.html',1,'']]],
+  ['strawtubesdetector_40',['strawtubesDetector',['../classstrawtubesDetector_1_1strawtubesDetector.html',1,'strawtubesDetector']]],
+  ['strawtubeshit_41',['strawtubesHit',['../classstrawtubesHit.html',1,'']]],
+  ['strawtubespoint_42',['strawtubesPoint',['../classstrawtubesPoint.html',1,'']]]
 ];

@@ -1,10 +1,10 @@
 var searchData=
 [
-  ['e_0',['e',['../classDISparticle.html#aea56345d0c04a5d18c73c6b1ff752c3a',1,'DISparticle::E'],['../structTrackBuffer.html#ab58809fbaaf19dd4093d14caa0d0f2e0',1,'TrackBuffer::e'],['../namespacemakeMuonEM.html#a2f541edec5da16cf64dcce3ea03d80c8',1,'makeMuonEM.E']]],
+  ['e_0',['e',['../structTrackBuffer.html#ab58809fbaaf19dd4093d14caa0d0f2e0',1,'TrackBuffer::e'],['../classDISparticle.html#aea56345d0c04a5d18c73c6b1ff752c3a',1,'DISparticle::E'],['../namespacemakeMuonEM.html#a2f541edec5da16cf64dcce3ea03d80c8',1,'makeMuonEM.E']]],
   ['e13_1',['e13',['../namespacerun__fixedTarget.html#a05d4d5d811ac982fb950c0e77dff935b',1,'run_fixedTarget.e13'],['../namespacemakeDecay.html#ae036a600a0fe461ba6d63d7c5a7d1eb0',1,'makeDecay.e13']]],
   ['e_5fsi_2',['e_si',['../namespaceshipunit.html#aa4f540f7dedc6234c8b6620bc2c1fb07',1,'shipunit.e_SI'],['../namespacehepunit.html#af875140c15decb3950dea5e4b73f9212',1,'hepunit.e_SI']]],
   ['e_5fsquared_3',['e_squared',['../namespaceshipunit.html#a4674e521cd11cd1285bd45539a4a5322',1,'shipunit.e_squared'],['../namespacehepunit.html#acd336a10b0bd5eb9bb2286a9534c3a49',1,'hepunit.e_squared']]],
-  ['ecut_4',['ecut',['../namespacestudy__muMSC.html#ae0e2151c318c7666057adb54d84926f0',1,'study_muMSC.ecut'],['../namespacestudy__thinTarget.html#af22b0230911110381a9456faaa67d77b',1,'study_thinTarget.ecut'],['../namespacestudy__GammaConv.html#a147a7866f4638ffd619406fd06f8cdfb',1,'study_GammaConv.ecut'],['../namespacecompactingBackgroundProduction.html#a68e9182156087adfdb0fed8323680296',1,'compactingBackgroundProduction.ecut'],['../classMuonBackGenerator.html#a69b3ae0f15d91b15e14655080d17db39',1,'MuonBackGenerator::ecut']]],
+  ['ecut_4',['ecut',['../namespacestudy__GammaConv.html#a147a7866f4638ffd619406fd06f8cdfb',1,'study_GammaConv.ecut'],['../namespacestudy__thinTarget.html#af22b0230911110381a9456faaa67d77b',1,'study_thinTarget.ecut'],['../namespacestudy__muMSC.html#ae0e2151c318c7666057adb54d84926f0',1,'study_muMSC.ecut'],['../namespacecompactingBackgroundProduction.html#a68e9182156087adfdb0fed8323680296',1,'compactingBackgroundProduction.ecut'],['../classMuonBackGenerator.html#a69b3ae0f15d91b15e14655080d17db39',1,'MuonBackGenerator::ecut']]],
   ['edges_5',['edges',['../namespacetest__event__histogram.html#a64eae27ed22609bb61c980fc25e38f5a',1,'test_event_histogram.EDGES'],['../classevent__histogram_1_1EventHistogram.html#a11298d067f838a5563ad09904ccff998',1,'event_histogram.EventHistogram.edges']]],
   ['ef_6',['Ef',['../classGenieGenerator.html#aeccda1bacf472b4e29661781d21653b0',1,'GenieGenerator']]],
   ['ekin_7',['Ekin',['../namespacestudy__thinTarget.html#abf343d15ac513f7c099b042aa8b8910d',1,'study_thinTarget']]],
@@ -23,7 +23,7 @@ var searchData=
   ['emulsiony_20',['EmulsionY',['../classTarget.html#a4f413bdaa4b87fe74788e5cc3c6f4457',1,'Target']]],
   ['end_21',['end',['../classFixedTargetGenerator.html#a59ae4f1dfb442d58254275e5a83692ce',1,'FixedTargetGenerator::end'],['../classPythia8Generator.html#accaba94561242bc1e06134f27a30bb0d',1,'Pythia8Generator::end']]],
   ['endofhadronabsorber_22',['endOfHadronAbsorber',['../namespacemergeMbias.html#ac1ba9c5e18f9a604f0c372e588cc6a67',1,'mergeMbias']]],
-  ['endz_23',['endz',['../structMuGeoProcessor_1_1Segment.html#aeaa2b56b717cf5be4bb485affac32fe9',1,'MuGeoProcessor::Segment::endZ'],['../classPythia8Generator.html#a3f7b61dbce42df88afc6859845bc0540',1,'Pythia8Generator::endZ'],['../classMuDISGenerator.html#aebd4e2db02a83054f90440088fd8d9a7',1,'MuDISGenerator::endZ'],['../classGenieGenerator.html#a29396a1cf89c0f75beefde980874eefc',1,'GenieGenerator::endZ'],['../classFixedTargetGenerator.html#a6e276b38f39dac3a7b26dd4eac990c95',1,'FixedTargetGenerator::endZ']]],
+  ['endz_23',['endz',['../structMuGeoProcessor_1_1Segment.html#aeaa2b56b717cf5be4bb485affac32fe9',1,'MuGeoProcessor::Segment::endZ'],['../classFixedTargetGenerator.html#a6e276b38f39dac3a7b26dd4eac990c95',1,'FixedTargetGenerator::endZ'],['../classPythia8Generator.html#a3f7b61dbce42df88afc6859845bc0540',1,'Pythia8Generator::endZ'],['../classMuDISGenerator.html#aebd4e2db02a83054f90440088fd8d9a7',1,'MuDISGenerator::endZ'],['../classGenieGenerator.html#a29396a1cf89c0f75beefde980874eefc',1,'GenieGenerator::endZ']]],
   ['energycut_24',['EnergyCut',['../namespacerun__simScript.html#a25a12c56a31e27776669952116892e5d',1,'run_simScript']]],
   ['eospath_25',['eospath',['../namespacemergeMbias.html#a1243a109cb5cb7d4aed6fb2d7117cbd9',1,'mergeMbias']]],
   ['eplus_26',['eplus',['../namespaceshipunit.html#ace91ca0177771d2bd46de7eecea1a684',1,'shipunit.eplus'],['../namespacehepunit.html#a2059067430f3e0328dedb2dff0feaf60',1,'hepunit.eplus']]],
@@ -32,7 +32,7 @@ var searchData=
   ['error_29',['error',['../namespacegeometry__from__file.html#ad232dcc15bc0553bad570e1756cabf9a',1,'geometry_from_file']]],
   ['eta1mass_30',['eta1mass',['../namespacepythia8darkphoton__conf.html#a7ce8c8aa53e93dfe5afaa43e2f0901b6',1,'pythia8darkphoton_conf']]],
   ['etamass_31',['etamass',['../namespacepythia8darkphoton__conf.html#a4e665f9019e795ebc2533973bbe5a2a1',1,'pythia8darkphoton_conf']]],
-  ['ev_32',['ev',['../namespaceshipunit.html#a8f2defd4984fcc30864b0582d4fd44de',1,'shipunit.eV'],['../namespacehepunit.html#a6406f2471788e2223287ee1f97583611',1,'hepunit.eV'],['../classGenieGenerator.html#a54166a35edcde3605f9d18bcfca7a92c',1,'GenieGenerator::Ev']]],
+  ['ev_32',['ev',['../classGenieGenerator.html#a54166a35edcde3605f9d18bcfca7a92c',1,'GenieGenerator::Ev'],['../namespacehepunit.html#a6406f2471788e2223287ee1f97583611',1,'hepunit.eV'],['../namespaceshipunit.html#a8f2defd4984fcc30864b0582d4fd44de',1,'shipunit.eV']]],
   ['event_5fdata_33',['event_data',['../namespacemake__nTuple__SBT.html#a1cdb01243d3ec2f98d1b3dda16d0a5d0',1,'make_nTuple_SBT.event_data'],['../namespacemake__nTuple__Tr.html#acde6f1b368186db401b2b7ca1089fd37',1,'make_nTuple_Tr.event_data']]],
   ['eventheader_34',['eventHeader',['../classshipDigiReco_1_1ShipDigiReco.html#a8e5e31ba378ecc05524cf6e44bfd57e3',1,'shipDigiReco::ShipDigiReco']]],
   ['events_5f_35',['events_',['../namespacemake__nTuple__Tr.html#a5ddcb3b840ba7d740bc64e9c5f2fa7f4',1,'make_nTuple_Tr']]],
@@ -45,5 +45,7 @@ var searchData=
   ['exist_5fok_42',['exist_ok',['../namespacerun__tracking__scan.html#a5cd4b30d3b678aec7802fdf6770cb417',1,'run_tracking_scan']]],
   ['expected_43',['EXPECTED',['../namespacetest__field__maps.html#a41706d33ece31f6587f430faf20fa82c',1,'test_field_maps']]],
   ['expectedpars_44',['expectedPars',['../structModelSpec.html#af3f40e0ec1c08f9fa649e851f9edf91c',1,'ModelSpec']]],
-  ['ezero_45',['Ezero',['../classNtupleGenerator.html#ab05d064a7e4ee7380e3f6bb41cb44d46',1,'NtupleGenerator']]]
+  ['extensions_45',['extensions',['../structSHiP_1_1ActsStrawTracker_1_1Impl.html#abe22eb9eca81a47a056f540270b5e7ac',1,'SHiP::ActsStrawTracker::Impl']]],
+  ['extrapolator_46',['extrapolator',['../structSHiP_1_1ActsStrawTracker_1_1Impl.html#a76d7bd8a73752e21f14b088150696217',1,'SHiP::ActsStrawTracker::Impl']]],
+  ['ezero_47',['Ezero',['../classNtupleGenerator.html#ab05d064a7e4ee7380e3f6bb41cb44d46',1,'NtupleGenerator']]]
 ];

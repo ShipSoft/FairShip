@@ -128,7 +128,7 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:acb59b103102d2e60cde7fb28a7a2d0e1" id="r_acb59b103102d2e60cde7fb28a7a2d0e1"><td class="memItemLeft" align="right" valign="top">TGeoVolume *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classShipMagnet.html#acb59b103102d2e60cde7fb28a7a2d0e1">MagnetSupport</a> (Double_t hwidth, Double_t hheight, Double_t dz, Int_t colour, TGeoMedium *material)</td></tr>
+<tr class="memitem:acb59b103102d2e60cde7fb28a7a2d0e1" id="r_acb59b103102d2e60cde7fb28a7a2d0e1"><td class="memItemLeft" align="right" valign="top">TGeoVolume *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classShipMagnet.html#acb59b103102d2e60cde7fb28a7a2d0e1">MagnetSupport</a> (Double_t hwidth, Double_t hheight, Double_t dz, Int_t colour, TGeoMedium *<a class="el" href="ActsStrawGeometry_8cpp.html#ab28a4576d44aa77518d33e053ea2ca12">material</a>)</td></tr>
 <tr class="separator:acb59b103102d2e60cde7fb28a7a2d0e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
@@ -628,10 +628,11 @@ Protected Attributes</h2></td></tr>
 <div class="line"><span class="lineno">   93</span>  TGeoCompositeShape* TS = <span class="keyword">new</span> TGeoCompositeShape(</div>
 <div class="line"><span class="lineno">   94</span>      <span class="stringliteral">&quot;TS&quot;</span>, <span class="stringliteral">&quot;ms-FL1-FL2-FL3-FL4-FL5-FL6-SL1:r-SL2:r-SL3:r-SL4:r-SL5:r-SL6:r&quot;</span>);</div>
 <div class="line"><span class="lineno">   95</span> </div>
-<div class="line"><span class="lineno">   96</span>  TGeoVolume* T = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;TSUP&quot;</span>, TS, material);</div>
+<div class="line"><span class="lineno">   96</span>  TGeoVolume* T = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;TSUP&quot;</span>, TS, <a class="code hl_variable" href="ActsStrawGeometry_8cpp.html#ab28a4576d44aa77518d33e053ea2ca12">material</a>);</div>
 <div class="line"><span class="lineno">   97</span>  T-&gt;SetLineColor(colour);</div>
 <div class="line"><span class="lineno">   98</span>  <span class="keywordflow">return</span> T;</div>
 <div class="line"><span class="lineno">   99</span>}</div>
+<div class="ttc" id="aActsStrawGeometry_8cpp_html_ab28a4576d44aa77518d33e053ea2ca12"><div class="ttname"><a href="ActsStrawGeometry_8cpp.html#ab28a4576d44aa77518d33e053ea2ca12">material</a></div><div class="ttdeci">std::shared_ptr&lt; const Acts::HomogeneousSurfaceMaterial &gt; material</div><div class="ttdef"><b>Definition</b> <a href="ActsStrawGeometry_8cpp_source.html#l00072">ActsStrawGeometry.cpp:72</a></div></div>
 <div class="ttc" id="anamespacehepunit_html_a6873f9620ecd5384620eec4a92f2beae"><div class="ttname"><a href="namespacehepunit.html#a6873f9620ecd5384620eec4a92f2beae">hepunit.ms</a></div><div class="ttdeci">float ms</div><div class="ttdef"><b>Definition</b> <a href="hepunit_8py_source.html#l00098">hepunit.py:98</a></div></div>
 <div class="ttc" id="anamespacerun__tracking__scan_html_abbed94f59e0f6368be9ce4b8326a80ec"><div class="ttname"><a href="namespacerun__tracking__scan.html#abbed94f59e0f6368be9ce4b8326a80ec">run_tracking_scan.alpha</a></div><div class="ttdeci">alpha</div><div class="ttdef"><b>Definition</b> <a href="run__tracking__scan_8py_source.html#l00348">run_tracking_scan.py:348</a></div></div>
 </div><!-- fragment -->

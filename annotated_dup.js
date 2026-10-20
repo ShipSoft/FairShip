@@ -59,10 +59,15 @@ var annotated_dup =
       [ "SciFiMapping", "classSciFiMapping_1_1SciFiMapping.html", "classSciFiMapping_1_1SciFiMapping" ]
     ] ],
     [ "SHiP", "namespaceSHiP.html", [
+      [ "ActsShipField", "classSHiP_1_1ActsShipField.html", "classSHiP_1_1ActsShipField" ],
+      [ "ActsStrawGeometry", "classSHiP_1_1ActsStrawGeometry.html", "classSHiP_1_1ActsStrawGeometry" ],
+      [ "ActsStrawTracker", "classSHiP_1_1ActsStrawTracker.html", "classSHiP_1_1ActsStrawTracker" ],
       [ "Detector", "classSHiP_1_1Detector.html", "classSHiP_1_1Detector" ],
       [ "DetectorHit", "classSHiP_1_1DetectorHit.html", "classSHiP_1_1DetectorHit" ],
       [ "DetectorPoint", "classSHiP_1_1DetectorPoint.html", "classSHiP_1_1DetectorPoint" ],
       [ "Generator", "classSHiP_1_1Generator.html", "classSHiP_1_1Generator" ],
+      [ "RecoTrack", "classSHiP_1_1RecoTrack.html", "classSHiP_1_1RecoTrack" ],
+      [ "RecoVertex", "classSHiP_1_1RecoVertex.html", "classSHiP_1_1RecoVertex" ],
       [ "ScoringPlane", "classSHiP_1_1ScoringPlane.html", "classSHiP_1_1ScoringPlane" ],
       [ "TTreeGenerator", "classSHiP_1_1TTreeGenerator.html", "classSHiP_1_1TTreeGenerator" ]
     ] ],
@@ -97,6 +102,9 @@ var annotated_dup =
       [ "Desplit", "classsplit__provenance_1_1Desplit.html", "classsplit__provenance_1_1Desplit" ],
       [ "SplitProvenance", "classsplit__provenance_1_1SplitProvenance.html", "classsplit__provenance_1_1SplitProvenance" ]
     ] ],
+    [ "strawReco", "namespacestrawReco.html", [
+      [ "StrawHit", "classstrawReco_1_1StrawHit.html", "classstrawReco_1_1StrawHit" ]
+    ] ],
     [ "strawtubesDetector", "namespacestrawtubesDetector.html", [
       [ "strawtubesDetector", "classstrawtubesDetector_1_1strawtubesDetector.html", "classstrawtubesDetector_1_1strawtubesDetector" ]
     ] ],
@@ -113,6 +121,10 @@ var annotated_dup =
     ] ],
     [ "test_signal_particle", "namespacetest__signal__particle.html", [
       [ "FakeTrack", "classtest__signal__particle_1_1FakeTrack.html", "classtest__signal__particle_1_1FakeTrack" ]
+    ] ],
+    [ "test_straw_reco", "namespacetest__straw__reco.html", [
+      [ "FakeTrack", "classtest__straw__reco_1_1FakeTrack.html", "classtest__straw__reco_1_1FakeTrack" ],
+      [ "FakeTracker", "classtest__straw__reco_1_1FakeTracker.html", "classtest__straw__reco_1_1FakeTracker" ]
     ] ],
     [ "timeDetector", "namespacetimeDetector.html", [
       [ "timeDetector", "classtimeDetector_1_1timeDetector.html", "classtimeDetector_1_1timeDetector" ]

@@ -1,0 +1,7 @@
+var ActsStrawTracker_8cxx =
+[
+    [ "SHiP::ActsStrawTracker::Impl", "structSHiP_1_1ActsStrawTracker_1_1Impl.html", "structSHiP_1_1ActsStrawTracker_1_1Impl" ],
+    [ "driftRadius", "ActsStrawTracker_8cxx.html#ae5cb94dca8dcbe66ddd6800d2af1c1f4", null ],
+    [ "surface", "ActsStrawTracker_8cxx.html#aec5af89e65310252ed8c44356bcf9a02", null ],
+    [ "variance", "ActsStrawTracker_8cxx.html#a15a0c65c166603403af08bd98b38f7fd", null ]
+];

@@ -448,7 +448,7 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  122</span>  }</div>
 <div class="line"><span class="lineno">  123</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><span class="lineno">  124</span>}</div>
-<div class="ttc" id="anamespaceShipAna_html_aa4bf87f4d17f9d38b1d8f4d009bb54b3"><div class="ttname"><a href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">ShipAna.i</a></div><div class="ttdeci">int i</div><div class="ttdef"><b>Definition</b> <a href="ShipAna_8py_source.html#l00112">ShipAna.py:112</a></div></div>
+<div class="ttc" id="anamespaceShipAna_html_aa4bf87f4d17f9d38b1d8f4d009bb54b3"><div class="ttname"><a href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">ShipAna.i</a></div><div class="ttdeci">int i</div><div class="ttdef"><b>Definition</b> <a href="ShipAna_8py_source.html#l00108">ShipAna.py:108</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -616,13 +616,13 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  438</span>          <span class="keywordflow">while</span> (currentnode) {</div>
 <div class="line"><span class="lineno">  439</span>            <span class="keyword">const</span> <span class="keyword">auto</span>* geoMaterial =</div>
 <div class="line"><span class="lineno">  440</span>                currentnode-&gt;GetVolume()-&gt;GetMedium()-&gt;GetMaterial();</div>
-<div class="line"><span class="lineno">  441</span>            std::string <a class="code hl_variable" href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">material</a> = geoMaterial-&gt;GetName();</div>
+<div class="line"><span class="lineno">  441</span>            std::string <a class="code hl_variable" href="ActsStrawGeometry_8cpp.html#ab28a4576d44aa77518d33e053ea2ca12">material</a> = geoMaterial-&gt;GetName();</div>
 <div class="line"><span class="lineno">  442</span>            std::string volName = currentnode-&gt;GetVolume()-&gt;GetName();</div>
-<div class="line"><span class="lineno">  443</span>            volumeMaterials.emplace(std::make_pair(volName, material),</div>
+<div class="line"><span class="lineno">  443</span>            volumeMaterials.emplace(std::make_pair(volName, <a class="code hl_variable" href="ActsStrawGeometry_8cpp.html#ab28a4576d44aa77518d33e053ea2ca12">material</a>),</div>
 <div class="line"><span class="lineno">  444</span>                                    geoMaterial-&gt;GetDensity());</div>
 <div class="line"><span class="lineno">  445</span>            <span class="comment">// if (volName.find(&quot;Tr2&quot;) != volName.npos) break;</span></div>
 <div class="line"><span class="lineno">  446</span>            volName.append(<span class="stringliteral">&quot;_&quot;</span>);</div>
-<div class="line"><span class="lineno">  447</span>            volName.append(material);</div>
+<div class="line"><span class="lineno">  447</span>            volName.append(<a class="code hl_variable" href="ActsStrawGeometry_8cpp.html#ab28a4576d44aa77518d33e053ea2ca12">material</a>);</div>
 <div class="line"><span class="lineno">  448</span>            lMap.emplace(volName, snext);</div>
 <div class="line"><span class="lineno">  449</span>            currentnode = gGeoManager-&gt;FindNextBoundaryAndStep();</div>
 <div class="line"><span class="lineno">  450</span>            snext += gGeoManager-&gt;GetStep() * dz;</div>
@@ -652,9 +652,9 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  474</span>  <a class="code hl_class" href="classMuonPath.html">MuonPath</a> <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a5296266b8955872e3259622e903275de">path</a>;</div>
 <div class="line"><span class="lineno">  475</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; entry : volumeMaterials) {</div>
 <div class="line"><span class="lineno">  476</span>    <span class="keyword">const</span> <span class="keyword">auto</span>&amp; volName = entry.first.first;</div>
-<div class="line"><span class="lineno">  477</span>    <span class="keyword">const</span> <span class="keyword">auto</span>&amp; <a class="code hl_variable" href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">material</a> = entry.first.second;</div>
-<div class="line"><span class="lineno">  478</span>    categoryOutput[<a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a5296266b8955872e3259622e903275de">path</a>.GetLabel(volName, material)]</div>
-<div class="line"><span class="lineno">  479</span>        &lt;&lt; <span class="stringliteral">&quot;  volume=&quot;</span> &lt;&lt; volName &lt;&lt; <span class="stringliteral">&quot;, material=&quot;</span> &lt;&lt; <a class="code hl_variable" href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">material</a></div>
+<div class="line"><span class="lineno">  477</span>    <span class="keyword">const</span> <span class="keyword">auto</span>&amp; <a class="code hl_variable" href="ActsStrawGeometry_8cpp.html#ab28a4576d44aa77518d33e053ea2ca12">material</a> = entry.first.second;</div>
+<div class="line"><span class="lineno">  478</span>    categoryOutput[<a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a5296266b8955872e3259622e903275de">path</a>.GetLabel(volName, <a class="code hl_variable" href="ActsStrawGeometry_8cpp.html#ab28a4576d44aa77518d33e053ea2ca12">material</a>)]</div>
+<div class="line"><span class="lineno">  479</span>        &lt;&lt; <span class="stringliteral">&quot;  volume=&quot;</span> &lt;&lt; volName &lt;&lt; <span class="stringliteral">&quot;, material=&quot;</span> &lt;&lt; <a class="code hl_variable" href="ActsStrawGeometry_8cpp.html#ab28a4576d44aa77518d33e053ea2ca12">material</a></div>
 <div class="line"><span class="lineno">  480</span>        &lt;&lt; <span class="stringliteral">&quot;, density=&quot;</span> &lt;&lt; entry.second &lt;&lt; <span class="stringliteral">&quot; g/cm^3\n&quot;</span>;</div>
 <div class="line"><span class="lineno">  481</span>  }</div>
 <div class="line"><span class="lineno">  482</span>  std::ostringstream summary;</div>
@@ -671,11 +671,11 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  493</span>    LOG(warning) &lt;&lt; <span class="stringliteral">&quot;Could not write volume summary to CheckAllVolumes.txt&quot;</span>;</div>
 <div class="line"><span class="lineno">  494</span>  }</div>
 <div class="line"><span class="lineno">  495</span>}</div>
+<div class="ttc" id="aActsStrawGeometry_8cpp_html_ab28a4576d44aa77518d33e053ea2ca12"><div class="ttname"><a href="ActsStrawGeometry_8cpp.html#ab28a4576d44aa77518d33e053ea2ca12">material</a></div><div class="ttdeci">std::shared_ptr&lt; const Acts::HomogeneousSurfaceMaterial &gt; material</div><div class="ttdef"><b>Definition</b> <a href="ActsStrawGeometry_8cpp_source.html#l00072">ActsStrawGeometry.cpp:72</a></div></div>
 <div class="ttc" id="aclassMuonPath_html"><div class="ttname"><a href="classMuonPath.html">MuonPath</a></div><div class="ttdef"><b>Definition</b> <a href="MuonPath_8h_source.html#l00034">MuonPath.h:34</a></div></div>
 <div class="ttc" id="anamespaceShipMuDIS_html_af25d2b354a7c85e57de767c81ac89c45"><div class="ttname"><a href="namespaceShipMuDIS.html#af25d2b354a7c85e57de767c81ac89c45">ShipMuDIS::MatTypeStr</a></div><div class="ttdeci">const std::array&lt; TString, nMats &gt; MatTypeStr</div><div class="ttdef"><b>Definition</b> <a href="MuDISDefs_8h_source.html#l00045">MuDISDefs.h:45</a></div></div>
 <div class="ttc" id="anamespaceadd__noise__to__field_html_a96cf5cc2cc008d7422009cb2ad93cb51"><div class="ttname"><a href="namespaceadd__noise__to__field.html#a96cf5cc2cc008d7422009cb2ad93cb51">add_noise_to_field.step</a></div><div class="ttdeci">step</div><div class="ttdef"><b>Definition</b> <a href="add__noise__to__field_8py_source.html#l00082">add_noise_to_field.py:82</a></div></div>
 <div class="ttc" id="anamespaceana__ShipMuon_html_ac655f36910fb63a8965bcc5578340fa6"><div class="ttname"><a href="namespaceana__ShipMuon.html#ac655f36910fb63a8965bcc5578340fa6">ana_ShipMuon.output</a></div><div class="ttdeci">output</div><div class="ttdef"><b>Definition</b> <a href="ana__ShipMuon_8py_source.html#l00020">ana_ShipMuon.py:20</a></div></div>
-<div class="ttc" id="anamespacestudy__GammaConv_html_abbc8036b3a71074383fbd57fa32aad59"><div class="ttname"><a href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">study_GammaConv.material</a></div><div class="ttdeci">material</div><div class="ttdef"><b>Definition</b> <a href="study__GammaConv_8py_source.html#l00042">study_GammaConv.py:42</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1729,8 +1729,8 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  528</span>      <span class="keywordflow">break</span>;</div>
 <div class="line"><span class="lineno">  529</span>    }</div>
 <div class="line"><span class="lineno">  530</span>    <span class="keyword">const</span> <span class="keyword">auto</span>* volume = node-&gt;GetVolume();</div>
-<div class="line"><span class="lineno">  531</span>    <span class="keyword">const</span> <span class="keyword">auto</span>* <a class="code hl_variable" href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">material</a> = volume-&gt;GetMaterial();</div>
-<div class="line"><span class="lineno">  532</span>    <span class="keywordflow">if</span> (!material) <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  531</span>    <span class="keyword">const</span> <span class="keyword">auto</span>* <a class="code hl_variable" href="ActsStrawGeometry_8cpp.html#ab28a4576d44aa77518d33e053ea2ca12">material</a> = volume-&gt;GetMaterial();</div>
+<div class="line"><span class="lineno">  532</span>    <span class="keywordflow">if</span> (!<a class="code hl_variable" href="ActsStrawGeometry_8cpp.html#ab28a4576d44aa77518d33e053ea2ca12">material</a>) <span class="keywordflow">break</span>;</div>
 <div class="line"><span class="lineno">  533</span>    <span class="keyword">const</span> std::string <a class="code hl_variable" href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">name</a> = volume-&gt;GetName();</div>
 <div class="line"><span class="lineno">  534</span>    <span class="keyword">const</span> <span class="keywordtype">bool</span> shield = <a class="code hl_variable" href="classMuGeoProcessor.html#ad73fb6b5808256e5a7f3f64a95ec3fd3">fShieldVolumes</a>.count(volume) != 0;</div>
 <div class="line"><span class="lineno">  535</span>    <span class="keywordtype">double</span> limit = remaining;</div>
@@ -1741,14 +1741,14 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  540</span>    <span class="keywordflow">if</span> (!std::isfinite(step) || step &lt; 0.) <span class="keywordflow">break</span>;</div>
 <div class="line"><span class="lineno">  541</span>    <span class="keywordflow">if</span> (step &gt; 0.) {</div>
 <div class="line"><span class="lineno">  542</span>      <a class="code hl_class" href="classMuonPath.html">MuonPath</a> <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a5296266b8955872e3259622e903275de">path</a>;</div>
-<div class="line"><span class="lineno">  543</span>      <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a5296266b8955872e3259622e903275de">path</a>.AddVolume(name, <a class="code hl_variable" href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">material</a>-&gt;GetName(), <a class="code hl_variable" href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">material</a>-&gt;GetDensity());</div>
+<div class="line"><span class="lineno">  543</span>      <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a5296266b8955872e3259622e903275de">path</a>.AddVolume(name, <a class="code hl_variable" href="ActsStrawGeometry_8cpp.html#ab28a4576d44aa77518d33e053ea2ca12">material</a>-&gt;GetName(), <a class="code hl_variable" href="ActsStrawGeometry_8cpp.html#ab28a4576d44aa77518d33e053ea2ca12">material</a>-&gt;GetDensity());</div>
 <div class="line"><span class="lineno">  544</span>      <span class="comment">// Only magnets inside MuonShieldArea belong to the shield category.</span></div>
 <div class="line"><span class="lineno">  545</span>      <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a5296266b8955872e3259622e903275de">path</a>.GetLabel() == <span class="stringliteral">&quot;MS&quot;</span> &amp;&amp; !shield) <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a5296266b8955872e3259622e903275de">path</a>.SetLabel(<span class="stringliteral">&quot;REST&quot;</span>);</div>
 <div class="line"><span class="lineno">  546</span>      <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a5296266b8955872e3259622e903275de">path</a>.SetVertexInfo(measurement.position, measurement.momentum,</div>
 <div class="line"><span class="lineno">  547</span>                         measurement.time);</div>
 <div class="line"><span class="lineno">  548</span>      <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a5296266b8955872e3259622e903275de">path</a>.SetLength(step, backward ? current + step * direction : current,</div>
 <div class="line"><span class="lineno">  549</span>                     <a class="code hl_variable" href="namespaceadd__noise__to__field.html#a96cf5cc2cc008d7422009cb2ad93cb51">step</a> * forward.Z());</div>
-<div class="line"><span class="lineno">  550</span>      <a class="code hl_variable" href="classMuGeoProcessor.html#a2b9c0e2a7265a7b78e046c03ffe09a5f">fVolMap</a>[<a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a5296266b8955872e3259622e903275de">path</a>.GetLabel()].insert(name + <span class="stringliteral">&quot;_&quot;</span> + <a class="code hl_variable" href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">material</a>-&gt;GetName());</div>
+<div class="line"><span class="lineno">  550</span>      <a class="code hl_variable" href="classMuGeoProcessor.html#a2b9c0e2a7265a7b78e046c03ffe09a5f">fVolMap</a>[<a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a5296266b8955872e3259622e903275de">path</a>.GetLabel()].insert(name + <span class="stringliteral">&quot;_&quot;</span> + <a class="code hl_variable" href="ActsStrawGeometry_8cpp.html#ab28a4576d44aa77518d33e053ea2ca12">material</a>-&gt;GetName());</div>
 <div class="line"><span class="lineno">  551</span>      <span class="keywordflow">if</span> (backward)</div>
 <div class="line"><span class="lineno">  552</span>        reverse.push_back(path);</div>
 <div class="line"><span class="lineno">  553</span>      <span class="keywordflow">else</span></div>

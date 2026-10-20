@@ -5,6 +5,8 @@ var test__data__class__io_8cxx =
     [ "test_const_access", "test__data__class__io_8cxx.html#a2c1ae0dc2e12629ee9d60f2b2989d22e", null ],
     [ "test_const_access", "test__data__class__io_8cxx.html#aff29b2b54b4734723141cd80a1c3fbce", null ],
     [ "test_const_access", "test__data__class__io_8cxx.html#a6a256cd8ed257d98e3eb6a17fb731833", null ],
+    [ "test_const_access", "test__data__class__io_8cxx.html#a891c87bdf0db76dd9586ade96a915aed", null ],
+    [ "test_const_access", "test__data__class__io_8cxx.html#aa2807d86bbdee8bc585e8ca1592c943c", null ],
     [ "test_const_access", "test__data__class__io_8cxx.html#a0a574544c616ba5b90af53bf9ebff4ce", null ],
     [ "test_const_access", "test__data__class__io_8cxx.html#a673419fba9863a70e76a775b0e10b738", null ],
     [ "test_const_access", "test__data__class__io_8cxx.html#a792daa8b127556c6a6ef94293518d547", null ],

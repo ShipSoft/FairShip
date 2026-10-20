@@ -190,8 +190,8 @@ $(document).ready(function(){initNavTree('test__timedet__geometry_8cxx_source.ht
 <div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>  }</div>
 <div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span> </div>
 <div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>  TGeoManager* geometry = gGeoManager;</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>  <span class="keyword">auto</span>* material = <span class="keyword">new</span> TGeoMaterial(<span class="stringliteral">&quot;WorldMaterial&quot;</span>, 14.7, 7.3, 0.0012);</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>  <span class="keyword">auto</span>* medium = <span class="keyword">new</span> TGeoMedium(<span class="stringliteral">&quot;WorldMedium&quot;</span>, 1, material);</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>  <span class="keyword">auto</span>* <a class="code hl_variable" href="ActsStrawGeometry_8cpp.html#ab28a4576d44aa77518d33e053ea2ca12">material</a> = <span class="keyword">new</span> TGeoMaterial(<span class="stringliteral">&quot;WorldMaterial&quot;</span>, 14.7, 7.3, 0.0012);</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>  <span class="keyword">auto</span>* medium = <span class="keyword">new</span> TGeoMedium(<span class="stringliteral">&quot;WorldMedium&quot;</span>, 1, <a class="code hl_variable" href="ActsStrawGeometry_8cpp.html#ab28a4576d44aa77518d33e053ea2ca12">material</a>);</div>
 <div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>  <span class="keyword">auto</span>* top = geometry-&gt;MakeBox(<span class="stringliteral">&quot;World&quot;</span>, medium, 1000.0, 1000.0, 1000.0);</div>
 <div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>  geometry-&gt;SetTopVolume(top);</div>
 <div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span> </div>
@@ -227,6 +227,7 @@ $(document).ready(function(){initNavTree('test__timedet__geometry_8cxx_source.ht
 <div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>  <span class="keywordflow">return</span> 0;</div>
 <div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>}</div>
 </div>
+<div class="ttc" id="aActsStrawGeometry_8cpp_html_ab28a4576d44aa77518d33e053ea2ca12"><div class="ttname"><a href="ActsStrawGeometry_8cpp.html#ab28a4576d44aa77518d33e053ea2ca12">material</a></div><div class="ttdeci">std::shared_ptr&lt; const Acts::HomogeneousSurfaceMaterial &gt; material</div><div class="ttdef"><b>Definition</b> <a href="ActsStrawGeometry_8cpp_source.html#l00072">ActsStrawGeometry.cpp:72</a></div></div>
 <div class="ttc" id="aTimeDetPoint_8h_html"><div class="ttname"><a href="TimeDetPoint_8h.html">TimeDetPoint.h</a></div></div>
 <div class="ttc" id="aTimeDet_8h_html"><div class="ttname"><a href="TimeDet_8h.html">TimeDet.h</a></div></div>
 <div class="ttc" id="aclassTimeDet_html"><div class="ttname"><a href="classTimeDet.html">TimeDet</a></div><div class="ttdef"><b>Definition</b> <a href="TimeDet_8h_source.html#l00019">TimeDet.h:19</a></div></div>

@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['yandexprod_0',['YandexProd',['../namespacecompactingBackgroundProduction.html#a708e024acb290e4040ca0976c1be15f0',1,'compactingBackgroundProduction']]],
-  ['ybeam_1',['yBeam',['../namespacerunPythia8.html#a0773b179ce66354584f56325e5da1bc0',1,'runPythia8']]]
+  ['x_0',['x',['../classSHiP_1_1RecoTrack.html#a12d157b9665e0523115ba282f007f2a8',1,'SHiP::RecoTrack::x()'],['../classSHiP_1_1RecoVertex.html#acab8de789bb48d612ba0382895e6a633',1,'SHiP::RecoVertex::x()']]]
 ];

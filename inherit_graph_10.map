@@ -1,3 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$structexitHadronAbsorber_1_1WeightHistory.html" title=" " alt="" coords="5,5,157,45"/>
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,13,92,38"/>
+<area shape="rect" id="Node000001" href="$classUpstreamTaggerDetector_1_1UBTGeometryMismatch.html" title=" " alt="" coords="140,5,420,45"/>
+<area shape="poly" id="edge12_Node000000_Node000001" title=" " alt="" coords="106,23,140,23,140,28,106,28"/>
 </map>

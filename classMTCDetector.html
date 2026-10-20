@@ -124,7 +124,7 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ae95d16080d7f14faa1866452e1271eb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6ebae99bd9cee2427cbf349a23bb0c9b" id="r_a6ebae99bd9cee2427cbf349a23bb0c9b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMTCDetector.html#a6ebae99bd9cee2427cbf349a23bb0c9b">SetMTCParameters</a> (Double_t width, Double_t height, Double_t fiber_tilt_angle, Double_t iron_thickness, Double_t scifi_thickness, Int_t num_of_agg_channels, Double_t scint_cell_size, Double_t scint_thickness, Int_t number_of_layers, Double_t z_position, Double_t field_strength)</td></tr>
 <tr class="separator:a6ebae99bd9cee2427cbf349a23bb0c9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a857bede1a01f9044a12e4f55da685694" id="r_a857bede1a01f9044a12e4f55da685694"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMTCDetector.html#a857bede1a01f9044a12e4f55da685694">CreateScintModule</a> (const char *name, TGeoVolumeAssembly *modMotherVol, Double_t z_shift, Double_t width, Double_t height, Double_t thickness, Double_t cellSizeX, Double_t cellSizeY, TGeoMedium *material, Int_t color, Double_t transparency, Int_t LayerId)</td></tr>
+<tr class="memitem:a857bede1a01f9044a12e4f55da685694" id="r_a857bede1a01f9044a12e4f55da685694"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMTCDetector.html#a857bede1a01f9044a12e4f55da685694">CreateScintModule</a> (const char *name, TGeoVolumeAssembly *modMotherVol, Double_t z_shift, Double_t width, Double_t height, Double_t thickness, Double_t cellSizeX, Double_t cellSizeY, TGeoMedium *<a class="el" href="ActsStrawGeometry_8cpp.html#ab28a4576d44aa77518d33e053ea2ca12">material</a>, Int_t color, Double_t transparency, Int_t LayerId)</td></tr>
 <tr class="separator:a857bede1a01f9044a12e4f55da685694"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8745cfc61c044fd896b67b21cebdf066" id="r_a8745cfc61c044fd896b67b21cebdf066"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMTCDetector.html#a8745cfc61c044fd896b67b21cebdf066">CreateSciFiModule</a> (const char *name, TGeoVolumeAssembly *modMotherVol, Double_t width, Double_t height, Double_t thickness, Int_t LayerId)</td></tr>
 <tr class="separator:a8745cfc61c044fd896b67b21cebdf066"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -797,7 +797,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  182</span>  scint_volume-&gt;AddNode(scint_mat, 0, <span class="keyword">new</span> TGeoTranslation(0, 0, 0));</div>
 <div class="line"><span class="lineno">  183</span>  <span class="keyword">auto</span> cell = <span class="keyword">new</span> TGeoBBox(Form(<span class="stringliteral">&quot;%s_cell&quot;</span>, name), cellSizeX / 2, cellSizeY / 2,</div>
 <div class="line"><span class="lineno">  184</span>                           thickness / 2);</div>
-<div class="line"><span class="lineno">  185</span>  <span class="keyword">auto</span> cellVol = <span class="keyword">new</span> TGeoVolume(Form(<span class="stringliteral">&quot;%s_cell&quot;</span>, name), cell, material);</div>
+<div class="line"><span class="lineno">  185</span>  <span class="keyword">auto</span> cellVol = <span class="keyword">new</span> TGeoVolume(Form(<span class="stringliteral">&quot;%s_cell&quot;</span>, name), cell, <a class="code hl_variable" href="ActsStrawGeometry_8cpp.html#ab28a4576d44aa77518d33e053ea2ca12">material</a>);</div>
 <div class="line"><span class="lineno">  186</span>  cellVol-&gt;SetLineColor(color);</div>
 <div class="line"><span class="lineno">  187</span>  cellVol-&gt;SetTransparency(transparency);</div>
 <div class="line"><span class="lineno">  188</span>  AddSensitiveVolume(cellVol);</div>
@@ -813,6 +813,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  198</span>    }</div>
 <div class="line"><span class="lineno">  199</span>  }</div>
 <div class="line"><span class="lineno">  200</span>}</div>
+<div class="ttc" id="aActsStrawGeometry_8cpp_html_ab28a4576d44aa77518d33e053ea2ca12"><div class="ttname"><a href="ActsStrawGeometry_8cpp.html#ab28a4576d44aa77518d33e053ea2ca12">material</a></div><div class="ttdeci">std::shared_ptr&lt; const Acts::HomogeneousSurfaceMaterial &gt; material</div><div class="ttdef"><b>Definition</b> <a href="ActsStrawGeometry_8cpp_source.html#l00072">ActsStrawGeometry.cpp:72</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

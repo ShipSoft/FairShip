@@ -5,6 +5,8 @@ var hierarchy =
     [ "AbsBField", null, [
       [ "genfit::FairShipFields", "classgenfit_1_1FairShipFields.html", null ]
     ] ],
+    [ "SHiP::ActsStrawGeometry", "classSHiP_1_1ActsStrawGeometry.html", null ],
+    [ "SHiP::ActsStrawTracker", "classSHiP_1_1ActsStrawTracker.html", null ],
     [ "MagneticTrackPropagator::Box", "structMagneticTrackPropagator_1_1Box.html", null ],
     [ "ShipMuDIS::CBMSimBranches", "structShipMuDIS_1_1CBMSimBranches.html", null ],
     [ "hnl.CKMmatrix", "classhnl_1_1CKMmatrix.html", null ],
@@ -134,6 +136,8 @@ var hierarchy =
       [ "eventDisplay.Rulers", "classeventDisplay_1_1Rulers.html", null ]
     ] ],
     [ "test_signal_particle.FakeTrack", "classtest__signal__particle_1_1FakeTrack.html", null ],
+    [ "test_straw_reco.FakeTrack", "classtest__straw__reco_1_1FakeTrack.html", null ],
+    [ "test_straw_reco.FakeTracker", "classtest__straw__reco_1_1FakeTracker.html", null ],
     [ "ShipFieldMaker::fieldInfo", "structShipFieldMaker_1_1fieldInfo.html", null ],
     [ "MagneticTrackPropagator::FieldMap", "structMagneticTrackPropagator_1_1FieldMap.html", null ],
     [ "MuDISFilter::FilterCandidate", "structMuDISFilter_1_1FilterCandidate.html", null ],
@@ -143,6 +147,7 @@ var hierarchy =
     [ "hnl.HNLbranchings", "classhnl_1_1HNLbranchings.html", [
       [ "hnl.HNL", "classhnl_1_1HNL.html", null ]
     ] ],
+    [ "SHiP::ActsStrawTracker::Impl", "structSHiP_1_1ActsStrawTracker_1_1Impl.html", null ],
     [ "makeCascadePythia8.InclusiveSignalEvents", "classmakeCascadePythia8_1_1InclusiveSignalEvents.html", null ],
     [ "eventDisplay.IO", "classeventDisplay_1_1IO.html", null ],
     [ "ISTLPointContainer", "classISTLPointContainer.html", [
@@ -157,6 +162,9 @@ var hierarchy =
       [ "SHiP::Detector< vetoPoint >", "classSHiP_1_1Detector.html", null ],
       [ "SHiP::Detector< strawtubesPoint >", "classSHiP_1_1Detector.html", null ],
       [ "SHiP::Detector< PointType >", "classSHiP_1_1Detector.html", null ]
+    ] ],
+    [ "Acts::MagneticFieldProvider", null, [
+      [ "SHiP::ActsShipField", "classSHiP_1_1ActsShipField.html", null ]
     ] ],
     [ "MagneticTrackPropagator", "classMagneticTrackPropagator.html", null ],
     [ "fieldMapTools.MapRange", "classfieldMapTools_1_1MapRange.html", null ],
@@ -196,6 +204,7 @@ var hierarchy =
     [ "ShipStack::SplitInfo", "structShipStack_1_1SplitInfo.html", null ],
     [ "split_provenance.SplitProvenance", "classsplit__provenance_1_1SplitProvenance.html", null ],
     [ "MagneticTrackPropagator::State", "structMagneticTrackPropagator_1_1State.html", null ],
+    [ "strawReco.StrawHit", "classstrawReco_1_1StrawHit.html", null ],
     [ "shipVertex.Task", "classshipVertex_1_1Task.html", null ],
     [ "shipVeto.Task", "classshipVeto_1_1Task.html", null ],
     [ "TG4RunConfiguration", null, [
@@ -216,6 +225,8 @@ var hierarchy =
         [ "strawtubesHit", "classstrawtubesHit.html", null ],
         [ "vetoHit", "classvetoHit.html", null ]
       ] ],
+      [ "SHiP::RecoTrack", "classSHiP_1_1RecoTrack.html", null ],
+      [ "SHiP::RecoVertex", "classSHiP_1_1RecoVertex.html", null ],
       [ "ShipMCTrack", "classShipMCTrack.html", null ],
       [ "ShipParticle", "classShipParticle.html", null ],
       [ "TrackInfo", "classTrackInfo.html", null ],

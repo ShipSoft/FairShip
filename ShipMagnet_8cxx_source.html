@@ -155,7 +155,7 @@ $(document).ready(function(){initNavTree('ShipMagnet_8cxx_source.html',''); init
 <div class="foldopen" id="foldopen00049" data-start="{" data-end="}">
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno"><a class="line" href="classShipMagnet.html#acb59b103102d2e60cde7fb28a7a2d0e1">   49</a></span>TGeoVolume* <a class="code hl_function" href="classShipMagnet.html#acb59b103102d2e60cde7fb28a7a2d0e1">ShipMagnet::MagnetSupport</a>(Double_t hwidth, Double_t hheight,</div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>                                      Double_t dz, Int_t colour,</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>                                      TGeoMedium* material) {</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>                                      TGeoMedium* <a class="code hl_variable" href="ActsStrawGeometry_8cpp.html#ab28a4576d44aa77518d33e053ea2ca12">material</a>) {</div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  [[maybe_unused]] TGeoBBox* ms = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;ms&quot;</span>, hwidth, hheight - 1., dz);</div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  <span class="comment">// try to make SHiP like logo in support</span></div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  Double_t swidth = 30.;  <span class="comment">//</span></div>
@@ -200,7 +200,7 @@ $(document).ready(function(){initNavTree('ShipMagnet_8cxx_source.html',''); init
 <div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>  TGeoCompositeShape* TS = <span class="keyword">new</span> TGeoCompositeShape(</div>
 <div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>      <span class="stringliteral">&quot;TS&quot;</span>, <span class="stringliteral">&quot;ms-FL1-FL2-FL3-FL4-FL5-FL6-SL1:r-SL2:r-SL3:r-SL4:r-SL5:r-SL6:r&quot;</span>);</div>
 <div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span> </div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>  TGeoVolume* T = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;TSUP&quot;</span>, TS, material);</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>  TGeoVolume* T = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;TSUP&quot;</span>, TS, <a class="code hl_variable" href="ActsStrawGeometry_8cpp.html#ab28a4576d44aa77518d33e053ea2ca12">material</a>);</div>
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>  T-&gt;SetLineColor(colour);</div>
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>  <span class="keywordflow">return</span> T;</div>
 <div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>}</div>
@@ -395,6 +395,7 @@ $(document).ready(function(){initNavTree('ShipMagnet_8cxx_source.html',''); init
 <div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>  }</div>
 <div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>}</div>
 </div>
+<div class="ttc" id="aActsStrawGeometry_8cpp_html_ab28a4576d44aa77518d33e053ea2ca12"><div class="ttname"><a href="ActsStrawGeometry_8cpp.html#ab28a4576d44aa77518d33e053ea2ca12">material</a></div><div class="ttdeci">std::shared_ptr&lt; const Acts::HomogeneousSurfaceMaterial &gt; material</div><div class="ttdef"><b>Definition</b> <a href="ActsStrawGeometry_8cpp_source.html#l00072">ActsStrawGeometry.cpp:72</a></div></div>
 <div class="ttc" id="aShipBellField_8cxx_html_a9842927f33236414d34831f59ed1c28f"><div class="ttname"><a href="ShipBellField_8cxx.html#a9842927f33236414d34831f59ed1c28f">cm</a></div><div class="ttdeci">constexpr Double_t cm</div><div class="ttdef"><b>Definition</b> <a href="ShipBellField_8cxx_source.html#l00024">ShipBellField.cxx:24</a></div></div>
 <div class="ttc" id="aShipBellField_8cxx_html_ae0699ca79e23818d99b9ee18334a9325"><div class="ttname"><a href="ShipBellField_8cxx.html#ae0699ca79e23818d99b9ee18334a9325">m</a></div><div class="ttdeci">constexpr Double_t m</div><div class="ttdef"><b>Definition</b> <a href="ShipBellField_8cxx_source.html#l00025">ShipBellField.cxx:25</a></div></div>
 <div class="ttc" id="aShipGeoUtil_8h_html"><div class="ttname"><a href="ShipGeoUtil_8h.html">ShipGeoUtil.h</a></div></div>

@@ -105,7 +105,7 @@ $(document).ready(function(){initNavTree('namespaceshipgen.html',''); initResiza
 Functions</h2></td></tr>
 <tr class="memitem:ac85d3b1e8d74de7b65eee39a98e92c1b" id="r_ac85d3b1e8d74de7b65eee39a98e92c1b"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceshipgen.html#ac85d3b1e8d74de7b65eee39a98e92c1b">MeanMaterialBudget</a> (std::span&lt; const double, 3 &gt; start, std::span&lt; const double, 3 &gt; end, std::span&lt; double, 10 &gt; mparam)</td></tr>
 <tr class="separator:ac85d3b1e8d74de7b65eee39a98e92c1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a697900e14010bb7c6ec21c4130c4574b" id="r_a697900e14010bb7c6ec21c4130c4574b"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceshipgen.html#a697900e14010bb7c6ec21c4130c4574b">NuclearCrossSection_mbarn</a> (const TGeoMaterial &amp;material)</td></tr>
+<tr class="memitem:a697900e14010bb7c6ec21c4130c4574b" id="r_a697900e14010bb7c6ec21c4130c4574b"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceshipgen.html#a697900e14010bb7c6ec21c4130c4574b">NuclearCrossSection_mbarn</a> (const TGeoMaterial &amp;<a class="el" href="ActsStrawGeometry_8cpp.html#ab28a4576d44aa77518d33e053ea2ca12">material</a>)</td></tr>
 <tr class="separator:a697900e14010bb7c6ec21c4130c4574b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abf37dd718f47d2835452543cb4b3f0a1" id="r_abf37dd718f47d2835452543cb4b3f0a1"><td class="memItemLeft" align="right" valign="top">constexpr double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceshipgen.html#abf37dd718f47d2835452543cb4b3f0a1">PythiaLengthToCm</a> (double x)</td></tr>
 <tr class="memdesc:abf37dd718f47d2835452543cb4b3f0a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">A <a class="el" href="namespacePythia8.html">Pythia8</a> position (mm) in FairShip units (cm).  <br /></td></tr>
@@ -228,19 +228,19 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">   86</span>               &lt;&lt; start[0] &lt;&lt; <span class="stringliteral">&quot;, y &quot;</span> &lt;&lt; start[1] &lt;&lt; <span class="stringliteral">&quot;, z &quot;</span> &lt;&lt; start[2];</div>
 <div class="line"><span class="lineno">   87</span>    <span class="keywordflow">return</span> 0.0;</div>
 <div class="line"><span class="lineno">   88</span>  }</div>
-<div class="line"><span class="lineno">   89</span>  TGeoMaterial* <a class="code hl_variable" href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">material</a> = startnode-&gt;GetVolume()-&gt;GetMedium()-&gt;GetMaterial();</div>
-<div class="line"><span class="lineno">   90</span>  lparam[0] = <a class="code hl_variable" href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">material</a>-&gt;GetDensity();</div>
+<div class="line"><span class="lineno">   89</span>  TGeoMaterial* <a class="code hl_variable" href="ActsStrawGeometry_8cpp.html#ab28a4576d44aa77518d33e053ea2ca12">material</a> = startnode-&gt;GetVolume()-&gt;GetMedium()-&gt;GetMaterial();</div>
+<div class="line"><span class="lineno">   90</span>  lparam[0] = <a class="code hl_variable" href="ActsStrawGeometry_8cpp.html#ab28a4576d44aa77518d33e053ea2ca12">material</a>-&gt;GetDensity();</div>
 <div class="line"><span class="lineno">   91</span>  <span class="keywordflow">if</span> (lparam[0] &gt; mparam[7]) mparam[7] = lparam[0];</div>
-<div class="line"><span class="lineno">   92</span>  lparam[1] = <a class="code hl_variable" href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">material</a>-&gt;GetRadLen();</div>
-<div class="line"><span class="lineno">   93</span>  lparam[2] = <a class="code hl_variable" href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">material</a>-&gt;GetA();</div>
-<div class="line"><span class="lineno">   94</span>  lparam[3] = <a class="code hl_variable" href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">material</a>-&gt;GetZ();</div>
+<div class="line"><span class="lineno">   92</span>  lparam[1] = <a class="code hl_variable" href="ActsStrawGeometry_8cpp.html#ab28a4576d44aa77518d33e053ea2ca12">material</a>-&gt;GetRadLen();</div>
+<div class="line"><span class="lineno">   93</span>  lparam[2] = <a class="code hl_variable" href="ActsStrawGeometry_8cpp.html#ab28a4576d44aa77518d33e053ea2ca12">material</a>-&gt;GetA();</div>
+<div class="line"><span class="lineno">   94</span>  lparam[3] = <a class="code hl_variable" href="ActsStrawGeometry_8cpp.html#ab28a4576d44aa77518d33e053ea2ca12">material</a>-&gt;GetZ();</div>
 <div class="line"><span class="lineno">   95</span>  lparam[4] = length;</div>
 <div class="line"><span class="lineno">   96</span>  lparam[5] = lparam[3] / lparam[2];</div>
-<div class="line"><span class="lineno">   97</span>  lparam[6] = <a class="code hl_variable" href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">material</a>-&gt;GetIntLen();</div>
-<div class="line"><span class="lineno">   98</span>  <span class="keywordtype">double</span> <a class="code hl_variable" href="namespacerunPythia8.html#aa6ccf15df5382fe526735a07d97d3cd4">sigma</a> = <a class="code hl_function" href="namespaceshipgen.html#a697900e14010bb7c6ec21c4130c4574b">NuclearCrossSection_mbarn</a>(*material);</div>
+<div class="line"><span class="lineno">   97</span>  lparam[6] = <a class="code hl_variable" href="ActsStrawGeometry_8cpp.html#ab28a4576d44aa77518d33e053ea2ca12">material</a>-&gt;GetIntLen();</div>
+<div class="line"><span class="lineno">   98</span>  <span class="keywordtype">double</span> <a class="code hl_variable" href="namespacerunPythia8.html#aa6ccf15df5382fe526735a07d97d3cd4">sigma</a> = <a class="code hl_function" href="namespaceshipgen.html#a697900e14010bb7c6ec21c4130c4574b">NuclearCrossSection_mbarn</a>(*<a class="code hl_variable" href="ActsStrawGeometry_8cpp.html#ab28a4576d44aa77518d33e053ea2ca12">material</a>);</div>
 <div class="line"><span class="lineno">   99</span>  <span class="keywordflow">if</span> (sigma &gt; mparam[9]) mparam[9] = <a class="code hl_variable" href="namespacerunPythia8.html#aa6ccf15df5382fe526735a07d97d3cd4">sigma</a>;</div>
-<div class="line"><span class="lineno">  100</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">material</a>-&gt;IsMixture()) {</div>
-<div class="line"><span class="lineno">  101</span>    TGeoMixture* mixture = <span class="keyword">dynamic_cast&lt;</span>TGeoMixture*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">material</a>);</div>
+<div class="line"><span class="lineno">  100</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="ActsStrawGeometry_8cpp.html#ab28a4576d44aa77518d33e053ea2ca12">material</a>-&gt;IsMixture()) {</div>
+<div class="line"><span class="lineno">  101</span>    TGeoMixture* mixture = <span class="keyword">dynamic_cast&lt;</span>TGeoMixture*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="ActsStrawGeometry_8cpp.html#ab28a4576d44aa77518d33e053ea2ca12">material</a>);</div>
 <div class="line"><span class="lineno">  102</span>    lparam[5] = 0;</div>
 <div class="line"><span class="lineno">  103</span>    <span class="keywordtype">double</span> sum = 0;</div>
 <div class="line"><span class="lineno">  104</span>    <span class="keywordflow">for</span> (Int_t iel = 0; iel &lt; mixture-&gt;GetNelements(); iel++) {</div>
@@ -300,18 +300,18 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">  158</span>    <span class="keywordflow">if</span> (snext &gt;= length) <span class="keywordflow">break</span>;</div>
 <div class="line"><span class="lineno">  159</span>    <span class="keywordflow">if</span> (!currentnode) <span class="keywordflow">break</span>;</div>
 <div class="line"><span class="lineno">  160</span>    length -= snext;</div>
-<div class="line"><span class="lineno">  161</span>    <a class="code hl_variable" href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">material</a> = currentnode-&gt;GetVolume()-&gt;GetMedium()-&gt;GetMaterial();</div>
-<div class="line"><span class="lineno">  162</span>    lparam[0] = <a class="code hl_variable" href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">material</a>-&gt;GetDensity();</div>
+<div class="line"><span class="lineno">  161</span>    <a class="code hl_variable" href="ActsStrawGeometry_8cpp.html#ab28a4576d44aa77518d33e053ea2ca12">material</a> = currentnode-&gt;GetVolume()-&gt;GetMedium()-&gt;GetMaterial();</div>
+<div class="line"><span class="lineno">  162</span>    lparam[0] = <a class="code hl_variable" href="ActsStrawGeometry_8cpp.html#ab28a4576d44aa77518d33e053ea2ca12">material</a>-&gt;GetDensity();</div>
 <div class="line"><span class="lineno">  163</span>    <span class="keywordflow">if</span> (lparam[0] &gt; mparam[7]) mparam[7] = lparam[0];</div>
-<div class="line"><span class="lineno">  164</span>    lparam[1] = <a class="code hl_variable" href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">material</a>-&gt;GetRadLen();</div>
-<div class="line"><span class="lineno">  165</span>    lparam[2] = <a class="code hl_variable" href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">material</a>-&gt;GetA();</div>
-<div class="line"><span class="lineno">  166</span>    lparam[3] = <a class="code hl_variable" href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">material</a>-&gt;GetZ();</div>
+<div class="line"><span class="lineno">  164</span>    lparam[1] = <a class="code hl_variable" href="ActsStrawGeometry_8cpp.html#ab28a4576d44aa77518d33e053ea2ca12">material</a>-&gt;GetRadLen();</div>
+<div class="line"><span class="lineno">  165</span>    lparam[2] = <a class="code hl_variable" href="ActsStrawGeometry_8cpp.html#ab28a4576d44aa77518d33e053ea2ca12">material</a>-&gt;GetA();</div>
+<div class="line"><span class="lineno">  166</span>    lparam[3] = <a class="code hl_variable" href="ActsStrawGeometry_8cpp.html#ab28a4576d44aa77518d33e053ea2ca12">material</a>-&gt;GetZ();</div>
 <div class="line"><span class="lineno">  167</span>    lparam[5] = lparam[3] / lparam[2];</div>
-<div class="line"><span class="lineno">  168</span>    lparam[6] = <a class="code hl_variable" href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">material</a>-&gt;GetIntLen();</div>
-<div class="line"><span class="lineno">  169</span>    <a class="code hl_variable" href="namespacerunPythia8.html#aa6ccf15df5382fe526735a07d97d3cd4">sigma</a> = <a class="code hl_function" href="namespaceshipgen.html#a697900e14010bb7c6ec21c4130c4574b">NuclearCrossSection_mbarn</a>(*material);</div>
+<div class="line"><span class="lineno">  168</span>    lparam[6] = <a class="code hl_variable" href="ActsStrawGeometry_8cpp.html#ab28a4576d44aa77518d33e053ea2ca12">material</a>-&gt;GetIntLen();</div>
+<div class="line"><span class="lineno">  169</span>    <a class="code hl_variable" href="namespacerunPythia8.html#aa6ccf15df5382fe526735a07d97d3cd4">sigma</a> = <a class="code hl_function" href="namespaceshipgen.html#a697900e14010bb7c6ec21c4130c4574b">NuclearCrossSection_mbarn</a>(*<a class="code hl_variable" href="ActsStrawGeometry_8cpp.html#ab28a4576d44aa77518d33e053ea2ca12">material</a>);</div>
 <div class="line"><span class="lineno">  170</span>    <span class="keywordflow">if</span> (sigma &gt; mparam[9]) mparam[9] = <a class="code hl_variable" href="namespacerunPythia8.html#aa6ccf15df5382fe526735a07d97d3cd4">sigma</a>;</div>
-<div class="line"><span class="lineno">  171</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">material</a>-&gt;IsMixture()) {</div>
-<div class="line"><span class="lineno">  172</span>      TGeoMixture* mixture = <span class="keyword">dynamic_cast&lt;</span>TGeoMixture*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">material</a>);</div>
+<div class="line"><span class="lineno">  171</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="ActsStrawGeometry_8cpp.html#ab28a4576d44aa77518d33e053ea2ca12">material</a>-&gt;IsMixture()) {</div>
+<div class="line"><span class="lineno">  172</span>      TGeoMixture* mixture = <span class="keyword">dynamic_cast&lt;</span>TGeoMixture*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="ActsStrawGeometry_8cpp.html#ab28a4576d44aa77518d33e053ea2ca12">material</a>);</div>
 <div class="line"><span class="lineno">  173</span>      lparam[5] = 0;</div>
 <div class="line"><span class="lineno">  174</span>      <span class="keywordtype">double</span> sum = 0;</div>
 <div class="line"><span class="lineno">  175</span>      <span class="keywordflow">for</span> (Int_t iel = 0; iel &lt; mixture-&gt;GetNelements(); iel++) {</div>
@@ -332,10 +332,10 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">  190</span>  mparam[8] = bparam[6];</div>
 <div class="line"><span class="lineno">  191</span>  <span class="keywordflow">return</span> bparam[0] / <a class="code hl_variable" href="namespaceadd__noise__to__field.html#a96cf5cc2cc008d7422009cb2ad93cb51">step</a>;</div>
 <div class="line"><span class="lineno">  192</span>}</div>
+<div class="ttc" id="aActsStrawGeometry_8cpp_html_ab28a4576d44aa77518d33e053ea2ca12"><div class="ttname"><a href="ActsStrawGeometry_8cpp.html#ab28a4576d44aa77518d33e053ea2ca12">material</a></div><div class="ttdeci">std::shared_ptr&lt; const Acts::HomogeneousSurfaceMaterial &gt; material</div><div class="ttdef"><b>Definition</b> <a href="ActsStrawGeometry_8cpp_source.html#l00072">ActsStrawGeometry.cpp:72</a></div></div>
 <div class="ttc" id="anamespaceadd__noise__to__field_html_a96cf5cc2cc008d7422009cb2ad93cb51"><div class="ttname"><a href="namespaceadd__noise__to__field.html#a96cf5cc2cc008d7422009cb2ad93cb51">add_noise_to_field.step</a></div><div class="ttdeci">step</div><div class="ttdef"><b>Definition</b> <a href="add__noise__to__field_8py_source.html#l00082">add_noise_to_field.py:82</a></div></div>
 <div class="ttc" id="anamespacerunPythia8_html_aa6ccf15df5382fe526735a07d97d3cd4"><div class="ttname"><a href="namespacerunPythia8.html#aa6ccf15df5382fe526735a07d97d3cd4">runPythia8.sigma</a></div><div class="ttdeci">dict sigma</div><div class="ttdef"><b>Definition</b> <a href="runPythia8_8py_source.html#l00187">runPythia8.py:187</a></div></div>
 <div class="ttc" id="anamespaceshipgen_html_a697900e14010bb7c6ec21c4130c4574b"><div class="ttname"><a href="namespaceshipgen.html#a697900e14010bb7c6ec21c4130c4574b">shipgen::NuclearCrossSection_mbarn</a></div><div class="ttdeci">double NuclearCrossSection_mbarn(const TGeoMaterial &amp;material)</div><div class="ttdef"><b>Definition</b> <a href="MeanMaterialBudget_8cxx_source.html#l00194">MeanMaterialBudget.cxx:194</a></div></div>
-<div class="ttc" id="anamespacestudy__GammaConv_html_abbc8036b3a71074383fbd57fa32aad59"><div class="ttname"><a href="namespacestudy__GammaConv.html#abbc8036b3a71074383fbd57fa32aad59">study_GammaConv.material</a></div><div class="ttdeci">material</div><div class="ttdef"><b>Definition</b> <a href="study__GammaConv_8py_source.html#l00042">study_GammaConv.py:42</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -358,8 +358,8 @@ Variables</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="MeanMaterialBudget_8cxx_source.html#l00194">194</a> of file <a class="el" href="MeanMaterialBudget_8cxx_source.html">MeanMaterialBudget.cxx</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  194</span>                                                               {</div>
 <div class="line"><span class="lineno">  195</span>  <span class="keyword">constexpr</span> <span class="keywordtype">double</span> mbarn = 1E-3 * 1E-24 * TMath::Na();  <span class="comment">// cm^2 * Avogadro</span></div>
-<div class="line"><span class="lineno">  196</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> n = material.GetDensity() / material.GetA();</div>
-<div class="line"><span class="lineno">  197</span>  <span class="keywordflow">return</span> 1. / (n * material.GetIntLen()) / mbarn;</div>
+<div class="line"><span class="lineno">  196</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> n = <a class="code hl_variable" href="ActsStrawGeometry_8cpp.html#ab28a4576d44aa77518d33e053ea2ca12">material</a>.GetDensity() / <a class="code hl_variable" href="ActsStrawGeometry_8cpp.html#ab28a4576d44aa77518d33e053ea2ca12">material</a>.GetA();</div>
+<div class="line"><span class="lineno">  197</span>  <span class="keywordflow">return</span> 1. / (n * <a class="code hl_variable" href="ActsStrawGeometry_8cpp.html#ab28a4576d44aa77518d33e053ea2ca12">material</a>.GetIntLen()) / mbarn;</div>
 <div class="line"><span class="lineno">  198</span>}</div>
 </div><!-- fragment -->
 </div>
