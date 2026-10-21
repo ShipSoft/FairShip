@@ -13,6 +13,7 @@
 #include <numeric>
 #include <set>
 #include <tuple>
+#include <unordered_map>
 #include <utility>
 
 namespace SHiP {
@@ -111,14 +112,6 @@ Layers groupLayers(const std::vector<PatRecHit>& hits,
   return layers;
 }
 
-int sharedHits(const LineSegment& a, const LineSegment& b) {
-  int shared = 0;
-  for (const int h : a.hits) {
-    shared += std::count(b.hits.begin(), b.hits.end(), h);
-  }
-  return shared;
-}
-
 /// Ranking of segments: more hits first, then the better fit
 bool better(const LineSegment& a, const LineSegment& b) {
   if (a.hits.size() != b.hits.size()) {
@@ -135,15 +128,40 @@ std::vector<LineSegment> removeDuplicates(std::vector<LineSegment> segments,
                                           double maxFraction = 1.) {
   std::sort(segments.begin(), segments.end(), better);
   std::vector<LineSegment> kept;
+  // Kept segments by hit: only segments sharing a hit can conflict, and a
+  // segment has at most one hit per layer, so the shared hits are counted
+  // from the kept segments of each of its hits
+  std::unordered_map<int, std::vector<std::size_t>> keptOfHit;
+  std::vector<int> shared;
+  std::vector<std::size_t> sharing;
   for (auto& segment : segments) {
+    sharing.clear();
+    for (const int h : segment.hits) {
+      const auto it = keptOfHit.find(h);
+      if (it == keptOfHit.end()) {
+        continue;
+      }
+      for (const std::size_t k : it->second) {
+        if (shared[k]++ == 0) {
+          sharing.push_back(k);
+        }
+      }
+    }
     const bool duplicate =
-        std::any_of(kept.begin(), kept.end(), [&](const auto& other) {
-          const int shared = sharedHits(segment, other);
-          const auto shorter = std::min(segment.hits.size(), other.hits.size());
-          return shared > maxShared || shared > maxFraction * shorter;
+        std::any_of(sharing.begin(), sharing.end(), [&](std::size_t k) {
+          const auto shorter =
+              std::min(segment.hits.size(), kept[k].hits.size());
+          return shared[k] > maxShared || shared[k] > maxFraction * shorter;
         });
+    for (const std::size_t k : sharing) {
+      shared[k] = 0;
+    }
     if (!duplicate) {
+      for (const int h : segment.hits) {
+        keptOfHit[h].push_back(kept.size());
+      }
       kept.push_back(std::move(segment));
+      shared.push_back(0);
     }
   }
   return kept;
