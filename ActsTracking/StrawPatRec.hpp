@@ -69,8 +69,11 @@ class StrawPatRec {
     /// of one view alone always gives a straight line, whichever track those
     /// hits are from; only the two views together fix x.
     int minHitsPerStereoView = 2;
-    /// Largest track slopes considered
+    /// Largest track slopes considered. The magnet bends in y, so the slopes
+    /// in x stay smaller: in neutrino DIS events, 0.1% of the reconstructible
+    /// tracks have |tx| > 0.3 downstream of the magnet, 0.01% upstream.
     double maxSlope = 0.6;
+    double maxSlopeX = 0.3;
     /// Uncertainties of the segment match at the bending plane, as
     /// sqrt(a^2 + (b / p)^2) with p in GeV: the straight segments extrapolated
     /// to the bending plane deviate more from the track the lower its
