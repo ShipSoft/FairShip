@@ -33,6 +33,8 @@ class MuonBackGenerator : public SHiP::Generator {
   Bool_t Init(const std::vector<std::string>&) override;
 
   Int_t GetNevents();
+  /** Also transport the non-neutrino tracks that crossed the scoring plane,
+   *  not only the muons. **/
   void FollowAllParticles() { followMuons = false; };
   void SetSmearBeam(Double_t sb) { fsmearBeam = sb; };
   void SetPaintRadius(Double_t r) { fPaintBeam = r; };

@@ -28,6 +28,17 @@
 
 using ShipUnit::cm;
 using ShipUnit::mm;
+
+namespace {
+// Turn (px, py) to a random azimuth, keeping the transverse momentum.
+template <typename T>
+void RandomizePhi(T& px, T& py) {
+  const double phi_random = gRandom->Uniform(0., 2 * TMath::Pi());
+  const Double_t pt = TMath::Sqrt(px * px + py * py);
+  px = pt * TMath::Cos(phi_random);
+  py = pt * TMath::Sin(phi_random);
+}
+}  // namespace
 // read events from Pythia8/Geant4 base simulation (only target + hadron
 // absorber
 
@@ -336,12 +347,12 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
     for (int i = 0; i < getMCTrackSize(); i++) {
       auto* track = getMCTrack(i);
       IncrementCounter("transported_tracks");
-      cpg->AddTrack(track->GetPdgCode(), track->GetPx(), track->GetPy(),
-                    track->GetPz(), track->GetStartX(), track->GetStartY(),
-                    track->GetStartZ(), track->GetMotherId(), false,
-                    track->GetEnergy(),
-                    track->GetStartT() / 1E9,  // convert back from ns to sec
-                    track->GetWeight(), (TMCProcess)track->GetProcID());
+      cpg->AddTrack(
+          track->GetPdgCode(), track->GetPx(), track->GetPy(), track->GetPz(),
+          track->GetStartX(), track->GetStartY(), track->GetStartZ(),
+          track->GetMotherId(), false, track->GetEnergy(),
+          track->GetStartT() / ShipUnit::s,  // ns to s, as AddTrack expects
+          track->GetWeight(), (TMCProcess)track->GetProcID());
     }
     // Each scored track is then added again as it entered the plane, as a
     // daughter of its origin entry, and only that copy is tracked. Sorted, so
@@ -358,66 +369,33 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
       IncrementCounter("plane_copies");
       cpg->AddTrack(track->GetPdgCode(), v->GetPx(), v->GetPy(), v->GetPz(),
                     v->GetX(), v->GetY(), v->GetZ(), i, true, e,
-                    v->GetTime() / 1E9,  // convert back from ns to sec
+                    v->GetTime() / ShipUnit::s,  // ns to s, as AddTrack expects
                     track->GetWeight(), kPTransportation);
     }
     return kTRUE;
   }
   auto [dx, dy] = CalculateBeamOffset(fsmearBeam, fPaintBeam);
   if (id == -1) {
+    // --MuonBackFromOrigin: the input event starts again at its production
+    // vertices, moved by the beam offset, and only the scored tracks are
+    // transported.
     for (int i = 0; i < getMCTrackSize(); i++) {
       auto* track = getMCTrack(i);
-      Int_t abspid = TMath::Abs(track->GetPdgCode());
-      px = track->GetPx();
-      py = track->GetPy();
-      pz = track->GetPz();
-      if (fPhiRandomize) {
-        double phi_random = gRandom->Uniform(0., 2 * TMath::Pi());
-        Double_t pt = track->GetPt();
-        px = pt * TMath::Cos(phi_random);
-        py = pt * TMath::Sin(phi_random);
-      }
-      vx = track->GetStartX() + dx;
-      vy = track->GetStartY() + dy;
-      vz = track->GetStartZ();
-      tof = track->GetStartT() / 1E9;  // convert back from ns to sec;
-      e = track->GetEnergy();
-      Bool_t wanttracking = false;  // only transport muons
-      if (auto element = muList.find(i); element != muList.end()) {
-        wanttracking = true;
-        if (!followMuons) {
-          auto* v = getVetoPoint(element->second);
-          TVector3 lpv = v->LastPoint();
-          TVector3 lmv = v->LastMom();
-          if (abspid == 22) {
-            e = lmv.Mag();
-          } else {
-            e = TMath::Sqrt(lmv.Mag2() +
-                            (track->GetMass()) * (track->GetMass()));
-          }
-          px = lmv[0];
-          py = lmv[1];
-          pz = lmv[2];
-          vx = lpv[0];
-          vy = lpv[1];
-          vz = lpv[2];
-          tof = v->GetTime() / 1E9;  // convert back from ns to sec
-        }
-      }
+      Double_t tpx = track->GetPx();
+      Double_t tpy = track->GetPy();
+      if (fPhiRandomize) RandomizePhi(tpx, tpy);
       IncrementCounter("transported_tracks");
-      cpg->AddTrack(track->GetPdgCode(), px, py, pz, vx, vy, vz,
-                    track->GetMotherId(), wanttracking, e, tof,
-                    track->GetWeight(), (TMCProcess)track->GetProcID());
+      cpg->AddTrack(
+          track->GetPdgCode(), tpx, tpy, track->GetPz(),
+          track->GetStartX() + dx, track->GetStartY() + dy, track->GetStartZ(),
+          track->GetMotherId(), muList.contains(i), track->GetEnergy(),
+          track->GetStartT() / ShipUnit::s,  // ns to s, as AddTrack expects
+          track->GetWeight(), (TMCProcess)track->GetProcID());
     }
   } else {
     vx += dx / 100.;
     vy += dy / 100.;
-    if (fPhiRandomize) {
-      double phi_random = gRandom->Uniform(0., 2 * TMath::Pi());
-      Double_t pt = TMath::Sqrt(px * px + py * py);
-      px = pt * TMath::Cos(phi_random);
-      py = pt * TMath::Sin(phi_random);
-    }
+    if (fPhiRandomize) RandomizePhi(px, py);
     IncrementCounter("accepted_entries");
     IncrementCounter("selected_muons");
     cpg->AddTrack(static_cast<int>(pythiaid), px, py, pz, vx * 100., vy * 100.,
