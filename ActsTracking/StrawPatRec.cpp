@@ -214,26 +214,33 @@ bool fitLine(LineSegment& line, const std::vector<PatRecHit>& hits, bool fitX,
     }
     line.signs = signs;
 
-    Eigen::MatrixXd a(n, nPar);
-    Eigen::VectorXd b(n);
+    // Normal equations of the weighted least squares, at most 4x4
+    Eigen::Matrix4d ata = Eigen::Matrix4d::Zero();
+    Eigen::Vector4d atb = Eigen::Vector4d::Zero();
     for (int k = 0; k < n; ++k) {
       const auto& hit = hits[line.hits[k]];
       const auto& w = *hit.wire;
       const Eigen::Vector3d m = sign(w);
       const double dz = w.z - z0;
-      const double weight = 1. / hit.sigma;
+      const double weight = 1. / (hit.sigma * hit.sigma);
       // m . (P - c), with P = (x0 + tx dz, y0 + ty dz, w.z)
       double rhs = signs[k] * hit.drift + m.x() * w.x + m.y() * w.y;
+      Eigen::Vector4d row;
       if (fitX) {
-        a.row(k) << m.x(), m.x() * dz, m.y(), m.y() * dz;
+        row << m.x(), m.x() * dz, m.y(), m.y() * dz;
       } else {
-        a.row(k) << m.y(), m.y() * dz;
+        row << m.y(), m.y() * dz, 0., 0.;
         rhs -= m.x() * line.x(w.z);
       }
-      a.row(k) *= weight;
-      b(k) = rhs * weight;
+      ata.noalias() += weight * row * row.transpose();
+      atb += weight * rhs * row;
     }
-    const Eigen::VectorXd p = a.colPivHouseholderQr().solve(b);
+    Eigen::Vector4d p = Eigen::Vector4d::Zero();
+    if (fitX) {
+      p = ata.ldlt().solve(atb);
+    } else {
+      p.head<2>() = ata.topLeftCorner<2, 2>().ldlt().solve(atb.head<2>());
+    }
     if (!p.allFinite()) {
       return false;
     }
