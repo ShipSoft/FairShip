@@ -114,6 +114,11 @@ class ShipDigiReco:
             self.caloScoringPlaneDetector = CaloScoringPlaneDetector(
                 "CaloScoringPlane", self.sTree, outtree=self.recoTree
             )
+        elif getattr(global_variables, "caloScoringPlanePIDFile", None):
+            logger.warning(
+                "--caloScoringPlanePID was given, but the input has no CaloScoringPlanePoint branch "
+                "(simulated before the scoring plane existed?); it is ignored and no scoring-plane hits are made."
+            )
 
         # for the digitizing step
         if hasattr(self, "strawtubes"):
