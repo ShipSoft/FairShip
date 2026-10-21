@@ -526,6 +526,13 @@ std::vector<LineSegment> StrawPatRec::findSegments(
   // projects the stereo hits differently. Duplicate segments are removed
   // after the stereo views.
   yLines = uniqueLines(std::move(yLines));
+  // The search in the stereo views grows with the number of y lines; in
+  // showers, with thousands of hits, only the best are searched
+  if (m_cfg.maxYLines > 0 &&
+      static_cast<int>(yLines.size()) > m_cfg.maxYLines) {
+    std::stable_sort(yLines.begin(), yLines.end(), better);
+    yLines.resize(m_cfg.maxYLines);
+  }
 
   // For each y line, find the x line in the stereo views. Each stereo hit
   // gives two x positions, one for each side of the wire.
