@@ -5,6 +5,7 @@
 #include "CaloScoringPlanePID.h"
 
 #include <algorithm>
+#include <array>
 #include <cmath>
 #include <cstdlib>
 #include <map>
@@ -38,6 +39,7 @@ bool IsHadronCode(Int_t pdg) {
 }
 
 using Species = CaloScoringPlanePID::Species;
+using Row = std::array<Double_t, CaloScoringPlanePID::kNSpecies>;
 
 void RequireFinite(Double_t energy) {
   if (!std::isfinite(energy)) {
@@ -47,12 +49,12 @@ void RequireFinite(Double_t energy) {
   }
 }
 
-// The only outcome of row s of the 3x3 matrix m, or kUnknown if more than one
-// is possible and a number has to be drawn.
-Species OnlyOutcome(const std::vector<Double_t>& m, Species s) {
+// The only outcome of a matrix row, or kUnknown if more than one is possible
+// and a number has to be drawn.
+Species OnlyOutcome(const Row& row) {
   Species only = CaloScoringPlanePID::kUnknown;
   for (Int_t j = 0; j < CaloScoringPlanePID::kNSpecies; ++j) {
-    if (m[3 * s + j] <= 0.) continue;
+    if (row[j] <= 0.) continue;
     if (only != CaloScoringPlanePID::kUnknown)
       return CaloScoringPlanePID::kUnknown;
     only = static_cast<Species>(j);
@@ -60,12 +62,12 @@ Species OnlyOutcome(const std::vector<Double_t>& m, Species s) {
   return only;
 }
 
-// Outcome of row s of m for the uniform number u.
-Species Draw(const std::vector<Double_t>& m, Species s, Double_t u) {
+// Outcome of the row of true species s for the uniform number u.
+Species Draw(const Row& row, Species s, Double_t u) {
   double cumulative = 0.;
   Int_t last = s;
   for (Int_t j = 0; j < CaloScoringPlanePID::kNSpecies; ++j) {
-    const double p = m[3 * s + j];
+    const double p = row[j];
     if (p <= 0.) continue;
     last = j;
     cumulative += p;
@@ -156,19 +158,18 @@ CaloScoringPlanePID::Species CaloScoringPlanePID::TrueSpecies(Int_t pdg) const {
   return kUnknown;
 }
 
-std::vector<Double_t> CaloScoringPlanePID::Matrix(Double_t energy) const {
+CaloScoringPlanePID::Row CaloScoringPlanePID::InterpolatedRow(
+    Double_t energy, Int_t trueSpecies) const {
   // A NaN would pass both clamps below and make upper_bound return end().
   RequireFinite(energy);
-  std::vector<Double_t> m(9);
+  Row row{};
+  const auto rowAt = [&](size_t k) {
+    for (Int_t j = 0; j < kNSpecies; ++j) row[j] = At(k, trueSpecies, j);
+    return row;
+  };
   const size_t n = fEnergies.size();
-  if (n == 1 || energy <= fEnergies.front()) {
-    std::copy_n(fMatrices.begin(), 9, m.begin());
-    return m;
-  }
-  if (energy >= fEnergies.back()) {
-    std::copy_n(fMatrices.begin() + 9 * (n - 1), 9, m.begin());
-    return m;
-  }
+  if (n == 1 || energy <= fEnergies.front()) return rowAt(0);
+  if (energy >= fEnergies.back()) return rowAt(n - 1);
   const auto hi = static_cast<size_t>(
       std::upper_bound(fEnergies.begin(), fEnergies.end(), energy) -
       fEnergies.begin());
@@ -178,10 +179,17 @@ std::vector<Double_t> CaloScoringPlanePID::Matrix(Double_t energy) const {
           ? std::log(energy / fEnergies[lo]) /
                 std::log(fEnergies[hi] / fEnergies[lo])
           : (energy - fEnergies[lo]) / (fEnergies[hi] - fEnergies[lo]);
+  for (Int_t j = 0; j < kNSpecies; ++j) {
+    row[j] = (1. - w) * At(lo, trueSpecies, j) + w * At(hi, trueSpecies, j);
+  }
+  return row;
+}
+
+std::vector<Double_t> CaloScoringPlanePID::Matrix(Double_t energy) const {
+  std::vector<Double_t> m(9);
   for (Int_t i = 0; i < kNSpecies; ++i) {
-    for (Int_t j = 0; j < kNSpecies; ++j) {
-      m[3 * i + j] = (1. - w) * At(lo, i, j) + w * At(hi, i, j);
-    }
+    const Row row = InterpolatedRow(energy, i);
+    std::copy(row.begin(), row.end(), m.begin() + 3L * i);
   }
   return m;
 }
@@ -199,7 +207,7 @@ Double_t CaloScoringPlanePID::Probability(Species trueSpecies,
   RequireFinite(energy);
   if (trueSpecies == kUnknown) return recoSpecies == kUnknown ? 1. : 0.;
   if (recoSpecies == kUnknown) return 0.;
-  return Matrix(energy)[3 * trueSpecies + recoSpecies];
+  return InterpolatedRow(energy, trueSpecies)[recoSpecies];
 }
 
 CaloScoringPlanePID::Species CaloScoringPlanePID::Identify(Int_t pdg,
@@ -207,7 +215,7 @@ CaloScoringPlanePID::Species CaloScoringPlanePID::Identify(Int_t pdg,
                                                            Double_t u) const {
   const Species s = TrueSpecies(pdg);
   if (s == kUnknown || !std::isfinite(energy)) return kUnknown;
-  return Draw(Matrix(energy), s, u);
+  return Draw(InterpolatedRow(energy, s), s, u);
 }
 
 CaloScoringPlanePID::Species CaloScoringPlanePID::Identify(Int_t pdg,
@@ -215,15 +223,17 @@ CaloScoringPlanePID::Species CaloScoringPlanePID::Identify(Int_t pdg,
                                                            TRandom& rng) const {
   const Species s = TrueSpecies(pdg);
   if (s == kUnknown || !std::isfinite(energy)) return kUnknown;
-  const std::vector<Double_t> m = Matrix(energy);
+  const Row row = InterpolatedRow(energy, s);
   // Draw only when the outcome can vary, so that a fixed outcome leaves the
   // generator's sequence untouched.
-  if (const Species only = OnlyOutcome(m, s); only != kUnknown) return only;
-  return Draw(m, s, rng.Rndm());
+  if (const Species only = OnlyOutcome(row); only != kUnknown) return only;
+  return Draw(row, s, rng.Rndm());
 }
 
 CaloScoringPlanePID::Species CaloScoringPlanePID::Identify(
     const CaloScoringPlanePoint& point, TRandom& rng) const {
+  // Skip the energy (a TDatabasePDG lookup) for photons, nuclei, ...
+  if (TrueSpecies(point.PdgCode()) == kUnknown) return kUnknown;
   return Identify(point.PdgCode(), Energy(point), rng);
 }
 
