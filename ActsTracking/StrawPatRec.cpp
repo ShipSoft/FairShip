@@ -448,9 +448,14 @@ double signedWireDistance(const LineSegment& line, const StrawWire& wire) {
   return (p - c).dot(signDirection(line, wire));
 }
 
+StrawPatRec::StrawPatRec(const Config& config, FieldAlong fieldAlong)
+    : m_cfg(config), m_fieldAlong(std::move(fieldAlong)) {}
+
 StrawPatRec::StrawPatRec(const Config& config, double bendingZ,
                          double fieldIntegral)
-    : m_cfg(config), m_bendingZ(bendingZ), m_fieldIntegral(fieldIntegral) {}
+    : StrawPatRec(config, [bendingZ, fieldIntegral](const LineSegment&) {
+        return FieldIntegrals{fieldIntegral, 0., bendingZ};
+      }) {}
 
 std::vector<LineSegment> StrawPatRec::findSegments(
     const std::vector<PatRecHit>& hits, bool upstream, int maxSegments) const {
@@ -627,11 +632,12 @@ std::vector<LineSegment> StrawPatRec::findSegments(
 }
 
 std::optional<TrackCandidate> StrawPatRec::match(
-    const LineSegment& upstream, const LineSegment& downstream) const {
+    const LineSegment& upstream, const LineSegment& downstream,
+    const FieldIntegrals& field) const {
   TrackCandidate candidate{upstream, downstream};
   // The field kicks the track in y by q * kKick * integral(Bx dz) / pz
   const double kink = downstream.ty - upstream.ty;
-  const double kick = kKick * m_fieldIntegral;
+  const double kick = kKick * field.bx;
   if (kink == 0. || kick == 0.) {
     return std::nullopt;
   }
@@ -639,13 +645,19 @@ std::optional<TrackCandidate> StrawPatRec::match(
   candidate.momentum = pz * std::sqrt(1. + upstream.tx * upstream.tx +
                                       upstream.ty * upstream.ty);
   candidate.charge = kink / kick > 0. ? 1 : -1;
+  if (candidate.momentum < m_cfg.minMomentum) {
+    return std::nullopt;
+  }
 
-  const double z = m_bendingZ;
+  // and in x by -q * kKick * integral(By dz) / pz: the kink in y scaled by
+  // -By/Bx. Positions are compared at the centre of the kick in y.
+  const double kinkX = -kink * field.by / field.bx;
+  const double z = field.centre;
   const double p = candidate.momentum;
   const auto sigma = [p](double a, double b) { return std::hypot(a, b / p); };
   const double dx = (upstream.x(z) - downstream.x(z)) /
                     sigma(m_cfg.matchSigmaX, m_cfg.matchSigmaXPerP);
-  const double dtx = (upstream.tx - downstream.tx) /
+  const double dtx = (upstream.tx + kinkX - downstream.tx) /
                      sigma(m_cfg.matchSigmaTx, m_cfg.matchSigmaTxPerP);
   const double dy = (upstream.y(z) - downstream.y(z)) /
                     sigma(m_cfg.matchSigmaY, m_cfg.matchSigmaYPerP);
@@ -653,13 +665,27 @@ std::optional<TrackCandidate> StrawPatRec::match(
   return candidate;
 }
 
+FieldIntegrals StrawPatRec::averageField(const FieldIntegrals& upstream,
+                                         const FieldIntegrals& downstream) {
+  return {0.5 * (upstream.bx + downstream.bx),
+          0.5 * (upstream.by + downstream.by),
+          0.5 * (upstream.centre + downstream.centre)};
+}
+
 std::vector<TrackCandidate> StrawPatRec::matchSegments(
     const std::vector<LineSegment>& upstream,
     const std::vector<LineSegment>& downstream) const {
+  std::vector<FieldIntegrals> downstreamField;
+  downstreamField.reserve(downstream.size());
+  for (const auto& d : downstream) {
+    downstreamField.push_back(m_fieldAlong(d));
+  }
   std::vector<TrackCandidate> pairs;
   for (const auto& u : upstream) {
-    for (const auto& d : downstream) {
-      auto candidate = match(u, d);
+    const FieldIntegrals upstreamField = m_fieldAlong(u);
+    for (std::size_t k = 0; k < downstream.size(); ++k) {
+      auto candidate = match(u, downstream[k],
+                             averageField(upstreamField, downstreamField[k]));
       if (candidate &&
           (candidate->matchChi2 < m_cfg.maxMatchChi2 ||
            (candidate->momentum < m_cfg.lowMomentum &&
@@ -690,7 +716,9 @@ std::optional<TrackCandidate> StrawPatRec::fitCandidate(
   if (upstream.empty() || downstream.empty()) {
     return std::nullopt;
   }
-  return match(upstream.front(), downstream.front());
+  return match(upstream.front(), downstream.front(),
+               averageField(m_fieldAlong(upstream.front()),
+                            m_fieldAlong(downstream.front())));
 }
 
 }  // namespace SHiP
