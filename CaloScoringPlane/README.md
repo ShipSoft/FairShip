@@ -86,7 +86,8 @@ From Python, with a PID file:
 from caloScoringPlanePID import load_pid
 
 pid = load_pid("$FAIRSHIP/geometry/caloScoringPlane_pid_provided.yaml")  # None: perfect PID
-if pid.Identify(point) == ROOT.CaloScoringPlanePID.kMuon:  # point: CaloScoringPlanePoint
+rng = ROOT.TRandom3(4357)
+if pid.Identify(point, rng) == ROOT.CaloScoringPlanePID.kMuon:  # point: CaloScoringPlanePoint
     ...
 ```
 
@@ -102,9 +103,15 @@ pid.Set({10., 100.},
         {0.98, 0.02, 0.00,  0.01, 0.97, 0.02,  0.00, 0.01, 0.99,   // 10 GeV
          0.99, 0.01, 0.00,  0.01, 0.98, 0.01,  0.00, 0.00, 1.00},  // 100 GeV
         {}, /*logInterpolation=*/kTRUE);
-CaloScoringPlanePID::Species s = pid.Identify(point);  // uses gRandom
+CaloScoringPlanePID::Species s = pid.Identify(point, *gRandom);  // or any TRandom
 double pMisId = pid.Probability(CaloScoringPlanePID::kHadron, CaloScoringPlanePID::kMuon, 7.5);
 ```
+
+`Identify()` draws from the generator it is given, and only when the outcome
+can vary: an unknown species, or a matrix row with a single non-zero entry
+(as with perfect identification), uses no random number. The digitiser gives
+the scoring plane its own `TRandom3`, so adding it does not change what the
+other detectors draw.
 
 `Set()` checks the model (finite, non-negative entries, rows summing to 1,
 increasing energies) and throws `std::invalid_argument` otherwise, keeping the

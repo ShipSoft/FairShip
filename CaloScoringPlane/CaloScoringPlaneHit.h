@@ -10,6 +10,7 @@
 #include "TVector3.h"
 
 class CaloScoringPlanePoint;
+class TRandom;
 
 /**
  * @brief Digitised scoring-plane hit with a particle-identification outcome.
@@ -30,9 +31,12 @@ class CaloScoringPlaneHit : public SHiP::DetectorHit {
    * @param pos_res  Gaussian x/y resolution (cm), 0 = no smearing
    * @param time_res Gaussian time resolution (ns), 0 = no smearing
    * @param pid      identified species (CaloScoringPlanePID::Species)
+   * @param rng      generator for the smearing (gRandom if null); nothing is
+   *                 drawn without smearing
    */
   CaloScoringPlaneHit(const CaloScoringPlanePoint* p, Double_t t0,
-                      Double_t pos_res, Double_t time_res, Int_t pid);
+                      Double_t pos_res, Double_t time_res, Int_t pid,
+                      TRandom* rng = nullptr);
 
   ~CaloScoringPlaneHit() override = default;
   CaloScoringPlaneHit(const CaloScoringPlaneHit& hit) = default;

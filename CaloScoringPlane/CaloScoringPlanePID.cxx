@@ -37,6 +37,36 @@ bool IsHadronCode(Int_t pdg) {
   return (a / 100) % 10 != 0;
 }
 
+using Species = CaloScoringPlanePID::Species;
+
+// The only outcome of row s of the 3x3 matrix m, or kUnknown if more than one
+// is possible and a number has to be drawn.
+Species OnlyOutcome(const std::vector<Double_t>& m, Species s) {
+  Species only = CaloScoringPlanePID::kUnknown;
+  for (Int_t j = 0; j < CaloScoringPlanePID::kNSpecies; ++j) {
+    if (m[3 * s + j] <= 0.) continue;
+    if (only != CaloScoringPlanePID::kUnknown)
+      return CaloScoringPlanePID::kUnknown;
+    only = static_cast<Species>(j);
+  }
+  return only;
+}
+
+// Outcome of row s of m for the uniform number u.
+Species Draw(const std::vector<Double_t>& m, Species s, Double_t u) {
+  double cumulative = 0.;
+  Int_t last = s;
+  for (Int_t j = 0; j < CaloScoringPlanePID::kNSpecies; ++j) {
+    const double p = m[3 * s + j];
+    if (p <= 0.) continue;
+    last = j;
+    cumulative += p;
+    if (u < cumulative) return static_cast<Species>(j);
+  }
+  // u at (or, through rounding, above) the row total: last non-empty outcome.
+  return static_cast<Species>(last);
+}
+
 }  // namespace
 
 CaloScoringPlanePID::CaloScoringPlanePID() { SetIdentity(); }
@@ -159,28 +189,24 @@ CaloScoringPlanePID::Species CaloScoringPlanePID::Identify(Int_t pdg,
                                                            Double_t u) const {
   const Species s = TrueSpecies(pdg);
   if (s == kUnknown) return kUnknown;
+  return Draw(Matrix(energy), s, u);
+}
+
+CaloScoringPlanePID::Species CaloScoringPlanePID::Identify(Int_t pdg,
+                                                           Double_t energy,
+                                                           TRandom& rng) const {
+  const Species s = TrueSpecies(pdg);
+  if (s == kUnknown) return kUnknown;
   const std::vector<Double_t> m = Matrix(energy);
-  double cumulative = 0.;
-  Int_t last = s;
-  for (Int_t j = 0; j < kNSpecies; ++j) {
-    const double p = m[3 * s + j];
-    if (p <= 0.) continue;
-    last = j;
-    cumulative += p;
-    if (u < cumulative) return static_cast<Species>(j);
-  }
-  // u at (or, through rounding, above) the row total: last non-empty outcome.
-  return static_cast<Species>(last);
+  // Draw only when the outcome can vary, so that a fixed outcome leaves the
+  // generator's sequence untouched.
+  if (const Species only = OnlyOutcome(m, s); only != kUnknown) return only;
+  return Draw(m, s, rng.Rndm());
 }
 
 CaloScoringPlanePID::Species CaloScoringPlanePID::Identify(
-    Int_t pdg, Double_t energy) const {
-  return Identify(pdg, energy, gRandom->Rndm());
-}
-
-CaloScoringPlanePID::Species CaloScoringPlanePID::Identify(
-    const CaloScoringPlanePoint& point) const {
-  return Identify(point.PdgCode(), Energy(point));
+    const CaloScoringPlanePoint& point, TRandom& rng) const {
+  return Identify(point.PdgCode(), Energy(point), rng);
 }
 
 Double_t CaloScoringPlanePID::Energy(const CaloScoringPlanePoint& point) {

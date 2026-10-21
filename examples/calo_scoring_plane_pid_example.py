@@ -18,6 +18,7 @@ parser.add_argument("-p", "--pid", default="", help="PID YAML file (default: per
 args = parser.parse_args()
 
 pid = load_pid(args.pid)
+rng = ROOT.TRandom3(4357)
 pid.Print()
 
 tree = ROOT.TFile.Open(args.sim)["cbmsim"]
@@ -25,7 +26,7 @@ table = Counter()  # (true species, identified species) -> count
 for event in tree:
     for point in event.CaloScoringPlanePoint:
         true_species = pid.TrueSpecies(point.PdgCode())
-        table[(true_species, pid.Identify(point))] += 1
+        table[(true_species, pid.Identify(point, rng))] += 1
 
 name = ROOT.CaloScoringPlanePID.SpeciesName
 print("true -> identified: count")

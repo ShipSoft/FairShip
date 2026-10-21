@@ -11,6 +11,7 @@
 #include "Rtypes.h"
 
 class CaloScoringPlanePoint;
+class TRandom;
 
 /**
  * @brief Energy-dependent electron / hadron / muon identification from
@@ -39,13 +40,13 @@ class CaloScoringPlanePoint;
  * @code
  *   CaloScoringPlanePID pid;
  *   pid.Set({3., 100.}, {...18 values...}, {}, kTRUE);
- *   CaloScoringPlanePID::Species s = pid.Identify(point);  // uses gRandom
+ *   CaloScoringPlanePID::Species s = pid.Identify(point, *gRandom);
  * @endcode
  * and from Python:
  * @code
  *   from caloScoringPlanePID import load_pid
  *   pid = load_pid("$FAIRSHIP/geometry/caloScoringPlane_pid_provided.yaml")
- *   if pid.Identify(point) == ROOT.CaloScoringPlanePID.kMuon: ...
+ *   if pid.Identify(point, rng) == ROOT.CaloScoringPlanePID.kMuon: ...
  * @endcode
  */
 class CaloScoringPlanePID {
@@ -87,10 +88,14 @@ class CaloScoringPlanePID {
 
   /** Draw the PID outcome with a given uniform number u in [0, 1]. */
   Species Identify(Int_t pdg, Double_t energy, Double_t u) const;
-  /** Draw the PID outcome using gRandom. */
-  Species Identify(Int_t pdg, Double_t energy) const;
-  /** PDG code and total energy taken from the point; uses gRandom. */
-  Species Identify(const CaloScoringPlanePoint& point) const;
+  /**
+   * Draw the PID outcome with the generator rng. No number is drawn when the
+   * outcome is fixed: for an unknown species, or a matrix row with a single
+   * non-zero entry (as everywhere with perfect identification).
+   */
+  Species Identify(Int_t pdg, Double_t energy, TRandom& rng) const;
+  /** Same, with the PDG code and total energy taken from the point. */
+  Species Identify(const CaloScoringPlanePoint& point, TRandom& rng) const;
 
   /** Total energy (GeV) at the point, using the PDG mass (0 if unknown). */
   static Double_t Energy(const CaloScoringPlanePoint& point);

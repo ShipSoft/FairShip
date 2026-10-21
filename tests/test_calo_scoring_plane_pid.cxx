@@ -17,7 +17,7 @@
 
 #include "CaloScoringPlanePID.h"
 #include "CaloScoringPlanePoint.h"
-#include "TRandom.h"
+#include "TRandom3.h"
 #include "TVector3.h"
 
 namespace {
@@ -129,11 +129,11 @@ int main() {
   {
     S pid;
     pid.Set({1.}, {0.8, 0.2, 0.0, 0.3, 0.6, 0.1, 0.0, 0.0, 1.0});
-    gRandom->SetSeed(4357);
+    TRandom3 rng(4357);
     const int n = 200000;
     int nE = 0, nMu = 0;
     for (int k = 0; k < n; ++k) {
-      const auto s = pid.Identify(211, 3.);
+      const auto s = pid.Identify(211, 3., rng);
       nE += s == S::kElectron;
       nMu += s == S::kMuon;
     }
@@ -141,6 +141,24 @@ int main() {
           "pi->e frequency");
     check(std::fabs(nMu / static_cast<double>(n) - 0.1) < 0.005,
           "pi->mu frequency");
+  }
+
+  // --- a fixed outcome draws no random number ---
+  {
+    S perfect;
+    TRandom3 used(1), reference(1);
+    for (int pdg : {11, -13, 211, 22, 12}) perfect.Identify(pdg, 5., used);
+    check(used.Rndm() == reference.Rndm(),
+          "perfect PID and unknown species leave the generator untouched");
+
+    S pid;  // electron row (0.5, 0.5, 0) at 15 GeV, (0, 1, 0) from 20 GeV
+    pid.Set({10., 20.}, Concat(kIdentity, kElectronAsHadron));
+    TRandom3 a(2), b(2);
+    check(pid.Identify(11, 50., a) == S::kHadron, "single non-zero entry");
+    check(a.Rndm() == b.Rndm(), "single non-zero entry draws nothing");
+    pid.Identify(11, 15., a);  // two possible outcomes: one draw
+    b.Rndm();
+    check(a.Rndm() == b.Rndm(), "a varying outcome draws exactly once");
   }
 
   // --- overrides ---
@@ -182,7 +200,9 @@ int main() {
   expectInvalid([](S& p) { p.Set({1.}, kIdentity, {{22, 3}}); },
                 "override species out of range");
   expectInvalid(
-      [](S& p) { p.Set({1.}, kIdentity, {{211, S::kHadron}, {-211, S::kMuon}}); },
+      [](S& p) {
+        p.Set({1.}, kIdentity, {{211, S::kHadron}, {-211, S::kMuon}});
+      },
       "conflicting overrides");
 
   if (failures) {

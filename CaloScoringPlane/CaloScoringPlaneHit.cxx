@@ -14,18 +14,20 @@ CaloScoringPlaneHit::CaloScoringPlaneHit() : SHiP::DetectorHit() {}
 
 CaloScoringPlaneHit::CaloScoringPlaneHit(const CaloScoringPlanePoint* p,
                                          Double_t t0, Double_t pos_res,
-                                         Double_t time_res, Int_t pid)
+                                         Double_t time_res, Int_t pid,
+                                         TRandom* rng)
     : SHiP::DetectorHit() {
   if (!p) {
     LOG(error) << "CaloScoringPlaneHit: null CaloScoringPlanePoint pointer";
     return;
   }
+  TRandom& random = rng ? *rng : *gRandom;
   fDetectorID = p->GetDetectorID();
-  fX = pos_res > 0. ? gRandom->Gaus(p->GetX(), pos_res) : p->GetX();
-  fY = pos_res > 0. ? gRandom->Gaus(p->GetY(), pos_res) : p->GetY();
+  fX = pos_res > 0. ? random.Gaus(p->GetX(), pos_res) : p->GetX();
+  fY = pos_res > 0. ? random.Gaus(p->GetY(), pos_res) : p->GetY();
   fZ = p->GetZ();
   const Double_t t = p->GetTime() + t0;
-  fTime = time_res > 0. ? gRandom->Gaus(t, time_res) : t;
+  fTime = time_res > 0. ? random.Gaus(t, time_res) : t;
   fPx = p->GetPx();
   fPy = p->GetPy();
   fPz = p->GetPz();
