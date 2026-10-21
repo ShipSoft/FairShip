@@ -39,6 +39,14 @@ bool IsHadronCode(Int_t pdg) {
 
 using Species = CaloScoringPlanePID::Species;
 
+void RequireFinite(Double_t energy) {
+  if (!std::isfinite(energy)) {
+    std::ostringstream os;
+    os << "CaloScoringPlanePID: energy must be finite, not " << energy;
+    throw std::invalid_argument(os.str());
+  }
+}
+
 // The only outcome of row s of the 3x3 matrix m, or kUnknown if more than one
 // is possible and a number has to be drawn.
 Species OnlyOutcome(const std::vector<Double_t>& m, Species s) {
@@ -149,6 +157,8 @@ CaloScoringPlanePID::Species CaloScoringPlanePID::TrueSpecies(Int_t pdg) const {
 }
 
 std::vector<Double_t> CaloScoringPlanePID::Matrix(Double_t energy) const {
+  // A NaN would pass both clamps below and make upper_bound return end().
+  RequireFinite(energy);
   std::vector<Double_t> m(9);
   const size_t n = fEnergies.size();
   if (n == 1 || energy <= fEnergies.front()) {
@@ -179,6 +189,14 @@ std::vector<Double_t> CaloScoringPlanePID::Matrix(Double_t energy) const {
 Double_t CaloScoringPlanePID::Probability(Species trueSpecies,
                                           Species recoSpecies,
                                           Double_t energy) const {
+  for (const Int_t s :
+       {static_cast<Int_t>(trueSpecies), static_cast<Int_t>(recoSpecies)}) {
+    if (s < kUnknown || s >= kNSpecies) {
+      throw std::out_of_range("CaloScoringPlanePID: species " +
+                              std::to_string(s) + " out of range");
+    }
+  }
+  RequireFinite(energy);
   if (trueSpecies == kUnknown) return recoSpecies == kUnknown ? 1. : 0.;
   if (recoSpecies == kUnknown) return 0.;
   return Matrix(energy)[3 * trueSpecies + recoSpecies];
@@ -188,7 +206,7 @@ CaloScoringPlanePID::Species CaloScoringPlanePID::Identify(Int_t pdg,
                                                            Double_t energy,
                                                            Double_t u) const {
   const Species s = TrueSpecies(pdg);
-  if (s == kUnknown) return kUnknown;
+  if (s == kUnknown || !std::isfinite(energy)) return kUnknown;
   return Draw(Matrix(energy), s, u);
 }
 
@@ -196,7 +214,7 @@ CaloScoringPlanePID::Species CaloScoringPlanePID::Identify(Int_t pdg,
                                                            Double_t energy,
                                                            TRandom& rng) const {
   const Species s = TrueSpecies(pdg);
-  if (s == kUnknown) return kUnknown;
+  if (s == kUnknown || !std::isfinite(energy)) return kUnknown;
   const std::vector<Double_t> m = Matrix(energy);
   // Draw only when the outcome can vary, so that a fixed outcome leaves the
   // generator's sequence untouched.

@@ -80,13 +80,23 @@ class CaloScoringPlanePID {
   /** True species for a PDG code (overrides applied). */
   Species TrueSpecies(Int_t pdg) const;
 
-  /** Interpolated probability P(identified as reco | true species, E). */
+  /**
+   * Interpolated probability P(identified as reco | true species, E). Throws
+   * std::out_of_range for a species other than kUnknown, kElectron, kHadron
+   * or kMuon, and std::invalid_argument for a non-finite energy.
+   */
   Double_t Probability(Species trueSpecies, Species recoSpecies,
                        Double_t energy) const;
-  /** Interpolated 3x3 matrix, row-major (9 values). */
+  /**
+   * Interpolated 3x3 matrix, row-major (9 values). Throws
+   * std::invalid_argument for a non-finite energy.
+   */
   std::vector<Double_t> Matrix(Double_t energy) const;
 
-  /** Draw the PID outcome with a given uniform number u in [0, 1]. */
+  /**
+   * Draw the PID outcome with a given uniform number u in [0, 1]. A
+   * non-finite energy gives kUnknown, as for the overloads below.
+   */
   Species Identify(Int_t pdg, Double_t energy, Double_t u) const;
   /**
    * Draw the PID outcome with the generator rng. No number is drawn when the

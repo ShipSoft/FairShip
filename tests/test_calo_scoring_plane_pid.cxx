@@ -179,6 +179,51 @@ int main() {
           "muon energy");
   }
 
+  // --- non-finite energies and out-of-range species ---
+  {
+    S pid;
+    pid.Set({10., 20.}, Concat(kIdentity, kElectronAsHadron));
+    TRandom3 used(3), reference(3);
+    for (double e : {nan, inf, -inf}) {
+      check(pid.Identify(11, e, 0.5) == S::kUnknown, "non-finite energy: u");
+      check(pid.Identify(11, e, used) == S::kUnknown,
+            "non-finite energy: generator");
+    }
+    check(used.Rndm() == reference.Rndm(), "non-finite energy draws nothing");
+    bool threw = false;
+    try {
+      pid.Matrix(nan);
+    } catch (const std::invalid_argument&) {
+      threw = true;
+    }
+    check(threw, "Matrix(NaN) throws");
+    threw = false;
+    try {
+      pid.Probability(S::kElectron, S::kElectron, nan);
+    } catch (const std::invalid_argument&) {
+      threw = true;
+    }
+    check(threw, "Probability(NaN) throws");
+    for (int bad : {3, -2}) {
+      threw = false;
+      try {
+        pid.Probability(static_cast<S::Species>(bad), S::kMuon, 1.);
+      } catch (const std::out_of_range&) {
+        threw = true;
+      }
+      check(threw, "true species " + std::to_string(bad) + " throws");
+      threw = false;
+      try {
+        pid.Probability(S::kMuon, static_cast<S::Species>(bad), 1.);
+      } catch (const std::out_of_range&) {
+        threw = true;
+      }
+      check(threw, "identified species " + std::to_string(bad) + " throws");
+    }
+    check(pid.Probability(S::kUnknown, S::kUnknown, 1.) == 1.,
+          "unknown -> unknown still allowed");
+  }
+
   // --- validation in Set() ---
   expectInvalid([](S& p) { p.Set({}, {}); }, "no energy points");
   expectInvalid([](S& p) { p.Set({1.}, {1, 0, 0}); }, "too few values");
