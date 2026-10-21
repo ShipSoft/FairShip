@@ -129,9 +129,8 @@ def make_pid(model: PIDModel, source: str = "<model>") -> Any:
             overrides,
             model.log_interpolation,
         )
-    except Exception as error:  # std::invalid_argument, raised through cppyy
-        message = str(error).splitlines()[-1].strip()
-        raise PIDConfigError(f"{source}: {message}") from error
+    except ROOT.std.invalid_argument as error:  # the model was rejected by Set()
+        raise PIDConfigError(f"{source}: {error.what()}") from error
     return pid
 
 
