@@ -62,9 +62,10 @@ def test_log_interpolation_and_several_points():
     assert len(model.matrices) == 18
 
 
-def test_overrides_by_absolute_pdg_code():
+def test_overrides_keep_the_sign():
+    # the sign is folded by CaloScoringPlanePID::Set(), which can then reject conflicts
     model = parse(config(pdg_overrides={22: "electron", -211: "none", 130: "muon"}))
-    assert model.overrides == {22: 0, 211: -1, 130: 2}
+    assert model.overrides == {22: 0, -211: -1, 130: 2}
 
 
 def test_empty_pdg_overrides_key_is_allowed():
@@ -92,6 +93,7 @@ def test_empty_pdg_overrides_key_is_allowed():
         (config(pdg_overrides=[22]), "'pdg_overrides' must map PDG codes"),
         (config(pdg_overrides={"gamma": "electron"}), "keys must be PDG codes"),
         (config(pdg_overrides={22: "photon"}), "pdg_overrides[22] must be one of"),
+        (config(pdg_overrides={22: ["electron"]}), "pdg_overrides[22] must be one of"),
     ],
 )
 def test_malformed_files_are_rejected(cfg, message):
@@ -170,3 +172,22 @@ def test_nan_in_the_file_is_rejected(ROOT, tmp_path):
     path.write_text("points:\n  - energy: .nan\n    matrix: [[1, 0, 0], [0, 1, 0], [0, 0, 1]]\n")
     with pytest.raises(PIDConfigError, match="not finite"):
         load_pid(str(path))
+
+
+def test_override_applies_to_both_signs(ROOT):
+    from caloScoringPlanePID import make_pid
+
+    pid = make_pid(parse(config(pdg_overrides={-211: "muon"})))
+    assert pid.TrueSpecies(211) == ROOT.CaloScoringPlanePID.kMuon
+    assert pid.TrueSpecies(-211) == ROOT.CaloScoringPlanePID.kMuon
+
+
+def test_conflicting_overrides_are_rejected(ROOT, tmp_path):
+    from caloScoringPlanePID import load_pid
+
+    path = tmp_path / "pid.yaml"
+    path.write_text(yaml.safe_dump(config(pdg_overrides={211: "hadron", -211: "muon"})))
+    with pytest.raises(PIDConfigError) as error:
+        load_pid(str(path))
+    assert str(path) in str(error.value)
+    assert "conflicting overrides" in str(error.value)
