@@ -4,9 +4,10 @@
 """Digitisation of the scoring plane with electron / hadron / muon identification.
 
 The identification itself is done by the C++ class CaloScoringPlanePID
-(CaloScoringPlane/CaloScoringPlanePID.h), which reads energy-dependent 3x3 confusion
-matrices from a YAML file (ShipReco.py --caloScoringPlanePID) and interpolates
-them at the particle energy. See CaloScoringPlane/README.md.
+(CaloScoringPlane/CaloScoringPlanePID.h), which interpolates energy-dependent 3x3
+confusion matrices at the particle energy. The matrices are read from a YAML file
+(ShipReco.py --caloScoringPlanePID) by python/caloScoringPlanePID.py. See
+CaloScoringPlane/README.md.
 """
 
 import logging
@@ -14,6 +15,7 @@ import logging
 import global_variables
 import ROOT
 from BaseDetector import BaseDetector
+from caloScoringPlanePID import load_pid
 
 logger = logging.getLogger(__name__)
 
@@ -34,11 +36,9 @@ class CaloScoringPlaneDetector(BaseDetector):
         self.ignored = {abs(int(p)) for p in cfg.get("IgnoredPdg", [12, 14, 16])}
 
         pid_file = getattr(global_variables, "caloScoringPlanePIDFile", None)
-        if pid_file:
-            self.pid = ROOT.CaloScoringPlanePID(pid_file)
-        else:
+        if not pid_file:
             logger.warning("CaloScoringPlane PID: no --caloScoringPlanePID file given, using perfect PID")
-            self.pid = ROOT.CaloScoringPlanePID()
+        self.pid = load_pid(pid_file)
         self.pid.Print()
 
     def digitize(self) -> None:

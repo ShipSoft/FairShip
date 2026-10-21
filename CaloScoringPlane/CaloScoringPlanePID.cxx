@@ -4,58 +4,28 @@
 
 #include "CaloScoringPlanePID.h"
 
-#include <yaml-cpp/yaml.h>
-
 #include <algorithm>
 #include <cmath>
 #include <cstdlib>
+#include <map>
 #include <sstream>
 #include <stdexcept>
+#include <string>
 #include <utility>
+#include <vector>
 
 #include "CaloScoringPlanePoint.h"
 #include "FairLogger.h"
 #include "TDatabasePDG.h"
 #include "TParticlePDG.h"
 #include "TRandom.h"
-#include "TString.h"
-#include "TSystem.h"
 
 namespace {
 
 constexpr Double_t kRowSumTolerance = 1e-6;
 
-/// Parsed and validated configuration, committed only when complete.
-struct Model {
-  std::vector<Double_t> energies;
-  std::vector<Double_t> matrices;  // 9 per energy, internal species order
-  std::map<Int_t, Int_t> overrides;
-  bool logInterpolation = false;
-};
-
-[[noreturn]] void Fail(const YAML::Node& node, const std::string& what) {
-  std::ostringstream os;
-  os << "CaloScoringPlanePID: " << what;
-  if (!node.Mark().is_null()) os << " (line " << node.Mark().line + 1 << ")";
-  throw std::runtime_error(os.str());
-}
-
-double ToDouble(const YAML::Node& node, const std::string& where) {
-  try {
-    return node.as<double>();
-  } catch (const YAML::Exception&) {
-    Fail(node, where + " must be a number");
-  }
-}
-
-Int_t SpeciesFromName(const YAML::Node& node) {
-  const std::string name = node.as<std::string>();
-  if (name == "electron") return CaloScoringPlanePID::kElectron;
-  if (name == "hadron") return CaloScoringPlanePID::kHadron;
-  if (name == "muon") return CaloScoringPlanePID::kMuon;
-  if (name == "none") return CaloScoringPlanePID::kUnknown;
-  Fail(node,
-       "unknown species '" + name + "' (use electron, hadron, muon or none)");
+[[noreturn]] void Invalid(const std::string& what) {
+  throw std::invalid_argument("CaloScoringPlanePID::Set: " + what);
 }
 
 // PDG Monte Carlo numbering scheme: mesons and baryons have a non-zero quark
@@ -67,116 +37,9 @@ bool IsHadronCode(Int_t pdg) {
   return (a / 100) % 10 != 0;
 }
 
-Model Parse(const YAML::Node& root) {
-  if (!root.IsMap()) Fail(root, "top level must be a mapping");
-  for (const auto& kv : root) {
-    const auto key = kv.first.as<std::string>();
-    if (key != "species" && key != "interpolation" && key != "points" &&
-        key != "pdg_overrides") {
-      Fail(kv.first, "unknown key '" + key + "'");
-    }
-  }
-  Model m;
-
-  // Order of rows/columns in the file -> internal species index.
-  std::vector<Int_t> order = {CaloScoringPlanePID::kElectron,
-                              CaloScoringPlanePID::kHadron,
-                              CaloScoringPlanePID::kMuon};
-  if (const YAML::Node species = root["species"]) {
-    if (!species.IsSequence() || species.size() != 3) {
-      Fail(species, "'species' must list electron, hadron and muon");
-    }
-    for (size_t i = 0; i < 3; ++i) order[i] = SpeciesFromName(species[i]);
-    std::vector<Int_t> sorted = order;
-    std::sort(sorted.begin(), sorted.end());
-    if (sorted != std::vector<Int_t>{CaloScoringPlanePID::kElectron,
-                                     CaloScoringPlanePID::kHadron,
-                                     CaloScoringPlanePID::kMuon}) {
-      Fail(species,
-           "'species' must be a permutation of electron, hadron, "
-           "muon");
-    }
-  }
-
-  if (const YAML::Node interp = root["interpolation"]) {
-    const auto mode = interp.as<std::string>();
-    if (mode != "linear" && mode != "log") {
-      Fail(interp, "'interpolation' must be linear or log");
-    }
-    m.logInterpolation = mode == "log";
-  }
-
-  const YAML::Node points = root["points"];
-  if (!points || !points.IsSequence() || points.size() == 0) {
-    Fail(root, "'points' must be a non-empty list of {energy, matrix}");
-  }
-  for (size_t k = 0; k < points.size(); ++k) {
-    const YAML::Node point = points[k];
-    const std::string where = "points[" + std::to_string(k) + "]";
-    if (!point.IsMap() || !point["energy"] || !point["matrix"]) {
-      Fail(point, where + " must have 'energy' and 'matrix'");
-    }
-    const double e = ToDouble(point["energy"], where + ".energy");
-    if (!m.energies.empty() && e <= m.energies.back()) {
-      Fail(point, "energies must be strictly increasing");
-    }
-    if (m.logInterpolation && e <= 0.) {
-      Fail(point, "log interpolation needs positive energies");
-    }
-    m.energies.push_back(e);
-
-    const YAML::Node matrix = point["matrix"];
-    if (!matrix.IsSequence() || matrix.size() != 3) {
-      Fail(matrix, where + ".matrix must have 3 rows");
-    }
-    const size_t base = m.matrices.size();
-    m.matrices.resize(base + 9, 0.);
-    for (size_t i = 0; i < 3; ++i) {
-      const YAML::Node row = matrix[i];
-      const std::string rwhere = where + ".matrix[" + std::to_string(i) + "]";
-      if (!row.IsSequence() || row.size() != 3) {
-        Fail(row, rwhere + " must have 3 entries");
-      }
-      double sum = 0.;
-      for (size_t j = 0; j < 3; ++j) {
-        const double x = ToDouble(row[j], rwhere);
-        if (x < 0.) Fail(row, rwhere + " has a negative entry");
-        sum += x;
-        m.matrices[base + static_cast<size_t>(3 * order[i] + order[j])] = x;
-      }
-      if (std::fabs(sum - 1.) > kRowSumTolerance) {
-        std::ostringstream os;
-        os << rwhere << " sums to " << sum << ", expected 1";
-        Fail(row, os.str());
-      }
-    }
-  }
-
-  if (const YAML::Node overrides = root["pdg_overrides"];
-      overrides && !overrides.IsNull()) {  // empty key = no overrides
-    if (!overrides.IsMap()) {
-      Fail(overrides, "'pdg_overrides' must map PDG codes to species");
-    }
-    for (const auto& kv : overrides) {
-      Int_t pdg = 0;
-      try {
-        pdg = kv.first.as<Int_t>();
-      } catch (const YAML::Exception&) {
-        Fail(kv.first, "'pdg_overrides' keys must be PDG codes");
-      }
-      m.overrides[std::abs(pdg)] = SpeciesFromName(kv.second);
-    }
-  }
-  return m;
-}
-
 }  // namespace
 
 CaloScoringPlanePID::CaloScoringPlanePID() { SetIdentity(); }
-
-CaloScoringPlanePID::CaloScoringPlanePID(const std::string& yamlFile) {
-  Load(yamlFile);
-}
 
 void CaloScoringPlanePID::SetIdentity() {
   fEnergies = {1.0};
@@ -186,43 +49,62 @@ void CaloScoringPlanePID::SetIdentity() {
   fLogInterpolation = kFALSE;
 }
 
-void CaloScoringPlanePID::Set(std::vector<Double_t> energies,
-                              std::vector<Double_t> matrices,
-                              std::map<Int_t, Int_t> overrides,
+void CaloScoringPlanePID::Set(const std::vector<Double_t>& energies,
+                              const std::vector<Double_t>& matrices,
+                              const std::map<Int_t, Int_t>& overrides,
                               Bool_t logInterpolation) {
-  fEnergies = std::move(energies);
-  fMatrices = std::move(matrices);
-  fOverrides = std::move(overrides);
+  // Validate everything before changing the model, so that a rejected model
+  // leaves the previous one in place.
+  const size_t n = energies.size();
+  if (n == 0) Invalid("no energy points");
+  if (matrices.size() != 9 * n) {
+    Invalid("expected " + std::to_string(9 * n) +
+            " matrix values (9 per energy point), got " +
+            std::to_string(matrices.size()));
+  }
+  for (size_t k = 0; k < n; ++k) {
+    std::ostringstream where;
+    where << "energy point " << k << " (" << energies[k] << " GeV)";
+    if (!std::isfinite(energies[k])) Invalid(where.str() + ": not finite");
+    if (k > 0 && energies[k] <= energies[k - 1]) {
+      Invalid(where.str() + ": energies must be strictly increasing");
+    }
+    if (logInterpolation && energies[k] <= 0.) {
+      Invalid(where.str() + ": log interpolation needs positive energies");
+    }
+    for (Int_t i = 0; i < kNSpecies; ++i) {
+      const std::string row = where.str() + ", true " + SpeciesName(i) + " row";
+      double sum = 0.;
+      for (Int_t j = 0; j < kNSpecies; ++j) {
+        const double x = matrices[9 * k + static_cast<size_t>(3 * i + j)];
+        if (!std::isfinite(x)) Invalid(row + ": entry not finite");
+        if (x < 0.) Invalid(row + ": negative entry");
+        sum += x;
+      }
+      if (std::fabs(sum - 1.) > kRowSumTolerance) {
+        std::ostringstream os;
+        os << row << " sums to " << sum << ", expected 1";
+        Invalid(os.str());
+      }
+    }
+  }
+  std::map<Int_t, Int_t> byAbsPdg;
+  for (const auto& [pdg, species] : overrides) {
+    if (species < kUnknown || species >= kNSpecies) {
+      Invalid("override for PDG code " + std::to_string(pdg) + ": species " +
+              std::to_string(species) +
+              " is not -1 (unknown), 0 (electron), 1 (hadron) or 2 (muon)");
+    }
+    const auto [it, inserted] = byAbsPdg.emplace(std::abs(pdg), species);
+    if (!inserted && it->second != species) {
+      Invalid("conflicting overrides for |PDG code| " +
+              std::to_string(std::abs(pdg)));
+    }
+  }
+  fEnergies = energies;
+  fMatrices = matrices;
+  fOverrides = std::move(byAbsPdg);
   fLogInterpolation = logInterpolation;
-}
-
-void CaloScoringPlanePID::Load(const std::string& yamlFile) {
-  TString path(yamlFile.c_str());
-  gSystem->ExpandPathName(path);
-  Model m;
-  try {
-    m = Parse(YAML::LoadFile(path.Data()));
-  } catch (const YAML::BadFile&) {
-    throw std::runtime_error("CaloScoringPlanePID: cannot open '" +
-                             std::string(path.Data()) + "'");
-  } catch (const std::exception& e) {  // YAML::Exception or our own
-    throw std::runtime_error(std::string(e.what()) + " [" + path.Data() + "]");
-  }
-  Set(std::move(m.energies), std::move(m.matrices), std::move(m.overrides),
-      m.logInterpolation);
-  LOG(info) << "CaloScoringPlanePID: " << fEnergies.size()
-            << " energy point(s) from " << path.Data();
-}
-
-void CaloScoringPlanePID::LoadFromString(const std::string& yaml) {
-  Model m;
-  try {
-    m = Parse(YAML::Load(yaml));
-  } catch (const YAML::Exception& e) {
-    throw std::runtime_error(std::string("CaloScoringPlanePID: ") + e.what());
-  }
-  Set(std::move(m.energies), std::move(m.matrices), std::move(m.overrides),
-      m.logInterpolation);
 }
 
 CaloScoringPlanePID::Species CaloScoringPlanePID::TrueSpecies(Int_t pdg) const {

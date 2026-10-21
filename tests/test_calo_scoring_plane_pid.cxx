@@ -3,13 +3,17 @@
 // Collaboration
 
 // Unit tests for CaloScoringPlanePID (energy-dependent e/h/mu confusion
-// matrices read from YAML).
+// matrices). The YAML file format is tested in
+// tests/test_caloScoringPlanePID.py.
 
 #include <cmath>
 #include <functional>
 #include <iostream>
+#include <limits>
+#include <map>
 #include <stdexcept>
 #include <string>
+#include <vector>
 
 #include "CaloScoringPlanePID.h"
 #include "CaloScoringPlanePoint.h"
@@ -31,35 +35,40 @@ bool close(double a, double b, double tol = 1e-9) {
   return std::fabs(a - b) < tol;
 }
 
-void expectThrow(const std::string& yaml, const std::string& what) {
-  CaloScoringPlanePID pid;
-  try {
-    pid.LoadFromString(yaml);
-  } catch (const std::runtime_error&) {
-    return;
-  }
-  check(false, "expected exception: " + what);
+using S = CaloScoringPlanePID;
+using Values = std::vector<double>;
+
+const Values kIdentity = {1, 0, 0, 0, 1, 0, 0, 0, 1};
+// Electrons identified as hadrons, the other rows diagonal.
+const Values kElectronAsHadron = {0, 1, 0, 0, 1, 0, 0, 0, 1};
+
+Values Concat(const Values& a, const Values& b) {
+  Values out = a;
+  out.insert(out.end(), b.begin(), b.end());
+  return out;
 }
 
-using S = CaloScoringPlanePID;
-
-// Two energy points; electron row changes with energy, others constant.
-const char* kTwoPoints = R"(
-species: [electron, hadron, muon]
-points:
-  - energy: 10
-    matrix: [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
-  - energy: 20
-    matrix: [[0, 1, 0], [0, 1, 0], [0, 0, 1]]
-)";
-
-std::string OnePoint(const std::string& matrix, const std::string& extra = "") {
-  return extra + "\npoints:\n  - energy: 1\n    matrix: " + matrix + "\n";
+// Set() must throw std::invalid_argument and keep the previous model.
+void expectInvalid(const std::function<void(S&)>& set,
+                   const std::string& what) {
+  S pid;
+  pid.Set({1.}, {0.5, 0.5, 0, 0, 1, 0, 0, 0, 1});
+  try {
+    set(pid);
+  } catch (const std::invalid_argument&) {
+    check(close(pid.Probability(S::kElectron, S::kElectron, 1.), 0.5),
+          what + ": previous model kept");
+    return;
+  }
+  check(false, "expected std::invalid_argument: " + what);
 }
 
 }  // namespace
 
 int main() {
+  const double nan = std::numeric_limits<double>::quiet_NaN();
+  const double inf = std::numeric_limits<double>::infinity();
+
   // --- default: perfect PID ---
   {
     S pid;
@@ -85,7 +94,7 @@ int main() {
   // --- linear interpolation and clamping ---
   {
     S pid;
-    pid.LoadFromString(kTwoPoints);
+    pid.Set({10., 20.}, Concat(kIdentity, kElectronAsHadron));
     check(close(pid.Probability(S::kElectron, S::kElectron, 15.), 0.5),
           "linear midpoint");
     check(close(pid.Probability(S::kElectron, S::kHadron, 12.5), 0.25),
@@ -109,28 +118,17 @@ int main() {
   // --- log interpolation ---
   {
     S pid;
-    pid.LoadFromString(std::string("interpolation: log\n") + kTwoPoints);
+    pid.Set({10., 20.}, Concat(kIdentity, kElectronAsHadron), {}, kTRUE);
+    check(pid.IsLogInterpolation(), "log interpolation set");
     const double e = std::sqrt(10. * 20.);  // geometric mean -> weight 0.5
     check(close(pid.Probability(S::kElectron, S::kElectron, e), 0.5),
           "log midpoint");
   }
 
-  // --- rows/columns given in a different order ---
-  {
-    S pid;
-    pid.LoadFromString(OnePoint("[[0.7, 0.0, 0.3], [0, 1, 0], [0, 0, 1]]",
-                                "species: [muon, electron, hadron]"));
-    check(close(pid.Probability(S::kMuon, S::kMuon, 1.), 0.7), "reorder mm");
-    check(close(pid.Probability(S::kMuon, S::kHadron, 1.), 0.3), "reorder mh");
-    check(close(pid.Probability(S::kElectron, S::kElectron, 1.), 1.),
-          "reorder ee");
-  }
-
   // --- frequencies ---
   {
     S pid;
-    pid.LoadFromString(
-        OnePoint("[[0.8, 0.2, 0.0], [0.3, 0.6, 0.1], [0.0, 0.0, 1.0]]"));
+    pid.Set({1.}, {0.8, 0.2, 0.0, 0.3, 0.6, 0.1, 0.0, 0.0, 1.0});
     gRandom->SetSeed(4357);
     const int n = 200000;
     int nE = 0, nMu = 0;
@@ -148,18 +146,10 @@ int main() {
   // --- overrides ---
   {
     S pid;
-    pid.LoadFromString(OnePoint("[[1, 0, 0], [0, 1, 0], [0, 0, 1]]",
-                                "pdg_overrides: {22: electron, -211: none}"));
+    pid.Set({1.}, kIdentity, {{22, S::kElectron}, {-211, S::kUnknown}});
     check(pid.TrueSpecies(22) == S::kElectron, "override photon");
-    check(pid.TrueSpecies(211) == S::kUnknown, "override pi to none");
-  }
-
-  // --- empty pdg_overrides (all entries commented out) ---
-  {
-    S pid;
-    pid.LoadFromString(
-        OnePoint("[[1, 0, 0], [0, 1, 0], [0, 0, 1]]", "pdg_overrides:"));
-    check(pid.TrueSpecies(22) == S::kUnknown, "empty pdg_overrides accepted");
+    check(pid.TrueSpecies(211) == S::kUnknown, "override pi to unknown");
+    check(pid.TrueSpecies(-211) == S::kUnknown, "override applies to |pdg|");
   }
 
   // --- energy from a point ---
@@ -171,54 +161,29 @@ int main() {
           "muon energy");
   }
 
-  // --- validation ---
-  const std::string id = "[[1, 0, 0], [0, 1, 0], [0, 0, 1]]";
-  expectThrow("points: [", "malformed YAML");
-  expectThrow("points: []", "no points");
-  expectThrow(R"(points:
-  - energy: 2
-    matrix: [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
-  - energy: 1
-    matrix: [[1, 0, 0], [0, 1, 0], [0, 0, 1]])",
-              "decreasing energies");
-  expectThrow(OnePoint("[[0.5, 0.4, 0], [0, 1, 0], [0, 0, 1]]"), "row sum");
-  expectThrow(OnePoint("[[1, 0], [0, 1], [0, 0]]"), "not 3x3");
-  expectThrow(OnePoint("[[1.2, -0.2, 0], [0, 1, 0], [0, 0, 1]]"), "negative");
-  expectThrow(OnePoint("[[a, 0, 0], [0, 1, 0], [0, 0, 1]]"), "not a number");
-  expectThrow(OnePoint(id, "energies: [1]"), "unknown key");
-  expectThrow(OnePoint(id, "species: [electron, electron, muon]"),
-              "species not a permutation");
-  expectThrow(OnePoint(id, "species: [electron, pion, muon]"),
-              "unknown species");
-  expectThrow(OnePoint(id, "interpolation: spline"), "bad interpolation");
-  expectThrow(R"(interpolation: log
-points:
-  - energy: 0
-    matrix: [[1, 0, 0], [0, 1, 0], [0, 0, 1]])",
-              "log with zero energy");
-  {
-    CaloScoringPlanePID pid;
-    bool threw = false;
-    try {
-      pid.Load("does/not/exist.yaml");
-    } catch (const std::runtime_error&) {
-      threw = true;
-    }
-    check(threw, "missing file throws");
-    check(pid.Identify(13, 5., 0.5) == S::kMuon,
-          "failed load leaves model unchanged");
-  }
-
-  // --- the example file shipped with FairShip ---
-  {
-    S pid;
-    try {
-      pid.Load("geometry/caloScoringPlane_pid_provided.yaml");
-      check(!pid.GetEnergies().empty(), "shipped PID file loads");
-    } catch (const std::exception& e) {
-      check(false, std::string("example file: ") + e.what());
-    }
-  }
+  // --- validation in Set() ---
+  expectInvalid([](S& p) { p.Set({}, {}); }, "no energy points");
+  expectInvalid([](S& p) { p.Set({1.}, {1, 0, 0}); }, "too few values");
+  expectInvalid([](S& p) { p.Set({2., 1.}, Concat(kIdentity, kIdentity)); },
+                "decreasing energies");
+  expectInvalid([](S& p) { p.Set({1., 1.}, Concat(kIdentity, kIdentity)); },
+                "repeated energy");
+  expectInvalid([](S& p) { p.Set({1.}, {0.5, 0.4, 0, 0, 1, 0, 0, 0, 1}); },
+                "row sum");
+  expectInvalid([](S& p) { p.Set({1.}, {1.2, -0.2, 0, 0, 1, 0, 0, 0, 1}); },
+                "negative entry");
+  expectInvalid([&](S& p) { p.Set({1.}, {nan, 1, 0, 0, 1, 0, 0, 0, 1}); },
+                "NaN entry");
+  expectInvalid([&](S& p) { p.Set({nan}, kIdentity); }, "NaN energy");
+  expectInvalid([&](S& p) { p.Set({1., inf}, Concat(kIdentity, kIdentity)); },
+                "infinite energy");
+  expectInvalid([](S& p) { p.Set({0.}, kIdentity, {}, kTRUE); },
+                "log with zero energy");
+  expectInvalid([](S& p) { p.Set({1.}, kIdentity, {{22, 3}}); },
+                "override species out of range");
+  expectInvalid(
+      [](S& p) { p.Set({1.}, kIdentity, {{211, S::kHadron}, {-211, S::kMuon}}); },
+      "conflicting overrides");
 
   if (failures) {
     std::cerr << failures << " check(s) failed" << std::endl;

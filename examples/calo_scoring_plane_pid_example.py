@@ -10,13 +10,14 @@ import argparse
 from collections import Counter
 
 import ROOT
+from caloScoringPlanePID import load_pid
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-f", "--sim", required=True, help="simulation file")
 parser.add_argument("-p", "--pid", default="", help="PID YAML file (default: perfect PID)")
 args = parser.parse_args()
 
-pid = ROOT.CaloScoringPlanePID(args.pid) if args.pid else ROOT.CaloScoringPlanePID()
+pid = load_pid(args.pid)
 pid.Print()
 
 tree = ROOT.TFile.Open(args.sim)["cbmsim"]
