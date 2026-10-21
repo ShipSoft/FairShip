@@ -7,6 +7,7 @@
 #include <Eigen/Dense>
 #include <algorithm>
 #include <cmath>
+#include <cstring>
 #include <limits>
 #include <map>
 #include <numeric>
@@ -32,6 +33,10 @@ constexpr int kXLinesPerYLine = 4;
 /// same line
 constexpr double kSameLineFraction = 0.75;
 
+/// Margin of the bisection window of `closestHit` (cm), for wires parallel
+/// and in a z plane only to rounding
+constexpr double kWindowMargin = 1e-4;
+
 /// Unit vector along d x t for a wire d and the track direction t, which
 /// gives the sign of the ACTS straw surface loc0
 Eigen::Vector3d signDirection(const LineSegment& line, const StrawWire& wire) {
@@ -39,6 +44,45 @@ Eigen::Vector3d signDirection(const LineSegment& line, const StrawWire& wire) {
   const Eigen::Vector3d d(wire.dx, wire.dy, wire.dz);
   return d.cross(t).normalized();
 }
+
+/// `signDirection` and `signedWireDistance` for the wires of one line. The
+/// direction depends only on the slopes of the line and of the wire, and the
+/// wires of a view share their direction, so it is computed once per wire
+/// direction (with the same arithmetic, so the results are identical). The
+/// line must not change while this is in use.
+class SignDirections {
+ public:
+  explicit SignDirections(const LineSegment& line)
+      : m_line(line), m_t(Eigen::Vector3d(line.tx, line.ty, 1.).normalized()) {}
+
+  Eigen::Vector3d operator()(const StrawWire& wire) {
+    const double d[3] = {wire.dx, wire.dy, wire.dz};
+    for (const auto& entry : m_cache) {
+      if (std::memcmp(entry.d, d, sizeof d) == 0) {
+        return entry.m;
+      }
+    }
+    const Eigen::Vector3d m =
+        Eigen::Vector3d(wire.dx, wire.dy, wire.dz).cross(m_t).normalized();
+    m_cache.push_back({{wire.dx, wire.dy, wire.dz}, m});
+    return m;
+  }
+
+  double distance(const StrawWire& wire) {
+    const Eigen::Vector3d p(m_line.x(wire.z), m_line.y(wire.z), wire.z);
+    const Eigen::Vector3d c(wire.x, wire.y, wire.z);
+    return (p - c).dot((*this)(wire));
+  }
+
+ private:
+  struct Entry {
+    double d[3];
+    Eigen::Vector3d m;
+  };
+  const LineSegment& m_line;
+  Eigen::Vector3d m_t;
+  std::vector<Entry> m_cache;
+};
 
 bool isStereo(const StrawWire& wire) {
   return wire.view == 1 || wire.view == 2;
@@ -130,11 +174,11 @@ bool fitLine(LineSegment& line, const std::vector<PatRecHit>& hits, bool fitX,
     line.z0 = z0;
 
     // Signs from the current line
+    SignDirections sign(line);
     std::vector<int> signs(n);
     bool changed = line.signs.size() != static_cast<std::size_t>(n);
     for (int k = 0; k < n; ++k) {
-      const double predicted =
-          signedWireDistance(line, *hits[line.hits[k]].wire);
+      const double predicted = sign.distance(*hits[line.hits[k]].wire);
       signs[k] = predicted >= 0. ? 1 : -1;
       changed = changed || signs[k] != line.signs[k];
     }
@@ -145,7 +189,7 @@ bool fitLine(LineSegment& line, const std::vector<PatRecHit>& hits, bool fitX,
     for (int k = 0; k < n; ++k) {
       const auto& hit = hits[line.hits[k]];
       const auto& w = *hit.wire;
-      const Eigen::Vector3d m = signDirection(line, w);
+      const Eigen::Vector3d m = sign(w);
       const double dz = w.z - z0;
       const double weight = 1. / hit.sigma;
       // m . (P - c), with P = (x0 + tx dz, y0 + ty dz, w.z)
@@ -174,13 +218,13 @@ bool fitLine(LineSegment& line, const std::vector<PatRecHit>& hits, bool fitX,
     }
 
     // Residuals, and the worst outlier
+    SignDirections fitted(line);
     line.chi2 = 0.;
     int worst = -1;
     double worstResidual = outlierCut;
     for (int k = 0; k < n; ++k) {
       const auto& hit = hits[line.hits[k]];
-      const double residual =
-          signs[k] * hit.drift - signedWireDistance(line, *hit.wire);
+      const double residual = signs[k] * hit.drift - fitted.distance(*hit.wire);
       line.chi2 += residual * residual / (hit.sigma * hit.sigma);
       if (std::abs(residual) > worstResidual) {
         worstResidual = std::abs(residual);
@@ -199,18 +243,103 @@ bool fitLine(LineSegment& line, const std::vector<PatRecHit>& hits, bool fitX,
   return true;
 }
 
-/// Hit in `layer` closest to the line within `tolerance`, or -1
-int closestHit(const LineSegment& line, const std::vector<int>& layer,
-               const std::vector<PatRecHit>& hits, double tolerance) {
-  int best = -1;
-  double bestDistance = tolerance;
+/// The hits of one layer sorted by the position of their wire across the
+/// wires, so that `closestHit` bisects instead of scanning the layer
+struct LayerIndex {
+  /// False if the wires are not parallel in a plane of constant z: the
+  /// layer is then scanned
+  bool sorted{false};
+  /// Unit vector across the wires, d x z
+  double mx{0.};
+  double my{0.};
+  /// z of the first wire, and the largest offset of the others from it
+  double z{0.};
+  double dzMax{0.};
+  double maxDrift{0.};
+  /// (position along (mx, my), position in the layer)
+  std::vector<std::pair<double, int>> byPosition;
+};
+
+LayerIndex indexLayer(const std::vector<int>& layer,
+                      const std::vector<PatRecHit>& hits) {
+  LayerIndex index;
+  const auto& first = *hits[layer.front()].wire;
   for (const int h : layer) {
-    const double distance = std::abs(
-        std::abs(signedWireDistance(line, *hits[h].wire)) - hits[h].drift);
-    if (distance < bestDistance) {
+    const auto& w = *hits[h].wire;
+    if (std::abs(w.dz) > 1e-9 ||
+        std::abs(w.dx * first.dy - w.dy * first.dx) > 1e-9) {
+      return index;
+    }
+  }
+  const double norm = std::hypot(first.dx, first.dy);
+  index.mx = first.dy / norm;
+  index.my = -first.dx / norm;
+  index.z = first.z;
+  for (int k = 0; k < static_cast<int>(layer.size()); ++k) {
+    const auto& hit = hits[layer[k]];
+    const auto& w = *hit.wire;
+    index.dzMax = std::max(index.dzMax, std::abs(w.z - index.z));
+    index.maxDrift = std::max(index.maxDrift, hit.drift);
+    index.byPosition.emplace_back(w.x * index.mx + w.y * index.my, k);
+  }
+  std::sort(index.byPosition.begin(), index.byPosition.end());
+  index.sorted = true;
+  return index;
+}
+
+std::vector<LayerIndex> indexLayers(const std::vector<std::vector<int>>& layers,
+                                    const std::vector<PatRecHit>& hits) {
+  std::vector<LayerIndex> indices;
+  indices.reserve(layers.size());
+  for (const auto& layer : layers) {
+    indices.push_back(indexLayer(layer, hits));
+  }
+  return indices;
+}
+
+/// Hit in `layer` closest to the line within `tolerance`, or -1; of equally
+/// close hits the first in the layer.
+///
+/// A hit within `tolerance` is less than maxDrift + tolerance from the line.
+/// For a wire d in a plane of constant z, that distance is b (m . u), with b
+/// the offset across the wires in that plane, m = d x z and u the unit
+/// vector along d x t. As m . u = t_z / |d x t| >= t_z, such a hit has
+/// |b| < (maxDrift + tolerance) / t_z, so only the wires within that (plus
+/// the slope over the z spread of the layer) of the line are tried.
+int closestHit(const LineSegment& line, const std::vector<int>& layer,
+               const LayerIndex& index, const std::vector<PatRecHit>& hits,
+               double tolerance, SignDirections& sign) {
+  int best = -1;
+  int bestPosition = 0;
+  double bestDistance = tolerance;
+  const auto consider = [&](int position) {
+    const int h = layer[position];
+    const double distance =
+        std::abs(std::abs(sign.distance(*hits[h].wire)) - hits[h].drift);
+    if (distance < bestDistance ||
+        (best >= 0 && distance == bestDistance && position < bestPosition)) {
       bestDistance = distance;
       best = h;
+      bestPosition = position;
     }
+  };
+  if (!index.sorted) {
+    for (int k = 0; k < static_cast<int>(layer.size()); ++k) {
+      consider(k);
+    }
+    return best;
+  }
+  const double halfWidth =
+      (index.maxDrift + tolerance) *
+          std::sqrt(1. + line.tx * line.tx + line.ty * line.ty) +
+      index.dzMax * std::hypot(line.tx, line.ty) + kWindowMargin;
+  const double centre = line.x(index.z) * index.mx + line.y(index.z) * index.my;
+  auto it = std::lower_bound(
+      index.byPosition.begin(), index.byPosition.end(), centre - halfWidth,
+      [](const auto& entry, double value) { return entry.first < value; });
+  for (; it != index.byPosition.end() && it->first <= centre + halfWidth;
+       ++it) {
+    consider(it->second);
   }
   return best;
 }
@@ -281,6 +410,8 @@ std::vector<LineSegment> StrawPatRec::findSegments(
   }
   const Layers yLayers = groupLayers(hits, yHits);
   const Layers stereoLayers = groupLayers(hits, stereoHits);
+  const auto yIndex = indexLayers(yLayers, hits);
+  const auto stereoIndex = indexLayers(stereoLayers, hits);
   const int nY = static_cast<int>(yLayers.size());
   const int nStereo = static_cast<int>(stereoLayers.size());
   if (nY < m_cfg.minYHits || nStereo < m_cfg.minStereoHits) {
@@ -308,12 +439,13 @@ std::vector<LineSegment> StrawPatRec::findSegments(
                 continue;
               }
               line.hits = {a, b};
+              SignDirections sign(line);
               for (int l = 0; l < nY; ++l) {
                 if (l == la || l == lb) {
                   continue;
                 }
-                const int h =
-                    closestHit(line, yLayers[l], hits, m_cfg.tolerance);
+                const int h = closestHit(line, yLayers[l], yIndex[l], hits,
+                                         m_cfg.tolerance, sign);
                 if (h >= 0) {
                   line.hits.push_back(h);
                 }
@@ -346,10 +478,11 @@ std::vector<LineSegment> StrawPatRec::findSegments(
   std::vector<LineSegment> segments;
   for (const auto& yLine : yLines) {
     std::vector<std::vector<XPoint>> points(nStereo);
+    SignDirections ySign(yLine);
     for (int l = 0; l < nStereo; ++l) {
       for (const int h : stereoLayers[l]) {
         const auto& w = *hits[h].wire;
-        const Eigen::Vector3d m = signDirection(yLine, w);
+        const Eigen::Vector3d m = ySign(w);
         if (std::abs(m.x()) < 1e-3) {
           continue;
         }
@@ -379,12 +512,13 @@ std::vector<LineSegment> StrawPatRec::findSegments(
             line.signs.clear();
             line.hits.push_back(pa.hit);
             line.hits.push_back(pb.hit);
+            SignDirections sign(line);
             for (int l = 0; l < nStereo; ++l) {
               if (l == la || l == lb) {
                 continue;
               }
-              const int h =
-                  closestHit(line, stereoLayers[l], hits, m_cfg.tolerance);
+              const int h = closestHit(line, stereoLayers[l], stereoIndex[l],
+                                       hits, m_cfg.tolerance, sign);
               if (h >= 0) {
                 line.hits.push_back(h);
               }
