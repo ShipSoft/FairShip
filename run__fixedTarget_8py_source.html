@@ -572,7 +572,7 @@ $(document).ready(function(){initNavTree('run__fixedTarget_8py_source.html','');
 <div class="line"><a id="l00466" name="l00466"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a7517af6118571b0b397cab0a2007b1fa">  466</a></span>    MuonShield = ROOT.ShipMuonShield(</div>
 <div class="line"><a id="l00467" name="l00467"></a><span class="lineno">  467</span>        in_params=list(ship_geo.muShield.params),</div>
 <div class="line"><a id="l00468" name="l00468"></a><span class="lineno">  468</span>        z=ship_geo.muShield.z,</div>
-<div class="line"><a id="l00469" name="l00469"></a><span class="lineno">  469</span>        WithConstShieldField=<span class="keyword">True</span>,</div>
+<div class="line"><a id="l00469" name="l00469"></a><span class="lineno">  469</span>        WithConstShieldField=<span class="keywordflow">not</span> args.AddMuonShieldField,</div>
 <div class="line"><a id="l00470" name="l00470"></a><span class="lineno">  470</span>        SC_key=ship_geo.SC_mag,</div>
 <div class="line"><a id="l00471" name="l00471"></a><span class="lineno">  471</span>    )</div>
 <div class="line"><a id="l00472" name="l00472"></a><span class="lineno">  472</span>    <span class="comment"># MuonShield.SetSupports(False) # otherwise overlap with sensitive Plane</span></div>
