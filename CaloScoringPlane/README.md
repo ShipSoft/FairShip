@@ -70,31 +70,45 @@ pdg_overrides: # optional: |PDG code| -> electron, hadron, muon or none
 
 The energy is the total energy at the plane, from the point momentum and the
 PDG mass. Between two points each matrix element is interpolated; below the
-first or above the last point that point's matrix is used. Mistakes in the
-file (unknown key or species, a row not summing to 1, energies not
-increasing, ...) raise an error that names the entry and line.
+first or above the last point that point's matrix is used. The file is read
+in Python with PyYAML (`python/caloScoringPlanePID.py`) and the matrices are
+passed to `CaloScoringPlanePID::Set()`. Mistakes in the file (unknown key or
+species, a row not summing to 1, energies not increasing, a `.nan`, ...) raise
+a `PIDConfigError` that names the file and the entry.
 `geometry/caloScoringPlane_pid_provided.yaml` is the configuration used for the
 `maximal_opt_CHEAP5_fixed` setup.
 
 ### Using CaloScoringPlanePID directly
 
-From C++ (link against the `CaloScoringPlane` library):
+From Python, with a PID file:
+
+```python
+from caloScoringPlanePID import load_pid
+
+pid = load_pid("$FAIRSHIP/geometry/caloScoringPlane_pid_provided.yaml")  # None: perfect PID
+if pid.Identify(point) == ROOT.CaloScoringPlanePID.kMuon:  # point: CaloScoringPlanePoint
+    ...
+```
+
+From C++ (link against the `CaloScoringPlane` library), the matrices are given
+directly, nine values per energy in the order electron, hadron, muon for both
+rows (true) and columns (identified):
 
 ```cpp
 #include "CaloScoringPlanePID.h"
 
-CaloScoringPlanePID pid("$FAIRSHIP/geometry/caloScoringPlane_pid_provided.yaml");
-CaloScoringPlanePID::Species s = pid.Identify(point);  // point: CaloScoringPlanePoint, uses gRandom
+CaloScoringPlanePID pid;  // perfect PID until Set() is called
+pid.Set({10., 100.},
+        {0.98, 0.02, 0.00,  0.01, 0.97, 0.02,  0.00, 0.01, 0.99,   // 10 GeV
+         0.99, 0.01, 0.00,  0.01, 0.98, 0.01,  0.00, 0.00, 1.00},  // 100 GeV
+        {}, /*logInterpolation=*/kTRUE);
+CaloScoringPlanePID::Species s = pid.Identify(point);  // uses gRandom
 double pMisId = pid.Probability(CaloScoringPlanePID::kHadron, CaloScoringPlanePID::kMuon, 7.5);
 ```
 
-From Python:
-
-```python
-pid = ROOT.CaloScoringPlanePID("caloScoringPlane_pid.yaml")
-if pid.Identify(point) == ROOT.CaloScoringPlanePID.kMuon:
-    ...
-```
+`Set()` checks the model (finite, non-negative entries, rows summing to 1,
+increasing energies) and throws `std::invalid_argument` otherwise, keeping the
+previous model.
 
 `examples/calo_scoring_plane_pid_example.py` applies it to all points of a
 simulation file and prints the resulting true → identified table.

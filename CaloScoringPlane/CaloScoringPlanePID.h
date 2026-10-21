@@ -6,7 +6,6 @@
 #define CALOSCORINGPLANE_CALOSCORINGPLANEPID_H_
 
 #include <map>
-#include <string>
 #include <vector>
 
 #include "Rtypes.h"
@@ -27,25 +26,25 @@ class CaloScoringPlanePoint;
  * non-negative.
  *
  * True species from the PDG code: |pdg| = 11 electron, 13 muon; any meson or
- * baryon (|pdg| < 1e9 with a non-zero quark digit n_q2) is a hadron;
+ * baryon (|pdg| < 9900000 with a non-zero quark digit n_q2) is a hadron;
  * anything else (photons, neutrinos, nuclei, BSM codes) is kUnknown and is
- * never identified. The optional "pdg_overrides" map changes this per |pdg|.
+ * never identified. Overrides change this per |pdg|.
  *
- * The configuration is a YAML file, read with yaml-cpp; its format is
- * documented in CaloScoringPlane/README.md, with an example in
- * geometry/caloScoringPlane_pid_provided.yaml. Errors in the file throw
- * std::runtime_error (a Python exception in PyROOT) naming the offending
- * entry and line.
+ * The model is given with Set(), which validates it. Reconstruction reads it
+ * from a YAML file in Python (python/caloScoringPlanePID.py; format in
+ * CaloScoringPlane/README.md, example in
+ * geometry/caloScoringPlane_pid_provided.yaml).
  *
  * Usage from C++ (link against the CaloScoringPlane library):
  * @code
- *   CaloScoringPlanePID
- * pid("$FAIRSHIP/geometry/caloScoringPlane_pid_provided.yaml");
+ *   CaloScoringPlanePID pid;
+ *   pid.Set({3., 100.}, {...18 values...}, {}, kTRUE);
  *   CaloScoringPlanePID::Species s = pid.Identify(point);  // uses gRandom
  * @endcode
  * and from Python:
  * @code
- *   pid = ROOT.CaloScoringPlanePID("caloScoringPlane_pid.yaml")
+ *   from caloScoringPlanePID import load_pid
+ *   pid = load_pid("$FAIRSHIP/geometry/caloScoringPlane_pid_provided.yaml")
  *   if pid.Identify(point) == ROOT.CaloScoringPlanePID.kMuon: ...
  * @endcode
  */
@@ -56,13 +55,26 @@ class CaloScoringPlanePID {
 
   /** Perfect identification (identity matrix at all energies). */
   CaloScoringPlanePID();
-  /** Load from a YAML file; environment variables in the path are expanded. */
-  explicit CaloScoringPlanePID(const std::string& yamlFile);
 
-  /** Replace the current model with the one in the file. */
-  void Load(const std::string& yamlFile);
-  /** Same, from a YAML string (mainly for tests). */
-  void LoadFromString(const std::string& yaml);
+  /**
+   * Replace the model.
+   *
+   * @param energies total energies in GeV, finite and strictly increasing
+   *   (and positive with log interpolation)
+   * @param matrices 9 values per energy, row-major; rows are the true and
+   *   columns the identified species, both in the order electron, hadron,
+   *   muon. Entries are finite and non-negative, each row sums to 1.
+   * @param overrides |pdg| -> species (kUnknown allowed); a negative key
+   *   applies to |pdg| as well.
+   * @param logInterpolation interpolate linearly in log E instead of E
+   *
+   * Throws std::invalid_argument, naming the energy point and row, if the
+   * model is invalid; the previous model is then kept.
+   */
+  void Set(const std::vector<Double_t>& energies,
+           const std::vector<Double_t>& matrices,
+           const std::map<Int_t, Int_t>& overrides = {},
+           Bool_t logInterpolation = kFALSE);
 
   /** True species for a PDG code (overrides applied). */
   Species TrueSpecies(Int_t pdg) const;
@@ -90,8 +102,6 @@ class CaloScoringPlanePID {
 
  private:
   void SetIdentity();
-  void Set(std::vector<Double_t> energies, std::vector<Double_t> matrices,
-           std::map<Int_t, Int_t> overrides, Bool_t logInterpolation);
   Double_t At(size_t iEnergy, Int_t i, Int_t j) const {
     return fMatrices[9 * iEnergy + static_cast<size_t>(3 * i + j)];
   }
