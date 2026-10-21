@@ -564,7 +564,11 @@ std::vector<LineSegment> StrawPatRec::findSegments(
                 line.hits.push_back(h);
               }
             }
-            if (countHits(line, hits, isStereo) < m_cfg.minStereoHits) {
+            // The fit only drops hits, so lines short of hits before the fit
+            // fail after it
+            if (countHits(line, hits, isStereo) < m_cfg.minStereoHits ||
+                countHits(line, hits, isU) < m_cfg.minHitsPerStereoView ||
+                countHits(line, hits, isV) < m_cfg.minHitsPerStereoView) {
               continue;
             }
             if (fitLine(line, hits, true, m_cfg.tolerance) &&
