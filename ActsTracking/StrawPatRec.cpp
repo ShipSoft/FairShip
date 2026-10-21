@@ -149,6 +149,36 @@ std::vector<LineSegment> removeDuplicates(std::vector<LineSegment> segments,
   return kept;
 }
 
+/// Keep one line of each set of lines with the same hits on the same sides,
+/// the one with the best fit, in the order the lines were found
+std::vector<LineSegment> uniqueLines(std::vector<LineSegment> lines) {
+  std::map<std::vector<std::pair<int, int>>, std::size_t> best;
+  std::vector<bool> keep(lines.size(), false);
+  for (std::size_t i = 0; i < lines.size(); ++i) {
+    std::vector<std::pair<int, int>> key;
+    key.reserve(lines[i].hits.size());
+    for (std::size_t k = 0; k < lines[i].hits.size(); ++k) {
+      key.emplace_back(lines[i].hits[k], lines[i].signs[k]);
+    }
+    std::sort(key.begin(), key.end());
+    const auto [it, inserted] = best.emplace(std::move(key), i);
+    if (inserted) {
+      keep[i] = true;
+    } else if (lines[i].chi2 < lines[it->second].chi2) {
+      keep[it->second] = false;
+      keep[i] = true;
+      it->second = i;
+    }
+  }
+  std::vector<LineSegment> unique;
+  for (std::size_t i = 0; i < lines.size(); ++i) {
+    if (keep[i]) {
+      unique.push_back(std::move(lines[i]));
+    }
+  }
+  return unique;
+}
+
 /// Least-squares fit of a straight line to signed drift distances.
 ///
 /// The side of each wire is taken from the current line and re-evaluated
@@ -463,10 +493,14 @@ std::vector<LineSegment> StrawPatRec::findSegments(
       }
     }
   }
-  // The y lines are not deduplicated: tracks that overlap in y have similar
-  // y lines, and are told apart only in the stereo views, and the same hits
-  // can fit with the sides of some wires mirrored, which projects the stereo
-  // hits differently. Duplicate segments are removed after the stereo views.
+  // A track crossing all layers is seeded by every pair of seed layers, and
+  // the seeds converge to the same line: one line per set of hits and sides
+  // is kept. Lines sharing only some hits are kept: tracks that overlap in y
+  // have similar y lines, and are told apart only in the stereo views, and
+  // the same hits can fit with the sides of some wires mirrored, which
+  // projects the stereo hits differently. Duplicate segments are removed
+  // after the stereo views.
+  yLines = uniqueLines(std::move(yLines));
 
   // For each y line, find the x line in the stereo views. Each stereo hit
   // gives two x positions, one for each side of the wire.
