@@ -74,6 +74,9 @@ class StrawPatRec {
     /// tracks have |tx| > 0.3 downstream of the magnet, 0.01% upstream.
     double maxSlope = 0.6;
     double maxSlopeX = 0.3;
+    /// Most y lines searched for x lines per pair of stations, the best by
+    /// hits and fit, or all if not positive
+    int maxYLines = 4000;
     /// Uncertainties of the segment match at the bending plane, as
     /// sqrt(a^2 + (b / p)^2) with p in GeV: the straight segments extrapolated
     /// to the bending plane deviate more from the track the lower its
