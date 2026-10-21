@@ -21,7 +21,8 @@ pid = load_pid(args.pid)
 rng = ROOT.TRandom3(4357)
 pid.Print()
 
-tree = ROOT.TFile.Open(args.sim)["cbmsim"]
+f = ROOT.TFile.Open(args.sim)
+tree = f["cbmsim"]
 table = Counter()  # (true species, identified species) -> count
 for event in tree:
     for point in event.CaloScoringPlanePoint:
