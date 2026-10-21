@@ -564,7 +564,7 @@ std::vector<LineSegment> StrawPatRec::findSegments(
           for (const auto& pb : points[lb]) {
             LineSegment line = yLine;
             line.tx = (pb.x - pa.x) / (pb.z - pa.z);
-            if (std::abs(line.tx) > m_cfg.maxSlope) {
+            if (std::abs(line.tx) > m_cfg.maxSlopeX) {
               continue;
             }
             line.x0 = pa.x + line.tx * (line.z0 - pa.z);
