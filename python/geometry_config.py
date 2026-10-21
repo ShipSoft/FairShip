@@ -13,23 +13,23 @@ from ShipGeoConfig import AttrDict, Config
 # targetOpt      = 5  # 0=solid   >0 sliced, 5: 5 pieces of tungsten, 4 air slits, 17: molybdenum tungsten interleaved with H20
 # strawOpt       = 0  # 4=Aluminium frame 10=steel frame (default)
 
-# Here you can select the MS geometry
-# The first row is the length of the magnets
-# The other rows are the transverse dimensions of the magnets:  dXIn[i], dXOut[i] , dYIn[i], dYOut[i], gapIn[i], gapOut[i].
+# Here you can select the MS geometry.
+# Each magnet is a solid iron box; its field comes from the map files/<shieldName>.root.
+# One row per magnet, in cm: [Zgap, dZ, dX, dY]
+#   Zgap: gap upstream of the magnet, dZ: half length, dX/dY: outer half width and half height.
+# The first row is the magnetised hadron absorber.
 shield_db = {
     "TRY_2026": {
-        "hybrid": False,
-        "WithConstField": False,
         "params": [
-            [0.0, 115.0, 40.0, 40.0, 119.0, 119.0, 61.5, 61.5, 1.5375, 1.5375, 50.0, 50.0, 0.0, 0.0, 2.05],
-            [15, 150, 62, 62, 11, 11, 12, 12, 1, 1.0, 69, 69, 0, 0, 1.87],
+            [0.0, 115.0, 163.5, 169.0],
+            [15, 150, 136, 80],
             # 0.3 m gap between the M1 and M2 yokes (integration layout 2026-0.1)
-            [30, 225, 70, 70, 12, 12, 9, 9, 1, 1.0, 77, 77, 0, 0, 1.865],
-            [16, 225, 64, 64, 14, 14, 8, 8, 1.3, 1.3, 71, 71, 0, 0, 1.92],
-            [15, 225, 42, 42, 13, 13, 8, 8, 2.6, 2.6, 47, 47, 0, 0, 1.89],
-            [16, 131, 40, 40, 30, 30, 0, 0, 2.25, 2.25, 22, 22, 0, 0, 0],
-            [15, 168, 20, 30, 30, 30, 22, 12, 5.4, 3.6, 33, 33, 0, 0, -1.42],
-            [19, 200, 38, 69, 51, 51, 8, 8, 3.2894736842105265, 1.36231884057971, 76, 76, 0, 0, -2.035],
+            [30, 225, 149, 89],
+            [16, 225, 155.2, 85],
+            [15, 225, 159.2, 60],
+            [16, 131, 134, 52],
+            [15, 168, 150, 63],
+            [19, 200, 171, 127],
         ],
     },
 }
@@ -167,7 +167,6 @@ def create_config(
         raise ValueError("shieldName must not be empty!")
 
     c.shieldName = shieldName
-    c.SC_mag = shield_db[shieldName]["hybrid"]
 
     # global strawDesign, Yheight
     c.Yheight = Yheight * u.m
@@ -367,9 +366,6 @@ def create_config(
             f"CaloScoringPlane ends at z = {c.CaloScoringPlane.z + c.CaloScoringPlane.DZ / 2} cm, "
             f"beyond the downstream ECN3 wall at {c.cave.zEnd} cm"
         )
-
-    c.hadronAbsorber.WithConstField = shield_db[shieldName]["WithConstField"]
-    c.muShield.WithConstField = shield_db[shieldName]["WithConstField"]
 
     # for the digitizing step
     c.strawtubesDigi = AttrDict()

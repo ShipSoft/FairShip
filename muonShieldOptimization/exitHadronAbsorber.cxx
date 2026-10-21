@@ -873,7 +873,7 @@ void exitHadronAbsorber::ConstructGeometry() {
     Float_t distance = 1.;
     Double_t local[3] = {0, 0, 0};
     if (!nav->cd("/MuonShieldArea_1/AbsorberVol_1")) {
-      nav->cd("/MuonShieldArea_1/MagnAbsorb_MagRetL_1");
+      nav->cd("/MuonShieldArea_1/MagnAbsorb_1");
       distance = -1.;
     }
     TGeoBBox* tmp =
