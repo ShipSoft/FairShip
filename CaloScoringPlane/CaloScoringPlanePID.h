@@ -5,6 +5,7 @@
 #ifndef CALOSCORINGPLANE_CALOSCORINGPLANEPID_H_
 #define CALOSCORINGPLANE_CALOSCORINGPLANEPID_H_
 
+#include <array>
 #include <map>
 #include <vector>
 
@@ -116,7 +117,11 @@ class CaloScoringPlanePID {
   void Print() const;
 
  private:
+  using Row = std::array<Double_t, kNSpecies>;
+
   void SetIdentity();
+  /** Interpolated matrix row of trueSpecies (not kUnknown). */
+  Row InterpolatedRow(Double_t energy, Int_t trueSpecies) const;
   Double_t At(size_t iEnergy, Int_t i, Int_t j) const {
     return fMatrices[9 * iEnergy + static_cast<size_t>(3 * i + j)];
   }
