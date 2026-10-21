@@ -137,7 +137,7 @@ $(document).ready(function(){initNavTree('readDecayTable_8py_source.html',''); i
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
 </div>
 <div class="foldopen" id="foldopen00033" data-start="" data-end="">
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="namespacereadDecayTable.html#accb3ca4d591c8a297fc406190aa012d1">   33</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacereadDecayTable.html#accb3ca4d591c8a297fc406190aa012d1">load</a>(conffile=os.path.expandvars(<span class="stringliteral">&quot;$FAIRSHIP/python/DecaySelection.conf&quot;</span>), verbose=<span class="keyword">True</span>):</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="namespacereadDecayTable.html#accb3ca4d591c8a297fc406190aa012d1">   33</a></span><span class="keyword">def </span>load(conffile=os.path.expandvars(<span class="stringliteral">&quot;$FAIRSHIP/python/DecaySelection.conf&quot;</span>), verbose=<span class="keyword">True</span>):</div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    <span class="keyword">with</span> open(conffile) <span class="keyword">as</span> f:</div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>        reader = csv.reader(f, delimiter=<span class="stringliteral">&quot;:&quot;</span>)</div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>        configuredDecays = {}</div>
@@ -170,7 +170,7 @@ $(document).ready(function(){initNavTree('readDecayTable_8py_source.html',''); i
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    <span class="comment"># First fetch the list of kinematically allowed decays</span></div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    allowed = hnl.allowedChannels()</div>
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    <span class="comment"># Then fetch the list of desired channels to activate</span></div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    wanted = <a class="code hl_function" href="namespacereadDecayTable.html#accb3ca4d591c8a297fc406190aa012d1">load</a>(conffile=conffile, verbose=verbose)</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    wanted = load(conffile=conffile, verbose=verbose)</div>
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    <span class="comment"># Add decay channels</span></div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    <span class="keywordflow">for</span> dec <span class="keywordflow">in</span> allowed:</div>
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>        <span class="keywordflow">if</span> dec <span class="keywordflow">not</span> <span class="keywordflow">in</span> wanted:</div>
@@ -206,7 +206,7 @@ $(document).ready(function(){initNavTree('readDecayTable_8py_source.html',''); i
 <div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    <span class="comment"># First fetch the list of kinematically allowed decays</span></div>
 <div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    allowed = DP.allowedChannels()</div>
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    <span class="comment"># Then fetch the list of desired channels to activate</span></div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    wanted = <a class="code hl_function" href="namespacereadDecayTable.html#accb3ca4d591c8a297fc406190aa012d1">load</a>(conffile=conffile, verbose=verbose)</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    wanted = load(conffile=conffile, verbose=verbose)</div>
 <div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    <span class="comment"># Add decay channels</span></div>
 <div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    <span class="keywordflow">for</span> dec <span class="keywordflow">in</span> allowed:</div>
 <div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>        print(<span class="stringliteral">&quot;channel allowed:&quot;</span>, dec)</div>
@@ -245,7 +245,7 @@ $(document).ready(function(){initNavTree('readDecayTable_8py_source.html',''); i
 <div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span> </div>
 </div>
 <div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span><span class="keywordflow">if</span> __name__ == <span class="stringliteral">&quot;__main__&quot;</span>:</div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno"><a class="line" href="namespacereadDecayTable.html#ac7b78e10a0805dc3d04baed8475ec3d7">  136</a></span>    configuredDecays = <a class="code hl_function" href="namespacereadDecayTable.html#accb3ca4d591c8a297fc406190aa012d1">load</a>()</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno"><a class="line" href="namespacereadDecayTable.html#ac7b78e10a0805dc3d04baed8475ec3d7">  136</a></span>    configuredDecays = load()</div>
 <div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>    print(<span class="stringliteral">&quot;Activated decay channels: &quot;</span>)</div>
 <div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>    <span class="keywordflow">for</span> channel <span class="keywordflow">in</span> configuredDecays:</div>
 <div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>        <span class="keywordflow">if</span> configuredDecays[channel] == <span class="stringliteral">&quot;yes&quot;</span>:</div>
@@ -253,7 +253,6 @@ $(document).ready(function(){initNavTree('readDecayTable_8py_source.html',''); i
 <div class="ttc" id="anamespacereadDecayTable_html_a02bdb1dd20ec4dc591b37bfc0aad40a4"><div class="ttname"><a href="namespacereadDecayTable.html#a02bdb1dd20ec4dc591b37bfc0aad40a4">readDecayTable.addDarkPhotondecayChannels</a></div><div class="ttdeci">addDarkPhotondecayChannels(P8gen, mDP, DP, conffile=os.path.expandvars(&quot;$FAIRSHIP/python/darkphotonDecaySelection.conf&quot;), verbose=True)</div><div class="ttdef"><b>Definition</b> <a href="readDecayTable_8py_source.html#l00084">readDecayTable.py:86</a></div></div>
 <div class="ttc" id="anamespacereadDecayTable_html_a7b20cc3e8df553c9dfbb68addb0e2665"><div class="ttname"><a href="namespacereadDecayTable.html#a7b20cc3e8df553c9dfbb68addb0e2665">readDecayTable.addHNLdecayChannels</a></div><div class="ttdeci">addHNLdecayChannels(P8Gen, hnl, conffile=os.path.expandvars(&quot;$FAIRSHIP/python/DecaySelection.conf&quot;), verbose=True)</div><div class="ttdef"><b>Definition</b> <a href="readDecayTable_8py_source.html#l00053">readDecayTable.py:53</a></div></div>
 <div class="ttc" id="anamespacereadDecayTable_html_a94bdd8639bf7a4e00cb64f1d4d0c820e"><div class="ttname"><a href="namespacereadDecayTable.html#a94bdd8639bf7a4e00cb64f1d4d0c820e">readDecayTable.PDGcode</a></div><div class="ttdeci">PDGcode(particle)</div><div class="ttdef"><b>Definition</b> <a href="readDecayTable_8py_source.html#l00024">readDecayTable.py:24</a></div></div>
-<div class="ttc" id="anamespacereadDecayTable_html_accb3ca4d591c8a297fc406190aa012d1"><div class="ttname"><a href="namespacereadDecayTable.html#accb3ca4d591c8a297fc406190aa012d1">readDecayTable.load</a></div><div class="ttdeci">load(conffile=os.path.expandvars(&quot;$FAIRSHIP/python/DecaySelection.conf&quot;), verbose=True)</div><div class="ttdef"><b>Definition</b> <a href="readDecayTable_8py_source.html#l00033">readDecayTable.py:33</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- SHiP Doxygen theme footer. Version-independent: only standard Doxygen

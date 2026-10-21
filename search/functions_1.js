@@ -29,7 +29,7 @@ var searchData=
   ['addhnltoroot_26',['addHNLtoROOT',['../namespacepythia8__conf__utils.html#a12dd6cdb0de38bac05ee053540819a3c',1,'pythia8_conf_utils']]],
   ['addmagneticchord_27',['AddMagneticChord',['../classMuGeoProcessor.html#aaf89f2afed489e116b31b21fd767934e',1,'MuGeoProcessor']]],
   ['addmagneticsegments_28',['AddMagneticSegments',['../classMuGeoProcessor.html#aa720f75476ab7e2a79ecf1dcbbed7c0e',1,'MuGeoProcessor']]],
-  ['addmeasurement_29',['addmeasurement',['../classtest__straw__reco_1_1FakeTracker.html#a0ac9ac4bb2cfb844b0f21be17825d4f2',1,'test_straw_reco.FakeTracker.AddMeasurement()'],['../classSHiP_1_1ActsStrawTracker.html#a9f4bf5bcef6df04c345c92635b152b9c',1,'SHiP::ActsStrawTracker::AddMeasurement()']]],
+  ['addmeasurement_29',['addmeasurement',['../classSHiP_1_1ActsStrawTracker.html#a9f4bf5bcef6df04c345c92635b152b9c',1,'SHiP::ActsStrawTracker::AddMeasurement()'],['../classtest__straw__reco_1_1FakeTracker.html#a0ac9ac4bb2cfb844b0f21be17825d4f2',1,'test_straw_reco.FakeTracker.AddMeasurement()']]],
   ['addparticle_30',['AddParticle',['../classShipStack.html#afeefa9f615a432b44382bfa42958d0f0',1,'ShipStack']]],
   ['addpath_31',['AddPath',['../classMuGeoProcessor.html#aec9f567931bccaaf5d45ff2ee8fe6746',1,'MuGeoProcessor']]],
   ['addplane_32',['AddPlane',['../classSHiP_1_1ScoringPlane.html#a5f45fc42985950873c66264870dd794a',1,'SHiP::ScoringPlane']]],
@@ -50,5 +50,6 @@ var searchData=
   ['artificial_5fretina_5fpat_5frec_5fy_5fview_47',['artificial_retina_pat_rec_y_view',['../namespaceshipPatRec.html#ae82fd2980482d81f8bfd7ee7af91308b',1,'shipPatRec']]],
   ['artificial_5fretina_5fpattern_5frecognition_48',['artificial_retina_pattern_recognition',['../namespaceshipPatRec.html#aaed2c3b80a8c779802840a527d840b5c',1,'shipPatRec']]],
   ['assignclonesarrayitem_49',['assignClonesArrayItem',['../namespacerootUtils.html#ae9fb99014f636adbd119f23c5eaf6b5f',1,'rootUtils']]],
-  ['axis_5fvalues_50',['axis_values',['../classfieldMapTools_1_1MapRange.html#a0d328eafba8806fac186f243f4c6e30f',1,'fieldMapTools::MapRange']]]
+  ['at_50',['At',['../classCaloScoringPlanePID.html#a720cba26d76c2ff9d1c442175f0faa42',1,'CaloScoringPlanePID']]],
+  ['axis_5fvalues_51',['axis_values',['../classfieldMapTools_1_1MapRange.html#a0d328eafba8806fac186f243f4c6e30f',1,'fieldMapTools::MapRange']]]
 ];

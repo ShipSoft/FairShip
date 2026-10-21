@@ -17,6 +17,7 @@ var classshipDigiReco_1_1ShipDigiReco =
     [ "reconstructActs", "classshipDigiReco_1_1ShipDigiReco.html#a70c983fdc2553735aed7684d4d92fd50", null ],
     [ "actsTracker", "classshipDigiReco_1_1ShipDigiReco.html#ad5cf630f2fa0704c4bfb3d8100e2e198", null ],
     [ "bfield", "classshipDigiReco_1_1ShipDigiReco.html#a97271c1be5a7dca5054299973c3e2ec3", null ],
+    [ "caloScoringPlaneDetector", "classshipDigiReco_1_1ShipDigiReco.html#ac033369e33bfe4eaac9783d29ea115f9", null ],
     [ "digiMTC", "classshipDigiReco_1_1ShipDigiReco.html#adee80199ed862daf9e63fce6014c0b2d", null ],
     [ "digiSBT", "classshipDigiReco_1_1ShipDigiReco.html#a65eabfbe07243c8d20a72cc52a9ed173", null ],
     [ "digiSiliconTarget", "classshipDigiReco_1_1ShipDigiReco.html#ae2bcc6c6eb238859f594cca33e3614f6", null ],

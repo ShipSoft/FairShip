@@ -118,6 +118,7 @@ $(document).ready(function(){initNavTree('functions_s.html',''); initResizable()
 <li>SegmentIntersectsBox()&#160;:&#160;<a class="el" href="classMagneticTrackPropagator.html#aeadfa17bb5d9d44fcc0f7ac908808265">MagneticTrackPropagator</a></li>
 <li>SelectTracks()&#160;:&#160;<a class="el" href="classShipStack.html#aee7fac1741182bb5ea40482c822dcc95">ShipStack</a></li>
 <li>sensPlane&#160;:&#160;<a class="el" href="classstudy__GammaConv_1_1Block.html#abb06a01ab50112e87a317114aec5ccc9">study_GammaConv.Block</a></li>
+<li>Set()&#160;:&#160;<a class="el" href="classCaloScoringPlanePID.html#aa9c288c71185976c8b8114595a996dee">CaloScoringPlanePID</a></li>
 <li>SetAccuracy()&#160;:&#160;<a class="el" href="classMagneticTrackPropagator.html#af59473689b70c6654f5d25da5a2bc2e1">MagneticTrackPropagator</a></li>
 <li>SetADC()&#160;:&#160;<a class="el" href="classUpstreamTaggerHit.html#a7b09d8180a04b8232a50d77bc1f9be98">UpstreamTaggerHit</a></li>
 <li>setAllContainers()&#160;:&#160;<a class="el" href="classShipPassiveContFact.html#ae0bf8471f0dc6fc596ed6447dda4fbd5">ShipPassiveContFact</a>, <a class="el" href="classstrawtubesContFact.html#a2b7cec020614ee861312a4de08cb1a93">strawtubesContFact</a>, <a class="el" href="classvetoContFact.html#ae21e5fb2e2fb847fe12cd1359a321808">vetoContFact</a></li>
@@ -192,6 +193,7 @@ $(document).ready(function(){initNavTree('functions_s.html',''); initResizable()
 <li>SetHNLId()&#160;:&#160;<a class="el" href="classHNLPythia8Generator.html#abc24910befd06faf1dfc2684c2132dbe">HNLPythia8Generator</a></li>
 <li>SetHpTParam()&#160;:&#160;<a class="el" href="classTarget.html#a0728ea1649f0c716f74292f93ef9afbc">Target</a></li>
 <li>SetId()&#160;:&#160;<a class="el" href="classDPPythia8Generator.html#adcc1b435a1abee172ded64db6ee89761">DPPythia8Generator</a>, <a class="el" href="classHNLPythia8Generator.html#a29a56425c20e9d6d208496d475abc420">HNLPythia8Generator</a>, <a class="el" href="classPythia8Generator.html#a4708306ada26d31dbb83e47d05f4d0eb">Pythia8Generator</a></li>
+<li>SetIdentity()&#160;:&#160;<a class="el" href="classCaloScoringPlanePID.html#afc174fd474ae7d02779f508dc273362f">CaloScoringPlanePID</a></li>
 <li>SetIncludeMuons()&#160;:&#160;<a class="el" href="classMuDISFilter.html#ab6842d357b8f5b9c977c3ed7fd447faa">MuDISFilter</a></li>
 <li>SetIntermediateNSplits()&#160;:&#160;<a class="el" href="classexitHadronAbsorber.html#ab65754d567a116d73e1ad03c3e808d4b">exitHadronAbsorber</a></li>
 <li>setInvalid()&#160;:&#160;<a class="el" href="classMTCDetHit.html#aa44b6ab6ff5420be8a73853b53c1c672">MTCDetHit</a>, <a class="el" href="classstrawtubesHit.html#ab029f6f7489aca1e7e5cd86a185fbaee">strawtubesHit</a>, <a class="el" href="classTimeDetHit.html#a16e67da12f274786beb4c6d2d74f2e1b">TimeDetHit</a>, <a class="el" href="classvetoHit.html#a05b5dab70909e140e471d910e4e3810a">vetoHit</a></li>
@@ -237,6 +239,7 @@ $(document).ready(function(){initNavTree('functions_s.html',''); initResizable()
 <li>SetPhiRandomize()&#160;:&#160;<a class="el" href="classMuonBackGenerator.html#a57b0991828f9c2266660191607bdbb15">MuonBackGenerator</a></li>
 <li>SetPhiRange()&#160;:&#160;<a class="el" href="classParticleGunGenerator.html#aea163f7d5c7575bdfadb260f36741571">ParticleGunGenerator</a></li>
 <li>SetPhotonCollision()&#160;:&#160;<a class="el" href="classFixedTargetGenerator.html#a39f3846074244a9703016788deb34430">FixedTargetGenerator</a></li>
+<li>SetPid()&#160;:&#160;<a class="el" href="classCaloScoringPlaneHit.html#a3edeb19cebd2ca4556bd377f83e96394">CaloScoringPlaneHit</a></li>
 <li>SetPillarDimension()&#160;:&#160;<a class="el" href="classTarget.html#ab83be661b77eeb39424cd3df57776bf9">Target</a></li>
 <li>SetPocaJumpThreshold()&#160;:&#160;<a class="el" href="classMuDISProcessor.html#a453be89216db11220ad77c9bdeccb39d">MuDISProcessor</a>, <a class="el" href="classMuGeoProcessor.html#aaa057a54e7af16cd474cb392ebe70e19">MuGeoProcessor</a></li>
 <li>SetPositions()&#160;:&#160;<a class="el" href="classEvtCalcGenerator.html#a98cafdb0ef782dabf8ab3f5b8ef83bef">EvtCalcGenerator</a>, <a class="el" href="classGenieGenerator.html#aa90e563f16da5bf23bd8471349171458">GenieGenerator</a>, <a class="el" href="classMuDISGenerator.html#ae0adf0b9bdf68dbc0ec65b853d586bc4">MuDISGenerator</a></li>
@@ -315,14 +318,14 @@ $(document).ready(function(){initNavTree('functions_s.html',''); initResizable()
 <li>shield_params&#160;:&#160;<a class="el" href="classShipMuonShield.html#aa20eee4086760aa148d9aca889ad0746">ShipMuonShield</a></li>
 <li>ship_geo&#160;:&#160;<a class="el" href="classexperimental_1_1analysis__toolkit_1_1selection__check.html#a450facd6a1ac401c7b545ee5fda100b5">experimental.analysis_toolkit.selection_check</a></li>
 <li>ShipBellField()&#160;:&#160;<a class="el" href="classShipBellField.html#af01b3e271d10f8408908a21f26a8fe1c">ShipBellField</a></li>
-<li>ShipBFieldMap()&#160;:&#160;<a class="el" href="classShipBFieldMap.html#a2117a4ad076f903a07540e26b10501c2">ShipBFieldMap</a></li>
-<li>ShipCave()&#160;:&#160;<a class="el" href="classShipCave.html#a7a134a52cd86cb6c2f5246bbaab8bbc9">ShipCave</a></li>
-<li>ShipCompField()&#160;:&#160;<a class="el" href="classShipCompField.html#a023be9e4418ee7ae50d73b7595acc735">ShipCompField</a></li>
+<li>ShipBFieldMap()&#160;:&#160;<a class="el" href="classShipBFieldMap.html#a308e307e932b4b35ad963ec61593cac5">ShipBFieldMap</a></li>
+<li>ShipCave()&#160;:&#160;<a class="el" href="classShipCave.html#afc5ff9240cbec843940578a4c6eb3bf3">ShipCave</a></li>
+<li>ShipCompField()&#160;:&#160;<a class="el" href="classShipCompField.html#a07e70f5114530588489df779a47bc18b">ShipCompField</a></li>
 <li>ShipConstField()&#160;:&#160;<a class="el" href="classShipConstField.html#a011887a931731f2375e5c23f441edebe">ShipConstField</a></li>
 <li>shipField&#160;:&#160;<a class="el" href="structSHiP_1_1ActsStrawTracker_1_1Impl.html#adaed0cbd3cf70cfb72b28da692619c4f">SHiP::ActsStrawTracker::Impl</a></li>
 <li>ShipFieldCreator()&#160;:&#160;<a class="el" href="classShipFieldCreator.html#ace226dfcd3846b9b6835e6f3b70e7297">ShipFieldCreator</a></li>
 <li>ShipFieldMaker()&#160;:&#160;<a class="el" href="classShipFieldMaker.html#a55ad765b425243cfb424ecc759a1918a">ShipFieldMaker</a></li>
-<li>ShipFieldPar()&#160;:&#160;<a class="el" href="classShipFieldPar.html#a6e22c7e3e2d6e18d1dc3c4ed25ed5abe">ShipFieldPar</a></li>
+<li>ShipFieldPar()&#160;:&#160;<a class="el" href="classShipFieldPar.html#a3e805ef9673c41249f2bd3c62e7ae005">ShipFieldPar</a></li>
 <li>ShipGeoCave()&#160;:&#160;<a class="el" href="classShipGeoCave.html#a8967299ec64ae2bcafacea67d6088755">ShipGeoCave</a></li>
 <li>ShipMagnet()&#160;:&#160;<a class="el" href="classShipMagnet.html#afc771e59dbad7503a644c8cc41f788f0">ShipMagnet</a></li>
 <li>ShipMCTrack()&#160;:&#160;<a class="el" href="classShipMCTrack.html#ab2c7dd6d1a627e493381a513c25f1098">ShipMCTrack</a></li>
@@ -371,6 +374,8 @@ $(document).ready(function(){initNavTree('functions_s.html',''); initResizable()
 <li>snd_hole_dx&#160;:&#160;<a class="el" href="classShipMuonShield.html#af69a736a23ef1339268d4bfe4a49069f">ShipMuonShield</a></li>
 <li>snd_hole_dy&#160;:&#160;<a class="el" href="classShipMuonShield.html#a9e5633e2a6bb1e1fc0587625bc227460">ShipMuonShield</a></li>
 <li>snd_last_magnet&#160;:&#160;<a class="el" href="classShipMuonShield.html#a87130a7cf761bb485abba3006820e726">ShipMuonShield</a></li>
+<li>Species&#160;:&#160;<a class="el" href="classCaloScoringPlanePID.html#a7ed72c68bbd487eb1bdf59037e0f93e5">CaloScoringPlanePID</a></li>
+<li>SpeciesName()&#160;:&#160;<a class="el" href="classCaloScoringPlanePID.html#a78930c264607808c45d2d85dda348441">CaloScoringPlanePID</a></li>
 <li>SpectrometerLenght&#160;:&#160;<a class="el" href="classShipTAUMagneticSpectrometer.html#a076ce0f705c65bd499dede1944c647ab">ShipTAUMagneticSpectrometer</a></li>
 <li>split_role&#160;:&#160;<a class="el" href="classsplit__provenance_1_1SplitProvenance.html#a2ea06d60338a8cb2a965445ca69c4d7c">split_provenance.SplitProvenance</a></li>
 <li>split_set&#160;:&#160;<a class="el" href="classsplit__provenance_1_1__Link.html#a87462addee47fd8e54f44403f0d761e6">split_provenance._Link</a>, <a class="el" href="classsplit__provenance_1_1SplitProvenance.html#a98daafe704f78a6323e49948f763bef2">split_provenance.SplitProvenance</a></li>

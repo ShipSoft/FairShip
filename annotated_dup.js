@@ -3,6 +3,13 @@ var annotated_dup =
     [ "BaseDetector", "namespaceBaseDetector.html", [
       [ "BaseDetector", "classBaseDetector_1_1BaseDetector.html", "classBaseDetector_1_1BaseDetector" ]
     ] ],
+    [ "CaloScoringPlaneDetector", "namespaceCaloScoringPlaneDetector.html", [
+      [ "CaloScoringPlaneDetector", "classCaloScoringPlaneDetector_1_1CaloScoringPlaneDetector.html", "classCaloScoringPlaneDetector_1_1CaloScoringPlaneDetector" ]
+    ] ],
+    [ "caloScoringPlanePID", "namespacecaloScoringPlanePID.html", [
+      [ "PIDConfigError", "classcaloScoringPlanePID_1_1PIDConfigError.html", null ],
+      [ "PIDModel", "classcaloScoringPlanePID_1_1PIDModel.html", null ]
+    ] ],
     [ "darkphoton", "namespacedarkphoton.html", [
       [ "DarkPhoton", "classdarkphoton_1_1DarkPhoton.html", "classdarkphoton_1_1DarkPhoton" ]
     ] ],
@@ -143,6 +150,8 @@ var annotated_dup =
       [ "UpstreamTaggerDetector", "classUpstreamTaggerDetector_1_1UpstreamTaggerDetector.html", "classUpstreamTaggerDetector_1_1UpstreamTaggerDetector" ]
     ] ],
     [ "CaloScoringPlane", "classCaloScoringPlane.html", "classCaloScoringPlane" ],
+    [ "CaloScoringPlaneHit", "classCaloScoringPlaneHit.html", "classCaloScoringPlaneHit" ],
+    [ "CaloScoringPlanePID", "classCaloScoringPlanePID.html", "classCaloScoringPlanePID" ],
     [ "CaloScoringPlanePoint", "classCaloScoringPlanePoint.html", "classCaloScoringPlanePoint" ],
     [ "Co3Rng", "classCo3Rng.html", "classCo3Rng" ],
     [ "CosmicsGenerator", "classCosmicsGenerator.html", "classCosmicsGenerator" ],

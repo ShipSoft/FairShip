@@ -97,9 +97,9 @@ $(document).ready(function(){initNavTree('md_newMuonDIS_2README.html',''); initR
   <div class="headertitle"><div class="title">README</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><h1><a class="anchor" id="autotoc_md106"></a>
+<div class="textblock"><h1><a class="anchor" id="autotoc_md112"></a>
 Muon DIS simulation</h1>
-<h2><a class="anchor" id="autotoc_md107"></a>
+<h2><a class="anchor" id="autotoc_md113"></a>
 Introduction</h2>
 <p>This folder contains the necessary processors to create DIS events from input muons, and the generator to replay the created daughters with Geant4.</p>
 <ul>
@@ -128,7 +128,7 @@ Introduction</h2>
 </li>
 <li>Replay: <a class="el" href="classNewMuDISGenerator.html">NewMuDISGenerator</a> class, called from the main <a class="el" href="run__simScript_8py.html">macro/run_simScript.py</a> file with option NewMuDIS, and using a postprocessor file in <a class="el" href="MuDISGenerator__postProcessing_8py.html">python/MuDISGenerator_postProcessing.py</a> script to add the initial muon hits back in the output, up to the disappearance of the muon track at DIS vertex.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md108"></a>
+<h2><a class="anchor" id="autotoc_md114"></a>
 Quick recipe</h2>
 <div class="fragment"><div class="line">cd FairShip</div>
 <div class="line">pixi run build</div>
@@ -161,7 +161,7 @@ Quick recipe</h2>
 </table>
 <p><code>GetMaterial()</code> still exposes the enum value after a successful <code>ReadEvent()</code>.</p>
 <p>The simulation macro calls <code><a class="el" href="MuDISGenerator__postProcessing_8py.html">python/MuDISGenerator_postProcessing.py</a></code> after simulation. It appends the original muon's UBT, SBT, SST and TD points to each event's corresponding detector branches, retaining only points with <code>GetZ() &lt; DISvz</code>. Points at the DIS vertex or downstream are excluded. Copied points refer to <code>MCTrack[0]</code> (the incoming muon) and the new event ID; simulated points and file metadata are preserved. The helper matches the generator's input order, material counts and starting muon entry, including filtered inputs and runs ending partway through a muon. For every output event it checks that <code>muDIS_muEntry</code>, <code>muDIS_material</code> and <code>muDIS_disIndex</code> match the interaction it is about to use, and stops with an error, leaving the output unchanged, if they differ. It must run before any output event skimming or reordering.</p>
-<h2><a class="anchor" id="autotoc_md109"></a>
+<h2><a class="anchor" id="autotoc_md115"></a>
 Overview of classes:</h2>
 <ul>
 <li><a class="el" href="prepareEvents_8py.html">prepareEvents.py</a>: python macro with argument parameters to pass to the main processor.</li>
@@ -174,7 +174,7 @@ Overview of classes:</h2>
 <li>class <a class="el" href="classMuDISFilter.html">MuDISFilter</a>: filter events using an extrapolation of the charged daughters, with B field effects, up to the TD.</li>
 <li>class <a class="el" href="classNewMuDISGenerator.html">NewMuDISGenerator</a>: FairGenerator to read again the MuonDIS tree and process particles again through Geant4 to give cbmsim tree.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md110"></a>
+<h2><a class="anchor" id="autotoc_md116"></a>
 Path to volumes</h2>
 <p>Path discovery uses the MC start and the first recorded muon hit in UBT, SBT, each of Tr1&ndash;Tr4, and TD. Available hits are ordered in z. A non-forward (<code>pz &lt;= 0</code>) selected measurement rejects the muon.</p>
 <ul>
@@ -190,7 +190,7 @@ Path to volumes</h2>
 <p>The end-of-run <code>Muon path totals</code> lines accumulate these same lengths, once per output muon, independently of the number of DIS interactions. Each category (including <code>REST</code>) reports <code>sum(L)</code> and <code>sum(fW*L)</code> in cm, plus the count and <code>sum(fW)</code> of crossing muons (positive path length). The overall line excludes <code>REST</code> from the lengths and counts all output muons, including those with zero total DIS path length. Totals reset each run and are printed with 17 significant digits for combining jobs.</p>
 <p>Sum the printed quantities across jobs before dividing: use <code>sum(L)</code> divided by the crossing count for a conditional mean, or <code>sum(fW*L) / sum(fW)</code> for its MC-weighted counterpart. For means over all output muons, including zero lengths, use the overall line's count or weight sum as the denominator. A weighted mean is undefined when its weight sum is zero. These are DIS material categories, not individual geometry material names; the MS total uses the restricted sampling interval, not the full shield trajectory.</p>
 <p><code>HeBalloon</code> groups the helium balloon liner walls and both lids. In the veto geometry these are the skin of the <code>HeBalloon</code> volume around <code>decay_medium</code>; the helium gas remains in <code>HE</code>. The liner has its own DIS branches and filter histograms. <code>REST</code> remains the last category and is excluded from DIS generation.</p>
-<h2><a class="anchor" id="autotoc_md111"></a>
+<h2><a class="anchor" id="autotoc_md117"></a>
 DIS events settings</h2>
 <p><code><a class="el" href="prepareEvents_8py.html">prepareEvents.py</a> --seed INTEGER</code> seeds both Pythia6 and ROOT. Seeds wrap into [1, 899999999]; without this option a nanosecond-resolution time seed is used. The effective seed is logged. <code>--check-all-volumes</code> enables the optional inclusive geometry scan (also available as <code><a class="el" href="classMuDISProcessor.html#a13e65afeacb53f786b2ffe2db5372163">MuDISProcessor::CheckAllVolumes()</a></code>).</p>
 <ul>
@@ -205,7 +205,7 @@ DIS events settings</h2>
 </li>
 <li>The muon momentum used in the initialisation of the Pythia6 muon beam is approximated at the value found for the first slice of the muon path found in the given material. This means that for example for the muon shield, the value will be overestimated when reaching the end of the magnet if its start position is much further upstream and the muon would have lost energy in the iron before the DIS takes place. This effect can be estimated offline by varying the cross section using the two closest momentum values recorded for the event (e.g. start and UBT for the MS).</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md112"></a>
+<h2><a class="anchor" id="autotoc_md118"></a>
 Structure of output tree:</h2>
 <ul>
 <li>branches muon_* : input muon information. Size: number of entries processed.</li>

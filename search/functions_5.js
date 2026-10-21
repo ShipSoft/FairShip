@@ -5,7 +5,7 @@ var searchData=
   ['endevent_2',['EndEvent',['../classEventHistogram.html#aa1ac373dfc57b13fc5406198031ccdb2',1,'EventHistogram']]],
   ['endif_3',['endif',['../CMakeLists_8txt.html#a7832b0a0510c0b06f5d92f69dd65bcec',1,'CMakeLists.txt']]],
   ['endofevent_4',['EndOfEvent',['../classSHiP_1_1Detector.html#a1faa8f6ee23650763084e1649f1465cb',1,'SHiP::Detector']]],
-  ['energy_5',['energy',['../classShipParticle.html#aaa06488834844ce1d270100e7f515dd2',1,'ShipParticle::Energy()'],['../namespaceproton__bremsstrahlung.html#a346de5637f6811443ef313e5b10ef9bc',1,'proton_bremsstrahlung.energy()']]],
+  ['energy_5',['energy',['../classCaloScoringPlanePID.html#a465516749fa426950c40b181c74fc449',1,'CaloScoringPlanePID::Energy()'],['../classShipParticle.html#aaa06488834844ce1d270100e7f515dd2',1,'ShipParticle::Energy()'],['../namespaceproton__bremsstrahlung.html#a346de5637f6811443ef313e5b10ef9bc',1,'proton_bremsstrahlung.energy()']]],
   ['ensuremuonshield_6',['EnsureMuonShield',['../classMagneticTrackPropagator.html#a049c9b833b00f1ef539032a108d5edbf',1,'MagneticTrackPropagator']]],
   ['entry_5fcount_7',['entry_count',['../namespacefieldMapTools.html#a95a62c80bb2e5afb13f268e5c64a1351',1,'fieldMapTools']]],
   ['err_5fpx_8',['err_px',['../classSHiP_1_1RecoTrack.html#a77e0249dfac4b32452953b03f3ef6bd1',1,'SHiP::RecoTrack']]],

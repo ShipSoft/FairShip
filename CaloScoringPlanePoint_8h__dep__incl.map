@@ -1,13 +1,19 @@
 <map id="CaloScoringPlane/CaloScoringPlanePoint.h" name="CaloScoringPlane/CaloScoringPlanePoint.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="351,5,567,45"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="725,5,941,45"/>
 <area shape="rect" id="Node000002" href="$CaloScoringPlane_8h.html" title=" " alt="" coords="5,93,221,133"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="370,51,190,96,188,91,369,46"/>
-<area shape="rect" id="Node000004" href="$CaloScoringPlanePoint_8cxx.html" title=" " alt="" coords="245,93,461,133"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="427,56,378,95,375,91,423,52"/>
-<area shape="rect" id="Node000005" href="$test__data__class__io_8cxx.html" title=" " alt="" coords="486,93,645,133"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="495,52,543,91,540,95,491,56"/>
-<area shape="rect" id="Node000006" href="$test__rntuple__io_8cxx.html" title=" " alt="" coords="669,93,805,133"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="534,47,677,91,676,96,532,52"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="712,41,490,65,234,96,222,98,222,92,233,91,489,60,712,36"/>
+<area shape="rect" id="Node000004" href="$CaloScoringPlaneHit_8cxx.html" title=" " alt="" coords="245,93,461,133"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="715,50,459,96,458,91,714,45"/>
+<area shape="rect" id="Node000005" href="$CaloScoringPlanePID_8cxx.html" title=" " alt="" coords="485,93,701,133"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="769,52,647,96,645,91,767,47"/>
+<area shape="rect" id="Node000006" href="$CaloScoringPlanePoint_8cxx.html" title=" " alt="" coords="725,93,941,133"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="836,59,836,93,831,93,831,59"/>
+<area shape="rect" id="Node000007" href="$test__calo__scoring__plane__pid_8cxx.html" title=" " alt="" coords="965,93,1136,133"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="895,48,1004,91,1002,96,893,53"/>
+<area shape="rect" id="Node000008" href="$test__data__class__io_8cxx.html" title=" " alt="" coords="1161,93,1319,133"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="936,46,1161,93,1160,98,935,51"/>
+<area shape="rect" id="Node000009" href="$test__rntuple__io_8cxx.html" title=" " alt="" coords="1344,93,1480,133"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="955,37,1134,59,1332,91,1344,93,1343,98,1332,96,1133,65,955,42"/>
 <area shape="rect" id="Node000003" href="$CaloScoringPlane_8cxx.html" title=" " alt="" coords="5,181,221,221"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="116,147,116,181,111,181,111,147"/>
 </map>

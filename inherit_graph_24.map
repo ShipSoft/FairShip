@@ -1,5 +1,25 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" title=" " alt="" coords="5,5,141,31"/>
-<area shape="rect" id="Node000001" href="$classShipFieldPar.html" title=" " alt="" coords="189,5,291,31"/>
-<area shape="poly" id="edge90_Node000000_Node000001" title=" " alt="" coords="155,15,189,15,189,21,155,21"/>
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,228,104,253"/>
+<area shape="rect" id="Node000001" href="$classSHiP_1_1DetectorPoint.html" title=" " alt="" coords="152,228,301,253"/>
+<area shape="poly" id="edge74_Node000000_Node000001" title=" " alt="" coords="118,238,152,238,152,243,118,243"/>
+<area shape="rect" id="Node000002" href="$classCaloScoringPlanePoint.html" title=" " alt="" coords="371,5,539,31"/>
+<area shape="poly" id="edge75_Node000001_Node000002" title=" " alt="" coords="234,214,249,175,273,127,306,80,348,40,369,28,372,33,351,44,310,83,278,130,254,177,239,216"/>
+<area shape="rect" id="Node000003" href="$classMTCDetPoint.html" title=" " alt="" coords="401,55,508,80"/>
+<area shape="poly" id="edge76_Node000001_Node000003" title=" " alt="" coords="239,214,281,151,312,117,348,89,374,77,400,70,402,75,375,82,351,94,316,121,286,154,243,217"/>
+<area shape="rect" id="Node000004" href="$classSiliconTargetPoint.html" title=" " alt="" coords="385,104,524,129"/>
+<area shape="poly" id="edge77_Node000001_Node000004" title=" " alt="" coords="248,216,291,176,319,155,348,138,384,125,386,130,350,143,322,160,295,180,251,219"/>
+<area shape="rect" id="Node000005" href="$classTTPoint.html" title=" " alt="" coords="419,153,490,179"/>
+<area shape="poly" id="edge78_Node000001_Node000005" title=" " alt="" coords="266,220,349,187,419,170,420,175,350,193,268,225"/>
+<area shape="rect" id="Node000006" href="$classTargetPoint.html" title=" " alt="" coords="407,203,502,228"/>
+<area shape="poly" id="edge79_Node000001_Node000006" title=" " alt="" coords="315,228,407,218,408,223,315,234"/>
+<area shape="rect" id="Node000007" href="$classTimeDetPoint.html" title=" " alt="" coords="399,252,510,277"/>
+<area shape="poly" id="edge80_Node000001_Node000007" title=" " alt="" coords="316,247,399,256,399,262,315,253"/>
+<area shape="rect" id="Node000008" href="$classUpstreamTaggerPoint.html" title=" " alt="" coords="373,301,536,327"/>
+<area shape="poly" id="edge81_Node000001_Node000008" title=" " alt="" coords="271,256,350,286,396,299,394,304,349,291,269,261"/>
+<area shape="rect" id="Node000009" href="$classUpstreamTaggerScoringPoint.html" title="Track crossing of one of the vacuum scoring planes around the UBT." alt="" coords="349,351,560,376"/>
+<area shape="poly" id="edge82_Node000001_Node000009" title=" " alt="" coords="252,261,295,300,351,336,384,348,382,353,348,340,292,304,248,265"/>
+<area shape="rect" id="Node000010" href="$classstrawtubesPoint.html" title=" " alt="" coords="391,400,518,425"/>
+<area shape="poly" id="edge83_Node000001_Node000010" title=" " alt="" coords="244,264,286,325,316,358,351,385,392,402,390,407,348,390,313,362,282,329,239,267"/>
+<area shape="rect" id="Node000011" href="$classvetoPoint.html" title=" " alt="" coords="413,449,497,475"/>
+<area shape="poly" id="edge84_Node000001_Node000011" title=" " alt="" coords="239,265,255,303,278,349,310,396,351,434,381,449,413,457,412,462,379,454,348,439,306,399,274,352,250,306,234,267"/>
 </map>

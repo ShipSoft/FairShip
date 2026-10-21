@@ -1,5 +1,6 @@
 var dir_339c7ec00789b632e2695cc72d150984 =
 [
+    [ "CaloScoringPlaneDetector.py", "CaloScoringPlaneDetector_8py.html", "CaloScoringPlaneDetector_8py" ],
     [ "MTCDetector.py", "MTCDetector_8py.html", "MTCDetector_8py" ],
     [ "SBTDetector.py", "SBTDetector_8py.html", "SBTDetector_8py" ],
     [ "SiliconTargetDetector.py", "SiliconTargetDetector_8py.html", "SiliconTargetDetector_8py" ],

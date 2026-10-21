@@ -423,34 +423,40 @@ Returns:
 <div class="line"><span class="lineno">  467</span>    c.CaloScoringPlane.DX = 4 * u.m  <span class="comment"># full width  (former SplitCal 2*XMax)</span></div>
 <div class="line"><span class="lineno">  468</span>    c.CaloScoringPlane.DY = 6 * u.m  <span class="comment"># full height (former SplitCal 2*YMax)</span></div>
 <div class="line"><span class="lineno">  469</span>    c.CaloScoringPlane.DZ = 1 * u.mm  <span class="comment"># full thickness</span></div>
-<div class="line"><span class="lineno">  470</span>    <span class="comment"># Centre of the plane; its upstream face is the ECAL front face, 38.90 m downstream of the</span></div>
-<div class="line"><span class="lineno">  471</span>    <span class="comment"># decay vessel centre, i.e. at 97.17 m (integration layout 2026-0.1)</span></div>
-<div class="line"><span class="lineno">  472</span>    c.CaloScoringPlane.z = 38.900 * u.m + c.decayVolume.z + c.CaloScoringPlane.DZ / 2</div>
-<div class="line"><span class="lineno">  473</span>    <span class="keywordflow">if</span> c.CaloScoringPlane.z + c.CaloScoringPlane.DZ / 2 &gt;= c.cave.zEnd:</div>
-<div class="line"><span class="lineno">  474</span>        <span class="keywordflow">raise</span> ValueError(</div>
-<div class="line"><span class="lineno">  475</span>            f<span class="stringliteral">&quot;CaloScoringPlane ends at z = {c.CaloScoringPlane.z + c.CaloScoringPlane.DZ / 2} cm, &quot;</span></div>
-<div class="line"><span class="lineno">  476</span>            f<span class="stringliteral">&quot;beyond the downstream ECN3 wall at {c.cave.zEnd} cm&quot;</span></div>
-<div class="line"><span class="lineno">  477</span>        )</div>
-<div class="line"><span class="lineno">  478</span> </div>
-<div class="line"><span class="lineno">  479</span>    c.hadronAbsorber.WithConstField = shield_db[shieldName][<span class="stringliteral">&quot;WithConstField&quot;</span>]</div>
-<div class="line"><span class="lineno">  480</span>    c.muShield.WithConstField = shield_db[shieldName][<span class="stringliteral">&quot;WithConstField&quot;</span>]</div>
-<div class="line"><span class="lineno">  481</span> </div>
-<div class="line"><span class="lineno">  482</span>    <span class="comment"># for the digitizing step</span></div>
-<div class="line"><span class="lineno">  483</span>    c.strawtubesDigi = AttrDict()</div>
-<div class="line"><span class="lineno">  484</span>    c.strawtubesDigi.v_drift = 1.0 / (30 * u.ns / u.mm)  <span class="comment"># for baseline NA62 5mm radius straws)</span></div>
-<div class="line"><span class="lineno">  485</span>    c.strawtubesDigi.sigma_spatial = 0.012 * u.cm  <span class="comment"># according to Massi&#39;s TP section</span></div>
-<div class="line"><span class="lineno">  486</span> </div>
-<div class="line"><span class="lineno">  487</span>    <span class="comment"># CAMM - For Nu tau detector, keep only these parameters which are used by others...</span></div>
-<div class="line"><span class="lineno">  488</span>    c.tauMudet = AttrDict()</div>
-<div class="line"><span class="lineno">  489</span>    c.tauMudet.Ztot = 3 * u.m  <span class="comment"># space allocated to Muon spectrometer</span></div>
-<div class="line"><span class="lineno">  490</span>    c.tauMudet.zMudetC = c.muShield.z + c.muShield.length / 2.0 - c.tauMudet.Ztot / 2.0 - 70 * u.cm</div>
-<div class="line"><span class="lineno">  491</span> </div>
-<div class="line"><span class="lineno">  492</span>    set_upstream_tagger(c)</div>
-<div class="line"><span class="lineno">  493</span> </div>
-<div class="line"><span class="lineno">  494</span>    <span class="comment"># Store parameters that might be needed for reference</span></div>
-<div class="line"><span class="lineno">  495</span>    c.nuTargetPassive = nuTargetPassive</div>
-<div class="line"><span class="lineno">  496</span> </div>
-<div class="line"><span class="lineno">  497</span>    <span class="keywordflow">return</span> c</div>
+<div class="line"><span class="lineno">  470</span>    <span class="comment"># Digitisation (python/detectors/CaloScoringPlaneDetector.py). Particle identification is</span></div>
+<div class="line"><span class="lineno">  471</span>    <span class="comment"># configured at reconstruction time: ShipReco.py --caloScoringPlanePID file.yaml</span></div>
+<div class="line"><span class="lineno">  472</span>    c.CaloScoringPlane.PositionResolution = 0.0 * u.cm  <span class="comment"># Gaussian x/y smearing, 0 = none</span></div>
+<div class="line"><span class="lineno">  473</span>    c.CaloScoringPlane.TimeResolution = 0.0  <span class="comment"># Gaussian time smearing in ns, 0 = none</span></div>
+<div class="line"><span class="lineno">  474</span>    c.CaloScoringPlane.ForwardOnly = <span class="keyword">True</span>  <span class="comment"># digitise only crossings with pz &gt; 0</span></div>
+<div class="line"><span class="lineno">  475</span>    c.CaloScoringPlane.IgnoredPdg = [12, 14, 16]  <span class="comment"># never produce a hit (neutrinos)</span></div>
+<div class="line"><span class="lineno">  476</span>    <span class="comment"># Centre of the plane; its upstream face is the ECAL front face, 38.90 m downstream of the</span></div>
+<div class="line"><span class="lineno">  477</span>    <span class="comment"># decay vessel centre, i.e. at 97.17 m (integration layout 2026-0.1)</span></div>
+<div class="line"><span class="lineno">  478</span>    c.CaloScoringPlane.z = 38.900 * u.m + c.decayVolume.z + c.CaloScoringPlane.DZ / 2</div>
+<div class="line"><span class="lineno">  479</span>    <span class="keywordflow">if</span> c.CaloScoringPlane.z + c.CaloScoringPlane.DZ / 2 &gt;= c.cave.zEnd:</div>
+<div class="line"><span class="lineno">  480</span>        <span class="keywordflow">raise</span> ValueError(</div>
+<div class="line"><span class="lineno">  481</span>            f<span class="stringliteral">&quot;CaloScoringPlane ends at z = {c.CaloScoringPlane.z + c.CaloScoringPlane.DZ / 2} cm, &quot;</span></div>
+<div class="line"><span class="lineno">  482</span>            f<span class="stringliteral">&quot;beyond the downstream ECN3 wall at {c.cave.zEnd} cm&quot;</span></div>
+<div class="line"><span class="lineno">  483</span>        )</div>
+<div class="line"><span class="lineno">  484</span> </div>
+<div class="line"><span class="lineno">  485</span>    c.hadronAbsorber.WithConstField = shield_db[shieldName][<span class="stringliteral">&quot;WithConstField&quot;</span>]</div>
+<div class="line"><span class="lineno">  486</span>    c.muShield.WithConstField = shield_db[shieldName][<span class="stringliteral">&quot;WithConstField&quot;</span>]</div>
+<div class="line"><span class="lineno">  487</span> </div>
+<div class="line"><span class="lineno">  488</span>    <span class="comment"># for the digitizing step</span></div>
+<div class="line"><span class="lineno">  489</span>    c.strawtubesDigi = AttrDict()</div>
+<div class="line"><span class="lineno">  490</span>    c.strawtubesDigi.v_drift = 1.0 / (30 * u.ns / u.mm)  <span class="comment"># for baseline NA62 5mm radius straws)</span></div>
+<div class="line"><span class="lineno">  491</span>    c.strawtubesDigi.sigma_spatial = 0.012 * u.cm  <span class="comment"># according to Massi&#39;s TP section</span></div>
+<div class="line"><span class="lineno">  492</span> </div>
+<div class="line"><span class="lineno">  493</span>    <span class="comment"># CAMM - For Nu tau detector, keep only these parameters which are used by others...</span></div>
+<div class="line"><span class="lineno">  494</span>    c.tauMudet = AttrDict()</div>
+<div class="line"><span class="lineno">  495</span>    c.tauMudet.Ztot = 3 * u.m  <span class="comment"># space allocated to Muon spectrometer</span></div>
+<div class="line"><span class="lineno">  496</span>    c.tauMudet.zMudetC = c.muShield.z + c.muShield.length / 2.0 - c.tauMudet.Ztot / 2.0 - 70 * u.cm</div>
+<div class="line"><span class="lineno">  497</span> </div>
+<div class="line"><span class="lineno">  498</span>    set_upstream_tagger(c)</div>
+<div class="line"><span class="lineno">  499</span> </div>
+<div class="line"><span class="lineno">  500</span>    <span class="comment"># Store parameters that might be needed for reference</span></div>
+<div class="line"><span class="lineno">  501</span>    c.nuTargetPassive = nuTargetPassive</div>
+<div class="line"><span class="lineno">  502</span> </div>
+<div class="line"><span class="lineno">  503</span>    <span class="keywordflow">return</span> c</div>
 </div><!-- fragment -->
 </div>
 </div>

@@ -1,0 +1,38 @@
+<map id="tests/test_calo_scoring_plane_pid.cxx" name="tests/test_calo_scoring_plane_pid.cxx">
+<area shape="rect" id="Node000001" title=" " alt="" coords="447,5,618,45"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,93,68,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="447,39,282,61,82,96,81,90,281,56,447,34"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="92,93,179,119"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="448,46,193,96,192,91,447,41"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="203,93,283,119"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="464,48,297,93,296,88,463,43"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="307,93,366,119"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="487,48,379,91,377,86,485,43"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="493,167,543,192"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="485,48,454,67,431,95,428,104,428,114,439,131,458,147,481,160,479,165,455,152,435,135,423,115,422,104,426,92,451,63,482,43"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="441,93,528,119"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="523,47,501,83,497,80,519,44"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="553,93,611,119"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="547,44,570,80,565,83,542,47"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="799,167,861,192"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="619,34,736,55,786,71,819,91,828,106,833,122,836,153,830,153,828,123,823,108,815,95,784,76,734,60,618,39"/>
+<area shape="rect" id="Node000010" href="$CaloScoringPlanePID_8h.html" title=" " alt="" coords="636,93,805,119"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="579,43,681,85,679,90,577,48"/>
+<area shape="rect" id="Node000012" href="$CaloScoringPlanePoint_8h.html" title=" " alt="" coords="881,93,1061,119"/>
+<area shape="poly" id="edge13_Node000001_Node000012" title=" " alt="" coords="619,39,894,88,893,94,618,45"/>
+<area shape="rect" id="Node000016" title=" " alt="" coords="1050,240,1141,265"/>
+<area shape="poly" id="edge19_Node000001_Node000016" title=" " alt="" coords="618,29,746,38,888,52,1009,69,1051,80,1074,91,1095,123,1104,159,1106,196,1103,226,1097,226,1100,195,1099,160,1090,125,1071,95,1049,85,1008,74,887,57,745,43,618,34"/>
+<area shape="rect" id="Node000017" title=" " alt="" coords="1137,93,1241,119"/>
+<area shape="poly" id="edge18_Node000001_Node000017" title=" " alt="" coords="618,33,845,57,1118,91,1124,91,1123,97,1118,96,844,62,618,38"/>
+<area shape="poly" id="edge10_Node000010_Node000006" title=" " alt="" coords="689,121,557,167,556,162,687,116"/>
+<area shape="poly" id="edge11_Node000010_Node000009" title=" " alt="" coords="740,116,802,157,799,161,737,121"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="681,167,760,192"/>
+<area shape="poly" id="edge12_Node000010_Node000011" title=" " alt="" coords="723,119,723,153,718,153,718,119"/>
+<area shape="rect" id="Node000013" href="$DetectorPoint_8h.html" title=" " alt="" coords="918,167,1041,192"/>
+<area shape="poly" id="edge14_Node000012_Node000013" title=" " alt="" coords="975,119,979,153,974,153,970,119"/>
+<area shape="rect" id="Node000014" title=" " alt="" coords="955,240,1011,265"/>
+<area shape="poly" id="edge15_Node000013_Node000014" title=" " alt="" coords="983,192,985,226,979,227,977,192"/>
+<area shape="rect" id="Node000015" title=" " alt="" coords="820,240,931,265"/>
+<area shape="poly" id="edge16_Node000013_Node000015" title=" " alt="" coords="964,194,905,234,902,230,961,190"/>
+<area shape="poly" id="edge17_Node000013_Node000016" title=" " alt="" coords="999,190,1066,230,1063,235,997,194"/>
+</map>

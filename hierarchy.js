@@ -8,6 +8,7 @@ var hierarchy =
     [ "SHiP::ActsStrawGeometry", "classSHiP_1_1ActsStrawGeometry.html", null ],
     [ "SHiP::ActsStrawTracker", "classSHiP_1_1ActsStrawTracker.html", null ],
     [ "MagneticTrackPropagator::Box", "structMagneticTrackPropagator_1_1Box.html", null ],
+    [ "CaloScoringPlanePID", "classCaloScoringPlanePID.html", null ],
     [ "ShipMuDIS::CBMSimBranches", "structShipMuDIS_1_1CBMSimBranches.html", null ],
     [ "hnl.CKMmatrix", "classhnl_1_1CKMmatrix.html", null ],
     [ "Co3Rng", "classCo3Rng.html", null ],
@@ -184,6 +185,7 @@ var hierarchy =
     [ "MuGeoProcessor::MuonWeights", "structMuGeoProcessor_1_1MuonWeights.html", null ],
     [ "ParticleGunParticle", "structParticleGunParticle.html", null ],
     [ "SHiP::PatRecHit", "structSHiP_1_1PatRecHit.html", null ],
+    [ "caloScoringPlanePID.PIDModel", "classcaloScoringPlanePID_1_1PIDModel.html", null ],
     [ "SHiP::ScoringPlane< PointType >::Plane", "structSHiP_1_1ScoringPlane_1_1Plane.html", null ],
     [ "ROOT.pyFairModule", null, [
       [ "study_GammaConv.Block", "classstudy__GammaConv_1_1Block.html", null ],
@@ -223,6 +225,7 @@ var hierarchy =
     ] ],
     [ "TObject", null, [
       [ "SHiP::DetectorHit", "classSHiP_1_1DetectorHit.html", [
+        [ "CaloScoringPlaneHit", "classCaloScoringPlaneHit.html", null ],
         [ "MTCDetHit", "classMTCDetHit.html", null ],
         [ "SiliconTargetHit", "classSiliconTargetHit.html", null ],
         [ "TimeDetHit", "classTimeDetHit.html", null ],
@@ -250,10 +253,14 @@ var hierarchy =
     [ "TVirtualMCDecayer", null, [
       [ "TEvtGenDecayer", "classTEvtGenDecayer.html", null ]
     ] ],
+    [ "ValueError", null, [
+      [ "caloScoringPlanePID.PIDConfigError", "classcaloScoringPlanePID_1_1PIDConfigError.html", null ]
+    ] ],
     [ "Veto", "classVeto.html", null ],
     [ "exitHadronAbsorber::WeightHistory", "structexitHadronAbsorber_1_1WeightHistory.html", null ],
     [ "ABC", null, [
       [ "BaseDetector.BaseDetector", "classBaseDetector_1_1BaseDetector.html", [
+        [ "CaloScoringPlaneDetector.CaloScoringPlaneDetector", "classCaloScoringPlaneDetector_1_1CaloScoringPlaneDetector.html", null ],
         [ "MTCDetector.MTCDetector", "classMTCDetector_1_1MTCDetector.html", null ],
         [ "SBTDetector.SBTDetector", "classSBTDetector_1_1SBTDetector.html", null ],
         [ "SiliconTargetDetector.SiliconTargetDetector", "classSiliconTargetDetector_1_1SiliconTargetDetector.html", null ],

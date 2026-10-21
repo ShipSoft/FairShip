@@ -521,7 +521,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  386</span>  <span class="keywordtype">double</span> tX = 0;</div>
 <div class="line"><span class="lineno">  387</span>  <span class="keywordtype">double</span> tY = 0;</div>
 <div class="line"><span class="lineno">  388</span>  <span class="keywordtype">double</span> tZ = 0;</div>
-<div class="line"><span class="lineno">  389</span>  TString <a class="code hl_variable" href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">name</a>(<span class="stringliteral">&quot;&quot;</span>);</div>
+<div class="line"><span class="lineno">  389</span>  TString <a class="code hl_variable" href="namespacecalo__scoring__plane__pid__example.html#a33cc14130de3283cf2cce7c78b91001f">name</a>(<span class="stringliteral">&quot;&quot;</span>);</div>
 <div class="line"><span class="lineno">  390</span> </div>
 <div class="line"><span class="lineno">  392</span>  TString nameOuterWall = (TString)outer_wall-&gt;GetName() + <span class="stringliteral">&quot;_&quot;</span> + blockName;</div>
 <div class="line"><span class="lineno">  393</span>  TGeoVolume* TOW =</div>
@@ -564,8 +564,8 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  431</span>    z1_x1 = z1_x1 - z1_x1_Step;</div>
 <div class="line"><span class="lineno">  432</span>    z1_x2 = z1_x2 - z1_x2_Step;</div>
 <div class="line"><span class="lineno">  433</span> </div>
-<div class="line"><span class="lineno">  434</span>    <a class="code hl_variable" href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">name</a> = <span class="stringliteral">&quot;&quot;</span>;</div>
-<div class="line"><span class="lineno">  435</span>    <a class="code hl_variable" href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">name</a>.Form(<span class="stringliteral">&quot;vLongitRibX_%s_phi%d&quot;</span>, blockName.Data(),</div>
+<div class="line"><span class="lineno">  434</span>    <a class="code hl_variable" href="namespacecalo__scoring__plane__pid__example.html#a33cc14130de3283cf2cce7c78b91001f">name</a> = <span class="stringliteral">&quot;&quot;</span>;</div>
+<div class="line"><span class="lineno">  435</span>    <a class="code hl_variable" href="namespacecalo__scoring__plane__pid__example.html#a33cc14130de3283cf2cce7c78b91001f">name</a>.Form(<span class="stringliteral">&quot;vLongitRibX_%s_phi%d&quot;</span>, blockName.Data(),</div>
 <div class="line"><span class="lineno">  436</span>              <a class="code hl_function" href="classveto.html#a3033d6c4b427718a1a072fe08b13a709">makeId</a>(0, z1_x1, z1_y1));</div>
 <div class="line"><span class="lineno">  437</span>    vLongitRibX.at(i) =</div>
 <div class="line"><span class="lineno">  438</span>        <a class="code hl_function" href="classveto.html#ad126b090d9dfcae898b029c92a646216">GeoSideObj</a>(name, dZ, rib_thickness, lisc_thickness_start, rib_thickness,</div>
@@ -586,8 +586,8 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  453</span>    z1_y1 = z1_y1 - z1_y1_Step;</div>
 <div class="line"><span class="lineno">  454</span>    z1_y2 = z1_y2 - z1_y2_Step;</div>
 <div class="line"><span class="lineno">  455</span> </div>
-<div class="line"><span class="lineno">  456</span>    <a class="code hl_variable" href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">name</a> = <span class="stringliteral">&quot;&quot;</span>;</div>
-<div class="line"><span class="lineno">  457</span>    <a class="code hl_variable" href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">name</a>.Form(<span class="stringliteral">&quot;vLongitRibY_%s_phi%d&quot;</span>, blockName.Data(),</div>
+<div class="line"><span class="lineno">  456</span>    <a class="code hl_variable" href="namespacecalo__scoring__plane__pid__example.html#a33cc14130de3283cf2cce7c78b91001f">name</a> = <span class="stringliteral">&quot;&quot;</span>;</div>
+<div class="line"><span class="lineno">  457</span>    <a class="code hl_variable" href="namespacecalo__scoring__plane__pid__example.html#a33cc14130de3283cf2cce7c78b91001f">name</a>.Form(<span class="stringliteral">&quot;vLongitRibY_%s_phi%d&quot;</span>, blockName.Data(),</div>
 <div class="line"><span class="lineno">  458</span>              <a class="code hl_function" href="classveto.html#a3033d6c4b427718a1a072fe08b13a709">makeId</a>(0, z1_x1, z1_y1));</div>
 <div class="line"><span class="lineno">  459</span>    vLongitRibY.at(i) = <a class="code hl_function" href="classveto.html#ad126b090d9dfcae898b029c92a646216">GeoSideObj</a>(</div>
 <div class="line"><span class="lineno">  460</span>        name, dZ, lisc_thickness_start, rib_thickness, lisc_thickness_end,</div>
@@ -597,11 +597,11 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  464</span>  }</div>
 <div class="line"><span class="lineno">  465</span> </div>
 <div class="line"><span class="lineno">  467</span> </div>
-<div class="line"><span class="lineno">  468</span>  <a class="code hl_variable" href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">name</a> = <span class="stringliteral">&quot;CornerRib_L_&quot;</span> + blockName + <span class="stringliteral">&quot;_id&quot;</span>;</div>
+<div class="line"><span class="lineno">  468</span>  <a class="code hl_variable" href="namespacecalo__scoring__plane__pid__example.html#a33cc14130de3283cf2cce7c78b91001f">name</a> = <span class="stringliteral">&quot;CornerRib_L_&quot;</span> + blockName + <span class="stringliteral">&quot;_id&quot;</span>;</div>
 <div class="line"><span class="lineno">  469</span>  TGeoVolumeAssembly* CornerRib_L =</div>
 <div class="line"><span class="lineno">  470</span>      <a class="code hl_function" href="classveto.html#a1792c91398a232b327a9befc8ae6434e">GeoCornerRib</a>(name, rib_thickness, lisc_thickness_start,</div>
 <div class="line"><span class="lineno">  471</span>                   lisc_thickness_end, dZ, slX, slY, ribColor, <a class="code hl_variable" href="classveto.html#a9db9c5caed299b5a276869592041217f">supportMedIn</a>);</div>
-<div class="line"><span class="lineno">  472</span>  <a class="code hl_variable" href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">name</a> = <span class="stringliteral">&quot;CornerRib_R_&quot;</span> + blockName + <span class="stringliteral">&quot;_id&quot;</span>;</div>
+<div class="line"><span class="lineno">  472</span>  <a class="code hl_variable" href="namespacecalo__scoring__plane__pid__example.html#a33cc14130de3283cf2cce7c78b91001f">name</a> = <span class="stringliteral">&quot;CornerRib_R_&quot;</span> + blockName + <span class="stringliteral">&quot;_id&quot;</span>;</div>
 <div class="line"><span class="lineno">  473</span>  TGeoVolumeAssembly* CornerRib_R =</div>
 <div class="line"><span class="lineno">  474</span>      <a class="code hl_function" href="classveto.html#a1792c91398a232b327a9befc8ae6434e">GeoCornerRib</a>(name, rib_thickness, lisc_thickness_start,</div>
 <div class="line"><span class="lineno">  475</span>                   lisc_thickness_end, dZ, slY, slX, ribColor, <a class="code hl_variable" href="classveto.html#a9db9c5caed299b5a276869592041217f">supportMedIn</a>);</div>
@@ -668,8 +668,8 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  538</span>    zi_y1 = zi_y_thickness_1 / 2;</div>
 <div class="line"><span class="lineno">  539</span>    zi_y2 = zi_y_thickness_2 / 2;</div>
 <div class="line"><span class="lineno">  540</span> </div>
-<div class="line"><span class="lineno">  541</span>    <a class="code hl_variable" href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">name</a> = <span class="stringliteral">&quot;&quot;</span>;</div>
-<div class="line"><span class="lineno">  542</span>    <a class="code hl_variable" href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">name</a>.Form(<span class="stringliteral">&quot;LiSc_S4_%d&quot;</span>, <a class="code hl_function" href="classveto.html#ace737c1b74c228bf9ef3ab30a57234c3">liscId</a>(<span class="stringliteral">&quot;LiSc_S4&quot;</span>, block_number, Zlayer, 0, 0));</div>
+<div class="line"><span class="lineno">  541</span>    <a class="code hl_variable" href="namespacecalo__scoring__plane__pid__example.html#a33cc14130de3283cf2cce7c78b91001f">name</a> = <span class="stringliteral">&quot;&quot;</span>;</div>
+<div class="line"><span class="lineno">  542</span>    <a class="code hl_variable" href="namespacecalo__scoring__plane__pid__example.html#a33cc14130de3283cf2cce7c78b91001f">name</a>.Form(<span class="stringliteral">&quot;LiSc_S4_%d&quot;</span>, <a class="code hl_function" href="classveto.html#ace737c1b74c228bf9ef3ab30a57234c3">liscId</a>(<span class="stringliteral">&quot;LiSc_S4&quot;</span>, block_number, Zlayer, 0, 0));</div>
 <div class="line"><span class="lineno">  543</span>    TGeoVolume* LiSc_S4 =</div>
 <div class="line"><span class="lineno">  544</span>        <a class="code hl_function" href="classveto.html#a7c4b9e6de5cec5327d401048fb245f3e">GeoCornerLiSc2</a>(name, dZ, 0, zi_y1_Step - lisc_thickness_start,</div>
 <div class="line"><span class="lineno">  545</span>                       zi_y2_Step - lisc_thickness_end, lisc_thickness_start,</div>
@@ -682,8 +682,8 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  552</span>                  <span class="keyword">new</span> TGeoCombiTrans(-zi_x1, (zi_y1 - zi_y1_Step), tZ,</div>
 <div class="line"><span class="lineno">  553</span>                                     <span class="keyword">new</span> TGeoRotation(<span class="stringliteral">&quot;r&quot;</span>, 0, 0, 180)));</div>
 <div class="line"><span class="lineno">  554</span> </div>
-<div class="line"><span class="lineno">  555</span>    <a class="code hl_variable" href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">name</a> = <span class="stringliteral">&quot;&quot;</span>;</div>
-<div class="line"><span class="lineno">  556</span>    <a class="code hl_variable" href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">name</a>.Form(<span class="stringliteral">&quot;LiSc_S6_%d&quot;</span>, <a class="code hl_function" href="classveto.html#ace737c1b74c228bf9ef3ab30a57234c3">liscId</a>(<span class="stringliteral">&quot;LiSc_S6&quot;</span>, block_number, Zlayer, ny, 0));</div>
+<div class="line"><span class="lineno">  555</span>    <a class="code hl_variable" href="namespacecalo__scoring__plane__pid__example.html#a33cc14130de3283cf2cce7c78b91001f">name</a> = <span class="stringliteral">&quot;&quot;</span>;</div>
+<div class="line"><span class="lineno">  556</span>    <a class="code hl_variable" href="namespacecalo__scoring__plane__pid__example.html#a33cc14130de3283cf2cce7c78b91001f">name</a>.Form(<span class="stringliteral">&quot;LiSc_S6_%d&quot;</span>, <a class="code hl_function" href="classveto.html#ace737c1b74c228bf9ef3ab30a57234c3">liscId</a>(<span class="stringliteral">&quot;LiSc_S6&quot;</span>, block_number, Zlayer, ny, 0));</div>
 <div class="line"><span class="lineno">  557</span>    TGeoVolume* LiSc_S6 =</div>
 <div class="line"><span class="lineno">  558</span>        <a class="code hl_function" href="classveto.html#a7c4b9e6de5cec5327d401048fb245f3e">GeoCornerLiSc2</a>(name, dZ, 1, zi_y1_Step - lisc_thickness_start,</div>
 <div class="line"><span class="lineno">  559</span>                       zi_y2_Step - lisc_thickness_end, lisc_thickness_start,</div>
@@ -710,8 +710,8 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  580</span>                             <span class="keyword">new</span> TGeoRotation(<span class="stringliteral">&quot;r&quot;</span>, 0, 0, 180)));</div>
 <div class="line"><span class="lineno">  581</span> </div>
 <div class="line"><span class="lineno">  582</span>      <span class="keywordflow">if</span> (i &gt; 0) {</div>
-<div class="line"><span class="lineno">  583</span>        <a class="code hl_variable" href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">name</a> = <span class="stringliteral">&quot;&quot;</span>;</div>
-<div class="line"><span class="lineno">  584</span>        <a class="code hl_variable" href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">name</a>.Form(<span class="stringliteral">&quot;LiScY_%d&quot;</span>, <a class="code hl_function" href="classveto.html#ace737c1b74c228bf9ef3ab30a57234c3">liscId</a>(<span class="stringliteral">&quot;LiScY&quot;</span>, block_number, Zlayer, i, 0));</div>
+<div class="line"><span class="lineno">  583</span>        <a class="code hl_variable" href="namespacecalo__scoring__plane__pid__example.html#a33cc14130de3283cf2cce7c78b91001f">name</a> = <span class="stringliteral">&quot;&quot;</span>;</div>
+<div class="line"><span class="lineno">  584</span>        <a class="code hl_variable" href="namespacecalo__scoring__plane__pid__example.html#a33cc14130de3283cf2cce7c78b91001f">name</a>.Form(<span class="stringliteral">&quot;LiScY_%d&quot;</span>, <a class="code hl_function" href="classveto.html#ace737c1b74c228bf9ef3ab30a57234c3">liscId</a>(<span class="stringliteral">&quot;LiScY&quot;</span>, block_number, Zlayer, i, 0));</div>
 <div class="line"><span class="lineno">  585</span>        TGeoVolume* LiScY =</div>
 <div class="line"><span class="lineno">  586</span>            <a class="code hl_function" href="classveto.html#ad126b090d9dfcae898b029c92a646216">GeoSideObj</a>(name, dZ, lisc_thickness_start, zi_y1_Step,</div>
 <div class="line"><span class="lineno">  587</span>                       lisc_thickness_end, zi_y2_Step, zi_x2 - zi_x1,</div>
@@ -734,8 +734,8 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  604</span>    zi_y1 = zi_y_thickness_1 / 2 - lisc_thickness_start;</div>
 <div class="line"><span class="lineno">  605</span>    zi_y2 = zi_y_thickness_2 / 2 - lisc_thickness_start;</div>
 <div class="line"><span class="lineno">  606</span> </div>
-<div class="line"><span class="lineno">  607</span>    <a class="code hl_variable" href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">name</a> = <span class="stringliteral">&quot;&quot;</span>;</div>
-<div class="line"><span class="lineno">  608</span>    <a class="code hl_variable" href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">name</a>.Form(<span class="stringliteral">&quot;LiSc_S3_%d&quot;</span>, <a class="code hl_function" href="classveto.html#ace737c1b74c228bf9ef3ab30a57234c3">liscId</a>(<span class="stringliteral">&quot;LiSc_S3&quot;</span>, block_number, Zlayer, 0, 0));</div>
+<div class="line"><span class="lineno">  607</span>    <a class="code hl_variable" href="namespacecalo__scoring__plane__pid__example.html#a33cc14130de3283cf2cce7c78b91001f">name</a> = <span class="stringliteral">&quot;&quot;</span>;</div>
+<div class="line"><span class="lineno">  608</span>    <a class="code hl_variable" href="namespacecalo__scoring__plane__pid__example.html#a33cc14130de3283cf2cce7c78b91001f">name</a>.Form(<span class="stringliteral">&quot;LiSc_S3_%d&quot;</span>, <a class="code hl_function" href="classveto.html#ace737c1b74c228bf9ef3ab30a57234c3">liscId</a>(<span class="stringliteral">&quot;LiSc_S3&quot;</span>, block_number, Zlayer, 0, 0));</div>
 <div class="line"><span class="lineno">  609</span> </div>
 <div class="line"><span class="lineno">  610</span>    TGeoVolume* LiSc_S3 = <a class="code hl_function" href="classveto.html#a5a8ce32ca342dfd39075a04d0907f007">GeoCornerLiSc1</a>(</div>
 <div class="line"><span class="lineno">  611</span>        name, dZ, 0,</div>
@@ -751,8 +751,8 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  621</span>                  <span class="keyword">new</span> TGeoCombiTrans((zi_x1 - zi_x1_Step), -zi_y1, tZ,</div>
 <div class="line"><span class="lineno">  622</span>                                     <span class="keyword">new</span> TGeoRotation(<span class="stringliteral">&quot;r&quot;</span>, 0, 0, 180)));</div>
 <div class="line"><span class="lineno">  623</span> </div>
-<div class="line"><span class="lineno">  624</span>    <a class="code hl_variable" href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">name</a> = <span class="stringliteral">&quot;&quot;</span>;</div>
-<div class="line"><span class="lineno">  625</span>    <a class="code hl_variable" href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">name</a>.Form(<span class="stringliteral">&quot;LiSc_S5_%d&quot;</span>, <a class="code hl_function" href="classveto.html#ace737c1b74c228bf9ef3ab30a57234c3">liscId</a>(<span class="stringliteral">&quot;LiSc_S5&quot;</span>, block_number, Zlayer, nx, 0));</div>
+<div class="line"><span class="lineno">  624</span>    <a class="code hl_variable" href="namespacecalo__scoring__plane__pid__example.html#a33cc14130de3283cf2cce7c78b91001f">name</a> = <span class="stringliteral">&quot;&quot;</span>;</div>
+<div class="line"><span class="lineno">  625</span>    <a class="code hl_variable" href="namespacecalo__scoring__plane__pid__example.html#a33cc14130de3283cf2cce7c78b91001f">name</a>.Form(<span class="stringliteral">&quot;LiSc_S5_%d&quot;</span>, <a class="code hl_function" href="classveto.html#ace737c1b74c228bf9ef3ab30a57234c3">liscId</a>(<span class="stringliteral">&quot;LiSc_S5&quot;</span>, block_number, Zlayer, nx, 0));</div>
 <div class="line"><span class="lineno">  626</span> </div>
 <div class="line"><span class="lineno">  627</span>    TGeoVolume* LiSc_S5 = <a class="code hl_function" href="classveto.html#a5a8ce32ca342dfd39075a04d0907f007">GeoCornerLiSc1</a>(</div>
 <div class="line"><span class="lineno">  628</span>        name, dZ, 1,</div>
@@ -782,8 +782,8 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  652</span>                             <span class="keyword">new</span> TGeoRotation(<span class="stringliteral">&quot;r&quot;</span>, 0, 0, 180)));</div>
 <div class="line"><span class="lineno">  653</span> </div>
 <div class="line"><span class="lineno">  654</span>      <span class="keywordflow">if</span> (i &gt; 0) {</div>
-<div class="line"><span class="lineno">  655</span>        <a class="code hl_variable" href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">name</a> = <span class="stringliteral">&quot;&quot;</span>;</div>
-<div class="line"><span class="lineno">  656</span>        <a class="code hl_variable" href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">name</a>.Form(<span class="stringliteral">&quot;LiScX_%d&quot;</span>, <a class="code hl_function" href="classveto.html#ace737c1b74c228bf9ef3ab30a57234c3">liscId</a>(<span class="stringliteral">&quot;LiScX&quot;</span>, block_number, Zlayer, i, 0));</div>
+<div class="line"><span class="lineno">  655</span>        <a class="code hl_variable" href="namespacecalo__scoring__plane__pid__example.html#a33cc14130de3283cf2cce7c78b91001f">name</a> = <span class="stringliteral">&quot;&quot;</span>;</div>
+<div class="line"><span class="lineno">  656</span>        <a class="code hl_variable" href="namespacecalo__scoring__plane__pid__example.html#a33cc14130de3283cf2cce7c78b91001f">name</a>.Form(<span class="stringliteral">&quot;LiScX_%d&quot;</span>, <a class="code hl_function" href="classveto.html#ace737c1b74c228bf9ef3ab30a57234c3">liscId</a>(<span class="stringliteral">&quot;LiScX&quot;</span>, block_number, Zlayer, i, 0));</div>
 <div class="line"><span class="lineno">  657</span>        TGeoVolume* LiScX =</div>
 <div class="line"><span class="lineno">  658</span>            <a class="code hl_function" href="classveto.html#ad126b090d9dfcae898b029c92a646216">GeoSideObj</a>(name, dZ, zi_x1_Step, lisc_thickness_start, zi_x2_Step,</div>
 <div class="line"><span class="lineno">  659</span>                       lisc_thickness_end, zi_x2 - zi_x1, zi_y2 - zi_y1,</div>
@@ -813,7 +813,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="ttc" id="aclassveto_html_ad126b090d9dfcae898b029c92a646216"><div class="ttname"><a href="classveto.html#ad126b090d9dfcae898b029c92a646216">veto::GeoSideObj</a></div><div class="ttdeci">TGeoVolume * GeoSideObj(const TString &amp;xname, double dz, double a1, double b1, double a2, double b2, double dA, double dB, Int_t color, TGeoMedium *material, Bool_t sens)</div><div class="ttdef"><b>Definition</b> <a href="veto_8cxx_source.html#l00171">veto.cxx:171</a></div></div>
 <div class="ttc" id="aclassveto_html_ad4fc534ea8b0bcef379f40e3f87f38c1"><div class="ttname"><a href="classveto.html#ad4fc534ea8b0bcef379f40e3f87f38c1">veto::wx</a></div><div class="ttdeci">double wx(double z)</div><div class="ttdoc">slope along the width (x)</div><div class="ttdef"><b>Definition</b> <a href="veto_8cxx_source.html#l00151">veto.cxx:151</a></div></div>
 <div class="ttc" id="anamespaceShipAna_html_aa4bf87f4d17f9d38b1d8f4d009bb54b3"><div class="ttname"><a href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">ShipAna.i</a></div><div class="ttdeci">int i</div><div class="ttdef"><b>Definition</b> <a href="ShipAna_8py_source.html#l00108">ShipAna.py:108</a></div></div>
-<div class="ttc" id="anamespacemakeCascade_html_add259298592a80ac35262a17847aee2d"><div class="ttname"><a href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">makeCascade.name</a></div><div class="ttdeci">name</div><div class="ttdef"><b>Definition</b> <a href="makeCascade_8py_source.html#l00244">makeCascade.py:244</a></div></div>
+<div class="ttc" id="anamespacecalo__scoring__plane__pid__example_html_a33cc14130de3283cf2cce7c78b91001f"><div class="ttname"><a href="namespacecalo__scoring__plane__pid__example.html#a33cc14130de3283cf2cce7c78b91001f">calo_scoring_plane_pid_example.name</a></div><div class="ttdeci">name</div><div class="ttdef"><b>Definition</b> <a href="calo__scoring__plane__pid__example_8py_source.html#l00031">calo_scoring_plane_pid_example.py:31</a></div></div>
 <div class="ttc" id="anamespacestudy__muMSC_html_a235aad16d3c1f1d4e8af0c3f536aa482"><div class="ttname"><a href="namespacestudy__muMSC.html#a235aad16d3c1f1d4e8af0c3f536aa482">study_muMSC.nx</a></div><div class="ttdeci">nx</div><div class="ttdef"><b>Definition</b> <a href="study__muMSC_8py_source.html#l00150">study_muMSC.py:150</a></div></div>
 <div class="ttc" id="anamespacestudy__muMSC_html_a6b14755453040cb3f775690620e2211e"><div class="ttname"><a href="namespacestudy__muMSC.html#a6b14755453040cb3f775690620e2211e">study_muMSC.ny</a></div><div class="ttdeci">ny</div><div class="ttdef"><b>Definition</b> <a href="study__muMSC_8py_source.html#l00150">study_muMSC.py:150</a></div></div>
 </div><!-- fragment -->
