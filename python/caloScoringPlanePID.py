@@ -18,6 +18,7 @@ from dataclasses import dataclass, field
 from typing import Any
 
 import yaml
+from yaml.error import YAMLError
 
 # Order of CaloScoringPlanePID::Species (kElectron = 0, kHadron = 1, kMuon = 2).
 SPECIES = ("electron", "hadron", "muon")
@@ -106,7 +107,7 @@ def load(path: str) -> PIDModel:
             config = yaml.safe_load(f)
     except OSError as error:
         raise PIDConfigError(f"cannot read the PID file {expanded}: {error.strerror}") from error
-    except yaml.YAMLError as error:
+    except YAMLError as error:
         raise PIDConfigError(f"{expanded}: not valid YAML: {error}") from error
     return parse(config, expanded)
 

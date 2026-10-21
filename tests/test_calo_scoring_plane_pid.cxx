@@ -38,9 +38,11 @@ bool close(double a, double b, double tol = 1e-9) {
 using S = CaloScoringPlanePID;
 using Values = std::vector<double>;
 
-const Values kIdentity = {1, 0, 0, 0, 1, 0, 0, 0, 1};
+// Functions rather than global constants: a global std::vector is built
+// before main() and its allocation could throw where nothing catches it.
+Values Identity() { return {1, 0, 0, 0, 1, 0, 0, 0, 1}; }
 // Electrons identified as hadrons, the other rows diagonal.
-const Values kElectronAsHadron = {0, 1, 0, 0, 1, 0, 0, 0, 1};
+Values ElectronAsHadron() { return {0, 1, 0, 0, 1, 0, 0, 0, 1}; }
 
 Values Concat(const Values& a, const Values& b) {
   Values out = a;
@@ -94,7 +96,7 @@ int main() {
   // --- linear interpolation and clamping ---
   {
     S pid;
-    pid.Set({10., 20.}, Concat(kIdentity, kElectronAsHadron));
+    pid.Set({10., 20.}, Concat(Identity(), ElectronAsHadron()));
     check(close(pid.Probability(S::kElectron, S::kElectron, 15.), 0.5),
           "linear midpoint");
     check(close(pid.Probability(S::kElectron, S::kHadron, 12.5), 0.25),
@@ -118,7 +120,7 @@ int main() {
   // --- log interpolation ---
   {
     S pid;
-    pid.Set({10., 20.}, Concat(kIdentity, kElectronAsHadron), {}, kTRUE);
+    pid.Set({10., 20.}, Concat(Identity(), ElectronAsHadron()), {}, kTRUE);
     check(pid.IsLogInterpolation(), "log interpolation set");
     const double e = std::sqrt(10. * 20.);  // geometric mean -> weight 0.5
     check(close(pid.Probability(S::kElectron, S::kElectron, e), 0.5),
@@ -152,7 +154,7 @@ int main() {
           "perfect PID and unknown species leave the generator untouched");
 
     S pid;  // electron row (0.5, 0.5, 0) at 15 GeV, (0, 1, 0) from 20 GeV
-    pid.Set({10., 20.}, Concat(kIdentity, kElectronAsHadron));
+    pid.Set({10., 20.}, Concat(Identity(), ElectronAsHadron()));
     TRandom3 a(2), b(2);
     check(pid.Identify(11, 50., a) == S::kHadron, "single non-zero entry");
     check(a.Rndm() == b.Rndm(), "single non-zero entry draws nothing");
@@ -164,7 +166,7 @@ int main() {
   // --- overrides ---
   {
     S pid;
-    pid.Set({1.}, kIdentity, {{22, S::kElectron}, {-211, S::kUnknown}});
+    pid.Set({1.}, Identity(), {{22, S::kElectron}, {-211, S::kUnknown}});
     check(pid.TrueSpecies(22) == S::kElectron, "override photon");
     check(pid.TrueSpecies(211) == S::kUnknown, "override pi to unknown");
     check(pid.TrueSpecies(-211) == S::kUnknown, "override applies to |pdg|");
@@ -182,7 +184,7 @@ int main() {
   // --- non-finite energies and out-of-range species ---
   {
     S pid;
-    pid.Set({10., 20.}, Concat(kIdentity, kElectronAsHadron));
+    pid.Set({10., 20.}, Concat(Identity(), ElectronAsHadron()));
     TRandom3 used(3), reference(3);
     for (double e : {nan, inf, -inf}) {
       check(pid.Identify(11, e, 0.5) == S::kUnknown, "non-finite energy: u");
@@ -227,9 +229,9 @@ int main() {
   // --- validation in Set() ---
   expectInvalid([](S& p) { p.Set({}, {}); }, "no energy points");
   expectInvalid([](S& p) { p.Set({1.}, {1, 0, 0}); }, "too few values");
-  expectInvalid([](S& p) { p.Set({2., 1.}, Concat(kIdentity, kIdentity)); },
+  expectInvalid([](S& p) { p.Set({2., 1.}, Concat(Identity(), Identity())); },
                 "decreasing energies");
-  expectInvalid([](S& p) { p.Set({1., 1.}, Concat(kIdentity, kIdentity)); },
+  expectInvalid([](S& p) { p.Set({1., 1.}, Concat(Identity(), Identity())); },
                 "repeated energy");
   expectInvalid([](S& p) { p.Set({1.}, {0.5, 0.4, 0, 0, 1, 0, 0, 0, 1}); },
                 "row sum");
@@ -237,16 +239,16 @@ int main() {
                 "negative entry");
   expectInvalid([&](S& p) { p.Set({1.}, {nan, 1, 0, 0, 1, 0, 0, 0, 1}); },
                 "NaN entry");
-  expectInvalid([&](S& p) { p.Set({nan}, kIdentity); }, "NaN energy");
-  expectInvalid([&](S& p) { p.Set({1., inf}, Concat(kIdentity, kIdentity)); },
+  expectInvalid([&](S& p) { p.Set({nan}, Identity()); }, "NaN energy");
+  expectInvalid([&](S& p) { p.Set({1., inf}, Concat(Identity(), Identity())); },
                 "infinite energy");
-  expectInvalid([](S& p) { p.Set({0.}, kIdentity, {}, kTRUE); },
+  expectInvalid([](S& p) { p.Set({0.}, Identity(), {}, kTRUE); },
                 "log with zero energy");
-  expectInvalid([](S& p) { p.Set({1.}, kIdentity, {{22, 3}}); },
+  expectInvalid([](S& p) { p.Set({1.}, Identity(), {{22, 3}}); },
                 "override species out of range");
   expectInvalid(
       [](S& p) {
-        p.Set({1.}, kIdentity, {{211, S::kHadron}, {-211, S::kMuon}});
+        p.Set({1.}, Identity(), {{211, S::kHadron}, {-211, S::kMuon}});
       },
       "conflicting overrides");
 
