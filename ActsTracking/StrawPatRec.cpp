@@ -668,23 +668,13 @@ std::vector<TrackCandidate> StrawPatRec::matchSegments(
       }
     }
   }
-  // Greedy one-to-one assignment, best match first
+  // Every pair is a candidate, best match first: the best match of a segment
+  // is often not its track, and the fit of the whole track resolves the
+  // candidates sharing a segment
   std::sort(pairs.begin(), pairs.end(), [](const auto& a, const auto& b) {
     return a.matchChi2 < b.matchChi2;
   });
-  std::vector<TrackCandidate> tracks;
-  std::set<std::vector<int>> usedUp;
-  std::set<std::vector<int>> usedDown;
-  for (auto& pair : pairs) {
-    if (usedUp.count(pair.upstream.hits) ||
-        usedDown.count(pair.downstream.hits)) {
-      continue;
-    }
-    usedUp.insert(pair.upstream.hits);
-    usedDown.insert(pair.downstream.hits);
-    tracks.push_back(std::move(pair));
-  }
-  return tracks;
+  return pairs;
 }
 
 std::vector<TrackCandidate> StrawPatRec::findTracks(
