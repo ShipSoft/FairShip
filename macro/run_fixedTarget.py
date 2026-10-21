@@ -466,7 +466,7 @@ if args.AddMuonShield or args.AddHadronAbsorberOnly:
     MuonShield = ROOT.ShipMuonShield(
         in_params=list(ship_geo.muShield.params),
         z=ship_geo.muShield.z,
-        WithConstShieldField=True,
+        WithConstShieldField=not args.AddMuonShieldField,
         SC_key=ship_geo.SC_mag,
     )
     # MuonShield.SetSupports(False) # otherwise overlap with sensitive Plane
