@@ -284,4 +284,3 @@ muons absent from the filtered trees. Shared records are identified by UUID
 and counted only once when inputs or analysis outputs are combined. Repeated
 filtering adds a distinct filtering invocation; the stage summary sums the
 unique invocations, while preparation remains unchanged.
-

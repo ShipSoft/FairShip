@@ -47,8 +47,11 @@ parser.add_argument(
 parser.add_argument("-n", "--n_events", type=int, default=-1)
 parser.add_argument("-s", "--start_event", type=int, default=0)
 parser.add_argument("--seed", type=int, help="Random seed for Pythia6 and ROOT (default: time-based)")
-parser.add_argument("--pythia-stdout", action="store_true",
-                    help="Send Pythia6 messages to stdout instead of fort.11 (use GFORTRAN_UNBUFFERED_ALL=1 for hang diagnostics)")
+parser.add_argument(
+    "--pythia-stdout",
+    action="store_true",
+    help="Send Pythia6 messages to stdout instead of fort.11 (use GFORTRAN_UNBUFFERED_ALL=1 for hang diagnostics)",
+)
 parser.add_argument("--check-all-volumes", action="store_true", help="Scan all geometry volumes for diagnostics")
 parser.add_argument("-z", "--z_max", type=float, default=20000)
 parser.add_argument("--z_min", type=float, default=2500, help="Minimum z in cm for diagnostics (default: 2500)")

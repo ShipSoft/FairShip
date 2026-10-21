@@ -295,22 +295,21 @@ void MuDISProcessor::generateDISevents(const std::string& tType,
     // Restore our starting cuts (Pythia defaults) for each beam/target pair.
     fPythia->SetCKIN(1, 2.);
     fPythia->SetCKIN(3, 0.);
-    LOG(debug1) << std::setprecision(17) << "PYTHIA Initialize BEGIN: entry="
-                << entry << " material=" << aLabel << " beam=" << tType
+    LOG(debug1) << std::setprecision(17)
+                << "PYTHIA Initialize BEGIN: entry=" << entry
+                << " material=" << aLabel << " beam=" << tType
                 << " target=" << target << " beamP=" << P
                 << " GeV/c MSEL=" << fPythia->GetMSEL()
                 << " PARP(2)=" << fPythia->GetPARP(2)
                 << " MSTP(14)=" << fPythia->GetMSTP(14)
                 << " CKIN(1:4)=" << fPythia->GetCKIN(1) << ","
                 << fPythia->GetCKIN(2) << "," << fPythia->GetCKIN(3) << ","
-                << fPythia->GetCKIN(4)
-                << " CKIN(5)=" << fPythia->GetCKIN(5)
+                << fPythia->GetCKIN(4) << " CKIN(5)=" << fPythia->GetCKIN(5)
                 << " CKIN(77:78)=" << fPythia->GetCKIN(77) << ","
                 << fPythia->GetCKIN(78) << std::endl;
     fPythia->Initialize("FIXT", tType.c_str(), target, P);
     LOG(debug1) << "PYTHIA Initialize END: entry=" << entry
-                << " material=" << aLabel << " target=" << target
-                << std::endl;
+                << " material=" << aLabel << " target=" << target << std::endl;
   };
   initialize("p+");
   aDISBr.pPythia = P;
@@ -347,25 +346,27 @@ void MuDISProcessor::generateDISevents(const std::string& tType,
     LOG(debug1) << std::setprecision(17)
                 << "PYTHIA GenerateEvent BEGIN: entry=" << entry
                 << " material=" << aLabel << " DIS=" << ia
-                << " target=" << (isProton ? "p+" : "n0")
-                << " beamP=" << P << " sliceP=" << sliceP << " GeV/c"
+                << " target=" << (isProton ? "p+" : "n0") << " beamP=" << P
+                << " sliceP=" << sliceP << " GeV/c"
                 << " slice=" << slice << "/" << aPath.GetNSlices()
-                << " sampledLength=" << sampledLength << " range=["
-                << minLength << "," << aPath.GetLength() << "] cm z="
-                << realz << " cm muonWeight=" << amuonW
+                << " sampledLength=" << sampledLength << " range=[" << minLength
+                << "," << aPath.GetLength() << "] cm z=" << realz
+                << " cm muonWeight=" << amuonW
                 << " MRPY(1:6)=" << fPythia->GetMRPY(1) << ","
                 << fPythia->GetMRPY(2) << "," << fPythia->GetMRPY(3) << ","
                 << fPythia->GetMRPY(4) << "," << fPythia->GetMRPY(5) << ","
                 << fPythia->GetMRPY(6) << std::endl;
     const auto generationStart = std::chrono::steady_clock::now();
     fPythia->GenerateEvent();
-    const double generationSeconds = std::chrono::duration<double>(
-        std::chrono::steady_clock::now() - generationStart).count();
+    const double generationSeconds =
+        std::chrono::duration<double>(std::chrono::steady_clock::now() -
+                                      generationStart)
+            .count();
     LOG(debug1) << "PYTHIA GenerateEvent END: entry=" << entry
                 << " material=" << aLabel << " DIS=" << ia
-                << " elapsed=" << generationSeconds << " s N="
-                << fPythia->GetN() << " MSTI(61)=" << fPythia->GetMSTI(61)
-                << std::endl;
+                << " elapsed=" << generationSeconds
+                << " s N=" << fPythia->GetN()
+                << " MSTI(61)=" << fPythia->GetMSTI(61) << std::endl;
     aDISBr.nDISevts++;
     // clean all but final stable particles
     LOG(debug1) << "PYTHIA Pyedit BEGIN: entry=" << entry
@@ -537,7 +538,6 @@ void MuDISProcessor::ProcessMuons() {
       skipMu_pminW += muW;
       continue;
     }
-
 
     initEvent();
     fillMCTracks(muIdx);
