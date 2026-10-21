@@ -1390,7 +1390,13 @@ class CaloScoringPlane:  # Partial stub
 
 class CaloScoringPlaneHit:  # Partial stub
     def __init__(
-        self, point: Any = ..., t0: float = ..., pos_res: float = ..., time_res: float = ..., pid: int = ...
+        self,
+        point: Any = ...,
+        t0: float = ...,
+        pos_res: float = ...,
+        time_res: float = ...,
+        pid: int = ...,
+        rng: TRandom | None = ...,
     ) -> None: ...
     def GetDetectorID(self) -> int: ...
     def GetPid(self) -> int: ...

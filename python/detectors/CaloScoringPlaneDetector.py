@@ -34,6 +34,10 @@ class CaloScoringPlaneDetector(BaseDetector):
         self.time_res = cfg.get("TimeResolution", 0.0)
         self.forward_only = cfg.get("ForwardOnly", True)
         self.ignored = {abs(int(p)) for p in cfg.get("IgnoredPdg", [12, 14, 16])}
+        # Own generator, seeded like shipVeto.py's: drawing the identification and the
+        # smearing from it leaves the random sequences of the other detectors unchanged.
+        self.random = ROOT.TRandom3()
+        self.random.SetSeed(13)
 
         pid_file = getattr(global_variables, "caloScoringPlanePIDFile", None)
         if not pid_file:
@@ -48,8 +52,8 @@ class CaloScoringPlaneDetector(BaseDetector):
                 continue
             if self.forward_only and point.GetPz() <= 0:
                 continue
-            species = self.pid.Identify(point)
-            self.det.push_back(ROOT.CaloScoringPlaneHit(point, t0, self.pos_res, self.time_res, species))
+            species = self.pid.Identify(point, self.random)
+            self.det.push_back(ROOT.CaloScoringPlaneHit(point, t0, self.pos_res, self.time_res, species, self.random))
             if self.MCdet is not None:  # always set (mcBranchName given); narrows the type
                 links = ROOT.std.vector("int")()
                 links.push_back(point.GetTrackID())
