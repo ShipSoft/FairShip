@@ -12,3 +12,13 @@ def root_with_shipdata():
     if ROOT.gSystem.Load("libShipData") < 0:
         pytest.skip("libShipData not available")
     return ROOT
+
+
+# libCaloScoringPlane links libShipData. Request root_with_shipdata first so
+# that libShipData is loaded by that one fixture and not again later.
+@pytest.fixture(scope="session")
+def root_with_calo_scoring_plane(root_with_shipdata):
+    ROOT = root_with_shipdata
+    if ROOT.gSystem.Load("libCaloScoringPlane") < 0:
+        pytest.skip("libCaloScoringPlane not available")
+    return ROOT

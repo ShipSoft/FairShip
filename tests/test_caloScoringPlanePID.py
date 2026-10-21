@@ -131,12 +131,9 @@ def test_shipped_file_parses():
 # --- through the C++ class (needs the compiled CaloScoringPlane library) ---
 
 
-@pytest.fixture(scope="module")
-def ROOT():
-    ROOT = pytest.importorskip("ROOT")
-    if ROOT.gSystem.Load("libCaloScoringPlane") < 0:
-        pytest.skip("libCaloScoringPlane not available")
-    return ROOT
+@pytest.fixture
+def ROOT(root_with_calo_scoring_plane):
+    return root_with_calo_scoring_plane
 
 
 def test_shipped_file_loads_into_the_cpp_class(ROOT):
