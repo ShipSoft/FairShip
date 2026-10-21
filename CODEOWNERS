@@ -18,3 +18,5 @@ passive/ShipMuonShield.* @Gfrisella  # Guglielmo Frisella (U Zürich)
 CaloScoringPlane/* @matclim # Matei Climescu (Ghent University)
 
 strawtubes/* @wcmartylee  # Wei-Chieh Marty Lee (U Hamburg)
+
+geometry/media.geo @matclim  # Matei Climescu (Ghent University)
