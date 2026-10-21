@@ -36,7 +36,7 @@ class PIDModel:
 
     energies: list[float]
     matrices: list[float]  # 9 per energy, row-major: rows true, columns identified
-    overrides: dict[int, int] = field(default_factory=dict)  # |pdg| -> species
+    overrides: dict[int, int] = field(default_factory=dict)  # pdg -> species; Set() folds the sign
     log_interpolation: bool = False
 
 
@@ -90,11 +90,13 @@ def parse(config: Any, source: str = "<string>") -> PIDModel:
     for pdg, name in raw.items():
         if isinstance(pdg, bool) or not isinstance(pdg, int):
             raise PIDConfigError(f"{source}: 'pdg_overrides' keys must be PDG codes, not {pdg!r}")
-        if name not in _OVERRIDE_SPECIES:
+        if not isinstance(name, str) or name not in _OVERRIDE_SPECIES:
             raise PIDConfigError(
                 f"{source}: pdg_overrides[{pdg}] must be one of {', '.join(_OVERRIDE_SPECIES)}, not {name!r}"
             )
-        overrides[abs(pdg)] = _OVERRIDE_SPECIES[name]
+        # Keep the sign: Set() applies the override to |pdg| and rejects
+        # conflicting entries for +pdg and -pdg.
+        overrides[pdg] = _OVERRIDE_SPECIES[name]
 
     return PIDModel(energies, matrices, overrides, interpolation == "log")
 
