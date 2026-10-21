@@ -26,10 +26,11 @@ what the run keeps from building:
 
 Other differences only change the material that particles go through, which
 is the point of simulating on a stored geometry, and are reported as a
-warning: passive volumes or placements that the stored geometry lacks, and
-volumes of the stored geometry that the current code does not build. These
-are passive in this run, so the warning names those made of the medium of a
-sensitive volume, as they may be detector elements of the design that wrote
+warning: passive volumes that the stored geometry lacks, placements that it
+lacks or adds, and volumes of the stored geometry that the current code does
+not build. These are passive in this run, so the warning names those made of
+the medium of a sensitive volume (other than vacuum, the medium of the
+scoring planes), as they may be detector elements of the design that wrote
 the file: they record no hits. Detector IDs come from the node names and copy
 numbers of the stored geometry, and the run writes the stored geometry, so
 the digitisation and reconstruction see the layout the hits come from.
@@ -54,6 +55,7 @@ _HELPER = """
 #include <vector>
 
 #include "TGeoManager.h"
+#include "TGeoMaterial.h"
 #include "TGeoMedium.h"
 #include "TGeoNode.h"
 #include "TGeoVolume.h"
@@ -97,21 +99,20 @@ inline std::string Placement(TGeoVolume* volume, TGeoNode* node) {
   return std::string(volume->GetName()) + "/" + node->GetName();
 }
 
-// Placements ("volume/node") of `built` that `loaded` lacks, with the name of
-// the volume placed, in the volumes that `loaded` has (the placements in the
-// volumes it lacks go with them).
-inline std::vector<std::pair<std::string, std::string>> MissingPlacements(TGeoManager* built,
-                                                                          TGeoManager* loaded) {
+// Placements ("volume/node") of `a` that `b` lacks, with the name of the
+// volume placed, in the volumes that `b` has (the placements in the volumes
+// it lacks go with them).
+inline std::vector<std::pair<std::string, std::string>> MissingPlacements(TGeoManager* a, TGeoManager* b) {
   std::unordered_set<std::string> have;
-  TIter next(loaded->GetListOfVolumes());
+  TIter next(b->GetListOfVolumes());
   while (auto* volume = static_cast<TGeoVolume*>(next())) {
     for (Int_t i = 0; i < volume->GetNdaughters(); ++i) have.insert(Placement(volume, volume->GetNode(i)));
   }
-  const auto volumes = Volumes(loaded);
+  const auto volumes = Volumes(b);
   std::unordered_set<std::string> seen;
   std::vector<std::pair<std::string, std::string>> missing;
-  TIter nextBuilt(built->GetListOfVolumes());
-  while (auto* volume = static_cast<TGeoVolume*>(nextBuilt())) {
+  TIter nextA(a->GetListOfVolumes());
+  while (auto* volume = static_cast<TGeoVolume*>(nextA())) {
     if (!volumes.count(volume->GetName())) continue;
     for (Int_t i = 0; i < volume->GetNdaughters(); ++i) {
       TGeoNode* node = volume->GetNode(i);
@@ -122,10 +123,15 @@ inline std::vector<std::pair<std::string, std::string>> MissingPlacements(TGeoMa
   return missing;
 }
 
-// Name of the medium of a volume, empty for an assembly or a missing volume.
+// Name of the medium of a volume, empty for an assembly, a missing volume or
+// a vacuum (density below 1e-5 g/cm3, below that of helium at 1.7e-4). The
+// scoring planes are sensitive vacuum boxes, so vacuum would otherwise count
+// as the medium of a sensitive volume.
 inline std::string Medium(TGeoManager* geometry, const char* name) {
   TGeoVolume* volume = geometry->GetVolume(name);
   if (!volume || volume->IsAssembly() || !volume->GetMedium()) return "";
+  const TGeoMaterial* material = volume->GetMedium()->GetMaterial();
+  if (!material || material->GetDensity() < 1.e-5) return "";
   return volume->GetMedium()->GetName();
 }
 }  // namespace ship_geofile
@@ -180,7 +186,6 @@ def _define_swap_class() -> Any:
             self.loaded: Any = None
             self.fields: list[str] = []
             self.error: str | None = None
-            self.warning: str | None = None
 
         def ConstructGeometry(self) -> None:
             # An exception raised here would pass through the C++ of Geant4 VMC,
@@ -258,7 +263,6 @@ def _define_swap_class() -> Any:
             if geo_par:
                 geo_par.SetGeometry(loaded)
             if warning:
-                self.warning = warning
                 print(f"WARNING in GeometrySwap: {warning}", flush=True)
             print(
                 f"GeometrySwap: transporting through the geometry of {self.geofile} ({len(loaded_volumes)} volumes);"
@@ -280,12 +284,14 @@ def _define_swap_class() -> Any:
             parts = []
             if missing:
                 parts.append(f"lacks {len(missing)} passive volume(s) that the current code builds ({_some(missing)})")
-            placements = sorted((str(p.first), str(p.second)) for p in helper.MissingPlacements(built, loaded))
-            if placements:
+            for verb, a, b in (("lacks", built, loaded), ("has", loaded, built)):
+                placements = sorted((str(p.first), str(p.second)) for p in helper.MissingPlacements(a, b))
+                if not placements:
+                    continue
                 of_sensitive = [name for name, placed in placements if placed in sensitive]
                 parts.append(
-                    f"lacks {len(placements)} placement(s) that the current code builds"
-                    f" ({_some([name for name, _ in placements])})"
+                    f"{verb} {len(placements)} placement(s) that the current code"
+                    f" {'builds' if verb == 'lacks' else 'does not build'} ({_some([name for name, _ in placements])})"
                     + (
                         f", {len(of_sensitive)} of them of sensitive volumes ({_some(of_sensitive)}): detector IDs"
                         " follow the stored geometry"

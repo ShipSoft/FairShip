@@ -486,10 +486,14 @@ def configure_upstream_tagger(yaml_file: str, upstream_tagger, ship_geo) -> None
 
 
 def _ubt_front_face(ubt_geo) -> float:
-    """z of the front face of the UBT envelope; a UBT from before the scintillator tiles gives its centre."""
+    """z of the front face of the UBT envelope; a UBT from before the scintillator tiles gives its centre.
+
+    Configurations from before 890cb34 (October 2025) have no BoxZ: their UBT
+    box was 16 cm thick, as configure_snd_old assumed then.
+    """
     if hasattr(ubt_geo, "z0"):
         return ubt_geo.z0
-    return ubt_geo.Z_Position - ubt_geo.BoxZ / 2.0
+    return ubt_geo.Z_Position - getattr(ubt_geo, "BoxZ", 16.0 * u.cm) / 2.0
 
 
 def configure(run, ship_geo, geofile: str | None = None):

@@ -14,7 +14,8 @@ and the same seed:
   HNL events from the test cascade file.
 
 For each geometry, the run with -g must give the same hits as the run that
-built it, and must write the same geometry file. To show that particles are
+built it, must write the same geometry file, and must report no difference
+between the stored and the built geometry. To show that particles are
 really transported through the stored geometry and not through the one the
 run builds, events on a copy of geometry B with tracking station 1 moved by
 2 cm must give other straw tube hits. A copy of geometry B without the corner
@@ -30,6 +31,7 @@ a geometry that lacks a volume with a magnetic field (A without the MTC iron).
 """
 
 import argparse
+import fnmatch
 import os
 import shutil
 import subprocess
@@ -41,7 +43,7 @@ FAIRSHIP = os.environ.get("FAIRSHIP", os.path.dirname(os.path.dirname(HERE)))
 SIM = os.path.join(FAIRSHIP, "macro", "run_simScript.py")
 SEED = "42"
 MOVED_NODE, MOVED_DZ = "Tr1_1", 2.0  # tracking station 1, cm
-# Volumes to remove from copies of the geometry files; a trailing * matches a prefix.
+# Volumes to remove from copies of the geometry files (fnmatch patterns).
 PASSIVE_VOLUMES = "CornerRib_*"  # assemblies of the SBT support (veto::GeoCornerRib), passive
 SENSITIVE_VOLUMES = "LiScX_*"  # SBT cells, sensitive
 FIELD_VOLUME = "MTC_iron"  # magnetised iron of the MTC, geometry A
@@ -91,9 +93,9 @@ def move_node(source: str, target: str, node_name: str, dz: float) -> None:
 def remove_volumes(source: str, target: str, pattern: str, config_keys: str = "") -> None:
     """Copy a geometry file without some volumes and their placements (run in its own process).
 
-    pattern is a comma-separated list of volume names, a trailing * matching
-    a prefix; config_keys a comma-separated list of dotted keys removed from
-    the stored configuration (ShipGeo).
+    pattern is a comma-separated list of fnmatch patterns of volume names;
+    config_keys a comma-separated list of dotted keys removed from the stored
+    configuration (ShipGeo).
     """
     import json
 
@@ -102,7 +104,7 @@ def remove_volumes(source: str, target: str, pattern: str, config_keys: str = ""
     patterns = pattern.split(",")
 
     def matches(name: str) -> bool:
-        return any(name.startswith(p[:-1]) if p.endswith("*") else name == p for p in patterns)
+        return any(fnmatch.fnmatchcase(name, p) for p in patterns)
 
     f = ROOT.TFile.Open(source)
     geometry = f.Get("FAIRGeom")
@@ -201,6 +203,15 @@ class Runner:
         else:
             self.fail(f"{description}: no line with '{expected}' in {self.log(tag)}")
 
+    def check_log_absent(self, description: str, tag: str, unexpected: str) -> None:
+        print(f"\n--- {description}", flush=True)
+        with open(self.log(tag)) as log:
+            lines = [line.strip() for line in log if unexpected in line]
+        if lines:
+            self.fail(f"{description}: {lines[0][:300]}")
+        else:
+            print(f"OK: no line with '{unexpected}'")
+
     def check_refused(self, description: str, args: list[str], expected: str) -> None:
         """run_simScript.py must stop with an error mentioning `expected`."""
         print(f"\n--- {description}", flush=True)
@@ -266,6 +277,7 @@ def main() -> int:
             r.path("geo", built),
             r.path("geo", loaded),
         )
+        r.check_log_absent(f"{name}: no geometry difference reported with -g", loaded, "WARNING in GeometrySwap")
 
     a_built, b_built = r.path("geo", "A_build"), r.path("geo", "B_build")
     if os.path.exists(r.path("sim", "A_load")):
@@ -326,7 +338,12 @@ def main() -> int:
             if ubt_branches:
                 r.fail(f"B_old_ubt_load: the left-out UBT still has branches {ubt_branches}")
             # The run keeps the stored configuration, so its own geometry file can be used with -g too.
-            r.simulate("B_old_ubt_reload", ["-g", r.path("geo", "B_old_ubt_load")], hnl_events(1))
+            if r.simulate("B_old_ubt_reload", ["-g", r.path("geo", "B_old_ubt_load")], hnl_events(1)):
+                r.check_log(
+                    "the geometry file of that run is used with -g again, with the UBT left out again",
+                    "B_old_ubt_reload",
+                    "UpstreamTagger, UpstreamTaggerScoringPlane left out of this run",
+                )
 
     if os.path.exists(a_built):
         r.check_refused(
