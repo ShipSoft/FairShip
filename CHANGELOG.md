@@ -57,6 +57,7 @@ it in future.
 * The UBT position and size and the scoring planes are derived from the decay vessel entrance (`decayVolume.z0`), the muon shield end and the ECN3 cavern instead of hardcoded values. The UBT position is now `UpstreamTagger.z` (centre) and `UpstreamTagger.z0` (front face) instead of `UpstreamTagger.Z_Position`, which is removed. Geometry files written before this change can still be used for reconstruction and analysis: `shipDet_conf.configure` fills in the ECN3 cavern defaults and replaces their UBT vacuum box by the current UBT and scoring planes, placed from the stored decay vessel and muon shield, but their UBT points, which carry the detector IDs of the old box, are not digitized (with a warning). They cannot be used with `-g`, since the old UBT can no longer be built
 * `--multiple-kpi-splits` now splits with `--intermediate-kaon-pion-splits` at each step instead of reusing `--kaon-pion-splits`, and requires both to be positive
 * Kaon/pion splitting takes the clone weights from the current weight of the split track, instead of assuming that the track has the same weight as its mother on the stack, or weight 1 if it has none. That holds for all current inputs, so results do not change
+* Make muon shield field uses field map (rather than set it to uniform) when `--AddMuonShieldField` is set to true in `run_fixedTarget.py`
 
 ### Fixed
 
