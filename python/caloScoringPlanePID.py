@@ -8,7 +8,9 @@ The file holds energy-dependent electron / hadron / muon confusion matrices
 geometry/caloScoringPlane_pid_provided.yaml). parse() checks its structure and
 returns a PIDModel in the species order of the C++ class; make_pid() hands it
 to CaloScoringPlanePID::Set(), which checks the numbers (finite, non-negative,
-rows summing to 1, energies increasing). load_pid() does both for a file.
+rows summing to 1, energies increasing) and that the overrides for +pdg and
+-pdg agree. A PIDModel from parse() alone is therefore not fully validated.
+load_pid() does both for a file.
 """
 
 from __future__ import annotations
