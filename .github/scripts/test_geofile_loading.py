@@ -19,7 +19,10 @@ really transported through the stored geometry and not through the one the
 run builds, events on a copy of geometry B with tracking station 1 moved by
 2 cm must give other straw tube hits. A copy of geometry B without the corner
 ribs of the SBT support, as from an SBT of another design, must be accepted
-with a warning that names them. Finally, -g must be refused together with a
+with a warning that names them. A copy of B made to look like a file from
+before the scintillator UBT (no UBT volumes nor tile parameters) must be used
+with the UBT and its scoring planes left out, and so must the geometry file
+written by that run. Finally, -g must be refused together with a
 geometry option, for a file without a geometry, for a geometry that lacks
 sensitive volumes the code builds from the stored configuration (geometry B
 with the configuration of A, and B without the LiScX cells of the SBT), and for
@@ -42,6 +45,10 @@ MOVED_NODE, MOVED_DZ = "Tr1_1", 2.0  # tracking station 1, cm
 PASSIVE_VOLUMES = "CornerRib_*"  # assemblies of the SBT support (veto::GeoCornerRib), passive
 SENSITIVE_VOLUMES = "LiScX_*"  # SBT cells, sensitive
 FIELD_VOLUME = "MTC_iron"  # magnetised iron of the MTC, geometry A
+# A geometry file from before the scintillator UBT: no UBT tiles or scoring
+# planes, and a configuration without their parameters.
+UBT_VOLUMES = "Upstream_Tagger,UpstreamTagger*"
+UBT_CONFIG_KEYS = "UpstreamTaggerScoringPlane,UpstreamTagger.TileThickness,UpstreamTagger_geo"
 
 
 def muon_gun(n_events: int) -> list[str]:
@@ -81,17 +88,36 @@ def move_node(source: str, target: str, node_name: str, dz: float) -> None:
     out.Close()
 
 
-def remove_volumes(source: str, target: str, pattern: str) -> None:
-    """Copy a geometry file without the volumes matching pattern and their placements (run in its own process)."""
+def remove_volumes(source: str, target: str, pattern: str, config_keys: str = "") -> None:
+    """Copy a geometry file without some volumes and their placements (run in its own process).
+
+    pattern is a comma-separated list of volume names, a trailing * matching
+    a prefix; config_keys a comma-separated list of dotted keys removed from
+    the stored configuration (ShipGeo).
+    """
+    import json
+
     import ROOT
 
+    patterns = pattern.split(",")
+
     def matches(name: str) -> bool:
-        return name.startswith(pattern[:-1]) if pattern.endswith("*") else name == pattern
+        return any(name.startswith(p[:-1]) if p.endswith("*") else name == p for p in patterns)
 
     f = ROOT.TFile.Open(source)
     geometry = f.Get("FAIRGeom")
     ship_geo = str(f.Get("ShipGeo"))
     f.Close()
+    if config_keys:
+        config = json.loads(ship_geo)
+        for key in config_keys.split(","):
+            *parents, last = key.split(".")
+            node = config
+            for parent in parents:
+                node = node[parent]
+            del node[last]
+        ship_geo = json.dumps(config, indent=2)
+        print(f"removed {config_keys} from the stored configuration")
     volumes = geometry.GetListOfVolumes()
     removed = [volume for volume in volumes if matches(volume.GetName())]
     if not removed:
@@ -186,12 +212,13 @@ class Runner:
         else:
             self.fail(f"{description} (exit code {result.returncode}, output: {output.strip()[-300:]})")
 
-    def copy_without(self, source: str, tag: str, pattern: str) -> str | None:
-        """Copy of a geometry file without the volumes matching pattern, None if it could not be written."""
+    def copy_without(self, source: str, tag: str, pattern: str, config_keys: str = "") -> str | None:
+        """Copy of a geometry file without some volumes (see remove_volumes), None if it could not be written."""
         target = self.path("geo", tag)
         print(f"\n--- copy of {source} without the volumes {pattern}: {target}", flush=True)
         script = os.path.abspath(__file__)
-        rc = subprocess.run([sys.executable, script, "--remove-volumes", source, target, pattern]).returncode
+        cmd = [sys.executable, script, "--remove-volumes", source, target, pattern, config_keys]
+        rc = subprocess.run(cmd).returncode
         if rc != 0:
             self.fail(f"could not write {target}")
             return None
@@ -206,8 +233,8 @@ def main() -> int:
     if len(sys.argv) == 6 and sys.argv[1] == "--move-node":
         move_node(sys.argv[2], sys.argv[3], sys.argv[4], float(sys.argv[5]))
         return 0
-    if len(sys.argv) == 5 and sys.argv[1] == "--remove-volumes":
-        remove_volumes(sys.argv[2], sys.argv[3], sys.argv[4])
+    if len(sys.argv) == 6 and sys.argv[1] == "--remove-volumes":
+        remove_volumes(sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5])
         return 0
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("-n", "--nEvents", type=int, default=20, help="events per run (default 20)")
@@ -283,6 +310,23 @@ def main() -> int:
                 "B_no_ribs_load",
                 f"passive volume(s) that the current code builds ({PASSIVE_VOLUMES[:-1]}",
             )
+        # A detector that the current code cannot build from the stored configuration is left out.
+        old_ubt = r.copy_without(b_built, "B_old_ubt", UBT_VOLUMES, UBT_CONFIG_KEYS)
+        if old_ubt and r.simulate("B_old_ubt_load", ["-g", old_ubt], geometries["B"][1]):
+            r.check_log(
+                "the UBT of a geometry from before the scintillator tiles is left out, with a warning",
+                "B_old_ubt_load",
+                "UpstreamTagger, UpstreamTaggerScoringPlane left out of this run",
+            )
+            import ROOT
+
+            with ROOT.TFile.Open(r.path("sim", "B_old_ubt_load")) as f:
+                tree = f["cbmsim"]
+                ubt_branches = [b for b in ("UpstreamTaggerPoint", "UpstreamTaggerScoringPoint") if tree.GetBranch(b)]
+            if ubt_branches:
+                r.fail(f"B_old_ubt_load: the left-out UBT still has branches {ubt_branches}")
+            # The run keeps the stored configuration, so its own geometry file can be used with -g too.
+            r.simulate("B_old_ubt_reload", ["-g", r.path("geo", "B_old_ubt_load")], hnl_events(1))
 
     if os.path.exists(a_built):
         r.check_refused(

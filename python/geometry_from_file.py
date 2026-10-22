@@ -33,6 +33,12 @@ sensitive volume, as they may be detector elements of the design that wrote
 the file: they record no hits. Detector IDs come from the node names and copy
 numbers of the stored geometry, and the run writes the stored geometry, so
 the digitisation and reconstruction see the layout the hits come from.
+
+A detector that the current code cannot build from the stored configuration,
+such as the UBT of a file from before the scintillator tiles, is left out of
+the run by shipDet_conf.configure, with a warning (warn_left_out): it is not
+built, so it registers no sensitive volumes, and its volumes in the stored
+geometry are passive.
 """
 
 from __future__ import annotations
@@ -315,6 +321,23 @@ def _define_swap_class() -> Any:
 def _some(names: list[str], n: int = 10) -> str:
     """The first n names, comma separated."""
     return ", ".join(names[:n]) + (", ..." if len(names) > n else "")
+
+
+def warn_left_out(geofile: str, left_out: dict[str, str]) -> None:
+    """Warn about the modules left out of the run because the current code cannot build them.
+
+    ``left_out`` maps the name of each such module to the reason, a phrase
+    describing what geofile has.
+    """
+    by_reason: dict[str, list[str]] = {}
+    for name, reason in left_out.items():
+        by_reason.setdefault(reason, []).append(name)
+    for reason, names in by_reason.items():
+        print(
+            f"WARNING: {geofile} has {reason}: {', '.join(names)} left out of this run. They record no hits, and"
+            " their volumes in the stored geometry are passive.",
+            flush=True,
+        )
 
 
 def check_swapped(swap: Any) -> None:
