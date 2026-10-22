@@ -158,7 +158,7 @@ def test_numerical_errors_name_the_file(ROOT, tmp_path):
     path.write_text(yaml.safe_dump({"points": [{"energy": 1, "matrix": [[0.5, 0.4, 0], [0, 1, 0], [0, 0, 1]]}]}))
     with pytest.raises(PIDConfigError) as error:
         load_pid(str(path))
-    assert str(path) in str(error.value)
+    assert str(error.value).startswith(f"{path}: energy point 0")
     assert "true electron row sums to 0.9" in str(error.value)
 
 

@@ -132,7 +132,9 @@ def make_pid(model: PIDModel, source: str = "<model>") -> Any:
             model.log_interpolation,
         )
     except ROOT.std.invalid_argument as error:  # the model was rejected by Set()
-        raise PIDConfigError(f"{source}: {error.what()}") from error
+        # The class prefix helps C++ callers; in a file error it is noise.
+        message = error.what().removeprefix("CaloScoringPlanePID::Set: ")
+        raise PIDConfigError(f"{source}: {message}") from error
     return pid
 
 
