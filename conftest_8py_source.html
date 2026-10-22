@@ -117,7 +117,20 @@ $(document).ready(function(){initNavTree('conftest_8py_source.html',''); initRes
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>    <span class="keywordflow">if</span> ROOT.gSystem.Load(<span class="stringliteral">&quot;libShipData&quot;</span>) &lt; 0:</div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>        pytest.skip(<span class="stringliteral">&quot;libShipData not available&quot;</span>)</div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>    <span class="keywordflow">return</span> ROOT</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="comment"># libCaloScoringPlane links libShipData. Request root_with_shipdata first so</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="comment"># that libShipData is loaded by that one fixture and not again later.</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">@pytest.fixture(scope=&quot;session&quot;)</span></div>
 </div>
+<div class="foldopen" id="foldopen00020" data-start="" data-end="">
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno"><a class="line" href="namespaceconftest.html#a873bd6af9ab4276a95bdb81992054fce">   20</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceconftest.html#a873bd6af9ab4276a95bdb81992054fce">root_with_calo_scoring_plane</a>(root_with_shipdata):</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    ROOT = root_with_shipdata</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    <span class="keywordflow">if</span> ROOT.gSystem.Load(<span class="stringliteral">&quot;libCaloScoringPlane&quot;</span>) &lt; 0:</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>        pytest.skip(<span class="stringliteral">&quot;libCaloScoringPlane not available&quot;</span>)</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    <span class="keywordflow">return</span> ROOT</div>
+</div>
+<div class="ttc" id="anamespaceconftest_html_a873bd6af9ab4276a95bdb81992054fce"><div class="ttname"><a href="namespaceconftest.html#a873bd6af9ab4276a95bdb81992054fce">conftest.root_with_calo_scoring_plane</a></div><div class="ttdeci">root_with_calo_scoring_plane(root_with_shipdata)</div><div class="ttdef"><b>Definition</b> <a href="conftest_8py_source.html#l00020">conftest.py:20</a></div></div>
 <div class="ttc" id="anamespaceconftest_html_ab403d908c73ec825d7749171dbf52e8c"><div class="ttname"><a href="namespaceconftest.html#ab403d908c73ec825d7749171dbf52e8c">conftest.root_with_shipdata</a></div><div class="ttdeci">root_with_shipdata()</div><div class="ttdef"><b>Definition</b> <a href="conftest_8py_source.html#l00010">conftest.py:10</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

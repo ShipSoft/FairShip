@@ -1,5 +1,8 @@
 var NAVTREEINDEX5 =
 {
+"classHNLPythia8Generator.html#a6be32a40e40958ead362d03660029196":[10,0,49,38],
+"classHNLPythia8Generator.html#a6c5b8e6c9cc4c42967e256e809ea9dca":[10,0,49,27],
+"classHNLPythia8Generator.html#a70feb7848811e1cbf8cb9c6da36252ca":[10,0,49,53],
 "classHNLPythia8Generator.html#a77e2fe7f0677158e2e38389c2c3e9049":[10,0,49,13],
 "classHNLPythia8Generator.html#a836a67db1bb01a4d9070f0d5273b1e93":[10,0,49,23],
 "classHNLPythia8Generator.html#a87e7fba5d9b88d366b9a11eda7a7a6b4":[10,0,49,16],
@@ -128,14 +131,14 @@ var NAVTREEINDEX5 =
 "classMTCDetector.html#afd86dacd0abbb9628d302fa9e1bfb1f6":[10,0,53,11],
 "classMTCDetector_1_1MTCDetector.html":[10,0,12,0],
 "classMTCDetector_1_1MTCDetector.html":[9,0,65,0],
-"classMTCDetector_1_1MTCDetector.html#a3335d6637ba8bd1aeb19d80362102a41":[10,0,12,0,2],
 "classMTCDetector_1_1MTCDetector.html#a3335d6637ba8bd1aeb19d80362102a41":[9,0,65,0,2],
-"classMTCDetector_1_1MTCDetector.html#ad5ec895e4f4d4e64aad5e9c3f7d02e43":[10,0,12,0,1],
+"classMTCDetector_1_1MTCDetector.html#a3335d6637ba8bd1aeb19d80362102a41":[10,0,12,0,2],
 "classMTCDetector_1_1MTCDetector.html#ad5ec895e4f4d4e64aad5e9c3f7d02e43":[9,0,65,0,1],
-"classMTCDetector_1_1MTCDetector.html#ae32ebaee7612743e9fc980c8dda59ee1":[10,0,12,0,0],
+"classMTCDetector_1_1MTCDetector.html#ad5ec895e4f4d4e64aad5e9c3f7d02e43":[10,0,12,0,1],
 "classMTCDetector_1_1MTCDetector.html#ae32ebaee7612743e9fc980c8dda59ee1":[9,0,65,0,0],
-"classMTCDetector_1_1MTCDetector.html#af79a6492f3950720f095380683b6da31":[10,0,12,0,3],
+"classMTCDetector_1_1MTCDetector.html#ae32ebaee7612743e9fc980c8dda59ee1":[10,0,12,0,0],
 "classMTCDetector_1_1MTCDetector.html#af79a6492f3950720f095380683b6da31":[9,0,65,0,3],
+"classMTCDetector_1_1MTCDetector.html#af79a6492f3950720f095380683b6da31":[10,0,12,0,3],
 "classMagneticTrackPropagator.html":[10,0,51],
 "classMagneticTrackPropagator.html#a026cceaa9e42677aa8d972d5a48e5dc8":[10,0,51,20],
 "classMagneticTrackPropagator.html#a02e9b4ee59df5b4484d38c25e98b6024":[10,0,51,27],
@@ -246,8 +249,5 @@ var NAVTREEINDEX5 =
 "classMuDISFilter.html#ae37575f5cbdf4f7a453ddc550cf4003a":[10,0,56,51],
 "classMuDISFilter.html#ae4cf796c670620cf3e848225626328c0":[10,0,56,8],
 "classMuDISFilter.html#ae64468d7c582bc64ec530ea58231459a":[10,0,56,72],
-"classMuDISFilter.html#ae6482017a6b19f6ff199f467550cf478":[10,0,56,60],
-"classMuDISFilter.html#aecbb0c1c88551b3e3aa5a0336926cce7":[10,0,56,36],
-"classMuDISFilter.html#aeef0575842304e2bf8bb12a0a0442523":[10,0,56,25],
-"classMuDISFilter.html#af4d08cad8ac3451102c5c5ef41ba9e93":[10,0,56,30]
+"classMuDISFilter.html#ae6482017a6b19f6ff199f467550cf478":[10,0,56,60]
 };

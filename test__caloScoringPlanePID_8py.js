@@ -1,7 +1,9 @@
 var test__caloScoringPlanePID_8py =
 [
     [ "config", "test__caloScoringPlanePID_8py.html#aa4f431aa09983a937e2ac803986da45c", null ],
-    [ "ROOT", "test__caloScoringPlanePID_8py.html#a58468862ec284e3a30b4ec473f981f17", null ],
+    [ "ROOT", "test__caloScoringPlanePID_8py.html#aa228b22955f0fd8ddd006ed1da44feb9", null ],
+    [ "test_binding_errors_are_not_reported_as_file_errors", "test__caloScoringPlanePID_8py.html#a70c254a560c98f9511f53ef6e9344477", null ],
+    [ "test_conflicting_overrides_are_rejected", "test__caloScoringPlanePID_8py.html#a67433fc8d185c777aeabaa16834295ca", null ],
     [ "test_defaults", "test__caloScoringPlanePID_8py.html#ab86bca51fab0cc01a039591b3f33d29a", null ],
     [ "test_empty_pdg_overrides_key_is_allowed", "test__caloScoringPlanePID_8py.html#a7b2d1e9785ac5d75d2dab382952c6f32", null ],
     [ "test_environment_variables_are_expanded", "test__caloScoringPlanePID_8py.html#aec9bdbfe3d7976908c0e10d9ee9981fa", null ],
@@ -12,7 +14,8 @@ var test__caloScoringPlanePID_8py =
     [ "test_nan_in_the_file_is_rejected", "test__caloScoringPlanePID_8py.html#adf32c234122073414278e48ac1c6db89", null ],
     [ "test_no_file_gives_perfect_identification", "test__caloScoringPlanePID_8py.html#abb066a842f61f6ba49a8a0a4c3baaaa8", null ],
     [ "test_numerical_errors_name_the_file", "test__caloScoringPlanePID_8py.html#a6770ac97a9c2e9115e8419387421c5cf", null ],
-    [ "test_overrides_by_absolute_pdg_code", "test__caloScoringPlanePID_8py.html#a91d2d7da8172d90d47732c86d8768528", null ],
+    [ "test_override_applies_to_both_signs", "test__caloScoringPlanePID_8py.html#ab3a3aeac250e58ba9ac2886fc986b504", null ],
+    [ "test_overrides_keep_the_sign", "test__caloScoringPlanePID_8py.html#a6ee7e2b1bf643c70321959e8d26a36c0", null ],
     [ "test_rows_and_columns_are_reordered", "test__caloScoringPlanePID_8py.html#a743101cd0e41d8b484a6e1d9560d4524", null ],
     [ "test_shipped_file_loads_into_the_cpp_class", "test__caloScoringPlanePID_8py.html#a6f001e7670280bacb41f5ecb0f226428", null ],
     [ "test_shipped_file_parses", "test__caloScoringPlanePID_8py.html#a3e2d440b412d57c6223a9125700501ea", null ],

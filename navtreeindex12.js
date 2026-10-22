@@ -1,5 +1,8 @@
 var NAVTREEINDEX12 =
 {
+"classSiliconTarget.html#a1f70999d37f0b8de06160f8e7e670aa1":[10,0,89,6],
+"classSiliconTarget.html#a2d8d7d99adab79e0d32fc1b687fb7d4f":[10,0,89,5],
+"classSiliconTarget.html#a3f090fc1879f38c810837a5656c56a8d":[10,0,89,10],
 "classSiliconTarget.html#a47080c7346ac68debdc558f9aa7d3d72":[10,0,89,1],
 "classSiliconTarget.html#a50b7063e519da0eeee994da8b5f55729":[10,0,89,15],
 "classSiliconTarget.html#a6b0afa3474e4ce4458ddda2d6e651317":[10,0,89,12],
@@ -12,12 +15,12 @@ var NAVTREEINDEX12 =
 "classSiliconTarget.html#ad60d653777987b7c86fce889ae393abe":[10,0,89,14],
 "classSiliconTarget.html#adb60ef0f46ddc26b11237848a7053456":[10,0,89,4],
 "classSiliconTarget.html#af4c00d5186b1ee93effdccca9ff457b8":[10,0,89,3],
-"classSiliconTargetDetector_1_1SiliconTargetDetector.html":[10,0,23,0],
 "classSiliconTargetDetector_1_1SiliconTargetDetector.html":[9,0,110,0],
-"classSiliconTargetDetector_1_1SiliconTargetDetector.html#ab40a95c9a9ec50a5114160a1f4a26e8d":[9,0,110,0,0],
+"classSiliconTargetDetector_1_1SiliconTargetDetector.html":[10,0,23,0],
 "classSiliconTargetDetector_1_1SiliconTargetDetector.html#ab40a95c9a9ec50a5114160a1f4a26e8d":[10,0,23,0,0],
-"classSiliconTargetDetector_1_1SiliconTargetDetector.html#aed0917631d97f8bd8b469368d225b9ce":[9,0,110,0,1],
+"classSiliconTargetDetector_1_1SiliconTargetDetector.html#ab40a95c9a9ec50a5114160a1f4a26e8d":[9,0,110,0,0],
 "classSiliconTargetDetector_1_1SiliconTargetDetector.html#aed0917631d97f8bd8b469368d225b9ce":[10,0,23,0,1],
+"classSiliconTargetDetector_1_1SiliconTargetDetector.html#aed0917631d97f8bd8b469368d225b9ce":[9,0,110,0,1],
 "classSiliconTargetHit.html":[10,0,90],
 "classSiliconTargetHit.html#a036fec867f26484d0e965457215567ae":[10,0,90,4],
 "classSiliconTargetHit.html#a2f400f95104dbe803df3275d2fe6a1e8":[10,0,90,1],
@@ -246,8 +249,5 @@ var NAVTREEINDEX12 =
 "classTimeDetHit.html#a9e7d424e21827adaa0a142da3f73bd17":[10,0,101,21],
 "classTimeDetHit.html#a9ff6a49e9e1eed9a8bda1ff8ed2e8d74":[10,0,101,9],
 "classTimeDetHit.html#ab0c6b77b1b4092b1f332653d3a5e20f3":[10,0,101,12],
-"classTimeDetHit.html#ab8551f1f9270a0fa4e5ae9b7c79c29f6":[10,0,101,20],
-"classTimeDetHit.html#acee0a0d0ff478f9b9eac425518b136c4":[10,0,101,16],
-"classTimeDetHit.html#ade38b8e42aa0c93553fdbb4ace1826b1":[10,0,101,0],
-"classTimeDetHit.html#aeff7dff684acfd43a9fd851ea0240f6f":[10,0,101,4]
+"classTimeDetHit.html#ab8551f1f9270a0fa4e5ae9b7c79c29f6":[10,0,101,20]
 };

@@ -139,7 +139,9 @@ The file holds energy-dependent electron / hadron / muon confusion matrices
 geometry/caloScoringPlane_pid_provided.yaml). parse() checks its structure and
 returns a PIDModel in the species order of the C++ class; make_pid() hands it
 to CaloScoringPlanePID::Set(), which checks the numbers (finite, non-negative,
-rows summing to 1, energies increasing). load_pid() does both for a file.
+rows summing to 1, energies increasing) and that the overrides for +pdg and
+-pdg agree. A PIDModel from parse() alone is therefore not fully validated.
+load_pid() does both for a file.
 </pre> </div><h2 class="groupheader">Function Documentation</h2>
 <a id="af77a6dc72c4a0a8944fe1eca6dcde853" name="af77a6dc72c4a0a8944fe1eca6dcde853"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af77a6dc72c4a0a8944fe1eca6dcde853">&#9670;&#160;</a></span>_number()</h2>
@@ -181,14 +183,14 @@ rows summing to 1, energies increasing). load_pid() does both for a file.
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="caloScoringPlanePID_8py_source.html#l00043">43</a> of file <a class="el" href="caloScoringPlanePID_8py_source.html">caloScoringPlanePID.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   43</span><span class="keyword">def </span>_number(value: Any, where: str, source: str) -&gt; float:</div>
-<div class="line"><span class="lineno">   44</span>    <span class="comment"># bool is an int subclass, but &quot;true&quot; is not a probability.</span></div>
-<div class="line"><span class="lineno">   45</span>    <span class="keywordflow">if</span> isinstance(value, bool) <span class="keywordflow">or</span> <span class="keywordflow">not</span> isinstance(value, (int, float)):</div>
-<div class="line"><span class="lineno">   46</span>        <span class="keywordflow">raise</span> PIDConfigError(f<span class="stringliteral">&quot;{source}: {where} must be a number, not {value!r}&quot;</span>)</div>
-<div class="line"><span class="lineno">   47</span>    <span class="keywordflow">return</span> float(value)</div>
-<div class="line"><span class="lineno">   48</span> </div>
-<div class="line"><span class="lineno">   49</span> </div>
+<p class="definition">Definition at line <a class="el" href="caloScoringPlanePID_8py_source.html#l00045">45</a> of file <a class="el" href="caloScoringPlanePID_8py_source.html">caloScoringPlanePID.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   45</span><span class="keyword">def </span>_number(value: Any, where: str, source: str) -&gt; float:</div>
+<div class="line"><span class="lineno">   46</span>    <span class="comment"># bool is an int subclass, but &quot;true&quot; is not a probability.</span></div>
+<div class="line"><span class="lineno">   47</span>    <span class="keywordflow">if</span> isinstance(value, bool) <span class="keywordflow">or</span> <span class="keywordflow">not</span> isinstance(value, (int, float)):</div>
+<div class="line"><span class="lineno">   48</span>        <span class="keywordflow">raise</span> PIDConfigError(f<span class="stringliteral">&quot;{source}: {where} must be a number, not {value!r}&quot;</span>)</div>
+<div class="line"><span class="lineno">   49</span>    <span class="keywordflow">return</span> float(value)</div>
+<div class="line"><span class="lineno">   50</span> </div>
+<div class="line"><span class="lineno">   51</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -208,20 +210,20 @@ rows summing to 1, energies increasing). load_pid() does both for a file.
       </table>
 </div><div class="memdoc">
 <pre class="fragment">Read and parse a PID file; environment variables and ~ are expanded.</pre> 
-<p class="definition">Definition at line <a class="el" href="caloScoringPlanePID_8py_source.html#l00102">102</a> of file <a class="el" href="caloScoringPlanePID_8py_source.html">caloScoringPlanePID.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  102</span><span class="keyword">def </span>load(path: str) -&gt; PIDModel:</div>
-<div class="line"><span class="lineno">  103</span>    <span class="stringliteral">&quot;&quot;&quot;Read and parse a PID file; environment variables and ~ are expanded.&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  104</span>    expanded = os.path.expanduser(os.path.expandvars(path))</div>
-<div class="line"><span class="lineno">  105</span>    <span class="keywordflow">try</span>:</div>
-<div class="line"><span class="lineno">  106</span>        <span class="keyword">with</span> open(expanded) <span class="keyword">as</span> f:</div>
-<div class="line"><span class="lineno">  107</span>            config = yaml.safe_load(f)</div>
-<div class="line"><span class="lineno">  108</span>    <span class="keywordflow">except</span> OSError <span class="keyword">as</span> error:</div>
-<div class="line"><span class="lineno">  109</span>        <span class="keywordflow">raise</span> PIDConfigError(f<span class="stringliteral">&quot;cannot read the PID file {expanded}: {error.strerror}&quot;</span>) <span class="keyword">from</span> error</div>
-<div class="line"><span class="lineno">  110</span>    <span class="keywordflow">except</span> YAMLError <span class="keyword">as</span> error:</div>
-<div class="line"><span class="lineno">  111</span>        <span class="keywordflow">raise</span> PIDConfigError(f<span class="stringliteral">&quot;{expanded}: not valid YAML: {error}&quot;</span>) <span class="keyword">from</span> error</div>
-<div class="line"><span class="lineno">  112</span>    <span class="keywordflow">return</span> parse(config, expanded)</div>
-<div class="line"><span class="lineno">  113</span> </div>
-<div class="line"><span class="lineno">  114</span> </div>
+<p class="definition">Definition at line <a class="el" href="caloScoringPlanePID_8py_source.html#l00106">106</a> of file <a class="el" href="caloScoringPlanePID_8py_source.html">caloScoringPlanePID.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  106</span><span class="keyword">def </span>load(path: str) -&gt; PIDModel:</div>
+<div class="line"><span class="lineno">  107</span>    <span class="stringliteral">&quot;&quot;&quot;Read and parse a PID file; environment variables and ~ are expanded.&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  108</span>    expanded = os.path.expanduser(os.path.expandvars(path))</div>
+<div class="line"><span class="lineno">  109</span>    <span class="keywordflow">try</span>:</div>
+<div class="line"><span class="lineno">  110</span>        <span class="keyword">with</span> open(expanded) <span class="keyword">as</span> f:</div>
+<div class="line"><span class="lineno">  111</span>            config = yaml.safe_load(f)</div>
+<div class="line"><span class="lineno">  112</span>    <span class="keywordflow">except</span> OSError <span class="keyword">as</span> error:</div>
+<div class="line"><span class="lineno">  113</span>        <span class="keywordflow">raise</span> PIDConfigError(f<span class="stringliteral">&quot;cannot read the PID file {expanded}: {error.strerror}&quot;</span>) <span class="keyword">from</span> error</div>
+<div class="line"><span class="lineno">  114</span>    <span class="keywordflow">except</span> YAMLError <span class="keyword">as</span> error:</div>
+<div class="line"><span class="lineno">  115</span>        <span class="keywordflow">raise</span> PIDConfigError(f<span class="stringliteral">&quot;{expanded}: not valid YAML: {error}&quot;</span>) <span class="keyword">from</span> error</div>
+<div class="line"><span class="lineno">  116</span>    <span class="keywordflow">return</span> parse(config, expanded)</div>
+<div class="line"><span class="lineno">  117</span> </div>
+<div class="line"><span class="lineno">  118</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -241,14 +243,14 @@ rows summing to 1, energies increasing). load_pid() does both for a file.
       </table>
 </div><div class="memdoc">
 <pre class="fragment">CaloScoringPlanePID from a PID file, or perfect identification without one.</pre> 
-<p class="definition">Definition at line <a class="el" href="caloScoringPlanePID_8py_source.html#l00136">136</a> of file <a class="el" href="caloScoringPlanePID_8py_source.html">caloScoringPlanePID.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  136</span><span class="keyword">def </span>load_pid(path: str | <span class="keywordtype">None</span>) -&gt; Any:</div>
-<div class="line"><span class="lineno">  137</span>    <span class="stringliteral">&quot;&quot;&quot;CaloScoringPlanePID from a PID file, or perfect identification without one.&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  138</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> path:</div>
-<div class="line"><span class="lineno">  139</span>        <span class="keyword">import</span> ROOT</div>
-<div class="line"><span class="lineno">  140</span> </div>
-<div class="line"><span class="lineno">  141</span>        <span class="keywordflow">return</span> ROOT.CaloScoringPlanePID()</div>
-<div class="line"><span class="lineno">  142</span>    <span class="keywordflow">return</span> make_pid(load(path), os.path.expanduser(os.path.expandvars(path)))</div>
+<p class="definition">Definition at line <a class="el" href="caloScoringPlanePID_8py_source.html#l00141">141</a> of file <a class="el" href="caloScoringPlanePID_8py_source.html">caloScoringPlanePID.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  141</span><span class="keyword">def </span>load_pid(path: str | <span class="keywordtype">None</span>) -&gt; Any:</div>
+<div class="line"><span class="lineno">  142</span>    <span class="stringliteral">&quot;&quot;&quot;CaloScoringPlanePID from a PID file, or perfect identification without one.&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  143</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> path:</div>
+<div class="line"><span class="lineno">  144</span>        <span class="keyword">import</span> ROOT</div>
+<div class="line"><span class="lineno">  145</span> </div>
+<div class="line"><span class="lineno">  146</span>        <span class="keywordflow">return</span> ROOT.CaloScoringPlanePID()</div>
+<div class="line"><span class="lineno">  147</span>    <span class="keywordflow">return</span> make_pid(load(path), os.path.expanduser(os.path.expandvars(path)))</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -278,28 +280,29 @@ rows summing to 1, energies increasing). load_pid() does both for a file.
       </table>
 </div><div class="memdoc">
 <pre class="fragment">Build a CaloScoringPlanePID from a model; numbers are checked in C++.</pre> 
-<p class="definition">Definition at line <a class="el" href="caloScoringPlanePID_8py_source.html#l00115">115</a> of file <a class="el" href="caloScoringPlanePID_8py_source.html">caloScoringPlanePID.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  115</span><span class="keyword">def </span>make_pid(model: PIDModel, source: str = <span class="stringliteral">&quot;&lt;model&gt;&quot;</span>) -&gt; Any:</div>
-<div class="line"><span class="lineno">  116</span>    <span class="stringliteral">&quot;&quot;&quot;Build a CaloScoringPlanePID from a model; numbers are checked in C++.&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  117</span>    <span class="keyword">import</span> ROOT</div>
-<div class="line"><span class="lineno">  118</span> </div>
-<div class="line"><span class="lineno">  119</span>    pid = ROOT.CaloScoringPlanePID()</div>
-<div class="line"><span class="lineno">  120</span>    overrides = ROOT.std.map(<span class="stringliteral">&quot;int&quot;</span>, <span class="stringliteral">&quot;int&quot;</span>)()</div>
-<div class="line"><span class="lineno">  121</span>    <span class="keywordflow">for</span> pdg, species <span class="keywordflow">in</span> model.overrides.items():</div>
-<div class="line"><span class="lineno">  122</span>        overrides[pdg] = species</div>
-<div class="line"><span class="lineno">  123</span>    <span class="keywordflow">try</span>:</div>
-<div class="line"><span class="lineno">  124</span>        pid.Set(</div>
-<div class="line"><span class="lineno">  125</span>            ROOT.std.vector(<span class="stringliteral">&quot;double&quot;</span>)(model.energies),</div>
-<div class="line"><span class="lineno">  126</span>            ROOT.std.vector(<span class="stringliteral">&quot;double&quot;</span>)(model.matrices),</div>
-<div class="line"><span class="lineno">  127</span>            overrides,</div>
-<div class="line"><span class="lineno">  128</span>            model.log_interpolation,</div>
-<div class="line"><span class="lineno">  129</span>        )</div>
-<div class="line"><span class="lineno">  130</span>    <span class="keywordflow">except</span> Exception <span class="keyword">as</span> error:  <span class="comment"># std::invalid_argument, raised through cppyy</span></div>
-<div class="line"><span class="lineno">  131</span>        message = str(error).splitlines()[-1].strip()</div>
-<div class="line"><span class="lineno">  132</span>        <span class="keywordflow">raise</span> PIDConfigError(f<span class="stringliteral">&quot;{source}: {message}&quot;</span>) <span class="keyword">from</span> error</div>
-<div class="line"><span class="lineno">  133</span>    <span class="keywordflow">return</span> pid</div>
-<div class="line"><span class="lineno">  134</span> </div>
-<div class="line"><span class="lineno">  135</span> </div>
+<p class="definition">Definition at line <a class="el" href="caloScoringPlanePID_8py_source.html#l00119">119</a> of file <a class="el" href="caloScoringPlanePID_8py_source.html">caloScoringPlanePID.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  119</span><span class="keyword">def </span>make_pid(model: PIDModel, source: str = <span class="stringliteral">&quot;&lt;model&gt;&quot;</span>) -&gt; Any:</div>
+<div class="line"><span class="lineno">  120</span>    <span class="stringliteral">&quot;&quot;&quot;Build a CaloScoringPlanePID from a model; numbers are checked in C++.&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  121</span>    <span class="keyword">import</span> ROOT</div>
+<div class="line"><span class="lineno">  122</span> </div>
+<div class="line"><span class="lineno">  123</span>    pid = ROOT.CaloScoringPlanePID()</div>
+<div class="line"><span class="lineno">  124</span>    overrides = ROOT.std.map(<span class="stringliteral">&quot;int&quot;</span>, <span class="stringliteral">&quot;int&quot;</span>)()</div>
+<div class="line"><span class="lineno">  125</span>    <span class="keywordflow">for</span> pdg, species <span class="keywordflow">in</span> model.overrides.items():</div>
+<div class="line"><span class="lineno">  126</span>        overrides[pdg] = species</div>
+<div class="line"><span class="lineno">  127</span>    <span class="keywordflow">try</span>:</div>
+<div class="line"><span class="lineno">  128</span>        pid.Set(</div>
+<div class="line"><span class="lineno">  129</span>            ROOT.std.vector(<span class="stringliteral">&quot;double&quot;</span>)(model.energies),</div>
+<div class="line"><span class="lineno">  130</span>            ROOT.std.vector(<span class="stringliteral">&quot;double&quot;</span>)(model.matrices),</div>
+<div class="line"><span class="lineno">  131</span>            overrides,</div>
+<div class="line"><span class="lineno">  132</span>            model.log_interpolation,</div>
+<div class="line"><span class="lineno">  133</span>        )</div>
+<div class="line"><span class="lineno">  134</span>    <span class="keywordflow">except</span> ROOT.std.invalid_argument <span class="keyword">as</span> error:  <span class="comment"># the model was rejected by Set()</span></div>
+<div class="line"><span class="lineno">  135</span>        <span class="comment"># The class prefix helps C++ callers; in a file error it is noise.</span></div>
+<div class="line"><span class="lineno">  136</span>        message = error.what().removeprefix(<span class="stringliteral">&quot;CaloScoringPlanePID::Set: &quot;</span>)</div>
+<div class="line"><span class="lineno">  137</span>        <span class="keywordflow">raise</span> PIDConfigError(f<span class="stringliteral">&quot;{source}: {message}&quot;</span>) <span class="keyword">from</span> error</div>
+<div class="line"><span class="lineno">  138</span>    <span class="keywordflow">return</span> pid</div>
+<div class="line"><span class="lineno">  139</span> </div>
+<div class="line"><span class="lineno">  140</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -329,59 +332,61 @@ rows summing to 1, energies increasing). load_pid() does both for a file.
       </table>
 </div><div class="memdoc">
 <pre class="fragment">Check the structure of a parsed PID file and reorder it to SPECIES.</pre> 
-<p class="definition">Definition at line <a class="el" href="caloScoringPlanePID_8py_source.html#l00050">50</a> of file <a class="el" href="caloScoringPlanePID_8py_source.html">caloScoringPlanePID.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   50</span><span class="keyword">def </span>parse(config: Any, source: str = <span class="stringliteral">&quot;&lt;string&gt;&quot;</span>) -&gt; PIDModel:</div>
-<div class="line"><span class="lineno">   51</span>    <span class="stringliteral">&quot;&quot;&quot;Check the structure of a parsed PID file and reorder it to SPECIES.&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   52</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> isinstance(config, dict):</div>
-<div class="line"><span class="lineno">   53</span>        <span class="keywordflow">raise</span> PIDConfigError(f<span class="stringliteral">&quot;{source}: the top level must be a mapping&quot;</span>)</div>
-<div class="line"><span class="lineno">   54</span>    unknown = sorted(str(k) <span class="keywordflow">for</span> k <span class="keywordflow">in</span> config <span class="keywordflow">if</span> k <span class="keywordflow">not</span> <span class="keywordflow">in</span> _KEYS)</div>
-<div class="line"><span class="lineno">   55</span>    <span class="keywordflow">if</span> unknown:</div>
-<div class="line"><span class="lineno">   56</span>        <span class="keywordflow">raise</span> PIDConfigError(f<span class="stringliteral">&quot;{source}: unknown key(s) {&#39;, &#39;.join(unknown)}&quot;</span>)</div>
-<div class="line"><span class="lineno">   57</span> </div>
-<div class="line"><span class="lineno">   58</span>    species = config.get(<span class="stringliteral">&quot;species&quot;</span>, list(SPECIES))</div>
-<div class="line"><span class="lineno">   59</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> isinstance(species, list) <span class="keywordflow">or</span> sorted(map(str, species)) != sorted(SPECIES):</div>
-<div class="line"><span class="lineno">   60</span>        <span class="keywordflow">raise</span> PIDConfigError(f<span class="stringliteral">&quot;{source}: &#39;species&#39; must be a permutation of {&#39;, &#39;.join(SPECIES)}, not {species!r}&quot;</span>)</div>
-<div class="line"><span class="lineno">   61</span>    order = [SPECIES.index(s) <span class="keywordflow">for</span> s <span class="keywordflow">in</span> species]  <span class="comment"># file row/column -&gt; internal index</span></div>
-<div class="line"><span class="lineno">   62</span> </div>
-<div class="line"><span class="lineno">   63</span>    interpolation = config.get(<span class="stringliteral">&quot;interpolation&quot;</span>, <span class="stringliteral">&quot;linear&quot;</span>)</div>
-<div class="line"><span class="lineno">   64</span>    <span class="keywordflow">if</span> interpolation <span class="keywordflow">not</span> <span class="keywordflow">in</span> (<span class="stringliteral">&quot;linear&quot;</span>, <span class="stringliteral">&quot;log&quot;</span>):</div>
-<div class="line"><span class="lineno">   65</span>        <span class="keywordflow">raise</span> PIDConfigError(f<span class="stringliteral">&quot;{source}: &#39;interpolation&#39; must be linear or log, not {interpolation!r}&quot;</span>)</div>
-<div class="line"><span class="lineno">   66</span> </div>
-<div class="line"><span class="lineno">   67</span>    points = config.get(<span class="stringliteral">&quot;points&quot;</span>)</div>
-<div class="line"><span class="lineno">   68</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> isinstance(points, list) <span class="keywordflow">or</span> <span class="keywordflow">not</span> points:</div>
-<div class="line"><span class="lineno">   69</span>        <span class="keywordflow">raise</span> PIDConfigError(f<span class="stringliteral">&quot;{source}: &#39;points&#39; must be a non-empty list of {{energy, matrix}}&quot;</span>)</div>
-<div class="line"><span class="lineno">   70</span>    energies: list[float] = []</div>
-<div class="line"><span class="lineno">   71</span>    matrices: list[float] = []</div>
-<div class="line"><span class="lineno">   72</span>    <span class="keywordflow">for</span> k, point <span class="keywordflow">in</span> enumerate(points):</div>
-<div class="line"><span class="lineno">   73</span>        where = f<span class="stringliteral">&quot;points[{k}]&quot;</span></div>
-<div class="line"><span class="lineno">   74</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> isinstance(point, dict) <span class="keywordflow">or</span> set(point) != {<span class="stringliteral">&quot;energy&quot;</span>, <span class="stringliteral">&quot;matrix&quot;</span>}:</div>
-<div class="line"><span class="lineno">   75</span>            <span class="keywordflow">raise</span> PIDConfigError(f<span class="stringliteral">&quot;{source}: {where} must have exactly the keys &#39;energy&#39; and &#39;matrix&#39;&quot;</span>)</div>
-<div class="line"><span class="lineno">   76</span>        energies.append(_number(point[<span class="stringliteral">&quot;energy&quot;</span>], f<span class="stringliteral">&quot;{where}.energy&quot;</span>, source))</div>
-<div class="line"><span class="lineno">   77</span>        rows = point[<span class="stringliteral">&quot;matrix&quot;</span>]</div>
-<div class="line"><span class="lineno">   78</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> isinstance(rows, list) <span class="keywordflow">or</span> len(rows) != 3 <span class="keywordflow">or</span> any(<span class="keywordflow">not</span> isinstance(r, list) <span class="keywordflow">or</span> len(r) != 3 <span class="keywordflow">for</span> r <span class="keywordflow">in</span> rows):</div>
-<div class="line"><span class="lineno">   79</span>            <span class="keywordflow">raise</span> PIDConfigError(f<span class="stringliteral">&quot;{source}: {where}.matrix must be 3 rows of 3 numbers&quot;</span>)</div>
-<div class="line"><span class="lineno">   80</span>        matrix = [0.0] * 9</div>
-<div class="line"><span class="lineno">   81</span>        <span class="keywordflow">for</span> i, row <span class="keywordflow">in</span> enumerate(rows):</div>
-<div class="line"><span class="lineno">   82</span>            <span class="keywordflow">for</span> j, value <span class="keywordflow">in</span> enumerate(row):</div>
-<div class="line"><span class="lineno">   83</span>                matrix[3 * order[i] + order[j]] = _number(value, f<span class="stringliteral">&quot;{where}.matrix[{i}][{j}]&quot;</span>, source)</div>
-<div class="line"><span class="lineno">   84</span>        matrices.extend(matrix)</div>
-<div class="line"><span class="lineno">   85</span> </div>
-<div class="line"><span class="lineno">   86</span>    overrides: dict[int, int] = {}</div>
-<div class="line"><span class="lineno">   87</span>    raw = config.get(<span class="stringliteral">&quot;pdg_overrides&quot;</span>) <span class="keywordflow">or</span> {}  <span class="comment"># an empty key (all entries commented out) is allowed</span></div>
-<div class="line"><span class="lineno">   88</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> isinstance(raw, dict):</div>
-<div class="line"><span class="lineno">   89</span>        <span class="keywordflow">raise</span> PIDConfigError(f<span class="stringliteral">&quot;{source}: &#39;pdg_overrides&#39; must map PDG codes to species&quot;</span>)</div>
-<div class="line"><span class="lineno">   90</span>    <span class="keywordflow">for</span> pdg, name <span class="keywordflow">in</span> raw.items():</div>
-<div class="line"><span class="lineno">   91</span>        <span class="keywordflow">if</span> isinstance(pdg, bool) <span class="keywordflow">or</span> <span class="keywordflow">not</span> isinstance(pdg, int):</div>
-<div class="line"><span class="lineno">   92</span>            <span class="keywordflow">raise</span> PIDConfigError(f<span class="stringliteral">&quot;{source}: &#39;pdg_overrides&#39; keys must be PDG codes, not {pdg!r}&quot;</span>)</div>
-<div class="line"><span class="lineno">   93</span>        <span class="keywordflow">if</span> name <span class="keywordflow">not</span> <span class="keywordflow">in</span> _OVERRIDE_SPECIES:</div>
-<div class="line"><span class="lineno">   94</span>            <span class="keywordflow">raise</span> PIDConfigError(</div>
-<div class="line"><span class="lineno">   95</span>                f<span class="stringliteral">&quot;{source}: pdg_overrides[{pdg}] must be one of {&#39;, &#39;.join(_OVERRIDE_SPECIES)}, not {name!r}&quot;</span></div>
-<div class="line"><span class="lineno">   96</span>            )</div>
-<div class="line"><span class="lineno">   97</span>        overrides[abs(pdg)] = _OVERRIDE_SPECIES[name]</div>
-<div class="line"><span class="lineno">   98</span> </div>
-<div class="line"><span class="lineno">   99</span>    <span class="keywordflow">return</span> PIDModel(energies, matrices, overrides, interpolation == <span class="stringliteral">&quot;log&quot;</span>)</div>
-<div class="line"><span class="lineno">  100</span> </div>
-<div class="line"><span class="lineno">  101</span> </div>
+<p class="definition">Definition at line <a class="el" href="caloScoringPlanePID_8py_source.html#l00052">52</a> of file <a class="el" href="caloScoringPlanePID_8py_source.html">caloScoringPlanePID.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   52</span><span class="keyword">def </span>parse(config: Any, source: str = <span class="stringliteral">&quot;&lt;string&gt;&quot;</span>) -&gt; PIDModel:</div>
+<div class="line"><span class="lineno">   53</span>    <span class="stringliteral">&quot;&quot;&quot;Check the structure of a parsed PID file and reorder it to SPECIES.&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   54</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> isinstance(config, dict):</div>
+<div class="line"><span class="lineno">   55</span>        <span class="keywordflow">raise</span> PIDConfigError(f<span class="stringliteral">&quot;{source}: the top level must be a mapping&quot;</span>)</div>
+<div class="line"><span class="lineno">   56</span>    unknown = sorted(str(k) <span class="keywordflow">for</span> k <span class="keywordflow">in</span> config <span class="keywordflow">if</span> k <span class="keywordflow">not</span> <span class="keywordflow">in</span> _KEYS)</div>
+<div class="line"><span class="lineno">   57</span>    <span class="keywordflow">if</span> unknown:</div>
+<div class="line"><span class="lineno">   58</span>        <span class="keywordflow">raise</span> PIDConfigError(f<span class="stringliteral">&quot;{source}: unknown key(s) {&#39;, &#39;.join(unknown)}&quot;</span>)</div>
+<div class="line"><span class="lineno">   59</span> </div>
+<div class="line"><span class="lineno">   60</span>    species = config.get(<span class="stringliteral">&quot;species&quot;</span>, list(SPECIES))</div>
+<div class="line"><span class="lineno">   61</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> isinstance(species, list) <span class="keywordflow">or</span> sorted(map(str, species)) != sorted(SPECIES):</div>
+<div class="line"><span class="lineno">   62</span>        <span class="keywordflow">raise</span> PIDConfigError(f<span class="stringliteral">&quot;{source}: &#39;species&#39; must be a permutation of {&#39;, &#39;.join(SPECIES)}, not {species!r}&quot;</span>)</div>
+<div class="line"><span class="lineno">   63</span>    order = [SPECIES.index(s) <span class="keywordflow">for</span> s <span class="keywordflow">in</span> species]  <span class="comment"># file row/column -&gt; internal index</span></div>
+<div class="line"><span class="lineno">   64</span> </div>
+<div class="line"><span class="lineno">   65</span>    interpolation = config.get(<span class="stringliteral">&quot;interpolation&quot;</span>, <span class="stringliteral">&quot;linear&quot;</span>)</div>
+<div class="line"><span class="lineno">   66</span>    <span class="keywordflow">if</span> interpolation <span class="keywordflow">not</span> <span class="keywordflow">in</span> (<span class="stringliteral">&quot;linear&quot;</span>, <span class="stringliteral">&quot;log&quot;</span>):</div>
+<div class="line"><span class="lineno">   67</span>        <span class="keywordflow">raise</span> PIDConfigError(f<span class="stringliteral">&quot;{source}: &#39;interpolation&#39; must be linear or log, not {interpolation!r}&quot;</span>)</div>
+<div class="line"><span class="lineno">   68</span> </div>
+<div class="line"><span class="lineno">   69</span>    points = config.get(<span class="stringliteral">&quot;points&quot;</span>)</div>
+<div class="line"><span class="lineno">   70</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> isinstance(points, list) <span class="keywordflow">or</span> <span class="keywordflow">not</span> points:</div>
+<div class="line"><span class="lineno">   71</span>        <span class="keywordflow">raise</span> PIDConfigError(f<span class="stringliteral">&quot;{source}: &#39;points&#39; must be a non-empty list of {{energy, matrix}}&quot;</span>)</div>
+<div class="line"><span class="lineno">   72</span>    energies: list[float] = []</div>
+<div class="line"><span class="lineno">   73</span>    matrices: list[float] = []</div>
+<div class="line"><span class="lineno">   74</span>    <span class="keywordflow">for</span> k, point <span class="keywordflow">in</span> enumerate(points):</div>
+<div class="line"><span class="lineno">   75</span>        where = f<span class="stringliteral">&quot;points[{k}]&quot;</span></div>
+<div class="line"><span class="lineno">   76</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> isinstance(point, dict) <span class="keywordflow">or</span> set(point) != {<span class="stringliteral">&quot;energy&quot;</span>, <span class="stringliteral">&quot;matrix&quot;</span>}:</div>
+<div class="line"><span class="lineno">   77</span>            <span class="keywordflow">raise</span> PIDConfigError(f<span class="stringliteral">&quot;{source}: {where} must have exactly the keys &#39;energy&#39; and &#39;matrix&#39;&quot;</span>)</div>
+<div class="line"><span class="lineno">   78</span>        energies.append(_number(point[<span class="stringliteral">&quot;energy&quot;</span>], f<span class="stringliteral">&quot;{where}.energy&quot;</span>, source))</div>
+<div class="line"><span class="lineno">   79</span>        rows = point[<span class="stringliteral">&quot;matrix&quot;</span>]</div>
+<div class="line"><span class="lineno">   80</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> isinstance(rows, list) <span class="keywordflow">or</span> len(rows) != 3 <span class="keywordflow">or</span> any(<span class="keywordflow">not</span> isinstance(r, list) <span class="keywordflow">or</span> len(r) != 3 <span class="keywordflow">for</span> r <span class="keywordflow">in</span> rows):</div>
+<div class="line"><span class="lineno">   81</span>            <span class="keywordflow">raise</span> PIDConfigError(f<span class="stringliteral">&quot;{source}: {where}.matrix must be 3 rows of 3 numbers&quot;</span>)</div>
+<div class="line"><span class="lineno">   82</span>        matrix = [0.0] * 9</div>
+<div class="line"><span class="lineno">   83</span>        <span class="keywordflow">for</span> i, row <span class="keywordflow">in</span> enumerate(rows):</div>
+<div class="line"><span class="lineno">   84</span>            <span class="keywordflow">for</span> j, value <span class="keywordflow">in</span> enumerate(row):</div>
+<div class="line"><span class="lineno">   85</span>                matrix[3 * order[i] + order[j]] = _number(value, f<span class="stringliteral">&quot;{where}.matrix[{i}][{j}]&quot;</span>, source)</div>
+<div class="line"><span class="lineno">   86</span>        matrices.extend(matrix)</div>
+<div class="line"><span class="lineno">   87</span> </div>
+<div class="line"><span class="lineno">   88</span>    overrides: dict[int, int] = {}</div>
+<div class="line"><span class="lineno">   89</span>    raw = config.get(<span class="stringliteral">&quot;pdg_overrides&quot;</span>) <span class="keywordflow">or</span> {}  <span class="comment"># an empty key (all entries commented out) is allowed</span></div>
+<div class="line"><span class="lineno">   90</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> isinstance(raw, dict):</div>
+<div class="line"><span class="lineno">   91</span>        <span class="keywordflow">raise</span> PIDConfigError(f<span class="stringliteral">&quot;{source}: &#39;pdg_overrides&#39; must map PDG codes to species&quot;</span>)</div>
+<div class="line"><span class="lineno">   92</span>    <span class="keywordflow">for</span> pdg, name <span class="keywordflow">in</span> raw.items():</div>
+<div class="line"><span class="lineno">   93</span>        <span class="keywordflow">if</span> isinstance(pdg, bool) <span class="keywordflow">or</span> <span class="keywordflow">not</span> isinstance(pdg, int):</div>
+<div class="line"><span class="lineno">   94</span>            <span class="keywordflow">raise</span> PIDConfigError(f<span class="stringliteral">&quot;{source}: &#39;pdg_overrides&#39; keys must be PDG codes, not {pdg!r}&quot;</span>)</div>
+<div class="line"><span class="lineno">   95</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> isinstance(name, str) <span class="keywordflow">or</span> name <span class="keywordflow">not</span> <span class="keywordflow">in</span> _OVERRIDE_SPECIES:</div>
+<div class="line"><span class="lineno">   96</span>            <span class="keywordflow">raise</span> PIDConfigError(</div>
+<div class="line"><span class="lineno">   97</span>                f<span class="stringliteral">&quot;{source}: pdg_overrides[{pdg}] must be one of {&#39;, &#39;.join(_OVERRIDE_SPECIES)}, not {name!r}&quot;</span></div>
+<div class="line"><span class="lineno">   98</span>            )</div>
+<div class="line"><span class="lineno">   99</span>        <span class="comment"># Keep the sign: Set() applies the override to |pdg| and rejects</span></div>
+<div class="line"><span class="lineno">  100</span>        <span class="comment"># conflicting entries for +pdg and -pdg.</span></div>
+<div class="line"><span class="lineno">  101</span>        overrides[pdg] = _OVERRIDE_SPECIES[name]</div>
+<div class="line"><span class="lineno">  102</span> </div>
+<div class="line"><span class="lineno">  103</span>    <span class="keywordflow">return</span> PIDModel(energies, matrices, overrides, interpolation == <span class="stringliteral">&quot;log&quot;</span>)</div>
+<div class="line"><span class="lineno">  104</span> </div>
+<div class="line"><span class="lineno">  105</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -406,7 +411,7 @@ rows summing to 1, energies increasing). load_pid() does both for a file.
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="caloScoringPlanePID_8py_source.html#l00026">26</a> of file <a class="el" href="caloScoringPlanePID_8py_source.html">caloScoringPlanePID.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="caloScoringPlanePID_8py_source.html#l00028">28</a> of file <a class="el" href="caloScoringPlanePID_8py_source.html">caloScoringPlanePID.py</a>.</p>
 
 </div>
 </div>
@@ -430,7 +435,7 @@ rows summing to 1, energies increasing). load_pid() does both for a file.
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="caloScoringPlanePID_8py_source.html#l00025">25</a> of file <a class="el" href="caloScoringPlanePID_8py_source.html">caloScoringPlanePID.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="caloScoringPlanePID_8py_source.html#l00027">27</a> of file <a class="el" href="caloScoringPlanePID_8py_source.html">caloScoringPlanePID.py</a>.</p>
 
 </div>
 </div>
@@ -446,7 +451,7 @@ rows summing to 1, energies increasing). load_pid() does both for a file.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="caloScoringPlanePID_8py_source.html#l00024">24</a> of file <a class="el" href="caloScoringPlanePID_8py_source.html">caloScoringPlanePID.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="caloScoringPlanePID_8py_source.html#l00026">26</a> of file <a class="el" href="caloScoringPlanePID_8py_source.html">caloScoringPlanePID.py</a>.</p>
 
 </div>
 </div>

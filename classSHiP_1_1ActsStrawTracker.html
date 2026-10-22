@@ -423,16 +423,16 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  608</span>          {<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>, proxy.chi2() / proxy.nDoF(), impl.trackMeasurements[track]});</div>
 <div class="line"><span class="lineno">  609</span>    }</div>
 <div class="line"><span class="lineno">  610</span>  }</div>
-<div class="line"><span class="lineno">  611</span>  <span class="keyword">const</span> <span class="keyword">auto</span> rank = [](<span class="keyword">const</span> Fitted&amp; <a class="code hl_variable" href="namespacerun__tracking__scan.html#aebca261c698426e065606174ee0bbf03">f</a>) {</div>
-<div class="line"><span class="lineno">  612</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="namespacerun__tracking__scan.html#aebca261c698426e065606174ee0bbf03">f</a>.chi2PerNdf -</div>
-<div class="line"><span class="lineno">  613</span>           kTrackHitWeight * <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespacerun__tracking__scan.html#aebca261c698426e065606174ee0bbf03">f</a>.measurements.size());</div>
+<div class="line"><span class="lineno">  611</span>  <span class="keyword">const</span> <span class="keyword">auto</span> rank = [](<span class="keyword">const</span> Fitted&amp; <a class="code hl_variable" href="namespacecalo__scoring__plane__pid__example.html#acbae59de564979e119cfd20a3285a787">f</a>) {</div>
+<div class="line"><span class="lineno">  612</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="namespacecalo__scoring__plane__pid__example.html#acbae59de564979e119cfd20a3285a787">f</a>.chi2PerNdf -</div>
+<div class="line"><span class="lineno">  613</span>           kTrackHitWeight * <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespacecalo__scoring__plane__pid__example.html#acbae59de564979e119cfd20a3285a787">f</a>.measurements.size());</div>
 <div class="line"><span class="lineno">  614</span>  };</div>
 <div class="line"><span class="lineno">  615</span>  std::sort(fitted.begin(), fitted.end(),</div>
 <div class="line"><span class="lineno">  616</span>            [&amp;](<span class="keyword">const</span> <span class="keyword">auto</span>&amp; a, <span class="keyword">const</span> <span class="keyword">auto</span>&amp; b) { return rank(a) &lt; rank(b); });</div>
 <div class="line"><span class="lineno">  617</span>  std::vector&lt;const Fitted*&gt; accepted;</div>
 <div class="line"><span class="lineno">  618</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; f : fitted) {</div>
-<div class="line"><span class="lineno">  619</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacerun__tracking__scan.html#aebca261c698426e065606174ee0bbf03">f</a>.chi2PerNdf &gt; kMaxTrackChi2PerNdf ||</div>
-<div class="line"><span class="lineno">  620</span>        <a class="code hl_variable" href="namespacerun__tracking__scan.html#aebca261c698426e065606174ee0bbf03">f</a>.measurements.size() &lt; kMinTrackHits) {</div>
+<div class="line"><span class="lineno">  619</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacecalo__scoring__plane__pid__example.html#acbae59de564979e119cfd20a3285a787">f</a>.chi2PerNdf &gt; kMaxTrackChi2PerNdf ||</div>
+<div class="line"><span class="lineno">  620</span>        <a class="code hl_variable" href="namespacecalo__scoring__plane__pid__example.html#acbae59de564979e119cfd20a3285a787">f</a>.measurements.size() &lt; kMinTrackHits) {</div>
 <div class="line"><span class="lineno">  621</span>      <span class="keywordflow">continue</span>;</div>
 <div class="line"><span class="lineno">  622</span>    }</div>
 <div class="line"><span class="lineno">  623</span>    <span class="keyword">const</span> <span class="keywordtype">bool</span> conflict =</div>
@@ -443,7 +443,7 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  628</span>                std::count(a-&gt;measurements.begin(), a-&gt;measurements.end(), m);</div>
 <div class="line"><span class="lineno">  629</span>          }</div>
 <div class="line"><span class="lineno">  630</span>          <span class="keyword">const</span> <span class="keyword">auto</span> shorter =</div>
-<div class="line"><span class="lineno">  631</span>              std::min(<a class="code hl_variable" href="namespacerun__tracking__scan.html#aebca261c698426e065606174ee0bbf03">f</a>.measurements.size(), a-&gt;measurements.size());</div>
+<div class="line"><span class="lineno">  631</span>              std::min(<a class="code hl_variable" href="namespacecalo__scoring__plane__pid__example.html#acbae59de564979e119cfd20a3285a787">f</a>.measurements.size(), a-&gt;measurements.size());</div>
 <div class="line"><span class="lineno">  632</span>          <span class="keywordflow">return</span> shared &gt; kMaxSharedFraction * <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(shorter);</div>
 <div class="line"><span class="lineno">  633</span>        });</div>
 <div class="line"><span class="lineno">  634</span>    <span class="keywordflow">if</span> (!conflict) {</div>
@@ -459,14 +459,14 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  644</span>  impl.tracks.clear();</div>
 <div class="line"><span class="lineno">  645</span>  impl.trackMeasurements.clear();</div>
 <div class="line"><span class="lineno">  646</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> Fitted* f : accepted) {</div>
-<div class="line"><span class="lineno">  647</span>    impl.fit(candidates[<a class="code hl_variable" href="namespacerun__tracking__scan.html#aebca261c698426e065606174ee0bbf03">f</a>-&gt;candidate], hits);</div>
+<div class="line"><span class="lineno">  647</span>    impl.fit(candidates[<a class="code hl_variable" href="namespacecalo__scoring__plane__pid__example.html#acbae59de564979e119cfd20a3285a787">f</a>-&gt;candidate], hits);</div>
 <div class="line"><span class="lineno">  648</span>  }</div>
 <div class="line"><span class="lineno">  649</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="classSHiP_1_1ActsStrawTracker.html#a50589b423d08a84f710381d0ae0fe466">GetNTracks</a>();</div>
 <div class="line"><span class="lineno">  650</span>}</div>
 <div class="ttc" id="aclassSHiP_1_1ActsStrawTracker_html_a50589b423d08a84f710381d0ae0fe466"><div class="ttname"><a href="classSHiP_1_1ActsStrawTracker.html#a50589b423d08a84f710381d0ae0fe466">SHiP::ActsStrawTracker::GetNTracks</a></div><div class="ttdeci">Int_t GetNTracks() const</div><div class="ttdef"><b>Definition</b> <a href="ActsStrawTracker_8cxx_source.html#l00667">ActsStrawTracker.cxx:667</a></div></div>
 <div class="ttc" id="anamespaceShipAna_html_aa4bf87f4d17f9d38b1d8f4d009bb54b3"><div class="ttname"><a href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">ShipAna.i</a></div><div class="ttdeci">int i</div><div class="ttdef"><b>Definition</b> <a href="ShipAna_8py_source.html#l00108">ShipAna.py:108</a></div></div>
+<div class="ttc" id="anamespacecalo__scoring__plane__pid__example_html_acbae59de564979e119cfd20a3285a787"><div class="ttname"><a href="namespacecalo__scoring__plane__pid__example.html#acbae59de564979e119cfd20a3285a787">calo_scoring_plane_pid_example.f</a></div><div class="ttdeci">f</div><div class="ttdef"><b>Definition</b> <a href="calo__scoring__plane__pid__example_8py_source.html#l00024">calo_scoring_plane_pid_example.py:24</a></div></div>
 <div class="ttc" id="anamespaceeventDisplay_html_a73fd0f3a2dae7cace5750a4973039f53"><div class="ttname"><a href="namespaceeventDisplay.html#a73fd0f3a2dae7cace5750a4973039f53">eventDisplay.candidate</a></div><div class="ttdeci">candidate</div><div class="ttdef"><b>Definition</b> <a href="eventDisplay_8py_source.html#l00143">eventDisplay.py:143</a></div></div>
-<div class="ttc" id="anamespacerun__tracking__scan_html_aebca261c698426e065606174ee0bbf03"><div class="ttname"><a href="namespacerun__tracking__scan.html#aebca261c698426e065606174ee0bbf03">run_tracking_scan.f</a></div><div class="ttdeci">f</div><div class="ttdef"><b>Definition</b> <a href="run__tracking__scan_8py_source.html#l00204">run_tracking_scan.py:204</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

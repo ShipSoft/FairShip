@@ -104,8 +104,35 @@ $(document).ready(function(){initNavTree('namespaceconftest.html',''); initResiz
 Functions</h2></td></tr>
 <tr class="memitem:ab403d908c73ec825d7749171dbf52e8c" id="r_ab403d908c73ec825d7749171dbf52e8c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceconftest.html#ab403d908c73ec825d7749171dbf52e8c">root_with_shipdata</a> ()</td></tr>
 <tr class="separator:ab403d908c73ec825d7749171dbf52e8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a873bd6af9ab4276a95bdb81992054fce" id="r_a873bd6af9ab4276a95bdb81992054fce"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceconftest.html#a873bd6af9ab4276a95bdb81992054fce">root_with_calo_scoring_plane</a> (<a class="el" href="namespaceconftest.html#ab403d908c73ec825d7749171dbf52e8c">root_with_shipdata</a>)</td></tr>
+<tr class="separator:a873bd6af9ab4276a95bdb81992054fce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="a873bd6af9ab4276a95bdb81992054fce" name="a873bd6af9ab4276a95bdb81992054fce"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a873bd6af9ab4276a95bdb81992054fce">&#9670;&#160;</a></span>root_with_calo_scoring_plane()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">conftest.root_with_calo_scoring_plane </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>root_with_shipdata</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="conftest_8py_source.html#l00020">20</a> of file <a class="el" href="conftest_8py_source.html">conftest.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   20</span><span class="keyword">def </span>root_with_calo_scoring_plane(root_with_shipdata):</div>
+<div class="line"><span class="lineno">   21</span>    ROOT = root_with_shipdata</div>
+<div class="line"><span class="lineno">   22</span>    <span class="keywordflow">if</span> ROOT.gSystem.Load(<span class="stringliteral">&quot;libCaloScoringPlane&quot;</span>) &lt; 0:</div>
+<div class="line"><span class="lineno">   23</span>        pytest.skip(<span class="stringliteral">&quot;libCaloScoringPlane not available&quot;</span>)</div>
+<div class="line"><span class="lineno">   24</span>    <span class="keywordflow">return</span> ROOT</div>
+</div><!-- fragment -->
+</div>
+</div>
 <a id="ab403d908c73ec825d7749171dbf52e8c" name="ab403d908c73ec825d7749171dbf52e8c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab403d908c73ec825d7749171dbf52e8c">&#9670;&#160;</a></span>root_with_shipdata()</h2>
 
@@ -127,6 +154,11 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   12</span>    <span class="keywordflow">if</span> ROOT.gSystem.Load(<span class="stringliteral">&quot;libShipData&quot;</span>) &lt; 0:</div>
 <div class="line"><span class="lineno">   13</span>        pytest.skip(<span class="stringliteral">&quot;libShipData not available&quot;</span>)</div>
 <div class="line"><span class="lineno">   14</span>    <span class="keywordflow">return</span> ROOT</div>
+<div class="line"><span class="lineno">   15</span> </div>
+<div class="line"><span class="lineno">   16</span> </div>
+<div class="line"><span class="lineno">   17</span><span class="comment"># libCaloScoringPlane links libShipData. Request root_with_shipdata first so</span></div>
+<div class="line"><span class="lineno">   18</span><span class="comment"># that libShipData is loaded by that one fixture and not again later.</span></div>
+<div class="line"><span class="lineno">   19</span><span class="preprocessor">@pytest.fixture(scope=&quot;session&quot;)</span></div>
 </div><!-- fragment -->
 </div>
 </div>

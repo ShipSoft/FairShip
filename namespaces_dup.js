@@ -119,6 +119,7 @@ var namespaces_dup =
     [ "calo_scoring_plane_pid_example", "namespacecalo__scoring__plane__pid__example.html", [
       [ "args", "namespacecalo__scoring__plane__pid__example.html#ae8a1c4d6b044965381106b28adcf7d90", null ],
       [ "default", "namespacecalo__scoring__plane__pid__example.html#a7505e230f1e5c07ee5a686225c9c2755", null ],
+      [ "f", "namespacecalo__scoring__plane__pid__example.html#acbae59de564979e119cfd20a3285a787", null ],
       [ "help", "namespacecalo__scoring__plane__pid__example.html#a843a0bc14688c530543a97e74e98d0d8", null ],
       [ "name", "namespacecalo__scoring__plane__pid__example.html#a33cc14130de3283cf2cce7c78b91001f", null ],
       [ "parser", "namespacecalo__scoring__plane__pid__example.html#a15f581e9ff64d818e2f99b6521b52609", null ],
@@ -194,6 +195,7 @@ var namespaces_dup =
       [ "config", "namespaceconfigGenieGenerator.html#a6bcca2f64dfe6e1783a59251bb8bacac", null ]
     ] ],
     [ "conftest", "namespaceconftest.html", [
+      [ "root_with_calo_scoring_plane", "namespaceconftest.html#a873bd6af9ab4276a95bdb81992054fce", null ],
       [ "root_with_shipdata", "namespaceconftest.html#ab403d908c73ec825d7749171dbf52e8c", null ]
     ] ],
     [ "convertEvtCalc", "namespaceconvertEvtCalc.html", [
@@ -1920,7 +1922,9 @@ var namespaces_dup =
     [ "study_thinTarget", "namespacestudy__thinTarget.html", "namespacestudy__thinTarget" ],
     [ "test_caloScoringPlanePID", "namespacetest__caloScoringPlanePID.html", [
       [ "config", "namespacetest__caloScoringPlanePID.html#aa4f431aa09983a937e2ac803986da45c", null ],
-      [ "ROOT", "namespacetest__caloScoringPlanePID.html#a58468862ec284e3a30b4ec473f981f17", null ],
+      [ "ROOT", "namespacetest__caloScoringPlanePID.html#aa228b22955f0fd8ddd006ed1da44feb9", null ],
+      [ "test_binding_errors_are_not_reported_as_file_errors", "namespacetest__caloScoringPlanePID.html#a70c254a560c98f9511f53ef6e9344477", null ],
+      [ "test_conflicting_overrides_are_rejected", "namespacetest__caloScoringPlanePID.html#a67433fc8d185c777aeabaa16834295ca", null ],
       [ "test_defaults", "namespacetest__caloScoringPlanePID.html#ab86bca51fab0cc01a039591b3f33d29a", null ],
       [ "test_empty_pdg_overrides_key_is_allowed", "namespacetest__caloScoringPlanePID.html#a7b2d1e9785ac5d75d2dab382952c6f32", null ],
       [ "test_environment_variables_are_expanded", "namespacetest__caloScoringPlanePID.html#aec9bdbfe3d7976908c0e10d9ee9981fa", null ],
@@ -1931,7 +1935,8 @@ var namespaces_dup =
       [ "test_nan_in_the_file_is_rejected", "namespacetest__caloScoringPlanePID.html#adf32c234122073414278e48ac1c6db89", null ],
       [ "test_no_file_gives_perfect_identification", "namespacetest__caloScoringPlanePID.html#abb066a842f61f6ba49a8a0a4c3baaaa8", null ],
       [ "test_numerical_errors_name_the_file", "namespacetest__caloScoringPlanePID.html#a6770ac97a9c2e9115e8419387421c5cf", null ],
-      [ "test_overrides_by_absolute_pdg_code", "namespacetest__caloScoringPlanePID.html#a91d2d7da8172d90d47732c86d8768528", null ],
+      [ "test_override_applies_to_both_signs", "namespacetest__caloScoringPlanePID.html#ab3a3aeac250e58ba9ac2886fc986b504", null ],
+      [ "test_overrides_keep_the_sign", "namespacetest__caloScoringPlanePID.html#a6ee7e2b1bf643c70321959e8d26a36c0", null ],
       [ "test_rows_and_columns_are_reordered", "namespacetest__caloScoringPlanePID.html#a743101cd0e41d8b484a6e1d9560d4524", null ],
       [ "test_shipped_file_loads_into_the_cpp_class", "namespacetest__caloScoringPlanePID.html#a6f001e7670280bacb41f5ecb0f226428", null ],
       [ "test_shipped_file_parses", "namespacetest__caloScoringPlanePID.html#a3e2d440b412d57c6223a9125700501ea", null ],

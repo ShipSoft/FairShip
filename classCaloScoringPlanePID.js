@@ -1,5 +1,6 @@
 var classCaloScoringPlanePID =
 [
+    [ "Row", "classCaloScoringPlanePID.html#a7088cf8b5eef47d10b086542a030d951", null ],
     [ "Species", "classCaloScoringPlanePID.html#a7ed72c68bbd487eb1bdf59037e0f93e5", [
       [ "kUnknown", "classCaloScoringPlanePID.html#a7ed72c68bbd487eb1bdf59037e0f93e5a30390fd8794fc97f6db1999e2a39415f", null ],
       [ "kElectron", "classCaloScoringPlanePID.html#a7ed72c68bbd487eb1bdf59037e0f93e5a58f9d8e884b2eac72fc053cc52325e20", null ],
@@ -12,6 +13,7 @@ var classCaloScoringPlanePID =
     [ "Identify", "classCaloScoringPlanePID.html#a3c3f4d65ee2e8d5dfc5b74e512abc0c8", null ],
     [ "Identify", "classCaloScoringPlanePID.html#adfe006c07da8024d9155881b18b94f6f", null ],
     [ "Identify", "classCaloScoringPlanePID.html#a56fb726afc32098eb4f0c2029cc250af", null ],
+    [ "InterpolatedRow", "classCaloScoringPlanePID.html#a878cf09806bef900dea5a8ff3d6357ae", null ],
     [ "IsLogInterpolation", "classCaloScoringPlanePID.html#ab81f36525da743a2bc90c302e0598ca5", null ],
     [ "Matrix", "classCaloScoringPlanePID.html#a81abd57b43e01622f70dfbc664debb2b", null ],
     [ "Print", "classCaloScoringPlanePID.html#ac440b887c6868f4f865a576105fd9c24", null ],

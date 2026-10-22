@@ -1,5 +1,14 @@
 var NAVTREEINDEX36 =
 {
+"shipStrawTracking_8py.html#a6f1c8ab4a8627d83bd87a950231721c6":[11,0,13,40,14],
+"shipStrawTracking_8py.html#a6f8170056fea500eadaec343a3b75173":[11,0,13,40,6],
+"shipStrawTracking_8py.html#a83f7bb574b00fdb506afca159273f046":[11,0,13,40,5],
+"shipStrawTracking_8py.html#ab4452cfc0291a3acdd577be659beae63":[11,0,13,40,3],
+"shipStrawTracking_8py.html#abc9eca6c9f512fcddfc991f29bac4b87":[11,0,13,40,11],
+"shipStrawTracking_8py.html#acd4b4f7a68c7fad0e0799cf537be7ce0":[11,0,13,40,7],
+"shipStrawTracking_8py.html#adc66dfda583a285e93e3230b61844e05":[11,0,13,40,1],
+"shipStrawTracking_8py.html#afa3352edb87c33e580243f775a6cc5ed":[11,0,13,40,0],
+"shipStrawTracking_8py.html#afd5476d8c8880a51e22ca2334c0c30e3":[11,0,13,40,4],
 "shipStrawTracking_8py_source.html":[11,0,13,40],
 "shipTrackAccess_8py.html":[11,0,13,41],
 "shipTrackAccess_8py.html#a0249a635f725f749dfd31a99b23239ee":[11,0,13,41,3],
@@ -240,14 +249,5 @@ var NAVTREEINDEX36 =
 "structMagneticTrackPropagator_1_1State.html#a175736b173fb95df8a8b93ac5a2a91d3":[10,0,51,2,1],
 "structMagneticTrackPropagator_1_1State.html#a8c434369e11eb1a229921e552c5f208d":[10,0,51,2,0],
 "structModelSpec.html":[10,0,52],
-"structModelSpec.html#a286246d782961db23a8eeddf18a70a55":[10,0,52,2],
-"structModelSpec.html#a61bcc93c9fd9108e7df476d229b086ac":[10,0,52,0],
-"structModelSpec.html#af3f40e0ec1c08f9fa649e851f9edf91c":[10,0,52,1],
-"structMuDISFilter_1_1FilterCandidate.html":[10,0,56,0],
-"structMuDISFilter_1_1FilterCandidate.html#a0587295e3fffd05a5ee41bf9d96881e6":[10,0,56,0,0],
-"structMuDISFilter_1_1FilterCandidate.html#af427ed482edd9588a7918de9daf7c40c":[10,0,56,0,1],
-"structMuDISFilter_1_1FilterEfficiencyHistograms.html":[10,0,56,1],
-"structMuDISFilter_1_1FilterEfficiencyHistograms.html#a356d0d5a179cea9bdffbd3ad01f271ed":[10,0,56,1,2],
-"structMuDISFilter_1_1FilterEfficiencyHistograms.html#a7a86c16cb255b76ed2f0af6ac42c6726":[10,0,56,1,1],
-"structMuDISFilter_1_1FilterEfficiencyHistograms.html#adb14ddad94e449f19c14610b47fabd7d":[10,0,56,1,0]
+"structModelSpec.html#a286246d782961db23a8eeddf18a70a55":[10,0,52,2]
 };

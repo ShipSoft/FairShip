@@ -99,6 +99,7 @@ $(document).ready(function(){initNavTree('classCaloScoringPlanePID.html',''); in
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
+<a href="#pri-types">Private Types</a> &#124;
 <a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classCaloScoringPlanePID-members.html">List of all members</a>  </div>
@@ -157,10 +158,17 @@ Static Public Attributes</h2></td></tr>
 <tr class="memitem:a26a9358185415412fe5c3ad0c96f804a" id="r_a26a9358185415412fe5c3ad0c96f804a"><td class="memItemLeft" align="right" valign="top">static constexpr Int_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCaloScoringPlanePID.html#a26a9358185415412fe5c3ad0c96f804a">kNSpecies</a> = 3</td></tr>
 <tr class="separator:a26a9358185415412fe5c3ad0c96f804a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-types" name="pri-types"></a>
+Private Types</h2></td></tr>
+<tr class="memitem:a7088cf8b5eef47d10b086542a030d951" id="r_a7088cf8b5eef47d10b086542a030d951"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCaloScoringPlanePID.html#a7088cf8b5eef47d10b086542a030d951">Row</a> = std::array&lt; Double_t, <a class="el" href="classCaloScoringPlanePID.html#a26a9358185415412fe5c3ad0c96f804a">kNSpecies</a> &gt;</td></tr>
+<tr class="separator:a7088cf8b5eef47d10b086542a030d951"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
 <tr class="memitem:afc174fd474ae7d02779f508dc273362f" id="r_afc174fd474ae7d02779f508dc273362f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCaloScoringPlanePID.html#afc174fd474ae7d02779f508dc273362f">SetIdentity</a> ()</td></tr>
 <tr class="separator:afc174fd474ae7d02779f508dc273362f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a878cf09806bef900dea5a8ff3d6357ae" id="r_a878cf09806bef900dea5a8ff3d6357ae"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classCaloScoringPlanePID.html#a7088cf8b5eef47d10b086542a030d951">Row</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCaloScoringPlanePID.html#a878cf09806bef900dea5a8ff3d6357ae">InterpolatedRow</a> (Double_t energy, Int_t trueSpecies) const</td></tr>
+<tr class="separator:a878cf09806bef900dea5a8ff3d6357ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a720cba26d76c2ff9d1c442175f0faa42" id="r_a720cba26d76c2ff9d1c442175f0faa42"><td class="memItemLeft" align="right" valign="top">Double_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCaloScoringPlanePID.html#a720cba26d76c2ff9d1c442175f0faa42">At</a> (size_t iEnergy, Int_t i, Int_t j) const</td></tr>
 <tr class="separator:a720cba26d76c2ff9d1c442175f0faa42"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -186,8 +194,8 @@ Private Attributes</h2></td></tr>
 <p>Usage from C++ (link against the <a class="el" href="classCaloScoringPlane.html" title="Ideal scoring plane downstream of the timing detector.">CaloScoringPlane</a> library): </p><div class="fragment"><div class="line"><a class="code hl_class" href="classCaloScoringPlanePID.html">CaloScoringPlanePID</a> pid;</div>
 <div class="line">pid.Set({3., 100.}, {...18 values...}, {}, kTRUE);</div>
 <div class="line"><a class="code hl_enumeration" href="classCaloScoringPlanePID.html#a7ed72c68bbd487eb1bdf59037e0f93e5">CaloScoringPlanePID::Species</a> <a class="code hl_variable" href="namespacestudy__GammaConv.html#a6178e60a012f4ac198fff3a25fb91f78">s</a> = <a class="code hl_variable" href="namespacecalo__scoring__plane__pid__example.html#af3f45e8a845461ad662709cc8cf0b506">pid</a>.Identify(point, *gRandom);</div>
-<div class="ttc" id="aclassCaloScoringPlanePID_html"><div class="ttname"><a href="classCaloScoringPlanePID.html">CaloScoringPlanePID</a></div><div class="ttdoc">Energy-dependent electron / hadron / muon identification from confusion matrices.</div><div class="ttdef"><b>Definition</b> <a href="CaloScoringPlanePID_8h_source.html#l00052">CaloScoringPlanePID.h:52</a></div></div>
-<div class="ttc" id="aclassCaloScoringPlanePID_html_a7ed72c68bbd487eb1bdf59037e0f93e5"><div class="ttname"><a href="classCaloScoringPlanePID.html#a7ed72c68bbd487eb1bdf59037e0f93e5">CaloScoringPlanePID::Species</a></div><div class="ttdeci">Species</div><div class="ttdef"><b>Definition</b> <a href="CaloScoringPlanePID_8h_source.html#l00054">CaloScoringPlanePID.h:54</a></div></div>
+<div class="ttc" id="aclassCaloScoringPlanePID_html"><div class="ttname"><a href="classCaloScoringPlanePID.html">CaloScoringPlanePID</a></div><div class="ttdoc">Energy-dependent electron / hadron / muon identification from confusion matrices.</div><div class="ttdef"><b>Definition</b> <a href="CaloScoringPlanePID_8h_source.html#l00053">CaloScoringPlanePID.h:53</a></div></div>
+<div class="ttc" id="aclassCaloScoringPlanePID_html_a7ed72c68bbd487eb1bdf59037e0f93e5"><div class="ttname"><a href="classCaloScoringPlanePID.html#a7ed72c68bbd487eb1bdf59037e0f93e5">CaloScoringPlanePID::Species</a></div><div class="ttdeci">Species</div><div class="ttdef"><b>Definition</b> <a href="CaloScoringPlanePID_8h_source.html#l00055">CaloScoringPlanePID.h:55</a></div></div>
 <div class="ttc" id="anamespacecalo__scoring__plane__pid__example_html_af3f45e8a845461ad662709cc8cf0b506"><div class="ttname"><a href="namespacecalo__scoring__plane__pid__example.html#af3f45e8a845461ad662709cc8cf0b506">calo_scoring_plane_pid_example.pid</a></div><div class="ttdeci">pid</div><div class="ttdef"><b>Definition</b> <a href="calo__scoring__plane__pid__example_8py_source.html#l00020">calo_scoring_plane_pid_example.py:20</a></div></div>
 <div class="ttc" id="anamespacestudy__GammaConv_html_a6178e60a012f4ac198fff3a25fb91f78"><div class="ttname"><a href="namespacestudy__GammaConv.html#a6178e60a012f4ac198fff3a25fb91f78">study_GammaConv.s</a></div><div class="ttdeci">s</div><div class="ttdef"><b>Definition</b> <a href="study__GammaConv_8py_source.html#l00041">study_GammaConv.py:41</a></div></div>
 </div><!-- fragment --><p> and from Python: </p><div class="fragment"><div class="line">from <a class="code hl_namespace" href="namespacecaloScoringPlanePID.html">caloScoringPlanePID</a> <span class="keyword">import</span> load_pid</div>
@@ -195,8 +203,33 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="keywordflow">if</span> pid.Identify(point, rng) == ROOT.CaloScoringPlanePID.kMuon: ...</div>
 <div class="ttc" id="anamespacecaloScoringPlanePID_html"><div class="ttname"><a href="namespacecaloScoringPlanePID.html">caloScoringPlanePID</a></div><div class="ttdef"><b>Definition</b> <a href="caloScoringPlanePID_8py_source.html#l00001">caloScoringPlanePID.py:1</a></div></div>
 </div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="CaloScoringPlanePID_8h_source.html#l00052">52</a> of file <a class="el" href="CaloScoringPlanePID_8h_source.html">CaloScoringPlanePID.h</a>.</p>
-</div><h2 class="groupheader">Member Enumeration Documentation</h2>
+<p class="definition">Definition at line <a class="el" href="CaloScoringPlanePID_8h_source.html#l00053">53</a> of file <a class="el" href="CaloScoringPlanePID_8h_source.html">CaloScoringPlanePID.h</a>.</p>
+</div><h2 class="groupheader">Member Typedef Documentation</h2>
+<a id="a7088cf8b5eef47d10b086542a030d951" name="a7088cf8b5eef47d10b086542a030d951"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7088cf8b5eef47d10b086542a030d951">&#9670;&#160;</a></span>Row</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="classCaloScoringPlanePID.html#a7088cf8b5eef47d10b086542a030d951">CaloScoringPlanePID::Row</a> =  std::array&lt;Double_t, <a class="el" href="classCaloScoringPlanePID.html#a26a9358185415412fe5c3ad0c96f804a">kNSpecies</a>&gt;</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="CaloScoringPlanePID_8h_source.html#l00120">120</a> of file <a class="el" href="CaloScoringPlanePID_8h_source.html">CaloScoringPlanePID.h</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Enumeration Documentation</h2>
 <a id="a7ed72c68bbd487eb1bdf59037e0f93e5" name="a7ed72c68bbd487eb1bdf59037e0f93e5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7ed72c68bbd487eb1bdf59037e0f93e5">&#9670;&#160;</a></span>Species</h2>
 
@@ -215,12 +248,12 @@ Private Attributes</h2></td></tr>
 <tr><td class="fieldname"><a id="a7ed72c68bbd487eb1bdf59037e0f93e5a303b70357cb16eea6fcae8113fc4ecc9" name="a7ed72c68bbd487eb1bdf59037e0f93e5a303b70357cb16eea6fcae8113fc4ecc9"></a>kMuon&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="CaloScoringPlanePID_8h_source.html#l00054">54</a> of file <a class="el" href="CaloScoringPlanePID_8h_source.html">CaloScoringPlanePID.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   54</span>: Int_t { <a class="code hl_enumvalue" href="classCaloScoringPlanePID.html#a7ed72c68bbd487eb1bdf59037e0f93e5a30390fd8794fc97f6db1999e2a39415f">kUnknown</a> = -1, <a class="code hl_enumvalue" href="classCaloScoringPlanePID.html#a7ed72c68bbd487eb1bdf59037e0f93e5a58f9d8e884b2eac72fc053cc52325e20">kElectron</a> = 0, <a class="code hl_enumvalue" href="classCaloScoringPlanePID.html#a7ed72c68bbd487eb1bdf59037e0f93e5afad35b37d8569e7ada4a256581033caa">kHadron</a> = 1, <a class="code hl_enumvalue" href="classCaloScoringPlanePID.html#a7ed72c68bbd487eb1bdf59037e0f93e5a303b70357cb16eea6fcae8113fc4ecc9">kMuon</a> = 2 };</div>
-<div class="ttc" id="aclassCaloScoringPlanePID_html_a7ed72c68bbd487eb1bdf59037e0f93e5a30390fd8794fc97f6db1999e2a39415f"><div class="ttname"><a href="classCaloScoringPlanePID.html#a7ed72c68bbd487eb1bdf59037e0f93e5a30390fd8794fc97f6db1999e2a39415f">CaloScoringPlanePID::kUnknown</a></div><div class="ttdeci">@ kUnknown</div><div class="ttdef"><b>Definition</b> <a href="CaloScoringPlanePID_8h_source.html#l00054">CaloScoringPlanePID.h:54</a></div></div>
-<div class="ttc" id="aclassCaloScoringPlanePID_html_a7ed72c68bbd487eb1bdf59037e0f93e5a303b70357cb16eea6fcae8113fc4ecc9"><div class="ttname"><a href="classCaloScoringPlanePID.html#a7ed72c68bbd487eb1bdf59037e0f93e5a303b70357cb16eea6fcae8113fc4ecc9">CaloScoringPlanePID::kMuon</a></div><div class="ttdeci">@ kMuon</div><div class="ttdef"><b>Definition</b> <a href="CaloScoringPlanePID_8h_source.html#l00054">CaloScoringPlanePID.h:54</a></div></div>
-<div class="ttc" id="aclassCaloScoringPlanePID_html_a7ed72c68bbd487eb1bdf59037e0f93e5a58f9d8e884b2eac72fc053cc52325e20"><div class="ttname"><a href="classCaloScoringPlanePID.html#a7ed72c68bbd487eb1bdf59037e0f93e5a58f9d8e884b2eac72fc053cc52325e20">CaloScoringPlanePID::kElectron</a></div><div class="ttdeci">@ kElectron</div><div class="ttdef"><b>Definition</b> <a href="CaloScoringPlanePID_8h_source.html#l00054">CaloScoringPlanePID.h:54</a></div></div>
-<div class="ttc" id="aclassCaloScoringPlanePID_html_a7ed72c68bbd487eb1bdf59037e0f93e5afad35b37d8569e7ada4a256581033caa"><div class="ttname"><a href="classCaloScoringPlanePID.html#a7ed72c68bbd487eb1bdf59037e0f93e5afad35b37d8569e7ada4a256581033caa">CaloScoringPlanePID::kHadron</a></div><div class="ttdeci">@ kHadron</div><div class="ttdef"><b>Definition</b> <a href="CaloScoringPlanePID_8h_source.html#l00054">CaloScoringPlanePID.h:54</a></div></div>
+<p class="definition">Definition at line <a class="el" href="CaloScoringPlanePID_8h_source.html#l00055">55</a> of file <a class="el" href="CaloScoringPlanePID_8h_source.html">CaloScoringPlanePID.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   55</span>: Int_t { <a class="code hl_enumvalue" href="classCaloScoringPlanePID.html#a7ed72c68bbd487eb1bdf59037e0f93e5a30390fd8794fc97f6db1999e2a39415f">kUnknown</a> = -1, <a class="code hl_enumvalue" href="classCaloScoringPlanePID.html#a7ed72c68bbd487eb1bdf59037e0f93e5a58f9d8e884b2eac72fc053cc52325e20">kElectron</a> = 0, <a class="code hl_enumvalue" href="classCaloScoringPlanePID.html#a7ed72c68bbd487eb1bdf59037e0f93e5afad35b37d8569e7ada4a256581033caa">kHadron</a> = 1, <a class="code hl_enumvalue" href="classCaloScoringPlanePID.html#a7ed72c68bbd487eb1bdf59037e0f93e5a303b70357cb16eea6fcae8113fc4ecc9">kMuon</a> = 2 };</div>
+<div class="ttc" id="aclassCaloScoringPlanePID_html_a7ed72c68bbd487eb1bdf59037e0f93e5a30390fd8794fc97f6db1999e2a39415f"><div class="ttname"><a href="classCaloScoringPlanePID.html#a7ed72c68bbd487eb1bdf59037e0f93e5a30390fd8794fc97f6db1999e2a39415f">CaloScoringPlanePID::kUnknown</a></div><div class="ttdeci">@ kUnknown</div><div class="ttdef"><b>Definition</b> <a href="CaloScoringPlanePID_8h_source.html#l00055">CaloScoringPlanePID.h:55</a></div></div>
+<div class="ttc" id="aclassCaloScoringPlanePID_html_a7ed72c68bbd487eb1bdf59037e0f93e5a303b70357cb16eea6fcae8113fc4ecc9"><div class="ttname"><a href="classCaloScoringPlanePID.html#a7ed72c68bbd487eb1bdf59037e0f93e5a303b70357cb16eea6fcae8113fc4ecc9">CaloScoringPlanePID::kMuon</a></div><div class="ttdeci">@ kMuon</div><div class="ttdef"><b>Definition</b> <a href="CaloScoringPlanePID_8h_source.html#l00055">CaloScoringPlanePID.h:55</a></div></div>
+<div class="ttc" id="aclassCaloScoringPlanePID_html_a7ed72c68bbd487eb1bdf59037e0f93e5a58f9d8e884b2eac72fc053cc52325e20"><div class="ttname"><a href="classCaloScoringPlanePID.html#a7ed72c68bbd487eb1bdf59037e0f93e5a58f9d8e884b2eac72fc053cc52325e20">CaloScoringPlanePID::kElectron</a></div><div class="ttdeci">@ kElectron</div><div class="ttdef"><b>Definition</b> <a href="CaloScoringPlanePID_8h_source.html#l00055">CaloScoringPlanePID.h:55</a></div></div>
+<div class="ttc" id="aclassCaloScoringPlanePID_html_a7ed72c68bbd487eb1bdf59037e0f93e5afad35b37d8569e7ada4a256581033caa"><div class="ttname"><a href="classCaloScoringPlanePID.html#a7ed72c68bbd487eb1bdf59037e0f93e5afad35b37d8569e7ada4a256581033caa">CaloScoringPlanePID::kHadron</a></div><div class="ttdeci">@ kHadron</div><div class="ttdef"><b>Definition</b> <a href="CaloScoringPlanePID_8h_source.html#l00055">CaloScoringPlanePID.h:55</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -241,9 +274,9 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Perfect identification (identity matrix at all energies). </p>
 
-<p class="definition">Definition at line <a class="el" href="CaloScoringPlanePID_8cxx_source.html#l00080">80</a> of file <a class="el" href="CaloScoringPlanePID_8cxx_source.html">CaloScoringPlanePID.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   80</span>{ <a class="code hl_function" href="classCaloScoringPlanePID.html#afc174fd474ae7d02779f508dc273362f">SetIdentity</a>(); }</div>
-<div class="ttc" id="aclassCaloScoringPlanePID_html_afc174fd474ae7d02779f508dc273362f"><div class="ttname"><a href="classCaloScoringPlanePID.html#afc174fd474ae7d02779f508dc273362f">CaloScoringPlanePID::SetIdentity</a></div><div class="ttdeci">void SetIdentity()</div><div class="ttdef"><b>Definition</b> <a href="CaloScoringPlanePID_8cxx_source.html#l00082">CaloScoringPlanePID.cxx:82</a></div></div>
+<p class="definition">Definition at line <a class="el" href="CaloScoringPlanePID_8cxx_source.html#l00082">82</a> of file <a class="el" href="CaloScoringPlanePID_8cxx_source.html">CaloScoringPlanePID.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   82</span>{ <a class="code hl_function" href="classCaloScoringPlanePID.html#afc174fd474ae7d02779f508dc273362f">SetIdentity</a>(); }</div>
+<div class="ttc" id="aclassCaloScoringPlanePID_html_afc174fd474ae7d02779f508dc273362f"><div class="ttname"><a href="classCaloScoringPlanePID.html#afc174fd474ae7d02779f508dc273362f">CaloScoringPlanePID::SetIdentity</a></div><div class="ttdeci">void SetIdentity()</div><div class="ttdef"><b>Definition</b> <a href="CaloScoringPlanePID_8cxx_source.html#l00084">CaloScoringPlanePID.cxx:84</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -288,11 +321,11 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="CaloScoringPlanePID_8h_source.html#l00120">120</a> of file <a class="el" href="CaloScoringPlanePID_8h_source.html">CaloScoringPlanePID.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  120</span>                                                      {</div>
-<div class="line"><span class="lineno">  121</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="classCaloScoringPlanePID.html#a53e5d569708e222b1806f3c6c1be3bdb">fMatrices</a>[9 * iEnergy + <span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(3 * <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> + j)];</div>
-<div class="line"><span class="lineno">  122</span>  }</div>
-<div class="ttc" id="aclassCaloScoringPlanePID_html_a53e5d569708e222b1806f3c6c1be3bdb"><div class="ttname"><a href="classCaloScoringPlanePID.html#a53e5d569708e222b1806f3c6c1be3bdb">CaloScoringPlanePID::fMatrices</a></div><div class="ttdeci">std::vector&lt; Double_t &gt; fMatrices</div><div class="ttdoc">9 per energy, row-major, internal order</div><div class="ttdef"><b>Definition</b> <a href="CaloScoringPlanePID_8h_source.html#l00125">CaloScoringPlanePID.h:125</a></div></div>
+<p class="definition">Definition at line <a class="el" href="CaloScoringPlanePID_8h_source.html#l00125">125</a> of file <a class="el" href="CaloScoringPlanePID_8h_source.html">CaloScoringPlanePID.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  125</span>                                                      {</div>
+<div class="line"><span class="lineno">  126</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="classCaloScoringPlanePID.html#a53e5d569708e222b1806f3c6c1be3bdb">fMatrices</a>[9 * iEnergy + <span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(3 * <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> + j)];</div>
+<div class="line"><span class="lineno">  127</span>  }</div>
+<div class="ttc" id="aclassCaloScoringPlanePID_html_a53e5d569708e222b1806f3c6c1be3bdb"><div class="ttname"><a href="classCaloScoringPlanePID.html#a53e5d569708e222b1806f3c6c1be3bdb">CaloScoringPlanePID::fMatrices</a></div><div class="ttdeci">std::vector&lt; Double_t &gt; fMatrices</div><div class="ttdoc">9 per energy, row-major, internal order</div><div class="ttdef"><b>Definition</b> <a href="CaloScoringPlanePID_8h_source.html#l00130">CaloScoringPlanePID.h:130</a></div></div>
 <div class="ttc" id="anamespaceShipAna_html_aa4bf87f4d17f9d38b1d8f4d009bb54b3"><div class="ttname"><a href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">ShipAna.i</a></div><div class="ttdeci">int i</div><div class="ttdef"><b>Definition</b> <a href="ShipAna_8py_source.html#l00108">ShipAna.py:108</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -322,18 +355,18 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Total energy (GeV) at the point, using the PDG mass (0 if unknown). </p>
 
-<p class="definition">Definition at line <a class="el" href="CaloScoringPlanePID_8cxx_source.html#l00230">230</a> of file <a class="el" href="CaloScoringPlanePID_8cxx_source.html">CaloScoringPlanePID.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  230</span>                                                                       {</div>
-<div class="line"><span class="lineno">  231</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> p2 = point.GetPx() * point.GetPx() +</div>
-<div class="line"><span class="lineno">  232</span>                    point.GetPy() * point.GetPy() +</div>
-<div class="line"><span class="lineno">  233</span>                    point.GetPz() * point.GetPz();</div>
-<div class="line"><span class="lineno">  234</span>  <span class="keywordtype">double</span> <a class="code hl_function" href="namespacemakeCascadePythia8.html#a6ce03a4ad799da04993110e6c76ed006">mass</a> = 0.;</div>
-<div class="line"><span class="lineno">  235</span>  <span class="keywordflow">if</span> (<span class="keyword">const</span> TParticlePDG* particle =</div>
-<div class="line"><span class="lineno">  236</span>          TDatabasePDG::Instance()-&gt;GetParticle(point.<a class="code hl_function" href="classSHiP_1_1DetectorPoint.html#a818efcf383fbcc6d732a40528d4b4d31">PdgCode</a>())) {</div>
-<div class="line"><span class="lineno">  237</span>    <a class="code hl_function" href="namespacemakeCascadePythia8.html#a6ce03a4ad799da04993110e6c76ed006">mass</a> = particle-&gt;Mass();</div>
-<div class="line"><span class="lineno">  238</span>  }</div>
-<div class="line"><span class="lineno">  239</span>  <span class="keywordflow">return</span> std::sqrt(p2 + mass * mass);</div>
-<div class="line"><span class="lineno">  240</span>}</div>
+<p class="definition">Definition at line <a class="el" href="CaloScoringPlanePID_8cxx_source.html#l00240">240</a> of file <a class="el" href="CaloScoringPlanePID_8cxx_source.html">CaloScoringPlanePID.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  240</span>                                                                       {</div>
+<div class="line"><span class="lineno">  241</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> p2 = point.GetPx() * point.GetPx() +</div>
+<div class="line"><span class="lineno">  242</span>                    point.GetPy() * point.GetPy() +</div>
+<div class="line"><span class="lineno">  243</span>                    point.GetPz() * point.GetPz();</div>
+<div class="line"><span class="lineno">  244</span>  <span class="keywordtype">double</span> <a class="code hl_function" href="namespacemakeCascadePythia8.html#a6ce03a4ad799da04993110e6c76ed006">mass</a> = 0.;</div>
+<div class="line"><span class="lineno">  245</span>  <span class="keywordflow">if</span> (<span class="keyword">const</span> TParticlePDG* particle =</div>
+<div class="line"><span class="lineno">  246</span>          TDatabasePDG::Instance()-&gt;GetParticle(point.<a class="code hl_function" href="classSHiP_1_1DetectorPoint.html#a818efcf383fbcc6d732a40528d4b4d31">PdgCode</a>())) {</div>
+<div class="line"><span class="lineno">  247</span>    <a class="code hl_function" href="namespacemakeCascadePythia8.html#a6ce03a4ad799da04993110e6c76ed006">mass</a> = particle-&gt;Mass();</div>
+<div class="line"><span class="lineno">  248</span>  }</div>
+<div class="line"><span class="lineno">  249</span>  <span class="keywordflow">return</span> std::sqrt(p2 + mass * mass);</div>
+<div class="line"><span class="lineno">  250</span>}</div>
 <div class="ttc" id="aclassSHiP_1_1DetectorPoint_html_a818efcf383fbcc6d732a40528d4b4d31"><div class="ttname"><a href="classSHiP_1_1DetectorPoint.html#a818efcf383fbcc6d732a40528d4b4d31">SHiP::DetectorPoint::PdgCode</a></div><div class="ttdeci">Int_t PdgCode() const</div><div class="ttdef"><b>Definition</b> <a href="DetectorPoint_8h_source.html#l00035">DetectorPoint.h:35</a></div></div>
 <div class="ttc" id="anamespacemakeCascadePythia8_html_a6ce03a4ad799da04993110e6c76ed006"><div class="ttname"><a href="namespacemakeCascadePythia8.html#a6ce03a4ad799da04993110e6c76ed006">makeCascadePythia8.mass</a></div><div class="ttdeci">mass(pdg_id)</div><div class="ttdef"><b>Definition</b> <a href="makeCascadePythia8_8py_source.html#l00197">makeCascadePythia8.py:197</a></div></div>
 </div><!-- fragment -->
@@ -362,9 +395,9 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="CaloScoringPlanePID_8h_source.html#l00114">114</a> of file <a class="el" href="CaloScoringPlanePID_8h_source.html">CaloScoringPlanePID.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  114</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classCaloScoringPlanePID.html#a1ef0185d42873a2b776680a6d80472ee">fEnergies</a>; }</div>
-<div class="ttc" id="aclassCaloScoringPlanePID_html_a1ef0185d42873a2b776680a6d80472ee"><div class="ttname"><a href="classCaloScoringPlanePID.html#a1ef0185d42873a2b776680a6d80472ee">CaloScoringPlanePID::fEnergies</a></div><div class="ttdeci">std::vector&lt; Double_t &gt; fEnergies</div><div class="ttdoc">GeV, strictly increasing.</div><div class="ttdef"><b>Definition</b> <a href="CaloScoringPlanePID_8h_source.html#l00124">CaloScoringPlanePID.h:124</a></div></div>
+<p class="definition">Definition at line <a class="el" href="CaloScoringPlanePID_8h_source.html#l00115">115</a> of file <a class="el" href="CaloScoringPlanePID_8h_source.html">CaloScoringPlanePID.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  115</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classCaloScoringPlanePID.html#a1ef0185d42873a2b776680a6d80472ee">fEnergies</a>; }</div>
+<div class="ttc" id="aclassCaloScoringPlanePID_html_a1ef0185d42873a2b776680a6d80472ee"><div class="ttname"><a href="classCaloScoringPlanePID.html#a1ef0185d42873a2b776680a6d80472ee">CaloScoringPlanePID::fEnergies</a></div><div class="ttdeci">std::vector&lt; Double_t &gt; fEnergies</div><div class="ttdoc">GeV, strictly increasing.</div><div class="ttdef"><b>Definition</b> <a href="CaloScoringPlanePID_8h_source.html#l00129">CaloScoringPlanePID.h:129</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -395,12 +428,15 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Same, with the PDG code and total energy taken from the point. </p>
 
-<p class="definition">Definition at line <a class="el" href="CaloScoringPlanePID_8cxx_source.html#l00225">225</a> of file <a class="el" href="CaloScoringPlanePID_8cxx_source.html">CaloScoringPlanePID.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  226</span>                                                            {</div>
-<div class="line"><span class="lineno">  227</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="classCaloScoringPlanePID.html#adfe006c07da8024d9155881b18b94f6f">Identify</a>(point.<a class="code hl_function" href="classSHiP_1_1DetectorPoint.html#a818efcf383fbcc6d732a40528d4b4d31">PdgCode</a>(), <a class="code hl_function" href="classCaloScoringPlanePID.html#a465516749fa426950c40b181c74fc449">Energy</a>(point), rng);</div>
-<div class="line"><span class="lineno">  228</span>}</div>
-<div class="ttc" id="aclassCaloScoringPlanePID_html_a465516749fa426950c40b181c74fc449"><div class="ttname"><a href="classCaloScoringPlanePID.html#a465516749fa426950c40b181c74fc449">CaloScoringPlanePID::Energy</a></div><div class="ttdeci">static Double_t Energy(const CaloScoringPlanePoint &amp;point)</div><div class="ttdef"><b>Definition</b> <a href="CaloScoringPlanePID_8cxx_source.html#l00230">CaloScoringPlanePID.cxx:230</a></div></div>
-<div class="ttc" id="aclassCaloScoringPlanePID_html_adfe006c07da8024d9155881b18b94f6f"><div class="ttname"><a href="classCaloScoringPlanePID.html#adfe006c07da8024d9155881b18b94f6f">CaloScoringPlanePID::Identify</a></div><div class="ttdeci">Species Identify(Int_t pdg, Double_t energy, Double_t u) const</div><div class="ttdef"><b>Definition</b> <a href="CaloScoringPlanePID_8cxx_source.html#l00205">CaloScoringPlanePID.cxx:205</a></div></div>
+<p class="definition">Definition at line <a class="el" href="CaloScoringPlanePID_8cxx_source.html#l00233">233</a> of file <a class="el" href="CaloScoringPlanePID_8cxx_source.html">CaloScoringPlanePID.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  234</span>                                                            {</div>
+<div class="line"><span class="lineno">  235</span>  <span class="comment">// Skip the energy (a TDatabasePDG lookup) for photons, nuclei, ...</span></div>
+<div class="line"><span class="lineno">  236</span>  <span class="keywordflow">if</span> (<a class="code hl_function" href="classCaloScoringPlanePID.html#ae5eb01b075e8f556d5dfcfa3448eeec2">TrueSpecies</a>(point.<a class="code hl_function" href="classSHiP_1_1DetectorPoint.html#a818efcf383fbcc6d732a40528d4b4d31">PdgCode</a>()) == <a class="code hl_enumvalue" href="classCaloScoringPlanePID.html#a7ed72c68bbd487eb1bdf59037e0f93e5a30390fd8794fc97f6db1999e2a39415f">kUnknown</a>) <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="classCaloScoringPlanePID.html#a7ed72c68bbd487eb1bdf59037e0f93e5a30390fd8794fc97f6db1999e2a39415f">kUnknown</a>;</div>
+<div class="line"><span class="lineno">  237</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="classCaloScoringPlanePID.html#adfe006c07da8024d9155881b18b94f6f">Identify</a>(point.<a class="code hl_function" href="classSHiP_1_1DetectorPoint.html#a818efcf383fbcc6d732a40528d4b4d31">PdgCode</a>(), <a class="code hl_function" href="classCaloScoringPlanePID.html#a465516749fa426950c40b181c74fc449">Energy</a>(point), rng);</div>
+<div class="line"><span class="lineno">  238</span>}</div>
+<div class="ttc" id="aclassCaloScoringPlanePID_html_a465516749fa426950c40b181c74fc449"><div class="ttname"><a href="classCaloScoringPlanePID.html#a465516749fa426950c40b181c74fc449">CaloScoringPlanePID::Energy</a></div><div class="ttdeci">static Double_t Energy(const CaloScoringPlanePoint &amp;point)</div><div class="ttdef"><b>Definition</b> <a href="CaloScoringPlanePID_8cxx_source.html#l00240">CaloScoringPlanePID.cxx:240</a></div></div>
+<div class="ttc" id="aclassCaloScoringPlanePID_html_adfe006c07da8024d9155881b18b94f6f"><div class="ttname"><a href="classCaloScoringPlanePID.html#adfe006c07da8024d9155881b18b94f6f">CaloScoringPlanePID::Identify</a></div><div class="ttdeci">Species Identify(Int_t pdg, Double_t energy, Double_t u) const</div><div class="ttdef"><b>Definition</b> <a href="CaloScoringPlanePID_8cxx_source.html#l00213">CaloScoringPlanePID.cxx:213</a></div></div>
+<div class="ttc" id="aclassCaloScoringPlanePID_html_ae5eb01b075e8f556d5dfcfa3448eeec2"><div class="ttname"><a href="classCaloScoringPlanePID.html#ae5eb01b075e8f556d5dfcfa3448eeec2">CaloScoringPlanePID::TrueSpecies</a></div><div class="ttdeci">Species TrueSpecies(Int_t pdg) const</div><div class="ttdef"><b>Definition</b> <a href="CaloScoringPlanePID_8cxx_source.html#l00150">CaloScoringPlanePID.cxx:150</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -437,14 +473,13 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Draw the PID outcome with a given uniform number u in [0, 1]. A non-finite energy gives kUnknown, as for the overloads below. </p>
 
-<p class="definition">Definition at line <a class="el" href="CaloScoringPlanePID_8cxx_source.html#l00205">205</a> of file <a class="el" href="CaloScoringPlanePID_8cxx_source.html">CaloScoringPlanePID.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  207</span>                                                                             {</div>
-<div class="line"><span class="lineno">  208</span>  <span class="keyword">const</span> <a class="code hl_enumeration" href="classCaloScoringPlanePID.html#a7ed72c68bbd487eb1bdf59037e0f93e5">Species</a> <a class="code hl_variable" href="namespacestudy__GammaConv.html#a6178e60a012f4ac198fff3a25fb91f78">s</a> = <a class="code hl_function" href="classCaloScoringPlanePID.html#ae5eb01b075e8f556d5dfcfa3448eeec2">TrueSpecies</a>(pdg);</div>
-<div class="line"><span class="lineno">  209</span>  <span class="keywordflow">if</span> (s == <a class="code hl_enumvalue" href="classCaloScoringPlanePID.html#a7ed72c68bbd487eb1bdf59037e0f93e5a30390fd8794fc97f6db1999e2a39415f">kUnknown</a> || !std::isfinite(energy)) <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="classCaloScoringPlanePID.html#a7ed72c68bbd487eb1bdf59037e0f93e5a30390fd8794fc97f6db1999e2a39415f">kUnknown</a>;</div>
-<div class="line"><span class="lineno">  210</span>  <span class="keywordflow">return</span> Draw(<a class="code hl_function" href="classCaloScoringPlanePID.html#a81abd57b43e01622f70dfbc664debb2b">Matrix</a>(energy), s, u);</div>
-<div class="line"><span class="lineno">  211</span>}</div>
-<div class="ttc" id="aclassCaloScoringPlanePID_html_a81abd57b43e01622f70dfbc664debb2b"><div class="ttname"><a href="classCaloScoringPlanePID.html#a81abd57b43e01622f70dfbc664debb2b">CaloScoringPlanePID::Matrix</a></div><div class="ttdeci">std::vector&lt; Double_t &gt; Matrix(Double_t energy) const</div><div class="ttdef"><b>Definition</b> <a href="CaloScoringPlanePID_8cxx_source.html#l00159">CaloScoringPlanePID.cxx:159</a></div></div>
-<div class="ttc" id="aclassCaloScoringPlanePID_html_ae5eb01b075e8f556d5dfcfa3448eeec2"><div class="ttname"><a href="classCaloScoringPlanePID.html#ae5eb01b075e8f556d5dfcfa3448eeec2">CaloScoringPlanePID::TrueSpecies</a></div><div class="ttdeci">Species TrueSpecies(Int_t pdg) const</div><div class="ttdef"><b>Definition</b> <a href="CaloScoringPlanePID_8cxx_source.html#l00148">CaloScoringPlanePID.cxx:148</a></div></div>
+<p class="definition">Definition at line <a class="el" href="CaloScoringPlanePID_8cxx_source.html#l00213">213</a> of file <a class="el" href="CaloScoringPlanePID_8cxx_source.html">CaloScoringPlanePID.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  215</span>                                                                             {</div>
+<div class="line"><span class="lineno">  216</span>  <span class="keyword">const</span> <a class="code hl_enumeration" href="classCaloScoringPlanePID.html#a7ed72c68bbd487eb1bdf59037e0f93e5">Species</a> <a class="code hl_variable" href="namespacestudy__GammaConv.html#a6178e60a012f4ac198fff3a25fb91f78">s</a> = <a class="code hl_function" href="classCaloScoringPlanePID.html#ae5eb01b075e8f556d5dfcfa3448eeec2">TrueSpecies</a>(pdg);</div>
+<div class="line"><span class="lineno">  217</span>  <span class="keywordflow">if</span> (s == <a class="code hl_enumvalue" href="classCaloScoringPlanePID.html#a7ed72c68bbd487eb1bdf59037e0f93e5a30390fd8794fc97f6db1999e2a39415f">kUnknown</a> || !std::isfinite(energy)) <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="classCaloScoringPlanePID.html#a7ed72c68bbd487eb1bdf59037e0f93e5a30390fd8794fc97f6db1999e2a39415f">kUnknown</a>;</div>
+<div class="line"><span class="lineno">  218</span>  <span class="keywordflow">return</span> Draw(<a class="code hl_function" href="classCaloScoringPlanePID.html#a878cf09806bef900dea5a8ff3d6357ae">InterpolatedRow</a>(energy, s), s, u);</div>
+<div class="line"><span class="lineno">  219</span>}</div>
+<div class="ttc" id="aclassCaloScoringPlanePID_html_a878cf09806bef900dea5a8ff3d6357ae"><div class="ttname"><a href="classCaloScoringPlanePID.html#a878cf09806bef900dea5a8ff3d6357ae">CaloScoringPlanePID::InterpolatedRow</a></div><div class="ttdeci">Row InterpolatedRow(Double_t energy, Int_t trueSpecies) const</div><div class="ttdef"><b>Definition</b> <a href="CaloScoringPlanePID_8cxx_source.html#l00161">CaloScoringPlanePID.cxx:161</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -481,18 +516,89 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Draw the PID outcome with the generator rng. No number is drawn when the outcome is fixed: for an unknown species, or a matrix row with a single non-zero entry (as everywhere with perfect identification). </p>
 
-<p class="definition">Definition at line <a class="el" href="CaloScoringPlanePID_8cxx_source.html#l00213">213</a> of file <a class="el" href="CaloScoringPlanePID_8cxx_source.html">CaloScoringPlanePID.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  215</span>                                                                               {</div>
-<div class="line"><span class="lineno">  216</span>  <span class="keyword">const</span> <a class="code hl_enumeration" href="classCaloScoringPlanePID.html#a7ed72c68bbd487eb1bdf59037e0f93e5">Species</a> <a class="code hl_variable" href="namespacestudy__GammaConv.html#a6178e60a012f4ac198fff3a25fb91f78">s</a> = <a class="code hl_function" href="classCaloScoringPlanePID.html#ae5eb01b075e8f556d5dfcfa3448eeec2">TrueSpecies</a>(pdg);</div>
-<div class="line"><span class="lineno">  217</span>  <span class="keywordflow">if</span> (s == <a class="code hl_enumvalue" href="classCaloScoringPlanePID.html#a7ed72c68bbd487eb1bdf59037e0f93e5a30390fd8794fc97f6db1999e2a39415f">kUnknown</a> || !std::isfinite(energy)) <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="classCaloScoringPlanePID.html#a7ed72c68bbd487eb1bdf59037e0f93e5a30390fd8794fc97f6db1999e2a39415f">kUnknown</a>;</div>
-<div class="line"><span class="lineno">  218</span>  <span class="keyword">const</span> std::vector&lt;Double_t&gt; <a class="code hl_variable" href="ShipBellField_8cxx.html#ae0699ca79e23818d99b9ee18334a9325">m</a> = <a class="code hl_function" href="classCaloScoringPlanePID.html#a81abd57b43e01622f70dfbc664debb2b">Matrix</a>(energy);</div>
-<div class="line"><span class="lineno">  219</span>  <span class="comment">// Draw only when the outcome can vary, so that a fixed outcome leaves the</span></div>
-<div class="line"><span class="lineno">  220</span>  <span class="comment">// generator&#39;s sequence untouched.</span></div>
-<div class="line"><span class="lineno">  221</span>  <span class="keywordflow">if</span> (<span class="keyword">const</span> <a class="code hl_enumeration" href="classCaloScoringPlanePID.html#a7ed72c68bbd487eb1bdf59037e0f93e5">Species</a> only = OnlyOutcome(m, s); only != <a class="code hl_enumvalue" href="classCaloScoringPlanePID.html#a7ed72c68bbd487eb1bdf59037e0f93e5a30390fd8794fc97f6db1999e2a39415f">kUnknown</a>) <span class="keywordflow">return</span> only;</div>
-<div class="line"><span class="lineno">  222</span>  <span class="keywordflow">return</span> Draw(m, s, <a class="code hl_variable" href="namespacecalo__scoring__plane__pid__example.html#afc4a60dfbda1252041b740e32bd378cd">rng</a>.Rndm());</div>
-<div class="line"><span class="lineno">  223</span>}</div>
-<div class="ttc" id="aShipBellField_8cxx_html_ae0699ca79e23818d99b9ee18334a9325"><div class="ttname"><a href="ShipBellField_8cxx.html#ae0699ca79e23818d99b9ee18334a9325">m</a></div><div class="ttdeci">constexpr Double_t m</div><div class="ttdef"><b>Definition</b> <a href="ShipBellField_8cxx_source.html#l00025">ShipBellField.cxx:25</a></div></div>
+<p class="definition">Definition at line <a class="el" href="CaloScoringPlanePID_8cxx_source.html#l00221">221</a> of file <a class="el" href="CaloScoringPlanePID_8cxx_source.html">CaloScoringPlanePID.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  223</span>                                                                               {</div>
+<div class="line"><span class="lineno">  224</span>  <span class="keyword">const</span> <a class="code hl_enumeration" href="classCaloScoringPlanePID.html#a7ed72c68bbd487eb1bdf59037e0f93e5">Species</a> <a class="code hl_variable" href="namespacestudy__GammaConv.html#a6178e60a012f4ac198fff3a25fb91f78">s</a> = <a class="code hl_function" href="classCaloScoringPlanePID.html#ae5eb01b075e8f556d5dfcfa3448eeec2">TrueSpecies</a>(pdg);</div>
+<div class="line"><span class="lineno">  225</span>  <span class="keywordflow">if</span> (s == <a class="code hl_enumvalue" href="classCaloScoringPlanePID.html#a7ed72c68bbd487eb1bdf59037e0f93e5a30390fd8794fc97f6db1999e2a39415f">kUnknown</a> || !std::isfinite(energy)) <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="classCaloScoringPlanePID.html#a7ed72c68bbd487eb1bdf59037e0f93e5a30390fd8794fc97f6db1999e2a39415f">kUnknown</a>;</div>
+<div class="line"><span class="lineno">  226</span>  <span class="keyword">const</span> <a class="code hl_typedef" href="classCaloScoringPlanePID.html#a7088cf8b5eef47d10b086542a030d951">Row</a> row = <a class="code hl_function" href="classCaloScoringPlanePID.html#a878cf09806bef900dea5a8ff3d6357ae">InterpolatedRow</a>(energy, s);</div>
+<div class="line"><span class="lineno">  227</span>  <span class="comment">// Draw only when the outcome can vary, so that a fixed outcome leaves the</span></div>
+<div class="line"><span class="lineno">  228</span>  <span class="comment">// generator&#39;s sequence untouched.</span></div>
+<div class="line"><span class="lineno">  229</span>  <span class="keywordflow">if</span> (<span class="keyword">const</span> <a class="code hl_enumeration" href="classCaloScoringPlanePID.html#a7ed72c68bbd487eb1bdf59037e0f93e5">Species</a> only = OnlyOutcome(row); only != <a class="code hl_enumvalue" href="classCaloScoringPlanePID.html#a7ed72c68bbd487eb1bdf59037e0f93e5a30390fd8794fc97f6db1999e2a39415f">kUnknown</a>) <span class="keywordflow">return</span> only;</div>
+<div class="line"><span class="lineno">  230</span>  <span class="keywordflow">return</span> Draw(row, s, <a class="code hl_variable" href="namespacecalo__scoring__plane__pid__example.html#afc4a60dfbda1252041b740e32bd378cd">rng</a>.Rndm());</div>
+<div class="line"><span class="lineno">  231</span>}</div>
+<div class="ttc" id="aclassCaloScoringPlanePID_html_a7088cf8b5eef47d10b086542a030d951"><div class="ttname"><a href="classCaloScoringPlanePID.html#a7088cf8b5eef47d10b086542a030d951">CaloScoringPlanePID::Row</a></div><div class="ttdeci">std::array&lt; Double_t, kNSpecies &gt; Row</div><div class="ttdef"><b>Definition</b> <a href="CaloScoringPlanePID_8h_source.html#l00120">CaloScoringPlanePID.h:120</a></div></div>
 <div class="ttc" id="anamespacecalo__scoring__plane__pid__example_html_afc4a60dfbda1252041b740e32bd378cd"><div class="ttname"><a href="namespacecalo__scoring__plane__pid__example.html#afc4a60dfbda1252041b740e32bd378cd">calo_scoring_plane_pid_example.rng</a></div><div class="ttdeci">rng</div><div class="ttdef"><b>Definition</b> <a href="calo__scoring__plane__pid__example_8py_source.html#l00021">calo_scoring_plane_pid_example.py:21</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a878cf09806bef900dea5a8ff3d6357ae" name="a878cf09806bef900dea5a8ff3d6357ae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a878cf09806bef900dea5a8ff3d6357ae">&#9670;&#160;</a></span>InterpolatedRow()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classCaloScoringPlanePID.html#a7088cf8b5eef47d10b086542a030d951">CaloScoringPlanePID::Row</a> CaloScoringPlanePID::InterpolatedRow </td>
+          <td>(</td>
+          <td class="paramtype">Double_t&#160;</td>
+          <td class="paramname"><em>energy</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Int_t&#160;</td>
+          <td class="paramname"><em>trueSpecies</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Interpolated matrix row of trueSpecies (not kUnknown). </p>
+
+<p class="definition">Definition at line <a class="el" href="CaloScoringPlanePID_8cxx_source.html#l00161">161</a> of file <a class="el" href="CaloScoringPlanePID_8cxx_source.html">CaloScoringPlanePID.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  162</span>                                              {</div>
+<div class="line"><span class="lineno">  163</span>  <span class="comment">// A NaN would pass both clamps below and make upper_bound return end().</span></div>
+<div class="line"><span class="lineno">  164</span>  RequireFinite(energy);</div>
+<div class="line"><span class="lineno">  165</span>  <a class="code hl_typedef" href="classCaloScoringPlanePID.html#a7088cf8b5eef47d10b086542a030d951">Row</a> row{};</div>
+<div class="line"><span class="lineno">  166</span>  <span class="keyword">const</span> <span class="keyword">auto</span> rowAt = [&amp;](<span class="keywordtype">size_t</span> <a class="code hl_variable" href="namespacerunPythia8.html#a4cd74a33c53eaeef70fcb6b448b9b285">k</a>) {</div>
+<div class="line"><span class="lineno">  167</span>    <span class="keywordflow">for</span> (Int_t j = 0; j &lt; <a class="code hl_variable" href="classCaloScoringPlanePID.html#a26a9358185415412fe5c3ad0c96f804a">kNSpecies</a>; ++j) row[j] = <a class="code hl_function" href="classCaloScoringPlanePID.html#a720cba26d76c2ff9d1c442175f0faa42">At</a>(k, trueSpecies, j);</div>
+<div class="line"><span class="lineno">  168</span>    <span class="keywordflow">return</span> row;</div>
+<div class="line"><span class="lineno">  169</span>  };</div>
+<div class="line"><span class="lineno">  170</span>  <span class="keyword">const</span> <span class="keywordtype">size_t</span> <a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a> = <a class="code hl_variable" href="classCaloScoringPlanePID.html#a1ef0185d42873a2b776680a6d80472ee">fEnergies</a>.size();</div>
+<div class="line"><span class="lineno">  171</span>  <span class="keywordflow">if</span> (n == 1 || energy &lt;= <a class="code hl_variable" href="classCaloScoringPlanePID.html#a1ef0185d42873a2b776680a6d80472ee">fEnergies</a>.front()) <span class="keywordflow">return</span> rowAt(0);</div>
+<div class="line"><span class="lineno">  172</span>  <span class="keywordflow">if</span> (energy &gt;= <a class="code hl_variable" href="classCaloScoringPlanePID.html#a1ef0185d42873a2b776680a6d80472ee">fEnergies</a>.back()) <span class="keywordflow">return</span> rowAt(n - 1);</div>
+<div class="line"><span class="lineno">  173</span>  <span class="keyword">const</span> <span class="keyword">auto</span> hi = <span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(</div>
+<div class="line"><span class="lineno">  174</span>      std::upper_bound(<a class="code hl_variable" href="classCaloScoringPlanePID.html#a1ef0185d42873a2b776680a6d80472ee">fEnergies</a>.begin(), <a class="code hl_variable" href="classCaloScoringPlanePID.html#a1ef0185d42873a2b776680a6d80472ee">fEnergies</a>.end(), energy) -</div>
+<div class="line"><span class="lineno">  175</span>      <a class="code hl_variable" href="classCaloScoringPlanePID.html#a1ef0185d42873a2b776680a6d80472ee">fEnergies</a>.begin());</div>
+<div class="line"><span class="lineno">  176</span>  <span class="keyword">const</span> <span class="keywordtype">size_t</span> lo = hi - 1;</div>
+<div class="line"><span class="lineno">  177</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> <a class="code hl_variable" href="namespacemakeMuonEM.html#a04298ed1d5fc7dbec7e764537bfec5d5">w</a> =</div>
+<div class="line"><span class="lineno">  178</span>      <a class="code hl_variable" href="classCaloScoringPlanePID.html#a17f2b9e113ec17a418a6212e9821da6a">fLogInterpolation</a></div>
+<div class="line"><span class="lineno">  179</span>          ? std::log(energy / <a class="code hl_variable" href="classCaloScoringPlanePID.html#a1ef0185d42873a2b776680a6d80472ee">fEnergies</a>[lo]) /</div>
+<div class="line"><span class="lineno">  180</span>                std::log(<a class="code hl_variable" href="classCaloScoringPlanePID.html#a1ef0185d42873a2b776680a6d80472ee">fEnergies</a>[hi] / <a class="code hl_variable" href="classCaloScoringPlanePID.html#a1ef0185d42873a2b776680a6d80472ee">fEnergies</a>[lo])</div>
+<div class="line"><span class="lineno">  181</span>          : (<a class="code hl_function" href="namespaceproton__bremsstrahlung.html#a346de5637f6811443ef313e5b10ef9bc">energy</a> - <a class="code hl_variable" href="classCaloScoringPlanePID.html#a1ef0185d42873a2b776680a6d80472ee">fEnergies</a>[lo]) / (<a class="code hl_variable" href="classCaloScoringPlanePID.html#a1ef0185d42873a2b776680a6d80472ee">fEnergies</a>[hi] - <a class="code hl_variable" href="classCaloScoringPlanePID.html#a1ef0185d42873a2b776680a6d80472ee">fEnergies</a>[lo]);</div>
+<div class="line"><span class="lineno">  182</span>  <span class="keywordflow">for</span> (Int_t j = 0; j &lt; <a class="code hl_variable" href="classCaloScoringPlanePID.html#a26a9358185415412fe5c3ad0c96f804a">kNSpecies</a>; ++j) {</div>
+<div class="line"><span class="lineno">  183</span>    row[j] = (1. - <a class="code hl_variable" href="namespacemakeMuonEM.html#a04298ed1d5fc7dbec7e764537bfec5d5">w</a>) * <a class="code hl_function" href="classCaloScoringPlanePID.html#a720cba26d76c2ff9d1c442175f0faa42">At</a>(lo, trueSpecies, j) + <a class="code hl_variable" href="namespacemakeMuonEM.html#a04298ed1d5fc7dbec7e764537bfec5d5">w</a> * <a class="code hl_function" href="classCaloScoringPlanePID.html#a720cba26d76c2ff9d1c442175f0faa42">At</a>(hi, trueSpecies, j);</div>
+<div class="line"><span class="lineno">  184</span>  }</div>
+<div class="line"><span class="lineno">  185</span>  <span class="keywordflow">return</span> row;</div>
+<div class="line"><span class="lineno">  186</span>}</div>
+<div class="ttc" id="aclassCaloScoringPlanePID_html_a17f2b9e113ec17a418a6212e9821da6a"><div class="ttname"><a href="classCaloScoringPlanePID.html#a17f2b9e113ec17a418a6212e9821da6a">CaloScoringPlanePID::fLogInterpolation</a></div><div class="ttdeci">Bool_t fLogInterpolation</div><div class="ttdef"><b>Definition</b> <a href="CaloScoringPlanePID_8h_source.html#l00132">CaloScoringPlanePID.h:132</a></div></div>
+<div class="ttc" id="aclassCaloScoringPlanePID_html_a26a9358185415412fe5c3ad0c96f804a"><div class="ttname"><a href="classCaloScoringPlanePID.html#a26a9358185415412fe5c3ad0c96f804a">CaloScoringPlanePID::kNSpecies</a></div><div class="ttdeci">static constexpr Int_t kNSpecies</div><div class="ttdef"><b>Definition</b> <a href="CaloScoringPlanePID_8h_source.html#l00056">CaloScoringPlanePID.h:56</a></div></div>
+<div class="ttc" id="aclassCaloScoringPlanePID_html_a720cba26d76c2ff9d1c442175f0faa42"><div class="ttname"><a href="classCaloScoringPlanePID.html#a720cba26d76c2ff9d1c442175f0faa42">CaloScoringPlanePID::At</a></div><div class="ttdeci">Double_t At(size_t iEnergy, Int_t i, Int_t j) const</div><div class="ttdef"><b>Definition</b> <a href="CaloScoringPlanePID_8h_source.html#l00125">CaloScoringPlanePID.h:125</a></div></div>
+<div class="ttc" id="anamespacemakeDecay_html_af2fe9da99a6c13f5bdd6d42663620c39"><div class="ttname"><a href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">makeDecay.n</a></div><div class="ttdeci">int n</div><div class="ttdef"><b>Definition</b> <a href="makeDecay_8py_source.html#l00089">makeDecay.py:89</a></div></div>
+<div class="ttc" id="anamespacemakeMuonEM_html_a04298ed1d5fc7dbec7e764537bfec5d5"><div class="ttname"><a href="namespacemakeMuonEM.html#a04298ed1d5fc7dbec7e764537bfec5d5">makeMuonEM.w</a></div><div class="ttdeci">w</div><div class="ttdef"><b>Definition</b> <a href="makeMuonEM_8py_source.html#l00048">makeMuonEM.py:48</a></div></div>
+<div class="ttc" id="anamespaceproton__bremsstrahlung_html_a346de5637f6811443ef313e5b10ef9bc"><div class="ttname"><a href="namespaceproton__bremsstrahlung.html#a346de5637f6811443ef313e5b10ef9bc">proton_bremsstrahlung.energy</a></div><div class="ttdeci">energy(p, m)</div><div class="ttdef"><b>Definition</b> <a href="proton__bremsstrahlung_8py_source.html#l00038">proton_bremsstrahlung.py:38</a></div></div>
+<div class="ttc" id="anamespacerunPythia8_html_a4cd74a33c53eaeef70fcb6b448b9b285"><div class="ttname"><a href="namespacerunPythia8.html#a4cd74a33c53eaeef70fcb6b448b9b285">runPythia8.k</a></div><div class="ttdeci">int k</div><div class="ttdef"><b>Definition</b> <a href="runPythia8_8py_source.html#l00168">runPythia8.py:168</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -519,9 +625,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="CaloScoringPlanePID_8h_source.html#l00115">115</a> of file <a class="el" href="CaloScoringPlanePID_8h_source.html">CaloScoringPlanePID.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  115</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classCaloScoringPlanePID.html#a17f2b9e113ec17a418a6212e9821da6a">fLogInterpolation</a>; }</div>
-<div class="ttc" id="aclassCaloScoringPlanePID_html_a17f2b9e113ec17a418a6212e9821da6a"><div class="ttname"><a href="classCaloScoringPlanePID.html#a17f2b9e113ec17a418a6212e9821da6a">CaloScoringPlanePID::fLogInterpolation</a></div><div class="ttdeci">Bool_t fLogInterpolation</div><div class="ttdef"><b>Definition</b> <a href="CaloScoringPlanePID_8h_source.html#l00127">CaloScoringPlanePID.h:127</a></div></div>
+<p class="definition">Definition at line <a class="el" href="CaloScoringPlanePID_8h_source.html#l00116">116</a> of file <a class="el" href="CaloScoringPlanePID_8h_source.html">CaloScoringPlanePID.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  116</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classCaloScoringPlanePID.html#a17f2b9e113ec17a418a6212e9821da6a">fLogInterpolation</a>; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -542,41 +647,16 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Interpolated 3x3 matrix, row-major (9 values). Throws std::invalid_argument for a non-finite energy. </p>
 
-<p class="definition">Definition at line <a class="el" href="CaloScoringPlanePID_8cxx_source.html#l00159">159</a> of file <a class="el" href="CaloScoringPlanePID_8cxx_source.html">CaloScoringPlanePID.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  159</span>                                                                     {</div>
-<div class="line"><span class="lineno">  160</span>  <span class="comment">// A NaN would pass both clamps below and make upper_bound return end().</span></div>
-<div class="line"><span class="lineno">  161</span>  RequireFinite(energy);</div>
-<div class="line"><span class="lineno">  162</span>  std::vector&lt;Double_t&gt; <a class="code hl_variable" href="ShipBellField_8cxx.html#ae0699ca79e23818d99b9ee18334a9325">m</a>(9);</div>
-<div class="line"><span class="lineno">  163</span>  <span class="keyword">const</span> <span class="keywordtype">size_t</span> <a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a> = <a class="code hl_variable" href="classCaloScoringPlanePID.html#a1ef0185d42873a2b776680a6d80472ee">fEnergies</a>.size();</div>
-<div class="line"><span class="lineno">  164</span>  <span class="keywordflow">if</span> (n == 1 || energy &lt;= <a class="code hl_variable" href="classCaloScoringPlanePID.html#a1ef0185d42873a2b776680a6d80472ee">fEnergies</a>.front()) {</div>
-<div class="line"><span class="lineno">  165</span>    std::copy_n(<a class="code hl_variable" href="classCaloScoringPlanePID.html#a53e5d569708e222b1806f3c6c1be3bdb">fMatrices</a>.begin(), 9, <a class="code hl_variable" href="ShipBellField_8cxx.html#ae0699ca79e23818d99b9ee18334a9325">m</a>.begin());</div>
-<div class="line"><span class="lineno">  166</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="ShipBellField_8cxx.html#ae0699ca79e23818d99b9ee18334a9325">m</a>;</div>
-<div class="line"><span class="lineno">  167</span>  }</div>
-<div class="line"><span class="lineno">  168</span>  <span class="keywordflow">if</span> (energy &gt;= <a class="code hl_variable" href="classCaloScoringPlanePID.html#a1ef0185d42873a2b776680a6d80472ee">fEnergies</a>.back()) {</div>
-<div class="line"><span class="lineno">  169</span>    std::copy_n(<a class="code hl_variable" href="classCaloScoringPlanePID.html#a53e5d569708e222b1806f3c6c1be3bdb">fMatrices</a>.begin() + 9 * (n - 1), 9, <a class="code hl_variable" href="ShipBellField_8cxx.html#ae0699ca79e23818d99b9ee18334a9325">m</a>.begin());</div>
-<div class="line"><span class="lineno">  170</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="ShipBellField_8cxx.html#ae0699ca79e23818d99b9ee18334a9325">m</a>;</div>
-<div class="line"><span class="lineno">  171</span>  }</div>
-<div class="line"><span class="lineno">  172</span>  <span class="keyword">const</span> <span class="keyword">auto</span> hi = <span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(</div>
-<div class="line"><span class="lineno">  173</span>      std::upper_bound(<a class="code hl_variable" href="classCaloScoringPlanePID.html#a1ef0185d42873a2b776680a6d80472ee">fEnergies</a>.begin(), <a class="code hl_variable" href="classCaloScoringPlanePID.html#a1ef0185d42873a2b776680a6d80472ee">fEnergies</a>.end(), energy) -</div>
-<div class="line"><span class="lineno">  174</span>      <a class="code hl_variable" href="classCaloScoringPlanePID.html#a1ef0185d42873a2b776680a6d80472ee">fEnergies</a>.begin());</div>
-<div class="line"><span class="lineno">  175</span>  <span class="keyword">const</span> <span class="keywordtype">size_t</span> lo = hi - 1;</div>
-<div class="line"><span class="lineno">  176</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> <a class="code hl_variable" href="namespacemakeMuonEM.html#a04298ed1d5fc7dbec7e764537bfec5d5">w</a> =</div>
-<div class="line"><span class="lineno">  177</span>      <a class="code hl_variable" href="classCaloScoringPlanePID.html#a17f2b9e113ec17a418a6212e9821da6a">fLogInterpolation</a></div>
-<div class="line"><span class="lineno">  178</span>          ? std::log(energy / <a class="code hl_variable" href="classCaloScoringPlanePID.html#a1ef0185d42873a2b776680a6d80472ee">fEnergies</a>[lo]) /</div>
-<div class="line"><span class="lineno">  179</span>                std::log(<a class="code hl_variable" href="classCaloScoringPlanePID.html#a1ef0185d42873a2b776680a6d80472ee">fEnergies</a>[hi] / <a class="code hl_variable" href="classCaloScoringPlanePID.html#a1ef0185d42873a2b776680a6d80472ee">fEnergies</a>[lo])</div>
-<div class="line"><span class="lineno">  180</span>          : (<a class="code hl_function" href="namespaceproton__bremsstrahlung.html#a346de5637f6811443ef313e5b10ef9bc">energy</a> - <a class="code hl_variable" href="classCaloScoringPlanePID.html#a1ef0185d42873a2b776680a6d80472ee">fEnergies</a>[lo]) / (<a class="code hl_variable" href="classCaloScoringPlanePID.html#a1ef0185d42873a2b776680a6d80472ee">fEnergies</a>[hi] - <a class="code hl_variable" href="classCaloScoringPlanePID.html#a1ef0185d42873a2b776680a6d80472ee">fEnergies</a>[lo]);</div>
-<div class="line"><span class="lineno">  181</span>  <span class="keywordflow">for</span> (Int_t i = 0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt; <a class="code hl_variable" href="classCaloScoringPlanePID.html#a26a9358185415412fe5c3ad0c96f804a">kNSpecies</a>; ++<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>) {</div>
-<div class="line"><span class="lineno">  182</span>    <span class="keywordflow">for</span> (Int_t j = 0; j &lt; <a class="code hl_variable" href="classCaloScoringPlanePID.html#a26a9358185415412fe5c3ad0c96f804a">kNSpecies</a>; ++j) {</div>
-<div class="line"><span class="lineno">  183</span>      <a class="code hl_variable" href="ShipBellField_8cxx.html#ae0699ca79e23818d99b9ee18334a9325">m</a>[3 * <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> + j] = (1. - <a class="code hl_variable" href="namespacemakeMuonEM.html#a04298ed1d5fc7dbec7e764537bfec5d5">w</a>) * <a class="code hl_function" href="classCaloScoringPlanePID.html#a720cba26d76c2ff9d1c442175f0faa42">At</a>(lo, i, j) + <a class="code hl_variable" href="namespacemakeMuonEM.html#a04298ed1d5fc7dbec7e764537bfec5d5">w</a> * <a class="code hl_function" href="classCaloScoringPlanePID.html#a720cba26d76c2ff9d1c442175f0faa42">At</a>(hi, i, j);</div>
-<div class="line"><span class="lineno">  184</span>    }</div>
-<div class="line"><span class="lineno">  185</span>  }</div>
-<div class="line"><span class="lineno">  186</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="ShipBellField_8cxx.html#ae0699ca79e23818d99b9ee18334a9325">m</a>;</div>
-<div class="line"><span class="lineno">  187</span>}</div>
-<div class="ttc" id="aclassCaloScoringPlanePID_html_a26a9358185415412fe5c3ad0c96f804a"><div class="ttname"><a href="classCaloScoringPlanePID.html#a26a9358185415412fe5c3ad0c96f804a">CaloScoringPlanePID::kNSpecies</a></div><div class="ttdeci">static constexpr Int_t kNSpecies</div><div class="ttdef"><b>Definition</b> <a href="CaloScoringPlanePID_8h_source.html#l00055">CaloScoringPlanePID.h:55</a></div></div>
-<div class="ttc" id="aclassCaloScoringPlanePID_html_a720cba26d76c2ff9d1c442175f0faa42"><div class="ttname"><a href="classCaloScoringPlanePID.html#a720cba26d76c2ff9d1c442175f0faa42">CaloScoringPlanePID::At</a></div><div class="ttdeci">Double_t At(size_t iEnergy, Int_t i, Int_t j) const</div><div class="ttdef"><b>Definition</b> <a href="CaloScoringPlanePID_8h_source.html#l00120">CaloScoringPlanePID.h:120</a></div></div>
-<div class="ttc" id="anamespacemakeDecay_html_af2fe9da99a6c13f5bdd6d42663620c39"><div class="ttname"><a href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">makeDecay.n</a></div><div class="ttdeci">int n</div><div class="ttdef"><b>Definition</b> <a href="makeDecay_8py_source.html#l00089">makeDecay.py:89</a></div></div>
-<div class="ttc" id="anamespacemakeMuonEM_html_a04298ed1d5fc7dbec7e764537bfec5d5"><div class="ttname"><a href="namespacemakeMuonEM.html#a04298ed1d5fc7dbec7e764537bfec5d5">makeMuonEM.w</a></div><div class="ttdeci">w</div><div class="ttdef"><b>Definition</b> <a href="makeMuonEM_8py_source.html#l00048">makeMuonEM.py:48</a></div></div>
-<div class="ttc" id="anamespaceproton__bremsstrahlung_html_a346de5637f6811443ef313e5b10ef9bc"><div class="ttname"><a href="namespaceproton__bremsstrahlung.html#a346de5637f6811443ef313e5b10ef9bc">proton_bremsstrahlung.energy</a></div><div class="ttdeci">energy(p, m)</div><div class="ttdef"><b>Definition</b> <a href="proton__bremsstrahlung_8py_source.html#l00038">proton_bremsstrahlung.py:38</a></div></div>
+<p class="definition">Definition at line <a class="el" href="CaloScoringPlanePID_8cxx_source.html#l00188">188</a> of file <a class="el" href="CaloScoringPlanePID_8cxx_source.html">CaloScoringPlanePID.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  188</span>                                                                     {</div>
+<div class="line"><span class="lineno">  189</span>  std::vector&lt;Double_t&gt; <a class="code hl_variable" href="ShipBellField_8cxx.html#ae0699ca79e23818d99b9ee18334a9325">m</a>(9);</div>
+<div class="line"><span class="lineno">  190</span>  <span class="keywordflow">for</span> (Int_t i = 0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt; <a class="code hl_variable" href="classCaloScoringPlanePID.html#a26a9358185415412fe5c3ad0c96f804a">kNSpecies</a>; ++<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>) {</div>
+<div class="line"><span class="lineno">  191</span>    <span class="keyword">const</span> <a class="code hl_typedef" href="classCaloScoringPlanePID.html#a7088cf8b5eef47d10b086542a030d951">Row</a> row = <a class="code hl_function" href="classCaloScoringPlanePID.html#a878cf09806bef900dea5a8ff3d6357ae">InterpolatedRow</a>(energy, i);</div>
+<div class="line"><span class="lineno">  192</span>    std::copy(row.begin(), row.end(), <a class="code hl_variable" href="ShipBellField_8cxx.html#ae0699ca79e23818d99b9ee18334a9325">m</a>.begin() + 3L * i);</div>
+<div class="line"><span class="lineno">  193</span>  }</div>
+<div class="line"><span class="lineno">  194</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="ShipBellField_8cxx.html#ae0699ca79e23818d99b9ee18334a9325">m</a>;</div>
+<div class="line"><span class="lineno">  195</span>}</div>
+<div class="ttc" id="aShipBellField_8cxx_html_ae0699ca79e23818d99b9ee18334a9325"><div class="ttname"><a href="ShipBellField_8cxx.html#ae0699ca79e23818d99b9ee18334a9325">m</a></div><div class="ttdeci">constexpr Double_t m</div><div class="ttdef"><b>Definition</b> <a href="ShipBellField_8cxx_source.html#l00025">ShipBellField.cxx:25</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -595,27 +675,26 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="CaloScoringPlanePID_8cxx_source.html#l00255">255</a> of file <a class="el" href="CaloScoringPlanePID_8cxx_source.html">CaloScoringPlanePID.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  255</span>                                      {</div>
-<div class="line"><span class="lineno">  256</span>  LOG(info) &lt;&lt; <span class="stringliteral">&quot;CaloScoringPlanePID: &quot;</span> &lt;&lt; <a class="code hl_variable" href="classCaloScoringPlanePID.html#a1ef0185d42873a2b776680a6d80472ee">fEnergies</a>.size()</div>
-<div class="line"><span class="lineno">  257</span>            &lt;&lt; <span class="stringliteral">&quot; energy point(s), &quot;</span> &lt;&lt; (<a class="code hl_variable" href="classCaloScoringPlanePID.html#a17f2b9e113ec17a418a6212e9821da6a">fLogInterpolation</a> ? <span class="stringliteral">&quot;log&quot;</span> : <span class="stringliteral">&quot;linear&quot;</span>)</div>
-<div class="line"><span class="lineno">  258</span>            &lt;&lt; <span class="stringliteral">&quot; interpolation; rows = true, columns = identified &quot;</span></div>
-<div class="line"><span class="lineno">  259</span>               <span class="stringliteral">&quot;(electron, hadron, muon)&quot;</span>;</div>
-<div class="line"><span class="lineno">  260</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> k = 0; <a class="code hl_variable" href="namespacerunPythia8.html#a4cd74a33c53eaeef70fcb6b448b9b285">k</a> &lt; <a class="code hl_variable" href="classCaloScoringPlanePID.html#a1ef0185d42873a2b776680a6d80472ee">fEnergies</a>.size(); ++<a class="code hl_variable" href="namespacerunPythia8.html#a4cd74a33c53eaeef70fcb6b448b9b285">k</a>) {</div>
-<div class="line"><span class="lineno">  261</span>    <span class="keywordflow">for</span> (Int_t i = 0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt; <a class="code hl_variable" href="classCaloScoringPlanePID.html#a26a9358185415412fe5c3ad0c96f804a">kNSpecies</a>; ++<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>) {</div>
-<div class="line"><span class="lineno">  262</span>      LOG(info) &lt;&lt; <span class="stringliteral">&quot;  E = &quot;</span> &lt;&lt; <a class="code hl_variable" href="classCaloScoringPlanePID.html#a1ef0185d42873a2b776680a6d80472ee">fEnergies</a>[<a class="code hl_variable" href="namespacerunPythia8.html#a4cd74a33c53eaeef70fcb6b448b9b285">k</a>] &lt;&lt; <span class="stringliteral">&quot; GeV  &quot;</span> &lt;&lt; <a class="code hl_function" href="classCaloScoringPlanePID.html#a78930c264607808c45d2d85dda348441">SpeciesName</a>(i)</div>
-<div class="line"><span class="lineno">  263</span>                &lt;&lt; <span class="stringliteral">&quot;: &quot;</span> &lt;&lt; <a class="code hl_function" href="classCaloScoringPlanePID.html#a720cba26d76c2ff9d1c442175f0faa42">At</a>(k, i, 0) &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; <a class="code hl_function" href="classCaloScoringPlanePID.html#a720cba26d76c2ff9d1c442175f0faa42">At</a>(k, i, 1) &lt;&lt; <span class="stringliteral">&quot; &quot;</span></div>
-<div class="line"><span class="lineno">  264</span>                &lt;&lt; <a class="code hl_function" href="classCaloScoringPlanePID.html#a720cba26d76c2ff9d1c442175f0faa42">At</a>(k, i, 2);</div>
-<div class="line"><span class="lineno">  265</span>    }</div>
-<div class="line"><span class="lineno">  266</span>  }</div>
-<div class="line"><span class="lineno">  267</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; [pdg, s] : <a class="code hl_variable" href="classCaloScoringPlanePID.html#a88c3d6628b2b591cdbf0ff01cec5a128">fOverrides</a>) {</div>
-<div class="line"><span class="lineno">  268</span>    LOG(info) &lt;&lt; <span class="stringliteral">&quot;  override |pdg| &quot;</span> &lt;&lt; <a class="code hl_variable" href="namespaceeventDisplay.html#a5bba68d8a49d0e499d10871520efe7c5">pdg</a> &lt;&lt; <span class="stringliteral">&quot; -&gt; &quot;</span> &lt;&lt; <a class="code hl_function" href="classCaloScoringPlanePID.html#a78930c264607808c45d2d85dda348441">SpeciesName</a>(s);</div>
-<div class="line"><span class="lineno">  269</span>  }</div>
-<div class="line"><span class="lineno">  270</span>}</div>
-<div class="ttc" id="aclassCaloScoringPlanePID_html_a78930c264607808c45d2d85dda348441"><div class="ttname"><a href="classCaloScoringPlanePID.html#a78930c264607808c45d2d85dda348441">CaloScoringPlanePID::SpeciesName</a></div><div class="ttdeci">static const char * SpeciesName(Int_t species)</div><div class="ttdef"><b>Definition</b> <a href="CaloScoringPlanePID_8cxx_source.html#l00242">CaloScoringPlanePID.cxx:242</a></div></div>
-<div class="ttc" id="aclassCaloScoringPlanePID_html_a88c3d6628b2b591cdbf0ff01cec5a128"><div class="ttname"><a href="classCaloScoringPlanePID.html#a88c3d6628b2b591cdbf0ff01cec5a128">CaloScoringPlanePID::fOverrides</a></div><div class="ttdeci">std::map&lt; Int_t, Int_t &gt; fOverrides</div><div class="ttdoc">|pdg| -&gt; Species</div><div class="ttdef"><b>Definition</b> <a href="CaloScoringPlanePID_8h_source.html#l00126">CaloScoringPlanePID.h:126</a></div></div>
+<p class="definition">Definition at line <a class="el" href="CaloScoringPlanePID_8cxx_source.html#l00265">265</a> of file <a class="el" href="CaloScoringPlanePID_8cxx_source.html">CaloScoringPlanePID.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  265</span>                                      {</div>
+<div class="line"><span class="lineno">  266</span>  LOG(info) &lt;&lt; <span class="stringliteral">&quot;CaloScoringPlanePID: &quot;</span> &lt;&lt; <a class="code hl_variable" href="classCaloScoringPlanePID.html#a1ef0185d42873a2b776680a6d80472ee">fEnergies</a>.size()</div>
+<div class="line"><span class="lineno">  267</span>            &lt;&lt; <span class="stringliteral">&quot; energy point(s), &quot;</span> &lt;&lt; (<a class="code hl_variable" href="classCaloScoringPlanePID.html#a17f2b9e113ec17a418a6212e9821da6a">fLogInterpolation</a> ? <span class="stringliteral">&quot;log&quot;</span> : <span class="stringliteral">&quot;linear&quot;</span>)</div>
+<div class="line"><span class="lineno">  268</span>            &lt;&lt; <span class="stringliteral">&quot; interpolation; rows = true, columns = identified &quot;</span></div>
+<div class="line"><span class="lineno">  269</span>               <span class="stringliteral">&quot;(electron, hadron, muon)&quot;</span>;</div>
+<div class="line"><span class="lineno">  270</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> k = 0; <a class="code hl_variable" href="namespacerunPythia8.html#a4cd74a33c53eaeef70fcb6b448b9b285">k</a> &lt; <a class="code hl_variable" href="classCaloScoringPlanePID.html#a1ef0185d42873a2b776680a6d80472ee">fEnergies</a>.size(); ++<a class="code hl_variable" href="namespacerunPythia8.html#a4cd74a33c53eaeef70fcb6b448b9b285">k</a>) {</div>
+<div class="line"><span class="lineno">  271</span>    <span class="keywordflow">for</span> (Int_t i = 0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt; <a class="code hl_variable" href="classCaloScoringPlanePID.html#a26a9358185415412fe5c3ad0c96f804a">kNSpecies</a>; ++<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>) {</div>
+<div class="line"><span class="lineno">  272</span>      LOG(info) &lt;&lt; <span class="stringliteral">&quot;  E = &quot;</span> &lt;&lt; <a class="code hl_variable" href="classCaloScoringPlanePID.html#a1ef0185d42873a2b776680a6d80472ee">fEnergies</a>[<a class="code hl_variable" href="namespacerunPythia8.html#a4cd74a33c53eaeef70fcb6b448b9b285">k</a>] &lt;&lt; <span class="stringliteral">&quot; GeV  &quot;</span> &lt;&lt; <a class="code hl_function" href="classCaloScoringPlanePID.html#a78930c264607808c45d2d85dda348441">SpeciesName</a>(i)</div>
+<div class="line"><span class="lineno">  273</span>                &lt;&lt; <span class="stringliteral">&quot;: &quot;</span> &lt;&lt; <a class="code hl_function" href="classCaloScoringPlanePID.html#a720cba26d76c2ff9d1c442175f0faa42">At</a>(k, i, 0) &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; <a class="code hl_function" href="classCaloScoringPlanePID.html#a720cba26d76c2ff9d1c442175f0faa42">At</a>(k, i, 1) &lt;&lt; <span class="stringliteral">&quot; &quot;</span></div>
+<div class="line"><span class="lineno">  274</span>                &lt;&lt; <a class="code hl_function" href="classCaloScoringPlanePID.html#a720cba26d76c2ff9d1c442175f0faa42">At</a>(k, i, 2);</div>
+<div class="line"><span class="lineno">  275</span>    }</div>
+<div class="line"><span class="lineno">  276</span>  }</div>
+<div class="line"><span class="lineno">  277</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; [pdg, s] : <a class="code hl_variable" href="classCaloScoringPlanePID.html#a88c3d6628b2b591cdbf0ff01cec5a128">fOverrides</a>) {</div>
+<div class="line"><span class="lineno">  278</span>    LOG(info) &lt;&lt; <span class="stringliteral">&quot;  override |pdg| &quot;</span> &lt;&lt; <a class="code hl_variable" href="namespaceeventDisplay.html#a5bba68d8a49d0e499d10871520efe7c5">pdg</a> &lt;&lt; <span class="stringliteral">&quot; -&gt; &quot;</span> &lt;&lt; <a class="code hl_function" href="classCaloScoringPlanePID.html#a78930c264607808c45d2d85dda348441">SpeciesName</a>(s);</div>
+<div class="line"><span class="lineno">  279</span>  }</div>
+<div class="line"><span class="lineno">  280</span>}</div>
+<div class="ttc" id="aclassCaloScoringPlanePID_html_a78930c264607808c45d2d85dda348441"><div class="ttname"><a href="classCaloScoringPlanePID.html#a78930c264607808c45d2d85dda348441">CaloScoringPlanePID::SpeciesName</a></div><div class="ttdeci">static const char * SpeciesName(Int_t species)</div><div class="ttdef"><b>Definition</b> <a href="CaloScoringPlanePID_8cxx_source.html#l00252">CaloScoringPlanePID.cxx:252</a></div></div>
+<div class="ttc" id="aclassCaloScoringPlanePID_html_a88c3d6628b2b591cdbf0ff01cec5a128"><div class="ttname"><a href="classCaloScoringPlanePID.html#a88c3d6628b2b591cdbf0ff01cec5a128">CaloScoringPlanePID::fOverrides</a></div><div class="ttdeci">std::map&lt; Int_t, Int_t &gt; fOverrides</div><div class="ttdoc">|pdg| -&gt; Species</div><div class="ttdef"><b>Definition</b> <a href="CaloScoringPlanePID_8h_source.html#l00131">CaloScoringPlanePID.h:131</a></div></div>
 <div class="ttc" id="anamespaceeventDisplay_html_a5bba68d8a49d0e499d10871520efe7c5"><div class="ttname"><a href="namespaceeventDisplay.html#a5bba68d8a49d0e499d10871520efe7c5">eventDisplay.pdg</a></div><div class="ttdeci">pdg</div><div class="ttdef"><b>Definition</b> <a href="eventDisplay_8py_source.html#l00064">eventDisplay.py:64</a></div></div>
-<div class="ttc" id="anamespacerunPythia8_html_a4cd74a33c53eaeef70fcb6b448b9b285"><div class="ttname"><a href="namespacerunPythia8.html#a4cd74a33c53eaeef70fcb6b448b9b285">runPythia8.k</a></div><div class="ttdeci">int k</div><div class="ttdef"><b>Definition</b> <a href="runPythia8_8py_source.html#l00168">runPythia8.py:168</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -652,20 +731,20 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Interpolated probability P(identified as reco | true species, E). Throws std::out_of_range for a species other than kUnknown, kElectron, kHadron or kMuon, and std::invalid_argument for a non-finite energy. </p>
 
-<p class="definition">Definition at line <a class="el" href="CaloScoringPlanePID_8cxx_source.html#l00189">189</a> of file <a class="el" href="CaloScoringPlanePID_8cxx_source.html">CaloScoringPlanePID.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  191</span>                                                                 {</div>
-<div class="line"><span class="lineno">  192</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> Int_t s :</div>
-<div class="line"><span class="lineno">  193</span>       {<span class="keyword">static_cast&lt;</span>Int_t<span class="keyword">&gt;</span>(trueSpecies), <span class="keyword">static_cast&lt;</span>Int_t<span class="keyword">&gt;</span>(recoSpecies)}) {</div>
-<div class="line"><span class="lineno">  194</span>    <span class="keywordflow">if</span> (s &lt; kUnknown || s &gt;= <a class="code hl_variable" href="classCaloScoringPlanePID.html#a26a9358185415412fe5c3ad0c96f804a">kNSpecies</a>) {</div>
-<div class="line"><span class="lineno">  195</span>      <span class="keywordflow">throw</span> std::out_of_range(<span class="stringliteral">&quot;CaloScoringPlanePID: species &quot;</span> +</div>
-<div class="line"><span class="lineno">  196</span>                              std::to_string(s) + <span class="stringliteral">&quot; out of range&quot;</span>);</div>
-<div class="line"><span class="lineno">  197</span>    }</div>
-<div class="line"><span class="lineno">  198</span>  }</div>
-<div class="line"><span class="lineno">  199</span>  RequireFinite(energy);</div>
-<div class="line"><span class="lineno">  200</span>  <span class="keywordflow">if</span> (trueSpecies == <a class="code hl_enumvalue" href="classCaloScoringPlanePID.html#a7ed72c68bbd487eb1bdf59037e0f93e5a30390fd8794fc97f6db1999e2a39415f">kUnknown</a>) <span class="keywordflow">return</span> recoSpecies == <a class="code hl_enumvalue" href="classCaloScoringPlanePID.html#a7ed72c68bbd487eb1bdf59037e0f93e5a30390fd8794fc97f6db1999e2a39415f">kUnknown</a> ? 1. : 0.;</div>
-<div class="line"><span class="lineno">  201</span>  <span class="keywordflow">if</span> (recoSpecies == <a class="code hl_enumvalue" href="classCaloScoringPlanePID.html#a7ed72c68bbd487eb1bdf59037e0f93e5a30390fd8794fc97f6db1999e2a39415f">kUnknown</a>) <span class="keywordflow">return</span> 0.;</div>
-<div class="line"><span class="lineno">  202</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="classCaloScoringPlanePID.html#a81abd57b43e01622f70dfbc664debb2b">Matrix</a>(energy)[3 * trueSpecies + recoSpecies];</div>
-<div class="line"><span class="lineno">  203</span>}</div>
+<p class="definition">Definition at line <a class="el" href="CaloScoringPlanePID_8cxx_source.html#l00197">197</a> of file <a class="el" href="CaloScoringPlanePID_8cxx_source.html">CaloScoringPlanePID.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  199</span>                                                                 {</div>
+<div class="line"><span class="lineno">  200</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> Int_t s :</div>
+<div class="line"><span class="lineno">  201</span>       {<span class="keyword">static_cast&lt;</span>Int_t<span class="keyword">&gt;</span>(trueSpecies), <span class="keyword">static_cast&lt;</span>Int_t<span class="keyword">&gt;</span>(recoSpecies)}) {</div>
+<div class="line"><span class="lineno">  202</span>    <span class="keywordflow">if</span> (s &lt; kUnknown || s &gt;= <a class="code hl_variable" href="classCaloScoringPlanePID.html#a26a9358185415412fe5c3ad0c96f804a">kNSpecies</a>) {</div>
+<div class="line"><span class="lineno">  203</span>      <span class="keywordflow">throw</span> std::out_of_range(<span class="stringliteral">&quot;CaloScoringPlanePID: species &quot;</span> +</div>
+<div class="line"><span class="lineno">  204</span>                              std::to_string(s) + <span class="stringliteral">&quot; out of range&quot;</span>);</div>
+<div class="line"><span class="lineno">  205</span>    }</div>
+<div class="line"><span class="lineno">  206</span>  }</div>
+<div class="line"><span class="lineno">  207</span>  RequireFinite(energy);</div>
+<div class="line"><span class="lineno">  208</span>  <span class="keywordflow">if</span> (trueSpecies == <a class="code hl_enumvalue" href="classCaloScoringPlanePID.html#a7ed72c68bbd487eb1bdf59037e0f93e5a30390fd8794fc97f6db1999e2a39415f">kUnknown</a>) <span class="keywordflow">return</span> recoSpecies == <a class="code hl_enumvalue" href="classCaloScoringPlanePID.html#a7ed72c68bbd487eb1bdf59037e0f93e5a30390fd8794fc97f6db1999e2a39415f">kUnknown</a> ? 1. : 0.;</div>
+<div class="line"><span class="lineno">  209</span>  <span class="keywordflow">if</span> (recoSpecies == <a class="code hl_enumvalue" href="classCaloScoringPlanePID.html#a7ed72c68bbd487eb1bdf59037e0f93e5a30390fd8794fc97f6db1999e2a39415f">kUnknown</a>) <span class="keywordflow">return</span> 0.;</div>
+<div class="line"><span class="lineno">  210</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="classCaloScoringPlanePID.html#a878cf09806bef900dea5a8ff3d6357ae">InterpolatedRow</a>(energy, trueSpecies)[recoSpecies];</div>
+<div class="line"><span class="lineno">  211</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -718,61 +797,61 @@ Private Attributes</h2></td></tr>
 </dl>
 <p>Throws std::invalid_argument, naming the energy point and row, if the model is invalid; the previous model is then kept. </p>
 
-<p class="definition">Definition at line <a class="el" href="CaloScoringPlanePID_8cxx_source.html#l00090">90</a> of file <a class="el" href="CaloScoringPlanePID_8cxx_source.html">CaloScoringPlanePID.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   93</span>                                                       {</div>
-<div class="line"><span class="lineno">   94</span>  <span class="comment">// Validate everything before changing the model, so that a rejected model</span></div>
-<div class="line"><span class="lineno">   95</span>  <span class="comment">// leaves the previous one in place.</span></div>
-<div class="line"><span class="lineno">   96</span>  <span class="keyword">const</span> <span class="keywordtype">size_t</span> <a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a> = energies.size();</div>
-<div class="line"><span class="lineno">   97</span>  <span class="keywordflow">if</span> (n == 0) Invalid(<span class="stringliteral">&quot;no energy points&quot;</span>);</div>
-<div class="line"><span class="lineno">   98</span>  <span class="keywordflow">if</span> (matrices.size() != 9 * n) {</div>
-<div class="line"><span class="lineno">   99</span>    Invalid(<span class="stringliteral">&quot;expected &quot;</span> + std::to_string(9 * n) +</div>
-<div class="line"><span class="lineno">  100</span>            <span class="stringliteral">&quot; matrix values (9 per energy point), got &quot;</span> +</div>
-<div class="line"><span class="lineno">  101</span>            std::to_string(matrices.size()));</div>
-<div class="line"><span class="lineno">  102</span>  }</div>
-<div class="line"><span class="lineno">  103</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> k = 0; <a class="code hl_variable" href="namespacerunPythia8.html#a4cd74a33c53eaeef70fcb6b448b9b285">k</a> &lt; <a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a>; ++<a class="code hl_variable" href="namespacerunPythia8.html#a4cd74a33c53eaeef70fcb6b448b9b285">k</a>) {</div>
-<div class="line"><span class="lineno">  104</span>    std::ostringstream where;</div>
-<div class="line"><span class="lineno">  105</span>    where &lt;&lt; <span class="stringliteral">&quot;energy point &quot;</span> &lt;&lt; <a class="code hl_variable" href="namespacerunPythia8.html#a4cd74a33c53eaeef70fcb6b448b9b285">k</a> &lt;&lt; <span class="stringliteral">&quot; (&quot;</span> &lt;&lt; energies[<a class="code hl_variable" href="namespacerunPythia8.html#a4cd74a33c53eaeef70fcb6b448b9b285">k</a>] &lt;&lt; <span class="stringliteral">&quot; GeV)&quot;</span>;</div>
-<div class="line"><span class="lineno">  106</span>    <span class="keywordflow">if</span> (!std::isfinite(energies[k])) Invalid(where.str() + <span class="stringliteral">&quot;: not finite&quot;</span>);</div>
-<div class="line"><span class="lineno">  107</span>    <span class="keywordflow">if</span> (k &gt; 0 &amp;&amp; energies[k] &lt;= energies[k - 1]) {</div>
-<div class="line"><span class="lineno">  108</span>      Invalid(where.str() + <span class="stringliteral">&quot;: energies must be strictly increasing&quot;</span>);</div>
-<div class="line"><span class="lineno">  109</span>    }</div>
-<div class="line"><span class="lineno">  110</span>    <span class="keywordflow">if</span> (logInterpolation &amp;&amp; energies[k] &lt;= 0.) {</div>
-<div class="line"><span class="lineno">  111</span>      Invalid(where.str() + <span class="stringliteral">&quot;: log interpolation needs positive energies&quot;</span>);</div>
-<div class="line"><span class="lineno">  112</span>    }</div>
-<div class="line"><span class="lineno">  113</span>    <span class="keywordflow">for</span> (Int_t i = 0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt; <a class="code hl_variable" href="classCaloScoringPlanePID.html#a26a9358185415412fe5c3ad0c96f804a">kNSpecies</a>; ++<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>) {</div>
-<div class="line"><span class="lineno">  114</span>      <span class="keyword">const</span> std::string row = where.str() + <span class="stringliteral">&quot;, true &quot;</span> + <a class="code hl_function" href="classCaloScoringPlanePID.html#a78930c264607808c45d2d85dda348441">SpeciesName</a>(i) + <span class="stringliteral">&quot; row&quot;</span>;</div>
-<div class="line"><span class="lineno">  115</span>      <span class="keywordtype">double</span> sum = 0.;</div>
-<div class="line"><span class="lineno">  116</span>      <span class="keywordflow">for</span> (Int_t j = 0; j &lt; <a class="code hl_variable" href="classCaloScoringPlanePID.html#a26a9358185415412fe5c3ad0c96f804a">kNSpecies</a>; ++j) {</div>
-<div class="line"><span class="lineno">  117</span>        <span class="keyword">const</span> <span class="keywordtype">double</span> <a class="code hl_variable" href="namespacerun__fixedTarget.html#a68f8e54ebe34ed88a1aff4505c32be7c">x</a> = matrices[9 * <a class="code hl_variable" href="namespacerunPythia8.html#a4cd74a33c53eaeef70fcb6b448b9b285">k</a> + <span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(3 * <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> + j)];</div>
-<div class="line"><span class="lineno">  118</span>        <span class="keywordflow">if</span> (!std::isfinite(x)) Invalid(row + <span class="stringliteral">&quot;: entry not finite&quot;</span>);</div>
-<div class="line"><span class="lineno">  119</span>        <span class="keywordflow">if</span> (x &lt; 0.) Invalid(row + <span class="stringliteral">&quot;: negative entry&quot;</span>);</div>
-<div class="line"><span class="lineno">  120</span>        sum += <a class="code hl_variable" href="namespacerun__fixedTarget.html#a68f8e54ebe34ed88a1aff4505c32be7c">x</a>;</div>
-<div class="line"><span class="lineno">  121</span>      }</div>
-<div class="line"><span class="lineno">  122</span>      <span class="keywordflow">if</span> (std::fabs(sum - 1.) &gt; kRowSumTolerance) {</div>
-<div class="line"><span class="lineno">  123</span>        std::ostringstream os;</div>
-<div class="line"><span class="lineno">  124</span>        os &lt;&lt; row &lt;&lt; <span class="stringliteral">&quot; sums to &quot;</span> &lt;&lt; sum &lt;&lt; <span class="stringliteral">&quot;, expected 1&quot;</span>;</div>
-<div class="line"><span class="lineno">  125</span>        Invalid(os.str());</div>
-<div class="line"><span class="lineno">  126</span>      }</div>
-<div class="line"><span class="lineno">  127</span>    }</div>
-<div class="line"><span class="lineno">  128</span>  }</div>
-<div class="line"><span class="lineno">  129</span>  std::map&lt;Int_t, Int_t&gt; byAbsPdg;</div>
-<div class="line"><span class="lineno">  130</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; [pdg, species] : overrides) {</div>
-<div class="line"><span class="lineno">  131</span>    <span class="keywordflow">if</span> (species &lt; kUnknown || species &gt;= <a class="code hl_variable" href="classCaloScoringPlanePID.html#a26a9358185415412fe5c3ad0c96f804a">kNSpecies</a>) {</div>
-<div class="line"><span class="lineno">  132</span>      Invalid(<span class="stringliteral">&quot;override for PDG code &quot;</span> + std::to_string(pdg) + <span class="stringliteral">&quot;: species &quot;</span> +</div>
-<div class="line"><span class="lineno">  133</span>              std::to_string(species) +</div>
-<div class="line"><span class="lineno">  134</span>              <span class="stringliteral">&quot; is not -1 (unknown), 0 (electron), 1 (hadron) or 2 (muon)&quot;</span>);</div>
-<div class="line"><span class="lineno">  135</span>    }</div>
-<div class="line"><span class="lineno">  136</span>    <span class="keyword">const</span> <span class="keyword">auto</span> [it, inserted] = byAbsPdg.emplace(std::abs(pdg), species);</div>
-<div class="line"><span class="lineno">  137</span>    <span class="keywordflow">if</span> (!inserted &amp;&amp; it-&gt;second != species) {</div>
-<div class="line"><span class="lineno">  138</span>      Invalid(<span class="stringliteral">&quot;conflicting overrides for |PDG code| &quot;</span> +</div>
-<div class="line"><span class="lineno">  139</span>              std::to_string(std::abs(pdg)));</div>
-<div class="line"><span class="lineno">  140</span>    }</div>
-<div class="line"><span class="lineno">  141</span>  }</div>
-<div class="line"><span class="lineno">  142</span>  <a class="code hl_variable" href="classCaloScoringPlanePID.html#a1ef0185d42873a2b776680a6d80472ee">fEnergies</a> = energies;</div>
-<div class="line"><span class="lineno">  143</span>  <a class="code hl_variable" href="classCaloScoringPlanePID.html#a53e5d569708e222b1806f3c6c1be3bdb">fMatrices</a> = matrices;</div>
-<div class="line"><span class="lineno">  144</span>  <a class="code hl_variable" href="classCaloScoringPlanePID.html#a88c3d6628b2b591cdbf0ff01cec5a128">fOverrides</a> = std::move(byAbsPdg);</div>
-<div class="line"><span class="lineno">  145</span>  <a class="code hl_variable" href="classCaloScoringPlanePID.html#a17f2b9e113ec17a418a6212e9821da6a">fLogInterpolation</a> = logInterpolation;</div>
-<div class="line"><span class="lineno">  146</span>}</div>
+<p class="definition">Definition at line <a class="el" href="CaloScoringPlanePID_8cxx_source.html#l00092">92</a> of file <a class="el" href="CaloScoringPlanePID_8cxx_source.html">CaloScoringPlanePID.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   95</span>                                                       {</div>
+<div class="line"><span class="lineno">   96</span>  <span class="comment">// Validate everything before changing the model, so that a rejected model</span></div>
+<div class="line"><span class="lineno">   97</span>  <span class="comment">// leaves the previous one in place.</span></div>
+<div class="line"><span class="lineno">   98</span>  <span class="keyword">const</span> <span class="keywordtype">size_t</span> <a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a> = energies.size();</div>
+<div class="line"><span class="lineno">   99</span>  <span class="keywordflow">if</span> (n == 0) Invalid(<span class="stringliteral">&quot;no energy points&quot;</span>);</div>
+<div class="line"><span class="lineno">  100</span>  <span class="keywordflow">if</span> (matrices.size() != 9 * n) {</div>
+<div class="line"><span class="lineno">  101</span>    Invalid(<span class="stringliteral">&quot;expected &quot;</span> + std::to_string(9 * n) +</div>
+<div class="line"><span class="lineno">  102</span>            <span class="stringliteral">&quot; matrix values (9 per energy point), got &quot;</span> +</div>
+<div class="line"><span class="lineno">  103</span>            std::to_string(matrices.size()));</div>
+<div class="line"><span class="lineno">  104</span>  }</div>
+<div class="line"><span class="lineno">  105</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> k = 0; <a class="code hl_variable" href="namespacerunPythia8.html#a4cd74a33c53eaeef70fcb6b448b9b285">k</a> &lt; <a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a>; ++<a class="code hl_variable" href="namespacerunPythia8.html#a4cd74a33c53eaeef70fcb6b448b9b285">k</a>) {</div>
+<div class="line"><span class="lineno">  106</span>    std::ostringstream where;</div>
+<div class="line"><span class="lineno">  107</span>    where &lt;&lt; <span class="stringliteral">&quot;energy point &quot;</span> &lt;&lt; <a class="code hl_variable" href="namespacerunPythia8.html#a4cd74a33c53eaeef70fcb6b448b9b285">k</a> &lt;&lt; <span class="stringliteral">&quot; (&quot;</span> &lt;&lt; energies[<a class="code hl_variable" href="namespacerunPythia8.html#a4cd74a33c53eaeef70fcb6b448b9b285">k</a>] &lt;&lt; <span class="stringliteral">&quot; GeV)&quot;</span>;</div>
+<div class="line"><span class="lineno">  108</span>    <span class="keywordflow">if</span> (!std::isfinite(energies[k])) Invalid(where.str() + <span class="stringliteral">&quot;: not finite&quot;</span>);</div>
+<div class="line"><span class="lineno">  109</span>    <span class="keywordflow">if</span> (k &gt; 0 &amp;&amp; energies[k] &lt;= energies[k - 1]) {</div>
+<div class="line"><span class="lineno">  110</span>      Invalid(where.str() + <span class="stringliteral">&quot;: energies must be strictly increasing&quot;</span>);</div>
+<div class="line"><span class="lineno">  111</span>    }</div>
+<div class="line"><span class="lineno">  112</span>    <span class="keywordflow">if</span> (logInterpolation &amp;&amp; energies[k] &lt;= 0.) {</div>
+<div class="line"><span class="lineno">  113</span>      Invalid(where.str() + <span class="stringliteral">&quot;: log interpolation needs positive energies&quot;</span>);</div>
+<div class="line"><span class="lineno">  114</span>    }</div>
+<div class="line"><span class="lineno">  115</span>    <span class="keywordflow">for</span> (Int_t i = 0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt; <a class="code hl_variable" href="classCaloScoringPlanePID.html#a26a9358185415412fe5c3ad0c96f804a">kNSpecies</a>; ++<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>) {</div>
+<div class="line"><span class="lineno">  116</span>      <span class="keyword">const</span> std::string row = where.str() + <span class="stringliteral">&quot;, true &quot;</span> + <a class="code hl_function" href="classCaloScoringPlanePID.html#a78930c264607808c45d2d85dda348441">SpeciesName</a>(i) + <span class="stringliteral">&quot; row&quot;</span>;</div>
+<div class="line"><span class="lineno">  117</span>      <span class="keywordtype">double</span> sum = 0.;</div>
+<div class="line"><span class="lineno">  118</span>      <span class="keywordflow">for</span> (Int_t j = 0; j &lt; <a class="code hl_variable" href="classCaloScoringPlanePID.html#a26a9358185415412fe5c3ad0c96f804a">kNSpecies</a>; ++j) {</div>
+<div class="line"><span class="lineno">  119</span>        <span class="keyword">const</span> <span class="keywordtype">double</span> <a class="code hl_variable" href="namespacerun__fixedTarget.html#a68f8e54ebe34ed88a1aff4505c32be7c">x</a> = matrices[9 * <a class="code hl_variable" href="namespacerunPythia8.html#a4cd74a33c53eaeef70fcb6b448b9b285">k</a> + <span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(3 * <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> + j)];</div>
+<div class="line"><span class="lineno">  120</span>        <span class="keywordflow">if</span> (!std::isfinite(x)) Invalid(row + <span class="stringliteral">&quot;: entry not finite&quot;</span>);</div>
+<div class="line"><span class="lineno">  121</span>        <span class="keywordflow">if</span> (x &lt; 0.) Invalid(row + <span class="stringliteral">&quot;: negative entry&quot;</span>);</div>
+<div class="line"><span class="lineno">  122</span>        sum += <a class="code hl_variable" href="namespacerun__fixedTarget.html#a68f8e54ebe34ed88a1aff4505c32be7c">x</a>;</div>
+<div class="line"><span class="lineno">  123</span>      }</div>
+<div class="line"><span class="lineno">  124</span>      <span class="keywordflow">if</span> (std::fabs(sum - 1.) &gt; kRowSumTolerance) {</div>
+<div class="line"><span class="lineno">  125</span>        std::ostringstream os;</div>
+<div class="line"><span class="lineno">  126</span>        os &lt;&lt; row &lt;&lt; <span class="stringliteral">&quot; sums to &quot;</span> &lt;&lt; sum &lt;&lt; <span class="stringliteral">&quot;, expected 1&quot;</span>;</div>
+<div class="line"><span class="lineno">  127</span>        Invalid(os.str());</div>
+<div class="line"><span class="lineno">  128</span>      }</div>
+<div class="line"><span class="lineno">  129</span>    }</div>
+<div class="line"><span class="lineno">  130</span>  }</div>
+<div class="line"><span class="lineno">  131</span>  std::map&lt;Int_t, Int_t&gt; byAbsPdg;</div>
+<div class="line"><span class="lineno">  132</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; [pdg, species] : overrides) {</div>
+<div class="line"><span class="lineno">  133</span>    <span class="keywordflow">if</span> (species &lt; kUnknown || species &gt;= <a class="code hl_variable" href="classCaloScoringPlanePID.html#a26a9358185415412fe5c3ad0c96f804a">kNSpecies</a>) {</div>
+<div class="line"><span class="lineno">  134</span>      Invalid(<span class="stringliteral">&quot;override for PDG code &quot;</span> + std::to_string(pdg) + <span class="stringliteral">&quot;: species &quot;</span> +</div>
+<div class="line"><span class="lineno">  135</span>              std::to_string(species) +</div>
+<div class="line"><span class="lineno">  136</span>              <span class="stringliteral">&quot; is not -1 (unknown), 0 (electron), 1 (hadron) or 2 (muon)&quot;</span>);</div>
+<div class="line"><span class="lineno">  137</span>    }</div>
+<div class="line"><span class="lineno">  138</span>    <span class="keyword">const</span> <span class="keyword">auto</span> [it, inserted] = byAbsPdg.emplace(std::abs(pdg), species);</div>
+<div class="line"><span class="lineno">  139</span>    <span class="keywordflow">if</span> (!inserted &amp;&amp; it-&gt;second != species) {</div>
+<div class="line"><span class="lineno">  140</span>      Invalid(<span class="stringliteral">&quot;conflicting overrides for |PDG code| &quot;</span> +</div>
+<div class="line"><span class="lineno">  141</span>              std::to_string(std::abs(pdg)));</div>
+<div class="line"><span class="lineno">  142</span>    }</div>
+<div class="line"><span class="lineno">  143</span>  }</div>
+<div class="line"><span class="lineno">  144</span>  <a class="code hl_variable" href="classCaloScoringPlanePID.html#a1ef0185d42873a2b776680a6d80472ee">fEnergies</a> = energies;</div>
+<div class="line"><span class="lineno">  145</span>  <a class="code hl_variable" href="classCaloScoringPlanePID.html#a53e5d569708e222b1806f3c6c1be3bdb">fMatrices</a> = matrices;</div>
+<div class="line"><span class="lineno">  146</span>  <a class="code hl_variable" href="classCaloScoringPlanePID.html#a88c3d6628b2b591cdbf0ff01cec5a128">fOverrides</a> = std::move(byAbsPdg);</div>
+<div class="line"><span class="lineno">  147</span>  <a class="code hl_variable" href="classCaloScoringPlanePID.html#a17f2b9e113ec17a418a6212e9821da6a">fLogInterpolation</a> = logInterpolation;</div>
+<div class="line"><span class="lineno">  148</span>}</div>
 <div class="ttc" id="anamespacerun__fixedTarget_html_a68f8e54ebe34ed88a1aff4505c32be7c"><div class="ttname"><a href="namespacerun__fixedTarget.html#a68f8e54ebe34ed88a1aff4505c32be7c">run_fixedTarget.x</a></div><div class="ttdeci">x</div><div class="ttdef"><b>Definition</b> <a href="run__fixedTarget_8py_source.html#l00705">run_fixedTarget.py:705</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -800,14 +879,14 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="CaloScoringPlanePID_8cxx_source.html#l00082">82</a> of file <a class="el" href="CaloScoringPlanePID_8cxx_source.html">CaloScoringPlanePID.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   82</span>                                      {</div>
-<div class="line"><span class="lineno">   83</span>  <a class="code hl_variable" href="classCaloScoringPlanePID.html#a1ef0185d42873a2b776680a6d80472ee">fEnergies</a> = {1.0};</div>
-<div class="line"><span class="lineno">   84</span>  <a class="code hl_variable" href="classCaloScoringPlanePID.html#a53e5d569708e222b1806f3c6c1be3bdb">fMatrices</a>.assign(9, 0.);</div>
-<div class="line"><span class="lineno">   85</span>  <span class="keywordflow">for</span> (Int_t i = 0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt; <a class="code hl_variable" href="classCaloScoringPlanePID.html#a26a9358185415412fe5c3ad0c96f804a">kNSpecies</a>; ++<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>) <a class="code hl_variable" href="classCaloScoringPlanePID.html#a53e5d569708e222b1806f3c6c1be3bdb">fMatrices</a>[3 * i + i] = 1.;</div>
-<div class="line"><span class="lineno">   86</span>  <a class="code hl_variable" href="classCaloScoringPlanePID.html#a88c3d6628b2b591cdbf0ff01cec5a128">fOverrides</a>.clear();</div>
-<div class="line"><span class="lineno">   87</span>  <a class="code hl_variable" href="classCaloScoringPlanePID.html#a17f2b9e113ec17a418a6212e9821da6a">fLogInterpolation</a> = kFALSE;</div>
-<div class="line"><span class="lineno">   88</span>}</div>
+<p class="definition">Definition at line <a class="el" href="CaloScoringPlanePID_8cxx_source.html#l00084">84</a> of file <a class="el" href="CaloScoringPlanePID_8cxx_source.html">CaloScoringPlanePID.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   84</span>                                      {</div>
+<div class="line"><span class="lineno">   85</span>  <a class="code hl_variable" href="classCaloScoringPlanePID.html#a1ef0185d42873a2b776680a6d80472ee">fEnergies</a> = {1.0};</div>
+<div class="line"><span class="lineno">   86</span>  <a class="code hl_variable" href="classCaloScoringPlanePID.html#a53e5d569708e222b1806f3c6c1be3bdb">fMatrices</a>.assign(9, 0.);</div>
+<div class="line"><span class="lineno">   87</span>  <span class="keywordflow">for</span> (Int_t i = 0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt; <a class="code hl_variable" href="classCaloScoringPlanePID.html#a26a9358185415412fe5c3ad0c96f804a">kNSpecies</a>; ++<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>) <a class="code hl_variable" href="classCaloScoringPlanePID.html#a53e5d569708e222b1806f3c6c1be3bdb">fMatrices</a>[3 * i + i] = 1.;</div>
+<div class="line"><span class="lineno">   88</span>  <a class="code hl_variable" href="classCaloScoringPlanePID.html#a88c3d6628b2b591cdbf0ff01cec5a128">fOverrides</a>.clear();</div>
+<div class="line"><span class="lineno">   89</span>  <a class="code hl_variable" href="classCaloScoringPlanePID.html#a17f2b9e113ec17a418a6212e9821da6a">fLogInterpolation</a> = kFALSE;</div>
+<div class="line"><span class="lineno">   90</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -835,19 +914,19 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="CaloScoringPlanePID_8cxx_source.html#l00242">242</a> of file <a class="el" href="CaloScoringPlanePID_8cxx_source.html">CaloScoringPlanePID.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  242</span>                                                          {</div>
-<div class="line"><span class="lineno">  243</span>  <span class="keywordflow">switch</span> (species) {</div>
-<div class="line"><span class="lineno">  244</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="classCaloScoringPlanePID.html#a7ed72c68bbd487eb1bdf59037e0f93e5a58f9d8e884b2eac72fc053cc52325e20">kElectron</a>:</div>
-<div class="line"><span class="lineno">  245</span>      <span class="keywordflow">return</span> <span class="stringliteral">&quot;electron&quot;</span>;</div>
-<div class="line"><span class="lineno">  246</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="classCaloScoringPlanePID.html#a7ed72c68bbd487eb1bdf59037e0f93e5afad35b37d8569e7ada4a256581033caa">kHadron</a>:</div>
-<div class="line"><span class="lineno">  247</span>      <span class="keywordflow">return</span> <span class="stringliteral">&quot;hadron&quot;</span>;</div>
-<div class="line"><span class="lineno">  248</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="classCaloScoringPlanePID.html#a7ed72c68bbd487eb1bdf59037e0f93e5a303b70357cb16eea6fcae8113fc4ecc9">kMuon</a>:</div>
-<div class="line"><span class="lineno">  249</span>      <span class="keywordflow">return</span> <span class="stringliteral">&quot;muon&quot;</span>;</div>
-<div class="line"><span class="lineno">  250</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">  251</span>      <span class="keywordflow">return</span> <span class="stringliteral">&quot;unknown&quot;</span>;</div>
-<div class="line"><span class="lineno">  252</span>  }</div>
-<div class="line"><span class="lineno">  253</span>}</div>
+<p class="definition">Definition at line <a class="el" href="CaloScoringPlanePID_8cxx_source.html#l00252">252</a> of file <a class="el" href="CaloScoringPlanePID_8cxx_source.html">CaloScoringPlanePID.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  252</span>                                                          {</div>
+<div class="line"><span class="lineno">  253</span>  <span class="keywordflow">switch</span> (species) {</div>
+<div class="line"><span class="lineno">  254</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="classCaloScoringPlanePID.html#a7ed72c68bbd487eb1bdf59037e0f93e5a58f9d8e884b2eac72fc053cc52325e20">kElectron</a>:</div>
+<div class="line"><span class="lineno">  255</span>      <span class="keywordflow">return</span> <span class="stringliteral">&quot;electron&quot;</span>;</div>
+<div class="line"><span class="lineno">  256</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="classCaloScoringPlanePID.html#a7ed72c68bbd487eb1bdf59037e0f93e5afad35b37d8569e7ada4a256581033caa">kHadron</a>:</div>
+<div class="line"><span class="lineno">  257</span>      <span class="keywordflow">return</span> <span class="stringliteral">&quot;hadron&quot;</span>;</div>
+<div class="line"><span class="lineno">  258</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="classCaloScoringPlanePID.html#a7ed72c68bbd487eb1bdf59037e0f93e5a303b70357cb16eea6fcae8113fc4ecc9">kMuon</a>:</div>
+<div class="line"><span class="lineno">  259</span>      <span class="keywordflow">return</span> <span class="stringliteral">&quot;muon&quot;</span>;</div>
+<div class="line"><span class="lineno">  260</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">  261</span>      <span class="keywordflow">return</span> <span class="stringliteral">&quot;unknown&quot;</span>;</div>
+<div class="line"><span class="lineno">  262</span>  }</div>
+<div class="line"><span class="lineno">  263</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -868,17 +947,17 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>True species for a PDG code (overrides applied). </p>
 
-<p class="definition">Definition at line <a class="el" href="CaloScoringPlanePID_8cxx_source.html#l00148">148</a> of file <a class="el" href="CaloScoringPlanePID_8cxx_source.html">CaloScoringPlanePID.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  148</span>                                                                           {</div>
-<div class="line"><span class="lineno">  149</span>  <span class="keyword">const</span> Int_t a = std::abs(pdg);</div>
-<div class="line"><span class="lineno">  150</span>  <span class="keywordflow">if</span> (<span class="keyword">auto</span> it = <a class="code hl_variable" href="classCaloScoringPlanePID.html#a88c3d6628b2b591cdbf0ff01cec5a128">fOverrides</a>.find(a); it != <a class="code hl_variable" href="classCaloScoringPlanePID.html#a88c3d6628b2b591cdbf0ff01cec5a128">fOverrides</a>.end()) {</div>
-<div class="line"><span class="lineno">  151</span>    <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><a class="code hl_enumeration" href="classCaloScoringPlanePID.html#a7ed72c68bbd487eb1bdf59037e0f93e5">Species</a><span class="keyword">&gt;</span>(it-&gt;second);</div>
-<div class="line"><span class="lineno">  152</span>  }</div>
-<div class="line"><span class="lineno">  153</span>  <span class="keywordflow">if</span> (a == 11) <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="classCaloScoringPlanePID.html#a7ed72c68bbd487eb1bdf59037e0f93e5a58f9d8e884b2eac72fc053cc52325e20">kElectron</a>;</div>
-<div class="line"><span class="lineno">  154</span>  <span class="keywordflow">if</span> (a == 13) <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="classCaloScoringPlanePID.html#a7ed72c68bbd487eb1bdf59037e0f93e5a303b70357cb16eea6fcae8113fc4ecc9">kMuon</a>;</div>
-<div class="line"><span class="lineno">  155</span>  <span class="keywordflow">if</span> (IsHadronCode(a)) <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="classCaloScoringPlanePID.html#a7ed72c68bbd487eb1bdf59037e0f93e5afad35b37d8569e7ada4a256581033caa">kHadron</a>;</div>
-<div class="line"><span class="lineno">  156</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="classCaloScoringPlanePID.html#a7ed72c68bbd487eb1bdf59037e0f93e5a30390fd8794fc97f6db1999e2a39415f">kUnknown</a>;</div>
-<div class="line"><span class="lineno">  157</span>}</div>
+<p class="definition">Definition at line <a class="el" href="CaloScoringPlanePID_8cxx_source.html#l00150">150</a> of file <a class="el" href="CaloScoringPlanePID_8cxx_source.html">CaloScoringPlanePID.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  150</span>                                                                           {</div>
+<div class="line"><span class="lineno">  151</span>  <span class="keyword">const</span> Int_t a = std::abs(pdg);</div>
+<div class="line"><span class="lineno">  152</span>  <span class="keywordflow">if</span> (<span class="keyword">auto</span> it = <a class="code hl_variable" href="classCaloScoringPlanePID.html#a88c3d6628b2b591cdbf0ff01cec5a128">fOverrides</a>.find(a); it != <a class="code hl_variable" href="classCaloScoringPlanePID.html#a88c3d6628b2b591cdbf0ff01cec5a128">fOverrides</a>.end()) {</div>
+<div class="line"><span class="lineno">  153</span>    <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><a class="code hl_enumeration" href="classCaloScoringPlanePID.html#a7ed72c68bbd487eb1bdf59037e0f93e5">Species</a><span class="keyword">&gt;</span>(it-&gt;second);</div>
+<div class="line"><span class="lineno">  154</span>  }</div>
+<div class="line"><span class="lineno">  155</span>  <span class="keywordflow">if</span> (a == 11) <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="classCaloScoringPlanePID.html#a7ed72c68bbd487eb1bdf59037e0f93e5a58f9d8e884b2eac72fc053cc52325e20">kElectron</a>;</div>
+<div class="line"><span class="lineno">  156</span>  <span class="keywordflow">if</span> (a == 13) <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="classCaloScoringPlanePID.html#a7ed72c68bbd487eb1bdf59037e0f93e5a303b70357cb16eea6fcae8113fc4ecc9">kMuon</a>;</div>
+<div class="line"><span class="lineno">  157</span>  <span class="keywordflow">if</span> (IsHadronCode(a)) <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="classCaloScoringPlanePID.html#a7ed72c68bbd487eb1bdf59037e0f93e5afad35b37d8569e7ada4a256581033caa">kHadron</a>;</div>
+<div class="line"><span class="lineno">  158</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="classCaloScoringPlanePID.html#a7ed72c68bbd487eb1bdf59037e0f93e5a30390fd8794fc97f6db1999e2a39415f">kUnknown</a>;</div>
+<div class="line"><span class="lineno">  159</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -905,7 +984,7 @@ Private Attributes</h2></td></tr>
 
 <p>GeV, strictly increasing. </p>
 
-<p class="definition">Definition at line <a class="el" href="CaloScoringPlanePID_8h_source.html#l00124">124</a> of file <a class="el" href="CaloScoringPlanePID_8h_source.html">CaloScoringPlanePID.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="CaloScoringPlanePID_8h_source.html#l00129">129</a> of file <a class="el" href="CaloScoringPlanePID_8h_source.html">CaloScoringPlanePID.h</a>.</p>
 
 </div>
 </div>
@@ -929,7 +1008,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="CaloScoringPlanePID_8h_source.html#l00127">127</a> of file <a class="el" href="CaloScoringPlanePID_8h_source.html">CaloScoringPlanePID.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="CaloScoringPlanePID_8h_source.html#l00132">132</a> of file <a class="el" href="CaloScoringPlanePID_8h_source.html">CaloScoringPlanePID.h</a>.</p>
 
 </div>
 </div>
@@ -955,7 +1034,7 @@ Private Attributes</h2></td></tr>
 
 <p>9 per energy, row-major, internal order </p>
 
-<p class="definition">Definition at line <a class="el" href="CaloScoringPlanePID_8h_source.html#l00125">125</a> of file <a class="el" href="CaloScoringPlanePID_8h_source.html">CaloScoringPlanePID.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="CaloScoringPlanePID_8h_source.html#l00130">130</a> of file <a class="el" href="CaloScoringPlanePID_8h_source.html">CaloScoringPlanePID.h</a>.</p>
 
 </div>
 </div>
@@ -981,7 +1060,7 @@ Private Attributes</h2></td></tr>
 
 <p>|pdg| -&gt; Species </p>
 
-<p class="definition">Definition at line <a class="el" href="CaloScoringPlanePID_8h_source.html#l00126">126</a> of file <a class="el" href="CaloScoringPlanePID_8h_source.html">CaloScoringPlanePID.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="CaloScoringPlanePID_8h_source.html#l00131">131</a> of file <a class="el" href="CaloScoringPlanePID_8h_source.html">CaloScoringPlanePID.h</a>.</p>
 
 </div>
 </div>
@@ -1005,7 +1084,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="CaloScoringPlanePID_8h_source.html#l00055">55</a> of file <a class="el" href="CaloScoringPlanePID_8h_source.html">CaloScoringPlanePID.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="CaloScoringPlanePID_8h_source.html#l00056">56</a> of file <a class="el" href="CaloScoringPlanePID_8h_source.html">CaloScoringPlanePID.h</a>.</p>
 
 </div>
 </div>

@@ -268,7 +268,7 @@ var searchData=
   ['mpy_265',['mpy',['../classHNLPythia8Generator.html#a2285f1abc4eecc67be0712a5f3f25975',1,'HNLPythia8Generator::mpy'],['../classPythia8Generator.html#ae127d6b028a354ae4837892d67281948',1,'Pythia8Generator::mpy']]],
   ['mpz_266',['mpz',['../classHNLPythia8Generator.html#a70feb7848811e1cbf8cb9c6da36252ca',1,'HNLPythia8Generator::mpz'],['../classPythia8Generator.html#a4293febece9d96d1df5abd7742647d98',1,'Pythia8Generator::mpz']]],
   ['mrad_267',['mrad',['../namespaceshipunit.html#a68470ac1d4e534a27bd592d2c0f74f8e',1,'shipunit.mrad'],['../namespacehepunit.html#a10c95da4c77bea32e5c84fd00910100d',1,'hepunit.mrad']]],
-  ['ms_268',['ms',['../namespaceshipunit.html#ab39ed707ab31771904e9d9a34b9ea95d',1,'shipunit.ms'],['../namespacehepunit.html#a6873f9620ecd5384620eec4a92f2beae',1,'hepunit.ms'],['../namespaceShipMuDIS.html#a6e84a21bf00778eafdce1fb4cb1cff55aec92cccd93ac6cccad9974e1799701a6',1,'ShipMuDIS::MS']]],
+  ['ms_268',['ms',['../namespacehepunit.html#a6873f9620ecd5384620eec4a92f2beae',1,'hepunit.ms'],['../namespaceShipMuDIS.html#a6e84a21bf00778eafdce1fb4cb1cff55aec92cccd93ac6cccad9974e1799701a6',1,'ShipMuDIS::MS'],['../namespaceshipunit.html#ab39ed707ab31771904e9d9a34b9ea95d',1,'shipunit.ms']]],
   ['msel_269',['msel',['../namespacerunCharmHadProd.html#a8ecfb19b19a9c961567df617be80b2a2',1,'runCharmHadProd']]],
   ['mtc_270',['SND and MTC',['../md_CHANGELOG.html#autotoc_md69',1,'']]],
   ['mtc_20and_20snd_271',['MTC and SND',['../md_CHANGELOG.html#autotoc_md78',1,'']]],

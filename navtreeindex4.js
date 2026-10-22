@@ -1,5 +1,8 @@
 var NAVTREEINDEX4 =
 {
+"classEventHistogram.html#a32d6420371c3d6e31cbc7b90700686ab":[10,0,43,9],
+"classEventHistogram.html#a333161e4eda9c98cce7cdb9387cb1fe5":[10,0,43,23],
+"classEventHistogram.html#a34a9ec95511ed91a9aab8a5c822788a6":[10,0,43,12],
 "classEventHistogram.html#a38be3295ae01cd277b14b155bc3ebc3f":[10,0,43,18],
 "classEventHistogram.html#a3b76045e006638feeb63268fb3975a47":[10,0,43,14],
 "classEventHistogram.html#a4d93228e783f808630d301bac70025df":[10,0,43,19],
@@ -246,8 +249,5 @@ var NAVTREEINDEX4 =
 "classHNLPythia8Generator.html#a571c46bff6eb108bc0118f74f8098241":[10,0,49,40],
 "classHNLPythia8Generator.html#a594b731c29232744d8a3980fbe3e4dec":[10,0,49,45],
 "classHNLPythia8Generator.html#a5aad52eae7045c93ac6eb56a34b7304d":[10,0,49,5],
-"classHNLPythia8Generator.html#a6b5288b0e7e34e762a5c310d7a495a0b":[10,0,49,29],
-"classHNLPythia8Generator.html#a6be32a40e40958ead362d03660029196":[10,0,49,38],
-"classHNLPythia8Generator.html#a6c5b8e6c9cc4c42967e256e809ea9dca":[10,0,49,27],
-"classHNLPythia8Generator.html#a70feb7848811e1cbf8cb9c6da36252ca":[10,0,49,53]
+"classHNLPythia8Generator.html#a6b5288b0e7e34e762a5c310d7a495a0b":[10,0,49,29]
 };
