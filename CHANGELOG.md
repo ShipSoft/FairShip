@@ -19,6 +19,7 @@ it in future.
 ### Changed
 
 * The hit lists in `Tracklets` and `fitTrack2MC` now come from fitted states. They therefore leave out any surface that ACTS skipped. #1537
+* `--patRec Segments` handles busy events and tracks far from the magnet axis. On neutrino DIS events (149 jobs of one seed of the gsimple sample, 183k reconstructible tracks) it finds 95.8 ± 0.1% of the tracks instead of 86.9 ± 0.1%, and 93.5% of the vertices instead of 80.4%, with 0.7% ghosts. In the 1.3% of events with more than 500 straw hits, where GenFit with AR finds almost nothing, it finds 89% (500-1000 hits) and 72% (more) of the tracks. A job of 2200 such events takes about 5 minutes; before, the median was 1.8 hours and some jobs ran over 8 hours. Segments are matched across the magnet with the integrals of Bx and By along the pair, because away from the axis the magnet also kicks tracks in x, and every pair that matches is a candidate for the track fit. Hits are looked up by bisection in sorted layers, the line fits solve fixed-size normal equations, repeated lines are merged and the search in the stereo views is bounded. On common-vertex muon events the efficiency rises by 0.2 to 2.4%, and on HNL decays by 0.7%.
 
 ## 26.11 - 2026-11-26
 
