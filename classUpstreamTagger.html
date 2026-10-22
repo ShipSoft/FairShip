@@ -196,7 +196,7 @@ Public Attributes</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
 <tr class="memitem:a18f903973a0b35a9472d2016195f72a3" id="r_a18f903973a0b35a9472d2016195f72a3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUpstreamTagger.html#a18f903973a0b35a9472d2016195f72a3">UpstreamTagger</a> (const <a class="el" href="classUpstreamTagger.html">UpstreamTagger</a> &amp;)=delete</td></tr>
-<tr class="memdesc:a18f903973a0b35a9472d2016195f72a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">allocated longitudinal space  <br /></td></tr>
+<tr class="memdesc:a18f903973a0b35a9472d2016195f72a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">current track entered the region (not born in it)  <br /></td></tr>
 <tr class="separator:a18f903973a0b35a9472d2016195f72a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab857469173016e305f2cff460d3bb75e" id="r_ab857469173016e305f2cff460d3bb75e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classUpstreamTagger.html">UpstreamTagger</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUpstreamTagger.html#ab857469173016e305f2cff460d3bb75e">operator=</a> (const <a class="el" href="classUpstreamTagger.html">UpstreamTagger</a> &amp;)=delete</td></tr>
 <tr class="separator:ab857469173016e305f2cff460d3bb75e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -220,6 +220,9 @@ Private Attributes</h2></td></tr>
 <tr class="memitem:ab6b9092fd8640c278ffa1a6251a95bcd" id="r_ab6b9092fd8640c278ffa1a6251a95bcd"><td class="memItemLeft" align="right" valign="top">Double_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUpstreamTagger.html#ab6b9092fd8640c278ffa1a6251a95bcd">fEnvelopeZ</a> = 0.</td></tr>
 <tr class="memdesc:ab6b9092fd8640c278ffa1a6251a95bcd"><td class="mdescLeft">&#160;</td><td class="mdescRight">detector centre y  <br /></td></tr>
 <tr class="separator:ab6b9092fd8640c278ffa1a6251a95bcd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abdb0370e3a21a05a263555328150f662" id="r_abdb0370e3a21a05a263555328150f662"><td class="memItemLeft" align="right" valign="top">Bool_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUpstreamTagger.html#abdb0370e3a21a05a263555328150f662">fEntered</a></td></tr>
+<tr class="memdesc:abdb0370e3a21a05a263555328150f662"><td class="mdescLeft">&#160;</td><td class="mdescRight">allocated longitudinal space  <br /></td></tr>
+<tr class="separator:abdb0370e3a21a05a263555328150f662"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -255,9 +258,9 @@ Additional Inherited Members</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Upstream Background Tagger (UBT) detector. </p>
-<p>The active plane is split into coarse regions, generated on the UBT box from the rule in geometry/UpstreamTagger_config.yaml (see <a class="el" href="namespaceshipDet__conf.html#a3801fceafab5b1b123396da08cf2651a">shipDet_conf.configure_upstream_tagger</a>). Each region records whether it represents 20 x 20 or 40 x 40 mm^2 polystyrene scintillator tiles. Optical photon production and transport are deliberately not simulated here: an MC point stores the energy deposited in a mapped region, identified by its copy number. </p>
+<p>The active plane is split into coarse regions, generated on the UBT box from the rule in geometry/UpstreamTagger_config.yaml (see <a class="el" href="namespaceshipDet__conf.html#a3801fceafab5b1b123396da08cf2651a">shipDet_conf.configure_upstream_tagger</a>). Each region records whether it represents 20 x 20 or 40 x 40 mm^2 polystyrene scintillator tiles. Optical photon production and transport are deliberately not simulated here: an MC point stores the energy deposited in a mapped region, identified by its copy number. Only points of tracks entering a region count towards keeping their track in MCTrack, not those of secondaries created in the plastic. </p>
 
-<p class="definition">Definition at line <a class="el" href="UpstreamTagger_8h_source.html#l00030">30</a> of file <a class="el" href="UpstreamTagger_8h_source.html">UpstreamTagger.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="UpstreamTagger_8h_source.html#l00032">32</a> of file <a class="el" href="UpstreamTagger_8h_source.html">UpstreamTagger.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a63dd607c0d6d84c20955d21d8dd72342" name="a63dd607c0d6d84c20955d21d8dd72342"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a63dd607c0d6d84c20955d21d8dd72342">&#9670;&#160;</a></span>UpstreamTagger() <span class="overload">[1/3]</span></h2>
@@ -286,11 +289,11 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p>Name : Detector Name Active: kTRUE for active detectors (<a class="el" href="classUpstreamTagger.html#a50e84425f21f58a52a73fc5474eb1641">ProcessHits()</a> will be called) kFALSE for inactive detectors </p>
 
-<p class="definition">Definition at line <a class="el" href="UpstreamTagger_8cxx_source.html#l00028">28</a> of file <a class="el" href="UpstreamTagger_8cxx_source.html">UpstreamTagger.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   29</span>    : <a class="code hl_function" href="classSHiP_1_1Detector.html#ae2bab78eb81793a0bdf1e79ee2e19eb4">Detector</a>(name, active, <a class="code hl_enumvalue" href="ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680a2f144cb97461008fcd3693cc5555461f">kUpstreamTagger</a>), <a class="code hl_variable" href="classUpstreamTagger.html#ab1b1bb2c25cc683210e456daecfecdc8">det_zPos</a>(0) {}</div>
+<p class="definition">Definition at line <a class="el" href="UpstreamTagger_8cxx_source.html#l00029">29</a> of file <a class="el" href="UpstreamTagger_8cxx_source.html">UpstreamTagger.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   30</span>    : <a class="code hl_function" href="classSHiP_1_1Detector.html#ae2bab78eb81793a0bdf1e79ee2e19eb4">Detector</a>(name, active, <a class="code hl_enumvalue" href="ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680a2f144cb97461008fcd3693cc5555461f">kUpstreamTagger</a>), <a class="code hl_variable" href="classUpstreamTagger.html#ab1b1bb2c25cc683210e456daecfecdc8">det_zPos</a>(0) {}</div>
 <div class="ttc" id="aShipDetectorList_8h_html_a1806da1a0fbae8ab81f7330906f65680a2f144cb97461008fcd3693cc5555461f"><div class="ttname"><a href="ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680a2f144cb97461008fcd3693cc5555461f">kUpstreamTagger</a></div><div class="ttdeci">@ kUpstreamTagger</div><div class="ttdef"><b>Definition</b> <a href="ShipDetectorList_8h_source.html#l00038">ShipDetectorList.h:38</a></div></div>
 <div class="ttc" id="aclassSHiP_1_1Detector_html_ae2bab78eb81793a0bdf1e79ee2e19eb4"><div class="ttname"><a href="classSHiP_1_1Detector.html#ae2bab78eb81793a0bdf1e79ee2e19eb4">SHiP::Detector&lt; UpstreamTaggerPoint &gt;::Detector</a></div><div class="ttdeci">Detector()=default</div></div>
-<div class="ttc" id="aclassUpstreamTagger_html_ab1b1bb2c25cc683210e456daecfecdc8"><div class="ttname"><a href="classUpstreamTagger.html#ab1b1bb2c25cc683210e456daecfecdc8">UpstreamTagger::det_zPos</a></div><div class="ttdeci">Double_t det_zPos</div><div class="ttdef"><b>Definition</b> <a href="UpstreamTagger_8h_source.html#l00075">UpstreamTagger.h:75</a></div></div>
+<div class="ttc" id="aclassUpstreamTagger_html_ab1b1bb2c25cc683210e456daecfecdc8"><div class="ttname"><a href="classUpstreamTagger.html#ab1b1bb2c25cc683210e456daecfecdc8">UpstreamTagger::det_zPos</a></div><div class="ttdeci">Double_t det_zPos</div><div class="ttdef"><b>Definition</b> <a href="UpstreamTagger_8h_source.html#l00077">UpstreamTagger.h:77</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -310,8 +313,8 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p>default constructor </p>
 
-<p class="definition">Definition at line <a class="el" href="UpstreamTagger_8cxx_source.html#l00025">25</a> of file <a class="el" href="UpstreamTagger_8cxx_source.html">UpstreamTagger.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   26</span>    : <a class="code hl_function" href="classSHiP_1_1Detector.html#ae2bab78eb81793a0bdf1e79ee2e19eb4">Detector</a>(<span class="stringliteral">&quot;UpstreamTagger&quot;</span>, kTRUE, <a class="code hl_enumvalue" href="ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680a2f144cb97461008fcd3693cc5555461f">kUpstreamTagger</a>), <a class="code hl_variable" href="classUpstreamTagger.html#ab1b1bb2c25cc683210e456daecfecdc8">det_zPos</a>(0) {}</div>
+<p class="definition">Definition at line <a class="el" href="UpstreamTagger_8cxx_source.html#l00026">26</a> of file <a class="el" href="UpstreamTagger_8cxx_source.html">UpstreamTagger.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   27</span>    : <a class="code hl_function" href="classSHiP_1_1Detector.html#ae2bab78eb81793a0bdf1e79ee2e19eb4">Detector</a>(<span class="stringliteral">&quot;UpstreamTagger&quot;</span>, kTRUE, <a class="code hl_enumvalue" href="ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680a2f144cb97461008fcd3693cc5555461f">kUpstreamTagger</a>), <a class="code hl_variable" href="classUpstreamTagger.html#ab1b1bb2c25cc683210e456daecfecdc8">det_zPos</a>(0) {}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -339,7 +342,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>allocated longitudinal space </p>
+<p>current track entered the region (not born in it) </p>
 
 </div>
 </div>
@@ -409,12 +412,12 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p>Add one coarse simulation region from the UBT detector map. constituentTileSize, the side of its tiles, is retained in centimetres so that the same detector ID can later select the digitization response of its tiles; thickness is that of its tiles. </p>
 
-<p class="definition">Definition at line <a class="el" href="UpstreamTagger_8h_source.html#l00063">63</a> of file <a class="el" href="UpstreamTagger_8h_source.html">UpstreamTagger.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   65</span>                                     {</div>
-<div class="line"><span class="lineno">   66</span>    <a class="code hl_variable" href="classUpstreamTagger.html#a8511b063bd7ec6ae49f4984133ebab28">fRegions</a>.push_back(</div>
-<div class="line"><span class="lineno">   67</span>        {<a class="code hl_variable" href="namespacemakeCascade.html#a55ced533804f50a9850abd7104f12e53">id</a>, <a class="code hl_variable" href="namespacerun__fixedTarget.html#a68f8e54ebe34ed88a1aff4505c32be7c">x</a>, <a class="code hl_variable" href="namespacerun__tracking__scan.html#a60149f5e9c7fe53ba27d5ee50faa64de">y</a>, sizeX, sizeY, constituentTileSize, <a class="code hl_variable" href="namespacestudy__GammaConv.html#a07854bb8bfaae44603d03642d1e042ad">thickness</a>});</div>
-<div class="line"><span class="lineno">   68</span>  }</div>
-<div class="ttc" id="aclassUpstreamTagger_html_a8511b063bd7ec6ae49f4984133ebab28"><div class="ttname"><a href="classUpstreamTagger.html#a8511b063bd7ec6ae49f4984133ebab28">UpstreamTagger::fRegions</a></div><div class="ttdeci">std::vector&lt; Region &gt; fRegions</div><div class="ttdef"><b>Definition</b> <a href="UpstreamTagger_8h_source.html#l00089">UpstreamTagger.h:89</a></div></div>
+<p class="definition">Definition at line <a class="el" href="UpstreamTagger_8h_source.html#l00065">65</a> of file <a class="el" href="UpstreamTagger_8h_source.html">UpstreamTagger.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   67</span>                                     {</div>
+<div class="line"><span class="lineno">   68</span>    <a class="code hl_variable" href="classUpstreamTagger.html#a8511b063bd7ec6ae49f4984133ebab28">fRegions</a>.push_back(</div>
+<div class="line"><span class="lineno">   69</span>        {<a class="code hl_variable" href="namespacemakeCascade.html#a55ced533804f50a9850abd7104f12e53">id</a>, <a class="code hl_variable" href="namespacerun__fixedTarget.html#a68f8e54ebe34ed88a1aff4505c32be7c">x</a>, <a class="code hl_variable" href="namespacerun__tracking__scan.html#a60149f5e9c7fe53ba27d5ee50faa64de">y</a>, sizeX, sizeY, constituentTileSize, <a class="code hl_variable" href="namespacestudy__GammaConv.html#a07854bb8bfaae44603d03642d1e042ad">thickness</a>});</div>
+<div class="line"><span class="lineno">   70</span>  }</div>
+<div class="ttc" id="aclassUpstreamTagger_html_a8511b063bd7ec6ae49f4984133ebab28"><div class="ttname"><a href="classUpstreamTagger.html#a8511b063bd7ec6ae49f4984133ebab28">UpstreamTagger::fRegions</a></div><div class="ttdeci">std::vector&lt; Region &gt; fRegions</div><div class="ttdef"><b>Definition</b> <a href="UpstreamTagger_8h_source.html#l00091">UpstreamTagger.h:91</a></div></div>
 <div class="ttc" id="anamespacemakeCascade_html_a55ced533804f50a9850abd7104f12e53"><div class="ttname"><a href="namespacemakeCascade.html#a55ced533804f50a9850abd7104f12e53">makeCascade.id</a></div><div class="ttdeci">int id</div><div class="ttdef"><b>Definition</b> <a href="makeCascade_8py_source.html#l00234">makeCascade.py:234</a></div></div>
 <div class="ttc" id="anamespacerun__fixedTarget_html_a68f8e54ebe34ed88a1aff4505c32be7c"><div class="ttname"><a href="namespacerun__fixedTarget.html#a68f8e54ebe34ed88a1aff4505c32be7c">run_fixedTarget.x</a></div><div class="ttdeci">x</div><div class="ttdef"><b>Definition</b> <a href="run__fixedTarget_8py_source.html#l00705">run_fixedTarget.py:705</a></div></div>
 <div class="ttc" id="anamespacerun__tracking__scan_html_a60149f5e9c7fe53ba27d5ee50faa64de"><div class="ttname"><a href="namespacerun__tracking__scan.html#a60149f5e9c7fe53ba27d5ee50faa64de">run_tracking_scan.y</a></div><div class="ttdeci">y</div><div class="ttdef"><b>Definition</b> <a href="run__tracking__scan_8py_source.html#l00327">run_tracking_scan.py:327</a></div></div>
@@ -448,75 +451,90 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classSHiP_1_1Detector.html#a5904684ed427b3620dc01d9d66450d51">SHiP::Detector&lt; UpstreamTaggerPoint &gt;</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="UpstreamTagger_8cxx_source.html#l00082">82</a> of file <a class="el" href="UpstreamTagger_8cxx_source.html">UpstreamTagger.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   82</span>                                       {</div>
-<div class="line"><span class="lineno">   83</span>  TGeoVolume* <a class="code hl_variable" href="namespaceeventDisplay.html#adedb83676a54edf1159c60c4e308ea97">top</a> = gGeoManager-&gt;GetTopVolume();</div>
-<div class="line"><span class="lineno">   84</span> </div>
-<div class="line"><span class="lineno">   85</span>  <a class="code hl_function" href="namespaceShipGeo.html#a41fa6e1cd4e92f644524675c6850e934">ShipGeo::InitMedium</a>(<span class="stringliteral">&quot;Scintillator&quot;</span>);</div>
-<div class="line"><span class="lineno">   86</span>  TGeoMedium* scintillator = gGeoManager-&gt;GetMedium(<span class="stringliteral">&quot;Scintillator&quot;</span>);</div>
-<div class="line"><span class="lineno">   87</span>  <span class="keywordflow">if</span> (!scintillator) {</div>
-<div class="line"><span class="lineno">   88</span>    Fatal(<span class="stringliteral">&quot;ConstructGeometry&quot;</span>, <span class="stringliteral">&quot;Medium &#39;Scintillator&#39; not found.&quot;</span>);</div>
-<div class="line"><span class="lineno">   89</span>  }</div>
-<div class="line"><span class="lineno">   90</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classUpstreamTagger.html#a8511b063bd7ec6ae49f4984133ebab28">fRegions</a>.empty()) {</div>
-<div class="line"><span class="lineno">   91</span>    Fatal(<span class="stringliteral">&quot;ConstructGeometry&quot;</span>, <span class="stringliteral">&quot;No regions loaded from the UBT detector map.&quot;</span>);</div>
-<div class="line"><span class="lineno">   92</span>  }</div>
-<div class="line"><span class="lineno">   93</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classUpstreamTagger.html#a048265f0225eebd7fa4d07c4a673d7e4">fSizeX</a> &lt;= 0. || <a class="code hl_variable" href="classUpstreamTagger.html#aa323357ed2924e40fc75d66184d7d8a7">fSizeY</a> &lt;= 0. || <a class="code hl_variable" href="classUpstreamTagger.html#ab6b9092fd8640c278ffa1a6251a95bcd">fEnvelopeZ</a> &lt;= 0.) {</div>
-<div class="line"><span class="lineno">   94</span>    Fatal(<span class="stringliteral">&quot;ConstructGeometry&quot;</span>, <span class="stringliteral">&quot;UBT box dimensions not set.&quot;</span>);</div>
-<div class="line"><span class="lineno">   95</span>  }</div>
-<div class="line"><span class="lineno">   96</span> </div>
-<div class="line"><span class="lineno">   97</span>  <a class="code hl_variable" href="classSHiP_1_1Detector.html#a97ab161eb00fb79673c501a571781c39">fDetector</a> = <span class="keyword">new</span> TGeoVolumeAssembly(<span class="stringliteral">&quot;Upstream_Tagger&quot;</span>);</div>
-<div class="line"><span class="lineno">   98</span> </div>
-<div class="line"><span class="lineno">   99</span>  std::map&lt;Double_t, Int_t&gt; regionsPerTileSize;</div>
-<div class="line"><span class="lineno">  100</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> Region&amp; region : <a class="code hl_variable" href="classUpstreamTagger.html#a8511b063bd7ec6ae49f4984133ebab28">fRegions</a>) {</div>
-<div class="line"><span class="lineno">  101</span>    <span class="keywordflow">if</span> (region.sizeX &lt;= 0. || region.sizeY &lt;= 0.) {</div>
-<div class="line"><span class="lineno">  102</span>      Fatal(<span class="stringliteral">&quot;ConstructGeometry&quot;</span>, <span class="stringliteral">&quot;UBT region %d has a non-positive size.&quot;</span>,</div>
-<div class="line"><span class="lineno">  103</span>            region.id);</div>
-<div class="line"><span class="lineno">  104</span>    }</div>
-<div class="line"><span class="lineno">  105</span>    <span class="keywordflow">if</span> (region.thickness &lt;= 0. || region.thickness &gt; <a class="code hl_variable" href="classUpstreamTagger.html#ab6b9092fd8640c278ffa1a6251a95bcd">fEnvelopeZ</a>) {</div>
-<div class="line"><span class="lineno">  106</span>      Fatal(<span class="stringliteral">&quot;ConstructGeometry&quot;</span>,</div>
-<div class="line"><span class="lineno">  107</span>            <span class="stringliteral">&quot;UBT region %d: the thickness %g cm of its %g cm tiles is not in &quot;</span></div>
-<div class="line"><span class="lineno">  108</span>            <span class="stringliteral">&quot;(0, %g] cm, the space reserved for the UBT.&quot;</span>,</div>
-<div class="line"><span class="lineno">  109</span>            region.id, region.thickness, region.constituentTileSize,</div>
-<div class="line"><span class="lineno">  110</span>            <a class="code hl_variable" href="classUpstreamTagger.html#ab6b9092fd8640c278ffa1a6251a95bcd">fEnvelopeZ</a>);</div>
-<div class="line"><span class="lineno">  111</span>    }</div>
-<div class="line"><span class="lineno">  112</span>    <span class="keywordflow">if</span> (std::abs(region.x - <a class="code hl_variable" href="classUpstreamTagger.html#a43b72c6cfe5761d939e2f7fd31a15de7">fCenterX</a>) + region.sizeX / 2. &gt; <a class="code hl_variable" href="classUpstreamTagger.html#a048265f0225eebd7fa4d07c4a673d7e4">fSizeX</a> / 2. ||</div>
-<div class="line"><span class="lineno">  113</span>        std::abs(region.y - <a class="code hl_variable" href="classUpstreamTagger.html#a1960bf9a7dba760ed43306dc14961969">fCenterY</a>) + region.sizeY / 2. &gt; <a class="code hl_variable" href="classUpstreamTagger.html#aa323357ed2924e40fc75d66184d7d8a7">fSizeY</a> / 2.) {</div>
-<div class="line"><span class="lineno">  114</span>      Fatal(<span class="stringliteral">&quot;ConstructGeometry&quot;</span>, <span class="stringliteral">&quot;UBT region %d lies outside the UBT box.&quot;</span>,</div>
-<div class="line"><span class="lineno">  115</span>            region.id);</div>
-<div class="line"><span class="lineno">  116</span>    }</div>
-<div class="line"><span class="lineno">  117</span>    <span class="keyword">const</span> TString volumeName =</div>
-<div class="line"><span class="lineno">  118</span>        TString::Format(<span class="stringliteral">&quot;UpstreamTaggerRegion%d_%dcm&quot;</span>, region.id,</div>
-<div class="line"><span class="lineno">  119</span>                        <span class="keyword">static_cast&lt;</span>Int_t<span class="keyword">&gt;</span>(region.constituentTileSize));</div>
-<div class="line"><span class="lineno">  120</span>    TGeoVolume* regionVolume =</div>
-<div class="line"><span class="lineno">  121</span>        gGeoManager-&gt;MakeBox(volumeName, scintillator, region.sizeX / 2.,</div>
-<div class="line"><span class="lineno">  122</span>                             region.sizeY / 2., region.thickness / 2.);</div>
-<div class="line"><span class="lineno">  123</span>    <span class="comment">// A shade of blue per tile size in the event display.</span></div>
-<div class="line"><span class="lineno">  124</span>    regionVolume-&gt;SetLineColor(kBlue -</div>
-<div class="line"><span class="lineno">  125</span>                               <span class="keyword">static_cast&lt;</span>Int_t<span class="keyword">&gt;</span>(region.constituentTileSize));</div>
-<div class="line"><span class="lineno">  126</span>    AddSensitiveVolume(regionVolume);</div>
-<div class="line"><span class="lineno">  127</span>    <a class="code hl_variable" href="classSHiP_1_1Detector.html#a97ab161eb00fb79673c501a571781c39">fDetector</a>-&gt;AddNode(regionVolume, region.id,</div>
-<div class="line"><span class="lineno">  128</span>                       <span class="keyword">new</span> TGeoTranslation(region.x, region.y, 0.));</div>
-<div class="line"><span class="lineno">  129</span>    ++regionsPerTileSize[region.constituentTileSize];</div>
-<div class="line"><span class="lineno">  130</span>  }</div>
-<div class="line"><span class="lineno">  131</span> </div>
-<div class="line"><span class="lineno">  132</span>  <a class="code hl_variable" href="namespaceeventDisplay.html#adedb83676a54edf1159c60c4e308ea97">top</a>-&gt;AddNode(<a class="code hl_variable" href="classSHiP_1_1Detector.html#a97ab161eb00fb79673c501a571781c39">fDetector</a>, 1, <span class="keyword">new</span> TGeoTranslation(0., 0., <a class="code hl_variable" href="classUpstreamTagger.html#ab1b1bb2c25cc683210e456daecfecdc8">det_zPos</a>));</div>
-<div class="line"><span class="lineno">  133</span>  cout &lt;&lt; <span class="stringliteral">&quot; Z Position (Upstream Tagger) &quot;</span> &lt;&lt; <a class="code hl_variable" href="classUpstreamTagger.html#ab1b1bb2c25cc683210e456daecfecdc8">det_zPos</a> &lt;&lt; <span class="stringliteral">&quot;, &quot;</span></div>
-<div class="line"><span class="lineno">  134</span>       &lt;&lt; <a class="code hl_variable" href="classUpstreamTagger.html#a8511b063bd7ec6ae49f4984133ebab28">fRegions</a>.size() &lt;&lt; <span class="stringliteral">&quot; mapped regions (&quot;</span>;</div>
-<div class="line"><span class="lineno">  135</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> it = regionsPerTileSize.begin(); it != regionsPerTileSize.end();</div>
-<div class="line"><span class="lineno">  136</span>       ++it) {</div>
-<div class="line"><span class="lineno">  137</span>    cout &lt;&lt; (it == regionsPerTileSize.begin() ? <span class="stringliteral">&quot;&quot;</span> : <span class="stringliteral">&quot;, &quot;</span>) &lt;&lt; it-&gt;second</div>
-<div class="line"><span class="lineno">  138</span>         &lt;&lt; <span class="stringliteral">&quot; with &quot;</span> &lt;&lt; it-&gt;first &lt;&lt; <span class="stringliteral">&quot; cm tiles&quot;</span>;</div>
-<div class="line"><span class="lineno">  139</span>  }</div>
-<div class="line"><span class="lineno">  140</span>  cout &lt;&lt; <span class="stringliteral">&quot;)&quot;</span> &lt;&lt; endl;</div>
-<div class="line"><span class="lineno">  141</span>}</div>
+<p class="definition">Definition at line <a class="el" href="UpstreamTagger_8cxx_source.html#l00092">92</a> of file <a class="el" href="UpstreamTagger_8cxx_source.html">UpstreamTagger.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   92</span>                                       {</div>
+<div class="line"><span class="lineno">   93</span>  TGeoVolume* <a class="code hl_variable" href="namespaceeventDisplay.html#adedb83676a54edf1159c60c4e308ea97">top</a> = gGeoManager-&gt;GetTopVolume();</div>
+<div class="line"><span class="lineno">   94</span> </div>
+<div class="line"><span class="lineno">   95</span>  <a class="code hl_function" href="namespaceShipGeo.html#a41fa6e1cd4e92f644524675c6850e934">ShipGeo::InitMedium</a>(<span class="stringliteral">&quot;Scintillator&quot;</span>);</div>
+<div class="line"><span class="lineno">   96</span>  TGeoMedium* scintillator = gGeoManager-&gt;GetMedium(<span class="stringliteral">&quot;Scintillator&quot;</span>);</div>
+<div class="line"><span class="lineno">   97</span>  <span class="keywordflow">if</span> (!scintillator) {</div>
+<div class="line"><span class="lineno">   98</span>    Fatal(<span class="stringliteral">&quot;ConstructGeometry&quot;</span>, <span class="stringliteral">&quot;Medium &#39;Scintillator&#39; not found.&quot;</span>);</div>
+<div class="line"><span class="lineno">   99</span>  }</div>
+<div class="line"><span class="lineno">  100</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classUpstreamTagger.html#a8511b063bd7ec6ae49f4984133ebab28">fRegions</a>.empty()) {</div>
+<div class="line"><span class="lineno">  101</span>    Fatal(<span class="stringliteral">&quot;ConstructGeometry&quot;</span>, <span class="stringliteral">&quot;No regions loaded from the UBT detector map.&quot;</span>);</div>
+<div class="line"><span class="lineno">  102</span>  }</div>
+<div class="line"><span class="lineno">  103</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classUpstreamTagger.html#a048265f0225eebd7fa4d07c4a673d7e4">fSizeX</a> &lt;= 0. || <a class="code hl_variable" href="classUpstreamTagger.html#aa323357ed2924e40fc75d66184d7d8a7">fSizeY</a> &lt;= 0. || <a class="code hl_variable" href="classUpstreamTagger.html#ab6b9092fd8640c278ffa1a6251a95bcd">fEnvelopeZ</a> &lt;= 0.) {</div>
+<div class="line"><span class="lineno">  104</span>    Fatal(<span class="stringliteral">&quot;ConstructGeometry&quot;</span>, <span class="stringliteral">&quot;UBT box dimensions not set.&quot;</span>);</div>
+<div class="line"><span class="lineno">  105</span>  }</div>
+<div class="line"><span class="lineno">  106</span> </div>
+<div class="line"><span class="lineno">  107</span>  <a class="code hl_variable" href="classSHiP_1_1Detector.html#a97ab161eb00fb79673c501a571781c39">fDetector</a> = <span class="keyword">new</span> TGeoVolumeAssembly(<span class="stringliteral">&quot;Upstream_Tagger&quot;</span>);</div>
+<div class="line"><span class="lineno">  108</span> </div>
+<div class="line"><span class="lineno">  109</span>  std::map&lt;Double_t, Int_t&gt; regionsPerTileSize;</div>
+<div class="line"><span class="lineno">  110</span>  <span class="comment">// Regions of the same shape share one volume, placed with the region ID as</span></div>
+<div class="line"><span class="lineno">  111</span>  <span class="comment">// copy number: most regions are full 20 x 20 cm2 squares, and only the</span></div>
+<div class="line"><span class="lineno">  112</span>  <span class="comment">// regions cut by the box edges differ. Sizes are keyed in um so that</span></div>
+<div class="line"><span class="lineno">  113</span>  <span class="comment">// rounding differences between equal regions do not split them.</span></div>
+<div class="line"><span class="lineno">  114</span>  <span class="keyword">using </span>ShapeKey = std::tuple&lt;Long64_t, Long64_t, Long64_t, Long64_t&gt;;</div>
+<div class="line"><span class="lineno">  115</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespaceshipunit.html#a266d8161500fa2769e26c7ad8c9283f6">um</a> = [](Double_t length) { <span class="keywordflow">return</span> std::llround(length * 1.0e4); };</div>
+<div class="line"><span class="lineno">  116</span>  std::map&lt;ShapeKey, TGeoVolume*&gt; volumes;</div>
+<div class="line"><span class="lineno">  117</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> Region&amp; region : <a class="code hl_variable" href="classUpstreamTagger.html#a8511b063bd7ec6ae49f4984133ebab28">fRegions</a>) {</div>
+<div class="line"><span class="lineno">  118</span>    <span class="keywordflow">if</span> (region.sizeX &lt;= 0. || region.sizeY &lt;= 0.) {</div>
+<div class="line"><span class="lineno">  119</span>      Fatal(<span class="stringliteral">&quot;ConstructGeometry&quot;</span>, <span class="stringliteral">&quot;UBT region %d has a non-positive size.&quot;</span>,</div>
+<div class="line"><span class="lineno">  120</span>            region.id);</div>
+<div class="line"><span class="lineno">  121</span>    }</div>
+<div class="line"><span class="lineno">  122</span>    <span class="keywordflow">if</span> (region.thickness &lt;= 0. || region.thickness &gt; <a class="code hl_variable" href="classUpstreamTagger.html#ab6b9092fd8640c278ffa1a6251a95bcd">fEnvelopeZ</a>) {</div>
+<div class="line"><span class="lineno">  123</span>      Fatal(<span class="stringliteral">&quot;ConstructGeometry&quot;</span>,</div>
+<div class="line"><span class="lineno">  124</span>            <span class="stringliteral">&quot;UBT region %d: the thickness %g cm of its %g cm tiles is not in &quot;</span></div>
+<div class="line"><span class="lineno">  125</span>            <span class="stringliteral">&quot;(0, %g] cm, the space reserved for the UBT.&quot;</span>,</div>
+<div class="line"><span class="lineno">  126</span>            region.id, region.thickness, region.constituentTileSize,</div>
+<div class="line"><span class="lineno">  127</span>            <a class="code hl_variable" href="classUpstreamTagger.html#ab6b9092fd8640c278ffa1a6251a95bcd">fEnvelopeZ</a>);</div>
+<div class="line"><span class="lineno">  128</span>    }</div>
+<div class="line"><span class="lineno">  129</span>    <span class="keywordflow">if</span> (std::abs(region.x - <a class="code hl_variable" href="classUpstreamTagger.html#a43b72c6cfe5761d939e2f7fd31a15de7">fCenterX</a>) + region.sizeX / 2. &gt; <a class="code hl_variable" href="classUpstreamTagger.html#a048265f0225eebd7fa4d07c4a673d7e4">fSizeX</a> / 2. ||</div>
+<div class="line"><span class="lineno">  130</span>        std::abs(region.y - <a class="code hl_variable" href="classUpstreamTagger.html#a1960bf9a7dba760ed43306dc14961969">fCenterY</a>) + region.sizeY / 2. &gt; <a class="code hl_variable" href="classUpstreamTagger.html#aa323357ed2924e40fc75d66184d7d8a7">fSizeY</a> / 2.) {</div>
+<div class="line"><span class="lineno">  131</span>      Fatal(<span class="stringliteral">&quot;ConstructGeometry&quot;</span>, <span class="stringliteral">&quot;UBT region %d lies outside the UBT box.&quot;</span>,</div>
+<div class="line"><span class="lineno">  132</span>            region.id);</div>
+<div class="line"><span class="lineno">  133</span>    }</div>
+<div class="line"><span class="lineno">  134</span>    <span class="keyword">const</span> ShapeKey shape{<a class="code hl_variable" href="namespaceshipunit.html#a266d8161500fa2769e26c7ad8c9283f6">um</a>(region.sizeX), <a class="code hl_variable" href="namespaceshipunit.html#a266d8161500fa2769e26c7ad8c9283f6">um</a>(region.sizeY),</div>
+<div class="line"><span class="lineno">  135</span>                         <a class="code hl_variable" href="namespaceshipunit.html#a266d8161500fa2769e26c7ad8c9283f6">um</a>(region.thickness), <a class="code hl_variable" href="namespaceshipunit.html#a266d8161500fa2769e26c7ad8c9283f6">um</a>(region.constituentTileSize)};</div>
+<div class="line"><span class="lineno">  136</span>    TGeoVolume*&amp; regionVolume = volumes[shape];</div>
+<div class="line"><span class="lineno">  137</span>    <span class="keywordflow">if</span> (!regionVolume) {</div>
+<div class="line"><span class="lineno">  138</span>      <span class="comment">// UpstreamTaggerRegion_&lt;tile size&gt;cm_&lt;shape number&gt;: the tile size is</span></div>
+<div class="line"><span class="lineno">  139</span>      <span class="comment">// read back by UpstreamTaggerDetector.validate_stored_geometry.</span></div>
+<div class="line"><span class="lineno">  140</span>      <span class="keyword">const</span> TString volumeName = TString::Format(</div>
+<div class="line"><span class="lineno">  141</span>          <span class="stringliteral">&quot;UpstreamTaggerRegion_%dcm_%zu&quot;</span>,</div>
+<div class="line"><span class="lineno">  142</span>          <span class="keyword">static_cast&lt;</span>Int_t<span class="keyword">&gt;</span>(region.constituentTileSize), volumes.size() - 1);</div>
+<div class="line"><span class="lineno">  143</span>      regionVolume =</div>
+<div class="line"><span class="lineno">  144</span>          gGeoManager-&gt;MakeBox(volumeName, scintillator, region.sizeX / 2.,</div>
+<div class="line"><span class="lineno">  145</span>                               region.sizeY / 2., region.thickness / 2.);</div>
+<div class="line"><span class="lineno">  146</span>      <span class="comment">// A shade of blue per tile size in the event display.</span></div>
+<div class="line"><span class="lineno">  147</span>      regionVolume-&gt;SetLineColor(</div>
+<div class="line"><span class="lineno">  148</span>          kBlue - <span class="keyword">static_cast&lt;</span>Int_t<span class="keyword">&gt;</span>(region.constituentTileSize));</div>
+<div class="line"><span class="lineno">  149</span>      AddSensitiveVolume(regionVolume);</div>
+<div class="line"><span class="lineno">  150</span>    }</div>
+<div class="line"><span class="lineno">  151</span>    <a class="code hl_variable" href="classSHiP_1_1Detector.html#a97ab161eb00fb79673c501a571781c39">fDetector</a>-&gt;AddNode(regionVolume, region.id,</div>
+<div class="line"><span class="lineno">  152</span>                       <span class="keyword">new</span> TGeoTranslation(region.x, region.y, 0.));</div>
+<div class="line"><span class="lineno">  153</span>    ++regionsPerTileSize[region.constituentTileSize];</div>
+<div class="line"><span class="lineno">  154</span>  }</div>
+<div class="line"><span class="lineno">  155</span> </div>
+<div class="line"><span class="lineno">  156</span>  <a class="code hl_variable" href="namespaceeventDisplay.html#adedb83676a54edf1159c60c4e308ea97">top</a>-&gt;AddNode(<a class="code hl_variable" href="classSHiP_1_1Detector.html#a97ab161eb00fb79673c501a571781c39">fDetector</a>, 1, <span class="keyword">new</span> TGeoTranslation(0., 0., <a class="code hl_variable" href="classUpstreamTagger.html#ab1b1bb2c25cc683210e456daecfecdc8">det_zPos</a>));</div>
+<div class="line"><span class="lineno">  157</span>  cout &lt;&lt; <span class="stringliteral">&quot; Z Position (Upstream Tagger) &quot;</span> &lt;&lt; <a class="code hl_variable" href="classUpstreamTagger.html#ab1b1bb2c25cc683210e456daecfecdc8">det_zPos</a> &lt;&lt; <span class="stringliteral">&quot;, &quot;</span></div>
+<div class="line"><span class="lineno">  158</span>       &lt;&lt; <a class="code hl_variable" href="classUpstreamTagger.html#a8511b063bd7ec6ae49f4984133ebab28">fRegions</a>.size() &lt;&lt; <span class="stringliteral">&quot; mapped regions (&quot;</span>;</div>
+<div class="line"><span class="lineno">  159</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> it = regionsPerTileSize.begin(); it != regionsPerTileSize.end();</div>
+<div class="line"><span class="lineno">  160</span>       ++it) {</div>
+<div class="line"><span class="lineno">  161</span>    cout &lt;&lt; (it == regionsPerTileSize.begin() ? <span class="stringliteral">&quot;&quot;</span> : <span class="stringliteral">&quot;, &quot;</span>) &lt;&lt; it-&gt;second</div>
+<div class="line"><span class="lineno">  162</span>         &lt;&lt; <span class="stringliteral">&quot; with &quot;</span> &lt;&lt; it-&gt;first &lt;&lt; <span class="stringliteral">&quot; cm tiles&quot;</span>;</div>
+<div class="line"><span class="lineno">  163</span>  }</div>
+<div class="line"><span class="lineno">  164</span>  cout &lt;&lt; <span class="stringliteral">&quot;) in &quot;</span> &lt;&lt; volumes.size() &lt;&lt; <span class="stringliteral">&quot; region shapes&quot;</span> &lt;&lt; endl;</div>
+<div class="line"><span class="lineno">  165</span>}</div>
 <div class="ttc" id="aclassSHiP_1_1Detector_html_a97ab161eb00fb79673c501a571781c39"><div class="ttname"><a href="classSHiP_1_1Detector.html#a97ab161eb00fb79673c501a571781c39">SHiP::Detector&lt; UpstreamTaggerPoint &gt;::fDetector</a></div><div class="ttdeci">TGeoVolume * fDetector</div><div class="ttdef"><b>Definition</b> <a href="Detector_8h_source.html#l00092">Detector.h:92</a></div></div>
-<div class="ttc" id="aclassUpstreamTagger_html_a048265f0225eebd7fa4d07c4a673d7e4"><div class="ttname"><a href="classUpstreamTagger.html#a048265f0225eebd7fa4d07c4a673d7e4">UpstreamTagger::fSizeX</a></div><div class="ttdeci">Double_t fSizeX</div><div class="ttdoc">coarse regions loaded from detector map</div><div class="ttdef"><b>Definition</b> <a href="UpstreamTagger_8h_source.html#l00090">UpstreamTagger.h:90</a></div></div>
-<div class="ttc" id="aclassUpstreamTagger_html_a1960bf9a7dba760ed43306dc14961969"><div class="ttname"><a href="classUpstreamTagger.html#a1960bf9a7dba760ed43306dc14961969">UpstreamTagger::fCenterY</a></div><div class="ttdeci">Double_t fCenterY</div><div class="ttdoc">detector centre x</div><div class="ttdef"><b>Definition</b> <a href="UpstreamTagger_8h_source.html#l00093">UpstreamTagger.h:93</a></div></div>
-<div class="ttc" id="aclassUpstreamTagger_html_a43b72c6cfe5761d939e2f7fd31a15de7"><div class="ttname"><a href="classUpstreamTagger.html#a43b72c6cfe5761d939e2f7fd31a15de7">UpstreamTagger::fCenterX</a></div><div class="ttdeci">Double_t fCenterX</div><div class="ttdoc">detector height</div><div class="ttdef"><b>Definition</b> <a href="UpstreamTagger_8h_source.html#l00092">UpstreamTagger.h:92</a></div></div>
-<div class="ttc" id="aclassUpstreamTagger_html_aa323357ed2924e40fc75d66184d7d8a7"><div class="ttname"><a href="classUpstreamTagger.html#aa323357ed2924e40fc75d66184d7d8a7">UpstreamTagger::fSizeY</a></div><div class="ttdeci">Double_t fSizeY</div><div class="ttdoc">detector width</div><div class="ttdef"><b>Definition</b> <a href="UpstreamTagger_8h_source.html#l00091">UpstreamTagger.h:91</a></div></div>
-<div class="ttc" id="aclassUpstreamTagger_html_ab6b9092fd8640c278ffa1a6251a95bcd"><div class="ttname"><a href="classUpstreamTagger.html#ab6b9092fd8640c278ffa1a6251a95bcd">UpstreamTagger::fEnvelopeZ</a></div><div class="ttdeci">Double_t fEnvelopeZ</div><div class="ttdoc">detector centre y</div><div class="ttdef"><b>Definition</b> <a href="UpstreamTagger_8h_source.html#l00094">UpstreamTagger.h:94</a></div></div>
+<div class="ttc" id="aclassUpstreamTagger_html_a048265f0225eebd7fa4d07c4a673d7e4"><div class="ttname"><a href="classUpstreamTagger.html#a048265f0225eebd7fa4d07c4a673d7e4">UpstreamTagger::fSizeX</a></div><div class="ttdeci">Double_t fSizeX</div><div class="ttdoc">coarse regions loaded from detector map</div><div class="ttdef"><b>Definition</b> <a href="UpstreamTagger_8h_source.html#l00092">UpstreamTagger.h:92</a></div></div>
+<div class="ttc" id="aclassUpstreamTagger_html_a1960bf9a7dba760ed43306dc14961969"><div class="ttname"><a href="classUpstreamTagger.html#a1960bf9a7dba760ed43306dc14961969">UpstreamTagger::fCenterY</a></div><div class="ttdeci">Double_t fCenterY</div><div class="ttdoc">detector centre x</div><div class="ttdef"><b>Definition</b> <a href="UpstreamTagger_8h_source.html#l00095">UpstreamTagger.h:95</a></div></div>
+<div class="ttc" id="aclassUpstreamTagger_html_a43b72c6cfe5761d939e2f7fd31a15de7"><div class="ttname"><a href="classUpstreamTagger.html#a43b72c6cfe5761d939e2f7fd31a15de7">UpstreamTagger::fCenterX</a></div><div class="ttdeci">Double_t fCenterX</div><div class="ttdoc">detector height</div><div class="ttdef"><b>Definition</b> <a href="UpstreamTagger_8h_source.html#l00094">UpstreamTagger.h:94</a></div></div>
+<div class="ttc" id="aclassUpstreamTagger_html_aa323357ed2924e40fc75d66184d7d8a7"><div class="ttname"><a href="classUpstreamTagger.html#aa323357ed2924e40fc75d66184d7d8a7">UpstreamTagger::fSizeY</a></div><div class="ttdeci">Double_t fSizeY</div><div class="ttdoc">detector width</div><div class="ttdef"><b>Definition</b> <a href="UpstreamTagger_8h_source.html#l00093">UpstreamTagger.h:93</a></div></div>
+<div class="ttc" id="aclassUpstreamTagger_html_ab6b9092fd8640c278ffa1a6251a95bcd"><div class="ttname"><a href="classUpstreamTagger.html#ab6b9092fd8640c278ffa1a6251a95bcd">UpstreamTagger::fEnvelopeZ</a></div><div class="ttdeci">Double_t fEnvelopeZ</div><div class="ttdoc">detector centre y</div><div class="ttdef"><b>Definition</b> <a href="UpstreamTagger_8h_source.html#l00096">UpstreamTagger.h:96</a></div></div>
 <div class="ttc" id="anamespaceShipGeo_html_a41fa6e1cd4e92f644524675c6850e934"><div class="ttname"><a href="namespaceShipGeo.html#a41fa6e1cd4e92f644524675c6850e934">ShipGeo::InitMedium</a></div><div class="ttdeci">Int_t InitMedium(const char *name)</div><div class="ttdef"><b>Definition</b> <a href="ShipGeoUtil_8h_source.html#l00022">ShipGeoUtil.h:22</a></div></div>
 <div class="ttc" id="anamespaceeventDisplay_html_adedb83676a54edf1159c60c4e308ea97"><div class="ttname"><a href="namespaceeventDisplay.html#adedb83676a54edf1159c60c4e308ea97">eventDisplay.top</a></div><div class="ttdeci">top</div><div class="ttdef"><b>Definition</b> <a href="eventDisplay_8py_source.html#l01272">eventDisplay.py:1272</a></div></div>
+<div class="ttc" id="anamespaceshipunit_html_a266d8161500fa2769e26c7ad8c9283f6"><div class="ttname"><a href="namespaceshipunit.html#a266d8161500fa2769e26c7ad8c9283f6">shipunit.um</a></div><div class="ttdeci">float um</div><div class="ttdef"><b>Definition</b> <a href="shipunit_8py_source.html#l00051">shipunit.py:51</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -572,56 +590,65 @@ Additional Inherited Members</h2></td></tr>
 <p>this method is called for each step during simulation (see FairMCApplication::Stepping()) </p>
 <p>This method is called from the MC stepping</p>
 
-<p class="definition">Definition at line <a class="el" href="UpstreamTagger_8cxx_source.html#l00031">31</a> of file <a class="el" href="UpstreamTagger_8cxx_source.html">UpstreamTagger.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   31</span>                                                  {</div>
-<div class="line"><span class="lineno">   33</span>  <span class="comment">// Set parameters at entrance of volume, or at the first step of a track</span></div>
-<div class="line"><span class="lineno">   34</span>  <span class="comment">// created inside it (e.g. a delta ray). Reset ELoss.</span></div>
-<div class="line"><span class="lineno">   35</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;IsTrackEntering() || <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;IsNewTrack()) {</div>
-<div class="line"><span class="lineno">   36</span>    <a class="code hl_variable" href="classSHiP_1_1Detector.html#a73510d2ac4e0508cd8297620923db8e4">fELoss</a> = 0.;</div>
-<div class="line"><span class="lineno">   37</span>    <a class="code hl_variable" href="classSHiP_1_1Detector.html#a59b2901f4062e764c35947220fe99cee">fTime</a> = <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;TrackTime() * 1.0e09;</div>
-<div class="line"><span class="lineno">   38</span>    <a class="code hl_variable" href="classSHiP_1_1Detector.html#ae214ab7c082d1472301f659910703f70">fLength</a> = <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;TrackLength();</div>
-<div class="line"><span class="lineno">   39</span>    <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;TrackPosition(<a class="code hl_variable" href="classSHiP_1_1Detector.html#a5017601ade4c6805f6685562092b72f4">fPos</a>);</div>
-<div class="line"><span class="lineno">   40</span>    <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;TrackMomentum(<a class="code hl_variable" href="classSHiP_1_1Detector.html#a9a38f37bdd864a330614332b9846f206">fMom</a>);</div>
-<div class="line"><span class="lineno">   41</span>  }</div>
-<div class="line"><span class="lineno">   42</span> </div>
-<div class="line"><span class="lineno">   43</span>  <span class="comment">// Sum energy loss for all steps in the active volume</span></div>
-<div class="line"><span class="lineno">   44</span>  <a class="code hl_variable" href="classSHiP_1_1Detector.html#a73510d2ac4e0508cd8297620923db8e4">fELoss</a> += <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;Edep();</div>
+<p class="definition">Definition at line <a class="el" href="UpstreamTagger_8cxx_source.html#l00032">32</a> of file <a class="el" href="UpstreamTagger_8cxx_source.html">UpstreamTagger.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   32</span>                                                  {</div>
+<div class="line"><span class="lineno">   34</span>  <span class="comment">// Set parameters at entrance of volume, or at the first step of a track</span></div>
+<div class="line"><span class="lineno">   35</span>  <span class="comment">// created inside it (e.g. a delta ray). Reset ELoss.</span></div>
+<div class="line"><span class="lineno">   36</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;IsTrackEntering() || <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;IsNewTrack()) {</div>
+<div class="line"><span class="lineno">   37</span>    <span class="comment">// Geant4 VMC also flags the first step of a new track as entering.</span></div>
+<div class="line"><span class="lineno">   38</span>    <a class="code hl_variable" href="classUpstreamTagger.html#abdb0370e3a21a05a263555328150f662">fEntered</a> = !<a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;IsNewTrack();</div>
+<div class="line"><span class="lineno">   39</span>    <a class="code hl_variable" href="classSHiP_1_1Detector.html#a73510d2ac4e0508cd8297620923db8e4">fELoss</a> = 0.;</div>
+<div class="line"><span class="lineno">   40</span>    <a class="code hl_variable" href="classSHiP_1_1Detector.html#a59b2901f4062e764c35947220fe99cee">fTime</a> = <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;TrackTime() * 1.0e09;</div>
+<div class="line"><span class="lineno">   41</span>    <a class="code hl_variable" href="classSHiP_1_1Detector.html#ae214ab7c082d1472301f659910703f70">fLength</a> = <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;TrackLength();</div>
+<div class="line"><span class="lineno">   42</span>    <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;TrackPosition(<a class="code hl_variable" href="classSHiP_1_1Detector.html#a5017601ade4c6805f6685562092b72f4">fPos</a>);</div>
+<div class="line"><span class="lineno">   43</span>    <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;TrackMomentum(<a class="code hl_variable" href="classSHiP_1_1Detector.html#a9a38f37bdd864a330614332b9846f206">fMom</a>);</div>
+<div class="line"><span class="lineno">   44</span>  }</div>
 <div class="line"><span class="lineno">   45</span> </div>
-<div class="line"><span class="lineno">   46</span>  <span class="comment">// Create vetoPoint at exit of active volume</span></div>
-<div class="line"><span class="lineno">   47</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;IsTrackExiting() || <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;IsTrackStop() ||</div>
-<div class="line"><span class="lineno">   48</span>      <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;IsTrackDisappeared()) {</div>
-<div class="line"><span class="lineno">   49</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classSHiP_1_1Detector.html#a73510d2ac4e0508cd8297620923db8e4">fELoss</a> == 0.) {</div>
-<div class="line"><span class="lineno">   50</span>      <span class="keywordflow">return</span> kFALSE;</div>
-<div class="line"><span class="lineno">   51</span>    }</div>
-<div class="line"><span class="lineno">   52</span> </div>
-<div class="line"><span class="lineno">   53</span>    <a class="code hl_variable" href="classSHiP_1_1Detector.html#a0f51e2d392c158d28d09fc71e9ef6a88">fTrackID</a> = <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;GetStack()-&gt;GetCurrentTrackNumber();</div>
-<div class="line"><span class="lineno">   54</span>    <a class="code hl_variable" href="classSHiP_1_1Detector.html#ac4ba571377f2accd0775e010df940ba1">fEventID</a> = <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;CurrentEvent();</div>
-<div class="line"><span class="lineno">   55</span>    Int_t tileId;</div>
-<div class="line"><span class="lineno">   56</span>    <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;CurrentVolID(tileId);</div>
-<div class="line"><span class="lineno">   57</span> </div>
-<div class="line"><span class="lineno">   58</span>    TParticle* <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a> = <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;GetStack()-&gt;GetCurrentTrack();</div>
-<div class="line"><span class="lineno">   59</span>    Int_t pdgCode = <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;GetPdgCode();</div>
-<div class="line"><span class="lineno">   60</span>    TLorentzVector Pos;</div>
-<div class="line"><span class="lineno">   61</span>    <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;TrackPosition(Pos);</div>
-<div class="line"><span class="lineno">   62</span>    TLorentzVector Mom;</div>
-<div class="line"><span class="lineno">   63</span>    <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;TrackMomentum(Mom);</div>
-<div class="line"><span class="lineno">   64</span>    Double_t xmean = (<a class="code hl_variable" href="classSHiP_1_1Detector.html#a5017601ade4c6805f6685562092b72f4">fPos</a>.X() + Pos.X()) / 2.;</div>
-<div class="line"><span class="lineno">   65</span>    Double_t ymean = (<a class="code hl_variable" href="classSHiP_1_1Detector.html#a5017601ade4c6805f6685562092b72f4">fPos</a>.Y() + Pos.Y()) / 2.;</div>
-<div class="line"><span class="lineno">   66</span>    Double_t zmean = (<a class="code hl_variable" href="classSHiP_1_1Detector.html#a5017601ade4c6805f6685562092b72f4">fPos</a>.Z() + Pos.Z()) / 2.;</div>
-<div class="line"><span class="lineno">   67</span> </div>
-<div class="line"><span class="lineno">   68</span>    <a class="code hl_function" href="classSHiP_1_1Detector.html#a9885b9592a20ae576f27735098c33952">AddHit</a>(<a class="code hl_variable" href="classSHiP_1_1Detector.html#ac4ba571377f2accd0775e010df940ba1">fEventID</a>, <a class="code hl_variable" href="classSHiP_1_1Detector.html#a0f51e2d392c158d28d09fc71e9ef6a88">fTrackID</a>, tileId, TVector3(xmean, ymean, zmean),</div>
-<div class="line"><span class="lineno">   69</span>           TVector3(<a class="code hl_variable" href="classSHiP_1_1Detector.html#a9a38f37bdd864a330614332b9846f206">fMom</a>.Px(), <a class="code hl_variable" href="classSHiP_1_1Detector.html#a9a38f37bdd864a330614332b9846f206">fMom</a>.Py(), <a class="code hl_variable" href="classSHiP_1_1Detector.html#a9a38f37bdd864a330614332b9846f206">fMom</a>.Pz()), <a class="code hl_variable" href="classSHiP_1_1Detector.html#a59b2901f4062e764c35947220fe99cee">fTime</a>, <a class="code hl_variable" href="classSHiP_1_1Detector.html#ae214ab7c082d1472301f659910703f70">fLength</a>, <a class="code hl_variable" href="classSHiP_1_1Detector.html#a73510d2ac4e0508cd8297620923db8e4">fELoss</a>,</div>
-<div class="line"><span class="lineno">   70</span>           pdgCode, TVector3(Pos.X(), Pos.Y(), Pos.Z()),</div>
-<div class="line"><span class="lineno">   71</span>           TVector3(Mom.Px(), Mom.Py(), Mom.Pz()));</div>
-<div class="line"><span class="lineno">   72</span>    <a class="code hl_variable" href="classSHiP_1_1Detector.html#a73510d2ac4e0508cd8297620923db8e4">fELoss</a> = 0.;</div>
-<div class="line"><span class="lineno">   73</span> </div>
-<div class="line"><span class="lineno">   74</span>    <span class="comment">// Increment number of veto det points in TParticle</span></div>
-<div class="line"><span class="lineno">   75</span>    <a class="code hl_class" href="classShipStack.html">ShipStack</a>* <a class="code hl_variable" href="namespacemakeCascade.html#a4af6ee173bd7ee58725a4483fc98f07e">stack</a> = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classShipStack.html">ShipStack</a>*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;GetStack());</div>
-<div class="line"><span class="lineno">   76</span>    <a class="code hl_variable" href="namespacemakeCascade.html#a4af6ee173bd7ee58725a4483fc98f07e">stack</a>-&gt;AddPoint(<a class="code hl_enumvalue" href="ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680a2f144cb97461008fcd3693cc5555461f">kUpstreamTagger</a>);</div>
-<div class="line"><span class="lineno">   77</span>  }</div>
-<div class="line"><span class="lineno">   78</span> </div>
-<div class="line"><span class="lineno">   79</span>  <span class="keywordflow">return</span> kTRUE;</div>
-<div class="line"><span class="lineno">   80</span>}</div>
+<div class="line"><span class="lineno">   46</span>  <span class="comment">// Sum energy loss for all steps in the active volume</span></div>
+<div class="line"><span class="lineno">   47</span>  <a class="code hl_variable" href="classSHiP_1_1Detector.html#a73510d2ac4e0508cd8297620923db8e4">fELoss</a> += <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;Edep();</div>
+<div class="line"><span class="lineno">   48</span> </div>
+<div class="line"><span class="lineno">   49</span>  <span class="comment">// Create vetoPoint at exit of active volume</span></div>
+<div class="line"><span class="lineno">   50</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;IsTrackExiting() || <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;IsTrackStop() ||</div>
+<div class="line"><span class="lineno">   51</span>      <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;IsTrackDisappeared()) {</div>
+<div class="line"><span class="lineno">   52</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classSHiP_1_1Detector.html#a73510d2ac4e0508cd8297620923db8e4">fELoss</a> == 0.) {</div>
+<div class="line"><span class="lineno">   53</span>      <span class="keywordflow">return</span> kFALSE;</div>
+<div class="line"><span class="lineno">   54</span>    }</div>
+<div class="line"><span class="lineno">   55</span> </div>
+<div class="line"><span class="lineno">   56</span>    <a class="code hl_variable" href="classSHiP_1_1Detector.html#a0f51e2d392c158d28d09fc71e9ef6a88">fTrackID</a> = <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;GetStack()-&gt;GetCurrentTrackNumber();</div>
+<div class="line"><span class="lineno">   57</span>    <a class="code hl_variable" href="classSHiP_1_1Detector.html#ac4ba571377f2accd0775e010df940ba1">fEventID</a> = <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;CurrentEvent();</div>
+<div class="line"><span class="lineno">   58</span>    Int_t tileId;</div>
+<div class="line"><span class="lineno">   59</span>    <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;CurrentVolID(tileId);</div>
+<div class="line"><span class="lineno">   60</span> </div>
+<div class="line"><span class="lineno">   61</span>    TParticle* <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a> = <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;GetStack()-&gt;GetCurrentTrack();</div>
+<div class="line"><span class="lineno">   62</span>    Int_t pdgCode = <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;GetPdgCode();</div>
+<div class="line"><span class="lineno">   63</span>    TLorentzVector Pos;</div>
+<div class="line"><span class="lineno">   64</span>    <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;TrackPosition(Pos);</div>
+<div class="line"><span class="lineno">   65</span>    TLorentzVector Mom;</div>
+<div class="line"><span class="lineno">   66</span>    <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;TrackMomentum(Mom);</div>
+<div class="line"><span class="lineno">   67</span>    Double_t xmean = (<a class="code hl_variable" href="classSHiP_1_1Detector.html#a5017601ade4c6805f6685562092b72f4">fPos</a>.X() + Pos.X()) / 2.;</div>
+<div class="line"><span class="lineno">   68</span>    Double_t ymean = (<a class="code hl_variable" href="classSHiP_1_1Detector.html#a5017601ade4c6805f6685562092b72f4">fPos</a>.Y() + Pos.Y()) / 2.;</div>
+<div class="line"><span class="lineno">   69</span>    Double_t zmean = (<a class="code hl_variable" href="classSHiP_1_1Detector.html#a5017601ade4c6805f6685562092b72f4">fPos</a>.Z() + Pos.Z()) / 2.;</div>
+<div class="line"><span class="lineno">   70</span> </div>
+<div class="line"><span class="lineno">   71</span>    <a class="code hl_function" href="classSHiP_1_1Detector.html#a9885b9592a20ae576f27735098c33952">AddHit</a>(<a class="code hl_variable" href="classSHiP_1_1Detector.html#ac4ba571377f2accd0775e010df940ba1">fEventID</a>, <a class="code hl_variable" href="classSHiP_1_1Detector.html#a0f51e2d392c158d28d09fc71e9ef6a88">fTrackID</a>, tileId, TVector3(xmean, ymean, zmean),</div>
+<div class="line"><span class="lineno">   72</span>           TVector3(<a class="code hl_variable" href="classSHiP_1_1Detector.html#a9a38f37bdd864a330614332b9846f206">fMom</a>.Px(), <a class="code hl_variable" href="classSHiP_1_1Detector.html#a9a38f37bdd864a330614332b9846f206">fMom</a>.Py(), <a class="code hl_variable" href="classSHiP_1_1Detector.html#a9a38f37bdd864a330614332b9846f206">fMom</a>.Pz()), <a class="code hl_variable" href="classSHiP_1_1Detector.html#a59b2901f4062e764c35947220fe99cee">fTime</a>, <a class="code hl_variable" href="classSHiP_1_1Detector.html#ae214ab7c082d1472301f659910703f70">fLength</a>, <a class="code hl_variable" href="classSHiP_1_1Detector.html#a73510d2ac4e0508cd8297620923db8e4">fELoss</a>,</div>
+<div class="line"><span class="lineno">   73</span>           pdgCode, TVector3(Pos.X(), Pos.Y(), Pos.Z()),</div>
+<div class="line"><span class="lineno">   74</span>           TVector3(Mom.Px(), Mom.Py(), Mom.Pz()));</div>
+<div class="line"><span class="lineno">   75</span>    <a class="code hl_variable" href="classSHiP_1_1Detector.html#a73510d2ac4e0508cd8297620923db8e4">fELoss</a> = 0.;</div>
+<div class="line"><span class="lineno">   76</span> </div>
+<div class="line"><span class="lineno">   77</span>    <span class="comment">// Count a point for tracks that entered the region. A track created in</span></div>
+<div class="line"><span class="lineno">   78</span>    <span class="comment">// the plastic (delta ray, Compton electron) still gives a point, for its</span></div>
+<div class="line"><span class="lineno">   79</span>    <span class="comment">// energy deposit, but does not keep its track in MCTrack: with</span></div>
+<div class="line"><span class="lineno">   80</span>    <span class="comment">// MCTracksWithHitsOnly (--MuonBack) every soft electron of every crossing</span></div>
+<div class="line"><span class="lineno">   81</span>    <span class="comment">// muon would be kept. Its point gets track ID -2 unless the track is kept</span></div>
+<div class="line"><span class="lineno">   82</span>    <span class="comment">// for another reason.</span></div>
+<div class="line"><span class="lineno">   83</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classUpstreamTagger.html#abdb0370e3a21a05a263555328150f662">fEntered</a>) {</div>
+<div class="line"><span class="lineno">   84</span>      <a class="code hl_class" href="classShipStack.html">ShipStack</a>* <a class="code hl_variable" href="namespacemakeCascade.html#a4af6ee173bd7ee58725a4483fc98f07e">stack</a> = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classShipStack.html">ShipStack</a>*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;GetStack());</div>
+<div class="line"><span class="lineno">   85</span>      <a class="code hl_variable" href="namespacemakeCascade.html#a4af6ee173bd7ee58725a4483fc98f07e">stack</a>-&gt;AddPoint(<a class="code hl_enumvalue" href="ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680a2f144cb97461008fcd3693cc5555461f">kUpstreamTagger</a>);</div>
+<div class="line"><span class="lineno">   86</span>    }</div>
+<div class="line"><span class="lineno">   87</span>  }</div>
+<div class="line"><span class="lineno">   88</span> </div>
+<div class="line"><span class="lineno">   89</span>  <span class="keywordflow">return</span> kTRUE;</div>
+<div class="line"><span class="lineno">   90</span>}</div>
 <div class="ttc" id="aclassSHiP_1_1Detector_html_a0f51e2d392c158d28d09fc71e9ef6a88"><div class="ttname"><a href="classSHiP_1_1Detector.html#a0f51e2d392c158d28d09fc71e9ef6a88">SHiP::Detector&lt; UpstreamTaggerPoint &gt;::fTrackID</a></div><div class="ttdeci">Int_t fTrackID</div><div class="ttdoc">event index</div><div class="ttdef"><b>Definition</b> <a href="Detector_8h_source.html#l00083">Detector.h:83</a></div></div>
 <div class="ttc" id="aclassSHiP_1_1Detector_html_a5017601ade4c6805f6685562092b72f4"><div class="ttname"><a href="classSHiP_1_1Detector.html#a5017601ade4c6805f6685562092b72f4">SHiP::Detector&lt; UpstreamTaggerPoint &gt;::fPos</a></div><div class="ttdeci">TLorentzVector fPos</div><div class="ttdoc">volume id</div><div class="ttdef"><b>Definition</b> <a href="Detector_8h_source.html#l00085">Detector.h:85</a></div></div>
 <div class="ttc" id="aclassSHiP_1_1Detector_html_a59b2901f4062e764c35947220fe99cee"><div class="ttname"><a href="classSHiP_1_1Detector.html#a59b2901f4062e764c35947220fe99cee">SHiP::Detector&lt; UpstreamTaggerPoint &gt;::fTime</a></div><div class="ttdeci">Double_t fTime</div><div class="ttdoc">momentum at entrance</div><div class="ttdef"><b>Definition</b> <a href="Detector_8h_source.html#l00087">Detector.h:87</a></div></div>
@@ -631,6 +658,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="ttc" id="aclassSHiP_1_1Detector_html_ac4ba571377f2accd0775e010df940ba1"><div class="ttname"><a href="classSHiP_1_1Detector.html#ac4ba571377f2accd0775e010df940ba1">SHiP::Detector&lt; UpstreamTaggerPoint &gt;::fEventID</a></div><div class="ttdeci">Int_t fEventID</div><div class="ttdef"><b>Definition</b> <a href="Detector_8h_source.html#l00082">Detector.h:82</a></div></div>
 <div class="ttc" id="aclassSHiP_1_1Detector_html_ae214ab7c082d1472301f659910703f70"><div class="ttname"><a href="classSHiP_1_1Detector.html#ae214ab7c082d1472301f659910703f70">SHiP::Detector&lt; UpstreamTaggerPoint &gt;::fLength</a></div><div class="ttdeci">Double_t fLength</div><div class="ttdoc">time</div><div class="ttdef"><b>Definition</b> <a href="Detector_8h_source.html#l00088">Detector.h:88</a></div></div>
 <div class="ttc" id="aclassShipStack_html"><div class="ttname"><a href="classShipStack.html">ShipStack</a></div><div class="ttdef"><b>Definition</b> <a href="ShipStack_8h_source.html#l00046">ShipStack.h:46</a></div></div>
+<div class="ttc" id="aclassUpstreamTagger_html_abdb0370e3a21a05a263555328150f662"><div class="ttname"><a href="classUpstreamTagger.html#abdb0370e3a21a05a263555328150f662">UpstreamTagger::fEntered</a></div><div class="ttdeci">Bool_t fEntered</div><div class="ttdoc">allocated longitudinal space</div><div class="ttdef"><b>Definition</b> <a href="UpstreamTagger_8h_source.html#l00097">UpstreamTagger.h:97</a></div></div>
 <div class="ttc" id="anamespacemakeCascade_html_a4af6ee173bd7ee58725a4483fc98f07e"><div class="ttname"><a href="namespacemakeCascade.html#a4af6ee173bd7ee58725a4483fc98f07e">makeCascade.stack</a></div><div class="ttdeci">list stack</div><div class="ttdef"><b>Definition</b> <a href="makeCascade_8py_source.html#l00327">makeCascade.py:327</a></div></div>
 <div class="ttc" id="anamespacemakeDecay_html_a9c90b95001a4909a6c5383da1b3066d9"><div class="ttname"><a href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">makeDecay.p</a></div><div class="ttdeci">p</div><div class="ttdef"><b>Definition</b> <a href="makeDecay_8py_source.html#l00092">makeDecay.py:92</a></div></div>
 <div class="ttc" id="anamespacerun__fixedTarget_html_a8849978ebdda515280cb5b90b4d173a5"><div class="ttname"><a href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">run_fixedTarget.gMC</a></div><div class="ttdeci">gMC</div><div class="ttdef"><b>Definition</b> <a href="run__fixedTarget_8py_source.html#l00586">run_fixedTarget.py:586</a></div></div>
@@ -671,11 +699,11 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="UpstreamTagger_8h_source.html#l00053">53</a> of file <a class="el" href="UpstreamTagger_8h_source.html">UpstreamTagger.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   53</span>                                            {</div>
-<div class="line"><span class="lineno">   54</span>    <a class="code hl_variable" href="classUpstreamTagger.html#a43b72c6cfe5761d939e2f7fd31a15de7">fCenterX</a> = <a class="code hl_variable" href="namespacerun__fixedTarget.html#a68f8e54ebe34ed88a1aff4505c32be7c">x</a>;</div>
-<div class="line"><span class="lineno">   55</span>    <a class="code hl_variable" href="classUpstreamTagger.html#a1960bf9a7dba760ed43306dc14961969">fCenterY</a> = <a class="code hl_variable" href="namespacerun__tracking__scan.html#a60149f5e9c7fe53ba27d5ee50faa64de">y</a>;</div>
-<div class="line"><span class="lineno">   56</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="UpstreamTagger_8h_source.html#l00055">55</a> of file <a class="el" href="UpstreamTagger_8h_source.html">UpstreamTagger.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   55</span>                                            {</div>
+<div class="line"><span class="lineno">   56</span>    <a class="code hl_variable" href="classUpstreamTagger.html#a43b72c6cfe5761d939e2f7fd31a15de7">fCenterX</a> = <a class="code hl_variable" href="namespacerun__fixedTarget.html#a68f8e54ebe34ed88a1aff4505c32be7c">x</a>;</div>
+<div class="line"><span class="lineno">   57</span>    <a class="code hl_variable" href="classUpstreamTagger.html#a1960bf9a7dba760ed43306dc14961969">fCenterY</a> = <a class="code hl_variable" href="namespacerun__tracking__scan.html#a60149f5e9c7fe53ba27d5ee50faa64de">y</a>;</div>
+<div class="line"><span class="lineno">   58</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -719,12 +747,12 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="UpstreamTagger_8h_source.html#l00048">48</a> of file <a class="el" href="UpstreamTagger_8h_source.html">UpstreamTagger.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   48</span>                                                            {</div>
-<div class="line"><span class="lineno">   49</span>    <a class="code hl_variable" href="classUpstreamTagger.html#a048265f0225eebd7fa4d07c4a673d7e4">fSizeX</a> = <a class="code hl_variable" href="namespacerun__fixedTarget.html#a68f8e54ebe34ed88a1aff4505c32be7c">x</a>;</div>
-<div class="line"><span class="lineno">   50</span>    <a class="code hl_variable" href="classUpstreamTagger.html#aa323357ed2924e40fc75d66184d7d8a7">fSizeY</a> = <a class="code hl_variable" href="namespacerun__tracking__scan.html#a60149f5e9c7fe53ba27d5ee50faa64de">y</a>;</div>
-<div class="line"><span class="lineno">   51</span>    <a class="code hl_variable" href="classUpstreamTagger.html#ab6b9092fd8640c278ffa1a6251a95bcd">fEnvelopeZ</a> = <a class="code hl_variable" href="namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed">z</a>;</div>
-<div class="line"><span class="lineno">   52</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="UpstreamTagger_8h_source.html#l00050">50</a> of file <a class="el" href="UpstreamTagger_8h_source.html">UpstreamTagger.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   50</span>                                                            {</div>
+<div class="line"><span class="lineno">   51</span>    <a class="code hl_variable" href="classUpstreamTagger.html#a048265f0225eebd7fa4d07c4a673d7e4">fSizeX</a> = <a class="code hl_variable" href="namespacerun__fixedTarget.html#a68f8e54ebe34ed88a1aff4505c32be7c">x</a>;</div>
+<div class="line"><span class="lineno">   52</span>    <a class="code hl_variable" href="classUpstreamTagger.html#aa323357ed2924e40fc75d66184d7d8a7">fSizeY</a> = <a class="code hl_variable" href="namespacerun__tracking__scan.html#a60149f5e9c7fe53ba27d5ee50faa64de">y</a>;</div>
+<div class="line"><span class="lineno">   53</span>    <a class="code hl_variable" href="classUpstreamTagger.html#ab6b9092fd8640c278ffa1a6251a95bcd">fEnvelopeZ</a> = <a class="code hl_variable" href="namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed">z</a>;</div>
+<div class="line"><span class="lineno">   54</span>  }</div>
 <div class="ttc" id="anamespacerun__simScript_html_a90c25390918b8dd5a6f17d8efa00c9ed"><div class="ttname"><a href="namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed">run_simScript.z</a></div><div class="ttdeci">z</div><div class="ttdef"><b>Definition</b> <a href="run__simScript_8py_source.html#l00799">run_simScript.py:799</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -754,8 +782,8 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p>Sets detector position and sizes </p>
 
-<p class="definition">Definition at line <a class="el" href="UpstreamTagger_8h_source.html#l00047">47</a> of file <a class="el" href="UpstreamTagger_8h_source.html">UpstreamTagger.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   47</span>{ <a class="code hl_variable" href="classUpstreamTagger.html#ab1b1bb2c25cc683210e456daecfecdc8">det_zPos</a> = <a class="code hl_variable" href="namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed">z</a>; }</div>
+<p class="definition">Definition at line <a class="el" href="UpstreamTagger_8h_source.html#l00049">49</a> of file <a class="el" href="UpstreamTagger_8h_source.html">UpstreamTagger.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   49</span>{ <a class="code hl_variable" href="classUpstreamTagger.html#ab1b1bb2c25cc683210e456daecfecdc8">det_zPos</a> = <a class="code hl_variable" href="namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed">z</a>; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -773,7 +801,7 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p>Detector parameters. </p>
 
-<p class="definition">Definition at line <a class="el" href="UpstreamTagger_8h_source.html#l00075">75</a> of file <a class="el" href="UpstreamTagger_8h_source.html">UpstreamTagger.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="UpstreamTagger_8h_source.html#l00077">77</a> of file <a class="el" href="UpstreamTagger_8h_source.html">UpstreamTagger.h</a>.</p>
 
 </div>
 </div>
@@ -799,7 +827,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>detector height </p>
 
-<p class="definition">Definition at line <a class="el" href="UpstreamTagger_8h_source.html#l00092">92</a> of file <a class="el" href="UpstreamTagger_8h_source.html">UpstreamTagger.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="UpstreamTagger_8h_source.html#l00094">94</a> of file <a class="el" href="UpstreamTagger_8h_source.html">UpstreamTagger.h</a>.</p>
 
 </div>
 </div>
@@ -825,7 +853,35 @@ Additional Inherited Members</h2></td></tr>
 
 <p>detector centre x </p>
 
-<p class="definition">Definition at line <a class="el" href="UpstreamTagger_8h_source.html#l00093">93</a> of file <a class="el" href="UpstreamTagger_8h_source.html">UpstreamTagger.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="UpstreamTagger_8h_source.html#l00095">95</a> of file <a class="el" href="UpstreamTagger_8h_source.html">UpstreamTagger.h</a>.</p>
+
+</div>
+</div>
+<a id="abdb0370e3a21a05a263555328150f662" name="abdb0370e3a21a05a263555328150f662"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abdb0370e3a21a05a263555328150f662">&#9670;&#160;</a></span>fEntered</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Bool_t UpstreamTagger::fEntered</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div>
+<div class="line">      kFALSE</div>
+</div><!-- fragment -->
+<p>allocated longitudinal space </p>
+
+<p class="definition">Definition at line <a class="el" href="UpstreamTagger_8h_source.html#l00097">97</a> of file <a class="el" href="UpstreamTagger_8h_source.html">UpstreamTagger.h</a>.</p>
 
 </div>
 </div>
@@ -851,7 +907,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>detector centre y </p>
 
-<p class="definition">Definition at line <a class="el" href="UpstreamTagger_8h_source.html#l00094">94</a> of file <a class="el" href="UpstreamTagger_8h_source.html">UpstreamTagger.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="UpstreamTagger_8h_source.html#l00096">96</a> of file <a class="el" href="UpstreamTagger_8h_source.html">UpstreamTagger.h</a>.</p>
 
 </div>
 </div>
@@ -875,7 +931,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="UpstreamTagger_8h_source.html#l00089">89</a> of file <a class="el" href="UpstreamTagger_8h_source.html">UpstreamTagger.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="UpstreamTagger_8h_source.html#l00091">91</a> of file <a class="el" href="UpstreamTagger_8h_source.html">UpstreamTagger.h</a>.</p>
 
 </div>
 </div>
@@ -901,7 +957,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>coarse regions loaded from detector map </p>
 
-<p class="definition">Definition at line <a class="el" href="UpstreamTagger_8h_source.html#l00090">90</a> of file <a class="el" href="UpstreamTagger_8h_source.html">UpstreamTagger.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="UpstreamTagger_8h_source.html#l00092">92</a> of file <a class="el" href="UpstreamTagger_8h_source.html">UpstreamTagger.h</a>.</p>
 
 </div>
 </div>
@@ -927,7 +983,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>detector width </p>
 
-<p class="definition">Definition at line <a class="el" href="UpstreamTagger_8h_source.html#l00091">91</a> of file <a class="el" href="UpstreamTagger_8h_source.html">UpstreamTagger.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="UpstreamTagger_8h_source.html#l00093">93</a> of file <a class="el" href="UpstreamTagger_8h_source.html">UpstreamTagger.h</a>.</p>
 
 </div>
 </div>

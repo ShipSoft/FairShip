@@ -1,5 +1,8 @@
 var NAVTREEINDEX40 =
 {
+"ubt__hits__example_8py.html":[11,0,4,4],
+"ubt__hits__example_8py.html#adeefb98a04762aa36dd1df08bd6b68e3":[11,0,4,4,0],
+"ubt__hits__example_8py_source.html":[11,0,4,4],
 "validationTools_8py.html":[11,0,13,49],
 "validationTools_8py.html#a00eb88014b976d31059e267e0118911e":[11,0,13,49,4],
 "validationTools_8py.html#a18c246303c5a140d447fcd798dd4ab9a":[11,0,13,49,8],

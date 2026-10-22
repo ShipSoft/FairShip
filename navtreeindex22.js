@@ -1,5 +1,6 @@
 var NAVTREEINDEX22 =
 {
+"makeDecay_8py.html#ae036a600a0fe461ba6d63d7c5a7d1eb0":[11,0,8,17,10],
 "makeDecay_8py.html#ae12e7ac24f8d7ac07035cdaa544c73e0":[11,0,8,17,6],
 "makeDecay_8py.html#ae5a856c0860587c503dfd928d8708053":[11,0,8,17,49],
 "makeDecay_8py.html#aebd1b561b67e3d8f8c27553c69912b02":[11,0,8,17,18],
@@ -248,6 +249,5 @@ var NAVTREEINDEX22 =
 "md_CHANGELOG.html#autotoc_md33":[3,3,1],
 "md_CHANGELOG.html#autotoc_md34":[3,3,2],
 "md_CHANGELOG.html#autotoc_md35":[3,3,3],
-"md_CHANGELOG.html#autotoc_md36":[3,4],
-"md_CHANGELOG.html#autotoc_md37":[3,4,0]
+"md_CHANGELOG.html#autotoc_md36":[3,4]
 };

@@ -114,41 +114,45 @@ $(document).ready(function(){initNavTree('test__cavern__layout_8py_source.html',
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="stringliteral">planes would cut into the walls without any error.</span></div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="stringliteral">&quot;&quot;&quot;</span></div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="keyword">import</span> re</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="keyword">from</span> pathlib <span class="keyword">import</span> Path</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="keyword">import</span> geometry_config</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="keyword">import</span> pytest</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="keyword">import</span> shipunit <span class="keyword">as</span> u</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno"><a class="line" href="namespacetest__cavern__layout.html#a70173db19d945df90fdeece9a215b7ef">   20</a></span>LAYOUT = Path(__file__).resolve().parent.parent / <span class="stringliteral">&quot;passive&quot;</span> / <span class="stringliteral">&quot;ShipCavernLayout.h&quot;</span></div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="comment"># geometry_config name -&gt; ShipCavernLayout constant</span></div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno"><a class="line" href="namespacetest__cavern__layout.html#a0de441203533b37132b2e927eb08380b">   23</a></span>QUANTITIES = {</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    <span class="stringliteral">&quot;ECN3LeftX&quot;</span>: <span class="stringliteral">&quot;kECN3LeftX&quot;</span>,</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    <span class="stringliteral">&quot;ECN3RightX&quot;</span>: <span class="stringliteral">&quot;kECN3RightX&quot;</span>,</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    <span class="stringliteral">&quot;ECN3FloorY&quot;</span>: <span class="stringliteral">&quot;kECN3FloorY&quot;</span>,</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>}</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="keyword">from</span> pathlib <span class="keyword">import</span> Path</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="keyword">import</span> geometry_config</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="keyword">import</span> pytest</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="keyword">import</span> shipunit <span class="keyword">as</span> u</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno"><a class="line" href="namespacetest__cavern__layout.html#aba89b5d92c5fcc6db6eaf01f2769200b">   19</a></span>ROOT = pytest.importorskip(<span class="stringliteral">&quot;ROOT&quot;</span>)</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno"><a class="line" href="namespacetest__cavern__layout.html#a27e36b17b7dc9c634e2582189df7df2b">   21</a></span>SOURCE = Path(__file__).resolve().parent.parent</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="comment"># geometry_config name -&gt; ShipCavernLayout constant</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno"><a class="line" href="namespacetest__cavern__layout.html#a0de441203533b37132b2e927eb08380b">   24</a></span>QUANTITIES = {</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    <span class="stringliteral">&quot;ECN3LeftX&quot;</span>: <span class="stringliteral">&quot;kECN3LeftX&quot;</span>,</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    <span class="stringliteral">&quot;ECN3RightX&quot;</span>: <span class="stringliteral">&quot;kECN3RightX&quot;</span>,</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    <span class="stringliteral">&quot;ECN3FloorY&quot;</span>: <span class="stringliteral">&quot;kECN3FloorY&quot;</span>,</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>}</div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
-<div class="foldopen" id="foldopen00030" data-start="" data-end="">
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="namespacetest__cavern__layout.html#a2283051e76f1aa7a8c82cac658205f54">   30</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacetest__cavern__layout.html#a2283051e76f1aa7a8c82cac658205f54">layout_constants</a>() -&gt; dict[str, float]:</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    <span class="stringliteral">&quot;&quot;&quot;The constants of ShipCavernLayout.h, in FairShip length units.&quot;&quot;&quot;</span></div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    pattern = re.compile(<span class="stringliteral">r&quot;(k\w+)\s*=\s*(-?[\d.]+)\s*\*\s*ShipUnit::m\b&quot;</span>)</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    <span class="keywordflow">return</span> {name: float(value) * u.m <span class="keywordflow">for</span> name, value <span class="keywordflow">in</span> pattern.findall(LAYOUT.read_text())}</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="preprocessor">@pytest.mark.parametrize(&quot;quantity&quot;, QUANTITIES)</span></div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="preprocessor">@pytest.fixture(scope=&quot;module&quot;)</span></div>
+<div class="foldopen" id="foldopen00032" data-start="" data-end="">
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="namespacetest__cavern__layout.html#a5f04886ec89edf4dfc9e87621c106663">   32</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacetest__cavern__layout.html#a5f04886ec89edf4dfc9e87621c106663">layout</a>():</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    <span class="stringliteral">&quot;&quot;&quot;The ShipCavernLayout namespace, compiled by Cling from the header ShipCave uses.&quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    <span class="keywordflow">for</span> directory <span class="keywordflow">in</span> (<span class="stringliteral">&quot;passive&quot;</span>, <span class="stringliteral">&quot;shipdata&quot;</span>):</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>        ROOT.gInterpreter.AddIncludePath(str(SOURCE / directory))</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <span class="keyword">assert</span> ROOT.gInterpreter.Declare(<span class="stringliteral">&#39;#include &quot;ShipCavernLayout.h&quot;&#39;</span>)</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    <span class="keywordflow">return</span> ROOT.ShipCavernLayout</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="preprocessor">@pytest.mark.parametrize(&quot;quantity&quot;, QUANTITIES)</span></div>
 </div>
-<div class="foldopen" id="foldopen00037" data-start="" data-end="">
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="namespacetest__cavern__layout.html#afdbe73d6330b1f4784ffae01cdab25d5">   37</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacetest__cavern__layout.html#afdbe73d6330b1f4784ffae01cdab25d5">test_ecn3_cross_section_matches_ship_cave</a>(quantity):</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    constants = <a class="code hl_function" href="namespacetest__cavern__layout.html#a2283051e76f1aa7a8c82cac658205f54">layout_constants</a>()</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    cave = <a class="code hl_function" href="namespacegeometry__config.html#a14c64c715c02fde546cf42f7c9d6f09f">geometry_config.create_config</a>().cave</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    <span class="keyword">assert</span> cave[quantity] == pytest.approx(constants[QUANTITIES[quantity]], abs=1.0e-6 * u.cm)</div>
+<div class="foldopen" id="foldopen00041" data-start="" data-end="">
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno"><a class="line" href="namespacetest__cavern__layout.html#a2683070b80125a4aa2063c5216ad5f1f">   41</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacetest__cavern__layout.html#a2683070b80125a4aa2063c5216ad5f1f">test_ecn3_cross_section_matches_ship_cave</a>(layout, quantity):</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    <span class="comment"># Both are in the FairShip length unit.</span></div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    cave = <a class="code hl_function" href="namespacegeometry__config.html#a14c64c715c02fde546cf42f7c9d6f09f">geometry_config.create_config</a>().cave</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <span class="keyword">assert</span> cave[quantity] == pytest.approx(getattr(layout, QUANTITIES[quantity]), abs=1.0e-6 * u.cm)</div>
 </div>
-<div class="ttc" id="anamespacegeometry__config_html_a14c64c715c02fde546cf42f7c9d6f09f"><div class="ttname"><a href="namespacegeometry__config.html#a14c64c715c02fde546cf42f7c9d6f09f">geometry_config.create_config</a></div><div class="ttdeci">create_config(str DecayVolumeMedium=&quot;helium&quot;, float Yheight=6.0, int strawDesign=10, str shieldName=&quot;TRY_2025&quot;, int nuTargetPassive=1, bool SND=True, SND_design=None, TARGET_YAML=None)</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00231">geometry_config.py:240</a></div></div>
-<div class="ttc" id="anamespacetest__cavern__layout_html_a2283051e76f1aa7a8c82cac658205f54"><div class="ttname"><a href="namespacetest__cavern__layout.html#a2283051e76f1aa7a8c82cac658205f54">test_cavern_layout.layout_constants</a></div><div class="ttdeci">dict[str, float] layout_constants()</div><div class="ttdef"><b>Definition</b> <a href="test__cavern__layout_8py_source.html#l00030">test_cavern_layout.py:30</a></div></div>
-<div class="ttc" id="anamespacetest__cavern__layout_html_afdbe73d6330b1f4784ffae01cdab25d5"><div class="ttname"><a href="namespacetest__cavern__layout.html#afdbe73d6330b1f4784ffae01cdab25d5">test_cavern_layout.test_ecn3_cross_section_matches_ship_cave</a></div><div class="ttdeci">test_ecn3_cross_section_matches_ship_cave(quantity)</div><div class="ttdef"><b>Definition</b> <a href="test__cavern__layout_8py_source.html#l00037">test_cavern_layout.py:37</a></div></div>
+<div class="ttc" id="anamespacegeometry__config_html_a14c64c715c02fde546cf42f7c9d6f09f"><div class="ttname"><a href="namespacegeometry__config.html#a14c64c715c02fde546cf42f7c9d6f09f">geometry_config.create_config</a></div><div class="ttdeci">create_config(str DecayVolumeMedium=&quot;helium&quot;, float Yheight=6.0, int strawDesign=10, str shieldName=&quot;TRY_2025&quot;, int nuTargetPassive=1, bool SND=True, SND_design=None, TARGET_YAML=None)</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00232">geometry_config.py:241</a></div></div>
+<div class="ttc" id="anamespacetest__cavern__layout_html_a2683070b80125a4aa2063c5216ad5f1f"><div class="ttname"><a href="namespacetest__cavern__layout.html#a2683070b80125a4aa2063c5216ad5f1f">test_cavern_layout.test_ecn3_cross_section_matches_ship_cave</a></div><div class="ttdeci">test_ecn3_cross_section_matches_ship_cave(layout, quantity)</div><div class="ttdef"><b>Definition</b> <a href="test__cavern__layout_8py_source.html#l00041">test_cavern_layout.py:41</a></div></div>
+<div class="ttc" id="anamespacetest__cavern__layout_html_a5f04886ec89edf4dfc9e87621c106663"><div class="ttname"><a href="namespacetest__cavern__layout.html#a5f04886ec89edf4dfc9e87621c106663">test_cavern_layout.layout</a></div><div class="ttdeci">layout()</div><div class="ttdef"><b>Definition</b> <a href="test__cavern__layout_8py_source.html#l00032">test_cavern_layout.py:32</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- SHiP Doxygen theme footer. Version-independent: only standard Doxygen

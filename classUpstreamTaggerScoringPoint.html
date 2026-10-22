@@ -238,8 +238,18 @@ Additional Inherited Members</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="UpstreamTaggerScoringPoint_8cxx_source.html#l00018">18</a> of file <a class="el" href="UpstreamTaggerScoringPoint_8cxx_source.html">UpstreamTaggerScoringPoint.cxx</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   18</span>                                                      {</div>
-<div class="line"><span class="lineno">   19</span>  LOG(info) &lt;&lt; <span class="stringliteral">&quot;This is the scoring plane downstream of the upstream tagger&quot;</span>;</div>
-<div class="line"><span class="lineno">   20</span>}</div>
+<div class="line"><span class="lineno">   19</span>  <span class="comment">// Plane numbers as set in shipDet_conf.configure</span></div>
+<div class="line"><span class="lineno">   20</span>  <span class="keywordflow">switch</span> (GetDetectorID()) {</div>
+<div class="line"><span class="lineno">   21</span>    <span class="keywordflow">case</span> 1:</div>
+<div class="line"><span class="lineno">   22</span>      LOG(info) &lt;&lt; <span class="stringliteral">&quot;UBT scoring plane 1, at the decay vessel entrance&quot;</span>;</div>
+<div class="line"><span class="lineno">   23</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">   24</span>    <span class="keywordflow">case</span> 2:</div>
+<div class="line"><span class="lineno">   25</span>      LOG(info) &lt;&lt; <span class="stringliteral">&quot;UBT scoring plane 2, behind the muon shield (muons only)&quot;</span>;</div>
+<div class="line"><span class="lineno">   26</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">   27</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">   28</span>      LOG(info) &lt;&lt; <span class="stringliteral">&quot;UBT scoring plane &quot;</span> &lt;&lt; GetDetectorID();</div>
+<div class="line"><span class="lineno">   29</span>  }</div>
+<div class="line"><span class="lineno">   30</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>

@@ -172,19 +172,19 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <pre class="fragment">(centre, size) of the cells of ``size`` centred on the beam axis, cut at [low, high].</pre> 
-<p class="definition">Definition at line <a class="el" href="shipDet__conf_8py_source.html#l00327">327</a> of file <a class="el" href="shipDet__conf_8py_source.html">shipDet_conf.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  327</span><span class="keyword">def </span>_axis_cells(low: float, high: float, size: float) -&gt; list[tuple[float, float]]:</div>
-<div class="line"><span class="lineno">  328</span>    <span class="stringliteral">&quot;&quot;&quot;(centre, size) of the cells of ``size`` centred on the beam axis, cut at [low, high].&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  329</span>    first = math.floor((low + size / 2.0) / size + 1.0e-9)</div>
-<div class="line"><span class="lineno">  330</span>    last = math.ceil((high - size / 2.0) / size - 1.0e-9)</div>
-<div class="line"><span class="lineno">  331</span>    cells = []</div>
-<div class="line"><span class="lineno">  332</span>    <span class="keywordflow">for</span> k <span class="keywordflow">in</span> range(first, last + 1):</div>
-<div class="line"><span class="lineno">  333</span>        cell_low, cell_high = max(k * size - size / 2.0, low), min(k * size + size / 2.0, high)</div>
-<div class="line"><span class="lineno">  334</span>        <span class="keywordflow">if</span> cell_high - cell_low &gt; 1.0e-9:</div>
-<div class="line"><span class="lineno">  335</span>            cells.append(((cell_low + cell_high) / 2.0, cell_high - cell_low))</div>
-<div class="line"><span class="lineno">  336</span>    <span class="keywordflow">return</span> cells</div>
-<div class="line"><span class="lineno">  337</span> </div>
+<p class="definition">Definition at line <a class="el" href="shipDet__conf_8py_source.html#l00328">328</a> of file <a class="el" href="shipDet__conf_8py_source.html">shipDet_conf.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  328</span><span class="keyword">def </span>_axis_cells(low: float, high: float, size: float) -&gt; list[tuple[float, float]]:</div>
+<div class="line"><span class="lineno">  329</span>    <span class="stringliteral">&quot;&quot;&quot;(centre, size) of the cells of ``size`` centred on the beam axis, cut at [low, high].&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  330</span>    first = math.floor((low + size / 2.0) / size + 1.0e-9)</div>
+<div class="line"><span class="lineno">  331</span>    last = math.ceil((high - size / 2.0) / size - 1.0e-9)</div>
+<div class="line"><span class="lineno">  332</span>    cells = []</div>
+<div class="line"><span class="lineno">  333</span>    <span class="keywordflow">for</span> k <span class="keywordflow">in</span> range(first, last + 1):</div>
+<div class="line"><span class="lineno">  334</span>        cell_low, cell_high = max(k * size - size / 2.0, low), min(k * size + size / 2.0, high)</div>
+<div class="line"><span class="lineno">  335</span>        <span class="keywordflow">if</span> cell_high - cell_low &gt; 1.0e-9:</div>
+<div class="line"><span class="lineno">  336</span>            cells.append(((cell_low + cell_high) / 2.0, cell_high - cell_low))</div>
+<div class="line"><span class="lineno">  337</span>    <span class="keywordflow">return</span> cells</div>
 <div class="line"><span class="lineno">  338</span> </div>
+<div class="line"><span class="lineno">  339</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -212,18 +212,18 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <pre class="fragment">The areas of small tiles of the UBT rule, as (x low, x high, y low, y high) in cm.</pre> 
-<p class="definition">Definition at line <a class="el" href="shipDet__conf_8py_source.html#l00339">339</a> of file <a class="el" href="shipDet__conf_8py_source.html">shipDet_conf.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  339</span><span class="keyword">def </span>_small_tile_areas(rule) -&gt; list[tuple[float, float, float, float]]:</div>
-<div class="line"><span class="lineno">  340</span>    <span class="stringliteral">&quot;&quot;&quot;The areas of small tiles of the UBT rule, as (x low, x high, y low, y high) in cm.&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  341</span>    areas = []</div>
-<div class="line"><span class="lineno">  342</span>    <span class="keywordflow">for</span> area <span class="keywordflow">in</span> rule.get(<span class="stringliteral">&quot;small_tile_areas&quot;</span>, []):</div>
-<div class="line"><span class="lineno">  343</span>        (x_low, x_high), (y_low, y_high) = (float(v) <span class="keywordflow">for</span> v <span class="keywordflow">in</span> area[<span class="stringliteral">&quot;x&quot;</span>]), (float(v) <span class="keywordflow">for</span> v <span class="keywordflow">in</span> area[<span class="stringliteral">&quot;y&quot;</span>])</div>
-<div class="line"><span class="lineno">  344</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> (x_low &lt; x_high <span class="keywordflow">and</span> y_low &lt; y_high):</div>
-<div class="line"><span class="lineno">  345</span>            <span class="keywordflow">raise</span> ValueError(f<span class="stringliteral">&quot;The UBT small-tile area {area} must have x and y ranges [low, high] with low &lt; high&quot;</span>)</div>
-<div class="line"><span class="lineno">  346</span>        areas.append((x_low, x_high, y_low, y_high))</div>
-<div class="line"><span class="lineno">  347</span>    <span class="keywordflow">return</span> areas</div>
-<div class="line"><span class="lineno">  348</span> </div>
+<p class="definition">Definition at line <a class="el" href="shipDet__conf_8py_source.html#l00340">340</a> of file <a class="el" href="shipDet__conf_8py_source.html">shipDet_conf.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  340</span><span class="keyword">def </span>_small_tile_areas(rule) -&gt; list[tuple[float, float, float, float]]:</div>
+<div class="line"><span class="lineno">  341</span>    <span class="stringliteral">&quot;&quot;&quot;The areas of small tiles of the UBT rule, as (x low, x high, y low, y high) in cm.&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  342</span>    areas = []</div>
+<div class="line"><span class="lineno">  343</span>    <span class="keywordflow">for</span> area <span class="keywordflow">in</span> rule.get(<span class="stringliteral">&quot;small_tile_areas&quot;</span>, []):</div>
+<div class="line"><span class="lineno">  344</span>        (x_low, x_high), (y_low, y_high) = (float(v) <span class="keywordflow">for</span> v <span class="keywordflow">in</span> area[<span class="stringliteral">&quot;x&quot;</span>]), (float(v) <span class="keywordflow">for</span> v <span class="keywordflow">in</span> area[<span class="stringliteral">&quot;y&quot;</span>])</div>
+<div class="line"><span class="lineno">  345</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> (x_low &lt; x_high <span class="keywordflow">and</span> y_low &lt; y_high):</div>
+<div class="line"><span class="lineno">  346</span>            <span class="keywordflow">raise</span> ValueError(f<span class="stringliteral">&quot;The UBT small-tile area {area} must have x and y ranges [low, high] with low &lt; high&quot;</span>)</div>
+<div class="line"><span class="lineno">  347</span>        areas.append((x_low, x_high, y_low, y_high))</div>
+<div class="line"><span class="lineno">  348</span>    <span class="keywordflow">return</span> areas</div>
 <div class="line"><span class="lineno">  349</span> </div>
+<div class="line"><span class="lineno">  350</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -254,61 +254,63 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <pre class="fragment">Check that the UBT map covers exactly the UBT box of the geometry configuration.
 
-A generated map does by construction; this also checks a map stored with a
-geometry, against the box stored with it. A box larger than the map would
+A generated map does by construction, so this is only run on a map stored
+with a geometry that the rule of the checkout does not reproduce, against
+the box stored with it. A box larger than the map would
 leave a strip without tiles, a smaller one would stop ConstructGeometry.
 </pre> 
 <p class="definition">Definition at line <a class="el" href="shipDet__conf_8py_source.html#l00277">277</a> of file <a class="el" href="shipDet__conf_8py_source.html">shipDet_conf.py</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  277</span><span class="keyword">def </span>check_upstream_tagger_map(ubt_map, ubt_geo) -&gt; None:</div>
 <div class="line"><span class="lineno">  278</span>    <span class="stringliteral">&quot;&quot;&quot;Check that the UBT map covers exactly the UBT box of the geometry configuration.</span></div>
 <div class="line"><span class="lineno">  279</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  280</span><span class="stringliteral">    A generated map does by construction; this also checks a map stored with a</span></div>
-<div class="line"><span class="lineno">  281</span><span class="stringliteral">    geometry, against the box stored with it. A box larger than the map would</span></div>
-<div class="line"><span class="lineno">  282</span><span class="stringliteral">    leave a strip without tiles, a smaller one would stop ConstructGeometry.</span></div>
-<div class="line"><span class="lineno">  283</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  284</span>    tolerance = 1.0e-6  <span class="comment"># cm</span></div>
-<div class="line"><span class="lineno">  285</span>    box = {</div>
-<div class="line"><span class="lineno">  286</span>        <span class="stringliteral">&quot;x&quot;</span>: (ubt_geo.BoxCenterX - ubt_geo.BoxX / 2.0, ubt_geo.BoxCenterX + ubt_geo.BoxX / 2.0),</div>
-<div class="line"><span class="lineno">  287</span>        <span class="stringliteral">&quot;y&quot;</span>: (ubt_geo.BoxCenterY - ubt_geo.BoxY / 2.0, ubt_geo.BoxCenterY + ubt_geo.BoxY / 2.0),</div>
-<div class="line"><span class="lineno">  288</span>    }</div>
-<div class="line"><span class="lineno">  289</span>    bounds = {axis: tuple(bound * u.cm <span class="keywordflow">for</span> bound <span class="keywordflow">in</span> ubt_map[<span class="stringliteral">&quot;bounds&quot;</span>][axis]) <span class="keywordflow">for</span> axis <span class="keywordflow">in</span> (<span class="stringliteral">&quot;x&quot;</span>, <span class="stringliteral">&quot;y&quot;</span>)}</div>
-<div class="line"><span class="lineno">  290</span>    <span class="keywordflow">for</span> axis <span class="keywordflow">in</span> (<span class="stringliteral">&quot;x&quot;</span>, <span class="stringliteral">&quot;y&quot;</span>):</div>
-<div class="line"><span class="lineno">  291</span>        <span class="keywordflow">if</span> any(abs(b - e) &gt; tolerance * u.cm <span class="keywordflow">for</span> b, e <span class="keywordflow">in</span> zip(bounds[axis], box[axis])):</div>
-<div class="line"><span class="lineno">  292</span>            <span class="keywordflow">raise</span> ValueError(</div>
-<div class="line"><span class="lineno">  293</span>                f<span class="stringliteral">&quot;The UBT map bounds in {axis}, {bounds[axis]} cm, differ from the UBT box of the geometry&quot;</span></div>
-<div class="line"><span class="lineno">  294</span>                f<span class="stringliteral">&quot; configuration, {box[axis]} cm&quot;</span></div>
-<div class="line"><span class="lineno">  295</span>            )</div>
-<div class="line"><span class="lineno">  296</span> </div>
-<div class="line"><span class="lineno">  297</span>    <span class="comment"># The regions must tile the bounds: each inside them, no two overlapping,</span></div>
-<div class="line"><span class="lineno">  298</span>    <span class="comment"># and together as large as them.</span></div>
-<div class="line"><span class="lineno">  299</span>    rectangles = []</div>
-<div class="line"><span class="lineno">  300</span>    <span class="keywordflow">for</span> region <span class="keywordflow">in</span> ubt_map[<span class="stringliteral">&quot;regions&quot;</span>]:</div>
-<div class="line"><span class="lineno">  301</span>        half_x, half_y = region[<span class="stringliteral">&quot;size_x&quot;</span>] * u.cm / 2.0, region[<span class="stringliteral">&quot;size_y&quot;</span>] * u.cm / 2.0</div>
-<div class="line"><span class="lineno">  302</span>        x, y = region[<span class="stringliteral">&quot;x&quot;</span>] * u.cm, region[<span class="stringliteral">&quot;y&quot;</span>] * u.cm</div>
-<div class="line"><span class="lineno">  303</span>        rectangle = (x - half_x, x + half_x, y - half_y, y + half_y)</div>
-<div class="line"><span class="lineno">  304</span>        <span class="keywordflow">if</span> (</div>
-<div class="line"><span class="lineno">  305</span>            rectangle[0] &lt; bounds[<span class="stringliteral">&quot;x&quot;</span>][0] - tolerance</div>
-<div class="line"><span class="lineno">  306</span>            <span class="keywordflow">or</span> rectangle[1] &gt; bounds[<span class="stringliteral">&quot;x&quot;</span>][1] + tolerance</div>
-<div class="line"><span class="lineno">  307</span>            <span class="keywordflow">or</span> rectangle[2] &lt; bounds[<span class="stringliteral">&quot;y&quot;</span>][0] - tolerance</div>
-<div class="line"><span class="lineno">  308</span>            <span class="keywordflow">or</span> rectangle[3] &gt; bounds[<span class="stringliteral">&quot;y&quot;</span>][1] + tolerance</div>
-<div class="line"><span class="lineno">  309</span>        ):</div>
-<div class="line"><span class="lineno">  310</span>            <span class="keywordflow">raise</span> ValueError(f<span class="stringliteral">&quot;UBT region {region[&#39;id&#39;]} extends outside the map bounds&quot;</span>)</div>
-<div class="line"><span class="lineno">  311</span>        rectangles.append((region[<span class="stringliteral">&quot;id&quot;</span>], rectangle))</div>
-<div class="line"><span class="lineno">  312</span>    <span class="keywordflow">for</span> i, (id_a, a) <span class="keywordflow">in</span> enumerate(rectangles):</div>
-<div class="line"><span class="lineno">  313</span>        <span class="keywordflow">for</span> id_b, b <span class="keywordflow">in</span> rectangles[i + 1 :]:</div>
-<div class="line"><span class="lineno">  314</span>            <span class="keywordflow">if</span> (</div>
-<div class="line"><span class="lineno">  315</span>                a[0] &lt; b[1] - tolerance</div>
-<div class="line"><span class="lineno">  316</span>                <span class="keywordflow">and</span> b[0] &lt; a[1] - tolerance</div>
-<div class="line"><span class="lineno">  317</span>                <span class="keywordflow">and</span> a[2] &lt; b[3] - tolerance</div>
-<div class="line"><span class="lineno">  318</span>                <span class="keywordflow">and</span> b[2] &lt; a[3] - tolerance</div>
-<div class="line"><span class="lineno">  319</span>            ):</div>
-<div class="line"><span class="lineno">  320</span>                <span class="keywordflow">raise</span> ValueError(f<span class="stringliteral">&quot;UBT regions {id_a} and {id_b} overlap&quot;</span>)</div>
-<div class="line"><span class="lineno">  321</span>    covered = sum((r[1] - r[0]) * (r[3] - r[2]) <span class="keywordflow">for</span> _, r <span class="keywordflow">in</span> rectangles)</div>
-<div class="line"><span class="lineno">  322</span>    area = (bounds[<span class="stringliteral">&quot;x&quot;</span>][1] - bounds[<span class="stringliteral">&quot;x&quot;</span>][0]) * (bounds[<span class="stringliteral">&quot;y&quot;</span>][1] - bounds[<span class="stringliteral">&quot;y&quot;</span>][0])</div>
-<div class="line"><span class="lineno">  323</span>    <span class="keywordflow">if</span> abs(covered - area) &gt; tolerance * area:</div>
-<div class="line"><span class="lineno">  324</span>        <span class="keywordflow">raise</span> ValueError(f<span class="stringliteral">&quot;The UBT regions cover {covered} cm2 of the {area} cm2 map: some of it has no tiles&quot;</span>)</div>
-<div class="line"><span class="lineno">  325</span> </div>
+<div class="line"><span class="lineno">  280</span><span class="stringliteral">    A generated map does by construction, so this is only run on a map stored</span></div>
+<div class="line"><span class="lineno">  281</span><span class="stringliteral">    with a geometry that the rule of the checkout does not reproduce, against</span></div>
+<div class="line"><span class="lineno">  282</span><span class="stringliteral">    the box stored with it. A box larger than the map would</span></div>
+<div class="line"><span class="lineno">  283</span><span class="stringliteral">    leave a strip without tiles, a smaller one would stop ConstructGeometry.</span></div>
+<div class="line"><span class="lineno">  284</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  285</span>    tolerance = 1.0e-6  <span class="comment"># cm</span></div>
+<div class="line"><span class="lineno">  286</span>    box = {</div>
+<div class="line"><span class="lineno">  287</span>        <span class="stringliteral">&quot;x&quot;</span>: (ubt_geo.BoxCenterX - ubt_geo.BoxX / 2.0, ubt_geo.BoxCenterX + ubt_geo.BoxX / 2.0),</div>
+<div class="line"><span class="lineno">  288</span>        <span class="stringliteral">&quot;y&quot;</span>: (ubt_geo.BoxCenterY - ubt_geo.BoxY / 2.0, ubt_geo.BoxCenterY + ubt_geo.BoxY / 2.0),</div>
+<div class="line"><span class="lineno">  289</span>    }</div>
+<div class="line"><span class="lineno">  290</span>    bounds = {axis: tuple(bound * u.cm <span class="keywordflow">for</span> bound <span class="keywordflow">in</span> ubt_map[<span class="stringliteral">&quot;bounds&quot;</span>][axis]) <span class="keywordflow">for</span> axis <span class="keywordflow">in</span> (<span class="stringliteral">&quot;x&quot;</span>, <span class="stringliteral">&quot;y&quot;</span>)}</div>
+<div class="line"><span class="lineno">  291</span>    <span class="keywordflow">for</span> axis <span class="keywordflow">in</span> (<span class="stringliteral">&quot;x&quot;</span>, <span class="stringliteral">&quot;y&quot;</span>):</div>
+<div class="line"><span class="lineno">  292</span>        <span class="keywordflow">if</span> any(abs(b - e) &gt; tolerance * u.cm <span class="keywordflow">for</span> b, e <span class="keywordflow">in</span> zip(bounds[axis], box[axis])):</div>
+<div class="line"><span class="lineno">  293</span>            <span class="keywordflow">raise</span> ValueError(</div>
+<div class="line"><span class="lineno">  294</span>                f<span class="stringliteral">&quot;The UBT map bounds in {axis}, {bounds[axis]} cm, differ from the UBT box of the geometry&quot;</span></div>
+<div class="line"><span class="lineno">  295</span>                f<span class="stringliteral">&quot; configuration, {box[axis]} cm&quot;</span></div>
+<div class="line"><span class="lineno">  296</span>            )</div>
+<div class="line"><span class="lineno">  297</span> </div>
+<div class="line"><span class="lineno">  298</span>    <span class="comment"># The regions must tile the bounds: each inside them, no two overlapping,</span></div>
+<div class="line"><span class="lineno">  299</span>    <span class="comment"># and together as large as them.</span></div>
+<div class="line"><span class="lineno">  300</span>    rectangles = []</div>
+<div class="line"><span class="lineno">  301</span>    <span class="keywordflow">for</span> region <span class="keywordflow">in</span> ubt_map[<span class="stringliteral">&quot;regions&quot;</span>]:</div>
+<div class="line"><span class="lineno">  302</span>        half_x, half_y = region[<span class="stringliteral">&quot;size_x&quot;</span>] * u.cm / 2.0, region[<span class="stringliteral">&quot;size_y&quot;</span>] * u.cm / 2.0</div>
+<div class="line"><span class="lineno">  303</span>        x, y = region[<span class="stringliteral">&quot;x&quot;</span>] * u.cm, region[<span class="stringliteral">&quot;y&quot;</span>] * u.cm</div>
+<div class="line"><span class="lineno">  304</span>        rectangle = (x - half_x, x + half_x, y - half_y, y + half_y)</div>
+<div class="line"><span class="lineno">  305</span>        <span class="keywordflow">if</span> (</div>
+<div class="line"><span class="lineno">  306</span>            rectangle[0] &lt; bounds[<span class="stringliteral">&quot;x&quot;</span>][0] - tolerance</div>
+<div class="line"><span class="lineno">  307</span>            <span class="keywordflow">or</span> rectangle[1] &gt; bounds[<span class="stringliteral">&quot;x&quot;</span>][1] + tolerance</div>
+<div class="line"><span class="lineno">  308</span>            <span class="keywordflow">or</span> rectangle[2] &lt; bounds[<span class="stringliteral">&quot;y&quot;</span>][0] - tolerance</div>
+<div class="line"><span class="lineno">  309</span>            <span class="keywordflow">or</span> rectangle[3] &gt; bounds[<span class="stringliteral">&quot;y&quot;</span>][1] + tolerance</div>
+<div class="line"><span class="lineno">  310</span>        ):</div>
+<div class="line"><span class="lineno">  311</span>            <span class="keywordflow">raise</span> ValueError(f<span class="stringliteral">&quot;UBT region {region[&#39;id&#39;]} extends outside the map bounds&quot;</span>)</div>
+<div class="line"><span class="lineno">  312</span>        rectangles.append((region[<span class="stringliteral">&quot;id&quot;</span>], rectangle))</div>
+<div class="line"><span class="lineno">  313</span>    <span class="keywordflow">for</span> i, (id_a, a) <span class="keywordflow">in</span> enumerate(rectangles):</div>
+<div class="line"><span class="lineno">  314</span>        <span class="keywordflow">for</span> id_b, b <span class="keywordflow">in</span> rectangles[i + 1 :]:</div>
+<div class="line"><span class="lineno">  315</span>            <span class="keywordflow">if</span> (</div>
+<div class="line"><span class="lineno">  316</span>                a[0] &lt; b[1] - tolerance</div>
+<div class="line"><span class="lineno">  317</span>                <span class="keywordflow">and</span> b[0] &lt; a[1] - tolerance</div>
+<div class="line"><span class="lineno">  318</span>                <span class="keywordflow">and</span> a[2] &lt; b[3] - tolerance</div>
+<div class="line"><span class="lineno">  319</span>                <span class="keywordflow">and</span> b[2] &lt; a[3] - tolerance</div>
+<div class="line"><span class="lineno">  320</span>            ):</div>
+<div class="line"><span class="lineno">  321</span>                <span class="keywordflow">raise</span> ValueError(f<span class="stringliteral">&quot;UBT regions {id_a} and {id_b} overlap&quot;</span>)</div>
+<div class="line"><span class="lineno">  322</span>    covered = sum((r[1] - r[0]) * (r[3] - r[2]) <span class="keywordflow">for</span> _, r <span class="keywordflow">in</span> rectangles)</div>
+<div class="line"><span class="lineno">  323</span>    area = (bounds[<span class="stringliteral">&quot;x&quot;</span>][1] - bounds[<span class="stringliteral">&quot;x&quot;</span>][0]) * (bounds[<span class="stringliteral">&quot;y&quot;</span>][1] - bounds[<span class="stringliteral">&quot;y&quot;</span>][0])</div>
+<div class="line"><span class="lineno">  324</span>    <span class="keywordflow">if</span> abs(covered - area) &gt; tolerance * area:</div>
+<div class="line"><span class="lineno">  325</span>        <span class="keywordflow">raise</span> ValueError(f<span class="stringliteral">&quot;The UBT regions cover {covered} cm2 of the {area} cm2 map: some of it has no tiles&quot;</span>)</div>
 <div class="line"><span class="lineno">  326</span> </div>
+<div class="line"><span class="lineno">  327</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -350,270 +352,270 @@ that geometry file: the modules build their geometry as usual, and a last
 module replaces it by the stored one (see geometry_from_file). ``ship_geo``
 must then be the configuration stored in the same file.
 </pre> 
-<p class="definition">Definition at line <a class="el" href="shipDet__conf_8py_source.html#l00486">486</a> of file <a class="el" href="shipDet__conf_8py_source.html">shipDet_conf.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  486</span><span class="keyword">def </span>configure(run, ship_geo, geofile: str | <span class="keywordtype">None</span> = <span class="keywordtype">None</span>):</div>
-<div class="line"><span class="lineno">  487</span>    <span class="stringliteral">&quot;&quot;&quot;Configure the modules of the run and add them to it.</span></div>
-<div class="line"><span class="lineno">  488</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  489</span><span class="stringliteral">    With ``geofile``, particles are transported through the geometry stored in</span></div>
-<div class="line"><span class="lineno">  490</span><span class="stringliteral">    that geometry file: the modules build their geometry as usual, and a last</span></div>
-<div class="line"><span class="lineno">  491</span><span class="stringliteral">    module replaces it by the stored one (see geometry_from_file). ``ship_geo``</span></div>
-<div class="line"><span class="lineno">  492</span><span class="stringliteral">    must then be the configuration stored in the same file.</span></div>
-<div class="line"><span class="lineno">  493</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  494</span>    stored_yaml_configs = <a class="code hl_function" href="namespacegeometry__from__file.html#a084611c24c0a258117d0b689d187ec6e">geometry_from_file.stored_yaml_configs</a>(ship_geo) <span class="keywordflow">if</span> geofile <span class="keywordflow">else</span> {}</div>
-<div class="line"><span class="lineno">  495</span>    <span class="comment"># ---- for backward compatibility ----</span></div>
-<div class="line"><span class="lineno">  496</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> hasattr(ship_geo, <span class="stringliteral">&quot;DecayVolumeMedium&quot;</span>):</div>
-<div class="line"><span class="lineno">  497</span>        <span class="keywordflow">raise</span> ValueError(<span class="stringliteral">&quot;DecayVolumeMedium is not defined, possibly old (incompatible) geometry!&quot;</span>)</div>
-<div class="line"><span class="lineno">  498</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> hasattr(ship_geo.Bfield, <span class="stringliteral">&quot;x&quot;</span>):</div>
-<div class="line"><span class="lineno">  499</span>        ship_geo.Bfield.x = 3.0 * u.m</div>
-<div class="line"><span class="lineno">  500</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> hasattr(ship_geo, <span class="stringliteral">&quot;cave&quot;</span>):</div>
-<div class="line"><span class="lineno">  501</span>        ship_geo.cave = AttrDict(z=0 * u.cm)</div>
-<div class="line"><span class="lineno">  502</span>        ship_geo.cave.floorHeightMuonShield = 5 * u.m</div>
-<div class="line"><span class="lineno">  503</span>        ship_geo.cave.floorHeightTankA = 4.5 * u.m</div>
-<div class="line"><span class="lineno">  504</span>        ship_geo.cave.floorHeightTankB = 2.0 * u.m</div>
-<div class="line"><span class="lineno">  505</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> hasattr(ship_geo, <span class="stringliteral">&quot;SND&quot;</span>):</div>
-<div class="line"><span class="lineno">  506</span>        ship_geo.SND = <span class="keyword">True</span></div>
-<div class="line"><span class="lineno">  507</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> hasattr(ship_geo.cave, <span class="stringliteral">&quot;ECN3FloorY&quot;</span>):</div>
-<div class="line"><span class="lineno">  508</span>        <span class="comment"># Placing the UBT needs the ECN3 floor and side walls: use those of the</span></div>
-<div class="line"><span class="lineno">  509</span>        <span class="comment"># cavern that ShipCave builds.</span></div>
-<div class="line"><span class="lineno">  510</span>        <a class="code hl_function" href="namespacegeometry__config.html#a23fa4639bd7834b2b245271c5c1dcd3c">geometry_config.set_ecn3_cavern</a>(ship_geo)</div>
-<div class="line"><span class="lineno">  511</span>    ubt_geo = getattr(ship_geo, <span class="stringliteral">&quot;UpstreamTagger&quot;</span>, <span class="keywordtype">None</span>)</div>
-<div class="line"><span class="lineno">  512</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> hasattr(ship_geo, <span class="stringliteral">&quot;UpstreamTaggerScoringPlane&quot;</span>) <span class="keywordflow">or</span> <span class="keywordflow">not</span> (</div>
-<div class="line"><span class="lineno">  513</span>        hasattr(ubt_geo, <span class="stringliteral">&quot;TileThickness&quot;</span>) <span class="keywordflow">or</span> hasattr(ubt_geo, <span class="stringliteral">&quot;SmallTileZ&quot;</span>)</div>
-<div class="line"><span class="lineno">  514</span>    ):</div>
-<div class="line"><span class="lineno">  515</span>        <span class="comment"># A geometry from before the scintillator UBT: its UBT was a vacuum box,</span></div>
-<div class="line"><span class="lineno">  516</span>        <span class="comment"># which can no longer be built.</span></div>
-<div class="line"><span class="lineno">  517</span>        <span class="keywordflow">if</span> geofile:</div>
-<div class="line"><span class="lineno">  518</span>            <span class="keywordflow">raise</span> ValueError(</div>
-<div class="line"><span class="lineno">  519</span>                f<span class="stringliteral">&quot;{geofile} has the UBT of before the scintillator tiles (a vacuum box), which cannot be built&quot;</span></div>
-<div class="line"><span class="lineno">  520</span>                <span class="stringliteral">&quot; any more, so it cannot be used with -g: write a new geometry file&quot;</span></div>
-<div class="line"><span class="lineno">  521</span>            )</div>
-<div class="line"><span class="lineno">  522</span>        <span class="comment"># Use the current UBT and scoring planes, placed from this geometry&#39;s</span></div>
-<div class="line"><span class="lineno">  523</span>        <span class="comment"># decay vessel and muon shield, so that the other detectors can be</span></div>
-<div class="line"><span class="lineno">  524</span>        <span class="comment"># used; the UBT points of such a file are not digitized (see</span></div>
-<div class="line"><span class="lineno">  525</span>        <span class="comment"># UpstreamTaggerDetector.validate_stored_geometry).</span></div>
-<div class="line"><span class="lineno">  526</span>        <a class="code hl_function" href="namespacegeometry__config.html#a68f8dfd6b8fc305422b155a63db0bdec">geometry_config.set_upstream_tagger</a>(ship_geo)</div>
-<div class="line"><span class="lineno">  527</span> </div>
-<div class="line"><span class="lineno">  528</span>    <span class="comment"># -----Create media-------------------------------------------------</span></div>
-<div class="line"><span class="lineno">  529</span>    run.SetMaterials(<span class="stringliteral">&quot;media.geo&quot;</span>)  <span class="comment"># Materials</span></div>
-<div class="line"><span class="lineno">  530</span>    <span class="comment"># ------------------------------------------------------------------------</span></div>
-<div class="line"><span class="lineno">  531</span> </div>
-<div class="line"><span class="lineno">  532</span>    <span class="comment"># -----Create geometry----------------------------------------------</span></div>
-<div class="line"><span class="lineno">  533</span>    cave = ROOT.ShipCave(<span class="stringliteral">&quot;Cave&quot;</span>, <span class="stringliteral">&quot;ShipCave&quot;</span>)</div>
-<div class="line"><span class="lineno">  534</span>    cave.SetGeometryFileName(<span class="stringliteral">&quot;caveWithAir.geo&quot;</span>)</div>
-<div class="line"><span class="lineno">  535</span>    <span class="keywordflow">if</span> hasattr(ship_geo.cave, <span class="stringliteral">&quot;ECN3_length&quot;</span>):</div>
-<div class="line"><span class="lineno">  536</span>        cave.SetCavernDimensions(</div>
-<div class="line"><span class="lineno">  537</span>            ship_geo.cave.TCC8_length,</div>
-<div class="line"><span class="lineno">  538</span>            ship_geo.cave.ECN3_length,</div>
-<div class="line"><span class="lineno">  539</span>            ship_geo.cave.stair_step_length,</div>
-<div class="line"><span class="lineno">  540</span>            ship_geo.cave.z_transition,</div>
-<div class="line"><span class="lineno">  541</span>        )</div>
-<div class="line"><span class="lineno">  542</span>    cave.SetSpectrometerZ(ship_geo.z)</div>
-<div class="line"><span class="lineno">  543</span>    detectorList.append(cave)</div>
-<div class="line"><span class="lineno">  544</span> </div>
-<div class="line"><span class="lineno">  545</span>    TargetStation = ROOT.ShipTargetStation(</div>
-<div class="line"><span class="lineno">  546</span>        <span class="stringliteral">&quot;TargetStation&quot;</span>,</div>
-<div class="line"><span class="lineno">  547</span>        ship_geo.target.length,</div>
-<div class="line"><span class="lineno">  548</span>        ship_geo.target.z,</div>
-<div class="line"><span class="lineno">  549</span>        ship_geo.target.nS,</div>
-<div class="line"><span class="lineno">  550</span>        ship_geo.target.HeT,</div>
-<div class="line"><span class="lineno">  551</span>    )</div>
-<div class="line"><span class="lineno">  552</span> </div>
-<div class="line"><span class="lineno">  553</span>    TargetStation.SetLayerPosMat(</div>
-<div class="line"><span class="lineno">  554</span>        ship_geo.target.xy, ship_geo.target.slices_length, ship_geo.target.slices_gap, ship_geo.target.slices_material</div>
-<div class="line"><span class="lineno">  555</span>    )</div>
-<div class="line"><span class="lineno">  556</span>    target_version = getattr(ship_geo.target, <span class="stringliteral">&quot;version&quot;</span>, 1)</div>
-<div class="line"><span class="lineno">  557</span>    TargetStation.SetDesign(target_version)</div>
-<div class="line"><span class="lineno">  558</span>    <span class="keywordflow">if</span> target_version &gt;= 2:</div>
-<div class="line"><span class="lineno">  559</span>        TargetStation.SetLastDiskDiameter(ship_geo.target.xy2)</div>
-<div class="line"><span class="lineno">  560</span>    TargetStation.SetShieldingReferenceLength(ship_geo.target.length_fixed)</div>
-<div class="line"><span class="lineno">  561</span>    detectorList.append(TargetStation)</div>
-<div class="line"><span class="lineno">  562</span> </div>
-<div class="line"><span class="lineno">  563</span>    <span class="comment"># For SND: support multiple designs</span></div>
-<div class="line"><span class="lineno">  564</span>    <span class="keywordflow">if</span> ship_geo.SND:</div>
-<div class="line"><span class="lineno">  565</span>        <span class="keywordflow">for</span> design <span class="keywordflow">in</span> ship_geo.SND_design:</div>
-<div class="line"><span class="lineno">  566</span>            <span class="keywordflow">if</span> design == 2:</div>
-<div class="line"><span class="lineno">  567</span>                <span class="comment"># SND design 2 -- MTC/SiliconTarget</span></div>
-<div class="line"><span class="lineno">  568</span>                configure_snd_mtc(os.path.join(os.environ[<span class="stringliteral">&quot;FAIRSHIP&quot;</span>], <span class="stringliteral">&quot;geometry&quot;</span>, <span class="stringliteral">&quot;MTC_config.yaml&quot;</span>), ship_geo)</div>
-<div class="line"><span class="lineno">  569</span>                configure_snd_siliconTarget(</div>
-<div class="line"><span class="lineno">  570</span>                    os.path.join(os.environ[<span class="stringliteral">&quot;FAIRSHIP&quot;</span>], <span class="stringliteral">&quot;geometry&quot;</span>, <span class="stringliteral">&quot;SiliconTarget_config.yaml&quot;</span>), ship_geo</div>
-<div class="line"><span class="lineno">  571</span>                )</div>
-<div class="line"><span class="lineno">  572</span>            <span class="keywordflow">elif</span> design == 1:</div>
-<div class="line"><span class="lineno">  573</span>                configure_snd_old(</div>
-<div class="line"><span class="lineno">  574</span>                    os.path.join(os.environ[<span class="stringliteral">&quot;FAIRSHIP&quot;</span>], <span class="stringliteral">&quot;geometry&quot;</span>, <span class="stringliteral">&quot;snd_config_old.yaml&quot;</span>),</div>
-<div class="line"><span class="lineno">  575</span>                    ship_geo.UpstreamTagger.z0 - 5 * u.cm,</div>
-<div class="line"><span class="lineno">  576</span>                    ship_geo.cave.floorHeightMuonShield,</div>
-<div class="line"><span class="lineno">  577</span>                )</div>
-<div class="line"><span class="lineno">  578</span>            <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  579</span>                print(f<span class="stringliteral">&quot;Warning: SND design {design} is not recognized.&quot;</span>)</div>
-<div class="line"><span class="lineno">  580</span> </div>
-<div class="line"><span class="lineno">  581</span>    in_params = list(ship_geo.muShield.params)</div>
+<p class="definition">Definition at line <a class="el" href="shipDet__conf_8py_source.html#l00488">488</a> of file <a class="el" href="shipDet__conf_8py_source.html">shipDet_conf.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  488</span><span class="keyword">def </span>configure(run, ship_geo, geofile: str | <span class="keywordtype">None</span> = <span class="keywordtype">None</span>):</div>
+<div class="line"><span class="lineno">  489</span>    <span class="stringliteral">&quot;&quot;&quot;Configure the modules of the run and add them to it.</span></div>
+<div class="line"><span class="lineno">  490</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  491</span><span class="stringliteral">    With ``geofile``, particles are transported through the geometry stored in</span></div>
+<div class="line"><span class="lineno">  492</span><span class="stringliteral">    that geometry file: the modules build their geometry as usual, and a last</span></div>
+<div class="line"><span class="lineno">  493</span><span class="stringliteral">    module replaces it by the stored one (see geometry_from_file). ``ship_geo``</span></div>
+<div class="line"><span class="lineno">  494</span><span class="stringliteral">    must then be the configuration stored in the same file.</span></div>
+<div class="line"><span class="lineno">  495</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  496</span>    stored_yaml_configs = <a class="code hl_function" href="namespacegeometry__from__file.html#a084611c24c0a258117d0b689d187ec6e">geometry_from_file.stored_yaml_configs</a>(ship_geo) <span class="keywordflow">if</span> geofile <span class="keywordflow">else</span> {}</div>
+<div class="line"><span class="lineno">  497</span>    <span class="comment"># ---- for backward compatibility ----</span></div>
+<div class="line"><span class="lineno">  498</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> hasattr(ship_geo, <span class="stringliteral">&quot;DecayVolumeMedium&quot;</span>):</div>
+<div class="line"><span class="lineno">  499</span>        <span class="keywordflow">raise</span> ValueError(<span class="stringliteral">&quot;DecayVolumeMedium is not defined, possibly old (incompatible) geometry!&quot;</span>)</div>
+<div class="line"><span class="lineno">  500</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> hasattr(ship_geo.Bfield, <span class="stringliteral">&quot;x&quot;</span>):</div>
+<div class="line"><span class="lineno">  501</span>        ship_geo.Bfield.x = 3.0 * u.m</div>
+<div class="line"><span class="lineno">  502</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> hasattr(ship_geo, <span class="stringliteral">&quot;cave&quot;</span>):</div>
+<div class="line"><span class="lineno">  503</span>        ship_geo.cave = AttrDict(z=0 * u.cm)</div>
+<div class="line"><span class="lineno">  504</span>        ship_geo.cave.floorHeightMuonShield = 5 * u.m</div>
+<div class="line"><span class="lineno">  505</span>        ship_geo.cave.floorHeightTankA = 4.5 * u.m</div>
+<div class="line"><span class="lineno">  506</span>        ship_geo.cave.floorHeightTankB = 2.0 * u.m</div>
+<div class="line"><span class="lineno">  507</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> hasattr(ship_geo, <span class="stringliteral">&quot;SND&quot;</span>):</div>
+<div class="line"><span class="lineno">  508</span>        ship_geo.SND = <span class="keyword">True</span></div>
+<div class="line"><span class="lineno">  509</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> hasattr(ship_geo.cave, <span class="stringliteral">&quot;ECN3FloorY&quot;</span>):</div>
+<div class="line"><span class="lineno">  510</span>        <span class="comment"># Placing the UBT needs the ECN3 floor and side walls: use those of the</span></div>
+<div class="line"><span class="lineno">  511</span>        <span class="comment"># cavern that ShipCave builds.</span></div>
+<div class="line"><span class="lineno">  512</span>        <a class="code hl_function" href="namespacegeometry__config.html#a23fa4639bd7834b2b245271c5c1dcd3c">geometry_config.set_ecn3_cavern</a>(ship_geo)</div>
+<div class="line"><span class="lineno">  513</span>    ubt_geo = getattr(ship_geo, <span class="stringliteral">&quot;UpstreamTagger&quot;</span>, <span class="keywordtype">None</span>)</div>
+<div class="line"><span class="lineno">  514</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> hasattr(ship_geo, <span class="stringliteral">&quot;UpstreamTaggerScoringPlane&quot;</span>) <span class="keywordflow">or</span> <span class="keywordflow">not</span> (</div>
+<div class="line"><span class="lineno">  515</span>        hasattr(ubt_geo, <span class="stringliteral">&quot;TileThickness&quot;</span>) <span class="keywordflow">or</span> hasattr(ubt_geo, <span class="stringliteral">&quot;SmallTileZ&quot;</span>)</div>
+<div class="line"><span class="lineno">  516</span>    ):</div>
+<div class="line"><span class="lineno">  517</span>        <span class="comment"># A geometry from before the scintillator UBT: its UBT was a vacuum box,</span></div>
+<div class="line"><span class="lineno">  518</span>        <span class="comment"># which can no longer be built.</span></div>
+<div class="line"><span class="lineno">  519</span>        <span class="keywordflow">if</span> geofile:</div>
+<div class="line"><span class="lineno">  520</span>            <span class="keywordflow">raise</span> ValueError(</div>
+<div class="line"><span class="lineno">  521</span>                f<span class="stringliteral">&quot;{geofile} has the UBT of before the scintillator tiles (a vacuum box), which cannot be built&quot;</span></div>
+<div class="line"><span class="lineno">  522</span>                <span class="stringliteral">&quot; any more, so it cannot be used with -g: write a new geometry file&quot;</span></div>
+<div class="line"><span class="lineno">  523</span>            )</div>
+<div class="line"><span class="lineno">  524</span>        <span class="comment"># Use the current UBT and scoring planes, placed from this geometry&#39;s</span></div>
+<div class="line"><span class="lineno">  525</span>        <span class="comment"># decay vessel and muon shield, so that the other detectors can be</span></div>
+<div class="line"><span class="lineno">  526</span>        <span class="comment"># used; the UBT points of such a file are not digitized (see</span></div>
+<div class="line"><span class="lineno">  527</span>        <span class="comment"># UpstreamTaggerDetector.validate_stored_geometry).</span></div>
+<div class="line"><span class="lineno">  528</span>        <a class="code hl_function" href="namespacegeometry__config.html#a68f8dfd6b8fc305422b155a63db0bdec">geometry_config.set_upstream_tagger</a>(ship_geo)</div>
+<div class="line"><span class="lineno">  529</span> </div>
+<div class="line"><span class="lineno">  530</span>    <span class="comment"># -----Create media-------------------------------------------------</span></div>
+<div class="line"><span class="lineno">  531</span>    run.SetMaterials(<span class="stringliteral">&quot;media.geo&quot;</span>)  <span class="comment"># Materials</span></div>
+<div class="line"><span class="lineno">  532</span>    <span class="comment"># ------------------------------------------------------------------------</span></div>
+<div class="line"><span class="lineno">  533</span> </div>
+<div class="line"><span class="lineno">  534</span>    <span class="comment"># -----Create geometry----------------------------------------------</span></div>
+<div class="line"><span class="lineno">  535</span>    cave = ROOT.ShipCave(<span class="stringliteral">&quot;Cave&quot;</span>, <span class="stringliteral">&quot;ShipCave&quot;</span>)</div>
+<div class="line"><span class="lineno">  536</span>    cave.SetGeometryFileName(<span class="stringliteral">&quot;caveWithAir.geo&quot;</span>)</div>
+<div class="line"><span class="lineno">  537</span>    <span class="keywordflow">if</span> hasattr(ship_geo.cave, <span class="stringliteral">&quot;ECN3_length&quot;</span>):</div>
+<div class="line"><span class="lineno">  538</span>        cave.SetCavernDimensions(</div>
+<div class="line"><span class="lineno">  539</span>            ship_geo.cave.TCC8_length,</div>
+<div class="line"><span class="lineno">  540</span>            ship_geo.cave.ECN3_length,</div>
+<div class="line"><span class="lineno">  541</span>            ship_geo.cave.stair_step_length,</div>
+<div class="line"><span class="lineno">  542</span>            ship_geo.cave.z_transition,</div>
+<div class="line"><span class="lineno">  543</span>        )</div>
+<div class="line"><span class="lineno">  544</span>    cave.SetSpectrometerZ(ship_geo.z)</div>
+<div class="line"><span class="lineno">  545</span>    detectorList.append(cave)</div>
+<div class="line"><span class="lineno">  546</span> </div>
+<div class="line"><span class="lineno">  547</span>    TargetStation = ROOT.ShipTargetStation(</div>
+<div class="line"><span class="lineno">  548</span>        <span class="stringliteral">&quot;TargetStation&quot;</span>,</div>
+<div class="line"><span class="lineno">  549</span>        ship_geo.target.length,</div>
+<div class="line"><span class="lineno">  550</span>        ship_geo.target.z,</div>
+<div class="line"><span class="lineno">  551</span>        ship_geo.target.nS,</div>
+<div class="line"><span class="lineno">  552</span>        ship_geo.target.HeT,</div>
+<div class="line"><span class="lineno">  553</span>    )</div>
+<div class="line"><span class="lineno">  554</span> </div>
+<div class="line"><span class="lineno">  555</span>    TargetStation.SetLayerPosMat(</div>
+<div class="line"><span class="lineno">  556</span>        ship_geo.target.xy, ship_geo.target.slices_length, ship_geo.target.slices_gap, ship_geo.target.slices_material</div>
+<div class="line"><span class="lineno">  557</span>    )</div>
+<div class="line"><span class="lineno">  558</span>    target_version = getattr(ship_geo.target, <span class="stringliteral">&quot;version&quot;</span>, 1)</div>
+<div class="line"><span class="lineno">  559</span>    TargetStation.SetDesign(target_version)</div>
+<div class="line"><span class="lineno">  560</span>    <span class="keywordflow">if</span> target_version &gt;= 2:</div>
+<div class="line"><span class="lineno">  561</span>        TargetStation.SetLastDiskDiameter(ship_geo.target.xy2)</div>
+<div class="line"><span class="lineno">  562</span>    TargetStation.SetShieldingReferenceLength(ship_geo.target.length_fixed)</div>
+<div class="line"><span class="lineno">  563</span>    detectorList.append(TargetStation)</div>
+<div class="line"><span class="lineno">  564</span> </div>
+<div class="line"><span class="lineno">  565</span>    <span class="comment"># For SND: support multiple designs</span></div>
+<div class="line"><span class="lineno">  566</span>    <span class="keywordflow">if</span> ship_geo.SND:</div>
+<div class="line"><span class="lineno">  567</span>        <span class="keywordflow">for</span> design <span class="keywordflow">in</span> ship_geo.SND_design:</div>
+<div class="line"><span class="lineno">  568</span>            <span class="keywordflow">if</span> design == 2:</div>
+<div class="line"><span class="lineno">  569</span>                <span class="comment"># SND design 2 -- MTC/SiliconTarget</span></div>
+<div class="line"><span class="lineno">  570</span>                configure_snd_mtc(os.path.join(os.environ[<span class="stringliteral">&quot;FAIRSHIP&quot;</span>], <span class="stringliteral">&quot;geometry&quot;</span>, <span class="stringliteral">&quot;MTC_config.yaml&quot;</span>), ship_geo)</div>
+<div class="line"><span class="lineno">  571</span>                configure_snd_siliconTarget(</div>
+<div class="line"><span class="lineno">  572</span>                    os.path.join(os.environ[<span class="stringliteral">&quot;FAIRSHIP&quot;</span>], <span class="stringliteral">&quot;geometry&quot;</span>, <span class="stringliteral">&quot;SiliconTarget_config.yaml&quot;</span>), ship_geo</div>
+<div class="line"><span class="lineno">  573</span>                )</div>
+<div class="line"><span class="lineno">  574</span>            <span class="keywordflow">elif</span> design == 1:</div>
+<div class="line"><span class="lineno">  575</span>                configure_snd_old(</div>
+<div class="line"><span class="lineno">  576</span>                    os.path.join(os.environ[<span class="stringliteral">&quot;FAIRSHIP&quot;</span>], <span class="stringliteral">&quot;geometry&quot;</span>, <span class="stringliteral">&quot;snd_config_old.yaml&quot;</span>),</div>
+<div class="line"><span class="lineno">  577</span>                    ship_geo.UpstreamTagger.z0 - 5 * u.cm,</div>
+<div class="line"><span class="lineno">  578</span>                    ship_geo.cave.floorHeightMuonShield,</div>
+<div class="line"><span class="lineno">  579</span>                )</div>
+<div class="line"><span class="lineno">  580</span>            <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  581</span>                print(f<span class="stringliteral">&quot;Warning: SND design {design} is not recognized.&quot;</span>)</div>
 <div class="line"><span class="lineno">  582</span> </div>
-<div class="line"><span class="lineno">  583</span>    MuonShield = ROOT.ShipMuonShield(</div>
-<div class="line"><span class="lineno">  584</span>        in_params,</div>
-<div class="line"><span class="lineno">  585</span>        ship_geo.muShield.z,</div>
-<div class="line"><span class="lineno">  586</span>        ship_geo.muShield.WithConstField,</div>
-<div class="line"><span class="lineno">  587</span>        ship_geo.SC_mag,</div>
-<div class="line"><span class="lineno">  588</span>    )</div>
-<div class="line"><span class="lineno">  589</span> </div>
-<div class="line"><span class="lineno">  590</span>    <span class="keywordflow">if</span> ship_geo.SND:</div>
-<div class="line"><span class="lineno">  591</span>        <span class="comment"># If any SND design is 2 (MTC), set SNDSpace for MuonShield</span></div>
-<div class="line"><span class="lineno">  592</span>        <span class="keywordflow">if</span> 2 <span class="keywordflow">in</span> getattr(ship_geo, <span class="stringliteral">&quot;SND_design&quot;</span>, []):</div>
-<div class="line"><span class="lineno">  593</span>            <span class="comment"># The SND sits in the third-to-last and second-to-last magnets</span></div>
-<div class="line"><span class="lineno">  594</span>            <span class="comment"># (S5 and M6 in the 2026 layout), see configure_snd_mtc.</span></div>
-<div class="line"><span class="lineno">  595</span>            n_magnets = ship_geo.muShield.nMagnets</div>
-<div class="line"><span class="lineno">  596</span>            MuonShield.SetSNDSpace(</div>
-<div class="line"><span class="lineno">  597</span>                hole=<span class="keyword">True</span>,</div>
-<div class="line"><span class="lineno">  598</span>                hole_dx=(ship_geo.mtc_geo.width + 5.0 * u.cm) / 2.0,</div>
-<div class="line"><span class="lineno">  599</span>                hole_dy=(ship_geo.mtc_geo.height + 5.0 * u.cm) / 2.0,</div>
-<div class="line"><span class="lineno">  600</span>                first_magnet=n_magnets - 3,</div>
-<div class="line"><span class="lineno">  601</span>                last_magnet=n_magnets - 2,</div>
-<div class="line"><span class="lineno">  602</span>            )</div>
-<div class="line"><span class="lineno">  603</span>    detectorList.append(MuonShield)</div>
-<div class="line"><span class="lineno">  604</span> </div>
-<div class="line"><span class="lineno">  605</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> hasattr(ship_geo, <span class="stringliteral">&quot;magnetDesign&quot;</span>):</div>
-<div class="line"><span class="lineno">  606</span>        <span class="comment"># backward compatibility</span></div>
-<div class="line"><span class="lineno">  607</span>        ship_geo.magnetDesign = 4</div>
-<div class="line"><span class="lineno">  608</span>        ship_geo.Bfield.YokeWidth = 200.0 * u.cm</div>
-<div class="line"><span class="lineno">  609</span>        ship_geo.Bfield.YokeDepth = 200.0 * u.cm</div>
-<div class="line"><span class="lineno">  610</span>        ship_geo.Bfield.CoilThick = 25.0 * u.cm</div>
-<div class="line"><span class="lineno">  611</span>    <span class="keywordflow">if</span> ship_geo.strawDesign &gt; 1:</div>
-<div class="line"><span class="lineno">  612</span>        <span class="keywordflow">if</span> ship_geo.magnetDesign &gt; 3:</div>
-<div class="line"><span class="lineno">  613</span>            B = ship_geo.Bfield</div>
-<div class="line"><span class="lineno">  614</span>            magnet = ROOT.ShipMagnet(</div>
-<div class="line"><span class="lineno">  615</span>                <span class="stringliteral">&quot;Magnet&quot;</span>,</div>
-<div class="line"><span class="lineno">  616</span>                <span class="stringliteral">&quot;SHiP Magnet&quot;</span>,</div>
-<div class="line"><span class="lineno">  617</span>                B.z,</div>
-<div class="line"><span class="lineno">  618</span>                ship_geo.magnetDesign,</div>
-<div class="line"><span class="lineno">  619</span>                B.x,</div>
-<div class="line"><span class="lineno">  620</span>                B.y,</div>
-<div class="line"><span class="lineno">  621</span>                ship_geo.cave.floorHeightTankB,</div>
-<div class="line"><span class="lineno">  622</span>                B.YokeWidth,</div>
-<div class="line"><span class="lineno">  623</span>                B.YokeDepth,</div>
-<div class="line"><span class="lineno">  624</span>                B.CoilThick,</div>
-<div class="line"><span class="lineno">  625</span>            )</div>
-<div class="line"><span class="lineno">  626</span>        <span class="comment">#                                                               xaperture,  yaperture</span></div>
-<div class="line"><span class="lineno">  627</span>        <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  628</span>            magnet = ROOT.ShipMagnet(</div>
-<div class="line"><span class="lineno">  629</span>                <span class="stringliteral">&quot;Magnet&quot;</span>,</div>
-<div class="line"><span class="lineno">  630</span>                <span class="stringliteral">&quot;SHiP Magnet&quot;</span>,</div>
-<div class="line"><span class="lineno">  631</span>                ship_geo.Bfield.z,</div>
-<div class="line"><span class="lineno">  632</span>                ship_geo.magnetDesign,</div>
-<div class="line"><span class="lineno">  633</span>                ship_geo.Bfield.x,</div>
-<div class="line"><span class="lineno">  634</span>                ship_geo.Bfield.y,</div>
-<div class="line"><span class="lineno">  635</span>                ship_geo.cave.floorHeightTankB,</div>
-<div class="line"><span class="lineno">  636</span>            )</div>
-<div class="line"><span class="lineno">  637</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  638</span>        magnet = ROOT.ShipMagnet(<span class="stringliteral">&quot;Magnet&quot;</span>, <span class="stringliteral">&quot;SHiP Magnet&quot;</span>, ship_geo.Bfield.z)</div>
-<div class="line"><span class="lineno">  639</span>    detectorList.append(magnet)</div>
-<div class="line"><span class="lineno">  640</span> </div>
-<div class="line"><span class="lineno">  641</span>    fairship = os.environ[<span class="stringliteral">&quot;FAIRSHIP&quot;</span>]</div>
+<div class="line"><span class="lineno">  583</span>    in_params = list(ship_geo.muShield.params)</div>
+<div class="line"><span class="lineno">  584</span> </div>
+<div class="line"><span class="lineno">  585</span>    MuonShield = ROOT.ShipMuonShield(</div>
+<div class="line"><span class="lineno">  586</span>        in_params,</div>
+<div class="line"><span class="lineno">  587</span>        ship_geo.muShield.z,</div>
+<div class="line"><span class="lineno">  588</span>        ship_geo.muShield.WithConstField,</div>
+<div class="line"><span class="lineno">  589</span>        ship_geo.SC_mag,</div>
+<div class="line"><span class="lineno">  590</span>    )</div>
+<div class="line"><span class="lineno">  591</span> </div>
+<div class="line"><span class="lineno">  592</span>    <span class="keywordflow">if</span> ship_geo.SND:</div>
+<div class="line"><span class="lineno">  593</span>        <span class="comment"># If any SND design is 2 (MTC), set SNDSpace for MuonShield</span></div>
+<div class="line"><span class="lineno">  594</span>        <span class="keywordflow">if</span> 2 <span class="keywordflow">in</span> getattr(ship_geo, <span class="stringliteral">&quot;SND_design&quot;</span>, []):</div>
+<div class="line"><span class="lineno">  595</span>            <span class="comment"># The SND sits in the third-to-last and second-to-last magnets</span></div>
+<div class="line"><span class="lineno">  596</span>            <span class="comment"># (S5 and M6 in the 2026 layout), see configure_snd_mtc.</span></div>
+<div class="line"><span class="lineno">  597</span>            n_magnets = ship_geo.muShield.nMagnets</div>
+<div class="line"><span class="lineno">  598</span>            MuonShield.SetSNDSpace(</div>
+<div class="line"><span class="lineno">  599</span>                hole=<span class="keyword">True</span>,</div>
+<div class="line"><span class="lineno">  600</span>                hole_dx=(ship_geo.mtc_geo.width + 5.0 * u.cm) / 2.0,</div>
+<div class="line"><span class="lineno">  601</span>                hole_dy=(ship_geo.mtc_geo.height + 5.0 * u.cm) / 2.0,</div>
+<div class="line"><span class="lineno">  602</span>                first_magnet=n_magnets - 3,</div>
+<div class="line"><span class="lineno">  603</span>                last_magnet=n_magnets - 2,</div>
+<div class="line"><span class="lineno">  604</span>            )</div>
+<div class="line"><span class="lineno">  605</span>    detectorList.append(MuonShield)</div>
+<div class="line"><span class="lineno">  606</span> </div>
+<div class="line"><span class="lineno">  607</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> hasattr(ship_geo, <span class="stringliteral">&quot;magnetDesign&quot;</span>):</div>
+<div class="line"><span class="lineno">  608</span>        <span class="comment"># backward compatibility</span></div>
+<div class="line"><span class="lineno">  609</span>        ship_geo.magnetDesign = 4</div>
+<div class="line"><span class="lineno">  610</span>        ship_geo.Bfield.YokeWidth = 200.0 * u.cm</div>
+<div class="line"><span class="lineno">  611</span>        ship_geo.Bfield.YokeDepth = 200.0 * u.cm</div>
+<div class="line"><span class="lineno">  612</span>        ship_geo.Bfield.CoilThick = 25.0 * u.cm</div>
+<div class="line"><span class="lineno">  613</span>    <span class="keywordflow">if</span> ship_geo.strawDesign &gt; 1:</div>
+<div class="line"><span class="lineno">  614</span>        <span class="keywordflow">if</span> ship_geo.magnetDesign &gt; 3:</div>
+<div class="line"><span class="lineno">  615</span>            B = ship_geo.Bfield</div>
+<div class="line"><span class="lineno">  616</span>            magnet = ROOT.ShipMagnet(</div>
+<div class="line"><span class="lineno">  617</span>                <span class="stringliteral">&quot;Magnet&quot;</span>,</div>
+<div class="line"><span class="lineno">  618</span>                <span class="stringliteral">&quot;SHiP Magnet&quot;</span>,</div>
+<div class="line"><span class="lineno">  619</span>                B.z,</div>
+<div class="line"><span class="lineno">  620</span>                ship_geo.magnetDesign,</div>
+<div class="line"><span class="lineno">  621</span>                B.x,</div>
+<div class="line"><span class="lineno">  622</span>                B.y,</div>
+<div class="line"><span class="lineno">  623</span>                ship_geo.cave.floorHeightTankB,</div>
+<div class="line"><span class="lineno">  624</span>                B.YokeWidth,</div>
+<div class="line"><span class="lineno">  625</span>                B.YokeDepth,</div>
+<div class="line"><span class="lineno">  626</span>                B.CoilThick,</div>
+<div class="line"><span class="lineno">  627</span>            )</div>
+<div class="line"><span class="lineno">  628</span>        <span class="comment">#                                                               xaperture,  yaperture</span></div>
+<div class="line"><span class="lineno">  629</span>        <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  630</span>            magnet = ROOT.ShipMagnet(</div>
+<div class="line"><span class="lineno">  631</span>                <span class="stringliteral">&quot;Magnet&quot;</span>,</div>
+<div class="line"><span class="lineno">  632</span>                <span class="stringliteral">&quot;SHiP Magnet&quot;</span>,</div>
+<div class="line"><span class="lineno">  633</span>                ship_geo.Bfield.z,</div>
+<div class="line"><span class="lineno">  634</span>                ship_geo.magnetDesign,</div>
+<div class="line"><span class="lineno">  635</span>                ship_geo.Bfield.x,</div>
+<div class="line"><span class="lineno">  636</span>                ship_geo.Bfield.y,</div>
+<div class="line"><span class="lineno">  637</span>                ship_geo.cave.floorHeightTankB,</div>
+<div class="line"><span class="lineno">  638</span>            )</div>
+<div class="line"><span class="lineno">  639</span>    <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  640</span>        magnet = ROOT.ShipMagnet(<span class="stringliteral">&quot;Magnet&quot;</span>, <span class="stringliteral">&quot;SHiP Magnet&quot;</span>, ship_geo.Bfield.z)</div>
+<div class="line"><span class="lineno">  641</span>    detectorList.append(magnet)</div>
 <div class="line"><span class="lineno">  642</span> </div>
-<div class="line"><span class="lineno">  643</span>    configure_veto(</div>
-<div class="line"><span class="lineno">  644</span>        os.path.join(fairship, f<span class="stringliteral">&quot;geometry/veto_config_{ship_geo.DecayVolumeMedium}.yaml&quot;</span>),</div>
-<div class="line"><span class="lineno">  645</span>        ship_geo.decayVolume.z0,</div>
-<div class="line"><span class="lineno">  646</span>    )</div>
-<div class="line"><span class="lineno">  647</span> </div>
-<div class="line"><span class="lineno">  648</span>    configure_strawtubes(</div>
-<div class="line"><span class="lineno">  649</span>        os.path.join(os.environ[<span class="stringliteral">&quot;FAIRSHIP&quot;</span>], <span class="stringliteral">&quot;geometry&quot;</span>, <span class="stringliteral">&quot;strawtubes_config.yaml&quot;</span>),</div>
-<div class="line"><span class="lineno">  650</span>        ship_geo,</div>
-<div class="line"><span class="lineno">  651</span>    )</div>
-<div class="line"><span class="lineno">  652</span> </div>
-<div class="line"><span class="lineno">  653</span>    <span class="keywordflow">if</span> hasattr(ship_geo, <span class="stringliteral">&quot;CaloScoringPlane&quot;</span>):  <span class="comment"># absent in geometry files made before SplitCal removal</span></div>
-<div class="line"><span class="lineno">  654</span>        caloScoringPlane = ROOT.CaloScoringPlane(<span class="stringliteral">&quot;CaloScoringPlane&quot;</span>, ROOT.kTRUE)</div>
-<div class="line"><span class="lineno">  655</span>        caloScoringPlane.SetZposition(ship_geo.CaloScoringPlane.z)</div>
-<div class="line"><span class="lineno">  656</span>        caloScoringPlane.SetBoxDimensions(</div>
-<div class="line"><span class="lineno">  657</span>            ship_geo.CaloScoringPlane.DX, ship_geo.CaloScoringPlane.DY, ship_geo.CaloScoringPlane.DZ</div>
-<div class="line"><span class="lineno">  658</span>        )</div>
-<div class="line"><span class="lineno">  659</span>        detectorList.append(caloScoringPlane)</div>
-<div class="line"><span class="lineno">  660</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  661</span>        print(<span class="stringliteral">&quot;Warning: no CaloScoringPlane in this geometry configuration; not building it.&quot;</span>)</div>
-<div class="line"><span class="lineno">  662</span> </div>
-<div class="line"><span class="lineno">  663</span>    upstreamTagger = ROOT.UpstreamTagger(<span class="stringliteral">&quot;UpstreamTagger&quot;</span>, ROOT.kTRUE)</div>
-<div class="line"><span class="lineno">  664</span>    upstreamTagger.SetZposition(ship_geo.UpstreamTagger.z)</div>
-<div class="line"><span class="lineno">  665</span>    upstreamTagger.SetBoxDimensions(</div>
-<div class="line"><span class="lineno">  666</span>        ship_geo.UpstreamTagger.BoxX, ship_geo.UpstreamTagger.BoxY, ship_geo.UpstreamTagger.BoxZ</div>
-<div class="line"><span class="lineno">  667</span>    )</div>
-<div class="line"><span class="lineno">  668</span>    upstreamTagger.SetBoxCenter(ship_geo.UpstreamTagger.BoxCenterX, ship_geo.UpstreamTagger.BoxCenterY)</div>
-<div class="line"><span class="lineno">  669</span>    configure_upstream_tagger(</div>
-<div class="line"><span class="lineno">  670</span>        os.path.join(os.environ[<span class="stringliteral">&quot;FAIRSHIP&quot;</span>], <span class="stringliteral">&quot;geometry&quot;</span>, <span class="stringliteral">&quot;UpstreamTagger_config.yaml&quot;</span>),</div>
-<div class="line"><span class="lineno">  671</span>        upstreamTagger,</div>
-<div class="line"><span class="lineno">  672</span>        ship_geo,</div>
-<div class="line"><span class="lineno">  673</span>    )</div>
-<div class="line"><span class="lineno">  674</span>    detectorList.append(upstreamTagger)</div>
-<div class="line"><span class="lineno">  675</span> </div>
-<div class="line"><span class="lineno">  676</span>    sp = ship_geo.UpstreamTaggerScoringPlane</div>
-<div class="line"><span class="lineno">  677</span>    ubt_scoring_plane = ROOT.UpstreamTaggerScoringPlane(<span class="stringliteral">&quot;UpstreamTaggerScoringPlane&quot;</span>, ROOT.kTRUE)</div>
-<div class="line"><span class="lineno">  678</span>    <span class="comment"># Planes 1 and 2, in this order: the plane number is the point detector ID.</span></div>
-<div class="line"><span class="lineno">  679</span>    <span class="keywordflow">for</span> number, plane <span class="keywordflow">in</span> enumerate((sp.DecayVessel, sp.MuonShield), start=1):</div>
-<div class="line"><span class="lineno">  680</span>        ubt_scoring_plane.AddPlane(</div>
-<div class="line"><span class="lineno">  681</span>            f<span class="stringliteral">&quot;UpstreamTaggerScoringPlane{number}&quot;</span>,</div>
-<div class="line"><span class="lineno">  682</span>            plane.CenterX,</div>
-<div class="line"><span class="lineno">  683</span>            plane.CenterY,</div>
-<div class="line"><span class="lineno">  684</span>            plane.z,</div>
-<div class="line"><span class="lineno">  685</span>            plane.X,</div>
-<div class="line"><span class="lineno">  686</span>            plane.Y,</div>
-<div class="line"><span class="lineno">  687</span>            sp.Z,</div>
-<div class="line"><span class="lineno">  688</span>            [13] <span class="keywordflow">if</span> plane.MuonsOnly <span class="keywordflow">else</span> [],</div>
-<div class="line"><span class="lineno">  689</span>            plane.get(<span class="stringliteral">&quot;KeepTracks&quot;</span>, <span class="keyword">True</span>),  <span class="comment"># absent in geometry files written before it</span></div>
-<div class="line"><span class="lineno">  690</span>        )</div>
-<div class="line"><span class="lineno">  691</span>    detectorList.append(ubt_scoring_plane)</div>
-<div class="line"><span class="lineno">  692</span> </div>
-<div class="line"><span class="lineno">  693</span>    timeDet = ROOT.TimeDet(<span class="stringliteral">&quot;TimeDet&quot;</span>, ROOT.kTRUE)</div>
-<div class="line"><span class="lineno">  694</span>    timeDet.SetZposition(ship_geo.TimeDet.z)</div>
-<div class="line"><span class="lineno">  695</span>    timeDet.SetBarZspacing(ship_geo.TimeDet.dzBarRow, ship_geo.TimeDet.dzBarCol)</div>
-<div class="line"><span class="lineno">  696</span>    timeDet.SetBarZ(ship_geo.TimeDet.zBar)</div>
-<div class="line"><span class="lineno">  697</span>    timeDet.SetSizeX(2 * ship_geo.TimeDet.DX)</div>
-<div class="line"><span class="lineno">  698</span>    timeDet.SetSizeY(2 * ship_geo.TimeDet.DY)</div>
-<div class="line"><span class="lineno">  699</span>    detectorList.append(timeDet)</div>
-<div class="line"><span class="lineno">  700</span> </div>
-<div class="line"><span class="lineno">  701</span>    <span class="comment"># -----   Magnetic field   -------------------------------------------</span></div>
-<div class="line"><span class="lineno">  702</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> hasattr(ship_geo.Bfield, <span class="stringliteral">&quot;fieldMap&quot;</span>):</div>
-<div class="line"><span class="lineno">  703</span>        <span class="keywordflow">if</span> ship_geo.strawDesign == 4 <span class="keywordflow">or</span> ship_geo.strawDesign == 10:</div>
-<div class="line"><span class="lineno">  704</span>            fMagField = ROOT.ShipBellField(</div>
-<div class="line"><span class="lineno">  705</span>                <span class="stringliteral">&quot;wilfried&quot;</span>,</div>
-<div class="line"><span class="lineno">  706</span>                ship_geo.Bfield.max,</div>
-<div class="line"><span class="lineno">  707</span>                ship_geo.Bfield.z,</div>
-<div class="line"><span class="lineno">  708</span>                2,</div>
-<div class="line"><span class="lineno">  709</span>                ship_geo.Yheight / 2.0 * u.m,</div>
-<div class="line"><span class="lineno">  710</span>            )</div>
-<div class="line"><span class="lineno">  711</span>        <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  712</span>            fMagField = ROOT.ShipBellField(</div>
-<div class="line"><span class="lineno">  713</span>                <span class="stringliteral">&quot;wilfried&quot;</span>,</div>
-<div class="line"><span class="lineno">  714</span>                ship_geo.Bfield.max,</div>
-<div class="line"><span class="lineno">  715</span>                ship_geo.Bfield.z,</div>
-<div class="line"><span class="lineno">  716</span>                1,</div>
-<div class="line"><span class="lineno">  717</span>                ship_geo.Yheight / 2.0 * u.m,</div>
-<div class="line"><span class="lineno">  718</span>            )</div>
-<div class="line"><span class="lineno">  719</span>        run.SetField(fMagField)</div>
-<div class="line"><span class="lineno">  720</span>        ROOT.SetOwnership(fMagField, <span class="keyword">False</span>)  <span class="comment"># C++ FairRunSim takes ownership</span></div>
-<div class="line"><span class="lineno">  721</span> </div>
-<div class="line"><span class="lineno">  722</span>    exclusionList: list[str] = []</div>
-<div class="line"><span class="lineno">  723</span>    <span class="comment"># exclusionList = [&quot;strawtubes&quot;,&quot;TargetTrackers&quot;,&quot;NuTauTarget&quot;,\</span></div>
-<div class="line"><span class="lineno">  724</span>    <span class="comment">#                 &quot;SiliconTarget&quot;,&quot;Veto&quot;,&quot;Magnet&quot;,&quot;MuonShield&quot;,&quot;TargetStation&quot;, &quot;TimeDet&quot;, &quot;UpstreamTagger&quot;]</span></div>
-<div class="line"><span class="lineno">  725</span> </div>
-<div class="line"><span class="lineno">  726</span>    <span class="comment"># Heterogeneous module dict: keys are GetName() strings, values are</span></div>
-<div class="line"><span class="lineno">  727</span>    <span class="comment"># FairModule subclasses (Target/MTC/strawtubes/...). Annotate as Any to</span></div>
-<div class="line"><span class="lineno">  728</span>    <span class="comment"># match the heterogeneous detectorList type.</span></div>
-<div class="line"><span class="lineno">  729</span>    detElements: dict[str, Any] = {}</div>
-<div class="line"><span class="lineno">  730</span>    <span class="keywordflow">if</span> geofile:</div>
-<div class="line"><span class="lineno">  731</span>        <a class="code hl_function" href="namespacegeometry__from__file.html#ad003da7c4d900ff4a2edc37862a51494">geometry_from_file.check_yaml_configs</a>(stored_yaml_configs, ship_geo)</div>
-<div class="line"><span class="lineno">  732</span>    <span class="keywordflow">for</span> x <span class="keywordflow">in</span> detectorList:</div>
-<div class="line"><span class="lineno">  733</span>        <span class="keywordflow">if</span> x.GetName() <span class="keywordflow">in</span> exclusionList:</div>
-<div class="line"><span class="lineno">  734</span>            <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  735</span>        run.AddModule(x)</div>
-<div class="line"><span class="lineno">  736</span>        ROOT.SetOwnership(x, <span class="keyword">False</span>)  <span class="comment"># C++ FairRunSim takes ownership</span></div>
-<div class="line"><span class="lineno">  737</span>        detElements[x.GetName()] = x</div>
-<div class="line"><span class="lineno">  738</span>    <span class="keywordflow">if</span> geofile:</div>
-<div class="line"><span class="lineno">  739</span>        <span class="comment"># Last, so that every module has built its geometry, registered its</span></div>
-<div class="line"><span class="lineno">  740</span>        <span class="comment"># sensitive volumes and attached its fields before the swap. The</span></div>
-<div class="line"><span class="lineno">  741</span>        <span class="comment"># caller must keep the returned dict: C++ calls back into this object.</span></div>
-<div class="line"><span class="lineno">  742</span>        swap = <a class="code hl_function" href="namespacegeometry__from__file.html#a39ee39f2ff59b2dacdc40abf83aa1fa6">geometry_from_file.make_swap</a>(geofile)</div>
-<div class="line"><span class="lineno">  743</span>        run.AddModule(swap)</div>
-<div class="line"><span class="lineno">  744</span>        ROOT.SetOwnership(swap, <span class="keyword">False</span>)  <span class="comment"># C++ FairRunSim takes ownership</span></div>
-<div class="line"><span class="lineno">  745</span>        detElements[geometry_from_file.SWAP_NAME] = swap</div>
-<div class="line"><span class="lineno">  746</span>    <span class="keywordflow">return</span> detElements</div>
+<div class="line"><span class="lineno">  643</span>    fairship = os.environ[<span class="stringliteral">&quot;FAIRSHIP&quot;</span>]</div>
+<div class="line"><span class="lineno">  644</span> </div>
+<div class="line"><span class="lineno">  645</span>    configure_veto(</div>
+<div class="line"><span class="lineno">  646</span>        os.path.join(fairship, f<span class="stringliteral">&quot;geometry/veto_config_{ship_geo.DecayVolumeMedium}.yaml&quot;</span>),</div>
+<div class="line"><span class="lineno">  647</span>        ship_geo.decayVolume.z0,</div>
+<div class="line"><span class="lineno">  648</span>    )</div>
+<div class="line"><span class="lineno">  649</span> </div>
+<div class="line"><span class="lineno">  650</span>    configure_strawtubes(</div>
+<div class="line"><span class="lineno">  651</span>        os.path.join(os.environ[<span class="stringliteral">&quot;FAIRSHIP&quot;</span>], <span class="stringliteral">&quot;geometry&quot;</span>, <span class="stringliteral">&quot;strawtubes_config.yaml&quot;</span>),</div>
+<div class="line"><span class="lineno">  652</span>        ship_geo,</div>
+<div class="line"><span class="lineno">  653</span>    )</div>
+<div class="line"><span class="lineno">  654</span> </div>
+<div class="line"><span class="lineno">  655</span>    <span class="keywordflow">if</span> hasattr(ship_geo, <span class="stringliteral">&quot;CaloScoringPlane&quot;</span>):  <span class="comment"># absent in geometry files made before SplitCal removal</span></div>
+<div class="line"><span class="lineno">  656</span>        caloScoringPlane = ROOT.CaloScoringPlane(<span class="stringliteral">&quot;CaloScoringPlane&quot;</span>, ROOT.kTRUE)</div>
+<div class="line"><span class="lineno">  657</span>        caloScoringPlane.SetZposition(ship_geo.CaloScoringPlane.z)</div>
+<div class="line"><span class="lineno">  658</span>        caloScoringPlane.SetBoxDimensions(</div>
+<div class="line"><span class="lineno">  659</span>            ship_geo.CaloScoringPlane.DX, ship_geo.CaloScoringPlane.DY, ship_geo.CaloScoringPlane.DZ</div>
+<div class="line"><span class="lineno">  660</span>        )</div>
+<div class="line"><span class="lineno">  661</span>        detectorList.append(caloScoringPlane)</div>
+<div class="line"><span class="lineno">  662</span>    <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  663</span>        print(<span class="stringliteral">&quot;Warning: no CaloScoringPlane in this geometry configuration; not building it.&quot;</span>)</div>
+<div class="line"><span class="lineno">  664</span> </div>
+<div class="line"><span class="lineno">  665</span>    upstreamTagger = ROOT.UpstreamTagger(<span class="stringliteral">&quot;UpstreamTagger&quot;</span>, ROOT.kTRUE)</div>
+<div class="line"><span class="lineno">  666</span>    upstreamTagger.SetZposition(ship_geo.UpstreamTagger.z)</div>
+<div class="line"><span class="lineno">  667</span>    upstreamTagger.SetBoxDimensions(</div>
+<div class="line"><span class="lineno">  668</span>        ship_geo.UpstreamTagger.BoxX, ship_geo.UpstreamTagger.BoxY, ship_geo.UpstreamTagger.BoxZ</div>
+<div class="line"><span class="lineno">  669</span>    )</div>
+<div class="line"><span class="lineno">  670</span>    upstreamTagger.SetBoxCenter(ship_geo.UpstreamTagger.BoxCenterX, ship_geo.UpstreamTagger.BoxCenterY)</div>
+<div class="line"><span class="lineno">  671</span>    configure_upstream_tagger(</div>
+<div class="line"><span class="lineno">  672</span>        os.path.join(os.environ[<span class="stringliteral">&quot;FAIRSHIP&quot;</span>], <span class="stringliteral">&quot;geometry&quot;</span>, <span class="stringliteral">&quot;UpstreamTagger_config.yaml&quot;</span>),</div>
+<div class="line"><span class="lineno">  673</span>        upstreamTagger,</div>
+<div class="line"><span class="lineno">  674</span>        ship_geo,</div>
+<div class="line"><span class="lineno">  675</span>    )</div>
+<div class="line"><span class="lineno">  676</span>    detectorList.append(upstreamTagger)</div>
+<div class="line"><span class="lineno">  677</span> </div>
+<div class="line"><span class="lineno">  678</span>    sp = ship_geo.UpstreamTaggerScoringPlane</div>
+<div class="line"><span class="lineno">  679</span>    ubt_scoring_plane = ROOT.UpstreamTaggerScoringPlane(<span class="stringliteral">&quot;UpstreamTaggerScoringPlane&quot;</span>, ROOT.kTRUE)</div>
+<div class="line"><span class="lineno">  680</span>    <span class="comment"># Planes 1 and 2, in this order: the plane number is the point detector ID.</span></div>
+<div class="line"><span class="lineno">  681</span>    <span class="keywordflow">for</span> number, plane <span class="keywordflow">in</span> enumerate((sp.DecayVessel, sp.MuonShield), start=1):</div>
+<div class="line"><span class="lineno">  682</span>        ubt_scoring_plane.AddPlane(</div>
+<div class="line"><span class="lineno">  683</span>            f<span class="stringliteral">&quot;UpstreamTaggerScoringPlane{number}&quot;</span>,</div>
+<div class="line"><span class="lineno">  684</span>            plane.CenterX,</div>
+<div class="line"><span class="lineno">  685</span>            plane.CenterY,</div>
+<div class="line"><span class="lineno">  686</span>            plane.z,</div>
+<div class="line"><span class="lineno">  687</span>            plane.X,</div>
+<div class="line"><span class="lineno">  688</span>            plane.Y,</div>
+<div class="line"><span class="lineno">  689</span>            sp.Z,</div>
+<div class="line"><span class="lineno">  690</span>            [13] <span class="keywordflow">if</span> plane.MuonsOnly <span class="keywordflow">else</span> [],</div>
+<div class="line"><span class="lineno">  691</span>            plane.get(<span class="stringliteral">&quot;KeepTracks&quot;</span>, <span class="keyword">True</span>),  <span class="comment"># absent in geometry files written before it</span></div>
+<div class="line"><span class="lineno">  692</span>        )</div>
+<div class="line"><span class="lineno">  693</span>    detectorList.append(ubt_scoring_plane)</div>
+<div class="line"><span class="lineno">  694</span> </div>
+<div class="line"><span class="lineno">  695</span>    timeDet = ROOT.TimeDet(<span class="stringliteral">&quot;TimeDet&quot;</span>, ROOT.kTRUE)</div>
+<div class="line"><span class="lineno">  696</span>    timeDet.SetZposition(ship_geo.TimeDet.z)</div>
+<div class="line"><span class="lineno">  697</span>    timeDet.SetBarZspacing(ship_geo.TimeDet.dzBarRow, ship_geo.TimeDet.dzBarCol)</div>
+<div class="line"><span class="lineno">  698</span>    timeDet.SetBarZ(ship_geo.TimeDet.zBar)</div>
+<div class="line"><span class="lineno">  699</span>    timeDet.SetSizeX(2 * ship_geo.TimeDet.DX)</div>
+<div class="line"><span class="lineno">  700</span>    timeDet.SetSizeY(2 * ship_geo.TimeDet.DY)</div>
+<div class="line"><span class="lineno">  701</span>    detectorList.append(timeDet)</div>
+<div class="line"><span class="lineno">  702</span> </div>
+<div class="line"><span class="lineno">  703</span>    <span class="comment"># -----   Magnetic field   -------------------------------------------</span></div>
+<div class="line"><span class="lineno">  704</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> hasattr(ship_geo.Bfield, <span class="stringliteral">&quot;fieldMap&quot;</span>):</div>
+<div class="line"><span class="lineno">  705</span>        <span class="keywordflow">if</span> ship_geo.strawDesign == 4 <span class="keywordflow">or</span> ship_geo.strawDesign == 10:</div>
+<div class="line"><span class="lineno">  706</span>            fMagField = ROOT.ShipBellField(</div>
+<div class="line"><span class="lineno">  707</span>                <span class="stringliteral">&quot;wilfried&quot;</span>,</div>
+<div class="line"><span class="lineno">  708</span>                ship_geo.Bfield.max,</div>
+<div class="line"><span class="lineno">  709</span>                ship_geo.Bfield.z,</div>
+<div class="line"><span class="lineno">  710</span>                2,</div>
+<div class="line"><span class="lineno">  711</span>                ship_geo.Yheight / 2.0 * u.m,</div>
+<div class="line"><span class="lineno">  712</span>            )</div>
+<div class="line"><span class="lineno">  713</span>        <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  714</span>            fMagField = ROOT.ShipBellField(</div>
+<div class="line"><span class="lineno">  715</span>                <span class="stringliteral">&quot;wilfried&quot;</span>,</div>
+<div class="line"><span class="lineno">  716</span>                ship_geo.Bfield.max,</div>
+<div class="line"><span class="lineno">  717</span>                ship_geo.Bfield.z,</div>
+<div class="line"><span class="lineno">  718</span>                1,</div>
+<div class="line"><span class="lineno">  719</span>                ship_geo.Yheight / 2.0 * u.m,</div>
+<div class="line"><span class="lineno">  720</span>            )</div>
+<div class="line"><span class="lineno">  721</span>        run.SetField(fMagField)</div>
+<div class="line"><span class="lineno">  722</span>        ROOT.SetOwnership(fMagField, <span class="keyword">False</span>)  <span class="comment"># C++ FairRunSim takes ownership</span></div>
+<div class="line"><span class="lineno">  723</span> </div>
+<div class="line"><span class="lineno">  724</span>    exclusionList: list[str] = []</div>
+<div class="line"><span class="lineno">  725</span>    <span class="comment"># exclusionList = [&quot;strawtubes&quot;,&quot;TargetTrackers&quot;,&quot;NuTauTarget&quot;,\</span></div>
+<div class="line"><span class="lineno">  726</span>    <span class="comment">#                 &quot;SiliconTarget&quot;,&quot;Veto&quot;,&quot;Magnet&quot;,&quot;MuonShield&quot;,&quot;TargetStation&quot;, &quot;TimeDet&quot;, &quot;UpstreamTagger&quot;]</span></div>
+<div class="line"><span class="lineno">  727</span> </div>
+<div class="line"><span class="lineno">  728</span>    <span class="comment"># Heterogeneous module dict: keys are GetName() strings, values are</span></div>
+<div class="line"><span class="lineno">  729</span>    <span class="comment"># FairModule subclasses (Target/MTC/strawtubes/...). Annotate as Any to</span></div>
+<div class="line"><span class="lineno">  730</span>    <span class="comment"># match the heterogeneous detectorList type.</span></div>
+<div class="line"><span class="lineno">  731</span>    detElements: dict[str, Any] = {}</div>
+<div class="line"><span class="lineno">  732</span>    <span class="keywordflow">if</span> geofile:</div>
+<div class="line"><span class="lineno">  733</span>        <a class="code hl_function" href="namespacegeometry__from__file.html#ad003da7c4d900ff4a2edc37862a51494">geometry_from_file.check_yaml_configs</a>(stored_yaml_configs, ship_geo)</div>
+<div class="line"><span class="lineno">  734</span>    <span class="keywordflow">for</span> x <span class="keywordflow">in</span> detectorList:</div>
+<div class="line"><span class="lineno">  735</span>        <span class="keywordflow">if</span> x.GetName() <span class="keywordflow">in</span> exclusionList:</div>
+<div class="line"><span class="lineno">  736</span>            <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  737</span>        run.AddModule(x)</div>
+<div class="line"><span class="lineno">  738</span>        ROOT.SetOwnership(x, <span class="keyword">False</span>)  <span class="comment"># C++ FairRunSim takes ownership</span></div>
+<div class="line"><span class="lineno">  739</span>        detElements[x.GetName()] = x</div>
+<div class="line"><span class="lineno">  740</span>    <span class="keywordflow">if</span> geofile:</div>
+<div class="line"><span class="lineno">  741</span>        <span class="comment"># Last, so that every module has built its geometry, registered its</span></div>
+<div class="line"><span class="lineno">  742</span>        <span class="comment"># sensitive volumes and attached its fields before the swap. The</span></div>
+<div class="line"><span class="lineno">  743</span>        <span class="comment"># caller must keep the returned dict: C++ calls back into this object.</span></div>
+<div class="line"><span class="lineno">  744</span>        swap = <a class="code hl_function" href="namespacegeometry__from__file.html#a39ee39f2ff59b2dacdc40abf83aa1fa6">geometry_from_file.make_swap</a>(geofile)</div>
+<div class="line"><span class="lineno">  745</span>        run.AddModule(swap)</div>
+<div class="line"><span class="lineno">  746</span>        ROOT.SetOwnership(swap, <span class="keyword">False</span>)  <span class="comment"># C++ FairRunSim takes ownership</span></div>
+<div class="line"><span class="lineno">  747</span>        detElements[geometry_from_file.SWAP_NAME] = swap</div>
+<div class="line"><span class="lineno">  748</span>    <span class="keywordflow">return</span> detElements</div>
 <div class="ttc" id="anamespacegeometry__config_html_a23fa4639bd7834b2b245271c5c1dcd3c"><div class="ttname"><a href="namespacegeometry__config.html#a23fa4639bd7834b2b245271c5c1dcd3c">geometry_config.set_ecn3_cavern</a></div><div class="ttdeci">None set_ecn3_cavern(c)</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00146">geometry_config.py:146</a></div></div>
-<div class="ttc" id="anamespacegeometry__config_html_a68f8dfd6b8fc305422b155a63db0bdec"><div class="ttname"><a href="namespacegeometry__config.html#a68f8dfd6b8fc305422b155a63db0bdec">geometry_config.set_upstream_tagger</a></div><div class="ttdeci">None set_upstream_tagger(c)</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00159">geometry_config.py:159</a></div></div>
+<div class="ttc" id="anamespacegeometry__config_html_a68f8dfd6b8fc305422b155a63db0bdec"><div class="ttname"><a href="namespacegeometry__config.html#a68f8dfd6b8fc305422b155a63db0bdec">geometry_config.set_upstream_tagger</a></div><div class="ttdeci">None set_upstream_tagger(c)</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00160">geometry_config.py:160</a></div></div>
 <div class="ttc" id="anamespacegeometry__from__file_html_a084611c24c0a258117d0b689d187ec6e"><div class="ttname"><a href="namespacegeometry__from__file.html#a084611c24c0a258117d0b689d187ec6e">geometry_from_file.stored_yaml_configs</a></div><div class="ttdeci">dict[str, Any] stored_yaml_configs(Any ship_geo)</div><div class="ttdef"><b>Definition</b> <a href="geometry__from__file_8py_source.html#l00218">geometry_from_file.py:218</a></div></div>
 <div class="ttc" id="anamespacegeometry__from__file_html_a39ee39f2ff59b2dacdc40abf83aa1fa6"><div class="ttname"><a href="namespacegeometry__from__file.html#a39ee39f2ff59b2dacdc40abf83aa1fa6">geometry_from_file.make_swap</a></div><div class="ttdeci">Any make_swap(str geofile)</div><div class="ttdef"><b>Definition</b> <a href="geometry__from__file_8py_source.html#l00102">geometry_from_file.py:102</a></div></div>
 <div class="ttc" id="anamespacegeometry__from__file_html_ad003da7c4d900ff4a2edc37862a51494"><div class="ttname"><a href="namespacegeometry__from__file.html#ad003da7c4d900ff4a2edc37862a51494">geometry_from_file.check_yaml_configs</a></div><div class="ttdeci">None check_yaml_configs(dict[str, Any] stored, Any ship_geo)</div><div class="ttdef"><b>Definition</b> <a href="geometry__from__file_8py_source.html#l00223">geometry_from_file.py:223</a></div></div>
@@ -1020,87 +1022,88 @@ geometry file (reconstruction, analysis, ``-g``) already has it: then the
 stored map is used, so that the regions and tile IDs are those of the
 simulation, whatever the rule in the checkout says.
 </pre> 
-<p class="definition">Definition at line <a class="el" href="shipDet__conf_8py_source.html#l00406">406</a> of file <a class="el" href="shipDet__conf_8py_source.html">shipDet_conf.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  406</span><span class="keyword">def </span>configure_upstream_tagger(yaml_file: str, upstream_tagger, ship_geo) -&gt; <span class="keywordtype">None</span>:</div>
-<div class="line"><span class="lineno">  407</span>    <span class="stringliteral">&quot;&quot;&quot;Configure the UBT regions and their digitization parameters.</span></div>
-<div class="line"><span class="lineno">  408</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  409</span><span class="stringliteral">    The regions are generated from the rule in ``yaml_file`` on the UBT box of</span></div>
-<div class="line"><span class="lineno">  410</span><span class="stringliteral">    ``ship_geo``, and the resulting map is kept in ``ship_geo.UpstreamTagger_geo``,</span></div>
-<div class="line"><span class="lineno">  411</span><span class="stringliteral">    so that it is saved with the geometry. A configuration read back from a</span></div>
-<div class="line"><span class="lineno">  412</span><span class="stringliteral">    geometry file (reconstruction, analysis, ``-g``) already has it: then the</span></div>
-<div class="line"><span class="lineno">  413</span><span class="stringliteral">    stored map is used, so that the regions and tile IDs are those of the</span></div>
-<div class="line"><span class="lineno">  414</span><span class="stringliteral">    simulation, whatever the rule in the checkout says.</span></div>
-<div class="line"><span class="lineno">  415</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  416</span>    <span class="keyword">with</span> open(yaml_file) <span class="keyword">as</span> file:</div>
-<div class="line"><span class="lineno">  417</span>        rule = yaml.safe_load(file)</div>
-<div class="line"><span class="lineno">  418</span> </div>
-<div class="line"><span class="lineno">  419</span>    stored_map = ship_geo.get(<span class="stringliteral">&quot;UpstreamTagger_geo&quot;</span>)</div>
-<div class="line"><span class="lineno">  420</span>    <span class="keywordflow">if</span> stored_map <span class="keywordflow">is</span> <span class="keywordtype">None</span>:</div>
-<div class="line"><span class="lineno">  421</span>        ubt_map = generate_upstream_tagger_map(rule, ship_geo.UpstreamTagger)</div>
-<div class="line"><span class="lineno">  422</span>        ship_geo.UpstreamTagger_geo = AttrDict(ubt_map)</div>
-<div class="line"><span class="lineno">  423</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  424</span>        <span class="comment"># The rule of the checkout is only compared with the stored map: it may</span></div>
-<div class="line"><span class="lineno">  425</span>        <span class="comment"># have changed since the simulation and no longer fit the stored box.</span></div>
-<div class="line"><span class="lineno">  426</span>        <span class="keywordflow">try</span>:</div>
-<div class="line"><span class="lineno">  427</span>            differs = dict(stored_map) != generate_upstream_tagger_map(rule, ship_geo.UpstreamTagger)</div>
-<div class="line"><span class="lineno">  428</span>        <span class="keywordflow">except</span> ValueError:</div>
-<div class="line"><span class="lineno">  429</span>            differs = <span class="keyword">True</span></div>
-<div class="line"><span class="lineno">  430</span>        <span class="keywordflow">if</span> differs:</div>
-<div class="line"><span class="lineno">  431</span>            print(</div>
-<div class="line"><span class="lineno">  432</span>                f<span class="stringliteral">&quot;Warning: the UBT map generated from {yaml_file} differs from the one stored with the&quot;</span></div>
-<div class="line"><span class="lineno">  433</span>                <span class="stringliteral">&quot; geometry; the stored map, used in the simulation, is used.&quot;</span></div>
-<div class="line"><span class="lineno">  434</span>            )</div>
-<div class="line"><span class="lineno">  435</span>        ubt_map = stored_map</div>
-<div class="line"><span class="lineno">  436</span> </div>
-<div class="line"><span class="lineno">  437</span>    check_upstream_tagger_map(ubt_map, ship_geo.UpstreamTagger)</div>
-<div class="line"><span class="lineno">  438</span> </div>
-<div class="line"><span class="lineno">  439</span>    regions = ubt_map[<span class="stringliteral">&quot;regions&quot;</span>]</div>
-<div class="line"><span class="lineno">  440</span>    region_ids = [region[<span class="stringliteral">&quot;id&quot;</span>] <span class="keywordflow">for</span> region <span class="keywordflow">in</span> regions]</div>
-<div class="line"><span class="lineno">  441</span>    <span class="keywordflow">if</span> len(region_ids) != len(set(region_ids)):</div>
-<div class="line"><span class="lineno">  442</span>        <span class="keywordflow">raise</span> ValueError(<span class="stringliteral">&quot;The UBT detector map contains duplicate region IDs&quot;</span>)</div>
-<div class="line"><span class="lineno">  443</span> </div>
-<div class="line"><span class="lineno">  444</span>    <span class="comment"># Kept in ShipGeo for digitization: detector ID -&gt; constituent tile side</span></div>
-<div class="line"><span class="lineno">  445</span>    <span class="comment"># in FairShip internal length units.  This distinguishes 2x2 and 4x4 cm2.</span></div>
-<div class="line"><span class="lineno">  446</span>    ship_geo.UpstreamTagger.RegionTileSize = {</div>
-<div class="line"><span class="lineno">  447</span>        region[<span class="stringliteral">&quot;id&quot;</span>]: region[<span class="stringliteral">&quot;constituent_tile_size&quot;</span>] * u.cm <span class="keywordflow">for</span> region <span class="keywordflow">in</span> regions</div>
-<div class="line"><span class="lineno">  448</span>    }</div>
-<div class="line"><span class="lineno">  449</span>    ship_geo.UpstreamTagger.TileGridOriginX, ship_geo.UpstreamTagger.TileGridEndX = (</div>
-<div class="line"><span class="lineno">  450</span>        bound * u.cm <span class="keywordflow">for</span> bound <span class="keywordflow">in</span> ubt_map[<span class="stringliteral">&quot;bounds&quot;</span>][<span class="stringliteral">&quot;x&quot;</span>]</div>
-<div class="line"><span class="lineno">  451</span>    )</div>
-<div class="line"><span class="lineno">  452</span>    ship_geo.UpstreamTagger.TileGridOriginY, ship_geo.UpstreamTagger.TileGridEndY = (</div>
-<div class="line"><span class="lineno">  453</span>        bound * u.cm <span class="keywordflow">for</span> bound <span class="keywordflow">in</span> ubt_map[<span class="stringliteral">&quot;bounds&quot;</span>][<span class="stringliteral">&quot;y&quot;</span>]</div>
-<div class="line"><span class="lineno">  454</span>    )</div>
-<div class="line"><span class="lineno">  455</span>    <span class="comment"># TH2D maps of ADC counts per MeV vs local hit position (mm) in a tile,</span></div>
-<div class="line"><span class="lineno">  456</span>    <span class="comment"># named adc_per_mev_&lt;tile side in mm&gt;mm.</span></div>
-<div class="line"><span class="lineno">  457</span>    ship_geo.UpstreamTagger.ADCResponseMapFile = os.path.join(</div>
-<div class="line"><span class="lineno">  458</span>        os.environ[<span class="stringliteral">&quot;FAIRSHIP&quot;</span>], <span class="stringliteral">&quot;geometry&quot;</span>, <span class="stringliteral">&quot;UpstreamTagger_adc_response.root&quot;</span></div>
-<div class="line"><span class="lineno">  459</span>    )</div>
-<div class="line"><span class="lineno">  460</span> </div>
-<div class="line"><span class="lineno">  461</span>    <span class="comment"># Tile side (cm) -&gt; thickness. A configuration read back from a file has</span></div>
-<div class="line"><span class="lineno">  462</span>    <span class="comment"># the keys as strings, and one written before TileThickness has the</span></div>
-<div class="line"><span class="lineno">  463</span>    <span class="comment"># thicknesses of the 20 and 40 mm tiles in SmallTileZ and LargeTileZ.</span></div>
-<div class="line"><span class="lineno">  464</span>    ubt_geo = ship_geo.UpstreamTagger</div>
-<div class="line"><span class="lineno">  465</span>    <span class="keywordflow">if</span> <span class="stringliteral">&quot;TileThickness&quot;</span> <span class="keywordflow">not</span> <span class="keywordflow">in</span> ubt_geo:</div>
-<div class="line"><span class="lineno">  466</span>        ubt_geo.TileThickness = {2: ubt_geo.SmallTileZ, 4: ubt_geo.LargeTileZ}</div>
-<div class="line"><span class="lineno">  467</span>    thicknesses = {float(size): thickness <span class="keywordflow">for</span> size, thickness <span class="keywordflow">in</span> ubt_geo.TileThickness.items()}</div>
-<div class="line"><span class="lineno">  468</span>    <span class="keywordflow">for</span> region <span class="keywordflow">in</span> regions:</div>
-<div class="line"><span class="lineno">  469</span>        thickness = thicknesses.get(float(region[<span class="stringliteral">&quot;constituent_tile_size&quot;</span>]))</div>
-<div class="line"><span class="lineno">  470</span>        <span class="keywordflow">if</span> thickness <span class="keywordflow">is</span> <span class="keywordtype">None</span>:</div>
-<div class="line"><span class="lineno">  471</span>            <span class="keywordflow">raise</span> ValueError(</div>
-<div class="line"><span class="lineno">  472</span>                f<span class="stringliteral">&quot;UBT region {region[&#39;id&#39;]} has {region[&#39;constituent_tile_size&#39;]} cm tiles, which have no thickness in&quot;</span></div>
-<div class="line"><span class="lineno">  473</span>                f<span class="stringliteral">&quot; UpstreamTagger.TileThickness (tile sides {sorted(thicknesses)} cm)&quot;</span></div>
-<div class="line"><span class="lineno">  474</span>            )</div>
-<div class="line"><span class="lineno">  475</span>        upstream_tagger.AddRegion(</div>
-<div class="line"><span class="lineno">  476</span>            region[<span class="stringliteral">&quot;id&quot;</span>],</div>
-<div class="line"><span class="lineno">  477</span>            region[<span class="stringliteral">&quot;x&quot;</span>] * u.cm,</div>
-<div class="line"><span class="lineno">  478</span>            region[<span class="stringliteral">&quot;y&quot;</span>] * u.cm,</div>
-<div class="line"><span class="lineno">  479</span>            region[<span class="stringliteral">&quot;size_x&quot;</span>] * u.cm,</div>
-<div class="line"><span class="lineno">  480</span>            region[<span class="stringliteral">&quot;size_y&quot;</span>] * u.cm,</div>
-<div class="line"><span class="lineno">  481</span>            region[<span class="stringliteral">&quot;constituent_tile_size&quot;</span>],</div>
-<div class="line"><span class="lineno">  482</span>            thickness,</div>
-<div class="line"><span class="lineno">  483</span>        )</div>
-<div class="line"><span class="lineno">  484</span> </div>
-<div class="line"><span class="lineno">  485</span> </div>
+<p class="definition">Definition at line <a class="el" href="shipDet__conf_8py_source.html#l00407">407</a> of file <a class="el" href="shipDet__conf_8py_source.html">shipDet_conf.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  407</span><span class="keyword">def </span>configure_upstream_tagger(yaml_file: str, upstream_tagger, ship_geo) -&gt; <span class="keywordtype">None</span>:</div>
+<div class="line"><span class="lineno">  408</span>    <span class="stringliteral">&quot;&quot;&quot;Configure the UBT regions and their digitization parameters.</span></div>
+<div class="line"><span class="lineno">  409</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  410</span><span class="stringliteral">    The regions are generated from the rule in ``yaml_file`` on the UBT box of</span></div>
+<div class="line"><span class="lineno">  411</span><span class="stringliteral">    ``ship_geo``, and the resulting map is kept in ``ship_geo.UpstreamTagger_geo``,</span></div>
+<div class="line"><span class="lineno">  412</span><span class="stringliteral">    so that it is saved with the geometry. A configuration read back from a</span></div>
+<div class="line"><span class="lineno">  413</span><span class="stringliteral">    geometry file (reconstruction, analysis, ``-g``) already has it: then the</span></div>
+<div class="line"><span class="lineno">  414</span><span class="stringliteral">    stored map is used, so that the regions and tile IDs are those of the</span></div>
+<div class="line"><span class="lineno">  415</span><span class="stringliteral">    simulation, whatever the rule in the checkout says.</span></div>
+<div class="line"><span class="lineno">  416</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  417</span>    <span class="keyword">with</span> open(yaml_file) <span class="keyword">as</span> file:</div>
+<div class="line"><span class="lineno">  418</span>        rule = yaml.safe_load(file)</div>
+<div class="line"><span class="lineno">  419</span> </div>
+<div class="line"><span class="lineno">  420</span>    stored_map = ship_geo.get(<span class="stringliteral">&quot;UpstreamTagger_geo&quot;</span>)</div>
+<div class="line"><span class="lineno">  421</span>    <span class="keywordflow">if</span> stored_map <span class="keywordflow">is</span> <span class="keywordtype">None</span>:</div>
+<div class="line"><span class="lineno">  422</span>        ubt_map = generate_upstream_tagger_map(rule, ship_geo.UpstreamTagger)</div>
+<div class="line"><span class="lineno">  423</span>        ship_geo.UpstreamTagger_geo = AttrDict(ubt_map)</div>
+<div class="line"><span class="lineno">  424</span>    <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  425</span>        <span class="comment"># The rule of the checkout is only compared with the stored map: it may</span></div>
+<div class="line"><span class="lineno">  426</span>        <span class="comment"># have changed since the simulation and no longer fit the stored box.</span></div>
+<div class="line"><span class="lineno">  427</span>        <span class="keywordflow">try</span>:</div>
+<div class="line"><span class="lineno">  428</span>            differs = dict(stored_map) != generate_upstream_tagger_map(rule, ship_geo.UpstreamTagger)</div>
+<div class="line"><span class="lineno">  429</span>        <span class="keywordflow">except</span> ValueError:</div>
+<div class="line"><span class="lineno">  430</span>            differs = <span class="keyword">True</span></div>
+<div class="line"><span class="lineno">  431</span>        ubt_map = stored_map</div>
+<div class="line"><span class="lineno">  432</span>        <span class="keywordflow">if</span> differs:</div>
+<div class="line"><span class="lineno">  433</span>            print(</div>
+<div class="line"><span class="lineno">  434</span>                f<span class="stringliteral">&quot;Warning: the UBT map generated from {yaml_file} differs from the one stored with the&quot;</span></div>
+<div class="line"><span class="lineno">  435</span>                <span class="stringliteral">&quot; geometry; the stored map, used in the simulation, is used.&quot;</span></div>
+<div class="line"><span class="lineno">  436</span>            )</div>
+<div class="line"><span class="lineno">  437</span>            <span class="comment"># A generated map tiles its box by construction, so only a stored</span></div>
+<div class="line"><span class="lineno">  438</span>            <span class="comment"># map that the rule does not reproduce needs checking.</span></div>
+<div class="line"><span class="lineno">  439</span>            check_upstream_tagger_map(ubt_map, ship_geo.UpstreamTagger)</div>
+<div class="line"><span class="lineno">  440</span> </div>
+<div class="line"><span class="lineno">  441</span>    regions = ubt_map[<span class="stringliteral">&quot;regions&quot;</span>]</div>
+<div class="line"><span class="lineno">  442</span>    region_ids = [region[<span class="stringliteral">&quot;id&quot;</span>] <span class="keywordflow">for</span> region <span class="keywordflow">in</span> regions]</div>
+<div class="line"><span class="lineno">  443</span>    <span class="keywordflow">if</span> len(region_ids) != len(set(region_ids)):</div>
+<div class="line"><span class="lineno">  444</span>        <span class="keywordflow">raise</span> ValueError(<span class="stringliteral">&quot;The UBT detector map contains duplicate region IDs&quot;</span>)</div>
+<div class="line"><span class="lineno">  445</span> </div>
+<div class="line"><span class="lineno">  446</span>    <span class="comment"># Kept in ShipGeo for digitization: detector ID -&gt; constituent tile side</span></div>
+<div class="line"><span class="lineno">  447</span>    <span class="comment"># in FairShip internal length units.  This distinguishes 2x2 and 4x4 cm2.</span></div>
+<div class="line"><span class="lineno">  448</span>    ship_geo.UpstreamTagger.RegionTileSize = {</div>
+<div class="line"><span class="lineno">  449</span>        region[<span class="stringliteral">&quot;id&quot;</span>]: region[<span class="stringliteral">&quot;constituent_tile_size&quot;</span>] * u.cm <span class="keywordflow">for</span> region <span class="keywordflow">in</span> regions</div>
+<div class="line"><span class="lineno">  450</span>    }</div>
+<div class="line"><span class="lineno">  451</span>    ship_geo.UpstreamTagger.TileGridOriginX, ship_geo.UpstreamTagger.TileGridEndX = (</div>
+<div class="line"><span class="lineno">  452</span>        bound * u.cm <span class="keywordflow">for</span> bound <span class="keywordflow">in</span> ubt_map[<span class="stringliteral">&quot;bounds&quot;</span>][<span class="stringliteral">&quot;x&quot;</span>]</div>
+<div class="line"><span class="lineno">  453</span>    )</div>
+<div class="line"><span class="lineno">  454</span>    ship_geo.UpstreamTagger.TileGridOriginY, ship_geo.UpstreamTagger.TileGridEndY = (</div>
+<div class="line"><span class="lineno">  455</span>        bound * u.cm <span class="keywordflow">for</span> bound <span class="keywordflow">in</span> ubt_map[<span class="stringliteral">&quot;bounds&quot;</span>][<span class="stringliteral">&quot;y&quot;</span>]</div>
+<div class="line"><span class="lineno">  456</span>    )</div>
+<div class="line"><span class="lineno">  457</span>    <span class="comment"># TH2D maps of ADC counts per MeV vs local hit position (mm) in a tile,</span></div>
+<div class="line"><span class="lineno">  458</span>    <span class="comment"># named adc_per_mev_&lt;tile side in mm&gt;mm.</span></div>
+<div class="line"><span class="lineno">  459</span>    ship_geo.UpstreamTagger.ADCResponseMapFile = os.path.join(</div>
+<div class="line"><span class="lineno">  460</span>        os.environ[<span class="stringliteral">&quot;FAIRSHIP&quot;</span>], <span class="stringliteral">&quot;geometry&quot;</span>, <span class="stringliteral">&quot;UpstreamTagger_adc_response.root&quot;</span></div>
+<div class="line"><span class="lineno">  461</span>    )</div>
+<div class="line"><span class="lineno">  462</span> </div>
+<div class="line"><span class="lineno">  463</span>    <span class="comment"># Tile side (cm) -&gt; thickness. A configuration read back from a file has</span></div>
+<div class="line"><span class="lineno">  464</span>    <span class="comment"># the keys as strings, and one written before TileThickness has the</span></div>
+<div class="line"><span class="lineno">  465</span>    <span class="comment"># thicknesses of the 20 and 40 mm tiles in SmallTileZ and LargeTileZ.</span></div>
+<div class="line"><span class="lineno">  466</span>    ubt_geo = ship_geo.UpstreamTagger</div>
+<div class="line"><span class="lineno">  467</span>    <span class="keywordflow">if</span> <span class="stringliteral">&quot;TileThickness&quot;</span> <span class="keywordflow">not</span> <span class="keywordflow">in</span> ubt_geo:</div>
+<div class="line"><span class="lineno">  468</span>        ubt_geo.TileThickness = {2: ubt_geo.SmallTileZ, 4: ubt_geo.LargeTileZ}</div>
+<div class="line"><span class="lineno">  469</span>    thicknesses = {float(size): thickness <span class="keywordflow">for</span> size, thickness <span class="keywordflow">in</span> ubt_geo.TileThickness.items()}</div>
+<div class="line"><span class="lineno">  470</span>    <span class="keywordflow">for</span> region <span class="keywordflow">in</span> regions:</div>
+<div class="line"><span class="lineno">  471</span>        thickness = thicknesses.get(float(region[<span class="stringliteral">&quot;constituent_tile_size&quot;</span>]))</div>
+<div class="line"><span class="lineno">  472</span>        <span class="keywordflow">if</span> thickness <span class="keywordflow">is</span> <span class="keywordtype">None</span>:</div>
+<div class="line"><span class="lineno">  473</span>            <span class="keywordflow">raise</span> ValueError(</div>
+<div class="line"><span class="lineno">  474</span>                f<span class="stringliteral">&quot;UBT region {region[&#39;id&#39;]} has {region[&#39;constituent_tile_size&#39;]} cm tiles, which have no thickness in&quot;</span></div>
+<div class="line"><span class="lineno">  475</span>                f<span class="stringliteral">&quot; UpstreamTagger.TileThickness (tile sides {sorted(thicknesses)} cm)&quot;</span></div>
+<div class="line"><span class="lineno">  476</span>            )</div>
+<div class="line"><span class="lineno">  477</span>        upstream_tagger.AddRegion(</div>
+<div class="line"><span class="lineno">  478</span>            region[<span class="stringliteral">&quot;id&quot;</span>],</div>
+<div class="line"><span class="lineno">  479</span>            region[<span class="stringliteral">&quot;x&quot;</span>] * u.cm,</div>
+<div class="line"><span class="lineno">  480</span>            region[<span class="stringliteral">&quot;y&quot;</span>] * u.cm,</div>
+<div class="line"><span class="lineno">  481</span>            region[<span class="stringliteral">&quot;size_x&quot;</span>] * u.cm,</div>
+<div class="line"><span class="lineno">  482</span>            region[<span class="stringliteral">&quot;size_y&quot;</span>] * u.cm,</div>
+<div class="line"><span class="lineno">  483</span>            region[<span class="stringliteral">&quot;constituent_tile_size&quot;</span>],</div>
+<div class="line"><span class="lineno">  484</span>            thickness,</div>
+<div class="line"><span class="lineno">  485</span>        )</div>
+<div class="line"><span class="lineno">  486</span> </div>
+<div class="line"><span class="lineno">  487</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1199,63 +1202,63 @@ See the note in geometry/UpstreamTagger_config.yaml for the rule. The map
 has the same form as the one stored with the geometry: kind, units, the
 bounds of the box and the regions, all in cm.
 </pre> 
-<p class="definition">Definition at line <a class="el" href="shipDet__conf_8py_source.html#l00350">350</a> of file <a class="el" href="shipDet__conf_8py_source.html">shipDet_conf.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  350</span><span class="keyword">def </span>generate_upstream_tagger_map(rule, ubt_geo) -&gt; dict[str, Any]:</div>
-<div class="line"><span class="lineno">  351</span>    <span class="stringliteral">&quot;&quot;&quot;Generate the UBT regions on the UBT box of the geometry configuration.</span></div>
-<div class="line"><span class="lineno">  352</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  353</span><span class="stringliteral">    See the note in geometry/UpstreamTagger_config.yaml for the rule. The map</span></div>
-<div class="line"><span class="lineno">  354</span><span class="stringliteral">    has the same form as the one stored with the geometry: kind, units, the</span></div>
-<div class="line"><span class="lineno">  355</span><span class="stringliteral">    bounds of the box and the regions, all in cm.</span></div>
-<div class="line"><span class="lineno">  356</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  357</span>    <span class="keywordflow">if</span> rule[<span class="stringliteral">&quot;kind&quot;</span>] != <span class="stringliteral">&quot;simulation&quot;</span> <span class="keywordflow">or</span> rule[<span class="stringliteral">&quot;units&quot;</span>] != <span class="stringliteral">&quot;cm&quot;</span>:</div>
-<div class="line"><span class="lineno">  358</span>        <span class="keywordflow">raise</span> ValueError(<span class="stringliteral">&quot;The UBT map must be a simulation map expressed in cm&quot;</span>)</div>
-<div class="line"><span class="lineno">  359</span>    bounds = {</div>
-<div class="line"><span class="lineno">  360</span>        <span class="stringliteral">&quot;x&quot;</span>: [(ubt_geo.BoxCenterX - ubt_geo.BoxX / 2.0) / u.cm, (ubt_geo.BoxCenterX + ubt_geo.BoxX / 2.0) / u.cm],</div>
-<div class="line"><span class="lineno">  361</span>        <span class="stringliteral">&quot;y&quot;</span>: [(ubt_geo.BoxCenterY - ubt_geo.BoxY / 2.0) / u.cm, (ubt_geo.BoxCenterY + ubt_geo.BoxY / 2.0) / u.cm],</div>
-<div class="line"><span class="lineno">  362</span>    }</div>
-<div class="line"><span class="lineno">  363</span>    size = rule[<span class="stringliteral">&quot;region_size&quot;</span>]</div>
-<div class="line"><span class="lineno">  364</span>    areas = _small_tile_areas(rule)</div>
-<div class="line"><span class="lineno">  365</span>    tolerance = 1.0e-9  <span class="comment"># cm</span></div>
-<div class="line"><span class="lineno">  366</span>    regions = []</div>
-<div class="line"><span class="lineno">  367</span>    <span class="keywordflow">for</span> y, size_y <span class="keywordflow">in</span> _axis_cells(bounds[<span class="stringliteral">&quot;y&quot;</span>][0], bounds[<span class="stringliteral">&quot;y&quot;</span>][1], size):</div>
-<div class="line"><span class="lineno">  368</span>        <span class="keywordflow">for</span> x, size_x <span class="keywordflow">in</span> _axis_cells(bounds[<span class="stringliteral">&quot;x&quot;</span>][0], bounds[<span class="stringliteral">&quot;x&quot;</span>][1], size):</div>
-<div class="line"><span class="lineno">  369</span>            <span class="comment"># A region lying inside a small-tile area has small tiles; an area</span></div>
-<div class="line"><span class="lineno">  370</span>            <span class="comment"># covering only part of a region would cut it in two.</span></div>
-<div class="line"><span class="lineno">  371</span>            low_x, high_x, low_y, high_y = x - size_x / 2.0, x + size_x / 2.0, y - size_y / 2.0, y + size_y / 2.0</div>
-<div class="line"><span class="lineno">  372</span>            in_area = <span class="keyword">False</span></div>
-<div class="line"><span class="lineno">  373</span>            <span class="keywordflow">for</span> area <span class="keywordflow">in</span> areas:</div>
-<div class="line"><span class="lineno">  374</span>                overlap_x = min(high_x, area[1]) - max(low_x, area[0])</div>
-<div class="line"><span class="lineno">  375</span>                overlap_y = min(high_y, area[3]) - max(low_y, area[2])</div>
-<div class="line"><span class="lineno">  376</span>                <span class="keywordflow">if</span> overlap_x &lt;= tolerance <span class="keywordflow">or</span> overlap_y &lt;= tolerance:</div>
-<div class="line"><span class="lineno">  377</span>                    <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  378</span>                <span class="keywordflow">if</span> overlap_x &lt; size_x - tolerance <span class="keywordflow">or</span> overlap_y &lt; size_y - tolerance:</div>
-<div class="line"><span class="lineno">  379</span>                    <span class="keywordflow">raise</span> ValueError(</div>
-<div class="line"><span class="lineno">  380</span>                        f<span class="stringliteral">&quot;The UBT small-tile area x {list(area[:2])}, y {list(area[2:])} cm covers only part of the&quot;</span></div>
-<div class="line"><span class="lineno">  381</span>                        f<span class="stringliteral">&quot; region at ({x}, {y}) cm: its edges must lie on region edges&quot;</span></div>
-<div class="line"><span class="lineno">  382</span>                    )</div>
-<div class="line"><span class="lineno">  383</span>                in_area = <span class="keyword">True</span></div>
-<div class="line"><span class="lineno">  384</span>            tile = rule[<span class="stringliteral">&quot;small_tile_size&quot;</span>] <span class="keywordflow">if</span> in_area <span class="keywordflow">else</span> rule[<span class="stringliteral">&quot;large_tile_size&quot;</span>]</div>
-<div class="line"><span class="lineno">  385</span>            <span class="keywordflow">for</span> centre, extent, axis <span class="keywordflow">in</span> ((x, size_x, <span class="stringliteral">&quot;x&quot;</span>), (y, size_y, <span class="stringliteral">&quot;y&quot;</span>)):</div>
-<div class="line"><span class="lineno">  386</span>                <span class="keywordflow">for</span> edge <span class="keywordflow">in</span> (centre - extent / 2.0, centre + extent / 2.0):</div>
-<div class="line"><span class="lineno">  387</span>                    tiles = (edge - rule[<span class="stringliteral">&quot;tile_edge_offset&quot;</span>]) / tile</div>
-<div class="line"><span class="lineno">  388</span>                    <span class="keywordflow">if</span> abs(tiles - round(tiles)) &gt; 1.0e-6:</div>
-<div class="line"><span class="lineno">  389</span>                        <span class="keywordflow">raise</span> ValueError(</div>
-<div class="line"><span class="lineno">  390</span>                            f<span class="stringliteral">&quot;The UBT region at ({x}, {y}) cm has an edge at {axis} = {edge} cm, off the grid of its&quot;</span></div>
-<div class="line"><span class="lineno">  391</span>                            f<span class="stringliteral">&quot; {tile} cm tiles: the UBT box, {bounds} cm, must end on a tile edge&quot;</span></div>
-<div class="line"><span class="lineno">  392</span>                        )</div>
-<div class="line"><span class="lineno">  393</span>            regions.append(</div>
-<div class="line"><span class="lineno">  394</span>                {</div>
-<div class="line"><span class="lineno">  395</span>                    <span class="stringliteral">&quot;id&quot;</span>: len(regions),</div>
-<div class="line"><span class="lineno">  396</span>                    <span class="stringliteral">&quot;x&quot;</span>: x,</div>
-<div class="line"><span class="lineno">  397</span>                    <span class="stringliteral">&quot;y&quot;</span>: y,</div>
-<div class="line"><span class="lineno">  398</span>                    <span class="stringliteral">&quot;size_x&quot;</span>: size_x,</div>
-<div class="line"><span class="lineno">  399</span>                    <span class="stringliteral">&quot;size_y&quot;</span>: size_y,</div>
-<div class="line"><span class="lineno">  400</span>                    <span class="stringliteral">&quot;constituent_tile_size&quot;</span>: tile,</div>
-<div class="line"><span class="lineno">  401</span>                }</div>
-<div class="line"><span class="lineno">  402</span>            )</div>
-<div class="line"><span class="lineno">  403</span>    <span class="keywordflow">return</span> {<span class="stringliteral">&quot;kind&quot;</span>: rule[<span class="stringliteral">&quot;kind&quot;</span>], <span class="stringliteral">&quot;units&quot;</span>: rule[<span class="stringliteral">&quot;units&quot;</span>], <span class="stringliteral">&quot;bounds&quot;</span>: bounds, <span class="stringliteral">&quot;regions&quot;</span>: regions}</div>
-<div class="line"><span class="lineno">  404</span> </div>
+<p class="definition">Definition at line <a class="el" href="shipDet__conf_8py_source.html#l00351">351</a> of file <a class="el" href="shipDet__conf_8py_source.html">shipDet_conf.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  351</span><span class="keyword">def </span>generate_upstream_tagger_map(rule, ubt_geo) -&gt; dict[str, Any]:</div>
+<div class="line"><span class="lineno">  352</span>    <span class="stringliteral">&quot;&quot;&quot;Generate the UBT regions on the UBT box of the geometry configuration.</span></div>
+<div class="line"><span class="lineno">  353</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  354</span><span class="stringliteral">    See the note in geometry/UpstreamTagger_config.yaml for the rule. The map</span></div>
+<div class="line"><span class="lineno">  355</span><span class="stringliteral">    has the same form as the one stored with the geometry: kind, units, the</span></div>
+<div class="line"><span class="lineno">  356</span><span class="stringliteral">    bounds of the box and the regions, all in cm.</span></div>
+<div class="line"><span class="lineno">  357</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  358</span>    <span class="keywordflow">if</span> rule[<span class="stringliteral">&quot;kind&quot;</span>] != <span class="stringliteral">&quot;simulation&quot;</span> <span class="keywordflow">or</span> rule[<span class="stringliteral">&quot;units&quot;</span>] != <span class="stringliteral">&quot;cm&quot;</span>:</div>
+<div class="line"><span class="lineno">  359</span>        <span class="keywordflow">raise</span> ValueError(<span class="stringliteral">&quot;The UBT map must be a simulation map expressed in cm&quot;</span>)</div>
+<div class="line"><span class="lineno">  360</span>    bounds = {</div>
+<div class="line"><span class="lineno">  361</span>        <span class="stringliteral">&quot;x&quot;</span>: [(ubt_geo.BoxCenterX - ubt_geo.BoxX / 2.0) / u.cm, (ubt_geo.BoxCenterX + ubt_geo.BoxX / 2.0) / u.cm],</div>
+<div class="line"><span class="lineno">  362</span>        <span class="stringliteral">&quot;y&quot;</span>: [(ubt_geo.BoxCenterY - ubt_geo.BoxY / 2.0) / u.cm, (ubt_geo.BoxCenterY + ubt_geo.BoxY / 2.0) / u.cm],</div>
+<div class="line"><span class="lineno">  363</span>    }</div>
+<div class="line"><span class="lineno">  364</span>    size = rule[<span class="stringliteral">&quot;region_size&quot;</span>]</div>
+<div class="line"><span class="lineno">  365</span>    areas = _small_tile_areas(rule)</div>
+<div class="line"><span class="lineno">  366</span>    tolerance = 1.0e-9  <span class="comment"># cm</span></div>
+<div class="line"><span class="lineno">  367</span>    regions = []</div>
+<div class="line"><span class="lineno">  368</span>    <span class="keywordflow">for</span> y, size_y <span class="keywordflow">in</span> _axis_cells(bounds[<span class="stringliteral">&quot;y&quot;</span>][0], bounds[<span class="stringliteral">&quot;y&quot;</span>][1], size):</div>
+<div class="line"><span class="lineno">  369</span>        <span class="keywordflow">for</span> x, size_x <span class="keywordflow">in</span> _axis_cells(bounds[<span class="stringliteral">&quot;x&quot;</span>][0], bounds[<span class="stringliteral">&quot;x&quot;</span>][1], size):</div>
+<div class="line"><span class="lineno">  370</span>            <span class="comment"># A region lying inside a small-tile area has small tiles; an area</span></div>
+<div class="line"><span class="lineno">  371</span>            <span class="comment"># covering only part of a region would cut it in two.</span></div>
+<div class="line"><span class="lineno">  372</span>            low_x, high_x, low_y, high_y = x - size_x / 2.0, x + size_x / 2.0, y - size_y / 2.0, y + size_y / 2.0</div>
+<div class="line"><span class="lineno">  373</span>            in_area = <span class="keyword">False</span></div>
+<div class="line"><span class="lineno">  374</span>            <span class="keywordflow">for</span> area <span class="keywordflow">in</span> areas:</div>
+<div class="line"><span class="lineno">  375</span>                overlap_x = min(high_x, area[1]) - max(low_x, area[0])</div>
+<div class="line"><span class="lineno">  376</span>                overlap_y = min(high_y, area[3]) - max(low_y, area[2])</div>
+<div class="line"><span class="lineno">  377</span>                <span class="keywordflow">if</span> overlap_x &lt;= tolerance <span class="keywordflow">or</span> overlap_y &lt;= tolerance:</div>
+<div class="line"><span class="lineno">  378</span>                    <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  379</span>                <span class="keywordflow">if</span> overlap_x &lt; size_x - tolerance <span class="keywordflow">or</span> overlap_y &lt; size_y - tolerance:</div>
+<div class="line"><span class="lineno">  380</span>                    <span class="keywordflow">raise</span> ValueError(</div>
+<div class="line"><span class="lineno">  381</span>                        f<span class="stringliteral">&quot;The UBT small-tile area x {list(area[:2])}, y {list(area[2:])} cm covers only part of the&quot;</span></div>
+<div class="line"><span class="lineno">  382</span>                        f<span class="stringliteral">&quot; region at ({x}, {y}) cm: its edges must lie on region edges&quot;</span></div>
+<div class="line"><span class="lineno">  383</span>                    )</div>
+<div class="line"><span class="lineno">  384</span>                in_area = <span class="keyword">True</span></div>
+<div class="line"><span class="lineno">  385</span>            tile = rule[<span class="stringliteral">&quot;small_tile_size&quot;</span>] <span class="keywordflow">if</span> in_area <span class="keywordflow">else</span> rule[<span class="stringliteral">&quot;large_tile_size&quot;</span>]</div>
+<div class="line"><span class="lineno">  386</span>            <span class="keywordflow">for</span> centre, extent, axis <span class="keywordflow">in</span> ((x, size_x, <span class="stringliteral">&quot;x&quot;</span>), (y, size_y, <span class="stringliteral">&quot;y&quot;</span>)):</div>
+<div class="line"><span class="lineno">  387</span>                <span class="keywordflow">for</span> edge <span class="keywordflow">in</span> (centre - extent / 2.0, centre + extent / 2.0):</div>
+<div class="line"><span class="lineno">  388</span>                    tiles = (edge - rule[<span class="stringliteral">&quot;tile_edge_offset&quot;</span>]) / tile</div>
+<div class="line"><span class="lineno">  389</span>                    <span class="keywordflow">if</span> abs(tiles - round(tiles)) &gt; 1.0e-6:</div>
+<div class="line"><span class="lineno">  390</span>                        <span class="keywordflow">raise</span> ValueError(</div>
+<div class="line"><span class="lineno">  391</span>                            f<span class="stringliteral">&quot;The UBT region at ({x}, {y}) cm has an edge at {axis} = {edge} cm, off the grid of its&quot;</span></div>
+<div class="line"><span class="lineno">  392</span>                            f<span class="stringliteral">&quot; {tile} cm tiles: the UBT box, {bounds} cm, must end on a tile edge&quot;</span></div>
+<div class="line"><span class="lineno">  393</span>                        )</div>
+<div class="line"><span class="lineno">  394</span>            regions.append(</div>
+<div class="line"><span class="lineno">  395</span>                {</div>
+<div class="line"><span class="lineno">  396</span>                    <span class="stringliteral">&quot;id&quot;</span>: len(regions),</div>
+<div class="line"><span class="lineno">  397</span>                    <span class="stringliteral">&quot;x&quot;</span>: x,</div>
+<div class="line"><span class="lineno">  398</span>                    <span class="stringliteral">&quot;y&quot;</span>: y,</div>
+<div class="line"><span class="lineno">  399</span>                    <span class="stringliteral">&quot;size_x&quot;</span>: size_x,</div>
+<div class="line"><span class="lineno">  400</span>                    <span class="stringliteral">&quot;size_y&quot;</span>: size_y,</div>
+<div class="line"><span class="lineno">  401</span>                    <span class="stringliteral">&quot;constituent_tile_size&quot;</span>: tile,</div>
+<div class="line"><span class="lineno">  402</span>                }</div>
+<div class="line"><span class="lineno">  403</span>            )</div>
+<div class="line"><span class="lineno">  404</span>    <span class="keywordflow">return</span> {<span class="stringliteral">&quot;kind&quot;</span>: rule[<span class="stringliteral">&quot;kind&quot;</span>], <span class="stringliteral">&quot;units&quot;</span>: rule[<span class="stringliteral">&quot;units&quot;</span>], <span class="stringliteral">&quot;bounds&quot;</span>: bounds, <span class="stringliteral">&quot;regions&quot;</span>: regions}</div>
 <div class="line"><span class="lineno">  405</span> </div>
+<div class="line"><span class="lineno">  406</span> </div>
 </div><!-- fragment -->
 </div>
 </div>

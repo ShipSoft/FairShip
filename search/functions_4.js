@@ -51,7 +51,7 @@ var searchData=
   ['divergence_5forder_48',['divergence_order',['../namespacecanonicaliseFieldMap.html#a615000b57f17e62323cab65f6cd20688',1,'canonicaliseFieldMap']]],
   ['dndpdtheta_49',['dNdPdTheta',['../namespaceproton__bremsstrahlung.html#ac3747a46ab38964a9676801aa3ca0cc9',1,'proton_bremsstrahlung']]],
   ['dndzdptsquare_50',['dNdZdPtSquare',['../namespaceproton__bremsstrahlung.html#a7a9c0c61414b735f42f7c7117a92ed28',1,'proton_bremsstrahlung']]],
-  ['doca_51',['doca',['../classSHiP_1_1RecoVertex.html#a6386c19efdccbd116ded0220463bcb86',1,'SHiP::RecoVertex::doca()'],['../classexperimental_1_1analysis__toolkit_1_1selection__check.html#a4c53d11817cd58716a5e7e9f150f4ee5',1,'experimental.analysis_toolkit.selection_check.DOCA()']]],
+  ['doca_51',['doca',['../classexperimental_1_1analysis__toolkit_1_1selection__check.html#a4c53d11817cd58716a5e7e9f150f4ee5',1,'experimental.analysis_toolkit.selection_check.DOCA()'],['../classSHiP_1_1RecoVertex.html#a6386c19efdccbd116ded0220463bcb86',1,'SHiP::RecoVertex::doca()']]],
   ['dppythia8generator_52',['DPPythia8Generator',['../classDPPythia8Generator.html#a5747ec819bd117b324de73185d2c62a8',1,'DPPythia8Generator']]],
   ['dpt2dtheta_53',['dPt2dTheta',['../namespaceproton__bremsstrahlung.html#a8317f12f6cfbdda00f7c16e7f1bef570',1,'proton_bremsstrahlung']]],
   ['draw_54',['draw',['../namespaceplotFieldMap.html#a7241ec8d3fd0196ac515a6e31da4f3d0',1,'plotFieldMap']]],

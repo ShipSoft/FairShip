@@ -9,6 +9,7 @@ var classshipVeto_1_1Task =
     [ "SBT_plastic_decision", "classshipVeto_1_1Task.html#a0de9644a2e6a218799f8812decbee069", null ],
     [ "Track_decision", "classshipVeto_1_1Task.html#a7560f9221a7fd3183d2de31904d0d9f3", null ],
     [ "UBT_decision", "classshipVeto_1_1Task.html#a162a9cf9b362833b5411adc62f63a798", null ],
+    [ "_warned_no_ubt_digis", "classshipVeto_1_1Task.html#af5fabdb99d676013910ef9a9cf8a746a", null ],
     [ "detList", "classshipVeto_1_1Task.html#a8ff222f2929866fb82f50f9b9784d8aa", null ],
     [ "random", "classshipVeto_1_1Task.html#ab282628010706cf008f561f62dfad380", null ],
     [ "SBTefficiency", "classshipVeto_1_1Task.html#a64e78dbd37d875f9dcfecde20d5f429e", null ],

@@ -14,6 +14,7 @@ var classUpstreamTagger =
     [ "det_zPos", "classUpstreamTagger.html#ab1b1bb2c25cc683210e456daecfecdc8", null ],
     [ "fCenterX", "classUpstreamTagger.html#a43b72c6cfe5761d939e2f7fd31a15de7", null ],
     [ "fCenterY", "classUpstreamTagger.html#a1960bf9a7dba760ed43306dc14961969", null ],
+    [ "fEntered", "classUpstreamTagger.html#abdb0370e3a21a05a263555328150f662", null ],
     [ "fEnvelopeZ", "classUpstreamTagger.html#ab6b9092fd8640c278ffa1a6251a95bcd", null ],
     [ "fRegions", "classUpstreamTagger.html#a8511b063bd7ec6ae49f4984133ebab28", null ],
     [ "fSizeX", "classUpstreamTagger.html#a048265f0225eebd7fa4d07c4a673d7e4", null ],

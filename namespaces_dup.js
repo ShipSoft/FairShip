@@ -1940,10 +1940,11 @@ var namespaces_dup =
       [ "SHIPPED", "namespacetest__caloScoringPlanePID.html#a4bdd123bc95bf219099d51ad9e4bbcf2", null ]
     ] ],
     [ "test_cavern_layout", "namespacetest__cavern__layout.html", [
-      [ "layout_constants", "namespacetest__cavern__layout.html#a2283051e76f1aa7a8c82cac658205f54", null ],
-      [ "test_ecn3_cross_section_matches_ship_cave", "namespacetest__cavern__layout.html#afdbe73d6330b1f4784ffae01cdab25d5", null ],
-      [ "LAYOUT", "namespacetest__cavern__layout.html#a70173db19d945df90fdeece9a215b7ef", null ],
-      [ "QUANTITIES", "namespacetest__cavern__layout.html#a0de441203533b37132b2e927eb08380b", null ]
+      [ "layout", "namespacetest__cavern__layout.html#a5f04886ec89edf4dfc9e87621c106663", null ],
+      [ "test_ecn3_cross_section_matches_ship_cave", "namespacetest__cavern__layout.html#a2683070b80125a4aa2063c5216ad5f1f", null ],
+      [ "QUANTITIES", "namespacetest__cavern__layout.html#a0de441203533b37132b2e927eb08380b", null ],
+      [ "ROOT", "namespacetest__cavern__layout.html#aba89b5d92c5fcc6db6eaf01f2769200b", null ],
+      [ "SOURCE", "namespacetest__cavern__layout.html#a27e36b17b7dc9c634e2582189df7df2b", null ]
     ] ],
     [ "test_event_histogram", "namespacetest__event__histogram.html", [
       [ "correlated_sample", "namespacetest__event__histogram.html#a412d8d079290903a55507df1ceade99b", null ],

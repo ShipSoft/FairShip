@@ -83,13 +83,13 @@ var searchData=
   ['ptsquare_80',['ptSquare',['../namespaceproton__bremsstrahlung.html#a4a7ab8940c1a8fe1f2e16c15c5d57e40',1,'proton_bremsstrahlung']]],
   ['pushtrack_81',['pushtrack',['../classShipStack.html#a595403a1e725bc2777d9b2c3659f4e4d',1,'ShipStack::PushTrack(Int_t toBeDone, Int_t parentID, Int_t pdgCode, Double_t px, Double_t py, Double_t pz, Double_t e, Double_t vx, Double_t vy, Double_t vz, Double_t time, Double_t polx, Double_t poly, Double_t polz, TMCProcess proc, Int_t &amp;ntr, Double_t weight, Int_t is) override'],['../classShipStack.html#afb016edc94f62251b8702e13f7687f8e',1,'ShipStack::PushTrack(Int_t toBeDone, Int_t parentID, Int_t pdgCode, Double_t px, Double_t py, Double_t pz, Double_t e, Double_t vx, Double_t vy, Double_t vz, Double_t time, Double_t polx, Double_t poly, Double_t polz, TMCProcess proc, Int_t &amp;ntr, Double_t weight, Int_t is, Int_t secondParentId) override']]],
   ['putparams_82',['putParams',['../classShipFieldPar.html#a7649f379bb10eb95fde485298f459e4b',1,'ShipFieldPar']]],
-  ['px_83',['px',['../classShipParticle.html#a6f2fec47a59f91ec66cf93643e1c0d73',1,'ShipParticle::Px()'],['../classSHiP_1_1RecoTrack.html#a8fa0d1877bf7812b5149d362fabe32f0',1,'SHiP::RecoTrack::px() const']]],
-  ['py_84',['py',['../classSHiP_1_1RecoTrack.html#ad3f71ecf99a9777614a8921b96f8cec6',1,'SHiP::RecoTrack::py()'],['../classShipParticle.html#a25b5b48ac48840b82e3b0dc8a9cf53f6',1,'ShipParticle::Py()']]],
+  ['px_83',['px',['../classSHiP_1_1RecoTrack.html#a8fa0d1877bf7812b5149d362fabe32f0',1,'SHiP::RecoTrack::px()'],['../classShipParticle.html#a6f2fec47a59f91ec66cf93643e1c0d73',1,'ShipParticle::Px() const']]],
+  ['py_84',['py',['../classShipParticle.html#a25b5b48ac48840b82e3b0dc8a9cf53f6',1,'ShipParticle::Py()'],['../classSHiP_1_1RecoTrack.html#ad3f71ecf99a9777614a8921b96f8cec6',1,'SHiP::RecoTrack::py()']]],
   ['pyfairmodule_85',['pyFairModule',['../classpyFairModule.html#afa7e3a718ebb87efbe13ded62e9fc97b',1,'pyFairModule']]],
   ['pythia8generator_86',['Pythia8Generator',['../classPythia8Generator.html#a0e02d13911bdc97f07817b0e5435fba4',1,'Pythia8Generator']]],
   ['pythialengthtocm_87',['PythiaLengthToCm',['../namespaceshipgen.html#abf37dd718f47d2835452543cb4b3f0a1',1,'shipgen']]],
   ['pythiatimetos_88',['PythiaTimeToS',['../namespaceshipgen.html#a1712d3106f13d600a33e5016f447f592',1,'shipgen']]],
   ['pytr1rng_89',['PyTr1Rng',['../classPyTr1Rng.html#ae5b31b74b581da42c9d446268d8ed011',1,'PyTr1Rng']]],
   ['pytr3rng_90',['PyTr3Rng',['../classPyTr3Rng.html#adb49a23253cf1b70b894e15173bf8349',1,'PyTr3Rng']]],
-  ['pz_91',['pz',['../classShipParticle.html#ac1740dece1991fe5b9f23b1369ef2338',1,'ShipParticle::Pz()'],['../classSHiP_1_1RecoTrack.html#ac9d0fe60559eb924b504093c87210e10',1,'SHiP::RecoTrack::pz()']]]
+  ['pz_91',['pz',['../classSHiP_1_1RecoTrack.html#ac9d0fe60559eb924b504093c87210e10',1,'SHiP::RecoTrack::pz()'],['../classShipParticle.html#ac1740dece1991fe5b9f23b1369ef2338',1,'ShipParticle::Pz()']]]
 ];

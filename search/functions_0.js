@@ -60,10 +60,11 @@ var searchData=
   ['_5fsumw2_57',['_sumw2',['../namespaceevent__histogram.html#a2b435b6c2744967aed7b8feba8b6d4e1',1,'event_histogram']]],
   ['_5fsurvives_5fto_58',['_survives_to',['../classsplit__provenance_1_1Desplit.html#aaca54f060ad128b65d3d5acba803fb14',1,'split_provenance::Desplit']]],
   ['_5ftarget_5fcode_59',['_target_code',['../namespacemakeGenieEvents.html#a21bd60f3fd933289fa2f5da835cff2ab',1,'makeGenieEvents']]],
-  ['_5ftile_5fcenter_60',['_tile_center',['../classUpstreamTaggerDetector_1_1UpstreamTaggerDetector.html#a8fd5855a22a8a1dfd0b517aaf407e064',1,'UpstreamTaggerDetector::UpstreamTaggerDetector']]],
-  ['_5ftruth_5fcharge_61',['_truth_charge',['../classtracking__benchmark_1_1TrackingBenchmark.html#a32c9285b9dba881263b169e971fe6f6b',1,'tracking_benchmark::TrackingBenchmark']]],
-  ['_5ftruth_5fvertices_62',['_truth_vertices',['../classtracking__benchmark_1_1TrackingBenchmark.html#afc45cef975b8bf35b505166f564b7bb8',1,'tracking_benchmark::TrackingBenchmark']]],
-  ['_5ftruthcandidates_63',['_truthCandidates',['../classshipDigiReco_1_1ShipDigiReco.html#ad50b6ca6cc8bdd79c87d1a9b844f275b',1,'shipDigiReco::ShipDigiReco']]],
-  ['_5fvertex_5fmetrics_64',['_vertex_metrics',['../classtracking__benchmark_1_1TrackingBenchmark.html#a17d9acb1a426c464521c1245d4ad4c70',1,'tracking_benchmark::TrackingBenchmark']]],
-  ['_5fwidth_65',['_width',['../classtracking__benchmark_1_1TrackingBenchmark.html#a991d1de2b144dd55f5ebc220255a8fa4',1,'tracking_benchmark::TrackingBenchmark']]]
+  ['_5ftile_5fcenter_60',['_tile_center',['../classUpstreamTaggerDetector_1_1UpstreamTaggerDetector.html#a2a1a1a3869b236fef113290aa3e39abc',1,'UpstreamTaggerDetector::UpstreamTaggerDetector']]],
+  ['_5ftile_5fcount_61',['_tile_count',['../classUpstreamTaggerDetector_1_1UpstreamTaggerDetector.html#adadd0e8556efe1b0b4b5793739ee8252',1,'UpstreamTaggerDetector::UpstreamTaggerDetector']]],
+  ['_5ftruth_5fcharge_62',['_truth_charge',['../classtracking__benchmark_1_1TrackingBenchmark.html#a32c9285b9dba881263b169e971fe6f6b',1,'tracking_benchmark::TrackingBenchmark']]],
+  ['_5ftruth_5fvertices_63',['_truth_vertices',['../classtracking__benchmark_1_1TrackingBenchmark.html#afc45cef975b8bf35b505166f564b7bb8',1,'tracking_benchmark::TrackingBenchmark']]],
+  ['_5ftruthcandidates_64',['_truthCandidates',['../classshipDigiReco_1_1ShipDigiReco.html#ad50b6ca6cc8bdd79c87d1a9b844f275b',1,'shipDigiReco::ShipDigiReco']]],
+  ['_5fvertex_5fmetrics_65',['_vertex_metrics',['../classtracking__benchmark_1_1TrackingBenchmark.html#a17d9acb1a426c464521c1245d4ad4c70',1,'tracking_benchmark::TrackingBenchmark']]],
+  ['_5fwidth_66',['_width',['../classtracking__benchmark_1_1TrackingBenchmark.html#a991d1de2b144dd55f5ebc220255a8fa4',1,'tracking_benchmark::TrackingBenchmark']]]
 ];

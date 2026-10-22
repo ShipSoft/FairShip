@@ -1,5 +1,7 @@
 var NAVTREEINDEX37 =
 {
+"structMuDISFilter_1_1FilterEfficiencyHistograms.html#adc398c87eb70fd724e473afedf3a7cc4":[10,0,56,1,3],
+"structMuGeoProcessor_1_1Measurement.html":[10,0,59,0],
 "structMuGeoProcessor_1_1Measurement.html#a3e129b04768952bf98b3f0dc2b6d05e9":[10,0,59,0,1],
 "structMuGeoProcessor_1_1Measurement.html#a8c728c9ba3a98a569e146e5408dd9c63":[10,0,59,0,0],
 "structMuGeoProcessor_1_1Measurement.html#ac892ce4f0c95d5c8e963ef43d2f5fa01":[10,0,59,0,2],
@@ -247,7 +249,5 @@ var NAVTREEINDEX37 =
 "structShipMuDIS_1_1CBMSimBranches.html#abb1c9bb40696696fa7cc6bc76e404696":[10,0,19,0,11],
 "structShipMuDIS_1_1CBMSimBranches.html#abe6da7103001a34536d3108f394bd477":[9,0,100,0,2],
 "structShipMuDIS_1_1CBMSimBranches.html#abe6da7103001a34536d3108f394bd477":[10,0,19,0,2],
-"structShipMuDIS_1_1CBMSimBranches.html#ad6b070ce0e3a7f1402d3cc58153c95a4":[10,0,19,0,7],
-"structShipMuDIS_1_1CBMSimBranches.html#ad6b070ce0e3a7f1402d3cc58153c95a4":[9,0,100,0,7],
-"structShipMuDIS_1_1CBMSimBranches.html#ad8c92ffaa2217ffa7f39c015bfc65eb9":[10,0,19,0,8]
+"structShipMuDIS_1_1CBMSimBranches.html#ad6b070ce0e3a7f1402d3cc58153c95a4":[10,0,19,0,7]
 };

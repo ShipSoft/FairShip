@@ -1,5 +1,6 @@
 var NAVTREEINDEX28 =
 {
+"namespacemake__nTuple__SBT.html#a1391b7407359c40dbacead1473f5a96b":[9,0,53,17],
 "namespacemake__nTuple__SBT.html#a1669fe4033902571e973de5e9649a362":[9,0,53,45],
 "namespacemake__nTuple__SBT.html#a1cdb01243d3ec2f98d1b3dda16d0a5d0":[9,0,53,9],
 "namespacemake__nTuple__SBT.html#a20bc34e7372638afea070927634df04f":[9,0,53,24],
@@ -248,6 +249,5 @@ var NAVTREEINDEX28 =
 "namespaceprepareEvents.html#a1cd57929cb20de80b23fdfca2ec7b6bf":[9,0,69,19],
 "namespaceprepareEvents.html#a1d0e01732bceb567ad284095d9dca3fd":[9,0,69,24],
 "namespaceprepareEvents.html#a2d1e694fe31efc0287cc3e40a1bb71c3":[9,0,69,16],
-"namespaceprepareEvents.html#a34b73bf680232e555f569e5890af45dd":[9,0,69,17],
-"namespaceprepareEvents.html#a375705f770ae1e24dc5877044fe657c0":[9,0,69,2]
+"namespaceprepareEvents.html#a34b73bf680232e555f569e5890af45dd":[9,0,69,17]
 };

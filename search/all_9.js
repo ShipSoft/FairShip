@@ -145,7 +145,7 @@ var searchData=
   ['divergence_5forder_142',['divergence_order',['../namespacecanonicaliseFieldMap.html#a615000b57f17e62323cab65f6cd20688',1,'canonicaliseFieldMap']]],
   ['dndpdtheta_143',['dNdPdTheta',['../namespaceproton__bremsstrahlung.html#ac3747a46ab38964a9676801aa3ca0cc9',1,'proton_bremsstrahlung']]],
   ['dndzdptsquare_144',['dNdZdPtSquare',['../namespaceproton__bremsstrahlung.html#a7a9c0c61414b735f42f7c7117a92ed28',1,'proton_bremsstrahlung']]],
-  ['doca_145',['doca',['../classexperimental_1_1analysis__toolkit_1_1selection__check.html#a4c53d11817cd58716a5e7e9f150f4ee5',1,'experimental.analysis_toolkit.selection_check.DOCA()'],['../classSHiP_1_1RecoVertex.html#a6386c19efdccbd116ded0220463bcb86',1,'SHiP::RecoVertex::doca()']]],
+  ['doca_145',['doca',['../classSHiP_1_1RecoVertex.html#a6386c19efdccbd116ded0220463bcb86',1,'SHiP::RecoVertex::doca()'],['../classexperimental_1_1analysis__toolkit_1_1selection__check.html#a4c53d11817cd58716a5e7e9f150f4ee5',1,'experimental.analysis_toolkit.selection_check.DOCA()']]],
   ['docacut_146',['docaCut',['../namespaceShipAna.html#a700ab637b54a36857a04bf4570626534',1,'ShipAna']]],
   ['docker_20instructions_147',['Docker instructions',['../md_README.html#autotoc_md127',1,'']]],
   ['documentation_148',['documentation',['../md_README.html#autotoc_md129',1,'Documentation'],['../index.html',1,'FairShip documentation']]],

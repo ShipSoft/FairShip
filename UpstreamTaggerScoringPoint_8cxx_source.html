@@ -123,8 +123,18 @@ $(document).ready(function(){initNavTree('UpstreamTaggerScoringPoint_8cxx_source
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
 <div class="foldopen" id="foldopen00018" data-start="{" data-end="}">
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="classUpstreamTaggerScoringPoint.html#abada3454d1e8f1f2b57abb4e20efbdc4">   18</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classUpstreamTaggerScoringPoint.html#abada3454d1e8f1f2b57abb4e20efbdc4">UpstreamTaggerScoringPoint::extraPrintInfo</a>()<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>  LOG(info) &lt;&lt; <span class="stringliteral">&quot;This is the scoring plane downstream of the upstream tagger&quot;</span>;</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>}</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>  <span class="comment">// Plane numbers as set in shipDet_conf.configure</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>  <span class="keywordflow">switch</span> (GetDetectorID()) {</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    <span class="keywordflow">case</span> 1:</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>      LOG(info) &lt;&lt; <span class="stringliteral">&quot;UBT scoring plane 1, at the decay vessel entrance&quot;</span>;</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    <span class="keywordflow">case</span> 2:</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>      LOG(info) &lt;&lt; <span class="stringliteral">&quot;UBT scoring plane 2, behind the muon shield (muons only)&quot;</span>;</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>      LOG(info) &lt;&lt; <span class="stringliteral">&quot;UBT scoring plane &quot;</span> &lt;&lt; GetDetectorID();</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>  }</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>}</div>
 </div>
 <div class="ttc" id="aUpstreamTaggerScoringPoint_8h_html"><div class="ttname"><a href="UpstreamTaggerScoringPoint_8h.html">UpstreamTaggerScoringPoint.h</a></div></div>
 <div class="ttc" id="aclassUpstreamTaggerScoringPoint_html_a096da07e5b1d732527bc1e171a9b8d7b"><div class="ttname"><a href="classUpstreamTaggerScoringPoint.html#a096da07e5b1d732527bc1e171a9b8d7b">UpstreamTaggerScoringPoint::~UpstreamTaggerScoringPoint</a></div><div class="ttdeci">~UpstreamTaggerScoringPoint() override</div></div>
