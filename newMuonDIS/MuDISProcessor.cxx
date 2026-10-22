@@ -7,11 +7,13 @@
 #include <TFile.h>
 #include <TTree.h>
 
+#include <chrono>
 #include <cmath>
 #include <iomanip>
 #include <iostream>
 
 #include "FairLogger.h"
+#include "MuDISNormalization.h"
 #include "TMath.h"
 #include "TROOT.h"
 #include "TRandom.h"
@@ -70,7 +72,7 @@ bool MuDISProcessor::init(const int& aEvts, const int& aStart,
 void MuDISProcessor::initPythia6() {
   // set process 1=QCD, 2=DY/others
   fPythia->SetMSEL(2);
-  // set min hard scale: 2 GeV --->try 1.5 for soft muons ?
+  // Minimum centre-of-mass energy in GeV (not a transverse-momentum cut).
   fPythia->SetPARP(2, fMinPythiaP);
   // disable decay for those PDGID
   unsigned hadrons[10] = {211,  321,  130,  310,  3112,
@@ -84,10 +86,9 @@ void MuDISProcessor::initPythia6() {
   LOG(info) << " * Pythia6 seed set to " << fP6seed << " wrapped to " << seed
             << std::endl;
   fPythia->SetMRPY(1, seed);
-  // To direct specific verbose Pythia6 output to a special file.
-  fPythia->SetMSTU(11, 11);
-  // For standard output stream it would be:
-  // fPythia->SetMSTU(11, 6);
+  fPythia->SetMSTU(11, fPythiaOutputUnit);
+  LOG(info) << "Pythia6 messages: "
+            << (fPythiaOutputUnit == 6 ? "stdout" : "fort.11");
 }
 
 void MuDISProcessor::rotate(const TVector3& pvec, const double& theta,
@@ -286,7 +287,31 @@ void MuDISProcessor::generateDISevents(const std::string& tType,
               << ". Doing nothing.";
     return;
   }
-  fPythia->Initialize("FIXT", tType.c_str(), "p+", P);  // target = "p+"
+  const Long64_t entry = ftree ? ftree->GetReadEntry() : -1;
+  const auto initialize = [&](const char* target) {
+    // PYINPR/PYSAVE overwrite these cuts for photon-process mixing.
+    // PYGAGA reads them at the NEXT initialization before they are recomputed;
+    // a previous, harder muon can otherwise leave an empty photon phase space.
+    // Restore our starting cuts (Pythia defaults) for each beam/target pair.
+    fPythia->SetCKIN(1, 2.);
+    fPythia->SetCKIN(3, 0.);
+    LOG(debug1) << std::setprecision(17)
+                << "PYTHIA Initialize BEGIN: entry=" << entry
+                << " material=" << aLabel << " beam=" << tType
+                << " target=" << target << " beamP=" << P
+                << " GeV/c MSEL=" << fPythia->GetMSEL()
+                << " PARP(2)=" << fPythia->GetPARP(2)
+                << " MSTP(14)=" << fPythia->GetMSTP(14)
+                << " CKIN(1:4)=" << fPythia->GetCKIN(1) << ","
+                << fPythia->GetCKIN(2) << "," << fPythia->GetCKIN(3) << ","
+                << fPythia->GetCKIN(4) << " CKIN(5)=" << fPythia->GetCKIN(5)
+                << " CKIN(77:78)=" << fPythia->GetCKIN(77) << ","
+                << fPythia->GetCKIN(78) << std::endl;
+    fPythia->Initialize("FIXT", tType.c_str(), target, P);
+    LOG(debug1) << "PYTHIA Initialize END: entry=" << entry
+                << " material=" << aLabel << " target=" << target << std::endl;
+  };
+  initialize("p+");
   aDISBr.pPythia = P;
   bool isProton = true;
   // print summary of initialisation params
@@ -301,14 +326,16 @@ void MuDISProcessor::generateDISevents(const std::string& tType,
     //@FIXME AMM - half-way through, we change to neutron target with 50-50 :
     //---> update to real material ??
     if (ia == static_cast<int>(fnDIS / 2)) {
-      fPythia->Initialize("FIXT", tType.c_str(), "n0", P);  // target = "n0"
+      initialize("n0");
       isProton = false;
     }
 
     // Choose a point on the measured segments, excluding spatial jumps.
+    LOG(debug1) << "DIS vertex sampling BEGIN: entry=" << entry
+                << " material=" << aLabel << " DIS=" << ia << std::endl;
     unsigned slice = 0;
-    double realz = aPath.GetZAtLength(
-        gRandom->Uniform(minLength, aPath.GetLength()), slice);
+    const double sampledLength = gRandom->Uniform(minLength, aPath.GetLength());
+    double realz = aPath.GetZAtLength(sampledLength, slice);
     double sliceP = aPath.GetMomentum(slice);
     if (sliceP == 0) {
       LOG(error) << " --- Slice in z has momentum " << sliceP
@@ -316,10 +343,38 @@ void MuDISProcessor::generateDISevents(const std::string& tType,
       continue;
     }
 
+    LOG(debug1) << std::setprecision(17)
+                << "PYTHIA GenerateEvent BEGIN: entry=" << entry
+                << " material=" << aLabel << " DIS=" << ia
+                << " target=" << (isProton ? "p+" : "n0") << " beamP=" << P
+                << " sliceP=" << sliceP << " GeV/c"
+                << " slice=" << slice << "/" << aPath.GetNSlices()
+                << " sampledLength=" << sampledLength << " range=[" << minLength
+                << "," << aPath.GetLength() << "] cm z=" << realz
+                << " cm muonWeight=" << amuonW
+                << " MRPY(1:6)=" << fPythia->GetMRPY(1) << ","
+                << fPythia->GetMRPY(2) << "," << fPythia->GetMRPY(3) << ","
+                << fPythia->GetMRPY(4) << "," << fPythia->GetMRPY(5) << ","
+                << fPythia->GetMRPY(6) << std::endl;
+    const auto generationStart = std::chrono::steady_clock::now();
     fPythia->GenerateEvent();
+    const double generationSeconds =
+        std::chrono::duration<double>(std::chrono::steady_clock::now() -
+                                      generationStart)
+            .count();
+    LOG(debug1) << "PYTHIA GenerateEvent END: entry=" << entry
+                << " material=" << aLabel << " DIS=" << ia
+                << " elapsed=" << generationSeconds
+                << " s N=" << fPythia->GetN()
+                << " MSTI(61)=" << fPythia->GetMSTI(61) << std::endl;
     aDISBr.nDISevts++;
     // clean all but final stable particles
+    LOG(debug1) << "PYTHIA Pyedit BEGIN: entry=" << entry
+                << " material=" << aLabel << " DIS=" << ia << std::endl;
     fPythia->Pyedit(1);
+    LOG(debug1) << "PYTHIA Pyedit END: entry=" << entry
+                << " material=" << aLabel << " DIS=" << ia
+                << " N=" << fPythia->GetN() << std::endl;
 
     lastxs = fPythia->GetPARI(1);      // in mb
     aDISBr.DISxsec.push_back(lastxs);  // in mb
@@ -380,10 +435,12 @@ void MuDISProcessor::generateDISevents(const std::string& tType,
 }
 
 void MuDISProcessor::ProcessMuons() {
+  ShipMuDIS::Normalization normalization("prepareEvents");
   LOG(info) << " * Start of event loop" << std::endl;
   fGeoProcessor.ResetDiagnostics();
 
   if (static_cast<Long64_t>(fstartEvt) >= ftree->GetEntries()) {
+    normalization.Attach(fouttree);
     LOG(error) << " ** Trying to start from event " << fstartEvt
                << " which is greater than the tree entries: "
                << ftree->GetEntries() << ". Doing nothing...";
@@ -453,16 +510,6 @@ void MuDISProcessor::ProcessMuons() {
     int pid = track.GetPdgCode();
     double muW = track.GetWeight();
 
-    double mup = track.GetP();
-
-    if (mup < fMinPythiaP) {
-      LOG(debug) << iEvent << " skipped: muon momentum " << mup
-                 << " below min value for Pythia:" << fMinPythiaP;
-      skipMu_pmin++;
-      skipMu_pminW += muW;
-      continue;
-    }
-
     std::string targetType;
     if (pid == -13) {
       nplus++;
@@ -477,6 +524,18 @@ void MuDISProcessor::ProcessMuons() {
                    << " nTracks= " << nTr
                    << " -- 1st track pid not a muon: " << pid << std::endl;
       skipEvt++;
+      continue;
+    }
+
+    normalization.Add(muW);
+
+    double mup = track.GetP();
+
+    if (mup < fMinPythiaP) {
+      LOG(debug) << iEvent << " skipped: muon momentum " << mup
+                 << " below min value for Pythia:" << fMinPythiaP;
+      skipMu_pmin++;
+      skipMu_pminW += muW;
       continue;
     }
 
@@ -565,6 +624,7 @@ void MuDISProcessor::ProcessMuons() {
             << " muons with too low p" << std::endl
             << "Counted: " << skipMu_acc
             << " muons with no recorded hits in UBT,SBT,SST,TD.";
+  normalization.Attach(fouttree);
   LOG(info) << "Weighted counts (sum MCTrack[0].fW): " << wplus << " mu+ and "
             << wminus << " mu- (after momentum cut)." << std::endl
             << "Skipped (sum MCTrack[0].fW): " << skipMu_pminW

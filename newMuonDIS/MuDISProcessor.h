@@ -52,6 +52,7 @@ class MuDISProcessor {
   void SetPocaJumpThreshold(double threshold) {
     fGeoProcessor.SetPocaJumpThreshold(threshold);
   }
+  void SetPythiaStdout(bool enabled) { fPythiaOutputUnit = enabled ? 6 : 11; }
 
   void generateDISevents(const std::string& tType, const double& amuonW,
                          const std::string& aLabel, const MuonPath& aPath,
@@ -75,6 +76,7 @@ class MuDISProcessor {
   double fMinPythiaP;
   int fnDIS;
   int fP6seed;
+  int fPythiaOutputUnit = 11;
 
   MuGeoProcessor fGeoProcessor;
 
