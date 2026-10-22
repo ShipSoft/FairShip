@@ -188,3 +188,10 @@ def test_conflicting_overrides_are_rejected(ROOT, tmp_path):
         load_pid(str(path))
     assert str(path) in str(error.value)
     assert "conflicting overrides" in str(error.value)
+
+
+def test_binding_errors_are_not_reported_as_file_errors(ROOT):
+    from caloScoringPlanePID import PIDModel, make_pid
+
+    with pytest.raises(TypeError):
+        make_pid(PIDModel(energies=["1"], matrices=[0.0] * 9))  # pyrefly: ignore[bad-argument-type]
