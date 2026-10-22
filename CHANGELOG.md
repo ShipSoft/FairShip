@@ -16,6 +16,10 @@ it in future.
 
 * GENIE (pythia8 build) is now a pixi dependency, so `macro/makeGenieEvents.py` can run `gmkspl`, `gevgen` and `gntpc` in the pixi environment without a separate GENIE installation.
 
+### Changed
+
+* `--patRec Segments` handles busy events and tracks far from the magnet axis. On neutrino DIS events (149 jobs of one seed of the gsimple sample, 183k reconstructible tracks) it finds 95.8 ± 0.1% of the tracks instead of 86.9 ± 0.1%, and 93.5% of the vertices instead of 80.4%, with 0.7% ghosts. In the 1.3% of events with more than 500 straw hits, where GenFit with AR finds almost nothing, it finds 89% (500-1000 hits) and 72% (more) of the tracks. A job of 2200 such events takes about 5 minutes; before, the median was 1.8 hours and some jobs ran over 8 hours. Segments are matched across the magnet with the integrals of Bx and By along the pair, because away from the axis the magnet also kicks tracks in x, and every pair that matches is a candidate for the track fit. Hits are looked up by bisection in sorted layers, the line fits solve fixed-size normal equations, repeated lines are merged and the search in the stereo views is bounded. On common-vertex muon events the efficiency rises by 0.2 to 2.4%, and on HNL decays by 0.7%.
+
 ### Fixed
 
 * The ACTS straw material now comes from the straw wall, gas and wire volumes of the geometry instead of fixed values. Each part counts with its mean path through the straw. A straw is now 5.3e-4 X0, where it was 5.7e-4: the walls were too thin (tracks taken through the straw centre) and the gas X0 was 30 m instead of 128 m (Ar/CO2 80/20).
