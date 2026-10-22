@@ -282,9 +282,9 @@ struct ActsStrawTracker::Impl {
         magnetEnd = std::min(magnetEnd, wire.z);
       }
     }
-    LineSegment axis;
-    const auto [integral, centre] = fieldIntegral(axis);
-    patRec.emplace(StrawPatRec::Config{}, centre, integral);
+    patRec.emplace(StrawPatRec::Config{}, [this](const LineSegment& line) {
+      return fieldIntegrals(line);
+    });
   }
 
   /// Hits for the pattern recognition, from measurement indices
@@ -300,10 +300,9 @@ struct ActsStrawTracker::Impl {
   std::optional<std::size_t> fitOnce(const std::vector<Int_t>& indices,
                                      const Acts::BoundTrackParameters& start);
 
-  /// Integral of Bx along a straight line through the magnet (T m), and the
-  /// z of its centre (cm)
-  std::pair<double, double> fieldIntegral(const LineSegment& line) const {
-    double integral = 0.;
+  /// Integrals of Bx and By along a straight line through the magnet
+  FieldIntegrals fieldIntegrals(const LineSegment& line) const {
+    FieldIntegrals integrals;
     double moment = 0.;
     for (double z = magnetStart; z < magnetEnd; z += kFieldStep) {
       const double zMid = z + kFieldStep / 2.;
@@ -312,11 +311,13 @@ struct ActsStrawTracker::Impl {
       shipField->Field(x, b);
       // kGauss to T, cm to m
       const double bx = 0.1 * b[0] * 0.01 * kFieldStep;
-      integral += bx;
+      integrals.bx += bx;
+      integrals.by += 0.1 * b[1] * 0.01 * kFieldStep;
       moment += bx * zMid;
     }
-    return {integral, integral != 0. ? moment / integral
-                                     : 0.5 * (magnetStart + magnetEnd)};
+    integrals.centre = integrals.bx != 0. ? moment / integrals.bx
+                                          : 0.5 * (magnetStart + magnetEnd);
+    return integrals;
   }
 
   const Acts::Surface* surfaceOf(const Acts::SourceLink& sourceLink) const {
@@ -513,7 +514,7 @@ Int_t ActsStrawTracker::Impl::fit(const TrackCandidate& candidate,
 
   // Momentum from the kink, with the field integral along this track
   TrackCandidate refined = candidate;
-  const auto [integral, centre] = fieldIntegral(candidate.upstream);
+  const double integral = fieldIntegrals(candidate.upstream).bx;
   const double kink = candidate.downstream.ty - candidate.upstream.ty;
   if (integral != 0. && kink != 0.) {
     const LineSegment& up = candidate.upstream;
