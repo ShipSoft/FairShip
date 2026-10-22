@@ -126,11 +126,24 @@ cmd = "python macro/ShipReco.py -f sim_ci-test.root -g geo_ci-test.root --patRec
 [tasks.ci-ana]
 cmd = "python macro/ShipAna.py -f sim_ci-test.root -r sim_ci-test_rec.root -g geo_ci-test.root"
 
+# The same events through ACTS with the drift-circle pattern recognition, in
+# acts/ so that the GenFit outputs used for the metrics stay untouched.
+[tasks.ci-reco-acts]
+cmd = "bash -c 'mkdir -p acts && cd acts && ln -sf ../sim_ci-test.root ../geo_ci-test.root . && python ../macro/ShipReco.py -f sim_ci-test.root -g geo_ci-test.root --trackFitter acts --patRec Segments --Debug'"
+
+[tasks.ci-ana-acts]
+cmd = "bash -c 'cd acts && python ../macro/ShipAna.py -f sim_ci-test.root -r sim_ci-test_rec.root -g geo_ci-test.root'"
+
 [tasks.ci-analysis-example]
 cmd = "python examples/analysis_example.py -f sim_ci-test.root -r sim_ci-test_rec.root -g geo_ci-test.root"
 
 [tasks.ci-tracking-benchmark]
 cmd = "python macro/run_tracking_benchmark.py -n 200 --seed 42 --tag ci-benchmark --output-json tracking_metrics.json"
+
+# The events of ci-tracking-benchmark again, with ACTS and the drift-circle
+# pattern recognition, in acts-benchmark/
+[tasks.ci-tracking-benchmark-acts]
+cmd = "bash -c 'mkdir -p acts-benchmark && ln -sf ../sim_ci-benchmark.root ../geo_ci-benchmark.root acts-benchmark/ && python macro/run_tracking_benchmark.py -n 200 --seed 42 --tag ci-benchmark -o acts-benchmark --skipSim --trackFitter acts --patRec Segments --output-json tracking_metrics_acts.json'"
 
 [tasks.ci-fixed-target]
 cmd = "python macro/run_fixedTarget.py -n 10 -e 10.0 -r 1"
@@ -159,6 +172,9 @@ cmd = "ship-metrics-render recohists.root sim_ci-test_ana.root --output-dir plot
 
 [tasks.ci-render-plots-tracking-benchmark]
 cmd = "ship-metrics-render tracking_benchmark_histos.root --output-dir plots/tracking-benchmark/pixi --job tracking-benchmark --config pixi"
+
+[tasks.ci-render-plots-tracking-benchmark-acts]
+cmd = "ship-metrics-render acts-benchmark/tracking_benchmark_histos.root --output-dir plots/tracking-benchmark/acts --job tracking-benchmark --config acts"
 
 [tasks.ci-render-plots-fixed-target]
 cmd = "ship-metrics-render *_run_fixedTarget_1/*.root --output-dir plots/fixed-target/pixi --job fixed-target --config pixi"
