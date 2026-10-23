@@ -2,8 +2,8 @@
 // SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP
 // Collaboration
 
-#ifndef UPSTREAMTAGGER_UPSTREAMTAGGERHIT_H_
-#define UPSTREAMTAGGER_UPSTREAMTAGGERHIT_H_
+#ifndef UPSTREAMTAGGERSTRAW_UPSTREAMTAGGERSTRAWHIT_H_
+#define UPSTREAMTAGGERSTRAW_UPSTREAMTAGGERSTRAWHIT_H_
 
 #include "DetectorHit.h"
 #include "TVector3.h"
@@ -61,4 +61,4 @@ class UpstreamTaggerStrawHit : public SHiP::DetectorHit {
   ClassDefOverride(UpstreamTaggerStrawHit, 2);
 };
 
-#endif  // UPSTREAMTAGGER_UPSTREAMTAGGERHIT_H_
+#endif  // UPSTREAMTAGGERSTRAW_UPSTREAMTAGGERSTRAWHIT_H_

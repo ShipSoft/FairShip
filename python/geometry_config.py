@@ -451,6 +451,19 @@ def create_config(
     c.UpstreamTagger.PositionResolution = 1.0 * u.cm  # Position smearing resolution
     c.UpstreamTagger.TimeResolution = 0.3  # Time resolution in ns
 
+    # Upstream TaggerStraw
+    # UpstreamTaggerStraw (UBTStraw) - Simplified scoring plane
+    # Note: UBTStraw is implemented as a simple vacuum box
+    # Legacy RPC parameters have been removed as they are not used in the current implementation
+    c.UpstreamTaggerStraw = AttrDict()
+    c.UpstreamTaggerStraw.BoxX = 4.4 * u.m  # X dimension (width)
+    c.UpstreamTaggerStraw.BoxY = 6.4 * u.m  # Y dimension (height)
+    c.UpstreamTaggerStraw.BoxZ = 2.0 * u.cm  # Z dimension (thickness)
+    c.UpstreamTaggerStraw.Z_Position = -25.400 * u.m + c.decayVolume.z  # Relative position of UBT to decay vessel centre
+    c.UpstreamTaggerStraw.PositionResolution = 1.0 * u.cm  # Position smearing resolution
+    c.UpstreamTaggerStraw.TimeResolution = 0.3  # Time resolution in ns
+
+
     # Store parameters that might be needed for reference
     c.muShieldGeo = muShieldGeo
     c.nuTargetPassive = nuTargetPassive

@@ -304,7 +304,7 @@ void UpstreamTaggerStraw::ConstructGeometry() {
   // statnb = station number; vnb = view number; hnb = tier number (1 = upper,
   // 2 = mid, 3 = lower set of straws); lnb = layer number; snb = straw number
   Int_t statnb = 1;
-  TString nmstation = "UBT";
+  TString nmstation = "UBTStraw";
   nmstation += statnb;
 
   TGeoVolume* vol = new TGeoVolume(nmstation, statbox, med);
@@ -465,14 +465,14 @@ void UpstreamTaggerStraw::ConstructGeometry() {
   ShipGeo::InitMedium("vacuum");
   TGeoMedium* Vacuum_box = gGeoManager->GetMedium("vacuum");
   UpstreamTaggerStraw_plastic = gGeoManager->MakeBox(
-      "Upstream_Tagger_Plastic", Vacuum_box, 4.0 * m, 2.0 * m, 1);
+      "Upstream_Tagger_Straw_Plastic_Downstream", Vacuum_box, 4.0 * m, 2.0 * m, 1);
   UpstreamTaggerStraw_plastic->SetLineColor(kGreen);
   top->AddNode(UpstreamTaggerStraw_plastic, 1,
                new TGeoTranslation(0.0, 0.0, f_T1_z + 40));
   AddSensitiveVolume(UpstreamTaggerStraw_plastic);
 
   UpstreamTaggerStraw_plastic_forward = gGeoManager->MakeBox(
-      "Upstream_Tagger_Plastic_forward", Vacuum_box, 4.0 * m, 2.0 * m, 1);
+      "Upstream_Tagger_Straw_Plastic_Upstream", Vacuum_box, 4.0 * m, 2.0 * m, 1);
   UpstreamTaggerStraw_plastic_forward->SetLineColor(kGreen);
   // Just upstream of the station box, which extends further upstream than
   // downstream because of the displaced middle tier

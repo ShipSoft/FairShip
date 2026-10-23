@@ -35,6 +35,7 @@ enum DetectorId {
   kMufluxSpectrometer,
   kMuonTagger,
   kUpstreamTagger,
+  kUpstreamTaggerStraw,
   kEndOfList
 };
 // last five for muonflux and Charm measurement

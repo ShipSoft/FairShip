@@ -267,35 +267,37 @@ def configure_strawtubes(yaml_file: str, ship_geo) -> None:
     detectorList.append(strawtubes)
 
 
-def configure_upstreamTagger(yaml_file, ship_geo):
+
+
+def configure_upstreamTaggerStraw(yaml_file, ship_geo):
     with open(yaml_file) as file:
         config = yaml.safe_load(file)
 
-    ship_geo.ubt_geo = AttrDict(config["UBT"])
+    ship_geo.ubt_straw_geo = AttrDict(config["UBTStraw"])
 
     # Straw tubes in decay vessel if vacuum, otherwise outside in air
-    ship_geo.ubt_geo.medium = "vacuums" if ship_geo.DecayVolumeMedium == "vacuums" else "air"
+    ship_geo.ubt_straw_geo.medium = "vacuums" if ship_geo.DecayVolumeMedium == "vacuums" else "air"
 
-    ship_geo.ubt_geo.frame_material = "DIRCcarbonFiber"
+    ship_geo.ubt_straw_geo.frame_material = "DIRCcarbonFiber"
 
-    ubt = ROOT.UpstreamTagger(ship_geo.ubt_geo.medium)
-    ubt.SetzPositions(
+    ubt_straw = ROOT.UpstreamTaggerStraw(ship_geo.ubt_straw_geo.medium)
+    ubt_straw.SetzPositions(
         ship_geo.UBTStation1.z,
     )
-    ubt.SetApertureArea(ship_geo.ubt_geo.width, ship_geo.ubt_geo.height, ship_geo.ubt_geo.station_length)
-    ubt.SetStrawDiameter(
-        ship_geo.ubt_geo.outer_straw_diameter,
-        ship_geo.ubt_geo.wall_thickness,
+    ubt_straw.SetApertureArea(ship_geo.ubt_straw_geo.width, ship_geo.ubt_straw_geo.height, ship_geo.ubt_straw_geo.station_length)
+    ubt_straw.SetStrawDiameter(
+        ship_geo.ubt_straw_geo.outer_straw_diameter,
+        ship_geo.ubt_straw_geo.wall_thickness,
     )
-    ubt.SetStrawPitch(
-        ship_geo.ubt_geo.straw_pitch,
-        ship_geo.ubt_geo.y_layer_offset,
+    ubt_straw.SetStrawPitch(
+        ship_geo.ubt_straw_geo.straw_pitch,
+        ship_geo.ubt_straw_geo.y_layer_offset,
     )
-    ubt.SetDeltazLayer(ship_geo.ubt_geo.delta_z_layer)
-    ubt.SetStereoAngle(ship_geo.ubt_geo.view_angle)
-    ubt.SetWireThickness(ship_geo.ubt_geo.wire_thickness)
-    ubt.SetDeltazView(ship_geo.ubt_geo.delta_z_view)
-    ubt.SetFrameMaterial(ship_geo.ubt_geo.frame_material)
+    ubt_straw.SetDeltazLayer(ship_geo.ubt_straw_geo.delta_z_layer)
+    ubt_straw.SetStereoAngle(ship_geo.ubt_straw_geo.view_angle)
+    ubt_straw.SetWireThickness(ship_geo.ubt_straw_geo.wire_thickness)
+    ubt_straw.SetDeltazView(ship_geo.ubt_straw_geo.delta_z_view)
+    ubt_straw.SetFrameMaterial(ship_geo.ubt_straw_geo.frame_material)
 
     # For digitization
     #    strawtubes.SetStrawResolution(
@@ -303,8 +305,7 @@ def configure_upstreamTagger(yaml_file, ship_geo):
     #        ship_geo.strawtubesDigi.sigma_spatial,
     #    )
 
-    detectorList.append(ubt)
-
+    detectorList.append(ubt_straw)
 
 def configure(run, ship_geo):
     # ---- for backward compatibility ----
@@ -471,7 +472,15 @@ def configure(run, ship_geo):
         SplitCal.SetStripSize(x.StripHalfWidth, x.StripHalfLength)
         detectorList.append(SplitCal)
 
-    configure_upstreamTagger(os.path.join(os.environ["FAIRSHIP"], "geometry", "ubt_config.yaml"), ship_geo)
+    # The straw part of the UpstreamTagger
+    configure_upstreamTaggerStraw(os.path.join(os.environ["FAIRSHIP"], "geometry", "ubtstraw_config.yaml"), ship_geo)
+    # The scintillating tile part of the UpstreamTagger
+    upstreamTagger = ROOT.UpstreamTagger("UpstreamTagger", ROOT.kTRUE)
+    upstreamTagger.SetZposition(ship_geo.UpstreamTagger.Z_Position)
+    upstreamTagger.SetBoxDimensions(
+        ship_geo.UpstreamTagger.BoxX, ship_geo.UpstreamTagger.BoxY, ship_geo.UpstreamTagger.BoxZ
+    )
+    detectorList.append(upstreamTagger)
 
     timeDet = ROOT.TimeDet("TimeDet", ROOT.kTRUE)
     timeDet.SetZposition(ship_geo.TimeDet.z)

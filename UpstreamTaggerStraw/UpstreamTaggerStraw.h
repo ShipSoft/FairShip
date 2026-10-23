@@ -2,8 +2,8 @@
 // SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP
 // Collaboration
 
-#ifndef UPSTREAMTAGGER_UPSTREAMTAGGER_H_
-#define UPSTREAMTAGGER_UPSTREAMTAGGER_H_
+#ifndef UPSTREAMTAGGERSTRAW_UPSTREAMTAGGERSTRAW_H_
+#define UPSTREAMTAGGERSTRAW_UPSTREAMTAGGERSTRAW_H_
 
 #include <map>
 #include <vector>
@@ -113,4 +113,4 @@ class UpstreamTaggerStraw : public SHiP::Detector<UpstreamTaggerStrawPoint> {
   UpstreamTaggerStraw& operator=(const UpstreamTaggerStraw&) = delete;
 };
 
-#endif  // UPSTREAMTAGGER_UPSTREAMTAGGER_H_
+#endif  // UPSTREAMTAGGERSTRAW_UPSTREAMTAGGERSTRAW_H_
