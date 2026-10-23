@@ -460,7 +460,7 @@ void UpstreamTaggerStraw::ConstructGeometry() {
     }
     // End of view loop
   }
-
+/*
   // Scoring planes downstream and upstream of the station
   ShipGeo::InitMedium("vacuum");
   TGeoMedium* Vacuum_box = gGeoManager->GetMedium("vacuum");
@@ -480,4 +480,5 @@ void UpstreamTaggerStraw::ConstructGeometry() {
                new TGeoTranslation(0.0, 0.0,
                                    f_T1_z + station_dz - station_half_z - 10));
   AddSensitiveVolume(UpstreamTaggerStraw_plastic_forward);
+*/
 }
