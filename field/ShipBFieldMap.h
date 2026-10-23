@@ -18,6 +18,8 @@
 #include "TGeoMatrix.h"
 #include "TVirtualMagField.h"
 
+class TTree;
+
 class ShipBFieldMap : public TVirtualMagField {
  public:
   //! Constructor
@@ -321,6 +323,13 @@ class ShipBFieldMap : public TVirtualMagField {
 
   //! Process the text file containing the field map data
   void readTextFile();
+
+  //! Check that the ROOT map really uses the assumed data ordering
+  /*!
+    \param [in] dTree The Data tree of the map file. Its branch statuses and
+    addresses are reset before returning
+  */
+  void checkRootFileOrdering(TTree* dTree);
 
   // ! Set the coordinate limits from information stored in the datafile
   void setLimits();

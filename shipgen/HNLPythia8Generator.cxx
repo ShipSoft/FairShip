@@ -8,31 +8,34 @@
 
 #include "BeamSmearingUtils.h"
 #include "FairPrimaryGenerator.h"
+#include "PythiaUnits.h"
 #include "TDatabasePDG.h"  // for TDatabasePDG
 #include "TMath.h"
 #include "TROOT.h"
 #include "TSystem.h"
-const Double_t cm = 10.;                  // pythia units are mm
-const Double_t mm = 1.;                   // pythia base unit
-const Double_t c_light = 2.99792458e+10;  // speed of light in cm/sec (c_light
-                                          // = 2.99792458e+8 * m/s)
+using shipgen::PythiaLengthToCm;
+using shipgen::PythiaTimeToS;
+// Lengths inside this generator are in Pythia8 units (mm); the setters convert
+// from cm and AddTrack gets cm.
+constexpr Double_t kPythiaMm = 1.;
+constexpr Double_t kPythiaCm = shipgen::kPythiaLengthPerCm;
 const Bool_t debug = false;
 // using namespace Pythia8;
 
 // -----   Default constructor   -------------------------------------------
 HNLPythia8Generator::HNLPythia8Generator() {
-  fId = 2212;           // proton
-  fMom = 400;           // proton
-  fHNL = 9900015;       // HNL  pdg code
-  fLmin = 5000. * cm;   // min decay length along the HNL flight direction
-                        // (50 m, stored in Pythia units, mm)
-  fLmax = 12000. * cm;  // max decay length along the HNL flight direction
-                        // (120 m, stored in Pythia units, mm)
-  fFDs = 7.7 / 10.4;    // correction for Pythia6 to match measured Ds
-                        // production.
-                        // TODO(olantwin, 2026-08-12): cite source of 7.7/10.4
-  fsmearBeam = 8 * mm;  // default value for smearing beam (8 mm)
-  fPaintBeam = 5 * cm;  // default value for painting beam (5 cm)
+  fId = 2212;                 // proton
+  fMom = 400;                 // proton
+  fHNL = 9900015;             // HNL  pdg code
+  fLmin = 5000. * kPythiaCm;  // min decay length along the HNL flight direction
+                              // (50 m, stored in Pythia units, mm)
+  fLmax = 12000. * kPythiaCm;  // max decay length along the HNL flight
+                               // direction (120 m, stored in Pythia units, mm)
+  fFDs = 7.7 / 10.4;           // correction for Pythia6 to match measured Ds
+                               // production.
+  // TODO(olantwin, 2026-08-12): cite source of 7.7/10.4
+  fsmearBeam = 8 * kPythiaMm;  // default value for smearing beam (8 mm)
+  fPaintBeam = 5 * kPythiaCm;  // default value for painting beam (5 cm)
   fInputFile = nullptr;
   fnRetries = 0;
   fShipEventNr = 0;
@@ -130,8 +133,8 @@ Bool_t HNLPythia8Generator::Init() {
   }
   Double_t root_ctau = hnl->Lifetime();
   fctau = fPythia->particleData.tau0(fHNL);  //* 3.3333e-12
-  LOG(debug) << "tau root " << root_ctau
-             << "[s] ctau root = " << root_ctau * 3e10 << "[cm]";
+  LOG(debug) << "tau root " << root_ctau << "[s] ctau root = "
+             << root_ctau * ShipUnit::s * ShipUnit::c_light << "[cm]";
   LOG(debug) << "ctau pythia " << fctau << "[mm]";
   if (debug) {
     List(9900015);
@@ -266,21 +269,31 @@ Bool_t HNLPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg) {
       if (fextFile) {
         // take grand mother particle from input file, to know if primary or
         // secondary production
-        cpg->AddTrack((Int_t)mid[0], mpx[0], mpy[0], mpz[0], xm / cm + dx / cm,
-                      ym / cm + dy / cm, zm / cm, -1, false, mE[0], 0., 1.);
+        cpg->AddTrack((Int_t)mid[0], mpx[0], mpy[0], mpz[0],
+                      PythiaLengthToCm(xm) + PythiaLengthToCm(dx),
+                      PythiaLengthToCm(ym) + PythiaLengthToCm(dy),
+                      PythiaLengthToCm(zm), -1, false, mE[0], 0., 1.);
         cpg->AddTrack(
-            (Int_t)fPythia->event[im].id(), pmx, pmy, pmz, xm / cm + dx / cm,
-            ym / cm + dy / cm, zm / cm, 0, false, em, tm / cm / c_light,
+            (Int_t)fPythia->event[im].id(), pmx, pmy, pmz,
+            PythiaLengthToCm(xm) + PythiaLengthToCm(dx),
+            PythiaLengthToCm(ym) + PythiaLengthToCm(dy), PythiaLengthToCm(zm),
+            0, false, em, PythiaTimeToS(tm),
             w);  // convert pythia's (x,y,z[mm], t[mm/c]) to ([cm], [s])
-        cpg->AddTrack(fHNL, px, py, pz, xp / cm + dx / cm, yp / cm + dy / cm,
-                      zp / cm, 1, false, e, tp / cm / c_light, w);
+        cpg->AddTrack(fHNL, px, py, pz,
+                      PythiaLengthToCm(xp) + PythiaLengthToCm(dx),
+                      PythiaLengthToCm(yp) + PythiaLengthToCm(dy),
+                      PythiaLengthToCm(zp), 1, false, e, PythiaTimeToS(tp), w);
       } else {
         cpg->AddTrack(
-            (Int_t)fPythia->event[im].id(), pmx, pmy, pmz, xm / cm + dx / cm,
-            ym / cm + dy / cm, zm / cm, -1, false, em, tm / cm / c_light,
+            (Int_t)fPythia->event[im].id(), pmx, pmy, pmz,
+            PythiaLengthToCm(xm) + PythiaLengthToCm(dx),
+            PythiaLengthToCm(ym) + PythiaLengthToCm(dy), PythiaLengthToCm(zm),
+            -1, false, em, PythiaTimeToS(tm),
             w);  // convert pythia's (x,y,z[mm], t[mm/c]) to ([cm], [s])
-        cpg->AddTrack(fHNL, px, py, pz, xp / cm + dx / cm, yp / cm + dy / cm,
-                      zp / cm, 0, false, e, tp / cm / c_light, w);
+        cpg->AddTrack(fHNL, px, py, pz,
+                      PythiaLengthToCm(xp) + PythiaLengthToCm(dx),
+                      PythiaLengthToCm(yp) + PythiaLengthToCm(dy),
+                      PythiaLengthToCm(zp), 0, false, e, PythiaTimeToS(tp), w);
       }
       // bookkeep the indices of stored particles
       dec_chain.push_back(im);
@@ -343,8 +356,10 @@ Bool_t HNLPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg) {
       im += 1;
     }
     IncrementCounter("hnl_stored_decay_products");
-    cpg->AddTrack((Int_t)fPythia->event[k].id(), px, py, pz, xS / cm, yS / cm,
-                  zS / cm, im, wanttracking, e, tS / cm / c_light, w);
+    cpg->AddTrack((Int_t)fPythia->event[k].id(), px, py, pz,
+                  PythiaLengthToCm(xS), PythiaLengthToCm(yS),
+                  PythiaLengthToCm(zS), im, wanttracking, e, PythiaTimeToS(tS),
+                  w);
     // std::cout <<k<< " insert pdg =" <<fPythia->event[k].id() << " pz = " <<
     // pz << " [GeV] zS = " << zS << " [mm] tS = " << tS << "[mm/c]" <<  endl;
   }

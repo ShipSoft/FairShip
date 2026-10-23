@@ -9,6 +9,7 @@
 
 #include <cmath>   // for cos, acos
 #include <cstdio>  // for printf
+#include <optional>
 #include <stdexcept>
 
 #include "FairLogger.h"
@@ -52,6 +53,18 @@ static const std::map<std::string, ModelSpec>& kVertexModels() {
                                                  pars[2] + pars[3] / 2.)
                               : pars[2];
           p.Z = pars[4];
+        }}},
+      {"uniform3d",
+       {6, "Uniform(X), Uniform(Y), Uniform(Z)",
+        [](ParticleGunParticle& p, const std::vector<Double32_t>& pars) {
+          auto uniform = [](Double32_t centre, Double32_t width) {
+            return (width > 0) ? gRandom->Uniform(centre - width / 2.,
+                                                  centre + width / 2.)
+                               : centre;
+          };
+          p.X = uniform(pars[0], pars[1]);
+          p.Y = uniform(pars[2], pars[3]);
+          p.Z = uniform(pars[4], pars[5]);
         }}},
   };
   return models;
@@ -245,9 +258,19 @@ int ParticleGunGenerator::GenPDGType() const {
 
 Bool_t ParticleGunGenerator::ReadEvent(FairPrimaryGenerator* primGen) {
   int pdg_type;
+  // With a common vertex, all particles of the event share the first one's
+  std::optional<ParticleGunParticle> vertex;
   for (Int_t k = 0; k < GetMultiplicity(); k++) {
     pdg_type = GenPDGType();
     ParticleGunParticle p = GenerateKinematics();
+    if (m_commonVertex) {
+      if (!vertex) {
+        vertex = p;
+      }
+      p.X = vertex->X;
+      p.Y = vertex->Y;
+      p.Z = vertex->Z;
+    }
     OverrideFromHistogram(p);
     primGen->AddTrack(pdg_type, p.Px, p.Py, p.Pz, p.X, p.Y, p.Z);
   }

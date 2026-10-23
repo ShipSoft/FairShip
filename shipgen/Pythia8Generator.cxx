@@ -11,16 +11,16 @@
 #include "FairPrimaryGenerator.h"
 #include "HNLPythia8Generator.h"
 #include "MeanMaterialBudget.h"
+#include "PythiaUnits.h"
 #include "TGeoBBox.h"
 #include "TGeoNode.h"
 #include "TGeoVolume.h"
 #include "TMath.h"
 #include "TROOT.h"
 #include "TSystem.h"
-const Double_t cm = 10.;                  // pythia units are mm
-const Double_t c_light = 2.99792458e+10;  // speed of light in cm/sec (c_light
-                                          // = 2.99792458e+8 * m/s)
-constexpr Double_t mbarn = 1E-3 * 1E-24 * TMath::Na();  // cm^2 * Avogadro
+// positions are handled in Pythia8 units (mm) and converted on output
+using shipgen::PythiaLengthToCm;
+using shipgen::PythiaTimeToS;
 
 // -----   Default constructor   -------------------------------------------
 Pythia8Generator::Pythia8Generator() {
@@ -250,11 +250,19 @@ Bool_t Pythia8Generator::ReadEvent(FairPrimaryGenerator* cpg) {
       // Fe: nuclear /\ 16.77 cm pion 20.42 cm  f=1.22
       // W:  nuclear /\ 9.946 cm pion 11.33 cm  f=1.14
       // Mo: nuclear /\ 15.25 cm pion 17.98 cm  f=1.18
-      while (prob2int < rndm) {
+      // The material is counted from the previous interaction point: counting
+      // it from the start of the target only multiplies every trial by the
+      // same survival probability, which leaves the distribution unchanged but
+      // makes the acceptance vanish for interactions deep in the cascade.
+      const Double_t from[3] = {xOff, yOff, zinterStart};
+      constexpr int kMaxTries = 100000;
+      int tries = 0;
+      while (prob2int < rndm && tries < kMaxTries) {
+        ++tries;
         // place x,y,z uniform along path
         zinter = gRandom->Uniform(zinterStart, end[2]);
         Double_t point[3] = {xOff, yOff, zinter};
-        bparam = shipgen::MeanMaterialBudget(start, point, mparam);
+        bparam = shipgen::MeanMaterialBudget(from, point, mparam);
         Double_t interLength =
             mparam[8] * intLengthFactor *
             1.7;  // 1.7 = interaction length / collision length from PDG Tables
@@ -262,19 +270,22 @@ Bool_t Pythia8Generator::ReadEvent(FairPrimaryGenerator* cpg) {
         TGeoMaterial* mat = nullptr;
         if (node && !gGeoManager->IsOutside()) {
           mat = node->GetVolume()->GetMaterial();
-          Double_t n = mat->GetDensity() / mat->GetA();
-          sigma = 1. / (n * mat->GetIntLen()) /
-                  mbarn;  // no need to multiply with intLengthFactor, will
-                          // cancel in next equation.
+          // no need to multiply with intLengthFactor, it cancels below
+          sigma = shipgen::NuclearCrossSection_mbarn(*mat);
           prob2int = TMath::Exp(-interLength) * sigma / maxCrossSection;
         } else {
           prob2int = 0.;
         }
         rndm = gRandom->Uniform(0., 1.);
       }
+      if (prob2int < rndm) {
+        // no material left downstream: keep the previous interaction point
+        zinter = zinterStart;
+        break;
+      }
       zinterStart = zinter;
     }
-    zinter = zinter * cm;
+    zinter = zinter * shipgen::kPythiaLengthPerCm;  // to Pythia8 units
   }
   for (Int_t c = 0; c < 2; c++) {
     if (c > 0) {
@@ -300,7 +311,8 @@ Bool_t Pythia8Generator::ReadEvent(FairPrimaryGenerator* cpg) {
       y = 0.;
       z = zinter;
       id = mid[0];
-      cpg->AddTrack(id, px, py, pz, x / cm, y / cm, z / cm, -1, false);
+      cpg->AddTrack(id, px, py, pz, PythiaLengthToCm(x), PythiaLengthToCm(y),
+                    PythiaLengthToCm(z), -1, false);
       addedParticles += 1;
     }
     for (Int_t ii = 1; ii < fPythia->event.size(); ii++) {
@@ -313,14 +325,14 @@ Bool_t Pythia8Generator::ReadEvent(FairPrimaryGenerator* cpg) {
         z = fPythia->event[ii].zProd() + dl * fPythia->event[1].pz() + zinter;
         x = fPythia->event[ii].xProd() + dl * fPythia->event[1].px();
         y = fPythia->event[ii].yProd() + dl * fPythia->event[1].py();
-        tof = fPythia->event[ii].tProd() / (10 * c_light) +
-              dl * fPythia->event[1].e() / cm / c_light;
+        // the displaced vertex adds the flight time dl * E (mm/c)
+        tof = PythiaTimeToS(fPythia->event[ii].tProd()) +
+              PythiaTimeToS(dl * fPythia->event[1].e());
       } else {
         z = fPythia->event[ii].zProd() + zinter;
         x = fPythia->event[ii].xProd();
         y = fPythia->event[ii].yProd();
-        tof =
-            fPythia->event[ii].tProd() / (10 * c_light);  // to go from mm to s
+        tof = PythiaTimeToS(fPythia->event[ii].tProd());
       }
       pz = fPythia->event[ii].pz();
       px = fPythia->event[ii].px();
@@ -331,8 +343,8 @@ Bool_t Pythia8Generator::ReadEvent(FairPrimaryGenerator* cpg) {
       if (ii == 1) {
         im = 0;
       }
-      cpg->AddTrack(id, px, py, pz, x / cm, y / cm, z / cm, im, wanttracking, e,
-                    tof, 1.);
+      cpg->AddTrack(id, px, py, pz, PythiaLengthToCm(x), PythiaLengthToCm(y),
+                    PythiaLengthToCm(z), im, wanttracking, e, tof, 1.);
       addedParticles += 1;
     }
     key += addedParticles - 1;  // pythia counts from 1
@@ -346,10 +358,11 @@ Bool_t Pythia8Generator::ReadEvent(FairPrimaryGenerator* cpg) {
       lx = true;
       fn++;
       cpg->AddTrack((Int_t)hid[0], hpx[0], hpy[0], hpz[0],
-                    (mpx[0] + fPythia->event[0].xProd()) / cm,
-                    (mpy[0] + fPythia->event[0].yProd()) / cm,
-                    (mpz[0] + fPythia->event[0].zProd()) / cm + zinter / cm, -1,
-                    true);
+                    PythiaLengthToCm(mpx[0] + fPythia->event[0].xProd()),
+                    PythiaLengthToCm(mpy[0] + fPythia->event[0].yProd()),
+                    PythiaLengthToCm(mpz[0] + fPythia->event[0].zProd()) +
+                        PythiaLengthToCm(zinter),
+                    -1, true);
       // mpx,mpy,mpz are the vertex coordinates with respect to charm hadron,
       // first particle in Pythia is (system)
     }

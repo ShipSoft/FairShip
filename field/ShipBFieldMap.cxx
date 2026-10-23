@@ -11,6 +11,8 @@
 
 #include "ShipBFieldMap.h"
 
+#include <array>
+#include <cmath>
 #include <fstream>
 #include <iostream>
 
@@ -307,6 +309,14 @@ void ShipBFieldMap::readRootFile() {
                  << mapFileName_;
     }
 
+    const Int_t nEntries = dTree->GetEntries();
+    if (nEntries != N_) {
+      LOG(fatal) << "Expected " << N_ << " field map entries but found "
+                 << nEntries;
+    }
+
+    this->checkRootFileOrdering(dTree);
+
     Float_t Bx, By, Bz;
     // Only enable the field components
     dTree->SetBranchStatus("*", 0);
@@ -317,13 +327,6 @@ void ShipBFieldMap::readRootFile() {
     dTree->SetBranchAddress("Bx", &Bx);
     dTree->SetBranchAddress("By", &By);
     dTree->SetBranchAddress("Bz", &Bz);
-
-    Int_t nEntries = dTree->GetEntries();
-    if (nEntries != N_) {
-      LOG(fatal) << "Expected " << N_ << " field map entries but found "
-                 << nEntries;
-      nEntries = 0;
-    }
 
     fieldMap_->reserve(nEntries);
 
@@ -342,6 +345,77 @@ void ShipBFieldMap::readRootFile() {
   }
 
   theFile->Close();
+}
+
+void ShipBFieldMap::checkRootFileOrdering(TTree* dTree) {
+  // Entry (iX*Ny_ + iY)*Nz_ + iZ has to hold the field at grid node
+  // (iX, iY, iZ). Maps converted with the coordinates stored also carry the
+  // node position, so probe a few entries and check where they land. Nothing
+  // else can catch a permuted map: when Nx == Ny and the x and y ranges agree,
+  // the entry count above still matches and the field is silently mirrored
+  // about the x = y plane.
+  if (!dTree->GetBranch("x") || !dTree->GetBranch("y") ||
+      !dTree->GetBranch("z")) {
+    LOG(warn) << "ShipBFieldMap: " << mapFileName_
+              << " stores no x,y,z branches, so the assumed ascending z,y,x "
+                 "ordering cannot be verified. Convert the map with the node "
+                 "coordinates stored.";
+    return;
+  }
+
+  Float_t x(0.0), y(0.0), z(0.0);
+  dTree->SetBranchStatus("*", 0);
+  dTree->SetBranchStatus("x", 1);
+  dTree->SetBranchStatus("y", 1);
+  dTree->SetBranchStatus("z", 1);
+  dTree->SetBranchAddress("x", &x);
+  dTree->SetBranchAddress("y", &y);
+  dTree->SetBranchAddress("z", &z);
+
+  // The first node, its z, y and x neighbours, and the last node. Between them
+  // these five tell apart every permutation of the three axes.
+  const std::array<Int_t, 5> probes{0, 1, Nz_, Ny_ * Nz_, N_ - 1};
+
+  for (const Int_t entry : probes) {
+    const Int_t iX = entry / (Ny_ * Nz_);
+    const Int_t iY = (entry / Nz_) % Ny_;
+    const Int_t iZ = entry % Nz_;
+
+    dTree->GetEntry(entry);
+
+    // A NaN or infinite coordinate cannot be rounded to a node, so it says
+    // nothing about the ordering and would only produce a misleading report.
+    if (!std::isfinite(x) || !std::isfinite(y) || !std::isfinite(z)) {
+      LOG(fatal) << "ShipBFieldMap: field map " << mapFileName_ << " entry "
+                 << entry << " holds a non-finite coordinate (" << x << ", "
+                 << y << ", " << z << ") cm.";
+      break;
+    }
+
+    // Round to the nearest node rather than compare coordinates directly.
+    // Some maps sit slightly off the nominal grid, by up to an eighth of a
+    // bin, while a permuted ordering is off by tens of bins.
+    const Int_t nodeX = static_cast<Int_t>(std::lround((x - xMin_) / dx_));
+    const Int_t nodeY = static_cast<Int_t>(std::lround((y - yMin_) / dy_));
+    const Int_t nodeZ = static_cast<Int_t>(std::lround((z - zMin_) / dz_));
+
+    if (nodeX != iX || nodeY != iY || nodeZ != iZ) {
+      LOG(fatal) << "ShipBFieldMap: field map " << mapFileName_
+                 << " is not stored in ascending z,y,x coordinate order. "
+                 << "Entry " << entry << " should hold node (" << iX << ", "
+                 << iY << ", " << iZ << ") at (" << xMin_ + iX * dx_ << ", "
+                 << yMin_ + iY * dy_ << ", " << zMin_ + iZ * dz_
+                 << ") cm but holds node (" << nodeX << ", " << nodeY << ", "
+                 << nodeZ << ") at (" << x << ", " << y << ", " << z
+                 << ") cm. Repack it with field/canonicaliseFieldMap.py.";
+      // Reporting every probe adds nothing once the first one has disagreed.
+      break;
+    }
+  }
+
+  // The addresses above are local, so the tree must not keep pointing at them.
+  dTree->ResetBranchAddresses();
+  dTree->SetBranchStatus("*", 1);
 }
 
 void ShipBFieldMap::readTextFile() {
@@ -368,7 +442,8 @@ void ShipBFieldMap::readTextFile() {
     getData >> tmpString >> tmpString >> tmpString;
 
     // The remaining lines contain Bx,By,Bz data values
-    // in ascending z,y,x co-ord order
+    // in ascending z,y,x co-ord order. Unlike the ROOT format the text one
+    // carries no coordinates, so that ordering cannot be verified here.
     fieldMap_->reserve(N_);
 
     Float_t Bx(0.0), By(0.0), Bz(0.0);
@@ -427,6 +502,18 @@ void ShipBFieldMap::setLimits() {
   if (Nx_ < 2 || Ny_ < 2 || Nz_ < 2) {
     LOG(fatal) << "ShipBFieldMap: field map needs at least 2 bins per axis; "
                << "got Nx = " << Nx_ << ", Ny = " << Ny_ << ", Nz = " << Nz_;
+  }
+
+  // The rounding above hides limits that are not a whole number of bins apart.
+  // Left alone, every node beyond the first would sit away from where the
+  // interpolation looks for it.
+  const Float_t tolerance(1e-2);
+  if (fabs((Nx_ - 1) * dx_ - xRange_) > tolerance * dx_ ||
+      fabs((Ny_ - 1) * dy_ - yRange_) > tolerance * dy_ ||
+      fabs((Nz_ - 1) * dz_ - zRange_) > tolerance * dz_) {
+    LOG(fatal) << "ShipBFieldMap: field map extents are not whole multiples of "
+               << "the bin widths: " << xRange_ << " / " << dx_ << ", "
+               << yRange_ << " / " << dy_ << ", " << zRange_ << " / " << dz_;
   }
 
   N_ = Nx_ * Ny_ * Nz_;

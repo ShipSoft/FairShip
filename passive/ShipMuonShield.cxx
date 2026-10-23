@@ -14,6 +14,7 @@
 #include "FairGeoMedia.h"
 #include "FairLogger.h"     /// for FairLogger, MESSAGE_ORIGIN
 #include "FairRuntimeDb.h"  // for FairRuntimeDb
+#include "ShipCavernLayout.h"
 #include "ShipGeoUtil.h"
 #include "ShipUnit.h"
 #include "TFile.h"
@@ -54,8 +55,11 @@ ShipMuonShield::ShipMuonShield(std::vector<double> in_params, Double_t z,
 }
 
 void ShipMuonShield::SetSNDSpace(Bool_t hole, Double_t hole_dx,
-                                 Double_t hole_dy) {
+                                 Double_t hole_dy, Int_t first_magnet,
+                                 Int_t last_magnet) {
   snd_hole = hole;
+  snd_first_magnet = first_magnet;
+  snd_last_magnet = last_magnet;
   snd_hole_dx = hole_dx / 2.;  // since the hole is cut in 2 halves, we need to
                                // divide the width by 2
   snd_hole_dy = hole_dy;
@@ -71,13 +75,13 @@ void ShipMuonShield::CreateArb8(const TString& arbName, TGeoMedium* medium,
 
   LOG(debug) << " Create CreateArb8 of the MS ";
 
-  TString magnLast = Form("Magn%zu", nMagnets - 1);
-  TString magnPrev = Form("Magn%zu", nMagnets - 2);
-
-  bool snd_magnet = (arbName == magnLast + "_MiddleMagL") ||
-                    (arbName == magnLast + "_MiddleMagR") ||
-                    (arbName == magnPrev + "_MiddleMagL") ||
-                    (arbName == magnPrev + "_MiddleMagR");
+  bool snd_magnet = false;
+  for (Int_t i = snd_first_magnet; i >= 0 && i <= snd_last_magnet; ++i) {
+    TString magn = Form("Magn%d", i);
+    if (arbName == magn + "_MiddleMagL" || arbName == magn + "_MiddleMagR") {
+      snd_magnet = true;
+    }
+  }
 
   if (snd_hole && snd_magnet) {
     //
@@ -424,13 +428,18 @@ void ShipMuonShield::ConstructGeometry() {
   Double_t absorber_offset = dZf[0];
   Double_t absorber_half_length = (Z_relf[0]);
 
-  // Absorber
+  // Absorber: iron filling the TCC8 cross-section around the hadron stopper
 
-  [[maybe_unused]] auto abs =
-      new TGeoBBox("absorber", 4.995 * m - 0.002 * m, 3.75 * m,
-                   absorber_half_length - 0.002 * m);
+  using ShipCavernLayout::kTCC8CeilingY;
+  using ShipCavernLayout::kTCC8FloorY;
+  using ShipCavernLayout::kTCC8LeftX;
+  using ShipCavernLayout::kTCC8RightX;
+  [[maybe_unused]] auto abs = new TGeoBBox(
+      "absorber", (kTCC8RightX - kTCC8LeftX) / 2. - 0.002 * m,
+      (kTCC8CeilingY - kTCC8FloorY) / 2., absorber_half_length - 0.002 * m);
   auto* absorber_shift =
-      new TGeoTranslation("absorber_shift", 1.435 * m, 2.05 * m, 0);
+      new TGeoTranslation("absorber_shift", (kTCC8RightX + kTCC8LeftX) / 2.,
+                          (kTCC8CeilingY + kTCC8FloorY) / 2., 0);
   absorber_shift->RegisterYourself();
 
   const std::vector<TString> absorber_magnets = {"MagnAbsorb"};

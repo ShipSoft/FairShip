@@ -1,0 +1,280 @@
+// SPDX-License-Identifier: LGPL-3.0-or-later
+// SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP
+// Collaboration
+
+#include "CaloScoringPlanePID.h"
+
+#include <algorithm>
+#include <array>
+#include <cmath>
+#include <cstdlib>
+#include <map>
+#include <sstream>
+#include <stdexcept>
+#include <string>
+#include <utility>
+#include <vector>
+
+#include "CaloScoringPlanePoint.h"
+#include "FairLogger.h"
+#include "TDatabasePDG.h"
+#include "TParticlePDG.h"
+#include "TRandom.h"
+
+namespace {
+
+constexpr Double_t kRowSumTolerance = 1e-6;
+
+[[noreturn]] void Invalid(const std::string& what) {
+  throw std::invalid_argument("CaloScoringPlanePID::Set: " + what);
+}
+
+// PDG Monte Carlo numbering scheme: mesons and baryons have a non-zero quark
+// digit n_q2 (hundreds). Codes >= 9900000 are generator-specific or BSM
+// (e.g. HNL 9900015), codes >= 1e9 are nuclei.
+bool IsHadronCode(Int_t pdg) {
+  const Int_t a = std::abs(pdg);
+  if (a >= 9900000) return false;
+  return (a / 100) % 10 != 0;
+}
+
+using Species = CaloScoringPlanePID::Species;
+using Row = std::array<Double_t, CaloScoringPlanePID::kNSpecies>;
+
+void RequireFinite(Double_t energy) {
+  if (!std::isfinite(energy)) {
+    std::ostringstream os;
+    os << "CaloScoringPlanePID: energy must be finite, not " << energy;
+    throw std::invalid_argument(os.str());
+  }
+}
+
+// The only outcome of a matrix row, or kUnknown if more than one is possible
+// and a number has to be drawn.
+Species OnlyOutcome(const Row& row) {
+  Species only = CaloScoringPlanePID::kUnknown;
+  for (Int_t j = 0; j < CaloScoringPlanePID::kNSpecies; ++j) {
+    if (row[j] <= 0.) continue;
+    if (only != CaloScoringPlanePID::kUnknown)
+      return CaloScoringPlanePID::kUnknown;
+    only = static_cast<Species>(j);
+  }
+  return only;
+}
+
+// Outcome of the row of true species s for the uniform number u.
+Species Draw(const Row& row, Species s, Double_t u) {
+  double cumulative = 0.;
+  Int_t last = s;
+  for (Int_t j = 0; j < CaloScoringPlanePID::kNSpecies; ++j) {
+    const double p = row[j];
+    if (p <= 0.) continue;
+    last = j;
+    cumulative += p;
+    if (u < cumulative) return static_cast<Species>(j);
+  }
+  // u at (or, through rounding, above) the row total: last non-empty outcome.
+  return static_cast<Species>(last);
+}
+
+}  // namespace
+
+CaloScoringPlanePID::CaloScoringPlanePID() { SetIdentity(); }
+
+void CaloScoringPlanePID::SetIdentity() {
+  fEnergies = {1.0};
+  fMatrices.assign(9, 0.);
+  for (Int_t i = 0; i < kNSpecies; ++i) fMatrices[3 * i + i] = 1.;
+  fOverrides.clear();
+  fLogInterpolation = kFALSE;
+}
+
+void CaloScoringPlanePID::Set(const std::vector<Double_t>& energies,
+                              const std::vector<Double_t>& matrices,
+                              const std::map<Int_t, Int_t>& overrides,
+                              Bool_t logInterpolation) {
+  // Validate everything before changing the model, so that a rejected model
+  // leaves the previous one in place.
+  const size_t n = energies.size();
+  if (n == 0) Invalid("no energy points");
+  if (matrices.size() != 9 * n) {
+    Invalid("expected " + std::to_string(9 * n) +
+            " matrix values (9 per energy point), got " +
+            std::to_string(matrices.size()));
+  }
+  for (size_t k = 0; k < n; ++k) {
+    std::ostringstream where;
+    where << "energy point " << k << " (" << energies[k] << " GeV)";
+    if (!std::isfinite(energies[k])) Invalid(where.str() + ": not finite");
+    if (k > 0 && energies[k] <= energies[k - 1]) {
+      Invalid(where.str() + ": energies must be strictly increasing");
+    }
+    if (logInterpolation && energies[k] <= 0.) {
+      Invalid(where.str() + ": log interpolation needs positive energies");
+    }
+    for (Int_t i = 0; i < kNSpecies; ++i) {
+      const std::string row = where.str() + ", true " + SpeciesName(i) + " row";
+      double sum = 0.;
+      for (Int_t j = 0; j < kNSpecies; ++j) {
+        const double x = matrices[9 * k + static_cast<size_t>(3 * i + j)];
+        if (!std::isfinite(x)) Invalid(row + ": entry not finite");
+        if (x < 0.) Invalid(row + ": negative entry");
+        sum += x;
+      }
+      if (std::fabs(sum - 1.) > kRowSumTolerance) {
+        std::ostringstream os;
+        os << row << " sums to " << sum << ", expected 1";
+        Invalid(os.str());
+      }
+    }
+  }
+  std::map<Int_t, Int_t> byAbsPdg;
+  for (const auto& [pdg, species] : overrides) {
+    if (species < kUnknown || species >= kNSpecies) {
+      Invalid("override for PDG code " + std::to_string(pdg) + ": species " +
+              std::to_string(species) +
+              " is not -1 (unknown), 0 (electron), 1 (hadron) or 2 (muon)");
+    }
+    const auto [it, inserted] = byAbsPdg.emplace(std::abs(pdg), species);
+    if (!inserted && it->second != species) {
+      Invalid("conflicting overrides for |PDG code| " +
+              std::to_string(std::abs(pdg)));
+    }
+  }
+  fEnergies = energies;
+  fMatrices = matrices;
+  fOverrides = std::move(byAbsPdg);
+  fLogInterpolation = logInterpolation;
+}
+
+CaloScoringPlanePID::Species CaloScoringPlanePID::TrueSpecies(Int_t pdg) const {
+  const Int_t a = std::abs(pdg);
+  if (auto it = fOverrides.find(a); it != fOverrides.end()) {
+    return static_cast<Species>(it->second);
+  }
+  if (a == 11) return kElectron;
+  if (a == 13) return kMuon;
+  if (IsHadronCode(a)) return kHadron;
+  return kUnknown;
+}
+
+CaloScoringPlanePID::Row CaloScoringPlanePID::InterpolatedRow(
+    Double_t energy, Int_t trueSpecies) const {
+  // A NaN would pass both clamps below and make upper_bound return end().
+  RequireFinite(energy);
+  Row row{};
+  const auto rowAt = [&](size_t k) {
+    for (Int_t j = 0; j < kNSpecies; ++j) row[j] = At(k, trueSpecies, j);
+    return row;
+  };
+  const size_t n = fEnergies.size();
+  if (n == 1 || energy <= fEnergies.front()) return rowAt(0);
+  if (energy >= fEnergies.back()) return rowAt(n - 1);
+  const auto hi = static_cast<size_t>(
+      std::upper_bound(fEnergies.begin(), fEnergies.end(), energy) -
+      fEnergies.begin());
+  const size_t lo = hi - 1;
+  const double w =
+      fLogInterpolation
+          ? std::log(energy / fEnergies[lo]) /
+                std::log(fEnergies[hi] / fEnergies[lo])
+          : (energy - fEnergies[lo]) / (fEnergies[hi] - fEnergies[lo]);
+  for (Int_t j = 0; j < kNSpecies; ++j) {
+    row[j] = (1. - w) * At(lo, trueSpecies, j) + w * At(hi, trueSpecies, j);
+  }
+  return row;
+}
+
+std::vector<Double_t> CaloScoringPlanePID::Matrix(Double_t energy) const {
+  std::vector<Double_t> m(9);
+  for (Int_t i = 0; i < kNSpecies; ++i) {
+    const Row row = InterpolatedRow(energy, i);
+    std::copy(row.begin(), row.end(), m.begin() + 3L * i);
+  }
+  return m;
+}
+
+Double_t CaloScoringPlanePID::Probability(Species trueSpecies,
+                                          Species recoSpecies,
+                                          Double_t energy) const {
+  for (const Int_t s :
+       {static_cast<Int_t>(trueSpecies), static_cast<Int_t>(recoSpecies)}) {
+    if (s < kUnknown || s >= kNSpecies) {
+      throw std::out_of_range("CaloScoringPlanePID: species " +
+                              std::to_string(s) + " out of range");
+    }
+  }
+  RequireFinite(energy);
+  if (trueSpecies == kUnknown) return recoSpecies == kUnknown ? 1. : 0.;
+  if (recoSpecies == kUnknown) return 0.;
+  return InterpolatedRow(energy, trueSpecies)[recoSpecies];
+}
+
+CaloScoringPlanePID::Species CaloScoringPlanePID::Identify(Int_t pdg,
+                                                           Double_t energy,
+                                                           Double_t u) const {
+  const Species s = TrueSpecies(pdg);
+  if (s == kUnknown || !std::isfinite(energy)) return kUnknown;
+  return Draw(InterpolatedRow(energy, s), s, u);
+}
+
+CaloScoringPlanePID::Species CaloScoringPlanePID::Identify(Int_t pdg,
+                                                           Double_t energy,
+                                                           TRandom& rng) const {
+  const Species s = TrueSpecies(pdg);
+  if (s == kUnknown || !std::isfinite(energy)) return kUnknown;
+  const Row row = InterpolatedRow(energy, s);
+  // Draw only when the outcome can vary, so that a fixed outcome leaves the
+  // generator's sequence untouched.
+  if (const Species only = OnlyOutcome(row); only != kUnknown) return only;
+  return Draw(row, s, rng.Rndm());
+}
+
+CaloScoringPlanePID::Species CaloScoringPlanePID::Identify(
+    const CaloScoringPlanePoint& point, TRandom& rng) const {
+  // Skip the energy (a TDatabasePDG lookup) for photons, nuclei, ...
+  if (TrueSpecies(point.PdgCode()) == kUnknown) return kUnknown;
+  return Identify(point.PdgCode(), Energy(point), rng);
+}
+
+Double_t CaloScoringPlanePID::Energy(const CaloScoringPlanePoint& point) {
+  const double p2 = point.GetPx() * point.GetPx() +
+                    point.GetPy() * point.GetPy() +
+                    point.GetPz() * point.GetPz();
+  double mass = 0.;
+  if (const TParticlePDG* particle =
+          TDatabasePDG::Instance()->GetParticle(point.PdgCode())) {
+    mass = particle->Mass();
+  }
+  return std::sqrt(p2 + mass * mass);
+}
+
+const char* CaloScoringPlanePID::SpeciesName(Int_t species) {
+  switch (species) {
+    case kElectron:
+      return "electron";
+    case kHadron:
+      return "hadron";
+    case kMuon:
+      return "muon";
+    default:
+      return "unknown";
+  }
+}
+
+void CaloScoringPlanePID::Print() const {
+  LOG(info) << "CaloScoringPlanePID: " << fEnergies.size()
+            << " energy point(s), " << (fLogInterpolation ? "log" : "linear")
+            << " interpolation; rows = true, columns = identified "
+               "(electron, hadron, muon)";
+  for (size_t k = 0; k < fEnergies.size(); ++k) {
+    for (Int_t i = 0; i < kNSpecies; ++i) {
+      LOG(info) << "  E = " << fEnergies[k] << " GeV  " << SpeciesName(i)
+                << ": " << At(k, i, 0) << " " << At(k, i, 1) << " "
+                << At(k, i, 2);
+    }
+  }
+  for (const auto& [pdg, s] : fOverrides) {
+    LOG(info) << "  override |pdg| " << pdg << " -> " << SpeciesName(s);
+  }
+}

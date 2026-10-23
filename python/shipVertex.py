@@ -373,10 +373,8 @@ class Task:
                     doca = (delta - d1u * delta.Dot(d1u)).Mag()
 
                 # fixme: mass from track reconstraction needed
-                p1 = self.PDG.GetParticle(PosDirCharge[t1]["pdgCode"])
-                p2 = self.PDG.GetParticle(PosDirCharge[t2]["pdgCode"])
-                assert p1 is not None, f"Unknown PDG: {PosDirCharge[t1]['pdgCode']}"
-                assert p2 is not None, f"Unknown PDG: {PosDirCharge[t2]['pdgCode']}"
+                p1 = ut.get_particle(PosDirCharge[t1]["pdgCode"])
+                p2 = ut.get_particle(PosDirCharge[t2]["pdgCode"])
                 m1 = p1.Mass()
                 m2 = p2.Mass()
 

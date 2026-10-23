@@ -351,7 +351,7 @@ for f in os.listdir(testdir):
         sGeo = fgeo.Get("FAIRGeom")
         inputFile = f.replace("geofile_full", "ship")
         break
-if fgeo is None or sGeo is None or inputFile is None:
+if fgeo is None or not sGeo or inputFile is None:
     raise RuntimeError("No geofile_full found in " + testdir)
 # try to extract from input file name
 tmp = inputFile.split(".")
@@ -915,8 +915,7 @@ def makePlots(nstations: int) -> None:
             pid = hid.GetBinCenter(k + 1)
             if ncont > 0:
                 temp = int(abs(pid) + 0.5) * int(pid / abs(pid))
-                _p = PDG.GetParticle(temp)
-                assert _p is not None, f"Unknown PDG: {temp}"
+                _p = ut.get_particle(temp)
                 nm = _p.GetName()
                 print(f"{nm} :{ncont:5.2g}")
         hid = h[histlist[i] + "_mu_id"]
@@ -925,8 +924,7 @@ def makePlots(nstations: int) -> None:
             pid = hid.GetBinCenter(k + 1)
             if ncont > 0:
                 temp = int(abs(pid) + 0.5) * int(pid / abs(pid))
-                _p = PDG.GetParticle(temp)
-                assert _p is not None, f"Unknown PDG: {temp}"
+                _p = ut.get_particle(temp)
                 nm = _p.GetName()
                 print(f"{nm} :{ncont:5.2g}")
         #
@@ -1364,8 +1362,7 @@ def depEnergy(sTree) -> None:
         for ahit in sTree.strawtubesPoint:
             dE = ahit.GetEnergyLoss() / u.keV
             ahit.Momentum(mom)
-            pa = PDG.GetParticle(ahit.PdgCode())
-            assert pa is not None, f"Unknown PDG: {ahit.PdgCode()}"
+            pa = ut.get_particle(ahit.PdgCode())
             mpa = pa.Mass()
             E = ROOT.TMath.Sqrt(mom.Mag2() + mpa**2)
             ekin = E - mpa

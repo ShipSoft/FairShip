@@ -7,6 +7,8 @@
 #include <algorithm>
 #include <cmath>
 #include <unordered_map>
+#include <utility>
+#include <vector>
 
 #include "BeamSmearingUtils.h"
 #include "FairPrimaryGenerator.h"
@@ -36,7 +38,8 @@ MuonBackGenerator::MuonBackGenerator()
       MCTrack_vec(nullptr),
       vetoPoints_vec(nullptr),
       fUseSTL(false),
-      fTree(nullptr) {
+      fTree(nullptr),
+      fStartFromOrigin(kFALSE) {
   followMuons = true;
 }
 // -------------------------------------------------------------------------
@@ -317,6 +320,48 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
     Int_t theSeed = fn + fSameSeed * fNevents;
     LOGF(debug, "Seed: %d", theSeed);
     gRandom->SetSeed(theSeed);
+  }
+  if (id == -1 && !fStartFromOrigin) {
+    // run_fixedTarget input: the scored tracks crossed the scoring plane once
+    // already, so they continue from where they entered it. Starting them at
+    // their production vertex would simulate the path to the plane a second
+    // time and count the probability of reaching it twice. Beam smearing and
+    // painting were applied in the first stage, and the absorber field breaks
+    // the symmetry a phi rotation would need, so neither is applied here.
+    if (fPhiRandomize) {
+      LOG(fatal) << "MuonBackGenerator: phi randomisation is not supported "
+                    "when starting at the scoring plane";
+    }
+    // The input event is kept as it is, untracked, as history.
+    for (int i = 0; i < getMCTrackSize(); i++) {
+      auto* track = getMCTrack(i);
+      IncrementCounter("transported_tracks");
+      cpg->AddTrack(track->GetPdgCode(), track->GetPx(), track->GetPy(),
+                    track->GetPz(), track->GetStartX(), track->GetStartY(),
+                    track->GetStartZ(), track->GetMotherId(), false,
+                    track->GetEnergy(),
+                    track->GetStartT() / 1E9,  // convert back from ns to sec
+                    track->GetWeight(), (TMCProcess)track->GetProcID());
+    }
+    // Each scored track is then added again as it entered the plane, as a
+    // daughter of its origin entry, and only that copy is tracked. Sorted, so
+    // that the output order does not depend on the hash map.
+    std::vector<std::pair<int, int>> scored(muList.begin(), muList.end());
+    std::sort(scored.begin(), scored.end());
+    for (const auto& [i, hit] : scored) {
+      auto* track = getMCTrack(i);
+      auto* v = getVetoPoint(hit);
+      const Double_t m = track->GetMass();
+      e = TMath::Sqrt(v->GetPx() * v->GetPx() + v->GetPy() * v->GetPy() +
+                      v->GetPz() * v->GetPz() + m * m);
+      IncrementCounter("transported_tracks");
+      IncrementCounter("plane_copies");
+      cpg->AddTrack(track->GetPdgCode(), v->GetPx(), v->GetPy(), v->GetPz(),
+                    v->GetX(), v->GetY(), v->GetZ(), i, true, e,
+                    v->GetTime() / 1E9,  // convert back from ns to sec
+                    track->GetWeight(), kPTransportation);
+    }
+    return kTRUE;
   }
   auto [dx, dy] = CalculateBeamOffset(fsmearBeam, fPaintBeam);
   if (id == -1) {

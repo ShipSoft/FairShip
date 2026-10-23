@@ -14,5 +14,7 @@
 #pragma link C++ class std::vector<vetoPoint>+;
 #pragma link C++ class vetoHit+;
 #pragma link C++ class vetoHitOnTrack+;
+#pragma link C++ class std::vector<vetoHit>+;
+#pragma link C++ class std::vector<vetoHitOnTrack>+;
 
 #endif

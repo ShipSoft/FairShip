@@ -10,8 +10,10 @@ import ROOT
 import shipRoot_conf
 import shipunit as u
 from heavyFlavourScaling import (
+    check_input_flavour,
     check_run_type_override,
     derive_cross_sections,
+    file_is_beauty,
     format_summary,
 )
 
@@ -95,10 +97,53 @@ ap.add_argument(
     "--kaon-pion-splits",
     type=int,
     default=0,
-    help="splitting factor for kaons and pions, in order to boost the number of muons stemming from their decays",
+    help="splitting factor for kaons and pions when they decay, in order to boost the number of muons stemming from their decays",
 )
 ap.add_argument(
-    "--multiple-kpi-splits", action="store_true", help="split kaons and pions multiple times along the track path"
+    "--intermediate-kaon-pion-splits",
+    type=int,
+    default=2,
+    help="EXPERTS ONLY: intermediate splitting factor for kaons and pions for each GEANT4 step before they decay, "
+    "in order to boost the number of muons stemming from forced decays. "
+    "EXPERTS ONLY: risk of very large memory usage if the number is set without proper testing",
+)
+ap.add_argument(
+    "--kaon-pion-lifetime-factor",
+    type=float,
+    default=1.0,
+    help="VALIDATION ONLY: scale the lifetimes of K+-, pi+- in Geant4 by this factor. Shorter lifetimes make "
+    "decays in flight common, so that split and unsplit samples can be compared at the level of single decays "
+    "with few events. The output is not physical for any factor other than 1",
+)
+ap.add_argument(
+    "--store-all-tracks",
+    action="store_true",
+    help="VALIDATION ONLY: store every track and every event, not only tracks with hits in a sensitive plane "
+    "(and their ancestors) in events with such hits. Needed to compare split and unsplit samples at the level of "
+    "the kaon/pion decays themselves. Output files are about 100 times larger with --multiple-kpi-splits",
+)
+ap.add_argument(
+    "--max-split-buffer",
+    type=int,
+    default=25000,
+    help="EXPERTS ONLY: maximum number of split clones buffered per track before further per-step splitting is "
+    "skipped. Memory safety valve for --multiple-kpi-splits; lowering it reduces the statistical boost but "
+    "conserves weight. With the default --max-event-size, that cap is reached first (at about 10k clones)",
+)
+ap.add_argument(
+    "--max-event-size",
+    type=int,
+    default=5_000_000,
+    help="EXPERTS ONLY: cap on the projected number of particles in the event, counting "
+    "exitHadronAbsorber::kShowerSafetyFactor (500) for each pending split clone, beyond which further per-step "
+    "splitting is skipped. Memory safety valve for "
+    "--multiple-kpi-splits; lowering it reduces the statistical boost but conserves weight",
+)
+
+ap.add_argument(
+    "--multiple-kpi-splits",
+    action="store_true",
+    help="split kaons and pions multiple times along the track path",
 )
 
 ap.add_argument("-C", "--charm", action=argparse.BooleanOptionalAction, default=False, help="generate charm decays")
@@ -179,8 +224,10 @@ ap.add_argument(
 )
 ap.add_argument(
     "--AddMuonShieldField",
-    help="Whether or not to add the muon shield magnetic field. Default set to False.",
-    default=False,
+    help="Whether or not to add the muon shield magnetic field, including the field of the hadron absorber. "
+    "Default set to True: MuonBack continues the scored tracks from the scoring plane, so the field up to the "
+    "plane has to be simulated here.",
+    default=True,
     action=argparse.BooleanOptionalAction,
 )
 ap.add_argument(
@@ -233,11 +280,36 @@ if args.debug:
 
 if args.kaon_pion_splits < 0:
     ap.error("--kaon-pion-splits must be >= 0")
-if args.multiple_kpi_splits and args.kaon_pion_splits == 0:
-    ap.error("--multiple-kpi-splits requires --kaon-pion-splits > 0")
 if args.pythia8_tune != "default" and (args.charm or args.beauty or args.G4only):
     ap.error("--pythia8-tune only affects the Pythia8 primary interaction, which --charm/--beauty/--G4only do not run")
+if args.multiple_kpi_splits and (args.kaon_pion_splits < 1 or args.intermediate_kaon_pion_splits < 1):
+    ap.error("--multiple-kpi-splits requires --kaon-pion-splits and --intermediate-kaon-pion-splits to be positive")
+if not args.kaon_pion_lifetime_factor > 0:
+    ap.error("--kaon-pion-lifetime-factor must be > 0")
+if args.max_split_buffer < 1:
+    ap.error("--max-split-buffer must be >= 1")
+if args.max_event_size < 1 or args.max_event_size > 2_147_483_647:
+    ap.error("--max-event-size must be >= 1 and <= 2_147_483_647")
 
+if args.max_split_buffer < args.kaon_pion_splits:
+    ap.error(
+        "--max-split-buffer must be >= --kaon-pion-splits: the clones buffered when the parent "
+        "decays have to fit under the cap"
+    )
+if args.multiple_kpi_splits:
+    # A per-step split has to reserve room for its own clones and for the endpoint clones of the
+    # same track under both caps (see exitHadronAbsorber::ProcessHits); if even the first one
+    # cannot, per-step splitting would silently never happen.
+    clones_per_split = args.kaon_pion_splits + args.intermediate_kaon_pion_splits
+    if args.max_split_buffer < clones_per_split:
+        ap.error("--max-split-buffer must be >= --kaon-pion-splits + --intermediate-kaon-pion-splits")
+    shower_safety_factor = ROOT.exitHadronAbsorber.kShowerSafetyFactor
+    if args.max_event_size < shower_safety_factor * clones_per_split:
+        ap.error(
+            f"--max-event-size must be >= {shower_safety_factor} * "
+            "(--kaon-pion-splits + --intermediate-kaon-pion-splits), "
+            "the projected event size of a single per-step split"
+        )
 
 if args.G4only:
     args.charm = False
@@ -394,7 +466,7 @@ if args.AddMuonShield or args.AddHadronAbsorberOnly:
     MuonShield = ROOT.ShipMuonShield(
         in_params=list(ship_geo.muShield.params),
         z=ship_geo.muShield.z,
-        WithConstShieldField=True,
+        WithConstShieldField=not args.AddMuonShieldField,
         SC_key=ship_geo.SC_mag,
     )
     # MuonShield.SetSupports(False) # otherwise overlap with sensitive Plane
@@ -403,9 +475,12 @@ if args.AddMuonShield or args.AddHadronAbsorberOnly:
 
 
 sensPlaneHA = ROOT.exitHadronAbsorber()
-sensPlaneHA.SetNSplits(args.kaon_pion_splits)  # type: ignore[missing-attribute]
+sensPlaneHA.SetNSplits(args.kaon_pion_splits)
+sensPlaneHA.SetMaxSplitBuffer(args.max_split_buffer)
+sensPlaneHA.SetMaxEventSize(args.max_event_size)
 if args.multiple_kpi_splits:
-    sensPlaneHA.SetSplitMultipleTimes()  # type: ignore[missing-attribute]
+    sensPlaneHA.SetSplitMultipleTimes()
+    sensPlaneHA.SetIntermediateNSplits(args.intermediate_kaon_pion_splits)
 sensPlaneHA.SetEnergyCut(args.ecut * u.GeV)
 sensPlaneHA.SetVetoPointName("PlaneHA")
 
@@ -432,12 +507,17 @@ if args.FourDP:  # in case a ntuple should be filled with pi0,etas,omega
     if sensPlaneT is not None:
         sensPlaneT.SetOpt4DP()
 
-run.AddModule(sensPlaneHA)
-ROOT.SetOwnership(sensPlaneHA, False)  # C++ FairRunSim takes ownership
-
-if args.AddCylindricalSensPlane:
+# Register every other exitHadronAbsorber plane before sensPlaneHA, which owns the kaon/pion split buffer:
+# FairMCApplication calls PreTrack() in registration order, and sensPlaneHA hands its buffered clones only
+# to a track that no earlier plane has stopped. A plane registered after it could stop the carrier and lose
+# the clones. Registering first also keeps the plane's volume its own: the first module to register a volume
+# owns it, and sensPlaneHA registers everything below the target for per-step splitting.
+if sensPlaneT is not None:
     run.AddModule(sensPlaneT)
     ROOT.SetOwnership(sensPlaneT, False)  # C++ FairRunSim takes ownership
+
+run.AddModule(sensPlaneHA)
+ROOT.SetOwnership(sensPlaneHA, False)  # C++ FairRunSim takes ownership
 
 # -----Create PrimaryGenerator--------------------------------------
 primGen = ROOT.FairPrimaryGenerator()
@@ -473,12 +553,27 @@ P8gen.SetSeed(seed)
 #        print '            : c chicc= ccbar over mbias cross section'
 if args.charm or args.beauty:
     check_run_type_override(args.beauty, args.chicc, args.chibb)
-    cs = derive_cross_sections(args.target_composition, args.A, args.chicc, args.chibb)
+    # cascade files written by makeCascadePythia8.py carry the cross section they were made with;
+    # the flavour is taken from the file, as FixedTargetGenerator does
+    with ROOT.TFile.Open(charmInputFile) as _fin:
+        sigma_QQ = _fin.Get("sigma_QQ").GetVal() if _fin.Get("sigma_QQ") else None
+        _ntuple = _fin.Get("pythia6")
+        _ntuple.GetEntry(0)
+        input_is_beauty = file_is_beauty(_ntuple.M)
+        del _ntuple  # owned by the file, which is closed below
+    check_input_flavour(args.beauty, input_is_beauty)
+    if sigma_QQ:
+        flavour = "beauty" if input_is_beauty else "charm"
+        print(
+            f"Input file {flavour} cross section per nucleon: {1e3 * sigma_QQ:.3g} ub, used to scale chi{flavour[0] * 2}"
+        )
+    cs = derive_cross_sections(args.target_composition, args.A, args.chicc, args.chibb, sigma_QQ, args.beauty)
     P8gen.SetChicc(cs.chicc)
     P8gen.SetChibb(cs.chibb)
     print(format_summary(cs, None if args.A is not None else args.target_composition))
     print("--- process heavy flavours ---")
-    P8gen.InitForCharmOrBeauty(charmInputFile, args.nev, args.pot, args.nStart)
+    if not P8gen.InitForCharmOrBeauty(charmInputFile, args.nev, args.pot, args.nStart):
+        raise SystemExit(f"Could not use {charmInputFile} as heavy-flavour input, see the error above")
 primGen.AddGenerator(P8gen)
 ROOT.SetOwnership(P8gen, False)  # C++ FairPrimaryGenerator takes ownership
 #
@@ -490,10 +585,29 @@ run.Init()
 
 gMC = ROOT.TVirtualMC.GetMC()
 fStack = gMC.GetStack()
-fStack.SetMinPoints(1)
+# With --store-all-tracks, tracks without hits are kept as well, e.g. all split clones and the kaons and
+# pions that decay without leaving a hit.
+fStack.SetMinPoints(0 if args.store_all_tracks else 1)
 fStack.SetEnergyCut(-1.0)
 if args.kaon_pion_splits > 0:
     fStack.SetSplitting()
+
+if args.kaon_pion_lifetime_factor != 1.0:
+    # G4Decay and the per-step splitting in exitHadronAbsorber both read the lifetime from the Geant4
+    # particle definition, so scaling it there after initialisation changes both consistently.
+    for cls in ("G4KaonPlus", "G4KaonMinus", "G4PionPlus", "G4PionMinus"):
+        ROOT.gROOT.ProcessLine(f'#include "Geant4/{cls}.hh"')
+        ROOT.gROOT.ProcessLine(
+            f"{cls}::Definition()->SetPDGLifeTime("
+            f"{cls}::Definition()->GetPDGLifeTime() * {args.kaon_pion_lifetime_factor!r});"
+        )
+    for pdg in (321, 211):
+        logger.warning(
+            "Lifetime of %d scaled by %g to %.6g ns: validation only, the output is not physical",
+            pdg,
+            args.kaon_pion_lifetime_factor,
+            gMC.ParticleLifeTime(pdg),
+        )
 #
 import AddDiMuonDecayChannelsToG4
 
@@ -579,7 +693,8 @@ nEvents = 0
 for n in range(t.GetEntries()):
     rc = t.GetEvent(n)
     if (
-        (len(t.PlaneHAPoint) > 0)
+        args.store_all_tracks
+        or (len(t.PlaneHAPoint) > 0)
         or (args.AddCylindricalSensPlane and len(t.PlaneTPoint) > 0)
         or (args.AddPostTargetSensPlane and len(t.PlanePostTPoint) > 0)
     ):

@@ -38,10 +38,12 @@ void Config() {
   /// stackPopper is required when adding secondaries, e.g. when splitting the
   /// pions and kaons
   if (fNsplits > 0) controls += "+stackPopper";
+  /// ShipRunConfiguration is a TG4RunConfiguration whose stepping action
+  /// passes every step to the per-step kaon/pion splitting.
   TG4RunConfiguration* runConfiguration =
-      new TG4RunConfiguration("geomRoot", "FTFP_BERT_HP_EMZ", controls.c_str(),
-                              false,   // specialStacking (default)
-                              false);  // disable MT
+      new ShipRunConfiguration("geomRoot", "FTFP_BERT_HP_EMZ", controls.c_str(),
+                               false,   // specialStacking (default)
+                               false);  // disable MT
 
   /// Create the G4 VMC
   TGeant4* geant4 =

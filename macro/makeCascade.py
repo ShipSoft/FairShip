@@ -128,8 +128,7 @@ tp = ROOT.tPythia6Generator()
 
 # Pythia6 can only accept names below in pyinit, hence reset PDG table:
 for _pdg_code, _name in [(2212, "p+"), (-2212, "pbar-"), (2112, "n0"), (-2112, "nbar0"), (130, "KL0"), (310, "KS0")]:
-    _p = PDG.GetParticle(_pdg_code)
-    assert _p is not None, f"Standard PDG code missing: {_pdg_code}"
+    _p = ut.get_particle(_pdg_code)
     _p.SetName(_name)
 # lower lowest sqrt(s) allowed for generating events
 myPythia.SetPARP(2, 2.0)
@@ -354,8 +353,7 @@ for iev in range(args.nevgen):
                 myPythia.SetP(2, k, 0.0)
             # new particle/momentum, init again: signal run.
             myPythia.SetMSEL(args.mselcb)  # set forced ccbar or bbbar generation
-            _beam = PDG.GetParticle(stack[nstack][0])
-            assert _beam is not None, f"Unknown PDG: {stack[nstack][0]}"
+            _beam = ut.get_particle(stack[nstack][0])
             myPythia.Initialize("3MOM", _beam.GetName(), target[idpn], 0.0)
             myPythia.GenerateEvent()
             # look for the signal particles
@@ -430,8 +428,7 @@ for iev in range(args.nevgen):
         idpn = 0
         if random.random() > fracp:
             idpn = 1
-        _beam = PDG.GetParticle(stack[nstack][0])
-        assert _beam is not None, f"Unknown PDG: {stack[nstack][0]}"
+        _beam = ut.get_particle(stack[nstack][0])
         myPythia.Initialize("3MOM", _beam.GetName(), target[idpn], 0.0)
         myPythia.GenerateEvent()
         # remove used particle from the stack, before adding new

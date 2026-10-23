@@ -23,7 +23,8 @@ shield_db = {
         "params": [
             [0.0, 115.0, 40.0, 40.0, 119.0, 119.0, 61.5, 61.5, 1.5375, 1.5375, 50.0, 50.0, 0.0, 0.0, 2.05],
             [15, 150, 62, 62, 11, 11, 12, 12, 1, 1.0, 69, 69, 0, 0, 1.87],
-            [15, 225, 70, 70, 12, 12, 9, 9, 1, 1.0, 77, 77, 0, 0, 1.865],
+            # 0.3 m gap between the M1 and M2 yokes (integration layout 2026-0.1)
+            [30, 225, 70, 70, 12, 12, 9, 9, 1, 1.0, 77, 77, 0, 0, 1.865],
             [16, 225, 64, 64, 14, 14, 8, 8, 1.3, 1.3, 71, 71, 0, 0, 1.92],
             [15, 225, 42, 42, 13, 13, 8, 8, 2.6, 2.6, 47, 47, 0, 0, 1.89],
             [16, 131, 40, 40, 30, 30, 0, 0, 2.25, 2.25, 22, 22, 0, 0, 0],
@@ -142,11 +143,96 @@ shield_db = {
 }
 
 
+def set_ecn3_cavern(c) -> None:
+    """Set in c.cave the ECN3 hall cross-section used to place the UBT and its scoring planes."""
+    # ECN3 hall cross-section, used to place the UBT and its scoring planes:
+    # the inner concrete surfaces of the CAD model, as in
+    # passive/ShipCavernLayout.h. They are copied so that geometry_config does
+    # not need ROOT; tests/test_cavern_layout.py compares them with the
+    # compiled constants. Beam axis at x = y = 0.
+    c.cave.ECN3LeftX = -4.566 * u.m
+    c.cave.ECN3RightX = 11.434 * u.m
+    c.cave.ECN3FloorY = -3.364 * u.m
+    # Side wall closest to the beam axis: the -x wall at x = -4.566 m
+    c.cave.ECN3WallDistance = min(-c.cave.ECN3LeftX, c.cave.ECN3RightX)
+
+
+def set_upstream_tagger(c) -> None:
+    """Set the UBT (c.UpstreamTagger) and its scoring planes (c.UpstreamTaggerScoringPlane).
+
+    Needs c.cave (with the ECN3 cavern), c.decayVolume.z0, c.muShield.z and c.muShield.length.
+    """
+    # Upstream Tagger: polystyrene scintillator plane, split into regions
+    # generated on the box below from the rule in
+    # geometry/UpstreamTagger_config.yaml. BoxZ is the space reserved by the
+    # integration layout; the active thickness depends on the tile size.
+    c.UpstreamTagger = AttrDict()
+    # The plane spans x in [-1.7, 1.7] m and y from FloorMargin above the ECN3
+    # floor up to Top, covering the decay vessel entrance. Its edges must lie
+    # on the edges of the 40 mm tiles (x, y = 2 + 4k cm).
+    c.UpstreamTagger.Top = 1.7 * u.m
+    # 2.4 cm above the ECN3 floor at -336.4 cm, so that the plane ends on a
+    # 40 mm tile edge (y = 2 + 4k cm), at -334 cm
+    c.UpstreamTagger.FloorMargin = 2.4 * u.cm
+    c.UpstreamTagger.BoxX = 3.4 * u.m  # X extent of detector map
+    c.UpstreamTagger.BoxY = c.UpstreamTagger.Top - c.cave.ECN3FloorY - c.UpstreamTagger.FloorMargin  # 5.04 m
+    c.UpstreamTagger.BoxCenterX = 0.0 * u.m
+    c.UpstreamTagger.BoxCenterY = (
+        c.UpstreamTagger.Top + c.cave.ECN3FloorY + c.UpstreamTagger.FloorMargin
+    ) / 2.0  # -0.82 m
+    c.UpstreamTagger.BoxZ = 16.0 * u.cm  # Z dimension (thickness)
+    # Tile thickness for each tile side (cm) of UpstreamTagger_config.yaml:
+    # 20 x 20 mm2 tiles are 5 mm thick, 40 x 40 mm2 tiles 10 mm. These are the
+    # only tile sizes of the UBT: if small_tile_size or large_tile_size in the
+    # YAML is changed to anything other than 2 or 4 cm, the thickness of the
+    # new size has to be added here.
+    c.UpstreamTagger.TileThickness = {2: 0.5 * u.cm, 4: 1.0 * u.cm}
+    # Gap between the back of the UBT envelope and the decay vessel entrance
+    c.UpstreamTagger.DecayVesselGap = 32.0 * u.cm
+    # Centre (z) and front face (z0) of the UBT envelope
+    c.UpstreamTagger.z = c.decayVolume.z0 - c.UpstreamTagger.DecayVesselGap - c.UpstreamTagger.BoxZ / 2.0
+    c.UpstreamTagger.z0 = c.UpstreamTagger.z - c.UpstreamTagger.BoxZ / 2.0
+    c.UpstreamTagger.TimeResolution = 0.3  # Time resolution in ns
+    c.UpstreamTagger.ADCTriggerThreshold = 100
+
+    # Thin vacuum scoring planes. They record every track entering them,
+    # without energy deposit; the point detID is the plane number.
+    c.UpstreamTaggerScoringPlane = AttrDict()
+    c.UpstreamTaggerScoringPlane.Z = 1.0 * u.mm  # thickness
+    # Plane 1, all particles: on the decay vessel entrance, centred on the
+    # beam axis, with y from the ECN3 floor to its mirror image.
+    dv = c.UpstreamTaggerScoringPlane.DecayVessel = AttrDict()
+    dv.X = 4.4 * u.m
+    dv.Y = -2.0 * c.cave.ECN3FloorY  # 6.728 m
+    dv.CenterX = 0.0 * u.m
+    dv.CenterY = 0.0 * u.m
+    dv.z = c.decayVolume.z0 - c.UpstreamTaggerScoringPlane.Z / 2.0
+    dv.MuonsOnly = False
+    # Its points do not keep their tracks in MCTrack (with MCTracksWithHitsOnly,
+    # as in --MuonBack): it sees every soft photon and electron from the
+    # shield and the cavern, which would otherwise all be kept, about 26 % more
+    # MCTracks in a muon-background sample. Points of tracks not kept for
+    # another reason get track ID -2.
+    dv.KeepTracks = False
+    # Plane 2, muons only: ShieldGap downstream of the muon shield. It spans x
+    # between the closest ECN3 side wall and its mirror image, and y from the
+    # ECN3 floor up to Top.
+    ms = c.UpstreamTaggerScoringPlane.MuonShield = AttrDict()
+    ms.Top = 5.2 * u.m
+    ms.ShieldGap = 10.0 * u.cm
+    ms.X = 2.0 * c.cave.ECN3WallDistance  # 9.132 m
+    ms.Y = ms.Top - c.cave.ECN3FloorY  # 8.564 m
+    ms.CenterX = 0.0 * u.m
+    ms.CenterY = (ms.Top + c.cave.ECN3FloorY) / 2.0  # 0.918 m
+    ms.z = c.muShield.z + c.muShield.length + ms.ShieldGap
+    ms.MuonsOnly = True
+    ms.KeepTracks = True  # muons only: their points keep their tracks
+
+
 def create_config(
     DecayVolumeMedium: str = "helium",
     Yheight: float = 6.0,
     strawDesign: int = 10,
-    muShieldGeo=None,
     shieldName: str = "TRY_2025",
     nuTargetPassive: int = 1,
     SND: bool = True,
@@ -160,7 +246,6 @@ def create_config(
         DecayVolumeMedium: Medium in decay volume ("helium" or "vacuums"), default: "helium"
         Yheight: Height of vacuum tank in meters, default: 6.0
         strawDesign: Straw tube design (4=Aluminium frame, 10=steel frame), default: 10
-        muShieldGeo: Muon shield geometry file (for experts), default: None
         shieldName: Name of shield configuration, default: "TRY_2025"
         nuTargetPassive: Target type (0=with active layers, 1=only passive), default: 1
         SND: Enable SND detector, default: True
@@ -206,6 +291,15 @@ def create_config(
     if strawDesign == 10:
         c.cave.floorHeightMuonShield = c.cave.floorHeightTankA  # avoid the gap, for 2018 geometry
     c.cave.floorHeightTankB = 2 * u.m
+    # ECN3 cavern, see passive/ShipCave.cxx
+    c.cave.TCC8_length = 170 * u.m
+    c.cave.ECN3_length = 100.81 * u.m  # step and hall, up to the end wall at 122.18 m
+    c.cave.stair_step_length = 0.82 * u.m
+    # End of the TCC8 floor (integration layout 2026-0.1); the stair step that follows is
+    # centred on the gap between M4 and S5
+    c.cave.z_transition = 21.37 * u.m
+    c.cave.zEnd = c.cave.z_transition + c.cave.ECN3_length  # downstream ECN3 wall
+    set_ecn3_cavern(c)
 
     with open(c.target_yaml) as file:
         targetconfig = yaml.safe_load(file)
@@ -259,8 +353,7 @@ def create_config(
         + 96.1 * u.mm  # Distance between target and proximity shielding
         + 250 * u.mm  # Thickness of proximity shielding
         + 207.5 * u.mm  # Distance between hadron absorber and proximity shielding
-        - 10 * u.cm  # Remove spacing internal to hadron absorber
-    )
+    )  # front face of the magnetised hadron stopper at 2.14 m (integration layout 2026-0.1)
 
     # DEFINITION OF THE MUON SHIELD
     c.muShield = AttrDict()
@@ -302,7 +395,7 @@ def create_config(
 
     # make z coordinates for the decay volume and tracking stations relative to T4z
     # eventually, the only parameter which needs to be changed when the active shielding length changes.
-    c.z = 89.57 * u.m  # absolute position of spectrometer magnet
+    c.z = 89.72 * u.m  # mid-plane of the spectrometer magnet (integration layout 2026-0.1)
     c.decayVolume.z = c.z - 31.450 * u.m  # Relative position of decay vessel centre to spectrometer magnet
     c.decayVolume.z0 = c.decayVolume.z - c.decayVolume.length / 2.0
     veto_yaml = os.path.expandvars(f"$FAIRSHIP/geometry/veto_config_{DecayVolumeMedium}.yaml")
@@ -351,7 +444,7 @@ def create_config(
     c.Bfield.max = 0  # 1.4361*u.kilogauss  # was 1.15 in EOI
     c.Bfield.y = c.Yheight
     c.Bfield.x = 2.4 * u.m
-    c.Bfield.fieldMap = "files/2025_02_12_SHiP_SpectrometerField_ECN3_MgB2.root"
+    c.Bfield.fieldMap = "files/2026_07_02_MainSpectrometerField_V21_2455.root"
     if c.magnetDesign > 3:  # MISIS design
         c.Bfield.YokeWidth = 0.8 * u.m  # full width       200.*cm
         c.Bfield.YokeDepth = 1.4 * u.m  # half length      200 *cm;
@@ -367,64 +460,30 @@ def create_config(
     c.TimeDet.DZ = (c.TimeDet.dzBarRow + c.TimeDet.dzBarCol + c.TimeDet.zBar) / 2
     c.TimeDet.DX = 275 * u.cm
     c.TimeDet.DY = 325 * u.cm
-    c.TimeDet.z = (
-        37.800 * u.m - c.TimeDet.dzBarRow * 3 / 2 + c.decayVolume.z
-    )  # Relative position of first layer of timing detector to decay vessel centre
+    # First bar row, placed so that the front face of the timing detector is 37.87 m
+    # downstream of the decay vessel centre, i.e. at 96.14 m (integration layout 2026-0.1)
+    c.TimeDet.z = 37.870 * u.m + c.decayVolume.z + c.TimeDet.zBar / 2
 
-    c.HcalOption = -1
-    c.EcalOption = 2
-
-    c.SplitCal = AttrDict()
-    c.SplitCal.ZStart = 38.450 * u.m + c.decayVolume.z  # Relative start z of split cal to decay vessel centre
-    c.SplitCal.XMax = 4 * u.m / 2  # half length
-    c.SplitCal.YMax = 6 * u.m / 2  # half length
-    c.SplitCal.Empty = 0 * u.cm
-    c.SplitCal.BigGap = 100 * u.cm
-    c.SplitCal.ActiveECALThickness = 0.56 * u.cm
-    c.SplitCal.FilterECALThickness = 0.28 * u.cm  #  0.56*u.cm   1.757*u.cm
-    c.SplitCal.FilterECALThickness_first = 0.28 * u.cm
-    c.SplitCal.ActiveHCALThickness = 90 * u.cm
-    c.SplitCal.FilterHCALThickness = 90 * u.cm
-    c.SplitCal.nECALSamplings = 50
-    c.SplitCal.nHCALSamplings = 0
-    c.SplitCal.ActiveHCAL = 0
-    c.SplitCal.FilterECALMaterial = 3  # 1=scintillator 2=Iron 3 = lead  4 =Argon
-    c.SplitCal.FilterHCALMaterial = 2
-    c.SplitCal.ActiveECALMaterial = 1
-    c.SplitCal.ActiveHCALMaterial = 1
-    c.SplitCal.ActiveECAL_gas_Thickness = 1.12 * u.cm
-    c.SplitCal.num_precision_layers = 1
-    c.SplitCal.first_precision_layer = 6
-    c.SplitCal.second_precision_layer = 10
-    c.SplitCal.third_precision_layer = 13
-    c.SplitCal.ActiveECAL_gas_gap = 10 * u.cm
-    c.SplitCal.NModulesInX = 2
-    c.SplitCal.NModulesInY = 3
-    c.SplitCal.NStripsPerModule = 50
-    c.SplitCal.StripHalfWidth = c.SplitCal.XMax / (c.SplitCal.NStripsPerModule * c.SplitCal.NModulesInX)
-    c.SplitCal.StripHalfLength = c.SplitCal.YMax / c.SplitCal.NModulesInY
-    c.SplitCal.SplitCalThickness = (
-        (c.SplitCal.FilterECALThickness_first - c.SplitCal.FilterECALThickness)
-        + (c.SplitCal.FilterECALThickness + c.SplitCal.ActiveECALThickness) * c.SplitCal.nECALSamplings
-        + c.SplitCal.BigGap
-    )
-
-    c.MuonStation0 = AttrDict(z=c.SplitCal.ZStart + 10 * u.cm + c.SplitCal.SplitCalThickness)
-
-    c.MuonStation1 = AttrDict(z=c.MuonStation0.z + 1 * u.m)
-    c.MuonStation2 = AttrDict(z=c.MuonStation0.z + 2 * u.m)
-    c.MuonStation3 = AttrDict(z=c.MuonStation0.z + 3 * u.m)
-
-    c.MuonFilter0 = AttrDict(z=c.MuonStation0.z + 50.0 * u.cm)
-    c.MuonFilter1 = AttrDict(z=c.MuonStation0.z + 150.0 * u.cm)
-    c.MuonFilter2 = AttrDict(z=c.MuonStation0.z + 250.0 * u.cm)
-
-    c.Muon = AttrDict()
-    c.Muon.XMax = 250.0 * u.cm
-    c.Muon.YMax = 325.0 * u.cm
-
-    c.Muon.ActiveThickness = 0.5 * u.cm
-    c.Muon.FilterThickness = 30.0 * u.cm
+    # CaloScoringPlane: ideal (vacuum) plane where the calorimeter entrance window sits.
+    # Every track entering it is scored.
+    c.CaloScoringPlane = AttrDict()
+    c.CaloScoringPlane.DX = 4 * u.m  # full width  (former SplitCal 2*XMax)
+    c.CaloScoringPlane.DY = 6 * u.m  # full height (former SplitCal 2*YMax)
+    c.CaloScoringPlane.DZ = 1 * u.mm  # full thickness
+    # Digitisation (python/detectors/CaloScoringPlaneDetector.py). Particle identification is
+    # configured at reconstruction time: ShipReco.py --caloScoringPlanePID file.yaml
+    c.CaloScoringPlane.PositionResolution = 0.0 * u.cm  # Gaussian x/y smearing, 0 = none
+    c.CaloScoringPlane.TimeResolution = 0.0  # Gaussian time smearing in ns, 0 = none
+    c.CaloScoringPlane.ForwardOnly = True  # digitise only crossings with pz > 0
+    c.CaloScoringPlane.IgnoredPdg = [12, 14, 16]  # never produce a hit (neutrinos)
+    # Centre of the plane; its upstream face is the ECAL front face, 38.90 m downstream of the
+    # decay vessel centre, i.e. at 97.17 m (integration layout 2026-0.1)
+    c.CaloScoringPlane.z = 38.900 * u.m + c.decayVolume.z + c.CaloScoringPlane.DZ / 2
+    if c.CaloScoringPlane.z + c.CaloScoringPlane.DZ / 2 >= c.cave.zEnd:
+        raise ValueError(
+            f"CaloScoringPlane ends at z = {c.CaloScoringPlane.z + c.CaloScoringPlane.DZ / 2} cm, "
+            f"beyond the downstream ECN3 wall at {c.cave.zEnd} cm"
+        )
 
     c.hadronAbsorber.WithConstField = shield_db[shieldName]["WithConstField"]
     c.muShield.WithConstField = shield_db[shieldName]["WithConstField"]
@@ -450,22 +509,11 @@ def create_config(
     c.UpstreamTagger.Z_Position = -25.400 * u.m + c.decayVolume.z  # Relative position of UBT to decay vessel centre
     c.UpstreamTagger.PositionResolution = 1.0 * u.cm  # Position smearing resolution
     c.UpstreamTagger.TimeResolution = 0.3  # Time resolution in ns
+    set_upstream_tagger(c)
 
-    # Upstream TaggerStraw
-    # UpstreamTaggerStraw (UBTStraw) - Simplified scoring plane
-    # Note: UBTStraw is implemented as a simple vacuum box
-    # Legacy RPC parameters have been removed as they are not used in the current implementation
-    c.UpstreamTaggerStraw = AttrDict()
-    c.UpstreamTaggerStraw.BoxX = 4.4 * u.m  # X dimension (width)
-    c.UpstreamTaggerStraw.BoxY = 6.4 * u.m  # Y dimension (height)
-    c.UpstreamTaggerStraw.BoxZ = 2.0 * u.cm  # Z dimension (thickness)
-    c.UpstreamTaggerStraw.Z_Position = -25.400 * u.m + c.decayVolume.z  # Relative position of UBT to decay vessel centre
-    c.UpstreamTaggerStraw.PositionResolution = 1.0 * u.cm  # Position smearing resolution
-    c.UpstreamTaggerStraw.TimeResolution = 0.3  # Time resolution in ns
 
 
     # Store parameters that might be needed for reference
-    c.muShieldGeo = muShieldGeo
     c.nuTargetPassive = nuTargetPassive
 
     return c

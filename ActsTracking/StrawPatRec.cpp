@@ -1,0 +1,502 @@
+// SPDX-License-Identifier: LGPL-3.0-or-later
+// SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP
+// Collaboration
+
+#include "StrawPatRec.hpp"
+
+#include <Eigen/Dense>
+#include <algorithm>
+#include <cmath>
+#include <limits>
+#include <map>
+#include <numeric>
+#include <set>
+#include <tuple>
+#include <utility>
+
+namespace SHiP {
+
+namespace {
+
+/// GeV per (T m) for a unit charge
+constexpr double kKick = 0.299792458;
+
+/// Highest momentum the magnet kink is taken to measure (GeV)
+constexpr double kMaxMomentum = 1000.;
+
+/// x lines kept per y line. Where tracks overlap in y, the stereo hits of a
+/// neighbour also give a line, so the best one need not be this track's;
+/// the fit of the whole track decides.
+constexpr int kXLinesPerYLine = 4;
+/// x lines of one y line sharing more than this fraction of hits are the
+/// same line
+constexpr double kSameLineFraction = 0.75;
+
+/// Unit vector along d x t for a wire d and the track direction t, which
+/// gives the sign of the ACTS straw surface loc0
+Eigen::Vector3d signDirection(const LineSegment& line, const StrawWire& wire) {
+  const Eigen::Vector3d t = Eigen::Vector3d(line.tx, line.ty, 1.).normalized();
+  const Eigen::Vector3d d(wire.dx, wire.dy, wire.dz);
+  return d.cross(t).normalized();
+}
+
+bool isStereo(const StrawWire& wire) {
+  return wire.view == 1 || wire.view == 2;
+}
+
+bool isUpstream(const StrawWire& wire) { return wire.station <= 2; }
+
+/// Layers of one kind of view in one pair of stations, ordered in z
+using Layers = std::vector<std::vector<int>>;
+
+Layers groupLayers(const std::vector<PatRecHit>& hits,
+                   const std::vector<int>& selected) {
+  std::map<std::tuple<int, int, int>, std::vector<int>> byLayer;
+  for (const int i : selected) {
+    const auto& w = *hits[i].wire;
+    byLayer[{w.station, w.view, w.layer}].push_back(i);
+  }
+  Layers layers;
+  for (auto& [key, members] : byLayer) {
+    layers.push_back(std::move(members));
+  }
+  std::sort(layers.begin(), layers.end(),
+            [&hits](const auto& a, const auto& b) {
+              return hits[a.front()].wire->z < hits[b.front()].wire->z;
+            });
+  return layers;
+}
+
+int sharedHits(const LineSegment& a, const LineSegment& b) {
+  int shared = 0;
+  for (const int h : a.hits) {
+    shared += std::count(b.hits.begin(), b.hits.end(), h);
+  }
+  return shared;
+}
+
+/// Ranking of segments: more hits first, then the better fit
+bool better(const LineSegment& a, const LineSegment& b) {
+  if (a.hits.size() != b.hits.size()) {
+    return a.hits.size() > b.hits.size();
+  }
+  return a.chi2 < b.chi2;
+}
+
+/// Keep the best of each set of conflicting segments: those sharing more
+/// than `maxShared` hits, or more than `maxFraction` of the hits of the
+/// shorter one
+std::vector<LineSegment> removeDuplicates(std::vector<LineSegment> segments,
+                                          int maxShared,
+                                          double maxFraction = 1.) {
+  std::sort(segments.begin(), segments.end(), better);
+  std::vector<LineSegment> kept;
+  for (auto& segment : segments) {
+    const bool duplicate =
+        std::any_of(kept.begin(), kept.end(), [&](const auto& other) {
+          const int shared = sharedHits(segment, other);
+          const auto shorter = std::min(segment.hits.size(), other.hits.size());
+          return shared > maxShared || shared > maxFraction * shorter;
+        });
+    if (!duplicate) {
+      kept.push_back(std::move(segment));
+    }
+  }
+  return kept;
+}
+
+/// Least-squares fit of a straight line to signed drift distances.
+///
+/// The side of each wire is taken from the current line and re-evaluated
+/// after each fit until it no longer changes. With `fitX` false, only y0
+/// and ty are fitted (y views alone do not constrain x). Hits further than
+/// `outlierCut` from the line are dropped.
+bool fitLine(LineSegment& line, const std::vector<PatRecHit>& hits, bool fitX,
+             double outlierCut) {
+  for (int iteration = 0; iteration < 10; ++iteration) {
+    const int n = static_cast<int>(line.hits.size());
+    const int nPar = fitX ? 4 : 2;
+    if (n < nPar + 1) {
+      return false;
+    }
+    double zSum = 0.;
+    for (const int h : line.hits) {
+      zSum += hits[h].wire->z;
+    }
+    const double z0 = zSum / n;
+    // Re-express the current line around the new reference z
+    line.x0 = line.x(z0);
+    line.y0 = line.y(z0);
+    line.z0 = z0;
+
+    // Signs from the current line
+    std::vector<int> signs(n);
+    bool changed = line.signs.size() != static_cast<std::size_t>(n);
+    for (int k = 0; k < n; ++k) {
+      const double predicted =
+          signedWireDistance(line, *hits[line.hits[k]].wire);
+      signs[k] = predicted >= 0. ? 1 : -1;
+      changed = changed || signs[k] != line.signs[k];
+    }
+    line.signs = signs;
+
+    Eigen::MatrixXd a(n, nPar);
+    Eigen::VectorXd b(n);
+    for (int k = 0; k < n; ++k) {
+      const auto& hit = hits[line.hits[k]];
+      const auto& w = *hit.wire;
+      const Eigen::Vector3d m = signDirection(line, w);
+      const double dz = w.z - z0;
+      const double weight = 1. / hit.sigma;
+      // m . (P - c), with P = (x0 + tx dz, y0 + ty dz, w.z)
+      double rhs = signs[k] * hit.drift + m.x() * w.x + m.y() * w.y;
+      if (fitX) {
+        a.row(k) << m.x(), m.x() * dz, m.y(), m.y() * dz;
+      } else {
+        a.row(k) << m.y(), m.y() * dz;
+        rhs -= m.x() * line.x(w.z);
+      }
+      a.row(k) *= weight;
+      b(k) = rhs * weight;
+    }
+    const Eigen::VectorXd p = a.colPivHouseholderQr().solve(b);
+    if (!p.allFinite()) {
+      return false;
+    }
+    if (fitX) {
+      line.x0 = p(0);
+      line.tx = p(1);
+      line.y0 = p(2);
+      line.ty = p(3);
+    } else {
+      line.y0 = p(0);
+      line.ty = p(1);
+    }
+
+    // Residuals, and the worst outlier
+    line.chi2 = 0.;
+    int worst = -1;
+    double worstResidual = outlierCut;
+    for (int k = 0; k < n; ++k) {
+      const auto& hit = hits[line.hits[k]];
+      const double residual =
+          signs[k] * hit.drift - signedWireDistance(line, *hit.wire);
+      line.chi2 += residual * residual / (hit.sigma * hit.sigma);
+      if (std::abs(residual) > worstResidual) {
+        worstResidual = std::abs(residual);
+        worst = k;
+      }
+    }
+    if (worst >= 0) {
+      line.hits.erase(line.hits.begin() + worst);
+      line.signs.erase(line.signs.begin() + worst);
+      continue;
+    }
+    if (!changed) {
+      return true;
+    }
+  }
+  return true;
+}
+
+/// Hit in `layer` closest to the line within `tolerance`, or -1
+int closestHit(const LineSegment& line, const std::vector<int>& layer,
+               const std::vector<PatRecHit>& hits, double tolerance) {
+  int best = -1;
+  double bestDistance = tolerance;
+  for (const int h : layer) {
+    const double distance = std::abs(
+        std::abs(signedWireDistance(line, *hits[h].wire)) - hits[h].drift);
+    if (distance < bestDistance) {
+      bestDistance = distance;
+      best = h;
+    }
+  }
+  return best;
+}
+
+int countHits(const LineSegment& line, const std::vector<PatRecHit>& hits,
+              bool (*select)(const StrawWire&)) {
+  return std::count_if(line.hits.begin(), line.hits.end(),
+                       [&](int h) { return select(*hits[h].wire); });
+}
+
+bool isY(const StrawWire& wire) { return !isStereo(wire); }
+
+/// Pairs of layers to seed lines from: one of the first two with one of the
+/// last two layers, over all layers and within each station, so that tracks
+/// crossing only one station of the pair are seeded too
+std::vector<std::pair<int, int>> seedLayerPairs(
+    const Layers& layers, const std::vector<PatRecHit>& hits) {
+  std::set<std::pair<int, int>> pairs;
+  const auto addPairs = [&](int first, int last) {
+    const int n = last - first;
+    if (n < 2) {
+      return;
+    }
+    const int edge = std::min(2, n / 2);
+    for (int la = first; la < first + edge; ++la) {
+      for (int lb = last - edge; lb < last; ++lb) {
+        pairs.emplace(la, lb);
+      }
+    }
+  };
+  const int nLayers = static_cast<int>(layers.size());
+  addPairs(0, nLayers);
+  int first = 0;
+  for (int l = 1; l <= nLayers; ++l) {
+    if (l == nLayers || hits[layers[l].front()].wire->station !=
+                            hits[layers[first].front()].wire->station) {
+      addPairs(first, l);
+      first = l;
+    }
+  }
+  return {pairs.begin(), pairs.end()};
+}
+bool isU(const StrawWire& wire) { return wire.view == 1; }
+bool isV(const StrawWire& wire) { return wire.view == 2; }
+
+}  // namespace
+
+double signedWireDistance(const LineSegment& line, const StrawWire& wire) {
+  const Eigen::Vector3d p(line.x(wire.z), line.y(wire.z), wire.z);
+  const Eigen::Vector3d c(wire.x, wire.y, wire.z);
+  return (p - c).dot(signDirection(line, wire));
+}
+
+StrawPatRec::StrawPatRec(const Config& config, double bendingZ,
+                         double fieldIntegral)
+    : m_cfg(config), m_bendingZ(bendingZ), m_fieldIntegral(fieldIntegral) {}
+
+std::vector<LineSegment> StrawPatRec::findSegments(
+    const std::vector<PatRecHit>& hits, bool upstream, int maxSegments) const {
+  std::vector<int> yHits;
+  std::vector<int> stereoHits;
+  for (int i = 0; i < static_cast<int>(hits.size()); ++i) {
+    const auto& w = *hits[i].wire;
+    if (isUpstream(w) != upstream) {
+      continue;
+    }
+    (isStereo(w) ? stereoHits : yHits).push_back(i);
+  }
+  const Layers yLayers = groupLayers(hits, yHits);
+  const Layers stereoLayers = groupLayers(hits, stereoHits);
+  const int nY = static_cast<int>(yLayers.size());
+  const int nStereo = static_cast<int>(stereoLayers.size());
+  if (nY < m_cfg.minYHits || nStereo < m_cfg.minStereoHits) {
+    return {};
+  }
+  // Seeds pair a hit in one of the first two layers with one in the last two,
+  // of the pair of stations and of each station
+
+  // y lines from pairs of drift circles: the two candidate y positions of
+  // each hit give four lines per pair
+  std::vector<LineSegment> yLines;
+  for (const auto& [la, lb] : seedLayerPairs(yLayers, hits)) {
+    {
+      for (const int a : yLayers[la]) {
+        for (const int b : yLayers[lb]) {
+          const auto& wa = *hits[a].wire;
+          const auto& wb = *hits[b].wire;
+          for (const int sa : {-1, 1}) {
+            for (const int sb : {-1, 1}) {
+              LineSegment line;
+              line.z0 = wa.z;
+              line.y0 = wa.y + sa * hits[a].drift;
+              line.ty = (wb.y + sb * hits[b].drift - line.y0) / (wb.z - wa.z);
+              if (std::abs(line.ty) > m_cfg.maxSlope) {
+                continue;
+              }
+              line.hits = {a, b};
+              for (int l = 0; l < nY; ++l) {
+                if (l == la || l == lb) {
+                  continue;
+                }
+                const int h =
+                    closestHit(line, yLayers[l], hits, m_cfg.tolerance);
+                if (h >= 0) {
+                  line.hits.push_back(h);
+                }
+              }
+              if (static_cast<int>(line.hits.size()) < m_cfg.minYHits) {
+                continue;
+              }
+              if (fitLine(line, hits, false, m_cfg.tolerance) &&
+                  static_cast<int>(line.hits.size()) >= m_cfg.minYHits) {
+                yLines.push_back(std::move(line));
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  // The y lines are not deduplicated: tracks that overlap in y have similar
+  // y lines, and are told apart only in the stereo views, and the same hits
+  // can fit with the sides of some wires mirrored, which projects the stereo
+  // hits differently. Duplicate segments are removed after the stereo views.
+
+  // For each y line, find the x line in the stereo views. Each stereo hit
+  // gives two x positions, one for each side of the wire.
+  struct XPoint {
+    int hit;
+    double z;
+    double x;
+  };
+  std::vector<LineSegment> segments;
+  for (const auto& yLine : yLines) {
+    std::vector<std::vector<XPoint>> points(nStereo);
+    for (int l = 0; l < nStereo; ++l) {
+      for (const int h : stereoLayers[l]) {
+        const auto& w = *hits[h].wire;
+        const Eigen::Vector3d m = signDirection(yLine, w);
+        if (std::abs(m.x()) < 1e-3) {
+          continue;
+        }
+        for (const int s : {-1, 1}) {
+          const double x =
+              w.x + (s * hits[h].drift - m.y() * (yLine.y(w.z) - w.y)) / m.x();
+          // Only where the wire actually is
+          const double along = (x - w.x) * w.dx + (yLine.y(w.z) - w.y) * w.dy;
+          if (std::abs(along) <= w.halfLength) {
+            points[l].push_back({h, w.z, x});
+          }
+        }
+      }
+    }
+    // Several x lines per y line (see kXLinesPerYLine)
+    std::vector<LineSegment> xLines;
+    for (const auto& [la, lb] : seedLayerPairs(stereoLayers, hits)) {
+      {
+        for (const auto& pa : points[la]) {
+          for (const auto& pb : points[lb]) {
+            LineSegment line = yLine;
+            line.tx = (pb.x - pa.x) / (pb.z - pa.z);
+            if (std::abs(line.tx) > m_cfg.maxSlope) {
+              continue;
+            }
+            line.x0 = pa.x + line.tx * (line.z0 - pa.z);
+            line.signs.clear();
+            line.hits.push_back(pa.hit);
+            line.hits.push_back(pb.hit);
+            for (int l = 0; l < nStereo; ++l) {
+              if (l == la || l == lb) {
+                continue;
+              }
+              const int h =
+                  closestHit(line, stereoLayers[l], hits, m_cfg.tolerance);
+              if (h >= 0) {
+                line.hits.push_back(h);
+              }
+            }
+            if (countHits(line, hits, isStereo) < m_cfg.minStereoHits) {
+              continue;
+            }
+            if (fitLine(line, hits, true, m_cfg.tolerance) &&
+                countHits(line, hits, isY) >= m_cfg.minYHits &&
+                countHits(line, hits, isStereo) >= m_cfg.minStereoHits &&
+                countHits(line, hits, isU) >= m_cfg.minHitsPerStereoView &&
+                countHits(line, hits, isV) >= m_cfg.minHitsPerStereoView) {
+              xLines.push_back(std::move(line));
+            }
+          }
+        }
+      }
+    }
+    xLines = removeDuplicates(
+        std::move(xLines), std::numeric_limits<int>::max(), kSameLineFraction);
+    if (static_cast<int>(xLines.size()) > kXLinesPerYLine) {
+      xLines.resize(kXLinesPerYLine);
+    }
+    for (auto& line : xLines) {
+      segments.push_back(std::move(line));
+    }
+  }
+  // Only near-duplicates are removed here. Neighbouring tracks share
+  // straws, and the choice between conflicting candidates is left to the
+  // fit of the whole track.
+  segments = removeDuplicates(std::move(segments), m_cfg.maxSharedHits);
+  if (maxSegments > 0 && static_cast<int>(segments.size()) > maxSegments) {
+    segments.resize(maxSegments);
+  }
+  return segments;
+}
+
+std::optional<TrackCandidate> StrawPatRec::match(
+    const LineSegment& upstream, const LineSegment& downstream) const {
+  TrackCandidate candidate{upstream, downstream};
+  // The field kicks the track in y by q * kKick * integral(Bx dz) / pz
+  const double kink = downstream.ty - upstream.ty;
+  const double kick = kKick * m_fieldIntegral;
+  if (kink == 0. || kick == 0.) {
+    return std::nullopt;
+  }
+  const double pz = std::min(std::abs(kick / kink), kMaxMomentum);
+  candidate.momentum = pz * std::sqrt(1. + upstream.tx * upstream.tx +
+                                      upstream.ty * upstream.ty);
+  candidate.charge = kink / kick > 0. ? 1 : -1;
+
+  const double z = m_bendingZ;
+  const double p = candidate.momentum;
+  const auto sigma = [p](double a, double b) { return std::hypot(a, b / p); };
+  const double dx = (upstream.x(z) - downstream.x(z)) /
+                    sigma(m_cfg.matchSigmaX, m_cfg.matchSigmaXPerP);
+  const double dtx = (upstream.tx - downstream.tx) /
+                     sigma(m_cfg.matchSigmaTx, m_cfg.matchSigmaTxPerP);
+  const double dy = (upstream.y(z) - downstream.y(z)) /
+                    sigma(m_cfg.matchSigmaY, m_cfg.matchSigmaYPerP);
+  candidate.matchChi2 = dx * dx + dtx * dtx + dy * dy;
+  return candidate;
+}
+
+std::vector<TrackCandidate> StrawPatRec::matchSegments(
+    const std::vector<LineSegment>& upstream,
+    const std::vector<LineSegment>& downstream) const {
+  std::vector<TrackCandidate> pairs;
+  for (const auto& u : upstream) {
+    for (const auto& d : downstream) {
+      auto candidate = match(u, d);
+      if (candidate &&
+          (candidate->matchChi2 < m_cfg.maxMatchChi2 ||
+           (candidate->momentum < m_cfg.lowMomentum &&
+            candidate->matchChi2 < m_cfg.maxLowMomentumMatchChi2))) {
+        pairs.push_back(std::move(*candidate));
+      }
+    }
+  }
+  // Greedy one-to-one assignment, best match first
+  std::sort(pairs.begin(), pairs.end(), [](const auto& a, const auto& b) {
+    return a.matchChi2 < b.matchChi2;
+  });
+  std::vector<TrackCandidate> tracks;
+  std::set<std::vector<int>> usedUp;
+  std::set<std::vector<int>> usedDown;
+  for (auto& pair : pairs) {
+    if (usedUp.count(pair.upstream.hits) ||
+        usedDown.count(pair.downstream.hits)) {
+      continue;
+    }
+    usedUp.insert(pair.upstream.hits);
+    usedDown.insert(pair.downstream.hits);
+    tracks.push_back(std::move(pair));
+  }
+  return tracks;
+}
+
+std::vector<TrackCandidate> StrawPatRec::findTracks(
+    const std::vector<PatRecHit>& hits) const {
+  return matchSegments(findSegments(hits, true, 0),
+                       findSegments(hits, false, 0));
+}
+
+std::optional<TrackCandidate> StrawPatRec::fitCandidate(
+    const std::vector<PatRecHit>& hits) const {
+  const auto upstream = findSegments(hits, true, 1);
+  const auto downstream = findSegments(hits, false, 1);
+  if (upstream.empty() || downstream.empty()) {
+    return std::nullopt;
+  }
+  return match(upstream.front(), downstream.front());
+}
+
+}  // namespace SHiP

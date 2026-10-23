@@ -26,7 +26,8 @@ enum DetectorId {
   kMuon,
   kPreshower,
   kTRSTATION,
-  kSplitCal,
+  kCaloScoringPlane,  // replaces kSplitCal (same slot, keeps enum values
+                      // stable)
   kBox1,
   kSpectrometer,
   kPixelModules,
@@ -36,6 +37,7 @@ enum DetectorId {
   kMuonTagger,
   kUpstreamTagger,
   kUpstreamTaggerStraw,
+  kUpstreamTaggerScoringPlane,
   kEndOfList
 };
 // last five for muonflux and Charm measurement

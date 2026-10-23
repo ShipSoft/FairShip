@@ -57,6 +57,9 @@ even if you already know Git, as it explains how development is done on GitHub.
 `FAIRSHIP` and `GEOMPATH` (among others) to `PIXI_PROJECT_ROOT`, so the pixi
 project root **must** be the FairShip clone itself — it contains the required
 `geometry/` and `files/` directories.
+When neither `DISPLAY` nor `WAYLAND_DISPLAY` is set (ssh, containers, batch
+jobs), it also sets `QT_QPA_PLATFORM=offscreen`, as Geant4's Qt interface
+otherwise aborts the run. A value you set yourself is kept.
 
 ### Build from source (recommended)
 
@@ -83,7 +86,7 @@ project root **must** be the FairShip clone itself — it contains the required
 ### Using the pre-built package
 
 Pre-built FairShip packages are available from the
-[ship](https://prefix.dev/channels/ship) channel. Because `activate.sh`
+[ship-experiment/stable](https://prefix.dev/channels/@ship-experiment/stable) channel. Because `activate.sh`
 expects `geometry/`, `files/`, and other data directories at
 `PIXI_PROJECT_ROOT`, the simplest approach is to add `fairship` directly to
 the clone:
@@ -94,6 +97,32 @@ cd FairShip
 pixi add fairship
 pixi run python macro/run_simScript.py --tag my-simulation
 ```
+
+### On lxplus (AFS)
+
+A plain `pixi run build` installs the whole environment into `.pixi/` inside
+your clone, which is enough to exceed a typical AFS quota. On lxplus, use the
+pixi build published on CVMFS together with the `pixi cvmfs` extension
+instead, which keeps the environment out of your AFS area.
+
+Start from a clean shell and a FairShip clone without an old `build/` directory, then:
+
+```bash
+export PATH=/cvmfs/ship-nightlies.cern.ch/pixi/0.72.0-rattlerfs-layers-d5a7568/bin:$PATH
+cd /path/to/FairShip
+pixi cvmfs build    # build (once, and again after code changes)
+pixi cvmfs          # enter the environment
+```
+
+To build a branch, check it out and rebuild:
+
+```bash
+git checkout yourbranch
+pixi cvmfs build
+```
+
+You can add the `export PATH=...` line to your `~/.bashrc` so the commands are
+available in every new shell.
 
 ## Run instructions
 
@@ -128,6 +157,14 @@ python -i $FAIRSHIP/macro/ShipAna.py -f sim_my-simulation.root -r sim_my-simulat
 
 **Note**: Simulation output files use the naming convention `{sim,geo,params}_{identifier}.root`, where the identifier is either a UUID (auto-generated) or a custom tag specified with `--tag`. ShipReco creates a separate reconstruction file (`*_rec.root`) containing only digitisation and reconstruction branches. The original simulation file is not modified. ShipAna uses both files via ROOT's friend tree mechanism to access both MC truth and reconstruction data.
 
+To simulate on the geometry of an earlier simulation, for example a standard geometry shared between productions, pass its geometry file with `-g`. The geometry configuration is then read from the file, so geometry options such as `--vacuums` or `--SND` cannot be given, and particles are transported through the geometry stored in the file:
+
+```bash
+python $FAIRSHIP/macro/run_simScript.py -g geo_my-simulation.root --tag my-second-simulation
+```
+
+The detectors still build their geometry from the stored configuration, because building is also how they register their sensitive volumes and magnetic fields, which a geometry file does not keep; the stored geometry then replaces the built one. The run stops if the stored geometry lacks a volume or placement that the current code builds.
+
 Alternatively, you can make use of the experimental `analysis_toolkit` to run a simple pre-selection check on the events. An example script can be found in `$FAIRSHIP/examples/analysis_example.py`.
 
 Simulate MC signal events with EventCalc:
@@ -155,11 +192,11 @@ for reproducing reproducible, stateless environments for debugging, HTCondor
 and cluster use, or when a strict separation between `FairShip` and the host is
 desirable.
 
-1. Build an docker image from the provided `Dockerfile`:
+1. Build a Docker image from the provided `Containerfile`:
     ```bash
     git clone https://github.com/ShipSoft/FairShip.git
     cd FairShip
-    docker build -t fairship .
+    docker build -f Containerfile -t fairship .
     ```
 2. Run the `FairShip` docker image:
     ```bash
@@ -219,8 +256,10 @@ is now in maintenance mode.
     ls /cvmfs/ship.cern.ch
     ```
 3. Source the chosen release (see the
-   [cvmfs_release](https://github.com/ShipSoft/cvmfs_release) repo for the
-   list):
+   [shipdist releases](https://github.com/ShipSoft/shipdist/releases) and its
+   [CHANGELOG](https://github.com/ShipSoft/shipdist/blob/main/CHANGELOG.md) for
+   the list; releases up to 25.11 are listed in the archived
+   [cvmfs_release](https://github.com/ShipSoft/cvmfs_release) repo):
     ```bash
     source /cvmfs/ship.cern.ch/$SHIP_RELEASE/setUp.sh
     ```
@@ -228,7 +267,9 @@ is now in maintenance mode.
     ```bash
     aliBuild build FairShip --always-prefer-system --config-dir $SHIPDIST --defaults release
     ```
-    For legacy branches, swap `--defaults release` for `--defaults fairship-2018`.
+    For legacy branches (`SHiP-2018`, `muflux`), use `--defaults fairship-2018`
+    with a shipdist checkout at the `SHiP-BDF-2020` tag. The `fairship-2018`
+    defaults were removed from shipdist `main` in 2022.
 5. Load the environment:
     ```bash
     alienv enter FairShip/latest
