@@ -153,7 +153,7 @@ void UpstreamTagger::ConstructGeometry() {
     ++regionsPerTileSize[region.constituentTileSize];
   }
 
-  top->AddNode(fDetector, 1, new TGeoTranslation(0., 0., det_zPos));
+  top->AddNode(fDetector, 1, new TGeoTranslation(0., 0., det_zPos+10));
   cout << " Z Position (Upstream Tagger) " << det_zPos << ", "
        << fRegions.size() << " mapped regions (";
   for (auto it = regionsPerTileSize.begin(); it != regionsPerTileSize.end();
