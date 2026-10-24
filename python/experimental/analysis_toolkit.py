@@ -8,8 +8,7 @@ import numpy as np
 import pythia8_conf
 import ROOT
 import shipunit as u
-import yaml
-from ShipGeoConfig import AttrDict, load_from_root_file
+from ShipGeoConfig import load_from_root_file
 from shipTrackAccess import get_tracks, track_info, uses_acts
 from tabulate import tabulate
 
@@ -22,21 +21,13 @@ class selection_check:
         self.geometry_manager = geo_file.Get("FAIRGeom")
         self.ship_geo = load_from_root_file(geo_file, "ShipGeo")
 
-        fairship = ROOT.gSystem.Getenv("FAIRSHIP")
-
-        if self.ship_geo.DecayVolumeMedium == "helium":
-            with open(fairship + "/geometry/veto_config_helium.yaml") as file:
-                config = yaml.safe_load(file)
-                self.veto_geo = AttrDict(config)
-                _ = self.veto_geo.z0
-        elif self.ship_geo.DecayVolumeMedium == "vacuums":
-            with open(fairship + "/geometry/veto_config_vacuums.yaml") as file:
-                config = yaml.safe_load(file)
-                self.veto_geo = AttrDict(config)
-        else:
-            raise ValueError(
-                f"Unsupported DecayVolumeMedium {self.ship_geo.DecayVolumeMedium!r}: expected 'helium' or 'vacuums'."
-            )
+        # Decay vessel entrance, from the configuration stored with the geometry
+        # Includes fallback for older geometries
+        dv = self.ship_geo.decayVolume
+        if "z0" in dv:  # Newer geometries
+            self.decay_vessel_z0 = dv.z0
+        else:  # Geometries written before decayVolume.z0 existed: the vessel starts at the upstream end of Tub1
+            self.decay_vessel_z0 = self.ship_geo.Chamber1.z - self.ship_geo.chambers.Tub1length
 
     def access_event(self, tree) -> None:
         """Access event data."""
@@ -143,7 +134,7 @@ class selection_check:
         """Calculate the distance of the candidate decay vertex to the entrance of the decay vessel."""
         candidate_pos = ROOT.TVector3()
         candidate.GetVertex(candidate_pos)
-        return candidate_pos.Z() - self.veto_geo.z0
+        return candidate_pos.Z() - self.decay_vessel_z0
 
     def nDOF(self, candidate):
         """Return the number of degrees of freedom (nDOF) for the particle's daughter tracks."""
@@ -189,7 +180,7 @@ class selection_check:
 
         if candidate_pos.Z() > self.ship_geo.TrackStation1.z:
             return False
-        if candidate_pos.Z() < self.veto_geo.z0:
+        if candidate_pos.Z() < self.decay_vessel_z0:
             return False
 
         # if self.dist2InnerWall(candidate)<=5*u.cm: return False
