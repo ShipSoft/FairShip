@@ -8,5 +8,5 @@ var searchData=
   ['quality_5',['Code Quality',['../md_CHANGELOG.html#autotoc_md83',1,'']]],
   ['quality_20and_20maintenance_6',['Code Quality and Maintenance',['../md_CHANGELOG.html#autotoc_md74',1,'']]],
   ['quantities_7',['QUANTITIES',['../namespacetest__cavern__layout.html#a0de441203533b37132b2e927eb08380b',1,'test_cavern_layout']]],
-  ['quick_20recipe_8',['Quick recipe',['../md_newMuonDIS_2README.html#autotoc_md114',1,'']]]
+  ['quick_20recipe_8',['Quick recipe',['../dir_c7af8ae1fa24dc0e27242ce21fb42ad9.html#autotoc_md114',1,'']]]
 ];

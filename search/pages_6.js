@@ -1,5 +1,27 @@
 var searchData=
 [
-  ['readme_0',['readme',['../md_field_2README.html',1,'README'],['../md_newMuonDIS_2README.html',1,'README']]],
-  ['readme_20filter_1',['README.filter',['../md_newMuonDIS_2README_8filter.html',1,'']]]
+  ['caloscoringplane_0',['CaloScoringPlane',['../dir_603b242ae3468e4f23dd3899c6f4b76d.html#autotoc_md1',1,'']]],
+  ['caloscoringplanepid_20directly_1',['Using CaloScoringPlanePID directly',['../dir_603b242ae3468e4f23dd3899c6f4b76d.html#autotoc_md6',1,'']]],
+  ['chain_2',['Input branches in a chain',['../md_newMuonDIS_2README_8filter.html#autotoc_md111',1,'']]],
+  ['changed_3',['Changed',['../md_CHANGELOG.html#autotoc_md10',1,'Changed'],['../md_CHANGELOG.html#autotoc_md15',1,'Changed'],['../md_CHANGELOG.html#autotoc_md28',1,'Changed'],['../md_CHANGELOG.html#autotoc_md33',1,'Changed'],['../md_CHANGELOG.html#autotoc_md38',1,'Changed'],['../md_CHANGELOG.html#autotoc_md43',1,'Changed'],['../md_CHANGELOG.html#autotoc_md48',1,'Changed'],['../md_CHANGELOG.html#autotoc_md60',1,'Changed'],['../md_CHANGELOG.html#autotoc_md94',1,'Changed'],['../md_CHANGELOG.html#autotoc_md99',1,'Changed'],['../md_CHANGELOG.html#autotoc_md104',1,'Changed']]],
+  ['changelog_4',['Changelog',['../md_CHANGELOG.html',1,'']]],
+  ['checking_5',['Python helpers and type checking',['../md_CHANGELOG.html#autotoc_md24',1,'']]],
+  ['classes_6',['Data Classes',['../md_CHANGELOG.html#autotoc_md72',1,'']]],
+  ['classes_20and_20i_20o_7',['Classes and I O',['../md_CHANGELOG.html#autotoc_md56',1,'Data Classes and I/O'],['../md_CHANGELOG.html#autotoc_md80',1,'Data Classes and I/O']]],
+  ['classes_3a_8',['Overview of classes:',['../dir_c7af8ae1fa24dc0e27242ce21fb42ad9.html#autotoc_md115',1,'']]],
+  ['code_9',['Obsolete Code',['../md_CHANGELOG.html#autotoc_md90',1,'']]],
+  ['code_10',['Contributing code',['../md_README.html#autotoc_md131',1,'']]],
+  ['code_20quality_11',['Code Quality',['../md_CHANGELOG.html#autotoc_md83',1,'']]],
+  ['code_20quality_20and_20maintenance_12',['Code Quality and Maintenance',['../md_CHANGELOG.html#autotoc_md74',1,'']]],
+  ['components_13',['Detector Components',['../md_CHANGELOG.html#autotoc_md89',1,'']]],
+  ['configuration_20file_14',['Configuration file',['../dir_603b242ae3468e4f23dd3899c6f4b76d.html#autotoc_md5',1,'']]],
+  ['configuration_20files_20for_20genie_20simulations_15',['Configuration files for GENIE simulations',['../dir_ccb7c4d33ded37e04bdd4140d41954a2.html#autotoc_md135',1,'']]],
+  ['configuration_20system_16',['Geometry Configuration System',['../md_CHANGELOG.html#autotoc_md65',1,'']]],
+  ['configurations_17',['Obsolete Detector Configurations',['../md_CHANGELOG.html#autotoc_md87',1,'']]],
+  ['contributing_20code_18',['Contributing code',['../md_README.html#autotoc_md131',1,'']]],
+  ['custom_20selections_19',['Custom selections',['../md_newMuonDIS_2README_8filter.html#autotoc_md109',1,'']]],
+  ['custom_20utilities_20',['Custom Utilities',['../md_CHANGELOG.html#autotoc_md85',1,'']]],
+  ['cvmfs_21',['Without CVMFS',['../md_README.html#autotoc_md134',1,'']]],
+  ['cvmfs_20alibuild_22',['Legacy releases (CVMFS + aliBuild)',['../md_README.html#autotoc_md132',1,'']]],
+  ['cvmfs_20lxplus_20and_20similar_23',['With CVMFS (lxplus and similar)',['../md_README.html#autotoc_md133',1,'']]]
 ];

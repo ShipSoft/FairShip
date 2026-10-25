@@ -8,6 +8,8 @@ var classDPPythia8Generator =
     [ "Init", "classDPPythia8Generator.html#ae2c15acb2996406ae5c17592ddb10dc5", null ],
     [ "Init", "classDPPythia8Generator.html#a01fe33515fea881838c2b11eb5d4a9d1", null ],
     [ "Init", "classDPPythia8Generator.html#a4f1d4450213a99e210d75c4af8c45409", null ],
+    [ "Init", "classDPPythia8Generator.html#a3f5d68b0b79dddffd25498e83c4e0542", null ],
+    [ "Init", "classDPPythia8Generator.html#a49e997f800bbb2c766ab9f93059a2c26", null ],
     [ "IsPbrem", "classDPPythia8Generator.html#a952b6cdbc59cc8c2edc7433614298038", null ],
     [ "List", "classDPPythia8Generator.html#aaf5583d052a6739dc78e1a76dce564bb", null ],
     [ "MinDPMass", "classDPPythia8Generator.html#ab214ef98a6ee16c18f4ee71af1fd402a", null ],

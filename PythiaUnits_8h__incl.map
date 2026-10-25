@@ -1,5 +1,5 @@
 <map id="shipgen/PythiaUnits.h" name="shipgen/PythiaUnits.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,169,31"/>
-<area shape="rect" id="Node000002" href="$ShipUnit_8h.html" title=" " alt="" coords="43,79,132,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="90,31,90,65,85,65,85,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,169,33"/>
+<area shape="rect" id="Node000002" href="$ShipUnit_8h.html" title=" " alt="" coords="43,81,131,109"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="89,32,90,66,84,64,85,36"/>
 </map>

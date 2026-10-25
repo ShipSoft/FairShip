@@ -1,7 +1,7 @@
 var searchData=
 [
   ['fairshipfields_0',['FairShipFields',['../classgenfit_1_1FairShipFields.html',1,'genfit']]],
-  ['faketrack_1',['faketrack',['../classtest__signal__particle_1_1FakeTrack.html',1,'test_signal_particle.FakeTrack'],['../classtest__straw__reco_1_1FakeTrack.html',1,'test_straw_reco.FakeTrack']]],
+  ['faketrack_1',['FakeTrack',['../classtest__signal__particle_1_1FakeTrack.html',1,'test_signal_particle.FakeTrack'],['../classtest__straw__reco_1_1FakeTrack.html',1,'test_straw_reco.FakeTrack']]],
   ['faketracker_2',['FakeTracker',['../classtest__straw__reco_1_1FakeTracker.html',1,'test_straw_reco']]],
   ['fieldinfo_3',['fieldInfo',['../structShipFieldMaker_1_1fieldInfo.html',1,'ShipFieldMaker']]],
   ['fieldmap_4',['FieldMap',['../structMagneticTrackPropagator_1_1FieldMap.html',1,'MagneticTrackPropagator']]],

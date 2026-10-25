@@ -1,4 +1,4 @@
 var VectorMCPointSource_8h =
 [
-    [ "VectorMCPointSource< PointType >", "classVectorMCPointSource.html", "classVectorMCPointSource" ]
+    [ "VectorMCPointSource&lt; PointType &gt;", "classVectorMCPointSource.html", "classVectorMCPointSource" ]
 ];

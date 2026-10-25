@@ -1,10 +1,10 @@
 var namespacemakeCascadePythia8 =
 [
-    [ "InclusiveSignalEvents", "classmakeCascadePythia8_1_1InclusiveSignalEvents.html", "classmakeCascadePythia8_1_1InclusiveSignalEvents" ],
     [ "NucleusModel", "classmakeCascadePythia8_1_1NucleusModel.html", null ],
-    [ "PythiaFactory", "classmakeCascadePythia8_1_1PythiaFactory.html", "classmakeCascadePythia8_1_1PythiaFactory" ],
     [ "SignalConfig", "classmakeCascadePythia8_1_1SignalConfig.html", null ],
+    [ "PythiaFactory", "classmakeCascadePythia8_1_1PythiaFactory.html", "classmakeCascadePythia8_1_1PythiaFactory" ],
     [ "SignalEvents", "classmakeCascadePythia8_1_1SignalEvents.html", "classmakeCascadePythia8_1_1SignalEvents" ],
+    [ "InclusiveSignalEvents", "classmakeCascadePythia8_1_1InclusiveSignalEvents.html", "classmakeCascadePythia8_1_1InclusiveSignalEvents" ],
     [ "cm_beam_settings", "namespacemakeCascadePythia8.html#a9a72ec8998020a54650079362084f29c", null ],
     [ "ecm", "namespacemakeCascadePythia8.html#af32ef7f19d88e1e65381a9038063a473", null ],
     [ "kforced_charm", "namespacemakeCascadePythia8.html#ab7cccda0e4cee9f2d3d9c66155b5f6db", null ],

@@ -22,10 +22,10 @@ var classhnl_1_1HNLbranchings =
     [ "_integrand_tf1", "classhnl_1_1HNLbranchings.html#a12ee12b611bc83c16d8ed93ac42acc2f", null ],
     [ "_totalWidth", "classhnl_1_1HNLbranchings.html#a91c7367c0ac1a33120c04abdefc749b2", null ],
     [ "CKM", "classhnl_1_1HNLbranchings.html#a3c9a00b61f6d63bc24ff826ff8fd9fd6", null ],
-    [ "CKMelemSq", "classhnl_1_1HNLbranchings.html#a82d1ecb0efc6a7dbbd3fbc0a50a426b8", null ],
+    [ "CKMelemSq", "classhnl_1_1HNLbranchings.html#a28ba76148129a066f48da57b72473ea3", null ],
     [ "decays", "classhnl_1_1HNLbranchings.html#ad0ccc66b383a2a6509655b371fe6555f", null ],
     [ "MN", "classhnl_1_1HNLbranchings.html#a37b3fe11bb2e531d8ca1ff9f7b9ce826", null ],
     [ "QCD_corr", "classhnl_1_1HNLbranchings.html#a17ed7ac6840f3cc5b7c05587de9c735a", null ],
-    [ "U", "classhnl_1_1HNLbranchings.html#a89cbb6c5120602cde4f7a23dd0427927", null ],
+    [ "U", "classhnl_1_1HNLbranchings.html#a20f61f65b1741c7af38c85f05e6b63db", null ],
     [ "U2", "classhnl_1_1HNLbranchings.html#a8b66ab769a15c0d3730f621fb6be268c", null ]
 ];

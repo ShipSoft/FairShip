@@ -5,7 +5,7 @@ var searchData=
   ['measurement_2',['Measurement',['../structMuGeoProcessor_1_1Measurement.html',1,'MuGeoProcessor']]],
   ['methodlogger_3',['MethodLogger',['../classmethod__logger_1_1MethodLogger.html',1,'method_logger']]],
   ['modelspec_4',['ModelSpec',['../structModelSpec.html',1,'']]],
-  ['mtcdetector_5',['mtcdetector',['../classMTCDetector.html',1,'MTCDetector'],['../classMTCDetector_1_1MTCDetector.html',1,'MTCDetector.MTCDetector']]],
+  ['mtcdetector_5',['MTCDetector',['../classMTCDetector.html',1,'MTCDetector'],['../classMTCDetector_1_1MTCDetector.html',1,'MTCDetector.MTCDetector']]],
   ['mtcdethit_6',['MTCDetHit',['../classMTCDetHit.html',1,'']]],
   ['mtcdetpoint_7',['MTCDetPoint',['../classMTCDetPoint.html',1,'']]],
   ['mudisfilter_8',['MuDISFilter',['../classMuDISFilter.html',1,'']]],

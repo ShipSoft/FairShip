@@ -5,6 +5,8 @@ var classNtupleGenerator =
     [ "GetNevents", "classNtupleGenerator.html#a9f910c61b9beeae27deb25de162a0068", null ],
     [ "Init", "classNtupleGenerator.html#afeefc4b720d31060b90b6794bcbdca54", null ],
     [ "Init", "classNtupleGenerator.html#afb456457d43552cdc495f6233da5abb8", null ],
+    [ "Init", "classNtupleGenerator.html#a3f5d68b0b79dddffd25498e83c4e0542", null ],
+    [ "Init", "classNtupleGenerator.html#a49e997f800bbb2c766ab9f93059a2c26", null ],
     [ "ReadEvent", "classNtupleGenerator.html#a3c572a3f83c58ce9ca1b3ab91319873d", null ],
     [ "Ezero", "classNtupleGenerator.html#ab05d064a7e4ee7380e3f6bb41cb44d46", null ],
     [ "fInputFile", "classNtupleGenerator.html#aea2daf5d738b097a396f9cbcb3bf5105", null ],

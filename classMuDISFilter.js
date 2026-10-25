@@ -2,8 +2,8 @@ var classMuDISFilter =
 [
     [ "FilterCandidate", "structMuDISFilter_1_1FilterCandidate.html", "structMuDISFilter_1_1FilterCandidate" ],
     [ "FilterEfficiencyHistograms", "structMuDISFilter_1_1FilterEfficiencyHistograms.html", "structMuDISFilter_1_1FilterEfficiencyHistograms" ],
-    [ "EfficiencyMaps", "classMuDISFilter.html#a4e696b6f8bcba9e871d01014a4248b36", null ],
-    [ "EfficiencyZHistograms", "classMuDISFilter.html#ab5ea4a99c167ba7f78a1c838e1da5701", null ],
+    [ "EfficiencyMaps", "classMuDISFilter.html#ab6dc8c55e0dabab551dc24c13cecd1a4", null ],
+    [ "EfficiencyZHistograms", "classMuDISFilter.html#ab7771d65191758cfae2dbfb9cd3cd8cb", null ],
     [ "Filter", "classMuDISFilter.html#a628c618fee620d6f5963fafb815d47c2", null ],
     [ "MuDISFilter", "classMuDISFilter.html#a0818696895bf252a7a771f6e5efb68d5", null ],
     [ "~MuDISFilter", "classMuDISFilter.html#ab46a9225493fdf557a1b8090df9d5e0e", null ],

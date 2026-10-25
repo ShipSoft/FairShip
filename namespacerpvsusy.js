@@ -1,8 +1,8 @@
 var namespacerpvsusy =
 [
     [ "constants", "classrpvsusy_1_1constants.html", "classrpvsusy_1_1constants" ],
-    [ "RPVSUSY", "classrpvsusy_1_1RPVSUSY.html", "classrpvsusy_1_1RPVSUSY" ],
     [ "RPVSUSYbranchings", "classrpvsusy_1_1RPVSUSYbranchings.html", "classrpvsusy_1_1RPVSUSYbranchings" ],
+    [ "RPVSUSY", "classrpvsusy_1_1RPVSUSY.html", "classrpvsusy_1_1RPVSUSY" ],
     [ "lifetime", "namespacerpvsusy.html#a3781638c4bf3e292c5c6a1f717cd3d73", null ],
     [ "mass", "namespacerpvsusy.html#ad81fa705dd5d293022b4dcda68f8fd9a", null ],
     [ "PDGcode", "namespacerpvsusy.html#abd73aa2c17e9d3ad238d506eda8a9b03", null ],

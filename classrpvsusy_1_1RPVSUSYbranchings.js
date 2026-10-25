@@ -13,8 +13,8 @@ var classrpvsusy_1_1RPVSUSYbranchings =
     [ "bench", "classrpvsusy_1_1RPVSUSYbranchings.html#a991cb187c997bb3d49cd1c048959024b", null ],
     [ "decays", "classrpvsusy_1_1RPVSUSYbranchings.html#a63dd4f75ccdd022dae81756977bad9ff", null ],
     [ "MN", "classrpvsusy_1_1RPVSUSYbranchings.html#a35a41a5e4ffb363bd86efcead3fd63af", null ],
-    [ "prods", "classrpvsusy_1_1RPVSUSYbranchings.html#ab1a309ca678acff241daf5b12d1b12f2", null ],
+    [ "prods", "classrpvsusy_1_1RPVSUSYbranchings.html#a43560b637927643e53afaa24fa227457", null ],
     [ "sfmass", "classrpvsusy_1_1RPVSUSYbranchings.html#ad47540ea6c20466ac70422ea4aad9c9b", null ],
     [ "U", "classrpvsusy_1_1RPVSUSYbranchings.html#a89d57b7169b27d22296ee297378f8b53", null ],
-    [ "U2", "classrpvsusy_1_1RPVSUSYbranchings.html#a6e8e0ff2eb20ca9949f5a287f3d708a1", null ]
+    [ "U2", "classrpvsusy_1_1RPVSUSYbranchings.html#a03dfea10c763058db93c952a72261594", null ]
 ];

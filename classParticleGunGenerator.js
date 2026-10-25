@@ -16,6 +16,8 @@ var classParticleGunGenerator =
     [ "Init", "classParticleGunGenerator.html#ac5f51053566b64c2dce6c814b248e2bc", null ],
     [ "Init", "classParticleGunGenerator.html#a8b8593399c52e95c9f30e4b56faeb95b", null ],
     [ "Init", "classParticleGunGenerator.html#a2fad64b023de0802b4cf0d79c9afed70", null ],
+    [ "Init", "classParticleGunGenerator.html#a3f5d68b0b79dddffd25498e83c4e0542", null ],
+    [ "Init", "classParticleGunGenerator.html#a49e997f800bbb2c766ab9f93059a2c26", null ],
     [ "LoadHistoFromFile", "classParticleGunGenerator.html#adb4adb35544eec6ca34ce7f224d43dc6", null ],
     [ "operator=", "classParticleGunGenerator.html#af81b1e563454003c6cbe1907cbe799bc", null ],
     [ "OverrideFromHistogram", "classParticleGunGenerator.html#a1003399b8cbd352a2cd458d0c0e98a7d", null ],

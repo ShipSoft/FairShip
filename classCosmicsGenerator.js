@@ -7,6 +7,8 @@ var classCosmicsGenerator =
     [ "Init", "classCosmicsGenerator.html#aef6cd1057296e7f80a05895b2ac3547b", null ],
     [ "Init", "classCosmicsGenerator.html#ab77bc24ca06682bbb854be5bc27c9eb6", null ],
     [ "Init", "classCosmicsGenerator.html#a664fc987559cce19725f73c726f0e4ad", null ],
+    [ "Init", "classCosmicsGenerator.html#a3f5d68b0b79dddffd25498e83c4e0542", null ],
+    [ "Init", "classCosmicsGenerator.html#a49e997f800bbb2c766ab9f93059a2c26", null ],
     [ "ReadEvent", "classCosmicsGenerator.html#ad8871b20e429d884fd3b7a06bffd76af", null ],
     [ "FluxIntegral", "classCosmicsGenerator.html#af8162d3e012f5a60e07da678a7d0d514", null ],
     [ "fRandomEngine", "classCosmicsGenerator.html#a5630621f5a2636fc83ee24aeae4fe3ce", null ],

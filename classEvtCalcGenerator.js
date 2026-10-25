@@ -31,6 +31,8 @@ var classEvtCalcGenerator =
     [ "GetVz", "classEvtCalcGenerator.html#aa79da6c1d29ee3e8ea5129e8acdbf73c", null ],
     [ "Init", "classEvtCalcGenerator.html#a975c5c1c8796d05ce19a250a05032572", null ],
     [ "Init", "classEvtCalcGenerator.html#a1ca2a87276c196085893defd7baab24b", null ],
+    [ "Init", "classEvtCalcGenerator.html#a3f5d68b0b79dddffd25498e83c4e0542", null ],
+    [ "Init", "classEvtCalcGenerator.html#a49e997f800bbb2c766ab9f93059a2c26", null ],
     [ "ReadEvent", "classEvtCalcGenerator.html#a549a5552d1222ae2ec4881645f61a656", null ],
     [ "SetPositions", "classEvtCalcGenerator.html#a98cafdb0ef782dabf8ab3f5b8ef83bef", null ],
     [ "branchVars", "classEvtCalcGenerator.html#a69e825e4551cfb9b96f1a79329f0fcff", null ],

@@ -1,7 +1,7 @@
 <map id="passive/ShipCave.h" name="passive/ShipCave.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="41,5,190,31"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="5,79,111,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="108,33,78,70,74,66,104,29"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="135,79,213,104"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="127,29,158,67,154,70,123,33"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="41,5,189,33"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,81,110,109"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="107,32,79,71,75,67,102,35"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="134,81,213,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="126,31,156,69,151,69,124,36"/>
 </map>

@@ -1,7 +1,7 @@
 <map id="muonShieldOptimization/pyFairModule.h" name="muonShieldOptimization/pyFairModule.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="17,5,200,45"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="5,93,92,119"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="96,47,68,84,64,81,92,44"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="116,93,221,119"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="125,44,154,81,149,84,121,47"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="16,5,198,50"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,98,91,126"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="94,49,68,87,64,83,89,52"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="114,98,219,126"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="124,48,151,85,145,85,121,53"/>
 </map>

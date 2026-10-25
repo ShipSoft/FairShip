@@ -6,6 +6,8 @@ var classGenieGenerator =
     [ "GetNevents", "classGenieGenerator.html#aa6d9e0479694d6fbd404f15489e75ad4", null ],
     [ "Init", "classGenieGenerator.html#ac0648a1ec1c2fde5c0f1c09ddc2915e4", null ],
     [ "Init", "classGenieGenerator.html#ab66c865624935e26f323ed644f7814c4", null ],
+    [ "Init", "classGenieGenerator.html#a3f5d68b0b79dddffd25498e83c4e0542", null ],
+    [ "Init", "classGenieGenerator.html#a49e997f800bbb2c766ab9f93059a2c26", null ],
     [ "NuOnly", "classGenieGenerator.html#a1099711d1ecd43706bf9e5d131c82416", null ],
     [ "ReadEvent", "classGenieGenerator.html#a76d001e6e62c10c3ae670913a8781e6d", null ],
     [ "ReadEventGeometryDriver", "classGenieGenerator.html#a0d76f31b4a472cce3ebe05d2eb0c8cc4", null ],

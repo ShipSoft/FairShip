@@ -1,9 +1,9 @@
 <map id="ActsTracking/ActsStrawGeometry.hpp" name="ActsTracking/ActsStrawGeometry.hpp">
-<area shape="rect" id="Node000001" title=" " alt="" coords="37,5,301,31"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="5,79,83,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="151,33,78,74,75,69,148,28"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="107,79,231,104"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="172,31,172,65,167,65,167,31"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="255,79,446,104"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="199,28,309,71,307,76,197,33"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="36,5,299,33"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,81,82,109"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="148,33,80,75,77,70,143,34"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="106,81,229,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="169,32,170,67,165,64,166,36"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="254,81,444,109"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="200,31,305,74,300,76,199,36"/>
 </map>

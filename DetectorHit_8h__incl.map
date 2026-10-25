@@ -1,9 +1,9 @@
 <map id="Detector/DetectorHit.h" name="Detector/DetectorHit.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="65,5,235,31"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="5,79,84,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="135,33,74,73,72,69,132,28"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="108,79,192,104"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="153,31,153,65,147,65,147,31"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="217,79,307,104"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="169,28,233,69,230,73,167,33"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="66,5,234,33"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,81,84,109"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="134,33,77,74,74,70,128,34"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="108,81,192,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="152,32,152,67,147,64,148,36"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="215,81,306,109"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="170,31,231,72,226,73,169,36"/>
 </map>

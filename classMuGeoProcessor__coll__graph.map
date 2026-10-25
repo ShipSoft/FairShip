@@ -1,7 +1,7 @@
 <map id="MuGeoProcessor" name="MuGeoProcessor">
-<area shape="rect" id="Node000001" title=" " alt="" coords="180,108,311,133"/>
-<area shape="rect" id="Node000002" href="$structMuGeoProcessor_1_1Measurement.html" title=" " alt="" coords="5,5,235,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="146,37,233,106,229,110,143,41"/>
-<area shape="rect" id="Node000003" href="$structMuGeoProcessor_1_1MuonWeights.html" title=" " alt="" coords="259,5,485,31"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="349,41,261,110,258,106,345,37"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="180,128,310,156"/>
+<area shape="rect" id="Node000002" href="$structMuGeoProcessor_1_1Measurement.html" title=" " alt="" coords="5,5,234,33"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="145,41,234,127,229,128,143,46"/>
+<area shape="rect" id="Node000003" href="$structMuGeoProcessor_1_1MuonWeights.html" title=" " alt="" coords="258,5,485,33"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="350,43,260,130,257,125,344,44"/>
 </map>

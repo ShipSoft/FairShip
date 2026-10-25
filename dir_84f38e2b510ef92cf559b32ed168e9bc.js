@@ -1,6 +1,6 @@
 var dir_84f38e2b510ef92cf559b32ed168e9bc =
 [
-    [ "SiliconTarget.cxx", "SiliconTarget_8cxx.html", null ],
+    [ "SiliconTarget.cxx", "SiliconTarget_8cxx.html", "SiliconTarget_8cxx" ],
     [ "SiliconTarget.h", "SiliconTarget_8h.html", "SiliconTarget_8h" ],
     [ "SiliconTargetHit.cxx", "SiliconTargetHit_8cxx.html", null ],
     [ "SiliconTargetHit.h", "SiliconTargetHit_8h.html", "SiliconTargetHit_8h" ],

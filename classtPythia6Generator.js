@@ -8,6 +8,8 @@ var classtPythia6Generator =
     [ "Init", "classtPythia6Generator.html#a2b3d728fba81ea8f2b46b751cd1713ac", null ],
     [ "Init", "classtPythia6Generator.html#a977feaf0cd13ebd881d57d17ff083f58", null ],
     [ "Init", "classtPythia6Generator.html#ad68a91ca7d3504b4318e9e1f65ff67cf", null ],
+    [ "Init", "classtPythia6Generator.html#a3f5d68b0b79dddffd25498e83c4e0542", null ],
+    [ "Init", "classtPythia6Generator.html#a49e997f800bbb2c766ab9f93059a2c26", null ],
     [ "ReadEvent", "classtPythia6Generator.html#a9251221a530544836aa1812234257ef5", null ],
     [ "SetMom", "classtPythia6Generator.html#a113f7d9cd3da4faae8f20bb0cbcd0424", null ],
     [ "SetTarget", "classtPythia6Generator.html#a79ab8cfdd9026715ac7a35d4d6ab73c5", null ],

@@ -1,8 +1,8 @@
 var classMuGeoProcessor =
 [
     [ "Measurement", "structMuGeoProcessor_1_1Measurement.html", "structMuGeoProcessor_1_1Measurement" ],
-    [ "MuonWeights", "structMuGeoProcessor_1_1MuonWeights.html", "structMuGeoProcessor_1_1MuonWeights" ],
     [ "Segment", "structMuGeoProcessor_1_1Segment.html", "structMuGeoProcessor_1_1Segment" ],
+    [ "MuonWeights", "structMuGeoProcessor_1_1MuonWeights.html", "structMuGeoProcessor_1_1MuonWeights" ],
     [ "MuGeoProcessor", "classMuGeoProcessor.html#ae803f2a167529a8d333d5fd18711ecd3", null ],
     [ "~MuGeoProcessor", "classMuGeoProcessor.html#a7d2ef4139908d15f15d39b6feae745a1", null ],
     [ "AddMagneticChord", "classMuGeoProcessor.html#aaf89f2afed489e116b31b21fd767934e", null ],

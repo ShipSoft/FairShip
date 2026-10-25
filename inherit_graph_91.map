@@ -1,33 +1,33 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" title=" " alt="" coords="5,327,77,352"/>
-<area shape="rect" id="Node000001" href="$classSHiP_1_1DetectorHit.html" title=" " alt="" coords="125,153,260,179"/>
-<area shape="poly" id="edge110_Node000000_Node000001" title=" " alt="" coords="48,313,75,251,97,217,124,188,142,177,145,181,127,192,101,220,80,253,53,315"/>
-<area shape="rect" id="Node000009" href="$classSHiP_1_1RecoTrack.html" title=" " alt="" coords="129,203,256,228"/>
-<area shape="poly" id="edge118_Node000000_Node000009" title=" " alt="" coords="56,313,84,274,124,237,145,226,147,230,127,241,88,278,60,316"/>
-<area shape="rect" id="Node000010" href="$classSHiP_1_1RecoVertex.html" title=" " alt="" coords="125,252,260,277"/>
-<area shape="poly" id="edge119_Node000000_Node000010" title=" " alt="" coords="71,317,124,286,151,275,153,280,127,291,74,321"/>
-<area shape="rect" id="Node000011" href="$classShipMCTrack.html" title=" " alt="" coords="140,301,245,327"/>
-<area shape="poly" id="edge120_Node000000_Node000011" title=" " alt="" coords="90,329,139,320,140,325,91,334"/>
-<area shape="rect" id="Node000012" href="$classShipParticle.html" title=" " alt="" coords="143,351,242,376"/>
-<area shape="poly" id="edge121_Node000000_Node000012" title=" " alt="" coords="91,345,144,353,143,358,91,350"/>
-<area shape="rect" id="Node000013" href="$classTrackInfo.html" title=" " alt="" coords="152,400,233,425"/>
-<area shape="poly" id="edge122_Node000000_Node000013" title=" " alt="" coords="74,357,126,386,153,397,151,402,124,391,72,362"/>
-<area shape="rect" id="Node000014" href="$classTracklet.html" title=" " alt="" coords="156,449,229,475"/>
-<area shape="poly" id="edge123_Node000000_Node000014" title=" " alt="" coords="60,362,88,400,127,436,157,450,155,455,124,440,84,404,56,365"/>
-<area shape="rect" id="Node000015" href="$classvetoHitOnTrack.html" title=" " alt="" coords="131,499,254,524"/>
-<area shape="poly" id="edge124_Node000000_Node000015" title=" " alt="" coords="53,364,80,425,101,457,127,485,145,496,142,501,124,489,97,460,75,427,48,366"/>
-<area shape="rect" id="Node000002" href="$classCaloScoringPlaneHit.html" title="Digitised scoring&#45;plane hit with a particle&#45;identification outcome." alt="" coords="308,5,463,31"/>
-<area shape="poly" id="edge111_Node000001_Node000002" title=" " alt="" coords="208,140,249,90,276,63,307,40,330,28,332,33,309,44,280,67,253,93,212,144"/>
-<area shape="rect" id="Node000003" href="$classMTCDetHit.html" title=" " alt="" coords="339,55,431,80"/>
-<area shape="poly" id="edge112_Node000001_Node000003" title=" " alt="" coords="220,142,260,115,307,89,338,77,340,82,309,94,263,120,223,147"/>
-<area shape="rect" id="Node000004" href="$classSiliconTargetHit.html" title=" " alt="" coords="323,104,447,129"/>
-<area shape="poly" id="edge113_Node000001_Node000004" title=" " alt="" coords="255,147,334,127,335,132,257,153"/>
-<area shape="rect" id="Node000005" href="$classTimeDetHit.html" title=" " alt="" coords="337,153,434,179"/>
-<area shape="poly" id="edge114_Node000001_Node000005" title=" " alt="" coords="274,163,336,163,336,169,274,169"/>
-<area shape="rect" id="Node000006" href="$classUpstreamTaggerHit.html" title="Hit class for UpstreamTagger scoring plane." alt="" coords="311,203,459,228"/>
-<area shape="poly" id="edge115_Node000001_Node000006" title=" " alt="" coords="257,179,335,200,334,205,255,185"/>
-<area shape="rect" id="Node000007" href="$classstrawtubesHit.html" title=" " alt="" coords="329,252,442,277"/>
-<area shape="poly" id="edge116_Node000001_Node000007" title=" " alt="" coords="251,182,262,188,277,201,286,213,295,225,309,237,335,249,333,254,307,242,291,229,282,216,273,204,258,192,249,187"/>
-<area shape="rect" id="Node000008" href="$classvetoHit.html" title=" " alt="" coords="350,301,421,327"/>
-<area shape="poly" id="edge117_Node000001_Node000008" title=" " alt="" coords="256,183,262,188,280,214,286,239,293,263,310,287,329,299,351,306,349,311,327,303,306,291,288,265,281,240,275,216,258,192,253,188"/>
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,344,77,372"/>
+<area shape="rect" id="Node000001" href="$classSHiP_1_1DetectorHit.html" title=" " alt="" coords="125,161,259,189"/>
+<area shape="poly" id="edge110_Node000000_Node000001" title=" " alt="" coords="48,328,75,265,96,230,123,200,145,187,142,192,126,204,100,233,80,267,53,330"/>
+<area shape="rect" id="Node000009" href="$classSHiP_1_1RecoTrack.html" title=" " alt="" coords="129,213,254,241"/>
+<area shape="poly" id="edge118_Node000000_Node000009" title=" " alt="" coords="56,329,85,290,123,252,148,239,144,244,126,256,89,293,61,332"/>
+<area shape="rect" id="Node000010" href="$classSHiP_1_1RecoVertex.html" title=" " alt="" coords="125,265,258,293"/>
+<area shape="poly" id="edge119_Node000000_Node000010" title=" " alt="" coords="73,333,123,303,154,292,150,295,126,308,77,337"/>
+<area shape="rect" id="Node000011" href="$classShipMCTrack.html" title=" " alt="" coords="140,317,244,345"/>
+<area shape="poly" id="edge120_Node000000_Node000011" title=" " alt="" coords="91,347,141,339,137,342,94,351"/>
+<area shape="rect" id="Node000012" href="$classShipParticle.html" title=" " alt="" coords="143,369,240,397"/>
+<area shape="poly" id="edge121_Node000000_Node000012" title=" " alt="" coords="91,364,145,373,140,376,93,369"/>
+<area shape="rect" id="Node000013" href="$classTrackInfo.html" title=" " alt="" coords="152,421,232,449"/>
+<area shape="poly" id="edge122_Node000000_Node000013" title=" " alt="" coords="76,378,126,406,154,420,149,422,123,411,76,383"/>
+<area shape="rect" id="Node000014" href="$classTracklet.html" title=" " alt="" coords="156,473,228,501"/>
+<area shape="poly" id="edge123_Node000000_Node000014" title=" " alt="" coords="59,382,89,422,126,458,158,476,153,477,123,463,85,425,58,387"/>
+<area shape="rect" id="Node000015" href="$classvetoHitOnTrack.html" title=" " alt="" coords="131,525,252,553"/>
+<area shape="poly" id="edge124_Node000000_Node000015" title=" " alt="" coords="52,384,80,448,101,481,126,510,146,525,140,525,123,515,96,485,75,451,50,389"/>
+<area shape="rect" id="Node000002" href="$classCaloScoringPlaneHit.html" title="Digitised scoring&#45;plane hit with a particle&#45;identification outcome." alt="" coords="307,5,460,33"/>
+<area shape="poly" id="edge111_Node000001_Node000002" title=" " alt="" coords="208,147,249,95,276,68,306,44,332,32,328,35,308,48,279,72,253,99,213,150"/>
+<area shape="rect" id="Node000003" href="$classMTCDetHit.html" title=" " alt="" coords="338,57,429,85"/>
+<area shape="poly" id="edge112_Node000001_Node000003" title=" " alt="" coords="221,150,261,122,306,95,340,83,336,87,308,100,264,126,225,154"/>
+<area shape="rect" id="Node000004" href="$classSiliconTargetHit.html" title=" " alt="" coords="322,109,445,137"/>
+<area shape="poly" id="edge113_Node000001_Node000004" title=" " alt="" coords="259,154,332,136,328,139,262,159"/>
+<area shape="rect" id="Node000005" href="$classTimeDetHit.html" title=" " alt="" coords="336,161,432,189"/>
+<area shape="poly" id="edge114_Node000001_Node000005" title=" " alt="" coords="273,173,337,174,333,177,275,178"/>
+<area shape="rect" id="Node000006" href="$classUpstreamTaggerHit.html" title="Hit class for UpstreamTagger scoring plane." alt="" coords="310,213,457,241"/>
+<area shape="poly" id="edge115_Node000001_Node000006" title=" " alt="" coords="260,191,332,212,327,214,261,196"/>
+<area shape="rect" id="Node000007" href="$classstrawtubesHit.html" title=" " alt="" coords="328,265,440,293"/>
+<area shape="poly" id="edge116_Node000001_Node000007" title=" " alt="" coords="249,194,261,200,276,213,285,226,294,238,308,250,334,264,328,265,306,255,290,242,281,229,272,217,257,204,250,199"/>
+<area shape="rect" id="Node000008" href="$classvetoHit.html" title=" " alt="" coords="349,317,418,345"/>
+<area shape="poly" id="edge117_Node000001_Node000008" title=" " alt="" coords="254,195,261,200,279,227,285,253,291,278,298,290,309,302,328,315,351,325,346,326,326,320,305,307,294,293,286,280,280,254,274,229,257,204,254,200"/>
 </map>

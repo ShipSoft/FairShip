@@ -1,8 +1,8 @@
 var namespaceShipMuDIS =
 [
-    [ "CBMSimBranches", "structShipMuDIS_1_1CBMSimBranches.html", "structShipMuDIS_1_1CBMSimBranches" ],
-    [ "MuonBranches", "structShipMuDIS_1_1MuonBranches.html", "structShipMuDIS_1_1MuonBranches" ],
     [ "MuonDISBranches", "structShipMuDIS_1_1MuonDISBranches.html", "structShipMuDIS_1_1MuonDISBranches" ],
+    [ "MuonBranches", "structShipMuDIS_1_1MuonBranches.html", "structShipMuDIS_1_1MuonBranches" ],
+    [ "CBMSimBranches", "structShipMuDIS_1_1CBMSimBranches.html", "structShipMuDIS_1_1CBMSimBranches" ],
     [ "MuonDISInBranches", "structShipMuDIS_1_1MuonDISInBranches.html", "structShipMuDIS_1_1MuonDISInBranches" ],
     [ "MuonInBranches", "structShipMuDIS_1_1MuonInBranches.html", "structShipMuDIS_1_1MuonInBranches" ],
     [ "MatType", "namespaceShipMuDIS.html#a6e84a21bf00778eafdce1fb4cb1cff55", [

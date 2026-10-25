@@ -4,8 +4,6 @@ var classSHiP_1_1TTreeGenerator =
     [ "~TTreeGenerator", "classSHiP_1_1TTreeGenerator.html#acbbae97a7e64bfc7209e23f1242f986b", null ],
     [ "GetCurrentEvent", "classSHiP_1_1TTreeGenerator.html#a6f522ca290397efd2a2846a1f8874ec4", null ],
     [ "GetNEvents", "classSHiP_1_1TTreeGenerator.html#a0db1f823fb4d890344fc26b51dacac65", null ],
-    [ "Init", "classSHiP_1_1TTreeGenerator.html#ab36f58abbf38877048e55c72cba8b21b", null ],
-    [ "Init", "classSHiP_1_1TTreeGenerator.html#ab189ccf5bef6cfec7a0b76656299a8d7", null ],
     [ "Init", "classSHiP_1_1TTreeGenerator.html#a8cb7e2f870f3ae0536621af0e9c21e65", null ],
     [ "Init", "classSHiP_1_1TTreeGenerator.html#a8aedd9ac7b79ab2a8977b8e5a4e011f9", null ],
     [ "Init", "classSHiP_1_1TTreeGenerator.html#a3f5d68b0b79dddffd25498e83c4e0542", null ],

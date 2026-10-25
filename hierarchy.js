@@ -2,6 +2,17 @@ var hierarchy =
 [
     [ "UpstreamTaggerDetector._FiredTile", "classUpstreamTaggerDetector_1_1__FiredTile.html", null ],
     [ "split_provenance._Link", "classsplit__provenance_1_1__Link.html", null ],
+    [ "ABC", null, [
+      [ "BaseDetector.BaseDetector", "classBaseDetector_1_1BaseDetector.html", [
+        [ "CaloScoringPlaneDetector.CaloScoringPlaneDetector", "classCaloScoringPlaneDetector_1_1CaloScoringPlaneDetector.html", null ],
+        [ "MTCDetector.MTCDetector", "classMTCDetector_1_1MTCDetector.html", null ],
+        [ "SBTDetector.SBTDetector", "classSBTDetector_1_1SBTDetector.html", null ],
+        [ "SiliconTargetDetector.SiliconTargetDetector", "classSiliconTargetDetector_1_1SiliconTargetDetector.html", null ],
+        [ "UpstreamTaggerDetector.UpstreamTaggerDetector", "classUpstreamTaggerDetector_1_1UpstreamTaggerDetector.html", null ],
+        [ "strawtubesDetector.strawtubesDetector", "classstrawtubesDetector_1_1strawtubesDetector.html", null ],
+        [ "timeDetector.timeDetector", "classtimeDetector_1_1timeDetector.html", null ]
+      ] ]
+    ] ],
     [ "AbsBField", null, [
       [ "genfit::FairShipFields", "classgenfit_1_1FairShipFields.html", null ]
     ] ],
@@ -38,7 +49,11 @@ var hierarchy =
       [ "VectorMCPointSource< PointType >", "classVectorMCPointSource.html", null ]
     ] ],
     [ "FairDetector", null, [
-      [ "SHiP::Detector< CaloScoringPlanePoint >", "classSHiP_1_1Detector.html", null ],
+      [ "SHiP::Detector< CaloScoringPlanePoint >", "classSHiP_1_1Detector.html", [
+        [ "SHiP::ScoringPlane< CaloScoringPlanePoint >", "classSHiP_1_1ScoringPlane.html", [
+          [ "CaloScoringPlane", "classCaloScoringPlane.html", null ]
+        ] ]
+      ] ],
       [ "SHiP::Detector< MTCDetPoint >", "classSHiP_1_1Detector.html", [
         [ "MTCDetector", "classMTCDetector.html", null ]
       ] ],
@@ -57,7 +72,11 @@ var hierarchy =
       [ "SHiP::Detector< UpstreamTaggerPoint >", "classSHiP_1_1Detector.html", [
         [ "UpstreamTagger", "classUpstreamTagger.html", null ]
       ] ],
-      [ "SHiP::Detector< UpstreamTaggerScoringPoint >", "classSHiP_1_1Detector.html", null ],
+      [ "SHiP::Detector< UpstreamTaggerScoringPoint >", "classSHiP_1_1Detector.html", [
+        [ "SHiP::ScoringPlane< UpstreamTaggerScoringPoint >", "classSHiP_1_1ScoringPlane.html", [
+          [ "UpstreamTaggerScoringPlane", "classUpstreamTaggerScoringPlane.html", null ]
+        ] ]
+      ] ],
       [ "SHiP::Detector< vetoPoint >", "classSHiP_1_1Detector.html", [
         [ "exitHadronAbsorber", "classexitHadronAbsorber.html", null ],
         [ "veto", "classveto.html", null ]
@@ -66,12 +85,6 @@ var hierarchy =
         [ "strawtubes", "classstrawtubes.html", null ]
       ] ],
       [ "SHiP::Detector< PointType >", "classSHiP_1_1Detector.html", [
-        [ "SHiP::ScoringPlane< CaloScoringPlanePoint >", "classSHiP_1_1ScoringPlane.html", [
-          [ "CaloScoringPlane", "classCaloScoringPlane.html", null ]
-        ] ],
-        [ "SHiP::ScoringPlane< UpstreamTaggerScoringPoint >", "classSHiP_1_1ScoringPlane.html", [
-          [ "UpstreamTaggerScoringPlane", "classUpstreamTaggerScoringPlane.html", null ]
-        ] ],
         [ "SHiP::ScoringPlane< PointType >", "classSHiP_1_1ScoringPlane.html", null ]
       ] ]
     ] ],
@@ -183,10 +196,16 @@ var hierarchy =
     [ "ShipMuDIS::MuonInBranches", "structShipMuDIS_1_1MuonInBranches.html", null ],
     [ "MuonPath", "classMuonPath.html", null ],
     [ "MuGeoProcessor::MuonWeights", "structMuGeoProcessor_1_1MuonWeights.html", null ],
+    [ "NamedTuple", null, [
+      [ "makeCascadePythia8.NucleusModel", "classmakeCascadePythia8_1_1NucleusModel.html", null ],
+      [ "makeCascadePythia8.SignalConfig", "classmakeCascadePythia8_1_1SignalConfig.html", null ],
+      [ "study_GammaConv.Setup", "classstudy__GammaConv_1_1Setup.html", null ],
+      [ "study_muMSC.Setup", "classstudy__muMSC_1_1Setup.html", null ]
+    ] ],
     [ "ParticleGunParticle", "structParticleGunParticle.html", null ],
     [ "SHiP::PatRecHit", "structSHiP_1_1PatRecHit.html", null ],
     [ "caloScoringPlanePID.PIDModel", "classcaloScoringPlanePID_1_1PIDModel.html", null ],
-    [ "SHiP::ScoringPlane< PointType >::Plane", "structSHiP_1_1ScoringPlane_1_1Plane.html", null ],
+    [ "SHiP::ScoringPlane&lt; PointType &gt;::Plane", "structSHiP_1_1ScoringPlane_1_1Plane.html", null ],
     [ "ROOT.pyFairModule", null, [
       [ "study_GammaConv.Block", "classstudy__GammaConv_1_1Block.html", null ],
       [ "study_muMSC.Block", "classstudy__muMSC_1_1Block.html", null ],
@@ -257,22 +276,5 @@ var hierarchy =
       [ "caloScoringPlanePID.PIDConfigError", "classcaloScoringPlanePID_1_1PIDConfigError.html", null ]
     ] ],
     [ "Veto", "classVeto.html", null ],
-    [ "exitHadronAbsorber::WeightHistory", "structexitHadronAbsorber_1_1WeightHistory.html", null ],
-    [ "ABC", null, [
-      [ "BaseDetector.BaseDetector", "classBaseDetector_1_1BaseDetector.html", [
-        [ "CaloScoringPlaneDetector.CaloScoringPlaneDetector", "classCaloScoringPlaneDetector_1_1CaloScoringPlaneDetector.html", null ],
-        [ "MTCDetector.MTCDetector", "classMTCDetector_1_1MTCDetector.html", null ],
-        [ "SBTDetector.SBTDetector", "classSBTDetector_1_1SBTDetector.html", null ],
-        [ "SiliconTargetDetector.SiliconTargetDetector", "classSiliconTargetDetector_1_1SiliconTargetDetector.html", null ],
-        [ "UpstreamTaggerDetector.UpstreamTaggerDetector", "classUpstreamTaggerDetector_1_1UpstreamTaggerDetector.html", null ],
-        [ "strawtubesDetector.strawtubesDetector", "classstrawtubesDetector_1_1strawtubesDetector.html", null ],
-        [ "timeDetector.timeDetector", "classtimeDetector_1_1timeDetector.html", null ]
-      ] ]
-    ] ],
-    [ "NamedTuple", null, [
-      [ "makeCascadePythia8.NucleusModel", "classmakeCascadePythia8_1_1NucleusModel.html", null ],
-      [ "makeCascadePythia8.SignalConfig", "classmakeCascadePythia8_1_1SignalConfig.html", null ],
-      [ "study_GammaConv.Setup", "classstudy__GammaConv_1_1Setup.html", null ],
-      [ "study_muMSC.Setup", "classstudy__muMSC_1_1Setup.html", null ]
-    ] ]
+    [ "exitHadronAbsorber::WeightHistory", "structexitHadronAbsorber_1_1WeightHistory.html", null ]
 ];

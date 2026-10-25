@@ -27,14 +27,6 @@ var NAVTREE =
   [ "FairShip", "index.html", [
     [ "FairShip documentation", "index.html", null ],
     [ "AI Policy", "md_AI__POLICY.html", null ],
-    [ "CaloScoringPlane", "md_CaloScoringPlane_2README.html", [
-      [ "Geometry and simulation", "md_CaloScoringPlane_2README.html#autotoc_md2", null ],
-      [ "Digitisation and particle identification", "md_CaloScoringPlane_2README.html#autotoc_md3", [
-        [ "True species", "md_CaloScoringPlane_2README.html#autotoc_md4", null ],
-        [ "Configuration file", "md_CaloScoringPlane_2README.html#autotoc_md5", null ],
-        [ "Using CaloScoringPlanePID directly", "md_CaloScoringPlane_2README.html#autotoc_md6", null ]
-      ] ]
-    ] ],
     [ "Changelog", "md_CHANGELOG.html", [
       [ "Unreleased", "md_CHANGELOG.html#autotoc_md8", [
         [ "Added", "md_CHANGELOG.html#autotoc_md9", null ],
@@ -152,22 +144,11 @@ var NAVTREE =
         [ "Removed", "md_CHANGELOG.html#autotoc_md106", null ]
       ] ]
     ] ],
-    [ "README", "md_field_2README.html", null ],
     [ "README.filter", "md_newMuonDIS_2README_8filter.html", [
       [ "Filtering prepared DIS events", "md_newMuonDIS_2README_8filter.html#autotoc_md108", [
         [ "Custom selections", "md_newMuonDIS_2README_8filter.html#autotoc_md109", null ],
         [ "Reusable magnetic propagation", "md_newMuonDIS_2README_8filter.html#autotoc_md110", null ],
         [ "Input branches in a chain", "md_newMuonDIS_2README_8filter.html#autotoc_md111", null ]
-      ] ]
-    ] ],
-    [ "README", "md_newMuonDIS_2README.html", [
-      [ "Muon DIS simulation", "md_newMuonDIS_2README.html#autotoc_md112", [
-        [ "Introduction", "md_newMuonDIS_2README.html#autotoc_md113", null ],
-        [ "Quick recipe", "md_newMuonDIS_2README.html#autotoc_md114", null ],
-        [ "Overview of classes:", "md_newMuonDIS_2README.html#autotoc_md115", null ],
-        [ "Path to volumes", "md_newMuonDIS_2README.html#autotoc_md116", null ],
-        [ "DIS events settings", "md_newMuonDIS_2README.html#autotoc_md117", null ],
-        [ "Structure of output tree:", "md_newMuonDIS_2README.html#autotoc_md118", null ]
       ] ]
     ] ],
     [ "FairShip", "md_README.html", [
@@ -189,12 +170,6 @@ var NAVTREE =
         [ "With CVMFS (lxplus and similar)", "md_README.html#autotoc_md133", null ],
         [ "Without CVMFS", "md_README.html#autotoc_md134", null ]
       ] ]
-    ] ],
-    [ "Configuration files for GENIE simulations", "md_shipgen_2genie__config_2README.html", [
-      [ "Introduction", "md_shipgen_2genie__config_2README.html#autotoc_md136", null ],
-      [ "Details", "md_shipgen_2genie__config_2README.html#autotoc_md137", null ],
-      [ "History", "md_shipgen_2genie__config_2README.html#autotoc_md138", null ],
-      [ "Notes on particle decays", "md_shipgen_2genie__config_2README.html#autotoc_md139", null ]
     ] ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
@@ -237,47 +212,39 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "ActsFrame_8hpp.html",
-"SciFiMapping_8py.html#a95d99f10990a300f568d41cad1c95af9",
-"ShipUnit_8h.html#ac17805e2154634b45e0493e800208b29",
-"canonicaliseFieldMap_8py.html#af0e2677b8c4e0ac366726b6d940dd0d6",
-"classEventHistogram.html#a32d6420371c3d6e31cbc7b90700686ab",
-"classHNLPythia8Generator.html#a6be32a40e40958ead362d03660029196",
-"classMuDISFilter.html#aecbb0c1c88551b3e3aa5a0336926cce7",
-"classNtupleGenerator.html#a3c31903311238df1f7755bfea8fe0b22",
-"classSHiP_1_1Detector.html#a59b2901f4062e764c35947220fe99cee",
-"classSHiP_1_1RecoVertex.html#a7620718065f400034135a18c187e3eaf",
-"classShipBFieldMap.html#ad89fd4e71cf67011e40940c6293a2ffe",
-"classShipMCTrack.html#a202124a9bba57ab33ac1730c2b75dd21",
-"classSiliconTarget.html#a1f70999d37f0b8de06160f8e7e670aa1",
-"classTimeDetHit.html#acee0a0d0ff478f9b9eac425518b136c4",
-"classeventDisplay_1_1EventLoop.html#a1fec4cb28423bf7aee3110489bf5a1f7",
-"classfieldMapTools_1_1MapRange.html#a16b8c509fae01607b6a9334e78538de5",
-"classrpvsusy_1_1RPVSUSYbranchings.html#ab872d9101e612cffe21211b4f865970d",
-"classsplit__provenance_1_1SplitProvenance.html#a287fc726638a5ab11d4660e519e7f709",
-"classtimeDetector_1_1timeDetector.html#a065f5a44b3e3f47982f99e69fe23e1bc",
-"decorators_8py.html#a1df8da2cd98ca2092730bcaf3b2838c6",
-"fieldMapTools_8py.html#a551834f6757b959db5ff9f84d25683fc",
-"hepunit_8py.html#a5e0145da845236c3fcd68b3c22ffdf03",
-"makeDecay_8py.html#ad422f34c01c3361b6027a63eaad5cfd7",
-"md_CHANGELOG.html#autotoc_md33",
-"namespaceShipAna.html#acaf84bc085f1f73b4f2351df8635971e",
-"namespacecheckZpositions.html#ad76f19d29dcf49656a5149f193b9fa84",
-"namespaceextractMuonsAndUpdateWeight.html#adfec8af16ddc9104b3a740bc14d0759f",
-"namespacehepunit.html#ad9ff4aee1b48ce23d4393561ff0552b8",
-"namespacemake__nTuple__SBT.html",
-"namespaceprepareEvents.html#a13258919d3ea42910bb902da6d3ea3aa",
-"namespacerun__fixedTarget.html#aa5bc42f75f97f070ce6f0d119cb72d8a",
-"namespacerun__tracking__scan.html#a37ed282b5bffd0a23c4c8d5edcdaea60",
-"namespaceshipunit.html#acb4b3cbcf1f2f1e687d62def03df0736",
-"namespacetest__heavyFlavourScaling.html#a09a9741db8e8543a430dcdc1fc2697f4",
-"runCharmHadProd_8py.html#a5a3285848784a5d2b42d34f916b2f70c",
-"run__simScript_8py.html#a7761e3105d78ab195878b40089abdfa1",
-"shipStrawTracking_8py.html#a6f1c8ab4a8627d83bd87a950231721c6",
-"structModelSpec.html#a61bcc93c9fd9108e7df476d229b086ac",
-"structShipMuDIS_1_1CBMSimBranches.html#a8c717ca587f9416c8cb8b329164ff835",
-"study__muMSC_8py.html#ad2940d32982ebfb35486ed68163021d1",
-"test__straw__reco_8py.html#ae9a96013c6a378eb0a33526fbb3aea21"
+"ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680a7dab255937fa6a88fcb024184485bbc5",
+"classCaloScoringPlaneDetector_1_1CaloScoringPlaneDetector.html#a5bfa7b5fc5810d0618082e2123d5c10b",
+"classEvtCalcGenerator.html#a98cafdb0ef782dabf8ab3f5b8ef83bef",
+"classMTCDetHit.html#a89dfd480e0ad0e1ebbaa473eaa062a93",
+"classMuDISProcessor.html#a99b79e6088f1424dc7e4f1ca052eea91",
+"classParticleGunGenerator.html#a66ba1da848d1d7905a448f2d7d4edcdb",
+"classSHiP_1_1DetectorHit.html#a3fa1f1f74b53a6390e831e1f6244c1a2",
+"classSHiP_1_1RecoVertex.html#ae3cd9dc5db16bb7d0b992241c253c815",
+"classShipCave.html#af6417f3ea148f15147481b44c6874130",
+"classShipMCTrack.html#aed4f0b4662fb4e25e3d7f989b80bb66ca50309a0b7d3894c9bdaf5f9a4e7fc428",
+"classSiliconTargetPoint.html#a05e12ad1eeffb08df1df7369ff3b96a2",
+"classUpstreamTagger.html#a50e84425f21f58a52a73fc5474eb1641",
+"classeventDisplay_1_1IO.html#a2322ddf595ff3e0e74ea10695d001da7",
+"classgenfit_1_1FairShipFields.html#a39aa9aeac8627b7f3796c6483eeb93ca",
+"classshipDigiReco_1_1ShipDigiReco.html#a08f7df8a50aa61462adabaeda75c52be",
+"classsplit__provenance_1_1__Link.html",
+"classtracking__benchmark_1_1TrackingBenchmark.html#a50885c8ee8e5dd181cac58728e31ca65",
+"functions_func_a.html",
+"md_newMuonDIS_2README_8filter.html#autotoc_md110",
+"namespaceana__ShipMuon.html#a21c426c3acb025f86734f82834caed9c",
+"namespaceeventDisplay.html#a44c1327d70cbf05a6e7e78cc4c3e4ab4",
+"namespacehepunit.html#a0b6881857afaba2bf49760b305de6035",
+"namespacemakeDecay.html#a1ec10b6fcd210fce31ebbfbc27fd2c5e",
+"namespacemembers_func.html",
+"namespacerunCharmHadProd.html#ab8513ba48dca84d9ba0ec5b34c140a7d",
+"namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed",
+"namespaceshipgen.html#ac34c2223302691f3db2e078530598bba",
+"namespacestudy__muMSC.html#af40bec1213f786d13938aea4817b82c4",
+"run__simScript_8py_source.html",
+"structSHiP_1_1StrawPatRec_1_1Config.html#a1dc77a310886b8156a616314a9c10cd3",
+"structTrackBuffer.html#a82f54dde28cb193990ffec500e7ead8d"
 ];
 
-var SYNCONMSG = 'click to disable panel synchronisation';
-var SYNCOFFMSG = 'click to enable panel synchronisation';
+var SYNCONMSG = 'click to disable panel synchronization';
+var SYNCOFFMSG = 'click to enable panel synchronization';
+var LISTOFALLMEMBERS = 'List of all members';

@@ -1,20 +1,20 @@
 <map id="newMuonDIS/MuDISDefs.h" name="newMuonDIS/MuDISDefs.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="334,5,529,31"/>
-<area shape="rect" id="Node000002" href="$MuDISFilter_8h.html" title=" " alt="" coords="67,79,265,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="376,37,210,81,208,76,375,32"/>
-<area shape="rect" id="Node000004" href="$MuDISProcessor_8h.html" title=" " alt="" coords="242,152,469,177"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="412,42,383,80,368,119,360,152,355,151,363,117,378,77,407,39"/>
-<area shape="rect" id="Node000006" href="$MuGeoProcessor_8h.html" title=" " alt="" coords="393,79,624,104"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="456,38,498,76,494,80,452,42"/>
-<area shape="rect" id="Node000008" href="$NewMuDISGenerator_8h.html" title=" " alt="" coords="710,79,969,104"/>
-<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="511,30,774,76,773,81,510,36"/>
-<area shape="rect" id="Node000003" href="$MuDISFilter_8cxx.html" title=" " alt="" coords="5,152,217,177"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="151,117,122,154,118,150,147,113"/>
-<area shape="rect" id="Node000005" href="$MuDISProcessor_8cxx.html" title=" " alt="" coords="234,225,477,251"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="358,191,358,225,353,225,353,191"/>
-<area shape="poly" id="edge6_Node000006_Node000004" title=" " alt="" coords="473,112,382,154,379,149,471,107"/>
-<area shape="rect" id="Node000007" href="$MuGeoProcessor_8cxx.html" title=" " alt="" coords="493,152,740,177"/>
-<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="539,109,600,150,598,154,536,114"/>
-<area shape="rect" id="Node000009" href="$NewMuDISGenerator_8cxx.html" title=" " alt="" coords="764,152,1037,177"/>
-<area shape="poly" id="edge9_Node000008_Node000009" title=" " alt="" coords="860,113,893,150,889,154,856,116"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="332,5,527,33"/>
+<area shape="rect" id="Node000002" href="$MuDISFilter_8h.html" title=" " alt="" coords="66,81,262,109"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="365,39,213,83,211,78,369,36"/>
+<area shape="rect" id="Node000004" href="$MuDISProcessor_8h.html" title=" " alt="" coords="240,157,467,184"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="408,43,381,82,366,122,358,158,354,155,361,121,377,80,404,46"/>
+<area shape="rect" id="Node000006" href="$MuGeoProcessor_8h.html" title=" " alt="" coords="390,81,621,109"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="455,41,495,81,490,80,453,46"/>
+<area shape="rect" id="Node000008" href="$NewMuDISGenerator_8h.html" title=" " alt="" coords="706,81,964,109"/>
+<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="517,34,765,80,759,81,517,39"/>
+<area shape="rect" id="Node000003" href="$MuDISFilter_8cxx.html" title=" " alt="" coords="5,157,217,184"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="148,120,122,158,118,155,144,123"/>
+<area shape="rect" id="Node000005" href="$MuDISProcessor_8cxx.html" title=" " alt="" coords="233,232,474,260"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="356,198,356,234,352,230,352,202"/>
+<area shape="poly" id="edge6_Node000006_Node000004" title=" " alt="" coords="467,115,382,159,380,154,462,117"/>
+<area shape="rect" id="Node000007" href="$MuGeoProcessor_8cxx.html" title=" " alt="" coords="491,157,736,184"/>
+<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="538,115,597,157,592,156,537,120"/>
+<area shape="rect" id="Node000009" href="$NewMuDISGenerator_8cxx.html" title=" " alt="" coords="760,157,1032,184"/>
+<area shape="poly" id="edge9_Node000008_Node000009" title=" " alt="" coords="857,118,888,157,883,155,855,123"/>
 </map>

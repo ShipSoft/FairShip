@@ -1,5 +1,5 @@
 <map id="MuDISFilter::FilterCandidate" name="MuDISFilter::FilterCandidate">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,93,209,119"/>
-<area shape="rect" id="Node000002" href="$classDISparticle.html" title=" " alt="" coords="61,5,154,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="110,45,110,93,105,93,105,45"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,106,209,134"/>
+<area shape="rect" id="Node000002" href="$classDISparticle.html" title=" " alt="" coords="61,5,153,33"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="109,47,110,106,104,105,105,50"/>
 </map>

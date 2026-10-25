@@ -17,7 +17,7 @@ var classSciFiMapping_1_1SciFiMapping =
     [ "modules", "classSciFiMapping_1_1SciFiMapping.html#aff5074300cd92594ea25952fed27b3b1", null ],
     [ "scifi", "classSciFiMapping_1_1SciFiMapping.html#aa5748a55f3f3f08032d05bf8c8639517", null ],
     [ "sipm_pos_U", "classSciFiMapping_1_1SciFiMapping.html#aca292dfd2152ad7249fe29c4bba93c37", null ],
-    [ "sipm_pos_V", "classSciFiMapping_1_1SciFiMapping.html#abd20ea6728ba88027699c0df365dcf14", null ],
+    [ "sipm_pos_V", "classSciFiMapping_1_1SciFiMapping.html#afcf539a059181406933e81effd474592", null ],
     [ "sipm_to_fibre_map_U", "classSciFiMapping_1_1SciFiMapping.html#a99f8ad40772c13652186498fd42986f1", null ],
-    [ "sipm_to_fibre_map_V", "classSciFiMapping_1_1SciFiMapping.html#a28cab36fc1b0ba6561b2002711d38da6", null ]
+    [ "sipm_to_fibre_map_V", "classSciFiMapping_1_1SciFiMapping.html#ab028b3533b340ebfe613e49807b2edf7", null ]
 ];

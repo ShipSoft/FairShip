@@ -1,5 +1,5 @@
 <map id="shipgen/MeanMaterialBudget.h" name="shipgen/MeanMaterialBudget.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,231,31"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="91,79,145,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="121,31,121,65,115,65,115,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,230,33"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="91,81,144,109"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="119,32,120,66,115,64,116,36"/>
 </map>

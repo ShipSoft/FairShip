@@ -1,9 +1,9 @@
 <map id="ActsTracking/ActsShipField.hpp" name="ActsTracking/ActsShipField.hpp">
-<area shape="rect" id="Node000001" title=" " alt="" coords="213,5,436,31"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="5,79,201,119"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="293,33,170,77,168,72,292,28"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="225,79,424,119"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="327,31,327,65,322,65,322,31"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="449,86,627,111"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="357,28,495,79,493,84,355,33"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="212,5,434,33"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,81,201,126"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="290,33,176,78,175,73,285,34"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="224,81,422,126"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="325,32,325,67,321,64,321,36"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="446,90,624,117"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="358,31,490,83,485,84,357,36"/>
 </map>

@@ -17,16 +17,16 @@ var annotated_dup =
       [ "EventHistogram", "classevent__histogram_1_1EventHistogram.html", "classevent__histogram_1_1EventHistogram" ]
     ] ],
     [ "eventDisplay", "namespaceeventDisplay.html", [
-      [ "DrawTracks", "classeventDisplay_1_1DrawTracks.html", "classeventDisplay_1_1DrawTracks" ],
       [ "DrawVetoDigi", "classeventDisplay_1_1DrawVetoDigi.html", "classeventDisplay_1_1DrawVetoDigi" ],
-      [ "EventLoop", "classeventDisplay_1_1EventLoop.html", "classeventDisplay_1_1EventLoop" ],
+      [ "DrawTracks", "classeventDisplay_1_1DrawTracks.html", "classeventDisplay_1_1DrawTracks" ],
       [ "IO", "classeventDisplay_1_1IO.html", "classeventDisplay_1_1IO" ],
+      [ "EventLoop", "classeventDisplay_1_1EventLoop.html", "classeventDisplay_1_1EventLoop" ],
       [ "Rulers", "classeventDisplay_1_1Rulers.html", "classeventDisplay_1_1Rulers" ]
     ] ],
     [ "experimental", "namespaceexperimental.html", [
       [ "analysis_toolkit", "namespaceexperimental_1_1analysis__toolkit.html", [
-        [ "event_inspector", "classexperimental_1_1analysis__toolkit_1_1event__inspector.html", "classexperimental_1_1analysis__toolkit_1_1event__inspector" ],
-        [ "selection_check", "classexperimental_1_1analysis__toolkit_1_1selection__check.html", "classexperimental_1_1analysis__toolkit_1_1selection__check" ]
+        [ "selection_check", "classexperimental_1_1analysis__toolkit_1_1selection__check.html", "classexperimental_1_1analysis__toolkit_1_1selection__check" ],
+        [ "event_inspector", "classexperimental_1_1analysis__toolkit_1_1event__inspector.html", "classexperimental_1_1analysis__toolkit_1_1event__inspector" ]
       ] ]
     ] ],
     [ "fieldMapTools", "namespacefieldMapTools.html", [
@@ -38,15 +38,15 @@ var annotated_dup =
     [ "hnl", "namespacehnl.html", [
       [ "CKMmatrix", "classhnl_1_1CKMmatrix.html", "classhnl_1_1CKMmatrix" ],
       [ "constants", "classhnl_1_1constants.html", "classhnl_1_1constants" ],
-      [ "HNL", "classhnl_1_1HNL.html", "classhnl_1_1HNL" ],
-      [ "HNLbranchings", "classhnl_1_1HNLbranchings.html", "classhnl_1_1HNLbranchings" ]
+      [ "HNLbranchings", "classhnl_1_1HNLbranchings.html", "classhnl_1_1HNLbranchings" ],
+      [ "HNL", "classhnl_1_1HNL.html", "classhnl_1_1HNL" ]
     ] ],
     [ "makeCascadePythia8", "namespacemakeCascadePythia8.html", [
-      [ "InclusiveSignalEvents", "classmakeCascadePythia8_1_1InclusiveSignalEvents.html", "classmakeCascadePythia8_1_1InclusiveSignalEvents" ],
       [ "NucleusModel", "classmakeCascadePythia8_1_1NucleusModel.html", null ],
-      [ "PythiaFactory", "classmakeCascadePythia8_1_1PythiaFactory.html", "classmakeCascadePythia8_1_1PythiaFactory" ],
       [ "SignalConfig", "classmakeCascadePythia8_1_1SignalConfig.html", null ],
-      [ "SignalEvents", "classmakeCascadePythia8_1_1SignalEvents.html", "classmakeCascadePythia8_1_1SignalEvents" ]
+      [ "PythiaFactory", "classmakeCascadePythia8_1_1PythiaFactory.html", "classmakeCascadePythia8_1_1PythiaFactory" ],
+      [ "SignalEvents", "classmakeCascadePythia8_1_1SignalEvents.html", "classmakeCascadePythia8_1_1SignalEvents" ],
+      [ "InclusiveSignalEvents", "classmakeCascadePythia8_1_1InclusiveSignalEvents.html", "classmakeCascadePythia8_1_1InclusiveSignalEvents" ]
     ] ],
     [ "method_logger", "namespacemethod__logger.html", [
       [ "MethodLogger", "classmethod__logger_1_1MethodLogger.html", "classmethod__logger_1_1MethodLogger" ]
@@ -56,8 +56,8 @@ var annotated_dup =
     ] ],
     [ "rpvsusy", "namespacerpvsusy.html", [
       [ "constants", "classrpvsusy_1_1constants.html", "classrpvsusy_1_1constants" ],
-      [ "RPVSUSY", "classrpvsusy_1_1RPVSUSY.html", "classrpvsusy_1_1RPVSUSY" ],
-      [ "RPVSUSYbranchings", "classrpvsusy_1_1RPVSUSYbranchings.html", "classrpvsusy_1_1RPVSUSYbranchings" ]
+      [ "RPVSUSYbranchings", "classrpvsusy_1_1RPVSUSYbranchings.html", "classrpvsusy_1_1RPVSUSYbranchings" ],
+      [ "RPVSUSY", "classrpvsusy_1_1RPVSUSY.html", "classrpvsusy_1_1RPVSUSY" ]
     ] ],
     [ "SBTDetector", "namespaceSBTDetector.html", [
       [ "SBTDetector", "classSBTDetector_1_1SBTDetector.html", "classSBTDetector_1_1SBTDetector" ]
@@ -67,20 +67,20 @@ var annotated_dup =
     ] ],
     [ "SHiP", "namespaceSHiP.html", [
       [ "ActsShipField", "classSHiP_1_1ActsShipField.html", "classSHiP_1_1ActsShipField" ],
+      [ "StrawWire", "structSHiP_1_1StrawWire.html", "structSHiP_1_1StrawWire" ],
       [ "ActsStrawGeometry", "classSHiP_1_1ActsStrawGeometry.html", "classSHiP_1_1ActsStrawGeometry" ],
       [ "ActsStrawTracker", "classSHiP_1_1ActsStrawTracker.html", "classSHiP_1_1ActsStrawTracker" ],
+      [ "PatRecHit", "structSHiP_1_1PatRecHit.html", "structSHiP_1_1PatRecHit" ],
+      [ "LineSegment", "structSHiP_1_1LineSegment.html", "structSHiP_1_1LineSegment" ],
+      [ "TrackCandidate", "structSHiP_1_1TrackCandidate.html", "structSHiP_1_1TrackCandidate" ],
+      [ "StrawPatRec", "classSHiP_1_1StrawPatRec.html", "classSHiP_1_1StrawPatRec" ],
       [ "Detector", "classSHiP_1_1Detector.html", "classSHiP_1_1Detector" ],
       [ "DetectorHit", "classSHiP_1_1DetectorHit.html", "classSHiP_1_1DetectorHit" ],
       [ "DetectorPoint", "classSHiP_1_1DetectorPoint.html", "classSHiP_1_1DetectorPoint" ],
-      [ "Generator", "classSHiP_1_1Generator.html", "classSHiP_1_1Generator" ],
-      [ "LineSegment", "structSHiP_1_1LineSegment.html", "structSHiP_1_1LineSegment" ],
-      [ "PatRecHit", "structSHiP_1_1PatRecHit.html", "structSHiP_1_1PatRecHit" ],
+      [ "ScoringPlane", "classSHiP_1_1ScoringPlane.html", "classSHiP_1_1ScoringPlane" ],
       [ "RecoTrack", "classSHiP_1_1RecoTrack.html", "classSHiP_1_1RecoTrack" ],
       [ "RecoVertex", "classSHiP_1_1RecoVertex.html", "classSHiP_1_1RecoVertex" ],
-      [ "ScoringPlane", "classSHiP_1_1ScoringPlane.html", "classSHiP_1_1ScoringPlane" ],
-      [ "StrawPatRec", "classSHiP_1_1StrawPatRec.html", "classSHiP_1_1StrawPatRec" ],
-      [ "StrawWire", "structSHiP_1_1StrawWire.html", "structSHiP_1_1StrawWire" ],
-      [ "TrackCandidate", "structSHiP_1_1TrackCandidate.html", "structSHiP_1_1TrackCandidate" ],
+      [ "Generator", "classSHiP_1_1Generator.html", "classSHiP_1_1Generator" ],
       [ "TTreeGenerator", "classSHiP_1_1TTreeGenerator.html", "classSHiP_1_1TTreeGenerator" ]
     ] ],
     [ "shipDigiReco", "namespaceshipDigiReco.html", [
@@ -91,9 +91,9 @@ var annotated_dup =
       [ "Config", "classShipGeoConfig_1_1Config.html", "classShipGeoConfig_1_1Config" ]
     ] ],
     [ "ShipMuDIS", "namespaceShipMuDIS.html", [
-      [ "CBMSimBranches", "structShipMuDIS_1_1CBMSimBranches.html", "structShipMuDIS_1_1CBMSimBranches" ],
-      [ "MuonBranches", "structShipMuDIS_1_1MuonBranches.html", "structShipMuDIS_1_1MuonBranches" ],
       [ "MuonDISBranches", "structShipMuDIS_1_1MuonDISBranches.html", "structShipMuDIS_1_1MuonDISBranches" ],
+      [ "MuonBranches", "structShipMuDIS_1_1MuonBranches.html", "structShipMuDIS_1_1MuonBranches" ],
+      [ "CBMSimBranches", "structShipMuDIS_1_1CBMSimBranches.html", "structShipMuDIS_1_1CBMSimBranches" ],
       [ "MuonDISInBranches", "structShipMuDIS_1_1MuonDISInBranches.html", "structShipMuDIS_1_1MuonDISInBranches" ],
       [ "MuonInBranches", "structShipMuDIS_1_1MuonInBranches.html", "structShipMuDIS_1_1MuonInBranches" ]
     ] ],
@@ -111,8 +111,8 @@ var annotated_dup =
     ] ],
     [ "split_provenance", "namespacesplit__provenance.html", [
       [ "_Link", "classsplit__provenance_1_1__Link.html", null ],
-      [ "Desplit", "classsplit__provenance_1_1Desplit.html", "classsplit__provenance_1_1Desplit" ],
-      [ "SplitProvenance", "classsplit__provenance_1_1SplitProvenance.html", "classsplit__provenance_1_1SplitProvenance" ]
+      [ "SplitProvenance", "classsplit__provenance_1_1SplitProvenance.html", "classsplit__provenance_1_1SplitProvenance" ],
+      [ "Desplit", "classsplit__provenance_1_1Desplit.html", "classsplit__provenance_1_1Desplit" ]
     ] ],
     [ "strawReco", "namespacestrawReco.html", [
       [ "StrawHit", "classstrawReco_1_1StrawHit.html", "classstrawReco_1_1StrawHit" ]
@@ -121,12 +121,12 @@ var annotated_dup =
       [ "strawtubesDetector", "classstrawtubesDetector_1_1strawtubesDetector.html", "classstrawtubesDetector_1_1strawtubesDetector" ]
     ] ],
     [ "study_GammaConv", "namespacestudy__GammaConv.html", [
-      [ "Block", "classstudy__GammaConv_1_1Block.html", "classstudy__GammaConv_1_1Block" ],
-      [ "Setup", "classstudy__GammaConv_1_1Setup.html", null ]
+      [ "Setup", "classstudy__GammaConv_1_1Setup.html", null ],
+      [ "Block", "classstudy__GammaConv_1_1Block.html", "classstudy__GammaConv_1_1Block" ]
     ] ],
     [ "study_muMSC", "namespacestudy__muMSC.html", [
-      [ "Block", "classstudy__muMSC_1_1Block.html", "classstudy__muMSC_1_1Block" ],
-      [ "Setup", "classstudy__muMSC_1_1Setup.html", null ]
+      [ "Setup", "classstudy__muMSC_1_1Setup.html", null ],
+      [ "Block", "classstudy__muMSC_1_1Block.html", "classstudy__muMSC_1_1Block" ]
     ] ],
     [ "study_thinTarget", "namespacestudy__thinTarget.html", [
       [ "Block", "classstudy__thinTarget_1_1Block.html", "classstudy__thinTarget_1_1Block" ]
@@ -228,8 +228,8 @@ var annotated_dup =
     [ "UpstreamTaggerScoringPlane", "classUpstreamTaggerScoringPlane.html", "classUpstreamTaggerScoringPlane" ],
     [ "UpstreamTaggerScoringPoint", "classUpstreamTaggerScoringPoint.html", "classUpstreamTaggerScoringPoint" ],
     [ "VectorMCPointSource", "classVectorMCPointSource.html", "classVectorMCPointSource" ],
-    [ "veto", "classveto.html", "classveto" ],
     [ "Veto", "classVeto.html", null ],
+    [ "veto", "classveto.html", "classveto" ],
     [ "vetoContFact", "classvetoContFact.html", "classvetoContFact" ],
     [ "vetoHit", "classvetoHit.html", "classvetoHit" ],
     [ "vetoHitOnTrack", "classvetoHitOnTrack.html", "classvetoHitOnTrack" ],

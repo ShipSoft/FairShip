@@ -1,9 +1,9 @@
 var namespaceeventDisplay =
 [
-    [ "DrawTracks", "classeventDisplay_1_1DrawTracks.html", "classeventDisplay_1_1DrawTracks" ],
     [ "DrawVetoDigi", "classeventDisplay_1_1DrawVetoDigi.html", "classeventDisplay_1_1DrawVetoDigi" ],
-    [ "EventLoop", "classeventDisplay_1_1EventLoop.html", "classeventDisplay_1_1EventLoop" ],
+    [ "DrawTracks", "classeventDisplay_1_1DrawTracks.html", "classeventDisplay_1_1DrawTracks" ],
     [ "IO", "classeventDisplay_1_1IO.html", "classeventDisplay_1_1IO" ],
+    [ "EventLoop", "classeventDisplay_1_1EventLoop.html", "classeventDisplay_1_1EventLoop" ],
     [ "Rulers", "classeventDisplay_1_1Rulers.html", "classeventDisplay_1_1Rulers" ],
     [ "_file_accessible", "namespaceeventDisplay.html#a3bd4625287f44ad83178f3407787e3a6", null ],
     [ "debugStraw", "namespaceeventDisplay.html#a69df705de9416f74ee669c245acf33c3", null ],

@@ -1,5 +1,5 @@
 <map id="ShipMuDIS::MuonDISInBranches" name="ShipMuDIS::MuonDISInBranches">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,93,236,119"/>
-<area shape="rect" id="Node000002" href="$structShipMuDIS_1_1MuonDISBranches.html" title=" " alt="" coords="11,5,230,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="123,45,123,93,118,93,118,45"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,106,235,134"/>
+<area shape="rect" id="Node000002" href="$structShipMuDIS_1_1MuonDISBranches.html" title=" " alt="" coords="11,5,229,33"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="122,47,123,106,117,104,118,50"/>
 </map>

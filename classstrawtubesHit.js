@@ -14,6 +14,7 @@ var classstrawtubesHit =
     [ "isValid", "classstrawtubesHit.html#a70d6a5e556c214de59d5cf9fa06e3f4a", null ],
     [ "operator=", "classstrawtubesHit.html#a44fe7c47f63808dd5c5e8573e4333ee5", null ],
     [ "Print", "classstrawtubesHit.html#a54fce890c050449cbd049eb88c8f81c4", null ],
+    [ "Print", "classstrawtubesHit.html#a3fa1f1f74b53a6390e831e1f6244c1a2", null ],
     [ "setInvalid", "classstrawtubesHit.html#ab029f6f7489aca1e7e5cd86a185fbaee", null ],
     [ "flag", "classstrawtubesHit.html#a54e0bf7ec4ad64ba3ae8c5d53781dffc", null ]
 ];

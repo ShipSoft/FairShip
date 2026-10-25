@@ -5,6 +5,8 @@ var classPythia8Generator =
     [ "Init", "classPythia8Generator.html#a34192fdefd0b0476a295c9f506a67752", null ],
     [ "Init", "classPythia8Generator.html#a74134af826fac3ad789403d9eb60a911", null ],
     [ "Init", "classPythia8Generator.html#ab1f11ac1b6ff4164ab17f38400b6b2e3", null ],
+    [ "Init", "classPythia8Generator.html#a3f5d68b0b79dddffd25498e83c4e0542", null ],
+    [ "Init", "classPythia8Generator.html#a49e997f800bbb2c766ab9f93059a2c26", null ],
     [ "nrOfRetries", "classPythia8Generator.html#a348eed559b7ee6ee92142e2dca21d18a", null ],
     [ "ReadEvent", "classPythia8Generator.html#aa24e1a096928de68e6772e46fb45ad8c", null ],
     [ "SetfFDs", "classPythia8Generator.html#abab3c221126823904c878ab6fd80021f", null ],

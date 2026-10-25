@@ -22,6 +22,7 @@ var classCaloScoringPlaneHit =
     [ "IsMuon", "classCaloScoringPlaneHit.html#a1838903a1e334d9ea1a29383f978d0fc", null ],
     [ "operator=", "classCaloScoringPlaneHit.html#af4566cd7d5657c04621911bdd21bfa8f", null ],
     [ "Print", "classCaloScoringPlaneHit.html#a59faaae8c69779eba52c451742d27568", null ],
+    [ "Print", "classCaloScoringPlaneHit.html#a3fa1f1f74b53a6390e831e1f6244c1a2", null ],
     [ "SetPid", "classCaloScoringPlaneHit.html#a3edeb19cebd2ca4556bd377f83e96394", null ],
     [ "fPid", "classCaloScoringPlaneHit.html#a9b02d0d3409fc7bab3d202b61d7be77c", null ],
     [ "fPx", "classCaloScoringPlaneHit.html#ae7a8421f79946b0450a343c91cd7e5d5", null ],

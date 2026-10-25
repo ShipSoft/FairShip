@@ -1,9 +1,9 @@
 <map id="veto/vetoHitOnTrack.h" name="veto/vetoHitOnTrack.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="173,5,340,31"/>
-<area shape="rect" id="Node000002" href="$test__data__class__io_8cxx.html" title=" " alt="" coords="5,79,164,119"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="221,39,127,81,125,76,218,34"/>
-<area shape="rect" id="Node000003" href="$test__rntuple__io_8cxx.html" title=" " alt="" coords="189,79,325,119"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="259,44,259,79,254,79,254,44"/>
-<area shape="rect" id="Node000004" href="$vetoHitOnTrack_8cxx.html" title=" " alt="" coords="349,86,532,111"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="297,33,415,84,413,88,295,38"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="172,5,338,33"/>
+<area shape="rect" id="Node000002" href="$test__data__class__io_8cxx.html" title=" " alt="" coords="5,81,164,126"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="217,39,131,83,129,78,212,41"/>
+<area shape="rect" id="Node000003" href="$test__rntuple__io_8cxx.html" title=" " alt="" coords="188,81,323,126"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="257,47,257,82,253,79,253,51"/>
+<area shape="rect" id="Node000004" href="$vetoHitOnTrack_8cxx.html" title=" " alt="" coords="347,90,528,117"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="299,37,411,89,406,89,298,42"/>
 </map>

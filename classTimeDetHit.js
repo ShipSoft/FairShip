@@ -17,6 +17,7 @@ var classTimeDetHit =
     [ "isValid", "classTimeDetHit.html#a9bafe1f37c55cf1e0f7a9ab771712e15", null ],
     [ "operator=", "classTimeDetHit.html#a19ce5bfaf8964cc204181809bcc330d2", null ],
     [ "Print", "classTimeDetHit.html#acee0a0d0ff478f9b9eac425518b136c4", null ],
+    [ "Print", "classTimeDetHit.html#a3fa1f1f74b53a6390e831e1f6244c1a2", null ],
     [ "Resol", "classTimeDetHit.html#a6940b7d3e545c87bdd4d0c1f5981d350", null ],
     [ "setInvalid", "classTimeDetHit.html#a16e67da12f274786beb4c6d2d74f2e1b", null ],
     [ "setIsValid", "classTimeDetHit.html#a61d024099f37ba1dbf01b5037e55f575", null ],

@@ -14,8 +14,8 @@ var classexperimental_1_1analysis__toolkit_1_1selection__check =
     [ "nDOF", "classexperimental_1_1analysis__toolkit_1_1selection__check.html#a59129329627f6852632978e880978706", null ],
     [ "preselection_cut", "classexperimental_1_1analysis__toolkit_1_1selection__check.html#a1c9190e514c91bd7c29cd812d5988849", null ],
     [ "acts_tracks", "classexperimental_1_1analysis__toolkit_1_1selection__check.html#a41b65be6ed5de996bf6d8b633dccd93b", null ],
+    [ "decay_vessel_z0", "classexperimental_1_1analysis__toolkit_1_1selection__check.html#a10e8bbb9e7f5b5f40172629a0babc18c", null ],
     [ "geometry_manager", "classexperimental_1_1analysis__toolkit_1_1selection__check.html#a19fbb7aa2b7a1698c34572a5093131cd", null ],
     [ "ship_geo", "classexperimental_1_1analysis__toolkit_1_1selection__check.html#a450facd6a1ac401c7b545ee5fda100b5", null ],
-    [ "tree", "classexperimental_1_1analysis__toolkit_1_1selection__check.html#a4754e84abee1de889dc98ed51c6bddbd", null ],
-    [ "veto_geo", "classexperimental_1_1analysis__toolkit_1_1selection__check.html#a260b89e561d9376e5ec6a3fd4ca97fe1", null ]
+    [ "tree", "classexperimental_1_1analysis__toolkit_1_1selection__check.html#a4754e84abee1de889dc98ed51c6bddbd", null ]
 ];

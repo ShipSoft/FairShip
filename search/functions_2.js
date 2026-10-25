@@ -1,14 +1,14 @@
 var searchData=
 [
   ['backview_0',['backView',['../classeventDisplay_1_1EventLoop.html#a64664b1343be8e6c9fc9df5c4cefef00',1,'eventDisplay::EventLoop']]],
-  ['beginevent_1',['beginevent',['../classSHiP_1_1Detector.html#a94e52e645171521d81764edbac5d5524',1,'SHiP::Detector::BeginEvent()'],['../classexitHadronAbsorber.html#a94288a58f58c1a7028b166d40bbf290f',1,'exitHadronAbsorber::BeginEvent()']]],
+  ['beginevent_1',['BeginEvent',['../classSHiP_1_1Detector.html#a94e52e645171521d81764edbac5d5524',1,'SHiP::Detector::BeginEvent()'],['../classexitHadronAbsorber.html#a94288a58f58c1a7028b166d40bbf290f',1,'exitHadronAbsorber::BeginEvent()']]],
   ['beginprimary_2',['BeginPrimary',['../classSHiP_1_1Detector.html#a03d8c93853fa437a2adc466863c6b39e',1,'SHiP::Detector']]],
   ['bending_5fpower_3',['bending_power',['../namespaceplotFieldMap.html#a73a7d0be8506d4b6d74679164628f803',1,'plotFieldMap']]],
   ['bigeventloop_4',['BigEventLoop',['../namespaceana__ShipMuon.html#a7261d9119dc8f042df0977eaee773b8d',1,'ana_ShipMuon']]],
   ['bindinputbranch_5',['BindInputBranch',['../namespaceShipMuDIS.html#a2e09589e2c90f61e4e1c616ab9194be1',1,'ShipMuDIS']]],
   ['bookcanvas_6',['bookCanvas',['../namespacerootUtils.html#aea2713c1fd3249a6dd7ea82c6ccc8ef5',1,'rootUtils']]],
   ['bookfilterefficiencyhistograms_7',['BookFilterEfficiencyHistograms',['../classMuDISFilter.html#ae4cf796c670620cf3e848225626328c0',1,'MuDISFilter']]],
-  ['bookhist_8',['bookhist',['../namespaceana__ShipMuon.html#a4a3714254df2980602fbc03161dde57f',1,'ana_ShipMuon.bookHist()'],['../namespacerootUtils.html#a6558e8446659e2fe282f24dff579b11d',1,'rootUtils.bookHist()']]],
+  ['bookhist_8',['bookHist',['../namespaceana__ShipMuon.html#a4a3714254df2980602fbc03161dde57f',1,'ana_ShipMuon.bookHist()'],['../namespacerootUtils.html#a6558e8446659e2fe282f24dff579b11d',1,'rootUtils.bookHist()']]],
   ['bookhistograms_9',['BookHistograms',['../classMuDISFilter.html#a5ddf38c0dc8f2a7977ee76e36ab1427d',1,'MuDISFilter']]],
   ['bookprof_10',['bookProf',['../namespacerootUtils.html#ae7d21aa6d2c4142e2b2c17659540b018',1,'rootUtils']]],
   ['bootstrap_5ferrors_11',['bootstrap_errors',['../classevent__histogram_1_1EventHistogram.html#ab05865af09c2c5a73414bf69e28d0f46',1,'event_histogram::EventHistogram']]],

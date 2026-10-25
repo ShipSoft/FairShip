@@ -1,7 +1,7 @@
 <map id="muonShieldOptimization/ShipRunConfiguration.h" name="muonShieldOptimization/ShipRunConfiguration.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="95,5,277,45"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="5,93,177,119"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="165,48,118,86,115,82,161,43"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="201,93,360,119"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="211,43,257,82,254,86,207,48"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="93,5,276,50"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,98,177,126"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="162,49,119,90,116,85,157,51"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="200,98,358,126"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="210,48,255,88,250,87,208,53"/>
 </map>

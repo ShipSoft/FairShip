@@ -1,8 +1,8 @@
 var classMagneticTrackPropagator =
 [
+    [ "State", "structMagneticTrackPropagator_1_1State.html", "structMagneticTrackPropagator_1_1State" ],
     [ "Box", "structMagneticTrackPropagator_1_1Box.html", "structMagneticTrackPropagator_1_1Box" ],
     [ "FieldMap", "structMagneticTrackPropagator_1_1FieldMap.html", "structMagneticTrackPropagator_1_1FieldMap" ],
-    [ "State", "structMagneticTrackPropagator_1_1State.html", "structMagneticTrackPropagator_1_1State" ],
     [ "MagneticTrackPropagator", "classMagneticTrackPropagator.html#a12988a7f5efbf5322ed28ae0f11f5f15", null ],
     [ "AddFieldMap", "classMagneticTrackPropagator.html#a6eb100b3cd431cd5c4999c0d1679d16d", null ],
     [ "BuildTrajectory", "classMagneticTrackPropagator.html#abcb13114ed52704c5cef5dd945d020ff", null ],

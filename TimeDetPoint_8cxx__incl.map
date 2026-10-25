@@ -1,21 +1,21 @@
 <map id="TimeDet/TimeDetPoint.cxx" name="TimeDet/TimeDetPoint.cxx">
-<area shape="rect" id="Node000001" title=" " alt="" coords="217,5,415,31"/>
-<area shape="rect" id="Node000002" href="$TimeDetPoint_8h.html" title=" " alt="" coords="129,79,252,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="297,33,224,74,222,69,295,28"/>
-<area shape="rect" id="Node000008" title=" " alt="" coords="276,79,356,104"/>
-<area shape="poly" id="edge9_Node000001_Node000008" title=" " alt="" coords="319,31,319,65,313,65,313,31"/>
-<area shape="rect" id="Node000009" title=" " alt="" coords="381,79,481,104"/>
-<area shape="poly" id="edge10_Node000001_Node000009" title=" " alt="" coords="336,28,402,69,399,74,333,33"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="5,225,61,251"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="151,107,108,125,88,138,70,154,52,182,41,213,36,211,47,180,66,150,85,134,106,120,149,102"/>
-<area shape="rect" id="Node000004" href="$DetectorPoint_8h.html" title=" " alt="" coords="80,152,203,177"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="185,106,159,142,155,139,180,103"/>
-<area shape="rect" id="Node000006" title=" " alt="" coords="221,225,312,251"/>
-<area shape="poly" id="edge8_Node000002_Node000006" title=" " alt="" coords="199,103,257,212,252,215,195,106"/>
-<area shape="rect" id="Node000007" title=" " alt="" coords="278,152,362,177"/>
-<area shape="poly" id="edge7_Node000002_Node000007" title=" " alt="" coords="213,102,288,143,285,147,210,106"/>
-<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="125,180,64,220,61,215,123,175"/>
-<area shape="rect" id="Node000005" title=" " alt="" coords="86,225,197,251"/>
-<area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="144,178,144,212,139,212,139,178"/>
-<area shape="poly" id="edge6_Node000004_Node000006" title=" " alt="" coords="163,175,236,216,233,221,160,180"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="216,5,413,33"/>
+<area shape="rect" id="Node000002" href="$TimeDetPoint_8h.html" title=" " alt="" coords="128,81,250,109"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="290,35,225,75,222,71,294,32"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="275,81,354,109"/>
+<area shape="poly" id="edge9_Node000001_Node000008" title=" " alt="" coords="316,31,317,66,312,64,313,36"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="378,81,477,109"/>
+<area shape="poly" id="edge10_Node000001_Node000009" title=" " alt="" coords="335,31,398,72,392,73,334,36"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,232,61,260"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="142,111,104,130,68,158,51,187,40,218,35,216,46,185,64,155,102,126,146,107"/>
+<area shape="rect" id="Node000004" href="$DetectorPoint_8h.html" title=" " alt="" coords="78,157,201,184"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="182,107,159,145,155,142,178,111"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="218,232,309,260"/>
+<area shape="poly" id="edge8_Node000002_Node000006" title=" " alt="" coords="197,107,253,218,248,218,194,111"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="275,157,359,184"/>
+<area shape="poly" id="edge7_Node000002_Node000007" title=" " alt="" coords="212,107,284,148,279,149,211,112"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="123,185,66,226,63,221,118,185"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="84,232,195,260"/>
+<area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="141,183,142,218,137,215,138,187"/>
+<area shape="poly" id="edge6_Node000004_Node000006" title=" " alt="" coords="163,182,231,224,226,225,161,187"/>
 </map>

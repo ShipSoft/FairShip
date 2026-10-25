@@ -19,7 +19,7 @@ var classevent__histogram_1_1EventHistogram =
     [ "to_root", "classevent__histogram_1_1EventHistogram.html#a4e25bd4ffada24d8a3ff1d3d0b043d0a", null ],
     [ "values", "classevent__histogram_1_1EventHistogram.html#ab5f02d9d6ab1c9f1760aa875186ac849", null ],
     [ "_current", "classevent__histogram_1_1EventHistogram.html#a9c5b03c0342592519282225e6dbb426b", null ],
-    [ "_open", "classevent__histogram_1_1EventHistogram.html#a057f0c63d526596bca242ce03ffc9650", null ],
+    [ "_open", "classevent__histogram_1_1EventHistogram.html#a57f5c167b75fb4dba1fc6695945bb27c", null ],
     [ "boot", "classevent__histogram_1_1EventHistogram.html#ab339dc97e78ee0d41f0db45eb85562c1", null ],
     [ "edges", "classevent__histogram_1_1EventHistogram.html#a11298d067f838a5563ad09904ccff998", null ],
     [ "n_events", "classevent__histogram_1_1EventHistogram.html#ae9109e5bb6d6ee03049952bb63938fc2", null ],

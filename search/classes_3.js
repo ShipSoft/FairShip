@@ -8,7 +8,7 @@ var searchData=
   ['cbmsimbranches_5',['CBMSimBranches',['../structShipMuDIS_1_1CBMSimBranches.html',1,'ShipMuDIS']]],
   ['ckmmatrix_6',['CKMmatrix',['../classhnl_1_1CKMmatrix.html',1,'hnl']]],
   ['co3rng_7',['Co3Rng',['../classCo3Rng.html',1,'']]],
-  ['config_8',['config',['../structSHiP_1_1StrawPatRec_1_1Config.html',1,'SHiP::StrawPatRec::Config'],['../classShipGeoConfig_1_1Config.html',1,'ShipGeoConfig.Config']]],
+  ['config_8',['Config',['../structSHiP_1_1StrawPatRec_1_1Config.html',1,'SHiP::StrawPatRec::Config'],['../classShipGeoConfig_1_1Config.html',1,'ShipGeoConfig.Config']]],
   ['constants_9',['constants',['../classhnl_1_1constants.html',1,'hnl.constants'],['../classrpvsusy_1_1constants.html',1,'rpvsusy.constants']]],
   ['cosmicsgenerator_10',['CosmicsGenerator',['../classCosmicsGenerator.html',1,'']]]
 ];

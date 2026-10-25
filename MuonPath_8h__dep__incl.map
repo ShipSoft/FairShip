@@ -1,14 +1,14 @@
 <map id="newMuonDIS/MuonPath.h" name="newMuonDIS/MuonPath.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="187,5,373,31"/>
-<area shape="rect" id="Node000002" href="$MuDISProcessor_8h.html" title=" " alt="" coords="13,152,240,177"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="222,38,186,55,155,80,144,98,137,117,130,152,125,151,132,116,139,95,151,77,183,51,220,33"/>
-<area shape="rect" id="Node000004" href="$MuGeoProcessor_8h.html" title=" " alt="" coords="165,79,395,104"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="283,44,283,79,277,79,277,44"/>
-<area shape="rect" id="Node000006" href="$MuonPath_8cxx.html" title=" " alt="" coords="420,79,623,104"/>
-<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="333,32,483,76,482,81,331,37"/>
-<area shape="rect" id="Node000003" href="$MuDISProcessor_8cxx.html" title=" " alt="" coords="5,225,248,251"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="129,191,129,225,124,225,124,191"/>
-<area shape="poly" id="edge4_Node000004_Node000002" title=" " alt="" coords="244,112,153,154,151,149,242,107"/>
-<area shape="rect" id="Node000005" href="$MuGeoProcessor_8cxx.html" title=" " alt="" coords="265,152,511,177"/>
-<area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="310,109,372,150,369,154,307,114"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="185,5,371,33"/>
+<area shape="rect" id="Node000002" href="$MuDISProcessor_8h.html" title=" " alt="" coords="13,157,239,184"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="212,41,182,58,153,83,142,101,135,120,129,157,124,155,130,119,137,98,149,79,179,54,216,37"/>
+<area shape="rect" id="Node000004" href="$MuGeoProcessor_8h.html" title=" " alt="" coords="163,81,393,109"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="279,47,280,82,276,79,277,51"/>
+<area shape="rect" id="Node000006" href="$MuonPath_8cxx.html" title=" " alt="" coords="417,81,619,109"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="336,35,478,80,473,81,335,41"/>
+<area shape="rect" id="Node000003" href="$MuDISProcessor_8cxx.html" title=" " alt="" coords="5,232,247,260"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="128,198,128,233,124,231,124,202"/>
+<area shape="poly" id="edge4_Node000004_Node000002" title=" " alt="" coords="235,117,154,159,152,154,239,114"/>
+<area shape="rect" id="Node000005" href="$MuGeoProcessor_8cxx.html" title=" " alt="" coords="263,157,509,184"/>
+<area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="310,115,370,156,364,156,309,120"/>
 </map>

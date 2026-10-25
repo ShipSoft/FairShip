@@ -12,7 +12,7 @@ var namespaces_dup =
       [ "required", "namespaceadd__muonresponse.html#aac7731f940c514fafd1ff48518e20131", null ]
     ] ],
     [ "add_noise_to_field", "namespaceadd__noise__to__field.html", [
-      [ "generate_file", "namespaceadd__noise__to__field.html#a13fc0238a214812064b5a20f5b183d21", null ],
+      [ "generate_file", "namespaceadd__noise__to__field.html#a25475b0e54844c84a9cf5d93a4773eb0", null ],
       [ "plot_my_hist", "namespaceadd__noise__to__field.html#a4a1ca5a3f64e4f2870b0367c97a78416", null ],
       [ "action", "namespaceadd__noise__to__field.html#ab9f26e8d25a833305a6398ce27105747", null ],
       [ "args", "namespaceadd__noise__to__field.html#a0c9f7358e4b40f6222907cf9737b120d", null ],
@@ -348,9 +348,9 @@ var namespaces_dup =
     [ "genie_interface", "namespacegenie__interface.html", [
       [ "_merge_env", "namespacegenie__interface.html#ac6e6905f3b30305d16b57fe8d96cbb1e", null ],
       [ "_parse_env_kv", "namespacegenie__interface.html#a36e3c8840e30c0734cba98f769903d7d", null ],
-      [ "_run", "namespacegenie__interface.html#a466b0df6aee34de143ec73457187718b", null ],
+      [ "_run", "namespacegenie__interface.html#a2d8c1635fde444c9b5345b4b031ca89e", null ],
       [ "add_hists", "namespacegenie__interface.html#a888fcbec131bfb61f76de8a7188c313c", null ],
-      [ "generate_genie_events", "namespacegenie__interface.html#a92940240873b4db915240f4844249337", null ],
+      [ "generate_genie_events", "namespacegenie__interface.html#a0475044e58dc820ac39111cdaaa97583", null ],
       [ "get_1D_flux_name", "namespacegenie__interface.html#a15c8730a3bbeabf1b756e27945ff6d8a", null ],
       [ "get_2D_flux_name", "namespacegenie__interface.html#ae99783f42c40a876e87e8fc273ae71ef", null ],
       [ "main", "namespacegenie__interface.html#a0d587b58ea6679dd6d74dbaa6d56ca13", null ],
@@ -376,9 +376,10 @@ var namespaces_dup =
       [ "stored_yaml_configs", "namespacegeometry__from__file.html#a084611c24c0a258117d0b689d187ec6e", null ],
       [ "_HELPER", "namespacegeometry__from__file.html#a53f0cacc6428058fca1021a91080bb8c", null ],
       [ "_swap_class", "namespacegeometry__from__file.html#a689bef891192aef41d4c0dfe5bb7be51", null ],
-      [ "error", "namespacegeometry__from__file.html#ad232dcc15bc0553bad570e1756cabf9a", null ],
+      [ "error", "namespacegeometry__from__file.html#aea6b5163bec4a8df08cf756661a9389e", null ],
+      [ "fields", "namespacegeometry__from__file.html#a9caaa870d5109022bea4d461c4ab1ff4", null ],
       [ "geofile", "namespacegeometry__from__file.html#ab380ad34fa475b58dddbc9d7b7ba920e", null ],
-      [ "loaded", "namespacegeometry__from__file.html#a8ce2714b9cecdfe3f038fe94e07dafb2", null ],
+      [ "loaded", "namespacegeometry__from__file.html#aa31c0a6e960dd096781116203482bbf2", null ],
       [ "SWAP_NAME", "namespacegeometry__from__file.html#a72281533c8b2d80b6557018be831c881", null ],
       [ "YAML_CONFIGS", "namespacegeometry__from__file.html#a95cd91ab64400027db0202d9acb2c451", null ]
     ] ],
@@ -846,7 +847,7 @@ var namespaces_dup =
       [ "_target_code", "namespacemakeGenieEvents.html#a21bd60f3fd933289fa2f5da835cff2ab", null ],
       [ "extract_nu_over_nubar", "namespacemakeGenieEvents.html#aa43083eb0dfff8f3af821a35a17837d8", null ],
       [ "main", "namespacemakeGenieEvents.html#a81f9b7fc054fb2f9fe4a2cd9f8f6ad45", null ],
-      [ "make_events", "namespacemakeGenieEvents.html#a557a9c1bcb8d76bae072301861803340", null ],
+      [ "make_events", "namespacemakeGenieEvents.html#a0a6666594b32797007b0d24be31b872c", null ],
       [ "make_splines_cli", "namespacemakeGenieEvents.html#aea90f25c7fc1d44ddc7ac30d8ac1dce8", null ],
       [ "DEFAULT_FILE_DIR", "namespacemakeGenieEvents.html#ad69e319c475fca9f00d6f8c2fce34348", null ],
       [ "DEFAULT_FLUX_FILE", "namespacemakeGenieEvents.html#a8d9f64a726e1f2908898186e0345a12e", null ],

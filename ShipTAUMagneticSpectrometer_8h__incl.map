@@ -1,9 +1,9 @@
 <map id="passive/ShipTAUMagneticSpectrometer.h" name="passive/ShipTAUMagneticSpectrometer.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,295,31"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="14,79,73,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="134,33,74,73,71,69,131,28"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="97,79,203,104"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="153,31,153,65,147,65,147,31"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="227,79,305,104"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="170,28,237,69,234,74,167,33"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,294,33"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="15,81,73,109"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="133,33,77,74,74,70,128,34"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="97,81,202,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="151,32,152,67,147,64,148,36"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="226,81,305,109"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="171,31,235,72,229,73,169,36"/>
 </map>

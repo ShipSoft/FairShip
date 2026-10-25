@@ -1,11 +1,11 @@
 <map id="shipdata/RecoTrack.h" name="shipdata/RecoTrack.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="275,5,435,31"/>
-<area shape="rect" id="Node000002" href="$ActsStrawTracker_8h.html" title=" " alt="" coords="13,86,243,111"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="310,38,162,88,160,83,308,33"/>
-<area shape="rect" id="Node000004" href="$RecoTrack_8cxx.html" title=" " alt="" coords="267,86,442,111"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="357,44,357,86,352,86,352,44"/>
-<area shape="rect" id="Node000005" href="$test__data__class__io_8cxx.html" title=" " alt="" coords="466,79,625,119"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="396,33,501,76,498,81,394,38"/>
-<area shape="rect" id="Node000003" href="$ActsStrawTracker_8cxx.html" title=" " alt="" coords="5,167,251,192"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="131,125,131,166,125,166,125,125"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="273,5,432,33"/>
+<area shape="rect" id="Node000002" href="$ActsStrawTracker_8h.html" title=" " alt="" coords="13,90,242,117"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="301,41,165,91,163,86,304,37"/>
+<area shape="rect" id="Node000004" href="$RecoTrack_8cxx.html" title=" " alt="" coords="266,90,440,117"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="355,47,355,91,351,88,351,51"/>
+<area shape="rect" id="Node000005" href="$test__data__class__io_8cxx.html" title=" " alt="" coords="464,81,623,126"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="398,37,496,80,490,81,397,42"/>
+<area shape="rect" id="Node000003" href="$ActsStrawTracker_8cxx.html" title=" " alt="" coords="5,174,250,201"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="129,131,130,174,125,172,126,135"/>
 </map>

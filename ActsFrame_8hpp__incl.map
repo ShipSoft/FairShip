@@ -1,7 +1,7 @@
 <map id="ActsTracking/ActsFrame.hpp" name="ActsTracking/ActsFrame.hpp">
-<area shape="rect" id="Node000001" title=" " alt="" coords="117,5,322,31"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="5,79,212,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="203,33,140,73,137,69,200,28"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="236,79,427,104"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="239,28,303,69,300,73,236,33"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="116,5,321,33"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,81,211,109"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="201,33,141,75,139,70,196,34"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="235,81,424,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="239,31,300,72,295,72,238,36"/>
 </map>

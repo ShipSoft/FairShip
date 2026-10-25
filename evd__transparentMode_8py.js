@@ -1,4 +1,4 @@
 var evd__transparentMode_8py =
 [
-    [ "SHiPDisplay", "evd__transparentMode_8py.html#afeac3b4d7cb3334678bf667700bc0b20", null ]
+    [ "evd_transparentMode.SHiPDisplay", "namespaceevd__transparentMode.html#afeac3b4d7cb3334678bf667700bc0b20", null ]
 ];

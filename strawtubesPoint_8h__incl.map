@@ -1,14 +1,14 @@
 <map id="strawtubes/strawtubesPoint.h" name="strawtubes/strawtubesPoint.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="153,5,367,31"/>
-<area shape="rect" id="Node000002" href="$DetectorPoint_8h.html" title=" " alt="" coords="93,79,216,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="245,33,184,73,182,69,242,28"/>
-<area shape="rect" id="Node000005" title=" " alt="" coords="221,152,312,177"/>
-<area shape="poly" id="edge6_Node000001_Node000005" title=" " alt="" coords="263,31,268,138,263,138,258,31"/>
-<area shape="rect" id="Node000006" title=" " alt="" coords="298,79,382,104"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="275,29,319,68,315,72,271,33"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="5,152,61,177"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="137,106,66,147,63,143,134,102"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="86,152,197,177"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="155,105,149,139,143,138,150,104"/>
-<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="174,102,238,142,235,147,171,106"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="150,5,364,33"/>
+<area shape="rect" id="Node000002" href="$DetectorPoint_8h.html" title=" " alt="" coords="90,81,213,109"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="240,32,184,74,181,70,236,35"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="218,157,309,184"/>
+<area shape="poly" id="edge6_Node000001_Node000005" title=" " alt="" coords="260,31,265,142,260,140,256,35"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="294,81,377,109"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="272,31,313,70,308,70,270,36"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,157,61,184"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="132,111,68,151,65,146,129,107"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="84,157,195,184"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="151,107,147,143,142,140,148,111"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="172,107,234,148,229,148,171,112"/>
 </map>

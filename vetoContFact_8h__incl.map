@@ -1,5 +1,5 @@
 <map id="veto/vetoContFact.h" name="veto/vetoContFact.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,157,31"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="25,79,138,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="84,31,84,65,79,65,79,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,157,33"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="25,81,137,109"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="83,32,84,66,78,65,79,36"/>
 </map>

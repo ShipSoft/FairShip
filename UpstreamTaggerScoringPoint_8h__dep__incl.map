@@ -1,13 +1,13 @@
 <map id="UpstreamTagger/UpstreamTaggerScoringPoint.h" name="UpstreamTagger/UpstreamTaggerScoringPoint.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="381,5,621,45"/>
-<area shape="rect" id="Node000002" href="$UpstreamTaggerScoringPlane_8h.html" title=" " alt="" coords="5,93,245,133"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="406,51,208,96,207,91,405,46"/>
-<area shape="rect" id="Node000004" href="$UpstreamTaggerScoringPoint_8cxx.html" title=" " alt="" coords="269,93,509,133"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="467,56,416,95,413,91,464,52"/>
-<area shape="rect" id="Node000005" href="$test__data__class__io_8cxx.html" title=" " alt="" coords="534,93,693,133"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="539,52,590,91,587,95,536,56"/>
-<area shape="rect" id="Node000006" href="$test__rntuple__io_8cxx.html" title=" " alt="" coords="717,93,853,133"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="578,47,724,91,722,96,576,52"/>
-<area shape="rect" id="Node000003" href="$UpstreamTaggerScoringPlane_8cxx.html" title=" " alt="" coords="5,181,245,221"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="128,147,128,181,123,181,123,147"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="380,5,619,50"/>
+<area shape="rect" id="Node000002" href="$UpstreamTaggerScoringPlane_8h.html" title=" " alt="" coords="5,98,245,143"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="393,56,215,100,214,95,397,52"/>
+<area shape="rect" id="Node000004" href="$UpstreamTaggerScoringPoint_8cxx.html" title=" " alt="" coords="269,98,509,143"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="464,59,417,100,414,95,459,61"/>
+<area shape="rect" id="Node000005" href="$test__data__class__io_8cxx.html" title=" " alt="" coords="532,98,691,143"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="539,57,588,98,582,97,537,62"/>
+<area shape="rect" id="Node000006" href="$test__rntuple__io_8cxx.html" title=" " alt="" coords="715,98,850,143"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="582,53,717,97,712,98,582,58"/>
+<area shape="rect" id="Node000003" href="$UpstreamTaggerScoringPlane_8cxx.html" title=" " alt="" coords="5,191,245,235"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="127,156,127,192,123,189,123,160"/>
 </map>

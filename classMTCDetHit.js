@@ -17,6 +17,7 @@ var classMTCDetHit =
     [ "isValid", "classMTCDetHit.html#a51adfde65e24f2895a47d43fa868aa8b", null ],
     [ "operator=", "classMTCDetHit.html#afb02e0ae751ce734df0f1b439326a2d8", null ],
     [ "Print", "classMTCDetHit.html#acc685970068c767f786875786b03c793", null ],
+    [ "Print", "classMTCDetHit.html#a3fa1f1f74b53a6390e831e1f6244c1a2", null ],
     [ "setInvalid", "classMTCDetHit.html#aa44b6ab6ff5420be8a73853b53c1c672", null ],
     [ "flag", "classMTCDetHit.html#a66f71efa249175be8fe4d5cc11a83f95", null ],
     [ "signals", "classMTCDetHit.html#a6b33710eec297647716726c01558093c", null ],

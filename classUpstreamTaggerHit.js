@@ -15,6 +15,7 @@ var classUpstreamTaggerHit =
     [ "IsTriggered", "classUpstreamTaggerHit.html#a44c27903b45c51643807e8fbf7aceed9", null ],
     [ "operator=", "classUpstreamTaggerHit.html#acdee8e543648a3d6d5bca87f8ce04aca", null ],
     [ "Print", "classUpstreamTaggerHit.html#a9420c4c54cff675692508a6c1f5b95e0", null ],
+    [ "Print", "classUpstreamTaggerHit.html#a3fa1f1f74b53a6390e831e1f6244c1a2", null ],
     [ "SetADC", "classUpstreamTaggerHit.html#a7b09d8180a04b8232a50d77bc1f9be98", null ],
     [ "SetTileID", "classUpstreamTaggerHit.html#a4c73c0811f77b503da6e22206395b481", null ],
     [ "SetTriggered", "classUpstreamTaggerHit.html#a97b6022ec71c26bdb72ec2a330c7c94e", null ],

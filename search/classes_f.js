@@ -7,7 +7,7 @@ var searchData=
   ['scoringplane_3c_20upstreamtaggerscoringpoint_20_3e_4',['ScoringPlane&lt; UpstreamTaggerScoringPoint &gt;',['../classSHiP_1_1ScoringPlane.html',1,'SHiP']]],
   ['segment_5',['Segment',['../structMuGeoProcessor_1_1Segment.html',1,'MuGeoProcessor']]],
   ['selection_5fcheck_6',['selection_check',['../classexperimental_1_1analysis__toolkit_1_1selection__check.html',1,'experimental::analysis_toolkit']]],
-  ['setup_7',['setup',['../classstudy__GammaConv_1_1Setup.html',1,'study_GammaConv.Setup'],['../classstudy__muMSC_1_1Setup.html',1,'study_muMSC.Setup']]],
+  ['setup_7',['Setup',['../classstudy__GammaConv_1_1Setup.html',1,'study_GammaConv.Setup'],['../classstudy__muMSC_1_1Setup.html',1,'study_muMSC.Setup']]],
   ['shipbellfield_8',['ShipBellField',['../classShipBellField.html',1,'']]],
   ['shipbfieldmap_9',['ShipBFieldMap',['../classShipBFieldMap.html',1,'']]],
   ['shipcave_10',['ShipCave',['../classShipCave.html',1,'']]],

@@ -1,7 +1,7 @@
 <map id="ShipMuDIS::MuonInBranches" name="ShipMuDIS::MuonInBranches">
-<area shape="rect" id="Node000001" title=" " alt="" coords="17,181,225,207"/>
-<area shape="rect" id="Node000002" href="$structShipMuDIS_1_1MuonDISInBranches.html" title=" " alt="" coords="5,93,236,119"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="123,133,123,181,118,181,118,133"/>
-<area shape="rect" id="Node000003" href="$structShipMuDIS_1_1MuonDISBranches.html" title=" " alt="" coords="11,5,230,31"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="123,45,123,93,118,93,118,45"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="16,207,224,234"/>
+<area shape="rect" id="Node000002" href="$structShipMuDIS_1_1MuonDISInBranches.html" title=" " alt="" coords="5,106,235,134"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="122,148,123,207,117,205,118,151"/>
+<area shape="rect" id="Node000003" href="$structShipMuDIS_1_1MuonDISBranches.html" title=" " alt="" coords="11,5,229,33"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="121,46,123,106,117,105,119,51"/>
 </map>
