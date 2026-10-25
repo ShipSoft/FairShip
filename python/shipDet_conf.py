@@ -274,9 +274,6 @@ def configure_strawtubes(yaml_file: str, ship_geo) -> None:
     detectorList.append(strawtubes)
 
 
-<<<<<<< HEAD
-
-
 def configure_upstreamTaggerStraw(yaml_file, ship_geo):
     with open(yaml_file) as file:
         config = yaml.safe_load(file)
@@ -315,8 +312,6 @@ def configure_upstreamTaggerStraw(yaml_file, ship_geo):
 
     detectorList.append(ubt_straw)
 
-def configure(run, ship_geo):
-=======
 def check_upstream_tagger_map(ubt_map, ubt_geo) -> None:
     """Check that the UBT map covers exactly the UBT box of the geometry configuration.
 
@@ -537,7 +532,6 @@ def configure(run, ship_geo, geofile: str | None = None):
     must then be the configuration stored in the same file.
     """
     stored_yaml_configs = geometry_from_file.stored_yaml_configs(ship_geo) if geofile else {}
->>>>>>> masmith/main
     # ---- for backward compatibility ----
     if not hasattr(ship_geo, "DecayVolumeMedium"):
         raise ValueError("DecayVolumeMedium is not defined, possibly old (incompatible) geometry!")

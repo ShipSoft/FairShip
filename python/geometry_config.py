@@ -219,7 +219,7 @@ def set_upstream_tagger(c) -> None:
     # ECN3 floor up to Top.
     ms = c.UpstreamTaggerScoringPlane.MuonShield = AttrDict()
     ms.Top = 5.2 * u.m
-    ms.ShieldGap = 10.0 * u.cm
+    ms.ShieldGap = 5.0 * u.cm
     ms.X = 2.0 * c.cave.ECN3WallDistance  # 9.132 m
     ms.Y = ms.Top - c.cave.ECN3FloorY  # 8.564 m
     ms.CenterX = 0.0 * u.m
