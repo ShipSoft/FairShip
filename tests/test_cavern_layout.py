@@ -10,14 +10,15 @@ changed without the other, the UBT would stand off the floor or the scoring
 planes would cut into the walls without any error.
 """
 
-import re
 from pathlib import Path
 
 import geometry_config
 import pytest
 import shipunit as u
 
-LAYOUT = Path(__file__).resolve().parent.parent / "passive" / "ShipCavernLayout.h"
+ROOT = pytest.importorskip("ROOT")
+
+SOURCE = Path(__file__).resolve().parent.parent
 
 # geometry_config name -> ShipCavernLayout constant
 QUANTITIES = {
@@ -27,14 +28,17 @@ QUANTITIES = {
 }
 
 
-def layout_constants() -> dict[str, float]:
-    """The constants of ShipCavernLayout.h, in FairShip length units."""
-    pattern = re.compile(r"(k\w+)\s*=\s*(-?[\d.]+)\s*\*\s*ShipUnit::m\b")
-    return {name: float(value) * u.m for name, value in pattern.findall(LAYOUT.read_text())}
+@pytest.fixture(scope="module")
+def layout():
+    """The ShipCavernLayout namespace, compiled by Cling from the header ShipCave uses."""
+    for directory in ("passive", "shipdata"):
+        ROOT.gInterpreter.AddIncludePath(str(SOURCE / directory))
+    assert ROOT.gInterpreter.Declare('#include "ShipCavernLayout.h"')
+    return ROOT.ShipCavernLayout
 
 
 @pytest.mark.parametrize("quantity", QUANTITIES)
-def test_ecn3_cross_section_matches_ship_cave(quantity):
-    constants = layout_constants()
+def test_ecn3_cross_section_matches_ship_cave(layout, quantity):
+    # Both are in the FairShip length unit.
     cave = geometry_config.create_config().cave
-    assert cave[quantity] == pytest.approx(constants[QUANTITIES[quantity]], abs=1.0e-6 * u.cm)
+    assert cave[quantity] == pytest.approx(getattr(layout, QUANTITIES[quantity]), abs=1.0e-6 * u.cm)

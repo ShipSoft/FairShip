@@ -277,8 +277,9 @@ def configure_strawtubes(yaml_file: str, ship_geo) -> None:
 def check_upstream_tagger_map(ubt_map, ubt_geo) -> None:
     """Check that the UBT map covers exactly the UBT box of the geometry configuration.
 
-    A generated map does by construction; this also checks a map stored with a
-    geometry, against the box stored with it. A box larger than the map would
+    A generated map does by construction, so this is only run on a map stored
+    with a geometry that the rule of the checkout does not reproduce, against
+    the box stored with it. A box larger than the map would
     leave a strip without tiles, a smaller one would stop ConstructGeometry.
     """
     tolerance = 1.0e-6  # cm
@@ -427,14 +428,15 @@ def configure_upstream_tagger(yaml_file: str, upstream_tagger, ship_geo) -> None
             differs = dict(stored_map) != generate_upstream_tagger_map(rule, ship_geo.UpstreamTagger)
         except ValueError:
             differs = True
+        ubt_map = stored_map
         if differs:
             print(
                 f"Warning: the UBT map generated from {yaml_file} differs from the one stored with the"
                 " geometry; the stored map, used in the simulation, is used."
             )
-        ubt_map = stored_map
-
-    check_upstream_tagger_map(ubt_map, ship_geo.UpstreamTagger)
+            # A generated map tiles its box by construction, so only a stored
+            # map that the rule does not reproduce needs checking.
+            check_upstream_tagger_map(ubt_map, ship_geo.UpstreamTagger)
 
     regions = ubt_map["regions"]
     region_ids = [region["id"] for region in regions]

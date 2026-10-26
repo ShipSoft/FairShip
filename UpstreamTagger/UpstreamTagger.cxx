@@ -7,6 +7,7 @@
 #include <cmath>
 #include <iostream>
 #include <map>
+#include <tuple>
 
 #include "FairVolume.h"
 #include "ShipDetectorList.h"
@@ -33,6 +34,8 @@ Bool_t UpstreamTagger::ProcessHits(FairVolume* vol) {
   // Set parameters at entrance of volume, or at the first step of a track
   // created inside it (e.g. a delta ray). Reset ELoss.
   if (gMC->IsTrackEntering() || gMC->IsNewTrack()) {
+    // Geant4 VMC also flags the first step of a new track as entering.
+    fEntered = !gMC->IsNewTrack();
     fELoss = 0.;
     fTime = gMC->TrackTime() * 1.0e09;
     fLength = gMC->TrackLength();
@@ -71,9 +74,16 @@ Bool_t UpstreamTagger::ProcessHits(FairVolume* vol) {
            TVector3(Mom.Px(), Mom.Py(), Mom.Pz()));
     fELoss = 0.;
 
-    // Increment number of veto det points in TParticle
-    ShipStack* stack = dynamic_cast<ShipStack*>(gMC->GetStack());
-    stack->AddPoint(kUpstreamTagger);
+    // Count a point for tracks that entered the region. A track created in
+    // the plastic (delta ray, Compton electron) still gives a point, for its
+    // energy deposit, but does not keep its track in MCTrack: with
+    // MCTracksWithHitsOnly (--MuonBack) every soft electron of every crossing
+    // muon would be kept. Its point gets track ID -2 unless the track is kept
+    // for another reason.
+    if (fEntered) {
+      ShipStack* stack = dynamic_cast<ShipStack*>(gMC->GetStack());
+      stack->AddPoint(kUpstreamTagger);
+    }
   }
 
   return kTRUE;
@@ -97,6 +107,13 @@ void UpstreamTagger::ConstructGeometry() {
   fDetector = new TGeoVolumeAssembly("Upstream_Tagger");
 
   std::map<Double_t, Int_t> regionsPerTileSize;
+  // Regions of the same shape share one volume, placed with the region ID as
+  // copy number: most regions are full 20 x 20 cm2 squares, and only the
+  // regions cut by the box edges differ. Sizes are keyed in um so that
+  // rounding differences between equal regions do not split them.
+  using ShapeKey = std::tuple<Long64_t, Long64_t, Long64_t, Long64_t>;
+  const auto um = [](Double_t length) { return std::llround(length * 1.0e4); };
+  std::map<ShapeKey, TGeoVolume*> volumes;
   for (const Region& region : fRegions) {
     if (region.sizeX <= 0. || region.sizeY <= 0.) {
       Fatal("ConstructGeometry", "UBT region %d has a non-positive size.",
@@ -114,16 +131,23 @@ void UpstreamTagger::ConstructGeometry() {
       Fatal("ConstructGeometry", "UBT region %d lies outside the UBT box.",
             region.id);
     }
-    const TString volumeName =
-        TString::Format("UpstreamTaggerRegion%d_%dcm", region.id,
-                        static_cast<Int_t>(region.constituentTileSize));
-    TGeoVolume* regionVolume =
-        gGeoManager->MakeBox(volumeName, scintillator, region.sizeX / 2.,
-                             region.sizeY / 2., region.thickness / 2.);
-    // A shade of blue per tile size in the event display.
-    regionVolume->SetLineColor(kBlue -
-                               static_cast<Int_t>(region.constituentTileSize));
-    AddSensitiveVolume(regionVolume);
+    const ShapeKey shape{um(region.sizeX), um(region.sizeY),
+                         um(region.thickness), um(region.constituentTileSize)};
+    TGeoVolume*& regionVolume = volumes[shape];
+    if (!regionVolume) {
+      // UpstreamTaggerRegion_<tile size>cm_<shape number>: the tile size is
+      // read back by UpstreamTaggerDetector.validate_stored_geometry.
+      const TString volumeName = TString::Format(
+          "UpstreamTaggerRegion_%dcm_%zu",
+          static_cast<Int_t>(region.constituentTileSize), volumes.size() - 1);
+      regionVolume =
+          gGeoManager->MakeBox(volumeName, scintillator, region.sizeX / 2.,
+                               region.sizeY / 2., region.thickness / 2.);
+      // A shade of blue per tile size in the event display.
+      regionVolume->SetLineColor(
+          kBlue - static_cast<Int_t>(region.constituentTileSize));
+      AddSensitiveVolume(regionVolume);
+    }
     fDetector->AddNode(regionVolume, region.id,
                        new TGeoTranslation(region.x, region.y, 0.));
     ++regionsPerTileSize[region.constituentTileSize];
@@ -137,5 +161,5 @@ void UpstreamTagger::ConstructGeometry() {
     cout << (it == regionsPerTileSize.begin() ? "" : ", ") << it->second
          << " with " << it->first << " cm tiles";
   }
-  cout << ")" << endl;
+  cout << ") in " << volumes.size() << " region shapes" << endl;
 }

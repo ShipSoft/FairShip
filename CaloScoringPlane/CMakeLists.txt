@@ -3,8 +3,12 @@
 
 ship_add_library(
   NAME CaloScoringPlane
-  SOURCES CaloScoringPlane.cxx CaloScoringPlanePoint.cxx
+  SOURCES
+    CaloScoringPlane.cxx
+    CaloScoringPlanePoint.cxx
+    CaloScoringPlaneHit.cxx
+    CaloScoringPlanePID.cxx
   LINKDEF LinkDef.h
   EXTRA_DICT_HEADERS ${CMAKE_SOURCE_DIR}/Detector/Detector.h ${CMAKE_SOURCE_DIR}/Detector/ScoringPlane.h
-  DEPENDENCIES Base ShipData FairLogger::FairLogger Detector
+  DEPENDENCIES Base ShipData EG FairLogger::FairLogger Detector
 )
