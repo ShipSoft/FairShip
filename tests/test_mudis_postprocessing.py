@@ -21,7 +21,10 @@ ROOT = pytest.importorskip("ROOT")
 
 # The test needs the compiled newMuonDIS dictionary (material labels) and the
 # detector point classes; fail loudly rather than skip if they are missing.
-if ROOT.gSystem.Load("libShipMuDIS") < 0:
+print("Loading libShipMuDIS.so for post-processing tests", flush=True)
+load_result = ROOT.gSystem.Load("libShipMuDIS.so")
+print(f"libShipMuDIS.so load result: {load_result}", flush=True)
+if load_result < 0:
     raise ImportError("libShipMuDIS could not be loaded; build FairShip and run the tests in its environment")
 
 from MuDISGenerator_postProcessing import _MARKER, _POINT_BRANCHES, post_process
@@ -82,7 +85,7 @@ def write_input(path, muons):
     output.Close()
 
 
-def write_output(path, identities):
+def write_output(path, identities, companion=False):
     """Write a cbmsim tree as the simulation leaves it, one entry per identity."""
     output = ROOT.TFile.Open(str(path), "RECREATE")
     tree = ROOT.TTree("cbmsim", "post-processing test output")
@@ -101,6 +104,10 @@ def write_output(path, identities):
         tracks.clear()
         # Untracked incoming muon at MCTrack[0], as NewMuDISGenerator adds it.
         tracks.push_back(ROOT.ShipMCTrack(13, -1, 0.0, 0.0, 50.0, MUON_MASS, 0.0, 0.0, 3000.0, 0.0, 0, event, 0, 1.0))
+        if companion:
+            tracks.push_back(
+                ROOT.ShipMCTrack(-13, 0, 0.0, 0.0, 50.0, MUON_MASS, 0.0, 0.0, 3000.0, 0.0, 0, event, 0, 2.0)
+            )
         for vector in points.values():
             vector.clear()
         points["vetoPoint"].push_back(make_point("vetoPoint", SIMULATED_Z, track_id=1))
@@ -146,9 +153,10 @@ def test_material_labels_used_by_the_test_exist():
     assert {"HE", "AIR"} <= set(MATERIALS)
 
 
-def test_restores_hits_upstream_of_each_vertex(tmp_path, inputs):
+@pytest.mark.parametrize("companion", [False, True])
+def test_restores_hits_upstream_of_each_vertex(tmp_path, inputs, companion):
     output = tmp_path / "sim.root"
-    write_output(output, REPLAY_FROM_START)
+    write_output(output, REPLAY_FROM_START, companion=companion)
 
     counts = post_process(output, inputs, start_event=0)
 

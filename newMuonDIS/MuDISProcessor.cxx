@@ -64,6 +64,7 @@ bool MuDISProcessor::init(const int& aEvts, const int& aStart,
     fnDIS = aDIS;
   }
   fP6seed = aSeed;
+  gRandom->SetSeed(aSeed);
   fGeoProcessor.SetZmax(aZmax);
   fGeoProcessor.SetZmin(aZmin);
   return true;
@@ -220,16 +221,18 @@ void MuDISProcessor::initEvent() {
 }
 
 void MuDISProcessor::fillMCTracks(const Int_t aIdx) {
-  Int_t iEle = 0;
-  for (auto& tkIt : (*finEv.MCTrack)) {
-    if (iEle == aIdx) foutEv.mcTrks.push_back(tkIt);
-
+  // Save the selected DIS muon first, followed by its soft daughters.
+  foutEv.mcTrks.push_back(finEv.MCTrack->at(aIdx));
+  foutEv.mcTrks.back().SetTrackID(0);
+  for (const auto& tkIt : *finEv.MCTrack) {
     if (tkIt.GetMotherId() == aIdx) {
       std::string procName = tkIt.GetProcName().Data();
-      if (procName.find("Muon nuclear interaction") == procName.npos)
+      if (procName.find("Muon nuclear interaction") == procName.npos) {
         foutEv.mcTrks.push_back(tkIt);
+        foutEv.mcTrks.back().SetMotherId(0);
+        foutEv.mcTrks.back().SetTrackID(foutEv.mcTrks.size() - 1);
+      }
     }
-    iEle++;
   }
 }
 
@@ -237,6 +240,7 @@ void MuDISProcessor::fillSBTHits(const Int_t aIdx) {
   for (auto& hitIt : (*finEv.sbtPt)) {
     if (hitIt.GetTrackID() == aIdx) {
       foutEv.sbtPt.push_back(hitIt);
+      foutEv.sbtPt.back().SetTrackID(0);
     }
   }
 }
@@ -245,6 +249,7 @@ void MuDISProcessor::fillUBTHits(const Int_t aIdx) {
   for (auto& hitIt : (*finEv.ubtPt)) {
     if (hitIt.GetTrackID() == aIdx) {
       foutEv.ubtPt.push_back(hitIt);
+      foutEv.ubtPt.back().SetTrackID(0);
     }
   }
 }
@@ -253,13 +258,17 @@ void MuDISProcessor::fillSSTHits(const Int_t aIdx) {
   for (auto& hitIt : (*finEv.sstPt)) {
     if (hitIt.GetTrackID() == aIdx) {
       foutEv.sstPt.push_back(hitIt);
+      foutEv.sstPt.back().SetTrackID(0);
     }
   }
 }
 
 void MuDISProcessor::fillTDHits(const Int_t aIdx) {
   for (const auto& hit : *finEv.tdPt) {
-    if (hit.GetTrackID() == aIdx) foutEv.tdPt.push_back(hit);
+    if (hit.GetTrackID() == aIdx) {
+      foutEv.tdPt.push_back(hit);
+      foutEv.tdPt.back().SetTrackID(0);
+    }
   }
 }
 
@@ -277,7 +286,7 @@ void MuDISProcessor::generateDISevents(const std::string& tType,
   }
   aDISBr.nDISevtsGenerated = 0;
   double P = aPath.GetMomentum(0);
-  LOG(debug) << " ** initial mu momentum: " << (*finEv.MCTrack).front().GetP()
+  LOG(debug) << " ** initial mu momentum: " << foutEv.mcTrks.front().GetP()
              << " Pythia init P: " << P;
 
   if (P < fMinPythiaP) {
@@ -436,6 +445,9 @@ void MuDISProcessor::generateDISevents(const std::string& tType,
 
 void MuDISProcessor::ProcessMuons() {
   ShipMuDIS::Normalization normalization("prepareEvents");
+  // Count before momentum/path cuts for the final diagnostics only.
+  Long64_t multiMuonEvents = 0;
+  Long64_t multiMuonSum = 0;
   LOG(info) << " * Start of event loop" << std::endl;
   fGeoProcessor.ResetDiagnostics();
 
@@ -501,10 +513,26 @@ void MuDISProcessor::ProcessMuons() {
       skipEvt++;
       continue;
     }
-    // interested in the first muon track - for PG setting
-    //@FIXME AMM adapt also to MuonBack input, take all muons?
-    // for now take MCTrack[0]
-    Int_t muIdx = 0;
+    std::vector<Int_t> muonIndices;
+    for (unsigned i = 0; i < nTr; ++i) {
+      const auto& candidate = finEv.MCTrack->at(i);
+      if (std::abs(candidate.GetPdgCode()) == 13 &&
+          candidate.GetMotherId() == -1)
+        muonIndices.push_back(i);
+    }
+    const auto nMu = muonIndices.size();
+    if (nMu == 0) {
+      LOG(warning) << iEvent << " skipped: no primary muon in " << nTr
+                   << " tracks";
+      skipEvt++;
+      continue;
+    }
+    if (nMu >= 2) {
+      ++multiMuonEvents;
+      multiMuonSum += nMu;
+    }
+    // Preserve the random stream for single-muon input events.
+    const Int_t muIdx = muonIndices[nMu == 1 ? 0 : gRandom->Integer(nMu)];
 
     ShipMCTrack& track = (*finEv.MCTrack)[static_cast<unsigned>(muIdx)];
     int pid = track.GetPdgCode();
@@ -519,12 +547,6 @@ void MuDISProcessor::ProcessMuons() {
       nminus++;
       wminus += muW;
       targetType = "gamma/mu-";
-    } else {
-      LOG(warning) << iEvent << " skipped: "
-                   << " nTracks= " << nTr
-                   << " -- 1st track pid not a muon: " << pid << std::endl;
-      skipEvt++;
-      continue;
     }
 
     normalization.Add(muW);
@@ -613,6 +635,12 @@ void MuDISProcessor::ProcessMuons() {
                           foutEv.br[i]);
     }
 
+    // Keep companion muons with their original weights; replay transports them.
+    for (const auto companion : muonIndices) {
+      if (companion == muIdx) continue;
+      foutEv.mcTrks.push_back(finEv.MCTrack->at(companion));
+      foutEv.mcTrks.back().SetTrackID(foutEv.mcTrks.size() - 1);
+    }
     fouttree->Fill();
     pathTotals.Add(muW, foutEv.pathLength);
 
@@ -625,6 +653,12 @@ void MuDISProcessor::ProcessMuons() {
             << "Counted: " << skipMu_acc
             << " muons with no recorded hits in UBT,SBT,SST,TD.";
   normalization.Attach(fouttree);
+  LOG(info) << "Input muon multiplicity: " << multiMuonEvents
+            << " events with n_mu >= 2, sum(n_mu) = "
+            << multiMuonSum << ", average n_mu = "
+            << (multiMuonEvents > 0
+                    ? static_cast<double>(multiMuonSum) / multiMuonEvents
+                    : 0.);
   LOG(info) << "Weighted counts (sum MCTrack[0].fW): " << wplus << " mu+ and "
             << wminus << " mu- (after momentum cut)." << std::endl
             << "Skipped (sum MCTrack[0].fW): " << skipMu_pminW

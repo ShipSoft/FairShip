@@ -231,29 +231,23 @@ Bool_t NewMuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
       fNevents = -1;
       return kFALSE;
     }
-    // add also soft tracks up to z_interaction
-    bool first = true;
-    int idxMum = -1;
-    for (auto&& mcTrk : *(finEv.mcTrks)) {
-      ShipMCTrack& softP = static_cast<ShipMCTrack&>(mcTrk);
-      // first particle is the original muon
-      if (first) {
-        cpg->AddTrack(softP.GetPdgCode(), softP.GetPx(), softP.GetPy(),
-                      softP.GetPz(), softP.GetStartX(), softP.GetStartY(),
-                      softP.GetStartZ(), idxMum, false, softP.GetEnergy(),
-                      softP.GetStartT() / 1E9, softP.GetWeight());
-        // passed the first track, we want to track the soft particles and they
-        // all stem from first one.
-        first = false;
-        idxMum = 0;
-      } else if (softP.GetStartZ() <= (*lBr->DISvz)[fnmuDis]) {
-        bool wantTracking = softP.GetStartZ() < 12000;
-        cpg->AddTrack(softP.GetPdgCode(), softP.GetPx(), softP.GetPy(),
-                      softP.GetPz(), softP.GetStartX(), softP.GetStartY(),
-                      softP.GetStartZ(), idxMum, wantTracking,
-                      softP.GetEnergy(), softP.GetStartT() / 1E9,
-                      softP.GetWeight());
-      }
+    // The DIS muon is first and untracked. Transport its upstream soft
+    // daughters and all companion muons, with motherId=-1.
+    for (std::size_t i = 0; i < finEv.mcTrks->size(); ++i) {
+      const auto& softP = finEv.mcTrks->at(i);
+      const bool companion = i != 0 && softP.GetMotherId() == -1 &&
+                             std::abs(softP.GetPdgCode()) == 13;
+      if (i != 0 && !companion &&
+          softP.GetStartZ() > (*lBr->DISvz)[fnmuDis])
+        continue;
+      const int idxMum = i == 0 || companion ? -1 : 0;
+      const bool wantTracking = i != 0 &&
+                                (companion || softP.GetStartZ() < 9500);
+      cpg->AddTrack(softP.GetPdgCode(), softP.GetPx(), softP.GetPy(),
+                    softP.GetPz(), softP.GetStartX(), softP.GetStartY(),
+                    softP.GetStartZ(), idxMum, wantTracking,
+                    softP.GetEnergy(), softP.GetStartT() / 1E9,
+                    softP.GetWeight());
     }
     LOG(debug) << " --- Processing dis muon " << fnmuDis << " with "
                << nDaughters << " daughters and " << nDISparts
