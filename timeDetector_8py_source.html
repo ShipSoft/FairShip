@@ -114,29 +114,28 @@ $(function(){initNavTree('timeDetector_8py_source.html','',''); });
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="classtimeDetector_1_1timeDetector.html#a065f5a44b3e3f47982f99e69fe23e1bc">   12</a></span>    <span class="keyword">def </span><a class="code hl_function" href="classtimeDetector_1_1timeDetector.html#a065f5a44b3e3f47982f99e69fe23e1bc">digitize</a>(self) -&gt; None:</div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>        <span class="stringliteral">&quot;&quot;&quot;Digitize timing detector MC hits.</span></div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="stringliteral"></span> </div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="stringliteral">        The earliest hit per straw will be marked valid, all later ones invalid.</span></div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>        earliest_per_det_id = {}</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>        <span class="keywordflow">for</span> index, point <span class="keywordflow">in</span> enumerate(self.<a class="code hl_variable" href="classBaseDetector_1_1BaseDetector.html#ac54365eaaae58490fec19a48f04928b7">intree</a>.TimeDetPoint):</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>            hit = ROOT.TimeDetHit(point, self.<a class="code hl_variable" href="classBaseDetector_1_1BaseDetector.html#ac54365eaaae58490fec19a48f04928b7">intree</a>.t0)</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>            self.<a class="code hl_variable" href="classBaseDetector_1_1BaseDetector.html#a146858d034cb57ffd0f81f4e025f9492">det</a>.push_back(hit)</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>            detector_id = hit.GetDetectorID()</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>            <span class="keywordflow">if</span> hit.isValid():</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>                <span class="keywordflow">if</span> detector_id <span class="keywordflow">in</span> earliest_per_det_id:</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>                    times = hit.GetMeasurements()</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>                    earliest = earliest_per_det_id[detector_id]</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>                    reference_times = self.<a class="code hl_variable" href="classBaseDetector_1_1BaseDetector.html#a146858d034cb57ffd0f81f4e025f9492">det</a>[earliest].GetMeasurements()</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>                    <span class="comment"># this is not really correct, only first attempt</span></div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>                    <span class="comment"># case that one measurement only is earlier not taken into account</span></div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>                    <span class="comment"># SetTDC(Float_t val1, Float_t val2)</span></div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>                    <span class="keywordflow">if</span> reference_times[0] &gt; times[0] <span class="keywordflow">or</span> reference_times[1] &gt; times[1]:</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>                        <span class="comment"># second hit with smaller tdc</span></div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>                        self.<a class="code hl_variable" href="classBaseDetector_1_1BaseDetector.html#a146858d034cb57ffd0f81f4e025f9492">det</a>[earliest].setInvalid()</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>                        earliest_per_det_id[detector_id] = index</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>                    <span class="keywordflow">else</span>:</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>                        self.<a class="code hl_variable" href="classBaseDetector_1_1BaseDetector.html#a146858d034cb57ffd0f81f4e025f9492">det</a>[index].setInvalid()</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>                <span class="keywordflow">else</span>:</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>                    earliest_per_det_id[detector_id] = index</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="stringliteral">        One hit is created per TimeDetPoint, at the same index. Per bar, the hit</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="stringliteral">        from the point with the earliest true (unsmeared) time is marked valid,</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="stringliteral">        all others invalid.</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="stringliteral"></span> </div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="stringliteral">        The selection uses the MC time rather than the smeared TDC values:</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="stringliteral">        points in the same bar (e.g. a muon and its delta electrons) belong to</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="stringliteral">        the same light pulse, so comparing independently smeared TDCs would pick</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="stringliteral">        a random point and often invalidate the primary&#39;s hit.</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>        earliest_per_det_id = {}</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>        points = self.<a class="code hl_variable" href="classBaseDetector_1_1BaseDetector.html#ac54365eaaae58490fec19a48f04928b7">intree</a>.TimeDetPoint</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>        <span class="keywordflow">for</span> index, point <span class="keywordflow">in</span> enumerate(points):</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>            self.<a class="code hl_variable" href="classBaseDetector_1_1BaseDetector.html#a146858d034cb57ffd0f81f4e025f9492">det</a>.push_back(ROOT.TimeDetHit(point, self.<a class="code hl_variable" href="classBaseDetector_1_1BaseDetector.html#ac54365eaaae58490fec19a48f04928b7">intree</a>.t0))</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>            detector_id = point.GetDetectorID()</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>            earliest = earliest_per_det_id.get(detector_id)</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>            <span class="keywordflow">if</span> earliest <span class="keywordflow">is</span> <span class="keywordtype">None</span>:</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>                earliest_per_det_id[detector_id] = index</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>            <span class="keywordflow">elif</span> point.GetTime() &lt; points[earliest].GetTime():</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>                self.<a class="code hl_variable" href="classBaseDetector_1_1BaseDetector.html#a146858d034cb57ffd0f81f4e025f9492">det</a>[earliest].setInvalid()</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>                earliest_per_det_id[detector_id] = index</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>            <span class="keywordflow">else</span>:</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>                self.<a class="code hl_variable" href="classBaseDetector_1_1BaseDetector.html#a146858d034cb57ffd0f81f4e025f9492">det</a>[index].setInvalid()</div>
 </div>
 </div>
 <div class="ttc" id="aclassBaseDetector_1_1BaseDetector_html"><div class="ttname"><a href="classBaseDetector_1_1BaseDetector.html">BaseDetector.BaseDetector</a></div><div class="ttdef"><b>Definition</b> <a href="BaseDetector_8py_source.html#l00011">BaseDetector.py:11</a></div></div>

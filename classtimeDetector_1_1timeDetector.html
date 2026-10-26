@@ -185,7 +185,14 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <pre class="fragment">Digitize timing detector MC hits.
 
-The earliest hit per straw will be marked valid, all later ones invalid.
+One hit is created per TimeDetPoint, at the same index. Per bar, the hit
+from the point with the earliest true (unsmeared) time is marked valid,
+all others invalid.
+
+The selection uses the MC time rather than the smeared TDC values:
+points in the same bar (e.g. a muon and its delta electrons) belong to
+the same light pulse, so comparing independently smeared TDCs would pick
+a random point and often invalidate the primary's hit.
 </pre> 
 <p>Reimplemented from <a class="el" href="classBaseDetector_1_1BaseDetector.html#a0386332312b99247b8a098b60e5bce71">BaseDetector.BaseDetector</a>.</p>
 
@@ -193,29 +200,28 @@ The earliest hit per straw will be marked valid, all later ones invalid.
 <div class="fragment"><div class="line"><span class="lineno">   12</span>    <span class="keyword">def </span>digitize(self) -&gt; None:</div>
 <div class="line"><span class="lineno">   13</span>        <span class="stringliteral">&quot;&quot;&quot;Digitize timing detector MC hits.</span></div>
 <div class="line"><span class="lineno">   14</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">   15</span><span class="stringliteral">        The earliest hit per straw will be marked valid, all later ones invalid.</span></div>
-<div class="line"><span class="lineno">   16</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   17</span>        earliest_per_det_id = {}</div>
-<div class="line"><span class="lineno">   18</span>        <span class="keywordflow">for</span> index, point <span class="keywordflow">in</span> enumerate(self.intree.TimeDetPoint):</div>
-<div class="line"><span class="lineno">   19</span>            hit = ROOT.TimeDetHit(point, self.intree.t0)</div>
-<div class="line"><span class="lineno">   20</span>            self.det.push_back(hit)</div>
-<div class="line"><span class="lineno">   21</span>            detector_id = hit.GetDetectorID()</div>
-<div class="line"><span class="lineno">   22</span>            <span class="keywordflow">if</span> hit.isValid():</div>
-<div class="line"><span class="lineno">   23</span>                <span class="keywordflow">if</span> detector_id <span class="keywordflow">in</span> earliest_per_det_id:</div>
-<div class="line"><span class="lineno">   24</span>                    times = hit.GetMeasurements()</div>
-<div class="line"><span class="lineno">   25</span>                    earliest = earliest_per_det_id[detector_id]</div>
-<div class="line"><span class="lineno">   26</span>                    reference_times = self.det[earliest].GetMeasurements()</div>
-<div class="line"><span class="lineno">   27</span>                    <span class="comment"># this is not really correct, only first attempt</span></div>
-<div class="line"><span class="lineno">   28</span>                    <span class="comment"># case that one measurement only is earlier not taken into account</span></div>
-<div class="line"><span class="lineno">   29</span>                    <span class="comment"># SetTDC(Float_t val1, Float_t val2)</span></div>
-<div class="line"><span class="lineno">   30</span>                    <span class="keywordflow">if</span> reference_times[0] &gt; times[0] <span class="keywordflow">or</span> reference_times[1] &gt; times[1]:</div>
-<div class="line"><span class="lineno">   31</span>                        <span class="comment"># second hit with smaller tdc</span></div>
-<div class="line"><span class="lineno">   32</span>                        self.det[earliest].setInvalid()</div>
-<div class="line"><span class="lineno">   33</span>                        earliest_per_det_id[detector_id] = index</div>
-<div class="line"><span class="lineno">   34</span>                    <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">   35</span>                        self.det[index].setInvalid()</div>
-<div class="line"><span class="lineno">   36</span>                <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">   37</span>                    earliest_per_det_id[detector_id] = index</div>
+<div class="line"><span class="lineno">   15</span><span class="stringliteral">        One hit is created per TimeDetPoint, at the same index. Per bar, the hit</span></div>
+<div class="line"><span class="lineno">   16</span><span class="stringliteral">        from the point with the earliest true (unsmeared) time is marked valid,</span></div>
+<div class="line"><span class="lineno">   17</span><span class="stringliteral">        all others invalid.</span></div>
+<div class="line"><span class="lineno">   18</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">   19</span><span class="stringliteral">        The selection uses the MC time rather than the smeared TDC values:</span></div>
+<div class="line"><span class="lineno">   20</span><span class="stringliteral">        points in the same bar (e.g. a muon and its delta electrons) belong to</span></div>
+<div class="line"><span class="lineno">   21</span><span class="stringliteral">        the same light pulse, so comparing independently smeared TDCs would pick</span></div>
+<div class="line"><span class="lineno">   22</span><span class="stringliteral">        a random point and often invalidate the primary&#39;s hit.</span></div>
+<div class="line"><span class="lineno">   23</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   24</span>        earliest_per_det_id = {}</div>
+<div class="line"><span class="lineno">   25</span>        points = self.intree.TimeDetPoint</div>
+<div class="line"><span class="lineno">   26</span>        <span class="keywordflow">for</span> index, point <span class="keywordflow">in</span> enumerate(points):</div>
+<div class="line"><span class="lineno">   27</span>            self.det.push_back(ROOT.TimeDetHit(point, self.intree.t0))</div>
+<div class="line"><span class="lineno">   28</span>            detector_id = point.GetDetectorID()</div>
+<div class="line"><span class="lineno">   29</span>            earliest = earliest_per_det_id.get(detector_id)</div>
+<div class="line"><span class="lineno">   30</span>            <span class="keywordflow">if</span> earliest <span class="keywordflow">is</span> <span class="keywordtype">None</span>:</div>
+<div class="line"><span class="lineno">   31</span>                earliest_per_det_id[detector_id] = index</div>
+<div class="line"><span class="lineno">   32</span>            <span class="keywordflow">elif</span> point.GetTime() &lt; points[earliest].GetTime():</div>
+<div class="line"><span class="lineno">   33</span>                self.det[earliest].setInvalid()</div>
+<div class="line"><span class="lineno">   34</span>                earliest_per_det_id[detector_id] = index</div>
+<div class="line"><span class="lineno">   35</span>            <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">   36</span>                self.det[index].setInvalid()</div>
 </div><!-- fragment -->
 </div>
 </div>
