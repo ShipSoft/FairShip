@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
+import json
 import os
 import sys
 from collections import Counter
@@ -210,3 +211,38 @@ def checkForBranch(inFile, branchName) -> bool:
     else:
         print("ERROR CheckForBranch: File must be either a string or list of files")
         os._exit(1)
+
+
+def stage1AbsorberFieldOff(inFile) -> tuple[list[str], list[str]]:
+    """Check the FileSummary that run_fixedTarget.py writes for the hadron absorber field.
+
+    Returns the files without a FileSummary, and the files simulated with a hadron
+    absorber but without its field.
+    """
+    fileList = [inFile] if isinstance(inFile, str) else list(inFile)
+    noSummary, noField = [], []
+    for _f in fileList:
+        with ROOT.TFile.Open(_f) as f:
+            summary = f.Get("FileSummary")
+            if not summary:
+                noSummary.append(_f)
+                continue
+            fsr = json.loads(str(summary))
+        hasAbsorber = fsr.get("AddMuonShield") or fsr.get("AddHadronAbsorberOnly")
+        if hasAbsorber and not fsr.get("AddMuonShieldField"):
+            noField.append(_f)
+    return noSummary, noField
+
+
+def is_known_particle(code: int | str) -> bool:
+    """Return True if TDatabasePDG knows this PDG code or particle name."""
+    # GetParticle returns a null pointer for an unknown code: it is falsy, but it is not None.
+    return bool(ROOT.TDatabasePDG.Instance().GetParticle(code))
+
+
+def get_particle(code: int | str) -> ROOT.TParticlePDG:
+    """Return the TDatabasePDG entry for a PDG code or particle name; raise ValueError if it is unknown."""
+    particle = ROOT.TDatabasePDG.Instance().GetParticle(code)
+    if not particle:
+        raise ValueError(f"Unknown particle: {code}")
+    return particle

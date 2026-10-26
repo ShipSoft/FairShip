@@ -5,9 +5,9 @@ find_package(Python3 COMPONENTS Development REQUIRED)
 
 ship_add_library(
   NAME ShipMuonShieldBackground
-  SOURCES exitHadronAbsorber.cxx pyFairModule.cxx
+  SOURCES exitHadronAbsorber.cxx pyFairModule.cxx ShipRunConfiguration.cxx
   LINKDEF LinkDef.h
   EXTRA_DICT_HEADERS ${CMAKE_SOURCE_DIR}/Detector/Detector.h
-  DEPENDENCIES Detector Base veto ShipData GeoBase ParBase Geom Core FairLogger::FairLogger
+  DEPENDENCIES Detector Base veto ShipData GeoBase ParBase Geom Core FairLogger::FairLogger geant4vmc
   INCLUDE_DIRECTORIES ${Python3_INCLUDE_DIRS}
 )

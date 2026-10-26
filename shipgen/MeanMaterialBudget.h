@@ -6,6 +6,8 @@
 
 #include <span>
 
+class TGeoMaterial;
+
 //
 // Calculate mean material budget and material properties between two points
 // in the geometry using TGeoManager navigation.
@@ -53,6 +55,10 @@ namespace shipgen {
 double MeanMaterialBudget(std::span<const double, 3> start,
                           std::span<const double, 3> end,
                           std::span<double, 10> mparam);
+
+// Hadronic cross section per nucleus of a material in mbarn, from its
+// interaction length: sigma = A / (N_A * density * interaction length).
+double NuclearCrossSection_mbarn(const TGeoMaterial& material);
 
 }  // namespace shipgen
 

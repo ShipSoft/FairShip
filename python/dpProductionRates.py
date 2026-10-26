@@ -5,6 +5,7 @@ import math
 
 import proton_bremsstrahlung
 import ROOT
+from rootUtils import get_particle
 
 PDG = ROOT.TDatabasePDG.Instance()
 protonFlux = 2e20
@@ -69,8 +70,7 @@ def mesonBRtoPhoton(mumPdg, doprint=False):
 
 
 def brMesonToGammaDP(mass, epsilon, mumPdg, doprint=False):
-    mum = PDG.GetParticle(mumPdg)
-    assert mum is not None, f"Unknown PDG: {mumPdg}"
+    mum = get_particle(mumPdg)
     mMeson = mum.Mass()
     if doprint:
         print("Mass of mother %d meson is %3.3f" % (mumPdg, mMeson))
@@ -84,10 +84,8 @@ def brMesonToGammaDP(mass, epsilon, mumPdg, doprint=False):
 
 
 def brMesonToMesonDP(mass, epsilon, mumPdg, dauPdg, doprint=False):
-    mum = PDG.GetParticle(mumPdg)
-    dau = PDG.GetParticle(dauPdg)
-    assert mum is not None, f"Unknown PDG: {mumPdg}"
-    assert dau is not None, f"Unknown PDG: {dauPdg}"
+    mum = get_particle(mumPdg)
+    dau = get_particle(dauPdg)
     mMeson = mum.Mass()
     mDaughterMeson = dau.Mass()
     if doprint:

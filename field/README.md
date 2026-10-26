@@ -111,14 +111,22 @@ following floating-point precision variables:
 xMin, xMax, dx, yMin, yMax, dy, zMin, zMax, dz
 ```
 
-and another one called Data which stores the floating-point precision B field components (T)
+and another one called Data which stores the floating-point precision B field components (T),
+together with the node coordinates (cm)
 
 ```
-Bx, By, Bz
+x, y, z, Bx, By, Bz
 ```
 
 assuming the position binning order (iX\*Ny + iY)\*Nz + iZ, where (iX,iY,iZ) is the equivalent
 bin for coordinate (x,y,z), and Ny and Nz are the number of y and z bins, respectively.
+
+The x, y and z branches are not used to look the field up, which goes purely by that binning
+order, but ShipBFieldMap checks a handful of them against it when the map is loaded and
+refuses to run if they disagree. Nothing else records the ordering, and a map written in a
+different one still has the right number of entries whenever Nx equals Ny and the x and y
+ranges match, so without that check it would be read mirrored about the x = y plane in
+silence. A map without the coordinates still loads, with a warning.
 
 All variables are stored with floating-point (not double) precision to save both
 disk space as well as memory consumption within the FairShip code.
@@ -127,7 +135,15 @@ The script [convertMap.py](convertMap.py) can be used to convert a general (asci
 data file into the ROOT file format for FairShip use. Alternatively, the scripts
 [convertMisisMap.py](convertMisisMap.py) and [convertRALMap.py](convertRALMap.py) can be used
 for converting field maps generated from MISIS or RAL (VectorFields/Opera software output)
-engineering work, respectively.
+engineering work, respectively. Those two do not yet write the node coordinates, so the maps
+they produce cannot be checked on load.
+
+An existing ROOT map can be inspected and rewritten in the expected order with
+[canonicaliseFieldMap.py](canonicaliseFieldMap.py), which works out the order a map is in
+from its stored coordinates and from the divergence of the field itself, since div B = 0
+only survives the correct one. [plotFieldMap.py](plotFieldMap.py) draws the components of a
+map straight from the file, and can show the same file read both ways side by side.
+`tests/test_field_maps.py` applies the same checks to every map in `files/`.
 
 
 2) [SymFieldMap](ShipBFieldMap.h): x-y quadrant symmetric field map

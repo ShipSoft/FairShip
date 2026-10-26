@@ -23,6 +23,9 @@ ignore = [
 ]
 
 
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
 [tool.codespell]
 skip = "pixi.lock"
 ignore-words-list = 'Millepede,Gaus,gaus,dYIn,te,KNO,kno'

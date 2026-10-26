@@ -18,31 +18,11 @@ if(POLICY CMP0144)
     cmake_policy(SET CMP0144 NEW)
 endif()
 
-# Determine version from git tags (CalVer: year.month[.patch])
-find_package(Git QUIET)
-if(Git_FOUND)
-    execute_process(
-        COMMAND ${GIT_EXECUTABLE} describe --tags --match "[0-9]*"
-        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-        OUTPUT_VARIABLE FAIRSHIP_GIT_VERSION
-        OUTPUT_STRIP_TRAILING_WHITESPACE
-        ERROR_QUIET
-        RESULT_VARIABLE GIT_DESCRIBE_RESULT
-    )
-endif()
-
-if(GIT_DESCRIBE_RESULT EQUAL 0)
-    # Parse: "26.05", "26.05.1", "26.05-12-gabcdef", or "26.05.1-3-gabcdef"
-    string(
-        REGEX MATCH "^[0-9]+\\.[0-9]+(\\.[0-9]+)?"
-        FAIRSHIP_VERSION
-        "${FAIRSHIP_GIT_VERSION}"
-    )
-    if(FAIRSHIP_GIT_VERSION MATCHES "^[0-9.]+-([0-9]+)-g")
-        set(FAIRSHIP_VERSION_TWEAK "${CMAKE_MATCH_1}")
-    endif()
-else()
-    set(FAIRSHIP_VERSION "0.0.0")
+# Determine version from git tags (CalVer: year.month[.patch]), or from
+# .git_archival.txt in a GitHub tarball.
+set(FAIRSHIP_SOURCE_DIR ${CMAKE_SOURCE_DIR})
+include(${CMAKE_SOURCE_DIR}/cmake/modules/FairShipGitVersion.cmake)
+if(NOT GIT_DESCRIBE_RESULT EQUAL 0)
     message(
         WARNING
         "Git not found or no tags — using fallback version ${FAIRSHIP_VERSION}"
@@ -56,13 +36,13 @@ if(FAIRSHIP_VERSION_TWEAK)
     set(PROJECT_VERSION "${PROJECT_VERSION}.${PROJECT_VERSION_TWEAK}")
 endif()
 
-message(STATUS "FairShip version: ${PROJECT_VERSION}")
+message(STATUS "FairShip version: ${PROJECT_VERSION} ${FAIRSHIP_GIT_HASH}")
 
 include(GNUInstallDirs)
 # aliBuild modulefile expects libraries in lib/, not lib64/
 set(CMAKE_INSTALL_LIBDIR lib)
 
-# C++20 required; ROOT 6.36 requires at least C++17
+# C++20: the conda-forge ROOT build FairShip links against is cxx20.
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
@@ -80,7 +60,6 @@ set(FAIRROOTPATH $ENV{FAIRROOTPATH})
 # Where to look first for cmake modules, before ${CMAKE_ROOT}/Modules/
 list(
     PREPEND CMAKE_MODULE_PATH
-    "${FAIRROOTPATH}/share/fairbase/cmake/modules_old"
     "${FAIRROOTPATH}/share/fairbase/cmake/modules"
     "${CMAKE_SOURCE_DIR}/cmake/modules"
 )
@@ -149,8 +128,15 @@ include(ShipMacros)
 find_package2(PUBLIC Pythia8 REQUIRED)
 find_package2(PUBLIC EvtGen REQUIRED)
 # (GENERATORS REQUIRED)
+# alienv exports XERCESC_ROOT, which CMake < 4 ignores in favour of a system
+# XercesC too old for Geant4 11.4
+if(NOT DEFINED XercesC_ROOT AND DEFINED ENV{XERCESC_ROOT})
+    set(XercesC_ROOT "$ENV{XERCESC_ROOT}")
+endif()
 find_package2(PUBLIC Geant4)
 find_package2(PUBLIC GEANT4DATA)
+# Geant4VMC exports VGM targets in its link interface without looking for VGM
+find_package2(PUBLIC VGM)
 find_package2(PUBLIC Geant4VMC)
 find_package2(PUBLIC fmt)
 find_package2(PUBLIC FairRoot REQUIRED)
@@ -160,6 +146,10 @@ find_package(genfit2 REQUIRED)
 
 # TPythia6 was removed from ROOT in 6.32, use external EGPythia6 package
 find_package(ROOTEGPythia6 REQUIRED)
+
+# ACTS is optional; without it the ACTS track fitter (ShipReco.py --trackFitter
+# acts) is not built.
+find_package(Acts 48 CONFIG COMPONENTS Core)
 
 # set a variable which should be used in all CMakeLists.txt Defines all basic
 # include directories from fairbase
@@ -187,6 +177,28 @@ set(PROJECT_LIBRARY_PROPERTIES
 
 install(DIRECTORY geometry DESTINATION share/${PROJECT_NAME})
 
+# Lets Python record which FairShip build ran (saveBasicParameters), as
+# FairRoot's FairVersion.h does for FairRoot. Regenerated on every build, so the
+# recorded commit does not go stale when CMake does not re-run; nothing compiles
+# against it, so a new commit rebuilds nothing.
+add_custom_target(
+    FairShipVersion
+    ALL
+    COMMAND
+        ${CMAKE_COMMAND} -DFAIRSHIP_SOURCE_DIR=${CMAKE_SOURCE_DIR}
+        -DGIT_EXECUTABLE=${GIT_EXECUTABLE}
+        -DIN=${CMAKE_SOURCE_DIR}/FairShipVersion.h.in
+        -DOUT=${CMAKE_BINARY_DIR}/FairShipVersion.h -P
+        ${CMAKE_SOURCE_DIR}/cmake/scripts/WriteFairShipVersion.cmake
+    BYPRODUCTS ${CMAKE_BINARY_DIR}/FairShipVersion.h
+    COMMENT "Updating FairShipVersion.h"
+    VERBATIM
+)
+install(
+    FILES ${CMAKE_BINARY_DIR}/FairShipVersion.h
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)
+
 # Generate a Clang compile_commands.json "compilation database" file for use
 # with various development tools, such as Vim's YouCompleteMe plugin. See
 # http://clang.llvm.org/docs/JSONCompilationDatabase.html
@@ -201,13 +213,17 @@ add_subdirectory(passive)
 add_subdirectory(SND/EmulsionTarget)
 add_subdirectory(SND/MTC)
 add_subdirectory(SND/SiliconTarget)
-add_subdirectory(splitcal)
+add_subdirectory(CaloScoringPlane)
 add_subdirectory(veto)
 add_subdirectory(TimeDet)
 add_subdirectory(UpstreamTagger)
 add_subdirectory(strawtubes)
+if(Acts_FOUND)
+    add_subdirectory(ActsTracking)
+endif()
 add_subdirectory(shipgen)
 add_subdirectory(field)
+add_subdirectory(newMuonDIS)
 add_subdirectory(muonShieldOptimization)
 add_subdirectory(tests)
 

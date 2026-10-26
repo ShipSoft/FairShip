@@ -57,9 +57,8 @@ double MeanMaterialBudget(std::span<const double, 3> start,
   mparam[8] = 0;
   mparam[9] = 0;
   //
-  double bparam[7];                           // total parameters
-  double lparam[7];                           // local parameters
-  double mbarn = 1E-3 * 1E-24 * TMath::Na();  // cm^2 * Avogadro
+  double bparam[7];  // total parameters
+  double lparam[7];  // local parameters
 
   for (Int_t i = 0; i < 7; i++) bparam[i] = 0;
 
@@ -96,8 +95,7 @@ double MeanMaterialBudget(std::span<const double, 3> start,
   lparam[4] = length;
   lparam[5] = lparam[3] / lparam[2];
   lparam[6] = material->GetIntLen();
-  double n = lparam[0] / lparam[2];
-  double sigma = 1. / (n * lparam[6]) / mbarn;
+  double sigma = NuclearCrossSection_mbarn(*material);
   if (sigma > mparam[9]) mparam[9] = sigma;
   if (material->IsMixture()) {
     TGeoMixture* mixture = dynamic_cast<TGeoMixture*>(material);
@@ -168,8 +166,7 @@ double MeanMaterialBudget(std::span<const double, 3> start,
     lparam[3] = material->GetZ();
     lparam[5] = lparam[3] / lparam[2];
     lparam[6] = material->GetIntLen();
-    n = lparam[0] / lparam[2];
-    sigma = 1. / (n * lparam[6]) / mbarn;
+    sigma = NuclearCrossSection_mbarn(*material);
     if (sigma > mparam[9]) mparam[9] = sigma;
     if (material->IsMixture()) {
       TGeoMixture* mixture = dynamic_cast<TGeoMixture*>(material);
@@ -192,6 +189,12 @@ double MeanMaterialBudget(std::span<const double, 3> start,
   mparam[5] = bparam[5] / step;
   mparam[8] = bparam[6];
   return bparam[0] / step;
+}
+
+double NuclearCrossSection_mbarn(const TGeoMaterial& material) {
+  constexpr double mbarn = 1E-3 * 1E-24 * TMath::Na();  // cm^2 * Avogadro
+  const double n = material.GetDensity() / material.GetA();
+  return 1. / (n * material.GetIntLen()) / mbarn;
 }
 
 }  // namespace shipgen

@@ -3,3 +3,5 @@
 # Declare files that will always have LF line endings on checkout.
 *.sh text eol=lf
 *.root filter=lfs diff=lfs merge=lfs -text
+# Filled in by git archive (GitHub tarballs), read by CMakeLists.txt.
+.git_archival.txt export-subst

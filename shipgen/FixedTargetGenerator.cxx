@@ -6,6 +6,7 @@
 
 #include <TGeoManager.h>
 
+#include <algorithm>
 #include <array>
 #include <cmath>
 #include <cstdlib>
@@ -18,6 +19,7 @@
 #include "HNLPythia8Generator.h"
 #include "MeanMaterialBudget.h"
 #include "Pythia8Plugins/EvtGen.h"
+#include "PythiaUnits.h"
 #include "ShipUnit.h"
 #include "TGeoBBox.h"
 #include "TGeoNode.h"
@@ -57,11 +59,9 @@ void SetDsToTauNuBR(Pythia8::Pythia* pythia, double br) {
 }
 }  // namespace
 
+using shipgen::PythiaTimeToS;
 using ShipUnit::cm;
 using ShipUnit::mm;
-const Double_t c_light = 2.99792458e+10;  // speed of light in cm/sec (c_light
-                                          // = 2.99792458e+8 * m/s)
-constexpr Double_t mbarn = 1E-3 * 1E-24 * TMath::Na();  // cm^2 * Avogadro
 
 // -----   Default constructor   -------------------------------------------
 FixedTargetGenerator::FixedTargetGenerator() {
@@ -162,6 +162,10 @@ Bool_t FixedTargetGenerator::InitForCharmOrBeauty(const TString& fInName,
     LOG(info) << "+++has branch+++";
     nTree->SetBranchAddress("k", &ck);
   }
+  hasHadronCount = nTree->GetBranch("n_hadrons") && nTree->GetBranch("k");
+  if (hasHadronCount) {
+    nTree->SetBranchAddress("n_hadrons", &n_hadrons);
+  }
   // check if we deal with charm or beauty:
   nTree->GetEvent(0);
   if (!setByHand && n_M > 5) {
@@ -184,11 +188,63 @@ Bool_t FixedTargetGenerator::InitForCharmOrBeauty(const TString& fInName,
     nTree = nullptr;
     return kFALSE;
   }
-  Int_t nrcpot =
-      potHist->GetBinContent(1) / 2.;  // number of primary interactions
-  // every event reads two entries, the two heavy-flavour hadrons of a pair,
-  // so the file holds nEvents / 2 events
-  wspill = nrpotspill * chicc / nrcpot * (nEvents / 2.) / nev;
+  // number of primary interactions and of events on the file. Without the
+  // hadron count every event is a pair of entries.
+  Double_t nrcpot = std::floor(potHist->GetBinContent(1) / 2.);
+  Double_t nInputEvents = nEvents / 2.;
+  if (hasHadronCount) {
+    // count the events and the primary (depth 1) ones, and move the start to
+    // the first entry of an event
+    nTree->SetBranchStatus("*", 0);
+    nTree->SetBranchStatus("n_hadrons", 1);
+    nTree->SetBranchStatus("k", 1);
+    nrcpot = 0.;
+    nInputEvents = 0.;
+    Int_t firstEntry = nEvents;
+    for (Int_t i = 0; i < nEvents;) {
+      nTree->GetEntry(i);
+      if (firstEntry == nEvents && i >= nStart) {
+        firstEntry = i;
+      }
+      nInputEvents += 1.;
+      if (ck < 1.5) {
+        nrcpot += 1.;
+      }
+      i += std::max(1, static_cast<Int_t>(TMath::Nint(n_hadrons)));
+    }
+    nTree->SetBranchStatus("*", 1);
+    if (firstEntry == nEvents) {
+      LOG(error) << "FixedTargetGenerator: no event starts at or after entry "
+                 << nStart;
+      fin->Close();
+      delete fin;
+      fin = nullptr;
+      nTree = nullptr;
+      return kFALSE;
+    }
+    if (firstEntry != nStart) {
+      LOG(info) << "start entry " << nStart
+                << " is inside an event, starting at entry " << firstEntry;
+    }
+    nEntry = firstEntry;
+  } else if (nStart % 2 != 0) {
+    // events are pairs of entries, so an odd start entry is the second hadron
+    // of an event: start at the next event instead of pairing hadrons from
+    // two different events
+    if (nStart + 1 >= nEvents) {
+      LOG(error) << "FixedTargetGenerator: no event starts at or after entry "
+                 << nStart;
+      fin->Close();
+      delete fin;
+      fin = nullptr;
+      nTree = nullptr;
+      return kFALSE;
+    }
+    LOG(info) << "start entry " << nStart
+              << " is inside an event, starting at entry " << nStart + 1;
+    nEntry = nStart + 1;
+  }
+  wspill = nrpotspill * chicc / nrcpot * nInputEvents / nev;
   LOG(info) << "Input file: " << fInName.Data() << " with " << nEvents
             << " entries, corresponding to nr-pot=" << (nrcpot / chicc);
   LOG(info) << "weight " << wspill << " corresponding to " << nrpotspill
@@ -216,17 +272,9 @@ Bool_t FixedTargetGenerator::Init() {
   std::vector<int> r = {221, 221, 223, 223, 113, 331, 333};
   std::vector<int> c = {6, 7, 5, 7, 5, 6, 9};  // decay channel mumu mumuX
 
-  // FTFT tune: parameters differing from Monash 2013, arXiv:2608.29076
-  const std::vector<std::string> ftftTune = {
-      "Tune:pp = 14",  // Monash 2013 baseline, must come first
-      "StringZ:aLund = 2.0",
-      "StringZ:bLund = 0.2",
-      "StringZ:rFactC = 2.0",
-      "MultipartonInteractions:ecmRef = 30.",
-      "MultipartonInteractions:pT0Ref = 0.69",
-      "MultipartonInteractions:ecmPow = 0.266",
-      "BeamRemnants:halfMassForKT = 1.21",
-      "PDF:piSet = 1"};  // GRV 92 LO, only relevant for pion beams
+  // FTFT tune (arXiv:2608.29076), shared with makeCascadePythia8.py
+  TString ftftTuneFile = getenv("FAIRSHIP");
+  ftftTuneFile += "/gconfig/FTFT.cmnd";
   if (!fTune.IsNull() && fTune != "FTFT") {
     LOG(fatal)
         << "FixedTargetGenerator: unknown Pythia8 tune " << fTune.Data()
@@ -261,11 +309,9 @@ Bool_t FixedTargetGenerator::Init() {
       // apply the tune before the process settings below, which Tune:pp
       // would otherwise reset
       if (fTune == "FTFT" && !G4only) {
-        for (const auto& setting : ftftTune) {
-          if (!fPythia->readString(setting)) {
-            LOG(fatal) << "FixedTargetGenerator: Pythia8 rejected tune setting "
-                       << setting;
-          }
+        if (!fPythia->readFile(ftftTuneFile.Data())) {
+          LOG(fatal) << "FixedTargetGenerator: Pythia8 could not read tune "
+                     << "settings from " << ftftTuneFile.Data();
         }
         LOG(info) << "FixedTargetGenerator: using Pythia8 tune "
                   << fTune.Data();
@@ -403,7 +449,7 @@ Bool_t FixedTargetGenerator::Init() {
     TObjArray* nodes = target->GetVolume()->GetNodes();
     // Get the first and last node of the target to calculate the material seen
     TGeoNode* first = static_cast<TGeoNode*>(nodes->At(0));
-    TGeoNode* last = static_cast<TGeoNode*>(nodes->At(nodes->GetSize() - 1));
+    TGeoNode* last = static_cast<TGeoNode*>(nodes->At(nodes->GetLast()));
     nav->cd(targetName + "/" + first->GetName());
     TGeoBBox* sha = static_cast<TGeoBBox*>(first->GetVolume()->GetShape());
     Double_t dz = sha->GetDZ();
@@ -412,7 +458,7 @@ Bool_t FixedTargetGenerator::Init() {
     nav->LocalToMaster(origin, master);
     startZ = master[2];
     nav->cd(targetName + "/" + last->GetName());
-    sha = static_cast<TGeoBBox*>(first->GetVolume()->GetShape());
+    sha = static_cast<TGeoBBox*>(last->GetVolume()->GetShape());
     dz = sha->GetDZ();
     origin[2] = +dz;
     nav->LocalToMaster(origin, master);
@@ -454,47 +500,63 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
     return kTRUE;
   }
 
+  // Cascade input: read the first hadron of the event before placing it,
+  // since its cascade depth sets how far into the target it is produced.
+  Int_t nInteractions = 1;
+  if (Option != "Primary") {
+    if (nEntry == nEvents) {
+      LOG(info) << "Rewind input file: " << nEntry;
+      nEntry = 0;
+    }
+    nTree->GetEvent(nEntry);
+    nEntry += 1;
+    if (nTree->GetBranch("k")) {
+      nInteractions = std::max(1, static_cast<Int_t>(TMath::Nint(ck)));
+    }
+  }
+
   Double_t zinter = 0;
   Double_t ZoverA = 1.;
   if (!targetName.IsNull()) {
-    // calculate primary proton interaction point:
-    // loop over trajectory between start and end to pick an interaction point,
-    // copied from GenieGenerator and adapted to hadrons
-    Double_t prob2int = -1.;
-    Double_t rndm = 0.;
+    // Interaction point, sampled along the beam line from the interaction
+    // probability in the material (copied from GenieGenerator and adapted to
+    // hadrons). A hadron from cascade depth k is produced in the k-th
+    // interaction: each further interaction point is sampled from the material
+    // after the previous one.
+    constexpr int kMaxTries = 100000;
     Double_t sigma;
     Double_t zinterStart = start[2];
-    if (Option == "charm" || Option == "beauty") {
-      // simulate more downstream interaction points for interactions down in
-      // the cascade
-      if (!(nTree->GetBranch("k"))) {
-        ck = 1;
-      }
-    } else {
-      ck = 1;
-    }
-    while (ck > 0.5) {
-      while (prob2int < rndm) {
+    for (Int_t iInter = 0; iInter < nInteractions; ++iInter) {
+      const Double_t from[3] = {start[0], start[1], zinterStart};
+      Double_t prob2int = -1.;
+      Double_t rndm = 0.;
+      Double_t zTry = zinterStart;
+      int tries = 0;
+      while (prob2int < rndm && tries < kMaxTries) {
+        ++tries;
         // place x,y,z uniform along path
-        zinter = gRandom->Uniform(zinterStart, end[2]);
-        Double_t point[3] = {xOff, yOff, zinter};
-        bparam = shipgen::MeanMaterialBudget(start, point, mparam);
+        zTry = gRandom->Uniform(zinterStart, end[2]);
+        Double_t point[3] = {xOff, yOff, zTry};
+        bparam = shipgen::MeanMaterialBudget(from, point, mparam);
         Double_t interLength = mparam[8];
         TGeoNode* node = gGeoManager->FindNode(point[0], point[1], point[2]);
         TGeoMaterial* mat = nullptr;
         if (node && !gGeoManager->IsOutside()) {
           mat = node->GetVolume()->GetMaterial();
-          Double_t n = mat->GetDensity() / mat->GetA();
           ZoverA = mat->GetZ() / mat->GetA();
-          sigma = 1. / (n * mat->GetIntLen()) / mbarn;
+          sigma = shipgen::NuclearCrossSection_mbarn(*mat);
           prob2int = TMath::Exp(-interLength) * sigma / maxCrossSection;
         } else {
           prob2int = 0.;
         }
         rndm = gRandom->Uniform(0., 1.);
       }
+      if (prob2int < rndm) {
+        // no material left downstream: keep the previous interaction point
+        break;
+      }
+      zinter = zTry;
       zinterStart = zinter;
-      ck -= 1;
     }
     zinter = zinter * cm;
   }
@@ -531,12 +593,14 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
       fPythia = fPythiaN;
     }
   } else {
-    if (nEntry == nEvents) {
-      LOG(info) << "Rewind input file: " << nEntry;
-      nEntry = 0;
+    // the first hadron of the event was read above; reject an event that the
+    // input file cuts short before using any of it
+    const Int_t nHadrons =
+        hasHadronCount ? static_cast<Int_t>(TMath::Nint(n_hadrons)) : 2;
+    if (nEntry + nHadrons - 1 > nEvents) {
+      LOG(error) << "FixedTargetGenerator: input ends inside an event";
+      return kFALSE;
     }
-    nTree->GetEvent(nEntry);
-    nEntry += 1;
     IncrementCounter("charm_input_pairs");
     // primary: produced by the beam proton, cascade depth 1. Files without
     // the depth branch tag the beam proton by its zero transverse momentum,
@@ -567,15 +631,17 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
                   (xOff + dx) * cm, (yOff + dy) * cm, zinter * cm, -1, kFALSE,
                   n_mE, 0., wspill, procID);
     IncrementCounter("stored_tracks");
-    // second charm hadron in the event
-    nTree->GetEvent(nEntry);
-    if (nID1 * n_id > 0) {
-      LOG(info) << "same sign charm: " << nEntry << ", " << nID1 << ", "
-                << n_id;
+    // the other heavy-flavour hadrons of the event
+    for (Int_t iHadron = 1; iHadron < nHadrons; ++iHadron) {
+      nTree->GetEvent(nEntry);
+      if (nHadrons == 2 && nID1 * n_id > 0) {
+        LOG(info) << "same sign charm: " << nEntry << ", " << nID1 << ", "
+                  << n_id;
+      }
+      nEntry += 1;
+      fPythiaP->event.append(static_cast<int>(n_id), 1, 0, 0, n_px, n_py, n_pz,
+                             n_E, n_M, 0., 9.);
     }
-    nEntry += 1;
-    fPythiaP->event.append(static_cast<int>(n_id), 1, 0, 0, n_px, n_py, n_pz,
-                           n_E, n_M, 0., 9.);
     fPythiaP->next();
     fPythia = fPythiaP;
   }
@@ -604,8 +670,7 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
     Double_t z = fPythia->event[ii].zProd() * mm + zinter * cm;
     Double_t x = fPythia->event[ii].xProd() * mm + xOff * cm + dx * cm;
     Double_t y = fPythia->event[ii].yProd() * mm + yOff * cm + dy * cm;
-    Double_t tof =
-        fPythia->event[ii].tProd() / (10 * c_light);  // to go from mm to s
+    Double_t tof = PythiaTimeToS(fPythia->event[ii].tProd());
     Double_t px = fPythia->event[ii].px();
     Double_t py = fPythia->event[ii].py();
     Int_t im = fPythia->event[ii].mother1() - 1;

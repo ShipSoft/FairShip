@@ -101,7 +101,7 @@ def TotStat() -> None:
     print("Total statistics so far", ntot / 1.0e9, " billion")
 
 
-def processFile(fin: str, noCharm: bool = True) -> int:
+def processFile(fin: str, noCharm: bool = True, process_muons_only: bool = False) -> int:
     f = ROOT.TFile.Open(os.environ["EOSSHIP"] + path + fin)
     nPot, diMuboost, xSecboost = PoT(f)
     sTree = f.Get("cbmsim")
@@ -111,7 +111,7 @@ def processFile(fin: str, noCharm: bool = True) -> int:
     for n in range(sTree.GetEntries()):
         sTree.GetEntry(n)
         nMu = muonUpdateWeight(sTree, diMuboost, xSecboost, noCharm)
-        if nMu > 0:
+        if nMu > 0 or not process_muons_only:
             newTree.Fill()
     ff = f.FileHeader.Clone("Extracted Muon Background File")
     txt = ff.GetTitle()

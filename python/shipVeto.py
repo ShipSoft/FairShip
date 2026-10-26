@@ -5,6 +5,7 @@
 from array import array
 
 import ROOT
+from shipTrackAccess import get_tracks, track_info, uses_acts
 
 
 class Task:
@@ -12,11 +13,12 @@ class Task:
 
     def __init__(self, t) -> None:
         self.SBTefficiency = 0.99  # Surrounding Background tagger: 99% efficiency picked up from TP
-        self.UBTefficiency = 0.9  # Upstream background tagger
+        self.UBTefficiency = 0.999  # Upstream background tagger, per triggered tile
         self.random = ROOT.TRandom3()
         self.random.SetSeed(13)
         self.detList = self.detMap()
         self.sTree = t
+        self._warned_no_ubt_digis = False
 
     def detMap(self):
         fGeo = ROOT.gGeoManager
@@ -66,17 +68,27 @@ class Task:
         return veto, w, hitSegments
 
     def UBT_decision(self, mcParticle=None) -> tuple[bool, float, int]:
+        # Count the triggered tiles: one digitized hit per fired tile, above
+        # the ADC trigger threshold.
+        # if mcParticle >0, only count tiles with a point of this particle
+        # if mcParticle <0, do not count tiles with a point of this particle
         nHits = 0
-        mom = ROOT.TVector3()
-        for ahit in self.sTree.UpstreamTaggerPoint:
+        if not self.sTree.GetBranch("Digi_UpstreamTaggerHits"):
+            # Not digitized: a geometry from before the scintillator UBT
+            if not self._warned_no_ubt_digis:
+                print("Warning: no Digi_UpstreamTaggerHits, the UBT does not veto")
+                self._warned_no_ubt_digis = True
+            return False, 1.0, 0
+        for index, aDigi in enumerate(self.sTree.Digi_UpstreamTaggerHits):
+            if not aDigi.IsTriggered():
+                continue
             if mcParticle:
-                if mcParticle > 0 and mcParticle != ahit.GetTrackID():
+                contributors = {self.sTree.UpstreamTaggerPoint[i].GetTrackID() for i in self.sTree.digiUBT2MC[index]}
+                if mcParticle > 0 and mcParticle not in contributors:
                     continue
-                if mcParticle < 0 and abs(mcParticle) == ahit.GetTrackID():
+                if mcParticle < 0 and abs(mcParticle) in contributors:
                     continue
-            ahit.Momentum(mom)
-            if mom.Mag() > 0.1:
-                nHits += 1
+            nHits += 1
         w = (1 - self.UBTefficiency) ** nHits
         veto = self.random.Rndm() > w
         return veto, w, nHits
@@ -84,17 +96,18 @@ class Task:
     def Track_decision(self, mcParticle=None) -> tuple[bool, int | float, int]:
         nMultCon = 0
         k = -1
-        for aTrack in self.sTree.FitTracks:
+        acts_tracks = uses_acts(self.sTree)
+        for aTrack in get_tracks(self.sTree):
             k += 1
             if mcParticle:
                 if mcParticle > 0 and mcParticle != self.sTree.fitTrack2MC[k]:
                     continue
                 if mcParticle < 0 and abs(mcParticle) == self.sTree.fitTrack2MC[k]:
                     continue
-            fstatus = aTrack.getFitStatus()
-            if not fstatus.isFitConverged():
+            info = track_info(aTrack, acts_tracks)
+            if not info.converged:
                 continue
-            if fstatus.getNdf() < 25:
+            if info.ndf < 25:
                 continue
             nMultCon += 1
         w = 1.0

@@ -5,8 +5,8 @@
 """Run a full tracking benchmark: simulation -> reconstruction -> metrics.
 
 Fires a particle gun upstream of the straw tube spectrometer (T1-T4),
-runs digitisation and reconstruction with template matching pattern
-recognition, then computes tracking performance metrics.
+runs digitisation and reconstruction (AR pattern recognition and GenFit by
+default), then computes tracking and vertexing performance metrics.
 
 Each phase (sim, reco) runs as a subprocess because FairRoot singletons
 prevent creating multiple FairRunSim instances in the same process.
@@ -35,6 +35,28 @@ parser.add_argument("--nTracks", type=int, default=1, help="Tracks per event (de
 parser.add_argument("--thetaMin", type=float, default=0, help="Minimum polar angle [deg] (default: 0)")
 parser.add_argument("--thetaMax", type=float, default=0, help="Maximum polar angle [deg] (default: 0)")
 parser.add_argument("--mixCharges", action="store_true", help="Generate equal mix of particle and antiparticle")
+parser.add_argument(
+    "--Dz", type=float, default=0.0, help="Vertex spread in z [cm]; uniform in (Vz - Dz/2, Vz + Dz/2) (default: 0)"
+)
+parser.add_argument(
+    "--commonVertex", action="store_true", help="Give all tracks of an event one vertex, for vertexing studies"
+)
+parser.add_argument(
+    "--trackFitter", choices=["genfit", "acts"], default="genfit", help="Track fitter (default: genfit)"
+)
+parser.add_argument("--patRec", default="AR", help="Pattern recognition passed to ShipReco.py (default: AR)")
+parser.add_argument(
+    "--allTracks",
+    action="store_true",
+    help="Count secondaries as reconstructible too (needed for samples such as HNL decays)",
+)
+parser.add_argument(
+    "--strawPurity",
+    action="store_true",
+    help="Attribute hits to every MC track crossing the straw (for busy events, where tracks share straws)",
+)
+parser.add_argument("--skipSim", action="store_true", help="Reuse an existing simulation output with this tag")
+parser.add_argument("--skipReco", action="store_true", help="Reuse an existing reconstruction output")
 parser.add_argument("--tag", default="benchmark", help="Output file tag (default: benchmark)")
 parser.add_argument("--output-json", default=None, help="JSON metrics output path")
 parser.add_argument("--seed", type=int, default=42, help="Random seed (default: 42)")
@@ -115,6 +137,10 @@ sim_cmd = [
     str(options.Dx),
     "--Dy",
     str(options.Dy),
+    "--smearMode",
+    "uniform3d" if options.Dz > 0 else "uniform",
+    "--Dz",
+    str(options.Dz),
     "--multiplicity",
     str(options.nTracks),
     "--thetaMin",
@@ -124,8 +150,11 @@ sim_cmd = [
 ]
 if options.mixCharges:
     sim_cmd.append("--bothCharges")
+if options.commonVertex:
+    sim_cmd.append("--commonVertex")
 
-run_phase("Phase 1: Simulation", sim_cmd)
+if not options.skipSim:
+    run_phase("Phase 1: Simulation", sim_cmd)
 
 if not os.path.exists(sim_file):
     print(f"ERROR: Simulation output {sim_file} not found")
@@ -145,12 +174,15 @@ reco_cmd = [
     "-n",
     str(options.nEvents),
     "--patRec",
-    "AR",
+    options.patRec,
+    "--trackFitter",
+    options.trackFitter,
 ]
 if options.debug > 0:
     reco_cmd.append("--Debug")
 
-run_phase("Phase 2: Reconstruction", reco_cmd, cwd=options.outputDir)
+if not options.skipReco:
+    run_phase("Phase 2: Reconstruction", reco_cmd, cwd=options.outputDir)
 
 if not os.path.exists(reco_file):
     print(f"ERROR: Reconstruction output {reco_file} not found")
@@ -165,7 +197,9 @@ print("=" * 60)
 
 import tracking_benchmark
 
-bench = tracking_benchmark.TrackingBenchmark(sim_file, reco_file, geo_file)
+bench = tracking_benchmark.TrackingBenchmark(
+    sim_file, reco_file, geo_file, primary_only=not options.allTracks, straw_purity=options.strawPurity
+)
 bench.compute_metrics()
 bench.print_summary()
 bench.save_json(json_file)

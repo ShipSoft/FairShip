@@ -65,13 +65,33 @@ parser.add_argument(
     help="Options for pattern recognition. \n\
            FH                        : Hough transform.\n\
            AR                        : Artificial retina.\n\
+           Truth                     : MC truth hit assignment -- for simulation only, requires --trackFitter acts.\n\
+           Segments                  : drift-circle segments matched across the magnet, requires --trackFitter acts.\n\
       TemplateMatching               : Tracks are searched for based on the template: track seed + hits within a window around the seed.",
     required=False,
-    choices=["FH", "AR", "TemplateMatching"],
+    choices=["FH", "AR", "TemplateMatching", "Truth", "Segments"],
     default="AR",
+)
+parser.add_argument(
+    "--trackFitter",
+    dest="trackFitter",
+    help="Track fitter to use. \n\
+           genfit (default)          : writes FitTracks/goodTracks branches.\n\
+           acts                      : writes RecoTracks/RecoVertices/Particles branches.",
+    required=False,
+    choices=["genfit", "acts"],
+    default="genfit",
 )
 parser.add_argument("-dy", dest="dy", help="Max height of tank", required=False, default=None, type=int)
 parser.add_argument("--Debug", dest="Debug", help="Switch on debugging", required=False, action="store_true")
+parser.add_argument(
+    "--caloScoringPlanePID",
+    dest="caloScoringPlanePID",
+    help="YAML file with energy-dependent electron/hadron/muon confusion matrices for the scoring plane "
+    "(format: CaloScoringPlane/README.md, provided: geometry/caloScoringPlane_pid_provided.yaml); default: perfect PID",
+    required=False,
+    default=None,
+)
 parser.add_argument(
     "--validation",
     dest="validation",
@@ -80,6 +100,8 @@ parser.add_argument(
     action="store_true",
 )
 options = parser.parse_args()
+if options.patRec in ("Truth", "Segments") and options.trackFitter != "acts":
+    parser.error(f"--patRec {options.patRec} requires --trackFitter acts")
 vertexing = not options.noVertexing
 
 
@@ -106,6 +128,8 @@ print(
     vertexing,
     " and pattern reco ",
     options.patRec,
+    " and track fitter ",
+    options.trackFitter,
 )
 # Determine output filename (will contain only digi/reco branches)
 if not options.inputFile.find("_rec.root") < 0:
@@ -163,12 +187,14 @@ global_variables.debug = options.Debug
 global_variables.fieldMaker = fieldMaker
 global_variables.withT0 = options.withT0
 global_variables.patRec = options.patRec
+global_variables.trackFitter = options.trackFitter
 global_variables.vertexing = vertexing
 global_variables.ShipGeo = ShipGeo
 global_variables.modules = modules
 global_variables.withNoStrawSmearing = options.withNoStrawSmearing
 global_variables.h = h
 global_variables.iEvent = 0
+global_variables.caloScoringPlanePIDFile = options.caloScoringPlanePID
 
 # import reco tasks
 import shipDigiReco

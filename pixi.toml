@@ -1,7 +1,7 @@
 [workspace]
 name = "fairship"
 description = "SHiP experiment simulation framework"
-channels = ["https://prefix.dev/ship", "conda-forge"]
+channels = ["https://prefix.dev/ship-experiment/stable", "conda-forge"]
 platforms = ["linux-64"]
 
 [dependencies]
@@ -25,13 +25,17 @@ faircmakemodules = { version = ">=1.0", channel = "conda-forge" }
 # fairlogger is on conda-forge but is not in fairroot's runtime deps —
 # keep it explicit so CMake's find_package(FairLogger) resolves.
 fairlogger = ">=2.3"
-# Eigen is header-only, so its conda package has no run_export and is not pulled
-# in transitively by acts-ship/genfit. acts-ship's CMake config requires
-# Eigen3 3.4.0 EXACT, so pin to 3.4.x (conda-forge is the only source).
-eigen = "3.4.*"
+# Eigen is header-only, so its conda package has no run_export, and acts-core
+# does not depend on it. acts-core's CMake config requires the Eigen it was
+# built against EXACTLY (5.0.1 for 48.2.0), so pin to that version.
+eigen = "==5.0.1"
+# Upstream ACTS (Core only) for the ACTS track fitter in ActsTracking/. CMake
+# requires the 48 major version.
+acts-core = "48.*"
 
 # Python (conda-forge)
-# acts-ship requires python 3.13, so the whole env is pinned to 3.13.
+# Pinned to 3.13 for acts-ship, which is no longer used; relaxing the pin is a
+# separate change.
 python = "3.13.*"
 numpy = "*"
 scipy = "*"
@@ -42,13 +46,11 @@ pytest-xdist = "*"
 pyyaml = "*"
 tabulate = "*"
 
-# SHiP custom packages (prefix.dev/ship channel)
+# SHiP custom packages (prefix.dev/ship-experiment/stable channel)
 geant4-vmc = ">=6.7"
 fairroot = ">=19.0"
 genfit = ">=2.3"
 rootegpythia6 = "*"
-# SHiP fork of ACTS; used at reco time via `import acts` (python/ACTSReco.py).
-acts-ship = "*"
 # Physics-metrics extraction/comparison CLIs used by the ci-* tasks.
 ship-ci-metrics = "*"
 # tauolapp and photospp are runtime-only (not needed for build)
@@ -58,6 +60,12 @@ ship-ci-metrics = "*"
 cmake = ">=3.27"
 ninja = "*"
 cxx-compiler = "*"
+# Boost headers for the FairShip build. acts-core depends on the runtime
+# libboost, but libboost-headers carries no run_exports, so the headers are
+# never pulled in transitively. The version follows acts-core's
+# `libboost >=1.90.0,<1.91` via libboost-devel's exact-match dependency on
+# libboost, which also satisfies acts-core's CMake check for Boost 1.90.0.
+libboost-devel = "*"
 
 # Static analysis
 # clang-tidy needs clang's builtin headers (lib/clang/<N>/include/stddef.h,
@@ -85,6 +93,11 @@ configure = { cmd = """cmake -S . -B build -G Ninja \
 build = { cmd = "cmake --build build -j$(nproc)", depends-on = ["configure"] }
 install = { cmd = "cmake --install build", depends-on = ["build"] }
 test = { cmd = "ctest --test-dir build --output-on-failure", depends-on = ["build"] }
+
+# Python unit tests. Separate from `test` so they run without a build: they
+# only need `python/` on PYTHONPATH, which activate.sh provides.
+[tasks.ci-pytest]
+cmd = "pytest tests/"
 
 # --- CI sim-chain tasks ---
 # Mirror the per-step commands in .github/workflows/build-run.yml so the
@@ -122,8 +135,18 @@ cmd = "python macro/run_tracking_benchmark.py -n 200 --seed 42 --tag ci-benchmar
 [tasks.ci-fixed-target]
 cmd = "python macro/run_fixedTarget.py -n 10 -e 10.0 -r 1"
 
+# Build two different geometries, simulate again on each of them with its
+# geometry file (run_simScript.py -g), and check the hits and geometries.
+[tasks.ci-geofile-loading]
+cmd = "python .github/scripts/test_geofile_loading.py -n 20 -w geofile-loading-test"
+
 [tasks.ci-sim-muonback]
 cmd = "python macro/run_simScript.py -n 5 -i 100 -f tests/data/muonback_smoke.root -S 42 -s 42 --MuonBack --FollowMuon --FastMuon --tag ci-muonback"
+
+# MuonBack on run_fixedTarget output: the muons have to continue from where
+# they entered the scoring plane behind the hadron absorber.
+[tasks.ci-sim-muonback-plane]
+cmd = "python macro/run_simScript.py -f tests/data/muonback_plane_smoke.root -S 42 -s 42 --MuonBack --FollowMuon --FastMuon --tag ci-muonback-plane && python tests/check_muonback_plane.py tests/data/muonback_plane_smoke.root sim_ci-muonback-plane.root --geo geo_ci-muonback-plane.root"
 
 # --- CI plot rendering tasks ---
 # Wrap ship-metrics-render (ship-ci-metrics) for each per-job output set. The
@@ -194,7 +217,7 @@ commitizen = "*"
 # mypy stubs are pinned to match the previous additional_dependencies.
 [feature.lint.pypi-dependencies]
 cpplint = "==2.0.2"
-gersemi = "==0.29.1"
+gersemi = "==0.29.2"
 types-PyYAML = "*"
 types-tabulate = "*"
 typing-extensions = ">=4.8"

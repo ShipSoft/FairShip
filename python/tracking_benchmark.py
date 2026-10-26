@@ -14,9 +14,14 @@ from __future__ import annotations
 import json
 import logging
 import math
+from array import array
+from collections import defaultdict
+from itertools import combinations
 from typing import Any
 
 import ROOT
+from rootUtils import get_particle, is_known_particle
+from shipTrackAccess import get_tracks, track_info, uses_acts
 
 ROOT.gROOT.SetBatch(True)
 
@@ -70,6 +75,14 @@ class TrackingBenchmark:
         Minimum number of straw hits for reconstructibility.
     min_stations : int
         Minimum number of tracking stations crossed for reconstructibility.
+    primary_only : bool
+        Count only primary particles as reconstructible. Set to False for
+        samples whose tracks of interest are secondaries, such as HNL
+        daughters.
+    straw_purity : bool
+        Attribute a hit to every MC track that crossed its straw, not only to
+        the one whose hit was recorded (the earliest). In busy events tracks
+        share straws, and a correct track would otherwise look impure.
     """
 
     def __init__(
@@ -80,10 +93,16 @@ class TrackingBenchmark:
         purity_cut: float = 0.70,
         min_hits: int = 25,
         min_stations: int = 3,
+        primary_only: bool = True,
+        straw_purity: bool = False,
     ) -> None:
         self.purity_cut = purity_cut
         self.min_hits = min_hits
         self.min_stations = min_stations
+        self.primary_only = primary_only
+        self.straw_purity = straw_purity
+        # Per event: MC tracks that crossed each straw
+        self._straw_crossers: dict[int, set[int]] = {}
 
         self.f_sim = ROOT.TFile.Open(sim_file, "read")
         self.sim_tree = self.f_sim["cbmsim"]
@@ -134,20 +153,19 @@ class TrackingBenchmark:
     def _is_reconstructible(self, mc_track_id: int) -> bool:
         """Check if an MC particle meets reconstructibility criteria.
 
-        A particle is reconstructible if it is a charged primary with
-        hits in >= min_stations tracking stations and >= min_hits total
-        straw hits. This matches the cuts in shipDigiReco.findTracks().
+        A particle is reconstructible if it is charged (and primary, unless
+        primary_only is False) with hits in >= min_stations tracking stations
+        and >= min_hits total straw hits.
         """
         mc_track = self.sim_tree.MCTrack[mc_track_id]
 
         # Must be primary (no mother)
-        if mc_track.GetMotherId() >= 0:
+        if self.primary_only and mc_track.GetMotherId() >= 0:
             return False
 
         # Must be charged
         pdg_code = mc_track.GetPdgCode()
-        particle = self.PDG.GetParticle(pdg_code)
-        if particle is None or particle.Charge() == 0:
+        if not is_known_particle(pdg_code) or get_particle(pdg_code).Charge() == 0:
             return False
 
         # Hit counts come from the per-event straw index (built once per event).
@@ -197,8 +215,14 @@ class TrackingBenchmark:
         track_counts: dict[int, int] = {}
         n_hits = 0
         for idx in hit_indices:
-            mc_id = self.sim_tree.strawtubesPoint[idx].GetTrackID()
-            track_counts[mc_id] = track_counts.get(mc_id, 0) + 1
+            point = self.sim_tree.strawtubesPoint[idx]
+            owners = (
+                self._straw_crossers.get(point.GetDetectorID(), {point.GetTrackID()})
+                if self.straw_purity
+                else (point.GetTrackID(),)
+            )
+            for mc_id in owners:
+                track_counts[mc_id] = track_counts.get(mc_id, 0) + 1
             n_hits += 1
 
         if not track_counts:
@@ -207,6 +231,153 @@ class TrackingBenchmark:
         tmax = max(track_counts, key=track_counts.__getitem__)
         frac = track_counts[tmax] / n_hits if n_hits > 0 else 0.0
         return frac, tmax
+
+    @staticmethod
+    def _fraction(k: int, n: int) -> dict[str, Any]:
+        return {
+            "value": _round_or_none(k / n if n > 0 else None),
+            "uncertainty": _round_or_none(wilson_interval(k, n)),
+            "compare": "statistical",
+        }
+
+    @staticmethod
+    def _width(histogram, n_replicas: int = 200) -> dict[str, Any]:
+        """Half-width of the central 68% of a distribution, robust to tails.
+
+        The uncertainty is the spread of the half-width over Poisson
+        replicas of the histogram (a bootstrap of the entries).
+        """
+        if histogram.GetEntries() < 10:
+            return {"value": None, "compare": "statistical"}
+        probabilities = array("d", [0.16, 0.5, 0.84])
+
+        def quantiles(h):
+            q = array("d", [0.0, 0.0, 0.0])
+            h.GetQuantiles(3, q, probabilities)
+            return q
+
+        q = quantiles(histogram)
+        width = (q[2] - q[0]) / 2
+        rng = ROOT.TRandom3(12345)
+        replica = histogram.Clone(f"{histogram.GetName()}_replica")
+        replica.SetDirectory(0)
+        widths = []
+        for _ in range(n_replicas):
+            for i in range(histogram.GetNbinsX() + 2):
+                replica.SetBinContent(i, rng.Poisson(histogram.GetBinContent(i)))
+            r = quantiles(replica)
+            widths.append((r[2] - r[0]) / 2)
+        mean = sum(widths) / n_replicas
+        spread = math.sqrt(sum((w - mean) ** 2 for w in widths) / (n_replicas - 1))
+        return {
+            "value": round(width, 6),
+            "uncertainty": round(spread, 6),
+            "median": round(q[1], 6),
+            "rms": round(histogram.GetRMS(), 6),
+            "compare": "statistical",
+        }
+
+    def _rates(self, stats: dict[str, int]) -> dict[str, Any]:
+        """Efficiency, clone and ghost rates and vertex efficiency of a subset of events."""
+        return {
+            "n_events": {"value": stats["n_events"], "compare": "exact"},
+            "n_reconstructible": {"value": stats["n_reconstructible"], "compare": "exact"},
+            "efficiency": self._fraction(stats["n_matched_mc"], stats["n_reconstructible"]),
+            "clone_rate": self._fraction(stats["n_clone_reco"], stats["n_matched_reco"]),
+            "ghost_rate": self._fraction(stats["n_total_reco"] - stats["n_matched_reco"], stats["n_total_reco"]),
+            "vertex_efficiency": self._fraction(stats["n_found_vertices"], stats["n_truth_vertices"]),
+        }
+
+    def _vertex_metrics(self, stats: dict[str, Any]) -> dict[str, Any]:
+        self._vertex_histos = {name: stats[name] for name in stats if name.startswith("h_")}
+        return {
+            "n_truth_vertices": {"value": stats["n_truth_vertices"], "compare": "exact"},
+            "n_candidates": {"value": stats["n_candidates"], "compare": "exact"},
+            # truth vertices with at least one matched two-track candidate
+            "vertex_efficiency": self._fraction(stats["n_found_vertices"], stats["n_truth_vertices"]),
+            # opposite-charge pairs of reconstructible tracks with a candidate
+            "pair_efficiency": self._fraction(stats["n_matched_candidates"], stats["n_findable_pairs"]),
+            # candidates that are not a distinct true pair: fakes and duplicates
+            "fake_rate": self._fraction(stats["n_candidates"] - stats["n_matched_candidates"], stats["n_candidates"]),
+            "vertex_dx_width": self._width(stats["h_vtx_dx"]),
+            "vertex_dy_width": self._width(stats["h_vtx_dy"]),
+            "vertex_dz_width": self._width(stats["h_vtx_dz"]),
+            "mass_rel_width": self._width(stats["h_mass_rel"]),
+            "doca": self._width(stats["h_doca"]),
+        }
+
+    def _truth_charge(self, mc_track_id: int) -> float:
+        particle = self.PDG.GetParticle(self.sim_tree.MCTrack[mc_track_id].GetPdgCode())
+        return particle.Charge() / 3.0 if particle else 0.0
+
+    def _truth_vertices(self, reconstructible_ids: set[int]) -> dict[tuple, list[int]]:
+        """Group reconstructible MC tracks by their production vertex.
+
+        Only vertices with at least one opposite-charge pair of
+        reconstructible tracks are returned, as only those can give a
+        two-track vertex candidate.
+        """
+        groups: dict[tuple, list[int]] = defaultdict(list)
+        for mc_id in reconstructible_ids:
+            mc = self.sim_tree.MCTrack[mc_id]
+            key = (round(mc.GetStartX(), 3), round(mc.GetStartY(), 3), round(mc.GetStartZ(), 3))
+            groups[key].append(mc_id)
+        return {key: ids for key, ids in groups.items() if self._opposite_pairs(ids)}
+
+    def _opposite_pairs(self, mc_ids: list[int]) -> list[tuple[int, int]]:
+        return [(a, b) for a, b in combinations(mc_ids, 2) if self._truth_charge(a) * self._truth_charge(b) < 0]
+
+    def _evaluate_vertices(self, reconstructible_ids: set[int], stats: dict[str, Any]) -> None:
+        """Match this event's vertex candidates (Particles) to MC truth vertices.
+
+        A candidate is matched if both daughters pass the purity cut, belong
+        to different MC tracks, and those come from the same truth vertex.
+        Updates the counters and histograms in ``stats``.
+        """
+        truth = self._truth_vertices(reconstructible_ids)
+        vertex_of = {mc_id: key for key, ids in truth.items() for mc_id in ids}
+        stats["n_truth_vertices"] += len(truth)
+        stats["n_findable_pairs"] += sum(len(self._opposite_pairs(ids)) for ids in truth.values())
+
+        found_vertices: set[tuple] = set()
+        found_pairs: set[frozenset[int]] = set()
+        particles = getattr(self.reco_tree, "Particles", None)
+        for particle in particles if particles is not None else []:
+            stats["n_candidates"] += 1
+            stats["h_doca"].Fill(particle.GetDoca())
+            mc_ids = []
+            for i in range(2):
+                frac, mc_id = self._fracMCsame(particle.GetDaughter(i))
+                if frac >= self.purity_cut:
+                    mc_ids.append(mc_id)
+            if len(mc_ids) != 2 or mc_ids[0] == mc_ids[1]:
+                continue
+            key = vertex_of.get(mc_ids[0])
+            pair = frozenset(mc_ids)
+            if key is None or vertex_of.get(mc_ids[1]) != key or pair in found_pairs:
+                continue
+            found_pairs.add(pair)
+            found_vertices.add(key)
+
+            vertex = ROOT.TLorentzVector()
+            particle.ProductionVertex(vertex)
+            stats["h_vtx_dx"].Fill(vertex.X() - key[0])
+            stats["h_vtx_dy"].Fill(vertex.Y() - key[1])
+            stats["h_vtx_dz"].Fill(vertex.Z() - key[2])
+
+            # Pair mass with the masses the reconstruction assumed, against
+            # the true pair mass
+            p_reco = particle.GetMomentum()
+            p_true = ROOT.TLorentzVector()
+            for mc_id in mc_ids:
+                mc_p = ROOT.TLorentzVector()
+                self.sim_tree.MCTrack[mc_id].Get4Momentum(mc_p)
+                p_true += mc_p
+            if p_true.M() > 0:
+                stats["h_mass_rel"].Fill((p_reco.M() - p_true.M()) / p_true.M())
+
+        stats["n_matched_candidates"] += len(found_pairs)
+        stats["n_found_vertices"] += len(found_vertices)
 
     def compute_metrics(self) -> dict[str, Any]:
         """Run the full benchmark analysis over all events.
@@ -297,10 +468,28 @@ class TrackingBenchmark:
         n_correct_charge = 0
         n_wrong_charge = 0
 
+        acts_mode = uses_acts(self.reco_tree)
+
+        # Per event multiplicity (number of reconstructible tracks)
+        by_multiplicity: dict[int, dict[str, int]] = defaultdict(lambda: defaultdict(int))
+        vertex_stats: dict[str, Any] = defaultdict(int)
+        vertex_stats["h_vtx_dx"] = ROOT.TH1D("h_vtx_dx", "Vertex x;x_{reco} #minus x_{truth} [cm];Entries", 1000, -5, 5)
+        vertex_stats["h_vtx_dy"] = ROOT.TH1D("h_vtx_dy", "Vertex y;y_{reco} #minus y_{truth} [cm];Entries", 1000, -5, 5)
+        vertex_stats["h_vtx_dz"] = ROOT.TH1D(
+            "h_vtx_dz", "Vertex z;z_{reco} #minus z_{truth} [cm];Entries", 1000, -200, 200
+        )
+        vertex_stats["h_doca"] = ROOT.TH1D("h_doca", "Vertex candidate DOCA;DOCA [cm];Entries", 200, 0, 10)
+        vertex_stats["h_mass_rel"] = ROOT.TH1D(
+            "h_mass_rel", "Pair mass;(m_{reco} #minus m_{truth}) / m_{truth};Entries", 1000, -0.5, 0.5
+        )
+
         for i_event in range(n_events):
             self.sim_tree.GetEvent(i_event)
             self.reco_tree.GetEvent(i_event)
             self._straw_index = self._build_straw_index()
+            self._straw_crossers = defaultdict(set)
+            for point in self.sim_tree.strawtubesPoint:
+                self._straw_crossers[point.GetDetectorID()].add(point.GetTrackID())
 
             # Find reconstructible MC particles
             reconstructible_ids: set[int] = set()
@@ -313,31 +502,35 @@ class TrackingBenchmark:
                         h_p_truth.Fill(p_truth)
 
             n_reconstructible += len(reconstructible_ids)
+            counts_before = (n_matched_mc, n_total_reco, n_matched_reco, n_clone_reco)
 
             # Match reco tracks to MC
-            n_reco = self.reco_tree.FitTracks.size()
+            reco_tracks = get_tracks(self.reco_tree)
+            n_reco = reco_tracks.size()
             n_total_reco += n_reco
 
             # Track which MC particles have been matched in this event
             matched_mc_this_event: set[int] = set()
 
             for i_reco in range(n_reco):
-                track = self.reco_tree.FitTracks[i_reco]
-                fit_status = track.getFitStatus()
-                if not fit_status.isFitConverged():
+                track = reco_tracks[i_reco]
+                info = track_info(track, acts_mode)
+                if not info.converged:
                     continue
 
-                ndf = fit_status.getNdf()
+                ndf = info.ndf
                 if ndf <= 0:
                     continue
-                chi2 = fit_status.getChi2() / ndf
+                chi2 = info.chi2 / ndf
                 h_chi2ndf.Fill(chi2)
 
                 # Use fitTrack2MC for the MC link (already computed by fracMCsame)
                 mc_id = self.reco_tree.fitTrack2MC[i_reco]
 
                 # Recompute purity to apply our cut
-                frac, _dominant_id = self._fracMCsame(i_reco)
+                frac, dominant_id = self._fracMCsame(i_reco)
+                if self.straw_purity:
+                    mc_id = dominant_id
 
                 if frac < self.purity_cut:
                     # Ghost track
@@ -357,69 +550,83 @@ class TrackingBenchmark:
                     x_t, y_t, _ = self._get_truth_pos_first(mc_id)
                     tx_t, ty_t = self._get_truth_slopes(mc_id)
 
-                    if p_truth > 0:
-                        try:
-                            fitted_state = track.getFittedState()
-                            p_reco = fitted_state.getMomMag()
-                            mom = fitted_state.getMom()
-                            pos = fitted_state.getPos()
+                    if p_truth > 0 and info.mom is not None and info.pos is not None:
+                        p_reco = info.mom.Mag()
 
-                            dp_over_p = (p_reco - p_truth) / p_truth
-                            h_dp_over_p.Fill(dp_over_p)
-                            h_dp_vs_p.Fill(p_truth, dp_over_p)
+                        dp_over_p = (p_reco - p_truth) / p_truth
+                        h_dp_over_p.Fill(dp_over_p)
+                        h_dp_vs_p.Fill(p_truth, dp_over_p)
 
-                            h_dx.Fill(pos.X() - x_t)
-                            h_dy.Fill(pos.Y() - y_t)
+                        h_dx.Fill(info.pos.X() - x_t)
+                        h_dy.Fill(info.pos.Y() - y_t)
 
-                            pz_reco = mom.Z()
-                            if abs(pz_reco) > 1e-10:
-                                tx_reco = mom.X() / pz_reco
-                                ty_reco = mom.Y() / pz_reco
-                                h_dtx.Fill(tx_reco - tx_t)
-                                h_dty.Fill(ty_reco - ty_t)
+                        pz_reco = info.mom.Z()
+                        if abs(pz_reco) > 1e-10:
+                            tx_reco = info.mom.X() / pz_reco
+                            ty_reco = info.mom.Y() / pz_reco
+                            h_dtx.Fill(tx_reco - tx_t)
+                            h_dty.Fill(ty_reco - ty_t)
 
-                            h_p_matched.Fill(p_truth)
+                        h_p_matched.Fill(p_truth)
 
-                            # Charge identification
-                            q_reco = fitted_state.getCharge()
-                            mc_pdg = self.sim_tree.MCTrack[mc_id].GetPdgCode()
-                            mc_particle = self.PDG.GetParticle(mc_pdg)
-                            if mc_particle:
-                                q_truth = mc_particle.Charge() / 3.0
-                                if q_reco * q_truth > 0:
-                                    n_correct_charge += 1
-                                    h_p_correct_charge.Fill(p_truth)
-                                else:
-                                    n_wrong_charge += 1
-                                    h_p_wrong_charge.Fill(p_truth)
-                        except Exception:
-                            logger.debug(
-                                "Failed to extract fitted state for mc_id=%d, p_truth=%.3f",
-                                mc_id,
-                                p_truth,
-                                exc_info=True,
-                            )
+                        # Charge identification
+                        q_reco = track.charge() if acts_mode else track.getFittedState().getCharge()
+                        mc_pdg = self.sim_tree.MCTrack[mc_id].GetPdgCode()
+                        mc_particle = self.PDG.GetParticle(mc_pdg)
+                        if mc_particle:
+                            q_truth = mc_particle.Charge() / 3.0
+                            if q_reco * q_truth > 0:
+                                n_correct_charge += 1
+                                h_p_correct_charge.Fill(p_truth)
+                            else:
+                                n_wrong_charge += 1
+                                h_p_wrong_charge.Fill(p_truth)
 
                     # Per-hit unbiased residuals and pulls
-                    n_meas = track.getNumPointsWithMeasurement()
-                    for i_hit in range(n_meas):
-                        try:
-                            tp = track.getPointWithMeasurement(i_hit)
-                            fitter_info = tp.getFitterInfo()
-                            if fitter_info is None:
-                                continue
-                            res = fitter_info.getResidual()
-                            # Index 0: 1D residual (straw drift-distance measurement)
-                            res_val = res.getState()(0)
-                            res_cov = res.getCov()(0, 0)
+                    if acts_mode:
+                        for res_val in track.GetResiduals():
                             h_hit_residual.Fill(res_val)
-                            if res_cov > 0:
-                                h_hit_pull.Fill(res_val / math.sqrt(res_cov))
-                        except (ROOT.genfit.Exception, AttributeError, IndexError) as e:
-                            logger.debug("Skipping hit %d: %s", i_hit, e)
-                            continue
+                        for pull_val in track.GetPulls():
+                            if pull_val != -999.0:
+                                h_hit_pull.Fill(pull_val)
+                    else:
+                        n_meas = track.getNumPointsWithMeasurement()
+                        for i_hit in range(n_meas):
+                            try:
+                                tp = track.getPointWithMeasurement(i_hit)
+                                fitter_info = tp.getFitterInfo()
+                                # A point without fitter info gives a null pointer: falsy, but not None.
+                                if not fitter_info:
+                                    continue
+                                res = fitter_info.getResidual()
+                                # Index 0: 1D residual (straw drift-distance measurement)
+                                res_val = res.getState()(0)
+                                res_cov = res.getCov()(0, 0)
+                                h_hit_residual.Fill(res_val)
+                                if res_cov > 0:
+                                    h_hit_pull.Fill(res_val / math.sqrt(res_cov))
+                            except (ROOT.genfit.Exception, AttributeError, IndexError) as e:
+                                logger.debug("Skipping hit %d: %s", i_hit, e)
+                                continue
 
             n_matched_mc += len(matched_mc_this_event)
+
+            bin_stats = by_multiplicity[len(reconstructible_ids)]
+            bin_stats["n_events"] += 1
+            bin_stats["n_reconstructible"] += len(reconstructible_ids)
+            counts_after = (n_matched_mc, n_total_reco, n_matched_reco, n_clone_reco)
+            for name, before, after in zip(
+                ("n_matched_mc", "n_total_reco", "n_matched_reco", "n_clone_reco"),
+                counts_before,
+                counts_after,
+                strict=True,
+            ):
+                bin_stats[name] += after - before
+
+            vertices_before = (vertex_stats["n_truth_vertices"], vertex_stats["n_found_vertices"])
+            self._evaluate_vertices(reconstructible_ids, vertex_stats)
+            bin_stats["n_truth_vertices"] += vertex_stats["n_truth_vertices"] - vertices_before[0]
+            bin_stats["n_found_vertices"] += vertex_stats["n_found_vertices"] - vertices_before[1]
 
         # Compute metrics (None when denominator is zero)
         n_ghost_reco = n_total_reco - n_matched_reco
@@ -545,7 +752,12 @@ class TrackingBenchmark:
                 },
                 "n_correct_charge": {"value": int(n_correct_charge), "compare": "exact"},
                 "n_wrong_charge": {"value": int(n_wrong_charge), "compare": "exact"},
-            }
+            },
+            "tracking_benchmark_by_multiplicity": {
+                str(multiplicity): self._rates(by_multiplicity[multiplicity])
+                for multiplicity in sorted(by_multiplicity)
+            },
+            "vertexing_benchmark": self._vertex_metrics(vertex_stats),
         }
 
         self._histos = {
@@ -575,7 +787,7 @@ class TrackingBenchmark:
     def save_histograms(self, output_path: str) -> None:
         """Save detailed histograms to a ROOT file."""
         f_out = ROOT.TFile.Open(output_path, "recreate")
-        for name, hist in self._histos.items():
+        for name, hist in {**self._histos, **getattr(self, "_vertex_histos", {})}.items():
             hist.Write(name)
         f_out.Close()
         print(f"Histograms saved to {output_path}")
@@ -617,6 +829,20 @@ class TrackingBenchmark:
             f"  Charge-ID eff:    {fmt(m['charge_id_efficiency']['value'], m['charge_id_efficiency']['uncertainty'])}"
         )
         print(f"  Correct/wrong:    {m['n_correct_charge']['value']}/{m['n_wrong_charge']['value']}")
+        v = self.metrics["vertexing_benchmark"]
+        print(f"  Truth vertices:   {v['n_truth_vertices']['value']} (candidates: {v['n_candidates']['value']})")
+        for name in ("vertex_efficiency", "pair_efficiency", "fake_rate"):
+            print(f"  {name + ':':18}{fmt(v[name]['value'], v[name]['uncertainty'])}")
+        for name in ("vertex_dx_width", "vertex_dy_width", "vertex_dz_width", "mass_rel_width", "doca"):
+            print(f"  {name + ':':18}{v[name]['value']}")
+        print("  By multiplicity (efficiency, ghost rate, vertex efficiency):")
+        for multiplicity, b in self.metrics["tracking_benchmark_by_multiplicity"].items():
+            print(
+                f"    {multiplicity:>3} tracks, {b['n_events']['value']:>5} events: "
+                f"{fmt(b['efficiency']['value'], b['efficiency']['uncertainty'], '.3f')}, "
+                f"{fmt(b['ghost_rate']['value'], b['ghost_rate']['uncertainty'], '.3f')}, "
+                f"{fmt(b['vertex_efficiency']['value'], b['vertex_efficiency']['uncertainty'], '.3f')}"
+            )
         print("==================================\n")
 
     def __del__(self) -> None:

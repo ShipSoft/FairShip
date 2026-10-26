@@ -9,6 +9,8 @@
 #include "FairLogger.h"
 #include "FairPrimaryGenerator.h"
 #include "MeanMaterialBudget.h"
+#include "ShipUnit.h"
+#include "TDatabasePDG.h"
 #include "TFile.h"
 #include "TGeoCompositeShape.h"
 #include "TGeoEltu.h"
@@ -24,8 +26,7 @@
 // MuDIS momentum GeV
 // Vertex in SI units, assume this means m
 
-const Double_t c_light = 29.9792458;             // speed of light in cm/ns
-const Double_t muon_mass = 0.10565999895334244;  // muon mass in GeV
+using ShipUnit::c_light;  // cm/ns
 
 // -----   Default constructor   -------------------------------------------
 MuDISGenerator::MuDISGenerator() = default;
@@ -200,6 +201,8 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
       TMath::Sqrt(TMath::Power(x - xmu, 2) + TMath::Power(y - ymu, 2) +
                   TMath::Power(z - zmu, 2));  // in cm
 
+  static const Double_t muon_mass =
+      TDatabasePDG::Instance()->GetParticle(13)->Mass();
   Double_t v =
       c_light * total_mom /
       TMath::Sqrt(TMath::Power(total_mom, 2) + TMath::Power(muon_mass, 2));
@@ -210,8 +213,8 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
     t_rmu = -t_rmu;
   }
 
-  Double_t t_DIS =
-      (t_muon + t_rmu) / 1e9;  // time taken in seconds to reach [xmu,ymu,zmu]
+  Double_t t_DIS = (t_muon + t_rmu) /
+                   ShipUnit::s;  // time taken in seconds to reach [xmu,ymu,zmu]
 
   cpg->AddTrack(static_cast<int>((*mu)[0]),  // incoming muon track ()
                 (*mu)[1], (*mu)[2], (*mu)[3], xmu, ymu, zmu, -1,
@@ -256,7 +259,7 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
       IncrementCounter("soft_particles_skipped");
       continue;
     }  // Soft interactions after the DIS point are not saved
-    Double_t t_soft = (*SoftPart)[8] / 1e9;  // Time in seconds
+    Double_t t_soft = (*SoftPart)[8] / ShipUnit::s;  // Time in seconds
     cpg->AddTrack(static_cast<int>((*SoftPart)[0]), (*SoftPart)[1],
                   (*SoftPart)[2], (*SoftPart)[3], (*SoftPart)[5],
                   (*SoftPart)[6], (*SoftPart)[7], 0, true, (*SoftPart)[4],

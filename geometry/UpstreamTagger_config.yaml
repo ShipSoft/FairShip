@@ -1,0 +1,25 @@
+description: "Rule for the UBT simulation regions, generated on the UBT box of the geometry configuration"
+kind: simulation
+units: cm
+origin: "beam axis at (0, 0)"
+note: "shipDet_conf.configure_upstream_tagger generates the regions on the UBT box (UpstreamTagger.BoxX/BoxY/BoxCenterX/BoxCenterY, derived from the ECN3 cavern, Top and FloorMargin), so they follow the geometry. The box is split into square regions of region_size, centred on the beam axis (edges at region_size/2 + k * region_size), and the regions crossing the box edge are cut at it. Region IDs run row by row from the bottom, left to right in each row. A region lying inside one of the small_tile_areas is made of small_tile_size tiles, all other regions of large_tile_size tiles; an area must not cover only part of a region. Tile edges lie on x, y = tile_edge_offset + k * tile size, so the central large tile is centred on the beam axis, and every region must hold a whole number of its tiles. For the default box (x in [-170, 170] cm, y in [-334, 170] cm) this gives 17 columns and 25 rows of 20 x 20 cm2 regions plus a bottom row of 20 x 4 cm2 regions, 442 regions of which 40 have small tiles."
+region_size: 20
+small_tile_size: 2
+large_tile_size: 4
+# Position of the tile grid, in cm: tile edges lie at x, y = tile_edge_offset
+# + k * tile size, on both axes, so with 2 the central 40 mm tile spans
+# [-2, 2] cm around the beam axis. Only the region generator uses it, as a
+# check: every region edge, the edges of the UBT box included, must lie on the
+# grid of the region's tiles. Geant4 only sees the regions; the tiles exist only
+# in digitization, which lays them from the lower-left corner of the box. The
+# check therefore makes each region hold whole tiles, so that a tile never
+# crosses a region boundary, and makes the tiles of digitization centred on the
+# beam axis. Without it, a box moved by a step that is not a multiple of 4 cm
+# would silently give tiles crossing region boundaries.
+tile_edge_offset: 2
+# Areas made of small tiles: a region lying inside one of them has small tiles,
+# all other regions large tiles. x and y ranges in cm, which must lie on region
+# edges; .inf or -.inf extends an area to the edge of the UBT box.
+small_tile_areas:
+  - {x: [-170, -90], y: [-50, 50]} # left part of the central neck
+  - {x: [90, 170], y: [-50, 50]} # right part of the central neck

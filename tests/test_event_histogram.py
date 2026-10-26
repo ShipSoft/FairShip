@@ -1,0 +1,221 @@
+# SPDX-License-Identifier: LGPL-3.0-or-later
+# SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
+
+import numpy as np
+import pytest
+from event_histogram import EventHistogram, make_event_key, replica_weights
+
+EDGES = np.linspace(0.0, 10.0, 11)
+
+
+def correlated_sample(seed, n_events, p_active=0.3, n_clones=20):
+    """Events with n_clones branches of weight 1/n_clones around a common x."""
+    rng = np.random.default_rng(seed)
+    events: list[tuple[np.ndarray, np.ndarray] | None] = []
+    for _ in range(n_events):
+        if rng.random() < p_active:
+            x0 = rng.uniform(0.0, 10.0)
+            events.append((x0 + rng.normal(0.0, 0.3, n_clones), np.full(n_clones, 1.0 / n_clones)))
+        else:
+            events.append(None)
+    return events
+
+
+def fill(h, events, run=1):
+    for i, ev in enumerate(events):
+        if ev is None:
+            h.add_empty_events(1)
+        else:
+            h.fill_event(*ev, key=make_event_key(run, i))
+
+
+def fill_cpp(h, events, run=1):
+    for i, ev in enumerate(events):
+        if ev is None:
+            h.AddEmptyEvents(1)
+            continue
+        for x, w in zip(*ev):
+            h.Fill(x, w)
+        h.EndEvent(make_event_key(run, i))
+
+
+def test_matches_per_event_formula():
+    events = correlated_sample(1, 3000)
+    h = EventHistogram("x", EDGES)
+    fill(h, events)
+    t = np.zeros((len(events), len(EDGES) - 1))
+    for i, ev in enumerate(events):
+        if ev is not None:
+            t[i] = np.histogram(ev[0], EDGES, weights=ev[1])[0]
+    n = len(events)
+    assert h.n_events == n
+    assert h.values() == pytest.approx(t.sum(0) / n)
+    assert h.errors() == pytest.approx(t.std(0, ddof=1) / np.sqrt(n))
+
+
+def test_naive_error_is_too_small_for_clones():
+    h = EventHistogram("x", EDGES)
+    fill(h, correlated_sample(2, 3000))
+    assert np.all(h.errors() / h.naive_errors() > 2.0)
+    assert np.all(h.n_eff() < 3000)
+
+
+def test_merge_equals_single_accumulator():
+    a, b = correlated_sample(3, 1000), correlated_sample(4, 1500)
+    ha = EventHistogram("x", EDGES, covariance=True, n_replicas=50)
+    hb = EventHistogram("x", EDGES, covariance=True, n_replicas=50)
+    hab = EventHistogram("x", EDGES, covariance=True, n_replicas=50)
+    fill(ha, a, run=1)
+    fill(hb, b, run=2)
+    fill(hab, a, run=1)
+    fill(hab, b, run=2)
+    ha += hb
+    assert ha.n_events == hab.n_events
+    assert ha.errors() == pytest.approx(hab.errors())
+    assert ha.covariance() == pytest.approx(hab.covariance())
+    assert ha.bootstrap_errors() == pytest.approx(hab.bootstrap_errors())
+
+
+def state(h):
+    """Copy of the accumulators of h, which has a covariance and replicas."""
+    assert h.sum_tt is not None and h.boot is not None
+    return h.sum_t.copy(), h.sum_tt.copy(), h.boot.copy(), h.n_events
+
+
+@pytest.mark.parametrize(
+    "kwargs",
+    [{"covariance": False, "n_replicas": 50}, {"covariance": True, "n_replicas": 20}, {"covariance": True}],
+)
+def test_incompatible_merge_is_refused(kwargs):
+    ha = EventHistogram("x", EDGES, covariance=True, n_replicas=50)
+    fill(ha, correlated_sample(5, 200))
+    before = state(ha)
+    hb = EventHistogram("x", EDGES, **kwargs)
+    fill(hb, correlated_sample(6, 200))
+    with pytest.raises(ValueError):
+        ha += hb
+    for x, y in zip(before, state(ha)):
+        assert np.array_equal(x, y)
+
+
+def test_merge_with_open_event_is_an_error():
+    ha, hb = EventHistogram("x", EDGES), EventHistogram("x", EDGES)
+    hb.fill(1.0)
+    with pytest.raises(RuntimeError):
+        ha += hb
+
+
+def test_no_events_gives_zeros():
+    h = EventHistogram("x", EDGES, covariance=True, n_replicas=10)
+    nb = len(EDGES) - 1
+    for result in (h.values(), h.errors(), h.naive_errors(), h.bootstrap_errors()):
+        assert np.array_equal(result, np.zeros(nb))
+    assert np.array_equal(h.covariance(), np.zeros((nb, nb)))
+
+
+def test_covariance_diagonal_is_variance():
+    h = EventHistogram("x", EDGES, covariance=True)
+    fill(h, correlated_sample(5, 2000))
+    assert np.diag(h.covariance()) == pytest.approx(h.errors() ** 2)
+
+
+def test_bootstrap_reproduces_errors():
+    h = EventHistogram("x", EDGES, n_replicas=400)
+    fill(h, correlated_sample(6, 4000))
+    assert h.bootstrap_errors() == pytest.approx(h.errors(), rel=0.25)
+
+
+def test_replica_weights_are_poisson_one():
+    w = np.concatenate([replica_weights(k, 50) for k in range(4000)])
+    assert w.mean() == pytest.approx(1.0, abs=0.02)
+    assert w.var() == pytest.approx(1.0, abs=0.04)
+    assert np.array_equal(replica_weights(42, 10), replica_weights(42, 10))
+
+
+def test_open_event_is_an_error():
+    h = EventHistogram("x", EDGES)
+    h.fill([1.0], [1.0])
+    with pytest.raises(RuntimeError):
+        h.values()
+
+
+def test_flows_are_kept_out_of_range():
+    h = EventHistogram("x", EDGES)
+    h.fill_event([-1.0, 5.0, 10.0, 11.0], [1.0, 1.0, 1.0, 1.0])
+    assert h.values().sum() == pytest.approx(1.0)
+    assert h.sum_t[0] == pytest.approx(1.0)
+    assert h.sum_t[-1] == pytest.approx(2.0)
+
+
+@pytest.fixture(scope="module")
+def root_with_shipdata(root_with_shipdata):
+    if not hasattr(root_with_shipdata, "EventHistogram"):
+        pytest.skip("libShipData with EventHistogram not available")
+    return root_with_shipdata
+
+
+def test_root_round_trip_and_cpp_agree(root_with_shipdata, tmp_path):
+    ROOT = root_with_shipdata
+    events = correlated_sample(7, 2000)
+    h = EventHistogram("x", EDGES, covariance=True, n_replicas=20)
+    fill(h, events)
+    cpp = ROOT.EventHistogram("x", "", len(EDGES) - 1, 0.0, 10.0, True, 20)
+    fill_cpp(cpp, events)
+    result = cpp.MakeResult()
+    assert [result.GetBinContent(b) for b in range(1, 11)] == pytest.approx(h.values())
+    assert [result.GetBinError(b) for b in range(1, 11)] == pytest.approx(h.errors())
+    assert list(cpp.GetBootstrapErrors()) == pytest.approx(h.bootstrap_errors())
+    for key in (0, 1, make_event_key(7, 123456)):
+        assert [cpp.ReplicaWeight(key, r) for r in range(30)] == list(replica_weights(key, 30))
+
+    # Python writes, C++ reads; C++ writes, Python reads.
+    path = str(tmp_path / "eh.root")
+    f = ROOT.TFile(path, "RECREATE")
+    h.to_root(f)
+    f.Close()
+    f = ROOT.TFile(path)
+    back = ROOT.EventHistogram.Read(f, "x")
+    assert back.GetNEvents() == h.n_events
+    res = back.MakeResult()
+    assert [res.GetBinError(b) for b in range(1, 11)] == pytest.approx(h.errors())
+    f.Close()
+    path2 = str(tmp_path / "eh_cpp.root")
+    f = ROOT.TFile(path2, "RECREATE")
+    cpp.Write(f)
+    f.Close()
+    f = ROOT.TFile(path2)
+    again = EventHistogram.from_root(f, "x")
+    assert again.errors() == pytest.approx(h.errors())
+    assert again.covariance() == pytest.approx(h.covariance())
+    f.Close()
+
+    # Both refuse an incompatible merge and an open event.
+    other = ROOT.EventHistogram("x", "", len(EDGES) - 1, 0.0, 10.0, False, 20)
+    with pytest.raises(Exception, match="covariance"):
+        cpp.Add(other)
+    other.Fill(1.0)
+    with pytest.raises(Exception, match="open event"):
+        other.MakeResult()
+
+
+def test_hadd_of_different_settings_is_refused(root_with_shipdata, tmp_path):
+    ROOT = root_with_shipdata
+    paths = []
+    for i, covariance in enumerate((True, False)):
+        h = EventHistogram("x", EDGES, covariance=covariance)
+        fill(h, correlated_sample(8 + i, 200), run=i)
+        paths.append(str(tmp_path / f"part{i}.root"))
+        f = ROOT.TFile(paths[-1], "RECREATE")
+        h.to_root(f)
+        f.Close()
+    merged = str(tmp_path / "merged.root")
+    merger = ROOT.TFileMerger(False)
+    merger.OutputFile(merged, "RECREATE")
+    for path in paths:
+        merger.AddFile(path)
+    assert merger.Merge()
+    f = ROOT.TFile(merged)
+    with pytest.raises(ValueError, match="different settings"):
+        EventHistogram.from_root(f, "x")
+    assert not ROOT.EventHistogram.Read(f, "x")
+    f.Close()

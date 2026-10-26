@@ -43,6 +43,11 @@ class MuonBackGenerator : public SHiP::Generator {
   void SetPhiRandomize(Bool_t phiRandomize) { fPhiRandomize = phiRandomize; };
   Bool_t checkDiMuon(Int_t muIndex);
   void SetDownScaleDiMuon() { fdownScaleDiMuon = kTRUE; };
+  /** For run_fixedTarget input: start the scored tracks at their production
+   *  vertex, as before, instead of where they entered the scoring plane. This
+   *  simulates the path to the plane a second time and biases the result
+   *  towards particles that reach it easily; only for validation. **/
+  void SetStartFromOrigin() { fStartFromOrigin = kTRUE; };
 
  private:
  protected:
@@ -62,6 +67,7 @@ class MuonBackGenerator : public SHiP::Generator {
   Bool_t followMuons;
   Int_t fSameSeed;
   Double_t fsmearBeam;
+  Bool_t fStartFromOrigin;
 };
 
 #endif  // SHIPGEN_MUONBACKGENERATOR_H_ /* !PNDmuGENERATOR_H */

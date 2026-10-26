@@ -10,5 +10,14 @@ export CONFIG_DIR="$PIXI_PROJECT_ROOT/gconfig"
 export EVTGENDATA="${EVTGEN_ROOT:-$CONDA_PREFIX/share/EvtGen}"
 # shipRoot_conf.py uses GENFIT_ROOT to load libgenfit2 and locate headers.
 export GENFIT_ROOT="$CONDA_PREFIX"
+# Default inputs (e.g. the charm cascade in run_simScript.py) are opened as
+# $EOSSHIP/eos/experiment/ship/...; keep a value the user has already set.
+export EOSSHIP="${EOSSHIP:-root://eospublic.cern.ch/}"
 export PYTHONPATH="$PIXI_PROJECT_ROOT/build/lib:$PIXI_PROJECT_ROOT/python${PYTHONPATH:+:$PYTHONPATH}"
 export LD_LIBRARY_PATH="$PIXI_PROJECT_ROOT/build/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+# Without a display, Geant4's Qt UI aborts at initialisation (#1223), e.g. over
+# ssh, in containers or on batch nodes. Use Qt's offscreen platform there,
+# unless the user chose a platform.
+if [ -z "${DISPLAY:-}" ] && [ -z "${WAYLAND_DISPLAY:-}" ]; then
+    export QT_QPA_PLATFORM="${QT_QPA_PLATFORM:-offscreen}"
+fi

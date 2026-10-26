@@ -34,11 +34,8 @@ r"""
 import math
 import re
 
-import ROOT
 import shipunit as u
-
-# Load PDG database
-pdg = ROOT.TDatabasePDG.Instance()
+from rootUtils import get_particle
 
 
 def PDGname(particle):
@@ -78,8 +75,7 @@ def PDGcode(particle: str) -> int:
     Read particle ID from PDG database
     """
     particle = PDGname(particle)
-    tPart = pdg.GetParticle(particle)
-    assert tPart is not None, f"Unknown particle: {particle}"
+    tPart = get_particle(particle)
     return int(tPart.PdgCode())
 
 
@@ -88,8 +84,7 @@ def mass(particle):
     Read particle mass from PDG database
     """
     particle = PDGname(particle)
-    tPart = pdg.GetParticle(particle)
-    assert tPart is not None, f"Unknown particle: {particle}"
+    tPart = get_particle(particle)
     return tPart.Mass()
 
 
@@ -98,8 +93,7 @@ def width(particle):
     Read particle width from PDG database
     """
     particle = PDGname(particle)
-    tPart = pdg.GetParticle(particle)
-    assert tPart is not None, f"Unknown particle: {particle}"
+    tPart = get_particle(particle)
     return tPart.Width()
 
 
@@ -108,7 +102,6 @@ def lifetime(particle):
     Read particle lifetime from PDG database
     """
     particle = PDGname(particle)
-    tPart = pdg.GetParticle(particle)
     if particle == "D0" or particle == "D0bar":
         return 4.1e-13
     elif particle == "D+" or particle == "D-":
@@ -120,8 +113,7 @@ def lifetime(particle):
     elif particle == "B+" or particle == "B-":
         return 1.6e-12
 
-    assert tPart is not None, f"Unknown particle: {particle}"
-    return tPart.Lifetime()
+    return get_particle(particle).Lifetime()
 
 
 class constants:

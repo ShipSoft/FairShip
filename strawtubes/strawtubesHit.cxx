@@ -11,6 +11,7 @@
 #include "FairLogger.h"
 #include "FairRun.h"
 #include "FairRunSim.h"
+#include "ShipUnit.h"
 #include "TGeoManager.h"
 #include "TGeoShape.h"
 #include "TGeoTube.h"
@@ -22,9 +23,6 @@
 using std::cout;
 using std::endl;
 
-namespace {
-constexpr Double_t speedOfLight = 29.9792458;  // TMath::C() * 100 / 1e9, cm/ns
-}  // namespace
 // -----   Default constructor   -------------------------------------------
 strawtubesHit::strawtubesHit() : SHiP::DetectorHit() {}
 // -----   Standard constructor   ------------------------------------------
@@ -48,7 +46,8 @@ strawtubesHit::strawtubesHit(strawtubesPoint* p, Double_t t0)
   strawtubes::StrawEndPoints(fDetectorID, start, stop);
   Double_t t_drift =
       fabs(gRandom->Gaus(p->dist2Wire(), sigma_spatial)) / v_drift;
-  fdigi = t0 + p->GetTime() + t_drift + (stop[0] - p->GetX()) / speedOfLight;
+  fdigi =
+      t0 + p->GetTime() + t_drift + (stop[0] - p->GetX()) / ShipUnit::c_light;
 }
 
 // -------------------------------------------------------------------------
