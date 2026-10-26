@@ -173,6 +173,19 @@ if(TARGET ShipActsTracking)
     )
     add_test(NAME ActsStrawGeometry COMMAND testActsStrawGeometry)
 
+    # Passive material of the ACTS straw geometry, from a small TGeo geometry
+    add_executable(testActsMaterial test_acts_material.cxx)
+    target_link_libraries(
+        testActsMaterial
+        ShipActsTracking
+        Acts::Core
+        ROOT::Geom
+        FairRoot::Base
+        genfit2
+        FairLogger::FairLogger
+    )
+    add_test(NAME ActsMaterial COMMAND testActsMaterial)
+
     # Track fits through ActsStrawTracker, from straw hits
     add_executable(testActsTrackFit test_acts_track_fit.cxx)
     target_link_libraries(
