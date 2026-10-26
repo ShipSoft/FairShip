@@ -36,6 +36,7 @@ enum DetectorId {
   kMufluxSpectrometer,
   kMuonTagger,
   kUpstreamTagger,
+  kUpstreamTaggerStraw,
   kUpstreamTaggerScoringPlane,
   kEndOfList
 };

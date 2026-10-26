@@ -219,7 +219,7 @@ def set_upstream_tagger(c) -> None:
     # ECN3 floor up to Top.
     ms = c.UpstreamTaggerScoringPlane.MuonShield = AttrDict()
     ms.Top = 5.2 * u.m
-    ms.ShieldGap = 10.0 * u.cm
+    ms.ShieldGap = 5.0 * u.cm
     ms.X = 2.0 * c.cave.ECN3WallDistance  # 9.132 m
     ms.Y = ms.Top - c.cave.ECN3FloorY  # 8.564 m
     ms.CenterX = 0.0 * u.m
@@ -437,6 +437,8 @@ def create_config(
         c.Chamber1 = AttrDict(z=c.decayVolume.z0 + c.chambers.Tub1length)
         c.Chamber6 = AttrDict(z=z4 + 30.0 * u.cm + windowBulge / 2.0)
 
+    c.UBTStation1 = AttrDict(z=c.decayVolume.z0 - 50 * u.cm)
+
     c.Bfield = AttrDict()
     c.Bfield.z = c.z
     c.Bfield.max = 0  # 1.4361*u.kilogauss  # was 1.15 in EOI
@@ -496,7 +498,20 @@ def create_config(
     c.tauMudet.Ztot = 3 * u.m  # space allocated to Muon spectrometer
     c.tauMudet.zMudetC = c.muShield.z + c.muShield.length / 2.0 - c.tauMudet.Ztot / 2.0 - 70 * u.cm
 
+    # Upstream Tagger
+    # UpstreamTagger (UBT) - Simplified scoring plane
+    # Note: UBT is implemented as a simple vacuum box
+    # Legacy RPC parameters have been removed as they are not used in the current implementation
+    c.UpstreamTagger = AttrDict()
+    c.UpstreamTagger.BoxX = 4.4 * u.m  # X dimension (width)
+    c.UpstreamTagger.BoxY = 6.4 * u.m  # Y dimension (height)
+    c.UpstreamTagger.BoxZ = 2.0 * u.cm  # Z dimension (thickness)
+    c.UpstreamTagger.Z_Position = -25.400 * u.m + c.decayVolume.z  # Relative position of UBT to decay vessel centre
+    c.UpstreamTagger.PositionResolution = 1.0 * u.cm  # Position smearing resolution
+    c.UpstreamTagger.TimeResolution = 0.3  # Time resolution in ns
     set_upstream_tagger(c)
+
+
 
     # Store parameters that might be needed for reference
     c.nuTargetPassive = nuTargetPassive
