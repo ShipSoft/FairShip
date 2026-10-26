@@ -460,9 +460,11 @@ if args.AddMuonShield or args.AddHadronAbsorberOnly:
     if args.AddHadronAbsorberOnly:
         # keep only the first magnet, the magnetised hadron absorber
         ship_geo.muShield.params = ship_geo.muShield.params[: ROOT.ShipMuonShield.nParams]
+        ship_geo.muShield.nMagnets = 1
 
     MuonShield = ROOT.ShipMuonShield(
         in_params=list(ship_geo.muShield.params),
+        n_magnets=ship_geo.muShield.nMagnets,
         z=ship_geo.muShield.z,
     )
     # MuonShield.SetSupports(False) # otherwise overlap with sensitive Plane

@@ -20,10 +20,11 @@
 // in_params holds nParams values per magnet, all in cm:
 //   [Zgap, dZ, dX, dY]
 // Zgap: gap upstream of the magnet, dZ: half length, dX/dY: outer half width
-// and half height.
+// and half height. n_magnets is the expected number of magnets, so that a
+// parameter list in another format (e.g. from an older geometry file) fails.
 class ShipMuonShield : public FairModule {
  public:
-  ShipMuonShield(std::vector<double> in_params, Double_t z);
+  ShipMuonShield(std::vector<double> in_params, size_t n_magnets, Double_t z);
   ShipMuonShield();
   ~ShipMuonShield() override;
   void ConstructGeometry() override;

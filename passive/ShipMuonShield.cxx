@@ -22,15 +22,19 @@ using ShipUnit::m;
 ShipMuonShield::~ShipMuonShield() = default;
 ShipMuonShield::ShipMuonShield() : FairModule("ShipMuonShield", "") {}
 
-ShipMuonShield::ShipMuonShield(std::vector<double> in_params, Double_t z)
+ShipMuonShield::ShipMuonShield(std::vector<double> in_params, size_t n_magnets,
+                               Double_t z)
     : FairModule("MuonShield", "ShipMuonShield") {
   LOG(debug) << " Function ShipMuonShield MS ";
-  std::ranges::copy(in_params, std::back_inserter(shield_params));
-  nMagnets = in_params.size() / nParams;  // integer division
-
-  if (in_params.size() % nParams != 0) {
-    LOG(error) << "Warning: incomplete magnet data!";
+  // A list in the old 15-value format also divides evenly by nParams, so
+  // check the size against the expected number of magnets.
+  if (in_params.size() != n_magnets * nParams) {
+    LOG(fatal) << "ShipMuonShield: expected " << n_magnets << " magnets x "
+               << nParams << " parameters, got " << in_params.size()
+               << " values. Is the geometry from an older version?";
   }
+  std::ranges::copy(in_params, std::back_inserter(shield_params));
+  nMagnets = n_magnets;
 
   z_end_of_proximity_shielding = z;
 }
