@@ -24,8 +24,10 @@
 #include "Acts/EventData/VectorTrackContainer.hpp"
 #include "Acts/Geometry/GeometryContext.hpp"
 #include "Acts/MagneticField/MagneticFieldContext.hpp"
+#include "Acts/Propagator/ActorList.hpp"
 #include "Acts/Propagator/DirectNavigator.hpp"
 #include "Acts/Propagator/EigenStepper.hpp"
+#include "Acts/Propagator/MaterialInteractor.hpp"
 #include "Acts/Propagator/Propagator.hpp"
 #include "Acts/Propagator/VoidNavigator.hpp"
 #include "Acts/Surfaces/PlaneSurface.hpp"
@@ -265,6 +267,9 @@ struct ActsStrawTracker::Impl {
         extrapolator(
             Stepper(field), Acts::VoidNavigator(),
             Acts::getDefaultLogger("Extrapolator", Acts::Logging::WARNING)),
+        materialExtrapolator(Stepper(field), Acts::DirectNavigator(),
+                             Acts::getDefaultLogger("MaterialExtrapolator",
+                                                    Acts::Logging::WARNING)),
         tracks(std::make_shared<Acts::VectorTrackContainer>(),
                std::make_shared<Trajectory>()) {
     extensions.surfaceAccessor.connect<&Impl::surfaceOf>(this);
@@ -361,6 +366,39 @@ struct ActsStrawTracker::Impl {
     return std::nullopt;
   }
 
+  /// Propagate to the plane of constant z `target` at `targetZ` (SHiP, cm),
+  /// with multiple scattering and energy loss in the passive material
+  /// between
+  std::optional<Acts::BoundTrackParameters> extrapolateThroughMaterial(
+      const Acts::BoundTrackParameters& start, const Acts::Surface& target,
+      double targetZ) const {
+    const double startZ = ActsFrame::positionToShip(start.position(gctx)).z();
+    const double pz = ActsFrame::momentumToShip(start.momentum()).z();
+    const bool forward = (targetZ - startZ) * pz > 0.;
+    std::vector<const Acts::Surface*> sequence;
+    for (const auto& plane : straws.passivePlanes()) {
+      if (plane.z > std::min(startZ, targetZ) &&
+          plane.z < std::max(startZ, targetZ)) {
+        sequence.push_back(plane.surface.get());
+      }
+    }
+    if (!forward) {
+      std::reverse(sequence.begin(), sequence.end());
+    }
+    sequence.push_back(&target);
+    DirectPropagator::Options<Acts::ActorList<Acts::MaterialInteractor>>
+        options(gctx, mctx);
+    options.pathLimit = kPathLimit;
+    options.direction =
+        forward ? Acts::Direction::Forward() : Acts::Direction::Backward();
+    options.navigation.surfaceSequence = std::move(sequence);
+    auto result = materialExtrapolator.propagate(start, target, options);
+    if (result.ok() && result.value().endParameters.has_value()) {
+      return result.value().endParameters.value();
+    }
+    return std::nullopt;
+  }
+
   ActsStrawGeometry straws;
   TVirtualMagField* shipField;
   std::shared_ptr<const ActsShipField> field;
@@ -369,6 +407,8 @@ struct ActsStrawTracker::Impl {
   std::optional<StrawPatRec> patRec;
   KalmanFitter fitter;
   Extrapolator extrapolator;
+  /// Through the passive material, for the extrapolation to vertices
+  DirectPropagator materialExtrapolator;
   Acts::GainMatrixUpdater updater;
   Acts::GainMatrixSmoother smoother;
   Acts::KalmanFitterExtensions<Trajectory> extensions;
@@ -736,9 +776,11 @@ Bool_t ActsStrawTracker::FitVertex(const std::vector<Int_t>& tracks,
   std::vector<Acts::BoundTrackParameters> atPlane;
   for (int iteration = 0; iteration < kVertexIterations; ++iteration) {
     const auto plane = constantZPlane(point);
+    const double planeZ = ActsFrame::positionToShip(point).z();
     atPlane.clear();
     for (const auto& params : fitted) {
-      auto extrapolated = impl.extrapolate(impl.extrapolator, params, *plane);
+      auto extrapolated =
+          impl.extrapolateThroughMaterial(params, *plane, planeZ);
       if (!extrapolated) {
         return false;
       }
