@@ -12,26 +12,25 @@ class timeDetector(BaseDetector):
     def digitize(self) -> None:
         """Digitize timing detector MC hits.
 
-        The earliest hit per straw will be marked valid, all later ones invalid.
+        One hit is created per TimeDetPoint, at the same index. Per bar, the hit
+        from the point with the earliest true (unsmeared) time is marked valid,
+        all others invalid.
+
+        The selection uses the MC time rather than the smeared TDC values:
+        points in the same bar (e.g. a muon and its delta electrons) belong to
+        the same light pulse, so comparing independently smeared TDCs would pick
+        a random point and often invalidate the primary's hit.
         """
         earliest_per_det_id = {}
-        for index, point in enumerate(self.intree.TimeDetPoint):
-            hit = ROOT.TimeDetHit(point, self.intree.t0)
-            self.det.push_back(hit)
-            detector_id = hit.GetDetectorID()
-            if hit.isValid():
-                if detector_id in earliest_per_det_id:
-                    times = hit.GetMeasurements()
-                    earliest = earliest_per_det_id[detector_id]
-                    reference_times = self.det[earliest].GetMeasurements()
-                    # this is not really correct, only first attempt
-                    # case that one measurement only is earlier not taken into account
-                    # SetTDC(Float_t val1, Float_t val2)
-                    if reference_times[0] > times[0] or reference_times[1] > times[1]:
-                        # second hit with smaller tdc
-                        self.det[earliest].setInvalid()
-                        earliest_per_det_id[detector_id] = index
-                    else:
-                        self.det[index].setInvalid()
-                else:
-                    earliest_per_det_id[detector_id] = index
+        points = self.intree.TimeDetPoint
+        for index, point in enumerate(points):
+            self.det.push_back(ROOT.TimeDetHit(point, self.intree.t0))
+            detector_id = point.GetDetectorID()
+            earliest = earliest_per_det_id.get(detector_id)
+            if earliest is None:
+                earliest_per_det_id[detector_id] = index
+            elif point.GetTime() < points[earliest].GetTime():
+                self.det[earliest].setInvalid()
+                earliest_per_det_id[detector_id] = index
+            else:
+                self.det[index].setInvalid()
