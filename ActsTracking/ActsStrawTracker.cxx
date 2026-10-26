@@ -468,8 +468,19 @@ std::optional<std::size_t> ActsStrawTracker::Impl::fitOnce(
     const std::vector<Int_t>& indices,
     const Acts::BoundTrackParameters& start) {
   std::vector<Acts::SourceLink> sourceLinks;
+  // The measurement surfaces, with the passive material between them, in z
   std::vector<const Acts::Surface*> surfaces;
+  const auto& passive = straws.passivePlanes();
+  auto plane = passive.begin();
+  const double zFirst = measurements[indices.front()].wire->z;
+  while (plane != passive.end() && plane->z <= zFirst) {
+    ++plane;
+  }
   for (const Int_t index : indices) {
+    const double z = measurements[index].wire->z;
+    for (; plane != passive.end() && plane->z < z; ++plane) {
+      surfaces.push_back(plane->surface.get());
+    }
     sourceLinks.emplace_back(static_cast<std::size_t>(index));
     surfaces.push_back(measurements[index].surface);
   }
