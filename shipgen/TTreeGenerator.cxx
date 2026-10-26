@@ -15,12 +15,12 @@ TTreeGenerator::TTreeGenerator()
       fTreeName("events"),
       fNEvents(0),
       fCurrentEvent(0),
-      fPx(0),
-      fPy(0),
-      fPz(0),
-      fX(0),
-      fY(0),
-      fZ(0),
+      fPx(0.0),
+      fPy(0.0),
+      fPz(0.0),
+      fX(0.0),
+      fY(0.0),
+      fZ(0.0),
       fPdgId(0),
       fWeight(1.0) {}
 
@@ -106,6 +106,8 @@ Bool_t TTreeGenerator::ReadEvent(FairPrimaryGenerator* primGen) {
 
   // Position in cm, momentum in GeV/c. e < 0 makes FairPrimaryGenerator
   // compute the energy from the momentum and PDG mass.
+  if(abs(fPdgId) < 10)
+      fPdgId *= 13 ;
   primGen->AddTrack(fPdgId, fPx, fPy, fPz, fX, fY, fZ, -1, true, -9e9, 0.,
                     fWeight);
 
@@ -119,16 +121,26 @@ Bool_t TTreeGenerator::InitBranches() {
 
   bool ok = true;
 
-  ok &= (fInputTree->SetBranchAddress("px", &fPx) >= 0);
-  ok &= (fInputTree->SetBranchAddress("py", &fPy) >= 0);
-  ok &= (fInputTree->SetBranchAddress("pz", &fPz) >= 0);
+//  ok &= (fInputTree->SetBranchAddress("px", &fPx) >= 0);
+//  ok &= (fInputTree->SetBranchAddress("py", &fPy) >= 0);
+//  ok &= (fInputTree->SetBranchAddress("pz", &fPz) >= 0);
 
-  ok &= (fInputTree->SetBranchAddress("x", &fX) >= 0);
-  ok &= (fInputTree->SetBranchAddress("y", &fY) >= 0);
-  ok &= (fInputTree->SetBranchAddress("z", &fZ) >= 0);
+//  ok &= (fInputTree->SetBranchAddress("x", &fX) >= 0);
+//  ok &= (fInputTree->SetBranchAddress("y", &fY) >= 0);
+//  ok &= (fInputTree->SetBranchAddress("z", &fZ) >= 0);
 
   ok &= (fInputTree->SetBranchAddress("id", &fPdgId) >= 0);
-  ok &= (fInputTree->SetBranchAddress("w", &fWeight) >= 0);
+//  ok &= (fInputTree->SetBranchAddress("w", &fWeight) >= 0);
+
+  fPx.attach(fInputTree, "px");
+  fPy.attach(fInputTree, "py");
+  fPz.attach(fInputTree, "pz");
+
+  fX.attach(fInputTree, "x");
+  fY.attach(fInputTree, "y");
+  fZ.attach(fInputTree, "z");
+
+  fWeight.attach(fInputTree, "w");
 
   if (!ok) {
     LOG(error) << "TTreeGenerator: failed to bind one or more branches";

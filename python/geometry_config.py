@@ -442,7 +442,7 @@ def create_config(
     # Note: UBT is implemented as a simple vacuum box
     # Legacy RPC parameters have been removed as they are not used in the current implementation
     c.UpstreamTagger = AttrDict()
-    c.UpstreamTagger.BoxX = 4.4 * u.m  # X dimension (width)
+    c.UpstreamTagger.BoxX = 8.4 * u.m  # X dimension (width)
     c.UpstreamTagger.BoxY = 6.4 * u.m  # Y dimension (height)
     c.UpstreamTagger.BoxZ = 16.0 * u.cm  # Z dimension (thickness)
     c.UpstreamTagger.Z_Position = -25.400 * u.m + c.decayVolume.z  # Relative position of UBT to decay vessel centre

@@ -175,8 +175,11 @@ import shipDigiReco
 
 SHiP = shipDigiReco.ShipDigiReco(options.inputFile, outFile, fgeo, validation=options.validation)
 nEntries = SHiP.sTree.GetEntries()
+toRunOver = options.nEvents
+if toRunOver < 0:
+    toRunOver = nEntries
 # main loop
-for global_variables.iEvent in range(options.firstEvent, min(nEntries, options.firstEvent + options.nEvents)):
+for global_variables.iEvent in range(options.firstEvent, min(nEntries, options.firstEvent + toRunOver)):
     if global_variables.iEvent % 1000 == 0 or global_variables.debug:
         print("event ", global_variables.iEvent)
     rc = SHiP.sTree.GetEvent(global_variables.iEvent)
