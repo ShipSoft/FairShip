@@ -651,14 +651,18 @@ Int_t ActsStrawTracker::FindTracks() {
   std::vector<Fitted> fitted;
   for (std::size_t i = 0; i < candidates.size(); ++i) {
     const Int_t track = impl.fit(candidates[i], hits);
-    if (track < 0) {
-      continue;
+    if (track >= 0) {
+      const auto proxy = impl.tracks.getTrack(track);
+      if (proxy.nDoF() > 0) {
+        fitted.push_back(
+            {i, proxy.chi2() / proxy.nDoF(), impl.trackMeasurements[track]});
+      }
     }
-    const auto proxy = impl.tracks.getTrack(track);
-    if (proxy.nDoF() > 0) {
-      fitted.push_back(
-          {i, proxy.chi2() / proxy.nDoF(), impl.trackMeasurements[track]});
-    }
+    // Only the fit quality and the hits are needed here, and the accepted
+    // tracks are refitted below, so the fitted states are dropped at once:
+    // a busy event has thousands of candidates
+    impl.tracks.clear();
+    impl.trackMeasurements.clear();
   }
   const auto rank = [](const Fitted& f) {
     return f.chi2PerNdf -
