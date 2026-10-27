@@ -267,9 +267,20 @@ bool fitLine(LineSegment& line, const std::vector<PatRecHit>& hits, bool fitX,
       line.tx = p(1);
       line.y0 = p(2);
       line.ty = p(3);
+      const Eigen::Matrix4d cov = ata.inverse();
+      line.varX0 = cov(0, 0);
+      line.covX0Tx = cov(0, 1);
+      line.varTx = cov(1, 1);
+      line.varY0 = cov(2, 2);
+      line.covY0Ty = cov(2, 3);
+      line.varTy = cov(3, 3);
     } else {
       line.y0 = p(0);
       line.ty = p(1);
+      const Eigen::Matrix2d cov = ata.topLeftCorner<2, 2>().inverse();
+      line.varY0 = cov(0, 0);
+      line.covY0Ty = cov(0, 1);
+      line.varTy = cov(1, 1);
     }
 
     // Residuals, and the worst outlier
@@ -654,13 +665,20 @@ std::optional<TrackCandidate> StrawPatRec::match(
   const double kinkX = -kink * field.by / field.bx;
   const double z = field.centre;
   const double p = candidate.momentum;
-  const auto sigma = [p](double a, double b) { return std::hypot(a, b / p); };
+  // The model uncertainty, sqrt(a^2 + (b / p)^2), and the fit
+  // uncertainties of the two segments, in quadrature
+  const auto sigma = [p](double a, double b, double fitVariance) {
+    return std::sqrt(a * a + b * b / (p * p) + fitVariance);
+  };
   const double dx = (upstream.x(z) - downstream.x(z)) /
-                    sigma(m_cfg.matchSigmaX, m_cfg.matchSigmaXPerP);
+                    sigma(m_cfg.matchSigmaX, m_cfg.matchSigmaXPerP,
+                          upstream.varX(z) + downstream.varX(z));
   const double dtx = (upstream.tx + kinkX - downstream.tx) /
-                     sigma(m_cfg.matchSigmaTx, m_cfg.matchSigmaTxPerP);
+                     sigma(m_cfg.matchSigmaTx, m_cfg.matchSigmaTxPerP,
+                           upstream.varTx + downstream.varTx);
   const double dy = (upstream.y(z) - downstream.y(z)) /
-                    sigma(m_cfg.matchSigmaY, m_cfg.matchSigmaYPerP);
+                    sigma(m_cfg.matchSigmaY, m_cfg.matchSigmaYPerP,
+                          upstream.varY(z) + downstream.varY(z));
   candidate.matchChi2 = dx * dx + dtx * dtx + dy * dy;
   return candidate;
 }
