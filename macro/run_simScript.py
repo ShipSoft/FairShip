@@ -224,10 +224,20 @@ parser.add_argument(
     help="misuse GenieGenerator for neutrino radiography and geometry timing test",
     action="store_true",
 )
-parser.add_argument("--notSaveGeoFile", dest="save_geofile", default=True, action="store_false",
-                    help="Turn off the saving of the geofile at the end.")
-parser.add_argument("--notSaveParFile", dest="save_parfile", default=True, action="store_false",
-                    help="Turn off the saving of the parameter files at the end.")
+parser.add_argument(
+    "--notSaveGeoFile",
+    dest="save_geofile",
+    default=True,
+    action="store_false",
+    help="Turn off the saving of the geofile at the end.",
+)
+parser.add_argument(
+    "--notSaveParFile",
+    dest="save_parfile",
+    default=True,
+    action="store_false",
+    help="Turn off the saving of the parameter files at the end.",
+)
 
 parser.add_argument("--Ntuple", dest="ntuple", help="Use ntuple as input", action="store_true")
 parser.add_argument("--ttree", help="Use TTree as input", action="store_true")
@@ -1131,9 +1141,9 @@ run.Run(options.nEvents)
 # -----Runtime database---------------------------------------------
 kParameterMerged = ROOT.kTRUE
 parOut = ROOT.FairParRootFileIo(kParameterMerged)
-if os.path.exists(parFile):
-    os.remove(parFile)
 if options.save_parfile:
+    if os.path.exists(parFile):
+        os.remove(parFile)
     parOut.open(parFile)
     rtdb.setOutput(parOut)
     ROOT.SetOwnership(parOut, False)  # C++ FairRuntimeDb takes ownership
