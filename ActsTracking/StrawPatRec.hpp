@@ -33,9 +33,22 @@ struct LineSegment {
   std::vector<int> hits;   ///< positions in the hit list
   std::vector<int> signs;  ///< signed drift distance = sign * drift
   double chi2{0.};
+  /// Covariance of the fitted (x0, tx) and (y0, ty) at z0, from the hit
+  /// uncertainties
+  double varX0{0.}, covX0Tx{0.}, varTx{0.};
+  double varY0{0.}, covY0Ty{0.}, varTy{0.};
 
   double x(double z) const { return x0 + tx * (z - z0); }
   double y(double z) const { return y0 + ty * (z - z0); }
+  /// Variance of x(z) and y(z) from the fit
+  double varX(double z) const {
+    const double dz = z - z0;
+    return varX0 + 2. * dz * covX0Tx + dz * dz * varTx;
+  }
+  double varY(double z) const {
+    const double dz = z - z0;
+    return varY0 + 2. * dz * covY0Ty + dz * dz * varTy;
+  }
 };
 
 /// Field integrals along a straight line through the magnet
@@ -90,6 +103,9 @@ class StrawPatRec {
     /// to the bending plane deviate more from the track the lower its
     /// momentum. From truth-matched segments of 2-100 GeV tracks, with the
     /// constant terms widened for busy events, where segments lose hits.
+    /// The fit uncertainties of the two segments are added in quadrature, so
+    /// a segment from a single station, e.g. of a track leaving the straws
+    /// at large angle, is matched with its larger slope uncertainty.
     double matchSigmaX = 0.6;        ///< cm
     double matchSigmaXPerP = 3.;     ///< cm GeV
     double matchSigmaTx = 1.5e-3;    ///< rad
