@@ -658,8 +658,10 @@ run_identifier = (
 if not os.path.exists(options.outputDir):
     os.makedirs(options.outputDir)
 outFile = f"{options.outputDir}/sim_{run_identifier}.root"
-if options.geofile and os.path.realpath(options.geofile) == os.path.realpath(
-    f"{options.outputDir}/geo_{run_identifier}.root"
+if (
+    options.geofile
+    and os.path.realpath(options.geofile) == os.path.realpath(f"{options.outputDir}/geo_{run_identifier}.root")
+    and options.save_geofile
 ):
     parser.error("-g/--geofile: the geometry file would be overwritten by the output of this run, use another --tag")
 
