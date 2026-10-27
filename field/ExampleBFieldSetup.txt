@@ -1,8 +1,4 @@
 # Specify the uniform fields (Tesla)
-Uniform B1_xPos 1.8 0.0 0.0
-Uniform B1_xNeg -1.8 0.0 0.0
-Uniform B1_yPos 0.0 1.8 0.0
-Uniform B1_yNeg 0.0 -1.8 0.0
 Uniform B2_zNeg 0.0 0.0 -1.5
 Uniform B2_zPos 0.0 0.0 1.5
 Uniform B2_yNeg 0.0 -1.5 0.0
@@ -19,14 +15,6 @@ Global Wilfried
 # for the specific volume or "Region" for local & global field
 # Active muon shield: each magnet is a single iron box. In the simulation
 # the shield field comes from the map files/<shieldName>.root instead
-Local MagnAbsorb B1_yPos
-Local Magn1 B1_yPos
-Local Magn2 B1_yPos
-Local Magn3 B1_yPos
-Local Magn4 B1_yNeg
-Local Magn5 B1_yNeg
-Local Magn6 B1_yNeg
-Local Magn7 B1_yNeg
 # Spectrometer
 Region volUpYoke B2_zNeg
 Region volLowYoke B2_zPos

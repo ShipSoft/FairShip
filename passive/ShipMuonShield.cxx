@@ -26,13 +26,6 @@ ShipMuonShield::ShipMuonShield(std::vector<double> in_params, size_t n_magnets,
                                Double_t z)
     : FairModule("MuonShield", "ShipMuonShield") {
   LOG(debug) << " Function ShipMuonShield MS ";
-  // A list in the old 15-value format also divides evenly by nParams, so
-  // check the size against the expected number of magnets.
-  if (in_params.size() != n_magnets * nParams) {
-    LOG(fatal) << "ShipMuonShield: expected " << n_magnets << " magnets x "
-               << nParams << " parameters, got " << in_params.size()
-               << " values. Is the geometry from an older version?";
-  }
   std::ranges::copy(in_params, std::back_inserter(shield_params));
   nMagnets = n_magnets;
 
@@ -79,6 +72,13 @@ void ShipMuonShield::CreateMagnet(const TString& magnetName, TGeoMedium* medium,
 
 void ShipMuonShield::ConstructGeometry() {
   LOG(debug) << " Construct Geometry of the MS ";
+  // A list in the old 15-value format also divides evenly by nParams, so
+  // check the size against the expected number of magnets.
+  if (shield_params.size() != nMagnets * nParams) {
+    LOG(fatal) << "ShipMuonShield: expected " << nMagnets << " magnets x "
+               << nParams << " parameters, got " << shield_params.size()
+               << " values. Is the geometry from an older version?";
+  }
   TGeoVolume* top = gGeoManager->GetTopVolume();
   TGeoVolume* tShield = new TGeoVolumeAssembly("MuonShieldArea");
   ShipGeo::InitMedium("iron");
