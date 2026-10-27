@@ -1176,8 +1176,6 @@ if P8gen is not None:
         print("total number of dark photons (including multiple meson decays per single collision) ", P8gen.nrOfDP())
 
 print("Output file is ", outFile)
-#print("Parameter file is ", parFile)
-#print("Geometry file is ", geofile_name)
 if not options.reproducible:
     print("Real time ", rtime, " s, CPU time ", ctime, "s")
 
