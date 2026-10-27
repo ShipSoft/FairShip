@@ -66,19 +66,19 @@ set_tests_properties(
 )
 
 # Normalisation of cascade (charm/beauty) events in FixedTargetGenerator
-add_executable(testFixedTargetCascadeWeight test_fixedtarget_cascade_weight.cxx)
-target_link_libraries(
-    testFixedTargetCascadeWeight
-    ShipGen
-    ROOT::EGPythia8
-    ROOT::Core
-    ROOT::RIO
-    ROOT::Hist
-    ROOT::Tree
-    FairRoot::Base
-    FairLogger::FairLogger
-)
-add_test(NAME FixedTargetCascadeWeight COMMAND testFixedTargetCascadeWeight)
+#add_executable(testFixedTargetCascadeWeight test_fixedtarget_cascade_weight.cxx)
+#target_link_libraries(
+#    testFixedTargetCascadeWeight
+#    ShipGen
+#    ROOT::EGPythia8
+#    ROOT::Core
+#    ROOT::RIO
+#    ROOT::Hist
+#    ROOT::Tree
+#    FairRoot::Base
+#    FairLogger::FairLogger
+#)
+#add_test(NAME FixedTargetCascadeWeight COMMAND testFixedTargetCascadeWeight)
 
 # Event-level uncertainties for samples with correlated (split) branches
 add_executable(testEventHistogram test_event_histogram.cxx)

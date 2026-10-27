@@ -7,19 +7,17 @@ import json
 import os
 import sys
 import uuid
-from argparse import ArgumentParser, Namespace
+from argparse import ArgumentParser
 from array import array
 from datetime import datetime
 from typing import cast
 
 import geometry_config
-import geometry_from_file
 import ROOT
 import rootUtils as ut
 import shipRoot_conf
 import shipunit as u
 import validationTools as validation_tools
-from ShipGeoConfig import load_from_root_file
 
 
 def _fraction_0_1(value: str) -> float:
@@ -158,18 +156,6 @@ pg_parser.add_argument(
     "--Dy", dest="Dy", type=float, help="size of the full uniform spread of PG ypos: (Vy - Dy/2, Vy + Dy/2)"
 )
 pg_parser.add_argument(
-    "--Dz",
-    dest="Dz",
-    type=float,
-    default=0,
-    help="size of the full uniform spread of PG zpos: (Vz - Dz/2, Vz + Dz/2), with --smearMode uniform3d",
-)
-pg_parser.add_argument(
-    "--commonVertex",
-    action="store_true",
-    help="give all particles of an event the same vertex (with --multiplePG, drawn once per event)",
-)
-pg_parser.add_argument(
     "--momentumModel", dest="momentumModel", default=0, type=int, help="Select a model to generate the momentum with"
 )
 pg_parser.add_argument(
@@ -224,6 +210,9 @@ parser.add_argument(
     help="misuse GenieGenerator for neutrino radiography and geometry timing test",
     action="store_true",
 )
+parser.add_argument("--save_geofile", dest="save_geofile", default=False, action="store_true")
+parser.add_argument("--save_parfile", dest="save_parfile", default=False, action="store_true")
+
 parser.add_argument("--Ntuple", dest="ntuple", help="Use ntuple as input", action="store_true")
 parser.add_argument("--ttree", help="Use TTree as input", action="store_true")
 parser.add_argument(
@@ -241,24 +230,7 @@ parser.add_argument(
     help="Only transport muons for a fast muon only background estimate",
     action="store_true",
 )
-parser.add_argument(
-    "--MuonBackFromOrigin",
-    dest="muonBackFromOrigin",
-    help="MuonBack with run_fixedTarget input: start the scored tracks at their production vertex instead of where "
-    "they entered the scoring plane. Biased, as the path to the plane is simulated twice; only for validation",
-    action="store_true",
-)
-parser.add_argument(
-    "--MuonBackAllowNoAbsorberField",
-    dest="muonBackAllowNoAbsorberField",
-    help="MuonBack: accept run_fixedTarget input that was simulated without the hadron absorber field",
-    action="store_true",
-)
-parser.add_argument(
-    "--phiRandom",
-    help="only relevant for muon background generator, random phi (not with run_fixedTarget input)",
-    action="store_true",
-)
+parser.add_argument("--phiRandom", help="only relevant for muon background generator, random phi", action="store_true")
 parser.add_argument(
     "--SmearBeam", dest="SmearBeam", help="Standard deviation of beam smearing [cm]", default=0.8, type=float
 )
@@ -267,12 +239,6 @@ parser.add_argument(
     "--Cosmics", dest="cosmics", help="Use cosmic generator, argument switch for cosmic generator 0 or 1", default=None
 )  # 0/1 selects CosmicsGenerator::Init(largeMom); not store_true, since "0" must enable cosmics with largeMom=False
 parser.add_argument("--MuDIS", dest="mudis", help="Use muon deep inelastic scattering generator", action="store_true")
-parser.add_argument(
-    "--NewMuDIS",
-    dest="newmudis",
-    help="Replay prepared/filtered MuonDIS events with NewMuDISGenerator",
-    action="store_true",
-)
 parser.add_argument("--RpvSusy", dest="RPVSUSY", help="Generate events based on RPV neutralino", action="store_true")
 parser.add_argument("--FixedTarget", dest="fixedTarget", help="Enable fixed target simulation", action="store_true")
 parser.add_argument("--DarkPhoton", help="Generate dark photons", action="store_true")
@@ -311,17 +277,8 @@ parser.add_argument(
 parser.add_argument(
     "-e", "--epsilon", dest="theDPepsilon", help="to set mixing parameter epsilon", default=0.00000008, type=float
 )
-parser.add_argument(
-    "-n",
-    "--nEvents",
-    dest="nEvents",
-    help="Number of events to generate (input muons for --NewMuDIS; -1: all)",
-    default=None,
-    type=int,
-)
-parser.add_argument(
-    "-i", "--firstEvent", help="First input entry to use (muon entry for --NewMuDIS)", default=0, type=int
-)
+parser.add_argument("-n", "--nEvents", dest="nEvents", help="Number of events to generate", default=100, type=int)
+parser.add_argument("-i", "--firstEvent", help="First event of input file to use", default=0, type=int)
 parser.add_argument(
     "-s",
     "--seed",
@@ -352,16 +309,7 @@ parser.add_argument(
     action="store_true",
 )
 parser.add_argument("--nFiles", dest="nFiles", help="Number of input files to process", default=-1, type=int)
-parser.add_argument(
-    "-g",
-    "--geofile",
-    dest="geofile",
-    help="Transport particles through the geometry stored in this geometry file, written by an earlier"
-    " run_simScript.py, instead of the one the current code builds. The geometry configuration stored in the file is"
-    " used, so geometry options (-Y, --strawDesign, --shieldName, --helium, --vacuums, --SND, --noSND, --SND_design,"
-    " --target-yaml) cannot be given.",
-    default=None,
-)
+parser.add_argument("-g", dest="geofile", help="geofile for muon shield geometry, for experts only", default=None)
 parser.add_argument("-o", "--output", dest="outputDir", help="Output directory", default=".")
 parser.add_argument(
     "-r",
@@ -415,7 +363,7 @@ parser.add_argument("--check-overlaps", help="Perform geometry overlap checking"
 parser.add_argument(
     "--field_map",
     default=None,
-    help="Specify spectrometer field map as files/<name>.root. Default set in geometry_config.py: files/2026_07_02_MainSpectrometerField_V21_2455.root",
+    help="Specify spectrometer field map as files/<name>.root. Default set in geometry_config.py: files/2025_02_12_SHiP_SpectrometerField_ECN3_MgB2.root",
 )
 parser.add_argument(
     "--z-offset", dest="z_offset", help="z-offset for the FixedTargetGenerator [mm]", default=-84.0, type=float
@@ -464,12 +412,6 @@ parser.add_argument(
 
 
 options = parser.parse_args()
-
-if options.nEvents is None and not options.newmudis:
-    options.nEvents = 100
-
-if options.mudis and options.newmudis:
-    parser.error("--MuDIS and --NewMuDIS are mutually exclusive")
 # Handle SND_design: allow 'all' (case-insensitive) or list of ints
 available_snd_designs = [1, 2]  # Extend this list as new designs are added
 if any(str(x).lower() == "all" for x in options.SND_design):
@@ -536,24 +478,6 @@ if options.thedeccouplings:
     theDecayCouplings = [float(c) for c in options.thedeccouplings.split(",")]
 if options.testFlag:
     inputFile = "$FAIRSHIP/files/Cascade-parp16-MSTP82-1-MSEL4-76Mpot_1_5000.root"
-if options.geofile:
-    # The geometry and its configuration both come from the geometry file.
-    # Parse again with these options already set to None: argparse then leaves
-    # them alone unless they are given on the command line.
-    geometry_options = ["dy", "strawDesign", "shieldName", "decayVolMed", "SND", "SND_design", "target_yaml"]
-    probe = parser.parse_args(namespace=Namespace(**dict.fromkeys(geometry_options)))
-    given = [
-        "/".join(flag for action in parser._actions if action.dest == dest for flag in action.option_strings)
-        for dest in geometry_options
-        if getattr(probe, dest) is not None
-    ]
-    if given:
-        parser.error(f"-g/--geofile cannot be combined with geometry options: {', '.join(given)}")
-    options.geofile = os.path.expandvars(options.geofile)
-    try:
-        geometry_from_file.check_file(options.geofile)  # fail early if it cannot be used
-    except ValueError as e:
-        parser.error(f"-g/--geofile: {e}")
 
 
 # sanity check
@@ -563,7 +487,7 @@ if (HNL and options.RPVSUSY) or (HNL and options.DarkPhoton) or (options.DarkPho
 
 if (options.command == "Genie" or options.nuradio) and defaultInputFile:
     inputFile = "$EOSSHIP/eos/experiment/ship/data/GenieEvents/genie-nu_mu.root"
-if (options.mudis or options.newmudis) and defaultInputFile:
+if options.mudis and defaultInputFile:
     print("input file required if simEngine = muonDIS")
     print(" for example -f  $EOSSHIP/eos/experiment/ship/data/muonDIS/muonDis_1.root")
     sys.exit(1)
@@ -596,23 +520,16 @@ elif options.debug == 2:
     ROOT.gInterpreter.ProcessLine('fair::Logger::SetConsoleSeverity("debug1");')
 elif options.debug == 3:
     ROOT.gInterpreter.ProcessLine('fair::Logger::SetConsoleSeverity("debug2");')
-if options.geofile:
-    ship_geo = load_from_root_file(options.geofile, "ShipGeo")
-    # saveBasicParameters replaces the versions with those of this run; keep the
-    # one that built the geometry, set once so later -g runs cannot overwrite it.
-    if "geometryBuiltWithFairShip" not in ship_geo:
-        ship_geo.geometryBuiltWithFairShip = ship_geo.get("FairShip", "unknown")
-    print(f"Geometry configuration loaded from {options.geofile}; particles are transported through its geometry")
-else:
-    ship_geo = geometry_config.create_config(
-        Yheight=options.dy,
-        strawDesign=options.strawDesign,
-        shieldName=options.shieldName,
-        DecayVolumeMedium=options.decayVolMed,
-        SND=options.SND,
-        SND_design=options.SND_design,
-        TARGET_YAML=options.target_yaml,
-    )
+ship_geo = geometry_config.create_config(
+    Yheight=options.dy,
+    strawDesign=options.strawDesign,
+#    muShieldGeo=options.geofile,
+    shieldName=options.shieldName,
+    DecayVolumeMedium=options.decayVolMed,
+    SND=options.SND,
+    SND_design=options.SND_design,
+    TARGET_YAML=options.target_yaml,
+)
 
 if not options.command:
     for g in [
@@ -624,7 +541,6 @@ if not options.command:
         "ntuple",
         "muonback",
         "mudis",
-        "newmudis",
         "fixedTarget",
         "cosmics",
     ]:
@@ -643,10 +559,6 @@ run_identifier = (
 if not os.path.exists(options.outputDir):
     os.makedirs(options.outputDir)
 outFile = f"{options.outputDir}/sim_{run_identifier}.root"
-if options.geofile and os.path.realpath(options.geofile) == os.path.realpath(
-    f"{options.outputDir}/geo_{run_identifier}.root"
-):
-    parser.error("-g/--geofile: the geometry file would be overwritten by the output of this run, use another --tag")
 
 # Parameter file name
 parFile = f"{options.outputDir}/params_{run_identifier}.root"
@@ -673,7 +585,7 @@ rtdb = run.GetRuntimeDb()
 # import shipTarget_only as shipDet_conf
 import shipDet_conf
 
-modules = shipDet_conf.configure(run, ship_geo, geofile=options.geofile)
+modules = shipDet_conf.configure(run, ship_geo)
 # -----Create PrimaryGenerator--------------------------------------
 primGen = ROOT.FairPrimaryGenerator()
 P8gen = None  # populated below by the various generator branches
@@ -819,15 +731,14 @@ if options.command == "PG":
     if options.bothCharges:
         myPgun.SetBothCharges(True, options.chargeFraction)
     if options.multiplePG:
-        # multiple PG sources in the x-y plane, or in a volume with uniform3d
-        vertex_pars = [options.Vx * u.cm, options.Dx * u.cm, options.Vy * u.cm, options.Dy * u.cm, options.Vz * u.cm]
-        if options.smearMode == "uniform3d":
-            vertex_pars.append(options.Dz * u.cm)
-        myPgun.SetVertexModel(options.smearMode, vertex_pars)
+        # multiple PG sources in the x-y plane; z is always the same!
+        myPgun.SetVertexModel(
+            options.smearMode,
+            [options.Vx * u.cm, options.Dx * u.cm, options.Vy * u.cm, options.Dy * u.cm, options.Vz * u.cm],
+        )
     else:
         # point source
         myPgun.SetVertexModel(options.smearMode, [options.Vx * u.cm, 0.0, options.Vy * u.cm, 0.0, options.Vz * u.cm])
-    myPgun.SetCommonVertex(options.commonVertex)
     if options.momentumModel > 0:
         myPgun.SetMomentumModel(options.momentumModel, options.modelPar)
     if options.histoFile:
@@ -853,33 +764,23 @@ if options.command == "PG":
     primGen.AddGenerator(myPgun)
     ROOT.SetOwnership(myPgun, False)  # C++ FairPrimaryGenerator takes ownership
 # -----muon DIS Background------------------------
-DISgen = None
-if options.mudis or options.newmudis:
+if options.mudis:
     useInputFile(inputFile)
     primGen.SetTarget(0.0, 0.0)
-    if options.newmudis:
-        DISgen = ROOT.NewMuDISGenerator()
-        # The default reads at most 100 input muons and replays at most 100 DIS events.
-        DISgen.SetNevents(100 if options.nEvents is None else options.nEvents)
-    else:
-        DISgen = ROOT.MuDISGenerator()
-        # from nu_tau detector to tracking station 2
-        # mu_start, mu_end =  ship_geo.tauMudet.zMudetC,ship_geo.TrackStation2.z
-        #
-        # in front of UVT up to tracking station 1
-        mu_start, mu_end = ship_geo.Chamber1.z - ship_geo.chambers.Tub1length - 10.0 * u.cm, ship_geo.TrackStation1.z
-        print("MuDIS position info input=", mu_start, mu_end)
-        DISgen.SetPositions(mu_start, mu_end)
+    DISgen = ROOT.MuDISGenerator()
+    # from nu_tau detector to tracking station 2
+    # mu_start, mu_end =  ship_geo.tauMudet.zMudetC,ship_geo.TrackStation2.z
+    #
+    # in front of UVT up to tracking station 1
+    mu_start, mu_end = ship_geo.Chamber1.z - ship_geo.chambers.Tub1length - 10.0 * u.cm, ship_geo.TrackStation1.z
+    print("MuDIS position info input=", mu_start, mu_end)
+    DISgen.SetPositions(mu_start, mu_end)
     if not DISgen.Init(inputFile, options.firstEvent):
-        raise RuntimeError(f"Failed to initialize DIS generator from input: {inputFile}")
+        raise RuntimeError(f"Failed to initialize MuDISGenerator from input: {inputFile}")
     primGen.AddGenerator(DISgen)
     ROOT.SetOwnership(DISgen, False)  # C++ FairPrimaryGenerator takes ownership
-    if options.newmudis:
-        nDIS = DISgen.GetNevents()
-        options.nEvents = min(nDIS, 100) if options.nEvents is None else nDIS
-    else:
-        options.nEvents = DISgen.GetNevents() if options.nEvents == -1 else min(options.nEvents, DISgen.GetNevents())
-    print("(New)MuDISGenerator: Generating ", options.nEvents, " DIS events, first event ", options.firstEvent)
+    options.nEvents = DISgen.GetNevents() if options.nEvents == -1 else min(options.nEvents, DISgen.GetNevents())
+    print("Generate ", options.nEvents, " with DIS input", " first event", options.firstEvent)
 # -----Neutrino Background------------------------
 if options.command == "Genie":
     # Genie
@@ -905,8 +806,8 @@ if options.nuradio:
     Geniegen = ROOT.GenieGenerator()
     if not Geniegen.Init(inputFile, options.firstEvent):
         raise RuntimeError(f"Failed to initialize GenieGenerator from input: {inputFile}")
-    # Geniegen.SetPositions(ship_geo.target.z0, ship_geo.target.z0, ship_geo.CaloScoringPlane.z)
-    Geniegen.SetPositions(ship_geo.target.z0, ship_geo.tauMudet.zMudetC, ship_geo.CaloScoringPlane.z)
+    # Geniegen.SetPositions(ship_geo.target.z0, ship_geo.target.z0, ship_geo.MuonStation3.z)
+    Geniegen.SetPositions(ship_geo.target.z0, ship_geo.tauMudet.zMudetC, ship_geo.MuonStation3.z)
     Geniegen.NuOnly()
     primGen.AddGenerator(Geniegen)
     ROOT.SetOwnership(Geniegen, False)  # C++ FairPrimaryGenerator takes ownership
@@ -956,36 +857,10 @@ if options.muonback:
         print("INFO: Processing a file from the old production - setting target z offset to 70.845m")
         primGen.SetTarget(ship_geo.target.z0 + 70.845 * u.m, 0.0)
     #
-    # run_fixedTarget output (cbmsim) rather than a legacy pythia8-Geant4 ntuple
-    fromStage1 = ut.checkForBranch(inputFile, "MCTrack")
-    startAtPlane = fromStage1 and not options.muonBackFromOrigin
-    if startAtPlane:
-        # The scored tracks continue from the scoring plane, so the first stage must have
-        # simulated the absorber with its field, and it already smeared and painted the beam.
-        if options.phiRandom:
-            raise ValueError(
-                "--phiRandom is not supported with run_fixedTarget input: the hadron absorber field breaks the "
-                "symmetry. Use --MuonBackFromOrigin to reproduce the old behaviour."
-            )
-        if options.SmearBeam != parser.get_default("SmearBeam") or options.PaintBeam != parser.get_default("PaintBeam"):
-            print("WARNING: --SmearBeam/--PaintBeam ignored, run_fixedTarget already applied the beam profile")
-        noSummary, noField = ut.stage1AbsorberFieldOff(inputFile)
-        if noSummary:
-            print(f"WARNING: no FileSummary, cannot check the hadron absorber field of: {', '.join(noSummary)}")
-        if noField:
-            message = (
-                "run_fixedTarget input simulated without the hadron absorber field (--no-AddMuonShieldField), but "
-                f"the tracks now continue from the scoring plane: {', '.join(noField)}"
-            )
-            if not options.muonBackAllowNoAbsorberField:
-                raise ValueError(message + ". Pass --MuonBackAllowNoAbsorberField to accept it.")
-            print("WARNING: " + message)
     MuonBackgen = ROOT.MuonBackGenerator()
-    # MuonBackgen.FollowAllParticles() # also start non-muons that crossed the scoring plane
+    # MuonBackgen.FollowAllParticles() # will follow all particles after hadron absorber, not only muons
     if not MuonBackgen.Init(inputFile, options.firstEvent):
         raise RuntimeError(f"Failed to initialize MuonBackGenerator from input: {inputFile}")
-    if options.muonBackFromOrigin:
-        MuonBackgen.SetStartFromOrigin()
     MuonBackgen.SetPaintRadius(options.PaintBeam * u.cm)
     MuonBackgen.SetSmearBeam(options.SmearBeam * u.cm)
     MuonBackgen.SetPhiRandomize(options.phiRandom)
@@ -997,24 +872,16 @@ if options.muonback:
         MuonBackgen.GetNevents() if options.nEvents == -1 else min(options.nEvents, MuonBackgen.GetNevents())
     )
     MCTracksWithHitsOnly = True  # otherwise, output file becomes too big
-    if startAtPlane:
-        print(
-            "Process ",
-            options.nEvents,
-            " from input file, starting at the scoring plane, with MCTracksWithHitsOnly",
-            MCTracksWithHitsOnly,
-        )
-    else:
-        print(
-            "Process ",
-            options.nEvents,
-            " from input file, with 𝜎 = ",
-            options.PaintBeam,
-            ", with smear radius r = ",
-            options.SmearBeam * u.cm,
-            "with MCTracksWithHitsOnly",
-            MCTracksWithHitsOnly,
-        )
+    print(
+        "Process ",
+        options.nEvents,
+        " from input file, with 𝜎 = ",
+        options.PaintBeam,
+        ", with smear radius r = ",
+        options.SmearBeam * u.cm,
+        "with MCTracksWithHitsOnly",
+        MCTracksWithHitsOnly,
+    )
     if options.followMuon:
         options.fastMuon = True
         modules["Veto"].SetFollowMuon()
@@ -1059,20 +926,14 @@ if options.evtgen_decayer:
 
 # -----Initialize simulation run------------------------------------
 run.Init()
-if options.geofile:
-    geometry_from_file.check_swapped(modules[geometry_from_file.SWAP_NAME])
 if options.dryrun:  # Early stop after setting up Pythia 8
     sys.exit(0)
-if options.newmudis:
-    assert isinstance(DISgen, ROOT.NewMuDISGenerator)
-    if not DISgen.RegisterOutputBranches(sink.GetOutTree()):
-        raise RuntimeError("Failed to register the MuDIS output branches")
 gMC = ROOT.TVirtualMC.GetMC()
 fStack = gMC.GetStack()
 
 # -----J/psi external decayer configuration handled in g4config.in------------------------------------
 # VMC command /mcPhysics/setExtDecayerSelection J/psi forces external decayer usage
-EnergyCut = 10.0 * u.MeV if (options.mudis or options.newmudis) else 100.0 * u.MeV
+EnergyCut = 10.0 * u.MeV if options.mudis else 100.0 * u.MeV
 
 if MCTracksWithHitsOnly:
     fStack.SetMinPoints(1)
@@ -1114,8 +975,7 @@ if hasattr(ship_geo.Bfield, "fieldMap"):
 if options.print_fields:
     geomGeant4.printVMCFields()
     geomGeant4.printWeightsandFields(
-        onlyWithField=True,
-        exclude=["DecayVolume", "Tr1", "Tr2", "Tr3", "Tr4", "Veto", "MuonDetector", "CaloScoringPlane"],
+        onlyWithField=True, exclude=["DecayVolume", "Tr1", "Tr2", "Tr3", "Tr4", "Veto", "MuonDetector", "SplitCal"]
     )
 # Plot the field example
 # fieldMaker.plotField(1, ROOT.TVector3(-9000.0, 6000.0, 50.0), ROOT.TVector3(-300.0, 300.0, 6.0), 'Bzx.png')
@@ -1128,18 +988,21 @@ kParameterMerged = ROOT.kTRUE
 parOut = ROOT.FairParRootFileIo(kParameterMerged)
 if os.path.exists(parFile):
     os.remove(parFile)
-parOut.open(parFile)
-rtdb.setOutput(parOut)
-ROOT.SetOwnership(parOut, False)  # C++ FairRuntimeDb takes ownership
-rtdb.saveOutput()
-
+if options.save_parfile:
+    parOut.open(parFile)
+    rtdb.setOutput(parOut)
+    ROOT.SetOwnership(parOut, False)  # C++ FairRuntimeDb takes ownership
+    rtdb.saveOutput()
+    print("Parameter file is ", parFile)
 # ------------------------------------------------------------------------
-geofile_name = f"{options.outputDir}/geo_{run_identifier}.root"
-run.CreateGeometryFile(geofile_name)
-# save ShipGeo dictionary in geofile
-import saveBasicParameters
+if options.save_geofile:
+    geofile_name = f"{options.outputDir}/geo_{run_identifier}.root"
+    run.CreateGeometryFile(geofile_name)
+    # save ShipGeo dictionary in geofile
+    import saveBasicParameters
 
-saveBasicParameters.execute(geofile_name, ship_geo)
+    saveBasicParameters.execute(geofile_name, ship_geo)
+    print("Geometry file is ", geofile_name)
 
 # checking for overlaps
 if options.check_overlaps:
@@ -1168,8 +1031,8 @@ if P8gen is not None:
         print("total number of dark photons (including multiple meson decays per single collision) ", P8gen.nrOfDP())
 
 print("Output file is ", outFile)
-print("Parameter file is ", parFile)
-print("Geometry file is ", geofile_name)
+#print("Parameter file is ", parFile)
+#print("Geometry file is ", geofile_name)
 if not options.reproducible:
     print("Real time ", rtime, " s, CPU time ", ctime, "s")
 
@@ -1199,10 +1062,6 @@ if options.muonback:
         if "Point" in name:
             pointContainers.append(name)
 
-    # The scoring planes record every crossing with no energy threshold, so on their own they
-    # must not make an event non-empty.
-    pointContainers = [n for n in pointContainers if n not in ("CaloScoringPlanePoint", "UpstreamTaggerScoringPoint")]
-
     # Filter out empty events (events with no hits in any Point container)
     for event in t:
         empty = True
@@ -1228,10 +1087,8 @@ if options.muonback:
         "ScoringPoint",
         "strawtubesPoint",
         "TimeDetPoint",
-        "CaloScoringPlanePoint",
         "MCEventHeader",
         "UpstreamTaggerPoint",
-        "UpstreamTaggerScoringPoint",
         "MTCdetPoint",
         "SiliconTargetPoint",
         "sGeoTracks",
@@ -1250,11 +1107,7 @@ if options.muonback:
     rc2 = os.system("mv " + tmpFile + " " + outFile)
     fin.SetWritable(False)  # bpyass flush error
 
-if options.newmudis:
-    from MuDISGenerator_postProcessing import post_process
-
-    post_process(outFile, inputFile, options.firstEvent)
-elif options.mudis:
+if options.mudis:
     temp_filename = outFile.replace(".root", "_tmp.root")
 
     with (
@@ -1346,11 +1199,6 @@ def mergeFileSummary(inFiles: list[str] | str) -> dict:
                 key_names = [_k.GetName() for _k in _of.GetListOfKeys()]
                 if "FileSummary" in key_names:
                     fsr = json.loads(str(_of.Get("FileSummary")))
-                    # Only merged productions have these; the summary of a
-                    # raw run_fixedTarget.py output records its arguments.
-                    if not all(k in fsr for k in ("PoT", "EnergyCut", "prodSite")):
-                        print(f"[WARNING] No PoT, EnergyCut or prodSite in the FileSummary of {_f}")
-                        continue
                     mergedFSR["PoT"] += fsr["PoT"]
                     energyCuts.append(fsr["EnergyCut"])
                     prodSites.append(fsr["prodSite"])
