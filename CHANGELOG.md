@@ -15,14 +15,18 @@ it in future.
 ### Added
 
 * GENIE (pythia8 build) is now a pixi dependency, so `macro/makeGenieEvents.py` can run `gmkspl`, `gevgen` and `gntpc` in the pixi environment without a separate GENIE installation.
+* `ShipReco.py --vertexAllTracks` (with `--trackFitter acts`) also fits one vertex from all good tracks of each event and stores it in `RecoVertices`, for studies of samples whose tracks share one vertex. On helium samples of N muons from a common vertex, the impact parameter of the vertex candidate to the target is known to σ68 = 0.69, 0.57, 0.47, 0.39 and 0.29 cm for N = 2, 4, 8, 12 and 20.
 
 ### Changed
 
 * `--patRec Segments` handles busy events and tracks far from the magnet axis. On neutrino DIS events (149 jobs of one seed of the gsimple sample, 183k reconstructible tracks) it finds 95.8 ± 0.1% of the tracks instead of 86.9 ± 0.1%, and 93.5% of the vertices instead of 80.4%, with 0.7% ghosts. In the 1.3% of events with more than 500 straw hits, where GenFit with AR finds almost nothing, it finds 89% (500-1000 hits) and 72% (more) of the tracks. A job of 2200 such events takes about 5 minutes; before, the median was 1.8 hours and some jobs ran over 8 hours. Segments are matched across the magnet with the integrals of Bx and By along the pair, because away from the axis the magnet also kicks tracks in x, and every pair that matches is a candidate for the track fit. Hits are looked up by bisection in sorted layers, the line fits solve fixed-size normal equations, repeated lines are merged and the search in the stereo views is bounded. On common-vertex muon events the efficiency rises by 0.2 to 2.4%, and on HNL decays by 0.7%.
+* The ACTS straw tracker includes the material outside the straws. When it is built, it reads the helium of the decay volume, the windows and the air in and between the stations from the TGeo geometry onto passive planes, which the track fit and the extrapolation to the vertex go through. The fit had only the straw walls and gas, about a quarter of the material, so its momentum pulls were 2.5 at 1-5 GeV/c and the HNL mass pull 1.7; both are now 1.1 (GenFit 0.9). Resolutions and efficiencies do not change.
+* The `--patRec Segments` match across the magnet adds the fit uncertainties of the two segments to its tolerances. A track at large angle can leave the straws downstream, so its downstream segment comes from one station and has a much less precise slope, and such pairs failed the match. On single muons up to 8 degrees the efficiency rises from 99.24 to 99.66%, on HNL daughters from 98.91 to 99.18%, and on neutrino DIS events from 96.2 to 97.1% (paired, +0.94 ± 0.02%), with the ghost rate going from 1.50 to 1.54%.
 
 ### Fixed
 
 * The ACTS straw material now comes from the straw wall, gas and wire volumes of the geometry instead of fixed values. Each part counts with its mean path through the straw. A straw is now 5.3e-4 X0, where it was 5.7e-4: the walls were too thin (tracks taken through the straw centre) and the gas X0 was 30 m instead of 128 m (Ar/CO2 80/20).
+* The ACTS track finding kept the first-pass fits of all candidates in memory until the ambiguity resolution. A neutrino DIS event with thousands of candidates took 8 GB, and 14 GB with the passive material. The fits are now dropped as they are made, and the same event needs 1.6 GB, with the same tracks.
 
 ## 26.10 - 2026-10-28
 
