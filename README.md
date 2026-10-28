@@ -124,6 +124,37 @@ pixi cvmfs build
 You can add the `export PATH=...` line to your `~/.bashrc` so the commands are
 available in every new shell.
 
+Also keep the pixi cache off EOS/AFS. By default it lives in `$XDG_CACHE_HOME`
+or `~/.cache`, which on lxplus are on EOS or AFS. Network filesystems are slow
+for the many small cache files, and a stuck I/O call can freeze `pixi` so that
+`Ctrl+C` has no effect. Put the cache on local disk, for example in `~/.bashrc`:
+
+```bash
+export PIXI_CACHE_DIR=/tmp/$USER/pixi-cache
+```
+
+`/tmp` is local to each lxplus node and gets cleaned up, so pixi may have to
+download packages again after you log in to a different node.
+
+If `pixi` waits forever with this message:
+
+```
+WARN still waiting on another pixi process to finish installing '.../FairShip/.pixi/envs/default'
+```
+
+a previous `pixi` process was probably killed while it was installing the
+environment and left its lock behind. In this case you can:
+
+1. Check that no other `pixi` process of yours is still running on a node that
+   uses the same clone.
+2. From your FairShip clone, remove the partial environment and its lock:
+
+    ```bash
+    rm -rf .pixi/envs/default .pixi/envs/default.rattler-fs-overlay .pixi/envs/default.rattler-fs.lock
+    ```
+
+3. Run your `pixi` command again.
+
 ## Run instructions
 
 Start a shell with the FairShip environment activated:
