@@ -4,8 +4,32 @@
 
 #include "pyFairModule.h"
 
-#include "Python.h"  // Needs to be included first to avoid redefinition of _POSIX_C_SOURCE
+#include "FairVolume.h"
+#include "Python.h"
 #include "TObject.h"
+
+std::vector<std::string> pyFairModule::SensitiveVolumeNames(
+    const std::string& module) {
+  std::vector<std::string> names;
+  names.reserve(fAllSensitiveVolumes.size());
+  for (const FairVolume* volume : fAllSensitiveVolumes) {
+    if (!volume) {
+      continue;
+    }
+    if (!module.empty() &&
+        (!volume->GetModule() || module != volume->GetModule()->GetName())) {
+      continue;
+    }
+    std::string name = volume->GetName();
+    // Same cut as in FairDetector::Initialize()
+    const auto pos = name.find('#', 1);
+    if (pos != std::string::npos && pos > 1) {
+      name.resize(pos);
+    }
+    names.push_back(name);
+  }
+  return names;
+}
 
 void call_python_method(PyObject* self, const char* method) {
   // check arguments

@@ -374,7 +374,11 @@ parser.add_argument(
     help="Transport particles through the geometry stored in this geometry file, written by an earlier"
     " run_simScript.py, instead of the one the current code builds. The geometry configuration stored in the file is"
     " used, so geometry options (-Y, --strawDesign, --shieldName, --helium, --vacuums, --SND, --noSND, --SND_design,"
-    " --target-yaml) cannot be given.",
+    " --target-yaml) cannot be given. The stored geometry may differ from the one the current code builds, e.g. in"
+    " its passive volumes, but must have every volume with a magnetic field that the current code builds; other"
+    " differences, such as missing sensitive volumes, which then record no hits, are printed as a warning. A"
+    " detector that the current code cannot build from the stored configuration (e.g. the UBT of a file from before"
+    " the scintillator tiles) is left out, with a warning.",
     default=None,
 )
 parser.add_argument("-o", "--output", dest="outputDir", help="Output directory", default=".")
