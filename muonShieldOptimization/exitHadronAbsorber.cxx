@@ -870,18 +870,17 @@ void exitHadronAbsorber::ConstructGeometry() {
   Double_t zLoc;
   if (fzPos > 1E8) {
     // Add thin sensitive plane after hadron absorber
-    Float_t distance = 1.;
     Double_t local[3] = {0, 0, 0};
     if (!nav->cd("/MuonShieldArea_1/AbsorberVol_1")) {
-      nav->cd("/MuonShieldArea_1/MagnAbsorb_1");
-      distance = -1.;
+      LOG(fatal) << "exitHadronAbsorber: no hadron absorber in the geometry, "
+                    "add the muon shield or set the plane position explicitly";
     }
     TGeoBBox* tmp =
         dynamic_cast<TGeoBBox*>(nav->GetCurrentNode()->GetVolume()->GetShape());
-    local[2] = distance * tmp->GetDZ();
+    local[2] = tmp->GetDZ();
     Double_t global[3] = {0, 0, 0};
     nav->LocalToMaster(local, global);
-    zLoc = global[2] + distance * 1. * cm;
+    zLoc = global[2] + 1. * cm;
   } else {
     zLoc = fzPos;
   }  // use external input

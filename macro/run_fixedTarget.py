@@ -457,14 +457,16 @@ if args.AddPostTargetSensPlane:
 
 
 if args.AddMuonShield or args.AddHadronAbsorberOnly:
+    params = list(ship_geo.muShield.params)
+    n_magnets = ship_geo.muShield.nMagnets
     if args.AddHadronAbsorberOnly:
         # keep only the first magnet, the magnetised hadron absorber
-        ship_geo.muShield.params = ship_geo.muShield.params[: ROOT.ShipMuonShield.nParams]
-        ship_geo.muShield.nMagnets = 1
+        params = params[: ROOT.ShipMuonShield.nParams]
+        n_magnets = 1
 
     MuonShield = ROOT.ShipMuonShield(
-        in_params=list(ship_geo.muShield.params),
-        n_magnets=ship_geo.muShield.nMagnets,
+        in_params=params,
+        n_magnets=n_magnets,
         z=ship_geo.muShield.z,
     )
     # MuonShield.SetSupports(False) # otherwise overlap with sensitive Plane

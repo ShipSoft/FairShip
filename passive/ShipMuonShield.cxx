@@ -73,8 +73,9 @@ void ShipMuonShield::CreateMagnet(const TString& magnetName, TGeoMedium* medium,
 void ShipMuonShield::ConstructGeometry() {
   LOG(debug) << " Construct Geometry of the MS ";
   // A list in the old 15-value format also divides evenly by nParams, so
-  // check the size against the expected number of magnets.
-  if (shield_params.size() != nMagnets * nParams) {
+  // check the size against the expected number of magnets. At least one
+  // magnet is needed, since the absorber is sized from the first one.
+  if (nMagnets == 0 || shield_params.size() != nMagnets * nParams) {
     LOG(fatal) << "ShipMuonShield: expected " << nMagnets << " magnets x "
                << nParams << " parameters, got " << shield_params.size()
                << " values. Is the geometry from an older version?";
