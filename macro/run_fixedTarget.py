@@ -4,6 +4,7 @@
 
 import json
 import os
+from types import SimpleNamespace
 
 import geometry_config
 import ROOT
@@ -214,7 +215,7 @@ ap.add_argument(
     "--shieldName",
     help="Name of the shield in the database.",
     default="TRY_2026",
-    choices=["TRY_2025", "TRY_2026"],
+    choices=["TRY_2026"],
 )
 ap.add_argument(
     "--AddMuonShield",
@@ -456,18 +457,17 @@ if args.AddPostTargetSensPlane:
 
 
 if args.AddMuonShield or args.AddHadronAbsorberOnly:
-    n_params = 15
-    if not args.AddMuonShieldField:
-        for i in range(ship_geo.muShield.nMagnets):
-            ship_geo.muShield.params[i * n_params + 14] = 0  # set B field to 0
+    params = list(ship_geo.muShield.params)
+    n_magnets = ship_geo.muShield.nMagnets
     if args.AddHadronAbsorberOnly:
-        ship_geo.muShield.params = ship_geo.muShield.params[:15]  # set dXIn to 0
+        # keep only the first magnet, the magnetised hadron absorber
+        params = params[: ROOT.ShipMuonShield.nParams]
+        n_magnets = 1
 
     MuonShield = ROOT.ShipMuonShield(
-        in_params=list(ship_geo.muShield.params),
+        in_params=params,
+        n_magnets=n_magnets,
         z=ship_geo.muShield.z,
-        WithConstShieldField=not args.AddMuonShieldField,
-        SC_key=ship_geo.SC_mag,
     )
     # MuonShield.SetSupports(False) # otherwise overlap with sensitive Plane
     run.AddModule(MuonShield)  # needs to be added because of magn hadron shield.
@@ -582,6 +582,12 @@ ROOT.SetOwnership(primGen, False)  # C++ FairRunSim takes ownership
 
 # -----Initialize simulation run------------------------------------
 run.Init()
+
+if (args.AddMuonShield or args.AddHadronAbsorberOnly) and args.AddMuonShieldField:
+    # The muon shield field, including the hadron absorber, comes from the field map
+    import geomGeant4
+
+    fieldMaker = geomGeant4.addVMCFields(SimpleNamespace(muShield=ship_geo.muShield, shieldName=ship_geo.shieldName))
 
 gMC = ROOT.TVirtualMC.GetMC()
 fStack = gMC.GetStack()

@@ -582,12 +582,7 @@ def configure(run, ship_geo, geofile: str | None = None):
 
     in_params = list(ship_geo.muShield.params)
 
-    MuonShield = ROOT.ShipMuonShield(
-        in_params,
-        ship_geo.muShield.z,
-        ship_geo.muShield.WithConstField,
-        ship_geo.SC_mag,
-    )
+    MuonShield = ROOT.ShipMuonShield(in_params, ship_geo.muShield.nMagnets, ship_geo.muShield.z)
 
     if ship_geo.SND:
         # If any SND design is 2 (MTC), set SNDSpace for MuonShield

@@ -1197,16 +1197,11 @@ class ShipTargetStation:  # Partial stub
     def GetName(self) -> str: ...
 
 class ShipMuonShield:  # Partial stub
-    def __init__(
-        self,
-        in_params: Any = ...,
-        params: Any = ...,
-        z: float = ...,
-        withConstField: bool = ...,
-        WithConstShieldField: bool = ...,
-        sc_mag: bool = ...,
-        SC_key: bool = ...,
-    ) -> None: ...
+    nParams: int
+    @overload
+    def __init__(self) -> None: ...
+    @overload
+    def __init__(self, in_params: Any, n_magnets: int, z: float) -> None: ...
     def SetSNDSpace(self, hole: bool, hole_dx: float, hole_dy: float, first_magnet: int, last_magnet: int) -> None: ...
     def GetName(self) -> str: ...
 
