@@ -87,7 +87,7 @@ def store_extrapolations(tracker, track_index, track, ubt_z=None, td_z=None):
             logger.debug("Track %d does not reach z = %.1f cm", track_index, z)
 
 
-def runTracking(tracker, candidates, hits, resolution, fit_vertex=True, ubt_z=None, td_z=None):
+def runTracking(tracker, candidates, hits, resolution, fit_vertex=True, ubt_z=None, td_z=None, vertex_all_tracks=False):
     """Find or fit tracks and, if the event qualifies, fit their vertex.
 
     With ``candidates`` None, the tracker's own pattern recognition finds
@@ -98,6 +98,10 @@ def runTracking(tracker, candidates, hits, resolution, fit_vertex=True, ubt_z=No
     plane at ``ubt_z`` and the timing-detector plane at ``td_z`` (cm); a
     plane given as None, e.g. because that detector is not in the geometry,
     is not stored (see ``store_extrapolations``).
+
+    With ``vertex_all_tracks``, one more vertex is fitted from all good
+    tracks of the event, for studies of samples whose tracks share one
+    vertex. It is skipped when it would repeat a two-track vertex.
 
     Returns the fitted tracks (``SHiP::RecoTrack``, in the order of the
     tracker's track indices), the fitted vertices (``SHiP::RecoVertex``) and,
@@ -156,6 +160,12 @@ def runTracking(tracker, candidates, hits, resolution, fit_vertex=True, ubt_z=No
                 vertices.append(vertex)
             else:
                 logger.debug("Vertex fit failed for tracks %d and %d", i, j)
+        if vertex_all_tracks and (len(good) > 2 or (len(good) == 2 and not vertices)):
+            vertex = ROOT.SHiP.RecoVertex()
+            if tracker.FitVertex(ROOT.std.vector("int")(good), vertex):
+                vertices.append(vertex)
+            else:
+                logger.debug("Vertex fit failed for all %d good tracks", len(good))
 
     return tracks, vertices, track_hit_indices
 
