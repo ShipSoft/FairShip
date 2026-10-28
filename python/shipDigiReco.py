@@ -343,6 +343,7 @@ class ShipDigiReco:
             self.strawHits,
             self.sigma_spatial,
             fit_vertex=global_variables.vertexing,
+            vertex_all_tracks=getattr(global_variables, "vertexAllTracks", False),
         )
 
     def _truthCandidates(self) -> list[dict]:

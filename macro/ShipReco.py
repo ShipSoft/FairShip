@@ -93,6 +93,14 @@ parser.add_argument(
     default=None,
 )
 parser.add_argument(
+    "--vertexAllTracks",
+    dest="vertexAllTracks",
+    help="With --trackFitter acts, also fit one vertex from all good tracks of each event and store it in "
+    "RecoVertices (for samples whose tracks share one vertex)",
+    required=False,
+    action="store_true",
+)
+parser.add_argument(
     "--validation",
     dest="validation",
     help="Print reconstruction validation summary after finishing",
@@ -102,6 +110,8 @@ parser.add_argument(
 options = parser.parse_args()
 if options.patRec in ("Truth", "Segments") and options.trackFitter != "acts":
     parser.error(f"--patRec {options.patRec} requires --trackFitter acts")
+if options.vertexAllTracks and (options.trackFitter != "acts" or options.noVertexing):
+    parser.error("--vertexAllTracks requires --trackFitter acts and vertexing")
 vertexing = not options.noVertexing
 
 
@@ -189,6 +199,7 @@ global_variables.withT0 = options.withT0
 global_variables.patRec = options.patRec
 global_variables.trackFitter = options.trackFitter
 global_variables.vertexing = vertexing
+global_variables.vertexAllTracks = options.vertexAllTracks
 global_variables.ShipGeo = ShipGeo
 global_variables.modules = modules
 global_variables.withNoStrawSmearing = options.withNoStrawSmearing
