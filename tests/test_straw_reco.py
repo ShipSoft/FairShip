@@ -138,3 +138,25 @@ def test_vertices_are_fitted_for_opposite_charge_pairs():
     _, vertices, _ = runTracking(tracker, None, hits, 0.012, fit_vertex=True)
     assert tracker.vertices == [[0, 1], [1, 2]]
     assert len(vertices) == 2
+
+
+def test_vertex_of_all_tracks_is_added_on_request():
+    hits = [make_hit(1000 + i, 1, 0, 0, z=float(i)) for i in range(3)]
+    tracker = FakeTracker(found=[[0], [1], [2]], charges=[1, -1, 1])
+    _, vertices, _ = runTracking(tracker, None, hits, 0.012, fit_vertex=True, vertex_all_tracks=True)
+    assert tracker.vertices == [[0, 1], [1, 2], [0, 1, 2]]
+    assert len(vertices) == 3
+
+
+def test_vertex_of_two_tracks_is_not_repeated():
+    hits = [make_hit(1000 + i, 1, 0, 0, z=float(i)) for i in range(2)]
+    tracker = FakeTracker(found=[[0], [1]], charges=[1, -1])
+    runTracking(tracker, None, hits, 0.012, fit_vertex=True, vertex_all_tracks=True)
+    assert tracker.vertices == [[0, 1]]
+
+
+def test_vertex_of_two_same_charge_tracks_is_fitted_on_request():
+    hits = [make_hit(1000 + i, 1, 0, 0, z=float(i)) for i in range(2)]
+    tracker = FakeTracker(found=[[0], [1]], charges=[1, 1])
+    runTracking(tracker, None, hits, 0.012, fit_vertex=True, vertex_all_tracks=True)
+    assert tracker.vertices == [[0, 1]]

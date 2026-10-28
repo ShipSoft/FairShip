@@ -59,12 +59,16 @@ def make_tracker(geometry, field):
     return tracker
 
 
-def runTracking(tracker, candidates, hits, resolution, fit_vertex=True):
+def runTracking(tracker, candidates, hits, resolution, fit_vertex=True, vertex_all_tracks=False):
     """Find or fit tracks and, if the event qualifies, fit their vertex.
 
     With ``candidates`` None, the tracker's own pattern recognition finds
     the tracks. Otherwise ``candidates`` are dicts with ``indices`` into
     ``hits`` (sorted by hit z in place), and each is fitted on its own.
+
+    With ``vertex_all_tracks``, one more vertex is fitted from all good
+    tracks of the event, for studies of samples whose tracks share one
+    vertex. It is skipped when it would repeat a two-track vertex.
 
     Returns the fitted tracks (``SHiP::RecoTrack``, in the order of the
     tracker's track indices), the fitted vertices (``SHiP::RecoVertex``) and,
@@ -121,6 +125,12 @@ def runTracking(tracker, candidates, hits, resolution, fit_vertex=True):
                 vertices.append(vertex)
             else:
                 logger.debug("Vertex fit failed for tracks %d and %d", i, j)
+        if vertex_all_tracks and (len(good) > 2 or (len(good) == 2 and not vertices)):
+            vertex = ROOT.SHiP.RecoVertex()
+            if tracker.FitVertex(ROOT.std.vector("int")(good), vertex):
+                vertices.append(vertex)
+            else:
+                logger.debug("Vertex fit failed for all %d good tracks", len(good))
 
     return tracks, vertices, track_hit_indices
 
