@@ -102,12 +102,12 @@ Directory dependency graph for genie_config:</div>
 <div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="dir_ccb7c4d33ded37e04bdd4140d41954a2_dep.svg" width="158" height="110"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md135"></a>
-Configuration files for GENIE simulations</h1>
 <h1 class="doxsection"><a class="anchor" id="autotoc_md136"></a>
+Configuration files for GENIE simulations</h1>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md137"></a>
 Introduction</h1>
 <p>Following ROOT's deprecation of TPythia6, these files replace the Pythia6Decayer with Pythia8Decayer in GENIE.</p>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md137"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md138"></a>
 Details</h1>
 <p>For more information, see:</p>
 <ul>
@@ -116,12 +116,12 @@ Details</h1>
 </ul>
 <p>To use these files, set the <span class="tt">GXMLPATH</span> environment variable to this folder before launching the simulation. This is done automatically by <span class="tt"><a class="el" href="makeGenieEvents_8py.html">makeGenieEvents.py</a></span>.</p>
 <p>This folder mirrors the structure of the default GENIE configuration and currently only contains the files needed to switch from Pythia6Decayer to Pythia8Decayer.</p>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md138"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md139"></a>
 History</h1>
 <ul>
 <li>February 2026: Initial creation (Antonio Iuliano)</li>
 </ul>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md139"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md140"></a>
 Notes on particle decays</h1>
 <p>Particle decays were previously configured in <span class="tt">UserPhysicsOptions.xml</span>. They are now provided in a "tune" folder. See for example: <a href="https://github.com/SND-LHC/sndsw/blob/master/shipgen/genie_config/SNDGHE19_00b/CommonDecay.xml">https://github.com/SND-LHC/sndsw/blob/master/shipgen/genie_config/SNDGHE19_00b/CommonDecay.xml</a></p>
 <p>GENIE no longer decays tau and charmed hadrons by default (this was the default in our old branch: <a href="https://github.com/ShipSoft/GENIE/blob/v2.12.6-ship2021/config/UserPhysicsOptions.xml">https://github.com/ShipSoft/GENIE/blob/v2.12.6-ship2021/config/UserPhysicsOptions.xml</a>), so we no longer need to override these settings. </p>

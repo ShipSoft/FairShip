@@ -1,5 +1,6 @@
 var NAVTREEINDEX29 =
 {
+"shipRoot__conf_8py.html":[7,0,13,39],
 "shipRoot__conf_8py_source.html":[7,0,13,39],
 "shipStrawTracking_8py.html":[7,0,13,40],
 "shipStrawTracking_8py_source.html":[7,0,13,40],
@@ -248,6 +249,5 @@ var NAVTREEINDEX29 =
 "structSHiP_1_1StrawPatRec_1_1Config.html#a71492238bf4ff8907efe5598a2b98b27":[5,0,92,8,0,4],
 "structSHiP_1_1StrawPatRec_1_1Config.html#a71492238bf4ff8907efe5598a2b98b27":[6,0,16,7,0,4],
 "structSHiP_1_1StrawPatRec_1_1Config.html#ab57e9e3d4d98a0c07dbd4758a746120c":[5,0,92,8,0,1],
-"structSHiP_1_1StrawPatRec_1_1Config.html#ab57e9e3d4d98a0c07dbd4758a746120c":[6,0,16,7,0,1],
-"structSHiP_1_1StrawPatRec_1_1Config.html#ab629b68286da3e1abf2e96e514e95146":[5,0,92,8,0,9]
+"structSHiP_1_1StrawPatRec_1_1Config.html#ab57e9e3d4d98a0c07dbd4758a746120c":[6,0,16,7,0,1]
 };

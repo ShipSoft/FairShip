@@ -5,8 +5,8 @@ var searchData=
   ['qcd_5fcorr_2',['QCD_corr',['../classhnl_1_1HNLbranchings.html#a17ed7ac6840f3cc5b7c05587de9c735a',1,'hnl::HNLbranchings']]],
   ['qcd_5fcorrection_3',['QCD_correction',['../classhnl_1_1HNLbranchings.html#a193ceb512abd3845ee899ee96682a69f',1,'hnl::HNLbranchings']]],
   ['qcdprodrate_4',['qcdprodRate',['../namespacedpProductionRates.html#a38e9e0cde17b3f7e8e777cdaddf97bb4',1,'dpProductionRates']]],
-  ['quality_5',['Code Quality',['../md_CHANGELOG.html#autotoc_md83',1,'']]],
-  ['quality_20and_20maintenance_6',['Code Quality and Maintenance',['../md_CHANGELOG.html#autotoc_md74',1,'']]],
+  ['quality_5',['Code Quality',['../md_CHANGELOG.html#autotoc_md84',1,'']]],
+  ['quality_20and_20maintenance_6',['Code Quality and Maintenance',['../md_CHANGELOG.html#autotoc_md75',1,'']]],
   ['quantities_7',['QUANTITIES',['../namespacetest__cavern__layout.html#a0de441203533b37132b2e927eb08380b',1,'test_cavern_layout']]],
-  ['quick_20recipe_8',['Quick recipe',['../dir_c7af8ae1fa24dc0e27242ce21fb42ad9.html#autotoc_md114',1,'']]]
+  ['quick_20recipe_8',['Quick recipe',['../dir_c7af8ae1fa24dc0e27242ce21fb42ad9.html#autotoc_md115',1,'']]]
 ];
