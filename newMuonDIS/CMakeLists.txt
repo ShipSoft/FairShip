@@ -6,8 +6,9 @@ ship_add_library(
   SOURCES MuDISFilter.cxx MagneticTrackPropagator.cxx MuDISProcessor.cxx MuGeoProcessor.cxx MuonPath.cxx NewMuDISGenerator.cxx
   LINKDEF LinkDef.h
   DEPENDENCIES Base ShipData ShipField veto ShipGen UpstreamTagger strawtubes TimeDet EvtGen::EvtGen EvtGen::EvtGenExternal FairLogger::FairLogger ROOT::EGPythia6
-  EXTRA_DICT_HEADERS MuDISDefs.h
+  EXTRA_DICT_HEADERS MuDISDefs.h MuDISNormalization.h
   INCLUDE_DIRECTORIES ${ROOTEGPythia6_INCLUDE_DIR}
   SYSTEM_INCLUDE_DIRECTORIES ${PYTHIA8_INCLUDE_DIR} ${PYTHIA8_INCLUDE_DIR}/..
                              ${EVTGEN_INCLUDE_DIR} ${EVTGEN_INCLUDE_DIR}/..
 )
+install(FILES MuDISNormalization.h DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})

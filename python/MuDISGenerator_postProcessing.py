@@ -14,6 +14,7 @@ import ROOT
 # Required input branch, simulation branch / point class.
 _POINT_BRANCHES = (
     ("muon_UBTPoints", "UpstreamTaggerPoint"),
+    ("muon_UBTScoringPoints", "UpstreamTaggerScoringPoint"),
     ("muon_SBTPoints", "vetoPoint"),
     ("muon_SSTPoints", "strawtubesPoint"),
     ("muon_TDPoints", "TimeDetPoint"),

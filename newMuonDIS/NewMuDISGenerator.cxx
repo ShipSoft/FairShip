@@ -231,29 +231,23 @@ Bool_t NewMuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
       fNevents = -1;
       return kFALSE;
     }
-    // add also soft tracks up to z_interaction
-    bool first = true;
-    int idxMum = -1;
-    for (auto&& mcTrk : *(finEv.mcTrks)) {
-      ShipMCTrack& softP = static_cast<ShipMCTrack&>(mcTrk);
-      // first particle is the original muon
-      if (first) {
-        cpg->AddTrack(softP.GetPdgCode(), softP.GetPx(), softP.GetPy(),
-                      softP.GetPz(), softP.GetStartX(), softP.GetStartY(),
-                      softP.GetStartZ(), idxMum, false, softP.GetEnergy(),
-                      softP.GetStartT() / 1E9, softP.GetWeight());
-        // passed the first track, we want to track the soft particles and they
-        // all stem from first one.
-        first = false;
-        idxMum = 0;
-      } else if (softP.GetStartZ() <= (*lBr->DISvz)[fnmuDis]) {
-        bool wantTracking = softP.GetStartZ() < 12000;
-        cpg->AddTrack(softP.GetPdgCode(), softP.GetPx(), softP.GetPy(),
-                      softP.GetPz(), softP.GetStartX(), softP.GetStartY(),
-                      softP.GetStartZ(), idxMum, wantTracking,
-                      softP.GetEnergy(), softP.GetStartT() / 1E9,
-                      softP.GetWeight());
-      }
+    // The DIS muon is first and untracked. Transport its upstream soft
+    // daughters and all companion muons, with motherId=-1.
+    for (std::size_t i = 0; i < finEv.mcTrks->size(); ++i) {
+      const auto& softP = finEv.mcTrks->at(i);
+      const bool companion = i != 0 && softP.GetMotherId() == -1 &&
+                             std::abs(softP.GetPdgCode()) == 13;
+      if (i != 0 && !companion &&
+          softP.GetStartZ() > (*lBr->DISvz)[fnmuDis])
+        continue;
+      const int idxMum = i == 0 || companion ? -1 : 0;
+      const bool wantTracking = i != 0 &&
+                                (companion || softP.GetStartZ() < 9500);
+      cpg->AddTrack(softP.GetPdgCode(), softP.GetPx(), softP.GetPy(),
+                    softP.GetPz(), softP.GetStartX(), softP.GetStartY(),
+                    softP.GetStartZ(), idxMum, wantTracking,
+                    softP.GetEnergy(), softP.GetStartT() / 1E9,
+                    softP.GetWeight());
     }
     LOG(debug) << " --- Processing dis muon " << fnmuDis << " with "
                << nDaughters << " daughters and " << nDISparts
@@ -311,6 +305,7 @@ Bool_t NewMuDISGenerator::RegisterOutputBranches(TTree* tree) {
       return kFALSE;
     }
   }
+  fNormalization.Attach(tree);
   return tree->Branch("muDIS_material", &fMaterialLabel) &&
          tree->Branch("muDIS_muEntry", &fMuonEntry, "muDIS_muEntry/I") &&
          tree->Branch("muDIS_disIndex", &fDISIndex, "muDIS_disIndex/I") &&
@@ -345,6 +340,7 @@ bool NewMuDISGenerator::ValidateEntry(Long64_t entry) const {
 }
 
 void NewMuDISGenerator::SetNevents(int nMuons) {
+  fNormalization.Reset("NewMuDISGenerator");
   fMaxMuons = nMuons;
   fNevents = -1;
   // Counting reads the tree; reload the current muon before replaying it.
@@ -355,16 +351,19 @@ void NewMuDISGenerator::SetNevents(int nMuons) {
     return;
   }
   if (!fTree) return;
+  fNormalization.ImportChain(fTree);
   fEndEvent = nMuons < 0 ? fTree->GetEntries()
                          : std::min(Long64_t(fStartEvent) + nMuons,
                                     fTree->GetEntries());
   int total = 0;
   for (Long64_t iEv = fStartEvent; iEv < fEndEvent; ++iEv) {
     if (!finEv.PrepareEntry(fTree, iEv) || fTree->GetEntry(iEv) <= 0 ||
-        !ValidateEntry(iEv)) {
+        !finEv.mcTrks || finEv.mcTrks->empty()) {
       LOG(error) << "NewMuDISGenerator: error counting input muon " << iEv;
       return;
     }
+    fNormalization.Add(finEv.mcTrks->at(0).GetWeight());
+    if (!ValidateEntry(iEv)) return;
     for (const auto& br : finEv.br) {
       if (br.nDISevts > std::numeric_limits<int>::max() - total) {
         LOG(error) << "NewMuDISGenerator: DIS event count exceeds Int_t range";
