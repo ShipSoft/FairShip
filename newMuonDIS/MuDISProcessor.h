@@ -27,6 +27,7 @@ class MuDISProcessor {
   bool init(const int& aEvts, const int& aStart, const double& aMinPythiaP,
             const int& aDIS, const int& aSeed, const double& aZmax,
             const double& aZmin = 2500);
+  void initP6CKIN();
   void initPythia6();
 
   void rotate(const TVector3& pvec, const double& theta, const double& phi,

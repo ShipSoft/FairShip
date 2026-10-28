@@ -70,6 +70,11 @@ bool MuDISProcessor::init(const int& aEvts, const int& aStart,
   return true;
 }
 
+void MuDISProcessor::initP6CKIN() {
+  fPythia->SetCKIN(1, 2.);
+  fPythia->SetCKIN(3, 0.);
+}
+
 void MuDISProcessor::initPythia6() {
   // set process 1=QCD, 2=DY/others
   fPythia->SetMSEL(2);
@@ -90,6 +95,7 @@ void MuDISProcessor::initPythia6() {
   fPythia->SetMSTU(11, fPythiaOutputUnit);
   LOG(info) << "Pythia6 messages: "
             << (fPythiaOutputUnit == 6 ? "stdout" : "fort.11");
+  initP6CKIN();
 }
 
 void MuDISProcessor::rotate(const TVector3& pvec, const double& theta,
@@ -308,8 +314,7 @@ void MuDISProcessor::generateDISevents(const std::string& tType,
     // PYGAGA reads them at the NEXT initialization before they are recomputed;
     // a previous, harder muon can otherwise leave an empty photon phase space.
     // Restore our starting cuts (Pythia defaults) for each beam/target pair.
-    fPythia->SetCKIN(1, 2.);
-    fPythia->SetCKIN(3, 0.);
+    initP6CKIN();
     LOG(debug1) << std::setprecision(17)
                 << "PYTHIA Initialize BEGIN: entry=" << entry
                 << " material=" << aLabel << " beam=" << tType
@@ -580,7 +585,8 @@ void MuDISProcessor::ProcessMuons() {
     //@FIXME AM to do: a study of whether the events created in the last lambda
     // of MS could still contribute or would hit UBT...
     if (foutEv.ubtScoringPt.empty() && foutEv.ubtPt.size() == 0 &&
-        foutEv.sbtPt.size() == 0 && foutEv.sstPt.size() == 0 && foutEv.tdPt.size() == 0) {
+        foutEv.sbtPt.size() == 0 && foutEv.sstPt.size() == 0 &&
+        foutEv.tdPt.size() == 0) {
       LOG(debug) << " Counting muon event with no hit " << iEvent
                  << " UBT scoring hits: " << foutEv.ubtScoringPt.size()
                  << ", UBT Hits: " << foutEv.ubtPt.size()
@@ -655,26 +661,26 @@ void MuDISProcessor::ProcessMuons() {
 
   }  // loop on events
 
-  LOG(info) << "Found " << nplus << " mu+ and " << nminus << " mu-."
-            << std::endl
-            << "Skipped: " << skipEvt << " events and " << skipMu_pmin
-            << " muons with too low p" << std::endl
-            << "Counted: " << skipMu_acc
-            << " muons with no recorded hits in UBT,UBT scoring planes,SBT,SST,TD.";
+  LOG(info)
+      << "Found " << nplus << " mu+ and " << nminus << " mu-." << std::endl
+      << "Skipped: " << skipEvt << " events and " << skipMu_pmin
+      << " muons with too low p" << std::endl
+      << "Counted: " << skipMu_acc
+      << " muons with no recorded hits in UBT,UBT scoring planes,SBT,SST,TD.";
   normalization.Attach(fouttree);
   LOG(info) << "Input muon multiplicity: " << multiMuonEvents
-            << " events with n_mu >= 2, sum(n_mu) = "
-            << multiMuonSum << ", average n_mu = "
+            << " events with n_mu >= 2, sum(n_mu) = " << multiMuonSum
+            << ", average n_mu = "
             << (multiMuonEvents > 0
                     ? static_cast<double>(multiMuonSum) / multiMuonEvents
                     : 0.);
-  LOG(info) << "Weighted counts (sum MCTrack[0].fW): " << wplus << " mu+ and "
-            << wminus << " mu- (after momentum cut)." << std::endl
-            << "Skipped (sum MCTrack[0].fW): " << skipMu_pminW
-            << " with too low p, " << skipMu_pathW
-            << " muons with invalid or empty paths." << std::endl
-            << "Counted (sum MCTrack[0].fW): " << skipMu_accW
-            << " muons with no recorded hits in UBT,UBT scoring planes,SBT,SST,TD.";
+  LOG(info)
+      << "Weighted counts (sum MCTrack[0].fW): " << wplus << " mu+ and "
+      << wminus << " mu- (before momentum cut)." << std::endl
+      << "Skipped (sum MCTrack[0].fW): " << skipMu_pminW << " with too low p, "
+      << skipMu_pathW << " muons with invalid or empty paths." << std::endl
+      << "Counted (sum MCTrack[0].fW): " << skipMu_accW
+      << " muons with no recorded hits in UBT,UBT scoring planes,SBT,SST,TD.";
   fGeoProcessor.PrintDiagnostics();
   // Print additive quantities so jobs can be combined before taking means.
   LOG(info) << std::setprecision(17)

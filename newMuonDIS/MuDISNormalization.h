@@ -56,14 +56,15 @@ class Normalization {
     fSquares->SetVal(fSquares->GetVal() + weight * weight);
   }
 
-  void ImportFiles(const std::vector<std::string>& paths) {
+  void ImportFiles(const std::vector<std::string>& paths,
+                   const std::string& treename) {
     fComplete = !paths.empty();
     for (const auto& path : paths) {
       TDirectory::TContext context;
       std::unique_ptr<TFile> file(TFile::Open(path.c_str(), "READ"));
       if (!file || file->IsZombie())
         throw std::runtime_error("Cannot read normalization input: " + path);
-      auto* tree = file->Get<TTree>("MuonDIS");
+      auto* tree = file->Get<TTree>(treename.c_str());
       auto* records =
           tree ? dynamic_cast<TList*>(
                      tree->GetUserInfo()->FindObject("muDIS_normalization"))
@@ -104,7 +105,7 @@ class Normalization {
     std::vector<std::string> paths;
     for (auto* file : *chain->GetListOfFiles())
       paths.emplace_back(file->GetTitle());
-    ImportFiles(paths);
+    ImportFiles(paths, chain->GetName());
   }
 
   void Attach(TTree* tree) const {

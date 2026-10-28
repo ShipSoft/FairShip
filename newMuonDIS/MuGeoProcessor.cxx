@@ -173,13 +173,14 @@ void MuGeoProcessor::PrintDiagnostics() const {
   LOG(info) << "Muon path diagnostics: " << fMuons << " muons considered, "
             << fBackwardMuons << " rejected for non-forward momentum, "
             << fInvalidMuons << " rejected for invalid measurements";
-  LOG(info) << "Muon path routes prepared (before material navigation): "
-            << fShieldExitBackwardPaths
-            << " from the shield-exit scoring plane with backward extrapolation, "
-            << fStartMagneticPaths << " from MC start in field, "
-            << fStartStraightPaths
-            << " from MC start in field-free region (bending on field entry); "
-            << fStartsBeyondZmax << " skipped with start z >= maximum z";
+  LOG(info)
+      << "Muon path routes prepared (before material navigation): "
+      << fShieldExitBackwardPaths
+      << " from the shield-exit scoring plane with backward extrapolation, "
+      << fStartMagneticPaths << " from MC start in field, "
+      << fStartStraightPaths
+      << " from MC start in field-free region (bending on field entry); "
+      << fStartsBeyondZmax << " skipped with start z >= maximum z";
   LOG(info) << "Shield-exit scoring-plane backward paths missing MS: "
             << fShieldExitBackwardMisses;
   LOG(info) << "Muons starting before z = " << fZmin
@@ -194,7 +195,8 @@ void MuGeoProcessor::PrintDiagnostics() const {
             << fMuonWeights.invalid << " rejected for invalid measurements"
             << " (entries without MCTrack have no weight)";
   LOG(info) << "Muon path routes prepared (sum MCTrack[0].fW): "
-            << fMuonWeights.shieldExitBackward << " from the shield-exit scoring plane, "
+            << fMuonWeights.shieldExitBackward
+            << " from the shield-exit scoring plane, "
             << fMuonWeights.startMagnetic << " from MC start in field, "
             << fMuonWeights.startStraight
             << " from MC start in field-free region, "
@@ -583,7 +585,8 @@ bool MuGeoProcessor::Trace(const Measurement& measurement, double startZ,
 std::map<std::string, MuonPath>& MuGeoProcessor::FillMuonPath() {
   fPathMap.clear();
   if (!gGeoManager || (fSegments.empty() && !fTraceBackward)) return fPathMap;
-  // Informational only: upstream starts use the shield-exit plane or field transport.
+  // Informational only: upstream starts use the shield-exit plane or field
+  // transport.
   if (fStart.position.Z() < fZmin) {
     ++fStartsBeforeZmin;
     fMuonWeights.beforeZmin += fMuonWeight;
@@ -593,7 +596,8 @@ std::map<std::string, MuonPath>& MuGeoProcessor::FillMuonPath() {
 
   if (fTraceBackward) {
     const double high = std::min(fShieldExit.position.Z(), fZmax);
-    const double low = std::isfinite(fShieldMinZ) ? fShieldMinZ : fZmin;
+    const double low = std::max(
+        fStart.position.Z(), std::isfinite(fShieldMinZ) ? fShieldMinZ : fZmin);
     if (high > low && !Trace(fShieldExit, high, low, true)) {
       fPathMap.clear();
       return fPathMap;
@@ -601,18 +605,19 @@ std::map<std::string, MuonPath>& MuGeoProcessor::FillMuonPath() {
     if (fPathMap.count("MS") == 0) {
       ++fShieldExitBackwardMisses;
       fMuonWeights.shieldExitMiss += fMuonWeight;
-      LOG(debug)
-          << "Shield-exit scoring-plane backward extrapolation does not cross MS: "
-             "start position ("
-          << fStart.position.X() << ", " << fStart.position.Y() << ", "
-          << fStart.position.Z() << "), start momentum (" << fStart.momentum.X()
-          << ", " << fStart.momentum.Y() << ", " << fStart.momentum.Z()
-          << "), shield-exit position (" << fShieldExit.position.X() << ", "
-          << fShieldExit.position.Y() << ", " << fShieldExit.position.Z()
-          << "), shield-exit momentum (" << fShieldExit.momentum.X() << ", "
-          << fShieldExit.momentum.Y() << ", " << fShieldExit.momentum.Z()
-          << "), start time "
-          << fStart.time << ", shield-exit time " << fShieldExit.time;
+      LOG(debug) << "Shield-exit scoring-plane backward extrapolation does not "
+                    "cross MS: "
+                    "start position ("
+                 << fStart.position.X() << ", " << fStart.position.Y() << ", "
+                 << fStart.position.Z() << "), start momentum ("
+                 << fStart.momentum.X() << ", " << fStart.momentum.Y() << ", "
+                 << fStart.momentum.Z() << "), shield-exit position ("
+                 << fShieldExit.position.X() << ", " << fShieldExit.position.Y()
+                 << ", " << fShieldExit.position.Z()
+                 << "), shield-exit momentum (" << fShieldExit.momentum.X()
+                 << ", " << fShieldExit.momentum.Y() << ", "
+                 << fShieldExit.momentum.Z() << "), start time " << fStart.time
+                 << ", shield-exit time " << fShieldExit.time;
     }
   }
 

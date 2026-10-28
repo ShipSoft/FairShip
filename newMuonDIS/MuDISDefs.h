@@ -187,8 +187,8 @@ struct CBMSimBranches {
       fValid &= BindInputBranch(current, "TimeDetPoint", &tdPt);
       fValid &= BindInputBranch(current, "vetoPoint", &sbtPt);
       fValid &= BindInputBranch(current, "UpstreamTaggerPoint", &ubtPt);
-      fValid &= BindInputBranch(current, "UpstreamTaggerScoringPoint",
-                                &ubtScoringPt);
+      fValid &=
+          BindInputBranch(current, "UpstreamTaggerScoringPoint", &ubtScoringPt);
       fValid &= BindInputBranch(current, "strawtubesPoint", &sstPt);
     }
     return fValid;
@@ -350,8 +350,8 @@ struct MuonInBranches {
       fValid &= BindInputBranch(current, "muon_TDPoints", &tdPt);
       fValid &= BindInputBranch(current, "muon_SBTPoints", &sbtPt);
       fValid &= BindInputBranch(current, "muon_UBTPoints", &ubtPt);
-      fValid &= BindInputBranch(current, "muon_UBTScoringPoints",
-                                &ubtScoringPt);
+      fValid &=
+          BindInputBranch(current, "muon_UBTScoringPoints", &ubtScoringPt);
       fValid &= BindInputBranch(current, "muon_SSTPoints", &sstPt);
       fValid &= BindInputBranch(current, "muon_path_length", &pathLength);
       for (unsigned i = 0; i < nMats; ++i) {
