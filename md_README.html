@@ -167,6 +167,19 @@ On lxplus (AFS)</h2>
 <div class="fragment"><div class="line">git checkout yourbranch</div>
 <div class="line">pixi cvmfs build</div>
 </div><!-- fragment --><p>You can add the <span class="tt">export PATH=...</span> line to your <span class="tt">~/.bashrc</span> so the commands are available in every new shell.</p>
+<p>Also keep the pixi cache off EOS/AFS. By default it lives in <span class="tt">$XDG_CACHE_HOME</span> or <span class="tt">~/.cache</span>, which on lxplus are on EOS or AFS. Network filesystems are slow for the many small cache files, and a stuck I/O call can freeze <span class="tt">pixi</span> so that <span class="tt">Ctrl+C</span> has no effect. Put the cache on local disk, for example in <span class="tt">~/.bashrc</span>:</p>
+<div class="fragment"><div class="line">export PIXI_CACHE_DIR=/tmp/$USER/pixi-cache</div>
+</div><!-- fragment --><p><span class="tt">/tmp</span> is local to each lxplus node and gets cleaned up, so pixi may have to download packages again after you log in to a different node.</p>
+<p>If <span class="tt">pixi</span> waits forever with this message:</p>
+<div class="fragment"><div class="line">WARN still waiting on another pixi process to finish installing &#39;.../FairShip/.pixi/envs/default&#39;</div>
+</div><!-- fragment --><p>a previous <span class="tt">pixi</span> process was probably killed while it was installing the environment and left its lock behind. In this case you can:</p>
+<ol type="1">
+<li>Check that no other <span class="tt">pixi</span> process of yours is still running on a node that uses the same clone.</li>
+<li><p class="startli">From your FairShip clone, remove the partial environment and its lock:</p>
+<div class="fragment"><div class="line">rm -rf .pixi/envs/default .pixi/envs/default.rattler-fs-overlay .pixi/envs/default.rattler-fs.lock</div>
+</div><!-- fragment --></li>
+<li>Run your <span class="tt">pixi</span> command again.</li>
+</ol>
 <h1 class="doxsection"><a class="anchor" id="autotoc_md126"></a>
 Run instructions</h1>
 <p>Start a shell with the FairShip environment activated:</p>
