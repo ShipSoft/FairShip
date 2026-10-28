@@ -369,11 +369,14 @@ var namespaces_dup =
     ] ],
     [ "geometry_from_file", "namespacegeometry__from__file.html", [
       [ "_define_swap_class", "namespacegeometry__from__file.html#a4343d70f112d7f1fc3e2fa68a08a0428", null ],
+      [ "_missed_by_veto_hit", "namespacegeometry__from__file.html#ab4d69f223350f7393e6de123a8b7e2f5", null ],
+      [ "_some", "namespacegeometry__from__file.html#adbb24e525c46a702faa61c1ac3679d15", null ],
       [ "check_file", "namespacegeometry__from__file.html#a04a46c3c1fb6eb2b52661a6443354076", null ],
       [ "check_swapped", "namespacegeometry__from__file.html#a15e149c06726d938db03869db1e93e70", null ],
       [ "check_yaml_configs", "namespacegeometry__from__file.html#ad003da7c4d900ff4a2edc37862a51494", null ],
       [ "make_swap", "namespacegeometry__from__file.html#a39ee39f2ff59b2dacdc40abf83aa1fa6", null ],
       [ "stored_yaml_configs", "namespacegeometry__from__file.html#a084611c24c0a258117d0b689d187ec6e", null ],
+      [ "warn_left_out", "namespacegeometry__from__file.html#a1d6a755bdc05515a93ee7cea1f24afce", null ],
       [ "_HELPER", "namespacegeometry__from__file.html#a53f0cacc6428058fca1021a91080bb8c", null ],
       [ "_swap_class", "namespacegeometry__from__file.html#a689bef891192aef41d4c0dfe5bb7be51", null ],
       [ "error", "namespacegeometry__from__file.html#aea6b5163bec4a8df08cf756661a9389e", null ],
@@ -381,6 +384,7 @@ var namespaces_dup =
       [ "geofile", "namespacegeometry__from__file.html#ab380ad34fa475b58dddbc9d7b7ba920e", null ],
       [ "loaded", "namespacegeometry__from__file.html#aa31c0a6e960dd096781116203482bbf2", null ],
       [ "SWAP_NAME", "namespacegeometry__from__file.html#a72281533c8b2d80b6557018be831c881", null ],
+      [ "VETO_MODULE", "namespacegeometry__from__file.html#a305fc75158c5cbca32287eb9c9184151", null ],
       [ "YAML_CONFIGS", "namespacegeometry__from__file.html#a95cd91ab64400027db0202d9acb2c451", null ]
     ] ],
     [ "geomGeant4", "namespacegeomGeant4.html", [
@@ -1618,6 +1622,7 @@ var namespaces_dup =
     [ "shipDet_conf", "namespaceshipDet__conf.html", [
       [ "_axis_cells", "namespaceshipDet__conf.html#afec42c5b1e2dc5fbc4af7a40a140a76b", null ],
       [ "_small_tile_areas", "namespaceshipDet__conf.html#aaaa42dac4c132a8a35e10c2344a1b349", null ],
+      [ "_ubt_front_face", "namespaceshipDet__conf.html#a6a846e8b9bb5f7d79395c21c19bb80be", null ],
       [ "check_upstream_tagger_map", "namespaceshipDet__conf.html#aefe20d186538283f7aa113c21b347f39", null ],
       [ "configure", "namespaceshipDet__conf.html#a6e3eaea419c04a40644184c1c4bd7ae0", null ],
       [ "configure_snd_mtc", "namespaceshipDet__conf.html#aa4ac8d6cef9fc6657dedbd2090cf8f13", null ],

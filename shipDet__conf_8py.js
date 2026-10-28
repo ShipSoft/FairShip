@@ -2,6 +2,7 @@ var shipDet__conf_8py =
 [
     [ "shipDet_conf._axis_cells", "namespaceshipDet__conf.html#afec42c5b1e2dc5fbc4af7a40a140a76b", null ],
     [ "shipDet_conf._small_tile_areas", "namespaceshipDet__conf.html#aaaa42dac4c132a8a35e10c2344a1b349", null ],
+    [ "shipDet_conf._ubt_front_face", "namespaceshipDet__conf.html#a6a846e8b9bb5f7d79395c21c19bb80be", null ],
     [ "shipDet_conf.check_upstream_tagger_map", "namespaceshipDet__conf.html#aefe20d186538283f7aa113c21b347f39", null ],
     [ "shipDet_conf.configure", "namespaceshipDet__conf.html#a6e3eaea419c04a40644184c1c4bd7ae0", null ],
     [ "shipDet_conf.configure_snd_mtc", "namespaceshipDet__conf.html#aa4ac8d6cef9fc6657dedbd2090cf8f13", null ],

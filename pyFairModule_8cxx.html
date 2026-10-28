@@ -97,12 +97,13 @@ $(function(){initNavTree('pyFairModule_8cxx.html','',''); });
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="pyFairModule_8h_source.html">pyFairModule.h</a>&quot;</code><br />
+<code>#include &quot;FairVolume.h&quot;</code><br />
 <code>#include &quot;Python.h&quot;</code><br />
 <code>#include &quot;TObject.h&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for pyFairModule.cxx:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="pyFairModule_8cxx__incl.svg" width="383" height="207"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="pyFairModule_8cxx__incl.svg" width="591" height="207"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 <p><a href="pyFairModule_8cxx_source.html">Go to the source code of this file.</a></p>
@@ -131,24 +132,24 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pyFairModule_8cxx_source.html#l00010">10</a> of file <a class="el" href="pyFairModule_8cxx_source.html">pyFairModule.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   10</span>                                                            {</div>
-<div class="line"><span class="lineno">   11</span>  <span class="comment">// check arguments</span></div>
-<div class="line"><span class="lineno">   12</span>  <span class="keywordflow">if</span> (<span class="keyword">nullptr</span> == self || <span class="keyword">nullptr</span> == method) {</div>
-<div class="line"><span class="lineno">   13</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Invalid Python object and method&quot;</span>);</div>
-<div class="line"><span class="lineno">   14</span>  }</div>
-<div class="line"><span class="lineno">   15</span>  <span class="comment">// call Python</span></div>
-<div class="line"><span class="lineno">   16</span>  <a class="code hl_typedef" href="pyFairModule_8h.html#ae19630c1f4ca6d5236b30719d9140013">PyObject</a>* r = PyObject_CallMethod(self, <span class="keyword">const_cast&lt;</span><span class="keywordtype">char</span>*<span class="keyword">&gt;</span>(method),</div>
-<div class="line"><span class="lineno">   17</span>                                    <span class="keyword">const_cast&lt;</span><span class="keywordtype">char</span>*<span class="keyword">&gt;</span>(<span class="stringliteral">&quot;&quot;</span>));</div>
-<div class="line"><span class="lineno">   18</span>  <span class="keywordflow">if</span> (<span class="keyword">nullptr</span> == r) {</div>
-<div class="line"><span class="lineno">   19</span>    PyErr_Print();</div>
-<div class="line"><span class="lineno">   20</span>    <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno">   21</span>  }</div>
-<div class="line"><span class="lineno">   22</span>  <span class="comment">// release used objects</span></div>
-<div class="line"><span class="lineno">   23</span>  Py_XDECREF(r);</div>
-<div class="line"><span class="lineno">   24</span>  <span class="comment">//</span></div>
-<div class="line"><span class="lineno">   25</span>  <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno">   26</span>}</div>
+<p class="definition">Definition at line <a class="el" href="pyFairModule_8cxx_source.html#l00034">34</a> of file <a class="el" href="pyFairModule_8cxx_source.html">pyFairModule.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   34</span>                                                            {</div>
+<div class="line"><span class="lineno">   35</span>  <span class="comment">// check arguments</span></div>
+<div class="line"><span class="lineno">   36</span>  <span class="keywordflow">if</span> (<span class="keyword">nullptr</span> == self || <span class="keyword">nullptr</span> == method) {</div>
+<div class="line"><span class="lineno">   37</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Invalid Python object and method&quot;</span>);</div>
+<div class="line"><span class="lineno">   38</span>  }</div>
+<div class="line"><span class="lineno">   39</span>  <span class="comment">// call Python</span></div>
+<div class="line"><span class="lineno">   40</span>  <a class="code hl_typedef" href="pyFairModule_8h.html#ae19630c1f4ca6d5236b30719d9140013">PyObject</a>* r = PyObject_CallMethod(self, <span class="keyword">const_cast&lt;</span><span class="keywordtype">char</span>*<span class="keyword">&gt;</span>(method),</div>
+<div class="line"><span class="lineno">   41</span>                                    <span class="keyword">const_cast&lt;</span><span class="keywordtype">char</span>*<span class="keyword">&gt;</span>(<span class="stringliteral">&quot;&quot;</span>));</div>
+<div class="line"><span class="lineno">   42</span>  <span class="keywordflow">if</span> (<span class="keyword">nullptr</span> == r) {</div>
+<div class="line"><span class="lineno">   43</span>    PyErr_Print();</div>
+<div class="line"><span class="lineno">   44</span>    <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">   45</span>  }</div>
+<div class="line"><span class="lineno">   46</span>  <span class="comment">// release used objects</span></div>
+<div class="line"><span class="lineno">   47</span>  Py_XDECREF(r);</div>
+<div class="line"><span class="lineno">   48</span>  <span class="comment">//</span></div>
+<div class="line"><span class="lineno">   49</span>  <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">   50</span>}</div>
 <div class="ttc" id="apyFairModule_8h_html_ae19630c1f4ca6d5236b30719d9140013"><div class="ttname"><a href="pyFairModule_8h.html#ae19630c1f4ca6d5236b30719d9140013">PyObject</a></div><div class="ttdeci">_object PyObject</div><div class="ttdef"><b>Definition</b> <a href="pyFairModule_8h_source.html#l00009">pyFairModule.h:9</a></div></div>
 </div><!-- fragment -->
 </div>
