@@ -86,6 +86,10 @@ jobs:
         run: pixi run --locked ci-ana
       - name: Analysis example
         run: pixi run --locked ci-analysis-example
+      - name: Reconstruction (ACTS)
+        run: pixi run --locked ci-reco-acts
+      - name: Analysis (ACTS)
+        run: pixi run --locked ci-ana-acts
       - name: Extract metrics
         run: pixi run --locked ci-extract-metrics ${{ matrix.vessel }}-${{ matrix.snd_design }}-${{ matrix.muon_shield }}
       - name: Render plots
@@ -120,8 +124,12 @@ jobs:
           path: build/
       - name: Tracking benchmark
         run: pixi run --locked ci-tracking-benchmark
+      - name: Tracking benchmark (ACTS)
+        run: pixi run --locked ci-tracking-benchmark-acts
       - name: Render plots
         run: pixi run --locked ci-render-plots-tracking-benchmark
+      - name: Render plots (ACTS)
+        run: pixi run --locked ci-render-plots-tracking-benchmark-acts
       - name: Upload tracking metrics
         uses: actions/upload-artifact@v7
         with:
@@ -129,6 +137,13 @@ jobs:
           path: |
             tracking_metrics.json
             tracking_benchmark_histos.root
+      - name: Upload tracking metrics (ACTS)
+        uses: actions/upload-artifact@v7
+        with:
+          name: tracking-metrics-acts
+          path: |
+            tracking_metrics_acts.json
+            acts-benchmark/tracking_benchmark_histos.root
       - name: Upload plot images
         uses: actions/upload-artifact@v7
         with:
