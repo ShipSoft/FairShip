@@ -1,11 +1,5 @@
 var NAVTREEINDEX8 =
 {
-"classSHiP_1_1RecoVertex.html#ae3cd9dc5db16bb7d0b992241c253c815":[6,0,16,13,10],
-"classSHiP_1_1RecoVertex.html#aeb23bbac1fd0ffd495e98348c4f9aa4d":[5,0,92,14,35],
-"classSHiP_1_1RecoVertex.html#aeb23bbac1fd0ffd495e98348c4f9aa4d":[6,0,16,13,35],
-"classSHiP_1_1RecoVertex.html#af1f627c321d8c2a4c49da19d68fe1145":[5,0,92,14,34],
-"classSHiP_1_1RecoVertex.html#af1f627c321d8c2a4c49da19d68fe1145":[6,0,16,13,34],
-"classSHiP_1_1RecoVertex.html#af8df6762fea58405bc40f2d52c216be8":[5,0,92,14,15],
 "classSHiP_1_1RecoVertex.html#af8df6762fea58405bc40f2d52c216be8":[6,0,16,13,15],
 "classSHiP_1_1ScoringPlane.html":[5,0,92,12],
 "classSHiP_1_1ScoringPlane.html":[6,0,16,11],
@@ -249,5 +243,11 @@ var NAVTREEINDEX8 =
 "classShipCave.html#a8cb2f4ea18618e936f484b0b64506030":[6,0,72,3],
 "classShipCave.html#a8cbdea1cf52198304407f44a7a21e305":[6,0,72,12],
 "classShipCave.html#a8db4f868848dbf257b7990faa44b8b34":[6,0,72,11],
-"classShipCave.html#ad520fc8aa64be85dc62894629bc63a9e":[6,0,72,6]
+"classShipCave.html#ad520fc8aa64be85dc62894629bc63a9e":[6,0,72,6],
+"classShipCave.html#af6417f3ea148f15147481b44c6874130":[6,0,72,7],
+"classShipCave.html#afc5ff9240cbec843940578a4c6eb3bf3":[6,0,72,0],
+"classShipCompField.html":[6,0,73],
+"classShipCompField.html#a023be9e4418ee7ae50d73b7595acc735":[6,0,73,1],
+"classShipCompField.html#a07e70f5114530588489df779a47bc18b":[6,0,73,0],
+"classShipCompField.html#a3005035d531de7934d27eb9d8df23d5e":[6,0,73,8]
 };

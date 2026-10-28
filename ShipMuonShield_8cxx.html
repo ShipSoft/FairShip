@@ -98,70 +98,30 @@ $(function(){initNavTree('ShipMuonShield_8cxx.html','',''); });
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="ShipMuonShield_8h_source.html">ShipMuonShield.h</a>&quot;</code><br />
 <code>#include &lt;algorithm&gt;</code><br />
-<code>#include &lt;functional&gt;</code><br />
-<code>#include &lt;iostream&gt;</code><br />
 <code>#include &lt;iterator&gt;</code><br />
-<code>#include &quot;FairGeoBuilder.h&quot;</code><br />
-<code>#include &quot;FairGeoInterface.h&quot;</code><br />
-<code>#include &quot;FairGeoMedia.h&quot;</code><br />
 <code>#include &quot;FairLogger.h&quot;</code><br />
-<code>#include &quot;FairRuntimeDb.h&quot;</code><br />
 <code>#include &quot;<a class="el" href="ShipCavernLayout_8h_source.html">ShipCavernLayout.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="ShipGeoUtil_8h_source.html">ShipGeoUtil.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="ShipUnit_8h_source.html">ShipUnit.h</a>&quot;</code><br />
-<code>#include &quot;TFile.h&quot;</code><br />
 <code>#include &quot;TGeoBBox.h&quot;</code><br />
-<code>#include &quot;TGeoBoolNode.h&quot;</code><br />
 <code>#include &quot;TGeoCompositeShape.h&quot;</code><br />
 <code>#include &quot;TGeoManager.h&quot;</code><br />
-<code>#include &quot;TGeoMaterial.h&quot;</code><br />
-<code>#include &quot;TGeoTrd1.h&quot;</code><br />
-<code>#include &quot;TGeoTube.h&quot;</code><br />
-<code>#include &quot;TObjArray.h&quot;</code><br />
+<code>#include &quot;TGeoMatrix.h&quot;</code><br />
 <code>#include &quot;TString.h&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for ShipMuonShield.cxx:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="ShipMuonShield_8cxx__incl.svg" width="3551" height="190"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="ShipMuonShield_8cxx__incl.svg" width="2340" height="190"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 <p><a href="ShipMuonShield_8cxx_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-var-members" class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:a265f40d0ffca1af0d38fe9a050c98bcf" id="r_a265f40d0ffca1af0d38fe9a050c98bcf"><td class="memItemLeft" align="right" valign="top">constexpr double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a265f40d0ffca1af0d38fe9a050c98bcf">cm</a></td></tr>
-<tr class="memdesc:a265f40d0ffca1af0d38fe9a050c98bcf"><td class="mdescLeft">&#160;</td><td class="mdescRight">for FairLogger, MESSAGE_ORIGIN  <br /></td></tr>
 <tr class="memitem:a7b82ae8775009208066598546951dd22" id="r_a7b82ae8775009208066598546951dd22"><td class="memItemLeft" align="right" valign="top">constexpr double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7b82ae8775009208066598546951dd22">m</a></td></tr>
-<tr class="memitem:a644590da60ab4efe07fbda3a260e5407" id="r_a644590da60ab4efe07fbda3a260e5407"><td class="memItemLeft" align="right" valign="top">constexpr double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a644590da60ab4efe07fbda3a260e5407">mm</a></td></tr>
-<tr class="memitem:adae44b3580098be2b6f2c6d514dc72dd" id="r_adae44b3580098be2b6f2c6d514dc72dd"><td class="memItemLeft" align="right" valign="top">constexpr double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adae44b3580098be2b6f2c6d514dc72dd">tesla</a></td></tr>
+<tr class="memdesc:a7b82ae8775009208066598546951dd22"><td class="mdescLeft">&#160;</td><td class="mdescRight">for FairLogger, MESSAGE_ORIGIN  <br /></td></tr>
 </table>
 <a name="doc-var-members" id="doc-var-members"></a><h2 id="header-doc-var-members" class="groupheader">Variable Documentation</h2>
-<a id="a265f40d0ffca1af0d38fe9a050c98bcf" name="a265f40d0ffca1af0d38fe9a050c98bcf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a265f40d0ffca1af0d38fe9a050c98bcf">&#9670;&#160;</a></span>cm</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">double <a class="el" href="namespaceShipUnit.html#a265f40d0ffca1af0d38fe9a050c98bcf">ShipUnit::cm</a></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel constexpr">constexpr</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>for FairLogger, MESSAGE_ORIGIN </p>
-
-<p class="definition">Definition at line <a class="el" href="ShipUnit_8h_source.html#l00023">23</a> of file <a class="el" href="ShipUnit_8h_source.html">ShipUnit.h</a>.</p>
-
-</div>
-</div>
 <a id="a7b82ae8775009208066598546951dd22" name="a7b82ae8775009208066598546951dd22"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7b82ae8775009208066598546951dd22">&#9670;&#160;</a></span>m</h2>
 
@@ -182,55 +142,9 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>for FairLogger, MESSAGE_ORIGIN </p>
+
 <p class="definition">Definition at line <a class="el" href="ShipUnit_8h_source.html#l00024">24</a> of file <a class="el" href="ShipUnit_8h_source.html">ShipUnit.h</a>.</p>
-
-</div>
-</div>
-<a id="a644590da60ab4efe07fbda3a260e5407" name="a644590da60ab4efe07fbda3a260e5407"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a644590da60ab4efe07fbda3a260e5407">&#9670;&#160;</a></span>mm</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">double <a class="el" href="namespaceShipUnit.html#a644590da60ab4efe07fbda3a260e5407">ShipUnit::mm</a></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel constexpr">constexpr</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="ShipUnit_8h_source.html#l00025">25</a> of file <a class="el" href="ShipUnit_8h_source.html">ShipUnit.h</a>.</p>
-
-</div>
-</div>
-<a id="adae44b3580098be2b6f2c6d514dc72dd" name="adae44b3580098be2b6f2c6d514dc72dd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adae44b3580098be2b6f2c6d514dc72dd">&#9670;&#160;</a></span>tesla</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">double <a class="el" href="namespaceShipUnit.html#adae44b3580098be2b6f2c6d514dc72dd">ShipUnit::tesla</a></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel constexpr">constexpr</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="ShipUnit_8h_source.html#l00041">41</a> of file <a class="el" href="ShipUnit_8h_source.html">ShipUnit.h</a>.</p>
 
 </div>
 </div>

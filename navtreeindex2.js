@@ -1,11 +1,5 @@
 var NAVTREEINDEX2 =
 {
-"classCaloScoringPlaneDetector_1_1CaloScoringPlaneDetector.html#a5bfa7b5fc5810d0618082e2123d5c10b":[5,0,7,0,5],
-"classCaloScoringPlaneDetector_1_1CaloScoringPlaneDetector.html#a5bfa7b5fc5810d0618082e2123d5c10b":[6,0,1,0,5],
-"classCaloScoringPlaneDetector_1_1CaloScoringPlaneDetector.html#a5de8e074642b24b052dbf77e019e3fe8":[5,0,7,0,6],
-"classCaloScoringPlaneDetector_1_1CaloScoringPlaneDetector.html#a5de8e074642b24b052dbf77e019e3fe8":[6,0,1,0,6],
-"classCaloScoringPlaneDetector_1_1CaloScoringPlaneDetector.html#a769edb6466535090ad8d799c8ef62eab":[5,0,7,0,4],
-"classCaloScoringPlaneDetector_1_1CaloScoringPlaneDetector.html#a769edb6466535090ad8d799c8ef62eab":[6,0,1,0,4],
 "classCaloScoringPlaneDetector_1_1CaloScoringPlaneDetector.html#ac4f3995f03f92cece823ab2e80758592":[5,0,7,0,0],
 "classCaloScoringPlaneDetector_1_1CaloScoringPlaneDetector.html#ac4f3995f03f92cece823ab2e80758592":[6,0,1,0,0],
 "classCaloScoringPlaneDetector_1_1CaloScoringPlaneDetector.html#ae8a76f4ca3b7fd8643efb87087c2f3c4":[5,0,7,0,7],
@@ -249,5 +243,11 @@ var NAVTREEINDEX2 =
 "classEvtCalcGenerator.html#a80e9e94360f3c81965a2fe22d283bb9b":[6,0,44,14],
 "classEvtCalcGenerator.html#a816e91b68269f2f4da0198913703a474":[6,0,44,34],
 "classEvtCalcGenerator.html#a896c3c43ffee5f5c18b61573aba9536a":[6,0,44,12],
-"classEvtCalcGenerator.html#a975c5c1c8796d05ce19a250a05032572":[6,0,44,20]
+"classEvtCalcGenerator.html#a975c5c1c8796d05ce19a250a05032572":[6,0,44,20],
+"classEvtCalcGenerator.html#a98cafdb0ef782dabf8ab3f5b8ef83bef":[6,0,44,25],
+"classEvtCalcGenerator.html#aa79da6c1d29ee3e8ea5129e8acdbf73c":[6,0,44,19],
+"classEvtCalcGenerator.html#abef70b2166267ba4e350f9456faabd2f":[6,0,44,8],
+"classEvtCalcGenerator.html#ac33228cc03084fde6dc7b4f9605faf28":[6,0,44,17],
+"classEvtCalcGenerator.html#ac3c5044abd7b89900b45a03ab3eb6199":[6,0,44,16],
+"classEvtCalcGenerator.html#adc605667f4571c677c821a3a21c52e78":[6,0,44,33]
 };

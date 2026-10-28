@@ -70,17 +70,8 @@ var searchData=
   ['dvecs_67',['dVecs',['../classGenieGenerator.html#a8a9d0e3672635663febb66e6030a81f9',1,'GenieGenerator']]],
   ['dx_68',['dx',['../structSHiP_1_1StrawWire.html#a315f4673a8c496b57a68be17230c7281',1,'SHiP::StrawWire::dx'],['../classfieldMapTools_1_1MapRange.html#a7649525a35692903823924c8e76e6197',1,'fieldMapTools.MapRange.dx']]],
   ['dx_5f_69',['dx_',['../classShipBFieldMap.html#ae84cc55fdd680b200bbab5ea720b2b19',1,'ShipBFieldMap']]],
-  ['dxgap_70',['dXgap',['../classShipMuonShield.html#a64f7b519e98b0e17a2caae28e7caf2fd',1,'ShipMuonShield']]],
-  ['dy_71',['dy',['../structSHiP_1_1StrawWire.html#a9b2cb6b6d0df4644d07c2b4aa4cb31e9',1,'SHiP::StrawWire::dy'],['../classfieldMapTools_1_1MapRange.html#a4d2fcc7057da041b3ab9be50e7a1adc4',1,'fieldMapTools.MapRange.dy'],['../namespacerun__fixedTarget.html#a3112a5faf6aba672ca6db63ae2691c5c',1,'run_fixedTarget.dy'],['../namespaceShipAna.html#a02a40c51d86f2bb079d5d8018e56f028',1,'ShipAna.dy'],['../namespaceShipReco.html#a0645db8c1347a0fcf8f6b07bed5830cb',1,'ShipReco.dy'],['../namespaceana__ShipMuon.html#a37ec6d67d500dcab407c4a134cdbe046',1,'ana_ShipMuon.dy']]],
-  ['dy_5f_72',['dy_',['../classShipBFieldMap.html#a14cd573350a95b0adde53cc7f1f880ab',1,'ShipBFieldMap']]],
-  ['dz_73',['dz',['../structSHiP_1_1StrawWire.html#a5eceaa54a07cc66d619c314c3aea0c0a',1,'SHiP::StrawWire::dz'],['../classeventDisplay_1_1DrawTracks.html#a46ebd2878493a246b3c3356a7f9800cd',1,'eventDisplay.DrawTracks.dz'],['../classfieldMapTools_1_1MapRange.html#ac49a8c1c423a8680b1315e1532f9a01c',1,'fieldMapTools.MapRange.dz']]],
-  ['dz0_74',['dZ0',['../classShipMuonShield.html#a25d8a1229a943532bbc3c02ebc7f8109',1,'ShipMuonShield']]],
-  ['dz1_75',['dZ1',['../classShipMuonShield.html#a0b5fdd40d2b50df6bb58faf95886a06d',1,'ShipMuonShield']]],
-  ['dz2_76',['dZ2',['../classShipMuonShield.html#afb7b692183d67dea99006da9533b3341',1,'ShipMuonShield']]],
-  ['dz3_77',['dZ3',['../classShipMuonShield.html#af08206671c0915c768e237897d865756',1,'ShipMuonShield']]],
-  ['dz4_78',['dZ4',['../classShipMuonShield.html#a5e9d1ec75ed246966ffa3d96cdc4ad76',1,'ShipMuonShield']]],
-  ['dz5_79',['dZ5',['../classShipMuonShield.html#a18ecac71d417e13399b87db533a4f186',1,'ShipMuonShield']]],
-  ['dz6_80',['dZ6',['../classShipMuonShield.html#a3ed89ff9d9698adeb74aee3798d673ec',1,'ShipMuonShield']]],
-  ['dz7_81',['dZ7',['../classShipMuonShield.html#afa1fdd58785194476d02251f6506179b',1,'ShipMuonShield']]],
-  ['dz_5f_82',['dz_',['../classShipBFieldMap.html#a1ca6516488c38f8effab03e4b6ef05ab',1,'ShipBFieldMap']]]
+  ['dy_70',['dy',['../structSHiP_1_1StrawWire.html#a9b2cb6b6d0df4644d07c2b4aa4cb31e9',1,'SHiP::StrawWire::dy'],['../classfieldMapTools_1_1MapRange.html#a4d2fcc7057da041b3ab9be50e7a1adc4',1,'fieldMapTools.MapRange.dy'],['../namespacerun__fixedTarget.html#a3112a5faf6aba672ca6db63ae2691c5c',1,'run_fixedTarget.dy'],['../namespaceShipAna.html#a02a40c51d86f2bb079d5d8018e56f028',1,'ShipAna.dy'],['../namespaceShipReco.html#a0645db8c1347a0fcf8f6b07bed5830cb',1,'ShipReco.dy'],['../namespaceana__ShipMuon.html#a37ec6d67d500dcab407c4a134cdbe046',1,'ana_ShipMuon.dy']]],
+  ['dy_5f_71',['dy_',['../classShipBFieldMap.html#a14cd573350a95b0adde53cc7f1f880ab',1,'ShipBFieldMap']]],
+  ['dz_72',['dz',['../structSHiP_1_1StrawWire.html#a5eceaa54a07cc66d619c314c3aea0c0a',1,'SHiP::StrawWire::dz'],['../classeventDisplay_1_1DrawTracks.html#a46ebd2878493a246b3c3356a7f9800cd',1,'eventDisplay.DrawTracks.dz'],['../classfieldMapTools_1_1MapRange.html#ac49a8c1c423a8680b1315e1532f9a01c',1,'fieldMapTools.MapRange.dz']]],
+  ['dz_5f_73',['dz_',['../classShipBFieldMap.html#a1ca6516488c38f8effab03e4b6ef05ab',1,'ShipBFieldMap']]]
 ];

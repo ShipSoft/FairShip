@@ -1,11 +1,5 @@
 var NAVTREEINDEX6 =
 {
-"classParticleGunGenerator.html#a66ba1da848d1d7905a448f2d7d4edcdb":[6,0,64,4],
-"classParticleGunGenerator.html#a6aeb2a6dc913e747916f45927bcf80d9":[6,0,64,9],
-"classParticleGunGenerator.html#a708bc568226d8de4f9ed9b659d97399c":[6,0,64,69],
-"classParticleGunGenerator.html#a71538d5ae860d413c5aa394f33308e07":[6,0,64,48],
-"classParticleGunGenerator.html#a72045cb7362c430468aa23036382d90b":[6,0,64,76],
-"classParticleGunGenerator.html#a76839e040f325a0078db598b930b5838":[6,0,64,7],
 "classParticleGunGenerator.html#a818b2e1b67970ad03a3287b0c741f4ec":[6,0,64,56],
 "classParticleGunGenerator.html#a81e9327c2e4eeec40b360ba24d24ec97":[6,0,64,41],
 "classParticleGunGenerator.html#a859ff1947e24a4b50ac30945b5a58d4b":[6,0,64,59],
@@ -249,5 +243,11 @@ var NAVTREEINDEX6 =
 "classSHiP_1_1DetectorHit.html":[6,0,16,9],
 "classSHiP_1_1DetectorHit.html#a00da2f63e6f720a619733b96604c1f0e":[5,0,92,10,7],
 "classSHiP_1_1DetectorHit.html#a00da2f63e6f720a619733b96604c1f0e":[6,0,16,9,7],
-"classSHiP_1_1DetectorHit.html#a3fa1f1f74b53a6390e831e1f6244c1a2":[5,0,92,10,6]
+"classSHiP_1_1DetectorHit.html#a3fa1f1f74b53a6390e831e1f6244c1a2":[5,0,92,10,6],
+"classSHiP_1_1DetectorHit.html#a3fa1f1f74b53a6390e831e1f6244c1a2":[6,0,16,9,6],
+"classSHiP_1_1DetectorHit.html#a450be4f21c65c4bad19cbbed6135edd5":[5,0,92,10,10],
+"classSHiP_1_1DetectorHit.html#a450be4f21c65c4bad19cbbed6135edd5":[6,0,16,9,10],
+"classSHiP_1_1DetectorHit.html#a5752d4ca502c2a8eccc5f0172404c581":[5,0,92,10,4],
+"classSHiP_1_1DetectorHit.html#a5752d4ca502c2a8eccc5f0172404c581":[6,0,16,9,4],
+"classSHiP_1_1DetectorHit.html#a5f980faeb73040116a07de46a56e87fe":[5,0,92,10,2]
 };

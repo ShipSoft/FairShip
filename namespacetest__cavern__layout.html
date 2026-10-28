@@ -167,9 +167,9 @@ planes would cut into the walls without any error.
 <p class="definition">Definition at line <a class="el" href="test__cavern__layout_8py_source.html#l00041">41</a> of file <a class="el" href="test__cavern__layout_8py_source.html">test_cavern_layout.py</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   41</span><span class="keyword">def </span>test_ecn3_cross_section_matches_ship_cave(layout, quantity):</div>
 <div class="line"><span class="lineno">   42</span>    <span class="comment"># Both are in the FairShip length unit.</span></div>
-<div class="line"><span class="lineno">   43</span>    cave = <a class="code hl_function" href="namespacegeometry__config.html#a14c64c715c02fde546cf42f7c9d6f09f">geometry_config.create_config</a>().cave</div>
+<div class="line"><span class="lineno">   43</span>    cave = <a class="code hl_function" href="namespacegeometry__config.html#a6ff4de2f4035fae09ac135a106fe4965">geometry_config.create_config</a>().cave</div>
 <div class="line"><span class="lineno">   44</span>    <span class="keyword">assert</span> cave[quantity] == pytest.approx(getattr(layout, QUANTITIES[quantity]), abs=1.0e-6 * u.cm)</div>
-<div class="ttc" id="anamespacegeometry__config_html_a14c64c715c02fde546cf42f7c9d6f09f"><div class="ttname"><a href="namespacegeometry__config.html#a14c64c715c02fde546cf42f7c9d6f09f">geometry_config.create_config</a></div><div class="ttdeci">create_config(str DecayVolumeMedium=&quot;helium&quot;, float Yheight=6.0, int strawDesign=10, str shieldName=&quot;TRY_2025&quot;, int nuTargetPassive=1, bool SND=True, SND_design=None, TARGET_YAML=None)</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00232">geometry_config.py:241</a></div></div>
+<div class="ttc" id="anamespacegeometry__config_html_a6ff4de2f4035fae09ac135a106fe4965"><div class="ttname"><a href="namespacegeometry__config.html#a6ff4de2f4035fae09ac135a106fe4965">geometry_config.create_config</a></div><div class="ttdeci">create_config(str DecayVolumeMedium=&quot;helium&quot;, float Yheight=6.0, int strawDesign=10, str shieldName=&quot;TRY_2026&quot;, int nuTargetPassive=1, bool SND=True, SND_design=None, TARGET_YAML=None)</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00124">geometry_config.py:133</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

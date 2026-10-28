@@ -292,7 +292,7 @@ $(function(){initNavTree('geomGeant4_8py_source.html','',''); });
 <div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>        fieldMaker.defineFieldMap(<span class="stringliteral">&quot;MainSpecMap&quot;</span>, shipGeo.Bfield.fieldMap, ROOT.TVector3(0.0, 0.0, shipGeo.Bfield.z))</div>
 <div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>        fieldsList.append(<span class="stringliteral">&quot;MainSpecMap&quot;</span>)</div>
 <div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span> </div>
-<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> shipGeo.muShield.WithConstField:</div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>    <span class="keywordflow">if</span> hasattr(shipGeo, <span class="stringliteral">&quot;muShield&quot;</span>):</div>
 <div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>        offset = shipGeo.muShield.Entrance[0]</div>
 <div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>        quadSymm = <span class="keyword">True</span></div>
 <div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>        file_name = f<span class="stringliteral">&quot;files/{shipGeo.shieldName}.root&quot;</span></div>

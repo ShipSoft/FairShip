@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['fielddirection_0',['FieldDirection',['../ShipMuonShield_8h.html#a7a162bd4e07daf5d23ff100f08d1cb43',1,'ShipMuonShield.h']]]
+  ['mattype_0',['MatType',['../namespaceShipMuDIS.html#a6e84a21bf00778eafdce1fb4cb1cff55',1,'ShipMuDIS']]]
 ];

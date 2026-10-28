@@ -362,7 +362,7 @@ var namespaces_dup =
       [ "PathLike", "namespacegenie__interface.html#a68539ce63930ec8fb7cd576ae839bb04", null ]
     ] ],
     [ "geometry_config", "namespacegeometry__config.html", [
-      [ "create_config", "namespacegeometry__config.html#a14c64c715c02fde546cf42f7c9d6f09f", null ],
+      [ "create_config", "namespacegeometry__config.html#a6ff4de2f4035fae09ac135a106fe4965", null ],
       [ "set_ecn3_cavern", "namespacegeometry__config.html#a23fa4639bd7834b2b245271c5c1dcd3c", null ],
       [ "set_upstream_tagger", "namespacegeometry__config.html#a68f8dfd6b8fc305422b155a63db0bdec", null ],
       [ "shield_db", "namespacegeometry__config.html#a4ebc72f6a5c5803cfcc7f6a783c1aaf3", null ]
@@ -1123,6 +1123,7 @@ var namespaces_dup =
       [ "False", "namespacerun__fixedTarget.html#ad50662eb5b8a53f8ea74c76843ad04f6", null ],
       [ "ff", "namespacerun__fixedTarget.html#a19a471f3f243f19b46791b725612a06d", null ],
       [ "fHeader", "namespacerun__fixedTarget.html#abb198cfaf268451c0899cebf70da5dc4", null ],
+      [ "fieldMaker", "namespacerun__fixedTarget.html#afe07e05753c497787b09b52e737294e0", null ],
       [ "fin", "namespacerun__fixedTarget.html#a44a2f398422c952305b4ee8df6ee9da0", null ],
       [ "flavour", "namespacerun__fixedTarget.html#addbbdbc8c12ba647dd9f529db31613a7", null ],
       [ "float", "namespacerun__fixedTarget.html#af1277424a1c78c806b635aedae63a6c4", null ],
@@ -1142,7 +1143,7 @@ var namespaces_dup =
       [ "M", "namespacerun__fixedTarget.html#af90f2a88330fe43e2fc455313465f260", null ],
       [ "mcEngine", "namespacerun__fixedTarget.html#a2ecf6a13590cfb316a6f17be3fb51f35", null ],
       [ "MuonShield", "namespacerun__fixedTarget.html#a7517af6118571b0b397cab0a2007b1fa", null ],
-      [ "n_params", "namespacerun__fixedTarget.html#acad6c0d1dfd24bba22f2eab2138afc96", null ],
+      [ "n_magnets", "namespacerun__fixedTarget.html#a5e405a58d2886451649433156c3c557e", null ],
       [ "nEvents", "namespacerun__fixedTarget.html#a60dc506ed774436b3860cfd1925230e3", null ],
       [ "None", "namespacerun__fixedTarget.html#abd583ebbc467395a63d606f36b87fe68", null ],
       [ "nt", "namespacerun__fixedTarget.html#a3824536a9c3d7dd8855280526d9b7d95", null ],

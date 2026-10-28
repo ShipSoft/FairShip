@@ -479,79 +479,78 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  870</span>  Double_t zLoc;</div>
 <div class="line"><span class="lineno">  871</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="#a870b8583ed055da51139171aac19ef9b">fzPos</a> &gt; 1E8) {</div>
 <div class="line"><span class="lineno">  872</span>    <span class="comment">// Add thin sensitive plane after hadron absorber</span></div>
-<div class="line"><span class="lineno">  873</span>    Float_t distance = 1.;</div>
-<div class="line"><span class="lineno">  874</span>    Double_t <a class="code hl_variable" href="namespaceana__ShipMuon.html#aca3f5e85758a67e98544d3bd0d4cb8ce">local</a>[3] = {0, 0, 0};</div>
-<div class="line"><span class="lineno">  875</span>    <span class="keywordflow">if</span> (!nav-&gt;cd(<span class="stringliteral">&quot;/MuonShieldArea_1/AbsorberVol_1&quot;</span>)) {</div>
-<div class="line"><span class="lineno">  876</span>      nav-&gt;cd(<span class="stringliteral">&quot;/MuonShieldArea_1/MagnAbsorb_MagRetL_1&quot;</span>);</div>
-<div class="line"><span class="lineno">  877</span>      distance = -1.;</div>
-<div class="line"><span class="lineno">  878</span>    }</div>
-<div class="line"><span class="lineno">  879</span>    TGeoBBox* <a class="code hl_variable" href="namespacemakeCascade.html#a14cea4d78b73e5ff8a7eefb813be9886">tmp</a> =</div>
-<div class="line"><span class="lineno">  880</span>        <span class="keyword">dynamic_cast&lt;</span>TGeoBBox*<span class="keyword">&gt;</span>(nav-&gt;GetCurrentNode()-&gt;GetVolume()-&gt;GetShape());</div>
-<div class="line"><span class="lineno">  881</span>    <a class="code hl_variable" href="namespaceana__ShipMuon.html#aca3f5e85758a67e98544d3bd0d4cb8ce">local</a>[2] = distance * <a class="code hl_variable" href="namespacemakeCascade.html#a14cea4d78b73e5ff8a7eefb813be9886">tmp</a>-&gt;GetDZ();</div>
-<div class="line"><span class="lineno">  882</span>    Double_t global[3] = {0, 0, 0};</div>
-<div class="line"><span class="lineno">  883</span>    nav-&gt;LocalToMaster(local, global);</div>
-<div class="line"><span class="lineno">  884</span>    zLoc = global[2] + distance * 1. * <a class="code hl_variable" href="ShipBellField_8cxx.html#a9842927f33236414d34831f59ed1c28f">cm</a>;</div>
-<div class="line"><span class="lineno">  885</span>  } <span class="keywordflow">else</span> {</div>
-<div class="line"><span class="lineno">  886</span>    zLoc = <a class="code hl_variable" href="#a870b8583ed055da51139171aac19ef9b">fzPos</a>;</div>
-<div class="line"><span class="lineno">  887</span>  }  <span class="comment">// use external input</span></div>
-<div class="line"><span class="lineno">  888</span> </div>
-<div class="line"><span class="lineno">  889</span>  TString myname(this-&gt;GetName());</div>
-<div class="line"><span class="lineno">  890</span>  TString shapename_prefix(myname);  <span class="comment">// Use a prefix for shapenames</span></div>
-<div class="line"><span class="lineno">  891</span> </div>
-<div class="line"><span class="lineno">  892</span>  Double_t xLocPlane = 0.0;</div>
-<div class="line"><span class="lineno">  893</span>  Double_t yLocPlane = 0.0;</div>
-<div class="line"><span class="lineno">  894</span>  Double_t zLocPlane = zLoc;</div>
-<div class="line"><span class="lineno">  895</span> </div>
-<div class="line"><span class="lineno">  896</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="#a7be0ddff85460bb24c31c0369cc9dd57">fCylindricalPlane</a>) {</div>
-<div class="line"><span class="lineno">  897</span>    TGeoVolume* <a class="code hl_variable" href="namespacestudy__GammaConv.html#a3e1144f0a516f56c4b359927d9e3fe9c">sensPlane</a> =</div>
-<div class="line"><span class="lineno">  898</span>        gGeoManager-&gt;MakeBox(shapename_prefix + <a class="code hl_variable" href="#abad68307a244613567d1fc695117984f">fVetoName</a> + <span class="stringliteral">&quot;_box&quot;</span>, vac,</div>
-<div class="line"><span class="lineno">  899</span>                             3.56 * <a class="code hl_variable" href="ShipBellField_8cxx.html#ae0699ca79e23818d99b9ee18334a9325">m</a> - 1. * <a class="code hl_variable" href="exitHadronAbsorber_8cxx.html#a644590da60ab4efe07fbda3a260e5407">mm</a>, 1.7 * <a class="code hl_variable" href="ShipBellField_8cxx.html#ae0699ca79e23818d99b9ee18334a9325">m</a> - 1. * <a class="code hl_variable" href="exitHadronAbsorber_8cxx.html#a644590da60ab4efe07fbda3a260e5407">mm</a>, 1. * <a class="code hl_variable" href="exitHadronAbsorber_8cxx.html#a644590da60ab4efe07fbda3a260e5407">mm</a>);</div>
-<div class="line"><span class="lineno">  900</span>    std::cout &lt;&lt; this-&gt;GetName()</div>
-<div class="line"><span class="lineno">  901</span>              &lt;&lt; <span class="stringliteral">&quot;, ConstructGeometry(): Created Box with dimensions: &quot;</span></div>
-<div class="line"><span class="lineno">  902</span>                 <span class="stringliteral">&quot;3.56*m-1.*mm,1.7*m-1.*mm,1.*mm&quot;</span></div>
-<div class="line"><span class="lineno">  903</span>              &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  904</span> </div>
-<div class="line"><span class="lineno">  905</span>    <span class="keywordflow">if</span> (!<a class="code hl_variable" href="#a4e344e5ef687176c93495090272a6778">fUseCaveCoordinates</a>) {</div>
-<div class="line"><span class="lineno">  906</span>      nav-&gt;cd(<span class="stringliteral">&quot;/MuonShieldArea_1/&quot;</span>);</div>
-<div class="line"><span class="lineno">  907</span>    } <span class="keywordflow">else</span> {</div>
-<div class="line"><span class="lineno">  908</span>      Double_t <a class="code hl_variable" href="namespaceana__ShipMuon.html#aca3f5e85758a67e98544d3bd0d4cb8ce">local</a>[3] = {0, 0, zLoc};</div>
-<div class="line"><span class="lineno">  909</span>      Double_t global[3];</div>
-<div class="line"><span class="lineno">  910</span>      nav-&gt;cd(<span class="stringliteral">&quot;/target_vacuum_box_1/TargetArea_1&quot;</span>);</div>
-<div class="line"><span class="lineno">  911</span>      nav-&gt;LocalToMaster(local, global);</div>
-<div class="line"><span class="lineno">  912</span>      nav-&gt;cd(<span class="stringliteral">&quot;/cave_1&quot;</span>);</div>
-<div class="line"><span class="lineno">  913</span>      yLocPlane = global[1];</div>
-<div class="line"><span class="lineno">  914</span>      zLocPlane = global[2];</div>
-<div class="line"><span class="lineno">  915</span>      xLocPlane = global[0];</div>
-<div class="line"><span class="lineno">  916</span>    }</div>
-<div class="line"><span class="lineno">  917</span>    <a class="code hl_variable" href="namespacestudy__GammaConv.html#a3e1144f0a516f56c4b359927d9e3fe9c">sensPlane</a>-&gt;SetLineColor(kBlue - 10);</div>
-<div class="line"><span class="lineno">  918</span>    nav-&gt;GetCurrentNode()-&gt;GetVolume()-&gt;AddNode(</div>
-<div class="line"><span class="lineno">  919</span>        sensPlane, 1, <span class="keyword">new</span> TGeoTranslation(xLocPlane, yLocPlane, zLocPlane));</div>
-<div class="line"><span class="lineno">  920</span>    <a class="code hl_variable" href="#a0de1289f9798f6b4bdcbeb95d9a4d027">fPlaneVolName</a> = <a class="code hl_variable" href="namespacestudy__GammaConv.html#a3e1144f0a516f56c4b359927d9e3fe9c">sensPlane</a>-&gt;GetName();</div>
-<div class="line"><span class="lineno">  921</span>    AddSensitiveVolume(sensPlane);</div>
-<div class="line"><span class="lineno">  922</span>  } <span class="keywordflow">else</span> {  <span class="comment">// add cylindrical sensPlane</span></div>
-<div class="line"><span class="lineno">  923</span>    TGeoVolume* sensPlaneCyl =</div>
-<div class="line"><span class="lineno">  924</span>        gGeoManager-&gt;MakeTube(shapename_prefix + <a class="code hl_variable" href="#abad68307a244613567d1fc695117984f">fVetoName</a> + <span class="stringliteral">&quot;_tube&quot;</span>, vac,</div>
-<div class="line"><span class="lineno">  925</span>                              12.51 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a9842927f33236414d34831f59ed1c28f">cm</a>, 12.52 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a9842927f33236414d34831f59ed1c28f">cm</a>, zLoc / 2.);</div>
-<div class="line"><span class="lineno">  926</span>    std::cout &lt;&lt; this-&gt;GetName()</div>
-<div class="line"><span class="lineno">  927</span>              &lt;&lt; <span class="stringliteral">&quot;, ConstructGeometry(): Created Tube with dimensions: &quot;</span></div>
-<div class="line"><span class="lineno">  928</span>                 <span class="stringliteral">&quot;12.51*cm,12.52*cm,zLoc/2.&quot;</span></div>
-<div class="line"><span class="lineno">  929</span>              &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  930</span>    nav-&gt;cd(<span class="stringliteral">&quot;/target_vacuum_box_1/TargetArea_1/HeVolume_1&quot;</span>);</div>
-<div class="line"><span class="lineno">  931</span>    nav-&gt;GetCurrentNode()-&gt;GetVolume()-&gt;AddNode(sensPlaneCyl, 1,</div>
-<div class="line"><span class="lineno">  932</span>                                                <span class="keyword">new</span> TGeoTranslation(0, 0, 0));</div>
-<div class="line"><span class="lineno">  933</span>    <a class="code hl_variable" href="#a0de1289f9798f6b4bdcbeb95d9a4d027">fPlaneVolName</a> = sensPlaneCyl-&gt;GetName();</div>
-<div class="line"><span class="lineno">  934</span>    AddSensitiveVolume(sensPlaneCyl);</div>
-<div class="line"><span class="lineno">  935</span>  }</div>
-<div class="line"><span class="lineno">  936</span>  <span class="comment">// Splitting region of SplitStep(): the target box and everything in it.</span></div>
-<div class="line"><span class="lineno">  937</span>  <span class="comment">// These are not made sensitive: SplitStep() sees every step through</span></div>
-<div class="line"><span class="lineno">  938</span>  <span class="comment">// ShipSteppingAction and checks the volume of the pre-step point.</span></div>
-<div class="line"><span class="lineno">  939</span>  <span class="keywordflow">if</span> ((<a class="code hl_variable" href="#a8e8b78bd11859e08e28dbc0526383fc7">fNsplits</a> &gt; 0) &amp;&amp; (<a class="code hl_variable" href="#a628f6439716f26f9b0c25252b1f3524f">fIntermediateNsplits</a> &gt; 0) &amp;&amp; (!<a class="code hl_variable" href="#a1b35a802c7f2f7c81d509b2b4d0ddab7">fSplitOnce</a>)) {</div>
-<div class="line"><span class="lineno">  940</span>    nav-&gt;cd(<span class="stringliteral">&quot;/target_vacuum_box_1&quot;</span>);</div>
-<div class="line"><span class="lineno">  941</span>    CollectVolumeNames(nav-&gt;GetCurrentNode()-&gt;GetVolume(), <a class="code hl_variable" href="#af5ad047e588500396f82b97d1f04c07e">fSplitVolumes</a>);</div>
-<div class="line"><span class="lineno">  942</span>    LOG(info) &lt;&lt; <span class="stringliteral">&quot;exitHadronAbsorber: per-step splitting in &quot;</span></div>
-<div class="line"><span class="lineno">  943</span>              &lt;&lt; <a class="code hl_variable" href="#af5ad047e588500396f82b97d1f04c07e">fSplitVolumes</a>.size() &lt;&lt; <span class="stringliteral">&quot; volumes below target_vacuum_box&quot;</span>;</div>
-<div class="line"><span class="lineno">  944</span>  }</div>
-<div class="line"><span class="lineno">  945</span>}</div>
+<div class="line"><span class="lineno">  873</span>    Double_t <a class="code hl_variable" href="namespaceana__ShipMuon.html#aca3f5e85758a67e98544d3bd0d4cb8ce">local</a>[3] = {0, 0, 0};</div>
+<div class="line"><span class="lineno">  874</span>    <span class="keywordflow">if</span> (!nav-&gt;cd(<span class="stringliteral">&quot;/MuonShieldArea_1/AbsorberVol_1&quot;</span>)) {</div>
+<div class="line"><span class="lineno">  875</span>      LOG(fatal) &lt;&lt; <span class="stringliteral">&quot;exitHadronAbsorber: no hadron absorber in the geometry, &quot;</span></div>
+<div class="line"><span class="lineno">  876</span>                    <span class="stringliteral">&quot;add the muon shield or set the plane position explicitly&quot;</span>;</div>
+<div class="line"><span class="lineno">  877</span>    }</div>
+<div class="line"><span class="lineno">  878</span>    TGeoBBox* <a class="code hl_variable" href="namespacemakeCascade.html#a14cea4d78b73e5ff8a7eefb813be9886">tmp</a> =</div>
+<div class="line"><span class="lineno">  879</span>        <span class="keyword">dynamic_cast&lt;</span>TGeoBBox*<span class="keyword">&gt;</span>(nav-&gt;GetCurrentNode()-&gt;GetVolume()-&gt;GetShape());</div>
+<div class="line"><span class="lineno">  880</span>    <a class="code hl_variable" href="namespaceana__ShipMuon.html#aca3f5e85758a67e98544d3bd0d4cb8ce">local</a>[2] = <a class="code hl_variable" href="namespacemakeCascade.html#a14cea4d78b73e5ff8a7eefb813be9886">tmp</a>-&gt;GetDZ();</div>
+<div class="line"><span class="lineno">  881</span>    Double_t global[3] = {0, 0, 0};</div>
+<div class="line"><span class="lineno">  882</span>    nav-&gt;LocalToMaster(local, global);</div>
+<div class="line"><span class="lineno">  883</span>    zLoc = global[2] + 1. * <a class="code hl_variable" href="ShipBellField_8cxx.html#a9842927f33236414d34831f59ed1c28f">cm</a>;</div>
+<div class="line"><span class="lineno">  884</span>  } <span class="keywordflow">else</span> {</div>
+<div class="line"><span class="lineno">  885</span>    zLoc = <a class="code hl_variable" href="#a870b8583ed055da51139171aac19ef9b">fzPos</a>;</div>
+<div class="line"><span class="lineno">  886</span>  }  <span class="comment">// use external input</span></div>
+<div class="line"><span class="lineno">  887</span> </div>
+<div class="line"><span class="lineno">  888</span>  TString myname(this-&gt;GetName());</div>
+<div class="line"><span class="lineno">  889</span>  TString shapename_prefix(myname);  <span class="comment">// Use a prefix for shapenames</span></div>
+<div class="line"><span class="lineno">  890</span> </div>
+<div class="line"><span class="lineno">  891</span>  Double_t xLocPlane = 0.0;</div>
+<div class="line"><span class="lineno">  892</span>  Double_t yLocPlane = 0.0;</div>
+<div class="line"><span class="lineno">  893</span>  Double_t zLocPlane = zLoc;</div>
+<div class="line"><span class="lineno">  894</span> </div>
+<div class="line"><span class="lineno">  895</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="#a7be0ddff85460bb24c31c0369cc9dd57">fCylindricalPlane</a>) {</div>
+<div class="line"><span class="lineno">  896</span>    TGeoVolume* <a class="code hl_variable" href="namespacestudy__GammaConv.html#a3e1144f0a516f56c4b359927d9e3fe9c">sensPlane</a> =</div>
+<div class="line"><span class="lineno">  897</span>        gGeoManager-&gt;MakeBox(shapename_prefix + <a class="code hl_variable" href="#abad68307a244613567d1fc695117984f">fVetoName</a> + <span class="stringliteral">&quot;_box&quot;</span>, vac,</div>
+<div class="line"><span class="lineno">  898</span>                             3.56 * <a class="code hl_variable" href="ShipBellField_8cxx.html#ae0699ca79e23818d99b9ee18334a9325">m</a> - 1. * <a class="code hl_variable" href="exitHadronAbsorber_8cxx.html#a644590da60ab4efe07fbda3a260e5407">mm</a>, 1.7 * <a class="code hl_variable" href="ShipBellField_8cxx.html#ae0699ca79e23818d99b9ee18334a9325">m</a> - 1. * <a class="code hl_variable" href="exitHadronAbsorber_8cxx.html#a644590da60ab4efe07fbda3a260e5407">mm</a>, 1. * <a class="code hl_variable" href="exitHadronAbsorber_8cxx.html#a644590da60ab4efe07fbda3a260e5407">mm</a>);</div>
+<div class="line"><span class="lineno">  899</span>    std::cout &lt;&lt; this-&gt;GetName()</div>
+<div class="line"><span class="lineno">  900</span>              &lt;&lt; <span class="stringliteral">&quot;, ConstructGeometry(): Created Box with dimensions: &quot;</span></div>
+<div class="line"><span class="lineno">  901</span>                 <span class="stringliteral">&quot;3.56*m-1.*mm,1.7*m-1.*mm,1.*mm&quot;</span></div>
+<div class="line"><span class="lineno">  902</span>              &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  903</span> </div>
+<div class="line"><span class="lineno">  904</span>    <span class="keywordflow">if</span> (!<a class="code hl_variable" href="#a4e344e5ef687176c93495090272a6778">fUseCaveCoordinates</a>) {</div>
+<div class="line"><span class="lineno">  905</span>      nav-&gt;cd(<span class="stringliteral">&quot;/MuonShieldArea_1/&quot;</span>);</div>
+<div class="line"><span class="lineno">  906</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><span class="lineno">  907</span>      Double_t <a class="code hl_variable" href="namespaceana__ShipMuon.html#aca3f5e85758a67e98544d3bd0d4cb8ce">local</a>[3] = {0, 0, zLoc};</div>
+<div class="line"><span class="lineno">  908</span>      Double_t global[3];</div>
+<div class="line"><span class="lineno">  909</span>      nav-&gt;cd(<span class="stringliteral">&quot;/target_vacuum_box_1/TargetArea_1&quot;</span>);</div>
+<div class="line"><span class="lineno">  910</span>      nav-&gt;LocalToMaster(local, global);</div>
+<div class="line"><span class="lineno">  911</span>      nav-&gt;cd(<span class="stringliteral">&quot;/cave_1&quot;</span>);</div>
+<div class="line"><span class="lineno">  912</span>      yLocPlane = global[1];</div>
+<div class="line"><span class="lineno">  913</span>      zLocPlane = global[2];</div>
+<div class="line"><span class="lineno">  914</span>      xLocPlane = global[0];</div>
+<div class="line"><span class="lineno">  915</span>    }</div>
+<div class="line"><span class="lineno">  916</span>    <a class="code hl_variable" href="namespacestudy__GammaConv.html#a3e1144f0a516f56c4b359927d9e3fe9c">sensPlane</a>-&gt;SetLineColor(kBlue - 10);</div>
+<div class="line"><span class="lineno">  917</span>    nav-&gt;GetCurrentNode()-&gt;GetVolume()-&gt;AddNode(</div>
+<div class="line"><span class="lineno">  918</span>        sensPlane, 1, <span class="keyword">new</span> TGeoTranslation(xLocPlane, yLocPlane, zLocPlane));</div>
+<div class="line"><span class="lineno">  919</span>    <a class="code hl_variable" href="#a0de1289f9798f6b4bdcbeb95d9a4d027">fPlaneVolName</a> = <a class="code hl_variable" href="namespacestudy__GammaConv.html#a3e1144f0a516f56c4b359927d9e3fe9c">sensPlane</a>-&gt;GetName();</div>
+<div class="line"><span class="lineno">  920</span>    AddSensitiveVolume(sensPlane);</div>
+<div class="line"><span class="lineno">  921</span>  } <span class="keywordflow">else</span> {  <span class="comment">// add cylindrical sensPlane</span></div>
+<div class="line"><span class="lineno">  922</span>    TGeoVolume* sensPlaneCyl =</div>
+<div class="line"><span class="lineno">  923</span>        gGeoManager-&gt;MakeTube(shapename_prefix + <a class="code hl_variable" href="#abad68307a244613567d1fc695117984f">fVetoName</a> + <span class="stringliteral">&quot;_tube&quot;</span>, vac,</div>
+<div class="line"><span class="lineno">  924</span>                              12.51 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a9842927f33236414d34831f59ed1c28f">cm</a>, 12.52 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a9842927f33236414d34831f59ed1c28f">cm</a>, zLoc / 2.);</div>
+<div class="line"><span class="lineno">  925</span>    std::cout &lt;&lt; this-&gt;GetName()</div>
+<div class="line"><span class="lineno">  926</span>              &lt;&lt; <span class="stringliteral">&quot;, ConstructGeometry(): Created Tube with dimensions: &quot;</span></div>
+<div class="line"><span class="lineno">  927</span>                 <span class="stringliteral">&quot;12.51*cm,12.52*cm,zLoc/2.&quot;</span></div>
+<div class="line"><span class="lineno">  928</span>              &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  929</span>    nav-&gt;cd(<span class="stringliteral">&quot;/target_vacuum_box_1/TargetArea_1/HeVolume_1&quot;</span>);</div>
+<div class="line"><span class="lineno">  930</span>    nav-&gt;GetCurrentNode()-&gt;GetVolume()-&gt;AddNode(sensPlaneCyl, 1,</div>
+<div class="line"><span class="lineno">  931</span>                                                <span class="keyword">new</span> TGeoTranslation(0, 0, 0));</div>
+<div class="line"><span class="lineno">  932</span>    <a class="code hl_variable" href="#a0de1289f9798f6b4bdcbeb95d9a4d027">fPlaneVolName</a> = sensPlaneCyl-&gt;GetName();</div>
+<div class="line"><span class="lineno">  933</span>    AddSensitiveVolume(sensPlaneCyl);</div>
+<div class="line"><span class="lineno">  934</span>  }</div>
+<div class="line"><span class="lineno">  935</span>  <span class="comment">// Splitting region of SplitStep(): the target box and everything in it.</span></div>
+<div class="line"><span class="lineno">  936</span>  <span class="comment">// These are not made sensitive: SplitStep() sees every step through</span></div>
+<div class="line"><span class="lineno">  937</span>  <span class="comment">// ShipSteppingAction and checks the volume of the pre-step point.</span></div>
+<div class="line"><span class="lineno">  938</span>  <span class="keywordflow">if</span> ((<a class="code hl_variable" href="#a8e8b78bd11859e08e28dbc0526383fc7">fNsplits</a> &gt; 0) &amp;&amp; (<a class="code hl_variable" href="#a628f6439716f26f9b0c25252b1f3524f">fIntermediateNsplits</a> &gt; 0) &amp;&amp; (!<a class="code hl_variable" href="#a1b35a802c7f2f7c81d509b2b4d0ddab7">fSplitOnce</a>)) {</div>
+<div class="line"><span class="lineno">  939</span>    nav-&gt;cd(<span class="stringliteral">&quot;/target_vacuum_box_1&quot;</span>);</div>
+<div class="line"><span class="lineno">  940</span>    CollectVolumeNames(nav-&gt;GetCurrentNode()-&gt;GetVolume(), <a class="code hl_variable" href="#af5ad047e588500396f82b97d1f04c07e">fSplitVolumes</a>);</div>
+<div class="line"><span class="lineno">  941</span>    LOG(info) &lt;&lt; <span class="stringliteral">&quot;exitHadronAbsorber: per-step splitting in &quot;</span></div>
+<div class="line"><span class="lineno">  942</span>              &lt;&lt; <a class="code hl_variable" href="#af5ad047e588500396f82b97d1f04c07e">fSplitVolumes</a>.size() &lt;&lt; <span class="stringliteral">&quot; volumes below target_vacuum_box&quot;</span>;</div>
+<div class="line"><span class="lineno">  943</span>  }</div>
+<div class="line"><span class="lineno">  944</span>}</div>
 <div class="ttc" id="aShipBellField_8cxx_html_a9842927f33236414d34831f59ed1c28f"><div class="ttname"><a href="ShipBellField_8cxx.html#a9842927f33236414d34831f59ed1c28f">cm</a></div><div class="ttdeci">constexpr Double_t cm</div><div class="ttdef"><b>Definition</b> <a href="ShipBellField_8cxx_source.html#l00024">ShipBellField.cxx:24</a></div></div>
 <div class="ttc" id="aShipBellField_8cxx_html_ae0699ca79e23818d99b9ee18334a9325"><div class="ttname"><a href="ShipBellField_8cxx.html#ae0699ca79e23818d99b9ee18334a9325">m</a></div><div class="ttdeci">constexpr Double_t m</div><div class="ttdef"><b>Definition</b> <a href="ShipBellField_8cxx_source.html#l00025">ShipBellField.cxx:25</a></div></div>
 <div class="ttc" id="aclassexitHadronAbsorber_html_a0de1289f9798f6b4bdcbeb95d9a4d027"><div class="ttname"><a href="#a0de1289f9798f6b4bdcbeb95d9a4d027">exitHadronAbsorber::fPlaneVolName</a></div><div class="ttdeci">TString fPlaneVolName</div><div class="ttdef"><b>Definition</b> <a href="exitHadronAbsorber_8h_source.html#l00164">exitHadronAbsorber.h:164</a></div></div>
@@ -961,7 +960,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="ttc" id="anamespaceShipAna_html_aa4bf87f4d17f9d38b1d8f4d009bb54b3"><div class="ttname"><a href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">ShipAna.i</a></div><div class="ttdeci">int i</div><div class="ttdef"><b>Definition</b> <a href="ShipAna_8py_source.html#l00108">ShipAna.py:108</a></div></div>
 <div class="ttc" id="anamespacemakeMuonEM_html_ade078eb3a164b74694c2f6d5e568565e"><div class="ttname"><a href="namespacemakeMuonEM.html#ade078eb3a164b74694c2f6d5e568565e">makeMuonEM.part</a></div><div class="ttdeci">part</div><div class="ttdef"><b>Definition</b> <a href="makeMuonEM_8py_source.html#l00059">makeMuonEM.py:59</a></div></div>
 <div class="ttc" id="anamespacerunPythia8_html_ac56f70c860e9ee4f5cbea5426bc6138c"><div class="ttname"><a href="namespacerunPythia8.html#ac56f70c860e9ee4f5cbea5426bc6138c">runPythia8.processes</a></div><div class="ttdeci">dict processes</div><div class="ttdef"><b>Definition</b> <a href="runPythia8_8py_source.html#l00092">runPythia8.py:92</a></div></div>
-<div class="ttc" id="anamespacerun__fixedTarget_html_a8849978ebdda515280cb5b90b4d173a5"><div class="ttname"><a href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">run_fixedTarget.gMC</a></div><div class="ttdeci">gMC</div><div class="ttdef"><b>Definition</b> <a href="run__fixedTarget_8py_source.html#l00586">run_fixedTarget.py:586</a></div></div>
+<div class="ttc" id="anamespacerun__fixedTarget_html_a8849978ebdda515280cb5b90b4d173a5"><div class="ttname"><a href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">run_fixedTarget.gMC</a></div><div class="ttdeci">gMC</div><div class="ttdef"><b>Definition</b> <a href="run__fixedTarget_8py_source.html#l00592">run_fixedTarget.py:592</a></div></div>
 <div class="ttc" id="astructTrackBuffer_html_a08c1af66e8d4a52ef7ec9e3dd6680b61"><div class="ttname"><a href="structTrackBuffer.html#a08c1af66e8d4a52ef7ec9e3dd6680b61">TrackBuffer::pz</a></div><div class="ttdeci">Double_t pz</div><div class="ttdef"><b>Definition</b> <a href="exitHadronAbsorber_8h_source.html#l00025">exitHadronAbsorber.h:25</a></div></div>
 <div class="ttc" id="astructTrackBuffer_html_a1b007773749006d427fe66ab5ca0d4db"><div class="ttname"><a href="structTrackBuffer.html#a1b007773749006d427fe66ab5ca0d4db">TrackBuffer::splitRole</a></div><div class="ttdeci">Int_t splitRole</div><div class="ttdef"><b>Definition</b> <a href="exitHadronAbsorber_8h_source.html#l00036">exitHadronAbsorber.h:36</a></div></div>
 <div class="ttc" id="astructTrackBuffer_html_a253a2de70fce2a1873c55b56c8b39f2b"><div class="ttname"><a href="structTrackBuffer.html#a253a2de70fce2a1873c55b56c8b39f2b">TrackBuffer::x</a></div><div class="ttdeci">Double_t x</div><div class="ttdef"><b>Definition</b> <a href="exitHadronAbsorber_8h_source.html#l00026">exitHadronAbsorber.h:26</a></div></div>
@@ -1283,12 +1282,12 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8cxx_source.html#l00947">947</a> of file <a class="el" href="exitHadronAbsorber_8cxx_source.html">exitHadronAbsorber.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  947</span>                                  {</div>
-<div class="line"><span class="lineno">  948</span>  <a class="code hl_variable" href="classSHiP_1_1Detector.html#a15abb9db813d378f7c19b79bc53cac88">fDetPoints</a> = <span class="keyword">new</span> std::vector&lt;vetoPoint&gt;();</div>
-<div class="line"><span class="lineno">  949</span>  TString <a class="code hl_variable" href="namespacecalo__scoring__plane__pid__example.html#a33cc14130de3283cf2cce7c78b91001f">name</a> = <a class="code hl_variable" href="#abad68307a244613567d1fc695117984f">fVetoName</a> + <span class="stringliteral">&quot;Point&quot;</span>;</div>
-<div class="line"><span class="lineno">  950</span>  FairRootManager::Instance()-&gt;RegisterAny(<a class="code hl_variable" href="namespacecalo__scoring__plane__pid__example.html#a33cc14130de3283cf2cce7c78b91001f">name</a>.Data(), <a class="code hl_variable" href="classSHiP_1_1Detector.html#a15abb9db813d378f7c19b79bc53cac88">fDetPoints</a>, kTRUE);</div>
-<div class="line"><span class="lineno">  951</span>}</div>
+<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8cxx_source.html#l00946">946</a> of file <a class="el" href="exitHadronAbsorber_8cxx_source.html">exitHadronAbsorber.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  946</span>                                  {</div>
+<div class="line"><span class="lineno">  947</span>  <a class="code hl_variable" href="classSHiP_1_1Detector.html#a15abb9db813d378f7c19b79bc53cac88">fDetPoints</a> = <span class="keyword">new</span> std::vector&lt;vetoPoint&gt;();</div>
+<div class="line"><span class="lineno">  948</span>  TString <a class="code hl_variable" href="namespacecalo__scoring__plane__pid__example.html#a33cc14130de3283cf2cce7c78b91001f">name</a> = <a class="code hl_variable" href="#abad68307a244613567d1fc695117984f">fVetoName</a> + <span class="stringliteral">&quot;Point&quot;</span>;</div>
+<div class="line"><span class="lineno">  949</span>  FairRootManager::Instance()-&gt;RegisterAny(<a class="code hl_variable" href="namespacecalo__scoring__plane__pid__example.html#a33cc14130de3283cf2cce7c78b91001f">name</a>.Data(), <a class="code hl_variable" href="classSHiP_1_1Detector.html#a15abb9db813d378f7c19b79bc53cac88">fDetPoints</a>, kTRUE);</div>
+<div class="line"><span class="lineno">  950</span>}</div>
 <div class="ttc" id="aclassSHiP_1_1Detector_html_a15abb9db813d378f7c19b79bc53cac88"><div class="ttname"><a href="classSHiP_1_1Detector.html#a15abb9db813d378f7c19b79bc53cac88">SHiP::Detector&lt; vetoPoint &gt;::fDetPoints</a></div><div class="ttdeci">std::vector&lt; vetoPoint &gt; * fDetPoints</div><div class="ttdef"><b>Definition</b> <a href="Detector_8h_source.html#l00090">Detector.h:90</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -1656,7 +1655,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8h_source.html#l00085">85</a> of file <a class="el" href="exitHadronAbsorber_8h_source.html">exitHadronAbsorber.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   85</span>{ <a class="code hl_variable" href="#a870b8583ed055da51139171aac19ef9b">fzPos</a> = <a class="code hl_variable" href="namespacerun__fixedTarget.html#a68f8e54ebe34ed88a1aff4505c32be7c">x</a>; }</div>
-<div class="ttc" id="anamespacerun__fixedTarget_html_a68f8e54ebe34ed88a1aff4505c32be7c"><div class="ttname"><a href="namespacerun__fixedTarget.html#a68f8e54ebe34ed88a1aff4505c32be7c">run_fixedTarget.x</a></div><div class="ttdeci">x</div><div class="ttdef"><b>Definition</b> <a href="run__fixedTarget_8py_source.html#l00705">run_fixedTarget.py:705</a></div></div>
+<div class="ttc" id="anamespacerun__fixedTarget_html_a68f8e54ebe34ed88a1aff4505c32be7c"><div class="ttname"><a href="namespacerun__fixedTarget.html#a68f8e54ebe34ed88a1aff4505c32be7c">run_fixedTarget.x</a></div><div class="ttdeci">x</div><div class="ttdef"><b>Definition</b> <a href="run__fixedTarget_8py_source.html#l00711">run_fixedTarget.py:711</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

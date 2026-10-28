@@ -111,34 +111,24 @@ Collaboration diagram for ShipMuonShield:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a5d5ad91df9fc8ad44b3d77c9f4fdcd14" id="r_a5d5ad91df9fc8ad44b3d77c9f4fdcd14"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5d5ad91df9fc8ad44b3d77c9f4fdcd14">ShipMuonShield</a> (std::vector&lt; double &gt; in_params, Double_t z, const Bool_t WithConstShieldField, const Bool_t SC_key)</td></tr>
+<tr class="memitem:afc8a8b1cb67343f65a61d6e2ea9f2462" id="r_afc8a8b1cb67343f65a61d6e2ea9f2462"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afc8a8b1cb67343f65a61d6e2ea9f2462">ShipMuonShield</a> (std::vector&lt; double &gt; in_params, size_t n_magnets, Double_t z)</td></tr>
 <tr class="memitem:a21c4058626af3ba4afb7100f8d1e4023" id="r_a21c4058626af3ba4afb7100f8d1e4023"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a21c4058626af3ba4afb7100f8d1e4023">ShipMuonShield</a> ()</td></tr>
 <tr class="memitem:ac713a92b34161406fb02070349dffc88" id="r_ac713a92b34161406fb02070349dffc88"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac713a92b34161406fb02070349dffc88">~ShipMuonShield</a> () override</td></tr>
 <tr class="memitem:a5c4dc64fbf3cac8bf4263e984202c53f" id="r_a5c4dc64fbf3cac8bf4263e984202c53f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5c4dc64fbf3cac8bf4263e984202c53f">ConstructGeometry</a> () override</td></tr>
 <tr class="memitem:ae9c0bdddabd0ce99b92dce10ec9d536f" id="r_ae9c0bdddabd0ce99b92dce10ec9d536f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae9c0bdddabd0ce99b92dce10ec9d536f">SetSNDSpace</a> (Bool_t hole, Double_t hole_dx, Double_t hole_dy, Int_t first_magnet, Int_t last_magnet)</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pub-static-attribs" class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
+Static Public Attributes</h2></td></tr>
+<tr class="memitem:ac81702251e4b3eae9619d7733e0d7dca" id="r_ac81702251e4b3eae9619d7733e0d7dca"><td class="memItemLeft" align="right" valign="top">static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac81702251e4b3eae9619d7733e0d7dca">nParams</a> = 4</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pro-methods" class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:a287d88c01d16336f64b5eec85574a4ac" id="r_a287d88c01d16336f64b5eec85574a4ac"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a287d88c01d16336f64b5eec85574a4ac">CreateArb8</a> (const TString &amp;arbName, TGeoMedium *medium, Double_t dZ, std::array&lt; Double_t, 16 &gt; corners, Int_t color, TGeoUniformMagField *magField, TGeoVolume *top, Double_t x_translation, Double_t y_translation, Double_t z_translation)</td></tr>
-<tr class="memitem:a7bbec66dfe6198b6507880fb2bd8696a" id="r_a7bbec66dfe6198b6507880fb2bd8696a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7bbec66dfe6198b6507880fb2bd8696a">Initialize</a> (std::vector&lt; TString &gt; &amp;magnetName, std::vector&lt; <a class="el" href="ShipMuonShield_8h.html#a7a162bd4e07daf5d23ff100f08d1cb43">FieldDirection</a> &gt; &amp;fieldDirection, std::vector&lt; Double_t &gt; &amp;dXIn, std::vector&lt; Double_t &gt; &amp;dYIn, std::vector&lt; Double_t &gt; &amp;dXOut, std::vector&lt; Double_t &gt; &amp;dYOut, std::vector&lt; Double_t &gt; &amp;ratio_yokesIn, std::vector&lt; Double_t &gt; &amp;ratio_yokesOut, std::vector&lt; Double_t &gt; &amp;dY_yokeIn, std::vector&lt; Double_t &gt; &amp;dY_yokeOut, std::vector&lt; Double_t &gt; &amp;dZ, std::vector&lt; Double_t &gt; &amp;Z_rel, std::vector&lt; Double_t &gt; &amp;midGapIn, std::vector&lt; Double_t &gt; &amp;midGapOut, std::vector&lt; Double_t &gt; &amp;Bgoal, std::vector&lt; Double_t &gt; &amp;gapIn, std::vector&lt; Double_t &gt; &amp;gapOut, std::vector&lt; Double_t &gt; &amp;Z)</td></tr>
-<tr class="memitem:a2ebcc373aaaa231637f97fa31daca62d" id="r_a2ebcc373aaaa231637f97fa31daca62d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2ebcc373aaaa231637f97fa31daca62d">CreateMagnet</a> (const TString &amp;magnetName, TGeoMedium *medium, TGeoVolume *tShield, TGeoUniformMagField *fields[4], <a class="el" href="ShipMuonShield_8h.html#a7a162bd4e07daf5d23ff100f08d1cb43">FieldDirection</a> fieldDirection, Double_t dX, Double_t dY, Double_t dX2, Double_t dY2, Double_t ratio_yoke_1, Double_t ratio_yoke_2, Double_t dY_yoke_1, Double_t dY_yoke_2, Double_t dZ, Double_t middleGap, Double_t middleGap2, Double_t gap, Double_t gap2, Double_t Z, Bool_t NotMagnet, Bool_t SC_key)</td></tr>
+<tr class="memitem:aec12b24095d380b1a8a464c4696c15b7" id="r_aec12b24095d380b1a8a464c4696c15b7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aec12b24095d380b1a8a464c4696c15b7">CreateMagnet</a> (const TString &amp;magnetName, TGeoMedium *medium, TGeoVolume *tShield, Double_t dX, Double_t dY, Double_t dZ, Double_t Z, Bool_t withSNDHole)</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pro-attribs" class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
-<tr class="memitem:a25d8a1229a943532bbc3c02ebc7f8109" id="r_a25d8a1229a943532bbc3c02ebc7f8109"><td class="memItemLeft" align="right" valign="top">Double_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a25d8a1229a943532bbc3c02ebc7f8109">dZ0</a> {0.}</td></tr>
-<tr class="memitem:a0b5fdd40d2b50df6bb58faf95886a06d" id="r_a0b5fdd40d2b50df6bb58faf95886a06d"><td class="memItemLeft" align="right" valign="top">Double_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0b5fdd40d2b50df6bb58faf95886a06d">dZ1</a> {0.}</td></tr>
-<tr class="memitem:afb7b692183d67dea99006da9533b3341" id="r_afb7b692183d67dea99006da9533b3341"><td class="memItemLeft" align="right" valign="top">Double_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afb7b692183d67dea99006da9533b3341">dZ2</a> {0.}</td></tr>
-<tr class="memitem:af08206671c0915c768e237897d865756" id="r_af08206671c0915c768e237897d865756"><td class="memItemLeft" align="right" valign="top">Double_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af08206671c0915c768e237897d865756">dZ3</a> {0.}</td></tr>
-<tr class="memitem:a5e9d1ec75ed246966ffa3d96cdc4ad76" id="r_a5e9d1ec75ed246966ffa3d96cdc4ad76"><td class="memItemLeft" align="right" valign="top">Double_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5e9d1ec75ed246966ffa3d96cdc4ad76">dZ4</a> {0.}</td></tr>
-<tr class="memitem:a18ecac71d417e13399b87db533a4f186" id="r_a18ecac71d417e13399b87db533a4f186"><td class="memItemLeft" align="right" valign="top">Double_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a18ecac71d417e13399b87db533a4f186">dZ5</a> {0.}</td></tr>
-<tr class="memitem:a3ed89ff9d9698adeb74aee3798d673ec" id="r_a3ed89ff9d9698adeb74aee3798d673ec"><td class="memItemLeft" align="right" valign="top">Double_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3ed89ff9d9698adeb74aee3798d673ec">dZ6</a> {0.}</td></tr>
-<tr class="memitem:afa1fdd58785194476d02251f6506179b" id="r_afa1fdd58785194476d02251f6506179b"><td class="memItemLeft" align="right" valign="top">Double_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afa1fdd58785194476d02251f6506179b">dZ7</a> {0.}</td></tr>
-<tr class="memitem:a64f7b519e98b0e17a2caae28e7caf2fd" id="r_a64f7b519e98b0e17a2caae28e7caf2fd"><td class="memItemLeft" align="right" valign="top">Double_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a64f7b519e98b0e17a2caae28e7caf2fd">dXgap</a> {0.}</td></tr>
 <tr class="memitem:a899926b2ae70e54e604cb8851bc69ff1" id="r_a899926b2ae70e54e604cb8851bc69ff1"><td class="memItemLeft" align="right" valign="top">Double_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a899926b2ae70e54e604cb8851bc69ff1">z_end_of_proximity_shielding</a> {0.}</td></tr>
 <tr class="memitem:a5f10b4dcb1170c0ddd4faba94b308673" id="r_a5f10b4dcb1170c0ddd4faba94b308673"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5f10b4dcb1170c0ddd4faba94b308673">nMagnets</a> {0}</td></tr>
-<tr class="memitem:a6eef9ac6682ae43dd8888f2848367cc5" id="r_a6eef9ac6682ae43dd8888f2848367cc5"><td class="memItemLeft" align="right" valign="top">Int_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6eef9ac6682ae43dd8888f2848367cc5">nParams</a> {0}</td></tr>
-<tr class="memitem:aa83bbeaa79fad431c2c5186c7df276ba" id="r_aa83bbeaa79fad431c2c5186c7df276ba"><td class="memItemLeft" align="right" valign="top">Bool_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa83bbeaa79fad431c2c5186c7df276ba">fWithConstShieldField</a> {false}</td></tr>
-<tr class="memitem:a92c765f3f0e52c87e24d34520480868d" id="r_a92c765f3f0e52c87e24d34520480868d"><td class="memItemLeft" align="right" valign="top">Bool_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a92c765f3f0e52c87e24d34520480868d">fSC_mag</a> {false}</td></tr>
 <tr class="memitem:aa20eee4086760aa148d9aca889ad0746" id="r_aa20eee4086760aa148d9aca889ad0746"><td class="memItemLeft" align="right" valign="top">std::vector&lt; Double_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa20eee4086760aa148d9aca889ad0746">shield_params</a></td></tr>
 <tr class="memitem:a621dfbab4170ed79ff142d25063f5a8c" id="r_a621dfbab4170ed79ff142d25063f5a8c"><td class="memItemLeft" align="right" valign="top">Bool_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a621dfbab4170ed79ff142d25063f5a8c">snd_hole</a> {false}</td></tr>
 <tr class="memitem:af69a736a23ef1339268d4bfe4a49069f" id="r_af69a736a23ef1339268d4bfe4a49069f"><td class="memItemLeft" align="right" valign="top">Double_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af69a736a23ef1339268d4bfe4a49069f">snd_hole_dx</a> = 0.</td></tr>
@@ -148,10 +138,10 @@ Protected Attributes</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="ShipMuonShield_8h_source.html#l00022">22</a> of file <a class="el" href="ShipMuonShield_8h_source.html">ShipMuonShield.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ShipMuonShield_8h_source.html#l00025">25</a> of file <a class="el" href="ShipMuonShield_8h_source.html">ShipMuonShield.h</a>.</p>
 </div><a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a5d5ad91df9fc8ad44b3d77c9f4fdcd14" name="a5d5ad91df9fc8ad44b3d77c9f4fdcd14"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5d5ad91df9fc8ad44b3d77c9f4fdcd14">&#9670;&#160;</a></span>ShipMuonShield() <span class="overload">[1/2]</span></h2>
+<a id="afc8a8b1cb67343f65a61d6e2ea9f2462" name="afc8a8b1cb67343f65a61d6e2ea9f2462"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afc8a8b1cb67343f65a61d6e2ea9f2462">&#9670;&#160;</a></span>ShipMuonShield() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -164,43 +154,29 @@ Protected Attributes</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">Double_t</td>          <td class="paramname"><span class="paramname"><em>z</em></span>, </td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>n_magnets</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const Bool_t</td>          <td class="paramname"><span class="paramname"><em>WithConstShieldField</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const Bool_t</td>          <td class="paramname"><span class="paramname"><em>SC_key</em></span>&#160;)</td>
+          <td class="paramtype">Double_t</td>          <td class="paramname"><span class="paramname"><em>z</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipMuonShield_8cxx_source.html#l00039">39</a> of file <a class="el" href="ShipMuonShield_8cxx_source.html">ShipMuonShield.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   42</span>    : FairModule(<span class="stringliteral">&quot;MuonShield&quot;</span>, <span class="stringliteral">&quot;ShipMuonShield&quot;</span>) {</div>
-<div class="line"><span class="lineno">   43</span>  LOG(<a class="code hl_variable" href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a>) &lt;&lt; <span class="stringliteral">&quot; Function ShipMuonShield MS &quot;</span>;</div>
-<div class="line"><span class="lineno">   44</span>  std::ranges::copy(in_params, std::back_inserter(<a class="code hl_variable" href="#aa20eee4086760aa148d9aca889ad0746">shield_params</a>));</div>
-<div class="line"><span class="lineno">   45</span>  <a class="code hl_variable" href="#a6eef9ac6682ae43dd8888f2848367cc5">nParams</a> = 15;</div>
-<div class="line"><span class="lineno">   46</span>  <a class="code hl_variable" href="#a5f10b4dcb1170c0ddd4faba94b308673">nMagnets</a> = in_params.size() / <a class="code hl_variable" href="#a6eef9ac6682ae43dd8888f2848367cc5">nParams</a>;  <span class="comment">// integer division</span></div>
-<div class="line"><span class="lineno">   47</span> </div>
-<div class="line"><span class="lineno">   48</span>  <span class="keywordflow">if</span> (in_params.size() % 15 != 0) {</div>
-<div class="line"><span class="lineno">   49</span>    LOG(error) &lt;&lt; <span class="stringliteral">&quot;Warning: incomplete magnet data!&quot;</span>;</div>
-<div class="line"><span class="lineno">   50</span>  }</div>
-<div class="line"><span class="lineno">   51</span> </div>
-<div class="line"><span class="lineno">   52</span>  <a class="code hl_variable" href="#aa83bbeaa79fad431c2c5186c7df276ba">fWithConstShieldField</a> = WithConstShieldField;</div>
-<div class="line"><span class="lineno">   53</span>  <a class="code hl_variable" href="#a92c765f3f0e52c87e24d34520480868d">fSC_mag</a> = SC_key;</div>
-<div class="line"><span class="lineno">   54</span>  <a class="code hl_variable" href="#a899926b2ae70e54e604cb8851bc69ff1">z_end_of_proximity_shielding</a> = <a class="code hl_variable" href="namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed">z</a>;</div>
-<div class="line"><span class="lineno">   55</span>}</div>
+<p class="definition">Definition at line <a class="el" href="ShipMuonShield_8cxx_source.html#l00025">25</a> of file <a class="el" href="ShipMuonShield_8cxx_source.html">ShipMuonShield.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   27</span>    : FairModule(<span class="stringliteral">&quot;MuonShield&quot;</span>, <span class="stringliteral">&quot;ShipMuonShield&quot;</span>) {</div>
+<div class="line"><span class="lineno">   28</span>  LOG(<a class="code hl_variable" href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a>) &lt;&lt; <span class="stringliteral">&quot; Function ShipMuonShield MS &quot;</span>;</div>
+<div class="line"><span class="lineno">   29</span>  std::ranges::copy(in_params, std::back_inserter(<a class="code hl_variable" href="#aa20eee4086760aa148d9aca889ad0746">shield_params</a>));</div>
+<div class="line"><span class="lineno">   30</span>  <a class="code hl_variable" href="#a5f10b4dcb1170c0ddd4faba94b308673">nMagnets</a> = <a class="code hl_variable" href="namespacerun__fixedTarget.html#a5e405a58d2886451649433156c3c557e">n_magnets</a>;</div>
+<div class="line"><span class="lineno">   31</span> </div>
+<div class="line"><span class="lineno">   32</span>  <a class="code hl_variable" href="#a899926b2ae70e54e604cb8851bc69ff1">z_end_of_proximity_shielding</a> = <a class="code hl_variable" href="namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed">z</a>;</div>
+<div class="line"><span class="lineno">   33</span>}</div>
 <div class="ttc" id="aDPPythia8Generator_8cxx_html_a07cdd66ebb44c854868e1f85a375ac1e"><div class="ttname"><a href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a></div><div class="ttdeci">const Int_t debug</div><div class="ttdef"><b>Definition</b> <a href="DPPythia8Generator_8cxx_source.html#l00023">DPPythia8Generator.cxx:23</a></div></div>
-<div class="ttc" id="aclassShipMuonShield_html_a5f10b4dcb1170c0ddd4faba94b308673"><div class="ttname"><a href="#a5f10b4dcb1170c0ddd4faba94b308673">ShipMuonShield::nMagnets</a></div><div class="ttdeci">size_t nMagnets</div><div class="ttdef"><b>Definition</b> <a href="ShipMuonShield_8h_source.html#l00037">ShipMuonShield.h:37</a></div></div>
-<div class="ttc" id="aclassShipMuonShield_html_a6eef9ac6682ae43dd8888f2848367cc5"><div class="ttname"><a href="#a6eef9ac6682ae43dd8888f2848367cc5">ShipMuonShield::nParams</a></div><div class="ttdeci">Int_t nParams</div><div class="ttdef"><b>Definition</b> <a href="ShipMuonShield_8h_source.html#l00038">ShipMuonShield.h:38</a></div></div>
-<div class="ttc" id="aclassShipMuonShield_html_a899926b2ae70e54e604cb8851bc69ff1"><div class="ttname"><a href="#a899926b2ae70e54e604cb8851bc69ff1">ShipMuonShield::z_end_of_proximity_shielding</a></div><div class="ttdeci">Double_t z_end_of_proximity_shielding</div><div class="ttdef"><b>Definition</b> <a href="ShipMuonShield_8h_source.html#l00036">ShipMuonShield.h:36</a></div></div>
-<div class="ttc" id="aclassShipMuonShield_html_a92c765f3f0e52c87e24d34520480868d"><div class="ttname"><a href="#a92c765f3f0e52c87e24d34520480868d">ShipMuonShield::fSC_mag</a></div><div class="ttdeci">Bool_t fSC_mag</div><div class="ttdef"><b>Definition</b> <a href="ShipMuonShield_8h_source.html#l00040">ShipMuonShield.h:40</a></div></div>
+<div class="ttc" id="aclassShipMuonShield_html_a5f10b4dcb1170c0ddd4faba94b308673"><div class="ttname"><a href="#a5f10b4dcb1170c0ddd4faba94b308673">ShipMuonShield::nMagnets</a></div><div class="ttdeci">size_t nMagnets</div><div class="ttdef"><b>Definition</b> <a href="ShipMuonShield_8h_source.html#l00040">ShipMuonShield.h:40</a></div></div>
+<div class="ttc" id="aclassShipMuonShield_html_a899926b2ae70e54e604cb8851bc69ff1"><div class="ttname"><a href="#a899926b2ae70e54e604cb8851bc69ff1">ShipMuonShield::z_end_of_proximity_shielding</a></div><div class="ttdeci">Double_t z_end_of_proximity_shielding</div><div class="ttdef"><b>Definition</b> <a href="ShipMuonShield_8h_source.html#l00039">ShipMuonShield.h:39</a></div></div>
 <div class="ttc" id="aclassShipMuonShield_html_aa20eee4086760aa148d9aca889ad0746"><div class="ttname"><a href="#aa20eee4086760aa148d9aca889ad0746">ShipMuonShield::shield_params</a></div><div class="ttdeci">std::vector&lt; Double_t &gt; shield_params</div><div class="ttdef"><b>Definition</b> <a href="ShipMuonShield_8h_source.html#l00041">ShipMuonShield.h:41</a></div></div>
-<div class="ttc" id="aclassShipMuonShield_html_aa83bbeaa79fad431c2c5186c7df276ba"><div class="ttname"><a href="#aa83bbeaa79fad431c2c5186c7df276ba">ShipMuonShield::fWithConstShieldField</a></div><div class="ttdeci">Bool_t fWithConstShieldField</div><div class="ttdef"><b>Definition</b> <a href="ShipMuonShield_8h_source.html#l00039">ShipMuonShield.h:39</a></div></div>
+<div class="ttc" id="anamespacerun__fixedTarget_html_a5e405a58d2886451649433156c3c557e"><div class="ttname"><a href="namespacerun__fixedTarget.html#a5e405a58d2886451649433156c3c557e">run_fixedTarget.n_magnets</a></div><div class="ttdeci">n_magnets</div><div class="ttdef"><b>Definition</b> <a href="run__fixedTarget_8py_source.html#l00461">run_fixedTarget.py:461</a></div></div>
 <div class="ttc" id="anamespacerun__simScript_html_a90c25390918b8dd5a6f17d8efa00c9ed"><div class="ttname"><a href="namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed">run_simScript.z</a></div><div class="ttdeci">z</div><div class="ttdef"><b>Definition</b> <a href="run__simScript_8py_source.html#l00816">run_simScript.py:816</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -220,8 +196,8 @@ Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipMuonShield_8cxx_source.html#l00037">37</a> of file <a class="el" href="ShipMuonShield_8cxx_source.html">ShipMuonShield.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   37</span>: FairModule(<span class="stringliteral">&quot;ShipMuonShield&quot;</span>, <span class="stringliteral">&quot;&quot;</span>) {}</div>
+<p class="definition">Definition at line <a class="el" href="ShipMuonShield_8cxx_source.html#l00023">23</a> of file <a class="el" href="ShipMuonShield_8cxx_source.html">ShipMuonShield.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   23</span>: FairModule(<span class="stringliteral">&quot;ShipMuonShield&quot;</span>, <span class="stringliteral">&quot;&quot;</span>) {}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -274,247 +250,102 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipMuonShield_8cxx_source.html#l00386">386</a> of file <a class="el" href="ShipMuonShield_8cxx_source.html">ShipMuonShield.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  386</span>                                       {</div>
-<div class="line"><span class="lineno">  387</span>  LOG(<a class="code hl_variable" href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a>) &lt;&lt; <span class="stringliteral">&quot; Construct Geometry of the MS &quot;</span>;</div>
-<div class="line"><span class="lineno">  388</span>  TGeoVolume* <a class="code hl_variable" href="namespaceeventDisplay.html#adedb83676a54edf1159c60c4e308ea97">top</a> = gGeoManager-&gt;GetTopVolume();</div>
-<div class="line"><span class="lineno">  389</span>  TGeoVolume* tShield = <span class="keyword">new</span> TGeoVolumeAssembly(<span class="stringliteral">&quot;MuonShieldArea&quot;</span>);</div>
-<div class="line"><span class="lineno">  390</span>  <a class="code hl_function" href="namespaceShipGeo.html#a41fa6e1cd4e92f644524675c6850e934">ShipGeo::InitMedium</a>(<span class="stringliteral">&quot;iron&quot;</span>);</div>
-<div class="line"><span class="lineno">  391</span>  TGeoMedium* iron = gGeoManager-&gt;GetMedium(<span class="stringliteral">&quot;iron&quot;</span>);</div>
-<div class="line"><span class="lineno">  392</span> </div>
-<div class="line"><span class="lineno">  393</span>  std::vector&lt;TString&gt; magnetName;</div>
-<div class="line"><span class="lineno">  394</span>  std::vector&lt;FieldDirection&gt; fieldDirection;</div>
-<div class="line"><span class="lineno">  395</span>  std::vector&lt;Double_t&gt; dXIn, dYIn, dXOut, dYOut, dZf, Z_relf, midGapIn,</div>
-<div class="line"><span class="lineno">  396</span>      midGapOut, ratio_yokesIn, ratio_yokesOut, dY_yokeIn, dY_yokeOut, gapIn,</div>
-<div class="line"><span class="lineno">  397</span>      gapOut, Bgoal, Z;</div>
-<div class="line"><span class="lineno">  398</span>  <a class="code hl_function" href="#a7bbec66dfe6198b6507880fb2bd8696a">Initialize</a>(magnetName, fieldDirection, dXIn, dYIn, dXOut, dYOut,</div>
-<div class="line"><span class="lineno">  399</span>             ratio_yokesIn, ratio_yokesOut, dY_yokeIn, dY_yokeOut, dZf, Z_relf,</div>
-<div class="line"><span class="lineno">  400</span>             midGapIn, midGapOut, Bgoal, gapIn, gapOut, Z);</div>
-<div class="line"><span class="lineno">  401</span> </div>
-<div class="line"><span class="lineno">  402</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> nM = 0; nM &lt; <a class="code hl_variable" href="#a5f10b4dcb1170c0ddd4faba94b308673">nMagnets</a>; ++nM) {</div>
-<div class="line"><span class="lineno">  403</span>    <span class="keywordflow">if</span> (Z_relf[nM] &lt; 1e-5 || dXIn[nM] == 0) {</div>
-<div class="line"><span class="lineno">  404</span>      <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">  405</span>    }</div>
-<div class="line"><span class="lineno">  406</span>    Double_t ironField_s = Bgoal[nM] * <a class="code hl_variable" href="ShipBellField_8cxx.html#aa1123ed52d552a023188aa45658b4244">tesla</a>;</div>
-<div class="line"><span class="lineno">  407</span>    TGeoUniformMagField* magFieldIron_s =</div>
-<div class="line"><span class="lineno">  408</span>        <span class="keyword">new</span> TGeoUniformMagField(0., ironField_s, 0.);</div>
-<div class="line"><span class="lineno">  409</span>    TGeoUniformMagField* RetField_s =</div>
-<div class="line"><span class="lineno">  410</span>        <span class="keyword">new</span> TGeoUniformMagField(0., -ironField_s, 0.);</div>
-<div class="line"><span class="lineno">  411</span>    TGeoUniformMagField* ConRField_s =</div>
-<div class="line"><span class="lineno">  412</span>        <span class="keyword">new</span> TGeoUniformMagField(-ironField_s, 0., 0.);</div>
-<div class="line"><span class="lineno">  413</span>    TGeoUniformMagField* ConLField_s =</div>
-<div class="line"><span class="lineno">  414</span>        <span class="keyword">new</span> TGeoUniformMagField(ironField_s, 0., 0.);</div>
-<div class="line"><span class="lineno">  415</span>    TGeoUniformMagField* fields_s[4] = {magFieldIron_s, RetField_s, ConRField_s,</div>
-<div class="line"><span class="lineno">  416</span>                                        ConLField_s};</div>
-<div class="line"><span class="lineno">  417</span>    <span class="comment">// Create the magnet</span></div>
-<div class="line"><span class="lineno">  418</span>    <a class="code hl_function" href="#a2ebcc373aaaa231637f97fa31daca62d">CreateMagnet</a>(magnetName[nM], iron, tShield, fields_s, fieldDirection[nM],</div>
-<div class="line"><span class="lineno">  419</span>                 dXIn[nM], dYIn[nM], dXOut[nM], dYOut[nM], ratio_yokesIn[nM],</div>
-<div class="line"><span class="lineno">  420</span>                 ratio_yokesOut[nM], dY_yokeIn[nM], dY_yokeOut[nM], Z_relf[nM],</div>
-<div class="line"><span class="lineno">  421</span>                 midGapIn[nM], midGapOut[nM], gapIn[nM], gapOut[nM], Z[nM],</div>
-<div class="line"><span class="lineno">  422</span>                 nM == 0, nM == 3 &amp;&amp; <a class="code hl_variable" href="#a92c765f3f0e52c87e24d34520480868d">fSC_mag</a>);</div>
-<div class="line"><span class="lineno">  423</span>  }</div>
-<div class="line"><span class="lineno">  424</span> </div>
-<div class="line"><span class="lineno">  425</span>  <span class="comment">// Place in origin of SHiP coordinate system as subnodes placed correctly</span></div>
-<div class="line"><span class="lineno">  426</span>  <a class="code hl_variable" href="namespaceeventDisplay.html#adedb83676a54edf1159c60c4e308ea97">top</a>-&gt;AddNode(tShield, 1);</div>
-<div class="line"><span class="lineno">  427</span> </div>
-<div class="line"><span class="lineno">  428</span>  Double_t absorber_offset = dZf[0];</div>
-<div class="line"><span class="lineno">  429</span>  Double_t absorber_half_length = (Z_relf[0]);</div>
-<div class="line"><span class="lineno">  430</span> </div>
-<div class="line"><span class="lineno">  431</span>  <span class="comment">// Absorber: iron filling the TCC8 cross-section around the hadron stopper</span></div>
-<div class="line"><span class="lineno">  432</span> </div>
-<div class="line"><span class="lineno">  433</span>  <span class="keyword">using </span><a class="code hl_variable" href="namespaceShipCavernLayout.html#ad50f64adb792c0e622c979318c89b5d0">ShipCavernLayout::kTCC8CeilingY</a>;</div>
-<div class="line"><span class="lineno">  434</span>  <span class="keyword">using </span><a class="code hl_variable" href="namespaceShipCavernLayout.html#afe558055f4f4c35f814ac5e503768f0d">ShipCavernLayout::kTCC8FloorY</a>;</div>
-<div class="line"><span class="lineno">  435</span>  <span class="keyword">using </span><a class="code hl_variable" href="namespaceShipCavernLayout.html#a882ff87bb00eafdc33047035caf373b3">ShipCavernLayout::kTCC8LeftX</a>;</div>
-<div class="line"><span class="lineno">  436</span>  <span class="keyword">using </span><a class="code hl_variable" href="namespaceShipCavernLayout.html#a847ad4f95a340db7ed83fe62f0e55ee9">ShipCavernLayout::kTCC8RightX</a>;</div>
-<div class="line"><span class="lineno">  437</span>  [[maybe_unused]] <span class="keyword">auto</span> abs = <span class="keyword">new</span> TGeoBBox(</div>
-<div class="line"><span class="lineno">  438</span>      <span class="stringliteral">&quot;absorber&quot;</span>, (kTCC8RightX - kTCC8LeftX) / 2. - 0.002 * <a class="code hl_variable" href="ShipBellField_8cxx.html#ae0699ca79e23818d99b9ee18334a9325">m</a>,</div>
-<div class="line"><span class="lineno">  439</span>      (kTCC8CeilingY - kTCC8FloorY) / 2., absorber_half_length - 0.002 * <a class="code hl_variable" href="ShipBellField_8cxx.html#ae0699ca79e23818d99b9ee18334a9325">m</a>);</div>
-<div class="line"><span class="lineno">  440</span>  <span class="keyword">auto</span>* absorber_shift =</div>
-<div class="line"><span class="lineno">  441</span>      <span class="keyword">new</span> TGeoTranslation(<span class="stringliteral">&quot;absorber_shift&quot;</span>, (kTCC8RightX + kTCC8LeftX) / 2.,</div>
-<div class="line"><span class="lineno">  442</span>                          (kTCC8CeilingY + kTCC8FloorY) / 2., 0);</div>
-<div class="line"><span class="lineno">  443</span>  absorber_shift-&gt;RegisterYourself();</div>
-<div class="line"><span class="lineno">  444</span> </div>
-<div class="line"><span class="lineno">  445</span>  <span class="keyword">const</span> std::vector&lt;TString&gt; absorber_magnets = {<span class="stringliteral">&quot;MagnAbsorb&quot;</span>};</div>
-<div class="line"><span class="lineno">  446</span>  <span class="keyword">const</span> std::vector&lt;TString&gt; magnet_components = {</div>
-<div class="line"><span class="lineno">  447</span>      <span class="stringliteral">&quot;_MiddleMagL&quot;</span>, <span class="stringliteral">&quot;_MiddleMagR&quot;</span>,  <span class="stringliteral">&quot;_MagRetL&quot;</span>,    <span class="stringliteral">&quot;_MagRetR&quot;</span>,</div>
-<div class="line"><span class="lineno">  448</span>      <span class="stringliteral">&quot;_MagTopLeft&quot;</span>, <span class="stringliteral">&quot;_MagTopRight&quot;</span>, <span class="stringliteral">&quot;_MagBotLeft&quot;</span>, <span class="stringliteral">&quot;_MagBotRight&quot;</span>,</div>
-<div class="line"><span class="lineno">  449</span>  };</div>
-<div class="line"><span class="lineno">  450</span>  <span class="keyword">const</span> TString absorber_magnet_components = [&amp;] {</div>
-<div class="line"><span class="lineno">  451</span>    TString <a class="code hl_variable" href="namespacerun__tracking__scan.html#aefd0a105108077accad31b51b4f0647e">result</a>;</div>
-<div class="line"><span class="lineno">  452</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp;&amp; magnet_component : magnet_components) {</div>
-<div class="line"><span class="lineno">  453</span>      <a class="code hl_variable" href="namespacerun__tracking__scan.html#aefd0a105108077accad31b51b4f0647e">result</a> += (<span class="stringliteral">&quot;-&quot;</span> + absorber_magnets[0] + magnet_component);</div>
-<div class="line"><span class="lineno">  454</span>    }</div>
-<div class="line"><span class="lineno">  455</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="namespacerun__tracking__scan.html#aefd0a105108077accad31b51b4f0647e">result</a>;</div>
-<div class="line"><span class="lineno">  456</span>  }();</div>
-<div class="line"><span class="lineno">  457</span> </div>
-<div class="line"><span class="lineno">  458</span>  TGeoCompositeShape* absorberShape = <span class="keyword">new</span> TGeoCompositeShape(</div>
-<div class="line"><span class="lineno">  459</span>      <span class="stringliteral">&quot;Absorber&quot;</span>, <span class="stringliteral">&quot;absorber:absorber_shift&quot;</span> + absorber_magnet_components);</div>
-<div class="line"><span class="lineno">  460</span> </div>
-<div class="line"><span class="lineno">  461</span>  TGeoVolume* absorber = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;AbsorberVol&quot;</span>, absorberShape, iron);</div>
-<div class="line"><span class="lineno">  462</span>  absorber-&gt;SetLineColor(42);  <span class="comment">// brown / light red</span></div>
-<div class="line"><span class="lineno">  463</span>  tShield-&gt;AddNode(</div>
-<div class="line"><span class="lineno">  464</span>      absorber, 1,</div>
-<div class="line"><span class="lineno">  465</span>      <span class="keyword">new</span> TGeoTranslation(0, 0,</div>
-<div class="line"><span class="lineno">  466</span>                          <a class="code hl_variable" href="#a899926b2ae70e54e604cb8851bc69ff1">z_end_of_proximity_shielding</a> + absorber_half_length +</div>
-<div class="line"><span class="lineno">  467</span>                              absorber_offset));  <span class="comment">// - Passive?</span></div>
-<div class="line"><span class="lineno">  468</span>}</div>
-<div class="ttc" id="aShipBellField_8cxx_html_aa1123ed52d552a023188aa45658b4244"><div class="ttname"><a href="ShipBellField_8cxx.html#aa1123ed52d552a023188aa45658b4244">tesla</a></div><div class="ttdeci">constexpr Double_t tesla</div><div class="ttdef"><b>Definition</b> <a href="ShipBellField_8cxx_source.html#l00022">ShipBellField.cxx:22</a></div></div>
+<p class="definition">Definition at line <a class="el" href="ShipMuonShield_8cxx_source.html#l00073">73</a> of file <a class="el" href="ShipMuonShield_8cxx_source.html">ShipMuonShield.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   73</span>                                       {</div>
+<div class="line"><span class="lineno">   74</span>  LOG(<a class="code hl_variable" href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a>) &lt;&lt; <span class="stringliteral">&quot; Construct Geometry of the MS &quot;</span>;</div>
+<div class="line"><span class="lineno">   75</span>  <span class="comment">// A list in the old 15-value format also divides evenly by nParams, so</span></div>
+<div class="line"><span class="lineno">   76</span>  <span class="comment">// check the size against the expected number of magnets. At least one</span></div>
+<div class="line"><span class="lineno">   77</span>  <span class="comment">// magnet is needed, since the absorber is sized from the first one.</span></div>
+<div class="line"><span class="lineno">   78</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="#a5f10b4dcb1170c0ddd4faba94b308673">nMagnets</a> == 0 || <a class="code hl_variable" href="#aa20eee4086760aa148d9aca889ad0746">shield_params</a>.size() != <a class="code hl_variable" href="#a5f10b4dcb1170c0ddd4faba94b308673">nMagnets</a> * <a class="code hl_variable" href="#ac81702251e4b3eae9619d7733e0d7dca">nParams</a>) {</div>
+<div class="line"><span class="lineno">   79</span>    LOG(fatal) &lt;&lt; <span class="stringliteral">&quot;ShipMuonShield: expected &quot;</span> &lt;&lt; <a class="code hl_variable" href="#a5f10b4dcb1170c0ddd4faba94b308673">nMagnets</a> &lt;&lt; <span class="stringliteral">&quot; magnets x &quot;</span></div>
+<div class="line"><span class="lineno">   80</span>               &lt;&lt; <a class="code hl_variable" href="#ac81702251e4b3eae9619d7733e0d7dca">nParams</a> &lt;&lt; <span class="stringliteral">&quot; parameters, got &quot;</span> &lt;&lt; <a class="code hl_variable" href="#aa20eee4086760aa148d9aca889ad0746">shield_params</a>.size()</div>
+<div class="line"><span class="lineno">   81</span>               &lt;&lt; <span class="stringliteral">&quot; values. Is the geometry from an older version?&quot;</span>;</div>
+<div class="line"><span class="lineno">   82</span>  }</div>
+<div class="line"><span class="lineno">   83</span>  TGeoVolume* <a class="code hl_variable" href="namespaceeventDisplay.html#adedb83676a54edf1159c60c4e308ea97">top</a> = gGeoManager-&gt;GetTopVolume();</div>
+<div class="line"><span class="lineno">   84</span>  TGeoVolume* tShield = <span class="keyword">new</span> TGeoVolumeAssembly(<span class="stringliteral">&quot;MuonShieldArea&quot;</span>);</div>
+<div class="line"><span class="lineno">   85</span>  <a class="code hl_function" href="namespaceShipGeo.html#a41fa6e1cd4e92f644524675c6850e934">ShipGeo::InitMedium</a>(<span class="stringliteral">&quot;iron&quot;</span>);</div>
+<div class="line"><span class="lineno">   86</span>  TGeoMedium* iron = gGeoManager-&gt;GetMedium(<span class="stringliteral">&quot;iron&quot;</span>);</div>
+<div class="line"><span class="lineno">   87</span> </div>
+<div class="line"><span class="lineno">   88</span>  <span class="keywordtype">bool</span> absorber_magnet = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">   89</span>  Double_t Z = <a class="code hl_variable" href="#a899926b2ae70e54e604cb8851bc69ff1">z_end_of_proximity_shielding</a>;</div>
+<div class="line"><span class="lineno">   90</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> nM = 0; nM &lt; <a class="code hl_variable" href="#a5f10b4dcb1170c0ddd4faba94b308673">nMagnets</a>; ++nM) {</div>
+<div class="line"><span class="lineno">   91</span>    <span class="keyword">const</span> Double_t Zgap = <a class="code hl_variable" href="#aa20eee4086760aa148d9aca889ad0746">shield_params</a>[nM * <a class="code hl_variable" href="#ac81702251e4b3eae9619d7733e0d7dca">nParams</a> + 0];</div>
+<div class="line"><span class="lineno">   92</span>    <span class="keyword">const</span> Double_t dZ = <a class="code hl_variable" href="#aa20eee4086760aa148d9aca889ad0746">shield_params</a>[nM * <a class="code hl_variable" href="#ac81702251e4b3eae9619d7733e0d7dca">nParams</a> + 1];</div>
+<div class="line"><span class="lineno">   93</span>    <span class="keyword">const</span> Double_t dX = <a class="code hl_variable" href="#aa20eee4086760aa148d9aca889ad0746">shield_params</a>[nM * <a class="code hl_variable" href="#ac81702251e4b3eae9619d7733e0d7dca">nParams</a> + 2];</div>
+<div class="line"><span class="lineno">   94</span>    <span class="keyword">const</span> Double_t dY = <a class="code hl_variable" href="#aa20eee4086760aa148d9aca889ad0746">shield_params</a>[nM * <a class="code hl_variable" href="#ac81702251e4b3eae9619d7733e0d7dca">nParams</a> + 3];</div>
+<div class="line"><span class="lineno">   95</span>    <span class="comment">// Subsequent magnets are placed relative to the previous one</span></div>
+<div class="line"><span class="lineno">   96</span>    <span class="keywordflow">if</span> (nM &gt; 0) {</div>
+<div class="line"><span class="lineno">   97</span>      Z += <a class="code hl_variable" href="#aa20eee4086760aa148d9aca889ad0746">shield_params</a>[(nM - 1) * <a class="code hl_variable" href="#ac81702251e4b3eae9619d7733e0d7dca">nParams</a> + 1];</div>
+<div class="line"><span class="lineno">   98</span>    }</div>
+<div class="line"><span class="lineno">   99</span>    Z += Zgap + dZ;</div>
+<div class="line"><span class="lineno">  100</span> </div>
+<div class="line"><span class="lineno">  101</span>    TString <a class="code hl_variable" href="namespacecalo__scoring__plane__pid__example.html#a33cc14130de3283cf2cce7c78b91001f">name</a> = nM == 0 ? TString(<span class="stringliteral">&quot;MagnAbsorb&quot;</span>) : Form(<span class="stringliteral">&quot;Magn%zu&quot;</span>, nM);</div>
+<div class="line"><span class="lineno">  102</span>    LOG(<a class="code hl_variable" href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a>) &lt;&lt; <span class="stringliteral">&quot;Magnet &quot;</span> &lt;&lt; <a class="code hl_variable" href="namespacecalo__scoring__plane__pid__example.html#a33cc14130de3283cf2cce7c78b91001f">name</a> &lt;&lt; <span class="stringliteral">&quot;: Zgap=&quot;</span> &lt;&lt; Zgap &lt;&lt; <span class="stringliteral">&quot;, dZ=&quot;</span> &lt;&lt; dZ</div>
+<div class="line"><span class="lineno">  103</span>               &lt;&lt; <span class="stringliteral">&quot;, dX=&quot;</span> &lt;&lt; dX &lt;&lt; <span class="stringliteral">&quot;, dY=&quot;</span> &lt;&lt; dY &lt;&lt; <span class="stringliteral">&quot;, Z=&quot;</span> &lt;&lt; Z;</div>
+<div class="line"><span class="lineno">  104</span>    <span class="keywordflow">if</span> (dZ &lt; 1e-5 || dX == 0) {</div>
+<div class="line"><span class="lineno">  105</span>      <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">  106</span>    }</div>
+<div class="line"><span class="lineno">  107</span>    <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> = <span class="keyword">static_cast&lt;</span>Int_t<span class="keyword">&gt;</span>(nM);</div>
+<div class="line"><span class="lineno">  108</span>    <a class="code hl_function" href="#aec12b24095d380b1a8a464c4696c15b7">CreateMagnet</a>(name, iron, tShield, dX, dY, dZ, Z,</div>
+<div class="line"><span class="lineno">  109</span>                 <a class="code hl_variable" href="#a621dfbab4170ed79ff142d25063f5a8c">snd_hole</a> &amp;&amp; i &gt;= <a class="code hl_variable" href="#adbe47d24b57d2c21b343da9117bfcba8">snd_first_magnet</a> &amp;&amp; i &lt;= <a class="code hl_variable" href="#a87130a7cf761bb485abba3006820e726">snd_last_magnet</a>);</div>
+<div class="line"><span class="lineno">  110</span>    absorber_magnet |= nM == 0;</div>
+<div class="line"><span class="lineno">  111</span>  }</div>
+<div class="line"><span class="lineno">  112</span> </div>
+<div class="line"><span class="lineno">  113</span>  <span class="comment">// Place in origin of SHiP coordinate system as subnodes placed correctly</span></div>
+<div class="line"><span class="lineno">  114</span>  <a class="code hl_variable" href="namespaceeventDisplay.html#adedb83676a54edf1159c60c4e308ea97">top</a>-&gt;AddNode(tShield, 1);</div>
+<div class="line"><span class="lineno">  115</span> </div>
+<div class="line"><span class="lineno">  116</span>  Double_t absorber_offset = <a class="code hl_variable" href="#aa20eee4086760aa148d9aca889ad0746">shield_params</a>[0];</div>
+<div class="line"><span class="lineno">  117</span>  Double_t absorber_half_length = <a class="code hl_variable" href="#aa20eee4086760aa148d9aca889ad0746">shield_params</a>[1];</div>
+<div class="line"><span class="lineno">  118</span> </div>
+<div class="line"><span class="lineno">  119</span>  <span class="comment">// Absorber: iron filling the TCC8 cross-section around the hadron stopper</span></div>
+<div class="line"><span class="lineno">  120</span> </div>
+<div class="line"><span class="lineno">  121</span>  <span class="keyword">using </span><a class="code hl_variable" href="namespaceShipCavernLayout.html#ad50f64adb792c0e622c979318c89b5d0">ShipCavernLayout::kTCC8CeilingY</a>;</div>
+<div class="line"><span class="lineno">  122</span>  <span class="keyword">using </span><a class="code hl_variable" href="namespaceShipCavernLayout.html#afe558055f4f4c35f814ac5e503768f0d">ShipCavernLayout::kTCC8FloorY</a>;</div>
+<div class="line"><span class="lineno">  123</span>  <span class="keyword">using </span><a class="code hl_variable" href="namespaceShipCavernLayout.html#a882ff87bb00eafdc33047035caf373b3">ShipCavernLayout::kTCC8LeftX</a>;</div>
+<div class="line"><span class="lineno">  124</span>  <span class="keyword">using </span><a class="code hl_variable" href="namespaceShipCavernLayout.html#a847ad4f95a340db7ed83fe62f0e55ee9">ShipCavernLayout::kTCC8RightX</a>;</div>
+<div class="line"><span class="lineno">  125</span>  TGeoShape* absorberShape = <span class="keyword">new</span> TGeoBBox(</div>
+<div class="line"><span class="lineno">  126</span>      <span class="stringliteral">&quot;absorber&quot;</span>, (kTCC8RightX - kTCC8LeftX) / 2. - 0.002 * <a class="code hl_variable" href="ShipBellField_8cxx.html#ae0699ca79e23818d99b9ee18334a9325">m</a>,</div>
+<div class="line"><span class="lineno">  127</span>      (kTCC8CeilingY - kTCC8FloorY) / 2., absorber_half_length - 0.002 * <a class="code hl_variable" href="ShipBellField_8cxx.html#ae0699ca79e23818d99b9ee18334a9325">m</a>);</div>
+<div class="line"><span class="lineno">  128</span>  Double_t shift_x = (<a class="code hl_variable" href="namespaceShipCavernLayout.html#a847ad4f95a340db7ed83fe62f0e55ee9">kTCC8RightX</a> + <a class="code hl_variable" href="namespaceShipCavernLayout.html#a882ff87bb00eafdc33047035caf373b3">kTCC8LeftX</a>) / 2.;</div>
+<div class="line"><span class="lineno">  129</span>  Double_t shift_y = (<a class="code hl_variable" href="namespaceShipCavernLayout.html#ad50f64adb792c0e622c979318c89b5d0">kTCC8CeilingY</a> + <a class="code hl_variable" href="namespaceShipCavernLayout.html#afe558055f4f4c35f814ac5e503768f0d">kTCC8FloorY</a>) / 2.;</div>
+<div class="line"><span class="lineno">  130</span> </div>
+<div class="line"><span class="lineno">  131</span>  <span class="keywordflow">if</span> (absorber_magnet) {</div>
+<div class="line"><span class="lineno">  132</span>    <span class="comment">// Leave room for the magnet of the hadron absorber</span></div>
+<div class="line"><span class="lineno">  133</span>    <span class="keyword">auto</span>* absorber_shift =</div>
+<div class="line"><span class="lineno">  134</span>        <span class="keyword">new</span> TGeoTranslation(<span class="stringliteral">&quot;absorber_shift&quot;</span>, shift_x, shift_y, 0);</div>
+<div class="line"><span class="lineno">  135</span>    absorber_shift-&gt;RegisterYourself();</div>
+<div class="line"><span class="lineno">  136</span>    absorberShape = <span class="keyword">new</span> TGeoCompositeShape(</div>
+<div class="line"><span class="lineno">  137</span>        <span class="stringliteral">&quot;Absorber&quot;</span>, <span class="stringliteral">&quot;absorber:absorber_shift - MagnAbsorb&quot;</span>);</div>
+<div class="line"><span class="lineno">  138</span>    shift_x = shift_y = 0;</div>
+<div class="line"><span class="lineno">  139</span>  }</div>
+<div class="line"><span class="lineno">  140</span> </div>
+<div class="line"><span class="lineno">  141</span>  TGeoVolume* absorber = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;AbsorberVol&quot;</span>, absorberShape, iron);</div>
+<div class="line"><span class="lineno">  142</span>  absorber-&gt;SetLineColor(42);  <span class="comment">// brown / light red</span></div>
+<div class="line"><span class="lineno">  143</span>  tShield-&gt;AddNode(</div>
+<div class="line"><span class="lineno">  144</span>      absorber, 1,</div>
+<div class="line"><span class="lineno">  145</span>      <span class="keyword">new</span> TGeoTranslation(shift_x, shift_y,</div>
+<div class="line"><span class="lineno">  146</span>                          <a class="code hl_variable" href="#a899926b2ae70e54e604cb8851bc69ff1">z_end_of_proximity_shielding</a> + absorber_half_length +</div>
+<div class="line"><span class="lineno">  147</span>                              absorber_offset));  <span class="comment">// - Passive?</span></div>
+<div class="line"><span class="lineno">  148</span>}</div>
 <div class="ttc" id="aShipBellField_8cxx_html_ae0699ca79e23818d99b9ee18334a9325"><div class="ttname"><a href="ShipBellField_8cxx.html#ae0699ca79e23818d99b9ee18334a9325">m</a></div><div class="ttdeci">constexpr Double_t m</div><div class="ttdef"><b>Definition</b> <a href="ShipBellField_8cxx_source.html#l00025">ShipBellField.cxx:25</a></div></div>
-<div class="ttc" id="aclassShipMuonShield_html_a2ebcc373aaaa231637f97fa31daca62d"><div class="ttname"><a href="#a2ebcc373aaaa231637f97fa31daca62d">ShipMuonShield::CreateMagnet</a></div><div class="ttdeci">void CreateMagnet(const TString &amp;magnetName, TGeoMedium *medium, TGeoVolume *tShield, TGeoUniformMagField *fields[4], FieldDirection fieldDirection, Double_t dX, Double_t dY, Double_t dX2, Double_t dY2, Double_t ratio_yoke_1, Double_t ratio_yoke_2, Double_t dY_yoke_1, Double_t dY_yoke_2, Double_t dZ, Double_t middleGap, Double_t middleGap2, Double_t gap, Double_t gap2, Double_t Z, Bool_t NotMagnet, Bool_t SC_key)</div><div class="ttdef"><b>Definition</b> <a href="ShipMuonShield_8cxx_source.html#l00138">ShipMuonShield.cxx:138</a></div></div>
-<div class="ttc" id="aclassShipMuonShield_html_a7bbec66dfe6198b6507880fb2bd8696a"><div class="ttname"><a href="#a7bbec66dfe6198b6507880fb2bd8696a">ShipMuonShield::Initialize</a></div><div class="ttdeci">void Initialize(std::vector&lt; TString &gt; &amp;magnetName, std::vector&lt; FieldDirection &gt; &amp;fieldDirection, std::vector&lt; Double_t &gt; &amp;dXIn, std::vector&lt; Double_t &gt; &amp;dYIn, std::vector&lt; Double_t &gt; &amp;dXOut, std::vector&lt; Double_t &gt; &amp;dYOut, std::vector&lt; Double_t &gt; &amp;ratio_yokesIn, std::vector&lt; Double_t &gt; &amp;ratio_yokesOut, std::vector&lt; Double_t &gt; &amp;dY_yokeIn, std::vector&lt; Double_t &gt; &amp;dY_yokeOut, std::vector&lt; Double_t &gt; &amp;dZ, std::vector&lt; Double_t &gt; &amp;Z_rel, std::vector&lt; Double_t &gt; &amp;midGapIn, std::vector&lt; Double_t &gt; &amp;midGapOut, std::vector&lt; Double_t &gt; &amp;Bgoal, std::vector&lt; Double_t &gt; &amp;gapIn, std::vector&lt; Double_t &gt; &amp;gapOut, std::vector&lt; Double_t &gt; &amp;Z)</div><div class="ttdef"><b>Definition</b> <a href="ShipMuonShield_8cxx_source.html#l00304">ShipMuonShield.cxx:304</a></div></div>
+<div class="ttc" id="aclassShipMuonShield_html_a621dfbab4170ed79ff142d25063f5a8c"><div class="ttname"><a href="#a621dfbab4170ed79ff142d25063f5a8c">ShipMuonShield::snd_hole</a></div><div class="ttdeci">Bool_t snd_hole</div><div class="ttdef"><b>Definition</b> <a href="ShipMuonShield_8h_source.html#l00042">ShipMuonShield.h:42</a></div></div>
+<div class="ttc" id="aclassShipMuonShield_html_a87130a7cf761bb485abba3006820e726"><div class="ttname"><a href="#a87130a7cf761bb485abba3006820e726">ShipMuonShield::snd_last_magnet</a></div><div class="ttdeci">Int_t snd_last_magnet</div><div class="ttdef"><b>Definition</b> <a href="ShipMuonShield_8h_source.html#l00044">ShipMuonShield.h:44</a></div></div>
+<div class="ttc" id="aclassShipMuonShield_html_ac81702251e4b3eae9619d7733e0d7dca"><div class="ttname"><a href="#ac81702251e4b3eae9619d7733e0d7dca">ShipMuonShield::nParams</a></div><div class="ttdeci">static constexpr size_t nParams</div><div class="ttdef"><b>Definition</b> <a href="ShipMuonShield_8h_source.html#l00036">ShipMuonShield.h:36</a></div></div>
+<div class="ttc" id="aclassShipMuonShield_html_adbe47d24b57d2c21b343da9117bfcba8"><div class="ttname"><a href="#adbe47d24b57d2c21b343da9117bfcba8">ShipMuonShield::snd_first_magnet</a></div><div class="ttdeci">Int_t snd_first_magnet</div><div class="ttdef"><b>Definition</b> <a href="ShipMuonShield_8h_source.html#l00044">ShipMuonShield.h:44</a></div></div>
+<div class="ttc" id="aclassShipMuonShield_html_aec12b24095d380b1a8a464c4696c15b7"><div class="ttname"><a href="#aec12b24095d380b1a8a464c4696c15b7">ShipMuonShield::CreateMagnet</a></div><div class="ttdeci">void CreateMagnet(const TString &amp;magnetName, TGeoMedium *medium, TGeoVolume *tShield, Double_t dX, Double_t dY, Double_t dZ, Double_t Z, Bool_t withSNDHole)</div><div class="ttdef"><b>Definition</b> <a href="ShipMuonShield_8cxx_source.html#l00045">ShipMuonShield.cxx:45</a></div></div>
+<div class="ttc" id="anamespaceShipAna_html_aa4bf87f4d17f9d38b1d8f4d009bb54b3"><div class="ttname"><a href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">ShipAna.i</a></div><div class="ttdeci">int i</div><div class="ttdef"><b>Definition</b> <a href="ShipAna_8py_source.html#l00108">ShipAna.py:108</a></div></div>
 <div class="ttc" id="anamespaceShipCavernLayout_html_a847ad4f95a340db7ed83fe62f0e55ee9"><div class="ttname"><a href="namespaceShipCavernLayout.html#a847ad4f95a340db7ed83fe62f0e55ee9">ShipCavernLayout::kTCC8RightX</a></div><div class="ttdeci">const Double_t kTCC8RightX</div><div class="ttdef"><b>Definition</b> <a href="ShipCavernLayout_8h_source.html#l00025">ShipCavernLayout.h:25</a></div></div>
 <div class="ttc" id="anamespaceShipCavernLayout_html_a882ff87bb00eafdc33047035caf373b3"><div class="ttname"><a href="namespaceShipCavernLayout.html#a882ff87bb00eafdc33047035caf373b3">ShipCavernLayout::kTCC8LeftX</a></div><div class="ttdeci">const Double_t kTCC8LeftX</div><div class="ttdef"><b>Definition</b> <a href="ShipCavernLayout_8h_source.html#l00024">ShipCavernLayout.h:24</a></div></div>
 <div class="ttc" id="anamespaceShipCavernLayout_html_ad50f64adb792c0e622c979318c89b5d0"><div class="ttname"><a href="namespaceShipCavernLayout.html#ad50f64adb792c0e622c979318c89b5d0">ShipCavernLayout::kTCC8CeilingY</a></div><div class="ttdeci">const Double_t kTCC8CeilingY</div><div class="ttdef"><b>Definition</b> <a href="ShipCavernLayout_8h_source.html#l00027">ShipCavernLayout.h:27</a></div></div>
 <div class="ttc" id="anamespaceShipCavernLayout_html_afe558055f4f4c35f814ac5e503768f0d"><div class="ttname"><a href="namespaceShipCavernLayout.html#afe558055f4f4c35f814ac5e503768f0d">ShipCavernLayout::kTCC8FloorY</a></div><div class="ttdeci">const Double_t kTCC8FloorY</div><div class="ttdef"><b>Definition</b> <a href="ShipCavernLayout_8h_source.html#l00026">ShipCavernLayout.h:26</a></div></div>
 <div class="ttc" id="anamespaceShipGeo_html_a41fa6e1cd4e92f644524675c6850e934"><div class="ttname"><a href="namespaceShipGeo.html#a41fa6e1cd4e92f644524675c6850e934">ShipGeo::InitMedium</a></div><div class="ttdeci">Int_t InitMedium(const char *name)</div><div class="ttdef"><b>Definition</b> <a href="ShipGeoUtil_8h_source.html#l00022">ShipGeoUtil.h:22</a></div></div>
+<div class="ttc" id="anamespacecalo__scoring__plane__pid__example_html_a33cc14130de3283cf2cce7c78b91001f"><div class="ttname"><a href="namespacecalo__scoring__plane__pid__example.html#a33cc14130de3283cf2cce7c78b91001f">calo_scoring_plane_pid_example.name</a></div><div class="ttdeci">name</div><div class="ttdef"><b>Definition</b> <a href="calo__scoring__plane__pid__example_8py_source.html#l00032">calo_scoring_plane_pid_example.py:32</a></div></div>
 <div class="ttc" id="anamespaceeventDisplay_html_adedb83676a54edf1159c60c4e308ea97"><div class="ttname"><a href="namespaceeventDisplay.html#adedb83676a54edf1159c60c4e308ea97">eventDisplay.top</a></div><div class="ttdeci">top</div><div class="ttdef"><b>Definition</b> <a href="eventDisplay_8py_source.html#l01272">eventDisplay.py:1272</a></div></div>
-<div class="ttc" id="anamespacerun__tracking__scan_html_aefd0a105108077accad31b51b4f0647e"><div class="ttname"><a href="namespacerun__tracking__scan.html#aefd0a105108077accad31b51b4f0647e">run_tracking_scan.result</a></div><div class="ttdeci">result</div><div class="ttdef"><b>Definition</b> <a href="run__tracking__scan_8py_source.html#l00156">run_tracking_scan.py:156</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="a287d88c01d16336f64b5eec85574a4ac" name="a287d88c01d16336f64b5eec85574a4ac"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a287d88c01d16336f64b5eec85574a4ac">&#9670;&#160;</a></span>CreateArb8()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void ShipMuonShield::CreateArb8 </td>
-          <td>(</td>
-          <td class="paramtype">const TString &amp;</td>          <td class="paramname"><span class="paramname"><em>arbName</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">TGeoMedium *</td>          <td class="paramname"><span class="paramname"><em>medium</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Double_t</td>          <td class="paramname"><span class="paramname"><em>dZ</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::array&lt; Double_t, 16 &gt;</td>          <td class="paramname"><span class="paramname"><em>corners</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Int_t</td>          <td class="paramname"><span class="paramname"><em>color</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">TGeoUniformMagField *</td>          <td class="paramname"><span class="paramname"><em>magField</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">TGeoVolume *</td>          <td class="paramname"><span class="paramname"><em>top</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Double_t</td>          <td class="paramname"><span class="paramname"><em>x_translation</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Double_t</td>          <td class="paramname"><span class="paramname"><em>y_translation</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Double_t</td>          <td class="paramname"><span class="paramname"><em>z_translation</em></span>&#160;)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="ShipMuonShield_8cxx_source.html#l00068">68</a> of file <a class="el" href="ShipMuonShield_8cxx_source.html">ShipMuonShield.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   73</span>                                                        {</div>
-<div class="line"><span class="lineno">   74</span>  TGeoVolume* magVol = <span class="keyword">nullptr</span>;</div>
-<div class="line"><span class="lineno">   75</span> </div>
-<div class="line"><span class="lineno">   76</span>  LOG(<a class="code hl_variable" href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a>) &lt;&lt; <span class="stringliteral">&quot; Create CreateArb8 of the MS &quot;</span>;</div>
-<div class="line"><span class="lineno">   77</span> </div>
-<div class="line"><span class="lineno">   78</span>  <span class="keywordtype">bool</span> snd_magnet = <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">   79</span>  <span class="keywordflow">for</span> (Int_t i = <a class="code hl_variable" href="#adbe47d24b57d2c21b343da9117bfcba8">snd_first_magnet</a>; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &gt;= 0 &amp;&amp; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt;= <a class="code hl_variable" href="#a87130a7cf761bb485abba3006820e726">snd_last_magnet</a>; ++<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>) {</div>
-<div class="line"><span class="lineno">   80</span>    TString magn = Form(<span class="stringliteral">&quot;Magn%d&quot;</span>, i);</div>
-<div class="line"><span class="lineno">   81</span>    <span class="keywordflow">if</span> (arbName == magn + <span class="stringliteral">&quot;_MiddleMagL&quot;</span> || arbName == magn + <span class="stringliteral">&quot;_MiddleMagR&quot;</span>) {</div>
-<div class="line"><span class="lineno">   82</span>      snd_magnet = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">   83</span>    }</div>
-<div class="line"><span class="lineno">   84</span>  }</div>
-<div class="line"><span class="lineno">   85</span> </div>
-<div class="line"><span class="lineno">   86</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="#a621dfbab4170ed79ff142d25063f5a8c">snd_hole</a> &amp;&amp; snd_magnet) {</div>
-<div class="line"><span class="lineno">   87</span>    <span class="comment">//</span></div>
-<div class="line"><span class="lineno">   88</span>    <span class="comment">// 1) Raw Arb8 “shape”</span></div>
-<div class="line"><span class="lineno">   89</span>    <span class="comment">//</span></div>
-<div class="line"><span class="lineno">   90</span>    TString shapeName = arbName + <span class="stringliteral">&quot;_shape&quot;</span>;</div>
-<div class="line"><span class="lineno">   91</span>    gGeoManager-&gt;MakeArb8(shapeName, medium, dZ, corners.data());</div>
-<div class="line"><span class="lineno">   92</span> </div>
-<div class="line"><span class="lineno">   93</span>    <span class="comment">//</span></div>
-<div class="line"><span class="lineno">   94</span>    <span class="comment">// 2) Void box that’s 0.1 mm smaller on each half-length</span></div>
-<div class="line"><span class="lineno">   95</span>    <span class="comment">//</span></div>
-<div class="line"><span class="lineno">   96</span>    <span class="keyword">constexpr</span> <span class="keywordtype">double</span> eps = 0.01;  <span class="comment">// mm anti-overlap</span></div>
-<div class="line"><span class="lineno">   97</span>    <span class="keywordtype">double</span> void_dx = <a class="code hl_variable" href="#af69a736a23ef1339268d4bfe4a49069f">snd_hole_dx</a> - eps;</div>
-<div class="line"><span class="lineno">   98</span>    <span class="keywordtype">double</span> void_dy = <a class="code hl_variable" href="#a9e5633e2a6bb1e1fc0587625bc227460">snd_hole_dy</a> - eps;</div>
-<div class="line"><span class="lineno">   99</span>    TString voidName = arbName + <span class="stringliteral">&quot;_void&quot;</span>;</div>
-<div class="line"><span class="lineno">  100</span>    gGeoManager-&gt;MakeBox(voidName, medium, void_dx, void_dy, dZ);</div>
-<div class="line"><span class="lineno">  101</span> </div>
-<div class="line"><span class="lineno">  102</span>    <span class="comment">//</span></div>
-<div class="line"><span class="lineno">  103</span>    <span class="comment">// 3) Single named translation for the subtraction</span></div>
-<div class="line"><span class="lineno">  104</span>    <span class="comment">//</span></div>
-<div class="line"><span class="lineno">  105</span>    Double_t shift = (corners[1] &gt; 0 ? -void_dx : void_dx);</div>
-<div class="line"><span class="lineno">  106</span>    TString transName = arbName + <span class="stringliteral">&quot;_t&quot;</span>;</div>
-<div class="line"><span class="lineno">  107</span>    <span class="keyword">auto</span>* tr = <span class="keyword">new</span> TGeoTranslation(transName.Data(), shift, 0.0, 0.0);</div>
-<div class="line"><span class="lineno">  108</span>    tr-&gt;RegisterYourself();</div>
-<div class="line"><span class="lineno">  109</span> </div>
-<div class="line"><span class="lineno">  110</span>    <span class="comment">//</span></div>
-<div class="line"><span class="lineno">  111</span>    <span class="comment">// 4) Composite shape: &lt;shape&gt; minus the translated &lt;void&gt;</span></div>
-<div class="line"><span class="lineno">  112</span>    <span class="comment">//</span></div>
-<div class="line"><span class="lineno">  113</span>    TString compName = arbName + <span class="stringliteral">&quot;_comp&quot;</span>;</div>
-<div class="line"><span class="lineno">  114</span>    TString expr = TString::Format(<span class="stringliteral">&quot;%s - %s:%s&quot;</span>, shapeName.Data(),</div>
-<div class="line"><span class="lineno">  115</span>                                   voidName.Data(), transName.Data());</div>
-<div class="line"><span class="lineno">  116</span>    <span class="keyword">auto</span>* compShape = <span class="keyword">new</span> TGeoCompositeShape(compName.Data(), expr.Data());</div>
-<div class="line"><span class="lineno">  117</span> </div>
-<div class="line"><span class="lineno">  118</span>    <span class="comment">//</span></div>
-<div class="line"><span class="lineno">  119</span>    <span class="comment">// 5) Wrap the composite in a volume</span></div>
-<div class="line"><span class="lineno">  120</span>    <span class="comment">//</span></div>
-<div class="line"><span class="lineno">  121</span>    LOG(<a class="code hl_variable" href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a>) &lt;&lt; <span class="stringliteral">&quot; Create CreateArb8 of the MS 5&quot;</span>;</div>
-<div class="line"><span class="lineno">  122</span>    magVol = <span class="keyword">new</span> TGeoVolume(arbName, compShape, medium);</div>
-<div class="line"><span class="lineno">  123</span>  } <span class="keywordflow">else</span> {</div>
-<div class="line"><span class="lineno">  124</span>    <span class="comment">// original uncut magnet</span></div>
-<div class="line"><span class="lineno">  125</span>    magVol = gGeoManager-&gt;MakeArb8(arbName, medium, dZ, corners.data());</div>
-<div class="line"><span class="lineno">  126</span>  }</div>
-<div class="line"><span class="lineno">  127</span> </div>
-<div class="line"><span class="lineno">  128</span>  <span class="comment">// common settings</span></div>
-<div class="line"><span class="lineno">  129</span>  magVol-&gt;SetLineColor(color);</div>
-<div class="line"><span class="lineno">  130</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="#aa83bbeaa79fad431c2c5186c7df276ba">fWithConstShieldField</a>) {</div>
-<div class="line"><span class="lineno">  131</span>    magVol-&gt;SetField(magField);</div>
-<div class="line"><span class="lineno">  132</span>  }</div>
-<div class="line"><span class="lineno">  133</span>  tShield-&gt;AddNode(</div>
-<div class="line"><span class="lineno">  134</span>      magVol, 1,</div>
-<div class="line"><span class="lineno">  135</span>      <span class="keyword">new</span> TGeoTranslation(x_translation, y_translation, z_translation));</div>
-<div class="line"><span class="lineno">  136</span>}</div>
-<div class="ttc" id="aclassShipMuonShield_html_a621dfbab4170ed79ff142d25063f5a8c"><div class="ttname"><a href="#a621dfbab4170ed79ff142d25063f5a8c">ShipMuonShield::snd_hole</a></div><div class="ttdeci">Bool_t snd_hole</div><div class="ttdef"><b>Definition</b> <a href="ShipMuonShield_8h_source.html#l00042">ShipMuonShield.h:42</a></div></div>
-<div class="ttc" id="aclassShipMuonShield_html_a87130a7cf761bb485abba3006820e726"><div class="ttname"><a href="#a87130a7cf761bb485abba3006820e726">ShipMuonShield::snd_last_magnet</a></div><div class="ttdeci">Int_t snd_last_magnet</div><div class="ttdef"><b>Definition</b> <a href="ShipMuonShield_8h_source.html#l00044">ShipMuonShield.h:44</a></div></div>
-<div class="ttc" id="aclassShipMuonShield_html_a9e5633e2a6bb1e1fc0587625bc227460"><div class="ttname"><a href="#a9e5633e2a6bb1e1fc0587625bc227460">ShipMuonShield::snd_hole_dy</a></div><div class="ttdeci">Double_t snd_hole_dy</div><div class="ttdef"><b>Definition</b> <a href="ShipMuonShield_8h_source.html#l00043">ShipMuonShield.h:43</a></div></div>
-<div class="ttc" id="aclassShipMuonShield_html_adbe47d24b57d2c21b343da9117bfcba8"><div class="ttname"><a href="#adbe47d24b57d2c21b343da9117bfcba8">ShipMuonShield::snd_first_magnet</a></div><div class="ttdeci">Int_t snd_first_magnet</div><div class="ttdef"><b>Definition</b> <a href="ShipMuonShield_8h_source.html#l00044">ShipMuonShield.h:44</a></div></div>
-<div class="ttc" id="aclassShipMuonShield_html_af69a736a23ef1339268d4bfe4a49069f"><div class="ttname"><a href="#af69a736a23ef1339268d4bfe4a49069f">ShipMuonShield::snd_hole_dx</a></div><div class="ttdeci">Double_t snd_hole_dx</div><div class="ttdef"><b>Definition</b> <a href="ShipMuonShield_8h_source.html#l00043">ShipMuonShield.h:43</a></div></div>
-<div class="ttc" id="anamespaceShipAna_html_aa4bf87f4d17f9d38b1d8f4d009bb54b3"><div class="ttname"><a href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">ShipAna.i</a></div><div class="ttdeci">int i</div><div class="ttdef"><b>Definition</b> <a href="ShipAna_8py_source.html#l00108">ShipAna.py:108</a></div></div>
-</div><!-- fragment -->
-</div>
-</div>
-<a id="a2ebcc373aaaa231637f97fa31daca62d" name="a2ebcc373aaaa231637f97fa31daca62d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2ebcc373aaaa231637f97fa31daca62d">&#9670;&#160;</a></span>CreateMagnet()</h2>
+<a id="aec12b24095d380b1a8a464c4696c15b7" name="aec12b24095d380b1a8a464c4696c15b7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aec12b24095d380b1a8a464c4696c15b7">&#9670;&#160;</a></span>CreateMagnet()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -540,16 +371,6 @@ Protected Attributes</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">TGeoUniformMagField *</td>          <td class="paramname"><span class="paramname"><em>fields</em></span>[4], </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="ShipMuonShield_8h.html#a7a162bd4e07daf5d23ff100f08d1cb43">FieldDirection</a></td>          <td class="paramname"><span class="paramname"><em>fieldDirection</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
           <td class="paramtype">Double_t</td>          <td class="paramname"><span class="paramname"><em>dX</em></span>, </td>
         </tr>
         <tr>
@@ -560,57 +381,7 @@ Protected Attributes</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">Double_t</td>          <td class="paramname"><span class="paramname"><em>dX2</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Double_t</td>          <td class="paramname"><span class="paramname"><em>dY2</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Double_t</td>          <td class="paramname"><span class="paramname"><em>ratio_yoke_1</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Double_t</td>          <td class="paramname"><span class="paramname"><em>ratio_yoke_2</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Double_t</td>          <td class="paramname"><span class="paramname"><em>dY_yoke_1</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Double_t</td>          <td class="paramname"><span class="paramname"><em>dY_yoke_2</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
           <td class="paramtype">Double_t</td>          <td class="paramname"><span class="paramname"><em>dZ</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Double_t</td>          <td class="paramname"><span class="paramname"><em>middleGap</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Double_t</td>          <td class="paramname"><span class="paramname"><em>middleGap2</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Double_t</td>          <td class="paramname"><span class="paramname"><em>gap</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Double_t</td>          <td class="paramname"><span class="paramname"><em>gap2</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -620,12 +391,7 @@ Protected Attributes</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">Bool_t</td>          <td class="paramname"><span class="paramname"><em>NotMagnet</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Bool_t</td>          <td class="paramname"><span class="paramname"><em>SC_key</em></span><span class="paramdefsep"> = </span><span class="paramdefval">false</span>&#160;)</td>
+          <td class="paramtype">Bool_t</td>          <td class="paramname"><span class="paramname"><em>withSNDHole</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -635,356 +401,34 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipMuonShield_8cxx_source.html#l00138">138</a> of file <a class="el" href="ShipMuonShield_8cxx_source.html">ShipMuonShield.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  144</span>                                                         {</div>
-<div class="line"><span class="lineno">  145</span>  LOG(<a class="code hl_variable" href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a>) &lt;&lt; <span class="stringliteral">&quot; Create a magnet of the MS &quot;</span>;</div>
-<div class="line"><span class="lineno">  146</span>  Double_t coil_gap, coil_gap2;</div>
-<div class="line"><span class="lineno">  147</span>  Int_t <a class="code hl_variable" href="namespacerun__tracking__scan.html#a4cba8f45e0372b66a7aa3a660287236c">color</a>[4] = {45, 31, 30, 38};</div>
-<div class="line"><span class="lineno">  148</span>  gap = std::ceil(std::max(100. / dY, gap));</div>
-<div class="line"><span class="lineno">  149</span>  gap2 = std::ceil(std::max(100. / dY2, gap2));</div>
-<div class="line"><span class="lineno">  150</span>  coil_gap = gap;</div>
-<div class="line"><span class="lineno">  151</span>  coil_gap2 = gap2;</div>
-<div class="line"><span class="lineno">  152</span> </div>
-<div class="line"><span class="lineno">  153</span>  Double_t anti_overlap = 0.1;  <span class="comment">// gap between fields in the</span></div>
-<div class="line"><span class="lineno">  154</span>                                <span class="comment">// corners for mitred joints</span></div>
-<div class="line"><span class="lineno">  155</span>                                <span class="comment">// (Geant goes crazy when</span></div>
-<div class="line"><span class="lineno">  156</span>                                <span class="comment">// they touch each other)</span></div>
-<div class="line"><span class="lineno">  157</span> </div>
-<div class="line"><span class="lineno">  158</span>  std::array&lt;Double_t, 16&gt; cornersMainL = {</div>
-<div class="line"><span class="lineno">  159</span>      middleGap,        -(dY + dY_yoke_1) - anti_overlap,</div>
-<div class="line"><span class="lineno">  160</span>      middleGap,        dY + dY_yoke_1 - anti_overlap,</div>
-<div class="line"><span class="lineno">  161</span>      dX + middleGap,   dY - anti_overlap,</div>
-<div class="line"><span class="lineno">  162</span>      dX + middleGap,   -(dY - anti_overlap),</div>
-<div class="line"><span class="lineno">  163</span>      middleGap2,       -(dY2 + dY_yoke_2 - anti_overlap),</div>
-<div class="line"><span class="lineno">  164</span>      middleGap2,       dY2 + dY_yoke_2 - anti_overlap,</div>
-<div class="line"><span class="lineno">  165</span>      dX2 + middleGap2, dY2 - anti_overlap,</div>
-<div class="line"><span class="lineno">  166</span>      dX2 + middleGap2, -(dY2 - anti_overlap)};</div>
-<div class="line"><span class="lineno">  167</span> </div>
-<div class="line"><span class="lineno">  168</span>  std::array&lt;Double_t, 16&gt; cornersTL = {</div>
-<div class="line"><span class="lineno">  169</span>      middleGap + dX,</div>
-<div class="line"><span class="lineno">  170</span>      dY,</div>
-<div class="line"><span class="lineno">  171</span>      middleGap,</div>
-<div class="line"><span class="lineno">  172</span>      dY + dY_yoke_1,</div>
-<div class="line"><span class="lineno">  173</span>      dX + ratio_yoke_1 * dX + middleGap + coil_gap,</div>
-<div class="line"><span class="lineno">  174</span>      dY + dY_yoke_1,</div>
-<div class="line"><span class="lineno">  175</span>      dX + middleGap + coil_gap,</div>
-<div class="line"><span class="lineno">  176</span>      dY,</div>
-<div class="line"><span class="lineno">  177</span>      middleGap2 + dX2,</div>
-<div class="line"><span class="lineno">  178</span>      dY2,</div>
-<div class="line"><span class="lineno">  179</span>      middleGap2,</div>
-<div class="line"><span class="lineno">  180</span>      dY2 + dY_yoke_2,</div>
-<div class="line"><span class="lineno">  181</span>      dX2 + ratio_yoke_2 * dX2 + middleGap2 + coil_gap2,</div>
-<div class="line"><span class="lineno">  182</span>      dY2 + dY_yoke_2,</div>
-<div class="line"><span class="lineno">  183</span>      dX2 + middleGap2 + coil_gap2,</div>
-<div class="line"><span class="lineno">  184</span>      dY2};</div>
-<div class="line"><span class="lineno">  185</span> </div>
-<div class="line"><span class="lineno">  186</span>  std::array&lt;Double_t, 16&gt; cornersMainSideL = {</div>
-<div class="line"><span class="lineno">  187</span>      dX + middleGap + gap,</div>
-<div class="line"><span class="lineno">  188</span>      -(dY),</div>
-<div class="line"><span class="lineno">  189</span>      dX + middleGap + gap,</div>
-<div class="line"><span class="lineno">  190</span>      dY,</div>
-<div class="line"><span class="lineno">  191</span>      dX + ratio_yoke_1 * dX + middleGap + gap,</div>
-<div class="line"><span class="lineno">  192</span>      dY + dY_yoke_1,</div>
-<div class="line"><span class="lineno">  193</span>      dX + ratio_yoke_1 * dX + middleGap + gap,</div>
-<div class="line"><span class="lineno">  194</span>      -(dY + dY_yoke_1),</div>
-<div class="line"><span class="lineno">  195</span>      dX2 + middleGap2 + gap2,</div>
-<div class="line"><span class="lineno">  196</span>      -(dY2),</div>
-<div class="line"><span class="lineno">  197</span>      dX2 + middleGap2 + gap2,</div>
-<div class="line"><span class="lineno">  198</span>      dY2,</div>
-<div class="line"><span class="lineno">  199</span>      dX2 + ratio_yoke_2 * dX2 + middleGap2 + gap2,</div>
-<div class="line"><span class="lineno">  200</span>      dY2 + dY_yoke_2,</div>
-<div class="line"><span class="lineno">  201</span>      dX2 + ratio_yoke_2 * dX2 + middleGap2 + gap2,</div>
-<div class="line"><span class="lineno">  202</span>      -(dY2 + dY_yoke_2)};</div>
-<div class="line"><span class="lineno">  203</span>  <span class="comment">// SC part</span></div>
-<div class="line"><span class="lineno">  204</span>  <span class="keywordflow">if</span> (SC_key) {</div>
-<div class="line"><span class="lineno">  205</span>    cornersMainL = {middleGap,        -(dY + 3 * dX - anti_overlap),</div>
-<div class="line"><span class="lineno">  206</span>                    middleGap,        dY + 3 * dX - anti_overlap,</div>
-<div class="line"><span class="lineno">  207</span>                    dX + middleGap,   dY - anti_overlap,</div>
-<div class="line"><span class="lineno">  208</span>                    dX + middleGap,   -(dY - anti_overlap),</div>
-<div class="line"><span class="lineno">  209</span>                    middleGap2,       -(dY2 + 3 * dX2 - anti_overlap),</div>
-<div class="line"><span class="lineno">  210</span>                    middleGap2,       dY2 + 3 * dX2 - anti_overlap,</div>
-<div class="line"><span class="lineno">  211</span>                    dX2 + middleGap2, dY2 - anti_overlap,</div>
-<div class="line"><span class="lineno">  212</span>                    dX2 + middleGap2, -(dY2 - anti_overlap)};</div>
-<div class="line"><span class="lineno">  213</span> </div>
-<div class="line"><span class="lineno">  214</span>    cornersTL = {middleGap + dX,</div>
-<div class="line"><span class="lineno">  215</span>                 dY,</div>
-<div class="line"><span class="lineno">  216</span>                 middleGap,</div>
-<div class="line"><span class="lineno">  217</span>                 dY + 3 * dX,</div>
-<div class="line"><span class="lineno">  218</span>                 4 * dX + middleGap + coil_gap,</div>
-<div class="line"><span class="lineno">  219</span>                 dY + 3 * dX,</div>
-<div class="line"><span class="lineno">  220</span>                 dX + middleGap + coil_gap,</div>
-<div class="line"><span class="lineno">  221</span>                 dY,</div>
-<div class="line"><span class="lineno">  222</span>                 middleGap2 + dX2,</div>
-<div class="line"><span class="lineno">  223</span>                 dY2,</div>
-<div class="line"><span class="lineno">  224</span>                 middleGap2,</div>
-<div class="line"><span class="lineno">  225</span>                 dY2 + 3 * dX2,</div>
-<div class="line"><span class="lineno">  226</span>                 4 * dX2 + middleGap2 + coil_gap2,</div>
-<div class="line"><span class="lineno">  227</span>                 dY2 + 3 * dX2,</div>
-<div class="line"><span class="lineno">  228</span>                 dX2 + middleGap2 + coil_gap2,</div>
-<div class="line"><span class="lineno">  229</span>                 dY2};</div>
-<div class="line"><span class="lineno">  230</span> </div>
-<div class="line"><span class="lineno">  231</span>    cornersMainSideL = {</div>
-<div class="line"><span class="lineno">  232</span>        dX + middleGap + gap,        -(dY - anti_overlap),</div>
-<div class="line"><span class="lineno">  233</span>        dX + middleGap + gap,        dY - anti_overlap,</div>
-<div class="line"><span class="lineno">  234</span>        4 * dX + middleGap + gap,    dY + 3 * dX - anti_overlap,</div>
-<div class="line"><span class="lineno">  235</span>        4 * dX + middleGap + gap,    -(dY + 3 * dX - anti_overlap),</div>
-<div class="line"><span class="lineno">  236</span>        dX2 + middleGap2 + gap2,     -(dY2 - anti_overlap),</div>
-<div class="line"><span class="lineno">  237</span>        dX2 + middleGap2 + gap2,     dY2 - anti_overlap,</div>
-<div class="line"><span class="lineno">  238</span>        4 * dX2 + middleGap2 + gap2, dY2 + 3 * dX2 - anti_overlap,</div>
-<div class="line"><span class="lineno">  239</span>        4 * dX2 + middleGap2 + gap2, -(dY2 + 3 * dX2 - anti_overlap)};</div>
-<div class="line"><span class="lineno">  240</span>  }</div>
-<div class="line"><span class="lineno">  241</span>  std::array&lt;Double_t, 16&gt; cornersMainR, cornersMainSideR, cornersTR, cornersBL,</div>
-<div class="line"><span class="lineno">  242</span>      cornersBR;</div>
-<div class="line"><span class="lineno">  243</span>  <span class="comment">// Use symmetries to define remaining magnets</span></div>
-<div class="line"><span class="lineno">  244</span>  std::ranges::transform(cornersMainL, cornersMainR.begin(), std::negate{});</div>
-<div class="line"><span class="lineno">  245</span>  std::ranges::transform(cornersMainSideL, cornersMainSideR.begin(),</div>
-<div class="line"><span class="lineno">  246</span>                         std::negate{});</div>
-<div class="line"><span class="lineno">  247</span>  std::ranges::transform(cornersTL, cornersBR.begin(), std::negate{});</div>
-<div class="line"><span class="lineno">  248</span>  <span class="comment">// Need to change order as corners need to be defined clockwise</span></div>
-<div class="line"><span class="lineno">  249</span>  <span class="keywordflow">for</span> (std::size_t i = 0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt; 8; ++<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>) {</div>
-<div class="line"><span class="lineno">  250</span>    <span class="keyword">const</span> std::size_t j = (11 - <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>) % 8;</div>
-<div class="line"><span class="lineno">  251</span>    cornersTR[2 * j] = -cornersTL[2 * <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>];</div>
-<div class="line"><span class="lineno">  252</span>    cornersTR[2 * j + 1] = cornersTL[2 * <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> + 1];</div>
-<div class="line"><span class="lineno">  253</span>  }</div>
-<div class="line"><span class="lineno">  254</span>  std::ranges::transform(cornersTR, cornersBL.begin(), std::negate{});</div>
-<div class="line"><span class="lineno">  255</span> </div>
-<div class="line"><span class="lineno">  256</span>  TString str1L = <span class="stringliteral">&quot;_MiddleMagL&quot;</span>;</div>
-<div class="line"><span class="lineno">  257</span>  TString str1R = <span class="stringliteral">&quot;_MiddleMagR&quot;</span>;</div>
-<div class="line"><span class="lineno">  258</span>  TString str2 = <span class="stringliteral">&quot;_MagRetL&quot;</span>;</div>
-<div class="line"><span class="lineno">  259</span>  TString str3 = <span class="stringliteral">&quot;_MagRetR&quot;</span>;</div>
-<div class="line"><span class="lineno">  260</span>  TString str8 = <span class="stringliteral">&quot;_MagTopLeft&quot;</span>;</div>
-<div class="line"><span class="lineno">  261</span>  TString str9 = <span class="stringliteral">&quot;_MagTopRight&quot;</span>;</div>
-<div class="line"><span class="lineno">  262</span>  TString str10 = <span class="stringliteral">&quot;_MagBotLeft&quot;</span>;</div>
-<div class="line"><span class="lineno">  263</span>  TString str11 = <span class="stringliteral">&quot;_MagBotRight&quot;</span>;</div>
-<div class="line"><span class="lineno">  264</span> </div>
-<div class="line"><span class="lineno">  265</span>  <span class="keywordflow">switch</span> (fieldDirection) {</div>
-<div class="line"><span class="lineno">  266</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="ShipMuonShield_8h.html#a7a162bd4e07daf5d23ff100f08d1cb43a46c48bec0d282018b9d167eef7711b2c">FieldDirection::up</a>:</div>
-<div class="line"><span class="lineno">  267</span>      <a class="code hl_function" href="#a287d88c01d16336f64b5eec85574a4ac">CreateArb8</a>(magnetName + str1L, medium, dZ, cornersMainL, color[0],</div>
-<div class="line"><span class="lineno">  268</span>                 fields[0], tShield, 0, 0, Z);</div>
-<div class="line"><span class="lineno">  269</span>      <a class="code hl_function" href="#a287d88c01d16336f64b5eec85574a4ac">CreateArb8</a>(magnetName + str1R, medium, dZ, cornersMainR, color[0],</div>
-<div class="line"><span class="lineno">  270</span>                 fields[0], tShield, 0, 0, Z);</div>
-<div class="line"><span class="lineno">  271</span>      <a class="code hl_function" href="#a287d88c01d16336f64b5eec85574a4ac">CreateArb8</a>(magnetName + str2, medium, dZ, cornersMainSideL, color[1],</div>
-<div class="line"><span class="lineno">  272</span>                 fields[1], tShield, 0, 0, Z);</div>
-<div class="line"><span class="lineno">  273</span>      <a class="code hl_function" href="#a287d88c01d16336f64b5eec85574a4ac">CreateArb8</a>(magnetName + str3, medium, dZ, cornersMainSideR, color[1],</div>
-<div class="line"><span class="lineno">  274</span>                 fields[1], tShield, 0, 0, Z);</div>
-<div class="line"><span class="lineno">  275</span>      <a class="code hl_function" href="#a287d88c01d16336f64b5eec85574a4ac">CreateArb8</a>(magnetName + str8, medium, dZ, cornersTL, color[3], fields[3],</div>
-<div class="line"><span class="lineno">  276</span>                 tShield, 0, 0, Z);</div>
-<div class="line"><span class="lineno">  277</span>      <a class="code hl_function" href="#a287d88c01d16336f64b5eec85574a4ac">CreateArb8</a>(magnetName + str9, medium, dZ, cornersTR, color[2], fields[2],</div>
-<div class="line"><span class="lineno">  278</span>                 tShield, 0, 0, Z);</div>
-<div class="line"><span class="lineno">  279</span>      <a class="code hl_function" href="#a287d88c01d16336f64b5eec85574a4ac">CreateArb8</a>(magnetName + str10, medium, dZ, cornersBL, color[2], fields[2],</div>
-<div class="line"><span class="lineno">  280</span>                 tShield, 0, 0, Z);</div>
-<div class="line"><span class="lineno">  281</span>      <a class="code hl_function" href="#a287d88c01d16336f64b5eec85574a4ac">CreateArb8</a>(magnetName + str11, medium, dZ, cornersBR, color[3], fields[3],</div>
-<div class="line"><span class="lineno">  282</span>                 tShield, 0, 0, Z);</div>
-<div class="line"><span class="lineno">  283</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  284</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="ShipMuonShield_8h.html#a7a162bd4e07daf5d23ff100f08d1cb43a74e8333ad11685ff3bdae589c8f6e34d">FieldDirection::down</a>:</div>
-<div class="line"><span class="lineno">  285</span>      <a class="code hl_function" href="#a287d88c01d16336f64b5eec85574a4ac">CreateArb8</a>(magnetName + str1L, medium, dZ, cornersMainL, color[1],</div>
-<div class="line"><span class="lineno">  286</span>                 fields[1], tShield, 0, 0, Z);</div>
-<div class="line"><span class="lineno">  287</span>      <a class="code hl_function" href="#a287d88c01d16336f64b5eec85574a4ac">CreateArb8</a>(magnetName + str1R, medium, dZ, cornersMainR, color[1],</div>
-<div class="line"><span class="lineno">  288</span>                 fields[1], tShield, 0, 0, Z);</div>
-<div class="line"><span class="lineno">  289</span>      <a class="code hl_function" href="#a287d88c01d16336f64b5eec85574a4ac">CreateArb8</a>(magnetName + str2, medium, dZ, cornersMainSideL, color[0],</div>
-<div class="line"><span class="lineno">  290</span>                 fields[0], tShield, 0, 0, Z);</div>
-<div class="line"><span class="lineno">  291</span>      <a class="code hl_function" href="#a287d88c01d16336f64b5eec85574a4ac">CreateArb8</a>(magnetName + str3, medium, dZ, cornersMainSideR, color[0],</div>
-<div class="line"><span class="lineno">  292</span>                 fields[0], tShield, 0, 0, Z);</div>
-<div class="line"><span class="lineno">  293</span>      <a class="code hl_function" href="#a287d88c01d16336f64b5eec85574a4ac">CreateArb8</a>(magnetName + str8, medium, dZ, cornersTL, color[2], fields[2],</div>
-<div class="line"><span class="lineno">  294</span>                 tShield, 0, 0, Z);</div>
-<div class="line"><span class="lineno">  295</span>      <a class="code hl_function" href="#a287d88c01d16336f64b5eec85574a4ac">CreateArb8</a>(magnetName + str9, medium, dZ, cornersTR, color[3], fields[3],</div>
-<div class="line"><span class="lineno">  296</span>                 tShield, 0, 0, Z);</div>
-<div class="line"><span class="lineno">  297</span>      <a class="code hl_function" href="#a287d88c01d16336f64b5eec85574a4ac">CreateArb8</a>(magnetName + str10, medium, dZ, cornersBL, color[3], fields[3],</div>
-<div class="line"><span class="lineno">  298</span>                 tShield, 0, 0, Z);</div>
-<div class="line"><span class="lineno">  299</span>      <a class="code hl_function" href="#a287d88c01d16336f64b5eec85574a4ac">CreateArb8</a>(magnetName + str11, medium, dZ, cornersBR, color[2], fields[2],</div>
-<div class="line"><span class="lineno">  300</span>                 tShield, 0, 0, Z);</div>
-<div class="line"><span class="lineno">  301</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  302</span>  }</div>
-<div class="line"><span class="lineno">  303</span>}</div>
-<div class="ttc" id="aShipMuonShield_8h_html_a7a162bd4e07daf5d23ff100f08d1cb43a46c48bec0d282018b9d167eef7711b2c"><div class="ttname"><a href="ShipMuonShield_8h.html#a7a162bd4e07daf5d23ff100f08d1cb43a46c48bec0d282018b9d167eef7711b2c">FieldDirection::up</a></div><div class="ttdeci">@ up</div><div class="ttdef"><b>Definition</b> <a href="ShipMuonShield_8h_source.html#l00020">ShipMuonShield.h:20</a></div></div>
-<div class="ttc" id="aShipMuonShield_8h_html_a7a162bd4e07daf5d23ff100f08d1cb43a74e8333ad11685ff3bdae589c8f6e34d"><div class="ttname"><a href="ShipMuonShield_8h.html#a7a162bd4e07daf5d23ff100f08d1cb43a74e8333ad11685ff3bdae589c8f6e34d">FieldDirection::down</a></div><div class="ttdeci">@ down</div><div class="ttdef"><b>Definition</b> <a href="ShipMuonShield_8h_source.html#l00020">ShipMuonShield.h:20</a></div></div>
-<div class="ttc" id="aclassShipMuonShield_html_a287d88c01d16336f64b5eec85574a4ac"><div class="ttname"><a href="#a287d88c01d16336f64b5eec85574a4ac">ShipMuonShield::CreateArb8</a></div><div class="ttdeci">void CreateArb8(const TString &amp;arbName, TGeoMedium *medium, Double_t dZ, std::array&lt; Double_t, 16 &gt; corners, Int_t color, TGeoUniformMagField *magField, TGeoVolume *top, Double_t x_translation, Double_t y_translation, Double_t z_translation)</div><div class="ttdef"><b>Definition</b> <a href="ShipMuonShield_8cxx_source.html#l00068">ShipMuonShield.cxx:68</a></div></div>
-<div class="ttc" id="anamespacerun__tracking__scan_html_a4cba8f45e0372b66a7aa3a660287236c"><div class="ttname"><a href="namespacerun__tracking__scan.html#a4cba8f45e0372b66a7aa3a660287236c">run_tracking_scan.color</a></div><div class="ttdeci">color</div><div class="ttdef"><b>Definition</b> <a href="run__tracking__scan_8py_source.html#l00338">run_tracking_scan.py:338</a></div></div>
-</div><!-- fragment -->
-</div>
-</div>
-<a id="a7bbec66dfe6198b6507880fb2bd8696a" name="a7bbec66dfe6198b6507880fb2bd8696a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7bbec66dfe6198b6507880fb2bd8696a">&#9670;&#160;</a></span>Initialize()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void ShipMuonShield::Initialize </td>
-          <td>(</td>
-          <td class="paramtype">std::vector&lt; TString &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>magnetName</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::vector&lt; <a class="el" href="ShipMuonShield_8h.html#a7a162bd4e07daf5d23ff100f08d1cb43">FieldDirection</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>fieldDirection</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::vector&lt; Double_t &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>dXIn</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::vector&lt; Double_t &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>dYIn</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::vector&lt; Double_t &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>dXOut</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::vector&lt; Double_t &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>dYOut</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::vector&lt; Double_t &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>ratio_yokesIn</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::vector&lt; Double_t &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>ratio_yokesOut</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::vector&lt; Double_t &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>dY_yokeIn</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::vector&lt; Double_t &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>dY_yokeOut</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::vector&lt; Double_t &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>dZ</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::vector&lt; Double_t &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>Z_rel</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::vector&lt; Double_t &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>midGapIn</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::vector&lt; Double_t &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>midGapOut</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::vector&lt; Double_t &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>Bgoal</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::vector&lt; Double_t &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>gapIn</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::vector&lt; Double_t &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>gapOut</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::vector&lt; Double_t &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>Z</em></span>&#160;)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="ShipMuonShield_8cxx_source.html#l00304">304</a> of file <a class="el" href="ShipMuonShield_8cxx_source.html">ShipMuonShield.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  314</span>                            {</div>
-<div class="line"><span class="lineno">  315</span>  LOG(<a class="code hl_variable" href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a>) &lt;&lt; <span class="stringliteral">&quot; Initialize the MS &quot;</span>;</div>
-<div class="line"><span class="lineno">  316</span>  magnetName.reserve(<a class="code hl_variable" href="#a5f10b4dcb1170c0ddd4faba94b308673">nMagnets</a>);</div>
-<div class="line"><span class="lineno">  317</span>  fieldDirection.reserve(<a class="code hl_variable" href="#a5f10b4dcb1170c0ddd4faba94b308673">nMagnets</a>);</div>
-<div class="line"><span class="lineno">  318</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> i : {&amp;dXIn, &amp;dXOut, &amp;dYIn, &amp;dYOut, &amp;dZ, &amp;Z_rel, &amp;midGapIn,</div>
-<div class="line"><span class="lineno">  319</span>                 &amp;midGapOut, &amp;ratio_yokesIn, &amp;ratio_yokesOut, &amp;dY_yokeIn,</div>
-<div class="line"><span class="lineno">  320</span>                 &amp;dY_yokeOut, &amp;Bgoal, &amp;gapIn, &amp;gapOut, &amp;Z}) {</div>
-<div class="line"><span class="lineno">  321</span>    <span class="comment">// These are written below via operator[], which requires size(), not</span></div>
-<div class="line"><span class="lineno">  322</span>    <span class="comment">// merely reserved capacity; resize() to avoid out-of-bounds UB.</span></div>
-<div class="line"><span class="lineno">  323</span>    <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>-&gt;resize(<a class="code hl_variable" href="#a5f10b4dcb1170c0ddd4faba94b308673">nMagnets</a>);</div>
-<div class="line"><span class="lineno">  324</span>  }</div>
-<div class="line"><span class="lineno">  325</span>  magnetName.push_back(<span class="stringliteral">&quot;MagnAbsorb&quot;</span>);</div>
-<div class="line"><span class="lineno">  326</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 1; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt; <a class="code hl_variable" href="#a5f10b4dcb1170c0ddd4faba94b308673">nMagnets</a>; ++<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>) {</div>
-<div class="line"><span class="lineno">  327</span>    TString <a class="code hl_variable" href="namespacecalo__scoring__plane__pid__example.html#a33cc14130de3283cf2cce7c78b91001f">name</a> = Form(<span class="stringliteral">&quot;Magn%zu&quot;</span>, i);</div>
-<div class="line"><span class="lineno">  328</span>    magnetName.push_back(name);</div>
-<div class="line"><span class="lineno">  329</span>    LOG(<a class="code hl_variable" href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a>) &lt;&lt; <span class="stringliteral">&quot;magnet i: &quot;</span> &lt;&lt; <a class="code hl_variable" href="namespacecalo__scoring__plane__pid__example.html#a33cc14130de3283cf2cce7c78b91001f">name</a>;</div>
-<div class="line"><span class="lineno">  330</span>  }</div>
-<div class="line"><span class="lineno">  331</span> </div>
-<div class="line"><span class="lineno">  332</span>  fieldDirection = {<a class="code hl_enumvalue" href="ShipMuonShield_8h.html#a7a162bd4e07daf5d23ff100f08d1cb43a46c48bec0d282018b9d167eef7711b2c">FieldDirection::up</a>,   <a class="code hl_enumvalue" href="ShipMuonShield_8h.html#a7a162bd4e07daf5d23ff100f08d1cb43a46c48bec0d282018b9d167eef7711b2c">FieldDirection::up</a>,</div>
-<div class="line"><span class="lineno">  333</span>                    <a class="code hl_enumvalue" href="ShipMuonShield_8h.html#a7a162bd4e07daf5d23ff100f08d1cb43a46c48bec0d282018b9d167eef7711b2c">FieldDirection::up</a>,   <a class="code hl_enumvalue" href="ShipMuonShield_8h.html#a7a162bd4e07daf5d23ff100f08d1cb43a46c48bec0d282018b9d167eef7711b2c">FieldDirection::up</a>,</div>
-<div class="line"><span class="lineno">  334</span>                    <a class="code hl_enumvalue" href="ShipMuonShield_8h.html#a7a162bd4e07daf5d23ff100f08d1cb43a46c48bec0d282018b9d167eef7711b2c">FieldDirection::up</a>,   <a class="code hl_enumvalue" href="ShipMuonShield_8h.html#a7a162bd4e07daf5d23ff100f08d1cb43a74e8333ad11685ff3bdae589c8f6e34d">FieldDirection::down</a>,</div>
-<div class="line"><span class="lineno">  335</span>                    <a class="code hl_enumvalue" href="ShipMuonShield_8h.html#a7a162bd4e07daf5d23ff100f08d1cb43a74e8333ad11685ff3bdae589c8f6e34d">FieldDirection::down</a>, <a class="code hl_enumvalue" href="ShipMuonShield_8h.html#a7a162bd4e07daf5d23ff100f08d1cb43a74e8333ad11685ff3bdae589c8f6e34d">FieldDirection::down</a>};</div>
-<div class="line"><span class="lineno">  336</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="#a5f10b4dcb1170c0ddd4faba94b308673">nMagnets</a> &gt; fieldDirection.size()) {</div>
-<div class="line"><span class="lineno">  337</span>    LOG(fatal) &lt;&lt; <span class="stringliteral">&quot;ShipMuonShield::Initialize: &quot;</span> &lt;&lt; <a class="code hl_variable" href="#a5f10b4dcb1170c0ddd4faba94b308673">nMagnets</a></div>
-<div class="line"><span class="lineno">  338</span>               &lt;&lt; <span class="stringliteral">&quot; magnets configured but only &quot;</span> &lt;&lt; fieldDirection.size()</div>
-<div class="line"><span class="lineno">  339</span>               &lt;&lt; <span class="stringliteral">&quot; field directions are defined; extend fieldDirection.&quot;</span>;</div>
-<div class="line"><span class="lineno">  340</span>  }</div>
-<div class="line"><span class="lineno">  341</span> </div>
-<div class="line"><span class="lineno">  342</span>  std::vector&lt;Double_t&gt; <a class="code hl_variable" href="namespacerun__fixedTarget.html#ad83c31f0696cc6c2129af09325c7ef08">params</a>;</div>
-<div class="line"><span class="lineno">  343</span>  <a class="code hl_variable" href="namespacerun__fixedTarget.html#ad83c31f0696cc6c2129af09325c7ef08">params</a> = <a class="code hl_variable" href="#aa20eee4086760aa148d9aca889ad0746">shield_params</a>;</div>
-<div class="line"><span class="lineno">  344</span> </div>
-<div class="line"><span class="lineno">  345</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt; <a class="code hl_variable" href="#a5f10b4dcb1170c0ddd4faba94b308673">nMagnets</a>; ++<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>) {</div>
-<div class="line"><span class="lineno">  346</span>    <span class="comment">// --- Load parameters for each magnet ---</span></div>
-<div class="line"><span class="lineno">  347</span> </div>
-<div class="line"><span class="lineno">  348</span>    dZ[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>] = <a class="code hl_variable" href="namespacerun__fixedTarget.html#ad83c31f0696cc6c2129af09325c7ef08">params</a>[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> * <a class="code hl_variable" href="#a6eef9ac6682ae43dd8888f2848367cc5">nParams</a> + 0];</div>
-<div class="line"><span class="lineno">  349</span>    Z_rel[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>] = <a class="code hl_variable" href="namespacerun__fixedTarget.html#ad83c31f0696cc6c2129af09325c7ef08">params</a>[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> * <a class="code hl_variable" href="#a6eef9ac6682ae43dd8888f2848367cc5">nParams</a> + 1];</div>
-<div class="line"><span class="lineno">  350</span>    dXIn[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>] = <a class="code hl_variable" href="namespacerun__fixedTarget.html#ad83c31f0696cc6c2129af09325c7ef08">params</a>[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> * <a class="code hl_variable" href="#a6eef9ac6682ae43dd8888f2848367cc5">nParams</a> + 2];</div>
-<div class="line"><span class="lineno">  351</span>    dXOut[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>] = <a class="code hl_variable" href="namespacerun__fixedTarget.html#ad83c31f0696cc6c2129af09325c7ef08">params</a>[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> * <a class="code hl_variable" href="#a6eef9ac6682ae43dd8888f2848367cc5">nParams</a> + 3];</div>
-<div class="line"><span class="lineno">  352</span>    dYIn[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>] = <a class="code hl_variable" href="namespacerun__fixedTarget.html#ad83c31f0696cc6c2129af09325c7ef08">params</a>[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> * <a class="code hl_variable" href="#a6eef9ac6682ae43dd8888f2848367cc5">nParams</a> + 4];</div>
-<div class="line"><span class="lineno">  353</span>    dYOut[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>] = <a class="code hl_variable" href="namespacerun__fixedTarget.html#ad83c31f0696cc6c2129af09325c7ef08">params</a>[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> * <a class="code hl_variable" href="#a6eef9ac6682ae43dd8888f2848367cc5">nParams</a> + 5];</div>
-<div class="line"><span class="lineno">  354</span>    gapIn[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>] = <a class="code hl_variable" href="namespacerun__fixedTarget.html#ad83c31f0696cc6c2129af09325c7ef08">params</a>[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> * <a class="code hl_variable" href="#a6eef9ac6682ae43dd8888f2848367cc5">nParams</a> + 6];</div>
-<div class="line"><span class="lineno">  355</span>    gapOut[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>] = <a class="code hl_variable" href="namespacerun__fixedTarget.html#ad83c31f0696cc6c2129af09325c7ef08">params</a>[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> * <a class="code hl_variable" href="#a6eef9ac6682ae43dd8888f2848367cc5">nParams</a> + 7];</div>
-<div class="line"><span class="lineno">  356</span>    ratio_yokesIn[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>] = <a class="code hl_variable" href="namespacerun__fixedTarget.html#ad83c31f0696cc6c2129af09325c7ef08">params</a>[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> * <a class="code hl_variable" href="#a6eef9ac6682ae43dd8888f2848367cc5">nParams</a> + 8];</div>
-<div class="line"><span class="lineno">  357</span>    ratio_yokesOut[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>] = <a class="code hl_variable" href="namespacerun__fixedTarget.html#ad83c31f0696cc6c2129af09325c7ef08">params</a>[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> * <a class="code hl_variable" href="#a6eef9ac6682ae43dd8888f2848367cc5">nParams</a> + 9];</div>
-<div class="line"><span class="lineno">  358</span>    dY_yokeIn[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>] = <a class="code hl_variable" href="namespacerun__fixedTarget.html#ad83c31f0696cc6c2129af09325c7ef08">params</a>[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> * <a class="code hl_variable" href="#a6eef9ac6682ae43dd8888f2848367cc5">nParams</a> + 10];</div>
-<div class="line"><span class="lineno">  359</span>    dY_yokeOut[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>] = <a class="code hl_variable" href="namespacerun__fixedTarget.html#ad83c31f0696cc6c2129af09325c7ef08">params</a>[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> * <a class="code hl_variable" href="#a6eef9ac6682ae43dd8888f2848367cc5">nParams</a> + 11];</div>
-<div class="line"><span class="lineno">  360</span>    midGapIn[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>] = <a class="code hl_variable" href="namespacerun__fixedTarget.html#ad83c31f0696cc6c2129af09325c7ef08">params</a>[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> * <a class="code hl_variable" href="#a6eef9ac6682ae43dd8888f2848367cc5">nParams</a> + 12];</div>
-<div class="line"><span class="lineno">  361</span>    midGapOut[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>] = <a class="code hl_variable" href="namespacerun__fixedTarget.html#ad83c31f0696cc6c2129af09325c7ef08">params</a>[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> * <a class="code hl_variable" href="#a6eef9ac6682ae43dd8888f2848367cc5">nParams</a> + 13];</div>
-<div class="line"><span class="lineno">  362</span>    Bgoal[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>] = <a class="code hl_variable" href="namespacerun__fixedTarget.html#ad83c31f0696cc6c2129af09325c7ef08">params</a>[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> * <a class="code hl_variable" href="#a6eef9ac6682ae43dd8888f2848367cc5">nParams</a> + 14];</div>
-<div class="line"><span class="lineno">  363</span> </div>
-<div class="line"><span class="lineno">  364</span>    <span class="comment">// --- Compute Z position for each magnet ---</span></div>
-<div class="line"><span class="lineno">  365</span>    <span class="keywordflow">if</span> (i == 0) {</div>
-<div class="line"><span class="lineno">  366</span>      <span class="comment">// First magnet uses the initial offset</span></div>
-<div class="line"><span class="lineno">  367</span>      Z[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>] = <a class="code hl_variable" href="#a899926b2ae70e54e604cb8851bc69ff1">z_end_of_proximity_shielding</a> + dZ[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>] + Z_rel[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>];</div>
-<div class="line"><span class="lineno">  368</span>    } <span class="keywordflow">else</span> {</div>
-<div class="line"><span class="lineno">  369</span>      <span class="comment">// Subsequent magnets are placed relative to the previous one</span></div>
-<div class="line"><span class="lineno">  370</span>      Z[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>] = Z[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> - 1] + Z_rel[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> - 1] + dZ[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>] + Z_rel[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>];</div>
-<div class="line"><span class="lineno">  371</span>    }</div>
-<div class="line"><span class="lineno">  372</span>    <span class="comment">// --- Print all values for this magnet ---</span></div>
-<div class="line"><span class="lineno">  373</span>    LOG(<a class="code hl_variable" href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a>) &lt;&lt; <span class="stringliteral">&quot;Magnet &quot;</span> &lt;&lt; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt;&lt; <span class="stringliteral">&quot;: dZ=&quot;</span> &lt;&lt; dZ[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>] &lt;&lt; <span class="stringliteral">&quot;, Z_rel=&quot;</span> &lt;&lt; Z_rel[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>]</div>
-<div class="line"><span class="lineno">  374</span>               &lt;&lt; <span class="stringliteral">&quot;, dXIn=&quot;</span> &lt;&lt; dXIn[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>] &lt;&lt; <span class="stringliteral">&quot;, dXOut=&quot;</span> &lt;&lt; dXOut[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>]</div>
-<div class="line"><span class="lineno">  375</span>               &lt;&lt; <span class="stringliteral">&quot;, dYIn=&quot;</span> &lt;&lt; dYIn[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>] &lt;&lt; <span class="stringliteral">&quot;, dYOut=&quot;</span> &lt;&lt; dYOut[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>]</div>
-<div class="line"><span class="lineno">  376</span>               &lt;&lt; <span class="stringliteral">&quot;, gapIn=&quot;</span> &lt;&lt; gapIn[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>] &lt;&lt; <span class="stringliteral">&quot;, gapOut=&quot;</span> &lt;&lt; gapOut[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>]</div>
-<div class="line"><span class="lineno">  377</span>               &lt;&lt; <span class="stringliteral">&quot;, ratio_yokesIn=&quot;</span> &lt;&lt; ratio_yokesIn[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>]</div>
-<div class="line"><span class="lineno">  378</span>               &lt;&lt; <span class="stringliteral">&quot;, ratio_yokesOut=&quot;</span> &lt;&lt; ratio_yokesOut[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>]</div>
-<div class="line"><span class="lineno">  379</span>               &lt;&lt; <span class="stringliteral">&quot;, dY_yokeIn=&quot;</span> &lt;&lt; dY_yokeIn[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>]</div>
-<div class="line"><span class="lineno">  380</span>               &lt;&lt; <span class="stringliteral">&quot;, dY_yokeOut=&quot;</span> &lt;&lt; dY_yokeOut[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>]</div>
-<div class="line"><span class="lineno">  381</span>               &lt;&lt; <span class="stringliteral">&quot;, midGapIn=&quot;</span> &lt;&lt; midGapIn[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>] &lt;&lt; <span class="stringliteral">&quot;, midGapOut=&quot;</span> &lt;&lt; midGapOut[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>]</div>
-<div class="line"><span class="lineno">  382</span>               &lt;&lt; <span class="stringliteral">&quot;, Bgoal=&quot;</span> &lt;&lt; Bgoal[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>] &lt;&lt; <span class="stringliteral">&quot;, Z=&quot;</span> &lt;&lt; Z[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>];</div>
-<div class="line"><span class="lineno">  383</span>  }</div>
-<div class="line"><span class="lineno">  384</span>  LOG(<a class="code hl_variable" href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a>) &lt;&lt; <span class="stringliteral">&quot; ending of Initialize the MS &quot;</span>;</div>
-<div class="line"><span class="lineno">  385</span>}</div>
-<div class="ttc" id="anamespacecalo__scoring__plane__pid__example_html_a33cc14130de3283cf2cce7c78b91001f"><div class="ttname"><a href="namespacecalo__scoring__plane__pid__example.html#a33cc14130de3283cf2cce7c78b91001f">calo_scoring_plane_pid_example.name</a></div><div class="ttdeci">name</div><div class="ttdef"><b>Definition</b> <a href="calo__scoring__plane__pid__example_8py_source.html#l00032">calo_scoring_plane_pid_example.py:32</a></div></div>
-<div class="ttc" id="anamespacerun__fixedTarget_html_ad83c31f0696cc6c2129af09325c7ef08"><div class="ttname"><a href="namespacerun__fixedTarget.html#ad83c31f0696cc6c2129af09325c7ef08">run_fixedTarget.params</a></div><div class="ttdeci">params</div><div class="ttdef"><b>Definition</b> <a href="run__fixedTarget_8py_source.html#l00464">run_fixedTarget.py:464</a></div></div>
+<p class="definition">Definition at line <a class="el" href="ShipMuonShield_8cxx_source.html#l00045">45</a> of file <a class="el" href="ShipMuonShield_8cxx_source.html">ShipMuonShield.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   47</span>                                                                               {</div>
+<div class="line"><span class="lineno">   48</span>  LOG(<a class="code hl_variable" href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a>) &lt;&lt; <span class="stringliteral">&quot; Create a magnet of the MS &quot;</span>;</div>
+<div class="line"><span class="lineno">   49</span>  TGeoVolume* magVol = <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">   50</span> </div>
+<div class="line"><span class="lineno">   51</span>  <span class="keywordflow">if</span> (withSNDHole) {</div>
+<div class="line"><span class="lineno">   52</span>    <span class="comment">// Solid box minus a void box along the beam axis</span></div>
+<div class="line"><span class="lineno">   53</span>    TString shapeName = magnetName + <span class="stringliteral">&quot;_shape&quot;</span>;</div>
+<div class="line"><span class="lineno">   54</span>    <span class="keyword">new</span> TGeoBBox(shapeName, dX, dY, dZ);</div>
+<div class="line"><span class="lineno">   55</span> </div>
+<div class="line"><span class="lineno">   56</span>    <span class="comment">// Void 0.1 mm smaller than the hole transversally (anti-overlap with the</span></div>
+<div class="line"><span class="lineno">   57</span>    <span class="comment">// SND) and longer than the magnet, so that no faces coincide</span></div>
+<div class="line"><span class="lineno">   58</span>    <span class="keyword">constexpr</span> <span class="keywordtype">double</span> eps = 0.01;</div>
+<div class="line"><span class="lineno">   59</span>    TString voidName = magnetName + <span class="stringliteral">&quot;_void&quot;</span>;</div>
+<div class="line"><span class="lineno">   60</span>    <span class="keyword">new</span> TGeoBBox(voidName, <a class="code hl_variable" href="#af69a736a23ef1339268d4bfe4a49069f">snd_hole_dx</a> - eps, <a class="code hl_variable" href="#a9e5633e2a6bb1e1fc0587625bc227460">snd_hole_dy</a> - eps, dZ + eps);</div>
+<div class="line"><span class="lineno">   61</span> </div>
+<div class="line"><span class="lineno">   62</span>    <span class="keyword">auto</span>* compShape = <span class="keyword">new</span> TGeoCompositeShape(magnetName + <span class="stringliteral">&quot;_comp&quot;</span>,</div>
+<div class="line"><span class="lineno">   63</span>                                             shapeName + <span class="stringliteral">&quot; - &quot;</span> + voidName);</div>
+<div class="line"><span class="lineno">   64</span>    magVol = <span class="keyword">new</span> TGeoVolume(magnetName, compShape, medium);</div>
+<div class="line"><span class="lineno">   65</span>  } <span class="keywordflow">else</span> {</div>
+<div class="line"><span class="lineno">   66</span>    magVol = gGeoManager-&gt;MakeBox(magnetName, medium, dX, dY, dZ);</div>
+<div class="line"><span class="lineno">   67</span>  }</div>
+<div class="line"><span class="lineno">   68</span> </div>
+<div class="line"><span class="lineno">   69</span>  magVol-&gt;SetLineColor(45);</div>
+<div class="line"><span class="lineno">   70</span>  tShield-&gt;AddNode(magVol, 1, <span class="keyword">new</span> TGeoTranslation(0, 0, Z));</div>
+<div class="line"><span class="lineno">   71</span>}</div>
+<div class="ttc" id="aclassShipMuonShield_html_a9e5633e2a6bb1e1fc0587625bc227460"><div class="ttname"><a href="#a9e5633e2a6bb1e1fc0587625bc227460">ShipMuonShield::snd_hole_dy</a></div><div class="ttdeci">Double_t snd_hole_dy</div><div class="ttdef"><b>Definition</b> <a href="ShipMuonShield_8h_source.html#l00043">ShipMuonShield.h:43</a></div></div>
+<div class="ttc" id="aclassShipMuonShield_html_af69a736a23ef1339268d4bfe4a49069f"><div class="ttname"><a href="#af69a736a23ef1339268d4bfe4a49069f">ShipMuonShield::snd_hole_dx</a></div><div class="ttdeci">Double_t snd_hole_dx</div><div class="ttdef"><b>Definition</b> <a href="ShipMuonShield_8h_source.html#l00043">ShipMuonShield.h:43</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1022,301 +466,18 @@ Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipMuonShield_8cxx_source.html#l00057">57</a> of file <a class="el" href="ShipMuonShield_8cxx_source.html">ShipMuonShield.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   59</span>                                                    {</div>
-<div class="line"><span class="lineno">   60</span>  <a class="code hl_variable" href="#a621dfbab4170ed79ff142d25063f5a8c">snd_hole</a> = hole;</div>
-<div class="line"><span class="lineno">   61</span>  <a class="code hl_variable" href="#adbe47d24b57d2c21b343da9117bfcba8">snd_first_magnet</a> = first_magnet;</div>
-<div class="line"><span class="lineno">   62</span>  <a class="code hl_variable" href="#a87130a7cf761bb485abba3006820e726">snd_last_magnet</a> = last_magnet;</div>
-<div class="line"><span class="lineno">   63</span>  <a class="code hl_variable" href="#af69a736a23ef1339268d4bfe4a49069f">snd_hole_dx</a> = hole_dx / 2.;  <span class="comment">// since the hole is cut in 2 halves, we need to</span></div>
-<div class="line"><span class="lineno">   64</span>                               <span class="comment">// divide the width by 2</span></div>
-<div class="line"><span class="lineno">   65</span>  <a class="code hl_variable" href="#a9e5633e2a6bb1e1fc0587625bc227460">snd_hole_dy</a> = hole_dy;</div>
-<div class="line"><span class="lineno">   66</span>}</div>
+<p class="definition">Definition at line <a class="el" href="ShipMuonShield_8cxx_source.html#l00035">35</a> of file <a class="el" href="ShipMuonShield_8cxx_source.html">ShipMuonShield.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   37</span>                                                    {</div>
+<div class="line"><span class="lineno">   38</span>  <a class="code hl_variable" href="#a621dfbab4170ed79ff142d25063f5a8c">snd_hole</a> = hole;</div>
+<div class="line"><span class="lineno">   39</span>  <a class="code hl_variable" href="#adbe47d24b57d2c21b343da9117bfcba8">snd_first_magnet</a> = first_magnet;</div>
+<div class="line"><span class="lineno">   40</span>  <a class="code hl_variable" href="#a87130a7cf761bb485abba3006820e726">snd_last_magnet</a> = last_magnet;</div>
+<div class="line"><span class="lineno">   41</span>  <a class="code hl_variable" href="#af69a736a23ef1339268d4bfe4a49069f">snd_hole_dx</a> = hole_dx;</div>
+<div class="line"><span class="lineno">   42</span>  <a class="code hl_variable" href="#a9e5633e2a6bb1e1fc0587625bc227460">snd_hole_dy</a> = hole_dy;</div>
+<div class="line"><span class="lineno">   43</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
 <a name="doc-variable-members" id="doc-variable-members"></a><h2 id="header-doc-variable-members" class="groupheader">Member Data Documentation</h2>
-<a id="a64f7b519e98b0e17a2caae28e7caf2fd" name="a64f7b519e98b0e17a2caae28e7caf2fd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a64f7b519e98b0e17a2caae28e7caf2fd">&#9670;&#160;</a></span>dXgap</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">Double_t ShipMuonShield::dXgap {0.}</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="ShipMuonShield_8h_source.html#l00036">36</a> of file <a class="el" href="ShipMuonShield_8h_source.html">ShipMuonShield.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   36</span>{0.}, <a class="code hl_variable" href="#a64f7b519e98b0e17a2caae28e7caf2fd">dXgap</a>{0.}, <a class="code hl_variable" href="#a899926b2ae70e54e604cb8851bc69ff1">z_end_of_proximity_shielding</a>{0.};</div>
-<div class="ttc" id="aclassShipMuonShield_html_a64f7b519e98b0e17a2caae28e7caf2fd"><div class="ttname"><a href="#a64f7b519e98b0e17a2caae28e7caf2fd">ShipMuonShield::dXgap</a></div><div class="ttdeci">Double_t dXgap</div><div class="ttdef"><b>Definition</b> <a href="ShipMuonShield_8h_source.html#l00036">ShipMuonShield.h:36</a></div></div>
-</div><!-- fragment -->
-</div>
-</div>
-<a id="a25d8a1229a943532bbc3c02ebc7f8109" name="a25d8a1229a943532bbc3c02ebc7f8109"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a25d8a1229a943532bbc3c02ebc7f8109">&#9670;&#160;</a></span>dZ0</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">Double_t ShipMuonShield::dZ0 {0.}</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="ShipMuonShield_8h_source.html#l00035">35</a> of file <a class="el" href="ShipMuonShield_8h_source.html">ShipMuonShield.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   35</span>{0.}, <a class="code hl_variable" href="#a0b5fdd40d2b50df6bb58faf95886a06d">dZ1</a>{0.}, <a class="code hl_variable" href="#afb7b692183d67dea99006da9533b3341">dZ2</a>{0.}, <a class="code hl_variable" href="#af08206671c0915c768e237897d865756">dZ3</a>{0.}, <a class="code hl_variable" href="#a5e9d1ec75ed246966ffa3d96cdc4ad76">dZ4</a>{0.}, <a class="code hl_variable" href="#a18ecac71d417e13399b87db533a4f186">dZ5</a>{0.}, <a class="code hl_variable" href="#a3ed89ff9d9698adeb74aee3798d673ec">dZ6</a>{0.},</div>
-<div class="ttc" id="aclassShipMuonShield_html_a0b5fdd40d2b50df6bb58faf95886a06d"><div class="ttname"><a href="#a0b5fdd40d2b50df6bb58faf95886a06d">ShipMuonShield::dZ1</a></div><div class="ttdeci">Double_t dZ1</div><div class="ttdef"><b>Definition</b> <a href="ShipMuonShield_8h_source.html#l00035">ShipMuonShield.h:35</a></div></div>
-<div class="ttc" id="aclassShipMuonShield_html_a18ecac71d417e13399b87db533a4f186"><div class="ttname"><a href="#a18ecac71d417e13399b87db533a4f186">ShipMuonShield::dZ5</a></div><div class="ttdeci">Double_t dZ5</div><div class="ttdef"><b>Definition</b> <a href="ShipMuonShield_8h_source.html#l00035">ShipMuonShield.h:35</a></div></div>
-<div class="ttc" id="aclassShipMuonShield_html_a3ed89ff9d9698adeb74aee3798d673ec"><div class="ttname"><a href="#a3ed89ff9d9698adeb74aee3798d673ec">ShipMuonShield::dZ6</a></div><div class="ttdeci">Double_t dZ6</div><div class="ttdef"><b>Definition</b> <a href="ShipMuonShield_8h_source.html#l00035">ShipMuonShield.h:35</a></div></div>
-<div class="ttc" id="aclassShipMuonShield_html_a5e9d1ec75ed246966ffa3d96cdc4ad76"><div class="ttname"><a href="#a5e9d1ec75ed246966ffa3d96cdc4ad76">ShipMuonShield::dZ4</a></div><div class="ttdeci">Double_t dZ4</div><div class="ttdef"><b>Definition</b> <a href="ShipMuonShield_8h_source.html#l00035">ShipMuonShield.h:35</a></div></div>
-<div class="ttc" id="aclassShipMuonShield_html_af08206671c0915c768e237897d865756"><div class="ttname"><a href="#af08206671c0915c768e237897d865756">ShipMuonShield::dZ3</a></div><div class="ttdeci">Double_t dZ3</div><div class="ttdef"><b>Definition</b> <a href="ShipMuonShield_8h_source.html#l00035">ShipMuonShield.h:35</a></div></div>
-<div class="ttc" id="aclassShipMuonShield_html_afb7b692183d67dea99006da9533b3341"><div class="ttname"><a href="#afb7b692183d67dea99006da9533b3341">ShipMuonShield::dZ2</a></div><div class="ttdeci">Double_t dZ2</div><div class="ttdef"><b>Definition</b> <a href="ShipMuonShield_8h_source.html#l00035">ShipMuonShield.h:35</a></div></div>
-</div><!-- fragment -->
-</div>
-</div>
-<a id="a0b5fdd40d2b50df6bb58faf95886a06d" name="a0b5fdd40d2b50df6bb58faf95886a06d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0b5fdd40d2b50df6bb58faf95886a06d">&#9670;&#160;</a></span>dZ1</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">Double_t ShipMuonShield::dZ1 {0.}</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="ShipMuonShield_8h_source.html#l00035">35</a> of file <a class="el" href="ShipMuonShield_8h_source.html">ShipMuonShield.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   35</span>{0.}, <a class="code hl_variable" href="#a0b5fdd40d2b50df6bb58faf95886a06d">dZ1</a>{0.}, <a class="code hl_variable" href="#afb7b692183d67dea99006da9533b3341">dZ2</a>{0.}, <a class="code hl_variable" href="#af08206671c0915c768e237897d865756">dZ3</a>{0.}, <a class="code hl_variable" href="#a5e9d1ec75ed246966ffa3d96cdc4ad76">dZ4</a>{0.}, <a class="code hl_variable" href="#a18ecac71d417e13399b87db533a4f186">dZ5</a>{0.}, <a class="code hl_variable" href="#a3ed89ff9d9698adeb74aee3798d673ec">dZ6</a>{0.},</div>
-</div><!-- fragment -->
-</div>
-</div>
-<a id="afb7b692183d67dea99006da9533b3341" name="afb7b692183d67dea99006da9533b3341"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afb7b692183d67dea99006da9533b3341">&#9670;&#160;</a></span>dZ2</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">Double_t ShipMuonShield::dZ2 {0.}</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="ShipMuonShield_8h_source.html#l00035">35</a> of file <a class="el" href="ShipMuonShield_8h_source.html">ShipMuonShield.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   35</span>{0.}, <a class="code hl_variable" href="#a0b5fdd40d2b50df6bb58faf95886a06d">dZ1</a>{0.}, <a class="code hl_variable" href="#afb7b692183d67dea99006da9533b3341">dZ2</a>{0.}, <a class="code hl_variable" href="#af08206671c0915c768e237897d865756">dZ3</a>{0.}, <a class="code hl_variable" href="#a5e9d1ec75ed246966ffa3d96cdc4ad76">dZ4</a>{0.}, <a class="code hl_variable" href="#a18ecac71d417e13399b87db533a4f186">dZ5</a>{0.}, <a class="code hl_variable" href="#a3ed89ff9d9698adeb74aee3798d673ec">dZ6</a>{0.},</div>
-</div><!-- fragment -->
-</div>
-</div>
-<a id="af08206671c0915c768e237897d865756" name="af08206671c0915c768e237897d865756"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af08206671c0915c768e237897d865756">&#9670;&#160;</a></span>dZ3</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">Double_t ShipMuonShield::dZ3 {0.}</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="ShipMuonShield_8h_source.html#l00035">35</a> of file <a class="el" href="ShipMuonShield_8h_source.html">ShipMuonShield.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   35</span>{0.}, <a class="code hl_variable" href="#a0b5fdd40d2b50df6bb58faf95886a06d">dZ1</a>{0.}, <a class="code hl_variable" href="#afb7b692183d67dea99006da9533b3341">dZ2</a>{0.}, <a class="code hl_variable" href="#af08206671c0915c768e237897d865756">dZ3</a>{0.}, <a class="code hl_variable" href="#a5e9d1ec75ed246966ffa3d96cdc4ad76">dZ4</a>{0.}, <a class="code hl_variable" href="#a18ecac71d417e13399b87db533a4f186">dZ5</a>{0.}, <a class="code hl_variable" href="#a3ed89ff9d9698adeb74aee3798d673ec">dZ6</a>{0.},</div>
-</div><!-- fragment -->
-</div>
-</div>
-<a id="a5e9d1ec75ed246966ffa3d96cdc4ad76" name="a5e9d1ec75ed246966ffa3d96cdc4ad76"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5e9d1ec75ed246966ffa3d96cdc4ad76">&#9670;&#160;</a></span>dZ4</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">Double_t ShipMuonShield::dZ4 {0.}</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="ShipMuonShield_8h_source.html#l00035">35</a> of file <a class="el" href="ShipMuonShield_8h_source.html">ShipMuonShield.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   35</span>{0.}, <a class="code hl_variable" href="#a0b5fdd40d2b50df6bb58faf95886a06d">dZ1</a>{0.}, <a class="code hl_variable" href="#afb7b692183d67dea99006da9533b3341">dZ2</a>{0.}, <a class="code hl_variable" href="#af08206671c0915c768e237897d865756">dZ3</a>{0.}, <a class="code hl_variable" href="#a5e9d1ec75ed246966ffa3d96cdc4ad76">dZ4</a>{0.}, <a class="code hl_variable" href="#a18ecac71d417e13399b87db533a4f186">dZ5</a>{0.}, <a class="code hl_variable" href="#a3ed89ff9d9698adeb74aee3798d673ec">dZ6</a>{0.},</div>
-</div><!-- fragment -->
-</div>
-</div>
-<a id="a18ecac71d417e13399b87db533a4f186" name="a18ecac71d417e13399b87db533a4f186"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a18ecac71d417e13399b87db533a4f186">&#9670;&#160;</a></span>dZ5</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">Double_t ShipMuonShield::dZ5 {0.}</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="ShipMuonShield_8h_source.html#l00035">35</a> of file <a class="el" href="ShipMuonShield_8h_source.html">ShipMuonShield.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   35</span>{0.}, <a class="code hl_variable" href="#a0b5fdd40d2b50df6bb58faf95886a06d">dZ1</a>{0.}, <a class="code hl_variable" href="#afb7b692183d67dea99006da9533b3341">dZ2</a>{0.}, <a class="code hl_variable" href="#af08206671c0915c768e237897d865756">dZ3</a>{0.}, <a class="code hl_variable" href="#a5e9d1ec75ed246966ffa3d96cdc4ad76">dZ4</a>{0.}, <a class="code hl_variable" href="#a18ecac71d417e13399b87db533a4f186">dZ5</a>{0.}, <a class="code hl_variable" href="#a3ed89ff9d9698adeb74aee3798d673ec">dZ6</a>{0.},</div>
-</div><!-- fragment -->
-</div>
-</div>
-<a id="a3ed89ff9d9698adeb74aee3798d673ec" name="a3ed89ff9d9698adeb74aee3798d673ec"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3ed89ff9d9698adeb74aee3798d673ec">&#9670;&#160;</a></span>dZ6</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">Double_t ShipMuonShield::dZ6 {0.}</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="ShipMuonShield_8h_source.html#l00035">35</a> of file <a class="el" href="ShipMuonShield_8h_source.html">ShipMuonShield.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   35</span>{0.}, <a class="code hl_variable" href="#a0b5fdd40d2b50df6bb58faf95886a06d">dZ1</a>{0.}, <a class="code hl_variable" href="#afb7b692183d67dea99006da9533b3341">dZ2</a>{0.}, <a class="code hl_variable" href="#af08206671c0915c768e237897d865756">dZ3</a>{0.}, <a class="code hl_variable" href="#a5e9d1ec75ed246966ffa3d96cdc4ad76">dZ4</a>{0.}, <a class="code hl_variable" href="#a18ecac71d417e13399b87db533a4f186">dZ5</a>{0.}, <a class="code hl_variable" href="#a3ed89ff9d9698adeb74aee3798d673ec">dZ6</a>{0.},</div>
-</div><!-- fragment -->
-</div>
-</div>
-<a id="afa1fdd58785194476d02251f6506179b" name="afa1fdd58785194476d02251f6506179b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afa1fdd58785194476d02251f6506179b">&#9670;&#160;</a></span>dZ7</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">Double_t ShipMuonShield::dZ7 {0.}</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="ShipMuonShield_8h_source.html#l00036">36</a> of file <a class="el" href="ShipMuonShield_8h_source.html">ShipMuonShield.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   36</span>{0.}, <a class="code hl_variable" href="#a64f7b519e98b0e17a2caae28e7caf2fd">dXgap</a>{0.}, <a class="code hl_variable" href="#a899926b2ae70e54e604cb8851bc69ff1">z_end_of_proximity_shielding</a>{0.};</div>
-</div><!-- fragment -->
-</div>
-</div>
-<a id="a92c765f3f0e52c87e24d34520480868d" name="a92c765f3f0e52c87e24d34520480868d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a92c765f3f0e52c87e24d34520480868d">&#9670;&#160;</a></span>fSC_mag</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">Bool_t ShipMuonShield::fSC_mag {false}</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="ShipMuonShield_8h_source.html#l00040">40</a> of file <a class="el" href="ShipMuonShield_8h_source.html">ShipMuonShield.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   40</span>{<span class="keyword">false</span>};</div>
-</div><!-- fragment -->
-</div>
-</div>
-<a id="aa83bbeaa79fad431c2c5186c7df276ba" name="aa83bbeaa79fad431c2c5186c7df276ba"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa83bbeaa79fad431c2c5186c7df276ba">&#9670;&#160;</a></span>fWithConstShieldField</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">Bool_t ShipMuonShield::fWithConstShieldField {false}</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="ShipMuonShield_8h_source.html#l00039">39</a> of file <a class="el" href="ShipMuonShield_8h_source.html">ShipMuonShield.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   39</span>{<span class="keyword">false</span>};</div>
-</div><!-- fragment -->
-</div>
-</div>
 <a id="a5f10b4dcb1170c0ddd4faba94b308673" name="a5f10b4dcb1170c0ddd4faba94b308673"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5f10b4dcb1170c0ddd4faba94b308673">&#9670;&#160;</a></span>nMagnets</h2>
 
@@ -1337,13 +498,13 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipMuonShield_8h_source.html#l00037">37</a> of file <a class="el" href="ShipMuonShield_8h_source.html">ShipMuonShield.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   37</span>{0};</div>
+<p class="definition">Definition at line <a class="el" href="ShipMuonShield_8h_source.html#l00040">40</a> of file <a class="el" href="ShipMuonShield_8h_source.html">ShipMuonShield.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   40</span>{0};</div>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="a6eef9ac6682ae43dd8888f2848367cc5" name="a6eef9ac6682ae43dd8888f2848367cc5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6eef9ac6682ae43dd8888f2848367cc5">&#9670;&#160;</a></span>nParams</h2>
+<a id="ac81702251e4b3eae9619d7733e0d7dca" name="ac81702251e4b3eae9619d7733e0d7dca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac81702251e4b3eae9619d7733e0d7dca">&#9670;&#160;</a></span>nParams</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1352,19 +513,18 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">Int_t ShipMuonShield::nParams {0}</td>
+          <td class="memname">size_t ShipMuonShield::nParams = 4</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel static">static</span><span class="mlabel constexpr">constexpr</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipMuonShield_8h_source.html#l00038">38</a> of file <a class="el" href="ShipMuonShield_8h_source.html">ShipMuonShield.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   38</span>{0};</div>
-</div><!-- fragment -->
+<p class="definition">Definition at line <a class="el" href="ShipMuonShield_8h_source.html#l00036">36</a> of file <a class="el" href="ShipMuonShield_8h_source.html">ShipMuonShield.h</a>.</p>
+
 </div>
 </div>
 <a id="aa20eee4086760aa148d9aca889ad0746" name="aa20eee4086760aa148d9aca889ad0746"></a>
@@ -1534,8 +694,8 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipMuonShield_8h_source.html#l00036">36</a> of file <a class="el" href="ShipMuonShield_8h_source.html">ShipMuonShield.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   36</span>{0.}, <a class="code hl_variable" href="#a64f7b519e98b0e17a2caae28e7caf2fd">dXgap</a>{0.}, <a class="code hl_variable" href="#a899926b2ae70e54e604cb8851bc69ff1">z_end_of_proximity_shielding</a>{0.};</div>
+<p class="definition">Definition at line <a class="el" href="ShipMuonShield_8h_source.html#l00039">39</a> of file <a class="el" href="ShipMuonShield_8h_source.html">ShipMuonShield.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   39</span>{0.};</div>
 </div><!-- fragment -->
 </div>
 </div>

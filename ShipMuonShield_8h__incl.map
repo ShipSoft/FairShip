@@ -1,23 +1,15 @@
 <map id="passive/ShipMuonShield.h" name="passive/ShipMuonShield.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="428,5,619,33"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="5,81,61,109"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="425,29,267,50,77,83,76,78,266,45,430,28"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="84,81,147,109"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="425,34,305,55,162,83,161,78,305,50,430,33"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="171,81,271,109"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="472,34,286,80,285,75,467,34"/>
-<area shape="rect" id="Node000005" title=" " alt="" coords="294,81,398,109"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="495,33,393,77,391,72,489,34"/>
-<area shape="rect" id="Node000006" title=" " alt="" coords="423,81,502,109"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="515,32,484,71,481,67,510,35"/>
-<area shape="rect" id="Node000007" title=" " alt="" coords="526,81,646,109"/>
-<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="536,31,568,70,563,68,534,36"/>
-<area shape="rect" id="Node000008" title=" " alt="" coords="671,81,840,109"/>
-<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="566,31,702,76,697,76,565,36"/>
-<area shape="rect" id="Node000009" title=" " alt="" coords="865,81,1044,109"/>
-<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="601,31,864,78,859,78,601,36"/>
-<area shape="rect" id="Node000010" title=" " alt="" coords="1068,81,1147,109"/>
-<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="620,25,816,45,1055,81,1050,81,815,50,620,31"/>
-<area shape="rect" id="Node000011" title=" " alt="" coords="1171,81,1260,109"/>
-<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="620,23,860,42,1006,58,1158,81,1153,81,1006,63,859,47,619,29"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="229,5,420,33"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,81,68,109"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="270,36,84,83,82,78,269,31"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="92,81,192,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="294,33,189,77,187,72,289,34"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="215,81,319,109"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="317,32,288,71,285,67,312,35"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="344,81,422,109"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="336,31,366,69,361,68,334,36"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="447,81,567,109"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="358,31,463,75,458,75,357,36"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="592,81,671,109"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="380,31,579,80,574,81,379,36"/>
 </map>
