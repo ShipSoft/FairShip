@@ -1059,6 +1059,7 @@ void MuDISFilter::ProcessEvents() {
       foutEv.mcTrks = *finEv.mcTrks;
       foutEv.sbtPt = *finEv.sbtPt;
       foutEv.ubtPt = *finEv.ubtPt;
+      foutEv.ubtScoringPt = *finEv.ubtScoringPt;
       foutEv.sstPt = *finEv.sstPt;
       foutEv.tdPt = *finEv.tdPt;
       foutEv.pathLength = finEv.pathLength;

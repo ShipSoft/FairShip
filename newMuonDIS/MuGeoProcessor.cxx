@@ -162,8 +162,8 @@ void MuGeoProcessor::SetPocaJumpThreshold(double threshold) {
 
 void MuGeoProcessor::ResetDiagnostics() {
   fMuons = fBackwardMuons = fInvalidMuons = fTransitions = 0;
-  fUBTBackwardPaths = fStartMagneticPaths = fStartStraightPaths = 0;
-  fUBTBackwardMisses = fStartsBeyondZmax = fStartsBeforeZmin = 0;
+  fShieldExitBackwardPaths = fStartMagneticPaths = fStartStraightPaths = 0;
+  fShieldExitBackwardMisses = fStartsBeyondZmax = fStartsBeforeZmin = 0;
   fLargeJumps = fMuonsWithLargeJumps = 0;
   fMaxTransverseJump = 0.;
   fMuonWeights = {};
@@ -174,12 +174,14 @@ void MuGeoProcessor::PrintDiagnostics() const {
             << fBackwardMuons << " rejected for non-forward momentum, "
             << fInvalidMuons << " rejected for invalid measurements";
   LOG(info) << "Muon path routes prepared (before material navigation): "
-            << fUBTBackwardPaths << " from UBT with backward extrapolation, "
+            << fShieldExitBackwardPaths
+            << " from the shield-exit scoring plane with backward extrapolation, "
             << fStartMagneticPaths << " from MC start in field, "
             << fStartStraightPaths
             << " from MC start in field-free region (bending on field entry); "
             << fStartsBeyondZmax << " skipped with start z >= maximum z";
-  LOG(info) << "UBT backward paths missing MS: " << fUBTBackwardMisses;
+  LOG(info) << "Shield-exit scoring-plane backward paths missing MS: "
+            << fShieldExitBackwardMisses;
   LOG(info) << "Muons starting before z = " << fZmin
             << " cm (paths still built): " << fStartsBeforeZmin;
   LOG(info) << "POCA transverse jumps: " << fLargeJumps << " of "
@@ -192,13 +194,14 @@ void MuGeoProcessor::PrintDiagnostics() const {
             << fMuonWeights.invalid << " rejected for invalid measurements"
             << " (entries without MCTrack have no weight)";
   LOG(info) << "Muon path routes prepared (sum MCTrack[0].fW): "
-            << fMuonWeights.ubtBackward << " from UBT, "
+            << fMuonWeights.shieldExitBackward << " from the shield-exit scoring plane, "
             << fMuonWeights.startMagnetic << " from MC start in field, "
             << fMuonWeights.startStraight
             << " from MC start in field-free region, "
             << fMuonWeights.beyondZmax << " skipped with start z >= maximum z";
-  LOG(info) << "UBT backward paths missing MS (sum MCTrack[0].fW): "
-            << fMuonWeights.ubtMiss;
+  LOG(info) << "Shield-exit scoring-plane backward paths missing MS "
+               "(sum MCTrack[0].fW): "
+            << fMuonWeights.shieldExitMiss;
   LOG(info) << "Muons starting before z = " << fZmin
             << " cm (sum MCTrack[0].fW): " << fMuonWeights.beforeZmin;
   LOG(info) << "Muons with large POCA transverse jumps (sum MCTrack[0].fW): "
@@ -218,7 +221,7 @@ bool MuGeoProcessor::initialise(MuonBranches& aEvt) {
     return false;
   }
 
-  std::array<Measurement, 8> measurements;
+  std::array<Measurement, 10> measurements;
   unsigned count = 1;
   aEvt.mcTrks[0].GetStartVertex(measurements[0].position);
   aEvt.mcTrks[0].GetMomentum(measurements[0].momentum);
@@ -229,6 +232,16 @@ bool MuGeoProcessor::initialise(MuonBranches& aEvt) {
     hit.Momentum(measurement.momentum);
     measurement.time = hit.GetTime();
   };
+  // Plane IDs are defined in shipDet_conf: 1 at the vessel, 2 at the shield.
+  const UpstreamTaggerScoringPoint* shieldExit = nullptr;
+  std::array<bool, 2> foundScoring = {};
+  for (const auto& hit : aEvt.ubtScoringPt) {
+    const int plane = hit.GetDetectorID();
+    if (plane < 1 || plane > 2 || foundScoring[plane - 1]) continue;
+    foundScoring[plane - 1] = true;
+    addHit(hit);
+    if (plane == 2) shieldExit = &hit;
+  }
   if (!aEvt.ubtPt.empty()) addHit(aEvt.ubtPt.front());
   if (!aEvt.sbtPt.empty()) addHit(aEvt.sbtPt.front());
   std::array<bool, 4> found = {};
@@ -264,7 +277,7 @@ bool MuGeoProcessor::initialise(MuonBranches& aEvt) {
       return false;
     }
   }
-  // Stable insertion sort for at most seven hits, without allocating storage.
+  // Stable insertion sort for at most nine hits, without allocating storage.
   for (unsigned i = 2; i < count; ++i) {
     const auto measurement = measurements[i];
     unsigned j = i;
@@ -283,26 +296,25 @@ bool MuGeoProcessor::initialise(MuonBranches& aEvt) {
     fMuonWeights.beyondZmax += fMuonWeight;
     return true;
   }
-  const bool hasUBT = !aEvt.ubtPt.empty();
-  if (hasUBT) {
-    aEvt.ubtPt.front().Position(fUBT.position);
-    aEvt.ubtPt.front().Momentum(fUBT.momentum);
-    fUBT.time = aEvt.ubtPt.front().GetTime();
+  if (shieldExit) {
+    shieldExit->Position(fShieldExit.position);
+    shieldExit->Momentum(fShieldExit.momentum);
+    fShieldExit.time = shieldExit->GetTime();
   }
   double startZ = fStart.position.Z();
   unsigned first = 0;
-  if (hasUBT) {
+  if (shieldExit) {
     fTraceBackward = true;
-    // UBT always anchors both legs, irrespective of the MC start or field.
+    // The shield-exit scoring plane anchors both legs.
     unsigned kept = 1;
     for (unsigned i = 1; i < count; ++i)
-      if (measurements[i].position.Z() > fUBT.position.Z())
+      if (measurements[i].position.Z() > fShieldExit.position.Z())
         measurements[kept++] = measurements[i];
-    measurements[0] = fUBT;
+    measurements[0] = fShieldExit;
     count = kept;
-    startZ = fUBT.position.Z();
-    ++fUBTBackwardPaths;
-    fMuonWeights.ubtBackward += fMuonWeight;
+    startZ = fShieldExit.position.Z();
+    ++fShieldExitBackwardPaths;
+    fMuonWeights.shieldExitBackward += fMuonWeight;
   } else if (fPropagator) {
     const bool startsInField = fPropagator->HasFieldAt(fStart.position);
     // The propagator skips field-free regions linearly and resumes bending
@@ -338,7 +350,8 @@ bool MuGeoProcessor::initialise(MuonBranches& aEvt) {
   } else {
     if (!fShieldVolumes.empty())
       throw std::runtime_error(
-          "Muon without UBT requires a configured shield field map");
+          "Muon without a shield-exit scoring hit requires a configured "
+          "shield field map");
     ++fStartStraightPaths;
     fMuonWeights.startStraight += fMuonWeight;
   }
@@ -570,7 +583,7 @@ bool MuGeoProcessor::Trace(const Measurement& measurement, double startZ,
 std::map<std::string, MuonPath>& MuGeoProcessor::FillMuonPath() {
   fPathMap.clear();
   if (!gGeoManager || (fSegments.empty() && !fTraceBackward)) return fPathMap;
-  // Informational only: upstream starts are routed via UBT or field transport.
+  // Informational only: upstream starts use the shield-exit plane or field transport.
   if (fStart.position.Z() < fZmin) {
     ++fStartsBeforeZmin;
     fMuonWeights.beforeZmin += fMuonWeight;
@@ -579,25 +592,27 @@ std::map<std::string, MuonPath>& MuGeoProcessor::FillMuonPath() {
   }
 
   if (fTraceBackward) {
-    const double high = std::min(fUBT.position.Z(), fZmax);
+    const double high = std::min(fShieldExit.position.Z(), fZmax);
     const double low = std::isfinite(fShieldMinZ) ? fShieldMinZ : fZmin;
-    if (high > low && !Trace(fUBT, high, low, true)) {
+    if (high > low && !Trace(fShieldExit, high, low, true)) {
       fPathMap.clear();
       return fPathMap;
     }
     if (fPathMap.count("MS") == 0) {
-      ++fUBTBackwardMisses;
-      fMuonWeights.ubtMiss += fMuonWeight;
+      ++fShieldExitBackwardMisses;
+      fMuonWeights.shieldExitMiss += fMuonWeight;
       LOG(debug)
-          << "UBT backward extrapolation does not cross MS: start position ("
+          << "Shield-exit scoring-plane backward extrapolation does not cross MS: "
+             "start position ("
           << fStart.position.X() << ", " << fStart.position.Y() << ", "
           << fStart.position.Z() << "), start momentum (" << fStart.momentum.X()
           << ", " << fStart.momentum.Y() << ", " << fStart.momentum.Z()
-          << "), UBT position (" << fUBT.position.X() << ", "
-          << fUBT.position.Y() << ", " << fUBT.position.Z()
-          << "), UBT momentum (" << fUBT.momentum.X() << ", "
-          << fUBT.momentum.Y() << ", " << fUBT.momentum.Z() << "), start time "
-          << fStart.time << ", UBT time " << fUBT.time;
+          << "), shield-exit position (" << fShieldExit.position.X() << ", "
+          << fShieldExit.position.Y() << ", " << fShieldExit.position.Z()
+          << "), shield-exit momentum (" << fShieldExit.momentum.X() << ", "
+          << fShieldExit.momentum.Y() << ", " << fShieldExit.momentum.Z()
+          << "), start time "
+          << fStart.time << ", shield-exit time " << fShieldExit.time;
     }
   }
 

@@ -42,8 +42,8 @@ class MuGeoProcessor {
   int64_t GetLargeJumpCount() const { return fLargeJumps; }
   int64_t GetMuonsWithLargeJumps() const { return fMuonsWithLargeJumps; }
   int64_t GetBackwardMuonCount() const { return fBackwardMuons; }
-  int64_t GetUBTBackwardMissCount() const { return fUBTBackwardMisses; }
-  int64_t GetUBTBackwardPathCount() const { return fUBTBackwardPaths; }
+  int64_t GetShieldExitBackwardMissCount() const { return fShieldExitBackwardMisses; }
+  int64_t GetShieldExitBackwardPathCount() const { return fShieldExitBackwardPaths; }
   int64_t GetStartInFieldCount() const { return fStartMagneticPaths; }
   int64_t GetStartFieldFreeCount() const { return fStartStraightPaths; }
   int64_t GetStartsBeforeZminCount() const { return fStartsBeforeZmin; }
@@ -96,15 +96,15 @@ class MuGeoProcessor {
   std::unique_ptr<MagneticTrackPropagator> fPropagator;  //! Shield transport
   double fShieldMinZ = 0.;
   bool fTraceBackward = false;
-  Measurement fStart, fUBT;
+  Measurement fStart, fShieldExit;
 
   double fPocaJumpThreshold = 1.;  // transverse distance in cm
   int64_t fMuons = 0;
   int64_t fBackwardMuons = 0;
   int64_t fInvalidMuons = 0;
   // Routes prepared by initialise(), before material navigation.
-  int64_t fUBTBackwardPaths = 0;
-  int64_t fUBTBackwardMisses = 0;
+  int64_t fShieldExitBackwardPaths = 0;
+  int64_t fShieldExitBackwardMisses = 0;
   int64_t fStartMagneticPaths = 0;
   int64_t fStartStraightPaths = 0;
   int64_t fStartsBeyondZmax = 0;
@@ -118,8 +118,8 @@ class MuGeoProcessor {
     double considered = 0.;
     double backward = 0.;
     double invalid = 0.;
-    double ubtBackward = 0.;
-    double ubtMiss = 0.;
+    double shieldExitBackward = 0.;
+    double shieldExitMiss = 0.;
     double startMagnetic = 0.;
     double startStraight = 0.;
     double beyondZmax = 0.;

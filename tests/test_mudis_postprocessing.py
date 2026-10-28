@@ -36,7 +36,12 @@ MUON_MASS = 0.10566
 # Muon 1 has no DIS interaction at all and must be skipped by the replay order.
 FIRST_FILE = [
     {
-        "hits": {"muon_UBTPoints": [3270.0], "muon_SBTPoints": [3500.0], "muon_SSTPoints": [8500.0]},
+        "hits": {
+            "muon_UBTPoints": [3270.0],
+            "muon_UBTScoringPoints": [(3200.0, 2), (4000.0, 1)],
+            "muon_SBTPoints": [3500.0],
+            "muon_SSTPoints": [8500.0],
+        },
         "dis": {"HE": [4000.0, 4100.0]},
     },
     {"hits": {"muon_SBTPoints": [3300.0]}, "dis": {}},
@@ -50,10 +55,11 @@ REPLAY_FROM_START = [(0, "HE", 0), (0, "HE", 1), (2, "AIR", 0)]
 SIMULATED_Z = 9999.0
 
 
-def make_point(class_name, z, track_id):
+def make_point(class_name, z, track_id, detector_id=0):
     point = getattr(ROOT, class_name)()
     point.SetXYZ(0.0, 0.0, z)
     point.SetTrackID(track_id)
+    point.SetDetectorID(detector_id)
     return point
 
 
@@ -72,8 +78,9 @@ def write_input(path, muons):
     for muon in muons:
         for branch, class_name in _POINT_BRANCHES:
             hits[branch].clear()
-            for z in muon["hits"].get(branch, ()):
-                hits[branch].push_back(make_point(class_name, z, track_id=1))
+            for hit in muon["hits"].get(branch, ()):
+                z, detector_id = hit if isinstance(hit, tuple) else (hit, 0)
+                hits[branch].push_back(make_point(class_name, z, track_id=1, detector_id=detector_id))
         for material in MATERIALS:
             dis_z = muon["dis"].get(material, ())
             counts[material][0] = len(dis_z)
@@ -111,6 +118,9 @@ def write_output(path, identities, companion=False):
         for vector in points.values():
             vector.clear()
         points["vetoPoint"].push_back(make_point("vetoPoint", SIMULATED_Z, track_id=1))
+        points["UpstreamTaggerScoringPoint"].push_back(
+            make_point("UpstreamTaggerScoringPoint", SIMULATED_Z, track_id=1, detector_id=2)
+        )
         muon_entry[0] = entry
         dis_index[0] = index
         material.Clear()
@@ -135,6 +145,7 @@ def read_events(path):
                 event[class_name] = [
                     (point.GetZ(), point.GetTrackID(), point.GetEventID()) for point in getattr(tree, class_name)
                 ]
+            event["scoring_detector_ids"] = [point.GetDetectorID() for point in tree.UpstreamTaggerScoringPoint]
             events.append(event)
         restored = bool(source.Get(_MARKER))
     return events, restored
@@ -162,20 +173,34 @@ def test_restores_hits_upstream_of_each_vertex(tmp_path, inputs, companion):
 
     # Both HE events get the UBT and SBT hits of muon 0 (z < 4000, 4100), not its
     # SST hit; the AIR event gets the SBT hit of muon 2 (z < 8000), not its TD hit.
-    assert counts == {"UpstreamTaggerPoint": 2, "vetoPoint": 3, "strawtubesPoint": 0, "TimeDetPoint": 0}
+    assert counts == {
+        "UpstreamTaggerPoint": 2,
+        "UpstreamTaggerScoringPoint": 3,
+        "vetoPoint": 3,
+        "strawtubesPoint": 0,
+        "TimeDetPoint": 0,
+    }
     events, restored = read_events(output)
     assert restored
     assert [event["identity"] for event in events] == REPLAY_FROM_START
     expected_veto_z = [[SIMULATED_Z, 3500.0], [SIMULATED_Z, 3500.0], [SIMULATED_Z, 3400.0]]
     expected_ubt_z = [[3270.0], [3270.0], []]
-    for event, veto_z, ubt_z in zip(events, expected_veto_z, expected_ubt_z):
+    # The vessel-plane hit at z=4000 is excluded at that DIS vertex, then
+    # included at z=4100. Both plane IDs and existing simulated hits survive.
+    expected_scoring_z = [[SIMULATED_Z, 3200.0], [SIMULATED_Z, 3200.0, 4000.0], [SIMULATED_Z]]
+    assert [event["scoring_detector_ids"] for event in events] == [[2, 2], [2, 2, 1], [2]]
+    for event, veto_z, ubt_z, scoring_z in zip(events, expected_veto_z, expected_ubt_z, expected_scoring_z):
         assert [z for z, _, _ in event["vetoPoint"]] == pytest.approx(veto_z)
         assert [z for z, _, _ in event["UpstreamTaggerPoint"]] == pytest.approx(ubt_z)
+        assert [z for z, _, _ in event["UpstreamTaggerScoringPoint"]] == pytest.approx(scoring_z)
         assert event["strawtubesPoint"] == []
         assert event["TimeDetPoint"] == []
         # The simulated hit is untouched; restored hits point at MCTrack[0] of this event.
         assert event["vetoPoint"][0][1] == 1
-        for _, track_id, event_id in event["vetoPoint"][1:] + event["UpstreamTaggerPoint"]:
+        assert event["UpstreamTaggerScoringPoint"][0][1] == 1
+        for _, track_id, event_id in (
+            event["vetoPoint"][1:] + event["UpstreamTaggerPoint"] + event["UpstreamTaggerScoringPoint"][1:]
+        ):
             assert track_id == 0
             assert event_id == event["event_id"]
 

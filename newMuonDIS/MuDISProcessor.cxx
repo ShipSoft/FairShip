@@ -246,6 +246,12 @@ void MuDISProcessor::fillSBTHits(const Int_t aIdx) {
 }
 
 void MuDISProcessor::fillUBTHits(const Int_t aIdx) {
+  for (const auto& hit : *finEv.ubtScoringPt) {
+    if (hit.GetTrackID() == aIdx) {
+      foutEv.ubtScoringPt.push_back(hit);
+      foutEv.ubtScoringPt.back().SetTrackID(0);
+    }
+  }
   for (auto& hitIt : (*finEv.ubtPt)) {
     if (hitIt.GetTrackID() == aIdx) {
       foutEv.ubtPt.push_back(hitIt);
@@ -568,15 +574,16 @@ void MuDISProcessor::ProcessMuons() {
     fillSSTHits(muIdx);
     fillTDHits(muIdx);
 
-    // Count events which have no hit in UBT, SBT, SST or TD, muon just
+    // Count events with no hit in UBT, its scoring planes, SBT, SST or TD,
     // flying out of vessel acceptance never bouncing back... For those, very
     // numerous in the cudaMu files, skip to optimise processing.
     //@FIXME AM to do: a study of whether the events created in the last lambda
     // of MS could still contribute or would hit UBT...
-    if (foutEv.ubtPt.size() == 0 && foutEv.sbtPt.size() == 0 &&
-        foutEv.sstPt.size() == 0 && foutEv.tdPt.size() == 0) {
+    if (foutEv.ubtScoringPt.empty() && foutEv.ubtPt.size() == 0 &&
+        foutEv.sbtPt.size() == 0 && foutEv.sstPt.size() == 0 && foutEv.tdPt.size() == 0) {
       LOG(debug) << " Counting muon event with no hit " << iEvent
-                 << " UBT Hits: " << foutEv.ubtPt.size()
+                 << " UBT scoring hits: " << foutEv.ubtScoringPt.size()
+                 << ", UBT Hits: " << foutEv.ubtPt.size()
                  << ", SBT Hits: " << foutEv.sbtPt.size()
                  << ", SST Hits: " << foutEv.sstPt.size()
                  << ", TD Hits: " << foutEv.tdPt.size() << std::endl;
@@ -588,6 +595,8 @@ void MuDISProcessor::ProcessMuons() {
 
     LOG(debug) << " -- size of hits collections: " << std::endl
                << " ---- mcTracks: " << foutEv.mcTrks.size() << std::endl
+               << " ---- UBT scoring hits: " << foutEv.ubtScoringPt.size()
+               << std::endl
                << " ---- UBT Hits: " << foutEv.ubtPt.size() << std::endl
                << " ---- SBT Hits: " << foutEv.sbtPt.size() << std::endl
                << " ---- SST Hits: " << foutEv.sstPt.size() << std::endl;
@@ -651,7 +660,7 @@ void MuDISProcessor::ProcessMuons() {
             << "Skipped: " << skipEvt << " events and " << skipMu_pmin
             << " muons with too low p" << std::endl
             << "Counted: " << skipMu_acc
-            << " muons with no recorded hits in UBT,SBT,SST,TD.";
+            << " muons with no recorded hits in UBT,UBT scoring planes,SBT,SST,TD.";
   normalization.Attach(fouttree);
   LOG(info) << "Input muon multiplicity: " << multiMuonEvents
             << " events with n_mu >= 2, sum(n_mu) = "
@@ -665,7 +674,7 @@ void MuDISProcessor::ProcessMuons() {
             << " with too low p, " << skipMu_pathW
             << " muons with invalid or empty paths." << std::endl
             << "Counted (sum MCTrack[0].fW): " << skipMu_accW
-            << " muons with no recorded hits in UBT,SBT,SST,TD.";
+            << " muons with no recorded hits in UBT,UBT scoring planes,SBT,SST,TD.";
   fGeoProcessor.PrintDiagnostics();
   // Print additive quantities so jobs can be combined before taking means.
   LOG(info) << std::setprecision(17)

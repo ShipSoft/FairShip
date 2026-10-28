@@ -21,6 +21,7 @@
 #include "TVector3.h"
 #include "TimeDetPoint.h"
 #include "UpstreamTaggerPoint.h"
+#include "UpstreamTaggerScoringPoint.h"
 #include "strawtubesPoint.h"
 #include "vetoPoint.h"
 
@@ -104,6 +105,7 @@ struct MuonBranches {
   std::vector<ShipMCTrack> mcTrks;
   std::vector<vetoPoint> sbtPt;
   std::vector<UpstreamTaggerPoint> ubtPt;
+  std::vector<UpstreamTaggerScoringPoint> ubtScoringPt;
   std::vector<strawtubesPoint> sstPt;
   std::vector<TimeDetPoint> tdPt;
   double pathLength = 0.;
@@ -114,6 +116,7 @@ struct MuonBranches {
     aT->Branch("muon_SBTPoints", &sbtPt);
     aT->Branch("muon_SSTPoints", &sstPt);
     aT->Branch("muon_UBTPoints", &ubtPt);
+    aT->Branch("muon_UBTScoringPoints", &ubtScoringPt);
     aT->Branch("muon_TDPoints", &tdPt);
     aT->Branch("muon_path_length", &pathLength);
     for (unsigned i(0); i < nMats; ++i) {
@@ -128,6 +131,8 @@ struct MuonBranches {
     sbtPt.reserve(nMax);
     ubtPt.clear();
     ubtPt.reserve(nMax);
+    ubtScoringPt.clear();
+    ubtScoringPt.reserve(nMax);
     sstPt.clear();
     sstPt.reserve(nMax);
     tdPt.clear();
@@ -162,6 +167,7 @@ struct CBMSimBranches {
   std::vector<ShipMCTrack>* MCTrack = nullptr;
   std::vector<vetoPoint>* sbtPt = nullptr;
   std::vector<UpstreamTaggerPoint>* ubtPt = nullptr;
+  std::vector<UpstreamTaggerScoringPoint>* ubtScoringPt = nullptr;
   std::vector<strawtubesPoint>* sstPt = nullptr;
   std::vector<TimeDetPoint>* tdPt = nullptr;
 
@@ -181,6 +187,8 @@ struct CBMSimBranches {
       fValid &= BindInputBranch(current, "TimeDetPoint", &tdPt);
       fValid &= BindInputBranch(current, "vetoPoint", &sbtPt);
       fValid &= BindInputBranch(current, "UpstreamTaggerPoint", &ubtPt);
+      fValid &= BindInputBranch(current, "UpstreamTaggerScoringPoint",
+                                &ubtScoringPt);
       fValid &= BindInputBranch(current, "strawtubesPoint", &sstPt);
     }
     return fValid;
@@ -191,17 +199,20 @@ struct CBMSimBranches {
     fTracks.clear();
     fSBT.clear();
     fUBT.clear();
+    fUBTScoring.clear();
     fSST.clear();
     fTD.clear();
     MCTrack = &fTracks;
     sbtPt = &fSBT;
     ubtPt = &fUBT;
+    ubtScoringPt = &fUBTScoring;
     sstPt = &fSST;
     tdPt = &fTD;
   }
   std::vector<ShipMCTrack> fTracks;
   std::vector<vetoPoint> fSBT;
   std::vector<UpstreamTaggerPoint> fUBT;
+  std::vector<UpstreamTaggerScoringPoint> fUBTScoring;
   std::vector<strawtubesPoint> fSST;
   std::vector<TimeDetPoint> fTD;
   int fTreeNumber = -1;
@@ -316,6 +327,7 @@ struct MuonInBranches {
   std::vector<ShipMCTrack>* mcTrks = nullptr;
   std::vector<vetoPoint>* sbtPt = nullptr;
   std::vector<UpstreamTaggerPoint>* ubtPt = nullptr;
+  std::vector<UpstreamTaggerScoringPoint>* ubtScoringPt = nullptr;
   std::vector<strawtubesPoint>* sstPt = nullptr;
   std::vector<TimeDetPoint>* tdPt = nullptr;
   double pathLength = 0.;
@@ -338,6 +350,8 @@ struct MuonInBranches {
       fValid &= BindInputBranch(current, "muon_TDPoints", &tdPt);
       fValid &= BindInputBranch(current, "muon_SBTPoints", &sbtPt);
       fValid &= BindInputBranch(current, "muon_UBTPoints", &ubtPt);
+      fValid &= BindInputBranch(current, "muon_UBTScoringPoints",
+                                &ubtScoringPt);
       fValid &= BindInputBranch(current, "muon_SSTPoints", &sstPt);
       fValid &= BindInputBranch(current, "muon_path_length", &pathLength);
       for (unsigned i = 0; i < nMats; ++i) {
@@ -354,11 +368,13 @@ struct MuonInBranches {
     fTracks.clear();
     fSBT.clear();
     fUBT.clear();
+    fUBTScoring.clear();
     fSST.clear();
     fTD.clear();
     mcTrks = &fTracks;
     sbtPt = &fSBT;
     ubtPt = &fUBT;
+    ubtScoringPt = &fUBTScoring;
     sstPt = &fSST;
     tdPt = &fTD;
     pathLength = 0.;
@@ -368,6 +384,7 @@ struct MuonInBranches {
   std::vector<ShipMCTrack> fTracks;
   std::vector<vetoPoint> fSBT;
   std::vector<UpstreamTaggerPoint> fUBT;
+  std::vector<UpstreamTaggerScoringPoint> fUBTScoring;
   std::vector<strawtubesPoint> fSST;
   std::vector<TimeDetPoint> fTD;
   int fTreeNumber = -1;
