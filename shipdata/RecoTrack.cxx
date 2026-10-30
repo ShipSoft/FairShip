@@ -13,6 +13,8 @@ namespace SHiP {
 RecoTrack::RecoTrack(const TVector3& position, const TVector3& momentum,
                      Int_t charge, const std::array<Double_t, 21>& covariance,
                      Double_t chi2, Double_t nDoF, UInt_t nMeasurements,
+                     std::vector<Double_t> x_fits, std::vector<Double_t> y_fits,
+                     std::vector<Double_t> z_fits,
                      std::vector<Double_t> residuals,
                      std::vector<Double_t> pulls)
     : TObject(),
@@ -27,6 +29,9 @@ RecoTrack::RecoTrack(const TVector3& position, const TVector3& momentum,
       m_nDoF(nDoF),
       m_nMeasurements(nMeasurements),
       m_residuals(std::move(residuals)),
+      m_x_fits(std::move(x_fits)),
+      m_y_fits(std::move(y_fits)),
+      m_z_fits(std::move(z_fits)),
       m_pulls(std::move(pulls)),
       m_cov_elements(covariance.begin(), covariance.end()) {
   // Diagonal of the upper triangle of a 6x6 matrix, row-major

@@ -106,6 +106,14 @@ struct StrawMeasurement {
   int sign{1};
 };
 
+/// Whether a track state holds a measurement the fit reached. Not every
+/// measurement given to the fit has one: ACTS skips surfaces it cannot
+/// intersect.
+template <typename TrackState>
+bool isFittedMeasurement(const TrackState& state) {
+  return state.hasCalibrated() && state.hasSmoothed();
+}
+
 /// Upper triangle of a symmetric matrix, row-major
 template <int N, std::size_t M = N * (N + 1) / 2>
 std::array<Double_t, M> upperTriangle(const Acts::SquareMatrix<N>& matrix) {
@@ -343,6 +351,19 @@ struct ActsStrawTracker::Impl {
     return tracks.getTrack(track).createParametersAtReference();
   }
 
+  /// The measurements of the fitted states of a track, ordered along it
+  std::vector<Int_t> fittedMeasurements(std::size_t track) const {
+    std::vector<Int_t> indices;
+    for (const auto state : tracks.getTrack(track).trackStatesReversed()) {
+      if (isFittedMeasurement(state)) {
+        indices.push_back(static_cast<Int_t>(
+            state.getUncalibratedSourceLink().template get<std::size_t>()));
+      }
+    }
+    std::reverse(indices.begin(), indices.end());
+    return indices;
+  }
+
   /// Propagate to `target` in whichever direction reaches it
   std::optional<Acts::BoundTrackParameters> extrapolate(
       const Extrapolator& propagator, const Acts::BoundTrackParameters& start,
@@ -377,7 +398,7 @@ struct ActsStrawTracker::Impl {
   Acts::CalibrationContext cctx;
   std::vector<StrawMeasurement> measurements;
   TrackContainer tracks;
-  /// Measurements used in each track
+  /// Measurements of the fitted states of each track, ordered along it
   std::vector<std::vector<Int_t>> trackMeasurements;
 };
 
@@ -562,7 +583,7 @@ Int_t ActsStrawTracker::Impl::fit(const TrackCandidate& candidate,
       kept.emplace_back(m.wire->z, index);
     }
     if (!changed || refit == kMaxRefits) {
-      trackMeasurements.push_back(indices);
+      trackMeasurements.push_back(fittedMeasurements(*track));
       return static_cast<Int_t>(*track);
     }
     // Refit from the fitted parameters, with the seed uncertainties so the
@@ -675,8 +696,11 @@ RecoTrack ActsStrawTracker::GetTrack(Int_t track) const {
 
   std::vector<Double_t> residuals;
   std::vector<Double_t> pulls;
+  std::vector<Double_t> xFittedPoints;
+  std::vector<Double_t> yFittedPoints;
+  std::vector<Double_t> zFittedPoints;
   for (const auto state : proxy.trackStatesReversed()) {
-    if (!state.hasCalibrated() || !state.hasSmoothed()) {
+    if (!isFittedMeasurement(state)) {
       continue;
     }
     const double measured = state.template calibrated<1>()(0);
@@ -690,9 +714,17 @@ RecoTrack ActsStrawTracker::GetTrack(Int_t track) const {
     residuals.push_back(residual / ActsFrame::kShipLength);
     pulls.push_back(
         residualVariance > 0. ? residual / std::sqrt(residualVariance) : 0.);
+    const Acts::Vector3 fittedPosition = ActsFrame::positionToShip(
+        tangent(state.referenceSurface(), state.smoothed(), impl.gctx).first);
+    xFittedPoints.push_back(fittedPosition.x());
+    yFittedPoints.push_back(fittedPosition.y());
+    zFittedPoints.push_back(fittedPosition.z());
   }
   std::reverse(residuals.begin(), residuals.end());
   std::reverse(pulls.begin(), pulls.end());
+  std::reverse(xFittedPoints.begin(), xFittedPoints.end());
+  std::reverse(yFittedPoints.begin(), yFittedPoints.end());
+  std::reverse(zFittedPoints.begin(), zFittedPoints.end());
 
   const Acts::Vector3 position =
       ActsFrame::positionToShip(params.position(impl.gctx));
@@ -702,7 +734,9 @@ RecoTrack ActsStrawTracker::GetTrack(Int_t track) const {
                    static_cast<Int_t>(std::lround(params.charge())),
                    upperTriangle<6>(shipCovariance(params, impl.gctx)),
                    proxy.chi2(), proxy.nDoF(), proxy.nMeasurements(),
-                   std::move(residuals), std::move(pulls));
+                   std::move(xFittedPoints), std::move(yFittedPoints),
+                   std::move(zFittedPoints), std::move(residuals),
+                   std::move(pulls));
 }
 
 Bool_t ActsStrawTracker::FitVertex(const std::vector<Int_t>& tracks,
