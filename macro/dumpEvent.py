@@ -4,7 +4,7 @@
 # example for dumping an MC event
 
 import ROOT
-import shipunit as u
+import hepunits as u
 
 PDG = ROOT.TDatabasePDG.Instance()
 

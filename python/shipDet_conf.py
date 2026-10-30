@@ -9,7 +9,7 @@ from typing import Any
 import geometry_config
 import geometry_from_file
 import ROOT
-import shipunit as u
+import hepunits as u
 import yaml
 from ShipGeoConfig import AttrDict
 

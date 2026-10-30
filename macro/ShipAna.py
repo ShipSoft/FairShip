@@ -8,12 +8,13 @@ import decorators
 import ROOT
 import rootUtils as ut
 import shipRoot_conf
-import shipunit as u
 from mc_truth import find_signal_track, signal_weight
 from ShipGeoConfig import load_from_root_file
+import hepunits as u
 
 shipRoot_conf.configure()
 decorators.apply_decorators()
+
 PDG = ROOT.TDatabasePDG.Instance()
 
 chi2CutOff = 4.0
