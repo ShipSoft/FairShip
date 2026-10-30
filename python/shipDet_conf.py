@@ -485,13 +485,30 @@ def configure_upstream_tagger(yaml_file: str, upstream_tagger, ship_geo) -> None
         )
 
 
+def _ubt_front_face(ubt_geo) -> float:
+    """z of the front face of the UBT envelope, from which the old SND design is placed.
+
+    A UBT from before the scintillator tiles gives its centre as Z_Position,
+    and the old SND design was then placed 8 cm upstream of it whatever BoxZ
+    was, so that is reproduced here.
+    """
+    if hasattr(ubt_geo, "z0"):
+        return ubt_geo.z0
+    return ubt_geo.Z_Position - 8.0 * u.cm
+
+
 def configure(run, ship_geo, geofile: str | None = None):
     """Configure the modules of the run and add them to it.
 
     With ``geofile``, particles are transported through the geometry stored in
     that geometry file: the modules build their geometry as usual, and a last
     module replaces it by the stored one (see geometry_from_file). ``ship_geo``
-    must then be the configuration stored in the same file.
+    must then be the configuration stored in the same file. A detector that
+    the current code cannot build from that configuration, such as the UBT of
+    a file from before the scintillator tiles, is left out of the run with a
+    warning: it records no hits, and its volumes in the stored geometry are
+    passive. Its stored configuration is kept, so that the geometry file this
+    run writes can be used with -g in the same way.
     """
     stored_yaml_configs = geometry_from_file.stored_yaml_configs(ship_geo) if geofile else {}
     # ---- for backward compatibility ----
@@ -510,22 +527,32 @@ def configure(run, ship_geo, geofile: str | None = None):
         # Placing the UBT needs the ECN3 floor and side walls: use those of the
         # cavern that ShipCave builds.
         geometry_config.set_ecn3_cavern(ship_geo)
+    # With -g, the modules that the current code cannot build from the stored
+    # configuration, and why; they are left out of the run.
+    left_out: dict[str, str] = {}
     ubt_geo = getattr(ship_geo, "UpstreamTagger", None)
-    if not hasattr(ship_geo, "UpstreamTaggerScoringPlane") or not (
-        hasattr(ubt_geo, "TileThickness") or hasattr(ubt_geo, "SmallTileZ")
-    ):
+    has_tiles = hasattr(ubt_geo, "TileThickness") or hasattr(ubt_geo, "SmallTileZ")
+    has_scoring_planes = hasattr(ship_geo, "UpstreamTaggerScoringPlane")
+    if not (has_tiles and has_scoring_planes):
         # A geometry from before the scintillator UBT: its UBT was a vacuum box,
-        # which can no longer be built.
+        # which can no longer be built, and it has no UBT scoring planes.
         if geofile:
-            raise ValueError(
-                f"{geofile} has the UBT of before the scintillator tiles (a vacuum box), which cannot be built"
-                " any more, so it cannot be used with -g: write a new geometry file"
-            )
-        # Use the current UBT and scoring planes, placed from this geometry's
-        # decay vessel and muon shield, so that the other detectors can be
-        # used; the UBT points of such a file are not digitized (see
-        # UpstreamTaggerDetector.validate_stored_geometry).
-        geometry_config.set_upstream_tagger(ship_geo)
+            # Each module is left out only if its own configuration is missing.
+            old_ubt = "the UBT of before the scintillator tiles (a vacuum box), which the current code cannot build"
+            if not has_tiles:
+                left_out["UpstreamTagger"] = old_ubt
+            if not has_scoring_planes:
+                left_out["UpstreamTaggerScoringPlane"] = (
+                    old_ubt
+                    if not has_tiles
+                    else "no configuration of the UBT scoring planes (UpstreamTaggerScoringPlane)"
+                )
+        else:
+            # Use the current UBT and scoring planes, placed from this geometry's
+            # decay vessel and muon shield, so that the other detectors can be
+            # used; the UBT points of such a file are not digitized (see
+            # UpstreamTaggerDetector.validate_stored_geometry).
+            geometry_config.set_upstream_tagger(ship_geo)
 
     # -----Create media-------------------------------------------------
     run.SetMaterials("media.geo")  # Materials
@@ -572,9 +599,15 @@ def configure(run, ship_geo, geofile: str | None = None):
                     os.path.join(os.environ["FAIRSHIP"], "geometry", "SiliconTarget_config.yaml"), ship_geo
                 )
             elif design == 1:
+                if getattr(ship_geo, "UpstreamTagger", None) is None:
+                    # Only possible with -g: otherwise set_upstream_tagger made one above.
+                    raise ValueError(
+                        f"{geofile} has SND design 1 but no UBT configuration (UpstreamTagger), from which that SND"
+                        " design is placed, so it cannot be used with -g"
+                    )
                 configure_snd_old(
                     os.path.join(os.environ["FAIRSHIP"], "geometry", "snd_config_old.yaml"),
-                    ship_geo.UpstreamTagger.z0 - 5 * u.cm,
+                    _ubt_front_face(ship_geo.UpstreamTagger) - 5 * u.cm,
                     ship_geo.cave.floorHeightMuonShield,
                 )
             else:
@@ -582,12 +615,7 @@ def configure(run, ship_geo, geofile: str | None = None):
 
     in_params = list(ship_geo.muShield.params)
 
-    MuonShield = ROOT.ShipMuonShield(
-        in_params,
-        ship_geo.muShield.z,
-        ship_geo.muShield.WithConstField,
-        ship_geo.SC_mag,
-    )
+    MuonShield = ROOT.ShipMuonShield(in_params, ship_geo.muShield.nMagnets, ship_geo.muShield.z)
 
     if ship_geo.SND:
         # If any SND design is 2 (MTC), set SNDSpace for MuonShield
@@ -662,35 +690,37 @@ def configure(run, ship_geo, geofile: str | None = None):
     else:
         print("Warning: no CaloScoringPlane in this geometry configuration; not building it.")
 
-    upstreamTagger = ROOT.UpstreamTagger("UpstreamTagger", ROOT.kTRUE)
-    upstreamTagger.SetZposition(ship_geo.UpstreamTagger.z)
-    upstreamTagger.SetBoxDimensions(
-        ship_geo.UpstreamTagger.BoxX, ship_geo.UpstreamTagger.BoxY, ship_geo.UpstreamTagger.BoxZ
-    )
-    upstreamTagger.SetBoxCenter(ship_geo.UpstreamTagger.BoxCenterX, ship_geo.UpstreamTagger.BoxCenterY)
-    configure_upstream_tagger(
-        os.path.join(os.environ["FAIRSHIP"], "geometry", "UpstreamTagger_config.yaml"),
-        upstreamTagger,
-        ship_geo,
-    )
-    detectorList.append(upstreamTagger)
-
-    sp = ship_geo.UpstreamTaggerScoringPlane
-    ubt_scoring_plane = ROOT.UpstreamTaggerScoringPlane("UpstreamTaggerScoringPlane", ROOT.kTRUE)
-    # Planes 1 and 2, in this order: the plane number is the point detector ID.
-    for number, plane in enumerate((sp.DecayVessel, sp.MuonShield), start=1):
-        ubt_scoring_plane.AddPlane(
-            f"UpstreamTaggerScoringPlane{number}",
-            plane.CenterX,
-            plane.CenterY,
-            plane.z,
-            plane.X,
-            plane.Y,
-            sp.Z,
-            [13] if plane.MuonsOnly else [],
-            plane.get("KeepTracks", True),  # absent in geometry files written before it
+    if "UpstreamTagger" not in left_out:
+        upstreamTagger = ROOT.UpstreamTagger("UpstreamTagger", ROOT.kTRUE)
+        upstreamTagger.SetZposition(ship_geo.UpstreamTagger.z)
+        upstreamTagger.SetBoxDimensions(
+            ship_geo.UpstreamTagger.BoxX, ship_geo.UpstreamTagger.BoxY, ship_geo.UpstreamTagger.BoxZ
         )
-    detectorList.append(ubt_scoring_plane)
+        upstreamTagger.SetBoxCenter(ship_geo.UpstreamTagger.BoxCenterX, ship_geo.UpstreamTagger.BoxCenterY)
+        configure_upstream_tagger(
+            os.path.join(os.environ["FAIRSHIP"], "geometry", "UpstreamTagger_config.yaml"),
+            upstreamTagger,
+            ship_geo,
+        )
+        detectorList.append(upstreamTagger)
+
+    if "UpstreamTaggerScoringPlane" not in left_out:
+        sp = ship_geo.UpstreamTaggerScoringPlane
+        ubt_scoring_plane = ROOT.UpstreamTaggerScoringPlane("UpstreamTaggerScoringPlane", ROOT.kTRUE)
+        # Planes 1 and 2, in this order: the plane number is the point detector ID.
+        for number, plane in enumerate((sp.DecayVessel, sp.MuonShield), start=1):
+            ubt_scoring_plane.AddPlane(
+                f"UpstreamTaggerScoringPlane{number}",
+                plane.CenterX,
+                plane.CenterY,
+                plane.z,
+                plane.X,
+                plane.Y,
+                sp.Z,
+                [13] if plane.MuonsOnly else [],
+                plane.get("KeepTracks", True),  # absent in geometry files written before it
+            )
+        detectorList.append(ubt_scoring_plane)
 
     timeDet = ROOT.TimeDet("TimeDet", ROOT.kTRUE)
     timeDet.SetZposition(ship_geo.TimeDet.z)
@@ -731,6 +761,7 @@ def configure(run, ship_geo, geofile: str | None = None):
     detElements: dict[str, Any] = {}
     if geofile:
         geometry_from_file.check_yaml_configs(stored_yaml_configs, ship_geo)
+        geometry_from_file.warn_left_out(geofile, left_out)
     for x in detectorList:
         if x.GetName() in exclusionList:
             continue
