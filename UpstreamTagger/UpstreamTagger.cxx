@@ -24,23 +24,10 @@ using std::cout;
 using std::endl;
 
 UpstreamTagger::UpstreamTagger()
-<<<<<<< HEAD
-    : Detector("UpstreamTagger", kTRUE, kUpstreamTagger),
-      det_zPos(0),
-      UpstreamTagger_fulldet(nullptr),
-      scoringPlaneUBText(nullptr) {}
-
-UpstreamTagger::UpstreamTagger(const char* name, Bool_t active)
-    : Detector(name, active, kUpstreamTagger),
-      det_zPos(0),
-      UpstreamTagger_fulldet(nullptr),
-      scoringPlaneUBText(nullptr) {}
-=======
     : Detector("UpstreamTagger", kTRUE, kUpstreamTagger), det_zPos(0) {}
 
 UpstreamTagger::UpstreamTagger(const char* name, Bool_t active)
     : Detector(name, active, kUpstreamTagger), det_zPos(0) {}
->>>>>>> main
 
 Bool_t UpstreamTagger::ProcessHits(FairVolume* vol) {
   /** This method is called from the MC stepping */
@@ -117,54 +104,6 @@ void UpstreamTagger::ConstructGeometry() {
     Fatal("ConstructGeometry", "UBT box dimensions not set.");
   }
 
-<<<<<<< HEAD
-  UpstreamTagger_fulldet =
-      gGeoManager->MakeBox("Upstream_Tagger", Vacuum_box, xbox_fulldet / 2.0,
-                           ybox_fulldet / 2.0, zbox_fulldet / 10.0);
-  UpstreamTagger_fulldet->SetLineColor(kGreen);
-
-
-  top->AddNode(UpstreamTagger_fulldet, 1,
-               new TGeoTranslation(0.0, 0.0, det_zPos));
-  AddSensitiveVolume(UpstreamTagger_fulldet);
-  cout << " Z Position (Upstream Tagger1) " << det_zPos << endl;
-/*
-
-  UpstreamTagger_fulldet_2 =
-      gGeoManager->MakeBox("Upstream_Tagger_2", Vacuum_box, xbox_fulldet / 2.0,
-                           ybox_fulldet / 2.0, zbox_fulldet / 10.0);
-  UpstreamTagger_fulldet_2->SetLineColor(kGreen);
-
-  top->AddNode(UpstreamTagger_fulldet_2, 1,
-               new TGeoTranslation(0.0, 0.0, 3160));
-
-  AddSensitiveVolume(UpstreamTagger_fulldet_2);
-  cout << " Z Position (Upstream Tagger1) " << 3160 << endl;
-
-  UpstreamTagger_fulldet_3 =
-      gGeoManager->MakeBox("Upstream_Tagger_3", Vacuum_box, xbox_fulldet / 2.0,
-                           ybox_fulldet / 2.0, zbox_fulldet / 10.0);
-  UpstreamTagger_fulldet_3->SetLineColor(kGreen);
-
-  top->AddNode(UpstreamTagger_fulldet_3, 1,
-               new TGeoTranslation(0.0, 0.0, 3170));
-  AddSensitiveVolume(UpstreamTagger_fulldet_3);
-  cout << " Z Position (Upstream Tagger1) " << 3170 << endl;
-
-  UpstreamTagger_fulldet_4 =
-      gGeoManager->MakeBox("Upstream_Tagger_4", Vacuum_box, xbox_fulldet / 2.0,
-                           ybox_fulldet / 2.0, zbox_fulldet / 10.0);
-  UpstreamTagger_fulldet_4->SetLineColor(kGreen);
-
-  top->AddNode(UpstreamTagger_fulldet_4, 1,
-               new TGeoTranslation(0.0, 0.0, 3180));
-  AddSensitiveVolume(UpstreamTagger_fulldet_4);
-  cout << " Z Position (Upstream Tagger1) " << 3180 << endl;
-*/
-
-
-  //////////////////////////////////////////////////////////////////
-=======
   fDetector = new TGeoVolumeAssembly("Upstream_Tagger");
 
   std::map<Double_t, Int_t> regionsPerTileSize;
@@ -213,7 +152,6 @@ void UpstreamTagger::ConstructGeometry() {
                        new TGeoTranslation(region.x, region.y, 0.));
     ++regionsPerTileSize[region.constituentTileSize];
   }
->>>>>>> main
 
   top->AddNode(fDetector, 1, new TGeoTranslation(0., 0., det_zPos));
   cout << " Z Position (Upstream Tagger) " << det_zPos << ", "
