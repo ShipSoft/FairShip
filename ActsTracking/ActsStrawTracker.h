@@ -60,7 +60,8 @@ class ActsStrawTracker {
   /// are dropped.
   Int_t FitCandidate(const std::vector<Int_t>& measurements);
 
-  /// Measurements used in the fit of a track
+  /// Measurements of the fitted states of a track, one per entry of the
+  /// fitted points, residuals and pulls of GetTrack(), in the same order
   std::vector<Int_t> GetTrackMeasurements(Int_t track) const;
 
   Int_t GetNTracks() const;
