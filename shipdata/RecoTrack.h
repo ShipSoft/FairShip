@@ -27,7 +27,8 @@ class RecoTrack : public TObject {
   RecoTrack() = default;
   RecoTrack(const TVector3& position, const TVector3& momentum, Int_t charge,
             const std::array<Double_t, 21>& covariance, Double_t chi2,
-            Double_t nDoF, UInt_t nMeasurements,
+            Double_t nDoF, UInt_t nMeasurements, std::vector<Double_t> x_fits,
+            std::vector<Double_t> y_fits, std::vector<Double_t> z_fits,
             std::vector<Double_t> residuals, std::vector<Double_t> pulls);
   ~RecoTrack() override = default;
 
@@ -47,6 +48,9 @@ class RecoTrack : public TObject {
   Double_t chi2() const { return m_chi2; }
   Double_t nDoF() const { return m_nDoF; }
   UInt_t nMeasurements() const { return m_nMeasurements; }
+  const std::vector<Double_t>& GetXFittedPoints() const { return m_x_fits; }
+  const std::vector<Double_t>& GetYFittedPoints() const { return m_y_fits; }
+  const std::vector<Double_t>& GetZFittedPoints() const { return m_z_fits; }
   /// Residuals of the smoothed states, in cm, ordered along the track.
   const std::vector<Double_t>& GetResiduals() const { return m_residuals; }
   const std::vector<Double_t>& GetPulls() const { return m_pulls; }
@@ -79,10 +83,13 @@ class RecoTrack : public TObject {
   Double_t m_nDoF{0.};
   UInt_t m_nMeasurements{0};
   std::vector<Double_t> m_residuals;
+  std::vector<Double_t> m_x_fits;
+  std::vector<Double_t> m_y_fits;
+  std::vector<Double_t> m_z_fits;
   std::vector<Double_t> m_pulls;
   std::vector<Double_t> m_cov_elements;
 
-  ClassDefOverride(RecoTrack, 1);
+  ClassDefOverride(RecoTrack, 2);
 };
 
 }  // namespace SHiP

@@ -675,6 +675,9 @@ RecoTrack ActsStrawTracker::GetTrack(Int_t track) const {
 
   std::vector<Double_t> residuals;
   std::vector<Double_t> pulls;
+  std::vector<Double_t> xFittedPoints;
+  std::vector<Double_t> yFittedPoints;
+  std::vector<Double_t> zFittedPoints;
   for (const auto state : proxy.trackStatesReversed()) {
     if (!state.hasCalibrated() || !state.hasSmoothed()) {
       continue;
@@ -690,9 +693,17 @@ RecoTrack ActsStrawTracker::GetTrack(Int_t track) const {
     residuals.push_back(residual / ActsFrame::kShipLength);
     pulls.push_back(
         residualVariance > 0. ? residual / std::sqrt(residualVariance) : 0.);
+    const Acts::Vector3 fittedPosition = ActsFrame::positionToShip(
+        tangent(state.referenceSurface(), state.smoothed(), impl.gctx).first);
+    xFittedPoints.push_back(fittedPosition.x());
+    yFittedPoints.push_back(fittedPosition.y());
+    zFittedPoints.push_back(fittedPosition.z());
   }
   std::reverse(residuals.begin(), residuals.end());
   std::reverse(pulls.begin(), pulls.end());
+  std::reverse(xFittedPoints.begin(), xFittedPoints.end());
+  std::reverse(yFittedPoints.begin(), yFittedPoints.end());
+  std::reverse(zFittedPoints.begin(), zFittedPoints.end());
 
   const Acts::Vector3 position =
       ActsFrame::positionToShip(params.position(impl.gctx));
@@ -702,7 +713,9 @@ RecoTrack ActsStrawTracker::GetTrack(Int_t track) const {
                    static_cast<Int_t>(std::lround(params.charge())),
                    upperTriangle<6>(shipCovariance(params, impl.gctx)),
                    proxy.chi2(), proxy.nDoF(), proxy.nMeasurements(),
-                   std::move(residuals), std::move(pulls));
+                   std::move(xFittedPoints), std::move(yFittedPoints),
+                   std::move(zFittedPoints), std::move(residuals),
+                   std::move(pulls));
 }
 
 Bool_t ActsStrawTracker::FitVertex(const std::vector<Int_t>& tracks,
