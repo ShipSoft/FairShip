@@ -4,7 +4,7 @@
 from typing import Any
 
 import ROOT
-import shipunit as u
+import hepunits as u
 
 minNdf = 20
 parallelToZ = ROOT.TVector3(0.0, 0.0, 1.0)

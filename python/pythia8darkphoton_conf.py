@@ -8,7 +8,7 @@ import darkphoton
 import proton_bremsstrahlung
 import readDecayTable
 import ROOT
-import shipunit as u
+import hepunits as u
 from method_logger import MethodLogger
 from pythia8_conf_utils import make_particles_stable
 

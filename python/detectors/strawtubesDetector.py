@@ -1,6 +1,6 @@
 import global_variables
 import ROOT
-import shipunit as u
+import hepunits as u
 from BaseDetector import BaseDetector
 
 

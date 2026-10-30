@@ -17,7 +17,7 @@ import geometry_from_file
 import ROOT
 import rootUtils as ut
 import shipRoot_conf
-import shipunit as u
+import hepunits as u
 import validationTools as validation_tools
 from ShipGeoConfig import load_from_root_file
 

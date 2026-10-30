@@ -34,8 +34,8 @@ import math
 import os
 
 import ROOT
-import shipunit as u
 from rootUtils import get_particle
+import hepunits as u
 
 # Load PDG database
 pdg = ROOT.TDatabasePDG.Instance()
