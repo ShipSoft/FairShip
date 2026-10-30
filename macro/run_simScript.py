@@ -224,6 +224,21 @@ parser.add_argument(
     help="misuse GenieGenerator for neutrino radiography and geometry timing test",
     action="store_true",
 )
+parser.add_argument(
+    "--notSaveGeoFile",
+    dest="save_geofile",
+    default=True,
+    action="store_false",
+    help="Turn off the saving of the geofile at the end.",
+)
+parser.add_argument(
+    "--notSaveParFile",
+    dest="save_parfile",
+    default=True,
+    action="store_false",
+    help="Turn off the saving of the parameter files at the end.",
+)
+
 parser.add_argument("--Ntuple", dest="ntuple", help="Use ntuple as input", action="store_true")
 parser.add_argument("--ttree", help="Use TTree as input", action="store_true")
 parser.add_argument(
@@ -359,7 +374,11 @@ parser.add_argument(
     help="Transport particles through the geometry stored in this geometry file, written by an earlier"
     " run_simScript.py, instead of the one the current code builds. The geometry configuration stored in the file is"
     " used, so geometry options (-Y, --strawDesign, --shieldName, --helium, --vacuums, --SND, --noSND, --SND_design,"
-    " --target-yaml) cannot be given.",
+    " --target-yaml) cannot be given. The stored geometry may differ from the one the current code builds, e.g. in"
+    " its passive volumes, but must have every volume with a magnetic field that the current code builds; other"
+    " differences, such as missing sensitive volumes, which then record no hits, are printed as a warning. A"
+    " detector that the current code cannot build from the stored configuration (e.g. the UBT of a file from before"
+    " the scintillator tiles) is left out, with a warning.",
     default=None,
 )
 parser.add_argument("-o", "--output", dest="outputDir", help="Output directory", default=".")
@@ -398,7 +417,7 @@ parser.add_argument(
     "--shieldName",
     help="The name of the muon shield in the database to use.",
     default="TRY_2026",
-    choices=["TRY_2025", "TRY_2026"],
+    choices=["TRY_2026"],
 )
 parser.add_argument(
     "--MesonMother", dest="MM", help="Choose DP production meson source: pi0, eta, omega, eta1, eta11", default="pi0"
@@ -643,8 +662,10 @@ run_identifier = (
 if not os.path.exists(options.outputDir):
     os.makedirs(options.outputDir)
 outFile = f"{options.outputDir}/sim_{run_identifier}.root"
-if options.geofile and os.path.realpath(options.geofile) == os.path.realpath(
-    f"{options.outputDir}/geo_{run_identifier}.root"
+if (
+    options.geofile
+    and os.path.realpath(options.geofile) == os.path.realpath(f"{options.outputDir}/geo_{run_identifier}.root")
+    and options.save_geofile
 ):
     parser.error("-g/--geofile: the geometry file would be overwritten by the output of this run, use another --tag")
 
@@ -1126,20 +1147,23 @@ run.Run(options.nEvents)
 # -----Runtime database---------------------------------------------
 kParameterMerged = ROOT.kTRUE
 parOut = ROOT.FairParRootFileIo(kParameterMerged)
-if os.path.exists(parFile):
-    os.remove(parFile)
-parOut.open(parFile)
-rtdb.setOutput(parOut)
-ROOT.SetOwnership(parOut, False)  # C++ FairRuntimeDb takes ownership
-rtdb.saveOutput()
-
+if options.save_parfile:
+    if os.path.exists(parFile):
+        os.remove(parFile)
+    parOut.open(parFile)
+    rtdb.setOutput(parOut)
+    ROOT.SetOwnership(parOut, False)  # C++ FairRuntimeDb takes ownership
+    rtdb.saveOutput()
+    print("Parameter file is ", parFile)
 # ------------------------------------------------------------------------
-geofile_name = f"{options.outputDir}/geo_{run_identifier}.root"
-run.CreateGeometryFile(geofile_name)
-# save ShipGeo dictionary in geofile
-import saveBasicParameters
+if options.save_geofile:
+    geofile_name = f"{options.outputDir}/geo_{run_identifier}.root"
+    run.CreateGeometryFile(geofile_name)
+    # save ShipGeo dictionary in geofile
+    import saveBasicParameters
 
-saveBasicParameters.execute(geofile_name, ship_geo)
+    saveBasicParameters.execute(geofile_name, ship_geo)
+    print("Geometry file is ", geofile_name)
 
 # checking for overlaps
 if options.check_overlaps:
@@ -1168,8 +1192,6 @@ if P8gen is not None:
         print("total number of dark photons (including multiple meson decays per single collision) ", P8gen.nrOfDP())
 
 print("Output file is ", outFile)
-print("Parameter file is ", parFile)
-print("Geometry file is ", geofile_name)
 if not options.reproducible:
     print("Real time ", rtime, " s, CPU time ", ctime, "s")
 

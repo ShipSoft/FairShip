@@ -181,7 +181,7 @@ def addVMCFields(shipGeo, controlFile: str = "", verbose: bool = False, withVirt
         fieldMaker.defineFieldMap("MainSpecMap", shipGeo.Bfield.fieldMap, ROOT.TVector3(0.0, 0.0, shipGeo.Bfield.z))
         fieldsList.append("MainSpecMap")
 
-    if not shipGeo.muShield.WithConstField:
+    if hasattr(shipGeo, "muShield"):
         offset = shipGeo.muShield.Entrance[0]
         quadSymm = True
         file_name = f"files/{shipGeo.shieldName}.root"
