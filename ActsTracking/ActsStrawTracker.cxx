@@ -381,6 +381,51 @@ struct ActsStrawTracker::Impl {
     return std::nullopt;
   }
 
+  /// As extrapolate(), also returning the path length (ACTS units), signed:
+  /// negative when the target is reached against the momentum direction
+  std::optional<std::pair<Acts::BoundTrackParameters, double>>
+  extrapolateWithLength(const Extrapolator& propagator,
+                        const Acts::BoundTrackParameters& start,
+                        const Acts::Surface& target) const {
+    for (const auto direction :
+         {Acts::Direction::Forward(), Acts::Direction::Backward()}) {
+      Extrapolator::Options<> options(gctx, mctx);
+      options.pathLimit = kPathLimit;
+      options.direction = direction;
+      auto result = propagator.propagate(start, target, options);
+      if (result.ok() && result.value().endParameters.has_value()) {
+        // Take the sign from the direction rather than relying on the
+        // sign convention of the accumulated path length
+        const double sign = direction == Acts::Direction::Forward() ? 1. : -1.;
+        const double length = sign * std::abs(result.value().pathLength);
+        return std::make_pair(result.value().endParameters.value(), length);
+      }
+    }
+    return std::nullopt;
+  }
+
+  /// Smoothed parameters at the first (or last) fitted measurement of a
+  /// track; the parameters at the reference surface if it has none
+  Acts::BoundTrackParameters endSmoothedParameters(Int_t track,
+                                                   bool last) const {
+    // Throws for a bad index, like the other track accessors
+    Acts::BoundTrackParameters params = trackParameters(track);
+    const auto proxy = tracks.getTrack(track);
+    // The states run from the last to the first measurement
+    for (const auto state : proxy.trackStatesReversed()) {
+      if (!isFittedMeasurement(state)) {
+        continue;
+      }
+      params = Acts::BoundTrackParameters(
+          state.referenceSurface().getSharedPtr(), state.smoothed(),
+          state.smoothedCovariance(), proxy.particleHypothesis());
+      if (last) {
+        break;
+      }
+    }
+    return params;
+  }
+
   ActsStrawGeometry straws;
   TVirtualMagField* shipField;
   std::shared_ptr<const ActsShipField> field;
@@ -856,6 +901,49 @@ Double_t ActsStrawTracker::DistanceToHit(Int_t track,
   const auto& local = result->parameters();
   return std::hypot(local[Acts::eBoundLoc0], local[Acts::eBoundLoc1]) /
          ActsFrame::kShipLength;
+}
+
+Bool_t ActsStrawTracker::ExtrapolateToZ(Int_t track, Double_t z,
+                                        Bool_t fromLastHit, TVector3& position,
+                                        TVector3& momentum,
+                                        std::vector<Double_t>& covariance,
+                                        Double_t& pathLength) const {
+  const auto& impl = *fImpl;
+  const auto start = impl.endSmoothedParameters(track, fromLastHit);
+  const auto plane = constantZPlane(ActsFrame::positionToActs(0., 0., z));
+  const auto result =
+      impl.extrapolateWithLength(impl.extrapolator, start, *plane);
+  if (!result) {
+    return false;
+  }
+  const auto& [params, length] = *result;
+  const Acts::Vector3 pos =
+      ActsFrame::positionToShip(params.position(impl.gctx));
+  const Acts::Vector3 mom = ActsFrame::momentumToShip(params.momentum());
+  position.SetXYZ(pos.x(), pos.y(), pos.z());
+  momentum.SetXYZ(mom.x(), mom.y(), mom.z());
+  covariance.clear();
+  if (params.covariance().has_value()) {
+    const auto elements = upperTriangle<6>(shipCovariance(params, impl.gctx));
+    covariance.assign(elements.begin(), elements.end());
+  }
+  pathLength = length / ActsFrame::kShipLength;
+  return true;
+}
+
+Double_t ActsStrawTracker::TrackLength(Int_t track) const {
+  const auto& impl = *fImpl;
+  const auto first = impl.endSmoothedParameters(track, false);
+  const auto last = impl.endSmoothedParameters(track, true);
+  if (&first.referenceSurface() == &last.referenceSurface()) {
+    return -1.;  // a single fitted measurement
+  }
+  const auto result = impl.extrapolateWithLength(impl.extrapolator, first,
+                                                 last.referenceSurface());
+  if (!result) {
+    return -1.;
+  }
+  return std::abs(result->second) / ActsFrame::kShipLength;
 }
 
 Int_t ActsStrawTracker::GetNStraws() const {

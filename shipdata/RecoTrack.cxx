@@ -5,7 +5,9 @@
 #include "RecoTrack.h"
 
 #include <algorithm>
+#include <array>
 #include <cmath>
+#include <limits>
 #include <utility>
 
 namespace SHiP {
@@ -53,6 +55,51 @@ Bool_t RecoTrack::ExtrapolateToZ(Double_t z, TVector3& position) const {
   const Double_t lambda = (z - m_z) / m_pz;
   position.SetXYZ(m_x + lambda * m_px, m_y + lambda * m_py, z);
   return true;
+}
+
+namespace {
+
+/// Fill the members of one stored extrapolation
+void setExtrapolation(const TVector3& position, const TVector3& momentum,
+                      const std::vector<Double_t>& covariance,
+                      Double_t pathLength, Bool_t& valid,
+                      std::array<Double_t*, 7> values,
+                      std::vector<Double_t>& cov) {
+  valid = true;
+  const std::array<Double_t, 7> input{position.X(), position.Y(), position.Z(),
+                                      momentum.X(), momentum.Y(), momentum.Z(),
+                                      pathLength};
+  for (std::size_t i = 0; i < values.size(); ++i) {
+    *values[i] = input[i];
+  }
+  constexpr std::size_t kCovSize = 21;
+  if (covariance.size() == kCovSize) {
+    cov = covariance;
+  } else {
+    cov.assign(kCovSize, std::numeric_limits<Double_t>::quiet_NaN());
+  }
+}
+
+}  // namespace
+
+void RecoTrack::SetUBTExtrapolation(const TVector3& position,
+                                    const TVector3& momentum,
+                                    const std::vector<Double_t>& covariance,
+                                    Double_t pathLength) {
+  setExtrapolation(position, momentum, covariance, pathLength, m_ubt_valid,
+                   {&m_ubt_x, &m_ubt_y, &m_ubt_z, &m_ubt_px, &m_ubt_py,
+                    &m_ubt_pz, &m_ubt_path_len},
+                   m_ubt_cov);
+}
+
+void RecoTrack::SetTDExtrapolation(const TVector3& position,
+                                   const TVector3& momentum,
+                                   const std::vector<Double_t>& covariance,
+                                   Double_t pathLength) {
+  setExtrapolation(
+      position, momentum, covariance, pathLength, m_td_valid,
+      {&m_td_x, &m_td_y, &m_td_z, &m_td_px, &m_td_py, &m_td_pz, &m_td_path_len},
+      m_td_cov);
 }
 
 }  // namespace SHiP
