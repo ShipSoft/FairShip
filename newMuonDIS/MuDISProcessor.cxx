@@ -7,11 +7,13 @@
 #include <TFile.h>
 #include <TTree.h>
 
+#include <chrono>
 #include <cmath>
 #include <iomanip>
 #include <iostream>
 
 #include "FairLogger.h"
+#include "MuDISNormalization.h"
 #include "TMath.h"
 #include "TROOT.h"
 #include "TRandom.h"
@@ -62,15 +64,21 @@ bool MuDISProcessor::init(const int& aEvts, const int& aStart,
     fnDIS = aDIS;
   }
   fP6seed = aSeed;
+  gRandom->SetSeed(aSeed);
   fGeoProcessor.SetZmax(aZmax);
   fGeoProcessor.SetZmin(aZmin);
   return true;
 }
 
+void MuDISProcessor::initP6CKIN() {
+  fPythia->SetCKIN(1, 2.);
+  fPythia->SetCKIN(3, 0.);
+}
+
 void MuDISProcessor::initPythia6() {
   // set process 1=QCD, 2=DY/others
   fPythia->SetMSEL(2);
-  // set min hard scale: 2 GeV --->try 1.5 for soft muons ?
+  // Minimum centre-of-mass energy in GeV (not a transverse-momentum cut).
   fPythia->SetPARP(2, fMinPythiaP);
   // disable decay for those PDGID
   unsigned hadrons[10] = {211,  321,  130,  310,  3112,
@@ -84,10 +92,10 @@ void MuDISProcessor::initPythia6() {
   LOG(info) << " * Pythia6 seed set to " << fP6seed << " wrapped to " << seed
             << std::endl;
   fPythia->SetMRPY(1, seed);
-  // To direct specific verbose Pythia6 output to a special file.
-  fPythia->SetMSTU(11, 11);
-  // For standard output stream it would be:
-  // fPythia->SetMSTU(11, 6);
+  fPythia->SetMSTU(11, fPythiaOutputUnit);
+  LOG(info) << "Pythia6 messages: "
+            << (fPythiaOutputUnit == 6 ? "stdout" : "fort.11");
+  initP6CKIN();
 }
 
 void MuDISProcessor::rotate(const TVector3& pvec, const double& theta,
@@ -219,16 +227,18 @@ void MuDISProcessor::initEvent() {
 }
 
 void MuDISProcessor::fillMCTracks(const Int_t aIdx) {
-  Int_t iEle = 0;
-  for (auto& tkIt : (*finEv.MCTrack)) {
-    if (iEle == aIdx) foutEv.mcTrks.push_back(tkIt);
-
+  // Save the selected DIS muon first, followed by its soft daughters.
+  foutEv.mcTrks.push_back(finEv.MCTrack->at(aIdx));
+  foutEv.mcTrks.back().SetTrackID(0);
+  for (const auto& tkIt : *finEv.MCTrack) {
     if (tkIt.GetMotherId() == aIdx) {
       std::string procName = tkIt.GetProcName().Data();
-      if (procName.find("Muon nuclear interaction") == procName.npos)
+      if (procName.find("Muon nuclear interaction") == procName.npos) {
         foutEv.mcTrks.push_back(tkIt);
+        foutEv.mcTrks.back().SetMotherId(0);
+        foutEv.mcTrks.back().SetTrackID(foutEv.mcTrks.size() - 1);
+      }
     }
-    iEle++;
   }
 }
 
@@ -236,14 +246,22 @@ void MuDISProcessor::fillSBTHits(const Int_t aIdx) {
   for (auto& hitIt : (*finEv.sbtPt)) {
     if (hitIt.GetTrackID() == aIdx) {
       foutEv.sbtPt.push_back(hitIt);
+      foutEv.sbtPt.back().SetTrackID(0);
     }
   }
 }
 
 void MuDISProcessor::fillUBTHits(const Int_t aIdx) {
+  for (const auto& hit : *finEv.ubtScoringPt) {
+    if (hit.GetTrackID() == aIdx) {
+      foutEv.ubtScoringPt.push_back(hit);
+      foutEv.ubtScoringPt.back().SetTrackID(0);
+    }
+  }
   for (auto& hitIt : (*finEv.ubtPt)) {
     if (hitIt.GetTrackID() == aIdx) {
       foutEv.ubtPt.push_back(hitIt);
+      foutEv.ubtPt.back().SetTrackID(0);
     }
   }
 }
@@ -252,13 +270,17 @@ void MuDISProcessor::fillSSTHits(const Int_t aIdx) {
   for (auto& hitIt : (*finEv.sstPt)) {
     if (hitIt.GetTrackID() == aIdx) {
       foutEv.sstPt.push_back(hitIt);
+      foutEv.sstPt.back().SetTrackID(0);
     }
   }
 }
 
 void MuDISProcessor::fillTDHits(const Int_t aIdx) {
   for (const auto& hit : *finEv.tdPt) {
-    if (hit.GetTrackID() == aIdx) foutEv.tdPt.push_back(hit);
+    if (hit.GetTrackID() == aIdx) {
+      foutEv.tdPt.push_back(hit);
+      foutEv.tdPt.back().SetTrackID(0);
+    }
   }
 }
 
@@ -276,7 +298,7 @@ void MuDISProcessor::generateDISevents(const std::string& tType,
   }
   aDISBr.nDISevtsGenerated = 0;
   double P = aPath.GetMomentum(0);
-  LOG(debug) << " ** initial mu momentum: " << (*finEv.MCTrack).front().GetP()
+  LOG(debug) << " ** initial mu momentum: " << foutEv.mcTrks.front().GetP()
              << " Pythia init P: " << P;
 
   if (P < fMinPythiaP) {
@@ -286,7 +308,30 @@ void MuDISProcessor::generateDISevents(const std::string& tType,
               << ". Doing nothing.";
     return;
   }
-  fPythia->Initialize("FIXT", tType.c_str(), "p+", P);  // target = "p+"
+  const Long64_t entry = ftree ? ftree->GetReadEntry() : -1;
+  const auto initialize = [&](const char* target) {
+    // PYINPR/PYSAVE overwrite these cuts for photon-process mixing.
+    // PYGAGA reads them at the NEXT initialization before they are recomputed;
+    // a previous, harder muon can otherwise leave an empty photon phase space.
+    // Restore our starting cuts (Pythia defaults) for each beam/target pair.
+    initP6CKIN();
+    LOG(debug1) << std::setprecision(17)
+                << "PYTHIA Initialize BEGIN: entry=" << entry
+                << " material=" << aLabel << " beam=" << tType
+                << " target=" << target << " beamP=" << P
+                << " GeV/c MSEL=" << fPythia->GetMSEL()
+                << " PARP(2)=" << fPythia->GetPARP(2)
+                << " MSTP(14)=" << fPythia->GetMSTP(14)
+                << " CKIN(1:4)=" << fPythia->GetCKIN(1) << ","
+                << fPythia->GetCKIN(2) << "," << fPythia->GetCKIN(3) << ","
+                << fPythia->GetCKIN(4) << " CKIN(5)=" << fPythia->GetCKIN(5)
+                << " CKIN(77:78)=" << fPythia->GetCKIN(77) << ","
+                << fPythia->GetCKIN(78) << std::endl;
+    fPythia->Initialize("FIXT", tType.c_str(), target, P);
+    LOG(debug1) << "PYTHIA Initialize END: entry=" << entry
+                << " material=" << aLabel << " target=" << target << std::endl;
+  };
+  initialize("p+");
   aDISBr.pPythia = P;
   bool isProton = true;
   // print summary of initialisation params
@@ -301,14 +346,16 @@ void MuDISProcessor::generateDISevents(const std::string& tType,
     //@FIXME AMM - half-way through, we change to neutron target with 50-50 :
     //---> update to real material ??
     if (ia == static_cast<int>(fnDIS / 2)) {
-      fPythia->Initialize("FIXT", tType.c_str(), "n0", P);  // target = "n0"
+      initialize("n0");
       isProton = false;
     }
 
     // Choose a point on the measured segments, excluding spatial jumps.
+    LOG(debug1) << "DIS vertex sampling BEGIN: entry=" << entry
+                << " material=" << aLabel << " DIS=" << ia << std::endl;
     unsigned slice = 0;
-    double realz = aPath.GetZAtLength(
-        gRandom->Uniform(minLength, aPath.GetLength()), slice);
+    const double sampledLength = gRandom->Uniform(minLength, aPath.GetLength());
+    double realz = aPath.GetZAtLength(sampledLength, slice);
     double sliceP = aPath.GetMomentum(slice);
     if (sliceP == 0) {
       LOG(error) << " --- Slice in z has momentum " << sliceP
@@ -316,10 +363,38 @@ void MuDISProcessor::generateDISevents(const std::string& tType,
       continue;
     }
 
+    LOG(debug1) << std::setprecision(17)
+                << "PYTHIA GenerateEvent BEGIN: entry=" << entry
+                << " material=" << aLabel << " DIS=" << ia
+                << " target=" << (isProton ? "p+" : "n0") << " beamP=" << P
+                << " sliceP=" << sliceP << " GeV/c"
+                << " slice=" << slice << "/" << aPath.GetNSlices()
+                << " sampledLength=" << sampledLength << " range=[" << minLength
+                << "," << aPath.GetLength() << "] cm z=" << realz
+                << " cm muonWeight=" << amuonW
+                << " MRPY(1:6)=" << fPythia->GetMRPY(1) << ","
+                << fPythia->GetMRPY(2) << "," << fPythia->GetMRPY(3) << ","
+                << fPythia->GetMRPY(4) << "," << fPythia->GetMRPY(5) << ","
+                << fPythia->GetMRPY(6) << std::endl;
+    const auto generationStart = std::chrono::steady_clock::now();
     fPythia->GenerateEvent();
+    const double generationSeconds =
+        std::chrono::duration<double>(std::chrono::steady_clock::now() -
+                                      generationStart)
+            .count();
+    LOG(debug1) << "PYTHIA GenerateEvent END: entry=" << entry
+                << " material=" << aLabel << " DIS=" << ia
+                << " elapsed=" << generationSeconds
+                << " s N=" << fPythia->GetN()
+                << " MSTI(61)=" << fPythia->GetMSTI(61) << std::endl;
     aDISBr.nDISevts++;
     // clean all but final stable particles
+    LOG(debug1) << "PYTHIA Pyedit BEGIN: entry=" << entry
+                << " material=" << aLabel << " DIS=" << ia << std::endl;
     fPythia->Pyedit(1);
+    LOG(debug1) << "PYTHIA Pyedit END: entry=" << entry
+                << " material=" << aLabel << " DIS=" << ia
+                << " N=" << fPythia->GetN() << std::endl;
 
     lastxs = fPythia->GetPARI(1);      // in mb
     aDISBr.DISxsec.push_back(lastxs);  // in mb
@@ -380,10 +455,15 @@ void MuDISProcessor::generateDISevents(const std::string& tType,
 }
 
 void MuDISProcessor::ProcessMuons() {
+  ShipMuDIS::Normalization normalization("prepareEvents");
+  // Count before momentum/path cuts for the final diagnostics only.
+  Long64_t multiMuonEvents = 0;
+  Long64_t multiMuonSum = 0;
   LOG(info) << " * Start of event loop" << std::endl;
   fGeoProcessor.ResetDiagnostics();
 
   if (static_cast<Long64_t>(fstartEvt) >= ftree->GetEntries()) {
+    normalization.Attach(fouttree);
     LOG(error) << " ** Trying to start from event " << fstartEvt
                << " which is greater than the tree entries: "
                << ftree->GetEntries() << ". Doing nothing...";
@@ -444,14 +524,43 @@ void MuDISProcessor::ProcessMuons() {
       skipEvt++;
       continue;
     }
-    // interested in the first muon track - for PG setting
-    //@FIXME AMM adapt also to MuonBack input, take all muons?
-    // for now take MCTrack[0]
-    Int_t muIdx = 0;
+    std::vector<Int_t> muonIndices;
+    for (unsigned i = 0; i < nTr; ++i) {
+      const auto& candidate = finEv.MCTrack->at(i);
+      if (std::abs(candidate.GetPdgCode()) == 13 &&
+          candidate.GetMotherId() == -1)
+        muonIndices.push_back(i);
+    }
+    const auto nMu = muonIndices.size();
+    if (nMu == 0) {
+      LOG(warning) << iEvent << " skipped: no primary muon in " << nTr
+                   << " tracks";
+      skipEvt++;
+      continue;
+    }
+    if (nMu >= 2) {
+      ++multiMuonEvents;
+      multiMuonSum += nMu;
+    }
+    // Preserve the random stream for single-muon input events.
+    const Int_t muIdx = muonIndices[nMu == 1 ? 0 : gRandom->Integer(nMu)];
 
     ShipMCTrack& track = (*finEv.MCTrack)[static_cast<unsigned>(muIdx)];
     int pid = track.GetPdgCode();
     double muW = track.GetWeight();
+
+    std::string targetType;
+    if (pid == -13) {
+      nplus++;
+      wplus += muW;
+      targetType = "gamma/mu+";
+    } else if (pid == 13) {
+      nminus++;
+      wminus += muW;
+      targetType = "gamma/mu-";
+    }
+
+    normalization.Add(muW);
 
     double mup = track.GetP();
 
@@ -463,23 +572,6 @@ void MuDISProcessor::ProcessMuons() {
       continue;
     }
 
-    std::string targetType;
-    if (pid == -13) {
-      nplus++;
-      wplus += muW;
-      targetType = "gamma/mu+";
-    } else if (pid == 13) {
-      nminus++;
-      wminus += muW;
-      targetType = "gamma/mu-";
-    } else {
-      LOG(warning) << iEvent << " skipped: "
-                   << " nTracks= " << nTr
-                   << " -- 1st track pid not a muon: " << pid << std::endl;
-      skipEvt++;
-      continue;
-    }
-
     initEvent();
     fillMCTracks(muIdx);
     fillUBTHits(muIdx);
@@ -487,15 +579,17 @@ void MuDISProcessor::ProcessMuons() {
     fillSSTHits(muIdx);
     fillTDHits(muIdx);
 
-    // Count events which have no hit in UBT, SBT, SST or TD, muon just
+    // Count events with no hit in UBT, its scoring planes, SBT, SST or TD,
     // flying out of vessel acceptance never bouncing back... For those, very
     // numerous in the cudaMu files, skip to optimise processing.
     //@FIXME AM to do: a study of whether the events created in the last lambda
     // of MS could still contribute or would hit UBT...
-    if (foutEv.ubtPt.size() == 0 && foutEv.sbtPt.size() == 0 &&
-        foutEv.sstPt.size() == 0 && foutEv.tdPt.size() == 0) {
+    if (foutEv.ubtScoringPt.empty() && foutEv.ubtPt.size() == 0 &&
+        foutEv.sbtPt.size() == 0 && foutEv.sstPt.size() == 0 &&
+        foutEv.tdPt.size() == 0) {
       LOG(debug) << " Counting muon event with no hit " << iEvent
-                 << " UBT Hits: " << foutEv.ubtPt.size()
+                 << " UBT scoring hits: " << foutEv.ubtScoringPt.size()
+                 << ", UBT Hits: " << foutEv.ubtPt.size()
                  << ", SBT Hits: " << foutEv.sbtPt.size()
                  << ", SST Hits: " << foutEv.sstPt.size()
                  << ", TD Hits: " << foutEv.tdPt.size() << std::endl;
@@ -507,6 +601,8 @@ void MuDISProcessor::ProcessMuons() {
 
     LOG(debug) << " -- size of hits collections: " << std::endl
                << " ---- mcTracks: " << foutEv.mcTrks.size() << std::endl
+               << " ---- UBT scoring hits: " << foutEv.ubtScoringPt.size()
+               << std::endl
                << " ---- UBT Hits: " << foutEv.ubtPt.size() << std::endl
                << " ---- SBT Hits: " << foutEv.sbtPt.size() << std::endl
                << " ---- SST Hits: " << foutEv.sstPt.size() << std::endl;
@@ -554,24 +650,37 @@ void MuDISProcessor::ProcessMuons() {
                           foutEv.br[i]);
     }
 
+    // Keep companion muons with their original weights; replay transports them.
+    for (const auto companion : muonIndices) {
+      if (companion == muIdx) continue;
+      foutEv.mcTrks.push_back(finEv.MCTrack->at(companion));
+      foutEv.mcTrks.back().SetTrackID(foutEv.mcTrks.size() - 1);
+    }
     fouttree->Fill();
     pathTotals.Add(muW, foutEv.pathLength);
 
   }  // loop on events
 
-  LOG(info) << "Found " << nplus << " mu+ and " << nminus << " mu-."
-            << std::endl
-            << "Skipped: " << skipEvt << " events and " << skipMu_pmin
-            << " muons with too low p" << std::endl
-            << "Counted: " << skipMu_acc
-            << " muons with no recorded hits in UBT,SBT,SST,TD.";
-  LOG(info) << "Weighted counts (sum MCTrack[0].fW): " << wplus << " mu+ and "
-            << wminus << " mu- (after momentum cut)." << std::endl
-            << "Skipped (sum MCTrack[0].fW): " << skipMu_pminW
-            << " with too low p, " << skipMu_pathW
-            << " muons with invalid or empty paths." << std::endl
-            << "Counted (sum MCTrack[0].fW): " << skipMu_accW
-            << " muons with no recorded hits in UBT,SBT,SST,TD.";
+  LOG(info)
+      << "Found " << nplus << " mu+ and " << nminus << " mu-." << std::endl
+      << "Skipped: " << skipEvt << " events and " << skipMu_pmin
+      << " muons with too low p" << std::endl
+      << "Counted: " << skipMu_acc
+      << " muons with no recorded hits in UBT,UBT scoring planes,SBT,SST,TD.";
+  normalization.Attach(fouttree);
+  LOG(info) << "Input muon multiplicity: " << multiMuonEvents
+            << " events with n_mu >= 2, sum(n_mu) = " << multiMuonSum
+            << ", average n_mu = "
+            << (multiMuonEvents > 0
+                    ? static_cast<double>(multiMuonSum) / multiMuonEvents
+                    : 0.);
+  LOG(info)
+      << "Weighted counts (sum MCTrack[0].fW): " << wplus << " mu+ and "
+      << wminus << " mu- (before momentum cut)." << std::endl
+      << "Skipped (sum MCTrack[0].fW): " << skipMu_pminW << " with too low p, "
+      << skipMu_pathW << " muons with invalid or empty paths." << std::endl
+      << "Counted (sum MCTrack[0].fW): " << skipMu_accW
+      << " muons with no recorded hits in UBT,UBT scoring planes,SBT,SST,TD.";
   fGeoProcessor.PrintDiagnostics();
   // Print additive quantities so jobs can be combined before taking means.
   LOG(info) << std::setprecision(17)

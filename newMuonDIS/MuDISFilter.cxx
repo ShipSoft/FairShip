@@ -19,6 +19,7 @@
 
 #include "FairLogger.h"
 #include "MagneticTrackPropagator.h"
+#include "MuDISNormalization.h"
 #include "TMath.h"
 #include "TROOT.h"
 #include "TRandom.h"
@@ -927,6 +928,8 @@ void MuDISFilter::ProcessEvents() {
   if (!ftree || !fouttree)
     throw std::runtime_error("Initialize input and output first");
   if (fstartEvt < 0) throw std::invalid_argument("Negative start event");
+  ShipMuDIS::Normalization normalization("filterEvents");
+  normalization.ImportChain(ftree);
   const Long64_t end =
       fnEvts >= 0 ? std::min(Long64_t(fstartEvt) + fnEvts, ftree->GetEntries())
                   : ftree->GetEntries();
@@ -940,8 +943,12 @@ void MuDISFilter::ProcessEvents() {
     if ((event - fstartEvt) % 100 == 0)
       LOG(info) << "MuDISFilter: processing entry " << event;
     if (!finEv.PrepareEntry(ftree, event) || ftree->GetEntry(event) <= 0 ||
-        !finEv.mcTrks || finEv.mcTrks->empty() || !finEv.sbtPt ||
-        !finEv.ubtPt || !finEv.sstPt) {
+        !finEv.mcTrks || finEv.mcTrks->empty()) {
+      ++skipped;
+      continue;
+    }
+    normalization.Add(finEv.mcTrks->at(0).GetWeight());
+    if (!finEv.sbtPt || !finEv.ubtPt || !finEv.sstPt) {
       ++skipped;
       continue;
     }
@@ -1052,6 +1059,7 @@ void MuDISFilter::ProcessEvents() {
       foutEv.mcTrks = *finEv.mcTrks;
       foutEv.sbtPt = *finEv.sbtPt;
       foutEv.ubtPt = *finEv.ubtPt;
+      foutEv.ubtScoringPt = *finEv.ubtScoringPt;
       foutEv.sstPt = *finEv.sstPt;
       foutEv.tdPt = *finEv.tdPt;
       foutEv.pathLength = finEv.pathLength;
@@ -1061,6 +1069,7 @@ void MuDISFilter::ProcessEvents() {
       ++selected;
     }
   }
+  normalization.Attach(fouttree);
   LOG(info) << "MuDISFilter: saved " << selected << " muon entries; skipped "
             << skipped << " unreadable or malformed entries.";
   for (unsigned imat = 0; imat < nMats; ++imat) {

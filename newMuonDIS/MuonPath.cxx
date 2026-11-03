@@ -98,7 +98,7 @@ std::string MuonPath::GetLabel(const std::string& aVol,
   std::string label = "REST";
   if (aVol.find("Magn") != aVol.npos)
     label = "MS";
-  else if (aVol.find("Upstream") != aVol.npos)
+  else if (aVol.find("UpstreamTaggerRegion_") == 0 && aMat == "Scintillator")
     label = "UBT";
   // The balloon skin includes the walls and both lids; decay_medium is HE.
   else if (aVol.find("HeBalloon") != aVol.npos)
