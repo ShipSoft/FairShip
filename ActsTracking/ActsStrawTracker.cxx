@@ -364,25 +364,9 @@ struct ActsStrawTracker::Impl {
     return indices;
   }
 
-  /// Propagate to `target` in whichever direction reaches it
-  std::optional<Acts::BoundTrackParameters> extrapolate(
-      const Extrapolator& propagator, const Acts::BoundTrackParameters& start,
-      const Acts::Surface& target) const {
-    for (const auto direction :
-         {Acts::Direction::Forward(), Acts::Direction::Backward()}) {
-      Extrapolator::Options<> options(gctx, mctx);
-      options.pathLimit = kPathLimit;
-      options.direction = direction;
-      auto result = propagator.propagate(start, target, options);
-      if (result.ok() && result.value().endParameters.has_value()) {
-        return result.value().endParameters.value();
-      }
-    }
-    return std::nullopt;
-  }
-
-  /// As extrapolate(), also returning the path length (ACTS units), signed:
-  /// negative when the target is reached against the momentum direction
+  /// Propagate to `target` in whichever direction reaches it, also returning
+  /// the path length (ACTS units), signed: negative when the target is
+  /// reached against the momentum direction
   std::optional<std::pair<Acts::BoundTrackParameters, double>>
   extrapolateWithLength(const Extrapolator& propagator,
                         const Acts::BoundTrackParameters& start,
@@ -402,6 +386,17 @@ struct ActsStrawTracker::Impl {
       }
     }
     return std::nullopt;
+  }
+
+  /// As extrapolateWithLength(), returning only the parameters
+  std::optional<Acts::BoundTrackParameters> extrapolate(
+      const Extrapolator& propagator, const Acts::BoundTrackParameters& start,
+      const Acts::Surface& target) const {
+    auto result = extrapolateWithLength(propagator, start, target);
+    if (!result) {
+      return std::nullopt;
+    }
+    return std::move(result->first);
   }
 
   /// Smoothed parameters at the first (or last) fitted measurement of a
