@@ -45,6 +45,8 @@ pytest = "*"
 pytest-xdist = "*"
 pyyaml = "*"
 tabulate = "*"
+# Other HEP packages (conda-forge)
+hepunits = ">=2.4.0"
 
 # SHiP custom packages (prefix.dev/ship-experiment/stable channel)
 geant4-vmc = ">=6.7"

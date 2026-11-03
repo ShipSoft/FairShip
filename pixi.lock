@@ -18,6 +18,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/linux-64/acts-core-48.2.0-np2h3377b24_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/eigen-5.0.1-h19c2612_3.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/faircmakemodules-1.0.0-h98f672e_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/noarch/hepunits-2.4.7-pyhc364b38_0.conda
       - conda: https://prefix.dev/conda-forge/linux-64/_openmp_mutex-4.5-8_kmp_llvm.conda
       - conda: https://prefix.dev/conda-forge/linux-64/alsa-lib-1.2.16.1-h7cc23a3_1.conda
       - conda: https://prefix.dev/conda-forge/linux-64/argon2-cffi-bindings-26.1.0-py313h995f894_2.conda
@@ -438,6 +439,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/linux-64/acts-core-48.2.0-np2h3377b24_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/eigen-5.0.1-h19c2612_3.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/faircmakemodules-1.0.0-h98f672e_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/noarch/hepunits-2.4.7-pyhc364b38_0.conda
       - conda: https://prefix.dev/conda-forge/linux-64/_openmp_mutex-4.5-8_kmp_llvm.conda
       - conda: https://prefix.dev/conda-forge/linux-64/alsa-lib-1.2.16.1-h7cc23a3_1.conda
       - conda: https://prefix.dev/conda-forge/linux-64/argon2-cffi-bindings-26.1.0-py313h995f894_2.conda
@@ -902,6 +904,19 @@ packages:
   run_exports: {}
   size: 18123
   timestamp: 1780676604349
+- conda: https://conda.anaconda.org/conda-forge/noarch/hepunits-2.4.7-pyhc364b38_0.conda
+  sha256: 22c83863512343fd209252dfe5192503431725dd25d185597720163455da7162
+  md5: c63d169595c5e358ae00c514be8c1602
+  depends:
+  - python >=3.9
+  - python
+  license: BSD-3-Clause
+  license_family: BSD
+  purls:
+  - pkg:pypi/hepunits?source=compressed-mapping
+  run_exports: {}
+  size: 21156
+  timestamp: 1790898561110
 - conda: https://prefix.dev/conda-forge/linux-64/_openmp_mutex-4.5-8_kmp_llvm.conda
   build_number: 8
   sha256: b8de006376660eb12c7fc40803c97e1480bf4bc1253f0d59694b12f81b52fe14
@@ -1178,7 +1193,7 @@ packages:
   - python_abi 3.13.* *_cp313
   license: BSD-3-Clause AND MIT AND EPL-2.0
   purls:
-  - pkg:pypi/backports-zstd?source=compressed-mapping
+  - pkg:pypi/backports-zstd?source=hash-mapping
   run_exports: {}
   size: 243747
   timestamp: 1788491297080
@@ -4410,7 +4425,8 @@ packages:
   license: LGPL-3.0-only
   license_family: LGPL
   purls:
-  - pkg:pypi/pyside6?source=compressed-mapping
+  - pkg:pypi/pyside6?source=hash-mapping
+  - pkg:pypi/shiboken6?source=hash-mapping
   run_exports: {}
   size: 13947145
   timestamp: 1788745031498
@@ -8051,7 +8067,7 @@ packages:
   license: Apache-2.0
   license_family: APACHE
   purls:
-  - pkg:pypi/websocket-client?source=compressed-mapping
+  - pkg:pypi/websocket-client?source=hash-mapping
   run_exports: {}
   size: 78254
   timestamp: 1788531123810

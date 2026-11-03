@@ -9,7 +9,6 @@ from types import SimpleNamespace
 import geometry_config
 import ROOT
 import shipRoot_conf
-import shipunit as u
 from heavyFlavourScaling import (
     check_input_flavour,
     check_run_type_override,
@@ -17,6 +16,7 @@ from heavyFlavourScaling import (
     file_is_beauty,
     format_summary,
 )
+import hepunits as u
 
 mcEngine = "TGeant4"
 simEngine = "Pythia8"
