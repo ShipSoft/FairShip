@@ -39,6 +39,13 @@ constexpr double kTracksMaxSignificance = 10.;
 /// Smallest significance of the distance between two vertices that are kept
 /// apart
 constexpr double kMaxMergeVertexSignificance = 3.;
+/// Chi2 of a track against a vertex at which its weight in the annealed fit
+/// falls to 0.5, and the largest chi2 of a track compatible with a vertex.
+/// The ACTS defaults (9 and 18.42) leave out 7% of the tracks of 8-track
+/// vertices and lose 2% of HNL decays; with the cut-off at 25, 1.5% and 0.8%.
+/// The straw track errors are about 10% too small, which inflates chi2.
+constexpr double kAnnealingCutOff = 25.;
+constexpr double kMaxVertexChi2 = 40.;
 /// Distance to the perigee surface at which the linearisation stops
 /// propagating. The ACTS default of 1e-12 mm cannot be reached in double
 /// precision tens of metres from the origin.
@@ -221,7 +228,9 @@ struct ActsVertexFinder::Impl {
 
   Acts::AdaptiveMultiVertexFinder makeFinder(Acts::Logging::Level level) {
     Acts::AdaptiveMultiVertexFitter::Config fitterConfig(ipEstimator);
-    fitterConfig.annealingTool = Acts::AnnealingUtility();
+    Acts::AnnealingUtility::Config annealing;
+    annealing.cutOff = kAnnealingCutOff;
+    fitterConfig.annealingTool = Acts::AnnealingUtility(annealing);
     // Refit the tracks at the vertex, for their momenta there
     fitterConfig.doSmoothing = true;
     fitterConfig.extractParameters
@@ -244,6 +253,7 @@ struct ActsVertexFinder::Impl {
     config.doFullSplitting = true;
     config.useTime = false;
     config.addSingleTrackVertices = false;
+    config.maxVertexChi2 = kMaxVertexChi2;
     config.extractParameters.connect<&Acts::InputTrack::extractParameters>();
     return Acts::AdaptiveMultiVertexFinder(
         std::move(config),
