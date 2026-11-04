@@ -38,7 +38,11 @@ class RecoVertex : public TObject {
   void AddTrack(Int_t trackId, const TVector3& momentum,
                 const std::array<Double_t, 6>& momentumCovariance,
                 Double_t weight = 1.);
-  /// Distance of closest approach of the two tracks, for two-track vertices
+  /// Weight above which a track counts as coming from the vertex
+  static constexpr Double_t kMinTrackWeight = 0.5;
+
+  /// Largest distance of closest approach between two tracks of the vertex
+  /// with a weight of at least kMinTrackWeight
   void SetDoca(Double_t doca) { m_doca = doca; }
 
   Double_t x() const { return m_x; }
@@ -49,7 +53,8 @@ class RecoVertex : public TObject {
   Double_t err_z() const { return m_err_z; }
   Double_t chi2() const { return m_chi2; }
   Double_t nDoF() const { return m_nDoF; }
-  /// Distance of closest approach in cm for two-track vertices, else -1
+  /// Largest distance of closest approach in cm between two tracks of the
+  /// vertex (see SetDoca), or -1 if not set
   Double_t doca() const { return m_doca; }
   const std::vector<Double_t>& GetCovarianceElements() const {
     return m_cov_elements;
