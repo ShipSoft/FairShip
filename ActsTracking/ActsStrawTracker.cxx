@@ -40,6 +40,7 @@
 #include "ActsFrame.hpp"
 #include "ActsShipField.hpp"
 #include "ActsStrawGeometry.hpp"
+#include "ActsVertexGeometry.hpp"
 #include "StrawPatRec.hpp"
 #include "TGeoManager.h"
 #include "TVirtualMagField.h"
@@ -49,6 +50,12 @@ namespace SHiP {
 namespace {
 
 namespace u = Acts::UnitConstants;
+using ActsVertexGeometry::closestPoint;
+using ActsVertexGeometry::constantZPlane;
+using ActsVertexGeometry::lineDistance;
+using ActsVertexGeometry::tangent;
+using ActsVertexGeometry::tangents;
+using ActsVertexGeometry::vertexSeed;
 
 using Trajectory = Acts::VectorMultiTrajectory;
 using TrackContainer = Acts::TrackContainer<Acts::VectorTrackContainer,
@@ -89,9 +96,6 @@ constexpr std::size_t kMinTrackHits = 20;
 // The time is not measured, so it is effectively left free
 constexpr double kSeedSigmaTime = 1e9;
 
-/// Range of the vertex seed along the beam (ACTS x)
-constexpr double kVertexSeedMinX = 20 * u::m;
-constexpr double kVertexSeedMaxX = 90 * u::m;
 /// Iterations and convergence of the vertex seed
 constexpr int kVertexIterations = 10;
 constexpr double kVertexTolerance = 0.1 * u::mm;
@@ -179,78 +183,6 @@ Acts::SquareMatrix3 shipMomentumCovariance(
   const Acts::Matrix<3, Acts::eBoundSize> jacobian =
       ActsFrame::toShipRotation() * boundToMomentum / u::GeV;
   return jacobian * params.covariance().value() * jacobian.transpose();
-}
-
-/// A straight line: a point and a unit direction
-using Tangent = std::pair<Acts::Vector3, Acts::Vector3>;
-
-/// Tangent of a track with the given bound parameters on a surface
-Tangent tangent(const Acts::Surface& surface, const Acts::BoundVector& params,
-                const Acts::GeometryContext& gctx) {
-  const Acts::Vector3 direction = Acts::makeDirectionFromPhiTheta(
-      params[Acts::eBoundPhi], params[Acts::eBoundTheta]);
-  return {surface.localToGlobal(
-              gctx,
-              Acts::Vector2(params[Acts::eBoundLoc0], params[Acts::eBoundLoc1]),
-              direction),
-          direction};
-}
-
-std::vector<Tangent> tangents(
-    const std::vector<Acts::BoundTrackParameters>& tracks,
-    const Acts::GeometryContext& gctx) {
-  std::vector<Tangent> lines;
-  for (const auto& track : tracks) {
-    lines.push_back(
-        tangent(track.referenceSurface(), track.parameters(), gctx));
-  }
-  return lines;
-}
-
-/// The point closest to a set of lines, in the least-squares sense
-Acts::Vector3 closestPoint(const std::vector<Tangent>& lines) {
-  Acts::SquareMatrix3 a = Acts::SquareMatrix3::Zero();
-  Acts::Vector3 b = Acts::Vector3::Zero();
-  for (const auto& [position, direction] : lines) {
-    const Acts::SquareMatrix3 projection =
-        Acts::SquareMatrix3::Identity() - direction * direction.transpose();
-    a += projection;
-    b += projection * position;
-  }
-  return a.colPivHouseholderQr().solve(b);
-}
-
-/// Starting point of the vertex fit: the closest point of the straight
-/// tracks, kept within the range along the beam where vertices are
-Acts::Vector3 vertexSeed(const std::vector<Acts::BoundTrackParameters>& tracks,
-                         const Acts::GeometryContext& gctx) {
-  Acts::Vector3 seed = closestPoint(tangents(tracks, gctx));
-  if (!seed.allFinite()) {
-    seed = Acts::Vector3(0.5 * (kVertexSeedMinX + kVertexSeedMaxX), 0., 0.);
-  }
-  seed.x() = std::clamp(seed.x(), kVertexSeedMinX, kVertexSeedMaxX);
-  return seed;
-}
-
-/// Plane of constant z (SHiP), i.e. constant x (ACTS), through a point
-std::shared_ptr<Acts::PlaneSurface> constantZPlane(const Acts::Vector3& point) {
-  Acts::Transform3 transform = Acts::Transform3::Identity();
-  transform.linear().col(0) = Acts::Vector3::UnitY();
-  transform.linear().col(1) = Acts::Vector3::UnitZ();
-  transform.linear().col(2) = Acts::Vector3::UnitX();
-  transform.translation() = point;
-  return Acts::Surface::makeShared<Acts::PlaneSurface>(transform);
-}
-
-/// Distance of closest approach between two straight lines
-double lineDistance(const Acts::Vector3& p1, const Acts::Vector3& d1,
-                    const Acts::Vector3& p2, const Acts::Vector3& d2) {
-  const Acts::Vector3 delta = p1 - p2;
-  const Acts::Vector3 normal = d1.cross(d2);
-  if (normal.norm() > 1e-12) {
-    return std::abs(delta.dot(normal)) / normal.norm();
-  }
-  return delta.cross(d1.normalized()).norm();
 }
 
 }  // namespace
