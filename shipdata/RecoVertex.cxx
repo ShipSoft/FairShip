@@ -25,13 +25,15 @@ RecoVertex::RecoVertex(const TVector3& position,
       m_cov_elements(covariance.begin(), covariance.end()) {}
 
 void RecoVertex::AddTrack(Int_t trackId, const TVector3& momentum,
-                          const std::array<Double_t, 6>& momentumCovariance) {
+                          const std::array<Double_t, 6>& momentumCovariance,
+                          Double_t weight) {
   m_trackIds.push_back(trackId);
   m_trackPx.push_back(momentum.X());
   m_trackPy.push_back(momentum.Y());
   m_trackPz.push_back(momentum.Z());
   m_trackCovP.insert(m_trackCovP.end(), momentumCovariance.begin(),
                      momentumCovariance.end());
+  m_trackWeights.push_back(weight);
 }
 
 std::array<Double_t, 6> RecoVertex::GetTrackMomentumCovariance(size_t i) const {
