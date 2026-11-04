@@ -15,7 +15,7 @@ import json
 import logging
 import math
 from array import array
-from collections import defaultdict
+from collections import Counter, defaultdict
 from itertools import combinations
 from typing import Any
 
@@ -293,12 +293,19 @@ class TrackingBenchmark:
         return {
             "n_truth_vertices": {"value": stats["n_truth_vertices"], "compare": "exact"},
             "n_candidates": {"value": stats["n_candidates"], "compare": "exact"},
-            # truth vertices with at least one matched two-track candidate
+            # truth vertices with at least one matched candidate
             "vertex_efficiency": self._fraction(stats["n_found_vertices"], stats["n_truth_vertices"]),
-            # opposite-charge pairs of reconstructible tracks with a candidate
-            "pair_efficiency": self._fraction(stats["n_matched_candidates"], stats["n_findable_pairs"]),
-            # candidates that are not a distinct true pair: fakes and duplicates
-            "fake_rate": self._fraction(stats["n_candidates"] - stats["n_matched_candidates"], stats["n_candidates"]),
+            # opposite-charge pairs of reconstructible tracks that are both
+            # daughters of a candidate matched to their vertex
+            "pair_efficiency": self._fraction(stats["n_found_pairs"], stats["n_findable_pairs"]),
+            # candidates that are not a distinct true vertex: fakes and
+            # duplicates, such as two pairs of tracks of one vertex
+            "fake_rate": self._fraction(stats["n_candidates"] - stats["n_found_vertices"], stats["n_candidates"]),
+            # daughters of matched candidates that come from the matched vertex
+            "daughter_purity": self._fraction(stats["n_true_daughters"], stats["n_daughters"]),
+            # reconstructible tracks of found vertices that are daughters of the
+            # matched candidate
+            "vertex_track_efficiency": self._fraction(stats["n_true_daughters"], stats["n_vertex_tracks"]),
             "vertex_dx_width": self._width(stats["h_vtx_dx"]),
             "vertex_dy_width": self._width(stats["h_vtx_dy"]),
             "vertex_dz_width": self._width(stats["h_vtx_dz"]),
@@ -314,8 +321,9 @@ class TrackingBenchmark:
         """Group reconstructible MC tracks by their production vertex.
 
         Only vertices with at least one opposite-charge pair of
-        reconstructible tracks are returned, as only those can give a
-        two-track vertex candidate.
+        reconstructible tracks are returned: the GenFit vertexing only makes
+        candidates of such pairs, and the ACTS vertexing is measured against
+        the same vertices.
         """
         groups: dict[tuple, list[int]] = defaultdict(list)
         for mc_id in reconstructible_ids:
@@ -330,34 +338,41 @@ class TrackingBenchmark:
     def _evaluate_vertices(self, reconstructible_ids: set[int], stats: dict[str, Any]) -> None:
         """Match this event's vertex candidates (Particles) to MC truth vertices.
 
-        A candidate is matched if both daughters pass the purity cut, belong
-        to different MC tracks, and those come from the same truth vertex.
-        Updates the counters and histograms in ``stats``.
+        A candidate has any number of daughters. Those that pass the purity
+        cut are matched to MC tracks, and the candidate is matched to the
+        truth vertex from which at least two different of these MC tracks
+        come, the one with the most if there are several. Only the first
+        candidate matched to a truth vertex counts as found; the others are
+        duplicates. Updates the counters and histograms in ``stats``.
         """
         truth = self._truth_vertices(reconstructible_ids)
         vertex_of = {mc_id: key for key, ids in truth.items() for mc_id in ids}
         stats["n_truth_vertices"] += len(truth)
         stats["n_findable_pairs"] += sum(len(self._opposite_pairs(ids)) for ids in truth.values())
-
         found_vertices: set[tuple] = set()
         found_pairs: set[frozenset[int]] = set()
         particles = getattr(self.reco_tree, "Particles", None)
         for particle in particles if particles is not None else []:
             stats["n_candidates"] += 1
             stats["h_doca"].Fill(particle.GetDoca())
-            mc_ids = []
-            for i in range(2):
-                frac, mc_id = self._fracMCsame(particle.GetDaughter(i))
+            daughters = list(particle.GetDaughters())
+            mc_ids = set()
+            for daughter in daughters:
+                frac, mc_id = self._fracMCsame(daughter)
                 if frac >= self.purity_cut:
-                    mc_ids.append(mc_id)
-            if len(mc_ids) != 2 or mc_ids[0] == mc_ids[1]:
+                    mc_ids.add(mc_id)
+            by_vertex = Counter(vertex_of[mc_id] for mc_id in mc_ids if mc_id in vertex_of)
+            if not by_vertex:
                 continue
-            key = vertex_of.get(mc_ids[0])
-            pair = frozenset(mc_ids)
-            if key is None or vertex_of.get(mc_ids[1]) != key or pair in found_pairs:
+            key, n_from_key = by_vertex.most_common(1)[0]
+            if n_from_key < 2 or key in found_vertices:
                 continue
-            found_pairs.add(pair)
             found_vertices.add(key)
+            from_key = [mc_id for mc_id in mc_ids if vertex_of.get(mc_id) == key]
+            found_pairs.update(frozenset(pair) for pair in self._opposite_pairs(from_key))
+            stats["n_daughters"] += len(daughters)
+            stats["n_true_daughters"] += len(from_key)
+            stats["n_vertex_tracks"] += len(truth[key])
 
             vertex = ROOT.TLorentzVector()
             particle.ProductionVertex(vertex)
@@ -365,18 +380,20 @@ class TrackingBenchmark:
             stats["h_vtx_dy"].Fill(vertex.Y() - key[1])
             stats["h_vtx_dz"].Fill(vertex.Z() - key[2])
 
-            # Pair mass with the masses the reconstruction assumed, against
-            # the true pair mass
-            p_reco = particle.GetMomentum()
-            p_true = ROOT.TLorentzVector()
-            for mc_id in mc_ids:
-                mc_p = ROOT.TLorentzVector()
-                self.sim_tree.MCTrack[mc_id].Get4Momentum(mc_p)
-                p_true += mc_p
-            if p_true.M() > 0:
-                stats["h_mass_rel"].Fill((p_reco.M() - p_true.M()) / p_true.M())
+            # Mass with the masses the reconstruction assumed, against the
+            # true mass of the matched daughters, if they are all from the
+            # vertex
+            if len(from_key) == len(daughters):
+                p_reco = particle.GetMomentum()
+                p_true = ROOT.TLorentzVector()
+                for mc_id in from_key:
+                    mc_p = ROOT.TLorentzVector()
+                    self.sim_tree.MCTrack[mc_id].Get4Momentum(mc_p)
+                    p_true += mc_p
+                if p_true.M() > 0:
+                    stats["h_mass_rel"].Fill((p_reco.M() - p_true.M()) / p_true.M())
 
-        stats["n_matched_candidates"] += len(found_pairs)
+        stats["n_found_pairs"] += len(found_pairs)
         stats["n_found_vertices"] += len(found_vertices)
 
     def compute_metrics(self) -> dict[str, Any]:
@@ -480,7 +497,7 @@ class TrackingBenchmark:
         )
         vertex_stats["h_doca"] = ROOT.TH1D("h_doca", "Vertex candidate DOCA;DOCA [cm];Entries", 200, 0, 10)
         vertex_stats["h_mass_rel"] = ROOT.TH1D(
-            "h_mass_rel", "Pair mass;(m_{reco} #minus m_{truth}) / m_{truth};Entries", 1000, -0.5, 0.5
+            "h_mass_rel", "Candidate mass;(m_{reco} #minus m_{truth}) / m_{truth};Entries", 1000, -0.5, 0.5
         )
 
         for i_event in range(n_events):
@@ -831,7 +848,7 @@ class TrackingBenchmark:
         print(f"  Correct/wrong:    {m['n_correct_charge']['value']}/{m['n_wrong_charge']['value']}")
         v = self.metrics["vertexing_benchmark"]
         print(f"  Truth vertices:   {v['n_truth_vertices']['value']} (candidates: {v['n_candidates']['value']})")
-        for name in ("vertex_efficiency", "pair_efficiency", "fake_rate"):
+        for name in ("vertex_efficiency", "pair_efficiency", "fake_rate", "daughter_purity", "vertex_track_efficiency"):
             print(f"  {name + ':':18}{fmt(v[name]['value'], v[name]['uncertainty'])}")
         for name in ("vertex_dx_width", "vertex_dy_width", "vertex_dz_width", "mass_rel_width", "doca"):
             print(f"  {name + ':':18}{v[name]['value']}")
