@@ -23,13 +23,13 @@ namespace SHiP {
 /// Finds tracks with its own pattern recognition (StrawPatRec), or fits track
 /// candidates from another pattern recognition (or MC truth), with the ACTS
 /// Kalman filter; the left/right ambiguity of each straw hit is resolved in
-/// the fit. Also fits vertices with the Billoir vertex fitter and
-/// extrapolates fitted tracks to arbitrary planes. All inputs and outputs are
+/// the fit. Also finds and fits vertices, and extrapolates fitted tracks to
+/// arbitrary planes. All inputs and outputs are
 /// in the SHiP frame (cm, GeV); ACTS is an implementation detail.
 ///
 /// Usage per event: ClearEvent(), AddMeasurement() for each straw hit, then
 /// FindTracks() or FitCandidate() for each candidate, then
-/// GetTrack()/FitVertex()/DistanceToHit().
+/// GetTrack()/FindVertices()/FitVertex()/DistanceToHit().
 class ActsStrawTracker {
  public:
   /// Build the straw surfaces from `geometry` and use `field` for the fit.
@@ -71,6 +71,15 @@ class ActsStrawTracker {
   /// Track IDs in `vertex` are the indices passed in. Returns false if the
   /// fit fails.
   Bool_t FitVertex(const std::vector<Int_t>& tracks, RecoVertex& vertex) const;
+
+  /// Find any number of vertices among the given tracks (track indices) with
+  /// the ACTS adaptive multi-vertex finder, and return their number.
+  ///
+  /// A track can belong to more than one vertex, with a weight in each
+  /// (RecoVertex::trackWeights()). Track IDs in `vertices` are the indices
+  /// passed in.
+  Int_t FindVertices(const std::vector<Int_t>& tracks,
+                     std::vector<RecoVertex>& vertices) const;
 
   /// Distance in cm between a hit and a fitted track at the plane of
   /// constant z through the hit, or -1 if the extrapolation fails
