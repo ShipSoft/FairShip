@@ -236,19 +236,15 @@ class ShipDigiReco:
         for vtx in vertices:
             self.fACTSVertexArray.push_back(vtx)
 
-            # Create a ShipParticle from the vertex fit from 2 track vertices
-            if len(vtx.trackIds()) != 2:
-                logger.debug("Skipping vertex with %d tracks (expected 2)", len(vtx.trackIds()))
-                continue
-            t1, t2 = vtx.trackIds()
-            # The particle is neutral: a same-charge pair (possible from
-            # --vertexAllTracks) stays in RecoVertices only.
-            if tracks[t1].charge() * tracks[t2].charge() >= 0:
+            # A particle from the tracks that come from the vertex
+            daughters = [i for i, w in enumerate(vtx.trackWeights()) if w >= ROOT.SHiP.RecoVertex.kMinTrackWeight]
+            if len(daughters) < 2:
+                logger.debug("Skipping vertex with %d tracks from it", len(daughters))
                 continue
             # The daughters are taken to be muons, as in the GenFit vertexing
             P = ROOT.TLorentzVector()
             covP = np.zeros((4, 4))
-            for i in range(2):
+            for i in daughters:
                 p = np.array([vtx.trackPx()[i], vtx.trackPy()[i], vtx.trackPz()[i]])
                 energy = math.hypot(np.linalg.norm(p), MUON_MASS)
                 P += ROOT.TLorentzVector(float(p[0]), float(p[1]), float(p[2]), energy)
@@ -259,7 +255,8 @@ class ShipDigiReco:
                 jacobian = np.vstack([np.eye(3), p / energy])
                 covP += jacobian @ cov @ jacobian.T
             vertex_position_4d = ROOT.TLorentzVector(vtx.x(), vtx.y(), vtx.z(), 0.0)
-            particle = ROOT.ShipParticle(9900015, 0, -1, -1, t1, t2, P, vertex_position_4d)
+            track_ids = ROOT.std.vector("int")([vtx.trackIds()[i] for i in daughters])
+            particle = ROOT.ShipParticle(9900015, 0, -1, -1, track_ids, P, vertex_position_4d)
 
             # ShipParticle::SetCovP takes the upper triangle of the 4x4 (px, py,
             # pz, E) covariance, row by row.
@@ -354,7 +351,6 @@ class ShipDigiReco:
             fit_vertex=global_variables.vertexing,
             ubt_z=self.ubtZ,
             td_z=self.timeDetZ,
-            vertex_all_tracks=getattr(global_variables, "vertexAllTracks", False),
         )
 
     @staticmethod
