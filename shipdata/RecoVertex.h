@@ -32,11 +32,13 @@ class RecoVertex : public TObject {
   /// Add a track fitted to this vertex.
   ///
   /// `trackId` is the index of the track in the RecoTracks branch,
-  /// `momentum` its momentum at the vertex and `momentumCovariance` the
-  /// covariance of that momentum.
+  /// `momentum` its momentum at the vertex, `momentumCovariance` the
+  /// covariance of that momentum and `weight` the weight of the track in an
+  /// adaptive vertex fit (between 0 and 1).
   void AddTrack(Int_t trackId, const TVector3& momentum,
-                const std::array<Double_t, 6>& momentumCovariance);
-  /// Distance of closest approach of the two tracks, before the vertex fit
+                const std::array<Double_t, 6>& momentumCovariance,
+                Double_t weight = 1.);
+  /// Distance of closest approach of the two tracks, for two-track vertices
   void SetDoca(Double_t doca) { m_doca = doca; }
 
   Double_t x() const { return m_x; }
@@ -57,6 +59,9 @@ class RecoVertex : public TObject {
   const std::vector<Double_t>& trackPx() const { return m_trackPx; }
   const std::vector<Double_t>& trackPy() const { return m_trackPy; }
   const std::vector<Double_t>& trackPz() const { return m_trackPz; }
+  /// Weights of the tracks in the vertex fit; tracks with a low weight are
+  /// probably not from this vertex
+  const std::vector<Double_t>& trackWeights() const { return m_trackWeights; }
   /// Momentum covariance of track `i`, as 6 upper-triangle elements
   std::array<Double_t, 6> GetTrackMomentumCovariance(size_t i) const;
 
@@ -77,8 +82,10 @@ class RecoVertex : public TObject {
   std::vector<Double_t> m_trackPz;
   /// Momentum covariances of all tracks, 6 elements per track
   std::vector<Double_t> m_trackCovP;
+  /// Weights of the tracks in the vertex fit (1 in files of version 1)
+  std::vector<Double_t> m_trackWeights;
 
-  ClassDefOverride(RecoVertex, 1);
+  ClassDefOverride(RecoVertex, 2);
 };
 
 }  // namespace SHiP
