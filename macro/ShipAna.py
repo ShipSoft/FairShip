@@ -2,6 +2,7 @@
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
 # example for accessing smeared hits and fitted tracks
+import itertools
 from argparse import ArgumentParser
 
 import decorators
@@ -452,7 +453,8 @@ def match2HNL(p, signal_id) -> bool:
     if signal_id is None:
         return matched
     hnlKey = []
-    for t in [p.GetDaughter(0), p.GetDaughter(1)]:
+    daughters = list(p.GetDaughters())
+    for t in daughters:
         mcp = sTree.fitTrack2MC[t]
         # Walk up the MC mother chain looking for the signal particle.
         while mcp > -0.5:
@@ -462,7 +464,8 @@ def match2HNL(p, signal_id) -> bool:
                 hnlKey.append(mcp)
                 break
             mcp = sTree.MCTrack[mcp].GetMotherId()
-    if len(hnlKey) == 2 and hnlKey[0] == hnlKey[1]:
+    # Every daughter comes from the signal particle
+    if len(hnlKey) == len(daughters):
         matched = True
     return matched
 
@@ -665,16 +668,18 @@ def myEventLoop(n: int) -> None:
     vetoDets["UBT"] = veto.UBT_decision()
     vetoDets["TRA"] = veto.Track_decision()
     signal_selected = False
-    # loop over particles, 2-track combinations
+    # loop over particles; GenFit particles have two daughters, ACTS ones any
+    # number
     for HNL in sTree.Particles:
-        t1, t2 = HNL.GetDaughter(0), HNL.GetDaughter(1)
+        daughters = list(HNL.GetDaughters())
+        t1 = daughters[0]
         # kill tracks outside fiducial volume, if enabled
-        if not checkFiducialVolume(sTree, t1, dy) or not checkFiducialVolume(sTree, t2, dy):
+        if not all(checkFiducialVolume(sTree, t, dy) for t in daughters):
             continue
         checkMeasurements = True
         # cut on nDOF
         tracks = sTree.RecoTracks if actsMode else sTree.FitTracks
-        for tr in [t1, t2]:
+        for tr in daughters:
             nmeas = track_info(tracks[tr], actsMode).ndf
             if nmeas < measCut:
                 checkMeasurements = False
@@ -733,18 +738,19 @@ def myEventLoop(n: int) -> None:
         # opening angle at vertex
         newPos = ROOT.TVector3(HNLPos.X(), HNLPos.Y(), HNLPos.Z())
         if actsMode:
-            # momenta smoothed at the vertex, from the vertex holding exactly
-            # these two tracks; fall back to the track momenta otherwise
-            mom1 = track_info(sTree.RecoTracks[t1], actsMode).mom
-            mom2 = track_info(sTree.RecoTracks[t2], actsMode).mom
+            # momenta smoothed at the vertex, from the vertex the particle was
+            # made of; fall back to the track momenta otherwise
+            moms = {t: track_info(sTree.RecoTracks[t], actsMode).mom for t in daughters}
             for vtx in sTree.RecoVertices:
-                if sorted(vtx.trackIds()) == sorted([t1, t2]):
-                    vtx_px, vtx_py, vtx_pz = vtx.trackPx(), vtx.trackPy(), vtx.trackPz()
-                    if len(vtx_px) >= 2:
-                        mom1 = ROOT.TVector3(vtx_px[0], vtx_py[0], vtx_pz[0])
-                        mom2 = ROOT.TVector3(vtx_px[1], vtx_py[1], vtx_pz[1])
+                ids = list(vtx.trackIds())
+                if set(daughters) <= set(ids):
+                    for t in daughters:
+                        k = ids.index(t)
+                        moms[t] = ROOT.TVector3(vtx.trackPx()[k], vtx.trackPy()[k], vtx.trackPz()[k])
                     break
+            momenta = [moms[t] for t in daughters]
         else:
+            t2 = daughters[1]
             st1, st2 = sTree.FitTracks[t1].getFittedState(), sTree.FitTracks[t2].getFittedState()
             PosDir[t1] = {"position": st1.getPos(), "direction": st1.getDir(), "momentum": st1.getMom()}
             PosDir[t2] = {"position": st2.getPos(), "direction": st2.getDir(), "momentum": st2.getMom()}
@@ -762,9 +768,11 @@ def myEventLoop(n: int) -> None:
                 mom1, mom2 = st1.getMom(), st2.getMom()
             newPosDir[t1] = {"position": rep1.getPos(state1), "direction": rep1.getDir(state1), "momentum": mom1}
             newPosDir[t2] = {"position": rep2.getPos(state2), "direction": rep2.getDir(state2), "momentum": mom2}
-        if mom1 is None or mom2 is None or not (mom1.Mag() > 0 and mom2.Mag() > 0):
+            momenta = [mom1, mom2]
+        if any(m is None or not m.Mag() > 0 for m in momenta):
             continue
-        oa = mom1.Dot(mom2) / (mom1.Mag() * mom2.Mag())
+        # The widest opening angle between two daughters
+        oa = min(a.Dot(b) / (a.Mag() * b.Mag()) for a, b in itertools.combinations(momenta, 2))
         h["oa"].Fill(oa)
         #
         covX = HNL.GetCovV()
@@ -829,9 +837,8 @@ def HNLKinematics() -> None:
                 h["HNLPt"].Fill(Pt, wg)
                 h["HNLPtNoW"].Fill(Pt)
                 for HNL in sTree.Particles:
-                    t1, t2 = HNL.GetDaughter(0), HNL.GetDaughter(1)
                     tracks = sTree.RecoTracks if actsMode else sTree.FitTracks
-                    for tr in [t1, t2]:
+                    for tr in HNL.GetDaughters():
                         info = track_info(tracks[tr], actsMode)
                         if info.mom is None:
                             continue
