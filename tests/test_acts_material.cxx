@@ -10,6 +10,19 @@
 #include <cmath>
 #include <iostream>
 
+#include "Acts/Definitions/Units.hpp"
+#include "Acts/EventData/BoundTrackParameters.hpp"
+#include "Acts/EventData/ParticleHypothesis.hpp"
+#include "Acts/Geometry/GeometryContext.hpp"
+#include "Acts/MagneticField/ConstantBField.hpp"
+#include "Acts/MagneticField/MagneticFieldContext.hpp"
+#include "Acts/Propagator/ActorList.hpp"
+#include "Acts/Propagator/DirectNavigator.hpp"
+#include "Acts/Propagator/EigenStepper.hpp"
+#include "Acts/Propagator/MaterialInteractor.hpp"
+#include "Acts/Propagator/Propagator.hpp"
+#include "Acts/Surfaces/PlaneSurface.hpp"
+#include "ActsFrame.hpp"
 #include "ActsStrawGeometry.hpp"
 #include "TGeoManager.h"
 #include "TGeoMaterial.h"
@@ -81,6 +94,71 @@ TGeoManager* buildGeometry() {
   return manager;
 }
 
+/// A plane of constant z (SHiP, cm)
+std::shared_ptr<Acts::PlaneSurface> constantZPlane(double z) {
+  Acts::Transform3 transform = Acts::Transform3::Identity();
+  transform.linear().col(0) = Acts::Vector3::UnitY();
+  transform.linear().col(1) = Acts::Vector3::UnitZ();
+  transform.linear().col(2) = Acts::Vector3::UnitX();
+  transform.translation() = SHiP::ActsFrame::positionToActs(0., 0., z);
+  return Acts::Surface::makeShared<Acts::PlaneSurface>(transform);
+}
+
+/// Propagate a muon going downstream from the plane at `fromZ` to the one
+/// at `toZ` through the passive planes in between, without field, and
+/// check that it crossed their material and scattered
+void checkExtrapolation(const SHiP::ActsStrawGeometry& geometry, double fromZ,
+                        double toZ) {
+  using Propagator =
+      Acts::Propagator<Acts::EigenStepper<>, Acts::DirectNavigator>;
+  const Propagator propagator(
+      Acts::EigenStepper<>(
+          std::make_shared<Acts::ConstantBField>(Acts::Vector3::Zero())),
+      Acts::DirectNavigator());
+  const auto gctx = Acts::GeometryContext::dangerouslyDefaultConstruct();
+  const Acts::MagneticFieldContext mctx;
+
+  const auto start = constantZPlane(fromZ);
+  const auto target = constantZPlane(toZ);
+  Acts::BoundVector parameters = Acts::BoundVector::Zero();
+  // Along ACTS x, i.e. the beam, at 10 GeV
+  parameters[Acts::eBoundTheta] = 0.5 * M_PI;
+  parameters[Acts::eBoundQOverP] = 1. / (10. * Acts::UnitConstants::GeV);
+  Acts::BoundMatrix covariance = Acts::BoundMatrix::Identity() * 1e-12;
+  covariance(Acts::eBoundLoc0, Acts::eBoundLoc0) = 1.;
+  covariance(Acts::eBoundLoc1, Acts::eBoundLoc1) = 1.;
+  const Acts::BoundTrackParameters params(start, parameters, covariance,
+                                          Acts::ParticleHypothesis::muon());
+
+  Propagator::Options<Acts::ActorList<Acts::MaterialInteractor>> options(gctx,
+                                                                         mctx);
+  options.direction =
+      toZ > fromZ ? Acts::Direction::Forward() : Acts::Direction::Backward();
+  options.navigation.surfaceSequence =
+      geometry.materialSequence(fromZ, toZ, 1., *target);
+  auto result = propagator.propagate(params, *target, options);
+  check(result.ok() && result.value().endParameters.has_value(),
+        "extrapolation through the passive planes");
+  if (!result.ok() || !result.value().endParameters.has_value()) {
+    return;
+  }
+
+  double expected = 0.;
+  for (const auto& plane : geometry.passivePlanes()) {
+    if (plane.z > std::min(fromZ, toZ) && plane.z < std::max(fromZ, toZ)) {
+      expected += plane.thicknessInX0;
+    }
+  }
+  const double crossed =
+      result.value().get<Acts::MaterialInteractor::result_type>().materialInX0;
+  check(expected > 0. && std::abs(crossed - expected) < 1e-3 * expected,
+        toZ > fromZ ? "forward extrapolation crosses all passive planes"
+                    : "backward extrapolation crosses all passive planes");
+  check(result.value().endParameters->covariance().value()(
+            Acts::eBoundPhi, Acts::eBoundPhi) > 10. * 1e-12,
+        "extrapolation adds multiple scattering");
+}
+
 }  // namespace
 
 int main() {
@@ -135,6 +213,10 @@ int main() {
   }
   check(std::abs(total - expected) < 8. * kStrawRadius / airX0 + 1e-6,
         "total material is helium plus air");
+
+  // Towards the decay volume, as to a vertex, and back
+  checkExtrapolation(geometry, kHeliumEnd + 50., kWallEnd + 1000.);
+  checkExtrapolation(geometry, kWallEnd + 1000., kHeliumEnd + 50.);
 
   if (failures == 0) {
     std::cout << "passive material: " << planes.size() << " planes, " << total

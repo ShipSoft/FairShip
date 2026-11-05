@@ -342,6 +342,25 @@ ActsStrawGeometry::ActsStrawGeometry(const TGeoManager& geometry) {
   m_passive = buildPassivePlanes(const_cast<TGeoManager&>(geometry), m_wires);
 }
 
+std::vector<const Acts::Surface*> ActsStrawGeometry::materialSequence(
+    double fromZ, double toZ, double pz, const Acts::Surface& target) const {
+  std::vector<const Acts::Surface*> sequence;
+  for (const auto& plane : m_passive) {
+    if (plane.z > std::min(fromZ, toZ) && plane.z < std::max(fromZ, toZ)) {
+      sequence.push_back(plane.surface.get());
+    }
+  }
+  if (pz < 0.) {
+    std::reverse(sequence.begin(), sequence.end());
+  }
+  if ((toZ - fromZ) * pz > 0.) {
+    sequence.push_back(&target);
+  } else {
+    sequence.insert(sequence.begin(), &target);
+  }
+  return sequence;
+}
+
 const Acts::Surface* ActsStrawGeometry::surface(int detectorId) const {
   const auto it = m_surfaces.find(detectorId);
   return it == m_surfaces.end() ? nullptr : it->second.get();
