@@ -12,6 +12,10 @@ it in future.
 
 ## Unreleased
 
+### Fixed
+
+* The pixi `configure` task passes `-DCMAKE_IGNORE_PREFIX_PATH=/usr`, so CMake no longer picks up host headers such as the GLES, Vulkan or Xaw headers in `/usr/include`. On hosts that had them (e.g. EL9 with GL development packages), `-I/usr/include` was added to the `rootcling` calls, mixing the host glibc headers with those of the conda sysroot, and `rootcling` crashed with a segmentation fault after `unknown type name '__BEGIN_NAMESPACE_STD'`. Existing build directories keep the old paths in `CMakeCache.txt` and must be removed once.
+
 ## 26.10 - 2026-10-28
 
 This release changes the geometry and the default field maps, and fixes bugs
