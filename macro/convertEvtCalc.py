@@ -34,7 +34,7 @@ def parse_file(infile: str):
         for line in lines:
             if line.startswith("#<"):
                 if current_block:
-                    data = np.loadtxt(current_block)
+                    data = np.loadtxt(current_block, ndmin=2)
                     variables = [data[:, i] for i in range(data.shape[1])]
                     current_block = []
                     header = line.strip()
@@ -49,7 +49,7 @@ def parse_file(infile: str):
         if current_block:
             if process_type is None or sampled_points is None:
                 raise ValueError("bin data encountered before any header")
-            data = np.loadtxt(current_block)
+            data = np.loadtxt(current_block, ndmin=2)
             variables = [data[:, i] for i in range(data.shape[1])]
             parsed_data.append((process_type, sampled_points, variables))
 

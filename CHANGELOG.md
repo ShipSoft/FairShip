@@ -12,6 +12,10 @@ it in future.
 
 ## Unreleased
 
+### Fixed
+
+* `convertEvtCalc.py` no longer aborts on EventCalc files in which a decay channel has a single sampled event (e.g. `2tauv` for a 4 GeV HNL); such a block was read as a 1-D array and the conversion failed with "tuple index out of range".
+
 ## 26.10 - 2026-10-28
 
 This release changes the geometry and the default field maps, and fixes bugs
