@@ -5,6 +5,7 @@
 #ifndef PASSIVE_SHIPMUONSHIELD_H_
 #define PASSIVE_SHIPMUONSHIELD_H_
 
+#include <map>
 #include <vector>
 
 #include "FairLogger.h"
@@ -32,6 +33,14 @@ class ShipMuonShield : public FairModule {
   // through the centre of magnets first_magnet..last_magnet (0-based).
   void SetSNDSpace(Bool_t hole, Double_t hole_dx, Double_t hole_dy,
                    Int_t first_magnet, Int_t last_magnet);
+  // Where the cavern floor steps down from TCC8 to the stair step
+  // (z_transition) and from the stair step to ECN3 (after stair_step_length).
+  void SetCavernStep(Double_t z_transition, Double_t stair_step_length);
+  // Fill the space below magnet (row in the parameters, 0-based) with
+  // concrete of the magnet width and length, from floor_gap above the cavern
+  // floor (the gap is left as air) to 30 cm below the magnet. The block is
+  // split at the floor step; none is built over the stair step itself.
+  void AddFloorBlock(Int_t magnet, Double_t floor_gap);
 
   static constexpr size_t nParams = 4;
 
@@ -42,10 +51,15 @@ class ShipMuonShield : public FairModule {
   Bool_t snd_hole{false};
   Double_t snd_hole_dx = 0., snd_hole_dy = 0.;
   Int_t snd_first_magnet{-1}, snd_last_magnet{-1};
+  Double_t cave_z_transition{0.}, cave_stair_step_length{0.};
+  std::map<Int_t, Double_t> floor_block_gaps;  // magnet -> floor gap
 
   void CreateMagnet(const TString& magnetName, TGeoMedium* medium,
                     TGeoVolume* tShield, Double_t dX, Double_t dY, Double_t dZ,
                     Double_t Z, Bool_t withSNDHole);
+  void CreateFloorBlocks(Int_t magnet, Double_t floor_gap, TGeoMedium* medium,
+                         TGeoVolume* tShield, Double_t dX, Double_t dY,
+                         Double_t dZ, Double_t Z);
 };
 
 #endif  // PASSIVE_SHIPMUONSHIELD_H_

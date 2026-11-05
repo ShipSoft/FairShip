@@ -4,8 +4,9 @@
 
 #include "ShipMuonShield.h"
 
-#include <algorithm>  // for std::ranges::copy
-#include <iterator>   // for std::back_inserter
+#include <algorithm>  // for std::ranges::copy, std::max, std::min
+#include <array>
+#include <iterator>  // for std::back_inserter
 
 #include "FairLogger.h"  /// for FairLogger, MESSAGE_ORIGIN
 #include "ShipCavernLayout.h"
@@ -40,6 +41,58 @@ void ShipMuonShield::SetSNDSpace(Bool_t hole, Double_t hole_dx,
   snd_last_magnet = last_magnet;
   snd_hole_dx = hole_dx;
   snd_hole_dy = hole_dy;
+}
+
+void ShipMuonShield::SetCavernStep(Double_t z_transition,
+                                   Double_t stair_step_length) {
+  cave_z_transition = z_transition;
+  cave_stair_step_length = stair_step_length;
+}
+
+void ShipMuonShield::AddFloorBlock(Int_t magnet, Double_t floor_gap) {
+  floor_block_gaps[magnet] = floor_gap;
+}
+
+void ShipMuonShield::CreateFloorBlocks(Int_t magnet, Double_t floor_gap,
+                                       TGeoMedium* medium, TGeoVolume* tShield,
+                                       Double_t dX, Double_t dY, Double_t dZ,
+                                       Double_t Z) {
+  using ShipCavernLayout::kECN3FloorY;
+  using ShipCavernLayout::kTCC8FloorY;
+  // Air between the top of the blocks and the magnet
+  constexpr Double_t kMagnetGap = 30 * ShipUnit::cm;
+  // Air between the ECN3 blocks and the vertical face of the floor step
+  constexpr Double_t kStepGap = 0.1 * ShipUnit::cm;
+  struct FloorSegment {
+    Double_t z_start, z_end, y;
+  };
+  // No block over the stair step between TCC8 and ECN3
+  const std::array<FloorSegment, 2> floor = {
+      {{-1e9, cave_z_transition, kTCC8FloorY},
+       {cave_z_transition + cave_stair_step_length + kStepGap, 1e9,
+        kECN3FloorY}}};
+
+  const Double_t y_top = -dY - kMagnetGap;
+  Int_t n_blocks = 0;
+  for (const auto& segment : floor) {
+    const Double_t z1 = std::max(Z - dZ, segment.z_start);
+    const Double_t z2 = std::min(Z + dZ, segment.z_end);
+    const Double_t y_bottom = segment.y + floor_gap;
+    if (z2 <= z1 || y_top <= y_bottom) {
+      continue;
+    }
+    // No "Magn" in the name: newMuonDIS takes volumes named Magn* as the
+    // muon shield
+    const TString name = Form("FloorBlock_M%d_%d", magnet, ++n_blocks);
+    LOG(debug) << "Floor block " << name << ": y = [" << y_bottom << ", "
+               << y_top << "], z = [" << z1 << ", " << z2 << "] cm";
+    TGeoVolume* block = gGeoManager->MakeBox(
+        name, medium, dX, (y_top - y_bottom) / 2., (z2 - z1) / 2.);
+    block->SetLineColor(30);
+    tShield->AddNode(
+        block, 1,
+        new TGeoTranslation(0, (y_top + y_bottom) / 2., (z1 + z2) / 2.));
+  }
 }
 
 void ShipMuonShield::CreateMagnet(const TString& magnetName, TGeoMedium* medium,
@@ -84,6 +137,8 @@ void ShipMuonShield::ConstructGeometry() {
   TGeoVolume* tShield = new TGeoVolumeAssembly("MuonShieldArea");
   ShipGeo::InitMedium("iron");
   TGeoMedium* iron = gGeoManager->GetMedium("iron");
+  ShipGeo::InitMedium("Concrete");
+  TGeoMedium* concrete = gGeoManager->GetMedium("Concrete");
 
   bool absorber_magnet = false;
   Double_t Z = z_end_of_proximity_shielding;
@@ -107,6 +162,10 @@ void ShipMuonShield::ConstructGeometry() {
     const auto i = static_cast<Int_t>(nM);
     CreateMagnet(name, iron, tShield, dX, dY, dZ, Z,
                  snd_hole && i >= snd_first_magnet && i <= snd_last_magnet);
+    if (const auto gap = floor_block_gaps.find(i);
+        gap != floor_block_gaps.end()) {
+      CreateFloorBlocks(i, gap->second, concrete, tShield, dX, dY, dZ, Z);
+    }
     absorber_magnet |= nM == 0;
   }
 
