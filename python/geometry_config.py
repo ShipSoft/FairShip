@@ -279,6 +279,20 @@ def create_config(
     # Flatten the params list
     c.muShield.params = [item for sublist in params for item in sublist]
 
+    # Concrete blocks between the cavern floor and the magnets, from M2
+    # (row 2, the absorber is row 0) to the last one: magnet width and length,
+    # FloorGap above the floor and MagnetGap below the magnet. Set FirstMagnet
+    # to -1 to build none.
+    c.muShield.FloorBlocks = AttrDict()
+    c.muShield.FloorBlocks.FirstMagnet = 2
+    c.muShield.FloorBlocks.FloorGap = 0.1 * u.cm
+    c.muShield.FloorBlocks.MagnetGap = 30 * u.cm
+    # Magnets (row numbers) with no block over the stair step after TCC8
+    c.muShield.FloorBlocks.NoStairStep = [4, 5]
+    # [magnet, floor gap] pairs overriding FloorGap; the gap is left as air
+    # (M5: 1 m above the ECN3 floor for electronics)
+    c.muShield.FloorBlocks.FloorGapPerMagnet = [[5, 1 * u.m]]
+
     c.decayVolume = AttrDict()
 
     # target absorber muon shield setup, decayVolume.length = nominal EOI length, only kept to define z=0

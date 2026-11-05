@@ -12,6 +12,10 @@ it in future.
 
 ## Unreleased
 
+### Added
+
+* Add concrete floor blocks under the muon shield magnets (`ship_geo.muShield.FloorBlocks`): from M2 on, each magnet gets a block of its width and length, `FloorGap` (0.1 cm) above the cavern floor and `MagnetGap` (30 cm) below the magnet, split where the floor steps down from TCC8 to the stair step and to ECN3. `NoStairStep` lists the magnets with no block over the stair step (M4 and M5), and `FloorGapPerMagnet` overrides the floor gap per magnet, left as air (1 m above the ECN3 floor under M5, for electronics). Set `FirstMagnet` to -1 to build none. Geometry files made before it do not build them.
+
 ## 26.10 - 2026-10-28
 
 This release changes the geometry and the default field maps, and fixes bugs
