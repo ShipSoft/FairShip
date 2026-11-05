@@ -4,8 +4,9 @@
 
 #include "ShipMuonShield.h"
 
-#include <algorithm>  // for std::ranges::copy
-#include <iterator>   // for std::back_inserter
+#include <algorithm>  // for std::ranges::copy, std::ranges::find, std::max, std::min
+#include <array>
+#include <iterator>  // for std::back_inserter
 
 #include "FairLogger.h"  /// for FairLogger, MESSAGE_ORIGIN
 #include "ShipCavernLayout.h"
@@ -40,6 +41,75 @@ void ShipMuonShield::SetSNDSpace(Bool_t hole, Double_t hole_dx,
   snd_last_magnet = last_magnet;
   snd_hole_dx = hole_dx;
   snd_hole_dy = hole_dy;
+}
+
+void ShipMuonShield::SetFloorBlocks(Int_t first_magnet, Double_t floor_gap,
+                                    Double_t magnet_gap, Double_t z_transition,
+                                    Double_t stair_step_length) {
+  floor_blocks_first_magnet = first_magnet;
+  floor_blocks_floor_gap = floor_gap;
+  floor_blocks_magnet_gap = magnet_gap;
+  cave_z_transition = z_transition;
+  cave_stair_step_length = stair_step_length;
+}
+
+void ShipMuonShield::SkipFloorBlockOnStair(Int_t magnet) {
+  floor_blocks_no_stair.push_back(magnet);
+}
+
+void ShipMuonShield::SetFloorBlockFloorGap(Int_t magnet, Double_t floor_gap) {
+  floor_blocks_floor_gap_per_magnet[magnet] = floor_gap;
+}
+
+void ShipMuonShield::CreateFloorBlocks(Int_t magnet, const TString& magnetName,
+                                       TGeoMedium* medium, TGeoVolume* tShield,
+                                       Double_t dX, Double_t dY, Double_t dZ,
+                                       Double_t Z) {
+  using ShipCavernLayout::kECN3FloorY;
+  using ShipCavernLayout::kStairFloorY;
+  using ShipCavernLayout::kTCC8FloorY;
+  struct FloorSegment {
+    Double_t z_start, z_end, y;
+  };
+  const Double_t z_ecn3 = cave_z_transition + cave_stair_step_length;
+  const std::array<FloorSegment, 3> floor = {
+      {{-1e9, cave_z_transition, kTCC8FloorY},
+       {cave_z_transition, z_ecn3, kStairFloorY},
+       {z_ecn3, 1e9, kECN3FloorY}}};
+
+  const Double_t y_top = -dY - floor_blocks_magnet_gap;
+  const auto gap_it = floor_blocks_floor_gap_per_magnet.find(magnet);
+  const Double_t floor_gap = gap_it != floor_blocks_floor_gap_per_magnet.end()
+                                 ? gap_it->second
+                                 : floor_blocks_floor_gap;
+  const bool no_stair = std::ranges::find(floor_blocks_no_stair, magnet) !=
+                        floor_blocks_no_stair.end();
+  Int_t n_blocks = 0;
+  for (size_t i = 0; i < floor.size(); ++i) {
+    if (i == 1 && no_stair) {
+      continue;  // segment 1 is the stair step
+    }
+    const auto& segment = floor[i];
+    // Downstream of a step, keep floor_blocks_floor_gap from its vertical
+    // face as well
+    const Double_t z_start =
+        i == 0 ? segment.z_start : segment.z_start + floor_blocks_floor_gap;
+    const Double_t z1 = std::max(Z - dZ, z_start);
+    const Double_t z2 = std::min(Z + dZ, segment.z_end);
+    const Double_t y_bottom = segment.y + floor_gap;
+    if (z2 <= z1 || y_top <= y_bottom) {
+      continue;
+    }
+    TString name = magnetName + Form("_FloorBlock%d", ++n_blocks);
+    LOG(info) << "Floor block " << name << ": y = [" << y_bottom << ", "
+              << y_top << "], z = [" << z1 << ", " << z2 << "] cm";
+    TGeoVolume* block = gGeoManager->MakeBox(
+        name, medium, dX, (y_top - y_bottom) / 2., (z2 - z1) / 2.);
+    block->SetLineColor(30);
+    tShield->AddNode(
+        block, 1,
+        new TGeoTranslation(0, (y_top + y_bottom) / 2., (z1 + z2) / 2.));
+  }
 }
 
 void ShipMuonShield::CreateMagnet(const TString& magnetName, TGeoMedium* medium,
@@ -84,6 +154,8 @@ void ShipMuonShield::ConstructGeometry() {
   TGeoVolume* tShield = new TGeoVolumeAssembly("MuonShieldArea");
   ShipGeo::InitMedium("iron");
   TGeoMedium* iron = gGeoManager->GetMedium("iron");
+  ShipGeo::InitMedium("Concrete");
+  TGeoMedium* concrete = gGeoManager->GetMedium("Concrete");
 
   bool absorber_magnet = false;
   Double_t Z = z_end_of_proximity_shielding;
@@ -107,6 +179,9 @@ void ShipMuonShield::ConstructGeometry() {
     const auto i = static_cast<Int_t>(nM);
     CreateMagnet(name, iron, tShield, dX, dY, dZ, Z,
                  snd_hole && i >= snd_first_magnet && i <= snd_last_magnet);
+    if (floor_blocks_first_magnet >= 0 && i >= floor_blocks_first_magnet) {
+      CreateFloorBlocks(i, name, concrete, tShield, dX, dY, dZ, Z);
+    }
     absorber_magnet |= nM == 0;
   }
 

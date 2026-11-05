@@ -5,6 +5,7 @@
 #ifndef PASSIVE_SHIPMUONSHIELD_H_
 #define PASSIVE_SHIPMUONSHIELD_H_
 
+#include <map>
 #include <vector>
 
 #include "FairLogger.h"
@@ -32,6 +33,19 @@ class ShipMuonShield : public FairModule {
   // through the centre of magnets first_magnet..last_magnet (0-based).
   void SetSNDSpace(Bool_t hole, Double_t hole_dx, Double_t hole_dy,
                    Int_t first_magnet, Int_t last_magnet);
+  // Fill the space between the cavern floor and magnets first_magnet..last
+  // (0-based) with concrete blocks of the magnet width and length, floor_gap
+  // above the floor and magnet_gap below the magnet. The floor steps down
+  // from TCC8 to the stair step at z_transition and to ECN3 after
+  // stair_step_length; a block over a step is split there.
+  void SetFloorBlocks(Int_t first_magnet, Double_t floor_gap,
+                      Double_t magnet_gap, Double_t z_transition,
+                      Double_t stair_step_length);
+  // No floor block over the stair step (TCC8 -> ECN3) for this magnet.
+  void SkipFloorBlockOnStair(Int_t magnet);
+  // Gap between the cavern floor and the floor blocks of this magnet,
+  // instead of the common floor_gap (e.g. room for electronics, left as air).
+  void SetFloorBlockFloorGap(Int_t magnet, Double_t floor_gap);
 
   static constexpr size_t nParams = 4;
 
@@ -42,10 +56,18 @@ class ShipMuonShield : public FairModule {
   Bool_t snd_hole{false};
   Double_t snd_hole_dx = 0., snd_hole_dy = 0.;
   Int_t snd_first_magnet{-1}, snd_last_magnet{-1};
+  Int_t floor_blocks_first_magnet{-1};  // -1: no floor blocks
+  Double_t floor_blocks_floor_gap{0.}, floor_blocks_magnet_gap{0.};
+  Double_t cave_z_transition{0.}, cave_stair_step_length{0.};
+  std::vector<Int_t> floor_blocks_no_stair;
+  std::map<Int_t, Double_t> floor_blocks_floor_gap_per_magnet;
 
   void CreateMagnet(const TString& magnetName, TGeoMedium* medium,
                     TGeoVolume* tShield, Double_t dX, Double_t dY, Double_t dZ,
                     Double_t Z, Bool_t withSNDHole);
+  void CreateFloorBlocks(Int_t magnet, const TString& magnetName,
+                         TGeoMedium* medium, TGeoVolume* tShield, Double_t dX,
+                         Double_t dY, Double_t dZ, Double_t Z);
 };
 
 #endif  // PASSIVE_SHIPMUONSHIELD_H_
