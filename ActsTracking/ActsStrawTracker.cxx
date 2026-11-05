@@ -375,17 +375,7 @@ struct ActsStrawTracker::Impl {
     const double startZ = ActsFrame::positionToShip(start.position(gctx)).z();
     const double pz = ActsFrame::momentumToShip(start.momentum()).z();
     const bool forward = (targetZ - startZ) * pz > 0.;
-    std::vector<const Acts::Surface*> sequence;
-    for (const auto& plane : straws.passivePlanes()) {
-      if (plane.z > std::min(startZ, targetZ) &&
-          plane.z < std::max(startZ, targetZ)) {
-        sequence.push_back(plane.surface.get());
-      }
-    }
-    if (!forward) {
-      std::reverse(sequence.begin(), sequence.end());
-    }
-    sequence.push_back(&target);
+    auto sequence = straws.materialSequence(startZ, targetZ, pz, target);
     DirectPropagator::Options<Acts::ActorList<Acts::MaterialInteractor>>
         options(gctx, mctx);
     options.pathLimit = kPathLimit;
