@@ -64,6 +64,14 @@ class ActsStrawGeometry {
   /// Passive material planes, ordered in z
   const std::vector<PassivePlane>& passivePlanes() const { return m_passive; }
 
+  /// The surface sequence for a DirectNavigator from `fromZ` to `target` at
+  /// `toZ` (SHiP, cm) for a track with momentum component `pz`: the passive
+  /// planes in between and the target, in the order of the momentum. When
+  /// propagating backward, the DirectNavigator walks the sequence from its
+  /// end, so the target comes first.
+  std::vector<const Acts::Surface*> materialSequence(
+      double fromZ, double toZ, double pz, const Acts::Surface& target) const;
+
  private:
   std::unordered_map<int, std::shared_ptr<Acts::Surface>> m_surfaces;
   std::unordered_map<int, StrawWire> m_wires;
