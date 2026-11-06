@@ -817,7 +817,6 @@ if options.evtcalc:
     EvtCalcGen = ROOT.EvtCalcGenerator()
     if not EvtCalcGen.Init(inputFile, options.firstEvent):
         raise RuntimeError(f"Failed to initialize EvtCalcGenerator from input: {inputFile}")
-    EvtCalcGen.SetPositions(zTa=ship_geo.target.z, zDV=ship_geo.decayVolume.z)
     primGen.AddGenerator(EvtCalcGen)
     ROOT.SetOwnership(EvtCalcGen, False)  # C++ FairPrimaryGenerator takes ownership
     options.nEvents = (
