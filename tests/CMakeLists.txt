@@ -160,4 +160,16 @@ if(TARGET ShipActsTracking)
         FairLogger::FairLogger
     )
     add_test(NAME StrawPatRec COMMAND testStrawPatRec)
+
+    add_executable(testActsStrawGeometry test_acts_straw_geometry.cxx)
+    target_link_libraries(
+        testActsStrawGeometry
+        ShipActsTracking
+        Acts::Core
+        ROOT::Geom
+        FairRoot::Base
+        genfit2
+        FairLogger::FairLogger
+    )
+    add_test(NAME ActsStrawGeometry COMMAND testActsStrawGeometry)
 endif()

@@ -12,6 +12,10 @@ it in future.
 
 ## Unreleased
 
+### Fixed
+
+* The ACTS straw material now comes from the straw wall, gas and wire volumes of the geometry instead of fixed values. Each part counts with its mean path through the straw. A straw is now 5.3e-4 X0, where it was 5.7e-4: the walls were too thin (tracks taken through the straw centre) and the gas X0 was 30 m instead of 128 m (Ar/CO2 80/20).
+
 ## 26.10 - 2026-10-28
 
 This release changes the geometry and the default field maps, and fixes bugs
