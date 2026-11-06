@@ -12,6 +12,10 @@ it in future.
 
 ## Unreleased
 
+### Fixed
+
+* `EvtCalcGenerator` no longer adds the target position to the z of the EventCalc decay vertex. EventCalc measures z from the front face of the target, where FairShip also has z = 0 (`target.z0`). Since 26.10 the generator added the target centre (`target.z`, 79.32 cm), which put every decay 79 cm downstream of where EventCalc placed it and made the LLP momentum point back to 79 cm inside the target instead of to its front face. The impact parameter of the LLP to the target was off by the LLP angle times 79 cm, up to a few cm. `EvtCalcGenerator::SetPositions` is removed.
+
 ## 26.10 - 2026-10-28
 
 This release changes the geometry and the default field maps, and fixes bugs

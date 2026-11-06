@@ -28,10 +28,6 @@ class EvtCalcGenerator : public SHiP::Generator {
   Bool_t Init(const char*) override;
 
   Int_t GetNevents() { return fNevents; }
-  void SetPositions(Double_t zTa, Double_t zDV) {
-    ztarget = zTa;       // units cm (midpoint)
-    zDecayVolume = zDV;  // units cm (midpoint)
-  }
 
   // Wrapper function declarations
   Double_t GetNdaughters(const std::unique_ptr<TTree>&) const;
@@ -57,7 +53,6 @@ class EvtCalcGenerator : public SHiP::Generator {
   // Generalized daughter variable access
   Double_t GetDaughterValue(const std::unique_ptr<TTree>& tree, int, int) const;
 
-  Double_t ztarget, zDecayVolume;
   std::unique_ptr<TFile> fInputFile;
   std::unique_ptr<TTree> fTree;
   std::vector<double> branchVars;
