@@ -37,8 +37,14 @@ struct StrawWire {
 struct PassivePlane {
   /// Position along the beam, SHiP frame (cm)
   double z;
-  /// Thickness in radiation lengths at normal incidence
+  /// Thickness in radiation lengths at normal incidence. The surface
+  /// material has a scaled radiation length, see `region`.
   double thicknessInX0;
+  /// Scattering region: 0 upstream of the first station centre, i between
+  /// the centres of stations i and i + 1. The surface material scatters by
+  /// this plane's share of Highland's width for the region's total
+  /// thickness.
+  int region;
   std::shared_ptr<Acts::Surface> surface;
 };
 
