@@ -11,11 +11,15 @@
 #pragma link C++ class ShipStack+;
 #pragma link C++ class ShipMCTrack+;
 #pragma link C++ class ShipParticle+;
+// Up to version 3, particles had exactly two daughters
+#pragma read sourceClass="ShipParticle" targetClass="ShipParticle" version="[-3]" source="Int_t fDaughter[2]" target="fDaughters" code="{ fDaughters.assign(onfile.fDaughter, onfile.fDaughter + 2); }"
 #pragma link C++ class TrackInfo+;
 #pragma link C++ class EventHistogram-;
 #pragma link C++ namespace SHiP;
 #pragma link C++ class SHiP::RecoTrack+;
 #pragma link C++ class SHiP::RecoVertex+;
+// Vertices of version 1 came from fits without track weights
+#pragma read sourceClass="SHiP::RecoVertex" targetClass="SHiP::RecoVertex" version="[1]" source="std::vector<Int_t> m_trackIds" target="m_trackWeights" code="{ m_trackWeights.assign(onfile.m_trackIds.size(), 1.); }"
 #pragma link C++ class std::vector<SHiP::RecoTrack>+;
 #pragma link C++ class std::vector<SHiP::RecoVertex>+;
 #pragma link C++ class ISTLPointContainer-;

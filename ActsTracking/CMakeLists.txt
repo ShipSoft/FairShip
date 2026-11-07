@@ -11,6 +11,10 @@ ship_add_library(
 )
 target_sources(
     ShipActsTracking
-    PRIVATE ActsShipField.cpp ActsStrawGeometry.cpp StrawPatRec.cpp
+    PRIVATE
+        ActsShipField.cpp
+        ActsStrawGeometry.cpp
+        ActsVertexing.cpp
+        StrawPatRec.cpp
 )
 target_link_libraries(ShipActsTracking PRIVATE Acts::Core ROOT::Geom)

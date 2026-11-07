@@ -5,7 +5,8 @@
 #ifndef SHIPDATA_SHIPPARTICLE_H_
 #define SHIPDATA_SHIPPARTICLE_H_
 
-#include <array>  // for std::array
+#include <array>   // for std::array
+#include <vector>  // for std::vector
 
 #include "Rtypes.h"            // for Double_t, Int_t, Double32_t, etc
 #include "ShipDetectorList.h"  // for DetectorId
@@ -26,6 +27,10 @@ class ShipParticle : public TObject {
   ShipParticle(Int_t pdg, Int_t status, Int_t mother1, Int_t mother2,
                Int_t daughter1, Int_t daughter2, const TLorentzVector& p,
                const TLorentzVector& v);
+  /// A particle with any number of daughters (indices of fitted tracks)
+  ShipParticle(Int_t pdg, Int_t status, Int_t mother1, Int_t mother2,
+               const std::vector<Int_t>& daughters, const TLorentzVector& p,
+               const TLorentzVector& v);
   /**  Destructor  **/
   ~ShipParticle() override;
 
@@ -43,9 +48,11 @@ class ShipParticle : public TObject {
   Int_t GetMother(Int_t i) const { return fMother[i]; }
   Int_t GetFirstMother() const { return fMother[0]; }
   Int_t GetSecondMother() const { return fMother[1]; }
-  Int_t GetDaughter(Int_t i) const { return fDaughter[i]; }
-  Int_t GetFirstDaughter() const { return fDaughter[0]; }
-  Int_t GetLastDaughter() const { return fDaughter[1]; }
+  Int_t GetNDaughters() const { return static_cast<Int_t>(fDaughters.size()); }
+  const std::vector<Int_t>& GetDaughters() const { return fDaughters; }
+  Int_t GetDaughter(Int_t i) const { return fDaughters.at(i); }
+  Int_t GetFirstDaughter() const { return fDaughters.at(0); }
+  Int_t GetLastDaughter() const { return fDaughters.at(fDaughters.size() - 1); }
   const char* GetName() const override;
 
   /**  Accessors - momentum  **/
@@ -94,10 +101,10 @@ class ShipParticle : public TObject {
 
  private:
   // Particle identification and status
-  Int_t fPdgCode;      // PDG code of the particle
-  Int_t fStatusCode;   // generation status code
-  Int_t fMother[2];    // Indices of the mother particles
-  Int_t fDaughter[2];  // Indices of the daughter particles
+  Int_t fPdgCode;                 // PDG code of the particle
+  Int_t fStatusCode;              // generation status code
+  Int_t fMother[2];               // Indices of the mother particles
+  std::vector<Int_t> fDaughters;  // Indices of the daughter particles
 
   // 4-momentum (px, py, pz, E)
   Double_t fPx;  // x component of momentum [GeV]
@@ -122,7 +129,7 @@ class ShipParticle : public TObject {
   // Distance of closest approach
   Double_t fDoca;
 
-  ClassDefOverride(ShipParticle, 3);
+  ClassDefOverride(ShipParticle, 4);
 };
 
 #endif  // SHIPDATA_SHIPPARTICLE_H_

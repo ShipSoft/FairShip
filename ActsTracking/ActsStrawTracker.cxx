@@ -40,6 +40,8 @@
 #include "ActsFrame.hpp"
 #include "ActsShipField.hpp"
 #include "ActsStrawGeometry.hpp"
+#include "ActsVertexGeometry.hpp"
+#include "ActsVertexing.hpp"
 #include "StrawPatRec.hpp"
 #include "TGeoManager.h"
 #include "TVirtualMagField.h"
@@ -49,6 +51,12 @@ namespace SHiP {
 namespace {
 
 namespace u = Acts::UnitConstants;
+using ActsVertexGeometry::closestPoint;
+using ActsVertexGeometry::constantZPlane;
+using ActsVertexGeometry::lineDistance;
+using ActsVertexGeometry::tangent;
+using ActsVertexGeometry::tangents;
+using ActsVertexGeometry::vertexSeed;
 
 using Trajectory = Acts::VectorMultiTrajectory;
 using TrackContainer = Acts::TrackContainer<Acts::VectorTrackContainer,
@@ -89,14 +97,15 @@ constexpr std::size_t kMinTrackHits = 20;
 // The time is not measured, so it is effectively left free
 constexpr double kSeedSigmaTime = 1e9;
 
-/// Range of the vertex seed along the beam (ACTS x)
-constexpr double kVertexSeedMinX = 20 * u::m;
-constexpr double kVertexSeedMaxX = 90 * u::m;
 /// Iterations and convergence of the vertex seed
 constexpr int kVertexIterations = 10;
 constexpr double kVertexTolerance = 0.1 * u::mm;
 
 constexpr double kPathLimit = 100 * u::m;
+
+/// Field (kGauss) below which the vertex finding takes tracks as straight
+/// lines; 1 G deflects a 1 GeV track by 0.03 mrad per metre
+constexpr double kFieldFreeB = 1e-3;
 
 struct StrawMeasurement {
   const Acts::Surface* surface;
@@ -181,78 +190,6 @@ Acts::SquareMatrix3 shipMomentumCovariance(
   return jacobian * params.covariance().value() * jacobian.transpose();
 }
 
-/// A straight line: a point and a unit direction
-using Tangent = std::pair<Acts::Vector3, Acts::Vector3>;
-
-/// Tangent of a track with the given bound parameters on a surface
-Tangent tangent(const Acts::Surface& surface, const Acts::BoundVector& params,
-                const Acts::GeometryContext& gctx) {
-  const Acts::Vector3 direction = Acts::makeDirectionFromPhiTheta(
-      params[Acts::eBoundPhi], params[Acts::eBoundTheta]);
-  return {surface.localToGlobal(
-              gctx,
-              Acts::Vector2(params[Acts::eBoundLoc0], params[Acts::eBoundLoc1]),
-              direction),
-          direction};
-}
-
-std::vector<Tangent> tangents(
-    const std::vector<Acts::BoundTrackParameters>& tracks,
-    const Acts::GeometryContext& gctx) {
-  std::vector<Tangent> lines;
-  for (const auto& track : tracks) {
-    lines.push_back(
-        tangent(track.referenceSurface(), track.parameters(), gctx));
-  }
-  return lines;
-}
-
-/// The point closest to a set of lines, in the least-squares sense
-Acts::Vector3 closestPoint(const std::vector<Tangent>& lines) {
-  Acts::SquareMatrix3 a = Acts::SquareMatrix3::Zero();
-  Acts::Vector3 b = Acts::Vector3::Zero();
-  for (const auto& [position, direction] : lines) {
-    const Acts::SquareMatrix3 projection =
-        Acts::SquareMatrix3::Identity() - direction * direction.transpose();
-    a += projection;
-    b += projection * position;
-  }
-  return a.colPivHouseholderQr().solve(b);
-}
-
-/// Starting point of the vertex fit: the closest point of the straight
-/// tracks, kept within the range along the beam where vertices are
-Acts::Vector3 vertexSeed(const std::vector<Acts::BoundTrackParameters>& tracks,
-                         const Acts::GeometryContext& gctx) {
-  Acts::Vector3 seed = closestPoint(tangents(tracks, gctx));
-  if (!seed.allFinite()) {
-    seed = Acts::Vector3(0.5 * (kVertexSeedMinX + kVertexSeedMaxX), 0., 0.);
-  }
-  seed.x() = std::clamp(seed.x(), kVertexSeedMinX, kVertexSeedMaxX);
-  return seed;
-}
-
-/// Plane of constant z (SHiP), i.e. constant x (ACTS), through a point
-std::shared_ptr<Acts::PlaneSurface> constantZPlane(const Acts::Vector3& point) {
-  Acts::Transform3 transform = Acts::Transform3::Identity();
-  transform.linear().col(0) = Acts::Vector3::UnitY();
-  transform.linear().col(1) = Acts::Vector3::UnitZ();
-  transform.linear().col(2) = Acts::Vector3::UnitX();
-  transform.translation() = point;
-  return Acts::Surface::makeShared<Acts::PlaneSurface>(transform);
-}
-
-/// Distance of closest approach between two straight lines
-double lineDistance(const Acts::Vector3& p1, const Acts::Vector3& d1,
-                    const Acts::Vector3& p2, const Acts::Vector3& d2) {
-  const Acts::Vector3 delta = p1 - p2;
-  const Acts::Vector3 normal = d1.cross(d2);
-  if (normal.norm() > 1e-12) {
-    return std::abs(delta.dot(normal)) / normal.norm();
-  }
-  return delta.cross(d1.normalized()).norm();
-}
-
 }  // namespace
 
 struct ActsStrawTracker::Impl {
@@ -290,6 +227,30 @@ struct ActsStrawTracker::Impl {
     patRec.emplace(StrawPatRec::Config{}, [this](const LineSegment& line) {
       return fieldIntegrals(line);
     });
+
+    double firstStation = std::numeric_limits<double>::infinity();
+    for (const auto& [id, wire] : straws.wires()) {
+      if (wire.station == 1) {
+        firstStation = std::min(firstStation, wire.z);
+      }
+    }
+    vertexReferenceZ = fieldFreeZ(firstStation);
+  }
+
+  /// The most downstream z (cm) upstream of `from` from which there is no
+  /// field along the beam axis, down to the start of the vertex range
+  double fieldFreeZ(double from) const {
+    const double lowest = ActsVertexGeometry::kVertexSeedMinX / u::cm;
+    double z = from;
+    for (; z > lowest; z -= kFieldStep) {
+      const double x[3] = {0., 0., z};
+      double b[3] = {0., 0., 0.};
+      shipField->Field(x, b);
+      if (std::hypot(b[0], b[1], b[2]) < kFieldFreeB) {
+        break;
+      }
+    }
+    return std::max(z, lowest);
   }
 
   /// Hits for the pattern recognition, from measurement indices
@@ -410,6 +371,10 @@ struct ActsStrawTracker::Impl {
   TrackContainer tracks;
   /// Measurements used in each track
   std::vector<std::vector<Int_t>> trackMeasurements;
+  ActsVertexFinder vertexFinder;
+  /// Plane of constant z (SHiP, cm) to which tracks are extrapolated before
+  /// the vertex finding, upstream of the field of the spectrometer
+  double vertexReferenceZ = 0.;
 };
 
 ActsStrawTracker::ActsStrawTracker(const TGeoManager* geometry,
@@ -853,6 +818,104 @@ Bool_t ActsStrawTracker::FitVertex(const std::vector<Int_t>& tracks,
     vertex.SetDoca(baseDoca / ActsFrame::kShipLength);
   }
   return true;
+}
+
+Int_t ActsStrawTracker::FindVertices(const std::vector<Int_t>& tracks,
+                                     std::vector<RecoVertex>& vertices) const {
+  const auto& impl = *fImpl;
+  vertices.clear();
+
+  // The vertex finding takes tracks as straight lines, so first bring them
+  // through the field and the material to a plane upstream of the field
+  const double referenceZ = impl.vertexReferenceZ;
+  const auto referencePlane =
+      constantZPlane(ActsFrame::positionToActs(0., 0., referenceZ));
+  std::vector<Int_t> used;
+  std::vector<Acts::BoundTrackParameters> original;
+  std::vector<Acts::BoundTrackParameters> atReference;
+  for (const Int_t track : tracks) {
+    auto params = impl.trackParameters(track);
+    auto extrapolated =
+        impl.extrapolateThroughMaterial(params, *referencePlane, referenceZ);
+    if (extrapolated) {
+      used.push_back(track);
+      original.push_back(std::move(params));
+      atReference.push_back(std::move(*extrapolated));
+    }
+  }
+  auto found = impl.vertexFinder.find(atReference, impl.gctx, impl.mctx);
+  if (found.empty()) {
+    return 0;
+  }
+
+  // Then once more, with each track brought through the material of the
+  // decay volume to the plane of the vertex in which it has the largest
+  // weight, so that the scattering on the way is accounted for
+  std::vector<Acts::BoundTrackParameters> atVertex;
+  atVertex.reserve(used.size());
+  for (std::size_t i = 0; i < used.size(); ++i) {
+    const FoundVertex* best = nullptr;
+    double bestWeight = 0.;
+    for (const auto& vertex : found) {
+      for (const auto& track : vertex.tracks) {
+        if (track.index == i && track.weight > bestWeight) {
+          best = &vertex;
+          bestWeight = track.weight;
+        }
+      }
+    }
+    std::optional<Acts::BoundTrackParameters> extrapolated;
+    if (best != nullptr) {
+      const double vertexZ = ActsFrame::positionToShip(best->position).z();
+      extrapolated = impl.extrapolateThroughMaterial(
+          original[i], *constantZPlane(best->position), vertexZ);
+    }
+    atVertex.push_back(extrapolated ? std::move(*extrapolated)
+                                    : atReference[i]);
+  }
+  found = impl.vertexFinder.find(atVertex, impl.gctx, impl.mctx);
+
+  const Acts::RotationMatrix3 rotation = ActsFrame::toShipRotation();
+  for (const auto& vertex : found) {
+    const Acts::Vector3 position = ActsFrame::positionToShip(vertex.position);
+    const Acts::SquareMatrix3 covariance =
+        rotation * vertex.covariance * rotation.transpose() /
+        (ActsFrame::kShipLength * ActsFrame::kShipLength);
+    RecoVertex out(TVector3(position.x(), position.y(), position.z()),
+                   upperTriangle<3>(covariance), vertex.chi2, vertex.nDoF);
+    std::vector<ActsVertexGeometry::Tangent> daughters;
+    for (const auto& track : vertex.tracks) {
+      // The track refitted at the vertex, if the fit gave its covariance
+      const auto& params = track.atVertex.covariance().has_value()
+                               ? track.atVertex
+                               : atVertex[track.index];
+      const Acts::Vector3 momentum =
+          ActsFrame::momentumToShip(params.momentum());
+      out.AddTrack(
+          used[track.index], TVector3(momentum.x(), momentum.y(), momentum.z()),
+          upperTriangle<3>(shipMomentumCovariance(params)), track.weight);
+      if (track.weight >= RecoVertex::kMinTrackWeight) {
+        const auto& input = atVertex[track.index];
+        daughters.push_back(
+            tangent(input.referenceSurface(), input.parameters(), impl.gctx));
+      }
+    }
+    // The largest distance of closest approach between two tracks of the
+    // vertex, before the fit
+    double doca = -1.;
+    for (std::size_t i = 0; i < daughters.size(); ++i) {
+      for (std::size_t j = i + 1; j < daughters.size(); ++j) {
+        doca = std::max(doca,
+                        lineDistance(daughters[i].first, daughters[i].second,
+                                     daughters[j].first, daughters[j].second));
+      }
+    }
+    if (doca >= 0.) {
+      out.SetDoca(doca / ActsFrame::kShipLength);
+    }
+    vertices.push_back(std::move(out));
+  }
+  return static_cast<Int_t>(vertices.size());
 }
 
 Double_t ActsStrawTracker::DistanceToHit(Int_t track,

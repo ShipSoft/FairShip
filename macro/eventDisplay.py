@@ -196,7 +196,7 @@ def printFittedTracks() -> None:
 
 
 def printParticles() -> None:
-    print("  #    P    Pt[GeV/c]   DOCA[mm]    Rsq    Vz[m]    d1    d2")
+    print("  #    P    Pt[GeV/c]   DOCA[mm]    Rsq    Vz[m]    daughters")
     n = -1
     for aP in sTree.Particles:
         n += 1
@@ -205,7 +205,7 @@ def printParticles() -> None:
             doca = aP.T()
         Rsq = (aP.Vx() / (2.45 * u.m)) ** 2 + (aP.Vy() / ((10.0 / 2.0 - 0.05) * u.m)) ** 2
         print(
-            "%3i %6.3F  %6.3F  %9.3F    %6.3F   %6.3F %4i  %4i "
+            "%3i %6.3F  %6.3F  %9.3F    %6.3F   %6.3F  %s"
             % (
                 n,
                 aP.P() / u.GeV,
@@ -213,8 +213,7 @@ def printParticles() -> None:
                 doca / u.mm,
                 Rsq,
                 aP.Vz() / u.m,
-                aP.GetDaughter(0),
-                aP.GetDaughter(1),
+                " ".join("%4i" % d for d in aP.GetDaughters()),
             )
         )
 
@@ -551,10 +550,8 @@ class DrawTracks(ROOT.FairTask):
             if aP.GetMother(1) == 99:  # DOCA is set
                 if aP.T() > 3 * u.cm:
                     continue
-            for k in range(aP.GetNDaughters()):
-                if k > 1:
-                    break  # we don't have more than 2tracks/vertex yet, no idea why ROOT sometimes comes up with 4!
-                fT = sTree.FitTracks[aP.GetDaughter(k)]
+            for daughter in aP.GetDaughters():
+                fT = sTree.FitTracks[daughter]
                 fst = fT.getFitStatus()
                 if not fst.isFitConverged():
                     tracksOK = False
