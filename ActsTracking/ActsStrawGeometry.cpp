@@ -53,6 +53,33 @@ constexpr double kWalkStart = 2000.;
 constexpr double kBoundaryThickness = 0.5;
 constexpr double kGasDensity = 0.01;  // g/cm3
 
+/// Highland's scattering width in units of 13.6 MeV/p, for a thickness `x`
+/// in radiation lengths (beta = 1)
+double highland(double x) { return std::sqrt(x) * (1. + 0.038 * std::log(x)); }
+
+/// The slab with its radiation length scaled so that Highland gives it the
+/// share of the width of `regionX0` that is proportional to its thickness:
+/// sqrt(x) (1 + 0.038 ln regionX0) instead of sqrt(x) (1 + 0.038 ln x).
+/// Mass density, A and Z stay, so the energy loss does not change.
+Acts::MaterialSlab regionalSlab(const Acts::MaterialSlab& slab,
+                                double regionX0) {
+  const double x = slab.thicknessInX0();
+  const double target = std::sqrt(x) * (1. + 0.038 * std::log(regionX0));
+  // highland() rises monotonically over the bracket; bisect in log(x)
+  double lo = 1e-3 * x;
+  double hi = 1e3 * x;
+  for (int i = 0; i < 100; ++i) {
+    const double mid = std::sqrt(lo * hi);
+    (highland(mid) < target ? lo : hi) = mid;
+  }
+  const double xEff = std::sqrt(lo * hi);
+  const Acts::Material& m = slab.material();
+  return Acts::MaterialSlab(
+      Acts::Material::fromMassDensity(m.X0() * x / xEff, m.L0(), m.Ar(), m.Z(),
+                                      m.massDensity()),
+      slab.thickness());
+}
+
 /// Material of one straw crossed at normal incidence: two walls and the gas
 std::shared_ptr<const Acts::HomogeneousSurfaceMaterial> strawMaterial() {
   const auto gas = Acts::Material::fromMassDensity(
@@ -202,6 +229,14 @@ Acts::MaterialSlab slab(const TGeoMaterial& material, double thickness) {
 /// at most kMaxSlice, each lumped onto a plane at its centre. The material
 /// is read along a few lines across the acceptance, and the one with the
 /// median material is used.
+///
+/// Highland's formula is not additive: applied to each of many thin planes,
+/// its log term (negative below 1 X0) shrinks every width, and the
+/// scattering summed over a region comes out several percent narrower than
+/// Highland on the region as a whole. The planes are therefore grouped into
+/// regions between the station centres, and each plane's radiation length is
+/// scaled so that the widths of a region's planes add up in quadrature to
+/// Highland on the region's total thickness.
 std::vector<PassivePlane> buildPassivePlanes(
     TGeoManager& manager, const std::unordered_map<int, StrawWire>& wires) {
   std::map<int, std::pair<double, double>> stations;
@@ -302,6 +337,22 @@ std::vector<PassivePlane> buildPassivePlanes(
     }
   }
 
+  // Regions: upstream of the first station centre, between the centres and
+  // downstream of the last
+  std::vector<double> centres;
+  for (const auto& [a, b] : zones) {
+    centres.push_back(0.5 * (a + b));
+  }
+  auto region = [&centres](double z) {
+    return static_cast<int>(
+        std::upper_bound(centres.begin(), centres.end(), z) - centres.begin());
+  };
+  std::map<int, double> regionX0;
+  for (const auto& [z, slabs] : lumped) {
+    regionX0[region(z)] +=
+        Acts::MaterialSlab::combineLayers(slabs).thicknessInX0();
+  }
+
   std::vector<PassivePlane> planes;
   for (const auto& [z, slabs] : lumped) {
     const Acts::MaterialSlab combined =
@@ -309,6 +360,7 @@ std::vector<PassivePlane> buildPassivePlanes(
     if (!(combined.thicknessInX0() > 0.)) {
       continue;
     }
+    const int index = region(z);
     // A plane of constant z (SHiP), i.e. of constant x (ACTS)
     Acts::Transform3 transform = Acts::Transform3::Identity();
     transform.linear().col(0) = Acts::Vector3::UnitY();
@@ -317,11 +369,12 @@ std::vector<PassivePlane> buildPassivePlanes(
     transform.translation() = ActsFrame::positionToActs(0., 0., z);
     auto surface = Acts::Surface::makeShared<Acts::PlaneSurface>(transform);
     surface->assignSurfaceMaterial(
-        std::make_shared<Acts::HomogeneousSurfaceMaterial>(combined));
+        std::make_shared<Acts::HomogeneousSurfaceMaterial>(
+            regionalSlab(combined, regionX0[index])));
     surface->assignGeometryId(
         Acts::GeometryIdentifier().withVolume(2).withPassive(
             static_cast<Acts::GeometryIdentifier::Value>(planes.size() + 1)));
-    planes.push_back({z, combined.thicknessInX0(), std::move(surface)});
+    planes.push_back({z, combined.thicknessInX0(), index, std::move(surface)});
   }
   return planes;
 }

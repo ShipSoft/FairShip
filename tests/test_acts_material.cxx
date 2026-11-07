@@ -9,6 +9,7 @@
 #include <algorithm>
 #include <cmath>
 #include <iostream>
+#include <map>
 
 #include "Acts/Definitions/Units.hpp"
 #include "Acts/EventData/BoundTrackParameters.hpp"
@@ -16,6 +17,8 @@
 #include "Acts/Geometry/GeometryContext.hpp"
 #include "Acts/MagneticField/ConstantBField.hpp"
 #include "Acts/MagneticField/MagneticFieldContext.hpp"
+#include "Acts/Material/ISurfaceMaterial.hpp"
+#include "Acts/Material/Interactions.hpp"
 #include "Acts/Propagator/ActorList.hpp"
 #include "Acts/Propagator/DirectNavigator.hpp"
 #include "Acts/Propagator/EigenStepper.hpp"
@@ -104,6 +107,14 @@ std::shared_ptr<Acts::PlaneSurface> constantZPlane(double z) {
   return Acts::Surface::makeShared<Acts::PlaneSurface>(transform);
 }
 
+/// Thickness in radiation lengths of a plane's surface material, whose
+/// radiation length is scaled for the regional scattering
+double surfaceX0(const SHiP::PassivePlane& plane) {
+  return plane.surface->surfaceMaterial()
+      ->materialSlab(Acts::Vector2::Zero())
+      .thicknessInX0();
+}
+
 /// Propagate a muon going downstream from the plane at `fromZ` to the one
 /// at `toZ` through the passive planes in between, without field, and
 /// check that it crossed their material and scattered
@@ -146,7 +157,7 @@ void checkExtrapolation(const SHiP::ActsStrawGeometry& geometry, double fromZ,
   double expected = 0.;
   for (const auto& plane : geometry.passivePlanes()) {
     if (plane.z > std::min(fromZ, toZ) && plane.z < std::max(fromZ, toZ)) {
-      expected += plane.thicknessInX0;
+      expected += surfaceX0(plane);
     }
   }
   const double crossed =
@@ -213,6 +224,32 @@ int main() {
   }
   check(std::abs(total - expected) < 8. * kStrawRadius / airX0 + 1e-6,
         "total material is helium plus air");
+
+  // Scattering regions split at the station centres; the planes of a region
+  // scatter together like Highland on the region's total thickness, while
+  // Highland applied to each plane alone is much narrower
+  const double centres[2] = {kStationZ[0] + 0.5 * kLayerPitch,
+                             kStationZ[1] + 0.5 * kLayerPitch};
+  std::map<int, double> regionX0, regionVariance, planeVariance;
+  for (const auto& plane : planes) {
+    check(plane.region == (plane.z > centres[0]) + (plane.z > centres[1]),
+          "plane in the region between the station centres");
+    const double scaled = Acts::approximateHighlandScattering(surfaceX0(plane));
+    const double plain =
+        Acts::approximateHighlandScattering(plane.thicknessInX0);
+    regionX0[plane.region] += plane.thicknessInX0;
+    regionVariance[plane.region] += scaled * scaled;
+    planeVariance[plane.region] += plain * plain;
+  }
+  check(regionX0.size() == 3, "three scattering regions");
+  for (const auto& [region, x0] : regionX0) {
+    const double highland = Acts::approximateHighlandScattering(x0);
+    check(std::abs(std::sqrt(regionVariance[region]) / highland - 1.) < 1e-4,
+          "planes of a region add up to Highland on the region");
+  }
+  check(std::sqrt(planeVariance[0]) <
+            0.9 * Acts::approximateHighlandScattering(regionX0[0]),
+        "Highland per plane is narrower in the decay volume");
 
   // Towards the decay volume, as to a vertex, and back
   checkExtrapolation(geometry, kHeliumEnd + 50., kWallEnd + 1000.);
