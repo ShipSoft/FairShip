@@ -16,6 +16,14 @@ it in future.
 
 * GENIE (pythia8 build) is now a pixi dependency, so `macro/makeGenieEvents.py` can run `gmkspl`, `gevgen` and `gntpc` in the pixi environment without a separate GENIE installation.
 
+### Changed
+
+* `ShipReco.py` uses ACTS for track fitting and vertexing (`--trackFitter acts`) and `--patRec Segments` for pattern recognition by default. Reco files therefore contain `RecoTracks` and `RecoVertices` instead of `FitTracks`. `--trackFitter genfit` gives the GenFit chain back, with `AR` pattern recognition unless `--patRec` says otherwise. `run_tracking_benchmark.py` has the same defaults.
+
+### Deprecated
+
+* GenFit tracking and vertexing (`--trackFitter genfit`) and the `FH`, `AR` and `TemplateMatching` pattern recognition will be removed in a later release. `ShipReco.py` prints a warning when one of them is used.
+
 ### Fixed
 
 * The ACTS straw material now comes from the straw wall, gas and wire volumes of the geometry instead of fixed values. Each part counts with its mean path through the straw. A straw is now 5.3e-4 X0, where it was 5.7e-4: the walls were too thin (tracks taken through the straw centre) and the gas X0 was 30 m instead of 128 m (Ar/CO2 80/20).
