@@ -3,6 +3,7 @@ var dir_59425e443f801f1f2fd8bbe4959a3ccf =
     [ "data", "dir_a5de59bb3ce2e2eb34fbfb710b8b1200.html", "dir_a5de59bb3ce2e2eb34fbfb710b8b1200" ],
     [ "check_muonback_plane.py", "check__muonback__plane_8py.html", "check__muonback__plane_8py" ],
     [ "conftest.py", "conftest_8py.html", "conftest_8py" ],
+    [ "test_acts_straw_geometry.cxx", "test__acts__straw__geometry_8cxx.html", "test__acts__straw__geometry_8cxx" ],
     [ "test_calo_scoring_plane_pid.cxx", "test__calo__scoring__plane__pid_8cxx.html", "test__calo__scoring__plane__pid_8cxx" ],
     [ "test_caloScoringPlanePID.py", "test__caloScoringPlanePID_8py.html", "test__caloScoringPlanePID_8py" ],
     [ "test_cavern_layout.py", "test__cavern__layout_8py.html", "test__cavern__layout_8py" ],

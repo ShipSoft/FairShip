@@ -1,14 +1,16 @@
 <map id="ActsTracking/ActsStrawGeometry.hpp" name="ActsTracking/ActsStrawGeometry.hpp">
-<area shape="rect" id="Node000001" title=" " alt="" coords="173,5,436,33"/>
-<area shape="rect" id="Node000002" href="$ActsStrawGeometry_8cpp.html" title=" " alt="" coords="5,81,268,109"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="258,41,167,83,165,78,263,38"/>
-<area shape="rect" id="Node000003" href="$ActsStrawTracker_8cxx.html" title=" " alt="" coords="154,157,399,184"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="302,47,281,157,277,155,297,49"/>
-<area shape="rect" id="Node000004" href="$StrawPatRec_8hpp.html" title=" " alt="" coords="395,81,611,109"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="355,36,470,80,465,81,354,41"/>
-<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="451,113,318,159,316,154,446,114"/>
-<area shape="rect" id="Node000005" href="$StrawPatRec_8cpp.html" title=" " alt="" coords="422,157,638,184"/>
-<area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="515,121,527,158,523,155,512,126"/>
-<area shape="rect" id="Node000006" href="$test__straw__patrec_8cxx.html" title=" " alt="" coords="662,157,862,184"/>
-<area shape="poly" id="edge6_Node000004_Node000006" title=" " alt="" coords="564,111,718,156,713,156,563,116"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="245,5,508,33"/>
+<area shape="rect" id="Node000002" href="$ActsStrawGeometry_8cpp.html" title=" " alt="" coords="5,90,268,117"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="322,40,176,91,174,86,325,37"/>
+<area shape="rect" id="Node000003" href="$ActsStrawTracker_8cxx.html" title=" " alt="" coords="128,174,372,201"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="359,44,332,83,261,175,258,171,328,79,355,47"/>
+<area shape="rect" id="Node000004" href="$StrawPatRec_8hpp.html" title=" " alt="" coords="342,90,558,117"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="399,42,441,90,436,89,397,47"/>
+<area shape="rect" id="Node000007" href="$test__acts__straw__geometry_8cxx.html" title=" " alt="" coords="582,81,742,126"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="437,35,589,80,583,81,437,40"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="406,123,283,176,281,171,401,124"/>
+<area shape="rect" id="Node000005" href="$StrawPatRec_8cpp.html" title=" " alt="" coords="396,174,611,201"/>
+<area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="468,128,497,174,492,172,465,133"/>
+<area shape="rect" id="Node000006" href="$test__straw__patrec_8cxx.html" title=" " alt="" coords="635,174,835,201"/>
+<area shape="poly" id="edge6_Node000004_Node000006" title=" " alt="" coords="511,119,692,173,687,173,510,125"/>
 </map>
