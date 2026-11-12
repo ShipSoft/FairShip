@@ -1,5 +1,6 @@
 var NAVTREEINDEX22 =
 {
+"namespacehepunit.html#a2dca37f0cf36ca111f1a76ef7fd2778a":[5,0,49,106],
 "namespacehepunit.html#a2e17793d65079fddae431879be2a7d17":[5,0,49,75],
 "namespacehepunit.html#a2fb84f7c2be8f4165dea48763cbb3cc6":[5,0,49,61],
 "namespacehepunit.html#a2fce90db6b981f1b770129bf9329d86e":[5,0,49,38],
@@ -248,6 +249,5 @@ var NAVTREEINDEX22 =
 "namespacemakeDecay.html#a6ca9ee1ac5dd881b42ce74249e60c74b":[5,0,58,36],
 "namespacemakeDecay.html#a71e56cc3e31edf9a03276e9c1dc39b52":[5,0,58,14],
 "namespacemakeDecay.html#a799db5ebd88d664f8f7075e2a4313c0e":[5,0,58,45],
-"namespacemakeDecay.html#a7ec12e88da32853a5e27cbbf8bcd8899":[5,0,58,12],
-"namespacemakeDecay.html#a8718f33cd01d5a873aede1561940be4b":[5,0,58,47]
+"namespacemakeDecay.html#a7ec12e88da32853a5e27cbbf8bcd8899":[5,0,58,12]
 };

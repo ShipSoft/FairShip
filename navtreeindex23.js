@@ -1,5 +1,6 @@
 var NAVTREEINDEX23 =
 {
+"namespacemakeDecay.html#a8718f33cd01d5a873aede1561940be4b":[5,0,58,47],
 "namespacemakeDecay.html#a8ae49156f9341ca95732cc2c31159dda":[5,0,58,48],
 "namespacemakeDecay.html#a97147c649e3e1cfd894b38f64fd37533":[5,0,58,19],
 "namespacemakeDecay.html#a9bc97cfee28a9e30fa7a0851a6f0071a":[5,0,58,26],
@@ -248,6 +249,5 @@ var NAVTREEINDEX23 =
 "namespacemembers_func_h.html":[5,1,1,8],
 "namespacemembers_func_i.html":[5,1,1,9],
 "namespacemembers_func_k.html":[5,1,1,10],
-"namespacemembers_func_l.html":[5,1,1,11],
-"namespacemembers_func_m.html":[5,1,1,12]
+"namespacemembers_func_l.html":[5,1,1,11]
 };

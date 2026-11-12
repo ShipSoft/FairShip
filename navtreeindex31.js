@@ -1,5 +1,6 @@
 var NAVTREEINDEX31 =
 {
+"structUpstreamTagger_1_1Region.html#ae6e79075ef0f864b405bc83cb7a1f7ea":[6,0,108,0,6],
 "structUpstreamTagger_1_1Region.html#ae9b70411970eed1141062e82b22b30bf":[6,0,108,0,4],
 "structUpstreamTagger_1_1Region.html#aeed18ec5179e338af9073a427ee1a79b":[6,0,108,0,5],
 "structexitHadronAbsorber_1_1WeightHistory.html":[6,0,45,0],

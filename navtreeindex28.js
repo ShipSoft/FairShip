@@ -1,5 +1,6 @@
 var NAVTREEINDEX28 =
 {
+"namespacestudy__thinTarget.html#a32297dc133cd2f024927c6e1e1eef1ba":[5,0,120,3],
 "namespacestudy__thinTarget.html#a39aa964b0e7234068dd84e1db8e82ed0":[5,0,120,28],
 "namespacestudy__thinTarget.html#a3fab425bc732ad707186e2238c85eb8d":[5,0,120,16],
 "namespacestudy__thinTarget.html#a4688ef8907b6eb071771ca870fad938a":[5,0,120,42],
@@ -248,6 +249,5 @@ var NAVTREEINDEX28 =
 "shipDet__conf_8py.html":[7,0,13,35],
 "shipDet__conf_8py_source.html":[7,0,13,35],
 "shipDigiReco_8py.html":[7,0,13,36],
-"shipDigiReco_8py_source.html":[7,0,13,36],
-"shipPatRec_8py.html":[7,0,13,38]
+"shipDigiReco_8py_source.html":[7,0,13,36]
 };
