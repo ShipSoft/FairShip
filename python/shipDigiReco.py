@@ -39,7 +39,7 @@ class ShipDigiReco:
 
     def __init__(self, finput, fout, fgeo, validation: bool = False) -> None:
         self.validation = validation
-        self.trackFitter = getattr(global_variables, "trackFitter", "genfit")
+        self.trackFitter = getattr(global_variables, "trackFitter", "acts")
         # Always allocate the counter dict so static analysis sees it as
         # subscriptable; entries are only updated when self.validation is true,
         # so a non-validation run still ends with the zeroed defaults.
