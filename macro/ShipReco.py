@@ -22,6 +22,7 @@ def mem_monitor() -> None:
 
 
 import os
+import warnings
 
 import global_variables
 import ROOT
@@ -63,24 +64,24 @@ parser.add_argument(
     "--patRec",
     dest="patRec",
     help="Options for pattern recognition. \n\
-           FH                        : Hough transform.\n\
-           AR                        : Artificial retina.\n\
+           Segments (default)        : drift-circle segments matched across the magnet, requires --trackFitter acts.\n\
            Truth                     : MC truth hit assignment -- for simulation only, requires --trackFitter acts.\n\
-           Segments                  : drift-circle segments matched across the magnet, requires --trackFitter acts.\n\
-      TemplateMatching               : Tracks are searched for based on the template: track seed + hits within a window around the seed.",
+           FH                        : Hough transform (deprecated).\n\
+           AR                        : Artificial retina (deprecated, default with --trackFitter genfit).\n\
+      TemplateMatching               : Tracks are searched for based on the template: track seed + hits within a window around the seed (deprecated).",
     required=False,
     choices=["FH", "AR", "TemplateMatching", "Truth", "Segments"],
-    default="AR",
+    default=None,
 )
 parser.add_argument(
     "--trackFitter",
     dest="trackFitter",
     help="Track fitter to use. \n\
-           genfit (default)          : writes FitTracks/goodTracks branches.\n\
-           acts                      : writes RecoTracks/RecoVertices/Particles branches.",
+           acts (default)            : writes RecoTracks/RecoVertices/Particles branches.\n\
+           genfit (deprecated)       : writes FitTracks/goodTracks branches.",
     required=False,
     choices=["genfit", "acts"],
-    default="genfit",
+    default="acts",
 )
 parser.add_argument("-dy", dest="dy", help="Max height of tank", required=False, default=None, type=int)
 parser.add_argument("--Debug", dest="Debug", help="Switch on debugging", required=False, action="store_true")
@@ -100,6 +101,21 @@ parser.add_argument(
     action="store_true",
 )
 options = parser.parse_args()
+if options.patRec is None:
+    options.patRec = "Segments" if options.trackFitter == "acts" else "AR"
+if options.trackFitter == "genfit":
+    warnings.warn(
+        "GenFit tracking and vertexing (--trackFitter genfit) are deprecated and will be removed, "
+        "use --trackFitter acts",
+        FutureWarning,
+        stacklevel=1,
+    )
+if options.patRec in ("FH", "AR", "TemplateMatching"):
+    warnings.warn(
+        f"--patRec {options.patRec} is deprecated and will be removed, use --patRec Segments with --trackFitter acts",
+        FutureWarning,
+        stacklevel=1,
+    )
 if options.patRec in ("Truth", "Segments") and options.trackFitter != "acts":
     parser.error(f"--patRec {options.patRec} requires --trackFitter acts")
 vertexing = not options.noVertexing
