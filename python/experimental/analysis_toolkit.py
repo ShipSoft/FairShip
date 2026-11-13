@@ -7,10 +7,10 @@
 import numpy as np
 import pythia8_conf
 import ROOT
-import shipunit as u
 from ShipGeoConfig import load_from_root_file
 from shipTrackAccess import get_tracks, track_info, uses_acts
 from tabulate import tabulate
+import hepunits as u
 
 
 class selection_check:

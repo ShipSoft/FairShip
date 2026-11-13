@@ -8,7 +8,7 @@ import hnl
 import readDecayTable
 import ROOT
 import rpvsusy
-import shipunit as u
+import hepunits as u
 import yaml
 from method_logger import MethodLogger
 from pythia8_conf_utils import (
