@@ -42,9 +42,17 @@ parser.add_argument(
     "--commonVertex", action="store_true", help="Give all tracks of an event one vertex, for vertexing studies"
 )
 parser.add_argument(
-    "--trackFitter", choices=["genfit", "acts"], default="genfit", help="Track fitter (default: genfit)"
+    "--trackFitter",
+    choices=["genfit", "acts"],
+    default="acts",
+    help="Track fitter (default: acts; genfit is deprecated)",
 )
-parser.add_argument("--patRec", default="AR", help="Pattern recognition passed to ShipReco.py (default: AR)")
+parser.add_argument(
+    "--patRec",
+    choices=["FH", "AR", "TemplateMatching", "Truth", "Segments"],
+    default=None,
+    help="Pattern recognition passed to ShipReco.py (default: ShipReco.py's, Segments for acts and AR for genfit)",
+)
 parser.add_argument(
     "--allTracks",
     action="store_true",
@@ -173,11 +181,11 @@ reco_cmd = [
     geo_file,
     "-n",
     str(options.nEvents),
-    "--patRec",
-    options.patRec,
     "--trackFitter",
     options.trackFitter,
 ]
+if options.patRec:
+    reco_cmd += ["--patRec", options.patRec]
 if options.debug > 0:
     reco_cmd.append("--Debug")
 

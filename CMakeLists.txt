@@ -147,8 +147,8 @@ find_package(genfit2 REQUIRED)
 # TPythia6 was removed from ROOT in 6.32, use external EGPythia6 package
 find_package(ROOTEGPythia6 REQUIRED)
 
-# ACTS is optional; without it the ACTS track fitter (ShipReco.py --trackFitter
-# acts) is not built.
+# ACTS is optional; without it the default ACTS track fitter (ShipReco.py
+# --trackFitter acts) is not built.
 find_package(Acts 48 CONFIG COMPONENTS Core)
 
 # set a variable which should be used in all CMakeLists.txt Defines all basic

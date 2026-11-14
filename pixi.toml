@@ -125,7 +125,7 @@ cmd = "bash -c 'set -o pipefail; python python/experimental/check_overlaps.py --
 cmd = "python macro/getGeoInformation.py --geometry geo_ci-test.root --level 2"
 
 [tasks.ci-reco]
-cmd = "python macro/ShipReco.py -f sim_ci-test.root -g geo_ci-test.root --patRec AR --Debug"
+cmd = "python macro/ShipReco.py -f sim_ci-test.root -g geo_ci-test.root --Debug"
 
 [tasks.ci-ana]
 cmd = "python macro/ShipAna.py -f sim_ci-test.root -r sim_ci-test_rec.root -g geo_ci-test.root"
