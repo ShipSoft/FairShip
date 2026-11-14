@@ -49,6 +49,7 @@ parser.add_argument(
 )
 parser.add_argument(
     "--patRec",
+    choices=["FH", "AR", "TemplateMatching", "Truth", "Segments"],
     default=None,
     help="Pattern recognition passed to ShipReco.py (default: ShipReco.py's, Segments for acts and AR for genfit)",
 )
