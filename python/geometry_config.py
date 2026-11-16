@@ -31,6 +31,10 @@ shield_db = {
             [15, 168, 150, 63],
             [19, 200, 171, 127],
         ],
+        # [magnet row, floor gap (cm)]: concrete from the floor (+ gap) to
+        # 30 cm below the magnet, none over the stair step from TCC8 to ECN3.
+        # M5 leaves 1 m of air above the ECN3 floor for electronics.
+        "floor_blocks": [[2, 0.1], [3, 0.1], [4, 0.1], [5, 100.0], [6, 0.1], [7, 0.1]],
     },
 }
 
@@ -278,6 +282,8 @@ def create_config(
             )
     # Flatten the params list
     c.muShield.params = [item for sublist in params for item in sublist]
+
+    c.muShield.floor_blocks = shield_db[shieldName].get("floor_blocks", [])
 
     c.decayVolume = AttrDict()
 

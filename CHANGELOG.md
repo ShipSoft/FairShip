@@ -16,6 +16,8 @@ it in future.
 
 * GENIE (pythia8 build) is now a pixi dependency, so `macro/makeGenieEvents.py` can run `gmkspl`, `gevgen` and `gntpc` in the pixi environment without a separate GENIE installation.
 
+* Add concrete floor blocks under the muon shield magnets: `shield_db` lists `floor_blocks` as `[magnet row, floor gap]` pairs (M2 to M7 for `TRY_2026`). Each block has the magnet width and length and fills the space from the floor gap above the cavern floor to 30 cm below the magnet, split where the floor steps down from TCC8 to ECN3; no block is built over the stair step. M5 keeps 1 m of air above the ECN3 floor for electronics. The blocks are named `FloorBlock_M<n>_<i>`, without `Magn`, so newMuonDIS does not count them as muon shield. Geometry files made before it do not build them.
+
 ### Fixed
 
 * The ACTS straw material now comes from the straw wall, gas and wire volumes of the geometry instead of fixed values. Each part counts with its mean path through the straw. A straw is now 5.3e-4 X0, where it was 5.7e-4: the walls were too thin (tracks taken through the straw centre) and the gas X0 was 30 m instead of 128 m (Ar/CO2 80/20).

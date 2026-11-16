@@ -630,6 +630,10 @@ def configure(run, ship_geo, geofile: str | None = None):
                 first_magnet=n_magnets - 3,
                 last_magnet=n_magnets - 2,
             )
+    if "floor_blocks" in ship_geo.muShield:  # absent in geometry files made before it
+        MuonShield.SetCavernStep(ship_geo.cave.z_transition, ship_geo.cave.stair_step_length)
+        for magnet, floor_gap in ship_geo.muShield.floor_blocks:
+            MuonShield.AddFloorBlock(magnet, floor_gap)
     detectorList.append(MuonShield)
 
     if not hasattr(ship_geo, "magnetDesign"):
