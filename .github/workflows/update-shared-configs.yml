@@ -11,3 +11,5 @@ jobs:
     uses: ShipSoft/.github/.github/workflows/config-sync.yml@main
     with:
       base: main
+    secrets:
+      app-private-key: ${{ secrets.APP_PRIVATE_KEY }}
