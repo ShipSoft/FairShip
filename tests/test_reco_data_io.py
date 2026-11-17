@@ -90,3 +90,26 @@ def test_old_class_versions_are_read(root_with_shipdata):
     assert list(vertex.trackIds()) == [3, 7]
     assert list(vertex.trackWeights()) == [1.0, 1.0]
     f.Close()
+
+
+def test_vertex_daughter_momenta(root_with_shipdata):
+    """The momenta come from the vertex whose strong tracks are the daughters."""
+    ROOT = root_with_shipdata
+    from shipTrackAccess import vertex_daughter_momenta
+
+    cov = covariance(ROOT, [1, 0, 0, 1, 0, 1])
+    # A track can be in several vertices, and a vertex lists its weak tracks
+    first = ROOT.SHiP.RecoVertex(ROOT.TVector3(0, 0, 6000), cov, 1.0, 5.0)
+    for track, weight in ((0, 1.0), (1, 0.9), (2, 0.6), (3, 0.7)):
+        first.AddTrack(track, ROOT.TVector3(0, 0, 10 + track), cov, weight)
+    second = ROOT.SHiP.RecoVertex(ROOT.TVector3(0, 0, 7000), cov, 1.0, 1.0)
+    for track, weight in ((1, 0.1), (2, 0.95), (3, 0.9)):
+        second.AddTrack(track, ROOT.TVector3(0, 0, 20 + track), cov, weight)
+    vertices = [first, second]
+
+    moms = vertex_daughter_momenta(vertices, [2, 3])
+    assert sorted(moms) == [2, 3]
+    assert moms[2].Z() == pytest.approx(22.0)
+    assert moms[3].Z() == pytest.approx(23.0)
+    assert sorted(vertex_daughter_momenta(vertices, [0, 1, 2, 3])) == [0, 1, 2, 3]
+    assert vertex_daughter_momenta(vertices, [0, 1]) is None

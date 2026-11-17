@@ -60,7 +60,7 @@ else:
     # Add reconstruction data as friend tree
     sTree.AddFriend("ship_reco_sim", options.recoFile)
 
-from shipTrackAccess import track_info, uses_acts
+from shipTrackAccess import track_info, uses_acts, vertex_daughter_momenta
 
 # reco file written with --trackFitter acts (RecoTracks) or genfit (FitTracks)?
 actsMode = uses_acts(sTree)
@@ -740,14 +740,9 @@ def myEventLoop(n: int) -> None:
         if actsMode:
             # momenta smoothed at the vertex, from the vertex the particle was
             # made of; fall back to the track momenta otherwise
-            moms = {t: track_info(sTree.RecoTracks[t], actsMode).mom for t in daughters}
-            for vtx in sTree.RecoVertices:
-                ids = list(vtx.trackIds())
-                if set(daughters) <= set(ids):
-                    for t in daughters:
-                        k = ids.index(t)
-                        moms[t] = ROOT.TVector3(vtx.trackPx()[k], vtx.trackPy()[k], vtx.trackPz()[k])
-                    break
+            moms = vertex_daughter_momenta(sTree.RecoVertices, daughters) or {
+                t: track_info(sTree.RecoTracks[t], actsMode).mom for t in daughters
+            }
             momenta = [moms[t] for t in daughters]
         else:
             t2 = daughters[1]
