@@ -4,8 +4,11 @@
 
 #include "ActsStrawGeometry.hpp"
 
+#include <cmath>
 #include <stdexcept>
+#include <string>
 #include <string_view>
+#include <vector>
 
 #include "Acts/Definitions/Units.hpp"
 #include "Acts/Geometry/GeometryIdentifier.hpp"
@@ -16,6 +19,7 @@
 #include "Acts/Surfaces/StrawSurface.hpp"
 #include "ActsFrame.hpp"
 #include "TGeoManager.h"
+#include "TGeoMaterial.h"
 #include "TGeoMatrix.h"
 #include "TGeoNode.h"
 #include "TGeoTube.h"
@@ -31,17 +35,58 @@ namespace u = Acts::UnitConstants;
 // copy number plus 1000 (see strawtubes::ConstructGeometry).
 constexpr int kGasCopyOffset = 1000;
 
-/// Material of one straw crossed at normal incidence: two walls and the gas
-std::shared_ptr<const Acts::HomogeneousSurfaceMaterial> strawMaterial() {
-  const auto gas = Acts::Material::fromMassDensity(
-      30000.0 * u::mm, 50000.0 * u::mm, 30.0, 15.0, 0.0018 * u::g / u::cm3);
-  const auto wall = Acts::Material::fromMassDensity(
-      300.0 * u::mm, 400.0 * u::mm, 27.0, 13.0, 1.4 * u::g / u::cm3);
-  const Acts::MaterialSlab gasSlab(gas, 10.0 * u::mm);
-  const Acts::MaterialSlab wallSlab(wall, 0.036 * u::mm);
-  auto slab = Acts::MaterialSlab::combineLayers(wallSlab, gasSlab);
-  slab = Acts::MaterialSlab::combineLayers(slab, wallSlab);
-  return std::make_shared<Acts::HomogeneousSurfaceMaterial>(slab);
+/// A straw component ("straw" for the wall, "gas", "wire") among the daughters
+/// of the volume holding the straws, or nullptr
+const TGeoNode* strawComponent(const TGeoVolume& volume,
+                               std::string_view name) {
+  for (int i = 0; i < volume.GetNdaughters(); ++i) {
+    const TGeoNode* node = volume.GetNode(i);
+    if (std::string_view(node->GetVolume()->GetName()) == name) {
+      return node;
+    }
+  }
+  return nullptr;
+}
+
+/// Material of a straw for a track at normal incidence, from the straw
+/// volumes of the geometry: the wall, the gas and, if there is one, the wire.
+/// Each contributes its mean path over where the track crosses the straw,
+/// i.e. its cross-section divided by the straw diameter. The straws of a layer
+/// touch, so this is also the mean material per layer.
+std::shared_ptr<const Acts::HomogeneousSurfaceMaterial> strawMaterial(
+    const TGeoVolume& volume) {
+  double diameter = 0.;
+  std::vector<Acts::MaterialSlab> slabs;
+  for (const char* name : {"straw", "gas", "wire"}) {
+    const TGeoNode* node = strawComponent(volume, name);
+    if (node == nullptr) {
+      if (std::string_view(name) == "wire") {
+        continue;
+      }
+      throw std::runtime_error(std::string("ActsStrawGeometry: no straw ") +
+                               name + " volume");
+    }
+    const auto* tube =
+        dynamic_cast<const TGeoTube*>(node->GetVolume()->GetShape());
+    if (tube == nullptr) {
+      throw std::runtime_error(std::string("ActsStrawGeometry: straw ") + name +
+                               " is not a TGeoTube");
+    }
+    if (diameter == 0.) {
+      diameter = 2. * tube->GetRmax();
+    }
+    const TGeoMaterial* material = node->GetVolume()->GetMaterial();
+    const double area = M_PI * (tube->GetRmax() * tube->GetRmax() -
+                                tube->GetRmin() * tube->GetRmin());
+    slabs.emplace_back(
+        Acts::Material::fromMassDensity(
+            material->GetRadLen() * ActsFrame::kShipLength,
+            material->GetIntLen() * ActsFrame::kShipLength, material->GetA(),
+            material->GetZ(), material->GetDensity() * u::g / u::cm3),
+        area / diameter * ActsFrame::kShipLength);
+  }
+  return std::make_shared<Acts::HomogeneousSurfaceMaterial>(
+      Acts::MaterialSlab::combineLayers(slabs));
 }
 
 Acts::Transform3 toTransform(const TGeoHMatrix& matrix) {
@@ -79,6 +124,10 @@ struct Builder {
       global.Multiply(node->GetMatrix());
       const TGeoVolume* daughter = node->GetVolume();
       if (std::string_view(daughter->GetName()) == "straw") {
+        if (material == nullptr) {
+          // All straws are alike
+          material = strawMaterial(volume);
+        }
         addStraw(*node, global);
       } else {
         visit(*daughter, global);
@@ -120,7 +169,7 @@ ActsStrawGeometry::ActsStrawGeometry(const TGeoManager& geometry) {
   if (top == nullptr) {
     throw std::invalid_argument("ActsStrawGeometry: no geometry loaded");
   }
-  Builder builder{m_surfaces, m_wires, strawMaterial()};
+  Builder builder{m_surfaces, m_wires, nullptr};
   builder.visit(*top, TGeoHMatrix());
   if (m_surfaces.empty()) {
     throw std::runtime_error("ActsStrawGeometry: no straws in the geometry");

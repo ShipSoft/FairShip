@@ -124,6 +124,37 @@ pixi cvmfs build
 You can add the `export PATH=...` line to your `~/.bashrc` so the commands are
 available in every new shell.
 
+Also keep the pixi cache off EOS/AFS. By default it lives in `$XDG_CACHE_HOME`
+or `~/.cache`, which on lxplus are on EOS or AFS. Network filesystems are slow
+for the many small cache files, and a stuck I/O call can freeze `pixi` so that
+`Ctrl+C` has no effect. Put the cache on local disk, for example in `~/.bashrc`:
+
+```bash
+export PIXI_CACHE_DIR=/tmp/$USER/pixi-cache
+```
+
+`/tmp` is local to each lxplus node and gets cleaned up, so pixi may have to
+download packages again after you log in to a different node.
+
+If `pixi` waits forever with this message:
+
+```
+WARN still waiting on another pixi process to finish installing '.../FairShip/.pixi/envs/default'
+```
+
+a previous `pixi` process was probably killed while it was installing the
+environment and left its lock behind. In this case you can:
+
+1. Check that no other `pixi` process of yours is still running on a node that
+   uses the same clone.
+2. From your FairShip clone, remove the partial environment and its lock:
+
+    ```bash
+    rm -rf .pixi/envs/default .pixi/envs/default.rattler-fs-overlay .pixi/envs/default.rattler-fs.lock
+    ```
+
+3. Run your `pixi` command again.
+
 ## Run instructions
 
 Start a shell with the FairShip environment activated:
@@ -163,7 +194,7 @@ To simulate on the geometry of an earlier simulation, for example a standard geo
 python $FAIRSHIP/macro/run_simScript.py -g geo_my-simulation.root --tag my-second-simulation
 ```
 
-The detectors still build their geometry from the stored configuration, because building is also how they register their sensitive volumes and magnetic fields, which a geometry file does not keep; the stored geometry then replaces the built one. The run stops if the stored geometry lacks a volume or placement that the current code builds.
+The detectors still build their geometry from the stored configuration, because building is also how they register their sensitive volumes and magnetic fields, which a geometry file does not keep; the stored geometry then replaces the built one. The stored geometry may differ from the one the current code builds, for example a geometry written with an SBT of another design: the run stops only if it lacks a volume to which the current code attaches a magnetic field, and prints the other differences as a warning. Sensitive volumes are found by name, so sensitive volumes that the stored geometry lacks record no hits, and volumes of the stored geometry that the current code does not build are passive. The SBT digitisation finds each SBT cell at the fixed path `cave/DecayVolume_1/T2_1/VetoLiSc_0/<cell>` (`vetoHit::GetNode`), so SBT hit positions are right only for SBT designs that keep that hierarchy and the cell names; the warning says when they do not. A detector that the current code can no longer build from the stored configuration, such as the UBT of a geometry file from before the scintillator tiles, is left out of the run with a warning: it records no hits.
 
 Alternatively, you can make use of the experimental `analysis_toolkit` to run a simple pre-selection check on the events. An example script can be found in `$FAIRSHIP/examples/analysis_example.py`.
 

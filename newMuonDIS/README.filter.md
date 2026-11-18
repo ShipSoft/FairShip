@@ -101,10 +101,7 @@ When the imported geometry contains `MuonShieldArea`, the filter also loads
 `ShipGeo.muShield.Entrance[0]` and quadrant symmetry, matching the simulation
 field setup. `--muon-shield-field-map` and `--muon-shield-field-z` override the
 shield map path and offset (cm). Missing maps or geometry metadata are reported
-as errors rather than silently omitting shield deflection. A geometry with
-`ShipGeo.muShield.WithConstField` set is refused: the simulation then uses
-constant per-volume shield fields instead of the map, which the propagator
-cannot reproduce. Both map files are
+as errors rather than silently omitting shield deflection. Both map files are
 excluded from recursive input discovery. Geometries without `MuonShieldArea`
 continue to support SST-only propagation.
 

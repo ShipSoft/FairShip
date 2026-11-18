@@ -51,6 +51,10 @@ geant4-vmc = ">=6.7"
 fairroot = ">=19.0"
 genfit = ">=2.3"
 rootegpythia6 = "*"
+# GENIE tools (gevgen, gmkspl, gntpc) for macro/makeGenieEvents.py. The
+# configs in shipgen/genie_config use Pythia8Decayer2023, which needs the
+# pythia8 build; the pythia6 build stops with a FATAL error.
+genie = { version = "3.06.*", build = "pythia8*" }
 # Physics-metrics extraction/comparison CLIs used by the ci-* tasks.
 ship-ci-metrics = "*"
 # tauolapp and photospp are runtime-only (not needed for build)
