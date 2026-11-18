@@ -232,25 +232,43 @@ struct ActsStrawTracker::Impl {
       return fieldIntegrals(line);
     });
 
+    // The field is sampled on the beam axis and at four points halfway to
+    // the edges of the first station, whose extent is that of its straws
     double firstStation = std::numeric_limits<double>::infinity();
+    double halfWidth = 0.;
+    double halfHeight = 0.;
     for (const auto& [id, wire] : straws.wires()) {
       if (wire.station == 1) {
         firstStation = std::min(firstStation, wire.z);
+        halfWidth = std::max(halfWidth, wire.halfLength);
+        halfHeight = std::max(halfHeight, std::abs(wire.y));
       }
     }
-    vertexReferenceZ = fieldFreeZ(firstStation);
+    if (!std::isfinite(firstStation)) {
+      throw std::runtime_error("ActsStrawTracker: no straws in station 1");
+    }
+    vertexReferenceZ = fieldFreeZ(firstStation, {{0., 0.},
+                                                 {0.5 * halfWidth, 0.},
+                                                 {-0.5 * halfWidth, 0.},
+                                                 {0., 0.5 * halfHeight},
+                                                 {0., -0.5 * halfHeight}});
   }
 
   /// The most downstream z (cm) upstream of `from` from which there is no
-  /// field along the beam axis, down to the start of the vertex range
-  double fieldFreeZ(double from) const {
+  /// field at any of the points (x, y), down to the start of the vertex range
+  double fieldFreeZ(
+      double from, const std::vector<std::pair<double, double>>& points) const {
     const double lowest = ActsVertexGeometry::kVertexSeedMinX / u::cm;
     double z = from;
     for (; z > lowest; z -= kFieldStep) {
-      const double x[3] = {0., 0., z};
-      double b[3] = {0., 0., 0.};
-      shipField->Field(x, b);
-      if (std::hypot(b[0], b[1], b[2]) < kFieldFreeB) {
+      double largest = 0.;
+      for (const auto& [px, py] : points) {
+        const double x[3] = {px, py, z};
+        double b[3] = {0., 0., 0.};
+        shipField->Field(x, b);
+        largest = std::max(largest, std::hypot(b[0], b[1], b[2]));
+      }
+      if (largest < kFieldFreeB) {
         break;
       }
     }
