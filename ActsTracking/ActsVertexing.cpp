@@ -66,7 +66,14 @@ constexpr double kSeedTrackSignificance = 5.;
 constexpr int kSeedRefinements = 5;
 
 /// A track as a straight line, with the variances of its position across
-/// the line at the reference surface and of its direction
+/// the line at the reference surface and of its direction.
+///
+/// This is only for seeding: the variances are averaged over the two
+/// directions across the line, and the correlation between position and
+/// direction is ignored, so the variance near a point far from the
+/// reference surface is overestimated. The pair with the smallest chi2 is
+/// then not always the best measured one, and a seed from a poorly measured
+/// pair is weaker; the vertex fit uses the full covariance.
 struct SeedLine {
   Acts::Vector3 position;
   Acts::Vector3 direction;
