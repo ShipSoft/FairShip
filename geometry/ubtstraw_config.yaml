@@ -12,4 +12,6 @@ UBTStraw:
   frame_width: 126 # Outer width (x) of the frame of one square in cm (full length); the straws fill the inside
   frame_height: 119.33 # Outer height (y) of the frame of one square in cm (full length); sets the straw length
   frame_thickness: 3 # Frame thickness in cm, the same on all 4 sides
+  support_width: 10 # Width of the support bars in cm (x for the uprights, y for the horizontal bars)
+  support_depth: 4 # Depth (z) of the support bars in cm; they sit just downstream of the last layer
   delta_z_mid: 1.5 # Distance (z) by which the middle square of each layer sits upstream of the upper and lower squares in cm (> square depth)

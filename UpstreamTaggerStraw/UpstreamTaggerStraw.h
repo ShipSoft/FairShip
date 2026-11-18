@@ -54,6 +54,9 @@ class UpstreamTaggerStraw : public SHiP::Detector<UpstreamTaggerStrawPoint> {
   /** z-distance by which the middle square of each layer sits upstream of
    *  the upper and lower squares */
   void SetDeltazMid(Double_t delta_z_mid);
+  /** Profile of the support bars: width (in x for the uprights, in y for
+   *  the horizontal bars) and depth in z */
+  void SetSupportSize(Double_t width, Double_t depth);
 
  private:
   /** Builds one layer (view vnb = 0 y1, 1 u, 2 v) covering the aperture,
@@ -65,6 +68,16 @@ class UpstreamTaggerStraw : public SHiP::Detector<UpstreamTaggerStrawPoint> {
    *  straws plus its frame */
   void BuildSquare(TGeoVolume* station, Int_t vnb, Int_t hnb, Double_t y,
                    Double_t z);
+
+  /** Builds the support structure in the plane z of the station: two
+   *  uprights just outside +-inner_half_x, running the full station height
+   *  (+-upright_half_y), and horizontal bars between them at the top of the
+   *  upper square, the bottom of the lower square and centred in the two
+   *  overlap regions between neighbouring squares (square half-height
+   *  square_half_y) */
+  void BuildSupport(TGeoVolume* station, TGeoMedium* medium, Double_t z,
+                    Double_t inner_half_x, Double_t square_half_y,
+                    Double_t upright_half_y);
 
   /** Stereo angle (degrees) of view vnb = 0 (y1), 1 (u), 2 (v) */
   Double_t ViewAngle(Int_t vnb) const;
@@ -86,6 +99,8 @@ class UpstreamTaggerStraw : public SHiP::Detector<UpstreamTaggerStrawPoint> {
   Double_t f_frame_height = 0.;     // outer y size of one frame (full)
   Double_t f_frame_thickness = 0.;  // same on all 4 sides
   Double_t f_delta_z_mid = 0.;      // mid square shift upstream
+  Double_t f_support_width = 0.;    // support bar profile
+  Double_t f_support_depth = 0.;    // support bar depth in z
 
   // Geometry pieces created in ConstructGeometry and placed by BuildLayer
   std::array<Double_t, 3> fTierY = {};          //!  tier centre, index hnb-1

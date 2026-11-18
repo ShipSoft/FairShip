@@ -127,6 +127,11 @@ void UpstreamTaggerStraw::SetDeltazMid(Double_t delta_z_mid) {
   f_delta_z_mid = delta_z_mid;
 }
 
+void UpstreamTaggerStraw::SetSupportSize(Double_t width, Double_t depth) {
+  f_support_width = width;
+  f_support_depth = depth;
+}
+
 namespace {
 TGeoMedium* GetMedium(const char* name) {
   ShipGeo::InitMedium(name);
@@ -195,6 +200,39 @@ void UpstreamTaggerStraw::BuildSquare(TGeoVolume* station, Int_t vnb,
   }
 }
 
+void UpstreamTaggerStraw::BuildSupport(TGeoVolume* station,
+                                       TGeoMedium* medium, Double_t z,
+                                       Double_t inner_half_x,
+                                       Double_t square_half_y,
+                                       Double_t upright_half_y) {
+  const Double_t eps = 0.0001;
+  const Double_t half_w = f_support_width / 2.;
+  const Double_t half_d = f_support_depth / 2.;
+
+  // Uprights, left and right, just outside the squares
+  auto* upright = new TGeoVolume(
+      fStationName + "_upright",
+      new TGeoBBox("ubt_upright", half_w, upright_half_y, half_d), medium);
+  upright->SetLineColor(kGray + 1);
+  const Double_t x_upright = inner_half_x + half_w + eps;
+  station->AddNode(upright, 1, new TGeoTranslation(-x_upright, 0, z));
+  station->AddNode(upright, 2, new TGeoTranslation(+x_upright, 0, z));
+
+  // Horizontal bars between the uprights. fTierY = {upper, mid, lower}.
+  auto* bar = new TGeoVolume(
+      fStationName + "_bar",
+      new TGeoBBox("ubt_bar", inner_half_x, half_w, half_d), medium);
+  bar->SetLineColor(kGray + 1);
+  const Double_t bar_y[] = {
+      fTierY[0] + square_half_y - half_w,     // top of the upper square
+      (fTierY[0] + fTierY[1]) / 2.,           // upper / mid overlap
+      (fTierY[1] + fTierY[2]) / 2.,           // mid / lower overlap
+      fTierY[2] - square_half_y + half_w};    // bottom of the lower square
+  for (Int_t i = 0; i < 4; i++) {
+    station->AddNode(bar, i + 1, new TGeoTranslation(0, bar_y[i], z));
+  }
+}
+
 void UpstreamTaggerStraw::ConstructGeometry() {
   // Layout: one station made of 3 layers (views y1, u, v), delta_z_view
   // apart in z and centred on f_T1_z. Each layer is made of 3 squares
@@ -219,7 +257,6 @@ void UpstreamTaggerStraw::ConstructGeometry() {
   gGeoManager->SetTopVisible();
 
   const Double_t eps = 0.0001;  // avoids overlapping volumes
-  const Double_t support_half_z = 2.;  // room left for the vertical supports
   const Double_t floor_y = -3.36 * m;  // ECN3 cavern floor, see ShipCave
 
   // --- Tier positions in y ---
@@ -277,12 +314,19 @@ void UpstreamTaggerStraw::ConstructGeometry() {
                << 2. * square_half_z;
   }
 
+  // --- Support plane, just downstream of the last layer ---
+  const Double_t support_z =
+      f_delta_z_view + square_half_z + f_support_depth / 2. + 2. * eps;
+
   // --- Station box: from the floor to the top of the upper frames, so not
-  // centred on the squares in y. In z it is centred on the middle layer;
-  // the most upstream square is the middle one of the first layer. ---
-  const Double_t station_half_z = f_delta_z_view + f_delta_z_mid +
-                                  square_half_z + 2. * support_half_z +
-                                  2. * eps;
+  // centred on the squares in y. In z it is centred on the middle layer and
+  // reaches the middle square of the first layer upstream and the supports
+  // downstream. In x it includes the uprights. ---
+  const Double_t station_half_z =
+      std::max(f_delta_z_view + f_delta_z_mid + square_half_z,
+               support_z + f_support_depth / 2.) +
+      eps;
+  const Double_t station_half_x = frame_half_x + f_support_width + 2. * eps;
   const Double_t station_top = tier_y0_abs + tier_pitch + frame_half_y + eps;
   const Double_t station_bottom = floor_y + eps;
   const Double_t station_y = (station_top + station_bottom) / 2.;
@@ -296,7 +340,7 @@ void UpstreamTaggerStraw::ConstructGeometry() {
   // --- Station ---
   fStationNb = 1;
   fStationName = TString::Format("UpstreamTaggerStraw%d", fStationNb);
-  auto* statbox = new TGeoBBox("ubt_statbox", frame_half_x + eps,
+  auto* statbox = new TGeoBBox("ubt_statbox", station_half_x,
                                station_half_y, station_half_z);
   auto* station = new TGeoVolume(fStationName, statbox, fBoxMedium);
   top->AddNode(station, fStationNb,
@@ -346,4 +390,8 @@ void UpstreamTaggerStraw::ConstructGeometry() {
   for (Int_t vnb = 0; vnb < 3; vnb++) {
     BuildLayer(station, vnb);
   }
+
+  // --- Support structure ---
+  BuildSupport(station, frameMedium, support_z, frame_half_x, frame_outer_y,
+               station_half_y - eps);
 }

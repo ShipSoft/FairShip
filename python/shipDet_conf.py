@@ -306,6 +306,7 @@ def configure_upstreamTaggerStraw(yaml_file, ship_geo):
     ubt_straw.SetFrameSize(ship_geo.ubt_straw_geo.frame_width, ship_geo.ubt_straw_geo.frame_height)
     ubt_straw.SetFrameThickness(ship_geo.ubt_straw_geo.frame_thickness)
     ubt_straw.SetDeltazMid(ship_geo.ubt_straw_geo.delta_z_mid)
+    ubt_straw.SetSupportSize(ship_geo.ubt_straw_geo.support_width, ship_geo.ubt_straw_geo.support_depth)
 
     # For digitization
     #    strawtubes.SetStrawResolution(
