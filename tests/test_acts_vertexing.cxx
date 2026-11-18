@@ -5,9 +5,11 @@
 // Vertex finding with ActsVertexFinder, on straight tracks from known vertices
 // in the decay volume, in the ACTS frame of the reconstruction (beam along x)
 
+#include <algorithm>
 #include <cmath>
 #include <cstddef>
 #include <iostream>
+#include <limits>
 #include <random>
 #include <string>
 #include <vector>
@@ -123,11 +125,12 @@ std::vector<int> assignment(const std::vector<SHiP::FoundVertex>& vertices,
 }
 
 /// Whether a found vertex agrees with the true position within its
-/// uncertainty
-bool compatible(const SHiP::FoundVertex& found, const Acts::Vector3& truth) {
+/// uncertainty and lies within `maxDistance` of it
+bool compatible(const SHiP::FoundVertex& found, const Acts::Vector3& truth,
+                double maxDistance) {
   const Acts::Vector3 delta = found.position - truth;
   const double chi2 = delta.dot(found.covariance.inverse() * delta);
-  return chi2 < kMaxPositionChi2 && delta.norm() < kMaxDistance;
+  return chi2 < kMaxPositionChi2 && delta.norm() < maxDistance;
 }
 
 /// Found vertex closest to `position`
@@ -147,6 +150,8 @@ const SHiP::FoundVertex* closest(const std::vector<SHiP::FoundVertex>& found,
 /// finding, like any fit, misses the tails of the distributions
 struct Tally {
   std::string name;
+  /// Largest distance of a found vertex from the true one
+  double maxDistance = kMaxDistance;
   int events = 0;
   int rightVertexCount = 0;
   int vertices = 0;
@@ -188,7 +193,8 @@ void evaluate(const SHiP::ActsVertexFinder& finder,
     ++tally.vertices;
     const auto* best = closest(found, vertices[v]);
     if (best) {
-      tally.compatibleVertices += compatible(*best, vertices[v]) ? 1 : 0;
+      tally.compatibleVertices +=
+          compatible(*best, vertices[v], tally.maxDistance) ? 1 : 0;
       foundOf[v] = static_cast<int>(best - found.data());
     }
   }
@@ -227,6 +233,52 @@ void twoVertices(const SHiP::ActsVertexFinder& finder, std::mt19937& rng,
   evaluate(finder, tracks, truth, vertices, tally);
 }
 
+/// Two tracks with an opening angle of a few mrad: the vertex is known to
+/// about a metre along the beam, so only its chi2 against the truth is
+/// checked. The seed from the closest point of the tracks is as poorly
+/// known, and the fit must not stay at it; the finder gives the seed a prior
+/// of 10 m along each axis.
+void smallOpeningAngle(const SHiP::ActsVertexFinder& finder, std::mt19937& rng,
+                       double openingAngle, Tally& tally) {
+  std::vector<Acts::BoundTrackParameters> tracks;
+  std::vector<int> truth;
+  const std::vector<Acts::Vector3> vertices = {shipVertex(30., -20., 5000.)};
+  std::uniform_real_distribution<double> direction(-0.02, 0.02);
+  std::uniform_real_distribution<double> momentum(2., 20.);
+  const double ty = direction(rng);
+  const double tz = direction(rng);
+  const double phi = std::uniform_real_distribution<double>(0., M_PI)(rng);
+  const double dy = 0.5 * openingAngle * std::cos(phi);
+  const double dz = 0.5 * openingAngle * std::sin(phi);
+  tracks.push_back(
+      makeTrack(vertices[0], ty + dy, tz + dz, momentum(rng), 1., rng));
+  tracks.push_back(
+      makeTrack(vertices[0], ty - dy, tz - dz, momentum(rng), -1., rng));
+  truth = {0, 0};
+  evaluate(finder, tracks, truth, vertices, tally);
+}
+
+/// Fraction of events with two 2-track vertices on the beam axis, `distance`
+/// apart along it, in which the two vertices are found apart
+double resolvedFraction(const SHiP::ActsVertexFinder& finder, std::mt19937& rng,
+                        double distance, int events) {
+  int resolved = 0;
+  for (int event = 0; event < events; ++event) {
+    std::vector<Acts::BoundTrackParameters> tracks;
+    std::vector<int> truth;
+    addTracks(tracks, truth, 0, shipVertex(0., 0., 5500.), 2, rng);
+    addTracks(tracks, truth, 1, shipVertex(0., 0., 5500. + distance), 2, rng);
+    const auto found = finder.find(tracks, gctx, mctx);
+    const auto assigned = assignment(found, tracks.size());
+    if (found.size() == 2 && assigned[0] == assigned[1] &&
+        assigned[2] == assigned[3] && assigned[0] >= 0 && assigned[2] >= 0 &&
+        assigned[0] != assigned[2]) {
+      ++resolved;
+    }
+  }
+  return static_cast<double>(resolved) / events;
+}
+
 void testTooFewTracks(const SHiP::ActsVertexFinder& finder, std::mt19937& rng) {
   std::vector<Acts::BoundTrackParameters> tracks;
   std::vector<int> truth;
@@ -253,6 +305,32 @@ int main(int argc, char** argv) {
   one.report();
   two.report();
   stray.report();
+
+  Tally narrow{"two tracks 5 mrad apart",
+               std::numeric_limits<double>::infinity()};
+  for (int event = 0; event < 200; ++event) {
+    smallOpeningAngle(finder, rng, 5e-3, narrow);
+  }
+  narrow.report();
+
+  // How close along the beam two vertices can be and still be found apart.
+  // Both are on the axis, so a track of one and a track of the other cross
+  // whenever their azimuths agree, and the finder, which builds one vertex
+  // at a time from the most compatible pair, often starts from such a
+  // crossing. At 1 m about half of the events have both vertices; the check
+  // only guards against getting worse.
+  for (const double distance : {10., 20., 30., 50., 100.}) {
+    const int events = 200;
+    const double fraction = resolvedFraction(finder, rng, distance, events);
+    std::cout << "two 2-track vertices " << distance
+              << " cm apart: " << fraction << " +- "
+              << std::sqrt(std::max(fraction * (1. - fraction), 1. / events) /
+                           events)
+              << " found apart" << std::endl;
+    if (distance >= 100.) {
+      check(fraction >= 0.4, "two vertices 1 m apart found apart");
+    }
+  }
   testTooFewTracks(finder, rng);
   if (failures > 0) {
     std::cout << failures << " checks failed" << std::endl;
