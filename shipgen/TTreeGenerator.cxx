@@ -107,7 +107,7 @@ Bool_t TTreeGenerator::ReadEvent(FairPrimaryGenerator* primGen) {
   // Position in cm, momentum in GeV/c. e < 0 makes FairPrimaryGenerator
   // compute the energy from the momentum and PDG mass.
   if(abs(fPdgId) < 10)
-      fPdgId *= 13 ;
+      fPdgId *= -13 ;  // Take care here. Is it id or really charge?
   primGen->AddTrack(fPdgId, fPx, fPy, fPz, fX, fY, fZ, -1, true, -9e9, 0.,
                     fWeight);
 
@@ -121,16 +121,7 @@ Bool_t TTreeGenerator::InitBranches() {
 
   bool ok = true;
 
-//  ok &= (fInputTree->SetBranchAddress("px", &fPx) >= 0);
-//  ok &= (fInputTree->SetBranchAddress("py", &fPy) >= 0);
-//  ok &= (fInputTree->SetBranchAddress("pz", &fPz) >= 0);
-
-//  ok &= (fInputTree->SetBranchAddress("x", &fX) >= 0);
-//  ok &= (fInputTree->SetBranchAddress("y", &fY) >= 0);
-//  ok &= (fInputTree->SetBranchAddress("z", &fZ) >= 0);
-
   ok &= (fInputTree->SetBranchAddress("id", &fPdgId) >= 0);
-//  ok &= (fInputTree->SetBranchAddress("w", &fWeight) >= 0);
 
   fPx.attach(fInputTree, "px");
   fPy.attach(fInputTree, "py");
