@@ -41,9 +41,12 @@ constexpr double kTracksMaxSignificance = 10.;
 constexpr double kMaxMergeVertexSignificance = 3.;
 /// Chi2 of a track against a vertex at which its weight in the annealed fit
 /// falls to 0.5, and the largest chi2 of a track compatible with a vertex.
-/// The ACTS defaults (9 and 18.42) leave out 7% of the tracks of 8-track
-/// vertices and lose 2% of HNL decays; with the cut-off at 25, 1.5% and 0.8%.
-/// The straw track errors are about 10% too small, which inflates chi2.
+/// The ACTS defaults (9 and 18.42) leave out 4.1% of the tracks of 8-track
+/// vertices and miss 1.3% of the HNL decays that pair vertexing finds; with
+/// the cut-off at 25, 1.2% and 0.6%. For Gaussian errors, 1.1% would be left
+/// out at 9. Tracks are left out at every momentum, 2.5-4 times as often below
+/// 2 GeV/c as above 10 GeV/c, so the larger cut-off covers non-Gaussian tails
+/// of the track errors at all momenta, not only low-momentum scattering.
 constexpr double kAnnealingCutOff = 25.;
 constexpr double kMaxVertexChi2 = 40.;
 /// Distance to the perigee surface at which the linearisation stops
