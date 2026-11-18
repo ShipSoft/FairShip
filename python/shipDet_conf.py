@@ -735,34 +735,8 @@ def configure(run, ship_geo, geofile: str | None = None):
     # The straw part of the UpstreamTagger
     if "UpstreamTaggerStraw" not in left_out:
         configure_upstreamTaggerStraw(os.path.join(os.environ["FAIRSHIP"], "geometry", "ubtstraw_config.yaml"), ship_geo)
-        # The scintillating tile part of the UpstreamTagger
-        upstreamTagger = ROOT.UpstreamTagger("UpstreamTagger", ROOT.kTRUE)
-        upstreamTagger.SetZposition(ship_geo.UpstreamTagger.z)
-        upstreamTagger.SetBoxDimensions(
-            ship_geo.UpstreamTagger.BoxX, ship_geo.UpstreamTagger.BoxY, ship_geo.UpstreamTagger.BoxZ
-        )
-        upstreamTagger.SetBoxCenter(ship_geo.UpstreamTagger.BoxCenterX, ship_geo.UpstreamTagger.BoxCenterY)
-        configure_upstream_tagger(
-            os.path.join(os.environ["FAIRSHIP"], "geometry", "UpstreamTagger_config.yaml"),
-            upstreamTagger,
-            ship_geo,
-        )
-        detectorList.append(upstreamTagger)
 
-        sp = ship_geo.UpstreamTaggerScoringPlane
-        ubt_scoring_plane = ROOT.UpstreamTaggerScoringPlane("UpstreamTaggerScoringPlane", ROOT.kTRUE)
-        # Planes 1 and 2, in this order: the plane number is the point detector ID.
-        for number, plane in enumerate((sp.DecayVessel, sp.MuonShield), start=1):
-            ubt_scoring_plane.AddPlane(
-                f"UpstreamTaggerScoringPlane{number}",
-                plane.CenterX,
-                plane.CenterY,
-                plane.z,
-                plane.X,
-                plane.Y,
-                sp.Z,
-                [13] if plane.MuonsOnly else [],
-                plane.get("KeepTracks", True),  # absent in geometry files written before it
+    # The tile part of the UpstreamTagger
     if "UpstreamTagger" not in left_out:
         upstreamTagger = ROOT.UpstreamTagger("UpstreamTagger", ROOT.kTRUE)
         upstreamTagger.SetZposition(ship_geo.UpstreamTagger.z)
