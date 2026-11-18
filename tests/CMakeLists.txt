@@ -197,4 +197,18 @@ if(TARGET ShipActsTracking)
         FairLogger::FairLogger
     )
     add_test(NAME ActsVertexing COMMAND testActsVertexing)
+
+    # Vertex finding through ActsStrawTracker, from straw hits
+    add_executable(testActsFindVertices test_acts_find_vertices.cxx)
+    target_link_libraries(
+        testActsFindVertices
+        ShipActsTracking
+        ShipData
+        Acts::Core
+        ROOT::Geom
+        FairRoot::Base
+        genfit2
+        FairLogger::FairLogger
+    )
+    add_test(NAME ActsFindVertices COMMAND testActsFindVertices)
 endif()
