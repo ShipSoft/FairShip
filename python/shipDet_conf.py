@@ -289,20 +289,23 @@ def configure_upstreamTaggerStraw(yaml_file, ship_geo):
     ubt_straw.SetzPositions(
         ship_geo.UBTStation1.z,
     )
-    ubt_straw.SetApertureArea(ship_geo.ubt_straw_geo.width, ship_geo.ubt_straw_geo.height, ship_geo.ubt_straw_geo.station_length)
+    ubt_straw.SetApertureHeight(ship_geo.ubt_straw_geo.height)
     ubt_straw.SetStrawDiameter(
         ship_geo.ubt_straw_geo.outer_straw_diameter,
         ship_geo.ubt_straw_geo.wall_thickness,
     )
     ubt_straw.SetStrawPitch(
         ship_geo.ubt_straw_geo.straw_pitch,
-        ship_geo.ubt_straw_geo.y_layer_offset,
+        ship_geo.ubt_straw_geo.row_offset,
     )
-    ubt_straw.SetDeltazLayer(ship_geo.ubt_straw_geo.delta_z_layer)
+    ubt_straw.SetDeltazRow(ship_geo.ubt_straw_geo.delta_z_row)
     ubt_straw.SetStereoAngle(ship_geo.ubt_straw_geo.view_angle)
     ubt_straw.SetWireThickness(ship_geo.ubt_straw_geo.wire_thickness)
     ubt_straw.SetDeltazView(ship_geo.ubt_straw_geo.delta_z_view)
     ubt_straw.SetFrameMaterial(ship_geo.ubt_straw_geo.frame_material)
+    ubt_straw.SetFrameSize(ship_geo.ubt_straw_geo.frame_width, ship_geo.ubt_straw_geo.frame_height)
+    ubt_straw.SetFrameThickness(ship_geo.ubt_straw_geo.frame_thickness)
+    ubt_straw.SetDeltazMid(ship_geo.ubt_straw_geo.delta_z_mid)
 
     # For digitization
     #    strawtubes.SetStrawResolution(

@@ -5,109 +5,100 @@
 #ifndef UPSTREAMTAGGERSTRAW_UPSTREAMTAGGERSTRAW_H_
 #define UPSTREAMTAGGERSTRAW_UPSTREAMTAGGERSTRAW_H_
 
-#include <map>
-#include <vector>
+#include <array>
+#include <string>
 
 #include "Detector.h"
-#include "ShipUnit.h"
-#include "TLorentzVector.h"
-#include "TVector3.h"
+#include "TString.h"
 
 class UpstreamTaggerStrawPoint;
 class FairVolume;
-class TClonesArray;
+class TGeoMedium;
+class TGeoShape;
+class TGeoVolume;
 
 /**
- * @brief Upstream Background Tagger (UBT) detector
+ * @brief Straw-tube Upstream Background Tagger (UBT)
  *
- * The UBT is a simplified scoring plane detector implemented as a vacuum box.
- * It serves as a background tagging device upstream of the decay volume.
- *
- * Historical Note:
- * The UBT was previously implemented as a detailed RPC (Resistive Plate
- * Chamber) with multiple material layers (Glass, PMMA, Freon SF6, FR4,
- * Aluminium, strips). It was simplified to a single vacuum box scoring plane to
- * avoid geometry overlaps and reduce simulation complexity while maintaining
- * its physics purpose. See commits 178787588 and related for the simplification
- * history.
- *
- * Current Implementation:
- * - Simple vacuum box with configurable dimensions
- * - Default dimensions: 4.4m (X) × 6.4m (Y) × 16cm (Z)
- * - Z position and box dimensions are set from geometry_config.py
- * - Configured via SetZposition() and SetBoxDimensions()
+ * One station of straw tubes upstream of the decay volume, made of three
+ * layers (views y1, u, v) in z. Each layer has three squares (upper, mid,
+ * lower) stacked in y, the middle one slightly upstream; each square holds
+ * two staggered rows of straws in a frame and is rotated about z by the
+ * layer's stereo angle. Only the gas is sensitive.
+ * Configured from python/shipDet_conf.py via the setters below.
  */
-
 class UpstreamTaggerStraw : public SHiP::Detector<UpstreamTaggerStrawPoint> {
  public:
-  /**      Name :  Detector Name
-   *       Active: kTRUE for active detectors (ProcessHits() will be called)
-   *               kFALSE for inactive detectors
-   */
-  UpstreamTaggerStraw(const char* Name, Bool_t Active);
-  UpstreamTaggerStraw(std::string medium);
-  /** default constructor */
   UpstreamTaggerStraw();
+  explicit UpstreamTaggerStraw(std::string medium);
 
-  /**   this method is called for each step during simulation
-   *    (see FairMCApplication::Stepping())
-   */
+  /** Called for each step in a sensitive volume */
   Bool_t ProcessHits(FairVolume* v = nullptr) override;
 
-  /** Sets detector position and sizes */
-  void SetZposition(Double_t z) { det_zPos = z; }
+  void ConstructGeometry() override;
 
   void SetzPositions(Double_t z1);
-  void SetApertureArea(Double_t width, Double_t height, Double_t length);
+  /** Half-height (y) of the aperture; the tiers are 2/3 of it apart */
+  void SetApertureHeight(Double_t height);
   void SetStrawDiameter(Double_t outer_straw_diameter, Double_t wall_thickness);
-  void SetStrawPitch(Double_t straw_pitch, Double_t layer_offset);
-  void SetDeltazLayer(Double_t delta_z_layer);
+  void SetStrawPitch(Double_t straw_pitch, Double_t row_offset);
+  void SetDeltazRow(Double_t delta_z_row);
   void SetStereoAngle(Double_t stereo_angle);
   void SetWireThickness(Double_t wire_thickness);
   void SetFrameMaterial(TString frame_material);
   void SetDeltazView(Double_t delta_z_view);
-  static std::tuple<Int_t, Int_t, Int_t, Int_t> StrawDecode(Int_t detID);
-  static void StrawEndPoints(Int_t detID, TVector3& top, TVector3& bot);
-  /**  Create the detector geometry */
-
-  void ConstructGeometry() override;
-
-  Double_t module[11][3];  // x,y,z centre positions for each module
-                           // TODO Avoid 1-indexed array!
-
-  /** Detector parameters.*/
-
-  Double_t f_aperture_width;
-  Double_t f_aperture_height;
-  Double_t f_station_length;
-  Double_t f_straw_pitch;
-  Double_t f_view_angle;
-  Double_t f_offset_layer;
-  Double_t f_inner_straw_diameter;
-  Double_t f_outer_straw_diameter;
-  Double_t f_wire_thickness;
-  Double_t f_T1_z;
-  Double_t f_delta_z_view;
-  Double_t f_delta_z_layer;
-  TString f_frame_material;
-  std::string fMedium;
-  /** Detector parameters.*/
-
-  Double_t det_zPos;  //!  z-position of detector (set via SetZposition)
+  /** Outer size of the frame of one square (full lengths) */
+  void SetFrameSize(Double_t width, Double_t height);
+  /** Thickness of the frame, the same on all 4 sides */
+  void SetFrameThickness(Double_t thickness);
+  /** z-distance by which the middle square of each layer sits upstream of
+   *  the upper and lower squares */
+  void SetDeltazMid(Double_t delta_z_mid);
 
  private:
-  // Detector box dimensions (set via SetBoxDimensions, defaults provided below)
-  Double_t xbox_fulldet = 4.4 * ShipUnit::m;  //!  X dimension (default: 4.4 m)
-  Double_t ybox_fulldet = 6.4 * ShipUnit::m;  //!  Y dimension (default: 6.4 m)
-  Double_t zbox_fulldet =
-      16.0 * ShipUnit::cm;  //!  Z dimension/thickness (default: 16 cm)
+  /** Builds one layer (view vnb = 0 y1, 1 u, 2 v) covering the aperture,
+   *  made of 3 squares, one per tier */
+  void BuildLayer(TGeoVolume* station, Int_t vnb);
 
-  /** container for data points */
+  /** Builds one square of straws of view vnb in tier hnb (1 upper, 2 mid,
+   *  3 lower), centred at (0, y, z) in the station: 2 staggered rows of
+   *  straws plus its frame */
+  void BuildSquare(TGeoVolume* station, Int_t vnb, Int_t hnb, Double_t y,
+                   Double_t z);
 
-  TGeoVolume* UpstreamTaggerStraw_plastic;
-  TGeoVolume* UpstreamTaggerStraw_plastic_forward;
+  /** Stereo angle (degrees) of view vnb = 0 (y1), 1 (u), 2 (v) */
+  Double_t ViewAngle(Int_t vnb) const;
 
-  TGeoVolume* UpstreamTaggerStraw_fulldet;
+  std::string fMedium;  // medium of the station and view boxes
+
+  Double_t f_T1_z = 0.;            // z-position of the station
+  Double_t f_aperture_height = 0.;  // half-height (y)
+  Double_t f_straw_pitch = 0.;   // x-distance between straws in a row
+  Double_t f_row_offset = 0.;    // x-offset between the two rows
+  Double_t f_view_angle = 0.;    // stereo angle (degrees)
+  Double_t f_inner_straw_diameter = 0.;
+  Double_t f_outer_straw_diameter = 0.;
+  Double_t f_wire_thickness = 0.;
+  Double_t f_delta_z_view = 0.;   // z-distance between views
+  Double_t f_delta_z_row = 0.;    // z-distance between the two rows
+  TString f_frame_material;
+  Double_t f_frame_width = 0.;      // outer x size of one frame (full)
+  Double_t f_frame_height = 0.;     // outer y size of one frame (full)
+  Double_t f_frame_thickness = 0.;  // same on all 4 sides
+  Double_t f_delta_z_mid = 0.;      // mid square shift upstream
+
+  // Geometry pieces created in ConstructGeometry and placed by BuildLayer
+  std::array<Double_t, 3> fTierY = {};          //!  tier centre, index hnb-1
+  std::array<Double_t, 3> fTierZ = {};          //!  w.r.t. layer centre
+  Double_t fStrawHalfWidth = 0.;                //!  straws fill +-this in x
+  TString fStationName;                         //!
+  Int_t fStationNb = 1;                         //!
+  TGeoMedium* fBoxMedium = nullptr;             //!
+  TGeoShape* fViewShape = nullptr;              //!
+  TGeoVolume* fFrame = nullptr;                 //!  frame of one square
+  TGeoVolume* fStraw = nullptr;                 //!
+  TGeoVolume* fWire = nullptr;                  //!
+  std::array<TGeoVolume*, 3> fGas = {};         //!  one per view
 
   UpstreamTaggerStraw(const UpstreamTaggerStraw&) = delete;
   UpstreamTaggerStraw& operator=(const UpstreamTaggerStraw&) = delete;
