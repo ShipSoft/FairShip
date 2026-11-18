@@ -873,7 +873,14 @@ Int_t ActsStrawTracker::FindVertices(const std::vector<Int_t>& tracks,
     atVertex.push_back(extrapolated ? std::move(*extrapolated)
                                     : atReference[i]);
   }
-  found = impl.vertexFinder.find(atVertex, impl.gctx, impl.mctx);
+  // If the second search finds nothing, keep the vertices of the first,
+  // with the tracks it was given
+  auto refined = impl.vertexFinder.find(atVertex, impl.gctx, impl.mctx);
+  const bool refinedFound = !refined.empty();
+  if (refinedFound) {
+    found = std::move(refined);
+  }
+  const auto& inputs = refinedFound ? atVertex : atReference;
 
   const Acts::RotationMatrix3 rotation = ActsFrame::toShipRotation();
   for (const auto& vertex : found) {
@@ -888,14 +895,14 @@ Int_t ActsStrawTracker::FindVertices(const std::vector<Int_t>& tracks,
       // The track refitted at the vertex, if the fit gave its covariance
       const auto& params = track.atVertex.covariance().has_value()
                                ? track.atVertex
-                               : atVertex[track.index];
+                               : inputs[track.index];
       const Acts::Vector3 momentum =
           ActsFrame::momentumToShip(params.momentum());
       out.AddTrack(
           used[track.index], TVector3(momentum.x(), momentum.y(), momentum.z()),
           upperTriangle<3>(shipMomentumCovariance(params)), track.weight);
       if (track.weight >= RecoVertex::kMinTrackWeight) {
-        const auto& input = atVertex[track.index];
+        const auto& input = inputs[track.index];
         daughters.push_back(
             tangent(input.referenceSurface(), input.parameters(), impl.gctx));
       }
