@@ -390,6 +390,8 @@ struct ActsStrawTracker::Impl {
   /// Measurements used in each track
   std::vector<std::vector<Int_t>> trackMeasurements;
   ActsVertexFinder vertexFinder;
+  std::unique_ptr<const Acts::Logger> logger =
+      Acts::getDefaultLogger("ActsStrawTracker", Acts::Logging::WARNING);
   /// Plane of constant z (SHiP, cm) to which tracks are extrapolated before
   /// the vertex finding, upstream of the field of the spectrometer
   double vertexReferenceZ = 0.;
@@ -860,6 +862,14 @@ Int_t ActsStrawTracker::FindVertices(const std::vector<Int_t>& tracks,
       original.push_back(std::move(params));
       atReference.push_back(std::move(*extrapolated));
     }
+  }
+  if (used.size() < tracks.size()) {
+    ACTS_LOG_WITH_LOGGER(*impl.logger, Acts::Logging::WARNING,
+                         tracks.size() - used.size()
+                             << " of " << tracks.size()
+                             << " tracks left out of the vertex finding: "
+                                "no extrapolation to z = "
+                             << referenceZ << " cm");
   }
   auto found = impl.vertexFinder.find(atReference, impl.gctx, impl.mctx);
   if (found.empty()) {

@@ -224,7 +224,8 @@ struct ActsVertexFinder::Impl {
                     Acts::getDefaultLogger("ImpactPointEstimator", level)),
         linearizer(linearizerConfig(propagator),
                    Acts::getDefaultLogger("TrackLinearizer", level)),
-        finder(makeFinder(level)) {}
+        finder(makeFinder(level)),
+        logger(Acts::getDefaultLogger("ShipVertexFinder", level)) {}
 
   Acts::AdaptiveMultiVertexFinder makeFinder(Acts::Logging::Level level) {
     Acts::AdaptiveMultiVertexFitter::Config fitterConfig(ipEstimator);
@@ -264,6 +265,7 @@ struct ActsVertexFinder::Impl {
   Acts::ImpactPointEstimator ipEstimator;
   Acts::HelicalTrackLinearizer linearizer;
   Acts::AdaptiveMultiVertexFinder finder;
+  std::unique_ptr<const Acts::Logger> logger;
 };
 
 ActsVertexFinder::ActsVertexFinder(Acts::Logging::Level level)
@@ -288,6 +290,10 @@ std::vector<FoundVertex> ActsVertexFinder::find(
   auto state = fImpl->finder.makeState(mctx);
   auto result = fImpl->finder.find(inputs, options, state);
   if (!result.ok()) {
+    ACTS_LOG_WITH_LOGGER(*fImpl->logger, Acts::Logging::WARNING,
+                         "vertex finding with "
+                             << tracks.size()
+                             << " tracks failed: " << result.error().message());
     return found;
   }
   for (const auto& vertex : *result) {
