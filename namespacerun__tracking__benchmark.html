@@ -166,21 +166,21 @@ Example usage:
       </table>
 </div><div class="memdoc">
 <pre class="fragment">Run a subprocess phase, raising on failure.</pre> 
-<p class="definition">Definition at line <a class="el" href="run__tracking__benchmark_8py_source.html#l00092">92</a> of file <a class="el" href="run__tracking__benchmark_8py_source.html">run_tracking_benchmark.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   92</span><span class="keyword">def </span>run_phase(description: str, cmd: list[str], cwd: str | <span class="keywordtype">None</span> = <span class="keywordtype">None</span>) -&gt; <span class="keywordtype">None</span>:</div>
-<div class="line"><span class="lineno">   93</span>    <span class="stringliteral">&quot;&quot;&quot;Run a subprocess phase, raising on failure.&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   94</span>    print(<span class="stringliteral">&quot;=&quot;</span> * 60)</div>
-<div class="line"><span class="lineno">   95</span>    print(f<span class="stringliteral">&quot;{description}&quot;</span>)</div>
-<div class="line"><span class="lineno">   96</span>    print(<span class="stringliteral">&quot;=&quot;</span> * 60)</div>
-<div class="line"><span class="lineno">   97</span>    result = subprocess.run(cmd, check=<span class="keyword">False</span>, cwd=cwd)</div>
-<div class="line"><span class="lineno">   98</span>    <span class="keywordflow">if</span> result.returncode != 0:</div>
-<div class="line"><span class="lineno">   99</span>        print(f<span class="stringliteral">&quot;FAILED: {description} (exit code {result.returncode})&quot;</span>)</div>
-<div class="line"><span class="lineno">  100</span>        sys.exit(result.returncode)</div>
-<div class="line"><span class="lineno">  101</span> </div>
-<div class="line"><span class="lineno">  102</span> </div>
-<div class="line"><span class="lineno">  103</span><span class="comment"># ============================================================</span></div>
-<div class="line"><span class="lineno">  104</span><span class="comment"># Phase 1: Simulation via run_simScript.py</span></div>
-<div class="line"><span class="lineno">  105</span><span class="comment"># ============================================================</span></div>
+<p class="definition">Definition at line <a class="el" href="run__tracking__benchmark_8py_source.html#l00100">100</a> of file <a class="el" href="run__tracking__benchmark_8py_source.html">run_tracking_benchmark.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  100</span><span class="keyword">def </span>run_phase(description: str, cmd: list[str], cwd: str | <span class="keywordtype">None</span> = <span class="keywordtype">None</span>) -&gt; <span class="keywordtype">None</span>:</div>
+<div class="line"><span class="lineno">  101</span>    <span class="stringliteral">&quot;&quot;&quot;Run a subprocess phase, raising on failure.&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  102</span>    print(<span class="stringliteral">&quot;=&quot;</span> * 60)</div>
+<div class="line"><span class="lineno">  103</span>    print(f<span class="stringliteral">&quot;{description}&quot;</span>)</div>
+<div class="line"><span class="lineno">  104</span>    print(<span class="stringliteral">&quot;=&quot;</span> * 60)</div>
+<div class="line"><span class="lineno">  105</span>    result = subprocess.run(cmd, check=<span class="keyword">False</span>, cwd=cwd)</div>
+<div class="line"><span class="lineno">  106</span>    <span class="keywordflow">if</span> result.returncode != 0:</div>
+<div class="line"><span class="lineno">  107</span>        print(f<span class="stringliteral">&quot;FAILED: {description} (exit code {result.returncode})&quot;</span>)</div>
+<div class="line"><span class="lineno">  108</span>        sys.exit(result.returncode)</div>
+<div class="line"><span class="lineno">  109</span> </div>
+<div class="line"><span class="lineno">  110</span> </div>
+<div class="line"><span class="lineno">  111</span><span class="comment"># ============================================================</span></div>
+<div class="line"><span class="lineno">  112</span><span class="comment"># Phase 1: Simulation via run_simScript.py</span></div>
+<div class="line"><span class="lineno">  113</span><span class="comment"># ============================================================</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -217,7 +217,7 @@ Example usage:
 <div class="line"><span class="lineno">    3</span>)</div>
 <div class="ttc" id="aclasstracking__benchmark_1_1TrackingBenchmark_html"><div class="ttname"><a href="classtracking__benchmark_1_1TrackingBenchmark.html">tracking_benchmark.TrackingBenchmark</a></div><div class="ttdef"><b>Definition</b> <a href="tracking__benchmark_8py_source.html#l00061">tracking_benchmark.py:61</a></div></div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="run__tracking__benchmark_8py_source.html#l00200">200</a> of file <a class="el" href="run__tracking__benchmark_8py_source.html">run_tracking_benchmark.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__tracking__benchmark_8py_source.html#l00208">208</a> of file <a class="el" href="run__tracking__benchmark_8py_source.html">run_tracking_benchmark.py</a>.</p>
 
 </div>
 </div>
@@ -233,7 +233,7 @@ Example usage:
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__tracking__benchmark_8py_source.html#l00045">45</a> of file <a class="el" href="run__tracking__benchmark_8py_source.html">run_tracking_benchmark.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__tracking__benchmark_8py_source.html#l00046">46</a> of file <a class="el" href="run__tracking__benchmark_8py_source.html">run_tracking_benchmark.py</a>.</p>
 
 </div>
 </div>
@@ -249,7 +249,7 @@ Example usage:
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__tracking__benchmark_8py_source.html#l00185">185</a> of file <a class="el" href="run__tracking__benchmark_8py_source.html">run_tracking_benchmark.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__tracking__benchmark_8py_source.html#l00193">193</a> of file <a class="el" href="run__tracking__benchmark_8py_source.html">run_tracking_benchmark.py</a>.</p>
 
 </div>
 </div>
@@ -281,7 +281,7 @@ Example usage:
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__tracking__benchmark_8py_source.html#l00089">89</a> of file <a class="el" href="run__tracking__benchmark_8py_source.html">run_tracking_benchmark.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__tracking__benchmark_8py_source.html#l00097">97</a> of file <a class="el" href="run__tracking__benchmark_8py_source.html">run_tracking_benchmark.py</a>.</p>
 
 </div>
 </div>
@@ -313,7 +313,7 @@ Example usage:
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__tracking__benchmark_8py_source.html#l00080">80</a> of file <a class="el" href="run__tracking__benchmark_8py_source.html">run_tracking_benchmark.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__tracking__benchmark_8py_source.html#l00088">88</a> of file <a class="el" href="run__tracking__benchmark_8py_source.html">run_tracking_benchmark.py</a>.</p>
 
 </div>
 </div>
@@ -345,7 +345,7 @@ Example usage:
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__tracking__benchmark_8py_source.html#l00087">87</a> of file <a class="el" href="run__tracking__benchmark_8py_source.html">run_tracking_benchmark.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__tracking__benchmark_8py_source.html#l00095">95</a> of file <a class="el" href="run__tracking__benchmark_8py_source.html">run_tracking_benchmark.py</a>.</p>
 
 </div>
 </div>
@@ -382,7 +382,7 @@ Example usage:
 <div class="line"><span class="lineno">    4</span>    <span class="keywordflow">else</span> os.path.join(options.outputDir, <span class="stringliteral">&quot;tracking_metrics.json&quot;</span>)</div>
 <div class="line"><span class="lineno">    5</span>)</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="run__tracking__benchmark_8py_source.html#l00082">82</a> of file <a class="el" href="run__tracking__benchmark_8py_source.html">run_tracking_benchmark.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__tracking__benchmark_8py_source.html#l00090">90</a> of file <a class="el" href="run__tracking__benchmark_8py_source.html">run_tracking_benchmark.py</a>.</p>
 
 </div>
 </div>
@@ -398,7 +398,7 @@ Example usage:
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__tracking__benchmark_8py_source.html#l00061">61</a> of file <a class="el" href="run__tracking__benchmark_8py_source.html">run_tracking_benchmark.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__tracking__benchmark_8py_source.html#l00069">69</a> of file <a class="el" href="run__tracking__benchmark_8py_source.html">run_tracking_benchmark.py</a>.</p>
 
 </div>
 </div>
@@ -414,7 +414,7 @@ Example usage:
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__tracking__benchmark_8py_source.html#l00072">72</a> of file <a class="el" href="run__tracking__benchmark_8py_source.html">run_tracking_benchmark.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__tracking__benchmark_8py_source.html#l00080">80</a> of file <a class="el" href="run__tracking__benchmark_8py_source.html">run_tracking_benchmark.py</a>.</p>
 
 </div>
 </div>
@@ -430,7 +430,7 @@ Example usage:
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__tracking__benchmark_8py_source.html#l00076">76</a> of file <a class="el" href="run__tracking__benchmark_8py_source.html">run_tracking_benchmark.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__tracking__benchmark_8py_source.html#l00084">84</a> of file <a class="el" href="run__tracking__benchmark_8py_source.html">run_tracking_benchmark.py</a>.</p>
 
 </div>
 </div>
@@ -470,13 +470,11 @@ Example usage:
 <div class="line"><span class="lineno">    7</span>    geo_file,</div>
 <div class="line"><span class="lineno">    8</span>    <span class="stringliteral">&quot;-n&quot;</span>,</div>
 <div class="line"><span class="lineno">    9</span>    str(options.nEvents),</div>
-<div class="line"><span class="lineno">   10</span>    <span class="stringliteral">&quot;--patRec&quot;</span>,</div>
-<div class="line"><span class="lineno">   11</span>    options.patRec,</div>
-<div class="line"><span class="lineno">   12</span>    <span class="stringliteral">&quot;--trackFitter&quot;</span>,</div>
-<div class="line"><span class="lineno">   13</span>    options.trackFitter,</div>
-<div class="line"><span class="lineno">   14</span>]</div>
+<div class="line"><span class="lineno">   10</span>    <span class="stringliteral">&quot;--trackFitter&quot;</span>,</div>
+<div class="line"><span class="lineno">   11</span>    options.trackFitter,</div>
+<div class="line"><span class="lineno">   12</span>]</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="run__tracking__benchmark_8py_source.html#l00167">167</a> of file <a class="el" href="run__tracking__benchmark_8py_source.html">run_tracking_benchmark.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__tracking__benchmark_8py_source.html#l00175">175</a> of file <a class="el" href="run__tracking__benchmark_8py_source.html">run_tracking_benchmark.py</a>.</p>
 
 </div>
 </div>
@@ -492,7 +490,7 @@ Example usage:
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__tracking__benchmark_8py_source.html#l00081">81</a> of file <a class="el" href="run__tracking__benchmark_8py_source.html">run_tracking_benchmark.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__tracking__benchmark_8py_source.html#l00089">89</a> of file <a class="el" href="run__tracking__benchmark_8py_source.html">run_tracking_benchmark.py</a>.</p>
 
 </div>
 </div>
@@ -508,7 +506,7 @@ Example usage:
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__tracking__benchmark_8py_source.html#l00166">166</a> of file <a class="el" href="run__tracking__benchmark_8py_source.html">run_tracking_benchmark.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__tracking__benchmark_8py_source.html#l00174">174</a> of file <a class="el" href="run__tracking__benchmark_8py_source.html">run_tracking_benchmark.py</a>.</p>
 
 </div>
 </div>
@@ -524,7 +522,7 @@ Example usage:
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__tracking__benchmark_8py_source.html#l00107">107</a> of file <a class="el" href="run__tracking__benchmark_8py_source.html">run_tracking_benchmark.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__tracking__benchmark_8py_source.html#l00115">115</a> of file <a class="el" href="run__tracking__benchmark_8py_source.html">run_tracking_benchmark.py</a>.</p>
 
 </div>
 </div>
@@ -540,7 +538,7 @@ Example usage:
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__tracking__benchmark_8py_source.html#l00079">79</a> of file <a class="el" href="run__tracking__benchmark_8py_source.html">run_tracking_benchmark.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__tracking__benchmark_8py_source.html#l00087">87</a> of file <a class="el" href="run__tracking__benchmark_8py_source.html">run_tracking_benchmark.py</a>.</p>
 
 </div>
 </div>
@@ -556,7 +554,7 @@ Example usage:
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__tracking__benchmark_8py_source.html#l00106">106</a> of file <a class="el" href="run__tracking__benchmark_8py_source.html">run_tracking_benchmark.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__tracking__benchmark_8py_source.html#l00114">114</a> of file <a class="el" href="run__tracking__benchmark_8py_source.html">run_tracking_benchmark.py</a>.</p>
 
 </div>
 </div>
@@ -572,7 +570,7 @@ Example usage:
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__tracking__benchmark_8py_source.html#l00078">78</a> of file <a class="el" href="run__tracking__benchmark_8py_source.html">run_tracking_benchmark.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__tracking__benchmark_8py_source.html#l00086">86</a> of file <a class="el" href="run__tracking__benchmark_8py_source.html">run_tracking_benchmark.py</a>.</p>
 
 </div>
 </div>

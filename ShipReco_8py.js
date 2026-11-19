@@ -32,6 +32,7 @@ var ShipReco_8py =
     [ "ShipReco.SHiP", "namespaceShipReco.html#af29bc13f95d9544b1f56ece16b06a4c6", null ],
     [ "ShipReco.ShipGeo", "namespaceShipReco.html#a57399f382942ed9788d85f3c9951cdeb", null ],
     [ "ShipReco.sink", "namespaceShipReco.html#a7adf1c90f5639c5887ba1d602f4b2f81", null ],
+    [ "ShipReco.stacklevel", "namespaceShipReco.html#a817011f4bd8146788393022f93e0bf39", null ],
     [ "ShipReco.tmp", "namespaceShipReco.html#ac8b44ebebde083d26d062978f205ead9", null ],
     [ "ShipReco.trackFitter", "namespaceShipReco.html#a10ff7da532c2440cc9aa03a46cf8f270", null ],
     [ "ShipReco.type", "namespaceShipReco.html#a9a338a5daf2d5cc378b238f64e270e9a", null ],

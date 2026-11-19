@@ -1,5 +1,8 @@
 var NAVTREEINDEX29 =
 {
+"shipDet__conf_8py_source.html":[7,0,13,35],
+"shipDigiReco_8py.html":[7,0,13,36],
+"shipDigiReco_8py_source.html":[7,0,13,36],
 "shipPatRec_8py.html":[7,0,13,38],
 "shipPatRec_8py_source.html":[7,0,13,38],
 "shipRoot__conf_8py.html":[7,0,13,39],
@@ -246,8 +249,5 @@ var NAVTREEINDEX29 =
 "structSHiP_1_1StrawPatRec_1_1Config.html#a25e3767d6f36e3077cd3e611e7c6ff3f":[6,0,16,7,0,2],
 "structSHiP_1_1StrawPatRec_1_1Config.html#a3e3a429e0bcf5fc24820972ba59757c8":[5,0,92,8,0,0],
 "structSHiP_1_1StrawPatRec_1_1Config.html#a3e3a429e0bcf5fc24820972ba59757c8":[6,0,16,7,0,0],
-"structSHiP_1_1StrawPatRec_1_1Config.html#a414fce57ced98dc30aefc1dec7033cc9":[5,0,92,8,0,3],
-"structSHiP_1_1StrawPatRec_1_1Config.html#a414fce57ced98dc30aefc1dec7033cc9":[6,0,16,7,0,3],
-"structSHiP_1_1StrawPatRec_1_1Config.html#a71492238bf4ff8907efe5598a2b98b27":[5,0,92,8,0,4],
-"structSHiP_1_1StrawPatRec_1_1Config.html#a71492238bf4ff8907efe5598a2b98b27":[6,0,16,7,0,4]
+"structSHiP_1_1StrawPatRec_1_1Config.html#a414fce57ced98dc30aefc1dec7033cc9":[5,0,92,8,0,3]
 };

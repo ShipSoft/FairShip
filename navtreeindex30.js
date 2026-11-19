@@ -1,5 +1,8 @@
 var NAVTREEINDEX30 =
 {
+"structSHiP_1_1StrawPatRec_1_1Config.html#a414fce57ced98dc30aefc1dec7033cc9":[6,0,16,7,0,3],
+"structSHiP_1_1StrawPatRec_1_1Config.html#a71492238bf4ff8907efe5598a2b98b27":[5,0,92,8,0,4],
+"structSHiP_1_1StrawPatRec_1_1Config.html#a71492238bf4ff8907efe5598a2b98b27":[6,0,16,7,0,4],
 "structSHiP_1_1StrawPatRec_1_1Config.html#ab57e9e3d4d98a0c07dbd4758a746120c":[5,0,92,8,0,1],
 "structSHiP_1_1StrawPatRec_1_1Config.html#ab57e9e3d4d98a0c07dbd4758a746120c":[6,0,16,7,0,1],
 "structSHiP_1_1StrawPatRec_1_1Config.html#ab629b68286da3e1abf2e96e514e95146":[5,0,92,8,0,9],
@@ -246,8 +249,5 @@ var NAVTREEINDEX30 =
 "structTrackBuffer.html#ab58809fbaaf19dd4093d14caa0d0f2e0":[6,0,104,1],
 "structTrackBuffer.html#ada45080a16cdbbd9a694348c9649c86c":[6,0,104,6],
 "structUpstreamTagger_1_1Region.html":[6,0,108,0],
-"structUpstreamTagger_1_1Region.html#a0ae5f2651c45f85f375419f089cc7cc2":[6,0,108,0,1],
-"structUpstreamTagger_1_1Region.html#a2383bc188a86d0a0c3e3bfceb08fef16":[6,0,108,0,3],
-"structUpstreamTagger_1_1Region.html#a94409d745162c2f010106600cf561507":[6,0,108,0,0],
-"structUpstreamTagger_1_1Region.html#ac519b4be377338d5cec89740b65b9ded":[6,0,108,0,2]
+"structUpstreamTagger_1_1Region.html#a0ae5f2651c45f85f375419f089cc7cc2":[6,0,108,0,1]
 };
