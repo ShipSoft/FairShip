@@ -88,6 +88,9 @@ void MuDISProcessor::initPythia6() {
   fPythia->SetMSTU(11, 11);
   // For standard output stream it would be:
   // fPythia->SetMSTU(11, 6);
+  // Report a failed initialisation through MSTI(53) instead of stopping, so
+  // that a muon without any process to generate can be skipped.
+  fPythia->SetMSTP(127, 1);
 }
 
 void MuDISProcessor::rotate(const TVector3& pvec, const double& theta,
@@ -287,6 +290,12 @@ void MuDISProcessor::generateDISevents(const std::string& tType,
     return;
   }
   fPythia->Initialize("FIXT", tType.c_str(), "p+", P);  // target = "p+"
+  if (fPythia->GetMSTI(53) == 1) {
+    LOG(warn) << " --- Pythia found nothing to generate for momentum " << P
+              << " in material " << aLabel
+              << " on a proton target. Skipping this muon.";
+    return;
+  }
   aDISBr.pPythia = P;
   bool isProton = true;
   // print summary of initialisation params
@@ -302,6 +311,13 @@ void MuDISProcessor::generateDISevents(const std::string& tType,
     //---> update to real material ??
     if (ia == static_cast<int>(fnDIS / 2)) {
       fPythia->Initialize("FIXT", tType.c_str(), "n0", P);  // target = "n0"
+      if (fPythia->GetMSTI(53) == 1) {
+        LOG(warn) << " --- Pythia found nothing to generate for momentum " << P
+                  << " in material " << aLabel
+                  << " on a neutron target. Keeping only the " << ia
+                  << " proton events for this muon.";
+        break;
+      }
       isProton = false;
     }
 
