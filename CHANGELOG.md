@@ -28,6 +28,7 @@ it in future.
 
 * Muon DIS generation (`newMuonDIS`) skips a muon when Pythia 6 reports at initialisation that it has nothing to generate (`MSTI(53)`), instead of stopping the job or looping forever in `GenerateEvent`. If only the neutron initialisation fails, the proton events for that muon are kept. This needs the matching pythia6 fix (ShipSoft/pythia6#3) to catch an empty photon mixture; with older pythia6 versions nothing changes.
 * The ACTS straw material now comes from the straw wall, gas and wire volumes of the geometry instead of fixed values. Each part counts with its mean path through the straw. A straw is now 5.3e-4 X0, where it was 5.7e-4: the walls were too thin (tracks taken through the straw centre) and the gas X0 was 30 m instead of 128 m (Ar/CO2 80/20).
+* The ACTS track fit smooths with the modified Bryson-Frazier smoother instead of the gain-matrix smoother. The gain-matrix smoother inverts the predicted covariance, which is nearly singular in the magnet, and below about 10 GeV/c the smoothed covariance could stop being positive definite, with a negative pz variance in places. In a test with tracks of 3-10 GeV/c through a 1 T magnet without material, this happened to 176 of 1000 tracks; now to none. In the full simulation, no fitted covariance had a negative variance before, and the track momenta and their uncertainties are unchanged (relative differences below 1e-9).
 
 ## 26.10 - 2026-10-28
 

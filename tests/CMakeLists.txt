@@ -172,4 +172,18 @@ if(TARGET ShipActsTracking)
         FairLogger::FairLogger
     )
     add_test(NAME ActsStrawGeometry COMMAND testActsStrawGeometry)
+
+    # Track fits through ActsStrawTracker, from straw hits
+    add_executable(testActsTrackFit test_acts_track_fit.cxx)
+    target_link_libraries(
+        testActsTrackFit
+        ShipActsTracking
+        ShipData
+        Acts::Core
+        ROOT::Geom
+        FairRoot::Base
+        genfit2
+        FairLogger::FairLogger
+    )
+    add_test(NAME ActsTrackFit COMMAND testActsTrackFit)
 endif()
