@@ -114,6 +114,14 @@ void UpstreamTaggerStraw::SetFrameMaterial(TString frame_material) {
   f_frame_material = frame_material;
 }
 
+void UpstreamTaggerStraw::SetSupportMaterial(TString support_material) {
+  f_support_material = support_material;
+}
+
+void UpstreamTaggerStraw::SetSupportWallThickness(Double_t thickness) {
+  f_support_wall_thickness = thickness;
+}
+
 void UpstreamTaggerStraw::SetFrameSize(Double_t width, Double_t height) {
   f_frame_width = width;
   f_frame_height = height;
@@ -121,6 +129,10 @@ void UpstreamTaggerStraw::SetFrameSize(Double_t width, Double_t height) {
 
 void UpstreamTaggerStraw::SetFrameThickness(Double_t thickness) {
   f_frame_thickness = thickness;
+}
+
+void UpstreamTaggerStraw::SetFrameWallThickness(Double_t thickness) {
+  f_frame_wall_thickness = thickness;
 }
 
 void UpstreamTaggerStraw::SetDeltazMid(Double_t delta_z_mid) {
@@ -200,19 +212,38 @@ void UpstreamTaggerStraw::BuildSquare(TGeoVolume* station, Int_t vnb,
   }
 }
 
+TGeoShape* UpstreamTaggerStraw::MakeHollowBox(const TString& name,
+					      Double_t half_x, Double_t half_y,
+					      Double_t half_z,
+					      Double_t thickness) {
+
+  auto* outer = new TGeoBBox(name + "_outer", half_x, half_y, half_z);
+
+  if (thickness < 1e-12)
+    return outer;
+  
+  new TGeoBBox(name + "_inner", half_x-thickness,
+	       half_y-thickness, half_z-thickness);  
+  
+  return new TGeoCompositeShape(name, Form("%s_outer - %s_inner", name.Data(), name.Data()));
+}
+
 void UpstreamTaggerStraw::BuildSupport(TGeoVolume* station,
                                        TGeoMedium* medium, Double_t z,
                                        Double_t inner_half_x,
                                        Double_t square_half_y,
-                                       Double_t upright_half_y) {
+                                       Double_t upright_half_y,
+				       Double_t wall_thickness) {
   const Double_t eps = 0.0001;
   const Double_t half_w = f_support_width / 2.;
   const Double_t half_d = f_support_depth / 2.;
 
+  
   // Uprights, left and right, just outside the squares
-  auto* upright = new TGeoVolume(
-      fStationName + "_upright",
-      new TGeoBBox("ubt_upright", half_w, upright_half_y, half_d), medium);
+  auto* upright = new TGeoVolume(fStationName + "_upright",
+				 MakeHollowBox("ubt_upright", half_w, upright_half_y, half_d, wall_thickness),
+				 medium);
+
   upright->SetLineColor(kGray + 1);
   const Double_t x_upright = inner_half_x + half_w + eps;
   station->AddNode(upright, 1, new TGeoTranslation(-x_upright, 0, z));
@@ -221,7 +252,8 @@ void UpstreamTaggerStraw::BuildSupport(TGeoVolume* station,
   // Horizontal bars between the uprights. fTierY = {upper, mid, lower}.
   auto* bar = new TGeoVolume(
       fStationName + "_bar",
-      new TGeoBBox("ubt_bar", inner_half_x, half_w, half_d), medium);
+      MakeHollowBox("ubt_bar", inner_half_x, half_w, half_d, wall_thickness),
+      medium);
   bar->SetLineColor(kGray + 1);
   const Double_t bar_y[] = {
       fTierY[0] + square_half_y - half_w,     // top of the upper square
@@ -251,6 +283,7 @@ void UpstreamTaggerStraw::ConstructGeometry() {
   TGeoMedium* gasMedium = GetMedium("UBTMixture");
   TGeoMedium* wireMedium = GetMedium("WReWire");
   TGeoMedium* frameMedium = GetMedium(f_frame_material.Data());
+  TGeoMedium* supportMedium = GetMedium(f_support_material.Data());  
   fBoxMedium = GetMedium(fMedium.c_str());
 
   gGeoManager->SetVisLevel(4);
@@ -350,15 +383,44 @@ void UpstreamTaggerStraw::ConstructGeometry() {
   fViewShape = new TGeoBBox("ubt_viewbox", frame_inner_x - eps,
                             frame_inner_y - eps, square_half_z);
 
-  new TGeoBBox("ubt_detbox1", frame_outer_x, frame_outer_y, square_half_z);
-  new TGeoBBox("ubt_detbox2", frame_inner_x, frame_inner_y,
-               square_half_z + eps);
-  fFrame = new TGeoVolume(
-      fStationName + "_frame",
-      new TGeoCompositeShape("ubt_detcomp1", "ubt_detbox1 - ubt_detbox2"),
-      frameMedium);
+//   // Frame made from one solid ring
+//   new TGeoBBox("ubt_detbox1", frame_outer_x, frame_outer_y, square_half_z);
+//   new TGeoBBox("ubt_detbox2", frame_inner_x, frame_inner_y,
+//                square_half_z + eps);
+//   fFrame = new TGeoVolume(
+//       fStationName + "_frame",
+//       new TGeoCompositeShape("ubt_detcomp1", "ubt_detbox1 - ubt_detbox2"),
+//       frameMedium);
+//   fFrame->SetLineColor(kOrange);
+
+  // Frame made from 4 hollow side bars, not one solid ring.
+  fFrame = new TGeoVolumeAssembly(fStationName + "_frame");
   fFrame->SetLineColor(kOrange);
 
+  const Double_t bar_z = square_half_z;
+
+  auto* hbar = new TGeoVolume(
+      fStationName + "_frame_hbar",
+      MakeHollowBox("ubt_frame_hbar", frame_outer_x - f_frame_thickness,
+                    f_frame_thickness / 2., bar_z, f_support_wall_thickness),
+      frameMedium);
+  hbar->SetLineColor(kOrange);
+
+  auto* vbar = new TGeoVolume(
+      fStationName + "_frame_vbar",
+      MakeHollowBox("ubt_frame_vbar", f_frame_thickness / 2., frame_outer_y,
+                    bar_z, f_support_wall_thickness),
+      frameMedium);
+  vbar->SetLineColor(kOrange);
+
+  const Double_t x_bar = frame_outer_x - f_frame_thickness / 2.;
+  const Double_t y_bar = frame_outer_y - f_frame_thickness / 2.;
+
+  fFrame->AddNode(hbar, 1, new TGeoTranslation(0, +y_bar, 0));
+  fFrame->AddNode(hbar, 2, new TGeoTranslation(0, -y_bar, 0));
+  fFrame->AddNode(vbar, 3, new TGeoTranslation(+x_bar, 0, 0));
+  fFrame->AddNode(vbar, 4, new TGeoTranslation(-x_bar, 0, 0));
+  
   fStraw = new TGeoVolume(
       "ubt_straw",
       new TGeoTube("ubt_straw", f_inner_straw_diameter / 2.,
@@ -392,6 +454,6 @@ void UpstreamTaggerStraw::ConstructGeometry() {
   }
 
   // --- Support structure ---
-  BuildSupport(station, frameMedium, support_z, frame_half_x, frame_outer_y,
-               station_half_y - eps);
+  BuildSupport(station, supportMedium, support_z, frame_outer_x, frame_outer_y,
+               station_half_y - eps, f_support_wall_thickness);
 }

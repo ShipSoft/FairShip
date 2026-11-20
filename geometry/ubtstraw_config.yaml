@@ -8,10 +8,13 @@ UBTStraw:
   row_offset: 0.25 # Offset (x) of straws between the two rows of a square in cm
   delta_z_row: 0.433 # Distance (z = sqrt(3)/2 * D) between the two rows of a square in cm
   delta_z_view: 6 # Distance (z) between the layers (views y1, u, v) in cm
-  view_angle: 15 # Stereo angle in degree
-  frame_width: 126 # Outer width (x) of the frame of one square in cm (full length); the straws fill the inside
-  frame_height: 119.33 # Outer height (y) of the frame of one square in cm (full length); sets the straw length
-  frame_thickness: 3 # Frame thickness in cm, the same on all 4 sides
-  support_width: 10 # Width of the support bars in cm (x for the uprights, y for the horizontal bars)
-  support_depth: 4 # Depth (z) of the support bars in cm; they sit just downstream of the last layer
+  view_angle: 7.5 # Stereo angle in degree
+  frame_width: 105 # Outer width (x) of the frame of one square in cm (full length); the straws fill the inside
+  frame_height: 105 # Outer height (y) of the frame of one square in cm (full length); sets the straw length
+  frame_thickness: 2.5 # Frame thickness in cm, the same on all 4 sides
+  frame_wall_thickness: 0.2 # Thicknes of frame box section wall
+  support_width: 3 # Width of the support bars in cm (x for the uprights, y for the horizontal bars)
+  support_depth: 3 # Depth (z) of the support bars in cm; they sit just downstream of the last layer
+  support_wall_thickness: 0.2 # Thicknes of support box section wall  
   delta_z_mid: 1.5 # Distance (z) by which the middle square of each layer sits upstream of the upper and lower squares in cm (> square depth)
+

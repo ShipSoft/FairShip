@@ -284,6 +284,7 @@ def configure_upstreamTaggerStraw(yaml_file, ship_geo):
     ship_geo.ubt_straw_geo.medium = "vacuums" if ship_geo.DecayVolumeMedium == "vacuums" else "air"
 
     ship_geo.ubt_straw_geo.frame_material = "DIRCcarbonFiber"
+    ship_geo.ubt_straw_geo.support_material = "DIRCcarbonFiber"    
 
     ubt_straw = ROOT.UpstreamTaggerStraw(ship_geo.ubt_straw_geo.medium)
     ubt_straw.SetzPositions(
@@ -303,11 +304,14 @@ def configure_upstreamTaggerStraw(yaml_file, ship_geo):
     ubt_straw.SetWireThickness(ship_geo.ubt_straw_geo.wire_thickness)
     ubt_straw.SetDeltazView(ship_geo.ubt_straw_geo.delta_z_view)
     ubt_straw.SetFrameMaterial(ship_geo.ubt_straw_geo.frame_material)
+    ubt_straw.SetSupportMaterial(ship_geo.ubt_straw_geo.support_material)    
     ubt_straw.SetFrameSize(ship_geo.ubt_straw_geo.frame_width, ship_geo.ubt_straw_geo.frame_height)
     ubt_straw.SetFrameThickness(ship_geo.ubt_straw_geo.frame_thickness)
+    ubt_straw.SetFrameWallThickness(ship_geo.ubt_straw_geo.frame_wall_thickness)    
     ubt_straw.SetDeltazMid(ship_geo.ubt_straw_geo.delta_z_mid)
     ubt_straw.SetSupportSize(ship_geo.ubt_straw_geo.support_width, ship_geo.ubt_straw_geo.support_depth)
-
+    ubt_straw.SetSupportWallThickness(ship_geo.ubt_straw_geo.support_wall_thickness)
+    
     # For digitization
     #    strawtubes.SetStrawResolution(
     #        ship_geo.strawtubesDigi.v_drift,

@@ -16,6 +16,7 @@ class FairVolume;
 class TGeoMedium;
 class TGeoShape;
 class TGeoVolume;
+class TGeoShape;
 
 /**
  * @brief Straw-tube Upstream Background Tagger (UBT)
@@ -46,11 +47,14 @@ class UpstreamTaggerStraw : public SHiP::Detector<UpstreamTaggerStrawPoint> {
   void SetStereoAngle(Double_t stereo_angle);
   void SetWireThickness(Double_t wire_thickness);
   void SetFrameMaterial(TString frame_material);
+  void SetSupportMaterial(TString support_material);  
+  void SetSupportWallThickness(Double_t thickness);
   void SetDeltazView(Double_t delta_z_view);
   /** Outer size of the frame of one square (full lengths) */
   void SetFrameSize(Double_t width, Double_t height);
   /** Thickness of the frame, the same on all 4 sides */
   void SetFrameThickness(Double_t thickness);
+  void SetFrameWallThickness(Double_t thickness);
   /** z-distance by which the middle square of each layer sits upstream of
    *  the upper and lower squares */
   void SetDeltazMid(Double_t delta_z_mid);
@@ -69,6 +73,12 @@ class UpstreamTaggerStraw : public SHiP::Detector<UpstreamTaggerStrawPoint> {
   void BuildSquare(TGeoVolume* station, Int_t vnb, Int_t hnb, Double_t y,
                    Double_t z);
 
+  /** Make a hollow box if a with is given, else a solid one **/
+  TGeoShape* MakeHollowBox(const TString& name,
+			   Double_t half_x, Double_t half_y,
+			   Double_t half_z,
+			   Double_t thickness = 0);
+  
   /** Builds the support structure in the plane z of the station: two
    *  uprights just outside +-inner_half_x, running the full station height
    *  (+-upright_half_y), and horizontal bars between them at the top of the
@@ -77,7 +87,7 @@ class UpstreamTaggerStraw : public SHiP::Detector<UpstreamTaggerStrawPoint> {
    *  square_half_y) */
   void BuildSupport(TGeoVolume* station, TGeoMedium* medium, Double_t z,
                     Double_t inner_half_x, Double_t square_half_y,
-                    Double_t upright_half_y);
+                    Double_t upright_half_y, Double_t wall_thickness = 0);
 
   /** Stereo angle (degrees) of view vnb = 0 (y1), 1 (u), 2 (v) */
   Double_t ViewAngle(Int_t vnb) const;
@@ -95,13 +105,16 @@ class UpstreamTaggerStraw : public SHiP::Detector<UpstreamTaggerStrawPoint> {
   Double_t f_delta_z_view = 0.;   // z-distance between views
   Double_t f_delta_z_row = 0.;    // z-distance between the two rows
   TString f_frame_material;
+  TString f_support_material;  
   Double_t f_frame_width = 0.;      // outer x size of one frame (full)
   Double_t f_frame_height = 0.;     // outer y size of one frame (full)
   Double_t f_frame_thickness = 0.;  // same on all 4 sides
+  Double_t f_frame_wall_thickness;  // Thickness of frame box section wall   
   Double_t f_delta_z_mid = 0.;      // mid square shift upstream
   Double_t f_support_width = 0.;    // support bar profile
   Double_t f_support_depth = 0.;    // support bar depth in z
-
+  Double_t f_support_wall_thickness;  // Thickness of support box section wall 
+  
   // Geometry pieces created in ConstructGeometry and placed by BuildLayer
   std::array<Double_t, 3> fTierY = {};          //!  tier centre, index hnb-1
   std::array<Double_t, 3> fTierZ = {};          //!  w.r.t. layer centre
