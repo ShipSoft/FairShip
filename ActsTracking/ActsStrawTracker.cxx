@@ -29,9 +29,9 @@
 #include "Acts/Propagator/Propagator.hpp"
 #include "Acts/Propagator/VoidNavigator.hpp"
 #include "Acts/Surfaces/PlaneSurface.hpp"
-#include "Acts/TrackFitting/GainMatrixSmoother.hpp"
 #include "Acts/TrackFitting/GainMatrixUpdater.hpp"
 #include "Acts/TrackFitting/KalmanFitter.hpp"
+#include "Acts/TrackFitting/MbfSmoother.hpp"
 #include "Acts/Utilities/CalibrationContext.hpp"
 #include "Acts/Utilities/Logger.hpp"
 #include "Acts/Utilities/UnitVectors.hpp"
@@ -271,8 +271,8 @@ struct ActsStrawTracker::Impl {
     extensions.calibrator.connect<&Impl::calibrate>(this);
     extensions.updater
         .connect<&Acts::GainMatrixUpdater::operator()<Trajectory>>(&updater);
-    extensions.smoother
-        .connect<&Acts::GainMatrixSmoother::operator()<Trajectory>>(&smoother);
+    extensions.smoother.connect<&Acts::MbfSmoother::operator()<Trajectory>>(
+        &smoother);
 
     // The magnet sits between stations 2 and 3
     for (const auto& [id, wire] : straws.wires()) {
@@ -369,7 +369,12 @@ struct ActsStrawTracker::Impl {
   KalmanFitter fitter;
   Extrapolator extrapolator;
   Acts::GainMatrixUpdater updater;
-  Acts::GainMatrixSmoother smoother;
+  /// The gain-matrix smoother inverts the predicted covariance, which is
+  /// nearly singular in the magnet: there, the bending angle is almost fully
+  /// correlated with the poorly known q/p. Below about 10 GeV/c the smoothed
+  /// covariance then stops being positive definite. The modified
+  /// Bryson-Frazier smoother only inverts the residual covariance.
+  Acts::MbfSmoother smoother;
   Acts::KalmanFitterExtensions<Trajectory> extensions;
   Acts::GeometryContext gctx =
       Acts::GeometryContext::dangerouslyDefaultConstruct();
