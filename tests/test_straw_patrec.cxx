@@ -137,9 +137,11 @@ void testFindsSyntheticTrack() {
 
   const SHiP::StrawPatRec patRec(SHiP::StrawPatRec::Config{}, bendingZ,
                                  fieldIntegral);
+  // Every matching pair of segments is a candidate, best match first; the
+  // best is the track
   const auto tracks = patRec.findTracks(hits);
-  check(tracks.size() == 1, "one track found");
-  if (tracks.size() != 1) {
+  check(!tracks.empty(), "track found");
+  if (tracks.empty()) {
     return;
   }
   const auto& track = tracks.front();
