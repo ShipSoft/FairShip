@@ -10,6 +10,44 @@
 #include "TFile.h"
 #include "TString.h"
 #include "TTree.h"
+#include "TLeaf.h"
+
+
+class FloatOrDouble {
+public:
+
+    explicit FloatOrDouble(double init = 0.0) { set(init); }
+
+    FloatOrDouble(TTree* tree, const char* name, double init = 0.0) : FloatOrDouble(init) {
+        attach(tree, name);
+    }
+
+    void attach(TTree* tree, const char* name) {
+        TLeaf* leaf = tree->GetLeaf(name);
+        if (!leaf) throw std::runtime_error(std::string("No leaf ") + name);
+        const std::string type = leaf->GetTypeName();
+        if (type == "Float_t")       { isFloat_ = true;  tree->SetBranchAddress(name, &f_); }
+        else if (type == "Double_t") { isFloat_ = false; tree->SetBranchAddress(name, &d_); }
+        else throw std::runtime_error("Unsupported type " + type + " for " + name);
+    }
+
+
+    // ROOT stores the address of f_/d_, so the object must never move
+    FloatOrDouble(const FloatOrDouble&) = delete;
+    FloatOrDouble& operator=(const FloatOrDouble&) = delete;
+    void set(double v) {
+        f_ = static_cast<float>(v);
+        d_ = v;
+    }
+    FloatOrDouble& operator=(double v) { set(v); return *this; }
+    double get() const { return isFloat_ ? f_ : d_; }
+    operator double() const { return get(); }
+
+private:
+    float  f_ = 0.f;
+    double d_ = 0.0;
+    bool   isFloat_ = false;
+};
 
 class FairPrimaryGenerator;
 
@@ -47,14 +85,14 @@ class TTreeGenerator : public Generator {
   Long64_t fNEvents;       //!< Total number of events in the tree
   Long64_t fCurrentEvent;  //!< Current event index (0-based)
 
-  Double_t fPx;      //!< Particle momentum x-component (GeV/c)
-  Double_t fPy;      //!< Particle momentum y-component (GeV/c)
-  Double_t fPz;      //!< Particle momentum z-component (GeV/c)
-  Double_t fX;       //!< Particle position x-coordinate (cm)
-  Double_t fY;       //!< Particle position y-coordinate (cm)
-  Double_t fZ;       //!< Particle position z-coordinate (cm)
+  FloatOrDouble fPx;      //!< Particle momentum x-component (GeV/c)
+  FloatOrDouble fPy;      //!< Particle momentum y-component (GeV/c)
+  FloatOrDouble fPz;      //!< Particle momentum z-component (GeV/c)
+  FloatOrDouble fX;       //!< Particle position x-coordinate (cm)
+  FloatOrDouble fY;       //!< Particle position y-coordinate (cm)
+  FloatOrDouble fZ;       //!< Particle position z-coordinate (cm)
   Int_t fPdgId;      //!< PDG particle identification code
-  Double_t fWeight;  //!< Event weight factor
+  FloatOrDouble fWeight;  //!< Event weight factor
 
   Bool_t InitBranches();
 };

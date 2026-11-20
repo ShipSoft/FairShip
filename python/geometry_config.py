@@ -328,6 +328,13 @@ def create_config(
         c.Chamber1 = AttrDict(z=c.decayVolume.z0 + c.chambers.Tub1length)
         c.Chamber6 = AttrDict(z=z4 + 30.0 * u.cm + windowBulge / 2.0)
 
+    # Straw UBT: station position (geometry in geometry/ubtstraw_config.yaml)
+    # and the Gaussian smearing used by its digitisation
+    c.UBTStation1 = AttrDict(z=c.decayVolume.z0 - 50 * u.cm)
+    c.UpstreamTaggerStraw = AttrDict()
+    c.UpstreamTaggerStraw.PositionResolution = 0.012 * u.cm  # x/y/z smearing
+    c.UpstreamTaggerStraw.TimeResolution = 1.0  # Time resolution in ns
+
     c.Bfield = AttrDict()
     c.Bfield.z = c.z
     c.Bfield.max = 0  # 1.4361*u.kilogauss  # was 1.15 in EOI
