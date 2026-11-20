@@ -11,7 +11,6 @@ the C++ ``SHiP::ActsStrawTracker``; everything here is in the SHiP frame
 
 import logging
 from dataclasses import dataclass
-from itertools import combinations
 
 import ROOT
 from recoConstants import MIN_HITS_PER_TRACK
@@ -59,16 +58,16 @@ def make_tracker(geometry, field):
     return tracker
 
 
-def runTracking(tracker, candidates, hits, resolution, fit_vertex=True, vertex_all_tracks=False):
-    """Find or fit tracks and, if the event qualifies, fit their vertex.
+def runTracking(tracker, candidates, hits, resolution, fit_vertex=True):
+    """Find or fit tracks and, with ``fit_vertex``, find their vertices.
 
     With ``candidates`` None, the tracker's own pattern recognition finds
     the tracks. Otherwise ``candidates`` are dicts with ``indices`` into
     ``hits`` (sorted by hit z in place), and each is fitted on its own.
 
-    With ``vertex_all_tracks``, one more vertex is fitted from all good
-    tracks of the event, for studies of samples whose tracks share one
-    vertex. It is skipped when it would repeat a two-track vertex.
+    The vertices are found among the good tracks with the ACTS adaptive
+    multi-vertex finder; there can be any number of them, of any number of
+    tracks.
 
     Returns the fitted tracks (``SHiP::RecoTrack``, in the order of the
     tracker's track indices), the fitted vertices (``SHiP::RecoVertex``) and,
@@ -113,24 +112,12 @@ def runTracking(tracker, candidates, hits, resolution, fit_vertex=True, vertex_a
         and track.nDoF() > 0
         and track.chi2() / track.nDoF() <= MAX_CHI2_NDF
     ]
-    # A two-track vertex for every opposite-charge pair of good tracks, as in
-    # the GenFit vertexing
     vertices = []
-    if fit_vertex:
-        for i, j in combinations(good, 2):
-            if tracks[i].charge() * tracks[j].charge() >= 0:
-                continue
-            vertex = ROOT.SHiP.RecoVertex()
-            if tracker.FitVertex(ROOT.std.vector("int")([i, j]), vertex):
-                vertices.append(vertex)
-            else:
-                logger.debug("Vertex fit failed for tracks %d and %d", i, j)
-        if vertex_all_tracks and (len(good) > 2 or (len(good) == 2 and not vertices)):
-            vertex = ROOT.SHiP.RecoVertex()
-            if tracker.FitVertex(ROOT.std.vector("int")(good), vertex):
-                vertices.append(vertex)
-            else:
-                logger.debug("Vertex fit failed for all %d good tracks", len(good))
+    if fit_vertex and len(good) >= 2:
+        found = ROOT.std.vector("SHiP::RecoVertex")()
+        tracker.FindVertices(ROOT.std.vector("int")(good), found)
+        # Copies, as the vector is gone when this returns
+        vertices = [ROOT.SHiP.RecoVertex(v) for v in found]
 
     return tracks, vertices, track_hit_indices
 

@@ -40,8 +40,7 @@ class selection_check:
         candidate_pos = ROOT.TVector3()
         candidate.GetVertex(candidate_pos)
 
-        d1, d2 = candidate.GetDaughter(0), candidate.GetDaughter(1)
-        d1_mc, d2_mc = self.tree.fitTrack2MC[d1], self.tree.fitTrack2MC[d2]
+        daughters_mc = {self.tree.fitTrack2MC[d] for d in candidate.GetDaughters()}
 
         time_vtx_from_strawhits = []
 
@@ -49,7 +48,7 @@ class selection_check:
             if not (int(str(hit.GetDetectorID())[:1]) == 1 or int(str(hit.GetDetectorID())[:1]) == 2):
                 continue
 
-            if not (hit.GetTrackID() == d1_mc or hit.GetTrackID() == d2_mc):
+            if hit.GetTrackID() not in daughters_mc:
                 continue
 
             t_straw = hit.GetTime()
@@ -139,10 +138,8 @@ class selection_check:
     def nDOF(self, candidate):
         """Return the number of degrees of freedom (nDOF) for the particle's daughter tracks."""
         nmeas = []
-        t1, t2 = candidate.GetDaughter(0), candidate.GetDaughter(1)
-
         tracks = get_tracks(self.tree)
-        for tr in [t1, t2]:
+        for tr in candidate.GetDaughters():
             nmeas.append(round(track_info(tracks[tr], self.acts_tracks).ndf))
 
         return np.array(nmeas)
@@ -154,9 +151,8 @@ class selection_check:
         momentum cut.
         """
         daughter_mom = []
-        t1, t2 = candidate.GetDaughter(0), candidate.GetDaughter(1)
         tracks = get_tracks(self.tree)
-        for trD in [t1, t2]:
+        for trD in candidate.GetDaughters():
             info = track_info(tracks[trD], self.acts_tracks)
             if not info.converged or info.mom is None or info.ndf <= 0:
                 daughter_mom.append(-1.0)
@@ -195,11 +191,9 @@ class selection_check:
         Tracks without a usable fit yield infinity, which fails the
         preselection chi^2 cut.
         """
-        t1, t2 = candidate.GetDaughter(0), candidate.GetDaughter(1)
-
         chi2ndf = []
         tracks = get_tracks(self.tree)
-        for tr in [t1, t2]:
+        for tr in candidate.GetDaughters():
             info = track_info(tracks[tr], self.acts_tracks)
             if not info.converged or info.ndf <= 0:
                 chi2ndf.append(float("inf"))

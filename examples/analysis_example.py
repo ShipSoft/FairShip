@@ -4,6 +4,7 @@
 
 """Example script for usage of the analysis_toolkit for signal selection."""
 
+import itertools
 from argparse import ArgumentParser
 
 import ROOT
@@ -112,9 +113,14 @@ def main() -> None:
             hist_dict["DOCA"].Fill(selection.DOCA(signal))
             hist_dict["inv_mass"].Fill(selection.invariant_mass(signal))
             hist_dict["len_Particles"].Fill(len(tree.Particles))
-            hist_dict["d_mom"].Fill(*selection.daughtermomentum(signal))
-            hist_dict["nDOF"].Fill(*selection.nDOF(signal))
-            hist_dict["chi2nDOF"].Fill(*selection.chi2nDOF(signal))
+            # One entry per pair of daughters
+            for name, values in (
+                ("d_mom", selection.daughtermomentum(signal)),
+                ("nDOF", selection.nDOF(signal)),
+                ("chi2nDOF", selection.chi2nDOF(signal)),
+            ):
+                for a, b in itertools.combinations(values, 2):
+                    hist_dict[name].Fill(a, b)
 
             IP_cut = 250
             preselection_flag = selection.preselection_cut(signal, IP_cut=IP_cut, show_table=False)
