@@ -60,7 +60,8 @@ class ActsStrawTracker {
   /// are dropped.
   Int_t FitCandidate(const std::vector<Int_t>& measurements);
 
-  /// Measurements used in the fit of a track
+  /// Measurements of the fitted states of a track, one per entry of the
+  /// fitted points, residuals and pulls of GetTrack(), in the same order
   std::vector<Int_t> GetTrackMeasurements(Int_t track) const;
 
   Int_t GetNTracks() const;
@@ -75,6 +76,28 @@ class ActsStrawTracker {
   /// Distance in cm between a hit and a fitted track at the plane of
   /// constant z through the hit, or -1 if the extrapolation fails
   Double_t DistanceToHit(Int_t track, const TVector3& hit) const;
+
+  /// Propagate a fitted track through the field to the plane of constant
+  /// `z` (cm), e.g. the UBT or the timing detector.
+  ///
+  /// Starts from the smoothed state of the first fitted measurement, or of
+  /// the last one with `fromLastHit`, and steps with the Runge-Kutta stepper
+  /// in either direction. Material is not included (no energy loss or
+  /// multiple scattering). Fills the position (cm) and momentum (GeV) on the
+  /// plane, the 6x6 (x, y, z, px, py, pz) covariance as its upper triangle in
+  /// row-major order (as in RecoTrack; empty if the track has none), and the
+  /// path length in cm from the starting hit, negative when the plane is
+  /// reached against the momentum direction. Returns false if the plane
+  /// cannot be reached.
+  Bool_t ExtrapolateToZ(Int_t track, Double_t z, Bool_t fromLastHit,
+                        TVector3& position, TVector3& momentum,
+                        std::vector<Double_t>& covariance,
+                        Double_t& pathLength) const;
+
+  /// Path length in cm through the field from the first to the last fitted
+  /// measurement of a track, or -1 if it has fewer than two or the
+  /// propagation fails
+  Double_t TrackLength(Int_t track) const;
 
   /// Number of straws found in the geometry
   Int_t GetNStraws() const;
