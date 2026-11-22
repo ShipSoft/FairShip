@@ -426,7 +426,7 @@ environments:
       - conda: https://prefix.dev/ship-experiment/stable/linux-64/geant3-4.5-ha28ff26_8.conda
       - conda: https://prefix.dev/ship-experiment/stable/linux-64/genfit-2.3.0-ha28ff26_15.conda
       - conda: https://prefix.dev/ship-experiment/stable/linux-64/genie-3.06.02-pythia8_97fe125_8.conda
-      - conda: https://prefix.dev/ship-experiment/stable/linux-64/pythia6-6.4.28-hb0f4dca_6.conda
+      - conda: https://prefix.dev/ship-experiment/stable/linux-64/pythia6-6.4.28-h80bbdca_10.conda
       - conda: https://prefix.dev/ship-experiment/stable/linux-64/rootegpythia6-0.1-ha28ff26_10.conda
       - conda: https://prefix.dev/ship-experiment/stable/noarch/genie-data-3.06.02-h4616a5c_0.conda
       - conda: https://prefix.dev/ship-experiment/stable/noarch/ship-ci-metrics-0.1.0-pyh4616a5c_0.conda
@@ -866,7 +866,7 @@ environments:
       - conda: https://prefix.dev/ship-experiment/stable/linux-64/geant3-4.5-ha28ff26_8.conda
       - conda: https://prefix.dev/ship-experiment/stable/linux-64/genfit-2.3.0-ha28ff26_15.conda
       - conda: https://prefix.dev/ship-experiment/stable/linux-64/genie-3.06.02-pythia8_97fe125_8.conda
-      - conda: https://prefix.dev/ship-experiment/stable/linux-64/pythia6-6.4.28-hb0f4dca_6.conda
+      - conda: https://prefix.dev/ship-experiment/stable/linux-64/pythia6-6.4.28-h80bbdca_10.conda
       - conda: https://prefix.dev/ship-experiment/stable/linux-64/rootegpythia6-0.1-ha28ff26_10.conda
       - conda: https://prefix.dev/ship-experiment/stable/noarch/genie-data-3.06.02-h4616a5c_0.conda
       - conda: https://prefix.dev/ship-experiment/stable/noarch/ship-ci-metrics-0.1.0-pyh4616a5c_0.conda
@@ -1216,7 +1216,7 @@ packages:
   - python_abi 3.13.* *_cp313
   license: BSD-3-Clause AND MIT AND EPL-2.0
   purls:
-  - pkg:pypi/backports-zstd?source=compressed-mapping
+  - pkg:pypi/backports-zstd?source=hash-mapping
   run_exports: {}
   size: 243747
   timestamp: 1788491297080
@@ -4448,7 +4448,8 @@ packages:
   license: LGPL-3.0-only
   license_family: LGPL
   purls:
-  - pkg:pypi/pyside6?source=compressed-mapping
+  - pkg:pypi/pyside6?source=hash-mapping
+  - pkg:pypi/shiboken6?source=hash-mapping
   run_exports: {}
   size: 13947145
   timestamp: 1788745031498
@@ -6511,7 +6512,7 @@ packages:
   license: BSD-3-Clause
   license_family: BSD
   purls:
-  - pkg:pypi/ipython?source=compressed-mapping
+  - pkg:pypi/ipython?source=hash-mapping
   run_exports: {}
   size: 730678
   timestamp: 1788260388285
@@ -6635,7 +6636,7 @@ packages:
   license: MIT
   license_family: MIT
   purls:
-  - pkg:pypi/jsonschema?source=compressed-mapping
+  - pkg:pypi/jsonschema?source=hash-mapping
   run_exports: {}
   size: 82084
   timestamp: 1787579299493
@@ -7155,7 +7156,7 @@ packages:
   license: BSD-3-Clause
   license_family: BSD
   purls:
-  - pkg:pypi/nbformat?source=compressed-mapping
+  - pkg:pypi/nbformat?source=hash-mapping
   run_exports: {}
   size: 107750
   timestamp: 1787133512599
@@ -7794,7 +7795,7 @@ packages:
   license: MIT
   license_family: MIT
   purls:
-  - pkg:pypi/setuptools?source=compressed-mapping
+  - pkg:pypi/setuptools?source=hash-mapping
   run_exports: {}
   size: 524488
   timestamp: 1786282924579
@@ -8089,7 +8090,7 @@ packages:
   license: Apache-2.0
   license_family: APACHE
   purls:
-  - pkg:pypi/websocket-client?source=compressed-mapping
+  - pkg:pypi/websocket-client?source=hash-mapping
   run_exports: {}
   size: 78254
   timestamp: 1788531123810
@@ -8193,21 +8194,18 @@ packages:
     - genie >=3.6.2,<3.7.0a0
   size: 4584818
   timestamp: 1790196578149
-- conda: https://prefix.dev/ship-experiment/stable/linux-64/pythia6-6.4.28-hb0f4dca_6.conda
-  sha256: a5f378d93f4d8425451552ac0fb916e4b271f47ba7428441332c66661321d893
-  md5: d453c87ccf91a75e2f2ad2c26e20a4ab
+- conda: https://prefix.dev/ship-experiment/stable/linux-64/pythia6-6.4.28-h80bbdca_10.conda
+  sha256: 6b984b4dc8d252e82391ecab0757e532bb66bccb13a2a2448e11da3730147fde
+  md5: 1353002e2d6087f79b4171e4e25089f4
   depends:
-  - libgcc >=15
-  - libgfortran5 >=15.2.0
-  - libgfortran
   - __glibc >=2.17,<3.0.a0
+  - libgcc >=15
+  - libgfortran5 >=15.3.0
+  - libgfortran
   - libstdcxx >=15
   license: GPL-2.0-or-later
-  run_exports:
-    weak:
-    - pythia6 >=6.4.28,<6.5.0a0
-  size: 1072492
-  timestamp: 1781446902861
+  size: 1072245
+  timestamp: 1795375292393
 - conda: https://prefix.dev/ship-experiment/stable/linux-64/rootegpythia6-0.1-ha28ff26_10.conda
   sha256: 6986b152608fa16cd81d349cd74a5e8b8df62b97e1df496e50326f3890c4db6c
   md5: 1231f436e2be4fb375ce0fca07d944da
