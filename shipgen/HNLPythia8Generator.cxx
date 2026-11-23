@@ -295,6 +295,9 @@ Bool_t HNLPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg) {
                       PythiaLengthToCm(yp) + PythiaLengthToCm(dy),
                       PythiaLengthToCm(zp), 0, false, e, PythiaTimeToS(tp), w);
       }
+      // the decay products get the same beam offset as the HNL
+      xS += dx;
+      yS += dy;
       // bookkeep the indices of stored particles
       dec_chain.push_back(im);
       dec_chain.push_back(i);

@@ -365,8 +365,9 @@ Bool_t DPPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg) {
     py = fPythia->event[k].py();
     e = fPythia->event[k].e();
 
-    cpg->AddTrack((Int_t)fPythia->event[k].id(), px, py, pz, xS * mm, yS * mm,
-                  zS * mm, im, wanttracking, e, PythiaTimeToS(tS), w);
+    cpg->AddTrack((Int_t)fPythia->event[k].id(), px, py, pz, xS * mm + dx,
+                  yS * mm + dy, zS * mm, im, wanttracking, e, PythiaTimeToS(tS),
+                  w);
   }
   return kTRUE;
 }
