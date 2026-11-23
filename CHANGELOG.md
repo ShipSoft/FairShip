@@ -26,6 +26,7 @@ it in future.
 
 ### Fixed
 
+* `DPPythia8Generator` in QCD mode (`-A qcd`) places the decay vertex along the dark photon copy that decays. Pythia's record holds the dark photon two or more times there, and one of the copies was picked at random (#1153), so in about 70 % of the events the vertex was on the beam axis and the decay products did not point back to it. The vessel acceptance now rejects about 50 % (2 GeV) and 37 % (4 GeV) of the Pythia events in QCD mode, where it rejected none.
 * The ACTS straw material now comes from the straw wall, gas and wire volumes of the geometry instead of fixed values. Each part counts with its mean path through the straw. A straw is now 5.3e-4 X0, where it was 5.7e-4: the walls were too thin (tracks taken through the straw centre) and the gas X0 was 30 m instead of 128 m (Ar/CO2 80/20).
 
 ## 26.10 - 2026-10-28
