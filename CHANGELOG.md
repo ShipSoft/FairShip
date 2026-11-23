@@ -20,6 +20,10 @@ it in future.
 
 * The hit lists in `Tracklets` and `fitTrack2MC` now come from fitted states. They therefore leave out any surface that ACTS skipped. #1537
 
+### Fixed
+
+* `newMuonDIS/prepareEvents.py` and `filterEvents.py` accept input files given as URLs, such as `root://eospublic.cern.ch//eos/...`, instead of rejecting them because they are not local files. ROOT opens them directly. A directory input still has to be on a local or mounted filesystem.
+
 ## 26.11 - 2026-11-26
 
 This release makes ACTS the default for pattern recognition, track fitting and
