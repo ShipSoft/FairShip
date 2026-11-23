@@ -167,3 +167,23 @@ def test_signal_weight_falls_back_on_nonpositive_weight():
         FakeTrack(-13, 0),
     ]
     assert signal_weight(tracks) == pytest.approx(1.0)
+
+
+def test_signal_with_hadronic_decay_chain():
+    """Dark photon -> q qbar -> hadrons: the generator stores the whole decay chain, whose members have daughters too."""
+    tracks = [
+        FakeTrack(2212, -1),
+        FakeTrack(4900023, 0),  # earlier Pythia copy
+        FakeTrack(4900023, 1),  # signal, the copy that decays
+        FakeTrack(2, 2),
+        FakeTrack(-2, 2),
+        FakeTrack(223, 3),
+        FakeTrack(221, 3),
+        FakeTrack(211, 5),
+        FakeTrack(-211, 5),
+        FakeTrack(111, 5),
+        FakeTrack(22, 6),
+        FakeTrack(22, 6),
+        FakeTrack(22, 9),
+    ]
+    assert find_signal_track(tracks) == 2

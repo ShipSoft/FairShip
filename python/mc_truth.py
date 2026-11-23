@@ -36,9 +36,11 @@ def find_signal_track(mc_tracks, pdg=None):
     -----
     A signal event is generated as a single production chain -- optionally a
     grandmother and a mother, then the signal -- followed by the signal's decay
-    products. So among the tracks the generator put on the stack there is
-    exactly one root, and the signal is the deepest one that has a daughter
-    also on the stack.
+    products, which can decay further (quarks, hadrons). So among the tracks
+    the generator put on the stack there is exactly one root, each member of
+    the production chain has the next one as its only daughter, and the signal
+    is the first track whose daughters are its decay products: more than one
+    daughter, or a single daughter that has none of its own.
 
     Requiring a single root is what keeps this honest on background samples,
     where the generator stack is a branching cascade with several roots: those
@@ -58,8 +60,15 @@ def find_signal_track(mc_tracks, pdg=None):
     if len(roots) != 1:
         return None
 
-    with_daughters = {mothers[i] for i in stack if mothers[i] in stack}
-    return max(with_daughters) if with_daughters else None
+    # Walk down the production chain from the root to the signal.
+    signal = roots[0]
+    while True:
+        daughters = [i for i in stack if mothers[i] == signal]
+        if not daughters:
+            return None
+        if len(daughters) > 1 or not any(mothers[i] == daughters[0] for i in stack):
+            return signal
+        signal = daughters[0]
 
 
 def signal_weight(mc_tracks, pdg=None, default=1.0):
