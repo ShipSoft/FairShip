@@ -163,8 +163,10 @@ Bool_t DPPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg) {
 
     // fPythia->event.list();
     for (int i = 0; i < fPythia->event.size(); i++) {
-      // find all DP
-      if (abs(fPythia->event[i].id()) == fDP) {
+      // find all DP, keeping only the last copy of each (the one that
+      // decays): in QCD production the record holds recoil copies too
+      if (abs(fPythia->event[i].id()) == fDP &&
+          fPythia->event[i].iBotCopyId() == i) {
         dpvec.push_back(i);
       }
     }
