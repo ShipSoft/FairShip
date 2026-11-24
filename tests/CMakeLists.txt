@@ -70,7 +70,6 @@ add_executable(testFixedTargetCascadeWeight test_fixedtarget_cascade_weight.cxx)
 target_link_libraries(
     testFixedTargetCascadeWeight
     ShipGen
-    ROOT::EGPythia8
     ROOT::Core
     ROOT::RIO
     ROOT::Hist
@@ -79,6 +78,20 @@ target_link_libraries(
     FairLogger::FairLogger
 )
 add_test(NAME FixedTargetCascadeWeight COMMAND testFixedTargetCascadeWeight)
+
+# Pythia8 path of the external decayer TEvtGenDecayer
+add_executable(testEvtGenDecayerPythia8 test_evtgen_decayer_pythia8.cxx)
+target_link_libraries(
+    testEvtGenDecayerPythia8
+    ShipGen
+    ROOT::Core
+    ROOT::MathCore
+    ROOT::Physics
+    ROOT::EG
+    FairRoot::Base
+    FairLogger::FairLogger
+)
+add_test(NAME EvtGenDecayerPythia8 COMMAND testEvtGenDecayerPythia8)
 
 # Event-level uncertainties for samples with correlated (split) branches
 add_executable(testEventHistogram test_event_histogram.cxx)
