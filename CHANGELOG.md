@@ -14,6 +14,7 @@ it in future.
 
 ### Added
 
+* `run_fixedTarget.py` has `--beam-energy` (GeV, default 400) and `--beam-particle` (PDG code, default 2212) options, passed to `FixedTargetGenerator::SetMom` and the new `SetBeamParticle`. They were fixed at a 400 GeV proton. The defaults reproduce the previous behaviour, and both are recorded in the FileSummary.
 * GENIE (pythia8 build) is now a pixi dependency, so `macro/makeGenieEvents.py` can run `gmkspl`, `gevgen` and `gntpc` in the pixi environment without a separate GENIE installation.
 
 ### Changed

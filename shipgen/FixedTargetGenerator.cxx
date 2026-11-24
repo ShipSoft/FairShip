@@ -68,7 +68,8 @@ FixedTargetGenerator::FixedTargetGenerator() {
   fUseRandom1 = kFALSE;
   fUseRandom3 = kTRUE;
   fSeed = 0;
-  fMom = 400;  // proton
+  fMom = 400;        // GeV
+  fBeamPDG = 2212;   // proton
   fLogger = FairLogger::GetLogger();
   targetName = "cave_1/target_vacuum_box_1/TargetArea_1/HeVolume_1";
   xOff = 0;
@@ -302,7 +303,7 @@ Bool_t FixedTargetGenerator::Init() {
     fPythia->settings.mode("Random:seed", fSeed);
     fPythia->settings.mode("Next:numberCount", heartbeat);
     if (Option == "Primary") {
-      fPythia->settings.mode("Beams:idA", 2212);
+      fPythia->settings.mode("Beams:idA", fBeamPDG);
       fPythia->settings.mode("Beams:frameType", 2);
       fPythia->settings.parm("Beams:eA", fMom);  // codespell:ignore parm
       fPythia->settings.parm("Beams:eB", 0.);    // codespell:ignore parm
@@ -495,7 +496,7 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
     IncrementCounter("generated_events");
     IncrementCounter("g4only_events");
     IncrementCounter("stored_tracks");
-    cpg->AddTrack(2212, 0., 0., fMom, (xOff + dx) / cm, (yOff + dy) / cm,
+    cpg->AddTrack(fBeamPDG, 0., 0., fMom, (xOff + dx) / cm, (yOff + dy) / cm,
                   start[2], -1, kTRUE, -1., 0., 1.);
     return kTRUE;
   }
