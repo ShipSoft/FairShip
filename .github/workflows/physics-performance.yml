@@ -1,0 +1,87 @@
+name: Physics performance
+on:
+  schedule:
+    - cron: 0 4 * * 0 # Weekly, Sunday 04:00 UTC
+  workflow_dispatch:
+    inputs:
+      n_events:
+        description: Events per scan point
+        default: '500'
+        type: string
+concurrency:
+  group: physics-performance-${{ github.ref }}
+  cancel-in-progress: true
+permissions:
+  contents: read
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          lfs: true
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: prefix-dev/setup-pixi@v0.11.3
+        with:
+          cache: true
+      - name: Set up ccache
+        uses: hendrikmuhs/ccache-action@v1.2
+        with:
+          key: build-${{ runner.os }}
+      - name: Configure
+        run: pixi run --locked configure
+        env:
+          CMAKE_CXX_COMPILER_LAUNCHER: ccache
+      - name: Build
+        run: pixi run --locked build
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: build
+          path: build/
+          retention-days: 1
+  tracking-scan:
+    name: Tracking scan (${{ matrix.mode }})
+    needs: build
+    runs-on: ubuntu-latest
+    # The scan points run one after the other, so this can take a while; stay
+    # just under the 6 h limit for GitHub-hosted runners.
+    timeout-minutes: 350
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # The scan points themselves are pinned in the pixi tasks.
+          - mode: theta
+            task: ci-tracking-scan-theta
+          - mode: nTracks
+            task: ci-tracking-scan-ntracks
+    env:
+      QT_QPA_PLATFORM: offscreen
+      n_events: ${{ inputs.n_events || '500' }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          lfs: true
+          persist-credentials: false
+      - uses: prefix-dev/setup-pixi@v0.11.3
+        with:
+          cache: true
+      - uses: actions/download-artifact@v8
+        with:
+          name: build
+          path: build/
+      - name: Run tracking scan
+        run: pixi run --locked ${{ matrix.task }} "$n_events"
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: tracking-scan-${{ matrix.mode }}
+          path: |
+            tracking_${{ matrix.mode }}_scan/scan_results.json
+            tracking_${{ matrix.mode }}_scan/scan_summary.root
+            tracking_${{ matrix.mode }}_scan/scan_*.png
+            tracking_${{ matrix.mode }}_scan/scan_*.pdf
