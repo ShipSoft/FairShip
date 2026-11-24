@@ -71,6 +71,25 @@ def find_signal_track(mc_tracks, pdg=None):
         signal = daughters[0]
 
 
+def is_signal_product(mc_tracks, index, signal_id):
+    """Return whether track ``index`` is a decay product of the signal.
+
+    A decay product is a track the generator put on the stack whose chain of
+    mothers leads to ``signal_id``. That includes the hadrons of a hadronic
+    decay, which are granddaughters or deeper because the generator also
+    stores the quarks and resonances in between. Geant secondaries, such as a
+    delta ray knocked out by a decay product, are not decay products.
+    """
+    if mc_tracks[index].GetProcName() != PRIMARY_PROCESS:
+        return False
+    mother = mc_tracks[index].GetMotherId()
+    while mother >= 0:
+        if mother == signal_id:
+            return True
+        mother = mc_tracks[mother].GetMotherId()
+    return False
+
+
 def signal_weight(mc_tracks, pdg=None, default=1.0):
     """Return the event weight carried by the signal track.
 

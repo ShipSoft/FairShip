@@ -2,7 +2,7 @@
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
 import pytest
-from mc_truth import PRIMARY_PROCESS, find_signal_track, signal_weight
+from mc_truth import PRIMARY_PROCESS, find_signal_track, is_signal_product, signal_weight
 
 
 class FakeTrack:
@@ -169,9 +169,9 @@ def test_signal_weight_falls_back_on_nonpositive_weight():
     assert signal_weight(tracks) == pytest.approx(1.0)
 
 
-def test_signal_with_hadronic_decay_chain():
-    """Dark photon -> q qbar -> hadrons: the generator stores the whole decay chain, whose members have daughters too."""
-    tracks = [
+def hadronic_decay_chain():
+    """Dark photon -> q qbar -> hadrons, from a simulated 2 GeV QCD event: the generator stores the whole decay chain."""
+    return [
         FakeTrack(2212, -1),
         FakeTrack(4900023, 0),  # earlier Pythia copy
         FakeTrack(4900023, 1),  # signal, the copy that decays
@@ -186,4 +186,25 @@ def test_signal_with_hadronic_decay_chain():
         FakeTrack(22, 6),
         FakeTrack(22, 9),
     ]
-    assert find_signal_track(tracks) == 2
+
+
+def test_signal_with_hadronic_decay_chain():
+    """The members of the decay chain have daughters too; the signal is still the dark photon that decays."""
+    assert find_signal_track(hadronic_decay_chain()) == 2
+
+
+def test_signal_products_include_the_hadrons_of_the_decay_chain():
+    """The charged pions are granddaughters of the signal; a delta ray from one of them is not a decay product."""
+    tracks = hadronic_decay_chain() + [FakeTrack(11, 7, process="Delta ray")]
+    assert is_signal_product(tracks, 3, 2)  # quark, a direct daughter
+    assert is_signal_product(tracks, 7, 2)  # pi+ from the omega
+    assert is_signal_product(tracks, 12, 2)  # photon from the pi0
+    assert not is_signal_product(tracks, 1, 2)  # earlier copy of the signal
+    assert not is_signal_product(tracks, 2, 2)  # the signal itself
+    assert not is_signal_product(tracks, 13, 2)  # delta ray
+
+
+def test_signal_products_of_a_two_body_decay():
+    """For an HNL the decay products are the direct daughters, as before."""
+    tracks, signal = LAYOUTS["hnl_external_charm_file"]
+    assert [i for i in range(len(tracks)) if is_signal_product(tracks, i, signal)] == [3, 4]
