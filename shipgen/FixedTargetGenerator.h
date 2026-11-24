@@ -43,7 +43,8 @@ class FixedTargetGenerator : public SHiP::Generator {
   Bool_t InitForCharmOrBeauty(const TString& fInName, Int_t nev,
                               Double_t npots = 5E13, Int_t nStart = 0);
 
-  // beam energy [GeV] (Pythia8 Beams:eA; momentum of the G4only primary)
+  // total beam energy [GeV] (Pythia8 Beams:eA; the G4only primary gets the
+  // corresponding momentum)
   void SetMom(Double_t mom) { fMom = mom; };
   // beam particle, PDG code (default 2212, proton)
   void SetBeamParticle(Int_t pdg) { fBeamPDG = pdg; };
@@ -116,7 +117,8 @@ class FixedTargetGenerator : public SHiP::Generator {
   std::shared_ptr<Pythia8::RndmEngine> fRandomEngine;  //!
 
  protected:
-  Double_t fMom;       // beam energy [GeV]
+  Double_t fMom;       // total beam energy [GeV]
+  Double_t fBeamMom;   // beam momentum [GeV], from fMom and the beam mass
   Int_t fBeamPDG;      // beam particle, PDG code
   Bool_t fUseRandom1;  // flag to use TRandom1
   Bool_t fUseRandom3;  // flag to use TRandom3 (default)

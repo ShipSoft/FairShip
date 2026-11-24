@@ -262,7 +262,7 @@ ap.add_argument(
     type=float,
     dest="beam_energy",
     default=400.0,
-    help="beam energy for the FixedTargetGenerator [GeV] (Pythia8 Beams:eA; with --G4only the momentum of the primary)",
+    help="total beam energy for the FixedTargetGenerator [GeV] (Pythia8 Beams:eA; must exceed the beam particle mass)",
 )
 ap.add_argument(
     "--beam-particle",
