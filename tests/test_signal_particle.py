@@ -193,6 +193,11 @@ def test_signal_with_hadronic_decay_chain():
     assert find_signal_track(hadronic_decay_chain()) == 2
 
 
+def test_explicit_pdg_returns_the_copy_that_decays():
+    """QCD production stores an earlier copy of the dark photon as the mother of the one that decays."""
+    assert find_signal_track(hadronic_decay_chain(), pdg=4900023) == 2
+
+
 def test_signal_products_include_the_hadrons_of_the_decay_chain():
     """The charged pions are granddaughters of the signal; a delta ray from one of them is not a decay product."""
     tracks = hadronic_decay_chain() + [FakeTrack(11, 7, process="Delta ray")]

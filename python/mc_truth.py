@@ -30,7 +30,9 @@ def find_signal_track(mc_tracks, pdg=None):
     pdg : int, optional
         The signal PDG code, when the caller knows it. Otherwise the signal is
         inferred from the shape of the generator record, as described below.
-        Pass ``pdg`` where it is available.
+        Pass ``pdg`` where it is available. When several tracks match, as the
+        copies of a dark photon in QCD production do, the copy that decays is
+        returned.
 
     Notes
     -----
@@ -47,10 +49,11 @@ def find_signal_track(mc_tracks, pdg=None):
     give ``None`` rather than an arbitrary resonance decay.
     """
     if pdg is not None:
-        for i in range(len(mc_tracks)):
-            if abs(mc_tracks[i].GetPdgCode()) == abs(pdg):
-                return i
-        return None
+        # Each stored copy is the mother of the next one: skip the copies that
+        # are the mother of another match.
+        matches = [i for i in range(len(mc_tracks)) if abs(mc_tracks[i].GetPdgCode()) == abs(pdg)]
+        mothers_of_matches = {mc_tracks[i].GetMotherId() for i in matches}
+        return next((i for i in matches if i not in mothers_of_matches), None)
 
     n_tracks = len(mc_tracks)
     stack = {i for i in range(n_tracks) if mc_tracks[i].GetProcName() == PRIMARY_PROCESS}
