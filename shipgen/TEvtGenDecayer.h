@@ -5,12 +5,12 @@
 #ifndef SHIPGEN_TEVTGENDECAYER_H_
 #define SHIPGEN_TEVTGENDECAYER_H_
 
-// Custom external decayer that uses EvtGen for specific particles (like J/psi)
-// and falls back to TPythia8Decayer for others
+// External decayer for the VMC: EvtGen decays the particles registered with
+// AddEvtGenParticle (e.g. J/psi), Pythia8 decays all others.
 
+#include <memory>
 #include <vector>
 
-#include "TPythia8Decayer.h"
 #include "TString.h"
 #include "TVirtualMCDecayer.h"
 
@@ -18,6 +18,9 @@ class TClonesArray;
 class TLorentzVector;
 class EvtGen;
 class EvtParticle;
+namespace Pythia8 {
+class Pythia;
+}
 
 class TEvtGenDecayer : public TVirtualMCDecayer {
  public:
@@ -38,8 +41,10 @@ class TEvtGenDecayer : public TVirtualMCDecayer {
   void SetEvtGenParticleFile(const char* particleFile);
   void AddEvtGenParticle(Int_t pdg);  // Add particle to be handled by EvtGen
 
-  // Access methods
-  TPythia8Decayer* GetPythia8Decayer() { return fPythia8Decayer; }
+  // Pythia8 settings for the fallback decayer, applied by Init(). Call before
+  // Init(); later settings need another Pythia8::Pythia::init().
+  bool ReadString(const char* setting);
+  Pythia8::Pythia* GetPythia() { return fPythia.get(); }
 
  protected:
   Bool_t UseEvtGenForParticle(Int_t pdg);
@@ -48,11 +53,10 @@ class TEvtGenDecayer : public TVirtualMCDecayer {
   void ConvertEvtGenDecay(EvtParticle* parent);
 
  private:
-  TPythia8Decayer*
-      fPythia8Decayer;    // Fallback decayer for non-EvtGen particles
-  EvtGen* fEvtGen;        // EvtGen instance
-  TString fDecayFile;     // EvtGen DECAY.DEC file
-  TString fParticleFile;  // EvtGen particle data file
+  std::unique_ptr<Pythia8::Pythia> fPythia;  //! Decays non-EvtGen particles
+  EvtGen* fEvtGen;                           // EvtGen instance
+  TString fDecayFile;                        // EvtGen DECAY.DEC file
+  TString fParticleFile;                     // EvtGen particle data file
   std::vector<Int_t>
       fEvtGenParticles;  // List of PDG codes to handle with EvtGen
 
