@@ -94,7 +94,9 @@ def generate_cpp(point_class_names):
             for (const auto& pt : *in_{branch_name}) {{
                 auto p = pt;
                 p.SetTime(pt.GetTime() + t_offset);
-                p.SetTrackID(pt.GetTrackID() + track_offset);
+                // Negative IDs (-1, -2 for tracks not stored) are sentinels, not indices
+                if (pt.GetTrackID() >= 0)
+                    p.SetTrackID(pt.GetTrackID() + track_offset);
                 out_{branch_name}.push_back(std::move(p));
             }}
             total_points += in_{branch_name}->size();"""

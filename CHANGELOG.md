@@ -21,6 +21,10 @@ it in future.
 
 * The hit lists in `Tracklets` and `fitTrack2MC` now come from fitted states. They therefore leave out any surface that ACTS skipped. #1537
 
+### Fixed
+
+* `macro/make_time_window.py` no longer shifts negative point track IDs (`-2` for tracks dropped from `MCTrack`) by the track offset of their sub-event. Such points used to point at a track of an earlier sub-event in the window.
+
 ## 26.11 - 2026-11-26
 
 This release makes ACTS the default for pattern recognition, track fitting and
