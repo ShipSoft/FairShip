@@ -217,6 +217,16 @@ double width68Error(double width, std::size_t n) {
   return 1.1 * width / std::sqrt(static_cast<double>(n));
 }
 
+/// Whether a 3x3 covariance, given as its upper triangle (xx, xy, xz, yy, yz,
+/// zz), is positive definite: all leading principal minors positive
+bool positiveDefinite(const std::array<Double_t, 6>& c) {
+  const double minor2 = c[0] * c[3] - c[1] * c[1];
+  const double det = c[0] * (c[3] * c[5] - c[4] * c[4]) -
+                     c[1] * (c[1] * c[5] - c[4] * c[2]) +
+                     c[2] * (c[1] * c[4] - c[3] * c[2]);
+  return c[0] > 0. && minor2 > 0. && det > 0.;
+}
+
 struct Truth {
   TVector3 vertex;
   std::vector<TVector3> momenta;
@@ -232,8 +242,9 @@ struct Tally {
   std::vector<double> residual[3];
   std::vector<double> error[3];
   std::vector<double> momentumPull[3];
-  /// Momenta at the vertex with a variance that is not positive, per axis
-  int nonPositive[3] = {0, 0, 0};
+  int momenta = 0;
+  /// Momenta at the vertex whose covariance is not positive definite
+  int notPositiveDefinite = 0;
   std::vector<double> momentumResidual;
   std::vector<double> doca;
 
@@ -263,11 +274,14 @@ struct Tally {
       const double w = width68(momentumPull[i]);
       std::cout << "  momentum p" << axes[i] << " at the vertex: pull width "
                 << w << " +- " << width68Error(w, momentumPull[i].size())
-                << " (N = " << momentumPull[i].size() << ", " << nonPositive[i]
-                << " left out with a variance <= 0)" << std::endl;
+                << " (N = " << momentumPull[i].size() << ")" << std::endl;
       check(w > 0.7 && w < 1.4,
             name + ": p" + axes[i] + " pull width within 0.7-1.4");
     }
+    std::cout << "  momentum covariance not positive definite: "
+              << notPositiveDefinite << " of " << momenta << std::endl;
+    check(notPositiveDefinite == 0,
+          name + ": momentum covariances at the vertex positive definite");
     const double dp = width68(momentumResidual);
     std::cout << "  dp/p at the vertex: width " << dp << std::endl;
     check(dp < 0.05, name + ": momentum at the vertex within 5%");
@@ -347,14 +361,13 @@ void runEvent(SHiP::ActsStrawTracker& tracker, const TVector3& vertex,
     const double measured[3] = {found.trackPx()[k], found.trackPy()[k],
                                 found.trackPz()[k]};
     const auto cov = found.GetTrackMomentumCovariance(k);
+    ++tally.momenta;
+    if (!positiveDefinite(cov)) {
+      ++tally.notPositiveDefinite;
+      continue;
+    }
     const double variances[3] = {cov[0], cov[3], cov[5]};
     for (int i = 0; i < 3; ++i) {
-      // Some low-momentum tracks come out of the fits with a slightly
-      // negative pz variance; they are counted, not checked
-      if (!(variances[i] > 0.)) {
-        ++tally.nonPositive[i];
-        continue;
-      }
       tally.momentumPull[i].push_back((measured[i] - p[i]) /
                                       std::sqrt(variances[i]));
     }
