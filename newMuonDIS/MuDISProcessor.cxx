@@ -10,6 +10,8 @@
 #include <cmath>
 #include <iomanip>
 #include <iostream>
+#include <stdexcept>
+#include <string>
 
 #include "FairLogger.h"
 #include "TMath.h"
@@ -169,6 +171,7 @@ Bool_t MuDISProcessor::InitFiles(const std::vector<std::string>& fileNames,
     LOG(info) << "MuDISProcessor: Initialization successful.";
     return kTRUE;
   }
+  LOG(error) << "MuDISProcessor: " << fileNames.at(0) << " has no cbmsim tree.";
   return kFALSE;
 }
 
@@ -182,16 +185,20 @@ void MuDISProcessor::process_file(const std::vector<std::string>& input,
                                   const std::string& output) {
   Bool_t treeOK = InitFiles(input);
 
+  // Throw rather than return, as MuDISFilter does, so that a failed job
+  // exits non-zero from Python instead of finishing without an output file
   if (!treeOK) {
     LOG(error) << " -- Error reading input files: n=" << input.size();
     if (input.size() > 0) LOG(error) << " first file: " << input[0];
-    return;
+    throw std::runtime_error(
+        "MuDISProcessor: failed to initialize input files");
   }
 
   TFile* outfile = TFile::Open(output.c_str(), "RECREATE");
   if (!outfile) {
     LOG(error) << " -- Error creating outputfile: " << output;
-    return;
+    throw std::runtime_error("MuDISProcessor: cannot create output file " +
+                             output);
   }
   outfile->cd();
   fouttree = new TTree(
