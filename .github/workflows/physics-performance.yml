@@ -75,6 +75,18 @@ jobs:
           path: build/
       - name: Run tracking scan
         run: pixi run --locked ${{ matrix.task }} "$n_events"
+      # run_tracking_scan.py skips failed points and still exits 0, so check
+      # that the results cover the whole grid.
+      - name: Check all scan points succeeded
+        env:
+          results: tracking_${{ matrix.mode }}_scan/scan_results.json
+        run: |
+          jq -e '
+            (if .scan_config.scan_mode == "theta" then .scan_config.thetas else .scan_config.nTracksList end | length) as $expected
+            | (.scan_results | length) as $got
+            | if $got == $expected then true
+              else "\($expected - $got) of \($expected) scan points failed\n" | halt_error(1) end
+          ' "$results"
       - name: Upload results
         if: always()
         uses: actions/upload-artifact@v7
