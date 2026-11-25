@@ -70,7 +70,8 @@ parser.add_argument("--Pythia8", dest="pythia8", help="Use Pythia8", action="sto
 parser.add_argument(
     "--EvtGenDecayer",
     dest="evtgen_decayer",
-    help="Use TEvtGenDecayer (EvtGen for J/psi and Upsilon(1S), Pythia8 for charm and tau). Always on for Genie and NuRadio",
+    help="Use TEvtGenDecayer (EvtGen for J/psi and Upsilon(1S), Pythia8 for tau; Geant4 still decays charm hadrons itself). "
+    "Always on for Genie and NuRadio",
     action="store_true",
 )
 parser.add_argument(
