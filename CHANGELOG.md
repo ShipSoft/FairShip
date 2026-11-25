@@ -28,6 +28,7 @@ it in future.
 
 * Muon DIS generation (`newMuonDIS`) skips a muon when Pythia 6 reports at initialisation that it has nothing to generate (`MSTI(53)`), instead of stopping the job or looping forever in `GenerateEvent`. If only the neutron initialisation fails, the proton events for that muon are kept. This needs the matching pythia6 fix (ShipSoft/pythia6#3) to catch an empty photon mixture; with older pythia6 versions nothing changes.
 * The ACTS straw material now comes from the straw wall, gas and wire volumes of the geometry instead of fixed values. Each part counts with its mean path through the straw. A straw is now 5.3e-4 X0, where it was 5.7e-4: the walls were too thin (tracks taken through the straw centre) and the gas X0 was 30 m instead of 128 m (Ar/CO2 80/20).
+* `DPPythia8Generator` and `HNLPythia8Generator` (also used for `--RpvSusy`) shift the decay products by the beam smearing and painting offset, as they already did for the mother and the dark photon or HNL. The products started from the unshifted decay vertex, so they pointed back to the target centre instead of to the stored production point, about 5 cm away with the default 8 mm smearing and 5 cm painting radius.
 
 ## 26.10 - 2026-10-28
 
