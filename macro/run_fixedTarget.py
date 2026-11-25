@@ -258,6 +258,20 @@ ap.add_argument(
     help="beam painting radius for the FixedTargetGenerator [mm]",
 )
 ap.add_argument(
+    "--beam-energy",
+    type=float,
+    dest="beam_energy",
+    default=400.0,
+    help="total beam energy for the FixedTargetGenerator [GeV] (Pythia8 Beams:eA; must exceed the beam particle mass)",
+)
+ap.add_argument(
+    "--beam-particle",
+    type=int,
+    dest="beam_particle",
+    default=2212,
+    help="beam particle for the FixedTargetGenerator, as a PDG code (default 2212, proton)",
+)
+ap.add_argument(
     "--TARGET_YAML",
     dest="TARGET_YAML",
     help="File for target configuration",
@@ -283,6 +297,10 @@ if args.kaon_pion_splits < 0:
     ap.error("--kaon-pion-splits must be >= 0")
 if args.pythia8_tune != "default" and (args.charm or args.beauty or args.G4only):
     ap.error("--pythia8-tune only affects the Pythia8 primary interaction, which --charm/--beauty/--G4only do not run")
+if (args.beam_energy != 400.0 or args.beam_particle != 2212) and (args.charm or args.beauty):
+    ap.error("--beam-energy and --beam-particle only affect the primary interaction, which --charm/--beauty do not run")
+if not args.beam_energy > 0:
+    ap.error("--beam-energy must be > 0")
 if args.multiple_kpi_splits and (args.kaon_pion_splits < 1 or args.intermediate_kaon_pion_splits < 1):
     ap.error("--multiple-kpi-splits requires --kaon-pion-splits and --intermediate-kaon-pion-splits to be positive")
 if not args.kaon_pion_lifetime_factor > 0:
@@ -529,7 +547,8 @@ P8gen.SetSmearBeam(args.beam_smear * u.mm)
 P8gen.SetPaintRadius(args.beam_paint * u.mm)
 # Use geometry constants instead of fragile TGeo navigation
 P8gen.SetTargetCoordinates(ship_geo.target.z0, ship_geo.target.z0 + ship_geo.target.length)
-P8gen.SetMom(400.0 * u.GeV)
+P8gen.SetMom(args.beam_energy * u.GeV)
+P8gen.SetBeamParticle(args.beam_particle)
 P8gen.SetEnergyCut(args.ecut * u.GeV)
 P8gen.SetDebug(args.debug)
 P8gen.SetHeartBeat(100000)

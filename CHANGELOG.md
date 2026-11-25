@@ -14,6 +14,7 @@ it in future.
 
 ### Added
 
+* `run_fixedTarget.py` has `--beam-energy` (GeV, default 400) and `--beam-particle` (PDG code, default 2212) options, passed to `FixedTargetGenerator::SetMom` and the new `SetBeamParticle`. They were fixed at a 400 GeV proton. The energy is the total beam energy in both modes: the `--G4only` primary now gets the matching momentum (399.9989 instead of 400 GeV/c for the default proton). Otherwise the defaults reproduce the previous behaviour. Pythia8 initialisation failures, an unknown beam particle and an energy below its mass now stop the run in `Init()`. Both values are recorded in the FileSummary.
 * GENIE (pythia8 build) is now a pixi dependency, so `macro/makeGenieEvents.py` can run `gmkspl`, `gevgen` and `gntpc` in the pixi environment without a separate GENIE installation.
 
 ### Changed
