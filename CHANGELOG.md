@@ -19,6 +19,16 @@ it in future.
 ### Changed
 
 * The hit lists in `Tracklets` and `fitTrack2MC` now come from fitted states. They therefore leave out any surface that ACTS skipped. #1537
+* `run_simScript.py Genie` and `--NuRadio` use `TEvtGenDecayer` (`DecayConfigTEvtGen.C`) as external decayer, like `--EvtGenDecayer`: EvtGen decays J/psi and Upsilon(1S), and Pythia8 the other particles Geant4 hands over, such as tau. Before, ROOT's `TPythia8Decayer` decayed tau, and Geant4 decayed J/psi and Upsilon(1S). Geant4 decays charm hadrons with its own decay tables in both cases: `gMC->SetUserDecay` does not override them, and `gconfig/g4config.in` selects only J/psi for the external decayer.
+* FairShip no longer uses ROOT's `TPythia8` (libEGPythia8), so ROOT no longer needs to be built with Pythia8. `TEvtGenDecayer` and `macro/makeDecay.py` use Pythia8 directly, `python/PythiaList.py` the `pythia8` Python module. `TEvtGenDecayer::GetPythia8Decayer()` is replaced by `GetPythia()` and `ReadString()`. The decay products it hands to Geant4 have their vertices in cm and times in s, where they were in mm and mm/c; Geant4 does not use them.
+
+### Removed
+
+* The external decayer configurations `gconfig/DecayConfigNuAge.C`, `DecayConfigPy8.C` and `DecayConfigPy6.C`. `DecayConfigNuAge.C` configured the shared `TPythia8::Instance()`, while `TPythia8Decayer` decays with its own `TPythia8`, so none of its settings were applied.
+
+### Fixed
+
+* The Pythia8 decays of the external decayer (tau with `--EvtGenDecayer`, Genie and `--NuRadio`) now follow `--seed`. `TEvtGenDecayer` seeded `TPythia8::Instance()`, which `TPythia8Decayer` does not use, so every job decayed with Pythia8's default seed and drew the same sequence of random numbers: with seeds 42 and 43, 1992 of 2000 tau decayed into the same channel.
 
 ## 26.11 - 2026-11-26
 
