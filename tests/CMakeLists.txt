@@ -80,6 +80,31 @@ target_link_libraries(
 )
 add_test(NAME FixedTargetCascadeWeight COMMAND testFixedTargetCascadeWeight)
 
+# EvtGen decays of D_s in FixedTargetGenerator: B(D_s -> tau nu) and tau
+# polarisation, by default and with --tau-only (one EvtGen per process)
+add_executable(testFixedTargetEvtGenDecays test_fixedtarget_evtgen_decays.cxx)
+target_link_libraries(
+    testFixedTargetEvtGenDecays
+    ShipGen
+    ROOT::Core
+    ROOT::RIO
+    ROOT::Hist
+    ROOT::Tree
+    ROOT::Geom
+    ROOT::Physics
+    FairRoot::Base
+    FairLogger::FairLogger
+)
+add_test(NAME FixedTargetEvtGenDecays COMMAND testFixedTargetEvtGenDecays)
+add_test(
+    NAME FixedTargetEvtGenDecaysTauOnly
+    COMMAND testFixedTargetEvtGenDecays tauonly
+)
+add_test(
+    NAME FixedTargetEvtGenDecaysJpsiMainly
+    COMMAND testFixedTargetEvtGenDecays jpsimainly
+)
+
 # Event-level uncertainties for samples with correlated (split) branches
 add_executable(testEventHistogram test_event_histogram.cxx)
 target_link_libraries(
