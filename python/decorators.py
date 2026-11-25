@@ -4,7 +4,7 @@
 from ctypes import c_double
 
 import ROOT
-import shipunit as u
+import hepunits as u
 
 
 def MCPointPrintOut(self) -> str:

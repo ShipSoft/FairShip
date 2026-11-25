@@ -11,7 +11,7 @@ ROOT.gROOT.ProcessLine('#include "FairModule.h"')
 time.sleep(20)
 
 import geometry_config
-import shipunit as u
+import hepunits as u
 
 mcEngine = "TGeant4"
 runnr = 1

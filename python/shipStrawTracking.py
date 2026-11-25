@@ -13,11 +13,12 @@ import ROOT
 
 # For modules
 import shipDet_conf
-import shipunit as u
 from mc_truth import find_signal_track
 
 # For ShipGeo
 from ShipGeoConfig import load_from_root_file
+
+import hepunits as u
 
 # For track pattern recognition
 

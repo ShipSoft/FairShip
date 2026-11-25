@@ -20,6 +20,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/linux-64/lhapdf-6.5.6-py313h2551ef2_4.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/log4cpp-1.1.4-h59595ed_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/faircmakemodules-1.0.0-h98f672e_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/noarch/hepunits-2.4.7-pyhc364b38_0.conda
       - conda: https://prefix.dev/conda-forge/linux-64/_openmp_mutex-4.5-8_kmp_llvm.conda
       - conda: https://prefix.dev/conda-forge/linux-64/alsa-lib-1.2.16.1-h7cc23a3_1.conda
       - conda: https://prefix.dev/conda-forge/linux-64/argon2-cffi-bindings-26.1.0-py313h995f894_2.conda
@@ -444,6 +445,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/linux-64/lhapdf-6.5.6-py313h2551ef2_4.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/log4cpp-1.1.4-h59595ed_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/faircmakemodules-1.0.0-h98f672e_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/noarch/hepunits-2.4.7-pyhc364b38_0.conda
       - conda: https://prefix.dev/conda-forge/linux-64/_openmp_mutex-4.5-8_kmp_llvm.conda
       - conda: https://prefix.dev/conda-forge/linux-64/alsa-lib-1.2.16.1-h7cc23a3_1.conda
       - conda: https://prefix.dev/conda-forge/linux-64/argon2-cffi-bindings-26.1.0-py313h995f894_2.conda
@@ -940,6 +942,19 @@ packages:
   run_exports: {}
   size: 18123
   timestamp: 1780676604349
+- conda: https://conda.anaconda.org/conda-forge/noarch/hepunits-2.4.7-pyhc364b38_0.conda
+  sha256: 22c83863512343fd209252dfe5192503431725dd25d185597720163455da7162
+  md5: c63d169595c5e358ae00c514be8c1602
+  depends:
+  - python >=3.9
+  - python
+  license: BSD-3-Clause
+  license_family: BSD
+  purls:
+  - pkg:pypi/hepunits?source=compressed-mapping
+  run_exports: {}
+  size: 21156
+  timestamp: 1790898561110
 - conda: https://prefix.dev/conda-forge/linux-64/_openmp_mutex-4.5-8_kmp_llvm.conda
   build_number: 8
   sha256: b8de006376660eb12c7fc40803c97e1480bf4bc1253f0d59694b12f81b52fe14

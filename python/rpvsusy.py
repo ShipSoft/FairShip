@@ -34,8 +34,8 @@ r"""
 import math
 import re
 
-import shipunit as u
 from rootUtils import get_particle
+import hepunits as u
 
 
 def PDGname(particle):

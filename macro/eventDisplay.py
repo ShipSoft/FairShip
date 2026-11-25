@@ -17,7 +17,7 @@ from array import array
 
 import decorators
 import shipRoot_conf
-import shipunit as u
+import hepunits as u
 from ShipGeoConfig import load_from_root_file
 
 shipRoot_conf.configure()
@@ -163,12 +163,12 @@ def printMCTrack(n: int, MCTrack) -> None:
     )
 
 
-def dump(pcut: float = 0) -> None:
+def dump(pcut_in_GeV: float = 0) -> None:
     print("   #         pid   px    py      pz     vx      vy       vz      mid")
     n = -1
     for mcp in sTree.MCTrack:
         n += 1
-        if mcp.GetP() / u.GeV < pcut:
+        if mcp.GetP() / u.GeV < pcut_in_GeV:
             continue
         printMCTrack(n, sTree.MCTrack)
 

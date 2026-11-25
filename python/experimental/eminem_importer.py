@@ -22,7 +22,7 @@ from pathlib import Path
 
 import numpy as np
 import ROOT
-import shipunit as u
+import hepunits as u
 
 
 def parse_arguments():
