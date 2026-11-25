@@ -117,11 +117,43 @@ int main() {
   Check(std::abs(frac - expected) < 5. * sigma,
         "D+ -> K- X fraction agrees with the decay table");
 
+  // Weakly decaying products (c tau0 above 1 um) come back undecayed, for
+  // the transport to decay them where they decay: K0S, Lambda, tau from
+  // D_s -> tau nu, ... Strong and electromagnetic decays (pi0, eta, rho, K*)
+  // happen in Pythia8.
+  int nLongLived = 0, nLongLivedDecayed = 0, nTau = 0, nShortLivedFinal = 0;
+  for (int pdg : {411, 421, 431, 4122}) {
+    for (int i = 0; i < 20000; i++) {
+      const int n = DecayOnce(decayer, record, pdg, 0.);
+      Check(static_cast<TParticle*>(record.At(0))->GetStatusCode() == 0,
+            "the handed-over particle decays");
+      for (int j = 1; j < n; j++) {
+        auto* part = static_cast<TParticle*>(record.At(j));
+        const int id = std::abs(part->GetPdgCode());
+        if (pd.tau0(id) > 1e-3) {
+          nLongLived++;
+          if (part->GetStatusCode() != 1) nLongLivedDecayed++;
+          if (id == 15) nTau++;
+        } else if (pd.canDecay(id) && part->GetStatusCode() == 1) {
+          nShortLivedFinal++;
+        }
+      }
+    }
+    Check(!pd.mayDecay(pdg),
+          "species of the handed-over particle stays stable");
+  }
+  std::printf("weakly decaying products: %d (%d decayed), tau: %d\n",
+              nLongLived, nLongLivedDecayed, nTau);
+  Check(nLongLived > 1000 && nTau > 0, "weakly decaying products occur");
+  Check(nLongLivedDecayed == 0, "weakly decaying products are not decayed");
+  Check(nShortLivedFinal == 0, "short-lived products are decayed");
+
   // Units. The decaying particle decays where Geant4 hands it over, so its
   // daughters start at the origin at t = 0. Particles decayed further down
-  // the chain, like K0S from D+ -> K0S X, get displaced vertices: their mean
-  // proper decay length must be c tau0 in cm and their mean proper time
-  // tau0 in s.
+  // the chain get displaced vertices. With K0S decays switched on for this
+  // check, their mean proper decay length must be c tau0 in cm and their
+  // mean proper time tau0 in s.
+  pd.mayDecay(310, true);
   const double cLight = 29979245800.;         // cm/s
   const double ctauK0S = pd.tau0(310) * 0.1;  // mm -> cm
   double sumL = 0., sumL2 = 0., sumT = 0.;
@@ -164,6 +196,7 @@ int main() {
   Check(std::abs(decayer.GetLifetime(310) - ctauK0S / cLight) <
             1e-6 * ctauK0S / cLight,
         "GetLifetime in s");
+  pd.mayDecay(310, false);
 
   // Seeding: the decays follow gRandom's seed.
   auto channels = [&record](int seed) {

@@ -34,6 +34,10 @@ constexpr double kMmOverCToS = 1e-3 / 299792458.;
 // Pythia8 accepts Random:seed in [1, 900000000]; 0 and negative values mean
 // a time-based and the default seed respectively.
 constexpr UInt_t kPythiaMaxSeed = 900000000;
+// Products with a proper lifetime above this (c tau0 in mm) are handed back
+// to the VMC undecayed: weakly decaying hadrons and tau fly and decay in
+// the transport, strong and electromagnetic decays happen in Pythia8.
+constexpr double kMaxTau0 = 1e-3;
 }  // namespace
 
 //_____________________________________________________________________________
@@ -75,6 +79,14 @@ void TEvtGenDecayer::Init() {
     LOG(fatal) << "TEvtGenDecayer: Pythia8 initialisation failed";
   }
   LOG(info) << "TEvtGenDecayer: Pythia8 seeded with " << pythiaSeed;
+
+  // Keep weakly decaying products (strange, charm and bottom hadrons, tau)
+  // for the transport, which decays them where they actually decay.
+  // ParticleDecays:limitTau0 cannot be used: it would also keep the particle
+  // that the transport asks to decay.
+  for (auto& [id, entry] : fPythia->particleData) {
+    if (entry->tau0() > kMaxTau0) entry->setMayDecay(false);
+  }
 
   // Initialize EvtGen if decay files are specified
   if (fDecayFile != "" && fParticleFile != "") {
@@ -278,10 +290,16 @@ void TEvtGenDecayer::DecayWithPythia8(Int_t pdg, TLorentzVector* p) {
   Pythia8::Event& event = fPythia->event;
   event.clear();
   event.append(pdg, 11, 0, 0, p->Px(), p->Py(), p->Pz(), p->E(), p->M());
-  // Geant4 hands over only particles it wants decayed: decay them even if
-  // Pythia8 would keep them stable by default.
-  fPythia->particleData.mayDecay(pdg, true);
-  if (!fPythia->moreDecays()) {
+  // Geant4 hands over only particles it wants decayed: decay this one even
+  // though its species is kept stable for products, then let Pythia8 decay
+  // the short-lived products.
+  Pythia8::ParticleData& particleData = fPythia->particleData;
+  const bool mayDecay = particleData.mayDecay(pdg);
+  particleData.mayDecay(pdg, true);
+  bool decayed = fPythia->moreDecays(0);
+  particleData.mayDecay(pdg, mayDecay);
+  decayed = decayed && fPythia->moreDecays();
+  if (!decayed) {
     LOG(warning) << "TEvtGenDecayer: Pythia8 failed to decay PDG " << pdg;
   }
 }

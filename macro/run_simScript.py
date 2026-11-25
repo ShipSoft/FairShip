@@ -70,8 +70,7 @@ parser.add_argument("--Pythia8", dest="pythia8", help="Use Pythia8", action="sto
 parser.add_argument(
     "--EvtGenDecayer",
     dest="evtgen_decayer",
-    help="Use TEvtGenDecayer (EvtGen for J/psi and Upsilon(1S), Pythia8 for tau; Geant4 still decays charm hadrons itself). "
-    "Always on for Genie and NuRadio",
+    help="Deprecated, no effect: TEvtGenDecayer is always the external decayer",
     action="store_true",
 )
 parser.add_argument(
@@ -919,7 +918,6 @@ if options.command == "Genie":
     primGen.AddGenerator(Geniegen)
     ROOT.SetOwnership(Geniegen, False)  # C++ FairPrimaryGenerator takes ownership
     options.nEvents = Geniegen.GetNevents() if options.nEvents == -1 else min(options.nEvents, Geniegen.GetNevents())
-    run.SetPythiaDecayer("DecayConfigTEvtGen.C")
     print("Generate ", options.nEvents, " with Genie input", " first event", options.firstEvent)
 if options.nuradio:
     useInputFile(inputFile)
@@ -936,8 +934,6 @@ if options.nuradio:
     #  add tungsten to PDG
     pdg = ROOT.TDatabasePDG.Instance()
     pdg.AddParticle("W", "Ion", 1.71350e02, True, 0.0, 74, "XXX", 1000741840)
-    #
-    run.SetPythiaDecayer("DecayConfigTEvtGen.C")
 if options.ttree:
     useInputFile(inputFile)
     primGen.SetTarget(0.0 + options.targetOffset * u.m, 0.0)
@@ -1070,14 +1066,18 @@ if options.eventDisplay:
 else:
     run.SetStoreTraj(ROOT.kFALSE)
 
-# -----Configure external decayer globally------------------------------------
-# Genie and NuRadio runs use TEvtGenDecayer already; other modes only with --EvtGenDecayer
+# -----External decayer------------------------------------------------------
+# EvtGen decays J/psi and Upsilon(1S), Pythia8 tau and charm and bottom hadrons
 if options.evtgen_decayer:
-    run.SetPythiaDecayer("DecayConfigTEvtGen.C")
-    print("Using TEvtGenDecayer for J/psi and quarkonium decays with EvtGen")
+    print("--EvtGenDecayer is deprecated and has no effect: TEvtGenDecayer is always used")
+run.SetPythiaDecayer("DecayConfigTEvtGen.C")
 
 # -----Initialize simulation run------------------------------------
 run.Init()
+# Imported here: it reads Geant4 headers, whose libraries run.Init() loads
+import external_decays
+
+external_decays.use_external_decayer_for_heavy_flavour()
 if options.geofile:
     geometry_from_file.check_swapped(modules[geometry_from_file.SWAP_NAME])
 if options.dryrun:  # Early stop after setting up Pythia 8

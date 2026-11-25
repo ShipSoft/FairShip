@@ -579,9 +579,17 @@ ROOT.SetOwnership(P8gen, False)  # C++ FairPrimaryGenerator takes ownership
 #
 run.SetGenerator(primGen)
 ROOT.SetOwnership(primGen, False)  # C++ FairRunSim takes ownership
+# External decayer: Pythia8 decays tau and charm and bottom hadrons produced in the
+# transport. Without EvtGen, as FixedTargetGenerator sets up EvtGen and EvtGen can be
+# set up only once per process.
+run.SetPythiaDecayer("DecayConfigPythia8.C")
 
 # -----Initialize simulation run------------------------------------
 run.Init()
+# Imported here: it reads Geant4 headers, whose libraries run.Init() loads
+import external_decays
+
+external_decays.use_external_decayer_for_heavy_flavour()
 
 if (args.AddMuonShield or args.AddHadronAbsorberOnly) and args.AddMuonShieldField:
     # The muon shield field, including the hadron absorber, comes from the field map
