@@ -221,14 +221,18 @@ void TEvtGenDecayer::DecayWithEvtGen(Int_t pdg, TLorentzVector* p) {
       // Generate decay
       fEvtGen->generateDecay(parent);
 
-      // Convert EvtGen decay products to ROOT format
-      ConvertEvtGenDecay(parent);
-
-      LOG(debug1)
-          << "TEvtGenDecayer: EvtGen decay products converted and stored";
-
-      // Clean up
-      parent->deleteTree();
+      if (parent->getNDaug() > 0) {
+        ConvertEvtGenDecay(parent);
+        LOG(debug1)
+            << "TEvtGenDecayer: EvtGen decay products converted and stored";
+        parent->deleteTree();
+      } else {
+        // Returning the particle undecayed would hand it straight back
+        LOG(warning) << "TEvtGenDecayer: EvtGen did not decay PDG " << pdg
+                     << ", falling back to Pythia8";
+        parent->deleteTree();
+        DecayWithPythia8(pdg, p);
+      }
     } else {
       LOG(warning) << "TEvtGenDecayer: Could not create EvtParticle for PDG "
                    << pdg;
@@ -245,36 +249,49 @@ void TEvtGenDecayer::DecayWithEvtGen(Int_t pdg, TLorentzVector* p) {
 
 //_____________________________________________________________________________
 void TEvtGenDecayer::ConvertEvtGenDecay(EvtParticle* parent) {
-  // Convert EvtGen decay products to ROOT/GEANT4 format
-  // Clear previous decay products
+  // Write the EvtGen decay tree as a record like the Pythia8 one: entry 0 is
+  // the decaying particle, followed by the products of each decayed entry.
+  // Momenta are in the lab frame (getP4Lab(); getP4() is in the rest frame
+  // of the mother). Vertices are relative to the decay point, in cm and s.
+  // The walk stops at products with c tau0 above kMaxTau0: they go to the
+  // transport undecayed and their decay by EvtGen is dropped, as for long-
+  // lived products of Pythia8 decays. Status 1 marks the final particles.
   fEvtGenProducts->Clear();
   fHasEvtGenDecay = kTRUE;
+  TClonesArray& record = *fEvtGenProducts;
 
-  int nDaughters = parent->getNDaug();
-  LOG(debug2) << "ConvertEvtGenDecay: Converting " << nDaughters
-              << " daughter particles";
+  // EvtGen positions are in mm and times in mm/c, in its lab frame
+  const EvtVector4R decayPoint = parent->getDaug(0)->get4Pos();
+  auto store = [&](int index, EvtParticle* particle, int mother) {
+    const EvtVector4R p4 = particle->getP4Lab();
+    const EvtVector4R x = mother < 0 ? EvtVector4R(0., 0., 0., 0.)
+                                     : particle->get4Pos() - decayPoint;
+    new (record[index]) TParticle(
+        EvtPDL::getStdHep(particle->getId()), 1, mother, -1, -1, -1, p4.get(1),
+        p4.get(2), p4.get(3), p4.get(0), x.get(1) * kMmToCm, x.get(2) * kMmToCm,
+        x.get(3) * kMmToCm, x.get(0) * kMmOverCToS);
+  };
 
-  // Convert each daughter particle to TParticle format
-  for (int i = 0; i < nDaughters; i++) {
-    EvtParticle* daughter = parent->getDaug(i);
-    EvtVector4R p4 = daughter->getP4();
-    int pdgId = EvtPDL::getStdHep(daughter->getId());
-
-    // Create TParticle (ROOT format)
-    TParticle* particle = new ((*fEvtGenProducts)[i]) TParticle();
-    particle->SetPdgCode(pdgId);
-    particle->SetMomentum(p4.get(1), p4.get(2), p4.get(3),
-                          p4.get(0));           // px, py, pz, E
-    particle->SetProductionVertex(0, 0, 0, 0);  // Produced at origin
-    particle->SetStatusCode(1);                 // Stable particle
-
-    LOG(debug2) << "  Daughter " << i << ": PDG=" << pdgId
-                << ", E=" << p4.get(0) << ", px=" << p4.get(1)
-                << ", py=" << p4.get(2) << ", pz=" << p4.get(3);
+  std::vector<EvtParticle*> entries{parent};
+  store(0, parent, -1);
+  for (size_t k = 0; k < entries.size(); k++) {
+    EvtParticle* particle = entries[k];
+    const bool decayed =
+        particle->getNDaug() > 0 &&
+        (k == 0 || EvtPDL::getctau(particle->getId()) <= kMaxTau0);
+    if (!decayed) continue;
+    auto* entry = static_cast<TParticle*>(record.At(k));
+    entry->SetStatusCode(0);
+    entry->SetFirstDaughter(entries.size());
+    for (size_t i = 0; i < particle->getNDaug(); i++) {
+      entries.push_back(particle->getDaug(i));
+      store(entries.size() - 1, entries.back(), k);
+    }
+    entry->SetLastDaughter(entries.size() - 1);
   }
 
-  LOG(debug1) << "ConvertEvtGenDecay: Stored "
-              << fEvtGenProducts->GetEntriesFast() << " particles";
+  LOG(debug1) << "ConvertEvtGenDecay: Stored " << record.GetEntriesFast()
+              << " particles";
 }
 
 //_____________________________________________________________________________

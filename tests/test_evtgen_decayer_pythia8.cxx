@@ -12,6 +12,7 @@
 
 #include <cmath>
 #include <cstdio>
+#include <cstdlib>
 #include <vector>
 
 #include "Pythia8/Pythia.h"
@@ -197,6 +198,89 @@ int main() {
             1e-6 * ctauK0S / cLight,
         "GetLifetime in s");
   pd.mayDecay(310, false);
+
+  // EvtGen path (J/psi, Upsilon(1S)): lab-frame momenta, full record, and
+  // only stable or long-lived particles as final ones.
+  const char* evtgenData = std::getenv("EVTGENDATA");
+  if (evtgenData == nullptr) {
+    std::printf("EVTGENDATA not set: skipping the EvtGen checks\n");
+  } else {
+    TEvtGenDecayer evtgen;
+    evtgen.SetEvtGenDecayFile(Form("%s/DECAY.DEC", evtgenData));
+    evtgen.SetEvtGenParticleFile(Form("%s/evt.pdl", evtgenData));
+    evtgen.AddEvtGenParticle(443);
+    evtgen.AddEvtGenParticle(553);
+    evtgen.Init();
+    // EvtGen's own hadronic Upsilon decays (through Pythia8) occasionally
+    // lose a particle, so the direct products of the decaying particle do
+    // not always add up to it. The record must reproduce EvtGen exactly:
+    // every decayed entry equals the sum of its products, and the final
+    // particles add up to the direct products of entry 0.
+    int nShortLivedFinal = 0, nLongLivedFinal = 0, nUnbalanced = 0;
+    const int nPerSample = 500;
+    for (int pdg : {443, 553}) {
+      for (double pz : {0., 50.}) {
+        for (int i = 0; i < nPerSample; i++) {
+          const int n = DecayOnce(evtgen, record, pdg, pz);
+          Check(n > 2, "EvtGen record has products");
+          TLorentzVector finalSum, direct, parent;
+          static_cast<TParticle*>(record.At(0))->Momentum(parent);
+          for (int j = 0; j < n; j++) {
+            auto* part = static_cast<TParticle*>(record.At(j));
+            TLorentzVector p4;
+            part->Momentum(p4);
+            if (part->GetFirstMother() == 0) direct += p4;
+            if (part->GetStatusCode() == 0) {
+              TLorentzVector products;
+              for (int d = part->GetFirstDaughter();
+                   d >= 0 && d <= part->GetLastDaughter(); d++) {
+                auto* daughter = static_cast<TParticle*>(record.At(d));
+                Check(daughter->GetFirstMother() == j,
+                      "EvtGen daughters point to their mother");
+                TLorentzVector q;
+                daughter->Momentum(q);
+                products += q;
+              }
+              if (j > 0) {
+                Check(
+                    (products - p4).P() < 1e-6 * (1. + p4.E()) &&
+                        std::abs(products.E() - p4.E()) < 1e-6 * (1. + p4.E()),
+                    "EvtGen decayed entry equals the sum of its products");
+              }
+              continue;
+            }
+            finalSum += p4;
+            const int id = std::abs(part->GetPdgCode());
+            if (pd.tau0(id) > 1e-3) {
+              nLongLivedFinal++;
+            } else if (pd.canDecay(id)) {
+              nShortLivedFinal++;
+            }
+          }
+          Check((finalSum - direct).P() < 1e-6 * (1. + parent.E()) &&
+                    std::abs(finalSum.E() - direct.E()) <
+                        1e-6 * (1. + parent.E()),
+                "EvtGen final particles add up to the direct products");
+          // Lab frame: the products carry the momentum of the boosted
+          // parent, up to EvtGen's rare unbalanced decays
+          if ((finalSum - parent).P() > 1e-6 * (1. + parent.E()) ||
+              std::abs(finalSum.E() - parent.E()) > 1e-6 * (1. + parent.E())) {
+            nUnbalanced++;
+            Check(std::abs(finalSum.E() - parent.E()) < 0.1 * parent.E(),
+                  "EvtGen products are in the lab frame");
+          }
+        }
+      }
+    }
+    std::printf(
+        "EvtGen: long-lived final particles %d, short-lived %d, "
+        "unbalanced decays %d of %d\n",
+        nLongLivedFinal, nShortLivedFinal, nUnbalanced, 4 * nPerSample);
+    Check(nLongLivedFinal > 0, "EvtGen hands long-lived products back");
+    Check(nShortLivedFinal == 0, "EvtGen decays short-lived products");
+    Check(nUnbalanced < 0.01 * 4 * nPerSample,
+          "EvtGen decays conserve four-momentum, up to rare exceptions");
+  }
 
   // Seeding: the decays follow gRandom's seed.
   auto channels = [&record](int seed) {
