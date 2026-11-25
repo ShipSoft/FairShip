@@ -20,6 +20,10 @@ it in future.
 
 * The hit lists in `Tracklets` and `fitTrack2MC` now come from fitted states. They therefore leave out any surface that ACTS skipped. #1537
 
+### Fixed
+
+* `FixedTargetGenerator` (`run_fixedTarget.py`) with EvtGen, the default: EvtGen decays every particle in its decay table instead of Pythia8, so the changes made to Pythia8 decay tables did not apply. D_s -> tau nu was 3.1% (EvtGen's 2011 value, measured 3.12% +- 0.03%) in place of the 5.36% world average that sets the tau neutrino yield, and `--tau-only` and `--Jpsi-mainly` had no effect in the primary mode. The same changes are now read into EvtGen as user decays, and EvtGen decays from the first event on. In charm and beauty mode EvtGen was not used at all: Pythia8 decayed the hadrons, without the polarisation of the tau from D_s -> tau nu. EvtGen now decays them there as well, and the tau from D_s are fully polarised.
+
 ## 26.11 - 2026-11-26
 
 This release makes ACTS the default for pattern recognition, track fitting and
