@@ -18,6 +18,7 @@ it in future.
 
 ### Changed
 
+* The pixi environment uses Pythia 8.318 instead of 8.312, with ROOT, EvtGen, GENIE and the other packages that link Pythia 8 rebuilt against it. Generator output changes accordingly; SHiP productions see differences from 8.316 on. ROOT has to match: its EGPythia8 C++ module carries the Pythia 8 headers it was built with, and PyROOT reads Pythia 8 objects through them.
 * `ShipReco.py` uses ACTS for track fitting and vertexing (`--trackFitter acts`) and `--patRec Segments` for pattern recognition by default. Reco files therefore contain `RecoTracks` and `RecoVertices` instead of `FitTracks`. `--trackFitter genfit` gives the GenFit chain back, with `AR` pattern recognition unless `--patRec` says otherwise. `run_tracking_benchmark.py` has the same defaults.
 
 ### Deprecated
