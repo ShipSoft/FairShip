@@ -16,7 +16,10 @@ geant4 = ">=11.3"
 expat = "*"
 zlib = "*"
 freetype = "*"
-pythia8 = ">=8.312"
+# 8.318 and the ROOT built against it come from the SHiP channel until
+# conda-forge catches up. ROOT's EGPythia8 C++ module embeds the Pythia 8
+# headers it was built with, so ROOT has to match this version.
+pythia8 = ">=8.318"
 evtgen = ">=2.2"
 fmt = "*"
 # Available on both channels — pin to conda-forge so a future SHiP-channel
