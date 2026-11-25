@@ -3,8 +3,9 @@
 // Collaboration
 
 void DecayConfig() {
-  // This script uses TEvtGenDecayer that handles J/psi with EvtGen
-  // and other particles with Pythia8
+  // External decayer for the transport: EvtGen decays J/psi and Upsilon(1S),
+  // Pythia8 the other particles Geant4 hands over (tau, charm and bottom
+  // hadrons). Products with c tau0 above 1 um go back to Geant4 undecayed.
 
   // Create the custom EvtGen decayer
   TEvtGenDecayer* decayer = new TEvtGenDecayer();
@@ -25,21 +26,13 @@ void DecayConfig() {
   // Tell the concrete monte carlo to use the external decayer
   gMC->SetExternalDecayer(decayer);
 
-  // Configure particles to use external decayer
-  gMC->SetUserDecay(411);    // D+
-  gMC->SetUserDecay(-411);   // D-
-  gMC->SetUserDecay(421);    // D0
-  gMC->SetUserDecay(-421);   // anti-D0
-  gMC->SetUserDecay(4122);   // Lambda_c+
-  gMC->SetUserDecay(-4122);  // Lambda_c-
-  gMC->SetUserDecay(431);    // D_s+
-  gMC->SetUserDecay(-431);   // D_s-
-  gMC->SetUserDecay(15);     // tau+
-  gMC->SetUserDecay(-15);    // tau-
-
-  // Configure charmonium and bottomonium to use external decayer (EvtGen)
-  gMC->SetUserDecay(443);  // J/psi
-  gMC->SetUserDecay(553);  // Upsilon(1S)
+  // Geant4 uses the external decayer for particles without a decay table.
+  // Remove Geant4's decay table of tau here. Charm and bottom hadrons,
+  // J/psi and Upsilon(1S) get their Geant4 decay tables only later, while
+  // the physics is built, so python/external_decays.py removes those after
+  // run.Init().
+  gMC->SetUserDecay(15);   // tau-
+  gMC->SetUserDecay(-15);  // tau+
 
   cout << "=== TEvtGenDecayer Configuration ===" << endl;
   cout << "EvtGen decay file: " << DecayFile << endl;
