@@ -30,25 +30,30 @@ def find_signal_track(mc_tracks, pdg=None):
     pdg : int, optional
         The signal PDG code, when the caller knows it. Otherwise the signal is
         inferred from the shape of the generator record, as described below.
-        Pass ``pdg`` where it is available.
+        Pass ``pdg`` where it is available. When several tracks match, as the
+        copies of a dark photon in QCD production do, the copy that decays is
+        returned.
 
     Notes
     -----
     A signal event is generated as a single production chain -- optionally a
     grandmother and a mother, then the signal -- followed by the signal's decay
-    products. So among the tracks the generator put on the stack there is
-    exactly one root, and the signal is the deepest one that has a daughter
-    also on the stack.
+    products, which can decay further (quarks, hadrons). So among the tracks
+    the generator put on the stack there is exactly one root, each member of
+    the production chain has the next one as its only daughter, and the signal
+    is the first track whose daughters are its decay products: more than one
+    daughter, or a single daughter that has none of its own.
 
     Requiring a single root is what keeps this honest on background samples,
     where the generator stack is a branching cascade with several roots: those
     give ``None`` rather than an arbitrary resonance decay.
     """
     if pdg is not None:
-        for i in range(len(mc_tracks)):
-            if abs(mc_tracks[i].GetPdgCode()) == abs(pdg):
-                return i
-        return None
+        # Each stored copy is the mother of the next one: skip the copies that
+        # are the mother of another match.
+        matches = [i for i in range(len(mc_tracks)) if abs(mc_tracks[i].GetPdgCode()) == abs(pdg)]
+        mothers_of_matches = {mc_tracks[i].GetMotherId() for i in matches}
+        return next((i for i in matches if i not in mothers_of_matches), None)
 
     n_tracks = len(mc_tracks)
     stack = {i for i in range(n_tracks) if mc_tracks[i].GetProcName() == PRIMARY_PROCESS}
@@ -58,8 +63,34 @@ def find_signal_track(mc_tracks, pdg=None):
     if len(roots) != 1:
         return None
 
-    with_daughters = {mothers[i] for i in stack if mothers[i] in stack}
-    return max(with_daughters) if with_daughters else None
+    # Walk down the production chain from the root to the signal.
+    signal = roots[0]
+    while True:
+        daughters = [i for i in stack if mothers[i] == signal]
+        if not daughters:
+            return None
+        if len(daughters) > 1 or not any(mothers[i] == daughters[0] for i in stack):
+            return signal
+        signal = daughters[0]
+
+
+def is_signal_product(mc_tracks, index, signal_id):
+    """Return whether track ``index`` is a decay product of the signal.
+
+    A decay product is a track the generator put on the stack whose chain of
+    mothers leads to ``signal_id``. That includes the hadrons of a hadronic
+    decay, which are granddaughters or deeper because the generator also
+    stores the quarks and resonances in between. Geant secondaries, such as a
+    delta ray knocked out by a decay product, are not decay products.
+    """
+    if mc_tracks[index].GetProcName() != PRIMARY_PROCESS:
+        return False
+    mother = mc_tracks[index].GetMotherId()
+    while mother >= 0:
+        if mother == signal_id:
+            return True
+        mother = mc_tracks[mother].GetMotherId()
+    return False
 
 
 def signal_weight(mc_tracks, pdg=None, default=1.0):
