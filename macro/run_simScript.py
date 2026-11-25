@@ -70,7 +70,7 @@ parser.add_argument("--Pythia8", dest="pythia8", help="Use Pythia8", action="sto
 parser.add_argument(
     "--EvtGenDecayer",
     dest="evtgen_decayer",
-    help="Use TEvtGenDecayer for J/psi and other quarkonium decays",
+    help="Use TEvtGenDecayer (EvtGen for J/psi and Upsilon(1S), Pythia8 for charm and tau). Always on for Genie and NuRadio",
     action="store_true",
 )
 parser.add_argument(
@@ -918,7 +918,7 @@ if options.command == "Genie":
     primGen.AddGenerator(Geniegen)
     ROOT.SetOwnership(Geniegen, False)  # C++ FairPrimaryGenerator takes ownership
     options.nEvents = Geniegen.GetNevents() if options.nEvents == -1 else min(options.nEvents, Geniegen.GetNevents())
-    run.SetPythiaDecayer("DecayConfigNuAge.C")
+    run.SetPythiaDecayer("DecayConfigTEvtGen.C")
     print("Generate ", options.nEvents, " with Genie input", " first event", options.firstEvent)
 if options.nuradio:
     useInputFile(inputFile)
@@ -936,10 +936,7 @@ if options.nuradio:
     pdg = ROOT.TDatabasePDG.Instance()
     pdg.AddParticle("W", "Ion", 1.71350e02, True, 0.0, 74, "XXX", 1000741840)
     #
-    run.SetPythiaDecayer("DecayConfigPy8.C")
-    # this requires writing a C macro, would have been easier to do directly in python!
-    # for i in [431,421,411,-431,-421,-411]:
-    # ROOT.gMC.SetUserDecay(i) # Force the decay to be done w/external decayer
+    run.SetPythiaDecayer("DecayConfigTEvtGen.C")
 if options.ttree:
     useInputFile(inputFile)
     primGen.SetTarget(0.0 + options.targetOffset * u.m, 0.0)
@@ -1073,7 +1070,7 @@ else:
     run.SetStoreTraj(ROOT.kFALSE)
 
 # -----Configure external decayer globally------------------------------------
-# Override any previous SetPythiaDecayer calls if EvtGenDecayer is requested
+# Genie and NuRadio runs use TEvtGenDecayer already; other modes only with --EvtGenDecayer
 if options.evtgen_decayer:
     run.SetPythiaDecayer("DecayConfigTEvtGen.C")
     print("Using TEvtGenDecayer for J/psi and quarkonium decays with EvtGen")
