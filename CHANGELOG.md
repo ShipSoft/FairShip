@@ -19,14 +19,21 @@ it in future.
 ### Changed
 
 * `ShipReco.py` uses ACTS for track fitting and vertexing (`--trackFitter acts`) and `--patRec Segments` for pattern recognition by default. Reco files therefore contain `RecoTracks` and `RecoVertices` instead of `FitTracks`. `--trackFitter genfit` gives the GenFit chain back, with `AR` pattern recognition unless `--patRec` says otherwise. `run_tracking_benchmark.py` has the same defaults.
+* `run_simScript.py Genie` and `--NuRadio` use `TEvtGenDecayer` (`DecayConfigTEvtGen.C`) as external decayer, like `--EvtGenDecayer`: EvtGen decays J/psi and Upsilon(1S), and Pythia8 the other particles Geant4 hands over, such as tau. Before, ROOT's `TPythia8Decayer` decayed tau, and Geant4 decayed J/psi and Upsilon(1S). Geant4 decays charm hadrons with its own decay tables in both cases: `gMC->SetUserDecay` does not override them, and `gconfig/g4config.in` selects only J/psi for the external decayer.
+* FairShip no longer uses ROOT's `TPythia8` (libEGPythia8), so ROOT no longer needs to be built with Pythia8. `TEvtGenDecayer` and `macro/makeDecay.py` use Pythia8 directly, `python/PythiaList.py` the `pythia8` Python module. `TEvtGenDecayer::GetPythia8Decayer()` is replaced by `GetPythia()` and `ReadString()`. The decay products it hands to Geant4 have their vertices in cm and times in s, where they were in mm and mm/c; Geant4 does not use them.
 
 ### Deprecated
 
 * GenFit tracking and vertexing (`--trackFitter genfit`) and the `FH`, `AR` and `TemplateMatching` pattern recognition will be removed in a later release. `ShipReco.py` prints a warning when one of them is used.
 
+### Removed
+
+* The external decayer configurations `gconfig/DecayConfigNuAge.C`, `DecayConfigPy8.C` and `DecayConfigPy6.C`. `DecayConfigNuAge.C` configured the shared `TPythia8::Instance()`, while `TPythia8Decayer` decays with its own `TPythia8`, so none of its settings were applied.
+
 ### Fixed
 
 * Muon DIS generation (`newMuonDIS`) skips a muon when Pythia 6 reports at initialisation that it has nothing to generate (`MSTI(53)`), instead of stopping the job or looping forever in `GenerateEvent`. If only the neutron initialisation fails, the proton events for that muon are kept. This needs the matching pythia6 fix (ShipSoft/pythia6#3) to catch an empty photon mixture; with older pythia6 versions nothing changes.
+* The Pythia8 decays of the external decayer (tau with `--EvtGenDecayer`, Genie and `--NuRadio`) now follow `--seed`. `TEvtGenDecayer` seeded `TPythia8::Instance()`, which `TPythia8Decayer` does not use, so every job decayed with Pythia8's default seed and drew the same sequence of random numbers: with seeds 42 and 43, 1992 of 2000 tau decayed into the same channel.
 * The ACTS straw material now comes from the straw wall, gas and wire volumes of the geometry instead of fixed values. Each part counts with its mean path through the straw. A straw is now 5.3e-4 X0, where it was 5.7e-4: the walls were too thin (tracks taken through the straw centre) and the gas X0 was 30 m instead of 128 m (Ar/CO2 80/20).
 
 ## 26.10 - 2026-10-28
