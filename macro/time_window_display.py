@@ -124,6 +124,7 @@ def main():
         if output.exists() and os.path.exists(args.input_file) and output.samefile(args.input_file):
             parser.error(f"output {output} is the input file")
         fig = plt.figure(figsize=(12, 10))
+        n_pages = 0
         with PdfPages(output) as pdf:
             for i in range(n_windows):
                 data = read_window(tree, meta_tree, i)
@@ -133,10 +134,15 @@ def main():
                 meta_tree.GetEntry(i)
                 plot_window(fig, x, y, z, sub_event, i, meta_tree.n_overlaid)
                 pdf.savefig(fig)
+                n_pages += 1
                 if (i + 1) % 10 == 0 or i == n_windows - 1:
                     print(f"\r{i + 1}/{n_windows} windows", end="", flush=True)
             print()
-        print(f"Written to {output}")
+        if n_pages:
+            print(f"Written {n_pages} windows to {output}")
+        else:
+            # PdfPages only creates the file on the first page
+            print(f"No window has straw hits; {output} not written")
 
     f.Close()
 
