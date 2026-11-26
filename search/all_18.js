@@ -435,7 +435,7 @@ var searchData=
   ['slope_5flo_432',['slope_lo',['../classmakeCascadePythia8_1_1NucleusModel.html#a8a2ca2f2db2e35aa7d6c0b42943b0176',1,'makeCascadePythia8::NucleusModel']]],
   ['smearedhits_433',['SmearedHits',['../classshipDigiReco_1_1ShipDigiReco.html#a3e5a53decbb82dbbb50af59e51d135f7',1,'shipDigiReco::ShipDigiReco']]],
   ['smearhits_434',['smearHits',['../classstrawtubesDetector_1_1strawtubesDetector.html#a97a5c17d4ec976383a2ec7c7cbbb9ae8',1,'strawtubesDetector::strawtubesDetector']]],
-  ['smoother_435',['smoother',['../structSHiP_1_1ActsStrawTracker_1_1Impl.html#a09c7cc4ace025dded3895b72b014b967',1,'SHiP::ActsStrawTracker::Impl']]],
+  ['smoother_435',['smoother',['../structSHiP_1_1ActsStrawTracker_1_1Impl.html#acb09b0ec316a281bcc3045770deea4dd',1,'SHiP::ActsStrawTracker::Impl']]],
   ['snd_436',['MTC and SND',['../md_CHANGELOG.html#autotoc_md83',1,'']]],
   ['snd_20and_20mtc_437',['SND and MTC',['../md_CHANGELOG.html#autotoc_md74',1,'']]],
   ['snd_20detector_20system_438',['SND Detector System',['../md_CHANGELOG.html#autotoc_md59',1,'']]],

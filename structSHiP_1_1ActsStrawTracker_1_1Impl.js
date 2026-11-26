@@ -22,7 +22,7 @@ var structSHiP_1_1ActsStrawTracker_1_1Impl =
     [ "measurements", "structSHiP_1_1ActsStrawTracker_1_1Impl.html#af34202a29410e136d731940318feaa3b", null ],
     [ "patRec", "structSHiP_1_1ActsStrawTracker_1_1Impl.html#aa36df547191d5e015472f8c937e2a62d", null ],
     [ "shipField", "structSHiP_1_1ActsStrawTracker_1_1Impl.html#adaed0cbd3cf70cfb72b28da692619c4f", null ],
-    [ "smoother", "structSHiP_1_1ActsStrawTracker_1_1Impl.html#a09c7cc4ace025dded3895b72b014b967", null ],
+    [ "smoother", "structSHiP_1_1ActsStrawTracker_1_1Impl.html#acb09b0ec316a281bcc3045770deea4dd", null ],
     [ "straws", "structSHiP_1_1ActsStrawTracker_1_1Impl.html#ad05e86dd28819bbb17b87fd741b4c971", null ],
     [ "trackMeasurements", "structSHiP_1_1ActsStrawTracker_1_1Impl.html#a0da100fce69ecb63c1c5173e4927f1c3", null ],
     [ "tracks", "structSHiP_1_1ActsStrawTracker_1_1Impl.html#a3fc72f4dd2046b4ad4f02e5cc7220521", null ],

@@ -77,7 +77,7 @@ var searchData=
   ['slope_74',['slope',['../classmakeCascadePythia8_1_1NucleusModel.html#a2c53181dedb855c079366c05789c1a52',1,'makeCascadePythia8::NucleusModel']]],
   ['slope_5flo_75',['slope_lo',['../classmakeCascadePythia8_1_1NucleusModel.html#a8a2ca2f2db2e35aa7d6c0b42943b0176',1,'makeCascadePythia8::NucleusModel']]],
   ['smearedhits_76',['SmearedHits',['../classshipDigiReco_1_1ShipDigiReco.html#a3e5a53decbb82dbbb50af59e51d135f7',1,'shipDigiReco::ShipDigiReco']]],
-  ['smoother_77',['smoother',['../structSHiP_1_1ActsStrawTracker_1_1Impl.html#a09c7cc4ace025dded3895b72b014b967',1,'SHiP::ActsStrawTracker::Impl']]],
+  ['smoother_77',['smoother',['../structSHiP_1_1ActsStrawTracker_1_1Impl.html#acb09b0ec316a281bcc3045770deea4dd',1,'SHiP::ActsStrawTracker::Impl']]],
   ['snd_5fdesign_78',['SND_design',['../namespacerun__simScript.html#abfc0d3d48b6d07dad5d8363b594beef6',1,'run_simScript']]],
   ['snd_5ffirst_5fmagnet_79',['snd_first_magnet',['../classShipMuonShield.html#adbe47d24b57d2c21b343da9117bfcba8',1,'ShipMuonShield']]],
   ['snd_5fhole_80',['snd_hole',['../classShipMuonShield.html#a621dfbab4170ed79ff142d25063f5a8c',1,'ShipMuonShield']]],
