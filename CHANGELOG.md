@@ -12,6 +12,22 @@ it in future.
 
 ## Unreleased
 
+## 26.11 - 2026-11-26
+
+This release makes ACTS the default for pattern recognition, track fitting and
+vertexing in `ShipReco.py`, and moves the pixi environment to Pythia 8.318, so
+generator output and reco files differ from those of 26.10. Reco files made
+with the default options contain `RecoTracks` and `RecoVertices` instead of
+`FitTracks`. The ACTS fit takes the straw material from the geometry and
+smooths with the modified Bryson-Frazier smoother, and muon DIS generation no
+longer stops or hangs when Pythia 6 has nothing to generate for a muon.
+
+Breaking changes: scripts that read `FitTracks` from reco files made with the
+default options have to read the ACTS branches or run `ShipReco.py` with
+`--trackFitter genfit`. GenFit and the `FH`, `AR` and `TemplateMatching`
+pattern recognition are deprecated. Environments built outside pixi need a
+ROOT built against the Pythia 8 version they use.
+
 ### Added
 
 * GENIE (pythia8 build) is now a pixi dependency, so `macro/makeGenieEvents.py` can run `gmkspl`, `gevgen` and `gntpc` in the pixi environment without a separate GENIE installation.
@@ -20,6 +36,8 @@ it in future.
 
 * The pixi environment uses Pythia 8.318 instead of 8.312, with ROOT, EvtGen, GENIE and the other packages that link Pythia 8 rebuilt against it. Generator output changes accordingly; SHiP productions see differences from 8.316 on. ROOT has to match: its EGPythia8 C++ module carries the Pythia 8 headers it was built with, and PyROOT reads Pythia 8 objects through them.
 * `ShipReco.py` uses ACTS for track fitting and vertexing (`--trackFitter acts`) and `--patRec Segments` for pattern recognition by default. Reco files therefore contain `RecoTracks` and `RecoVertices` instead of `FitTracks`. `--trackFitter genfit` gives the GenFit chain back, with `AR` pattern recognition unless `--patRec` says otherwise. `run_tracking_benchmark.py` has the same defaults.
+* The pixi environment uses pythia6 v6.4.28-ship2 (ShipSoft/pythia6#3). At initialisation, Pythia 6 evaluated DIS with kinematics left over from the other photon classes and could switch it off without a message; it now uses the same dummy kinematics as during generation. When no photon class has a positive cross section, it reports this through `MSTI(53)` (with `MSTP(127)=1`) instead of looping forever when generating events. Output is otherwise unchanged.
+* The pixi environment uses acts-core 48.5.0 instead of 48.2.0.
 
 ### Deprecated
 
@@ -27,9 +45,10 @@ it in future.
 
 ### Fixed
 
-* Muon DIS generation (`newMuonDIS`) skips a muon when Pythia 6 reports at initialisation that it has nothing to generate (`MSTI(53)`), instead of stopping the job or looping forever in `GenerateEvent`. If only the neutron initialisation fails, the proton events for that muon are kept. This needs the matching pythia6 fix (ShipSoft/pythia6#3) to catch an empty photon mixture; with older pythia6 versions nothing changes.
+* Muon DIS generation (`newMuonDIS`) skips a muon when Pythia 6 reports at initialisation that it has nothing to generate (`MSTI(53)`), instead of stopping the job or looping forever in `GenerateEvent`. If only the neutron initialisation fails, the proton events for that muon are kept. Catching an empty photon mixture needs pythia6 v6.4.28-ship2 (ShipSoft/pythia6#3), which the pixi environment now uses; with older pythia6 versions the job still hangs in that case.
 * The ACTS straw material now comes from the straw wall, gas and wire volumes of the geometry instead of fixed values. Each part counts with its mean path through the straw. A straw is now 5.3e-4 X0, where it was 5.7e-4: the walls were too thin (tracks taken through the straw centre) and the gas X0 was 30 m instead of 128 m (Ar/CO2 80/20).
 * The ACTS track fit smooths with the modified Bryson-Frazier smoother instead of the gain-matrix smoother. The gain-matrix smoother inverts the predicted covariance, which is nearly singular in the magnet, and below about 10 GeV/c the smoothed covariance could stop being positive definite, with a negative pz variance in places. In a test with tracks of 3-10 GeV/c through a 1 T magnet without material, this happened to 176 of 1000 tracks; now to none. In the full simulation, no fitted covariance had a negative variance before, and the track momenta and their uncertainties are unchanged (relative differences below 1e-9).
+* `run_tracking_benchmark.py` accepts only the `--patRec` values that `ShipReco.py` knows, so a typo fails before the simulation step instead of after it.
 
 ## 26.10 - 2026-10-28
 
