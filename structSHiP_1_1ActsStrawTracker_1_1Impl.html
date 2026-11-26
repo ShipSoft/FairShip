@@ -116,8 +116,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a8b438291224c6d9b9929c8a07c5c1566" id="r_a8b438291224c6d9b9929c8a07c5c1566"><td class="memItemLeft" align="right" valign="top">const Acts::Surface *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8b438291224c6d9b9929c8a07c5c1566">surfaceOf</a> (const Acts::SourceLink &amp;sourceLink) const</td></tr>
 <tr class="memitem:a7b0fca7c71ed78c50cfe84fbe4b467ac" id="r_a7b0fca7c71ed78c50cfe84fbe4b467ac"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7b0fca7c71ed78c50cfe84fbe4b467ac">calibrate</a> (const Acts::GeometryContext &amp;, const Acts::CalibrationContext &amp;, const Acts::SourceLink &amp;sourceLink, Trajectory::TrackStateProxy state) const</td></tr>
 <tr class="memitem:aa7b8e499073defaf85983f93e85c5050" id="r_aa7b8e499073defaf85983f93e85c5050"><td class="memItemLeft" align="right" valign="top">Acts::BoundTrackParameters&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa7b8e499073defaf85983f93e85c5050">trackParameters</a> (Int_t track) const</td></tr>
+<tr class="memitem:a162bad645ef764573774c548b0a5e1c7" id="r_a162bad645ef764573774c548b0a5e1c7"><td class="memItemLeft" align="right" valign="top">std::vector&lt; Int_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a162bad645ef764573774c548b0a5e1c7">fittedMeasurements</a> (std::size_t track) const</td></tr>
+<tr class="memdesc:a162bad645ef764573774c548b0a5e1c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">The measurements of the fitted states of a track, ordered along it.  <br /></td></tr>
+<tr class="memitem:a3a7cf2085f115a745bf93d602a578a4e" id="r_a3a7cf2085f115a745bf93d602a578a4e"><td class="memItemLeft" align="right" valign="top">std::optional&lt; std::pair&lt; Acts::BoundTrackParameters, double &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3a7cf2085f115a745bf93d602a578a4e">extrapolateWithLength</a> (const Extrapolator &amp;propagator, const Acts::BoundTrackParameters &amp;start, const Acts::Surface &amp;target) const</td></tr>
 <tr class="memitem:a4ce185815dd7b1be902233cbc15cc473" id="r_a4ce185815dd7b1be902233cbc15cc473"><td class="memItemLeft" align="right" valign="top">std::optional&lt; Acts::BoundTrackParameters &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4ce185815dd7b1be902233cbc15cc473">extrapolate</a> (const Extrapolator &amp;propagator, const Acts::BoundTrackParameters &amp;start, const Acts::Surface &amp;target) const</td></tr>
-<tr class="memdesc:a4ce185815dd7b1be902233cbc15cc473"><td class="mdescLeft">&#160;</td><td class="mdescRight">Propagate to <span class="tt">target</span> in whichever direction reaches it.  <br /></td></tr>
+<tr class="memdesc:a4ce185815dd7b1be902233cbc15cc473"><td class="mdescLeft">&#160;</td><td class="mdescRight">As <a class="el" href="#a3a7cf2085f115a745bf93d602a578a4e">extrapolateWithLength()</a>, returning only the parameters.  <br /></td></tr>
+<tr class="memitem:a1797b38f9307fb78f23b94762f7d261f" id="r_a1797b38f9307fb78f23b94762f7d261f"><td class="memItemLeft" align="right" valign="top">Acts::BoundTrackParameters&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1797b38f9307fb78f23b94762f7d261f">endSmoothedParameters</a> (Int_t track, bool last) const</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-attribs" class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -138,11 +142,11 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:af34202a29410e136d731940318feaa3b" id="r_af34202a29410e136d731940318feaa3b"><td class="memItemLeft" align="right" valign="top">std::vector&lt; StrawMeasurement &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af34202a29410e136d731940318feaa3b">measurements</a></td></tr>
 <tr class="memitem:a3fc72f4dd2046b4ad4f02e5cc7220521" id="r_a3fc72f4dd2046b4ad4f02e5cc7220521"><td class="memItemLeft" align="right" valign="top">TrackContainer&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3fc72f4dd2046b4ad4f02e5cc7220521">tracks</a></td></tr>
 <tr class="memitem:a0da100fce69ecb63c1c5173e4927f1c3" id="r_a0da100fce69ecb63c1c5173e4927f1c3"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::vector&lt; Int_t &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0da100fce69ecb63c1c5173e4927f1c3">trackMeasurements</a></td></tr>
-<tr class="memdesc:a0da100fce69ecb63c1c5173e4927f1c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Measurements used in each track.  <br /></td></tr>
+<tr class="memitem:a2e93f54db23be09d2ae5f24f6726f44d" id="r_a2e93f54db23be09d2ae5f24f6726f44d"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::vector&lt; Int_t &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2e93f54db23be09d2ae5f24f6726f44d">fittedTrackMeasurements</a></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00256">256</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00264">264</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
 </div><a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a24be7d8f5eba14411a20b796be1fb434" name="a24be7d8f5eba14411a20b796be1fb434"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a24be7d8f5eba14411a20b796be1fb434">&#9670;&#160;</a></span>Impl()</h2>
@@ -171,53 +175,53 @@ Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00257">257</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  258</span>      : <a class="code hl_variable" href="#ad05e86dd28819bbb17b87fd741b4c971">straws</a>(geometry),</div>
-<div class="line"><span class="lineno">  259</span>        <a class="code hl_variable" href="#adaed0cbd3cf70cfb72b28da692619c4f">shipField</a>(magField),</div>
-<div class="line"><span class="lineno">  260</span>        <a class="code hl_variable" href="#a5e02608b762da144968c95eb207d1685">field</a>(std::make_shared&lt;ActsShipField&gt;(magField)),</div>
-<div class="line"><span class="lineno">  261</span>        <a class="code hl_variable" href="#ac0d048cecc57489fd24223dc717576b0">fitter</a>(DirectPropagator(Stepper(<a class="code hl_variable" href="#a5e02608b762da144968c95eb207d1685">field</a>), Acts::DirectNavigator(),</div>
-<div class="line"><span class="lineno">  262</span>                                Acts::getDefaultLogger(<span class="stringliteral">&quot;Propagator&quot;</span>,</div>
-<div class="line"><span class="lineno">  263</span>                                                       Acts::Logging::WARNING)),</div>
-<div class="line"><span class="lineno">  264</span>               Acts::getDefaultLogger(<span class="stringliteral">&quot;KalmanFitter&quot;</span>, Acts::Logging::WARNING)),</div>
-<div class="line"><span class="lineno">  265</span>        <a class="code hl_variable" href="#a76d7bd8a73752e21f14b088150696217">extrapolator</a>(</div>
-<div class="line"><span class="lineno">  266</span>            Stepper(<a class="code hl_variable" href="#a5e02608b762da144968c95eb207d1685">field</a>), Acts::VoidNavigator(),</div>
-<div class="line"><span class="lineno">  267</span>            Acts::getDefaultLogger(<span class="stringliteral">&quot;Extrapolator&quot;</span>, Acts::Logging::WARNING)),</div>
-<div class="line"><span class="lineno">  268</span>        <a class="code hl_variable" href="#a3fc72f4dd2046b4ad4f02e5cc7220521">tracks</a>(std::make_shared&lt;Acts::VectorTrackContainer&gt;(),</div>
-<div class="line"><span class="lineno">  269</span>               std::make_shared&lt;Trajectory&gt;()) {</div>
-<div class="line"><span class="lineno">  270</span>    <a class="code hl_variable" href="#abe22eb9eca81a47a056f540270b5e7ac">extensions</a>.surfaceAccessor.connect&lt;&amp;<a class="code hl_function" href="#a8b438291224c6d9b9929c8a07c5c1566">Impl::surfaceOf</a>&gt;(<span class="keyword">this</span>);</div>
-<div class="line"><span class="lineno">  271</span>    <a class="code hl_variable" href="#abe22eb9eca81a47a056f540270b5e7ac">extensions</a>.calibrator.connect&lt;&amp;<a class="code hl_function" href="#a7b0fca7c71ed78c50cfe84fbe4b467ac">Impl::calibrate</a>&gt;(<span class="keyword">this</span>);</div>
-<div class="line"><span class="lineno">  272</span>    <a class="code hl_variable" href="#abe22eb9eca81a47a056f540270b5e7ac">extensions</a>.updater</div>
-<div class="line"><span class="lineno">  273</span>        .connect&lt;&amp;Acts::GainMatrixUpdater::operator()&lt;Trajectory&gt;&gt;(&amp;<a class="code hl_variable" href="#af3ddfcb32941dbb18059041a93329132">updater</a>);</div>
-<div class="line"><span class="lineno">  274</span>    <a class="code hl_variable" href="#abe22eb9eca81a47a056f540270b5e7ac">extensions</a>.smoother.connect&lt;&amp;Acts::MbfSmoother::operator()&lt;Trajectory&gt;&gt;(</div>
-<div class="line"><span class="lineno">  275</span>        &amp;<a class="code hl_variable" href="#acb09b0ec316a281bcc3045770deea4dd">smoother</a>);</div>
-<div class="line"><span class="lineno">  276</span> </div>
-<div class="line"><span class="lineno">  277</span>    <span class="comment">// The magnet sits between stations 2 and 3</span></div>
-<div class="line"><span class="lineno">  278</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; [<span class="keywordtype">id</span>, wire] : <a class="code hl_variable" href="#ad05e86dd28819bbb17b87fd741b4c971">straws</a>.wires()) {</div>
-<div class="line"><span class="lineno">  279</span>      <span class="keywordflow">if</span> (wire.station == 2) {</div>
-<div class="line"><span class="lineno">  280</span>        <a class="code hl_variable" href="#a4c6caa7a9ce37fe529254a423b6ea266">magnetStart</a> = std::max(<a class="code hl_variable" href="#a4c6caa7a9ce37fe529254a423b6ea266">magnetStart</a>, wire.z);</div>
-<div class="line"><span class="lineno">  281</span>      } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (wire.station == 3) {</div>
-<div class="line"><span class="lineno">  282</span>        <a class="code hl_variable" href="#a5987b16b660cdb4453a2717fcef3849c">magnetEnd</a> = std::min(<a class="code hl_variable" href="#a5987b16b660cdb4453a2717fcef3849c">magnetEnd</a>, wire.z);</div>
-<div class="line"><span class="lineno">  283</span>      }</div>
-<div class="line"><span class="lineno">  284</span>    }</div>
-<div class="line"><span class="lineno">  285</span>    LineSegment axis;</div>
-<div class="line"><span class="lineno">  286</span>    <span class="keyword">const</span> <span class="keyword">auto</span> [integral, centre] = <a class="code hl_function" href="#a1c46bbe3e642b143cd377c09e8096759">fieldIntegral</a>(axis);</div>
-<div class="line"><span class="lineno">  287</span>    <a class="code hl_variable" href="#aa36df547191d5e015472f8c937e2a62d">patRec</a>.emplace(StrawPatRec::Config{}, centre, integral);</div>
-<div class="line"><span class="lineno">  288</span>  }</div>
-<div class="ttc" id="astructSHiP_1_1ActsStrawTracker_1_1Impl_html_a1c46bbe3e642b143cd377c09e8096759"><div class="ttname"><a href="#a1c46bbe3e642b143cd377c09e8096759">SHiP::ActsStrawTracker::Impl::fieldIntegral</a></div><div class="ttdeci">std::pair&lt; double, double &gt; fieldIntegral(const LineSegment &amp;line) const</div><div class="ttdef"><b>Definition</b> <a href="ActsStrawTracker_8cxx_source.html#l00305">ActsStrawTracker.cxx:305</a></div></div>
-<div class="ttc" id="astructSHiP_1_1ActsStrawTracker_1_1Impl_html_a3fc72f4dd2046b4ad4f02e5cc7220521"><div class="ttname"><a href="#a3fc72f4dd2046b4ad4f02e5cc7220521">SHiP::ActsStrawTracker::Impl::tracks</a></div><div class="ttdeci">TrackContainer tracks</div><div class="ttdef"><b>Definition</b> <a href="ActsStrawTracker_8cxx_source.html#l00384">ActsStrawTracker.cxx:384</a></div></div>
-<div class="ttc" id="astructSHiP_1_1ActsStrawTracker_1_1Impl_html_a4c6caa7a9ce37fe529254a423b6ea266"><div class="ttname"><a href="#a4c6caa7a9ce37fe529254a423b6ea266">SHiP::ActsStrawTracker::Impl::magnetStart</a></div><div class="ttdeci">double magnetStart</div><div class="ttdef"><b>Definition</b> <a href="ActsStrawTracker_8cxx_source.html#l00366">ActsStrawTracker.cxx:366</a></div></div>
-<div class="ttc" id="astructSHiP_1_1ActsStrawTracker_1_1Impl_html_a5987b16b660cdb4453a2717fcef3849c"><div class="ttname"><a href="#a5987b16b660cdb4453a2717fcef3849c">SHiP::ActsStrawTracker::Impl::magnetEnd</a></div><div class="ttdeci">double magnetEnd</div><div class="ttdef"><b>Definition</b> <a href="ActsStrawTracker_8cxx_source.html#l00367">ActsStrawTracker.cxx:367</a></div></div>
-<div class="ttc" id="astructSHiP_1_1ActsStrawTracker_1_1Impl_html_a5e02608b762da144968c95eb207d1685"><div class="ttname"><a href="#a5e02608b762da144968c95eb207d1685">SHiP::ActsStrawTracker::Impl::field</a></div><div class="ttdeci">std::shared_ptr&lt; const ActsShipField &gt; field</div><div class="ttdef"><b>Definition</b> <a href="ActsStrawTracker_8cxx_source.html#l00365">ActsStrawTracker.cxx:365</a></div></div>
-<div class="ttc" id="astructSHiP_1_1ActsStrawTracker_1_1Impl_html_a76d7bd8a73752e21f14b088150696217"><div class="ttname"><a href="#a76d7bd8a73752e21f14b088150696217">SHiP::ActsStrawTracker::Impl::extrapolator</a></div><div class="ttdeci">Extrapolator extrapolator</div><div class="ttdef"><b>Definition</b> <a href="ActsStrawTracker_8cxx_source.html#l00370">ActsStrawTracker.cxx:370</a></div></div>
-<div class="ttc" id="astructSHiP_1_1ActsStrawTracker_1_1Impl_html_a7b0fca7c71ed78c50cfe84fbe4b467ac"><div class="ttname"><a href="#a7b0fca7c71ed78c50cfe84fbe4b467ac">SHiP::ActsStrawTracker::Impl::calibrate</a></div><div class="ttdeci">void calibrate(const Acts::GeometryContext &amp;, const Acts::CalibrationContext &amp;, const Acts::SourceLink &amp;sourceLink, Trajectory::TrackStateProxy state) const</div><div class="ttdef"><b>Definition</b> <a href="ActsStrawTracker_8cxx_source.html#l00326">ActsStrawTracker.cxx:326</a></div></div>
-<div class="ttc" id="astructSHiP_1_1ActsStrawTracker_1_1Impl_html_a8b438291224c6d9b9929c8a07c5c1566"><div class="ttname"><a href="#a8b438291224c6d9b9929c8a07c5c1566">SHiP::ActsStrawTracker::Impl::surfaceOf</a></div><div class="ttdeci">const Acts::Surface * surfaceOf(const Acts::SourceLink &amp;sourceLink) const</div><div class="ttdef"><b>Definition</b> <a href="ActsStrawTracker_8cxx_source.html#l00322">ActsStrawTracker.cxx:322</a></div></div>
-<div class="ttc" id="astructSHiP_1_1ActsStrawTracker_1_1Impl_html_aa36df547191d5e015472f8c937e2a62d"><div class="ttname"><a href="#aa36df547191d5e015472f8c937e2a62d">SHiP::ActsStrawTracker::Impl::patRec</a></div><div class="ttdeci">std::optional&lt; StrawPatRec &gt; patRec</div><div class="ttdef"><b>Definition</b> <a href="ActsStrawTracker_8cxx_source.html#l00368">ActsStrawTracker.cxx:368</a></div></div>
-<div class="ttc" id="astructSHiP_1_1ActsStrawTracker_1_1Impl_html_abe22eb9eca81a47a056f540270b5e7ac"><div class="ttname"><a href="#abe22eb9eca81a47a056f540270b5e7ac">SHiP::ActsStrawTracker::Impl::extensions</a></div><div class="ttdeci">Acts::KalmanFitterExtensions&lt; Trajectory &gt; extensions</div><div class="ttdef"><b>Definition</b> <a href="ActsStrawTracker_8cxx_source.html#l00378">ActsStrawTracker.cxx:378</a></div></div>
-<div class="ttc" id="astructSHiP_1_1ActsStrawTracker_1_1Impl_html_ac0d048cecc57489fd24223dc717576b0"><div class="ttname"><a href="#ac0d048cecc57489fd24223dc717576b0">SHiP::ActsStrawTracker::Impl::fitter</a></div><div class="ttdeci">KalmanFitter fitter</div><div class="ttdef"><b>Definition</b> <a href="ActsStrawTracker_8cxx_source.html#l00369">ActsStrawTracker.cxx:369</a></div></div>
-<div class="ttc" id="astructSHiP_1_1ActsStrawTracker_1_1Impl_html_acb09b0ec316a281bcc3045770deea4dd"><div class="ttname"><a href="#acb09b0ec316a281bcc3045770deea4dd">SHiP::ActsStrawTracker::Impl::smoother</a></div><div class="ttdeci">Acts::MbfSmoother smoother</div><div class="ttdef"><b>Definition</b> <a href="ActsStrawTracker_8cxx_source.html#l00377">ActsStrawTracker.cxx:377</a></div></div>
-<div class="ttc" id="astructSHiP_1_1ActsStrawTracker_1_1Impl_html_ad05e86dd28819bbb17b87fd741b4c971"><div class="ttname"><a href="#ad05e86dd28819bbb17b87fd741b4c971">SHiP::ActsStrawTracker::Impl::straws</a></div><div class="ttdeci">ActsStrawGeometry straws</div><div class="ttdef"><b>Definition</b> <a href="ActsStrawTracker_8cxx_source.html#l00363">ActsStrawTracker.cxx:363</a></div></div>
-<div class="ttc" id="astructSHiP_1_1ActsStrawTracker_1_1Impl_html_adaed0cbd3cf70cfb72b28da692619c4f"><div class="ttname"><a href="#adaed0cbd3cf70cfb72b28da692619c4f">SHiP::ActsStrawTracker::Impl::shipField</a></div><div class="ttdeci">TVirtualMagField * shipField</div><div class="ttdef"><b>Definition</b> <a href="ActsStrawTracker_8cxx_source.html#l00364">ActsStrawTracker.cxx:364</a></div></div>
-<div class="ttc" id="astructSHiP_1_1ActsStrawTracker_1_1Impl_html_af3ddfcb32941dbb18059041a93329132"><div class="ttname"><a href="#af3ddfcb32941dbb18059041a93329132">SHiP::ActsStrawTracker::Impl::updater</a></div><div class="ttdeci">Acts::GainMatrixUpdater updater</div><div class="ttdef"><b>Definition</b> <a href="ActsStrawTracker_8cxx_source.html#l00371">ActsStrawTracker.cxx:371</a></div></div>
+<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00265">265</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  266</span>      : <a class="code hl_variable" href="#ad05e86dd28819bbb17b87fd741b4c971">straws</a>(geometry),</div>
+<div class="line"><span class="lineno">  267</span>        <a class="code hl_variable" href="#adaed0cbd3cf70cfb72b28da692619c4f">shipField</a>(magField),</div>
+<div class="line"><span class="lineno">  268</span>        <a class="code hl_variable" href="#a5e02608b762da144968c95eb207d1685">field</a>(std::make_shared&lt;ActsShipField&gt;(magField)),</div>
+<div class="line"><span class="lineno">  269</span>        <a class="code hl_variable" href="#ac0d048cecc57489fd24223dc717576b0">fitter</a>(DirectPropagator(Stepper(<a class="code hl_variable" href="#a5e02608b762da144968c95eb207d1685">field</a>), Acts::DirectNavigator(),</div>
+<div class="line"><span class="lineno">  270</span>                                Acts::getDefaultLogger(<span class="stringliteral">&quot;Propagator&quot;</span>,</div>
+<div class="line"><span class="lineno">  271</span>                                                       Acts::Logging::WARNING)),</div>
+<div class="line"><span class="lineno">  272</span>               Acts::getDefaultLogger(<span class="stringliteral">&quot;KalmanFitter&quot;</span>, Acts::Logging::WARNING)),</div>
+<div class="line"><span class="lineno">  273</span>        <a class="code hl_variable" href="#a76d7bd8a73752e21f14b088150696217">extrapolator</a>(</div>
+<div class="line"><span class="lineno">  274</span>            Stepper(<a class="code hl_variable" href="#a5e02608b762da144968c95eb207d1685">field</a>), Acts::VoidNavigator(),</div>
+<div class="line"><span class="lineno">  275</span>            Acts::getDefaultLogger(<span class="stringliteral">&quot;Extrapolator&quot;</span>, Acts::Logging::WARNING)),</div>
+<div class="line"><span class="lineno">  276</span>        <a class="code hl_variable" href="#a3fc72f4dd2046b4ad4f02e5cc7220521">tracks</a>(std::make_shared&lt;Acts::VectorTrackContainer&gt;(),</div>
+<div class="line"><span class="lineno">  277</span>               std::make_shared&lt;Trajectory&gt;()) {</div>
+<div class="line"><span class="lineno">  278</span>    <a class="code hl_variable" href="#abe22eb9eca81a47a056f540270b5e7ac">extensions</a>.surfaceAccessor.connect&lt;&amp;<a class="code hl_function" href="#a8b438291224c6d9b9929c8a07c5c1566">Impl::surfaceOf</a>&gt;(<span class="keyword">this</span>);</div>
+<div class="line"><span class="lineno">  279</span>    <a class="code hl_variable" href="#abe22eb9eca81a47a056f540270b5e7ac">extensions</a>.calibrator.connect&lt;&amp;<a class="code hl_function" href="#a7b0fca7c71ed78c50cfe84fbe4b467ac">Impl::calibrate</a>&gt;(<span class="keyword">this</span>);</div>
+<div class="line"><span class="lineno">  280</span>    <a class="code hl_variable" href="#abe22eb9eca81a47a056f540270b5e7ac">extensions</a>.updater</div>
+<div class="line"><span class="lineno">  281</span>        .connect&lt;&amp;Acts::GainMatrixUpdater::operator()&lt;Trajectory&gt;&gt;(&amp;<a class="code hl_variable" href="#af3ddfcb32941dbb18059041a93329132">updater</a>);</div>
+<div class="line"><span class="lineno">  282</span>    <a class="code hl_variable" href="#abe22eb9eca81a47a056f540270b5e7ac">extensions</a>.smoother.connect&lt;&amp;Acts::MbfSmoother::operator()&lt;Trajectory&gt;&gt;(</div>
+<div class="line"><span class="lineno">  283</span>        &amp;<a class="code hl_variable" href="#acb09b0ec316a281bcc3045770deea4dd">smoother</a>);</div>
+<div class="line"><span class="lineno">  284</span> </div>
+<div class="line"><span class="lineno">  285</span>    <span class="comment">// The magnet sits between stations 2 and 3</span></div>
+<div class="line"><span class="lineno">  286</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; [<span class="keywordtype">id</span>, wire] : <a class="code hl_variable" href="#ad05e86dd28819bbb17b87fd741b4c971">straws</a>.wires()) {</div>
+<div class="line"><span class="lineno">  287</span>      <span class="keywordflow">if</span> (wire.station == 2) {</div>
+<div class="line"><span class="lineno">  288</span>        <a class="code hl_variable" href="#a4c6caa7a9ce37fe529254a423b6ea266">magnetStart</a> = std::max(<a class="code hl_variable" href="#a4c6caa7a9ce37fe529254a423b6ea266">magnetStart</a>, wire.z);</div>
+<div class="line"><span class="lineno">  289</span>      } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (wire.station == 3) {</div>
+<div class="line"><span class="lineno">  290</span>        <a class="code hl_variable" href="#a5987b16b660cdb4453a2717fcef3849c">magnetEnd</a> = std::min(<a class="code hl_variable" href="#a5987b16b660cdb4453a2717fcef3849c">magnetEnd</a>, wire.z);</div>
+<div class="line"><span class="lineno">  291</span>      }</div>
+<div class="line"><span class="lineno">  292</span>    }</div>
+<div class="line"><span class="lineno">  293</span>    LineSegment axis;</div>
+<div class="line"><span class="lineno">  294</span>    <span class="keyword">const</span> <span class="keyword">auto</span> [integral, centre] = <a class="code hl_function" href="#a1c46bbe3e642b143cd377c09e8096759">fieldIntegral</a>(axis);</div>
+<div class="line"><span class="lineno">  295</span>    <a class="code hl_variable" href="#aa36df547191d5e015472f8c937e2a62d">patRec</a>.emplace(StrawPatRec::Config{}, centre, integral);</div>
+<div class="line"><span class="lineno">  296</span>  }</div>
+<div class="ttc" id="astructSHiP_1_1ActsStrawTracker_1_1Impl_html_a1c46bbe3e642b143cd377c09e8096759"><div class="ttname"><a href="#a1c46bbe3e642b143cd377c09e8096759">SHiP::ActsStrawTracker::Impl::fieldIntegral</a></div><div class="ttdeci">std::pair&lt; double, double &gt; fieldIntegral(const LineSegment &amp;line) const</div><div class="ttdef"><b>Definition</b> <a href="ActsStrawTracker_8cxx_source.html#l00313">ActsStrawTracker.cxx:313</a></div></div>
+<div class="ttc" id="astructSHiP_1_1ActsStrawTracker_1_1Impl_html_a3fc72f4dd2046b4ad4f02e5cc7220521"><div class="ttname"><a href="#a3fc72f4dd2046b4ad4f02e5cc7220521">SHiP::ActsStrawTracker::Impl::tracks</a></div><div class="ttdeci">TrackContainer tracks</div><div class="ttdef"><b>Definition</b> <a href="ActsStrawTracker_8cxx_source.html#l00457">ActsStrawTracker.cxx:457</a></div></div>
+<div class="ttc" id="astructSHiP_1_1ActsStrawTracker_1_1Impl_html_a4c6caa7a9ce37fe529254a423b6ea266"><div class="ttname"><a href="#a4c6caa7a9ce37fe529254a423b6ea266">SHiP::ActsStrawTracker::Impl::magnetStart</a></div><div class="ttdeci">double magnetStart</div><div class="ttdef"><b>Definition</b> <a href="ActsStrawTracker_8cxx_source.html#l00439">ActsStrawTracker.cxx:439</a></div></div>
+<div class="ttc" id="astructSHiP_1_1ActsStrawTracker_1_1Impl_html_a5987b16b660cdb4453a2717fcef3849c"><div class="ttname"><a href="#a5987b16b660cdb4453a2717fcef3849c">SHiP::ActsStrawTracker::Impl::magnetEnd</a></div><div class="ttdeci">double magnetEnd</div><div class="ttdef"><b>Definition</b> <a href="ActsStrawTracker_8cxx_source.html#l00440">ActsStrawTracker.cxx:440</a></div></div>
+<div class="ttc" id="astructSHiP_1_1ActsStrawTracker_1_1Impl_html_a5e02608b762da144968c95eb207d1685"><div class="ttname"><a href="#a5e02608b762da144968c95eb207d1685">SHiP::ActsStrawTracker::Impl::field</a></div><div class="ttdeci">std::shared_ptr&lt; const ActsShipField &gt; field</div><div class="ttdef"><b>Definition</b> <a href="ActsStrawTracker_8cxx_source.html#l00438">ActsStrawTracker.cxx:438</a></div></div>
+<div class="ttc" id="astructSHiP_1_1ActsStrawTracker_1_1Impl_html_a76d7bd8a73752e21f14b088150696217"><div class="ttname"><a href="#a76d7bd8a73752e21f14b088150696217">SHiP::ActsStrawTracker::Impl::extrapolator</a></div><div class="ttdeci">Extrapolator extrapolator</div><div class="ttdef"><b>Definition</b> <a href="ActsStrawTracker_8cxx_source.html#l00443">ActsStrawTracker.cxx:443</a></div></div>
+<div class="ttc" id="astructSHiP_1_1ActsStrawTracker_1_1Impl_html_a7b0fca7c71ed78c50cfe84fbe4b467ac"><div class="ttname"><a href="#a7b0fca7c71ed78c50cfe84fbe4b467ac">SHiP::ActsStrawTracker::Impl::calibrate</a></div><div class="ttdeci">void calibrate(const Acts::GeometryContext &amp;, const Acts::CalibrationContext &amp;, const Acts::SourceLink &amp;sourceLink, Trajectory::TrackStateProxy state) const</div><div class="ttdef"><b>Definition</b> <a href="ActsStrawTracker_8cxx_source.html#l00334">ActsStrawTracker.cxx:334</a></div></div>
+<div class="ttc" id="astructSHiP_1_1ActsStrawTracker_1_1Impl_html_a8b438291224c6d9b9929c8a07c5c1566"><div class="ttname"><a href="#a8b438291224c6d9b9929c8a07c5c1566">SHiP::ActsStrawTracker::Impl::surfaceOf</a></div><div class="ttdeci">const Acts::Surface * surfaceOf(const Acts::SourceLink &amp;sourceLink) const</div><div class="ttdef"><b>Definition</b> <a href="ActsStrawTracker_8cxx_source.html#l00330">ActsStrawTracker.cxx:330</a></div></div>
+<div class="ttc" id="astructSHiP_1_1ActsStrawTracker_1_1Impl_html_aa36df547191d5e015472f8c937e2a62d"><div class="ttname"><a href="#aa36df547191d5e015472f8c937e2a62d">SHiP::ActsStrawTracker::Impl::patRec</a></div><div class="ttdeci">std::optional&lt; StrawPatRec &gt; patRec</div><div class="ttdef"><b>Definition</b> <a href="ActsStrawTracker_8cxx_source.html#l00441">ActsStrawTracker.cxx:441</a></div></div>
+<div class="ttc" id="astructSHiP_1_1ActsStrawTracker_1_1Impl_html_abe22eb9eca81a47a056f540270b5e7ac"><div class="ttname"><a href="#abe22eb9eca81a47a056f540270b5e7ac">SHiP::ActsStrawTracker::Impl::extensions</a></div><div class="ttdeci">Acts::KalmanFitterExtensions&lt; Trajectory &gt; extensions</div><div class="ttdef"><b>Definition</b> <a href="ActsStrawTracker_8cxx_source.html#l00451">ActsStrawTracker.cxx:451</a></div></div>
+<div class="ttc" id="astructSHiP_1_1ActsStrawTracker_1_1Impl_html_ac0d048cecc57489fd24223dc717576b0"><div class="ttname"><a href="#ac0d048cecc57489fd24223dc717576b0">SHiP::ActsStrawTracker::Impl::fitter</a></div><div class="ttdeci">KalmanFitter fitter</div><div class="ttdef"><b>Definition</b> <a href="ActsStrawTracker_8cxx_source.html#l00442">ActsStrawTracker.cxx:442</a></div></div>
+<div class="ttc" id="astructSHiP_1_1ActsStrawTracker_1_1Impl_html_acb09b0ec316a281bcc3045770deea4dd"><div class="ttname"><a href="#acb09b0ec316a281bcc3045770deea4dd">SHiP::ActsStrawTracker::Impl::smoother</a></div><div class="ttdeci">Acts::MbfSmoother smoother</div><div class="ttdef"><b>Definition</b> <a href="ActsStrawTracker_8cxx_source.html#l00450">ActsStrawTracker.cxx:450</a></div></div>
+<div class="ttc" id="astructSHiP_1_1ActsStrawTracker_1_1Impl_html_ad05e86dd28819bbb17b87fd741b4c971"><div class="ttname"><a href="#ad05e86dd28819bbb17b87fd741b4c971">SHiP::ActsStrawTracker::Impl::straws</a></div><div class="ttdeci">ActsStrawGeometry straws</div><div class="ttdef"><b>Definition</b> <a href="ActsStrawTracker_8cxx_source.html#l00436">ActsStrawTracker.cxx:436</a></div></div>
+<div class="ttc" id="astructSHiP_1_1ActsStrawTracker_1_1Impl_html_adaed0cbd3cf70cfb72b28da692619c4f"><div class="ttname"><a href="#adaed0cbd3cf70cfb72b28da692619c4f">SHiP::ActsStrawTracker::Impl::shipField</a></div><div class="ttdeci">TVirtualMagField * shipField</div><div class="ttdef"><b>Definition</b> <a href="ActsStrawTracker_8cxx_source.html#l00437">ActsStrawTracker.cxx:437</a></div></div>
+<div class="ttc" id="astructSHiP_1_1ActsStrawTracker_1_1Impl_html_af3ddfcb32941dbb18059041a93329132"><div class="ttname"><a href="#af3ddfcb32941dbb18059041a93329132">SHiP::ActsStrawTracker::Impl::updater</a></div><div class="ttdeci">Acts::GainMatrixUpdater updater</div><div class="ttdef"><b>Definition</b> <a href="ActsStrawTracker_8cxx_source.html#l00444">ActsStrawTracker.cxx:444</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -259,18 +263,70 @@ Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00326">326</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  329</span>                                                        {</div>
-<div class="line"><span class="lineno">  330</span>    <span class="keyword">const</span> <span class="keyword">auto</span>&amp; measurement = <a class="code hl_variable" href="#af34202a29410e136d731940318feaa3b">measurements</a>.at(sourceLink.get&lt;std::size_t&gt;());</div>
-<div class="line"><span class="lineno">  331</span>    <a class="code hl_function" href="namespacetest__event__histogram.html#a2d0b11f1b378a771928b160b98e1e172">state</a>.allocateCalibrated(1);</div>
-<div class="line"><span class="lineno">  332</span>    <a class="code hl_function" href="namespacetest__event__histogram.html#a2d0b11f1b378a771928b160b98e1e172">state</a>.template calibrated&lt;1&gt;()(0) =</div>
-<div class="line"><span class="lineno">  333</span>        measurement.sign * measurement.driftRadius;</div>
-<div class="line"><span class="lineno">  334</span>    <a class="code hl_function" href="namespacetest__event__histogram.html#a2d0b11f1b378a771928b160b98e1e172">state</a>.template calibratedCovariance&lt;1&gt;()(0, 0) = measurement.variance;</div>
-<div class="line"><span class="lineno">  335</span>    <a class="code hl_function" href="namespacetest__event__histogram.html#a2d0b11f1b378a771928b160b98e1e172">state</a>.setProjectorSubspaceIndices(std::array{Acts::eBoundLoc0});</div>
-<div class="line"><span class="lineno">  336</span>    <a class="code hl_function" href="namespacetest__event__histogram.html#a2d0b11f1b378a771928b160b98e1e172">state</a>.setUncalibratedSourceLink(Acts::SourceLink(sourceLink));</div>
-<div class="line"><span class="lineno">  337</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00334">334</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  337</span>                                                        {</div>
+<div class="line"><span class="lineno">  338</span>    <span class="keyword">const</span> <span class="keyword">auto</span>&amp; measurement = <a class="code hl_variable" href="#af34202a29410e136d731940318feaa3b">measurements</a>.at(sourceLink.get&lt;std::size_t&gt;());</div>
+<div class="line"><span class="lineno">  339</span>    <a class="code hl_function" href="namespacetest__event__histogram.html#a2d0b11f1b378a771928b160b98e1e172">state</a>.allocateCalibrated(1);</div>
+<div class="line"><span class="lineno">  340</span>    <a class="code hl_function" href="namespacetest__event__histogram.html#a2d0b11f1b378a771928b160b98e1e172">state</a>.template calibrated&lt;1&gt;()(0) =</div>
+<div class="line"><span class="lineno">  341</span>        measurement.sign * measurement.driftRadius;</div>
+<div class="line"><span class="lineno">  342</span>    <a class="code hl_function" href="namespacetest__event__histogram.html#a2d0b11f1b378a771928b160b98e1e172">state</a>.template calibratedCovariance&lt;1&gt;()(0, 0) = measurement.variance;</div>
+<div class="line"><span class="lineno">  343</span>    <a class="code hl_function" href="namespacetest__event__histogram.html#a2d0b11f1b378a771928b160b98e1e172">state</a>.setProjectorSubspaceIndices(std::array{Acts::eBoundLoc0});</div>
+<div class="line"><span class="lineno">  344</span>    <a class="code hl_function" href="namespacetest__event__histogram.html#a2d0b11f1b378a771928b160b98e1e172">state</a>.setUncalibratedSourceLink(Acts::SourceLink(sourceLink));</div>
+<div class="line"><span class="lineno">  345</span>  }</div>
 <div class="ttc" id="anamespacetest__event__histogram_html_a2d0b11f1b378a771928b160b98e1e172"><div class="ttname"><a href="namespacetest__event__histogram.html#a2d0b11f1b378a771928b160b98e1e172">test_event_histogram.state</a></div><div class="ttdeci">state(h)</div><div class="ttdef"><b>Definition</b> <a href="test__event__histogram_8py_source.html#l00079">test_event_histogram.py:79</a></div></div>
-<div class="ttc" id="astructSHiP_1_1ActsStrawTracker_1_1Impl_html_af34202a29410e136d731940318feaa3b"><div class="ttname"><a href="#af34202a29410e136d731940318feaa3b">SHiP::ActsStrawTracker::Impl::measurements</a></div><div class="ttdeci">std::vector&lt; StrawMeasurement &gt; measurements</div><div class="ttdef"><b>Definition</b> <a href="ActsStrawTracker_8cxx_source.html#l00383">ActsStrawTracker.cxx:383</a></div></div>
+<div class="ttc" id="astructSHiP_1_1ActsStrawTracker_1_1Impl_html_af34202a29410e136d731940318feaa3b"><div class="ttname"><a href="#af34202a29410e136d731940318feaa3b">SHiP::ActsStrawTracker::Impl::measurements</a></div><div class="ttdeci">std::vector&lt; StrawMeasurement &gt; measurements</div><div class="ttdef"><b>Definition</b> <a href="ActsStrawTracker_8cxx_source.html#l00456">ActsStrawTracker.cxx:456</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a1797b38f9307fb78f23b94762f7d261f" name="a1797b38f9307fb78f23b94762f7d261f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1797b38f9307fb78f23b94762f7d261f">&#9670;&#160;</a></span>endSmoothedParameters()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Acts::BoundTrackParameters SHiP::ActsStrawTracker::Impl::endSmoothedParameters </td>
+          <td>(</td>
+          <td class="paramtype">Int_t</td>          <td class="paramname"><span class="paramname"><em>track</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>last</em></span>&#160;) const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Smoothed parameters at the first (or last) fitted measurement of a track; the parameters at the reference surface if it has none </p>
+
+<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00416">416</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  417</span>                                                                    {</div>
+<div class="line"><span class="lineno">  418</span>    <span class="comment">// Throws for a bad index, like the other track accessors</span></div>
+<div class="line"><span class="lineno">  419</span>    Acts::BoundTrackParameters <a class="code hl_variable" href="namespacerun__fixedTarget.html#ad83c31f0696cc6c2129af09325c7ef08">params</a> = <a class="code hl_function" href="#aa7b8e499073defaf85983f93e85c5050">trackParameters</a>(track);</div>
+<div class="line"><span class="lineno">  420</span>    <span class="keyword">const</span> <span class="keyword">auto</span> proxy = <a class="code hl_variable" href="#a3fc72f4dd2046b4ad4f02e5cc7220521">tracks</a>.getTrack(track);</div>
+<div class="line"><span class="lineno">  421</span>    <span class="comment">// The states run from the last to the first measurement</span></div>
+<div class="line"><span class="lineno">  422</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> state : proxy.trackStatesReversed()) {</div>
+<div class="line"><span class="lineno">  423</span>      <span class="keywordflow">if</span> (!isFittedMeasurement(state)) {</div>
+<div class="line"><span class="lineno">  424</span>        <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">  425</span>      }</div>
+<div class="line"><span class="lineno">  426</span>      <a class="code hl_variable" href="namespacerun__fixedTarget.html#ad83c31f0696cc6c2129af09325c7ef08">params</a> = Acts::BoundTrackParameters(</div>
+<div class="line"><span class="lineno">  427</span>          <a class="code hl_function" href="namespacetest__event__histogram.html#a2d0b11f1b378a771928b160b98e1e172">state</a>.referenceSurface().getSharedPtr(), <a class="code hl_function" href="namespacetest__event__histogram.html#a2d0b11f1b378a771928b160b98e1e172">state</a>.smoothed(),</div>
+<div class="line"><span class="lineno">  428</span>          <a class="code hl_function" href="namespacetest__event__histogram.html#a2d0b11f1b378a771928b160b98e1e172">state</a>.smoothedCovariance(), proxy.particleHypothesis());</div>
+<div class="line"><span class="lineno">  429</span>      <span class="keywordflow">if</span> (last) {</div>
+<div class="line"><span class="lineno">  430</span>        <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  431</span>      }</div>
+<div class="line"><span class="lineno">  432</span>    }</div>
+<div class="line"><span class="lineno">  433</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="namespacerun__fixedTarget.html#ad83c31f0696cc6c2129af09325c7ef08">params</a>;</div>
+<div class="line"><span class="lineno">  434</span>  }</div>
+<div class="ttc" id="anamespacerun__fixedTarget_html_ad83c31f0696cc6c2129af09325c7ef08"><div class="ttname"><a href="namespacerun__fixedTarget.html#ad83c31f0696cc6c2129af09325c7ef08">run_fixedTarget.params</a></div><div class="ttdeci">params</div><div class="ttdef"><b>Definition</b> <a href="run__fixedTarget_8py_source.html#l00460">run_fixedTarget.py:460</a></div></div>
+<div class="ttc" id="astructSHiP_1_1ActsStrawTracker_1_1Impl_html_aa7b8e499073defaf85983f93e85c5050"><div class="ttname"><a href="#aa7b8e499073defaf85983f93e85c5050">SHiP::ActsStrawTracker::Impl::trackParameters</a></div><div class="ttdeci">Acts::BoundTrackParameters trackParameters(Int_t track) const</div><div class="ttdef"><b>Definition</b> <a href="ActsStrawTracker_8cxx_source.html#l00347">ActsStrawTracker.cxx:347</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -306,26 +362,89 @@ Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Propagate to <span class="tt">target</span> in whichever direction reaches it. </p>
+<p>As <a class="el" href="#a3a7cf2085f115a745bf93d602a578a4e">extrapolateWithLength()</a>, returning only the parameters. </p>
 
-<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00347">347</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  349</span>                                       {</div>
-<div class="line"><span class="lineno">  350</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> direction :</div>
-<div class="line"><span class="lineno">  351</span>         {Acts::Direction::Forward(), Acts::Direction::Backward()}) {</div>
-<div class="line"><span class="lineno">  352</span>      Extrapolator::Options&lt;&gt; <a class="code hl_variable" href="namespaceeventDisplay.html#a6820b8d5176d609cefecb49b8176516a">options</a>(<a class="code hl_variable" href="#a57359d735f0a2eaa772a51aa4baed40e">gctx</a>, <a class="code hl_variable" href="#acb0fd73ef6de21cc48e6fc7f0a9c0b78">mctx</a>);</div>
-<div class="line"><span class="lineno">  353</span>      <a class="code hl_variable" href="namespaceeventDisplay.html#a6820b8d5176d609cefecb49b8176516a">options</a>.pathLimit = kPathLimit;</div>
-<div class="line"><span class="lineno">  354</span>      <a class="code hl_variable" href="namespaceeventDisplay.html#a6820b8d5176d609cefecb49b8176516a">options</a>.direction = direction;</div>
-<div class="line"><span class="lineno">  355</span>      <span class="keyword">auto</span> <a class="code hl_variable" href="namespacerun__tracking__scan.html#aefd0a105108077accad31b51b4f0647e">result</a> = propagator.propagate(start, target, options);</div>
-<div class="line"><span class="lineno">  356</span>      <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacerun__tracking__scan.html#aefd0a105108077accad31b51b4f0647e">result</a>.ok() &amp;&amp; <a class="code hl_variable" href="namespacerun__tracking__scan.html#aefd0a105108077accad31b51b4f0647e">result</a>.value().endParameters.has_value()) {</div>
-<div class="line"><span class="lineno">  357</span>        <span class="keywordflow">return</span> <a class="code hl_variable" href="namespacerun__tracking__scan.html#aefd0a105108077accad31b51b4f0647e">result</a>.value().endParameters.value();</div>
-<div class="line"><span class="lineno">  358</span>      }</div>
-<div class="line"><span class="lineno">  359</span>    }</div>
-<div class="line"><span class="lineno">  360</span>    <span class="keywordflow">return</span> std::nullopt;</div>
-<div class="line"><span class="lineno">  361</span>  }</div>
-<div class="ttc" id="anamespaceeventDisplay_html_a6820b8d5176d609cefecb49b8176516a"><div class="ttname"><a href="namespaceeventDisplay.html#a6820b8d5176d609cefecb49b8176516a">eventDisplay.options</a></div><div class="ttdeci">options</div><div class="ttdef"><b>Definition</b> <a href="eventDisplay_8py_source.html#l00132">eventDisplay.py:132</a></div></div>
+<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00404">404</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  406</span>                                       {</div>
+<div class="line"><span class="lineno">  407</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="namespacerun__tracking__scan.html#aefd0a105108077accad31b51b4f0647e">result</a> = <a class="code hl_function" href="#a3a7cf2085f115a745bf93d602a578a4e">extrapolateWithLength</a>(propagator, start, target);</div>
+<div class="line"><span class="lineno">  408</span>    <span class="keywordflow">if</span> (!result) {</div>
+<div class="line"><span class="lineno">  409</span>      <span class="keywordflow">return</span> std::nullopt;</div>
+<div class="line"><span class="lineno">  410</span>    }</div>
+<div class="line"><span class="lineno">  411</span>    <span class="keywordflow">return</span> std::move(<a class="code hl_variable" href="namespacerun__tracking__scan.html#aefd0a105108077accad31b51b4f0647e">result</a>-&gt;first);</div>
+<div class="line"><span class="lineno">  412</span>  }</div>
 <div class="ttc" id="anamespacerun__tracking__scan_html_aefd0a105108077accad31b51b4f0647e"><div class="ttname"><a href="namespacerun__tracking__scan.html#aefd0a105108077accad31b51b4f0647e">run_tracking_scan.result</a></div><div class="ttdeci">result</div><div class="ttdef"><b>Definition</b> <a href="run__tracking__scan_8py_source.html#l00156">run_tracking_scan.py:156</a></div></div>
-<div class="ttc" id="astructSHiP_1_1ActsStrawTracker_1_1Impl_html_a57359d735f0a2eaa772a51aa4baed40e"><div class="ttname"><a href="#a57359d735f0a2eaa772a51aa4baed40e">SHiP::ActsStrawTracker::Impl::gctx</a></div><div class="ttdeci">Acts::GeometryContext gctx</div><div class="ttdef"><b>Definition</b> <a href="ActsStrawTracker_8cxx_source.html#l00379">ActsStrawTracker.cxx:379</a></div></div>
-<div class="ttc" id="astructSHiP_1_1ActsStrawTracker_1_1Impl_html_acb0fd73ef6de21cc48e6fc7f0a9c0b78"><div class="ttname"><a href="#acb0fd73ef6de21cc48e6fc7f0a9c0b78">SHiP::ActsStrawTracker::Impl::mctx</a></div><div class="ttdeci">Acts::MagneticFieldContext mctx</div><div class="ttdef"><b>Definition</b> <a href="ActsStrawTracker_8cxx_source.html#l00381">ActsStrawTracker.cxx:381</a></div></div>
+<div class="ttc" id="astructSHiP_1_1ActsStrawTracker_1_1Impl_html_a3a7cf2085f115a745bf93d602a578a4e"><div class="ttname"><a href="#a3a7cf2085f115a745bf93d602a578a4e">SHiP::ActsStrawTracker::Impl::extrapolateWithLength</a></div><div class="ttdeci">std::optional&lt; std::pair&lt; Acts::BoundTrackParameters, double &gt; &gt; extrapolateWithLength(const Extrapolator &amp;propagator, const Acts::BoundTrackParameters &amp;start, const Acts::Surface &amp;target) const</div><div class="ttdef"><b>Definition</b> <a href="ActsStrawTracker_8cxx_source.html#l00371">ActsStrawTracker.cxx:371</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a3a7cf2085f115a745bf93d602a578a4e" name="a3a7cf2085f115a745bf93d602a578a4e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3a7cf2085f115a745bf93d602a578a4e">&#9670;&#160;</a></span>extrapolateWithLength()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::optional&lt; std::pair&lt; Acts::BoundTrackParameters, double &gt; &gt; SHiP::ActsStrawTracker::Impl::extrapolateWithLength </td>
+          <td>(</td>
+          <td class="paramtype">const Extrapolator &amp;</td>          <td class="paramname"><span class="paramname"><em>propagator</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const Acts::BoundTrackParameters &amp;</td>          <td class="paramname"><span class="paramname"><em>start</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const Acts::Surface &amp;</td>          <td class="paramname"><span class="paramname"><em>target</em></span>&#160;) const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Propagate to <span class="tt">target</span> in whichever direction reaches it, also returning the path length (ACTS units), signed: negative when the target is reached against the momentum direction </p>
+
+<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00371">371</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  373</span>                                                         {</div>
+<div class="line"><span class="lineno">  374</span>    <span class="comment">// Try first the direction in which the straight line along the momentum</span></div>
+<div class="line"><span class="lineno">  375</span>    <span class="comment">// meets the target. A propagation the wrong way only stops at the path</span></div>
+<div class="line"><span class="lineno">  376</span>    <span class="comment">// limit, as the void navigator has no world boundary; the other</span></div>
+<div class="line"><span class="lineno">  377</span>    <span class="comment">// direction stays as the fallback in case the field changes the answer.</span></div>
+<div class="line"><span class="lineno">  378</span>    <span class="keyword">const</span> <span class="keyword">auto</span> intersection =</div>
+<div class="line"><span class="lineno">  379</span>        <a class="code hl_variable" href="namespacemakeCascade.html#a84ddf46aec68748aa97d4395eabca427">target</a>.intersect(<a class="code hl_variable" href="#a57359d735f0a2eaa772a51aa4baed40e">gctx</a>, start.position(<a class="code hl_variable" href="#a57359d735f0a2eaa772a51aa4baed40e">gctx</a>), start.direction())</div>
+<div class="line"><span class="lineno">  380</span>            .closest();</div>
+<div class="line"><span class="lineno">  381</span>    <span class="keyword">const</span> <span class="keywordtype">bool</span> behind =</div>
+<div class="line"><span class="lineno">  382</span>        intersection.isValid() &amp;&amp; intersection.pathLength() &lt; 0.;</div>
+<div class="line"><span class="lineno">  383</span>    <span class="keyword">const</span> <span class="keyword">auto</span> first =</div>
+<div class="line"><span class="lineno">  384</span>        behind ? Acts::Direction::Backward() : Acts::Direction::Forward();</div>
+<div class="line"><span class="lineno">  385</span>    <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespacehepunit.html#aadfb3bd79ceb0fa7f4b8a28700d2affb">second</a> =</div>
+<div class="line"><span class="lineno">  386</span>        behind ? Acts::Direction::Forward() : Acts::Direction::Backward();</div>
+<div class="line"><span class="lineno">  387</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> direction : {first, <a class="code hl_variable" href="namespacehepunit.html#aadfb3bd79ceb0fa7f4b8a28700d2affb">second</a>}) {</div>
+<div class="line"><span class="lineno">  388</span>      Extrapolator::Options&lt;&gt; <a class="code hl_variable" href="namespaceeventDisplay.html#a6820b8d5176d609cefecb49b8176516a">options</a>(<a class="code hl_variable" href="#a57359d735f0a2eaa772a51aa4baed40e">gctx</a>, <a class="code hl_variable" href="#acb0fd73ef6de21cc48e6fc7f0a9c0b78">mctx</a>);</div>
+<div class="line"><span class="lineno">  389</span>      <a class="code hl_variable" href="namespaceeventDisplay.html#a6820b8d5176d609cefecb49b8176516a">options</a>.pathLimit = kPathLimit;</div>
+<div class="line"><span class="lineno">  390</span>      <a class="code hl_variable" href="namespaceeventDisplay.html#a6820b8d5176d609cefecb49b8176516a">options</a>.direction = direction;</div>
+<div class="line"><span class="lineno">  391</span>      <span class="keyword">auto</span> <a class="code hl_variable" href="namespacerun__tracking__scan.html#aefd0a105108077accad31b51b4f0647e">result</a> = propagator.propagate(start, target, options);</div>
+<div class="line"><span class="lineno">  392</span>      <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacerun__tracking__scan.html#aefd0a105108077accad31b51b4f0647e">result</a>.ok() &amp;&amp; <a class="code hl_variable" href="namespacerun__tracking__scan.html#aefd0a105108077accad31b51b4f0647e">result</a>.value().endParameters.has_value()) {</div>
+<div class="line"><span class="lineno">  393</span>        <span class="comment">// Take the sign from the direction rather than relying on the</span></div>
+<div class="line"><span class="lineno">  394</span>        <span class="comment">// sign convention of the accumulated path length</span></div>
+<div class="line"><span class="lineno">  395</span>        <span class="keyword">const</span> <span class="keywordtype">double</span> sign = direction == Acts::Direction::Forward() ? 1. : -1.;</div>
+<div class="line"><span class="lineno">  396</span>        <span class="keyword">const</span> <span class="keywordtype">double</span> length = sign * std::abs(<a class="code hl_variable" href="namespacerun__tracking__scan.html#aefd0a105108077accad31b51b4f0647e">result</a>.value().pathLength);</div>
+<div class="line"><span class="lineno">  397</span>        <span class="keywordflow">return</span> std::make_pair(<a class="code hl_variable" href="namespacerun__tracking__scan.html#aefd0a105108077accad31b51b4f0647e">result</a>.value().endParameters.value(), length);</div>
+<div class="line"><span class="lineno">  398</span>      }</div>
+<div class="line"><span class="lineno">  399</span>    }</div>
+<div class="line"><span class="lineno">  400</span>    <span class="keywordflow">return</span> std::nullopt;</div>
+<div class="line"><span class="lineno">  401</span>  }</div>
+<div class="ttc" id="anamespaceeventDisplay_html_a6820b8d5176d609cefecb49b8176516a"><div class="ttname"><a href="namespaceeventDisplay.html#a6820b8d5176d609cefecb49b8176516a">eventDisplay.options</a></div><div class="ttdeci">options</div><div class="ttdef"><b>Definition</b> <a href="eventDisplay_8py_source.html#l00132">eventDisplay.py:132</a></div></div>
+<div class="ttc" id="anamespacehepunit_html_aadfb3bd79ceb0fa7f4b8a28700d2affb"><div class="ttname"><a href="namespacehepunit.html#aadfb3bd79ceb0fa7f4b8a28700d2affb">hepunit.second</a></div><div class="ttdeci">float second</div><div class="ttdef"><b>Definition</b> <a href="hepunit_8py_source.html#l00086">hepunit.py:86</a></div></div>
+<div class="ttc" id="anamespacemakeCascade_html_a84ddf46aec68748aa97d4395eabca427"><div class="ttname"><a href="namespacemakeCascade.html#a84ddf46aec68748aa97d4395eabca427">makeCascade.target</a></div><div class="ttdeci">list target</div><div class="ttdef"><b>Definition</b> <a href="makeCascade_8py_source.html#l00072">makeCascade.py:72</a></div></div>
+<div class="ttc" id="astructSHiP_1_1ActsStrawTracker_1_1Impl_html_a57359d735f0a2eaa772a51aa4baed40e"><div class="ttname"><a href="#a57359d735f0a2eaa772a51aa4baed40e">SHiP::ActsStrawTracker::Impl::gctx</a></div><div class="ttdeci">Acts::GeometryContext gctx</div><div class="ttdef"><b>Definition</b> <a href="ActsStrawTracker_8cxx_source.html#l00452">ActsStrawTracker.cxx:452</a></div></div>
+<div class="ttc" id="astructSHiP_1_1ActsStrawTracker_1_1Impl_html_acb0fd73ef6de21cc48e6fc7f0a9c0b78"><div class="ttname"><a href="#acb0fd73ef6de21cc48e6fc7f0a9c0b78">SHiP::ActsStrawTracker::Impl::mctx</a></div><div class="ttdeci">Acts::MagneticFieldContext mctx</div><div class="ttdef"><b>Definition</b> <a href="ActsStrawTracker_8cxx_source.html#l00454">ActsStrawTracker.cxx:454</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -353,23 +472,23 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Integral of Bx along a straight line through the magnet (T m), and the z of its centre (cm) </p>
 
-<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00305">305</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  305</span>                                                                       {</div>
-<div class="line"><span class="lineno">  306</span>    <span class="keywordtype">double</span> integral = 0.;</div>
-<div class="line"><span class="lineno">  307</span>    <span class="keywordtype">double</span> moment = 0.;</div>
-<div class="line"><span class="lineno">  308</span>    <span class="keywordflow">for</span> (<span class="keywordtype">double</span> z = <a class="code hl_variable" href="#a4c6caa7a9ce37fe529254a423b6ea266">magnetStart</a>; <a class="code hl_variable" href="namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed">z</a> &lt; <a class="code hl_variable" href="#a5987b16b660cdb4453a2717fcef3849c">magnetEnd</a>; <a class="code hl_variable" href="namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed">z</a> += kFieldStep) {</div>
-<div class="line"><span class="lineno">  309</span>      <span class="keyword">const</span> <span class="keywordtype">double</span> zMid = <a class="code hl_variable" href="namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed">z</a> + kFieldStep / 2.;</div>
-<div class="line"><span class="lineno">  310</span>      <span class="keyword">const</span> <span class="keywordtype">double</span> <a class="code hl_variable" href="namespacerun__fixedTarget.html#a68f8e54ebe34ed88a1aff4505c32be7c">x</a>[3] = {line.x(zMid), line.y(zMid), zMid};</div>
-<div class="line"><span class="lineno">  311</span>      <span class="keywordtype">double</span> b[3] = {0., 0., 0.};</div>
-<div class="line"><span class="lineno">  312</span>      <a class="code hl_variable" href="#adaed0cbd3cf70cfb72b28da692619c4f">shipField</a>-&gt;Field(x, b);</div>
-<div class="line"><span class="lineno">  313</span>      <span class="comment">// kGauss to T, cm to m</span></div>
-<div class="line"><span class="lineno">  314</span>      <span class="keyword">const</span> <span class="keywordtype">double</span> bx = 0.1 * b[0] * 0.01 * kFieldStep;</div>
-<div class="line"><span class="lineno">  315</span>      integral += bx;</div>
-<div class="line"><span class="lineno">  316</span>      moment += bx * zMid;</div>
-<div class="line"><span class="lineno">  317</span>    }</div>
-<div class="line"><span class="lineno">  318</span>    <span class="keywordflow">return</span> {integral, integral != 0. ? moment / integral</div>
-<div class="line"><span class="lineno">  319</span>                                     : 0.5 * (<a class="code hl_variable" href="#a4c6caa7a9ce37fe529254a423b6ea266">magnetStart</a> + <a class="code hl_variable" href="#a5987b16b660cdb4453a2717fcef3849c">magnetEnd</a>)};</div>
-<div class="line"><span class="lineno">  320</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00313">313</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  313</span>                                                                       {</div>
+<div class="line"><span class="lineno">  314</span>    <span class="keywordtype">double</span> integral = 0.;</div>
+<div class="line"><span class="lineno">  315</span>    <span class="keywordtype">double</span> moment = 0.;</div>
+<div class="line"><span class="lineno">  316</span>    <span class="keywordflow">for</span> (<span class="keywordtype">double</span> z = <a class="code hl_variable" href="#a4c6caa7a9ce37fe529254a423b6ea266">magnetStart</a>; <a class="code hl_variable" href="namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed">z</a> &lt; <a class="code hl_variable" href="#a5987b16b660cdb4453a2717fcef3849c">magnetEnd</a>; <a class="code hl_variable" href="namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed">z</a> += kFieldStep) {</div>
+<div class="line"><span class="lineno">  317</span>      <span class="keyword">const</span> <span class="keywordtype">double</span> zMid = <a class="code hl_variable" href="namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed">z</a> + kFieldStep / 2.;</div>
+<div class="line"><span class="lineno">  318</span>      <span class="keyword">const</span> <span class="keywordtype">double</span> <a class="code hl_variable" href="namespacerun__fixedTarget.html#a68f8e54ebe34ed88a1aff4505c32be7c">x</a>[3] = {line.x(zMid), line.y(zMid), zMid};</div>
+<div class="line"><span class="lineno">  319</span>      <span class="keywordtype">double</span> b[3] = {0., 0., 0.};</div>
+<div class="line"><span class="lineno">  320</span>      <a class="code hl_variable" href="#adaed0cbd3cf70cfb72b28da692619c4f">shipField</a>-&gt;Field(x, b);</div>
+<div class="line"><span class="lineno">  321</span>      <span class="comment">// kGauss to T, cm to m</span></div>
+<div class="line"><span class="lineno">  322</span>      <span class="keyword">const</span> <span class="keywordtype">double</span> bx = 0.1 * b[0] * 0.01 * kFieldStep;</div>
+<div class="line"><span class="lineno">  323</span>      integral += bx;</div>
+<div class="line"><span class="lineno">  324</span>      moment += bx * zMid;</div>
+<div class="line"><span class="lineno">  325</span>    }</div>
+<div class="line"><span class="lineno">  326</span>    <span class="keywordflow">return</span> {integral, integral != 0. ? moment / integral</div>
+<div class="line"><span class="lineno">  327</span>                                     : 0.5 * (<a class="code hl_variable" href="#a4c6caa7a9ce37fe529254a423b6ea266">magnetStart</a> + <a class="code hl_variable" href="#a5987b16b660cdb4453a2717fcef3849c">magnetEnd</a>)};</div>
+<div class="line"><span class="lineno">  328</span>  }</div>
 <div class="ttc" id="anamespacerun__fixedTarget_html_a68f8e54ebe34ed88a1aff4505c32be7c"><div class="ttname"><a href="namespacerun__fixedTarget.html#a68f8e54ebe34ed88a1aff4505c32be7c">run_fixedTarget.x</a></div><div class="ttdeci">x</div><div class="ttdef"><b>Definition</b> <a href="run__fixedTarget_8py_source.html#l00711">run_fixedTarget.py:711</a></div></div>
 <div class="ttc" id="anamespacerun__simScript_html_a90c25390918b8dd5a6f17d8efa00c9ed"><div class="ttname"><a href="namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed">run_simScript.z</a></div><div class="ttdeci">z</div><div class="ttdef"><b>Definition</b> <a href="run__simScript_8py_source.html#l00820">run_simScript.py:820</a></div></div>
 </div><!-- fragment -->
@@ -395,104 +514,106 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Fit a candidate, refining the sides of the wires and dropping outliers; returns the track index or -1 </p>
 
-<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00500">500</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  501</span>                                                                    {</div>
-<div class="line"><span class="lineno">  502</span>  <span class="comment">// The measurements, ordered in z, with the sides of the wires from the</span></div>
-<div class="line"><span class="lineno">  503</span>  <span class="comment">// segment fits</span></div>
-<div class="line"><span class="lineno">  504</span>  std::vector&lt;std::pair&lt;double, Int_t&gt;&gt; ordered;</div>
-<div class="line"><span class="lineno">  505</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> LineSegment* segment :</div>
-<div class="line"><span class="lineno">  506</span>       {&amp;<a class="code hl_variable" href="namespaceeventDisplay.html#a73fd0f3a2dae7cace5750a4973039f53">candidate</a>.upstream, &amp;<a class="code hl_variable" href="namespaceeventDisplay.html#a73fd0f3a2dae7cace5750a4973039f53">candidate</a>.downstream}) {</div>
-<div class="line"><span class="lineno">  507</span>    <span class="keywordflow">for</span> (std::size_t k = 0; <a class="code hl_variable" href="namespacerunPythia8.html#a4cd74a33c53eaeef70fcb6b448b9b285">k</a> &lt; segment-&gt;hits.size(); ++<a class="code hl_variable" href="namespacerunPythia8.html#a4cd74a33c53eaeef70fcb6b448b9b285">k</a>) {</div>
-<div class="line"><span class="lineno">  508</span>      <span class="keyword">const</span> PatRecHit&amp; hit = hits[segment-&gt;hits[<a class="code hl_variable" href="namespacerunPythia8.html#a4cd74a33c53eaeef70fcb6b448b9b285">k</a>]];</div>
-<div class="line"><span class="lineno">  509</span>      <a class="code hl_variable" href="#af34202a29410e136d731940318feaa3b">measurements</a>[hit.index].sign = segment-&gt;signs[<a class="code hl_variable" href="namespacerunPythia8.html#a4cd74a33c53eaeef70fcb6b448b9b285">k</a>];</div>
-<div class="line"><span class="lineno">  510</span>      ordered.emplace_back(hit.wire-&gt;z, hit.index);</div>
-<div class="line"><span class="lineno">  511</span>    }</div>
-<div class="line"><span class="lineno">  512</span>  }</div>
-<div class="line"><span class="lineno">  513</span>  std::sort(ordered.begin(), ordered.end());</div>
-<div class="line"><span class="lineno">  514</span>  std::vector&lt;Int_t&gt; indices;</div>
-<div class="line"><span class="lineno">  515</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; [z, index] : ordered) {</div>
-<div class="line"><span class="lineno">  516</span>    indices.push_back(index);</div>
-<div class="line"><span class="lineno">  517</span>  }</div>
-<div class="line"><span class="lineno">  518</span> </div>
-<div class="line"><span class="lineno">  519</span>  <span class="comment">// Momentum from the kink, with the field integral along this track</span></div>
-<div class="line"><span class="lineno">  520</span>  TrackCandidate refined = <a class="code hl_variable" href="namespaceeventDisplay.html#a73fd0f3a2dae7cace5750a4973039f53">candidate</a>;</div>
-<div class="line"><span class="lineno">  521</span>  <span class="keyword">const</span> <span class="keyword">auto</span> [integral, centre] = <a class="code hl_function" href="#a1c46bbe3e642b143cd377c09e8096759">fieldIntegral</a>(<a class="code hl_variable" href="namespaceeventDisplay.html#a73fd0f3a2dae7cace5750a4973039f53">candidate</a>.upstream);</div>
-<div class="line"><span class="lineno">  522</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> kink = <a class="code hl_variable" href="namespaceeventDisplay.html#a73fd0f3a2dae7cace5750a4973039f53">candidate</a>.downstream.ty - <a class="code hl_variable" href="namespaceeventDisplay.html#a73fd0f3a2dae7cace5750a4973039f53">candidate</a>.upstream.ty;</div>
-<div class="line"><span class="lineno">  523</span>  <span class="keywordflow">if</span> (integral != 0. &amp;&amp; kink != 0.) {</div>
-<div class="line"><span class="lineno">  524</span>    <span class="keyword">const</span> LineSegment&amp; up = <a class="code hl_variable" href="namespaceeventDisplay.html#a73fd0f3a2dae7cace5750a4973039f53">candidate</a>.upstream;</div>
-<div class="line"><span class="lineno">  525</span>    <span class="keyword">const</span> <span class="keywordtype">double</span> <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a595c352a9b1a3ae33b95fc5937803a60">pz</a> =</div>
-<div class="line"><span class="lineno">  526</span>        std::min(std::abs(kKick * integral / kink), kMaxSeedMomentum);</div>
-<div class="line"><span class="lineno">  527</span>    refined.momentum = <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a595c352a9b1a3ae33b95fc5937803a60">pz</a> * std::sqrt(1. + up.tx * up.tx + up.ty * up.ty);</div>
-<div class="line"><span class="lineno">  528</span>    refined.charge = kink / integral &gt; 0. ? 1 : -1;</div>
-<div class="line"><span class="lineno">  529</span>  }</div>
-<div class="line"><span class="lineno">  530</span>  Acts::BoundTrackParameters start =</div>
-<div class="line"><span class="lineno">  531</span>      <a class="code hl_function" href="#ac015b7a500daef23e3270394401636e0">seed</a>(refined, <a class="code hl_variable" href="#af34202a29410e136d731940318feaa3b">measurements</a>[indices.front()]);</div>
-<div class="line"><span class="lineno">  532</span> </div>
-<div class="line"><span class="lineno">  533</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> refit = 0;; ++refit) {</div>
-<div class="line"><span class="lineno">  534</span>    <span class="keywordflow">if</span> (<span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(indices.size()) &lt; kMinFitMeasurements) {</div>
-<div class="line"><span class="lineno">  535</span>      <span class="keywordflow">return</span> -1;</div>
-<div class="line"><span class="lineno">  536</span>    }</div>
-<div class="line"><span class="lineno">  537</span>    <span class="keyword">const</span> <span class="keyword">auto</span> track = <a class="code hl_function" href="#a7d1ccb2129d57077d71c326c74063e64">fitOnce</a>(indices, start);</div>
-<div class="line"><span class="lineno">  538</span>    <span class="keywordflow">if</span> (!track) {</div>
-<div class="line"><span class="lineno">  539</span>      <span class="keywordflow">return</span> -1;</div>
-<div class="line"><span class="lineno">  540</span>    }</div>
-<div class="line"><span class="lineno">  541</span>    <span class="comment">// Check each hit against the fitted track: take the side of the wire it</span></div>
-<div class="line"><span class="lineno">  542</span>    <span class="comment">// passes on, and drop hits that are too far from it</span></div>
-<div class="line"><span class="lineno">  543</span>    <span class="keywordtype">bool</span> changed = <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  544</span>    std::vector&lt;std::pair&lt;double, Int_t&gt;&gt; kept;</div>
-<div class="line"><span class="lineno">  545</span>    <span class="keyword">const</span> <span class="keyword">auto</span> proxy = <a class="code hl_variable" href="#a3fc72f4dd2046b4ad4f02e5cc7220521">tracks</a>.getTrack(*track);</div>
-<div class="line"><span class="lineno">  546</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> state : proxy.trackStatesReversed()) {</div>
-<div class="line"><span class="lineno">  547</span>      <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespacetest__event__histogram.html#a2d0b11f1b378a771928b160b98e1e172">state</a>.hasUncalibratedSourceLink() || !<a class="code hl_function" href="namespacetest__event__histogram.html#a2d0b11f1b378a771928b160b98e1e172">state</a>.hasSmoothed()) {</div>
-<div class="line"><span class="lineno">  548</span>        <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">  549</span>      }</div>
-<div class="line"><span class="lineno">  550</span>      <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a1391b7407359c40dbacead1473f5a96b">index</a> = <span class="keyword">static_cast&lt;</span>Int_t<span class="keyword">&gt;</span>(</div>
-<div class="line"><span class="lineno">  551</span>          <a class="code hl_function" href="namespacetest__event__histogram.html#a2d0b11f1b378a771928b160b98e1e172">state</a>.getUncalibratedSourceLink().<span class="keyword">template</span> get&lt;std::size_t&gt;());</div>
-<div class="line"><span class="lineno">  552</span>      <span class="keyword">auto</span>&amp; <a class="code hl_variable" href="ShipBellField_8cxx.html#ae0699ca79e23818d99b9ee18334a9325">m</a> = <a class="code hl_variable" href="#af34202a29410e136d731940318feaa3b">measurements</a>[<a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a1391b7407359c40dbacead1473f5a96b">index</a>];</div>
-<div class="line"><span class="lineno">  553</span>      <span class="keyword">const</span> <span class="keywordtype">double</span> predicted = <a class="code hl_function" href="namespacetest__event__histogram.html#a2d0b11f1b378a771928b160b98e1e172">state</a>.smoothed()[Acts::eBoundLoc0];</div>
-<div class="line"><span class="lineno">  554</span>      <span class="keyword">const</span> <span class="keywordtype">double</span> <a class="code hl_variable" href="namespacerunPythia8.html#aa6ccf15df5382fe526735a07d97d3cd4">sigma</a> =</div>
-<div class="line"><span class="lineno">  555</span>          std::sqrt(<a class="code hl_variable" href="ShipBellField_8cxx.html#ae0699ca79e23818d99b9ee18334a9325">m</a>.variance + <a class="code hl_function" href="namespacetest__event__histogram.html#a2d0b11f1b378a771928b160b98e1e172">state</a>.smoothedCovariance()(Acts::eBoundLoc0,</div>
-<div class="line"><span class="lineno">  556</span>                                                            Acts::eBoundLoc0));</div>
-<div class="line"><span class="lineno">  557</span>      <span class="keywordflow">if</span> (std::abs(std::abs(predicted) - <a class="code hl_variable" href="ShipBellField_8cxx.html#ae0699ca79e23818d99b9ee18334a9325">m</a>.driftRadius) &gt;</div>
-<div class="line"><span class="lineno">  558</span>          kOutlierPull * sigma) {</div>
-<div class="line"><span class="lineno">  559</span>        changed = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  560</span>        <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">  561</span>      }</div>
-<div class="line"><span class="lineno">  562</span>      <span class="keyword">const</span> <span class="keywordtype">int</span> side = predicted &gt;= 0. ? 1 : -1;</div>
-<div class="line"><span class="lineno">  563</span>      <span class="keywordflow">if</span> (side != <a class="code hl_variable" href="ShipBellField_8cxx.html#ae0699ca79e23818d99b9ee18334a9325">m</a>.sign &amp;&amp; std::abs(predicted) &gt; std::sqrt(<a class="code hl_variable" href="ShipBellField_8cxx.html#ae0699ca79e23818d99b9ee18334a9325">m</a>.variance)) {</div>
-<div class="line"><span class="lineno">  564</span>        <a class="code hl_variable" href="ShipBellField_8cxx.html#ae0699ca79e23818d99b9ee18334a9325">m</a>.sign = side;</div>
-<div class="line"><span class="lineno">  565</span>        changed = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  566</span>      }</div>
-<div class="line"><span class="lineno">  567</span>      kept.emplace_back(<a class="code hl_variable" href="ShipBellField_8cxx.html#ae0699ca79e23818d99b9ee18334a9325">m</a>.wire-&gt;z, index);</div>
-<div class="line"><span class="lineno">  568</span>    }</div>
-<div class="line"><span class="lineno">  569</span>    <span class="keywordflow">if</span> (!changed || refit == kMaxRefits) {</div>
-<div class="line"><span class="lineno">  570</span>      <a class="code hl_variable" href="#a0da100fce69ecb63c1c5173e4927f1c3">trackMeasurements</a>.push_back(indices);</div>
-<div class="line"><span class="lineno">  571</span>      <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>Int_t<span class="keyword">&gt;</span>(*track);</div>
-<div class="line"><span class="lineno">  572</span>    }</div>
-<div class="line"><span class="lineno">  573</span>    <span class="comment">// Refit from the fitted parameters, with the seed uncertainties so the</span></div>
-<div class="line"><span class="lineno">  574</span>    <span class="comment">// previous fit does not bias the next</span></div>
-<div class="line"><span class="lineno">  575</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="namespacerun__fixedTarget.html#ad83c31f0696cc6c2129af09325c7ef08">params</a> = proxy.createParametersAtReference();</div>
-<div class="line"><span class="lineno">  576</span>    start = Acts::BoundTrackParameters(</div>
-<div class="line"><span class="lineno">  577</span>        <a class="code hl_variable" href="namespacerun__fixedTarget.html#ad83c31f0696cc6c2129af09325c7ef08">params</a>.referenceSurface().getSharedPtr(), <a class="code hl_variable" href="namespacerun__fixedTarget.html#ad83c31f0696cc6c2129af09325c7ef08">params</a>.parameters(),</div>
-<div class="line"><span class="lineno">  578</span>        <a class="code hl_function" href="#ac015b7a500daef23e3270394401636e0">seed</a>(refined, <a class="code hl_variable" href="#af34202a29410e136d731940318feaa3b">measurements</a>[indices.front()]).covariance(),</div>
-<div class="line"><span class="lineno">  579</span>        <a class="code hl_variable" href="namespacerun__fixedTarget.html#ad83c31f0696cc6c2129af09325c7ef08">params</a>.particleHypothesis());</div>
-<div class="line"><span class="lineno">  580</span>    <a class="code hl_variable" href="#a3fc72f4dd2046b4ad4f02e5cc7220521">tracks</a>.removeTrack(*track);</div>
-<div class="line"><span class="lineno">  581</span>    std::sort(kept.begin(), kept.end());</div>
-<div class="line"><span class="lineno">  582</span>    indices.clear();</div>
-<div class="line"><span class="lineno">  583</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; [z, index] : kept) {</div>
-<div class="line"><span class="lineno">  584</span>      indices.push_back(index);</div>
-<div class="line"><span class="lineno">  585</span>    }</div>
-<div class="line"><span class="lineno">  586</span>  }</div>
-<div class="line"><span class="lineno">  587</span>}</div>
+<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00578">578</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  579</span>                                                                    {</div>
+<div class="line"><span class="lineno">  580</span>  <span class="comment">// The measurements, ordered in z, with the sides of the wires from the</span></div>
+<div class="line"><span class="lineno">  581</span>  <span class="comment">// segment fits</span></div>
+<div class="line"><span class="lineno">  582</span>  std::vector&lt;std::pair&lt;double, Int_t&gt;&gt; ordered;</div>
+<div class="line"><span class="lineno">  583</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> LineSegment* segment :</div>
+<div class="line"><span class="lineno">  584</span>       {&amp;<a class="code hl_variable" href="namespaceeventDisplay.html#a73fd0f3a2dae7cace5750a4973039f53">candidate</a>.upstream, &amp;<a class="code hl_variable" href="namespaceeventDisplay.html#a73fd0f3a2dae7cace5750a4973039f53">candidate</a>.downstream}) {</div>
+<div class="line"><span class="lineno">  585</span>    <span class="keywordflow">for</span> (std::size_t k = 0; <a class="code hl_variable" href="namespacerunPythia8.html#a4cd74a33c53eaeef70fcb6b448b9b285">k</a> &lt; segment-&gt;hits.size(); ++<a class="code hl_variable" href="namespacerunPythia8.html#a4cd74a33c53eaeef70fcb6b448b9b285">k</a>) {</div>
+<div class="line"><span class="lineno">  586</span>      <span class="keyword">const</span> PatRecHit&amp; hit = hits[segment-&gt;hits[<a class="code hl_variable" href="namespacerunPythia8.html#a4cd74a33c53eaeef70fcb6b448b9b285">k</a>]];</div>
+<div class="line"><span class="lineno">  587</span>      <a class="code hl_variable" href="#af34202a29410e136d731940318feaa3b">measurements</a>[hit.index].sign = segment-&gt;signs[<a class="code hl_variable" href="namespacerunPythia8.html#a4cd74a33c53eaeef70fcb6b448b9b285">k</a>];</div>
+<div class="line"><span class="lineno">  588</span>      ordered.emplace_back(hit.wire-&gt;z, hit.index);</div>
+<div class="line"><span class="lineno">  589</span>    }</div>
+<div class="line"><span class="lineno">  590</span>  }</div>
+<div class="line"><span class="lineno">  591</span>  std::sort(ordered.begin(), ordered.end());</div>
+<div class="line"><span class="lineno">  592</span>  std::vector&lt;Int_t&gt; indices;</div>
+<div class="line"><span class="lineno">  593</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; [z, index] : ordered) {</div>
+<div class="line"><span class="lineno">  594</span>    indices.push_back(index);</div>
+<div class="line"><span class="lineno">  595</span>  }</div>
+<div class="line"><span class="lineno">  596</span> </div>
+<div class="line"><span class="lineno">  597</span>  <span class="comment">// Momentum from the kink, with the field integral along this track</span></div>
+<div class="line"><span class="lineno">  598</span>  TrackCandidate refined = <a class="code hl_variable" href="namespaceeventDisplay.html#a73fd0f3a2dae7cace5750a4973039f53">candidate</a>;</div>
+<div class="line"><span class="lineno">  599</span>  <span class="keyword">const</span> <span class="keyword">auto</span> [integral, centre] = <a class="code hl_function" href="#a1c46bbe3e642b143cd377c09e8096759">fieldIntegral</a>(<a class="code hl_variable" href="namespaceeventDisplay.html#a73fd0f3a2dae7cace5750a4973039f53">candidate</a>.upstream);</div>
+<div class="line"><span class="lineno">  600</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> kink = <a class="code hl_variable" href="namespaceeventDisplay.html#a73fd0f3a2dae7cace5750a4973039f53">candidate</a>.downstream.ty - <a class="code hl_variable" href="namespaceeventDisplay.html#a73fd0f3a2dae7cace5750a4973039f53">candidate</a>.upstream.ty;</div>
+<div class="line"><span class="lineno">  601</span>  <span class="keywordflow">if</span> (integral != 0. &amp;&amp; kink != 0.) {</div>
+<div class="line"><span class="lineno">  602</span>    <span class="keyword">const</span> LineSegment&amp; up = <a class="code hl_variable" href="namespaceeventDisplay.html#a73fd0f3a2dae7cace5750a4973039f53">candidate</a>.upstream;</div>
+<div class="line"><span class="lineno">  603</span>    <span class="keyword">const</span> <span class="keywordtype">double</span> <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a595c352a9b1a3ae33b95fc5937803a60">pz</a> =</div>
+<div class="line"><span class="lineno">  604</span>        std::min(std::abs(kKick * integral / kink), kMaxSeedMomentum);</div>
+<div class="line"><span class="lineno">  605</span>    refined.momentum = <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a595c352a9b1a3ae33b95fc5937803a60">pz</a> * std::sqrt(1. + up.tx * up.tx + up.ty * up.ty);</div>
+<div class="line"><span class="lineno">  606</span>    refined.charge = kink / integral &gt; 0. ? 1 : -1;</div>
+<div class="line"><span class="lineno">  607</span>  }</div>
+<div class="line"><span class="lineno">  608</span>  Acts::BoundTrackParameters start =</div>
+<div class="line"><span class="lineno">  609</span>      <a class="code hl_function" href="#ac015b7a500daef23e3270394401636e0">seed</a>(refined, <a class="code hl_variable" href="#af34202a29410e136d731940318feaa3b">measurements</a>[indices.front()]);</div>
+<div class="line"><span class="lineno">  610</span> </div>
+<div class="line"><span class="lineno">  611</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> refit = 0;; ++refit) {</div>
+<div class="line"><span class="lineno">  612</span>    <span class="keywordflow">if</span> (<span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(indices.size()) &lt; kMinFitMeasurements) {</div>
+<div class="line"><span class="lineno">  613</span>      <span class="keywordflow">return</span> -1;</div>
+<div class="line"><span class="lineno">  614</span>    }</div>
+<div class="line"><span class="lineno">  615</span>    <span class="keyword">const</span> <span class="keyword">auto</span> track = <a class="code hl_function" href="#a7d1ccb2129d57077d71c326c74063e64">fitOnce</a>(indices, start);</div>
+<div class="line"><span class="lineno">  616</span>    <span class="keywordflow">if</span> (!track) {</div>
+<div class="line"><span class="lineno">  617</span>      <span class="keywordflow">return</span> -1;</div>
+<div class="line"><span class="lineno">  618</span>    }</div>
+<div class="line"><span class="lineno">  619</span>    <span class="comment">// Check each hit against the fitted track: take the side of the wire it</span></div>
+<div class="line"><span class="lineno">  620</span>    <span class="comment">// passes on, and drop hits that are too far from it</span></div>
+<div class="line"><span class="lineno">  621</span>    <span class="keywordtype">bool</span> changed = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  622</span>    std::vector&lt;std::pair&lt;double, Int_t&gt;&gt; kept;</div>
+<div class="line"><span class="lineno">  623</span>    <span class="keyword">const</span> <span class="keyword">auto</span> proxy = <a class="code hl_variable" href="#a3fc72f4dd2046b4ad4f02e5cc7220521">tracks</a>.getTrack(*track);</div>
+<div class="line"><span class="lineno">  624</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> state : proxy.trackStatesReversed()) {</div>
+<div class="line"><span class="lineno">  625</span>      <span class="keywordflow">if</span> (!isFittedMeasurement(state)) {</div>
+<div class="line"><span class="lineno">  626</span>        <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">  627</span>      }</div>
+<div class="line"><span class="lineno">  628</span>      <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a1391b7407359c40dbacead1473f5a96b">index</a> = <span class="keyword">static_cast&lt;</span>Int_t<span class="keyword">&gt;</span>(</div>
+<div class="line"><span class="lineno">  629</span>          <a class="code hl_function" href="namespacetest__event__histogram.html#a2d0b11f1b378a771928b160b98e1e172">state</a>.getUncalibratedSourceLink().<span class="keyword">template</span> get&lt;std::size_t&gt;());</div>
+<div class="line"><span class="lineno">  630</span>      <span class="keyword">auto</span>&amp; <a class="code hl_variable" href="ShipBellField_8cxx.html#ae0699ca79e23818d99b9ee18334a9325">m</a> = <a class="code hl_variable" href="#af34202a29410e136d731940318feaa3b">measurements</a>[<a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a1391b7407359c40dbacead1473f5a96b">index</a>];</div>
+<div class="line"><span class="lineno">  631</span>      <span class="keyword">const</span> <span class="keywordtype">double</span> predicted = <a class="code hl_function" href="namespacetest__event__histogram.html#a2d0b11f1b378a771928b160b98e1e172">state</a>.smoothed()[Acts::eBoundLoc0];</div>
+<div class="line"><span class="lineno">  632</span>      <span class="keyword">const</span> <span class="keywordtype">double</span> <a class="code hl_variable" href="namespacerunPythia8.html#aa6ccf15df5382fe526735a07d97d3cd4">sigma</a> =</div>
+<div class="line"><span class="lineno">  633</span>          std::sqrt(<a class="code hl_variable" href="ShipBellField_8cxx.html#ae0699ca79e23818d99b9ee18334a9325">m</a>.variance + <a class="code hl_function" href="namespacetest__event__histogram.html#a2d0b11f1b378a771928b160b98e1e172">state</a>.smoothedCovariance()(Acts::eBoundLoc0,</div>
+<div class="line"><span class="lineno">  634</span>                                                            Acts::eBoundLoc0));</div>
+<div class="line"><span class="lineno">  635</span>      <span class="keywordflow">if</span> (std::abs(std::abs(predicted) - <a class="code hl_variable" href="ShipBellField_8cxx.html#ae0699ca79e23818d99b9ee18334a9325">m</a>.driftRadius) &gt;</div>
+<div class="line"><span class="lineno">  636</span>          kOutlierPull * sigma) {</div>
+<div class="line"><span class="lineno">  637</span>        changed = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  638</span>        <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">  639</span>      }</div>
+<div class="line"><span class="lineno">  640</span>      <span class="keyword">const</span> <span class="keywordtype">int</span> side = predicted &gt;= 0. ? 1 : -1;</div>
+<div class="line"><span class="lineno">  641</span>      <span class="keywordflow">if</span> (side != <a class="code hl_variable" href="ShipBellField_8cxx.html#ae0699ca79e23818d99b9ee18334a9325">m</a>.sign &amp;&amp; std::abs(predicted) &gt; std::sqrt(<a class="code hl_variable" href="ShipBellField_8cxx.html#ae0699ca79e23818d99b9ee18334a9325">m</a>.variance)) {</div>
+<div class="line"><span class="lineno">  642</span>        <a class="code hl_variable" href="ShipBellField_8cxx.html#ae0699ca79e23818d99b9ee18334a9325">m</a>.sign = side;</div>
+<div class="line"><span class="lineno">  643</span>        changed = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  644</span>      }</div>
+<div class="line"><span class="lineno">  645</span>      kept.emplace_back(<a class="code hl_variable" href="ShipBellField_8cxx.html#ae0699ca79e23818d99b9ee18334a9325">m</a>.wire-&gt;z, index);</div>
+<div class="line"><span class="lineno">  646</span>    }</div>
+<div class="line"><span class="lineno">  647</span>    <span class="keywordflow">if</span> (!changed || refit == kMaxRefits) {</div>
+<div class="line"><span class="lineno">  648</span>      <a class="code hl_variable" href="#a0da100fce69ecb63c1c5173e4927f1c3">trackMeasurements</a>.push_back(indices);</div>
+<div class="line"><span class="lineno">  649</span>      <a class="code hl_variable" href="#a2e93f54db23be09d2ae5f24f6726f44d">fittedTrackMeasurements</a>.push_back(<a class="code hl_function" href="#a162bad645ef764573774c548b0a5e1c7">fittedMeasurements</a>(*track));</div>
+<div class="line"><span class="lineno">  650</span>      <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>Int_t<span class="keyword">&gt;</span>(*track);</div>
+<div class="line"><span class="lineno">  651</span>    }</div>
+<div class="line"><span class="lineno">  652</span>    <span class="comment">// Refit from the fitted parameters, with the seed uncertainties so the</span></div>
+<div class="line"><span class="lineno">  653</span>    <span class="comment">// previous fit does not bias the next</span></div>
+<div class="line"><span class="lineno">  654</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="namespacerun__fixedTarget.html#ad83c31f0696cc6c2129af09325c7ef08">params</a> = proxy.createParametersAtReference();</div>
+<div class="line"><span class="lineno">  655</span>    start = Acts::BoundTrackParameters(</div>
+<div class="line"><span class="lineno">  656</span>        <a class="code hl_variable" href="namespacerun__fixedTarget.html#ad83c31f0696cc6c2129af09325c7ef08">params</a>.referenceSurface().getSharedPtr(), <a class="code hl_variable" href="namespacerun__fixedTarget.html#ad83c31f0696cc6c2129af09325c7ef08">params</a>.parameters(),</div>
+<div class="line"><span class="lineno">  657</span>        <a class="code hl_function" href="#ac015b7a500daef23e3270394401636e0">seed</a>(refined, <a class="code hl_variable" href="#af34202a29410e136d731940318feaa3b">measurements</a>[indices.front()]).covariance(),</div>
+<div class="line"><span class="lineno">  658</span>        <a class="code hl_variable" href="namespacerun__fixedTarget.html#ad83c31f0696cc6c2129af09325c7ef08">params</a>.particleHypothesis());</div>
+<div class="line"><span class="lineno">  659</span>    <a class="code hl_variable" href="#a3fc72f4dd2046b4ad4f02e5cc7220521">tracks</a>.removeTrack(*track);</div>
+<div class="line"><span class="lineno">  660</span>    std::sort(kept.begin(), kept.end());</div>
+<div class="line"><span class="lineno">  661</span>    indices.clear();</div>
+<div class="line"><span class="lineno">  662</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; [z, index] : kept) {</div>
+<div class="line"><span class="lineno">  663</span>      indices.push_back(index);</div>
+<div class="line"><span class="lineno">  664</span>    }</div>
+<div class="line"><span class="lineno">  665</span>  }</div>
+<div class="line"><span class="lineno">  666</span>}</div>
 <div class="ttc" id="aShipBellField_8cxx_html_ae0699ca79e23818d99b9ee18334a9325"><div class="ttname"><a href="ShipBellField_8cxx.html#ae0699ca79e23818d99b9ee18334a9325">m</a></div><div class="ttdeci">constexpr Double_t m</div><div class="ttdef"><b>Definition</b> <a href="ShipBellField_8cxx_source.html#l00025">ShipBellField.cxx:25</a></div></div>
 <div class="ttc" id="anamespaceeventDisplay_html_a73fd0f3a2dae7cace5750a4973039f53"><div class="ttname"><a href="namespaceeventDisplay.html#a73fd0f3a2dae7cace5750a4973039f53">eventDisplay.candidate</a></div><div class="ttdeci">candidate</div><div class="ttdef"><b>Definition</b> <a href="eventDisplay_8py_source.html#l00143">eventDisplay.py:143</a></div></div>
 <div class="ttc" id="anamespacemake__nTuple__SBT_html_a1391b7407359c40dbacead1473f5a96b"><div class="ttname"><a href="namespacemake__nTuple__SBT.html#a1391b7407359c40dbacead1473f5a96b">make_nTuple_SBT.index</a></div><div class="ttdeci">int index</div><div class="ttdef"><b>Definition</b> <a href="make__nTuple__SBT_8py_source.html#l00291">make_nTuple_SBT.py:291</a></div></div>
 <div class="ttc" id="anamespacemake__nTuple__SBT_html_a595c352a9b1a3ae33b95fc5937803a60"><div class="ttname"><a href="namespacemake__nTuple__SBT.html#a595c352a9b1a3ae33b95fc5937803a60">make_nTuple_SBT.pz</a></div><div class="ttdeci">pz</div><div class="ttdef"><b>Definition</b> <a href="make__nTuple__SBT_8py_source.html#l00395">make_nTuple_SBT.py:395</a></div></div>
 <div class="ttc" id="anamespacerunPythia8_html_a4cd74a33c53eaeef70fcb6b448b9b285"><div class="ttname"><a href="namespacerunPythia8.html#a4cd74a33c53eaeef70fcb6b448b9b285">runPythia8.k</a></div><div class="ttdeci">int k</div><div class="ttdef"><b>Definition</b> <a href="runPythia8_8py_source.html#l00168">runPythia8.py:168</a></div></div>
 <div class="ttc" id="anamespacerunPythia8_html_aa6ccf15df5382fe526735a07d97d3cd4"><div class="ttname"><a href="namespacerunPythia8.html#aa6ccf15df5382fe526735a07d97d3cd4">runPythia8.sigma</a></div><div class="ttdeci">dict sigma</div><div class="ttdef"><b>Definition</b> <a href="runPythia8_8py_source.html#l00187">runPythia8.py:187</a></div></div>
-<div class="ttc" id="anamespacerun__fixedTarget_html_ad83c31f0696cc6c2129af09325c7ef08"><div class="ttname"><a href="namespacerun__fixedTarget.html#ad83c31f0696cc6c2129af09325c7ef08">run_fixedTarget.params</a></div><div class="ttdeci">params</div><div class="ttdef"><b>Definition</b> <a href="run__fixedTarget_8py_source.html#l00460">run_fixedTarget.py:460</a></div></div>
-<div class="ttc" id="astructSHiP_1_1ActsStrawTracker_1_1Impl_html_a0da100fce69ecb63c1c5173e4927f1c3"><div class="ttname"><a href="#a0da100fce69ecb63c1c5173e4927f1c3">SHiP::ActsStrawTracker::Impl::trackMeasurements</a></div><div class="ttdeci">std::vector&lt; std::vector&lt; Int_t &gt; &gt; trackMeasurements</div><div class="ttdoc">Measurements used in each track.</div><div class="ttdef"><b>Definition</b> <a href="ActsStrawTracker_8cxx_source.html#l00386">ActsStrawTracker.cxx:386</a></div></div>
-<div class="ttc" id="astructSHiP_1_1ActsStrawTracker_1_1Impl_html_a7d1ccb2129d57077d71c326c74063e64"><div class="ttname"><a href="#a7d1ccb2129d57077d71c326c74063e64">SHiP::ActsStrawTracker::Impl::fitOnce</a></div><div class="ttdeci">std::optional&lt; std::size_t &gt; fitOnce(const std::vector&lt; Int_t &gt; &amp;indices, const Acts::BoundTrackParameters &amp;start)</div><div class="ttdoc">One Kalman fit of the given measurements, appended to the tracks.</div><div class="ttdef"><b>Definition</b> <a href="ActsStrawTracker_8cxx_source.html#l00471">ActsStrawTracker.cxx:471</a></div></div>
-<div class="ttc" id="astructSHiP_1_1ActsStrawTracker_1_1Impl_html_ac015b7a500daef23e3270394401636e0"><div class="ttname"><a href="#ac015b7a500daef23e3270394401636e0">SHiP::ActsStrawTracker::Impl::seed</a></div><div class="ttdeci">Acts::BoundTrackParameters seed(const TrackCandidate &amp;candidate, const StrawMeasurement &amp;first) const</div><div class="ttdoc">Seed for the fit of a candidate, on the surface of its first hit.</div><div class="ttdef"><b>Definition</b> <a href="ActsStrawTracker_8cxx_source.html#l00434">ActsStrawTracker.cxx:434</a></div></div>
+<div class="ttc" id="astructSHiP_1_1ActsStrawTracker_1_1Impl_html_a0da100fce69ecb63c1c5173e4927f1c3"><div class="ttname"><a href="#a0da100fce69ecb63c1c5173e4927f1c3">SHiP::ActsStrawTracker::Impl::trackMeasurements</a></div><div class="ttdeci">std::vector&lt; std::vector&lt; Int_t &gt; &gt; trackMeasurements</div><div class="ttdef"><b>Definition</b> <a href="ActsStrawTracker_8cxx_source.html#l00460">ActsStrawTracker.cxx:460</a></div></div>
+<div class="ttc" id="astructSHiP_1_1ActsStrawTracker_1_1Impl_html_a162bad645ef764573774c548b0a5e1c7"><div class="ttname"><a href="#a162bad645ef764573774c548b0a5e1c7">SHiP::ActsStrawTracker::Impl::fittedMeasurements</a></div><div class="ttdeci">std::vector&lt; Int_t &gt; fittedMeasurements(std::size_t track) const</div><div class="ttdoc">The measurements of the fitted states of a track, ordered along it.</div><div class="ttdef"><b>Definition</b> <a href="ActsStrawTracker_8cxx_source.html#l00355">ActsStrawTracker.cxx:355</a></div></div>
+<div class="ttc" id="astructSHiP_1_1ActsStrawTracker_1_1Impl_html_a2e93f54db23be09d2ae5f24f6726f44d"><div class="ttname"><a href="#a2e93f54db23be09d2ae5f24f6726f44d">SHiP::ActsStrawTracker::Impl::fittedTrackMeasurements</a></div><div class="ttdeci">std::vector&lt; std::vector&lt; Int_t &gt; &gt; fittedTrackMeasurements</div><div class="ttdef"><b>Definition</b> <a href="ActsStrawTracker_8cxx_source.html#l00463">ActsStrawTracker.cxx:463</a></div></div>
+<div class="ttc" id="astructSHiP_1_1ActsStrawTracker_1_1Impl_html_a7d1ccb2129d57077d71c326c74063e64"><div class="ttname"><a href="#a7d1ccb2129d57077d71c326c74063e64">SHiP::ActsStrawTracker::Impl::fitOnce</a></div><div class="ttdeci">std::optional&lt; std::size_t &gt; fitOnce(const std::vector&lt; Int_t &gt; &amp;indices, const Acts::BoundTrackParameters &amp;start)</div><div class="ttdoc">One Kalman fit of the given measurements, appended to the tracks.</div><div class="ttdef"><b>Definition</b> <a href="ActsStrawTracker_8cxx_source.html#l00549">ActsStrawTracker.cxx:549</a></div></div>
+<div class="ttc" id="astructSHiP_1_1ActsStrawTracker_1_1Impl_html_ac015b7a500daef23e3270394401636e0"><div class="ttname"><a href="#ac015b7a500daef23e3270394401636e0">SHiP::ActsStrawTracker::Impl::seed</a></div><div class="ttdeci">Acts::BoundTrackParameters seed(const TrackCandidate &amp;candidate, const StrawMeasurement &amp;first) const</div><div class="ttdoc">Seed for the fit of a candidate, on the surface of its first hit.</div><div class="ttdef"><b>Definition</b> <a href="ActsStrawTracker_8cxx_source.html#l00512">ActsStrawTracker.cxx:512</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -517,34 +638,74 @@ Public Attributes</h2></td></tr>
 
 <p>One Kalman fit of the given measurements, appended to the tracks. </p>
 
-<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00471">471</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  473</span>                                           {</div>
-<div class="line"><span class="lineno">  474</span>  std::vector&lt;Acts::SourceLink&gt; sourceLinks;</div>
-<div class="line"><span class="lineno">  475</span>  std::vector&lt;const Acts::Surface*&gt; surfaces;</div>
-<div class="line"><span class="lineno">  476</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> Int_t index : indices) {</div>
-<div class="line"><span class="lineno">  477</span>    sourceLinks.emplace_back(<span class="keyword">static_cast&lt;</span>std::size_t<span class="keyword">&gt;</span>(index));</div>
-<div class="line"><span class="lineno">  478</span>    surfaces.push_back(<a class="code hl_variable" href="#af34202a29410e136d731940318feaa3b">measurements</a>[index].surface);</div>
-<div class="line"><span class="lineno">  479</span>  }</div>
-<div class="line"><span class="lineno">  480</span>  Acts::PropagatorPlainOptions propagatorOptions(<a class="code hl_variable" href="#a57359d735f0a2eaa772a51aa4baed40e">gctx</a>, <a class="code hl_variable" href="#acb0fd73ef6de21cc48e6fc7f0a9c0b78">mctx</a>);</div>
-<div class="line"><span class="lineno">  481</span>  Acts::KalmanFitterOptions&lt;Trajectory&gt; <a class="code hl_variable" href="namespaceeventDisplay.html#a6820b8d5176d609cefecb49b8176516a">options</a>(<a class="code hl_variable" href="#a57359d735f0a2eaa772a51aa4baed40e">gctx</a>, <a class="code hl_variable" href="#acb0fd73ef6de21cc48e6fc7f0a9c0b78">mctx</a>, std::cref(<a class="code hl_variable" href="#a5376bdcd4659257e15c6a393636e27a1">cctx</a>),</div>
-<div class="line"><span class="lineno">  482</span>                                                <a class="code hl_variable" href="#abe22eb9eca81a47a056f540270b5e7ac">extensions</a>, propagatorOptions,</div>
-<div class="line"><span class="lineno">  483</span>                                                surfaces.front());</div>
-<div class="line"><span class="lineno">  484</span>  <a class="code hl_variable" href="namespaceeventDisplay.html#a6820b8d5176d609cefecb49b8176516a">options</a>.referenceSurfaceStrategy = Acts::TrackExtrapolationStrategy::first;</div>
-<div class="line"><span class="lineno">  485</span> </div>
-<div class="line"><span class="lineno">  486</span>  <span class="keyword">const</span> std::size_t nTracksBefore = <a class="code hl_variable" href="#a3fc72f4dd2046b4ad4f02e5cc7220521">tracks</a>.size();</div>
-<div class="line"><span class="lineno">  487</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacerun__tracking__scan.html#aefd0a105108077accad31b51b4f0647e">result</a> = <a class="code hl_variable" href="#ac0d048cecc57489fd24223dc717576b0">fitter</a>.fit(sourceLinks.begin(), sourceLinks.end(), start,</div>
-<div class="line"><span class="lineno">  488</span>                           options, surfaces, <a class="code hl_variable" href="#a3fc72f4dd2046b4ad4f02e5cc7220521">tracks</a>);</div>
-<div class="line"><span class="lineno">  489</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="namespacerun__tracking__scan.html#aefd0a105108077accad31b51b4f0647e">result</a>.ok() || !<a class="code hl_variable" href="namespacerun__tracking__scan.html#aefd0a105108077accad31b51b4f0647e">result</a>.value().hasReferenceSurface()) {</div>
-<div class="line"><span class="lineno">  490</span>    <span class="comment">// A failed fit may leave a partial track behind. Drop it, so that track</span></div>
-<div class="line"><span class="lineno">  491</span>    <span class="comment">// indices stay contiguous.</span></div>
-<div class="line"><span class="lineno">  492</span>    <span class="keywordflow">while</span> (<a class="code hl_variable" href="#a3fc72f4dd2046b4ad4f02e5cc7220521">tracks</a>.size() &gt; nTracksBefore) {</div>
-<div class="line"><span class="lineno">  493</span>      <a class="code hl_variable" href="#a3fc72f4dd2046b4ad4f02e5cc7220521">tracks</a>.removeTrack(<a class="code hl_variable" href="#a3fc72f4dd2046b4ad4f02e5cc7220521">tracks</a>.size() - 1);</div>
-<div class="line"><span class="lineno">  494</span>    }</div>
-<div class="line"><span class="lineno">  495</span>    <span class="keywordflow">return</span> std::nullopt;</div>
-<div class="line"><span class="lineno">  496</span>  }</div>
-<div class="line"><span class="lineno">  497</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="namespacerun__tracking__scan.html#aefd0a105108077accad31b51b4f0647e">result</a>.value().index();</div>
-<div class="line"><span class="lineno">  498</span>}</div>
-<div class="ttc" id="astructSHiP_1_1ActsStrawTracker_1_1Impl_html_a5376bdcd4659257e15c6a393636e27a1"><div class="ttname"><a href="#a5376bdcd4659257e15c6a393636e27a1">SHiP::ActsStrawTracker::Impl::cctx</a></div><div class="ttdeci">Acts::CalibrationContext cctx</div><div class="ttdef"><b>Definition</b> <a href="ActsStrawTracker_8cxx_source.html#l00382">ActsStrawTracker.cxx:382</a></div></div>
+<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00549">549</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  551</span>                                           {</div>
+<div class="line"><span class="lineno">  552</span>  std::vector&lt;Acts::SourceLink&gt; sourceLinks;</div>
+<div class="line"><span class="lineno">  553</span>  std::vector&lt;const Acts::Surface*&gt; surfaces;</div>
+<div class="line"><span class="lineno">  554</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> Int_t index : indices) {</div>
+<div class="line"><span class="lineno">  555</span>    sourceLinks.emplace_back(<span class="keyword">static_cast&lt;</span>std::size_t<span class="keyword">&gt;</span>(index));</div>
+<div class="line"><span class="lineno">  556</span>    surfaces.push_back(<a class="code hl_variable" href="#af34202a29410e136d731940318feaa3b">measurements</a>[index].surface);</div>
+<div class="line"><span class="lineno">  557</span>  }</div>
+<div class="line"><span class="lineno">  558</span>  Acts::PropagatorPlainOptions propagatorOptions(<a class="code hl_variable" href="#a57359d735f0a2eaa772a51aa4baed40e">gctx</a>, <a class="code hl_variable" href="#acb0fd73ef6de21cc48e6fc7f0a9c0b78">mctx</a>);</div>
+<div class="line"><span class="lineno">  559</span>  Acts::KalmanFitterOptions&lt;Trajectory&gt; <a class="code hl_variable" href="namespaceeventDisplay.html#a6820b8d5176d609cefecb49b8176516a">options</a>(<a class="code hl_variable" href="#a57359d735f0a2eaa772a51aa4baed40e">gctx</a>, <a class="code hl_variable" href="#acb0fd73ef6de21cc48e6fc7f0a9c0b78">mctx</a>, std::cref(<a class="code hl_variable" href="#a5376bdcd4659257e15c6a393636e27a1">cctx</a>),</div>
+<div class="line"><span class="lineno">  560</span>                                                <a class="code hl_variable" href="#abe22eb9eca81a47a056f540270b5e7ac">extensions</a>, propagatorOptions,</div>
+<div class="line"><span class="lineno">  561</span>                                                surfaces.front());</div>
+<div class="line"><span class="lineno">  562</span>  <a class="code hl_variable" href="namespaceeventDisplay.html#a6820b8d5176d609cefecb49b8176516a">options</a>.referenceSurfaceStrategy = Acts::TrackExtrapolationStrategy::first;</div>
+<div class="line"><span class="lineno">  563</span> </div>
+<div class="line"><span class="lineno">  564</span>  <span class="keyword">const</span> std::size_t nTracksBefore = <a class="code hl_variable" href="#a3fc72f4dd2046b4ad4f02e5cc7220521">tracks</a>.size();</div>
+<div class="line"><span class="lineno">  565</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacerun__tracking__scan.html#aefd0a105108077accad31b51b4f0647e">result</a> = <a class="code hl_variable" href="#ac0d048cecc57489fd24223dc717576b0">fitter</a>.fit(sourceLinks.begin(), sourceLinks.end(), start,</div>
+<div class="line"><span class="lineno">  566</span>                           options, surfaces, <a class="code hl_variable" href="#a3fc72f4dd2046b4ad4f02e5cc7220521">tracks</a>);</div>
+<div class="line"><span class="lineno">  567</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="namespacerun__tracking__scan.html#aefd0a105108077accad31b51b4f0647e">result</a>.ok() || !<a class="code hl_variable" href="namespacerun__tracking__scan.html#aefd0a105108077accad31b51b4f0647e">result</a>.value().hasReferenceSurface()) {</div>
+<div class="line"><span class="lineno">  568</span>    <span class="comment">// A failed fit may leave a partial track behind. Drop it, so that track</span></div>
+<div class="line"><span class="lineno">  569</span>    <span class="comment">// indices stay contiguous.</span></div>
+<div class="line"><span class="lineno">  570</span>    <span class="keywordflow">while</span> (<a class="code hl_variable" href="#a3fc72f4dd2046b4ad4f02e5cc7220521">tracks</a>.size() &gt; nTracksBefore) {</div>
+<div class="line"><span class="lineno">  571</span>      <a class="code hl_variable" href="#a3fc72f4dd2046b4ad4f02e5cc7220521">tracks</a>.removeTrack(<a class="code hl_variable" href="#a3fc72f4dd2046b4ad4f02e5cc7220521">tracks</a>.size() - 1);</div>
+<div class="line"><span class="lineno">  572</span>    }</div>
+<div class="line"><span class="lineno">  573</span>    <span class="keywordflow">return</span> std::nullopt;</div>
+<div class="line"><span class="lineno">  574</span>  }</div>
+<div class="line"><span class="lineno">  575</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="namespacerun__tracking__scan.html#aefd0a105108077accad31b51b4f0647e">result</a>.value().index();</div>
+<div class="line"><span class="lineno">  576</span>}</div>
+<div class="ttc" id="astructSHiP_1_1ActsStrawTracker_1_1Impl_html_a5376bdcd4659257e15c6a393636e27a1"><div class="ttname"><a href="#a5376bdcd4659257e15c6a393636e27a1">SHiP::ActsStrawTracker::Impl::cctx</a></div><div class="ttdeci">Acts::CalibrationContext cctx</div><div class="ttdef"><b>Definition</b> <a href="ActsStrawTracker_8cxx_source.html#l00455">ActsStrawTracker.cxx:455</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a162bad645ef764573774c548b0a5e1c7" name="a162bad645ef764573774c548b0a5e1c7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a162bad645ef764573774c548b0a5e1c7">&#9670;&#160;</a></span>fittedMeasurements()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; Int_t &gt; SHiP::ActsStrawTracker::Impl::fittedMeasurements </td>
+          <td>(</td>
+          <td class="paramtype">std::size_t</td>          <td class="paramname"><span class="paramname"><em>track</em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The measurements of the fitted states of a track, ordered along it. </p>
+
+<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00355">355</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  355</span>                                                             {</div>
+<div class="line"><span class="lineno">  356</span>    std::vector&lt;Int_t&gt; indices;</div>
+<div class="line"><span class="lineno">  357</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> state : <a class="code hl_variable" href="#a3fc72f4dd2046b4ad4f02e5cc7220521">tracks</a>.getTrack(track).trackStatesReversed()) {</div>
+<div class="line"><span class="lineno">  358</span>      <span class="keywordflow">if</span> (isFittedMeasurement(state)) {</div>
+<div class="line"><span class="lineno">  359</span>        indices.push_back(<span class="keyword">static_cast&lt;</span>Int_t<span class="keyword">&gt;</span>(</div>
+<div class="line"><span class="lineno">  360</span>            <a class="code hl_function" href="namespacetest__event__histogram.html#a2d0b11f1b378a771928b160b98e1e172">state</a>.getUncalibratedSourceLink().template get&lt;std::size_t&gt;()));</div>
+<div class="line"><span class="lineno">  361</span>      }</div>
+<div class="line"><span class="lineno">  362</span>    }</div>
+<div class="line"><span class="lineno">  363</span>    std::reverse(indices.begin(), indices.end());</div>
+<div class="line"><span class="lineno">  364</span>    <span class="keywordflow">return</span> indices;</div>
+<div class="line"><span class="lineno">  365</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -565,20 +726,20 @@ Public Attributes</h2></td></tr>
 
 <p>Hits for the pattern recognition, from measurement indices. </p>
 
-<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00419">419</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  420</span>                                           {</div>
-<div class="line"><span class="lineno">  421</span>  std::vector&lt;PatRecHit&gt; hits;</div>
-<div class="line"><span class="lineno">  422</span>  hits.reserve(indices.size());</div>
-<div class="line"><span class="lineno">  423</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> Int_t index : indices) {</div>
-<div class="line"><span class="lineno">  424</span>    <span class="keywordflow">if</span> (index &lt; 0 || <span class="keyword">static_cast&lt;</span>std::size_t<span class="keyword">&gt;</span>(index) &gt;= <a class="code hl_variable" href="#af34202a29410e136d731940318feaa3b">measurements</a>.size()) {</div>
-<div class="line"><span class="lineno">  425</span>      <span class="keywordflow">throw</span> std::out_of_range(<span class="stringliteral">&quot;ActsStrawTracker: measurement out of range&quot;</span>);</div>
-<div class="line"><span class="lineno">  426</span>    }</div>
-<div class="line"><span class="lineno">  427</span>    <span class="keyword">const</span> <span class="keyword">auto</span>&amp; <a class="code hl_variable" href="ShipBellField_8cxx.html#ae0699ca79e23818d99b9ee18334a9325">m</a> = <a class="code hl_variable" href="#af34202a29410e136d731940318feaa3b">measurements</a>[<a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a1391b7407359c40dbacead1473f5a96b">index</a>];</div>
-<div class="line"><span class="lineno">  428</span>    hits.push_back({<a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a1391b7407359c40dbacead1473f5a96b">index</a>, <a class="code hl_variable" href="ShipBellField_8cxx.html#ae0699ca79e23818d99b9ee18334a9325">m</a>.wire, <a class="code hl_variable" href="ShipBellField_8cxx.html#ae0699ca79e23818d99b9ee18334a9325">m</a>.driftRadius / <a class="code hl_variable" href="namespaceSHiP_1_1ActsFrame.html#ae2c5b2d2a4d15fdbb38277d87b84d59f">ActsFrame::kShipLength</a>,</div>
-<div class="line"><span class="lineno">  429</span>                    std::sqrt(<a class="code hl_variable" href="ShipBellField_8cxx.html#ae0699ca79e23818d99b9ee18334a9325">m</a>.variance) / <a class="code hl_variable" href="namespaceSHiP_1_1ActsFrame.html#ae2c5b2d2a4d15fdbb38277d87b84d59f">ActsFrame::kShipLength</a>});</div>
-<div class="line"><span class="lineno">  430</span>  }</div>
-<div class="line"><span class="lineno">  431</span>  <span class="keywordflow">return</span> hits;</div>
-<div class="line"><span class="lineno">  432</span>}</div>
+<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00497">497</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  498</span>                                           {</div>
+<div class="line"><span class="lineno">  499</span>  std::vector&lt;PatRecHit&gt; hits;</div>
+<div class="line"><span class="lineno">  500</span>  hits.reserve(indices.size());</div>
+<div class="line"><span class="lineno">  501</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> Int_t index : indices) {</div>
+<div class="line"><span class="lineno">  502</span>    <span class="keywordflow">if</span> (index &lt; 0 || <span class="keyword">static_cast&lt;</span>std::size_t<span class="keyword">&gt;</span>(index) &gt;= <a class="code hl_variable" href="#af34202a29410e136d731940318feaa3b">measurements</a>.size()) {</div>
+<div class="line"><span class="lineno">  503</span>      <span class="keywordflow">throw</span> std::out_of_range(<span class="stringliteral">&quot;ActsStrawTracker: measurement out of range&quot;</span>);</div>
+<div class="line"><span class="lineno">  504</span>    }</div>
+<div class="line"><span class="lineno">  505</span>    <span class="keyword">const</span> <span class="keyword">auto</span>&amp; <a class="code hl_variable" href="ShipBellField_8cxx.html#ae0699ca79e23818d99b9ee18334a9325">m</a> = <a class="code hl_variable" href="#af34202a29410e136d731940318feaa3b">measurements</a>[<a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a1391b7407359c40dbacead1473f5a96b">index</a>];</div>
+<div class="line"><span class="lineno">  506</span>    hits.push_back({<a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a1391b7407359c40dbacead1473f5a96b">index</a>, <a class="code hl_variable" href="ShipBellField_8cxx.html#ae0699ca79e23818d99b9ee18334a9325">m</a>.wire, <a class="code hl_variable" href="ShipBellField_8cxx.html#ae0699ca79e23818d99b9ee18334a9325">m</a>.driftRadius / <a class="code hl_variable" href="namespaceSHiP_1_1ActsFrame.html#ae2c5b2d2a4d15fdbb38277d87b84d59f">ActsFrame::kShipLength</a>,</div>
+<div class="line"><span class="lineno">  507</span>                    std::sqrt(<a class="code hl_variable" href="ShipBellField_8cxx.html#ae0699ca79e23818d99b9ee18334a9325">m</a>.variance) / <a class="code hl_variable" href="namespaceSHiP_1_1ActsFrame.html#ae2c5b2d2a4d15fdbb38277d87b84d59f">ActsFrame::kShipLength</a>});</div>
+<div class="line"><span class="lineno">  508</span>  }</div>
+<div class="line"><span class="lineno">  509</span>  <span class="keywordflow">return</span> hits;</div>
+<div class="line"><span class="lineno">  510</span>}</div>
 <div class="ttc" id="anamespaceSHiP_1_1ActsFrame_html_ae2c5b2d2a4d15fdbb38277d87b84d59f"><div class="ttname"><a href="namespaceSHiP_1_1ActsFrame.html#ae2c5b2d2a4d15fdbb38277d87b84d59f">SHiP::ActsFrame::kShipLength</a></div><div class="ttdeci">constexpr double kShipLength</div><div class="ttdoc">Length unit of the SHiP frame, in ACTS units.</div><div class="ttdef"><b>Definition</b> <a href="ActsFrame_8hpp_source.html#l00036">ActsFrame.hpp:36</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -604,42 +765,42 @@ Public Attributes</h2></td></tr>
 
 <p>Seed for the fit of a candidate, on the surface of its first hit. </p>
 
-<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00434">434</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  435</span>                                                                          {</div>
-<div class="line"><span class="lineno">  436</span>  <span class="keyword">const</span> LineSegment&amp; line = <a class="code hl_variable" href="namespaceeventDisplay.html#a73fd0f3a2dae7cace5750a4973039f53">candidate</a>.upstream;</div>
-<div class="line"><span class="lineno">  437</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> <a class="code hl_variable" href="namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed">z</a> = first.wire-&gt;z;</div>
-<div class="line"><span class="lineno">  438</span>  <span class="keyword">const</span> Acts::Vector3 position =</div>
-<div class="line"><span class="lineno">  439</span>      <a class="code hl_function" href="namespaceSHiP_1_1ActsFrame.html#aa289858ebacbeabf87471ccf21dc0104">ActsFrame::positionToActs</a>(line.x(z), line.y(z), z);</div>
-<div class="line"><span class="lineno">  440</span>  <span class="keyword">const</span> Acts::Vector3 direction =</div>
-<div class="line"><span class="lineno">  441</span>      (<a class="code hl_function" href="namespaceSHiP_1_1ActsFrame.html#a4abd203673a6f82b8539a3abd3e3fac4">ActsFrame::toActsRotation</a>() * Acts::Vector3(line.tx, line.ty, 1.))</div>
-<div class="line"><span class="lineno">  442</span>          .normalized();</div>
-<div class="line"><span class="lineno">  443</span>  <span class="keyword">const</span> <span class="keyword">auto</span> hypothesis = Acts::ParticleHypothesis::muon();</div>
-<div class="line"><span class="lineno">  444</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> qOverP = hypothesis.qOverP(</div>
-<div class="line"><span class="lineno">  445</span>      <a class="code hl_variable" href="namespaceeventDisplay.html#a73fd0f3a2dae7cace5750a4973039f53">candidate</a>.momentum * u::GeV, <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespaceeventDisplay.html#a73fd0f3a2dae7cace5750a4973039f53">candidate</a>.charge));</div>
-<div class="line"><span class="lineno">  446</span> </div>
-<div class="line"><span class="lineno">  447</span>  <span class="comment">// Local coordinates at the point of closest approach to the first straw</span></div>
-<div class="line"><span class="lineno">  448</span>  <span class="keyword">const</span> Acts::Surface&amp; surface = *first.surface;</div>
-<div class="line"><span class="lineno">  449</span>  <span class="keyword">const</span> <span class="keyword">auto</span> intersection =</div>
-<div class="line"><span class="lineno">  450</span>      surface.intersect(<a class="code hl_variable" href="#a57359d735f0a2eaa772a51aa4baed40e">gctx</a>, position, direction).closest();</div>
-<div class="line"><span class="lineno">  451</span>  <span class="keyword">const</span> Acts::Vector3 onSurface =</div>
-<div class="line"><span class="lineno">  452</span>      intersection.isValid() ? intersection.position() : position;</div>
-<div class="line"><span class="lineno">  453</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespaceana__ShipMuon.html#aca3f5e85758a67e98544d3bd0d4cb8ce">local</a> = surface.globalToLocal(<a class="code hl_variable" href="#a57359d735f0a2eaa772a51aa4baed40e">gctx</a>, onSurface, direction);</div>
-<div class="line"><span class="lineno">  454</span>  <span class="keyword">const</span> Acts::Vector2 localPosition =</div>
-<div class="line"><span class="lineno">  455</span>      <a class="code hl_variable" href="namespaceana__ShipMuon.html#aca3f5e85758a67e98544d3bd0d4cb8ce">local</a>.ok() ? <a class="code hl_variable" href="namespaceana__ShipMuon.html#aca3f5e85758a67e98544d3bd0d4cb8ce">local</a>.value() : Acts::Vector2::Zero();</div>
-<div class="line"><span class="lineno">  456</span> </div>
-<div class="line"><span class="lineno">  457</span>  Acts::BoundVector parameters = Acts::BoundVector::Zero();</div>
-<div class="line"><span class="lineno">  458</span>  parameters[Acts::eBoundLoc0] = localPosition[0];</div>
-<div class="line"><span class="lineno">  459</span>  parameters[Acts::eBoundLoc1] = localPosition[1];</div>
-<div class="line"><span class="lineno">  460</span>  parameters[Acts::eBoundPhi] = Acts::VectorHelpers::phi(direction);</div>
-<div class="line"><span class="lineno">  461</span>  parameters[Acts::eBoundTheta] = Acts::VectorHelpers::theta(direction);</div>
-<div class="line"><span class="lineno">  462</span>  parameters[Acts::eBoundQOverP] = qOverP;</div>
-<div class="line"><span class="lineno">  463</span>  Acts::BoundVector sigmas;</div>
-<div class="line"><span class="lineno">  464</span>  sigmas &lt;&lt; kSeedSigmaLoc0, kSeedSigmaLoc1, kSeedSigmaAngle, kSeedSigmaAngle,</div>
-<div class="line"><span class="lineno">  465</span>      kSeedRelativeSigmaP * std::abs(qOverP), kSeedSigmaTime;</div>
-<div class="line"><span class="lineno">  466</span>  <span class="keyword">const</span> Acts::BoundMatrix covariance = sigmas.cwiseProduct(sigmas).asDiagonal();</div>
-<div class="line"><span class="lineno">  467</span>  <span class="keywordflow">return</span> Acts::BoundTrackParameters(surface.getSharedPtr(), parameters,</div>
-<div class="line"><span class="lineno">  468</span>                                    covariance, hypothesis);</div>
-<div class="line"><span class="lineno">  469</span>}</div>
+<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00512">512</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  513</span>                                                                          {</div>
+<div class="line"><span class="lineno">  514</span>  <span class="keyword">const</span> LineSegment&amp; line = <a class="code hl_variable" href="namespaceeventDisplay.html#a73fd0f3a2dae7cace5750a4973039f53">candidate</a>.upstream;</div>
+<div class="line"><span class="lineno">  515</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> <a class="code hl_variable" href="namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed">z</a> = first.wire-&gt;z;</div>
+<div class="line"><span class="lineno">  516</span>  <span class="keyword">const</span> Acts::Vector3 position =</div>
+<div class="line"><span class="lineno">  517</span>      <a class="code hl_function" href="namespaceSHiP_1_1ActsFrame.html#aa289858ebacbeabf87471ccf21dc0104">ActsFrame::positionToActs</a>(line.x(z), line.y(z), z);</div>
+<div class="line"><span class="lineno">  518</span>  <span class="keyword">const</span> Acts::Vector3 direction =</div>
+<div class="line"><span class="lineno">  519</span>      (<a class="code hl_function" href="namespaceSHiP_1_1ActsFrame.html#a4abd203673a6f82b8539a3abd3e3fac4">ActsFrame::toActsRotation</a>() * Acts::Vector3(line.tx, line.ty, 1.))</div>
+<div class="line"><span class="lineno">  520</span>          .normalized();</div>
+<div class="line"><span class="lineno">  521</span>  <span class="keyword">const</span> <span class="keyword">auto</span> hypothesis = Acts::ParticleHypothesis::muon();</div>
+<div class="line"><span class="lineno">  522</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> qOverP = hypothesis.qOverP(</div>
+<div class="line"><span class="lineno">  523</span>      <a class="code hl_variable" href="namespaceeventDisplay.html#a73fd0f3a2dae7cace5750a4973039f53">candidate</a>.momentum * u::GeV, <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespaceeventDisplay.html#a73fd0f3a2dae7cace5750a4973039f53">candidate</a>.charge));</div>
+<div class="line"><span class="lineno">  524</span> </div>
+<div class="line"><span class="lineno">  525</span>  <span class="comment">// Local coordinates at the point of closest approach to the first straw</span></div>
+<div class="line"><span class="lineno">  526</span>  <span class="keyword">const</span> Acts::Surface&amp; surface = *first.surface;</div>
+<div class="line"><span class="lineno">  527</span>  <span class="keyword">const</span> <span class="keyword">auto</span> intersection =</div>
+<div class="line"><span class="lineno">  528</span>      surface.intersect(<a class="code hl_variable" href="#a57359d735f0a2eaa772a51aa4baed40e">gctx</a>, position, direction).closest();</div>
+<div class="line"><span class="lineno">  529</span>  <span class="keyword">const</span> Acts::Vector3 onSurface =</div>
+<div class="line"><span class="lineno">  530</span>      intersection.isValid() ? intersection.position() : position;</div>
+<div class="line"><span class="lineno">  531</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespaceana__ShipMuon.html#aca3f5e85758a67e98544d3bd0d4cb8ce">local</a> = surface.globalToLocal(<a class="code hl_variable" href="#a57359d735f0a2eaa772a51aa4baed40e">gctx</a>, onSurface, direction);</div>
+<div class="line"><span class="lineno">  532</span>  <span class="keyword">const</span> Acts::Vector2 localPosition =</div>
+<div class="line"><span class="lineno">  533</span>      <a class="code hl_variable" href="namespaceana__ShipMuon.html#aca3f5e85758a67e98544d3bd0d4cb8ce">local</a>.ok() ? <a class="code hl_variable" href="namespaceana__ShipMuon.html#aca3f5e85758a67e98544d3bd0d4cb8ce">local</a>.value() : Acts::Vector2::Zero();</div>
+<div class="line"><span class="lineno">  534</span> </div>
+<div class="line"><span class="lineno">  535</span>  Acts::BoundVector parameters = Acts::BoundVector::Zero();</div>
+<div class="line"><span class="lineno">  536</span>  parameters[Acts::eBoundLoc0] = localPosition[0];</div>
+<div class="line"><span class="lineno">  537</span>  parameters[Acts::eBoundLoc1] = localPosition[1];</div>
+<div class="line"><span class="lineno">  538</span>  parameters[Acts::eBoundPhi] = Acts::VectorHelpers::phi(direction);</div>
+<div class="line"><span class="lineno">  539</span>  parameters[Acts::eBoundTheta] = Acts::VectorHelpers::theta(direction);</div>
+<div class="line"><span class="lineno">  540</span>  parameters[Acts::eBoundQOverP] = qOverP;</div>
+<div class="line"><span class="lineno">  541</span>  Acts::BoundVector sigmas;</div>
+<div class="line"><span class="lineno">  542</span>  sigmas &lt;&lt; kSeedSigmaLoc0, kSeedSigmaLoc1, kSeedSigmaAngle, kSeedSigmaAngle,</div>
+<div class="line"><span class="lineno">  543</span>      kSeedRelativeSigmaP * std::abs(qOverP), kSeedSigmaTime;</div>
+<div class="line"><span class="lineno">  544</span>  <span class="keyword">const</span> Acts::BoundMatrix covariance = sigmas.cwiseProduct(sigmas).asDiagonal();</div>
+<div class="line"><span class="lineno">  545</span>  <span class="keywordflow">return</span> Acts::BoundTrackParameters(surface.getSharedPtr(), parameters,</div>
+<div class="line"><span class="lineno">  546</span>                                    covariance, hypothesis);</div>
+<div class="line"><span class="lineno">  547</span>}</div>
 <div class="ttc" id="anamespaceSHiP_1_1ActsFrame_html_a4abd203673a6f82b8539a3abd3e3fac4"><div class="ttname"><a href="namespaceSHiP_1_1ActsFrame.html#a4abd203673a6f82b8539a3abd3e3fac4">SHiP::ActsFrame::toActsRotation</a></div><div class="ttdeci">Acts::RotationMatrix3 toActsRotation()</div><div class="ttdoc">Rotation taking SHiP-frame vectors to the ACTS frame.</div><div class="ttdef"><b>Definition</b> <a href="ActsFrame_8hpp_source.html#l00031">ActsFrame.hpp:31</a></div></div>
 <div class="ttc" id="anamespaceSHiP_1_1ActsFrame_html_aa289858ebacbeabf87471ccf21dc0104"><div class="ttname"><a href="namespaceSHiP_1_1ActsFrame.html#aa289858ebacbeabf87471ccf21dc0104">SHiP::ActsFrame::positionToActs</a></div><div class="ttdeci">Acts::Vector3 positionToActs(double x, double y, double z)</div><div class="ttdef"><b>Definition</b> <a href="ActsFrame_8hpp_source.html#l00038">ActsFrame.hpp:38</a></div></div>
 <div class="ttc" id="anamespaceana__ShipMuon_html_aca3f5e85758a67e98544d3bd0d4cb8ce"><div class="ttname"><a href="namespaceana__ShipMuon.html#aca3f5e85758a67e98544d3bd0d4cb8ce">ana_ShipMuon.local</a></div><div class="ttdeci">bool local</div><div class="ttdef"><b>Definition</b> <a href="ana__ShipMuon_8py_source.html#l00013">ana_ShipMuon.py:13</a></div></div>
@@ -669,10 +830,10 @@ Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00322">322</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  322</span>                                                                       {</div>
-<div class="line"><span class="lineno">  323</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="#af34202a29410e136d731940318feaa3b">measurements</a>.at(sourceLink.get&lt;std::size_t&gt;()).surface;</div>
-<div class="line"><span class="lineno">  324</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00330">330</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  330</span>                                                                       {</div>
+<div class="line"><span class="lineno">  331</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="#af34202a29410e136d731940318feaa3b">measurements</a>.at(sourceLink.get&lt;std::size_t&gt;()).surface;</div>
+<div class="line"><span class="lineno">  332</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -699,13 +860,13 @@ Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00339">339</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  339</span>                                                              {</div>
-<div class="line"><span class="lineno">  340</span>    <span class="keywordflow">if</span> (track &lt; 0 || <span class="keyword">static_cast&lt;</span>std::size_t<span class="keyword">&gt;</span>(track) &gt;= <a class="code hl_variable" href="#a3fc72f4dd2046b4ad4f02e5cc7220521">tracks</a>.size()) {</div>
-<div class="line"><span class="lineno">  341</span>      <span class="keywordflow">throw</span> std::out_of_range(<span class="stringliteral">&quot;ActsStrawTracker: track index out of range&quot;</span>);</div>
-<div class="line"><span class="lineno">  342</span>    }</div>
-<div class="line"><span class="lineno">  343</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="#a3fc72f4dd2046b4ad4f02e5cc7220521">tracks</a>.getTrack(track).createParametersAtReference();</div>
-<div class="line"><span class="lineno">  344</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00347">347</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  347</span>                                                              {</div>
+<div class="line"><span class="lineno">  348</span>    <span class="keywordflow">if</span> (track &lt; 0 || <span class="keyword">static_cast&lt;</span>std::size_t<span class="keyword">&gt;</span>(track) &gt;= <a class="code hl_variable" href="#a3fc72f4dd2046b4ad4f02e5cc7220521">tracks</a>.size()) {</div>
+<div class="line"><span class="lineno">  349</span>      <span class="keywordflow">throw</span> std::out_of_range(<span class="stringliteral">&quot;ActsStrawTracker: track index out of range&quot;</span>);</div>
+<div class="line"><span class="lineno">  350</span>    }</div>
+<div class="line"><span class="lineno">  351</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="#a3fc72f4dd2046b4ad4f02e5cc7220521">tracks</a>.getTrack(track).createParametersAtReference();</div>
+<div class="line"><span class="lineno">  352</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -722,7 +883,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00382">382</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00455">455</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
 
 </div>
 </div>
@@ -738,7 +899,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00378">378</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00451">451</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
 
 </div>
 </div>
@@ -754,7 +915,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00370">370</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00443">443</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
 
 </div>
 </div>
@@ -770,7 +931,24 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00365">365</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00438">438</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
+
+</div>
+</div>
+<a id="a2e93f54db23be09d2ae5f24f6726f44d" name="a2e93f54db23be09d2ae5f24f6726f44d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2e93f54db23be09d2ae5f24f6726f44d">&#9670;&#160;</a></span>fittedTrackMeasurements</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;std::vector&lt;Int_t&gt; &gt; SHiP::ActsStrawTracker::Impl::fittedTrackMeasurements</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Measurements of the fitted states of each track, ordered along it: those of trackMeasurements less any surface the fit skipped </p>
+
+<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00463">463</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
 
 </div>
 </div>
@@ -786,7 +964,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00369">369</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00442">442</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
 
 </div>
 </div>
@@ -804,7 +982,7 @@ Public Attributes</h2></td></tr>
 <b>Initial value:</b><div class="fragment"><div class="line">=</div>
 <div class="line">      Acts::GeometryContext::dangerouslyDefaultConstruct()</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00379">379</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00452">452</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
 
 </div>
 </div>
@@ -820,7 +998,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00367">367</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00440">440</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
 
 </div>
 </div>
@@ -836,7 +1014,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00366">366</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00439">439</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
 
 </div>
 </div>
@@ -852,7 +1030,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00381">381</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00454">454</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
 
 </div>
 </div>
@@ -868,7 +1046,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00383">383</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00456">456</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
 
 </div>
 </div>
@@ -884,7 +1062,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00368">368</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00441">441</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
 
 </div>
 </div>
@@ -900,7 +1078,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00364">364</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00437">437</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
 
 </div>
 </div>
@@ -917,7 +1095,7 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>The gain-matrix smoother inverts the predicted covariance, which is nearly singular in the magnet: there, the bending angle is almost fully correlated with the poorly known q/p. Below about 10 GeV/c the smoothed covariance then stops being positive definite. The modified Bryson-Frazier smoother only inverts the residual covariance. </p>
 
-<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00377">377</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00450">450</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
 
 </div>
 </div>
@@ -933,7 +1111,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00363">363</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00436">436</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
 
 </div>
 </div>
@@ -948,10 +1126,9 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Measurements given to the final fit of each track, ordered in z. The ambiguity resolution in FindTracks counts and compares these. </p>
 
-<p>Measurements used in each track. </p>
-
-<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00386">386</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00460">460</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
 
 </div>
 </div>
@@ -967,7 +1144,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00384">384</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00457">457</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
 
 </div>
 </div>
@@ -983,7 +1160,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00371">371</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ActsStrawTracker_8cxx_source.html#l00444">444</a> of file <a class="el" href="ActsStrawTracker_8cxx_source.html">ActsStrawTracker.cxx</a>.</p>
 
 </div>
 </div>

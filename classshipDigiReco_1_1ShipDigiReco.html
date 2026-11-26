@@ -154,6 +154,8 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a9f5c248192b6d24c792186da6f90234f" id="r_a9f5c248192b6d24c792186da6f90234f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9f5c248192b6d24c792186da6f90234f">random</a> = ROOT.TRandom()</td></tr>
 <tr class="memitem:ad6bdf194af8872402ee2141c57a4b2a1" id="r_ad6bdf194af8872402ee2141c57a4b2a1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad6bdf194af8872402ee2141c57a4b2a1">PDG</a> = ROOT.TDatabasePDG.Instance()</td></tr>
 <tr class="memitem:ad5cf630f2fa0704c4bfb3d8100e2e198" id="r_ad5cf630f2fa0704c4bfb3d8100e2e198"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad5cf630f2fa0704c4bfb3d8100e2e198">actsTracker</a> = make_tracker(ROOT.gGeoManager, global_variables.fieldMaker.getGlobalField())</td></tr>
+<tr class="memitem:aea6374fe0171b37b1fcbc7ea8d62f46f" id="r_aea6374fe0171b37b1fcbc7ea8d62f46f"><td class="memItemLeft" align="right" valign="top">float|None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aea6374fe0171b37b1fcbc7ea8d62f46f">ubtZ</a> = self._extrapolationZ(&quot;UpstreamTagger&quot;)</td></tr>
+<tr class="memitem:adb62bd8561bb05dd1c2b456f870f1462" id="r_adb62bd8561bb05dd1c2b456f870f1462"><td class="memItemLeft" align="right" valign="top">float|None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adb62bd8561bb05dd1c2b456f870f1462">timeDetZ</a> = self._extrapolationZ(&quot;TimeDet&quot;)</td></tr>
 <tr class="memitem:afd9920fe2cb6185d27c48b231f96a6e4" id="r_afd9920fe2cb6185d27c48b231f96a6e4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afd9920fe2cb6185d27c48b231f96a6e4">geoMat</a> = ROOT.genfit.TGeoMaterialInterface()</td></tr>
 <tr class="memitem:a97271c1be5a7dca5054299973c3e2ec3" id="r_a97271c1be5a7dca5054299973c3e2ec3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a97271c1be5a7dca5054299973c3e2ec3">bfield</a> = ROOT.genfit.FairShipFields()</td></tr>
 <tr class="memitem:ad76f6a4db254b7f5793a33a70b026ddb" id="r_ad76f6a4db254b7f5793a33a70b026ddb"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad76f6a4db254b7f5793a33a70b026ddb">fM</a> = ROOT.genfit.FieldManager.getInstance()</td></tr>
@@ -165,6 +167,10 @@ Public Attributes</h2></td></tr>
 Protected Member Functions</h2></td></tr>
 <tr class="memitem:ad50b6ca6cc8bdd79c87d1a9b844f275b" id="r_ad50b6ca6cc8bdd79c87d1a9b844f275b"><td class="memItemLeft" align="right" valign="top">list[dict]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad50b6ca6cc8bdd79c87d1a9b844f275b">_truthCandidates</a> (self)</td></tr>
 <tr class="memitem:ac564a7d329df8511cd4987a36d6455a0" id="r_ac564a7d329df8511cd4987a36d6455a0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac564a7d329df8511cd4987a36d6455a0">_compute_seed_state</a> (self, atrack, meas, trackParams)</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pro-static-methods" class="groupheader"><a id="pro-static-methods" name="pro-static-methods"></a>
+Static Protected Member Functions</h2></td></tr>
+<tr class="memitem:af625e076b241255914de852fe4cf0b66" id="r_af625e076b241255914de852fe4cf0b66"><td class="memItemLeft" align="right" valign="top">float|None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af625e076b241255914de852fe4cf0b66">_extrapolationZ</a> (str detector)</td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock">
@@ -306,30 +312,35 @@ Protected Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  138</span>        <span class="keywordflow">if</span> self.trackFitter == <span class="stringliteral">&quot;acts&quot;</span>:</div>
 <div class="line"><span class="lineno">  139</span>            <span class="comment"># straw surfaces from the loaded geometry, and the simulation field</span></div>
 <div class="line"><span class="lineno">  140</span>            self.actsTracker = make_tracker(ROOT.gGeoManager, global_variables.fieldMaker.getGlobalField())</div>
-<div class="line"><span class="lineno">  141</span>        <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  142</span>            <span class="comment"># init geometry and mag. field</span></div>
-<div class="line"><span class="lineno">  143</span>            self.geoMat = ROOT.genfit.TGeoMaterialInterface()</div>
-<div class="line"><span class="lineno">  144</span>            <span class="comment">#</span></div>
-<div class="line"><span class="lineno">  145</span>            self.bfield = ROOT.genfit.FairShipFields()</div>
-<div class="line"><span class="lineno">  146</span>            self.bfield.setField(global_variables.fieldMaker.getGlobalField())</div>
-<div class="line"><span class="lineno">  147</span>            self.fM = ROOT.genfit.FieldManager.getInstance()</div>
-<div class="line"><span class="lineno">  148</span>            self.fM.init(self.bfield)</div>
-<div class="line"><span class="lineno">  149</span>            ROOT.SetOwnership(self.bfield, <span class="keyword">False</span>)  <span class="comment"># genfit::FieldManager singleton takes ownership</span></div>
-<div class="line"><span class="lineno">  150</span>            ROOT.genfit.MaterialEffects.getInstance().init(self.geoMat)</div>
-<div class="line"><span class="lineno">  151</span>            ROOT.SetOwnership(self.geoMat, <span class="keyword">False</span>)  <span class="comment"># genfit::MaterialEffects singleton takes ownership</span></div>
-<div class="line"><span class="lineno">  152</span> </div>
-<div class="line"><span class="lineno">  153</span>            <span class="comment"># init fitter, to be done before importing shipPatRec</span></div>
-<div class="line"><span class="lineno">  154</span>            <span class="comment"># fitter          = ROOT.genfit.KalmanFitter()</span></div>
-<div class="line"><span class="lineno">  155</span>            <span class="comment"># fitter          = ROOT.genfit.KalmanFitterRefTrack()</span></div>
-<div class="line"><span class="lineno">  156</span>            self.fitter = ROOT.genfit.DAF()</div>
-<div class="line"><span class="lineno">  157</span>            self.fitter.setMaxIterations(50)</div>
-<div class="line"><span class="lineno">  158</span>            <span class="keywordflow">if</span> global_variables.debug:</div>
-<div class="line"><span class="lineno">  159</span>                self.fitter.setDebugLvl(1)  <span class="comment"># produces lot of printout</span></div>
-<div class="line"><span class="lineno">  160</span>        <span class="comment"># set to True if &quot;real&quot; pattern recognition is required also</span></div>
-<div class="line"><span class="lineno">  161</span> </div>
-<div class="line"><span class="lineno">  162</span>        <span class="comment"># for &#39;real&#39; PatRec</span></div>
-<div class="line"><span class="lineno">  163</span>        <a class="code hl_function" href="namespaceshipPatRec.html#a8f1a8a73d944309e62b6ad5adc283185">shipPatRec.initialize</a>(fgeo)</div>
-<div class="line"><span class="lineno">  164</span> </div>
+<div class="line"><span class="lineno">  141</span>            <span class="comment"># Planes the fitted tracks are extrapolated to and stored at:</span></div>
+<div class="line"><span class="lineno">  142</span>            <span class="comment"># the UBT and timing-detector z of the geometry, or None (not</span></div>
+<div class="line"><span class="lineno">  143</span>            <span class="comment"># stored) for a detector that is not in it</span></div>
+<div class="line"><span class="lineno">  144</span>            self.ubtZ = self._extrapolationZ(<span class="stringliteral">&quot;UpstreamTagger&quot;</span>)</div>
+<div class="line"><span class="lineno">  145</span>            self.timeDetZ = self._extrapolationZ(<span class="stringliteral">&quot;TimeDet&quot;</span>)</div>
+<div class="line"><span class="lineno">  146</span>        <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  147</span>            <span class="comment"># init geometry and mag. field</span></div>
+<div class="line"><span class="lineno">  148</span>            self.geoMat = ROOT.genfit.TGeoMaterialInterface()</div>
+<div class="line"><span class="lineno">  149</span>            <span class="comment">#</span></div>
+<div class="line"><span class="lineno">  150</span>            self.bfield = ROOT.genfit.FairShipFields()</div>
+<div class="line"><span class="lineno">  151</span>            self.bfield.setField(global_variables.fieldMaker.getGlobalField())</div>
+<div class="line"><span class="lineno">  152</span>            self.fM = ROOT.genfit.FieldManager.getInstance()</div>
+<div class="line"><span class="lineno">  153</span>            self.fM.init(self.bfield)</div>
+<div class="line"><span class="lineno">  154</span>            ROOT.SetOwnership(self.bfield, <span class="keyword">False</span>)  <span class="comment"># genfit::FieldManager singleton takes ownership</span></div>
+<div class="line"><span class="lineno">  155</span>            ROOT.genfit.MaterialEffects.getInstance().init(self.geoMat)</div>
+<div class="line"><span class="lineno">  156</span>            ROOT.SetOwnership(self.geoMat, <span class="keyword">False</span>)  <span class="comment"># genfit::MaterialEffects singleton takes ownership</span></div>
+<div class="line"><span class="lineno">  157</span> </div>
+<div class="line"><span class="lineno">  158</span>            <span class="comment"># init fitter, to be done before importing shipPatRec</span></div>
+<div class="line"><span class="lineno">  159</span>            <span class="comment"># fitter          = ROOT.genfit.KalmanFitter()</span></div>
+<div class="line"><span class="lineno">  160</span>            <span class="comment"># fitter          = ROOT.genfit.KalmanFitterRefTrack()</span></div>
+<div class="line"><span class="lineno">  161</span>            self.fitter = ROOT.genfit.DAF()</div>
+<div class="line"><span class="lineno">  162</span>            self.fitter.setMaxIterations(50)</div>
+<div class="line"><span class="lineno">  163</span>            <span class="keywordflow">if</span> global_variables.debug:</div>
+<div class="line"><span class="lineno">  164</span>                self.fitter.setDebugLvl(1)  <span class="comment"># produces lot of printout</span></div>
+<div class="line"><span class="lineno">  165</span>        <span class="comment"># set to True if &quot;real&quot; pattern recognition is required also</span></div>
+<div class="line"><span class="lineno">  166</span> </div>
+<div class="line"><span class="lineno">  167</span>        <span class="comment"># for &#39;real&#39; PatRec</span></div>
+<div class="line"><span class="lineno">  168</span>        <a class="code hl_function" href="namespaceshipPatRec.html#a8f1a8a73d944309e62b6ad5adc283185">shipPatRec.initialize</a>(fgeo)</div>
+<div class="line"><span class="lineno">  169</span> </div>
 <div class="ttc" id="aclassMTCDetector_html"><div class="ttname"><a href="classMTCDetector.html">MTCDetector</a></div><div class="ttdef"><b>Definition</b> <a href="MTCDetector_8h_source.html#l00021">MTCDetector.h:21</a></div></div>
 <div class="ttc" id="aclassshipVertex_1_1Task_html"><div class="ttname"><a href="classshipVertex_1_1Task.html">shipVertex.Task</a></div><div class="ttdef"><b>Definition</b> <a href="shipVertex_8py_source.html#l00015">shipVertex.py:15</a></div></div>
 <div class="ttc" id="anamespaceCaloScoringPlaneDetector_html"><div class="ttname"><a href="namespaceCaloScoringPlaneDetector.html">CaloScoringPlaneDetector</a></div><div class="ttdef"><b>Definition</b> <a href="CaloScoringPlaneDetector_8py_source.html#l00001">CaloScoringPlaneDetector.py:1</a></div></div>
@@ -386,47 +397,84 @@ to place the seed at the first hit's Z with the correct Y position
 and momentum direction. Prefers station 1-2 parameters, falls back
 to station 3-4, then to a geometry-free default at the first hit.
 </pre> 
-<p class="definition">Definition at line <a class="el" href="shipDigiReco_8py_source.html#l00665">665</a> of file <a class="el" href="shipDigiReco_8py_source.html">shipDigiReco.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  665</span>    <span class="keyword">def </span>_compute_seed_state(self, atrack, meas, trackParams):</div>
-<div class="line"><span class="lineno">  666</span>        <span class="stringliteral">&quot;&quot;&quot;Compute seed position and momentum for the track fitter.</span></div>
-<div class="line"><span class="lineno">  667</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  668</span><span class="stringliteral">        When PatRec track parameters (k_y, b_y) are available, use them</span></div>
-<div class="line"><span class="lineno">  669</span><span class="stringliteral">        to place the seed at the first hit&#39;s Z with the correct Y position</span></div>
-<div class="line"><span class="lineno">  670</span><span class="stringliteral">        and momentum direction. Prefers station 1-2 parameters, falls back</span></div>
-<div class="line"><span class="lineno">  671</span><span class="stringliteral">        to station 3-4, then to a geometry-free default at the first hit.</span></div>
-<div class="line"><span class="lineno">  672</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  673</span>        params = trackParams.get(atrack)</div>
-<div class="line"><span class="lineno">  674</span>        k_y = <span class="keywordtype">None</span></div>
-<div class="line"><span class="lineno">  675</span>        b_y = <span class="keywordtype">None</span></div>
-<div class="line"><span class="lineno">  676</span>        <span class="keywordflow">if</span> params:</div>
-<div class="line"><span class="lineno">  677</span>            <span class="keywordflow">if</span> params.get(<span class="stringliteral">&quot;k_y12&quot;</span>) <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span> <span class="keywordflow">and</span> params.get(<span class="stringliteral">&quot;b_y12&quot;</span>) <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span>:</div>
-<div class="line"><span class="lineno">  678</span>                k_y = params[<span class="stringliteral">&quot;k_y12&quot;</span>]</div>
-<div class="line"><span class="lineno">  679</span>                b_y = params[<span class="stringliteral">&quot;b_y12&quot;</span>]</div>
-<div class="line"><span class="lineno">  680</span>            <span class="keywordflow">elif</span> params.get(<span class="stringliteral">&quot;k_y34&quot;</span>) <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span> <span class="keywordflow">and</span> params.get(<span class="stringliteral">&quot;b_y34&quot;</span>) <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span>:</div>
-<div class="line"><span class="lineno">  681</span>                k_y = params[<span class="stringliteral">&quot;k_y34&quot;</span>]</div>
-<div class="line"><span class="lineno">  682</span>                b_y = params[<span class="stringliteral">&quot;b_y34&quot;</span>]</div>
-<div class="line"><span class="lineno">  683</span> </div>
-<div class="line"><span class="lineno">  684</span>        z_seed = meas[0][2]  <span class="comment"># z is the 3rd element of the TVectorD</span></div>
-<div class="line"><span class="lineno">  685</span>        <span class="keywordflow">if</span> k_y <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span>:</div>
-<div class="line"><span class="lineno">  686</span>            y_seed = k_y * z_seed + b_y</div>
-<div class="line"><span class="lineno">  687</span>            posM = ROOT.TVector3(0, y_seed, z_seed)</div>
-<div class="line"><span class="lineno">  688</span>            p_total = 3.0 * u.GeV</div>
-<div class="line"><span class="lineno">  689</span>            pz = p_total / ROOT.TMath.Sqrt(1.0 + k_y * k_y)</div>
-<div class="line"><span class="lineno">  690</span>            py = k_y * pz</div>
-<div class="line"><span class="lineno">  691</span>            momM = ROOT.TVector3(0, py, pz)</div>
-<div class="line"><span class="lineno">  692</span>            logger.debug(</div>
-<div class="line"><span class="lineno">  693</span>                <span class="stringliteral">&quot;seed from PatRec: z=%.1f y=%.1f k_y=%.4f p=(0, %.2f, %.2f)&quot;</span>,</div>
-<div class="line"><span class="lineno">  694</span>                z_seed,</div>
-<div class="line"><span class="lineno">  695</span>                y_seed,</div>
-<div class="line"><span class="lineno">  696</span>                k_y,</div>
-<div class="line"><span class="lineno">  697</span>                py,</div>
-<div class="line"><span class="lineno">  698</span>                pz,</div>
-<div class="line"><span class="lineno">  699</span>            )</div>
-<div class="line"><span class="lineno">  700</span>        <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  701</span>            posM = ROOT.TVector3(0, 0, z_seed)</div>
-<div class="line"><span class="lineno">  702</span>            momM = ROOT.TVector3(0, 0, 3.0 * u.GeV)</div>
-<div class="line"><span class="lineno">  703</span>        <span class="keywordflow">return</span> posM, momM</div>
-<div class="line"><span class="lineno">  704</span> </div>
+<p class="definition">Definition at line <a class="el" href="shipDigiReco_8py_source.html#l00683">683</a> of file <a class="el" href="shipDigiReco_8py_source.html">shipDigiReco.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  683</span>    <span class="keyword">def </span>_compute_seed_state(self, atrack, meas, trackParams):</div>
+<div class="line"><span class="lineno">  684</span>        <span class="stringliteral">&quot;&quot;&quot;Compute seed position and momentum for the track fitter.</span></div>
+<div class="line"><span class="lineno">  685</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  686</span><span class="stringliteral">        When PatRec track parameters (k_y, b_y) are available, use them</span></div>
+<div class="line"><span class="lineno">  687</span><span class="stringliteral">        to place the seed at the first hit&#39;s Z with the correct Y position</span></div>
+<div class="line"><span class="lineno">  688</span><span class="stringliteral">        and momentum direction. Prefers station 1-2 parameters, falls back</span></div>
+<div class="line"><span class="lineno">  689</span><span class="stringliteral">        to station 3-4, then to a geometry-free default at the first hit.</span></div>
+<div class="line"><span class="lineno">  690</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  691</span>        params = trackParams.get(atrack)</div>
+<div class="line"><span class="lineno">  692</span>        k_y = <span class="keywordtype">None</span></div>
+<div class="line"><span class="lineno">  693</span>        b_y = <span class="keywordtype">None</span></div>
+<div class="line"><span class="lineno">  694</span>        <span class="keywordflow">if</span> params:</div>
+<div class="line"><span class="lineno">  695</span>            <span class="keywordflow">if</span> params.get(<span class="stringliteral">&quot;k_y12&quot;</span>) <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span> <span class="keywordflow">and</span> params.get(<span class="stringliteral">&quot;b_y12&quot;</span>) <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span>:</div>
+<div class="line"><span class="lineno">  696</span>                k_y = params[<span class="stringliteral">&quot;k_y12&quot;</span>]</div>
+<div class="line"><span class="lineno">  697</span>                b_y = params[<span class="stringliteral">&quot;b_y12&quot;</span>]</div>
+<div class="line"><span class="lineno">  698</span>            <span class="keywordflow">elif</span> params.get(<span class="stringliteral">&quot;k_y34&quot;</span>) <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span> <span class="keywordflow">and</span> params.get(<span class="stringliteral">&quot;b_y34&quot;</span>) <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span>:</div>
+<div class="line"><span class="lineno">  699</span>                k_y = params[<span class="stringliteral">&quot;k_y34&quot;</span>]</div>
+<div class="line"><span class="lineno">  700</span>                b_y = params[<span class="stringliteral">&quot;b_y34&quot;</span>]</div>
+<div class="line"><span class="lineno">  701</span> </div>
+<div class="line"><span class="lineno">  702</span>        z_seed = meas[0][2]  <span class="comment"># z is the 3rd element of the TVectorD</span></div>
+<div class="line"><span class="lineno">  703</span>        <span class="keywordflow">if</span> k_y <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span>:</div>
+<div class="line"><span class="lineno">  704</span>            y_seed = k_y * z_seed + b_y</div>
+<div class="line"><span class="lineno">  705</span>            posM = ROOT.TVector3(0, y_seed, z_seed)</div>
+<div class="line"><span class="lineno">  706</span>            p_total = 3.0 * u.GeV</div>
+<div class="line"><span class="lineno">  707</span>            pz = p_total / ROOT.TMath.Sqrt(1.0 + k_y * k_y)</div>
+<div class="line"><span class="lineno">  708</span>            py = k_y * pz</div>
+<div class="line"><span class="lineno">  709</span>            momM = ROOT.TVector3(0, py, pz)</div>
+<div class="line"><span class="lineno">  710</span>            logger.debug(</div>
+<div class="line"><span class="lineno">  711</span>                <span class="stringliteral">&quot;seed from PatRec: z=%.1f y=%.1f k_y=%.4f p=(0, %.2f, %.2f)&quot;</span>,</div>
+<div class="line"><span class="lineno">  712</span>                z_seed,</div>
+<div class="line"><span class="lineno">  713</span>                y_seed,</div>
+<div class="line"><span class="lineno">  714</span>                k_y,</div>
+<div class="line"><span class="lineno">  715</span>                py,</div>
+<div class="line"><span class="lineno">  716</span>                pz,</div>
+<div class="line"><span class="lineno">  717</span>            )</div>
+<div class="line"><span class="lineno">  718</span>        <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  719</span>            posM = ROOT.TVector3(0, 0, z_seed)</div>
+<div class="line"><span class="lineno">  720</span>            momM = ROOT.TVector3(0, 0, 3.0 * u.GeV)</div>
+<div class="line"><span class="lineno">  721</span>        <span class="keywordflow">return</span> posM, momM</div>
+<div class="line"><span class="lineno">  722</span> </div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="af625e076b241255914de852fe4cf0b66" name="af625e076b241255914de852fe4cf0b66"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af625e076b241255914de852fe4cf0b66">&#9670;&#160;</a></span>_extrapolationZ()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"> float | None shipDigiReco.ShipDigiReco._extrapolationZ </td>
+          <td>(</td>
+          <td class="paramtype">str</td>          <td class="paramname"><span class="paramname"><em>detector</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<pre class="fragment">The z (cm) of a detector built in this geometry, or None if it was left out.</pre> 
+<p class="definition">Definition at line <a class="el" href="shipDigiReco_8py_source.html#l00356">356</a> of file <a class="el" href="shipDigiReco_8py_source.html">shipDigiReco.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  356</span>    <span class="keyword">def </span>_extrapolationZ(detector: str) -&gt; float | <span class="keywordtype">None</span>:</div>
+<div class="line"><span class="lineno">  357</span>        <span class="stringliteral">&quot;&quot;&quot;The z (cm) of a detector built in this geometry, or None if it was left out.&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  358</span>        <span class="keywordflow">if</span> detector <span class="keywordflow">not</span> <span class="keywordflow">in</span> global_variables.modules:</div>
+<div class="line"><span class="lineno">  359</span>            logger.info(<span class="stringliteral">&quot;%s is not in the geometry: its track extrapolations are not stored&quot;</span>, detector)</div>
+<div class="line"><span class="lineno">  360</span>            <span class="keywordflow">return</span> <span class="keywordtype">None</span></div>
+<div class="line"><span class="lineno">  361</span>        z = getattr(getattr(global_variables.ShipGeo, detector, <span class="keywordtype">None</span>), <span class="stringliteral">&quot;z&quot;</span>, <span class="keywordtype">None</span>)</div>
+<div class="line"><span class="lineno">  362</span>        <span class="keywordflow">if</span> z <span class="keywordflow">is</span> <span class="keywordtype">None</span>:</div>
+<div class="line"><span class="lineno">  363</span>            logger.warning(<span class="stringliteral">&quot;No %s.z in the geometry configuration: its track extrapolations are not stored&quot;</span>, detector)</div>
+<div class="line"><span class="lineno">  364</span>        <span class="keywordflow">return</span> z</div>
+<div class="line"><span class="lineno">  365</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -457,25 +505,25 @@ to station 3-4, then to a geometry-free default at the first hit.
 Only the hit assignment comes from the truth; the fit starts from the
 hits alone, as for any other pattern recognition.
 </pre> 
-<p class="definition">Definition at line <a class="el" href="shipDigiReco_8py_source.html#l00348">348</a> of file <a class="el" href="shipDigiReco_8py_source.html">shipDigiReco.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  348</span>    <span class="keyword">def </span>_truthCandidates(self) -&gt; list[dict]:</div>
-<div class="line"><span class="lineno">  349</span>        <span class="stringliteral">&quot;&quot;&quot;Build track candidates from MC truth: the straw hits of each charged MC track.</span></div>
-<div class="line"><span class="lineno">  350</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  351</span><span class="stringliteral">        Only the hit assignment comes from the truth; the fit starts from the</span></div>
-<div class="line"><span class="lineno">  352</span><span class="stringliteral">        hits alone, as for any other pattern recognition.</span></div>
-<div class="line"><span class="lineno">  353</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  354</span>        hits_by_track = defaultdict(list)</div>
-<div class="line"><span class="lineno">  355</span>        <span class="keywordflow">for</span> i, h <span class="keywordflow">in</span> enumerate(self.strawHits):</div>
-<div class="line"><span class="lineno">  356</span>            hits_by_track[h.track_id].append(i)</div>
-<div class="line"><span class="lineno">  357</span>        candidates = []</div>
-<div class="line"><span class="lineno">  358</span>        <span class="keywordflow">for</span> trID, indices <span class="keywordflow">in</span> sorted(hits_by_track.items()):</div>
-<div class="line"><span class="lineno">  359</span>            particle = self.PDG.GetParticle(self.sTree.MCTrack[trID].GetPdgCode()) <span class="keywordflow">if</span> trID &gt;= 0 <span class="keywordflow">else</span> <span class="keywordtype">None</span></div>
-<div class="line"><span class="lineno">  360</span>            <span class="comment"># PyROOT returns a null proxy, not None, for an unknown PDG code</span></div>
-<div class="line"><span class="lineno">  361</span>            <span class="keywordflow">if</span> <span class="keywordflow">not</span> particle <span class="keywordflow">or</span> particle.Charge() == 0:</div>
-<div class="line"><span class="lineno">  362</span>                <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  363</span>            candidates.append({<span class="stringliteral">&quot;indices&quot;</span>: indices})</div>
-<div class="line"><span class="lineno">  364</span>        <span class="keywordflow">return</span> candidates</div>
-<div class="line"><span class="lineno">  365</span> </div>
+<p class="definition">Definition at line <a class="el" href="shipDigiReco_8py_source.html#l00366">366</a> of file <a class="el" href="shipDigiReco_8py_source.html">shipDigiReco.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  366</span>    <span class="keyword">def </span>_truthCandidates(self) -&gt; list[dict]:</div>
+<div class="line"><span class="lineno">  367</span>        <span class="stringliteral">&quot;&quot;&quot;Build track candidates from MC truth: the straw hits of each charged MC track.</span></div>
+<div class="line"><span class="lineno">  368</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  369</span><span class="stringliteral">        Only the hit assignment comes from the truth; the fit starts from the</span></div>
+<div class="line"><span class="lineno">  370</span><span class="stringliteral">        hits alone, as for any other pattern recognition.</span></div>
+<div class="line"><span class="lineno">  371</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  372</span>        hits_by_track = defaultdict(list)</div>
+<div class="line"><span class="lineno">  373</span>        <span class="keywordflow">for</span> i, h <span class="keywordflow">in</span> enumerate(self.strawHits):</div>
+<div class="line"><span class="lineno">  374</span>            hits_by_track[h.track_id].append(i)</div>
+<div class="line"><span class="lineno">  375</span>        candidates = []</div>
+<div class="line"><span class="lineno">  376</span>        <span class="keywordflow">for</span> trID, indices <span class="keywordflow">in</span> sorted(hits_by_track.items()):</div>
+<div class="line"><span class="lineno">  377</span>            particle = self.PDG.GetParticle(self.sTree.MCTrack[trID].GetPdgCode()) <span class="keywordflow">if</span> trID &gt;= 0 <span class="keywordflow">else</span> <span class="keywordtype">None</span></div>
+<div class="line"><span class="lineno">  378</span>            <span class="comment"># PyROOT returns a null proxy, not None, for an unknown PDG code</span></div>
+<div class="line"><span class="lineno">  379</span>            <span class="keywordflow">if</span> <span class="keywordflow">not</span> particle <span class="keywordflow">or</span> particle.Charge() == 0:</div>
+<div class="line"><span class="lineno">  380</span>                <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  381</span>            candidates.append({<span class="stringliteral">&quot;indices&quot;</span>: indices})</div>
+<div class="line"><span class="lineno">  382</span>        <span class="keywordflow">return</span> candidates</div>
+<div class="line"><span class="lineno">  383</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -498,63 +546,65 @@ hits alone, as for any other pattern recognition.
 Returns (fitted tracks, vertices, per-track hit indices into
 self.strawHits).
 </pre> 
-<p class="definition">Definition at line <a class="el" href="shipDigiReco_8py_source.html#l00292">292</a> of file <a class="el" href="shipDigiReco_8py_source.html">shipDigiReco.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  292</span>    <span class="keyword">def </span>actsTracks(self) -&gt; tuple:</div>
-<div class="line"><span class="lineno">  293</span>        <span class="stringliteral">&quot;&quot;&quot;Collect this event&#39;s straw hits and fit track candidates with ACTS.</span></div>
-<div class="line"><span class="lineno">  294</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  295</span><span class="stringliteral">        Returns (fitted tracks, vertices, per-track hit indices into</span></div>
-<div class="line"><span class="lineno">  296</span><span class="stringliteral">        self.strawHits).</span></div>
-<div class="line"><span class="lineno">  297</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  298</span>        <span class="keywordflow">if</span> global_variables.patRec <span class="keywordflow">in</span> (<span class="stringliteral">&quot;Truth&quot;</span>, <span class="stringliteral">&quot;Segments&quot;</span>):</div>
-<div class="line"><span class="lineno">  299</span>            <span class="comment"># Truth hit assignment, or the ACTS tracker&#39;s own pattern</span></div>
-<div class="line"><span class="lineno">  300</span>            <span class="comment"># recognition, need only the smeared hits</span></div>
-<div class="line"><span class="lineno">  301</span>            candidates = <span class="keywordtype">None</span></div>
-<div class="line"><span class="lineno">  302</span>            <span class="keywordflow">if</span> global_variables.withT0:</div>
-<div class="line"><span class="lineno">  303</span>                self.SmearedHits = self.strawtubes.withT0Estimate()</div>
-<div class="line"><span class="lineno">  304</span>            <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  305</span>                self.SmearedHits = self.strawtubes.smearHits(global_variables.withNoStrawSmearing)</div>
-<div class="line"><span class="lineno">  306</span>        <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  307</span>            candidates = self.findTracks()</div>
-<div class="line"><span class="lineno">  308</span> </div>
-<div class="line"><span class="lineno">  309</span>        <span class="comment"># Collect the hits from this event&#39;s smeared hits (single smearing,</span></div>
-<div class="line"><span class="lineno">  310</span>        <span class="comment"># done above or inside findTracks).</span></div>
-<div class="line"><span class="lineno">  311</span>        self.strawHits = []</div>
-<div class="line"><span class="lineno">  312</span>        self.strawHitToDigi = []</div>
-<div class="line"><span class="lineno">  313</span>        digi_to_straw = {}</div>
-<div class="line"><span class="lineno">  314</span>        <span class="keywordflow">for</span> k, sm <span class="keywordflow">in</span> enumerate(self.SmearedHits):</div>
-<div class="line"><span class="lineno">  315</span>            digiHit = int(sm[<span class="stringliteral">&quot;digiHit&quot;</span>])</div>
-<div class="line"><span class="lineno">  316</span>            digi = self.strawtubes.det[digiHit]</div>
-<div class="line"><span class="lineno">  317</span>            point = self.sTree.strawtubesPoint[digiHit]</div>
-<div class="line"><span class="lineno">  318</span>            self.strawHits.append(</div>
-<div class="line"><span class="lineno">  319</span>                StrawHit(</div>
-<div class="line"><span class="lineno">  320</span>                    detector_id=digi.GetDetectorID(),</div>
-<div class="line"><span class="lineno">  321</span>                    station=digi.GetStationNumber(),</div>
-<div class="line"><span class="lineno">  322</span>                    view=digi.GetViewNumber(),</div>
-<div class="line"><span class="lineno">  323</span>                    layer=digi.GetLayerNumber(),</div>
-<div class="line"><span class="lineno">  324</span>                    track_id=point.GetTrackID(),</div>
-<div class="line"><span class="lineno">  325</span>                    z=sm[<span class="stringliteral">&quot;z&quot;</span>],</div>
-<div class="line"><span class="lineno">  326</span>                    drift=sm[<span class="stringliteral">&quot;dist&quot;</span>],</div>
-<div class="line"><span class="lineno">  327</span>                )</div>
-<div class="line"><span class="lineno">  328</span>            )</div>
-<div class="line"><span class="lineno">  329</span>            self.strawHitToDigi.append(digiHit)</div>
-<div class="line"><span class="lineno">  330</span>            digi_to_straw[digiHit] = k</div>
-<div class="line"><span class="lineno">  331</span> </div>
-<div class="line"><span class="lineno">  332</span>        <span class="keywordflow">if</span> global_variables.patRec == <span class="stringliteral">&quot;Truth&quot;</span>:</div>
-<div class="line"><span class="lineno">  333</span>            candidates = self._truthCandidates()</div>
-<div class="line"><span class="lineno">  334</span>        <span class="keywordflow">elif</span> candidates <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span>:</div>
-<div class="line"><span class="lineno">  335</span>            <span class="comment"># Candidate hit indices refer to digi hits; remap them to positions</span></div>
-<div class="line"><span class="lineno">  336</span>            <span class="comment"># in self.strawHits as expected by runTracking.</span></div>
-<div class="line"><span class="lineno">  337</span>            <span class="keywordflow">for</span> cand <span class="keywordflow">in</span> candidates:</div>
-<div class="line"><span class="lineno">  338</span>                cand[<span class="stringliteral">&quot;indices&quot;</span>] = [digi_to_straw[i] <span class="keywordflow">for</span> i <span class="keywordflow">in</span> cand[<span class="stringliteral">&quot;indices&quot;</span>] <span class="keywordflow">if</span> i <span class="keywordflow">in</span> digi_to_straw]</div>
-<div class="line"><span class="lineno">  339</span> </div>
-<div class="line"><span class="lineno">  340</span>        <span class="keywordflow">return</span> runTracking(</div>
-<div class="line"><span class="lineno">  341</span>            self.actsTracker,</div>
-<div class="line"><span class="lineno">  342</span>            candidates,</div>
-<div class="line"><span class="lineno">  343</span>            self.strawHits,</div>
-<div class="line"><span class="lineno">  344</span>            self.sigma_spatial,</div>
-<div class="line"><span class="lineno">  345</span>            fit_vertex=global_variables.vertexing,</div>
-<div class="line"><span class="lineno">  346</span>        )</div>
-<div class="line"><span class="lineno">  347</span> </div>
+<p class="definition">Definition at line <a class="el" href="shipDigiReco_8py_source.html#l00297">297</a> of file <a class="el" href="shipDigiReco_8py_source.html">shipDigiReco.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  297</span>    <span class="keyword">def </span>actsTracks(self) -&gt; tuple:</div>
+<div class="line"><span class="lineno">  298</span>        <span class="stringliteral">&quot;&quot;&quot;Collect this event&#39;s straw hits and fit track candidates with ACTS.</span></div>
+<div class="line"><span class="lineno">  299</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  300</span><span class="stringliteral">        Returns (fitted tracks, vertices, per-track hit indices into</span></div>
+<div class="line"><span class="lineno">  301</span><span class="stringliteral">        self.strawHits).</span></div>
+<div class="line"><span class="lineno">  302</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  303</span>        <span class="keywordflow">if</span> global_variables.patRec <span class="keywordflow">in</span> (<span class="stringliteral">&quot;Truth&quot;</span>, <span class="stringliteral">&quot;Segments&quot;</span>):</div>
+<div class="line"><span class="lineno">  304</span>            <span class="comment"># Truth hit assignment, or the ACTS tracker&#39;s own pattern</span></div>
+<div class="line"><span class="lineno">  305</span>            <span class="comment"># recognition, need only the smeared hits</span></div>
+<div class="line"><span class="lineno">  306</span>            candidates = <span class="keywordtype">None</span></div>
+<div class="line"><span class="lineno">  307</span>            <span class="keywordflow">if</span> global_variables.withT0:</div>
+<div class="line"><span class="lineno">  308</span>                self.SmearedHits = self.strawtubes.withT0Estimate()</div>
+<div class="line"><span class="lineno">  309</span>            <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  310</span>                self.SmearedHits = self.strawtubes.smearHits(global_variables.withNoStrawSmearing)</div>
+<div class="line"><span class="lineno">  311</span>        <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  312</span>            candidates = self.findTracks()</div>
+<div class="line"><span class="lineno">  313</span> </div>
+<div class="line"><span class="lineno">  314</span>        <span class="comment"># Collect the hits from this event&#39;s smeared hits (single smearing,</span></div>
+<div class="line"><span class="lineno">  315</span>        <span class="comment"># done above or inside findTracks).</span></div>
+<div class="line"><span class="lineno">  316</span>        self.strawHits = []</div>
+<div class="line"><span class="lineno">  317</span>        self.strawHitToDigi = []</div>
+<div class="line"><span class="lineno">  318</span>        digi_to_straw = {}</div>
+<div class="line"><span class="lineno">  319</span>        <span class="keywordflow">for</span> k, sm <span class="keywordflow">in</span> enumerate(self.SmearedHits):</div>
+<div class="line"><span class="lineno">  320</span>            digiHit = int(sm[<span class="stringliteral">&quot;digiHit&quot;</span>])</div>
+<div class="line"><span class="lineno">  321</span>            digi = self.strawtubes.det[digiHit]</div>
+<div class="line"><span class="lineno">  322</span>            point = self.sTree.strawtubesPoint[digiHit]</div>
+<div class="line"><span class="lineno">  323</span>            self.strawHits.append(</div>
+<div class="line"><span class="lineno">  324</span>                StrawHit(</div>
+<div class="line"><span class="lineno">  325</span>                    detector_id=digi.GetDetectorID(),</div>
+<div class="line"><span class="lineno">  326</span>                    station=digi.GetStationNumber(),</div>
+<div class="line"><span class="lineno">  327</span>                    view=digi.GetViewNumber(),</div>
+<div class="line"><span class="lineno">  328</span>                    layer=digi.GetLayerNumber(),</div>
+<div class="line"><span class="lineno">  329</span>                    track_id=point.GetTrackID(),</div>
+<div class="line"><span class="lineno">  330</span>                    z=sm[<span class="stringliteral">&quot;z&quot;</span>],</div>
+<div class="line"><span class="lineno">  331</span>                    drift=sm[<span class="stringliteral">&quot;dist&quot;</span>],</div>
+<div class="line"><span class="lineno">  332</span>                )</div>
+<div class="line"><span class="lineno">  333</span>            )</div>
+<div class="line"><span class="lineno">  334</span>            self.strawHitToDigi.append(digiHit)</div>
+<div class="line"><span class="lineno">  335</span>            digi_to_straw[digiHit] = k</div>
+<div class="line"><span class="lineno">  336</span> </div>
+<div class="line"><span class="lineno">  337</span>        <span class="keywordflow">if</span> global_variables.patRec == <span class="stringliteral">&quot;Truth&quot;</span>:</div>
+<div class="line"><span class="lineno">  338</span>            candidates = self._truthCandidates()</div>
+<div class="line"><span class="lineno">  339</span>        <span class="keywordflow">elif</span> candidates <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span>:</div>
+<div class="line"><span class="lineno">  340</span>            <span class="comment"># Candidate hit indices refer to digi hits; remap them to positions</span></div>
+<div class="line"><span class="lineno">  341</span>            <span class="comment"># in self.strawHits as expected by runTracking.</span></div>
+<div class="line"><span class="lineno">  342</span>            <span class="keywordflow">for</span> cand <span class="keywordflow">in</span> candidates:</div>
+<div class="line"><span class="lineno">  343</span>                cand[<span class="stringliteral">&quot;indices&quot;</span>] = [digi_to_straw[i] <span class="keywordflow">for</span> i <span class="keywordflow">in</span> cand[<span class="stringliteral">&quot;indices&quot;</span>] <span class="keywordflow">if</span> i <span class="keywordflow">in</span> digi_to_straw]</div>
+<div class="line"><span class="lineno">  344</span> </div>
+<div class="line"><span class="lineno">  345</span>        <span class="keywordflow">return</span> runTracking(</div>
+<div class="line"><span class="lineno">  346</span>            self.actsTracker,</div>
+<div class="line"><span class="lineno">  347</span>            candidates,</div>
+<div class="line"><span class="lineno">  348</span>            self.strawHits,</div>
+<div class="line"><span class="lineno">  349</span>            self.sigma_spatial,</div>
+<div class="line"><span class="lineno">  350</span>            fit_vertex=global_variables.vertexing,</div>
+<div class="line"><span class="lineno">  351</span>            ubt_z=self.ubtZ,</div>
+<div class="line"><span class="lineno">  352</span>            td_z=self.timeDetZ,</div>
+<div class="line"><span class="lineno">  353</span>        )</div>
+<div class="line"><span class="lineno">  354</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -573,29 +623,29 @@ self.strawHits).
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipDigiReco_8py_source.html#l00366">366</a> of file <a class="el" href="shipDigiReco_8py_source.html">shipDigiReco.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  366</span>    <span class="keyword">def </span>digitize(self) -&gt; None:</div>
-<div class="line"><span class="lineno">  367</span>        self.sTree.t0 = self.random.Rndm() * 1 * u.microsecond</div>
-<div class="line"><span class="lineno">  368</span>        self.header.SetEventTime(self.sTree.t0)</div>
-<div class="line"><span class="lineno">  369</span>        self.header.SetRunId(self.sTree.MCEventHeader.GetRunID())</div>
-<div class="line"><span class="lineno">  370</span>        self.header.SetMCEntryNumber(self.sTree.MCEventHeader.GetEventID())  <span class="comment"># counts from 1</span></div>
-<div class="line"><span class="lineno">  371</span>        <span class="keywordflow">if</span> hasattr(self, <span class="stringliteral">&quot;digiSBT&quot;</span>):</div>
-<div class="line"><span class="lineno">  372</span>            self.digiSBT.process()</div>
-<div class="line"><span class="lineno">  373</span>        <span class="keywordflow">if</span> hasattr(self, <span class="stringliteral">&quot;strawtubes&quot;</span>):</div>
-<div class="line"><span class="lineno">  374</span>            self.strawtubes.process()</div>
-<div class="line"><span class="lineno">  375</span>        <span class="keywordflow">if</span> hasattr(self, <span class="stringliteral">&quot;timeDetector&quot;</span>):</div>
-<div class="line"><span class="lineno">  376</span>            self.timeDetector.process()</div>
-<div class="line"><span class="lineno">  377</span>        <span class="keywordflow">if</span> hasattr(self, <span class="stringliteral">&quot;upstreamTaggerDetector&quot;</span>):</div>
-<div class="line"><span class="lineno">  378</span>            self.upstreamTaggerDetector.process()</div>
-<div class="line"><span class="lineno">  379</span>        <span class="keywordflow">if</span> hasattr(self, <span class="stringliteral">&quot;caloScoringPlaneDetector&quot;</span>):</div>
-<div class="line"><span class="lineno">  380</span>            self.caloScoringPlaneDetector.process()</div>
-<div class="line"><span class="lineno">  381</span>        <span class="keywordflow">if</span> hasattr(self, <span class="stringliteral">&quot;digiMTC&quot;</span>):</div>
-<div class="line"><span class="lineno">  382</span>            self.digiMTC.process()</div>
-<div class="line"><span class="lineno">  383</span>        <span class="keywordflow">if</span> hasattr(self, <span class="stringliteral">&quot;digiSiliconTarget&quot;</span>):</div>
-<div class="line"><span class="lineno">  384</span>            self.digiSiliconTarget.process()</div>
-<div class="line"><span class="lineno">  385</span>        <span class="keywordflow">if</span> self.validation:</div>
-<div class="line"><span class="lineno">  386</span>            self.validation_stats[<span class="stringliteral">&quot;events_digitized&quot;</span>] += 1</div>
-<div class="line"><span class="lineno">  387</span> </div>
+<p class="definition">Definition at line <a class="el" href="shipDigiReco_8py_source.html#l00384">384</a> of file <a class="el" href="shipDigiReco_8py_source.html">shipDigiReco.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  384</span>    <span class="keyword">def </span>digitize(self) -&gt; None:</div>
+<div class="line"><span class="lineno">  385</span>        self.sTree.t0 = self.random.Rndm() * 1 * u.microsecond</div>
+<div class="line"><span class="lineno">  386</span>        self.header.SetEventTime(self.sTree.t0)</div>
+<div class="line"><span class="lineno">  387</span>        self.header.SetRunId(self.sTree.MCEventHeader.GetRunID())</div>
+<div class="line"><span class="lineno">  388</span>        self.header.SetMCEntryNumber(self.sTree.MCEventHeader.GetEventID())  <span class="comment"># counts from 1</span></div>
+<div class="line"><span class="lineno">  389</span>        <span class="keywordflow">if</span> hasattr(self, <span class="stringliteral">&quot;digiSBT&quot;</span>):</div>
+<div class="line"><span class="lineno">  390</span>            self.digiSBT.process()</div>
+<div class="line"><span class="lineno">  391</span>        <span class="keywordflow">if</span> hasattr(self, <span class="stringliteral">&quot;strawtubes&quot;</span>):</div>
+<div class="line"><span class="lineno">  392</span>            self.strawtubes.process()</div>
+<div class="line"><span class="lineno">  393</span>        <span class="keywordflow">if</span> hasattr(self, <span class="stringliteral">&quot;timeDetector&quot;</span>):</div>
+<div class="line"><span class="lineno">  394</span>            self.timeDetector.process()</div>
+<div class="line"><span class="lineno">  395</span>        <span class="keywordflow">if</span> hasattr(self, <span class="stringliteral">&quot;upstreamTaggerDetector&quot;</span>):</div>
+<div class="line"><span class="lineno">  396</span>            self.upstreamTaggerDetector.process()</div>
+<div class="line"><span class="lineno">  397</span>        <span class="keywordflow">if</span> hasattr(self, <span class="stringliteral">&quot;caloScoringPlaneDetector&quot;</span>):</div>
+<div class="line"><span class="lineno">  398</span>            self.caloScoringPlaneDetector.process()</div>
+<div class="line"><span class="lineno">  399</span>        <span class="keywordflow">if</span> hasattr(self, <span class="stringliteral">&quot;digiMTC&quot;</span>):</div>
+<div class="line"><span class="lineno">  400</span>            self.digiMTC.process()</div>
+<div class="line"><span class="lineno">  401</span>        <span class="keywordflow">if</span> hasattr(self, <span class="stringliteral">&quot;digiSiliconTarget&quot;</span>):</div>
+<div class="line"><span class="lineno">  402</span>            self.digiSiliconTarget.process()</div>
+<div class="line"><span class="lineno">  403</span>        <span class="keywordflow">if</span> self.validation:</div>
+<div class="line"><span class="lineno">  404</span>            self.validation_stats[<span class="stringliteral">&quot;events_digitized&quot;</span>] += 1</div>
+<div class="line"><span class="lineno">  405</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -620,27 +670,27 @@ goodTracks branch means the same thing whichever fitter produced the
 file. Only converged ACTS fits are persisted, which stands in for
 GenFit's isFitConverged.
 </pre> 
-<p class="definition">Definition at line <a class="el" href="shipDigiReco_8py_source.html#l00719">719</a> of file <a class="el" href="shipDigiReco_8py_source.html">shipDigiReco.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  719</span>    <span class="keyword">def </span>findGoodActsTracks(self) -&gt; int:</div>
-<div class="line"><span class="lineno">  720</span>        <span class="stringliteral">&quot;&quot;&quot;ACTS counterpart of findGoodTracks.</span></div>
-<div class="line"><span class="lineno">  721</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  722</span><span class="stringliteral">        Applies the same chi2/ndf &lt; 50 criterion as the GenFit selection, so the</span></div>
-<div class="line"><span class="lineno">  723</span><span class="stringliteral">        goodTracks branch means the same thing whichever fitter produced the</span></div>
-<div class="line"><span class="lineno">  724</span><span class="stringliteral">        file. Only converged ACTS fits are persisted, which stands in for</span></div>
-<div class="line"><span class="lineno">  725</span><span class="stringliteral">        GenFit&#39;s isFitConverged.</span></div>
-<div class="line"><span class="lineno">  726</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  727</span>        self.goodTracksVect.clear()</div>
-<div class="line"><span class="lineno">  728</span>        nGoodTracks = 0</div>
-<div class="line"><span class="lineno">  729</span>        <span class="keywordflow">for</span> i, track <span class="keywordflow">in</span> enumerate(self.fACTSArray):</div>
-<div class="line"><span class="lineno">  730</span>            ndf = track.nDoF()</div>
-<div class="line"><span class="lineno">  731</span>            <span class="keywordflow">if</span> ndf &lt;= 0:</div>
-<div class="line"><span class="lineno">  732</span>                <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  733</span>            chi2 = track.chi2() / ndf</div>
-<div class="line"><span class="lineno">  734</span>            <span class="keywordflow">if</span> chi2 &lt; 50 <span class="keywordflow">and</span> <span class="keywordflow">not</span> chi2 &lt; 0:</div>
-<div class="line"><span class="lineno">  735</span>                self.goodTracksVect.push_back(i)</div>
-<div class="line"><span class="lineno">  736</span>                nGoodTracks += 1</div>
-<div class="line"><span class="lineno">  737</span>        <span class="keywordflow">return</span> nGoodTracks</div>
-<div class="line"><span class="lineno">  738</span> </div>
+<p class="definition">Definition at line <a class="el" href="shipDigiReco_8py_source.html#l00737">737</a> of file <a class="el" href="shipDigiReco_8py_source.html">shipDigiReco.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  737</span>    <span class="keyword">def </span>findGoodActsTracks(self) -&gt; int:</div>
+<div class="line"><span class="lineno">  738</span>        <span class="stringliteral">&quot;&quot;&quot;ACTS counterpart of findGoodTracks.</span></div>
+<div class="line"><span class="lineno">  739</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  740</span><span class="stringliteral">        Applies the same chi2/ndf &lt; 50 criterion as the GenFit selection, so the</span></div>
+<div class="line"><span class="lineno">  741</span><span class="stringliteral">        goodTracks branch means the same thing whichever fitter produced the</span></div>
+<div class="line"><span class="lineno">  742</span><span class="stringliteral">        file. Only converged ACTS fits are persisted, which stands in for</span></div>
+<div class="line"><span class="lineno">  743</span><span class="stringliteral">        GenFit&#39;s isFitConverged.</span></div>
+<div class="line"><span class="lineno">  744</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  745</span>        self.goodTracksVect.clear()</div>
+<div class="line"><span class="lineno">  746</span>        nGoodTracks = 0</div>
+<div class="line"><span class="lineno">  747</span>        <span class="keywordflow">for</span> i, track <span class="keywordflow">in</span> enumerate(self.fACTSArray):</div>
+<div class="line"><span class="lineno">  748</span>            ndf = track.nDoF()</div>
+<div class="line"><span class="lineno">  749</span>            <span class="keywordflow">if</span> ndf &lt;= 0:</div>
+<div class="line"><span class="lineno">  750</span>                <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  751</span>            chi2 = track.chi2() / ndf</div>
+<div class="line"><span class="lineno">  752</span>            <span class="keywordflow">if</span> chi2 &lt; 50 <span class="keywordflow">and</span> <span class="keywordflow">not</span> chi2 &lt; 0:</div>
+<div class="line"><span class="lineno">  753</span>                self.goodTracksVect.push_back(i)</div>
+<div class="line"><span class="lineno">  754</span>                nGoodTracks += 1</div>
+<div class="line"><span class="lineno">  755</span>        <span class="keywordflow">return</span> nGoodTracks</div>
+<div class="line"><span class="lineno">  756</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -659,21 +709,21 @@ GenFit's isFitConverged.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipDigiReco_8py_source.html#l00705">705</a> of file <a class="el" href="shipDigiReco_8py_source.html">shipDigiReco.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  705</span>    <span class="keyword">def </span>findGoodTracks(self) -&gt; int:</div>
-<div class="line"><span class="lineno">  706</span>        self.goodTracksVect.clear()</div>
-<div class="line"><span class="lineno">  707</span>        nGoodTracks = 0</div>
-<div class="line"><span class="lineno">  708</span>        <span class="keywordflow">for</span> i, track <span class="keywordflow">in</span> enumerate(self.fGenFitArray):</div>
-<div class="line"><span class="lineno">  709</span>            fitStatus = track.getFitStatus()</div>
-<div class="line"><span class="lineno">  710</span>            <span class="keywordflow">if</span> <span class="keywordflow">not</span> fitStatus.isFitConverged():</div>
-<div class="line"><span class="lineno">  711</span>                <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  712</span>            nmeas = fitStatus.getNdf()</div>
-<div class="line"><span class="lineno">  713</span>            chi2 = fitStatus.getChi2() / nmeas</div>
-<div class="line"><span class="lineno">  714</span>            <span class="keywordflow">if</span> chi2 &lt; 50 <span class="keywordflow">and</span> <span class="keywordflow">not</span> chi2 &lt; 0:</div>
-<div class="line"><span class="lineno">  715</span>                self.goodTracksVect.push_back(i)</div>
-<div class="line"><span class="lineno">  716</span>                nGoodTracks += 1</div>
-<div class="line"><span class="lineno">  717</span>        <span class="keywordflow">return</span> nGoodTracks</div>
-<div class="line"><span class="lineno">  718</span> </div>
+<p class="definition">Definition at line <a class="el" href="shipDigiReco_8py_source.html#l00723">723</a> of file <a class="el" href="shipDigiReco_8py_source.html">shipDigiReco.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  723</span>    <span class="keyword">def </span>findGoodTracks(self) -&gt; int:</div>
+<div class="line"><span class="lineno">  724</span>        self.goodTracksVect.clear()</div>
+<div class="line"><span class="lineno">  725</span>        nGoodTracks = 0</div>
+<div class="line"><span class="lineno">  726</span>        <span class="keywordflow">for</span> i, track <span class="keywordflow">in</span> enumerate(self.fGenFitArray):</div>
+<div class="line"><span class="lineno">  727</span>            fitStatus = track.getFitStatus()</div>
+<div class="line"><span class="lineno">  728</span>            <span class="keywordflow">if</span> <span class="keywordflow">not</span> fitStatus.isFitConverged():</div>
+<div class="line"><span class="lineno">  729</span>                <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  730</span>            nmeas = fitStatus.getNdf()</div>
+<div class="line"><span class="lineno">  731</span>            chi2 = fitStatus.getChi2() / nmeas</div>
+<div class="line"><span class="lineno">  732</span>            <span class="keywordflow">if</span> chi2 &lt; 50 <span class="keywordflow">and</span> <span class="keywordflow">not</span> chi2 &lt; 0:</div>
+<div class="line"><span class="lineno">  733</span>                self.goodTracksVect.push_back(i)</div>
+<div class="line"><span class="lineno">  734</span>                nGoodTracks += 1</div>
+<div class="line"><span class="lineno">  735</span>        <span class="keywordflow">return</span> nGoodTracks</div>
+<div class="line"><span class="lineno">  736</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -696,141 +746,141 @@ GenFit's isFitConverged.
 Each candidate holds the seed state, hit measurements and indices;
 fitting is done separately (e.g. by fitTracksGenfit).
 </pre> 
-<p class="definition">Definition at line <a class="el" href="shipDigiReco_8py_source.html#l00388">388</a> of file <a class="el" href="shipDigiReco_8py_source.html">shipDigiReco.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  388</span>    <span class="keyword">def </span>findTracks(self) -&gt; list[dict]:</div>
-<div class="line"><span class="lineno">  389</span>        <span class="stringliteral">&quot;&quot;&quot;Digitize, run pattern recognition and build fitter-agnostic track candidates.</span></div>
-<div class="line"><span class="lineno">  390</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  391</span><span class="stringliteral">        Each candidate holds the seed state, hit measurements and indices;</span></div>
-<div class="line"><span class="lineno">  392</span><span class="stringliteral">        fitting is done separately (e.g. by fitTracksGenfit).</span></div>
-<div class="line"><span class="lineno">  393</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  394</span>        hitPosLists = {}</div>
-<div class="line"><span class="lineno">  395</span>        hit_detector_ids = {}</div>
-<div class="line"><span class="lineno">  396</span>        stationCrossed: dict[int, dict[int, int]] = {}</div>
-<div class="line"><span class="lineno">  397</span>        listOfIndices: dict[int, list[int]] = {}</div>
-<div class="line"><span class="lineno">  398</span>        trackParams: dict[int, dict] = {}</div>
-<div class="line"><span class="lineno">  399</span> </div>
-<div class="line"><span class="lineno">  400</span>        <span class="comment">#</span></div>
-<div class="line"><span class="lineno">  401</span>        <span class="keywordflow">if</span> global_variables.withT0:</div>
-<div class="line"><span class="lineno">  402</span>            self.SmearedHits = self.strawtubes.withT0Estimate()</div>
-<div class="line"><span class="lineno">  403</span>        <span class="comment"># old procedure, not including estimation of t0</span></div>
-<div class="line"><span class="lineno">  404</span>        <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  405</span>            self.SmearedHits = self.strawtubes.smearHits(global_variables.withNoStrawSmearing)</div>
-<div class="line"><span class="lineno">  406</span>        <span class="keywordflow">if</span> self.validation:</div>
-<div class="line"><span class="lineno">  407</span>            self.validation_stats[<span class="stringliteral">&quot;smeared_hits_total&quot;</span>] += len(self.SmearedHits)</div>
-<div class="line"><span class="lineno">  408</span>            <span class="keywordflow">if</span> len(self.SmearedHits) &gt; 0:</div>
-<div class="line"><span class="lineno">  409</span>                self.validation_stats[<span class="stringliteral">&quot;events_with_hits&quot;</span>] += 1</div>
-<div class="line"><span class="lineno">  410</span> </div>
-<div class="line"><span class="lineno">  411</span>        <span class="comment"># Do pattern recognition</span></div>
-<div class="line"><span class="lineno">  412</span>        track_hits = <a class="code hl_function" href="namespaceshipPatRec.html#a5b567bf51736f0546f9c4c2d3e80c875">shipPatRec.execute</a>(self.SmearedHits, global_variables.ShipGeo, global_variables.patRec)</div>
-<div class="line"><span class="lineno">  413</span>        logger.debug(<span class="stringliteral">&quot;PatRec returned %d track candidates&quot;</span>, len(track_hits))</div>
-<div class="line"><span class="lineno">  414</span>        <span class="keywordflow">if</span> self.validation:</div>
-<div class="line"><span class="lineno">  415</span>            self.validation_stats[<span class="stringliteral">&quot;track_candidates_total&quot;</span>] += len(track_hits)</div>
-<div class="line"><span class="lineno">  416</span>            <span class="keywordflow">if</span> len(track_hits) &gt; 0:</div>
-<div class="line"><span class="lineno">  417</span>                self.validation_stats[<span class="stringliteral">&quot;events_with_candidates&quot;</span>] += 1</div>
-<div class="line"><span class="lineno">  418</span>            validation_tools.record_event_stat(self.validation_stats, <span class="stringliteral">&quot;event_track_candidates&quot;</span>, len(track_hits))</div>
-<div class="line"><span class="lineno">  419</span>        <span class="comment"># Create hitPosLists for track fit</span></div>
-<div class="line"><span class="lineno">  420</span>        <span class="keywordflow">for</span> i_track <span class="keywordflow">in</span> track_hits:</div>
-<div class="line"><span class="lineno">  421</span>            atrack = track_hits[i_track]</div>
-<div class="line"><span class="lineno">  422</span>            atrack_y12 = atrack[<span class="stringliteral">&quot;y12&quot;</span>]</div>
-<div class="line"><span class="lineno">  423</span>            atrack_stereo12 = atrack[<span class="stringliteral">&quot;stereo12&quot;</span>]</div>
-<div class="line"><span class="lineno">  424</span>            atrack_y34 = atrack[<span class="stringliteral">&quot;y34&quot;</span>]</div>
-<div class="line"><span class="lineno">  425</span>            atrack_stereo34 = atrack[<span class="stringliteral">&quot;stereo34&quot;</span>]</div>
-<div class="line"><span class="lineno">  426</span>            atrack_smeared_hits = list(atrack_y12) + list(atrack_stereo12) + list(atrack_y34) + list(atrack_stereo34)</div>
-<div class="line"><span class="lineno">  427</span>            <span class="comment"># Store PatRec track parameters for seeding the fitter</span></div>
-<div class="line"><span class="lineno">  428</span>            trackParams[i_track] = {</div>
-<div class="line"><span class="lineno">  429</span>                <span class="stringliteral">&quot;k_y12&quot;</span>: atrack.get(<span class="stringliteral">&quot;k_y12&quot;</span>),</div>
-<div class="line"><span class="lineno">  430</span>                <span class="stringliteral">&quot;b_y12&quot;</span>: atrack.get(<span class="stringliteral">&quot;b_y12&quot;</span>),</div>
-<div class="line"><span class="lineno">  431</span>                <span class="stringliteral">&quot;k_y34&quot;</span>: atrack.get(<span class="stringliteral">&quot;k_y34&quot;</span>),</div>
-<div class="line"><span class="lineno">  432</span>                <span class="stringliteral">&quot;b_y34&quot;</span>: atrack.get(<span class="stringliteral">&quot;b_y34&quot;</span>),</div>
-<div class="line"><span class="lineno">  433</span>            }</div>
-<div class="line"><span class="lineno">  434</span>            <span class="keywordflow">for</span> sm <span class="keywordflow">in</span> atrack_smeared_hits:</div>
-<div class="line"><span class="lineno">  435</span>                detID = sm[<span class="stringliteral">&quot;detID&quot;</span>]</div>
-<div class="line"><span class="lineno">  436</span>                station = self.strawtubes.det[sm[<span class="stringliteral">&quot;digiHit&quot;</span>]].GetStationNumber()</div>
-<div class="line"><span class="lineno">  437</span>                trID = i_track</div>
-<div class="line"><span class="lineno">  438</span>                <span class="comment"># Collect hits for track fit</span></div>
-<div class="line"><span class="lineno">  439</span>                <span class="keywordflow">if</span> trID <span class="keywordflow">not</span> <span class="keywordflow">in</span> hitPosLists:</div>
-<div class="line"><span class="lineno">  440</span>                    hitPosLists[trID] = ROOT.std.vector(<span class="stringliteral">&quot;TVectorD&quot;</span>)()</div>
-<div class="line"><span class="lineno">  441</span>                    listOfIndices[trID] = []</div>
-<div class="line"><span class="lineno">  442</span>                    stationCrossed[trID] = {}</div>
-<div class="line"><span class="lineno">  443</span>                    hit_detector_ids[trID] = ROOT.std.vector(<span class="stringliteral">&quot;int&quot;</span>)()</div>
-<div class="line"><span class="lineno">  444</span>                hit_detector_ids[trID].push_back(detID)</div>
-<div class="line"><span class="lineno">  445</span>                m = array(<span class="stringliteral">&quot;d&quot;</span>, [sm[<span class="stringliteral">&quot;xtop&quot;</span>], sm[<span class="stringliteral">&quot;ytop&quot;</span>], sm[<span class="stringliteral">&quot;z&quot;</span>], sm[<span class="stringliteral">&quot;xbot&quot;</span>], sm[<span class="stringliteral">&quot;ybot&quot;</span>], sm[<span class="stringliteral">&quot;z&quot;</span>], sm[<span class="stringliteral">&quot;dist&quot;</span>]])</div>
-<div class="line"><span class="lineno">  446</span>                hitPosLists[trID].push_back(ROOT.TVectorD(7, m))</div>
-<div class="line"><span class="lineno">  447</span>                listOfIndices[trID].append(sm[<span class="stringliteral">&quot;digiHit&quot;</span>])</div>
-<div class="line"><span class="lineno">  448</span>                <span class="keywordflow">if</span> station <span class="keywordflow">not</span> <span class="keywordflow">in</span> stationCrossed[trID]:</div>
-<div class="line"><span class="lineno">  449</span>                    stationCrossed[trID][station] = 0</div>
-<div class="line"><span class="lineno">  450</span>                stationCrossed[trID][station] += 1</div>
-<div class="line"><span class="lineno">  451</span> </div>
-<div class="line"><span class="lineno">  452</span>        n_too_few_hits = 0</div>
-<div class="line"><span class="lineno">  453</span>        n_too_few_stations = 0</div>
-<div class="line"><span class="lineno">  454</span>        track_candidates = []</div>
-<div class="line"><span class="lineno">  455</span> </div>
-<div class="line"><span class="lineno">  456</span>        <span class="keywordflow">for</span> atrack <span class="keywordflow">in</span> hitPosLists:</div>
-<div class="line"><span class="lineno">  457</span>            <span class="keywordflow">if</span> atrack &lt; 0:</div>
-<div class="line"><span class="lineno">  458</span>                <span class="keywordflow">continue</span>  <span class="comment"># these are hits not assigned to MC track because low E cut</span></div>
-<div class="line"><span class="lineno">  459</span>            <span class="comment"># Determine charge sign from bending between stations 1-2 and 3-4.</span></div>
-<div class="line"><span class="lineno">  460</span>            <span class="comment"># The slope difference dk = k_y34 - k_y12 encodes the charge:</span></div>
-<div class="line"><span class="lineno">  461</span>            <span class="comment"># dk &gt; 0 → negative charge (mu-, pi-), dk &lt;= 0 → positive charge (mu+, pi+)</span></div>
-<div class="line"><span class="lineno">  462</span>            params = trackParams.get(atrack, {})</div>
-<div class="line"><span class="lineno">  463</span>            k_y12 = params.get(<span class="stringliteral">&quot;k_y12&quot;</span>)</div>
-<div class="line"><span class="lineno">  464</span>            k_y34 = params.get(<span class="stringliteral">&quot;k_y34&quot;</span>)</div>
-<div class="line"><span class="lineno">  465</span>            <span class="keywordflow">if</span> k_y12 <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span> <span class="keywordflow">and</span> k_y34 <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span>:</div>
-<div class="line"><span class="lineno">  466</span>                <span class="comment"># The slope difference between the two station pairs gives the</span></div>
-<div class="line"><span class="lineno">  467</span>                <span class="comment"># bending sense, and with it the charge.</span></div>
-<div class="line"><span class="lineno">  468</span>                pdg = 13 <span class="keywordflow">if</span> k_y34 &gt; k_y12 <span class="keywordflow">else</span> -13</div>
-<div class="line"><span class="lineno">  469</span>            <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  470</span>                pdg = 13</div>
-<div class="line"><span class="lineno">  471</span>            <span class="comment"># GenFit is seeded with the PDG code, ACTS with the charge, so the two</span></div>
-<div class="line"><span class="lineno">  472</span>            <span class="comment"># have to agree: mu- (pdg 13) carries charge -1, mu+ (pdg -13) carries +1.</span></div>
-<div class="line"><span class="lineno">  473</span>            charge = -1 <span class="keywordflow">if</span> pdg &gt; 0 <span class="keywordflow">else</span> 1</div>
-<div class="line"><span class="lineno">  474</span>            meas = hitPosLists[atrack]</div>
-<div class="line"><span class="lineno">  475</span>            detIDs = hit_detector_ids[atrack]</div>
-<div class="line"><span class="lineno">  476</span>            nM = len(meas)</div>
-<div class="line"><span class="lineno">  477</span>            n_stations_crossed = len(stationCrossed[atrack])</div>
-<div class="line"><span class="lineno">  478</span>            <span class="keywordflow">if</span> self.validation:</div>
-<div class="line"><span class="lineno">  479</span>                self.validation_stats[<span class="stringliteral">&quot;candidate_hits_sum&quot;</span>] += nM</div>
-<div class="line"><span class="lineno">  480</span>                self.validation_stats[<span class="stringliteral">&quot;candidate_hits_sum_sq&quot;</span>] += nM * nM</div>
-<div class="line"><span class="lineno">  481</span>                self.validation_stats[<span class="stringliteral">&quot;candidate_hits_count&quot;</span>] += 1</div>
-<div class="line"><span class="lineno">  482</span>                self.validation_stats[<span class="stringliteral">&quot;candidate_stations_sum&quot;</span>] += n_stations_crossed</div>
-<div class="line"><span class="lineno">  483</span>                self.validation_stats[<span class="stringliteral">&quot;candidate_stations_sum_sq&quot;</span>] += n_stations_crossed * n_stations_crossed</div>
-<div class="line"><span class="lineno">  484</span>                self.validation_stats[<span class="stringliteral">&quot;candidate_stations_count&quot;</span>] += 1</div>
-<div class="line"><span class="lineno">  485</span>            <span class="keywordflow">if</span> nM &lt; MIN_HITS_PER_TRACK:</div>
-<div class="line"><span class="lineno">  486</span>                n_too_few_hits += 1</div>
-<div class="line"><span class="lineno">  487</span>                <span class="keywordflow">continue</span>  <span class="comment"># not enough hits for a good trackfit</span></div>
-<div class="line"><span class="lineno">  488</span>            <span class="keywordflow">if</span> n_stations_crossed &lt; MIN_STATIONS_CROSSED:</div>
-<div class="line"><span class="lineno">  489</span>                n_too_few_stations += 1</div>
-<div class="line"><span class="lineno">  490</span>                <span class="keywordflow">continue</span>  <span class="comment"># not enough stations crossed to make a good trackfit</span></div>
-<div class="line"><span class="lineno">  491</span>            <span class="keywordflow">if</span> global_variables.debug:</div>
-<div class="line"><span class="lineno">  492</span>                self.sTree.MCTrack[atrack]</div>
-<div class="line"><span class="lineno">  493</span> </div>
-<div class="line"><span class="lineno">  494</span>            <span class="comment"># Seed state: use PatRec track parameters when available</span></div>
-<div class="line"><span class="lineno">  495</span>            posM, momM = self._compute_seed_state(atrack, meas, trackParams)</div>
-<div class="line"><span class="lineno">  496</span> </div>
-<div class="line"><span class="lineno">  497</span>            track_candidates.append(</div>
-<div class="line"><span class="lineno">  498</span>                {</div>
-<div class="line"><span class="lineno">  499</span>                    <span class="stringliteral">&quot;pos&quot;</span>: posM,</div>
-<div class="line"><span class="lineno">  500</span>                    <span class="stringliteral">&quot;mom&quot;</span>: momM,</div>
-<div class="line"><span class="lineno">  501</span>                    <span class="stringliteral">&quot;pdg&quot;</span>: pdg,</div>
-<div class="line"><span class="lineno">  502</span>                    <span class="stringliteral">&quot;charge&quot;</span>: charge,</div>
-<div class="line"><span class="lineno">  503</span>                    <span class="stringliteral">&quot;meas&quot;</span>: meas,</div>
-<div class="line"><span class="lineno">  504</span>                    <span class="stringliteral">&quot;detIDs&quot;</span>: detIDs,</div>
-<div class="line"><span class="lineno">  505</span>                    <span class="stringliteral">&quot;indices&quot;</span>: listOfIndices[atrack],</div>
-<div class="line"><span class="lineno">  506</span>                }</div>
-<div class="line"><span class="lineno">  507</span>            )</div>
-<div class="line"><span class="lineno">  508</span> </div>
-<div class="line"><span class="lineno">  509</span>        logger.debug(</div>
-<div class="line"><span class="lineno">  510</span>            <span class="stringliteral">&quot;findTracks: %d candidates, %d too few hits, %d too few stations, %d candidates kept for fitting&quot;</span>,</div>
-<div class="line"><span class="lineno">  511</span>            len(hitPosLists),</div>
-<div class="line"><span class="lineno">  512</span>            n_too_few_hits,</div>
-<div class="line"><span class="lineno">  513</span>            n_too_few_stations,</div>
-<div class="line"><span class="lineno">  514</span>            len(track_candidates),</div>
-<div class="line"><span class="lineno">  515</span>        )</div>
-<div class="line"><span class="lineno">  516</span>        <span class="keywordflow">if</span> self.validation:</div>
-<div class="line"><span class="lineno">  517</span>            self.validation_stats[<span class="stringliteral">&quot;track_candidates_rejected_hits&quot;</span>] += n_too_few_hits</div>
-<div class="line"><span class="lineno">  518</span>            self.validation_stats[<span class="stringliteral">&quot;track_candidates_rejected_stations&quot;</span>] += n_too_few_stations</div>
-<div class="line"><span class="lineno">  519</span> </div>
-<div class="line"><span class="lineno">  520</span>        <span class="keywordflow">return</span> track_candidates</div>
-<div class="line"><span class="lineno">  521</span> </div>
+<p class="definition">Definition at line <a class="el" href="shipDigiReco_8py_source.html#l00406">406</a> of file <a class="el" href="shipDigiReco_8py_source.html">shipDigiReco.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  406</span>    <span class="keyword">def </span>findTracks(self) -&gt; list[dict]:</div>
+<div class="line"><span class="lineno">  407</span>        <span class="stringliteral">&quot;&quot;&quot;Digitize, run pattern recognition and build fitter-agnostic track candidates.</span></div>
+<div class="line"><span class="lineno">  408</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  409</span><span class="stringliteral">        Each candidate holds the seed state, hit measurements and indices;</span></div>
+<div class="line"><span class="lineno">  410</span><span class="stringliteral">        fitting is done separately (e.g. by fitTracksGenfit).</span></div>
+<div class="line"><span class="lineno">  411</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  412</span>        hitPosLists = {}</div>
+<div class="line"><span class="lineno">  413</span>        hit_detector_ids = {}</div>
+<div class="line"><span class="lineno">  414</span>        stationCrossed: dict[int, dict[int, int]] = {}</div>
+<div class="line"><span class="lineno">  415</span>        listOfIndices: dict[int, list[int]] = {}</div>
+<div class="line"><span class="lineno">  416</span>        trackParams: dict[int, dict] = {}</div>
+<div class="line"><span class="lineno">  417</span> </div>
+<div class="line"><span class="lineno">  418</span>        <span class="comment">#</span></div>
+<div class="line"><span class="lineno">  419</span>        <span class="keywordflow">if</span> global_variables.withT0:</div>
+<div class="line"><span class="lineno">  420</span>            self.SmearedHits = self.strawtubes.withT0Estimate()</div>
+<div class="line"><span class="lineno">  421</span>        <span class="comment"># old procedure, not including estimation of t0</span></div>
+<div class="line"><span class="lineno">  422</span>        <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  423</span>            self.SmearedHits = self.strawtubes.smearHits(global_variables.withNoStrawSmearing)</div>
+<div class="line"><span class="lineno">  424</span>        <span class="keywordflow">if</span> self.validation:</div>
+<div class="line"><span class="lineno">  425</span>            self.validation_stats[<span class="stringliteral">&quot;smeared_hits_total&quot;</span>] += len(self.SmearedHits)</div>
+<div class="line"><span class="lineno">  426</span>            <span class="keywordflow">if</span> len(self.SmearedHits) &gt; 0:</div>
+<div class="line"><span class="lineno">  427</span>                self.validation_stats[<span class="stringliteral">&quot;events_with_hits&quot;</span>] += 1</div>
+<div class="line"><span class="lineno">  428</span> </div>
+<div class="line"><span class="lineno">  429</span>        <span class="comment"># Do pattern recognition</span></div>
+<div class="line"><span class="lineno">  430</span>        track_hits = <a class="code hl_function" href="namespaceshipPatRec.html#a5b567bf51736f0546f9c4c2d3e80c875">shipPatRec.execute</a>(self.SmearedHits, global_variables.ShipGeo, global_variables.patRec)</div>
+<div class="line"><span class="lineno">  431</span>        logger.debug(<span class="stringliteral">&quot;PatRec returned %d track candidates&quot;</span>, len(track_hits))</div>
+<div class="line"><span class="lineno">  432</span>        <span class="keywordflow">if</span> self.validation:</div>
+<div class="line"><span class="lineno">  433</span>            self.validation_stats[<span class="stringliteral">&quot;track_candidates_total&quot;</span>] += len(track_hits)</div>
+<div class="line"><span class="lineno">  434</span>            <span class="keywordflow">if</span> len(track_hits) &gt; 0:</div>
+<div class="line"><span class="lineno">  435</span>                self.validation_stats[<span class="stringliteral">&quot;events_with_candidates&quot;</span>] += 1</div>
+<div class="line"><span class="lineno">  436</span>            validation_tools.record_event_stat(self.validation_stats, <span class="stringliteral">&quot;event_track_candidates&quot;</span>, len(track_hits))</div>
+<div class="line"><span class="lineno">  437</span>        <span class="comment"># Create hitPosLists for track fit</span></div>
+<div class="line"><span class="lineno">  438</span>        <span class="keywordflow">for</span> i_track <span class="keywordflow">in</span> track_hits:</div>
+<div class="line"><span class="lineno">  439</span>            atrack = track_hits[i_track]</div>
+<div class="line"><span class="lineno">  440</span>            atrack_y12 = atrack[<span class="stringliteral">&quot;y12&quot;</span>]</div>
+<div class="line"><span class="lineno">  441</span>            atrack_stereo12 = atrack[<span class="stringliteral">&quot;stereo12&quot;</span>]</div>
+<div class="line"><span class="lineno">  442</span>            atrack_y34 = atrack[<span class="stringliteral">&quot;y34&quot;</span>]</div>
+<div class="line"><span class="lineno">  443</span>            atrack_stereo34 = atrack[<span class="stringliteral">&quot;stereo34&quot;</span>]</div>
+<div class="line"><span class="lineno">  444</span>            atrack_smeared_hits = list(atrack_y12) + list(atrack_stereo12) + list(atrack_y34) + list(atrack_stereo34)</div>
+<div class="line"><span class="lineno">  445</span>            <span class="comment"># Store PatRec track parameters for seeding the fitter</span></div>
+<div class="line"><span class="lineno">  446</span>            trackParams[i_track] = {</div>
+<div class="line"><span class="lineno">  447</span>                <span class="stringliteral">&quot;k_y12&quot;</span>: atrack.get(<span class="stringliteral">&quot;k_y12&quot;</span>),</div>
+<div class="line"><span class="lineno">  448</span>                <span class="stringliteral">&quot;b_y12&quot;</span>: atrack.get(<span class="stringliteral">&quot;b_y12&quot;</span>),</div>
+<div class="line"><span class="lineno">  449</span>                <span class="stringliteral">&quot;k_y34&quot;</span>: atrack.get(<span class="stringliteral">&quot;k_y34&quot;</span>),</div>
+<div class="line"><span class="lineno">  450</span>                <span class="stringliteral">&quot;b_y34&quot;</span>: atrack.get(<span class="stringliteral">&quot;b_y34&quot;</span>),</div>
+<div class="line"><span class="lineno">  451</span>            }</div>
+<div class="line"><span class="lineno">  452</span>            <span class="keywordflow">for</span> sm <span class="keywordflow">in</span> atrack_smeared_hits:</div>
+<div class="line"><span class="lineno">  453</span>                detID = sm[<span class="stringliteral">&quot;detID&quot;</span>]</div>
+<div class="line"><span class="lineno">  454</span>                station = self.strawtubes.det[sm[<span class="stringliteral">&quot;digiHit&quot;</span>]].GetStationNumber()</div>
+<div class="line"><span class="lineno">  455</span>                trID = i_track</div>
+<div class="line"><span class="lineno">  456</span>                <span class="comment"># Collect hits for track fit</span></div>
+<div class="line"><span class="lineno">  457</span>                <span class="keywordflow">if</span> trID <span class="keywordflow">not</span> <span class="keywordflow">in</span> hitPosLists:</div>
+<div class="line"><span class="lineno">  458</span>                    hitPosLists[trID] = ROOT.std.vector(<span class="stringliteral">&quot;TVectorD&quot;</span>)()</div>
+<div class="line"><span class="lineno">  459</span>                    listOfIndices[trID] = []</div>
+<div class="line"><span class="lineno">  460</span>                    stationCrossed[trID] = {}</div>
+<div class="line"><span class="lineno">  461</span>                    hit_detector_ids[trID] = ROOT.std.vector(<span class="stringliteral">&quot;int&quot;</span>)()</div>
+<div class="line"><span class="lineno">  462</span>                hit_detector_ids[trID].push_back(detID)</div>
+<div class="line"><span class="lineno">  463</span>                m = array(<span class="stringliteral">&quot;d&quot;</span>, [sm[<span class="stringliteral">&quot;xtop&quot;</span>], sm[<span class="stringliteral">&quot;ytop&quot;</span>], sm[<span class="stringliteral">&quot;z&quot;</span>], sm[<span class="stringliteral">&quot;xbot&quot;</span>], sm[<span class="stringliteral">&quot;ybot&quot;</span>], sm[<span class="stringliteral">&quot;z&quot;</span>], sm[<span class="stringliteral">&quot;dist&quot;</span>]])</div>
+<div class="line"><span class="lineno">  464</span>                hitPosLists[trID].push_back(ROOT.TVectorD(7, m))</div>
+<div class="line"><span class="lineno">  465</span>                listOfIndices[trID].append(sm[<span class="stringliteral">&quot;digiHit&quot;</span>])</div>
+<div class="line"><span class="lineno">  466</span>                <span class="keywordflow">if</span> station <span class="keywordflow">not</span> <span class="keywordflow">in</span> stationCrossed[trID]:</div>
+<div class="line"><span class="lineno">  467</span>                    stationCrossed[trID][station] = 0</div>
+<div class="line"><span class="lineno">  468</span>                stationCrossed[trID][station] += 1</div>
+<div class="line"><span class="lineno">  469</span> </div>
+<div class="line"><span class="lineno">  470</span>        n_too_few_hits = 0</div>
+<div class="line"><span class="lineno">  471</span>        n_too_few_stations = 0</div>
+<div class="line"><span class="lineno">  472</span>        track_candidates = []</div>
+<div class="line"><span class="lineno">  473</span> </div>
+<div class="line"><span class="lineno">  474</span>        <span class="keywordflow">for</span> atrack <span class="keywordflow">in</span> hitPosLists:</div>
+<div class="line"><span class="lineno">  475</span>            <span class="keywordflow">if</span> atrack &lt; 0:</div>
+<div class="line"><span class="lineno">  476</span>                <span class="keywordflow">continue</span>  <span class="comment"># these are hits not assigned to MC track because low E cut</span></div>
+<div class="line"><span class="lineno">  477</span>            <span class="comment"># Determine charge sign from bending between stations 1-2 and 3-4.</span></div>
+<div class="line"><span class="lineno">  478</span>            <span class="comment"># The slope difference dk = k_y34 - k_y12 encodes the charge:</span></div>
+<div class="line"><span class="lineno">  479</span>            <span class="comment"># dk &gt; 0 → negative charge (mu-, pi-), dk &lt;= 0 → positive charge (mu+, pi+)</span></div>
+<div class="line"><span class="lineno">  480</span>            params = trackParams.get(atrack, {})</div>
+<div class="line"><span class="lineno">  481</span>            k_y12 = params.get(<span class="stringliteral">&quot;k_y12&quot;</span>)</div>
+<div class="line"><span class="lineno">  482</span>            k_y34 = params.get(<span class="stringliteral">&quot;k_y34&quot;</span>)</div>
+<div class="line"><span class="lineno">  483</span>            <span class="keywordflow">if</span> k_y12 <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span> <span class="keywordflow">and</span> k_y34 <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span>:</div>
+<div class="line"><span class="lineno">  484</span>                <span class="comment"># The slope difference between the two station pairs gives the</span></div>
+<div class="line"><span class="lineno">  485</span>                <span class="comment"># bending sense, and with it the charge.</span></div>
+<div class="line"><span class="lineno">  486</span>                pdg = 13 <span class="keywordflow">if</span> k_y34 &gt; k_y12 <span class="keywordflow">else</span> -13</div>
+<div class="line"><span class="lineno">  487</span>            <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  488</span>                pdg = 13</div>
+<div class="line"><span class="lineno">  489</span>            <span class="comment"># GenFit is seeded with the PDG code, ACTS with the charge, so the two</span></div>
+<div class="line"><span class="lineno">  490</span>            <span class="comment"># have to agree: mu- (pdg 13) carries charge -1, mu+ (pdg -13) carries +1.</span></div>
+<div class="line"><span class="lineno">  491</span>            charge = -1 <span class="keywordflow">if</span> pdg &gt; 0 <span class="keywordflow">else</span> 1</div>
+<div class="line"><span class="lineno">  492</span>            meas = hitPosLists[atrack]</div>
+<div class="line"><span class="lineno">  493</span>            detIDs = hit_detector_ids[atrack]</div>
+<div class="line"><span class="lineno">  494</span>            nM = len(meas)</div>
+<div class="line"><span class="lineno">  495</span>            n_stations_crossed = len(stationCrossed[atrack])</div>
+<div class="line"><span class="lineno">  496</span>            <span class="keywordflow">if</span> self.validation:</div>
+<div class="line"><span class="lineno">  497</span>                self.validation_stats[<span class="stringliteral">&quot;candidate_hits_sum&quot;</span>] += nM</div>
+<div class="line"><span class="lineno">  498</span>                self.validation_stats[<span class="stringliteral">&quot;candidate_hits_sum_sq&quot;</span>] += nM * nM</div>
+<div class="line"><span class="lineno">  499</span>                self.validation_stats[<span class="stringliteral">&quot;candidate_hits_count&quot;</span>] += 1</div>
+<div class="line"><span class="lineno">  500</span>                self.validation_stats[<span class="stringliteral">&quot;candidate_stations_sum&quot;</span>] += n_stations_crossed</div>
+<div class="line"><span class="lineno">  501</span>                self.validation_stats[<span class="stringliteral">&quot;candidate_stations_sum_sq&quot;</span>] += n_stations_crossed * n_stations_crossed</div>
+<div class="line"><span class="lineno">  502</span>                self.validation_stats[<span class="stringliteral">&quot;candidate_stations_count&quot;</span>] += 1</div>
+<div class="line"><span class="lineno">  503</span>            <span class="keywordflow">if</span> nM &lt; MIN_HITS_PER_TRACK:</div>
+<div class="line"><span class="lineno">  504</span>                n_too_few_hits += 1</div>
+<div class="line"><span class="lineno">  505</span>                <span class="keywordflow">continue</span>  <span class="comment"># not enough hits for a good trackfit</span></div>
+<div class="line"><span class="lineno">  506</span>            <span class="keywordflow">if</span> n_stations_crossed &lt; MIN_STATIONS_CROSSED:</div>
+<div class="line"><span class="lineno">  507</span>                n_too_few_stations += 1</div>
+<div class="line"><span class="lineno">  508</span>                <span class="keywordflow">continue</span>  <span class="comment"># not enough stations crossed to make a good trackfit</span></div>
+<div class="line"><span class="lineno">  509</span>            <span class="keywordflow">if</span> global_variables.debug:</div>
+<div class="line"><span class="lineno">  510</span>                self.sTree.MCTrack[atrack]</div>
+<div class="line"><span class="lineno">  511</span> </div>
+<div class="line"><span class="lineno">  512</span>            <span class="comment"># Seed state: use PatRec track parameters when available</span></div>
+<div class="line"><span class="lineno">  513</span>            posM, momM = self._compute_seed_state(atrack, meas, trackParams)</div>
+<div class="line"><span class="lineno">  514</span> </div>
+<div class="line"><span class="lineno">  515</span>            track_candidates.append(</div>
+<div class="line"><span class="lineno">  516</span>                {</div>
+<div class="line"><span class="lineno">  517</span>                    <span class="stringliteral">&quot;pos&quot;</span>: posM,</div>
+<div class="line"><span class="lineno">  518</span>                    <span class="stringliteral">&quot;mom&quot;</span>: momM,</div>
+<div class="line"><span class="lineno">  519</span>                    <span class="stringliteral">&quot;pdg&quot;</span>: pdg,</div>
+<div class="line"><span class="lineno">  520</span>                    <span class="stringliteral">&quot;charge&quot;</span>: charge,</div>
+<div class="line"><span class="lineno">  521</span>                    <span class="stringliteral">&quot;meas&quot;</span>: meas,</div>
+<div class="line"><span class="lineno">  522</span>                    <span class="stringliteral">&quot;detIDs&quot;</span>: detIDs,</div>
+<div class="line"><span class="lineno">  523</span>                    <span class="stringliteral">&quot;indices&quot;</span>: listOfIndices[atrack],</div>
+<div class="line"><span class="lineno">  524</span>                }</div>
+<div class="line"><span class="lineno">  525</span>            )</div>
+<div class="line"><span class="lineno">  526</span> </div>
+<div class="line"><span class="lineno">  527</span>        logger.debug(</div>
+<div class="line"><span class="lineno">  528</span>            <span class="stringliteral">&quot;findTracks: %d candidates, %d too few hits, %d too few stations, %d candidates kept for fitting&quot;</span>,</div>
+<div class="line"><span class="lineno">  529</span>            len(hitPosLists),</div>
+<div class="line"><span class="lineno">  530</span>            n_too_few_hits,</div>
+<div class="line"><span class="lineno">  531</span>            n_too_few_stations,</div>
+<div class="line"><span class="lineno">  532</span>            len(track_candidates),</div>
+<div class="line"><span class="lineno">  533</span>        )</div>
+<div class="line"><span class="lineno">  534</span>        <span class="keywordflow">if</span> self.validation:</div>
+<div class="line"><span class="lineno">  535</span>            self.validation_stats[<span class="stringliteral">&quot;track_candidates_rejected_hits&quot;</span>] += n_too_few_hits</div>
+<div class="line"><span class="lineno">  536</span>            self.validation_stats[<span class="stringliteral">&quot;track_candidates_rejected_stations&quot;</span>] += n_too_few_stations</div>
+<div class="line"><span class="lineno">  537</span> </div>
+<div class="line"><span class="lineno">  538</span>        <span class="keywordflow">return</span> track_candidates</div>
+<div class="line"><span class="lineno">  539</span> </div>
 <div class="ttc" id="anamespaceshipPatRec_html_a5b567bf51736f0546f9c4c2d3e80c875"><div class="ttname"><a href="namespaceshipPatRec.html#a5b567bf51736f0546f9c4c2d3e80c875">shipPatRec.execute</a></div><div class="ttdeci">execute(smeared_hits, ship_geo, str method=&quot;&quot;)</div><div class="ttdef"><b>Definition</b> <a href="shipPatRec_8py_source.html#l00021">shipPatRec.py:21</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -854,30 +904,30 @@ fitting is done separately (e.g. by fitTracksGenfit).
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipDigiReco_8py_source.html#l00739">739</a> of file <a class="el" href="shipDigiReco_8py_source.html">shipDigiReco.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  739</span>    <span class="keyword">def </span>findVetoHitOnTrack(self, track):</div>
-<div class="line"><span class="lineno">  740</span>        distMin = 99999.0</div>
-<div class="line"><span class="lineno">  741</span>        hitID = -1</div>
-<div class="line"><span class="lineno">  742</span>        xx = track.getFittedState()</div>
-<div class="line"><span class="lineno">  743</span>        rep = ROOT.genfit.RKTrackRep(xx.getPDG())</div>
-<div class="line"><span class="lineno">  744</span>        state = ROOT.genfit.StateOnPlane(rep)</div>
-<div class="line"><span class="lineno">  745</span>        rep.setPosMom(state, xx.getPos(), xx.getMom())</div>
-<div class="line"><span class="lineno">  746</span>        <span class="keywordflow">for</span> i, vetoHit <span class="keywordflow">in</span> enumerate(self.digiSBT.det):</div>
-<div class="line"><span class="lineno">  747</span>            vetoHitPos = <a class="code hl_function" href="classvetoHit.html#a9218ccf1aac64809630111df37738014">vetoHit.GetXYZ</a>()</div>
-<div class="line"><span class="lineno">  748</span>            <span class="keywordflow">try</span>:</div>
-<div class="line"><span class="lineno">  749</span>                rep.extrapolateToPoint(state, vetoHitPos, <span class="keyword">False</span>)</div>
-<div class="line"><span class="lineno">  750</span>            <span class="keywordflow">except</span> Exception:</div>
-<div class="line"><span class="lineno">  751</span>                error = <span class="stringliteral">&quot;shipDigiReco::findVetoHitOnTrack extrapolation did not worked&quot;</span></div>
-<div class="line"><span class="lineno">  752</span>                ut.reportError(error)</div>
-<div class="line"><span class="lineno">  753</span>                <span class="keywordflow">if</span> global_variables.debug:</div>
-<div class="line"><span class="lineno">  754</span>                    print(error)</div>
-<div class="line"><span class="lineno">  755</span>                <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  756</span>            dist = (rep.getPos(state) - vetoHitPos).Mag()</div>
-<div class="line"><span class="lineno">  757</span>            <span class="keywordflow">if</span> dist &lt; distMin:</div>
-<div class="line"><span class="lineno">  758</span>                distMin = dist</div>
-<div class="line"><span class="lineno">  759</span>                hitID = i</div>
-<div class="line"><span class="lineno">  760</span>        <span class="keywordflow">return</span> ROOT.vetoHitOnTrack(hitID, distMin)</div>
-<div class="line"><span class="lineno">  761</span> </div>
+<p class="definition">Definition at line <a class="el" href="shipDigiReco_8py_source.html#l00757">757</a> of file <a class="el" href="shipDigiReco_8py_source.html">shipDigiReco.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  757</span>    <span class="keyword">def </span>findVetoHitOnTrack(self, track):</div>
+<div class="line"><span class="lineno">  758</span>        distMin = 99999.0</div>
+<div class="line"><span class="lineno">  759</span>        hitID = -1</div>
+<div class="line"><span class="lineno">  760</span>        xx = track.getFittedState()</div>
+<div class="line"><span class="lineno">  761</span>        rep = ROOT.genfit.RKTrackRep(xx.getPDG())</div>
+<div class="line"><span class="lineno">  762</span>        state = ROOT.genfit.StateOnPlane(rep)</div>
+<div class="line"><span class="lineno">  763</span>        rep.setPosMom(state, xx.getPos(), xx.getMom())</div>
+<div class="line"><span class="lineno">  764</span>        <span class="keywordflow">for</span> i, vetoHit <span class="keywordflow">in</span> enumerate(self.digiSBT.det):</div>
+<div class="line"><span class="lineno">  765</span>            vetoHitPos = <a class="code hl_function" href="classvetoHit.html#a9218ccf1aac64809630111df37738014">vetoHit.GetXYZ</a>()</div>
+<div class="line"><span class="lineno">  766</span>            <span class="keywordflow">try</span>:</div>
+<div class="line"><span class="lineno">  767</span>                rep.extrapolateToPoint(state, vetoHitPos, <span class="keyword">False</span>)</div>
+<div class="line"><span class="lineno">  768</span>            <span class="keywordflow">except</span> Exception:</div>
+<div class="line"><span class="lineno">  769</span>                error = <span class="stringliteral">&quot;shipDigiReco::findVetoHitOnTrack extrapolation did not worked&quot;</span></div>
+<div class="line"><span class="lineno">  770</span>                ut.reportError(error)</div>
+<div class="line"><span class="lineno">  771</span>                <span class="keywordflow">if</span> global_variables.debug:</div>
+<div class="line"><span class="lineno">  772</span>                    print(error)</div>
+<div class="line"><span class="lineno">  773</span>                <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  774</span>            dist = (rep.getPos(state) - vetoHitPos).Mag()</div>
+<div class="line"><span class="lineno">  775</span>            <span class="keywordflow">if</span> dist &lt; distMin:</div>
+<div class="line"><span class="lineno">  776</span>                distMin = dist</div>
+<div class="line"><span class="lineno">  777</span>                hitID = i</div>
+<div class="line"><span class="lineno">  778</span>        <span class="keywordflow">return</span> ROOT.vetoHitOnTrack(hitID, distMin)</div>
+<div class="line"><span class="lineno">  779</span> </div>
 <div class="ttc" id="aclassvetoHit_html_a9218ccf1aac64809630111df37738014"><div class="ttname"><a href="classvetoHit.html#a9218ccf1aac64809630111df37738014">vetoHit::GetXYZ</a></div><div class="ttdeci">TVector3 GetXYZ() const</div><div class="ttdef"><b>Definition</b> <a href="vetoHit_8cxx_source.html#l00032">vetoHit.cxx:32</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -897,22 +947,22 @@ fitting is done separately (e.g. by fitTracksGenfit).
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipDigiReco_8py_source.html#l00785">785</a> of file <a class="el" href="shipDigiReco_8py_source.html">shipDigiReco.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  785</span>    <span class="keyword">def </span>finish(self) -&gt; None:</div>
-<div class="line"><span class="lineno">  786</span>        <span class="keywordflow">if</span> hasattr(self, <span class="stringliteral">&quot;fitter&quot;</span>):</div>
-<div class="line"><span class="lineno">  787</span>            del self.fitter</div>
-<div class="line"><span class="lineno">  788</span>        <span class="keywordflow">if</span> self.validation:</div>
-<div class="line"><span class="lineno">  789</span>            validation_tools.print_reco_validation_summary(</div>
-<div class="line"><span class="lineno">  790</span>                self.validation_stats, has_veto_detector=hasattr(self, <span class="stringliteral">&quot;digiSBT&quot;</span>)</div>
-<div class="line"><span class="lineno">  791</span>            )</div>
-<div class="line"><span class="lineno">  792</span>        print(<span class="stringliteral">&quot;finished writing tree&quot;</span>)</div>
-<div class="line"><span class="lineno">  793</span>        self.outputFile.cd()</div>
-<div class="line"><span class="lineno">  794</span>        self.recoTree.Write()</div>
-<div class="line"><span class="lineno">  795</span>        ut.errorSummary()</div>
-<div class="line"><span class="lineno">  796</span>        ut.writeHists(global_variables.h, <span class="stringliteral">&quot;recohists.root&quot;</span>)</div>
-<div class="line"><span class="lineno">  797</span>        <a class="code hl_function" href="namespaceshipPatRec.html#a4d4091fbd8bc88c49ee621dd481e131f">shipPatRec.finalize</a>()</div>
-<div class="line"><span class="lineno">  798</span>        self.outputFile.Close()</div>
-<div class="line"><span class="lineno">  799</span>        self.inputFile.Close()</div>
+<p class="definition">Definition at line <a class="el" href="shipDigiReco_8py_source.html#l00803">803</a> of file <a class="el" href="shipDigiReco_8py_source.html">shipDigiReco.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  803</span>    <span class="keyword">def </span>finish(self) -&gt; None:</div>
+<div class="line"><span class="lineno">  804</span>        <span class="keywordflow">if</span> hasattr(self, <span class="stringliteral">&quot;fitter&quot;</span>):</div>
+<div class="line"><span class="lineno">  805</span>            del self.fitter</div>
+<div class="line"><span class="lineno">  806</span>        <span class="keywordflow">if</span> self.validation:</div>
+<div class="line"><span class="lineno">  807</span>            validation_tools.print_reco_validation_summary(</div>
+<div class="line"><span class="lineno">  808</span>                self.validation_stats, has_veto_detector=hasattr(self, <span class="stringliteral">&quot;digiSBT&quot;</span>)</div>
+<div class="line"><span class="lineno">  809</span>            )</div>
+<div class="line"><span class="lineno">  810</span>        print(<span class="stringliteral">&quot;finished writing tree&quot;</span>)</div>
+<div class="line"><span class="lineno">  811</span>        self.outputFile.cd()</div>
+<div class="line"><span class="lineno">  812</span>        self.recoTree.Write()</div>
+<div class="line"><span class="lineno">  813</span>        ut.errorSummary()</div>
+<div class="line"><span class="lineno">  814</span>        ut.writeHists(global_variables.h, <span class="stringliteral">&quot;recohists.root&quot;</span>)</div>
+<div class="line"><span class="lineno">  815</span>        <a class="code hl_function" href="namespaceshipPatRec.html#a4d4091fbd8bc88c49ee621dd481e131f">shipPatRec.finalize</a>()</div>
+<div class="line"><span class="lineno">  816</span>        self.outputFile.Close()</div>
+<div class="line"><span class="lineno">  817</span>        self.inputFile.Close()</div>
 <div class="ttc" id="anamespaceshipPatRec_html_a4d4091fbd8bc88c49ee621dd481e131f"><div class="ttname"><a href="namespaceshipPatRec.html#a4d4091fbd8bc88c49ee621dd481e131f">shipPatRec.finalize</a></div><div class="ttdeci">None finalize()</div><div class="ttdef"><b>Definition</b> <a href="shipPatRec_8py_source.html#l00054">shipPatRec.py:54</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -936,150 +986,150 @@ fitting is done separately (e.g. by fitTracksGenfit).
       </table>
 </div><div class="memdoc">
 <pre class="fragment">Fit track candidates with GenFit and persist the fitted tracks.</pre> 
-<p class="definition">Definition at line <a class="el" href="shipDigiReco_8py_source.html#l00522">522</a> of file <a class="el" href="shipDigiReco_8py_source.html">shipDigiReco.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  522</span>    <span class="keyword">def </span>fitTracksGenfit(self, candidates) -&gt; int:</div>
-<div class="line"><span class="lineno">  523</span>        <span class="stringliteral">&quot;&quot;&quot;Fit track candidates with GenFit and persist the fitted tracks.&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  524</span>        self.fGenFitArray.clear()</div>
-<div class="line"><span class="lineno">  525</span>        self.fTrackletsArray.clear()</div>
-<div class="line"><span class="lineno">  526</span>        self.fitTrack2MC.clear()</div>
-<div class="line"><span class="lineno">  527</span> </div>
-<div class="line"><span class="lineno">  528</span>        fittedTracks = []</div>
-<div class="line"><span class="lineno">  529</span>        <span class="keywordflow">for</span> cand <span class="keywordflow">in</span> candidates:</div>
-<div class="line"><span class="lineno">  530</span>            pdg = cand[<span class="stringliteral">&quot;pdg&quot;</span>]</div>
-<div class="line"><span class="lineno">  531</span>            meas = cand[<span class="stringliteral">&quot;meas&quot;</span>]</div>
-<div class="line"><span class="lineno">  532</span>            detIDs = cand[<span class="stringliteral">&quot;detIDs&quot;</span>]</div>
-<div class="line"><span class="lineno">  533</span>            nM = len(meas)</div>
-<div class="line"><span class="lineno">  534</span>            posM, momM = cand[<span class="stringliteral">&quot;pos&quot;</span>], cand[<span class="stringliteral">&quot;mom&quot;</span>]</div>
-<div class="line"><span class="lineno">  535</span> </div>
-<div class="line"><span class="lineno">  536</span>            <span class="comment"># Try both charge hypotheses, keep the one with better chi2/NDF</span></div>
-<div class="line"><span class="lineno">  537</span>            best_track = <span class="keywordtype">None</span></div>
-<div class="line"><span class="lineno">  538</span>            best_chi2ndf = float(<span class="stringliteral">&quot;inf&quot;</span>)</div>
-<div class="line"><span class="lineno">  539</span>            <span class="keywordflow">for</span> try_pdg <span class="keywordflow">in</span> [pdg, -pdg]:</div>
-<div class="line"><span class="lineno">  540</span>                <span class="keywordflow">if</span> self.validation:</div>
-<div class="line"><span class="lineno">  541</span>                    self.validation_stats[<span class="stringliteral">&quot;fit_hypotheses_tried&quot;</span>] += 1</div>
-<div class="line"><span class="lineno">  542</span>                <span class="comment"># approximate covariance</span></div>
-<div class="line"><span class="lineno">  543</span>                covM = ROOT.TMatrixDSym(6)</div>
-<div class="line"><span class="lineno">  544</span>                resolution = self.sigma_spatial</div>
-<div class="line"><span class="lineno">  545</span>                <span class="keywordflow">if</span> global_variables.withT0:</div>
-<div class="line"><span class="lineno">  546</span>                    resolution *= 1.4  <span class="comment"># worse resolution due to t0 estimate</span></div>
-<div class="line"><span class="lineno">  547</span>                <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(3):</div>
-<div class="line"><span class="lineno">  548</span>                    covM[i][i] = resolution * resolution</div>
-<div class="line"><span class="lineno">  549</span>                <span class="comment"># x is only measured by the small-angle stereo views, so give</span></div>
-<div class="line"><span class="lineno">  550</span>                <span class="comment"># the seed a ~10x larger x uncertainty than y</span></div>
-<div class="line"><span class="lineno">  551</span>                covM[0][0] = resolution * resolution * 100.0</div>
-<div class="line"><span class="lineno">  552</span>                <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(3, 6):</div>
-<div class="line"><span class="lineno">  553</span>                    covM[i][i] = ROOT.TMath.Power(resolution / nM / ROOT.TMath.Sqrt(3), 2)</div>
-<div class="line"><span class="lineno">  554</span>                rep = ROOT.genfit.RKTrackRep(try_pdg)</div>
-<div class="line"><span class="lineno">  555</span>                stateSmeared = ROOT.genfit.MeasuredStateOnPlane(rep)</div>
-<div class="line"><span class="lineno">  556</span>                rep.setPosMomCov(stateSmeared, posM, momM, covM)</div>
-<div class="line"><span class="lineno">  557</span>                seedState = ROOT.TVectorD(6)</div>
-<div class="line"><span class="lineno">  558</span>                seedCov = ROOT.TMatrixDSym(6)</div>
-<div class="line"><span class="lineno">  559</span>                rep.get6DStateCov(stateSmeared, seedState, seedCov)</div>
-<div class="line"><span class="lineno">  560</span>                theTrack = ROOT.genfit.Track(rep, seedState, seedCov)</div>
-<div class="line"><span class="lineno">  561</span>                ROOT.SetOwnership(rep, <span class="keyword">False</span>)  <span class="comment"># genfit::Track takes ownership</span></div>
-<div class="line"><span class="lineno">  562</span>                hitCov = ROOT.TMatrixDSym(7)</div>
-<div class="line"><span class="lineno">  563</span>                hitCov[6][6] = resolution * resolution</div>
-<div class="line"><span class="lineno">  564</span>                hitID = 0</div>
-<div class="line"><span class="lineno">  565</span>                <span class="keywordflow">for</span> m, detID <span class="keywordflow">in</span> zip(meas, detIDs, strict=<span class="keyword">True</span>):</div>
-<div class="line"><span class="lineno">  566</span>                    tp = ROOT.genfit.TrackPoint(theTrack)</div>
-<div class="line"><span class="lineno">  567</span>                    measurement = ROOT.genfit.WireMeasurement(m, hitCov, detID, hitID, tp)</div>
-<div class="line"><span class="lineno">  568</span>                    measurement.setMaxDistance(</div>
-<div class="line"><span class="lineno">  569</span>                        global_variables.ShipGeo.strawtubes_geo.outer_straw_diameter / 2.0</div>
-<div class="line"><span class="lineno">  570</span>                        - global_variables.ShipGeo.strawtubes_geo.wall_thickness</div>
-<div class="line"><span class="lineno">  571</span>                    )</div>
-<div class="line"><span class="lineno">  572</span>                    tp.addRawMeasurement(measurement)</div>
-<div class="line"><span class="lineno">  573</span>                    ROOT.SetOwnership(measurement, <span class="keyword">False</span>)  <span class="comment"># TrackPoint takes ownership</span></div>
-<div class="line"><span class="lineno">  574</span>                    theTrack.insertPoint(tp)</div>
-<div class="line"><span class="lineno">  575</span>                    ROOT.SetOwnership(tp, <span class="keyword">False</span>)  <span class="comment"># genfit::Track takes ownership</span></div>
-<div class="line"><span class="lineno">  576</span>                    hitID += 1</div>
-<div class="line"><span class="lineno">  577</span>                <span class="comment"># Fit this hypothesis</span></div>
-<div class="line"><span class="lineno">  578</span>                <span class="keywordflow">try</span>:</div>
-<div class="line"><span class="lineno">  579</span>                    theTrack.checkConsistency()</div>
-<div class="line"><span class="lineno">  580</span>                <span class="keywordflow">except</span> ROOT.genfit.Exception:</div>
-<div class="line"><span class="lineno">  581</span>                    <span class="keywordflow">if</span> self.validation:</div>
-<div class="line"><span class="lineno">  582</span>                        self.validation_stats[<span class="stringliteral">&quot;tracks_failed_consistency&quot;</span>] += 1</div>
-<div class="line"><span class="lineno">  583</span>                    <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  584</span>                <span class="keywordflow">try</span>:</div>
-<div class="line"><span class="lineno">  585</span>                    self.fitter.processTrack(theTrack)</div>
-<div class="line"><span class="lineno">  586</span>                <span class="keywordflow">except</span> Exception <span class="keyword">as</span> e:</div>
-<div class="line"><span class="lineno">  587</span>                    logger.debug(<span class="stringliteral">&quot;Failed to processTrack for hypothesis %d: %s&quot;</span>, try_pdg, e)</div>
-<div class="line"><span class="lineno">  588</span>                    <span class="keywordflow">if</span> self.validation:</div>
-<div class="line"><span class="lineno">  589</span>                        self.validation_stats[<span class="stringliteral">&quot;tracks_failed_fit&quot;</span>] += 1</div>
-<div class="line"><span class="lineno">  590</span>                    <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  591</span>                <span class="keywordflow">try</span>:</div>
-<div class="line"><span class="lineno">  592</span>                    theTrack.checkConsistency()</div>
-<div class="line"><span class="lineno">  593</span>                <span class="keywordflow">except</span> ROOT.genfit.Exception:</div>
-<div class="line"><span class="lineno">  594</span>                    logger.debug(<span class="stringliteral">&quot;Track inconsistent after fit for hypothesis %d&quot;</span>, try_pdg)</div>
-<div class="line"><span class="lineno">  595</span>                    <span class="keywordflow">if</span> self.validation:</div>
-<div class="line"><span class="lineno">  596</span>                        self.validation_stats[<span class="stringliteral">&quot;tracks_failed_consistency&quot;</span>] += 1</div>
-<div class="line"><span class="lineno">  597</span>                    <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  598</span>                <span class="keywordflow">try</span>:</div>
-<div class="line"><span class="lineno">  599</span>                    fittedState = theTrack.getFittedState()</div>
-<div class="line"><span class="lineno">  600</span>                    fittedState.getMomMag()</div>
-<div class="line"><span class="lineno">  601</span>                <span class="keywordflow">except</span> Exception <span class="keyword">as</span> e:</div>
-<div class="line"><span class="lineno">  602</span>                    logger.debug(<span class="stringliteral">&quot;Failed to getFittedState/getMomMag for hypothesis %d: %s&quot;</span>, try_pdg, e)</div>
-<div class="line"><span class="lineno">  603</span>                    <span class="keywordflow">if</span> self.validation:</div>
-<div class="line"><span class="lineno">  604</span>                        self.validation_stats[<span class="stringliteral">&quot;tracks_failed_state_access&quot;</span>] += 1</div>
-<div class="line"><span class="lineno">  605</span>                    <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  606</span>                fitStatus = theTrack.getFitStatus()</div>
-<div class="line"><span class="lineno">  607</span>                <span class="keywordflow">if</span> <span class="keywordflow">not</span> fitStatus.isFitConverged():</div>
+<p class="definition">Definition at line <a class="el" href="shipDigiReco_8py_source.html#l00540">540</a> of file <a class="el" href="shipDigiReco_8py_source.html">shipDigiReco.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  540</span>    <span class="keyword">def </span>fitTracksGenfit(self, candidates) -&gt; int:</div>
+<div class="line"><span class="lineno">  541</span>        <span class="stringliteral">&quot;&quot;&quot;Fit track candidates with GenFit and persist the fitted tracks.&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  542</span>        self.fGenFitArray.clear()</div>
+<div class="line"><span class="lineno">  543</span>        self.fTrackletsArray.clear()</div>
+<div class="line"><span class="lineno">  544</span>        self.fitTrack2MC.clear()</div>
+<div class="line"><span class="lineno">  545</span> </div>
+<div class="line"><span class="lineno">  546</span>        fittedTracks = []</div>
+<div class="line"><span class="lineno">  547</span>        <span class="keywordflow">for</span> cand <span class="keywordflow">in</span> candidates:</div>
+<div class="line"><span class="lineno">  548</span>            pdg = cand[<span class="stringliteral">&quot;pdg&quot;</span>]</div>
+<div class="line"><span class="lineno">  549</span>            meas = cand[<span class="stringliteral">&quot;meas&quot;</span>]</div>
+<div class="line"><span class="lineno">  550</span>            detIDs = cand[<span class="stringliteral">&quot;detIDs&quot;</span>]</div>
+<div class="line"><span class="lineno">  551</span>            nM = len(meas)</div>
+<div class="line"><span class="lineno">  552</span>            posM, momM = cand[<span class="stringliteral">&quot;pos&quot;</span>], cand[<span class="stringliteral">&quot;mom&quot;</span>]</div>
+<div class="line"><span class="lineno">  553</span> </div>
+<div class="line"><span class="lineno">  554</span>            <span class="comment"># Try both charge hypotheses, keep the one with better chi2/NDF</span></div>
+<div class="line"><span class="lineno">  555</span>            best_track = <span class="keywordtype">None</span></div>
+<div class="line"><span class="lineno">  556</span>            best_chi2ndf = float(<span class="stringliteral">&quot;inf&quot;</span>)</div>
+<div class="line"><span class="lineno">  557</span>            <span class="keywordflow">for</span> try_pdg <span class="keywordflow">in</span> [pdg, -pdg]:</div>
+<div class="line"><span class="lineno">  558</span>                <span class="keywordflow">if</span> self.validation:</div>
+<div class="line"><span class="lineno">  559</span>                    self.validation_stats[<span class="stringliteral">&quot;fit_hypotheses_tried&quot;</span>] += 1</div>
+<div class="line"><span class="lineno">  560</span>                <span class="comment"># approximate covariance</span></div>
+<div class="line"><span class="lineno">  561</span>                covM = ROOT.TMatrixDSym(6)</div>
+<div class="line"><span class="lineno">  562</span>                resolution = self.sigma_spatial</div>
+<div class="line"><span class="lineno">  563</span>                <span class="keywordflow">if</span> global_variables.withT0:</div>
+<div class="line"><span class="lineno">  564</span>                    resolution *= 1.4  <span class="comment"># worse resolution due to t0 estimate</span></div>
+<div class="line"><span class="lineno">  565</span>                <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(3):</div>
+<div class="line"><span class="lineno">  566</span>                    covM[i][i] = resolution * resolution</div>
+<div class="line"><span class="lineno">  567</span>                <span class="comment"># x is only measured by the small-angle stereo views, so give</span></div>
+<div class="line"><span class="lineno">  568</span>                <span class="comment"># the seed a ~10x larger x uncertainty than y</span></div>
+<div class="line"><span class="lineno">  569</span>                covM[0][0] = resolution * resolution * 100.0</div>
+<div class="line"><span class="lineno">  570</span>                <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(3, 6):</div>
+<div class="line"><span class="lineno">  571</span>                    covM[i][i] = ROOT.TMath.Power(resolution / nM / ROOT.TMath.Sqrt(3), 2)</div>
+<div class="line"><span class="lineno">  572</span>                rep = ROOT.genfit.RKTrackRep(try_pdg)</div>
+<div class="line"><span class="lineno">  573</span>                stateSmeared = ROOT.genfit.MeasuredStateOnPlane(rep)</div>
+<div class="line"><span class="lineno">  574</span>                rep.setPosMomCov(stateSmeared, posM, momM, covM)</div>
+<div class="line"><span class="lineno">  575</span>                seedState = ROOT.TVectorD(6)</div>
+<div class="line"><span class="lineno">  576</span>                seedCov = ROOT.TMatrixDSym(6)</div>
+<div class="line"><span class="lineno">  577</span>                rep.get6DStateCov(stateSmeared, seedState, seedCov)</div>
+<div class="line"><span class="lineno">  578</span>                theTrack = ROOT.genfit.Track(rep, seedState, seedCov)</div>
+<div class="line"><span class="lineno">  579</span>                ROOT.SetOwnership(rep, <span class="keyword">False</span>)  <span class="comment"># genfit::Track takes ownership</span></div>
+<div class="line"><span class="lineno">  580</span>                hitCov = ROOT.TMatrixDSym(7)</div>
+<div class="line"><span class="lineno">  581</span>                hitCov[6][6] = resolution * resolution</div>
+<div class="line"><span class="lineno">  582</span>                hitID = 0</div>
+<div class="line"><span class="lineno">  583</span>                <span class="keywordflow">for</span> m, detID <span class="keywordflow">in</span> zip(meas, detIDs, strict=<span class="keyword">True</span>):</div>
+<div class="line"><span class="lineno">  584</span>                    tp = ROOT.genfit.TrackPoint(theTrack)</div>
+<div class="line"><span class="lineno">  585</span>                    measurement = ROOT.genfit.WireMeasurement(m, hitCov, detID, hitID, tp)</div>
+<div class="line"><span class="lineno">  586</span>                    measurement.setMaxDistance(</div>
+<div class="line"><span class="lineno">  587</span>                        global_variables.ShipGeo.strawtubes_geo.outer_straw_diameter / 2.0</div>
+<div class="line"><span class="lineno">  588</span>                        - global_variables.ShipGeo.strawtubes_geo.wall_thickness</div>
+<div class="line"><span class="lineno">  589</span>                    )</div>
+<div class="line"><span class="lineno">  590</span>                    tp.addRawMeasurement(measurement)</div>
+<div class="line"><span class="lineno">  591</span>                    ROOT.SetOwnership(measurement, <span class="keyword">False</span>)  <span class="comment"># TrackPoint takes ownership</span></div>
+<div class="line"><span class="lineno">  592</span>                    theTrack.insertPoint(tp)</div>
+<div class="line"><span class="lineno">  593</span>                    ROOT.SetOwnership(tp, <span class="keyword">False</span>)  <span class="comment"># genfit::Track takes ownership</span></div>
+<div class="line"><span class="lineno">  594</span>                    hitID += 1</div>
+<div class="line"><span class="lineno">  595</span>                <span class="comment"># Fit this hypothesis</span></div>
+<div class="line"><span class="lineno">  596</span>                <span class="keywordflow">try</span>:</div>
+<div class="line"><span class="lineno">  597</span>                    theTrack.checkConsistency()</div>
+<div class="line"><span class="lineno">  598</span>                <span class="keywordflow">except</span> ROOT.genfit.Exception:</div>
+<div class="line"><span class="lineno">  599</span>                    <span class="keywordflow">if</span> self.validation:</div>
+<div class="line"><span class="lineno">  600</span>                        self.validation_stats[<span class="stringliteral">&quot;tracks_failed_consistency&quot;</span>] += 1</div>
+<div class="line"><span class="lineno">  601</span>                    <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  602</span>                <span class="keywordflow">try</span>:</div>
+<div class="line"><span class="lineno">  603</span>                    self.fitter.processTrack(theTrack)</div>
+<div class="line"><span class="lineno">  604</span>                <span class="keywordflow">except</span> Exception <span class="keyword">as</span> e:</div>
+<div class="line"><span class="lineno">  605</span>                    logger.debug(<span class="stringliteral">&quot;Failed to processTrack for hypothesis %d: %s&quot;</span>, try_pdg, e)</div>
+<div class="line"><span class="lineno">  606</span>                    <span class="keywordflow">if</span> self.validation:</div>
+<div class="line"><span class="lineno">  607</span>                        self.validation_stats[<span class="stringliteral">&quot;tracks_failed_fit&quot;</span>] += 1</div>
 <div class="line"><span class="lineno">  608</span>                    <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  609</span>                <span class="keywordflow">if</span> self.validation:</div>
-<div class="line"><span class="lineno">  610</span>                    self.validation_stats[<span class="stringliteral">&quot;fit_hypotheses_converged&quot;</span>] += 1</div>
-<div class="line"><span class="lineno">  611</span>                nmeas = fitStatus.getNdf()</div>
-<div class="line"><span class="lineno">  612</span>                <span class="keywordflow">if</span> nmeas &lt;= 0:</div>
-<div class="line"><span class="lineno">  613</span>                    <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  614</span>                chi2ndf = fitStatus.getChi2() / nmeas</div>
-<div class="line"><span class="lineno">  615</span>                <span class="keywordflow">if</span> chi2ndf &lt; best_chi2ndf:</div>
-<div class="line"><span class="lineno">  616</span>                    best_chi2ndf = chi2ndf</div>
-<div class="line"><span class="lineno">  617</span>                    best_track = theTrack</div>
-<div class="line"><span class="lineno">  618</span>            <span class="keywordflow">if</span> best_track <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span>:</div>
-<div class="line"><span class="lineno">  619</span>                fittedTracks.append((best_track, cand))</div>
-<div class="line"><span class="lineno">  620</span> </div>
-<div class="line"><span class="lineno">  621</span>        <span class="keywordflow">for</span> theTrack, cand <span class="keywordflow">in</span> fittedTracks:</div>
-<div class="line"><span class="lineno">  622</span>            <span class="comment"># Tracks are already fitted from the dual-hypothesis loop above</span></div>
-<div class="line"><span class="lineno">  623</span>            fitStatus = theTrack.getFitStatus()</div>
-<div class="line"><span class="lineno">  624</span>            nmeas = fitStatus.getNdf()  <span class="comment"># guaranteed &gt; 0 by hypothesis loop filter</span></div>
-<div class="line"><span class="lineno">  625</span>            global_variables.h[<span class="stringliteral">&quot;nmeas&quot;</span>].Fill(nmeas)</div>
-<div class="line"><span class="lineno">  626</span>            chi2 = fitStatus.getChi2() / nmeas</div>
-<div class="line"><span class="lineno">  627</span>            <span class="keywordflow">if</span> self.validation:</div>
-<div class="line"><span class="lineno">  628</span>                self.validation_stats[<span class="stringliteral">&quot;chi2_sum&quot;</span>] += chi2</div>
-<div class="line"><span class="lineno">  629</span>                self.validation_stats[<span class="stringliteral">&quot;chi2_sum_sq&quot;</span>] += chi2 * chi2</div>
-<div class="line"><span class="lineno">  630</span>                self.validation_stats[<span class="stringliteral">&quot;chi2_count&quot;</span>] += 1</div>
-<div class="line"><span class="lineno">  631</span>                self.validation_stats[<span class="stringliteral">&quot;ndf_sum&quot;</span>] += nmeas</div>
-<div class="line"><span class="lineno">  632</span>                self.validation_stats[<span class="stringliteral">&quot;ndf_sum_sq&quot;</span>] += nmeas * nmeas</div>
-<div class="line"><span class="lineno">  633</span>                self.validation_stats[<span class="stringliteral">&quot;ndf_count&quot;</span>] += 1</div>
-<div class="line"><span class="lineno">  634</span>            global_variables.h[<span class="stringliteral">&quot;chi2&quot;</span>].Fill(chi2)</div>
-<div class="line"><span class="lineno">  635</span>            <span class="comment"># make track persistent</span></div>
-<div class="line"><span class="lineno">  636</span>            <span class="comment"># Store pointer - make a copy and let ROOT manage lifetime</span></div>
-<div class="line"><span class="lineno">  637</span>            trackCopy = ROOT.genfit.Track(theTrack)</div>
-<div class="line"><span class="lineno">  638</span>            ROOT.SetOwnership(trackCopy, <span class="keyword">False</span>)  <span class="comment"># ROOT TTree owns the track</span></div>
-<div class="line"><span class="lineno">  639</span>            self.fGenFitArray.push_back(trackCopy)</div>
-<div class="line"><span class="lineno">  640</span>            <span class="keywordflow">if</span> global_variables.debug:</div>
-<div class="line"><span class="lineno">  641</span>                print(<span class="stringliteral">&quot;save track&quot;</span>, theTrack, chi2, nmeas, fitStatus.isFitConverged())</div>
-<div class="line"><span class="lineno">  642</span>            <span class="comment"># Save MC link</span></div>
-<div class="line"><span class="lineno">  643</span>            track_ids = []</div>
-<div class="line"><span class="lineno">  644</span>            <span class="keywordflow">for</span> index <span class="keywordflow">in</span> cand[<span class="stringliteral">&quot;indices&quot;</span>]:</div>
-<div class="line"><span class="lineno">  645</span>                ahit = self.sTree.strawtubesPoint[index]</div>
-<div class="line"><span class="lineno">  646</span>                track_ids += [ahit.GetTrackID()]</div>
-<div class="line"><span class="lineno">  647</span>            _frac, tmax = self.fracMCsame(track_ids)</div>
-<div class="line"><span class="lineno">  648</span>            self.fitTrack2MC.push_back(tmax)</div>
-<div class="line"><span class="lineno">  649</span>            <span class="comment"># Save hits indexes of the the fitted tracks</span></div>
-<div class="line"><span class="lineno">  650</span>            indices = ROOT.std.vector(<span class="stringliteral">&quot;unsigned int&quot;</span>)()</div>
-<div class="line"><span class="lineno">  651</span>            <span class="keywordflow">for</span> index <span class="keywordflow">in</span> cand[<span class="stringliteral">&quot;indices&quot;</span>]:</div>
-<div class="line"><span class="lineno">  652</span>                indices.push_back(index)</div>
-<div class="line"><span class="lineno">  653</span>            aTracklet = ROOT.Tracklet(1, indices)</div>
-<div class="line"><span class="lineno">  654</span>            self.fTrackletsArray.push_back(aTracklet)</div>
-<div class="line"><span class="lineno">  655</span> </div>
-<div class="line"><span class="lineno">  656</span>        logger.debug(<span class="stringliteral">&quot;fitTracksGenfit: %d fitted tracks saved&quot;</span>, len(self.fGenFitArray))</div>
-<div class="line"><span class="lineno">  657</span> </div>
-<div class="line"><span class="lineno">  658</span>        <span class="comment"># debug</span></div>
-<div class="line"><span class="lineno">  659</span>        <span class="keywordflow">if</span> global_variables.debug:</div>
-<div class="line"><span class="lineno">  660</span>            print(<span class="stringliteral">&quot;save tracklets:&quot;</span>)</div>
-<div class="line"><span class="lineno">  661</span>            <span class="keywordflow">for</span> x <span class="keywordflow">in</span> self.recoTree.Tracklets:</div>
-<div class="line"><span class="lineno">  662</span>                print(x.getType(), len(x.getList()))</div>
-<div class="line"><span class="lineno">  663</span>        <span class="keywordflow">return</span> len(self.fGenFitArray)</div>
-<div class="line"><span class="lineno">  664</span> </div>
+<div class="line"><span class="lineno">  609</span>                <span class="keywordflow">try</span>:</div>
+<div class="line"><span class="lineno">  610</span>                    theTrack.checkConsistency()</div>
+<div class="line"><span class="lineno">  611</span>                <span class="keywordflow">except</span> ROOT.genfit.Exception:</div>
+<div class="line"><span class="lineno">  612</span>                    logger.debug(<span class="stringliteral">&quot;Track inconsistent after fit for hypothesis %d&quot;</span>, try_pdg)</div>
+<div class="line"><span class="lineno">  613</span>                    <span class="keywordflow">if</span> self.validation:</div>
+<div class="line"><span class="lineno">  614</span>                        self.validation_stats[<span class="stringliteral">&quot;tracks_failed_consistency&quot;</span>] += 1</div>
+<div class="line"><span class="lineno">  615</span>                    <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  616</span>                <span class="keywordflow">try</span>:</div>
+<div class="line"><span class="lineno">  617</span>                    fittedState = theTrack.getFittedState()</div>
+<div class="line"><span class="lineno">  618</span>                    fittedState.getMomMag()</div>
+<div class="line"><span class="lineno">  619</span>                <span class="keywordflow">except</span> Exception <span class="keyword">as</span> e:</div>
+<div class="line"><span class="lineno">  620</span>                    logger.debug(<span class="stringliteral">&quot;Failed to getFittedState/getMomMag for hypothesis %d: %s&quot;</span>, try_pdg, e)</div>
+<div class="line"><span class="lineno">  621</span>                    <span class="keywordflow">if</span> self.validation:</div>
+<div class="line"><span class="lineno">  622</span>                        self.validation_stats[<span class="stringliteral">&quot;tracks_failed_state_access&quot;</span>] += 1</div>
+<div class="line"><span class="lineno">  623</span>                    <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  624</span>                fitStatus = theTrack.getFitStatus()</div>
+<div class="line"><span class="lineno">  625</span>                <span class="keywordflow">if</span> <span class="keywordflow">not</span> fitStatus.isFitConverged():</div>
+<div class="line"><span class="lineno">  626</span>                    <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  627</span>                <span class="keywordflow">if</span> self.validation:</div>
+<div class="line"><span class="lineno">  628</span>                    self.validation_stats[<span class="stringliteral">&quot;fit_hypotheses_converged&quot;</span>] += 1</div>
+<div class="line"><span class="lineno">  629</span>                nmeas = fitStatus.getNdf()</div>
+<div class="line"><span class="lineno">  630</span>                <span class="keywordflow">if</span> nmeas &lt;= 0:</div>
+<div class="line"><span class="lineno">  631</span>                    <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  632</span>                chi2ndf = fitStatus.getChi2() / nmeas</div>
+<div class="line"><span class="lineno">  633</span>                <span class="keywordflow">if</span> chi2ndf &lt; best_chi2ndf:</div>
+<div class="line"><span class="lineno">  634</span>                    best_chi2ndf = chi2ndf</div>
+<div class="line"><span class="lineno">  635</span>                    best_track = theTrack</div>
+<div class="line"><span class="lineno">  636</span>            <span class="keywordflow">if</span> best_track <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span>:</div>
+<div class="line"><span class="lineno">  637</span>                fittedTracks.append((best_track, cand))</div>
+<div class="line"><span class="lineno">  638</span> </div>
+<div class="line"><span class="lineno">  639</span>        <span class="keywordflow">for</span> theTrack, cand <span class="keywordflow">in</span> fittedTracks:</div>
+<div class="line"><span class="lineno">  640</span>            <span class="comment"># Tracks are already fitted from the dual-hypothesis loop above</span></div>
+<div class="line"><span class="lineno">  641</span>            fitStatus = theTrack.getFitStatus()</div>
+<div class="line"><span class="lineno">  642</span>            nmeas = fitStatus.getNdf()  <span class="comment"># guaranteed &gt; 0 by hypothesis loop filter</span></div>
+<div class="line"><span class="lineno">  643</span>            global_variables.h[<span class="stringliteral">&quot;nmeas&quot;</span>].Fill(nmeas)</div>
+<div class="line"><span class="lineno">  644</span>            chi2 = fitStatus.getChi2() / nmeas</div>
+<div class="line"><span class="lineno">  645</span>            <span class="keywordflow">if</span> self.validation:</div>
+<div class="line"><span class="lineno">  646</span>                self.validation_stats[<span class="stringliteral">&quot;chi2_sum&quot;</span>] += chi2</div>
+<div class="line"><span class="lineno">  647</span>                self.validation_stats[<span class="stringliteral">&quot;chi2_sum_sq&quot;</span>] += chi2 * chi2</div>
+<div class="line"><span class="lineno">  648</span>                self.validation_stats[<span class="stringliteral">&quot;chi2_count&quot;</span>] += 1</div>
+<div class="line"><span class="lineno">  649</span>                self.validation_stats[<span class="stringliteral">&quot;ndf_sum&quot;</span>] += nmeas</div>
+<div class="line"><span class="lineno">  650</span>                self.validation_stats[<span class="stringliteral">&quot;ndf_sum_sq&quot;</span>] += nmeas * nmeas</div>
+<div class="line"><span class="lineno">  651</span>                self.validation_stats[<span class="stringliteral">&quot;ndf_count&quot;</span>] += 1</div>
+<div class="line"><span class="lineno">  652</span>            global_variables.h[<span class="stringliteral">&quot;chi2&quot;</span>].Fill(chi2)</div>
+<div class="line"><span class="lineno">  653</span>            <span class="comment"># make track persistent</span></div>
+<div class="line"><span class="lineno">  654</span>            <span class="comment"># Store pointer - make a copy and let ROOT manage lifetime</span></div>
+<div class="line"><span class="lineno">  655</span>            trackCopy = ROOT.genfit.Track(theTrack)</div>
+<div class="line"><span class="lineno">  656</span>            ROOT.SetOwnership(trackCopy, <span class="keyword">False</span>)  <span class="comment"># ROOT TTree owns the track</span></div>
+<div class="line"><span class="lineno">  657</span>            self.fGenFitArray.push_back(trackCopy)</div>
+<div class="line"><span class="lineno">  658</span>            <span class="keywordflow">if</span> global_variables.debug:</div>
+<div class="line"><span class="lineno">  659</span>                print(<span class="stringliteral">&quot;save track&quot;</span>, theTrack, chi2, nmeas, fitStatus.isFitConverged())</div>
+<div class="line"><span class="lineno">  660</span>            <span class="comment"># Save MC link</span></div>
+<div class="line"><span class="lineno">  661</span>            track_ids = []</div>
+<div class="line"><span class="lineno">  662</span>            <span class="keywordflow">for</span> index <span class="keywordflow">in</span> cand[<span class="stringliteral">&quot;indices&quot;</span>]:</div>
+<div class="line"><span class="lineno">  663</span>                ahit = self.sTree.strawtubesPoint[index]</div>
+<div class="line"><span class="lineno">  664</span>                track_ids += [ahit.GetTrackID()]</div>
+<div class="line"><span class="lineno">  665</span>            _frac, tmax = self.fracMCsame(track_ids)</div>
+<div class="line"><span class="lineno">  666</span>            self.fitTrack2MC.push_back(tmax)</div>
+<div class="line"><span class="lineno">  667</span>            <span class="comment"># Save hits indexes of the the fitted tracks</span></div>
+<div class="line"><span class="lineno">  668</span>            indices = ROOT.std.vector(<span class="stringliteral">&quot;unsigned int&quot;</span>)()</div>
+<div class="line"><span class="lineno">  669</span>            <span class="keywordflow">for</span> index <span class="keywordflow">in</span> cand[<span class="stringliteral">&quot;indices&quot;</span>]:</div>
+<div class="line"><span class="lineno">  670</span>                indices.push_back(index)</div>
+<div class="line"><span class="lineno">  671</span>            aTracklet = ROOT.Tracklet(1, indices)</div>
+<div class="line"><span class="lineno">  672</span>            self.fTrackletsArray.push_back(aTracklet)</div>
+<div class="line"><span class="lineno">  673</span> </div>
+<div class="line"><span class="lineno">  674</span>        logger.debug(<span class="stringliteral">&quot;fitTracksGenfit: %d fitted tracks saved&quot;</span>, len(self.fGenFitArray))</div>
+<div class="line"><span class="lineno">  675</span> </div>
+<div class="line"><span class="lineno">  676</span>        <span class="comment"># debug</span></div>
+<div class="line"><span class="lineno">  677</span>        <span class="keywordflow">if</span> global_variables.debug:</div>
+<div class="line"><span class="lineno">  678</span>            print(<span class="stringliteral">&quot;save tracklets:&quot;</span>)</div>
+<div class="line"><span class="lineno">  679</span>            <span class="keywordflow">for</span> x <span class="keywordflow">in</span> self.recoTree.Tracklets:</div>
+<div class="line"><span class="lineno">  680</span>                print(x.getType(), len(x.getList()))</div>
+<div class="line"><span class="lineno">  681</span>        <span class="keywordflow">return</span> len(self.fGenFitArray)</div>
+<div class="line"><span class="lineno">  682</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1102,15 +1152,15 @@ fitting is done separately (e.g. by fitTracksGenfit).
       </table>
 </div><div class="memdoc">
 <pre class="fragment">Find the majority MC track ID and its purity fraction.</pre> 
-<p class="definition">Definition at line <a class="el" href="shipDigiReco_8py_source.html#l00777">777</a> of file <a class="el" href="shipDigiReco_8py_source.html">shipDigiReco.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  777</span>    <span class="keyword">def </span>fracMCsame(self, trackids):</div>
-<div class="line"><span class="lineno">  778</span>        <span class="stringliteral">&quot;&quot;&quot;Find the majority MC track ID and its purity fraction.&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  779</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> trackids:</div>
-<div class="line"><span class="lineno">  780</span>            <span class="keywordflow">return</span> 0.0, -999</div>
-<div class="line"><span class="lineno">  781</span>        counts = Counter(trackids)</div>
-<div class="line"><span class="lineno">  782</span>        tmax, max_count = counts.most_common(1)[0]</div>
-<div class="line"><span class="lineno">  783</span>        <span class="keywordflow">return</span> float(max_count) / len(trackids), tmax</div>
-<div class="line"><span class="lineno">  784</span> </div>
+<p class="definition">Definition at line <a class="el" href="shipDigiReco_8py_source.html#l00795">795</a> of file <a class="el" href="shipDigiReco_8py_source.html">shipDigiReco.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  795</span>    <span class="keyword">def </span>fracMCsame(self, trackids):</div>
+<div class="line"><span class="lineno">  796</span>        <span class="stringliteral">&quot;&quot;&quot;Find the majority MC track ID and its purity fraction.&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  797</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> trackids:</div>
+<div class="line"><span class="lineno">  798</span>            <span class="keywordflow">return</span> 0.0, -999</div>
+<div class="line"><span class="lineno">  799</span>        counts = Counter(trackids)</div>
+<div class="line"><span class="lineno">  800</span>        tmax, max_count = counts.most_common(1)[0]</div>
+<div class="line"><span class="lineno">  801</span>        <span class="keywordflow">return</span> float(max_count) / len(trackids), tmax</div>
+<div class="line"><span class="lineno">  802</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1129,22 +1179,22 @@ fitting is done separately (e.g. by fitTracksGenfit).
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipDigiReco_8py_source.html#l00762">762</a> of file <a class="el" href="shipDigiReco_8py_source.html">shipDigiReco.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  762</span>    <span class="keyword">def </span>linkVetoOnTracks(self) -&gt; None:</div>
-<div class="line"><span class="lineno">  763</span>        self.vetoHitOnTrackArray.clear()</div>
-<div class="line"><span class="lineno">  764</span>        <span class="keywordflow">for</span> good_track <span class="keywordflow">in</span> self.goodTracksVect:</div>
-<div class="line"><span class="lineno">  765</span>            track = self.fGenFitArray[good_track]</div>
-<div class="line"><span class="lineno">  766</span>            veto_link = self.findVetoHitOnTrack(track)</div>
-<div class="line"><span class="lineno">  767</span>            self.vetoHitOnTrackArray.push_back(veto_link)</div>
-<div class="line"><span class="lineno">  768</span>            <span class="keywordflow">if</span> self.validation:</div>
-<div class="line"><span class="lineno">  769</span>                <span class="keywordflow">if</span> veto_link.GetHitID() &gt;= 0:  <span class="comment"># Only record real matches</span></div>
-<div class="line"><span class="lineno">  770</span>                    dist = float(veto_link.GetDist())</div>
-<div class="line"><span class="lineno">  771</span>                    self.validation_stats[<span class="stringliteral">&quot;veto_link_distance_sum&quot;</span>] += dist</div>
-<div class="line"><span class="lineno">  772</span>                    self.validation_stats[<span class="stringliteral">&quot;veto_link_distance_sum_sq&quot;</span>] += dist * dist</div>
-<div class="line"><span class="lineno">  773</span>                    self.validation_stats[<span class="stringliteral">&quot;veto_link_distance_count&quot;</span>] += 1</div>
-<div class="line"><span class="lineno">  774</span>        <span class="keywordflow">if</span> self.validation:</div>
-<div class="line"><span class="lineno">  775</span>            self.validation_stats[<span class="stringliteral">&quot;veto_links_total&quot;</span>] += len(self.vetoHitOnTrackArray)</div>
-<div class="line"><span class="lineno">  776</span> </div>
+<p class="definition">Definition at line <a class="el" href="shipDigiReco_8py_source.html#l00780">780</a> of file <a class="el" href="shipDigiReco_8py_source.html">shipDigiReco.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  780</span>    <span class="keyword">def </span>linkVetoOnTracks(self) -&gt; None:</div>
+<div class="line"><span class="lineno">  781</span>        self.vetoHitOnTrackArray.clear()</div>
+<div class="line"><span class="lineno">  782</span>        <span class="keywordflow">for</span> good_track <span class="keywordflow">in</span> self.goodTracksVect:</div>
+<div class="line"><span class="lineno">  783</span>            track = self.fGenFitArray[good_track]</div>
+<div class="line"><span class="lineno">  784</span>            veto_link = self.findVetoHitOnTrack(track)</div>
+<div class="line"><span class="lineno">  785</span>            self.vetoHitOnTrackArray.push_back(veto_link)</div>
+<div class="line"><span class="lineno">  786</span>            <span class="keywordflow">if</span> self.validation:</div>
+<div class="line"><span class="lineno">  787</span>                <span class="keywordflow">if</span> veto_link.GetHitID() &gt;= 0:  <span class="comment"># Only record real matches</span></div>
+<div class="line"><span class="lineno">  788</span>                    dist = float(veto_link.GetDist())</div>
+<div class="line"><span class="lineno">  789</span>                    self.validation_stats[<span class="stringliteral">&quot;veto_link_distance_sum&quot;</span>] += dist</div>
+<div class="line"><span class="lineno">  790</span>                    self.validation_stats[<span class="stringliteral">&quot;veto_link_distance_sum_sq&quot;</span>] += dist * dist</div>
+<div class="line"><span class="lineno">  791</span>                    self.validation_stats[<span class="stringliteral">&quot;veto_link_distance_count&quot;</span>] += 1</div>
+<div class="line"><span class="lineno">  792</span>        <span class="keywordflow">if</span> self.validation:</div>
+<div class="line"><span class="lineno">  793</span>            self.validation_stats[<span class="stringliteral">&quot;veto_links_total&quot;</span>] += len(self.vetoHitOnTrackArray)</div>
+<div class="line"><span class="lineno">  794</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1163,38 +1213,38 @@ fitting is done separately (e.g. by fitTracksGenfit).
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipDigiReco_8py_source.html#l00165">165</a> of file <a class="el" href="shipDigiReco_8py_source.html">shipDigiReco.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  165</span>    <span class="keyword">def </span>reconstruct(self) -&gt; None:</div>
-<div class="line"><span class="lineno">  166</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> hasattr(self, <span class="stringliteral">&quot;strawtubes&quot;</span>):</div>
-<div class="line"><span class="lineno">  167</span>            <span class="keywordflow">return</span></div>
-<div class="line"><span class="lineno">  168</span>        <span class="keywordflow">if</span> self.trackFitter == <span class="stringliteral">&quot;acts&quot;</span>:</div>
-<div class="line"><span class="lineno">  169</span>            self.reconstructActs()</div>
-<div class="line"><span class="lineno">  170</span>            <span class="keywordflow">return</span></div>
-<div class="line"><span class="lineno">  171</span>        candidates = self.findTracks()</div>
-<div class="line"><span class="lineno">  172</span>        n_tracks = self.fitTracksGenfit(candidates)</div>
-<div class="line"><span class="lineno">  173</span>        n_good_tracks = self.findGoodTracks()</div>
-<div class="line"><span class="lineno">  174</span>        <span class="keywordflow">if</span> hasattr(self, <span class="stringliteral">&quot;digiSBT&quot;</span>):</div>
-<div class="line"><span class="lineno">  175</span>            self.linkVetoOnTracks()</div>
-<div class="line"><span class="lineno">  176</span>        <span class="keywordflow">if</span> global_variables.vertexing:</div>
-<div class="line"><span class="lineno">  177</span>            <span class="comment"># now go for 2-track combinations</span></div>
-<div class="line"><span class="lineno">  178</span>            <span class="keywordflow">if</span> self.validation:</div>
-<div class="line"><span class="lineno">  179</span>                self.validation_stats[<span class="stringliteral">&quot;vertexing_calls&quot;</span>] += 1</div>
-<div class="line"><span class="lineno">  180</span>            self.Vertexing.execute()</div>
-<div class="line"><span class="lineno">  181</span>        <span class="keywordflow">if</span> self.validation:</div>
-<div class="line"><span class="lineno">  182</span>            self.validation_stats[<span class="stringliteral">&quot;events_reconstructed&quot;</span>] += 1</div>
-<div class="line"><span class="lineno">  183</span>            self.validation_stats[<span class="stringliteral">&quot;fitted_tracks_total&quot;</span>] += n_tracks</div>
-<div class="line"><span class="lineno">  184</span>            self.validation_stats[<span class="stringliteral">&quot;good_tracks_total&quot;</span>] += n_good_tracks</div>
-<div class="line"><span class="lineno">  185</span>            <span class="keywordflow">if</span> n_tracks &gt; 0:</div>
-<div class="line"><span class="lineno">  186</span>                self.validation_stats[<span class="stringliteral">&quot;events_with_fitted_tracks&quot;</span>] += 1</div>
-<div class="line"><span class="lineno">  187</span>            <span class="keywordflow">if</span> n_good_tracks &gt; 0:</div>
-<div class="line"><span class="lineno">  188</span>                self.validation_stats[<span class="stringliteral">&quot;events_with_good_tracks&quot;</span>] += 1</div>
-<div class="line"><span class="lineno">  189</span>            validation_tools.record_event_stat(self.validation_stats, <span class="stringliteral">&quot;event_fitted_tracks&quot;</span>, n_tracks)</div>
-<div class="line"><span class="lineno">  190</span>            validation_tools.record_event_stat(self.validation_stats, <span class="stringliteral">&quot;event_good_tracks&quot;</span>, n_good_tracks)</div>
-<div class="line"><span class="lineno">  191</span>            <span class="keywordflow">if</span> hasattr(self, <span class="stringliteral">&quot;digiSBT&quot;</span>):</div>
-<div class="line"><span class="lineno">  192</span>                validation_tools.record_event_stat(</div>
-<div class="line"><span class="lineno">  193</span>                    self.validation_stats, <span class="stringliteral">&quot;event_veto_links&quot;</span>, len(self.vetoHitOnTrackArray)</div>
-<div class="line"><span class="lineno">  194</span>                )</div>
-<div class="line"><span class="lineno">  195</span> </div>
+<p class="definition">Definition at line <a class="el" href="shipDigiReco_8py_source.html#l00170">170</a> of file <a class="el" href="shipDigiReco_8py_source.html">shipDigiReco.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  170</span>    <span class="keyword">def </span>reconstruct(self) -&gt; None:</div>
+<div class="line"><span class="lineno">  171</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> hasattr(self, <span class="stringliteral">&quot;strawtubes&quot;</span>):</div>
+<div class="line"><span class="lineno">  172</span>            <span class="keywordflow">return</span></div>
+<div class="line"><span class="lineno">  173</span>        <span class="keywordflow">if</span> self.trackFitter == <span class="stringliteral">&quot;acts&quot;</span>:</div>
+<div class="line"><span class="lineno">  174</span>            self.reconstructActs()</div>
+<div class="line"><span class="lineno">  175</span>            <span class="keywordflow">return</span></div>
+<div class="line"><span class="lineno">  176</span>        candidates = self.findTracks()</div>
+<div class="line"><span class="lineno">  177</span>        n_tracks = self.fitTracksGenfit(candidates)</div>
+<div class="line"><span class="lineno">  178</span>        n_good_tracks = self.findGoodTracks()</div>
+<div class="line"><span class="lineno">  179</span>        <span class="keywordflow">if</span> hasattr(self, <span class="stringliteral">&quot;digiSBT&quot;</span>):</div>
+<div class="line"><span class="lineno">  180</span>            self.linkVetoOnTracks()</div>
+<div class="line"><span class="lineno">  181</span>        <span class="keywordflow">if</span> global_variables.vertexing:</div>
+<div class="line"><span class="lineno">  182</span>            <span class="comment"># now go for 2-track combinations</span></div>
+<div class="line"><span class="lineno">  183</span>            <span class="keywordflow">if</span> self.validation:</div>
+<div class="line"><span class="lineno">  184</span>                self.validation_stats[<span class="stringliteral">&quot;vertexing_calls&quot;</span>] += 1</div>
+<div class="line"><span class="lineno">  185</span>            self.Vertexing.execute()</div>
+<div class="line"><span class="lineno">  186</span>        <span class="keywordflow">if</span> self.validation:</div>
+<div class="line"><span class="lineno">  187</span>            self.validation_stats[<span class="stringliteral">&quot;events_reconstructed&quot;</span>] += 1</div>
+<div class="line"><span class="lineno">  188</span>            self.validation_stats[<span class="stringliteral">&quot;fitted_tracks_total&quot;</span>] += n_tracks</div>
+<div class="line"><span class="lineno">  189</span>            self.validation_stats[<span class="stringliteral">&quot;good_tracks_total&quot;</span>] += n_good_tracks</div>
+<div class="line"><span class="lineno">  190</span>            <span class="keywordflow">if</span> n_tracks &gt; 0:</div>
+<div class="line"><span class="lineno">  191</span>                self.validation_stats[<span class="stringliteral">&quot;events_with_fitted_tracks&quot;</span>] += 1</div>
+<div class="line"><span class="lineno">  192</span>            <span class="keywordflow">if</span> n_good_tracks &gt; 0:</div>
+<div class="line"><span class="lineno">  193</span>                self.validation_stats[<span class="stringliteral">&quot;events_with_good_tracks&quot;</span>] += 1</div>
+<div class="line"><span class="lineno">  194</span>            validation_tools.record_event_stat(self.validation_stats, <span class="stringliteral">&quot;event_fitted_tracks&quot;</span>, n_tracks)</div>
+<div class="line"><span class="lineno">  195</span>            validation_tools.record_event_stat(self.validation_stats, <span class="stringliteral">&quot;event_good_tracks&quot;</span>, n_good_tracks)</div>
+<div class="line"><span class="lineno">  196</span>            <span class="keywordflow">if</span> hasattr(self, <span class="stringliteral">&quot;digiSBT&quot;</span>):</div>
+<div class="line"><span class="lineno">  197</span>                validation_tools.record_event_stat(</div>
+<div class="line"><span class="lineno">  198</span>                    self.validation_stats, <span class="stringliteral">&quot;event_veto_links&quot;</span>, len(self.vetoHitOnTrackArray)</div>
+<div class="line"><span class="lineno">  199</span>                )</div>
+<div class="line"><span class="lineno">  200</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1217,103 +1267,103 @@ fitting is done separately (e.g. by fitTracksGenfit).
 Fills the RecoTracks/RecoVertices/Particles branches, the MC link
 and Tracklets, and the SBT veto links.
 </pre> 
-<p class="definition">Definition at line <a class="el" href="shipDigiReco_8py_source.html#l00196">196</a> of file <a class="el" href="shipDigiReco_8py_source.html">shipDigiReco.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  196</span>    <span class="keyword">def </span>reconstructActs(self) -&gt; None:</div>
-<div class="line"><span class="lineno">  197</span>        <span class="stringliteral">&quot;&quot;&quot;Fit tracks and vertices with ACTS and persist them.</span></div>
-<div class="line"><span class="lineno">  198</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  199</span><span class="stringliteral">        Fills the RecoTracks/RecoVertices/Particles branches, the MC link</span></div>
-<div class="line"><span class="lineno">  200</span><span class="stringliteral">        and Tracklets, and the SBT veto links.</span></div>
-<div class="line"><span class="lineno">  201</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  202</span>        self.fACTSArray.clear()</div>
-<div class="line"><span class="lineno">  203</span>        self.fACTSVertexArray.clear()</div>
-<div class="line"><span class="lineno">  204</span>        self.fitTrack2MC.clear()</div>
-<div class="line"><span class="lineno">  205</span>        self.goodTracksVect.clear()</div>
-<div class="line"><span class="lineno">  206</span>        self.fPartArray.clear()</div>
-<div class="line"><span class="lineno">  207</span>        self.fTrackletsArray.clear()</div>
-<div class="line"><span class="lineno">  208</span> </div>
-<div class="line"><span class="lineno">  209</span>        tracks, vertices, track_hit_indices = self.actsTracks()</div>
-<div class="line"><span class="lineno">  210</span> </div>
-<div class="line"><span class="lineno">  211</span>        <span class="keywordflow">for</span> track, hit_indices <span class="keywordflow">in</span> zip(tracks, track_hit_indices, strict=<span class="keyword">True</span>):</div>
-<div class="line"><span class="lineno">  212</span>            self.fACTSArray.push_back(track)</div>
+<p class="definition">Definition at line <a class="el" href="shipDigiReco_8py_source.html#l00201">201</a> of file <a class="el" href="shipDigiReco_8py_source.html">shipDigiReco.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  201</span>    <span class="keyword">def </span>reconstructActs(self) -&gt; None:</div>
+<div class="line"><span class="lineno">  202</span>        <span class="stringliteral">&quot;&quot;&quot;Fit tracks and vertices with ACTS and persist them.</span></div>
+<div class="line"><span class="lineno">  203</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  204</span><span class="stringliteral">        Fills the RecoTracks/RecoVertices/Particles branches, the MC link</span></div>
+<div class="line"><span class="lineno">  205</span><span class="stringliteral">        and Tracklets, and the SBT veto links.</span></div>
+<div class="line"><span class="lineno">  206</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  207</span>        self.fACTSArray.clear()</div>
+<div class="line"><span class="lineno">  208</span>        self.fACTSVertexArray.clear()</div>
+<div class="line"><span class="lineno">  209</span>        self.fitTrack2MC.clear()</div>
+<div class="line"><span class="lineno">  210</span>        self.goodTracksVect.clear()</div>
+<div class="line"><span class="lineno">  211</span>        self.fPartArray.clear()</div>
+<div class="line"><span class="lineno">  212</span>        self.fTrackletsArray.clear()</div>
 <div class="line"><span class="lineno">  213</span> </div>
-<div class="line"><span class="lineno">  214</span>            nmeas = track.nDoF()</div>
-<div class="line"><span class="lineno">  215</span>            <span class="keywordflow">if</span> nmeas &gt; 0:</div>
-<div class="line"><span class="lineno">  216</span>                global_variables.h[<span class="stringliteral">&quot;nmeas&quot;</span>].Fill(nmeas)</div>
-<div class="line"><span class="lineno">  217</span>                global_variables.h[<span class="stringliteral">&quot;chi2&quot;</span>].Fill(track.chi2() / nmeas)</div>
+<div class="line"><span class="lineno">  214</span>        tracks, vertices, track_hit_indices = self.actsTracks()</div>
+<div class="line"><span class="lineno">  215</span> </div>
+<div class="line"><span class="lineno">  216</span>        <span class="keywordflow">for</span> track, hit_indices <span class="keywordflow">in</span> zip(tracks, track_hit_indices, strict=<span class="keyword">True</span>):</div>
+<div class="line"><span class="lineno">  217</span>            self.fACTSArray.push_back(track)</div>
 <div class="line"><span class="lineno">  218</span> </div>
-<div class="line"><span class="lineno">  219</span>            <span class="comment"># Save MC link: majority MC track over the hits used in the fit</span></div>
-<div class="line"><span class="lineno">  220</span>            _frac, tmax = self.fracMCsame([self.strawHits[i].track_id <span class="keywordflow">for</span> i <span class="keywordflow">in</span> hit_indices])</div>
-<div class="line"><span class="lineno">  221</span>            self.fitTrack2MC.push_back(tmax)</div>
-<div class="line"><span class="lineno">  222</span> </div>
-<div class="line"><span class="lineno">  223</span>            <span class="comment"># Save digi-hit indices of the fitted track</span></div>
-<div class="line"><span class="lineno">  224</span>            indices_vector = ROOT.std.vector(<span class="stringliteral">&quot;unsigned int&quot;</span>)()</div>
-<div class="line"><span class="lineno">  225</span>            <span class="keywordflow">for</span> index <span class="keywordflow">in</span> hit_indices:</div>
-<div class="line"><span class="lineno">  226</span>                indices_vector.push_back(self.strawHitToDigi[index])</div>
-<div class="line"><span class="lineno">  227</span>            self.fTrackletsArray.push_back(ROOT.Tracklet(1, indices_vector))</div>
-<div class="line"><span class="lineno">  228</span> </div>
-<div class="line"><span class="lineno">  229</span>        n_good_tracks = self.findGoodActsTracks()</div>
-<div class="line"><span class="lineno">  230</span> </div>
-<div class="line"><span class="lineno">  231</span>        <span class="keywordflow">for</span> vtx <span class="keywordflow">in</span> vertices:</div>
-<div class="line"><span class="lineno">  232</span>            self.fACTSVertexArray.push_back(vtx)</div>
+<div class="line"><span class="lineno">  219</span>            nmeas = track.nDoF()</div>
+<div class="line"><span class="lineno">  220</span>            <span class="keywordflow">if</span> nmeas &gt; 0:</div>
+<div class="line"><span class="lineno">  221</span>                global_variables.h[<span class="stringliteral">&quot;nmeas&quot;</span>].Fill(nmeas)</div>
+<div class="line"><span class="lineno">  222</span>                global_variables.h[<span class="stringliteral">&quot;chi2&quot;</span>].Fill(track.chi2() / nmeas)</div>
+<div class="line"><span class="lineno">  223</span> </div>
+<div class="line"><span class="lineno">  224</span>            <span class="comment"># Save MC link: majority MC track over the hits used in the fit</span></div>
+<div class="line"><span class="lineno">  225</span>            _frac, tmax = self.fracMCsame([self.strawHits[i].track_id <span class="keywordflow">for</span> i <span class="keywordflow">in</span> hit_indices])</div>
+<div class="line"><span class="lineno">  226</span>            self.fitTrack2MC.push_back(tmax)</div>
+<div class="line"><span class="lineno">  227</span> </div>
+<div class="line"><span class="lineno">  228</span>            <span class="comment"># Save digi-hit indices of the fitted track</span></div>
+<div class="line"><span class="lineno">  229</span>            indices_vector = ROOT.std.vector(<span class="stringliteral">&quot;unsigned int&quot;</span>)()</div>
+<div class="line"><span class="lineno">  230</span>            <span class="keywordflow">for</span> index <span class="keywordflow">in</span> hit_indices:</div>
+<div class="line"><span class="lineno">  231</span>                indices_vector.push_back(self.strawHitToDigi[index])</div>
+<div class="line"><span class="lineno">  232</span>            self.fTrackletsArray.push_back(ROOT.Tracklet(1, indices_vector))</div>
 <div class="line"><span class="lineno">  233</span> </div>
-<div class="line"><span class="lineno">  234</span>            <span class="comment"># Create a ShipParticle from the vertex fit from 2 track vertices</span></div>
-<div class="line"><span class="lineno">  235</span>            <span class="keywordflow">if</span> len(vtx.trackIds()) != 2:</div>
-<div class="line"><span class="lineno">  236</span>                logger.debug(<span class="stringliteral">&quot;Skipping vertex with %d tracks (expected 2)&quot;</span>, len(vtx.trackIds()))</div>
-<div class="line"><span class="lineno">  237</span>                <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  238</span>            t1, t2 = vtx.trackIds()</div>
-<div class="line"><span class="lineno">  239</span>            <span class="comment"># The daughters are taken to be muons, as in the GenFit vertexing</span></div>
-<div class="line"><span class="lineno">  240</span>            P = ROOT.TLorentzVector()</div>
-<div class="line"><span class="lineno">  241</span>            covP = np.zeros((4, 4))</div>
-<div class="line"><span class="lineno">  242</span>            <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(2):</div>
-<div class="line"><span class="lineno">  243</span>                p = np.array([vtx.trackPx()[i], vtx.trackPy()[i], vtx.trackPz()[i]])</div>
-<div class="line"><span class="lineno">  244</span>                energy = math.hypot(np.linalg.norm(p), MUON_MASS)</div>
-<div class="line"><span class="lineno">  245</span>                P += ROOT.TLorentzVector(float(p[0]), float(p[1]), float(p[2]), energy)</div>
-<div class="line"><span class="lineno">  246</span>                cov = np.zeros((3, 3))</div>
-<div class="line"><span class="lineno">  247</span>                cov[np.triu_indices(3)] = list(vtx.GetTrackMomentumCovariance(i))</div>
-<div class="line"><span class="lineno">  248</span>                cov = cov + np.triu(cov, 1).T</div>
-<div class="line"><span class="lineno">  249</span>                <span class="comment"># (px, py, pz, E) from (px, py, pz)</span></div>
-<div class="line"><span class="lineno">  250</span>                jacobian = np.vstack([np.eye(3), p / energy])</div>
-<div class="line"><span class="lineno">  251</span>                covP += jacobian @ cov @ jacobian.T</div>
-<div class="line"><span class="lineno">  252</span>            vertex_position_4d = ROOT.TLorentzVector(vtx.x(), vtx.y(), vtx.z(), 0.0)</div>
-<div class="line"><span class="lineno">  253</span>            particle = ROOT.ShipParticle(9900015, 0, -1, -1, t1, t2, P, vertex_position_4d)</div>
-<div class="line"><span class="lineno">  254</span> </div>
-<div class="line"><span class="lineno">  255</span>            <span class="comment"># ShipParticle::SetCovP takes the upper triangle of the 4x4 (px, py,</span></div>
-<div class="line"><span class="lineno">  256</span>            <span class="comment"># pz, E) covariance, row by row.</span></div>
-<div class="line"><span class="lineno">  257</span>            particle.SetCovP(list(covP[np.triu_indices(4)]))</div>
-<div class="line"><span class="lineno">  258</span>            particle.SetCovV(list(vtx.GetCovarianceElements()))</div>
-<div class="line"><span class="lineno">  259</span>            particle.SetDoca(vtx.doca())</div>
-<div class="line"><span class="lineno">  260</span>            self.fPartArray.push_back(particle)</div>
-<div class="line"><span class="lineno">  261</span> </div>
-<div class="line"><span class="lineno">  262</span>        <span class="keywordflow">if</span> hasattr(self, <span class="stringliteral">&quot;digiSBT&quot;</span>):</div>
-<div class="line"><span class="lineno">  263</span>            <span class="comment"># As in the GenFit linkVetoOnTracks, the veto links are built for the</span></div>
-<div class="line"><span class="lineno">  264</span>            <span class="comment"># selected tracks only: entry k of the VetoHitOnTrack branch belongs</span></div>
-<div class="line"><span class="lineno">  265</span>            <span class="comment"># to track goodTracks[k], and its hitID indexes the SBT digi hits.</span></div>
-<div class="line"><span class="lineno">  266</span>            veto_results = calculateSBTDOCA(self.actsTracker, self.digiSBT.det, list(self.goodTracksVect))</div>
-<div class="line"><span class="lineno">  267</span>            self.vetoHitOnTrackArray.clear()</div>
-<div class="line"><span class="lineno">  268</span>            <span class="keywordflow">for</span> hitID, distMin <span class="keywordflow">in</span> veto_results:</div>
-<div class="line"><span class="lineno">  269</span>                self.vetoHitOnTrackArray.push_back(ROOT.vetoHitOnTrack(hitID, float(distMin)))</div>
-<div class="line"><span class="lineno">  270</span>                <span class="keywordflow">if</span> self.validation <span class="keywordflow">and</span> hitID &gt;= 0:  <span class="comment"># Only record real matches</span></div>
-<div class="line"><span class="lineno">  271</span>                    self.validation_stats[<span class="stringliteral">&quot;veto_link_distance_sum&quot;</span>] += distMin</div>
-<div class="line"><span class="lineno">  272</span>                    self.validation_stats[<span class="stringliteral">&quot;veto_link_distance_sum_sq&quot;</span>] += distMin * distMin</div>
-<div class="line"><span class="lineno">  273</span>                    self.validation_stats[<span class="stringliteral">&quot;veto_link_distance_count&quot;</span>] += 1</div>
-<div class="line"><span class="lineno">  274</span> </div>
-<div class="line"><span class="lineno">  275</span>        n_tracks = len(self.fACTSArray)</div>
-<div class="line"><span class="lineno">  276</span>        <span class="keywordflow">if</span> self.validation:</div>
-<div class="line"><span class="lineno">  277</span>            self.validation_stats[<span class="stringliteral">&quot;events_reconstructed&quot;</span>] += 1</div>
-<div class="line"><span class="lineno">  278</span>            self.validation_stats[<span class="stringliteral">&quot;fitted_tracks_total&quot;</span>] += n_tracks</div>
-<div class="line"><span class="lineno">  279</span>            self.validation_stats[<span class="stringliteral">&quot;good_tracks_total&quot;</span>] += n_good_tracks</div>
-<div class="line"><span class="lineno">  280</span>            <span class="keywordflow">if</span> n_tracks &gt; 0:</div>
-<div class="line"><span class="lineno">  281</span>                self.validation_stats[<span class="stringliteral">&quot;events_with_fitted_tracks&quot;</span>] += 1</div>
-<div class="line"><span class="lineno">  282</span>            <span class="keywordflow">if</span> n_good_tracks &gt; 0:</div>
-<div class="line"><span class="lineno">  283</span>                self.validation_stats[<span class="stringliteral">&quot;events_with_good_tracks&quot;</span>] += 1</div>
-<div class="line"><span class="lineno">  284</span>            validation_tools.record_event_stat(self.validation_stats, <span class="stringliteral">&quot;event_fitted_tracks&quot;</span>, n_tracks)</div>
-<div class="line"><span class="lineno">  285</span>            validation_tools.record_event_stat(self.validation_stats, <span class="stringliteral">&quot;event_good_tracks&quot;</span>, n_good_tracks)</div>
-<div class="line"><span class="lineno">  286</span>            <span class="keywordflow">if</span> hasattr(self, <span class="stringliteral">&quot;digiSBT&quot;</span>):</div>
-<div class="line"><span class="lineno">  287</span>                self.validation_stats[<span class="stringliteral">&quot;veto_links_total&quot;</span>] += len(self.vetoHitOnTrackArray)</div>
-<div class="line"><span class="lineno">  288</span>                validation_tools.record_event_stat(</div>
-<div class="line"><span class="lineno">  289</span>                    self.validation_stats, <span class="stringliteral">&quot;event_veto_links&quot;</span>, len(self.vetoHitOnTrackArray)</div>
-<div class="line"><span class="lineno">  290</span>                )</div>
-<div class="line"><span class="lineno">  291</span> </div>
+<div class="line"><span class="lineno">  234</span>        n_good_tracks = self.findGoodActsTracks()</div>
+<div class="line"><span class="lineno">  235</span> </div>
+<div class="line"><span class="lineno">  236</span>        <span class="keywordflow">for</span> vtx <span class="keywordflow">in</span> vertices:</div>
+<div class="line"><span class="lineno">  237</span>            self.fACTSVertexArray.push_back(vtx)</div>
+<div class="line"><span class="lineno">  238</span> </div>
+<div class="line"><span class="lineno">  239</span>            <span class="comment"># Create a ShipParticle from the vertex fit from 2 track vertices</span></div>
+<div class="line"><span class="lineno">  240</span>            <span class="keywordflow">if</span> len(vtx.trackIds()) != 2:</div>
+<div class="line"><span class="lineno">  241</span>                logger.debug(<span class="stringliteral">&quot;Skipping vertex with %d tracks (expected 2)&quot;</span>, len(vtx.trackIds()))</div>
+<div class="line"><span class="lineno">  242</span>                <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  243</span>            t1, t2 = vtx.trackIds()</div>
+<div class="line"><span class="lineno">  244</span>            <span class="comment"># The daughters are taken to be muons, as in the GenFit vertexing</span></div>
+<div class="line"><span class="lineno">  245</span>            P = ROOT.TLorentzVector()</div>
+<div class="line"><span class="lineno">  246</span>            covP = np.zeros((4, 4))</div>
+<div class="line"><span class="lineno">  247</span>            <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(2):</div>
+<div class="line"><span class="lineno">  248</span>                p = np.array([vtx.trackPx()[i], vtx.trackPy()[i], vtx.trackPz()[i]])</div>
+<div class="line"><span class="lineno">  249</span>                energy = math.hypot(np.linalg.norm(p), MUON_MASS)</div>
+<div class="line"><span class="lineno">  250</span>                P += ROOT.TLorentzVector(float(p[0]), float(p[1]), float(p[2]), energy)</div>
+<div class="line"><span class="lineno">  251</span>                cov = np.zeros((3, 3))</div>
+<div class="line"><span class="lineno">  252</span>                cov[np.triu_indices(3)] = list(vtx.GetTrackMomentumCovariance(i))</div>
+<div class="line"><span class="lineno">  253</span>                cov = cov + np.triu(cov, 1).T</div>
+<div class="line"><span class="lineno">  254</span>                <span class="comment"># (px, py, pz, E) from (px, py, pz)</span></div>
+<div class="line"><span class="lineno">  255</span>                jacobian = np.vstack([np.eye(3), p / energy])</div>
+<div class="line"><span class="lineno">  256</span>                covP += jacobian @ cov @ jacobian.T</div>
+<div class="line"><span class="lineno">  257</span>            vertex_position_4d = ROOT.TLorentzVector(vtx.x(), vtx.y(), vtx.z(), 0.0)</div>
+<div class="line"><span class="lineno">  258</span>            particle = ROOT.ShipParticle(9900015, 0, -1, -1, t1, t2, P, vertex_position_4d)</div>
+<div class="line"><span class="lineno">  259</span> </div>
+<div class="line"><span class="lineno">  260</span>            <span class="comment"># ShipParticle::SetCovP takes the upper triangle of the 4x4 (px, py,</span></div>
+<div class="line"><span class="lineno">  261</span>            <span class="comment"># pz, E) covariance, row by row.</span></div>
+<div class="line"><span class="lineno">  262</span>            particle.SetCovP(list(covP[np.triu_indices(4)]))</div>
+<div class="line"><span class="lineno">  263</span>            particle.SetCovV(list(vtx.GetCovarianceElements()))</div>
+<div class="line"><span class="lineno">  264</span>            particle.SetDoca(vtx.doca())</div>
+<div class="line"><span class="lineno">  265</span>            self.fPartArray.push_back(particle)</div>
+<div class="line"><span class="lineno">  266</span> </div>
+<div class="line"><span class="lineno">  267</span>        <span class="keywordflow">if</span> hasattr(self, <span class="stringliteral">&quot;digiSBT&quot;</span>):</div>
+<div class="line"><span class="lineno">  268</span>            <span class="comment"># As in the GenFit linkVetoOnTracks, the veto links are built for the</span></div>
+<div class="line"><span class="lineno">  269</span>            <span class="comment"># selected tracks only: entry k of the VetoHitOnTrack branch belongs</span></div>
+<div class="line"><span class="lineno">  270</span>            <span class="comment"># to track goodTracks[k], and its hitID indexes the SBT digi hits.</span></div>
+<div class="line"><span class="lineno">  271</span>            veto_results = calculateSBTDOCA(self.actsTracker, self.digiSBT.det, list(self.goodTracksVect))</div>
+<div class="line"><span class="lineno">  272</span>            self.vetoHitOnTrackArray.clear()</div>
+<div class="line"><span class="lineno">  273</span>            <span class="keywordflow">for</span> hitID, distMin <span class="keywordflow">in</span> veto_results:</div>
+<div class="line"><span class="lineno">  274</span>                self.vetoHitOnTrackArray.push_back(ROOT.vetoHitOnTrack(hitID, float(distMin)))</div>
+<div class="line"><span class="lineno">  275</span>                <span class="keywordflow">if</span> self.validation <span class="keywordflow">and</span> hitID &gt;= 0:  <span class="comment"># Only record real matches</span></div>
+<div class="line"><span class="lineno">  276</span>                    self.validation_stats[<span class="stringliteral">&quot;veto_link_distance_sum&quot;</span>] += distMin</div>
+<div class="line"><span class="lineno">  277</span>                    self.validation_stats[<span class="stringliteral">&quot;veto_link_distance_sum_sq&quot;</span>] += distMin * distMin</div>
+<div class="line"><span class="lineno">  278</span>                    self.validation_stats[<span class="stringliteral">&quot;veto_link_distance_count&quot;</span>] += 1</div>
+<div class="line"><span class="lineno">  279</span> </div>
+<div class="line"><span class="lineno">  280</span>        n_tracks = len(self.fACTSArray)</div>
+<div class="line"><span class="lineno">  281</span>        <span class="keywordflow">if</span> self.validation:</div>
+<div class="line"><span class="lineno">  282</span>            self.validation_stats[<span class="stringliteral">&quot;events_reconstructed&quot;</span>] += 1</div>
+<div class="line"><span class="lineno">  283</span>            self.validation_stats[<span class="stringliteral">&quot;fitted_tracks_total&quot;</span>] += n_tracks</div>
+<div class="line"><span class="lineno">  284</span>            self.validation_stats[<span class="stringliteral">&quot;good_tracks_total&quot;</span>] += n_good_tracks</div>
+<div class="line"><span class="lineno">  285</span>            <span class="keywordflow">if</span> n_tracks &gt; 0:</div>
+<div class="line"><span class="lineno">  286</span>                self.validation_stats[<span class="stringliteral">&quot;events_with_fitted_tracks&quot;</span>] += 1</div>
+<div class="line"><span class="lineno">  287</span>            <span class="keywordflow">if</span> n_good_tracks &gt; 0:</div>
+<div class="line"><span class="lineno">  288</span>                self.validation_stats[<span class="stringliteral">&quot;events_with_good_tracks&quot;</span>] += 1</div>
+<div class="line"><span class="lineno">  289</span>            validation_tools.record_event_stat(self.validation_stats, <span class="stringliteral">&quot;event_fitted_tracks&quot;</span>, n_tracks)</div>
+<div class="line"><span class="lineno">  290</span>            validation_tools.record_event_stat(self.validation_stats, <span class="stringliteral">&quot;event_good_tracks&quot;</span>, n_good_tracks)</div>
+<div class="line"><span class="lineno">  291</span>            <span class="keywordflow">if</span> hasattr(self, <span class="stringliteral">&quot;digiSBT&quot;</span>):</div>
+<div class="line"><span class="lineno">  292</span>                self.validation_stats[<span class="stringliteral">&quot;veto_links_total&quot;</span>] += len(self.vetoHitOnTrackArray)</div>
+<div class="line"><span class="lineno">  293</span>                validation_tools.record_event_stat(</div>
+<div class="line"><span class="lineno">  294</span>                    self.validation_stats, <span class="stringliteral">&quot;event_veto_links&quot;</span>, len(self.vetoHitOnTrackArray)</div>
+<div class="line"><span class="lineno">  295</span>                )</div>
+<div class="line"><span class="lineno">  296</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1346,7 +1396,7 @@ and Tracklets, and the SBT veto links.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipDigiReco_8py_source.html#l00145">145</a> of file <a class="el" href="shipDigiReco_8py_source.html">shipDigiReco.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipDigiReco_8py_source.html#l00150">150</a> of file <a class="el" href="shipDigiReco_8py_source.html">shipDigiReco.py</a>.</p>
 
 </div>
 </div>
@@ -1528,7 +1578,7 @@ and Tracklets, and the SBT veto links.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipDigiReco_8py_source.html#l00156">156</a> of file <a class="el" href="shipDigiReco_8py_source.html">shipDigiReco.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipDigiReco_8py_source.html#l00161">161</a> of file <a class="el" href="shipDigiReco_8py_source.html">shipDigiReco.py</a>.</p>
 
 </div>
 </div>
@@ -1576,7 +1626,7 @@ and Tracklets, and the SBT veto links.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipDigiReco_8py_source.html#l00147">147</a> of file <a class="el" href="shipDigiReco_8py_source.html">shipDigiReco.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipDigiReco_8py_source.html#l00152">152</a> of file <a class="el" href="shipDigiReco_8py_source.html">shipDigiReco.py</a>.</p>
 
 </div>
 </div>
@@ -1624,7 +1674,7 @@ and Tracklets, and the SBT veto links.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipDigiReco_8py_source.html#l00143">143</a> of file <a class="el" href="shipDigiReco_8py_source.html">shipDigiReco.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipDigiReco_8py_source.html#l00148">148</a> of file <a class="el" href="shipDigiReco_8py_source.html">shipDigiReco.py</a>.</p>
 
 </div>
 </div>
@@ -1816,7 +1866,7 @@ and Tracklets, and the SBT veto links.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipDigiReco_8py_source.html#l00303">303</a> of file <a class="el" href="shipDigiReco_8py_source.html">shipDigiReco.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipDigiReco_8py_source.html#l00308">308</a> of file <a class="el" href="shipDigiReco_8py_source.html">shipDigiReco.py</a>.</p>
 
 </div>
 </div>
@@ -1848,7 +1898,7 @@ and Tracklets, and the SBT veto links.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipDigiReco_8py_source.html#l00312">312</a> of file <a class="el" href="shipDigiReco_8py_source.html">shipDigiReco.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipDigiReco_8py_source.html#l00317">317</a> of file <a class="el" href="shipDigiReco_8py_source.html">shipDigiReco.py</a>.</p>
 
 </div>
 </div>
@@ -1900,6 +1950,22 @@ and Tracklets, and the SBT veto links.
 
 </div>
 </div>
+<a id="adb62bd8561bb05dd1c2b456f870f1462" name="adb62bd8561bb05dd1c2b456f870f1462"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adb62bd8561bb05dd1c2b456f870f1462">&#9670;&#160;</a></span>timeDetZ</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float | None shipDigiReco.ShipDigiReco.timeDetZ = self._extrapolationZ(&quot;TimeDet&quot;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="shipDigiReco_8py_source.html#l00145">145</a> of file <a class="el" href="shipDigiReco_8py_source.html">shipDigiReco.py</a>.</p>
+
+</div>
+</div>
 <a id="ae19958d727d0a5f1e176d39c2c1a3a62" name="ae19958d727d0a5f1e176d39c2c1a3a62"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae19958d727d0a5f1e176d39c2c1a3a62">&#9670;&#160;</a></span>trackFitter</h2>
 
@@ -1929,6 +1995,22 @@ and Tracklets, and the SBT veto links.
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="shipDigiReco_8py_source.html#l00075">75</a> of file <a class="el" href="shipDigiReco_8py_source.html">shipDigiReco.py</a>.</p>
+
+</div>
+</div>
+<a id="aea6374fe0171b37b1fcbc7ea8d62f46f" name="aea6374fe0171b37b1fcbc7ea8d62f46f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aea6374fe0171b37b1fcbc7ea8d62f46f">&#9670;&#160;</a></span>ubtZ</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float | None shipDigiReco.ShipDigiReco.ubtZ = self._extrapolationZ(&quot;UpstreamTagger&quot;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="shipDigiReco_8py_source.html#l00144">144</a> of file <a class="el" href="shipDigiReco_8py_source.html">shipDigiReco.py</a>.</p>
 
 </div>
 </div>

@@ -99,7 +99,7 @@ $(function(){initNavTree('classtest__straw__reco_1_1FakeTracker.html','','classt
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a757054709b62685a623499ce3d86e989" id="r_a757054709b62685a623499ce3d86e989"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a757054709b62685a623499ce3d86e989">__init__</a> (self, found=(), charges=())</td></tr>
+<tr class="memitem:a7aac90853824b65b84de1fe1d20d6b1c" id="r_a7aac90853824b65b84de1fe1d20d6b1c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7aac90853824b65b84de1fe1d20d6b1c">__init__</a> (self, found=(), charges=(), unreachable_z=())</td></tr>
 <tr class="memitem:ac2ab560696c2a02783b60e6e14991ffc" id="r_ac2ab560696c2a02783b60e6e14991ffc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac2ab560696c2a02783b60e6e14991ffc">ClearEvent</a> (self)</td></tr>
 <tr class="memitem:a0ac9ac4bb2cfb844b0f21be17825d4f2" id="r_a0ac9ac4bb2cfb844b0f21be17825d4f2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0ac9ac4bb2cfb844b0f21be17825d4f2">AddMeasurement</a> (self, detector_id, drift, resolution)</td></tr>
 <tr class="memitem:a6896512d057dd56e658e1beedb4c888a" id="r_a6896512d057dd56e658e1beedb4c888a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6896512d057dd56e658e1beedb4c888a">FindTracks</a> (self)</td></tr>
@@ -107,6 +107,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a1060ad762ac0f6820baf5365fee61e54" id="r_a1060ad762ac0f6820baf5365fee61e54"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1060ad762ac0f6820baf5365fee61e54">GetNTracks</a> (self)</td></tr>
 <tr class="memitem:a640756d96bcde603f0385c08801c93dc" id="r_a640756d96bcde603f0385c08801c93dc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a640756d96bcde603f0385c08801c93dc">GetTrack</a> (self, index)</td></tr>
 <tr class="memitem:aa6c6e09b3f9c13a0519946380eac3b29" id="r_aa6c6e09b3f9c13a0519946380eac3b29"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa6c6e09b3f9c13a0519946380eac3b29">GetTrackMeasurements</a> (self, index)</td></tr>
+<tr class="memitem:a427cd9ae15bb3e2c1c940805421f0c90" id="r_a427cd9ae15bb3e2c1c940805421f0c90"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a427cd9ae15bb3e2c1c940805421f0c90">TrackLength</a> (self, index)</td></tr>
+<tr class="memitem:a72fb1e067576f5b9a2c7b5d131444d3c" id="r_a72fb1e067576f5b9a2c7b5d131444d3c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a72fb1e067576f5b9a2c7b5d131444d3c">ExtrapolateToZ</a> (self, index, z, from_last_hit, position, momentum, covariance, path_length)</td></tr>
 <tr class="memitem:a09e8b213667f34a7a6cb7bc810b8399b" id="r_a09e8b213667f34a7a6cb7bc810b8399b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a09e8b213667f34a7a6cb7bc810b8399b">FitVertex</a> (self, <a class="el" href="#a403b9949c0c13cb171e0d5bb95bf6f4a">tracks</a>, vertex)</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-attribs" class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
@@ -115,11 +117,13 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a2958e36af7bb7de0717e4384354f8fd3" id="r_a2958e36af7bb7de0717e4384354f8fd3"><td class="memItemLeft" align="right" valign="top">list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2958e36af7bb7de0717e4384354f8fd3">candidates</a> = []</td></tr>
 <tr class="memitem:a403b9949c0c13cb171e0d5bb95bf6f4a" id="r_a403b9949c0c13cb171e0d5bb95bf6f4a"><td class="memItemLeft" align="right" valign="top">list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a403b9949c0c13cb171e0d5bb95bf6f4a">tracks</a> = []</td></tr>
 <tr class="memitem:a04d856cfcf4c83645897ab8b7f46bff2" id="r_a04d856cfcf4c83645897ab8b7f46bff2"><td class="memItemLeft" align="right" valign="top">list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a04d856cfcf4c83645897ab8b7f46bff2">vertices</a> = []</td></tr>
+<tr class="memitem:af7f2cacc61da39886d563e30215c5b48" id="r_af7f2cacc61da39886d563e30215c5b48"><td class="memItemLeft" align="right" valign="top">list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af7f2cacc61da39886d563e30215c5b48">extrapolations</a> = []</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pro-attribs" class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
 <tr class="memitem:aa4e08efb1e1907907ebb4e2d196972ff" id="r_aa4e08efb1e1907907ebb4e2d196972ff"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa4e08efb1e1907907ebb4e2d196972ff">_found</a> = found</td></tr>
 <tr class="memitem:a26a7719bc9411b00740aea391b23af5a" id="r_a26a7719bc9411b00740aea391b23af5a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a26a7719bc9411b00740aea391b23af5a">_charges</a> = charges</td></tr>
+<tr class="memitem:a2c9ed299fc2d137b8eb53337577f2efe" id="r_a2c9ed299fc2d137b8eb53337577f2efe"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2c9ed299fc2d137b8eb53337577f2efe">_unreachable_z</a> = unreachable_z</td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><pre class="fragment">Records what runTracking hands to SHiP::ActsStrawTracker.
@@ -127,10 +131,10 @@ Protected Attributes</h2></td></tr>
 FitCandidate drops the last measurement of each candidate, as the real
 tracker drops measurements that do not fit the track.
 </pre> 
-<p class="definition">Definition at line <a class="el" href="test__straw__reco_8py_source.html#l00041">41</a> of file <a class="el" href="test__straw__reco_8py_source.html">test_straw_reco.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="test__straw__reco_8py_source.html#l00050">50</a> of file <a class="el" href="test__straw__reco_8py_source.html">test_straw_reco.py</a>.</p>
 </div><a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a757054709b62685a623499ce3d86e989" name="a757054709b62685a623499ce3d86e989"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a757054709b62685a623499ce3d86e989">&#9670;&#160;</a></span>__init__()</h2>
+<a id="a7aac90853824b65b84de1fe1d20d6b1c" name="a7aac90853824b65b84de1fe1d20d6b1c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7aac90853824b65b84de1fe1d20d6b1c">&#9670;&#160;</a></span>__init__()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -148,20 +152,27 @@ tracker drops measurements that do not fit the track.
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>charges</em></span><span class="paramdefsep"> = </span><span class="paramdefval">()</span>&#160;)</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>charges</em></span><span class="paramdefsep"> = </span><span class="paramdefval">()</span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>unreachable_z</em></span><span class="paramdefsep"> = </span><span class="paramdefval">()</span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__straw__reco_8py_source.html#l00048">48</a> of file <a class="el" href="test__straw__reco_8py_source.html">test_straw_reco.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   48</span>    <span class="keyword">def </span>__init__(self, found=(), charges=()):</div>
-<div class="line"><span class="lineno">   49</span>        self.measurements = []</div>
-<div class="line"><span class="lineno">   50</span>        self.candidates = []</div>
-<div class="line"><span class="lineno">   51</span>        self.tracks = []</div>
-<div class="line"><span class="lineno">   52</span>        self.vertices = []</div>
-<div class="line"><span class="lineno">   53</span>        self._found = found</div>
-<div class="line"><span class="lineno">   54</span>        self._charges = charges</div>
-<div class="line"><span class="lineno">   55</span> </div>
+<p class="definition">Definition at line <a class="el" href="test__straw__reco_8py_source.html#l00057">57</a> of file <a class="el" href="test__straw__reco_8py_source.html">test_straw_reco.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   57</span>    <span class="keyword">def </span>__init__(self, found=(), charges=(), unreachable_z=()):</div>
+<div class="line"><span class="lineno">   58</span>        self.measurements = []</div>
+<div class="line"><span class="lineno">   59</span>        self.candidates = []</div>
+<div class="line"><span class="lineno">   60</span>        self.tracks = []</div>
+<div class="line"><span class="lineno">   61</span>        self.vertices = []</div>
+<div class="line"><span class="lineno">   62</span>        self._found = found</div>
+<div class="line"><span class="lineno">   63</span>        self._charges = charges</div>
+<div class="line"><span class="lineno">   64</span>        self._unreachable_z = unreachable_z</div>
+<div class="line"><span class="lineno">   65</span>        self.extrapolations = []</div>
+<div class="line"><span class="lineno">   66</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -195,13 +206,13 @@ tracker drops measurements that do not fit the track.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__straw__reco_8py_source.html#l00060">60</a> of file <a class="el" href="test__straw__reco_8py_source.html">test_straw_reco.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   60</span>    <span class="keyword">def </span>AddMeasurement(self, detector_id, drift, resolution):</div>
-<div class="line"><span class="lineno">   61</span>        <span class="keywordflow">if</span> detector_id == UNKNOWN_STRAW:</div>
-<div class="line"><span class="lineno">   62</span>            <span class="keywordflow">return</span> -1</div>
-<div class="line"><span class="lineno">   63</span>        self.measurements.append((detector_id, drift, resolution))</div>
-<div class="line"><span class="lineno">   64</span>        <span class="keywordflow">return</span> len(self.measurements) - 1</div>
-<div class="line"><span class="lineno">   65</span> </div>
+<p class="definition">Definition at line <a class="el" href="test__straw__reco_8py_source.html#l00071">71</a> of file <a class="el" href="test__straw__reco_8py_source.html">test_straw_reco.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   71</span>    <span class="keyword">def </span>AddMeasurement(self, detector_id, drift, resolution):</div>
+<div class="line"><span class="lineno">   72</span>        <span class="keywordflow">if</span> detector_id == UNKNOWN_STRAW:</div>
+<div class="line"><span class="lineno">   73</span>            <span class="keywordflow">return</span> -1</div>
+<div class="line"><span class="lineno">   74</span>        self.measurements.append((detector_id, drift, resolution))</div>
+<div class="line"><span class="lineno">   75</span>        <span class="keywordflow">return</span> len(self.measurements) - 1</div>
+<div class="line"><span class="lineno">   76</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -220,11 +231,72 @@ tracker drops measurements that do not fit the track.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__straw__reco_8py_source.html#l00056">56</a> of file <a class="el" href="test__straw__reco_8py_source.html">test_straw_reco.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   56</span>    <span class="keyword">def </span>ClearEvent(self):</div>
-<div class="line"><span class="lineno">   57</span>        self.measurements.clear()</div>
-<div class="line"><span class="lineno">   58</span>        self.tracks.clear()</div>
-<div class="line"><span class="lineno">   59</span> </div>
+<p class="definition">Definition at line <a class="el" href="test__straw__reco_8py_source.html#l00067">67</a> of file <a class="el" href="test__straw__reco_8py_source.html">test_straw_reco.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   67</span>    <span class="keyword">def </span>ClearEvent(self):</div>
+<div class="line"><span class="lineno">   68</span>        self.measurements.clear()</div>
+<div class="line"><span class="lineno">   69</span>        self.tracks.clear()</div>
+<div class="line"><span class="lineno">   70</span> </div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a72fb1e067576f5b9a2c7b5d131444d3c" name="a72fb1e067576f5b9a2c7b5d131444d3c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a72fb1e067576f5b9a2c7b5d131444d3c">&#9670;&#160;</a></span>ExtrapolateToZ()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">test_straw_reco.FakeTracker.ExtrapolateToZ </td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>self</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>index</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>z</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>from_last_hit</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>position</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>momentum</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>covariance</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>path_length</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="test__straw__reco_8py_source.html#l00098">98</a> of file <a class="el" href="test__straw__reco_8py_source.html">test_straw_reco.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   98</span>    <span class="keyword">def </span>ExtrapolateToZ(self, index, z, from_last_hit, position, momentum, covariance, path_length):</div>
+<div class="line"><span class="lineno">   99</span>        self.extrapolations.append((index, z, from_last_hit))</div>
+<div class="line"><span class="lineno">  100</span>        <span class="keywordflow">if</span> z <span class="keywordflow">in</span> self._unreachable_z:</div>
+<div class="line"><span class="lineno">  101</span>            <span class="keywordflow">return</span> <span class="keyword">False</span></div>
+<div class="line"><span class="lineno">  102</span>        position.SetXYZ(0.0, 0.0, z)</div>
+<div class="line"><span class="lineno">  103</span>        path_length.value = z / 10.0</div>
+<div class="line"><span class="lineno">  104</span>        <span class="keywordflow">return</span> <span class="keyword">True</span></div>
+<div class="line"><span class="lineno">  105</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -243,11 +315,11 @@ tracker drops measurements that do not fit the track.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__straw__reco_8py_source.html#l00066">66</a> of file <a class="el" href="test__straw__reco_8py_source.html">test_straw_reco.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   66</span>    <span class="keyword">def </span>FindTracks(self):</div>
-<div class="line"><span class="lineno">   67</span>        self.tracks = [list(t) <span class="keywordflow">for</span> t <span class="keywordflow">in</span> self._found]</div>
-<div class="line"><span class="lineno">   68</span>        <span class="keywordflow">return</span> len(self.tracks)</div>
-<div class="line"><span class="lineno">   69</span> </div>
+<p class="definition">Definition at line <a class="el" href="test__straw__reco_8py_source.html#l00077">77</a> of file <a class="el" href="test__straw__reco_8py_source.html">test_straw_reco.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   77</span>    <span class="keyword">def </span>FindTracks(self):</div>
+<div class="line"><span class="lineno">   78</span>        self.tracks = [list(t) <span class="keywordflow">for</span> t <span class="keywordflow">in</span> self._found]</div>
+<div class="line"><span class="lineno">   79</span>        <span class="keywordflow">return</span> len(self.tracks)</div>
+<div class="line"><span class="lineno">   80</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -270,12 +342,12 @@ tracker drops measurements that do not fit the track.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__straw__reco_8py_source.html#l00070">70</a> of file <a class="el" href="test__straw__reco_8py_source.html">test_straw_reco.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   70</span>    <span class="keyword">def </span>FitCandidate(self, measurements):</div>
-<div class="line"><span class="lineno">   71</span>        self.candidates.append(list(measurements))</div>
-<div class="line"><span class="lineno">   72</span>        self.tracks.append(list(measurements)[:-1])</div>
-<div class="line"><span class="lineno">   73</span>        <span class="keywordflow">return</span> len(self.tracks) - 1</div>
-<div class="line"><span class="lineno">   74</span> </div>
+<p class="definition">Definition at line <a class="el" href="test__straw__reco_8py_source.html#l00081">81</a> of file <a class="el" href="test__straw__reco_8py_source.html">test_straw_reco.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   81</span>    <span class="keyword">def </span>FitCandidate(self, measurements):</div>
+<div class="line"><span class="lineno">   82</span>        self.candidates.append(list(measurements))</div>
+<div class="line"><span class="lineno">   83</span>        self.tracks.append(list(measurements)[:-1])</div>
+<div class="line"><span class="lineno">   84</span>        <span class="keywordflow">return</span> len(self.tracks) - 1</div>
+<div class="line"><span class="lineno">   85</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -303,12 +375,12 @@ tracker drops measurements that do not fit the track.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__straw__reco_8py_source.html#l00084">84</a> of file <a class="el" href="test__straw__reco_8py_source.html">test_straw_reco.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   84</span>    <span class="keyword">def </span>FitVertex(self, tracks, vertex):</div>
-<div class="line"><span class="lineno">   85</span>        self.vertices.append(list(tracks))</div>
-<div class="line"><span class="lineno">   86</span>        <span class="keywordflow">return</span> <span class="keyword">True</span></div>
-<div class="line"><span class="lineno">   87</span> </div>
-<div class="line"><span class="lineno">   88</span> </div>
+<p class="definition">Definition at line <a class="el" href="test__straw__reco_8py_source.html#l00106">106</a> of file <a class="el" href="test__straw__reco_8py_source.html">test_straw_reco.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  106</span>    <span class="keyword">def </span>FitVertex(self, tracks, vertex):</div>
+<div class="line"><span class="lineno">  107</span>        self.vertices.append(list(tracks))</div>
+<div class="line"><span class="lineno">  108</span>        <span class="keywordflow">return</span> <span class="keyword">True</span></div>
+<div class="line"><span class="lineno">  109</span> </div>
+<div class="line"><span class="lineno">  110</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -327,10 +399,10 @@ tracker drops measurements that do not fit the track.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__straw__reco_8py_source.html#l00075">75</a> of file <a class="el" href="test__straw__reco_8py_source.html">test_straw_reco.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   75</span>    <span class="keyword">def </span>GetNTracks(self):</div>
-<div class="line"><span class="lineno">   76</span>        <span class="keywordflow">return</span> len(self.tracks)</div>
-<div class="line"><span class="lineno">   77</span> </div>
+<p class="definition">Definition at line <a class="el" href="test__straw__reco_8py_source.html#l00086">86</a> of file <a class="el" href="test__straw__reco_8py_source.html">test_straw_reco.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   86</span>    <span class="keyword">def </span>GetNTracks(self):</div>
+<div class="line"><span class="lineno">   87</span>        <span class="keywordflow">return</span> len(self.tracks)</div>
+<div class="line"><span class="lineno">   88</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -353,10 +425,10 @@ tracker drops measurements that do not fit the track.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__straw__reco_8py_source.html#l00078">78</a> of file <a class="el" href="test__straw__reco_8py_source.html">test_straw_reco.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   78</span>    <span class="keyword">def </span>GetTrack(self, index):</div>
-<div class="line"><span class="lineno">   79</span>        <span class="keywordflow">return</span> FakeTrack(self._charges[index] <span class="keywordflow">if</span> self._charges <span class="keywordflow">else</span> 1)</div>
-<div class="line"><span class="lineno">   80</span> </div>
+<p class="definition">Definition at line <a class="el" href="test__straw__reco_8py_source.html#l00089">89</a> of file <a class="el" href="test__straw__reco_8py_source.html">test_straw_reco.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   89</span>    <span class="keyword">def </span>GetTrack(self, index):</div>
+<div class="line"><span class="lineno">   90</span>        <span class="keywordflow">return</span> FakeTrack(self._charges[index] <span class="keywordflow">if</span> self._charges <span class="keywordflow">else</span> 1)</div>
+<div class="line"><span class="lineno">   91</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -379,10 +451,36 @@ tracker drops measurements that do not fit the track.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__straw__reco_8py_source.html#l00081">81</a> of file <a class="el" href="test__straw__reco_8py_source.html">test_straw_reco.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   81</span>    <span class="keyword">def </span>GetTrackMeasurements(self, index):</div>
-<div class="line"><span class="lineno">   82</span>        <span class="keywordflow">return</span> self.tracks[index]</div>
-<div class="line"><span class="lineno">   83</span> </div>
+<p class="definition">Definition at line <a class="el" href="test__straw__reco_8py_source.html#l00092">92</a> of file <a class="el" href="test__straw__reco_8py_source.html">test_straw_reco.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   92</span>    <span class="keyword">def </span>GetTrackMeasurements(self, index):</div>
+<div class="line"><span class="lineno">   93</span>        <span class="keywordflow">return</span> self.tracks[index]</div>
+<div class="line"><span class="lineno">   94</span> </div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a427cd9ae15bb3e2c1c940805421f0c90" name="a427cd9ae15bb3e2c1c940805421f0c90"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a427cd9ae15bb3e2c1c940805421f0c90">&#9670;&#160;</a></span>TrackLength()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">test_straw_reco.FakeTracker.TrackLength </td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>self</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>index</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="test__straw__reco_8py_source.html#l00095">95</a> of file <a class="el" href="test__straw__reco_8py_source.html">test_straw_reco.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   95</span>    <span class="keyword">def </span>TrackLength(self, index):</div>
+<div class="line"><span class="lineno">   96</span>        <span class="keywordflow">return</span> 100.0 + index</div>
+<div class="line"><span class="lineno">   97</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -407,7 +505,7 @@ tracker drops measurements that do not fit the track.
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__straw__reco_8py_source.html#l00054">54</a> of file <a class="el" href="test__straw__reco_8py_source.html">test_straw_reco.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="test__straw__reco_8py_source.html#l00063">63</a> of file <a class="el" href="test__straw__reco_8py_source.html">test_straw_reco.py</a>.</p>
 
 </div>
 </div>
@@ -431,7 +529,31 @@ tracker drops measurements that do not fit the track.
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__straw__reco_8py_source.html#l00053">53</a> of file <a class="el" href="test__straw__reco_8py_source.html">test_straw_reco.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="test__straw__reco_8py_source.html#l00062">62</a> of file <a class="el" href="test__straw__reco_8py_source.html">test_straw_reco.py</a>.</p>
+
+</div>
+</div>
+<a id="a2c9ed299fc2d137b8eb53337577f2efe" name="a2c9ed299fc2d137b8eb53337577f2efe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2c9ed299fc2d137b8eb53337577f2efe">&#9670;&#160;</a></span>_unreachable_z</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">test_straw_reco.FakeTracker._unreachable_z = unreachable_z</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="test__straw__reco_8py_source.html#l00064">64</a> of file <a class="el" href="test__straw__reco_8py_source.html">test_straw_reco.py</a>.</p>
 
 </div>
 </div>
@@ -447,7 +569,23 @@ tracker drops measurements that do not fit the track.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__straw__reco_8py_source.html#l00050">50</a> of file <a class="el" href="test__straw__reco_8py_source.html">test_straw_reco.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="test__straw__reco_8py_source.html#l00059">59</a> of file <a class="el" href="test__straw__reco_8py_source.html">test_straw_reco.py</a>.</p>
+
+</div>
+</div>
+<a id="af7f2cacc61da39886d563e30215c5b48" name="af7f2cacc61da39886d563e30215c5b48"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af7f2cacc61da39886d563e30215c5b48">&#9670;&#160;</a></span>extrapolations</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">list test_straw_reco.FakeTracker.extrapolations = []</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="test__straw__reco_8py_source.html#l00065">65</a> of file <a class="el" href="test__straw__reco_8py_source.html">test_straw_reco.py</a>.</p>
 
 </div>
 </div>
@@ -463,7 +601,7 @@ tracker drops measurements that do not fit the track.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__straw__reco_8py_source.html#l00049">49</a> of file <a class="el" href="test__straw__reco_8py_source.html">test_straw_reco.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="test__straw__reco_8py_source.html#l00058">58</a> of file <a class="el" href="test__straw__reco_8py_source.html">test_straw_reco.py</a>.</p>
 
 </div>
 </div>
@@ -479,7 +617,7 @@ tracker drops measurements that do not fit the track.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__straw__reco_8py_source.html#l00051">51</a> of file <a class="el" href="test__straw__reco_8py_source.html">test_straw_reco.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="test__straw__reco_8py_source.html#l00060">60</a> of file <a class="el" href="test__straw__reco_8py_source.html">test_straw_reco.py</a>.</p>
 
 </div>
 </div>
@@ -495,7 +633,7 @@ tracker drops measurements that do not fit the track.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__straw__reco_8py_source.html#l00052">52</a> of file <a class="el" href="test__straw__reco_8py_source.html">test_straw_reco.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="test__straw__reco_8py_source.html#l00061">61</a> of file <a class="el" href="test__straw__reco_8py_source.html">test_straw_reco.py</a>.</p>
 
 </div>
 </div>

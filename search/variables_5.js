@@ -50,6 +50,7 @@ var searchData=
   ['expected_47',['EXPECTED',['../namespacetest__field__maps.html#a41706d33ece31f6587f430faf20fa82c',1,'test_field_maps']]],
   ['expectedpars_48',['expectedPars',['../structModelSpec.html#af3f40e0ec1c08f9fa649e851f9edf91c',1,'ModelSpec']]],
   ['extensions_49',['extensions',['../structSHiP_1_1ActsStrawTracker_1_1Impl.html#abe22eb9eca81a47a056f540270b5e7ac',1,'SHiP::ActsStrawTracker::Impl']]],
-  ['extrapolator_50',['extrapolator',['../structSHiP_1_1ActsStrawTracker_1_1Impl.html#a76d7bd8a73752e21f14b088150696217',1,'SHiP::ActsStrawTracker::Impl']]],
-  ['ezero_51',['Ezero',['../classNtupleGenerator.html#ab05d064a7e4ee7380e3f6bb41cb44d46',1,'NtupleGenerator']]]
+  ['extrapolations_50',['extrapolations',['../classtest__straw__reco_1_1FakeTracker.html#af7f2cacc61da39886d563e30215c5b48',1,'test_straw_reco::FakeTracker']]],
+  ['extrapolator_51',['extrapolator',['../structSHiP_1_1ActsStrawTracker_1_1Impl.html#a76d7bd8a73752e21f14b088150696217',1,'SHiP::ActsStrawTracker::Impl']]],
+  ['ezero_52',['Ezero',['../classNtupleGenerator.html#ab05d064a7e4ee7380e3f6bb41cb44d46',1,'NtupleGenerator']]]
 ];

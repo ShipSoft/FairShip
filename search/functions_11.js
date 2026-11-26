@@ -23,7 +23,7 @@ var searchData=
   ['reconstruct_20',['reconstruct',['../classshipDigiReco_1_1ShipDigiReco.html#a746d172974f2de428479f522160cb064',1,'shipDigiReco::ShipDigiReco']]],
   ['reconstructacts_21',['reconstructActs',['../classshipDigiReco_1_1ShipDigiReco.html#a70c983fdc2553735aed7684d4d92fd50',1,'shipDigiReco::ShipDigiReco']]],
   ['record_5fevent_5fstat_22',['record_event_stat',['../namespacevalidationTools.html#a9044712c4318a73364d1f78580c4ec5a',1,'validationTools']]],
-  ['recotrack_23',['RecoTrack',['../classSHiP_1_1RecoTrack.html#a97b02a1a39789bda00d12d494434cc3f',1,'SHiP::RecoTrack::RecoTrack()=default'],['../classSHiP_1_1RecoTrack.html#a270bc7f14a7e7f956eb718cac93b5f69',1,'SHiP::RecoTrack::RecoTrack(const TVector3 &amp;position, const TVector3 &amp;momentum, Int_t charge, const std::array&lt; Double_t, 21 &gt; &amp;covariance, Double_t chi2, Double_t nDoF, UInt_t nMeasurements, std::vector&lt; Double_t &gt; residuals, std::vector&lt; Double_t &gt; pulls)']]],
+  ['recotrack_23',['RecoTrack',['../classSHiP_1_1RecoTrack.html#a97b02a1a39789bda00d12d494434cc3f',1,'SHiP::RecoTrack::RecoTrack()=default'],['../classSHiP_1_1RecoTrack.html#afbf65ee8854b3adca88101c0e2e364cc',1,'SHiP::RecoTrack::RecoTrack(const TVector3 &amp;position, const TVector3 &amp;momentum, Int_t charge, const std::array&lt; Double_t, 21 &gt; &amp;covariance, Double_t chi2, Double_t nDoF, UInt_t nMeasurements, std::vector&lt; Double_t &gt; x_fits, std::vector&lt; Double_t &gt; y_fits, std::vector&lt; Double_t &gt; z_fits, std::vector&lt; Double_t &gt; residuals, std::vector&lt; Double_t &gt; pulls)']]],
   ['recovertex_24',['RecoVertex',['../classSHiP_1_1RecoVertex.html#a89b06436b56562096a8600694529a86d',1,'SHiP::RecoVertex::RecoVertex()=default'],['../classSHiP_1_1RecoVertex.html#ab719e9c3ada9956b075e74f2ddbbd48b',1,'SHiP::RecoVertex::RecoVertex(const TVector3 &amp;position, const std::array&lt; Double_t, 6 &gt; &amp;covariance, Double_t chi2, Double_t nDoF)']]],
   ['redovertexing_25',['RedoVertexing',['../namespaceShipAna.html#a365f177c7bf68e9ef076d53d9eef85b6',1,'ShipAna']]],
   ['redraw_26',['reDraw',['../namespaceana__ShipMuon.html#adc7e0a390eb7c1083c77f6d7a4cb1d42',1,'ana_ShipMuon']]],
@@ -66,5 +66,5 @@ var searchData=
   ['run_5fphase_63',['run_phase',['../namespacerun__tracking__benchmark.html#a66f2026b7b31bfac6371dd533ef5eab8',1,'run_tracking_benchmark']]],
   ['run_5ftrack_5fpattern_5frecognition_64',['run_track_pattern_recognition',['../namespaceshipStrawTracking.html#acd4b4f7a68c7fad0e0799cf537be7ce0',1,'shipStrawTracking']]],
   ['runproduction_65',['runProduction',['../namespacemergeMbias.html#a42594bc0dc3dc66ce0c4ced498916cae',1,'mergeMbias']]],
-  ['runtracking_66',['runTracking',['../namespacestrawReco.html#ad9357af7b62570f2f1fc645a88e64076',1,'strawReco']]]
+  ['runtracking_66',['runTracking',['../namespacestrawReco.html#ab31a69b97d8eb8f2128cba61dc3bb278',1,'strawReco']]]
 ];

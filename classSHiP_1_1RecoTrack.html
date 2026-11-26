@@ -112,7 +112,7 @@ Collaboration diagram for SHiP::RecoTrack:</div>
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a97b02a1a39789bda00d12d494434cc3f" id="r_a97b02a1a39789bda00d12d494434cc3f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a97b02a1a39789bda00d12d494434cc3f">RecoTrack</a> ()=default</td></tr>
-<tr class="memitem:a270bc7f14a7e7f956eb718cac93b5f69" id="r_a270bc7f14a7e7f956eb718cac93b5f69"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a270bc7f14a7e7f956eb718cac93b5f69">RecoTrack</a> (const TVector3 &amp;position, const TVector3 &amp;momentum, Int_t <a class="el" href="#af1bd72b0ea79eade0ce9f75a29448b64">charge</a>, const std::array&lt; Double_t, 21 &gt; &amp;covariance, Double_t <a class="el" href="#ab01625cf7788e88939daa2f68e2293d2">chi2</a>, Double_t <a class="el" href="#a9d1cec73aaeb89943ec3b390d1550b81">nDoF</a>, UInt_t <a class="el" href="#ab2574d88cc7f10dc064c21b5c1a7e573">nMeasurements</a>, std::vector&lt; Double_t &gt; residuals, std::vector&lt; Double_t &gt; pulls)</td></tr>
+<tr class="memitem:afbf65ee8854b3adca88101c0e2e364cc" id="r_afbf65ee8854b3adca88101c0e2e364cc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afbf65ee8854b3adca88101c0e2e364cc">RecoTrack</a> (const TVector3 &amp;position, const TVector3 &amp;momentum, Int_t <a class="el" href="#af1bd72b0ea79eade0ce9f75a29448b64">charge</a>, const std::array&lt; Double_t, 21 &gt; &amp;covariance, Double_t <a class="el" href="#ab01625cf7788e88939daa2f68e2293d2">chi2</a>, Double_t <a class="el" href="#a9d1cec73aaeb89943ec3b390d1550b81">nDoF</a>, UInt_t <a class="el" href="#ab2574d88cc7f10dc064c21b5c1a7e573">nMeasurements</a>, std::vector&lt; Double_t &gt; x_fits, std::vector&lt; Double_t &gt; y_fits, std::vector&lt; Double_t &gt; z_fits, std::vector&lt; Double_t &gt; residuals, std::vector&lt; Double_t &gt; pulls)</td></tr>
 <tr class="memitem:ae9e7504edbc692d26786c42fd8ce49c3" id="r_ae9e7504edbc692d26786c42fd8ce49c3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae9e7504edbc692d26786c42fd8ce49c3">~RecoTrack</a> () override=default</td></tr>
 <tr class="memitem:a12d157b9665e0523115ba282f007f2a8" id="r_a12d157b9665e0523115ba282f007f2a8"><td class="memItemLeft" align="right" valign="top">Double_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a12d157b9665e0523115ba282f007f2a8">x</a> () const</td></tr>
 <tr class="memitem:a98520743168521d4f2c176e3ca14be9d" id="r_a98520743168521d4f2c176e3ca14be9d"><td class="memItemLeft" align="right" valign="top">Double_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a98520743168521d4f2c176e3ca14be9d">y</a> () const</td></tr>
@@ -130,15 +130,33 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ab01625cf7788e88939daa2f68e2293d2" id="r_ab01625cf7788e88939daa2f68e2293d2"><td class="memItemLeft" align="right" valign="top">Double_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab01625cf7788e88939daa2f68e2293d2">chi2</a> () const</td></tr>
 <tr class="memitem:a9d1cec73aaeb89943ec3b390d1550b81" id="r_a9d1cec73aaeb89943ec3b390d1550b81"><td class="memItemLeft" align="right" valign="top">Double_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9d1cec73aaeb89943ec3b390d1550b81">nDoF</a> () const</td></tr>
 <tr class="memitem:ab2574d88cc7f10dc064c21b5c1a7e573" id="r_ab2574d88cc7f10dc064c21b5c1a7e573"><td class="memItemLeft" align="right" valign="top">UInt_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab2574d88cc7f10dc064c21b5c1a7e573">nMeasurements</a> () const</td></tr>
+<tr class="memitem:a7b7d7fd704bb563ea857611e52567ada" id="r_a7b7d7fd704bb563ea857611e52567ada"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; Double_t &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7b7d7fd704bb563ea857611e52567ada">GetXFittedPoints</a> () const</td></tr>
+<tr class="memitem:ad3e5dbdba080ff24eb29e94661089d67" id="r_ad3e5dbdba080ff24eb29e94661089d67"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; Double_t &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad3e5dbdba080ff24eb29e94661089d67">GetYFittedPoints</a> () const</td></tr>
+<tr class="memitem:a666fab64ee9c71fd1de3f73761900296" id="r_a666fab64ee9c71fd1de3f73761900296"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; Double_t &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a666fab64ee9c71fd1de3f73761900296">GetZFittedPoints</a> () const</td></tr>
 <tr class="memitem:a22d5a51db9d325c14250da41d618efb3" id="r_a22d5a51db9d325c14250da41d618efb3"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; Double_t &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a22d5a51db9d325c14250da41d618efb3">GetResiduals</a> () const</td></tr>
 <tr class="memdesc:a22d5a51db9d325c14250da41d618efb3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Residuals of the smoothed states, in cm, ordered along the track.  <br /></td></tr>
 <tr class="memitem:ab4506aeca96958a48174bfd63238a519" id="r_ab4506aeca96958a48174bfd63238a519"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; Double_t &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab4506aeca96958a48174bfd63238a519">GetPulls</a> () const</td></tr>
 <tr class="memitem:a5f0b1622f48356b217b9ec9e4f75bfdf" id="r_a5f0b1622f48356b217b9ec9e4f75bfdf"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; Double_t &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5f0b1622f48356b217b9ec9e4f75bfdf">GetCovarianceElements</a> () const</td></tr>
 <tr class="memitem:aa0f5fc6c4814615935db2c83ff7d87bd" id="r_aa0f5fc6c4814615935db2c83ff7d87bd"><td class="memItemLeft" align="right" valign="top">Bool_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa0f5fc6c4814615935db2c83ff7d87bd">ExtrapolateToZ</a> (Double_t <a class="el" href="#ac165f98128fbd9f9f65babb26f6e7e1a">z</a>, TVector3 &amp;position) const</td></tr>
+<tr class="memitem:a734cd919b6347b1a5e4dd1ed6b168469" id="r_a734cd919b6347b1a5e4dd1ed6b168469"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a734cd919b6347b1a5e4dd1ed6b168469">SetUBTExtrapolation</a> (const TVector3 &amp;position, const TVector3 &amp;momentum, const std::vector&lt; Double_t &gt; &amp;covariance, Double_t pathLength)</td></tr>
+<tr class="memitem:ac966d9cbcba2d4aa38b1a2c95085979e" id="r_ac966d9cbcba2d4aa38b1a2c95085979e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac966d9cbcba2d4aa38b1a2c95085979e">SetTDExtrapolation</a> (const TVector3 &amp;position, const TVector3 &amp;momentum, const std::vector&lt; Double_t &gt; &amp;covariance, Double_t pathLength)</td></tr>
+<tr class="memitem:a2d5aea4fc76313c331e4189f1449f886" id="r_a2d5aea4fc76313c331e4189f1449f886"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2d5aea4fc76313c331e4189f1449f886">SetTrackLength</a> (Double_t length)</td></tr>
+<tr class="memitem:ab216d8cc16cf5d4d499a5fe229f6b9bd" id="r_ab216d8cc16cf5d4d499a5fe229f6b9bd"><td class="memItemLeft" align="right" valign="top">Bool_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab216d8cc16cf5d4d499a5fe229f6b9bd">HasUBTExtrapolation</a> () const</td></tr>
+<tr class="memdesc:ab216d8cc16cf5d4d499a5fe229f6b9bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether the extrapolations were stored (they are NaN otherwise).  <br /></td></tr>
+<tr class="memitem:a57c147621487c761974335f522422dc6" id="r_a57c147621487c761974335f522422dc6"><td class="memItemLeft" align="right" valign="top">Bool_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a57c147621487c761974335f522422dc6">HasTDExtrapolation</a> () const</td></tr>
+<tr class="memitem:a133a78df0797a8d19be5a3253d0b2dac" id="r_a133a78df0797a8d19be5a3253d0b2dac"><td class="memItemLeft" align="right" valign="top">TVector3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a133a78df0797a8d19be5a3253d0b2dac">GetUBTPosition</a> () const</td></tr>
+<tr class="memitem:ad272ee04a10428048d253bd181a1a381" id="r_ad272ee04a10428048d253bd181a1a381"><td class="memItemLeft" align="right" valign="top">TVector3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad272ee04a10428048d253bd181a1a381">GetUBTMomentum</a> () const</td></tr>
+<tr class="memitem:a3f47842ab60bab9c43fe77de25a76526" id="r_a3f47842ab60bab9c43fe77de25a76526"><td class="memItemLeft" align="right" valign="top">TVector3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3f47842ab60bab9c43fe77de25a76526">GetTDPosition</a> () const</td></tr>
+<tr class="memitem:a8ecf8fb1871daecc35a18e6c680e6d16" id="r_a8ecf8fb1871daecc35a18e6c680e6d16"><td class="memItemLeft" align="right" valign="top">TVector3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8ecf8fb1871daecc35a18e6c680e6d16">GetTDMomentum</a> () const</td></tr>
+<tr class="memitem:a146fd1444f6ae375a96707558a299d69" id="r_a146fd1444f6ae375a96707558a299d69"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; Double_t &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a146fd1444f6ae375a96707558a299d69">GetUBTCovariance</a> () const</td></tr>
+<tr class="memitem:abe8c2e216683ab10feea6076a1b07d5f" id="r_abe8c2e216683ab10feea6076a1b07d5f"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; Double_t &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abe8c2e216683ab10feea6076a1b07d5f">GetTDCovariance</a> () const</td></tr>
+<tr class="memitem:a7cf52f472c99c161abee7a32009c7cf3" id="r_a7cf52f472c99c161abee7a32009c7cf3"><td class="memItemLeft" align="right" valign="top">Double_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7cf52f472c99c161abee7a32009c7cf3">GetUBTPathLength</a> () const</td></tr>
+<tr class="memitem:aa922c39a4a5beaa19f4d14d2313b5b35" id="r_aa922c39a4a5beaa19f4d14d2313b5b35"><td class="memItemLeft" align="right" valign="top">Double_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa922c39a4a5beaa19f4d14d2313b5b35">GetTDPathLength</a> () const</td></tr>
+<tr class="memitem:aa933e689e8fd99acfea57d73e930a5ab" id="r_aa933e689e8fd99acfea57d73e930a5ab"><td class="memItemLeft" align="right" valign="top">Double_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa933e689e8fd99acfea57d73e930a5ab">GetTrackLength</a> () const</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pri-methods" class="groupheader"><a id="pri-methods" name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
-<tr class="memitem:a8158132ef168f7eb75c444272647c953" id="r_a8158132ef168f7eb75c444272647c953"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8158132ef168f7eb75c444272647c953">ClassDefOverride</a> (<a class="el" href="#a97b02a1a39789bda00d12d494434cc3f">RecoTrack</a>, 1)</td></tr>
+<tr class="memitem:a1dd08e6733cf98c2ee846cd0b644e2c2" id="r_a1dd08e6733cf98c2ee846cd0b644e2c2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1dd08e6733cf98c2ee846cd0b644e2c2">ClassDefOverride</a> (<a class="el" href="#a97b02a1a39789bda00d12d494434cc3f">RecoTrack</a>, 2)</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pri-attribs" class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
@@ -159,15 +177,38 @@ Private Attributes</h2></td></tr>
 <tr class="memitem:a1e45070f303a837eb70d940b6521b897" id="r_a1e45070f303a837eb70d940b6521b897"><td class="memItemLeft" align="right" valign="top">Double_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1e45070f303a837eb70d940b6521b897">m_nDoF</a> {0.}</td></tr>
 <tr class="memitem:a73dde21b4e331a3e273db36702329968" id="r_a73dde21b4e331a3e273db36702329968"><td class="memItemLeft" align="right" valign="top">UInt_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a73dde21b4e331a3e273db36702329968">m_nMeasurements</a> {0}</td></tr>
 <tr class="memitem:abcb9fb7f81b1f7fe2ca906419f096e82" id="r_abcb9fb7f81b1f7fe2ca906419f096e82"><td class="memItemLeft" align="right" valign="top">std::vector&lt; Double_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abcb9fb7f81b1f7fe2ca906419f096e82">m_residuals</a></td></tr>
+<tr class="memitem:a5d57ab36625b820d1f73acac6890c0fe" id="r_a5d57ab36625b820d1f73acac6890c0fe"><td class="memItemLeft" align="right" valign="top">std::vector&lt; Double_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5d57ab36625b820d1f73acac6890c0fe">m_x_fits</a></td></tr>
+<tr class="memitem:a79987f5602a12671e817b5ffafd6d4a4" id="r_a79987f5602a12671e817b5ffafd6d4a4"><td class="memItemLeft" align="right" valign="top">std::vector&lt; Double_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a79987f5602a12671e817b5ffafd6d4a4">m_y_fits</a></td></tr>
+<tr class="memitem:ab01948ab95fb93f4cbb71d5f68b3ccc8" id="r_ab01948ab95fb93f4cbb71d5f68b3ccc8"><td class="memItemLeft" align="right" valign="top">std::vector&lt; Double_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab01948ab95fb93f4cbb71d5f68b3ccc8">m_z_fits</a></td></tr>
 <tr class="memitem:ab15f199c7db0adb18bfe45bc9fe3fce6" id="r_ab15f199c7db0adb18bfe45bc9fe3fce6"><td class="memItemLeft" align="right" valign="top">std::vector&lt; Double_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab15f199c7db0adb18bfe45bc9fe3fce6">m_pulls</a></td></tr>
 <tr class="memitem:ad575f3ac74eebda81c38457aaa200beb" id="r_ad575f3ac74eebda81c38457aaa200beb"><td class="memItemLeft" align="right" valign="top">std::vector&lt; Double_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad575f3ac74eebda81c38457aaa200beb">m_cov_elements</a></td></tr>
+<tr class="memitem:a8eabe145a003c1b98b693e29a06ec834" id="r_a8eabe145a003c1b98b693e29a06ec834"><td class="memItemLeft" align="right" valign="top">Bool_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8eabe145a003c1b98b693e29a06ec834">m_ubt_valid</a> {false}</td></tr>
+<tr class="memitem:a342e8baeeaa3bd0f489bc6aa4e73bff4" id="r_a342e8baeeaa3bd0f489bc6aa4e73bff4"><td class="memItemLeft" align="right" valign="top">Double_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a342e8baeeaa3bd0f489bc6aa4e73bff4">m_ubt_x</a> {std::numeric_limits&lt;Double_t&gt;::quiet_NaN()}</td></tr>
+<tr class="memitem:a29e9ee6dcb1febce8956e497c25bcaea" id="r_a29e9ee6dcb1febce8956e497c25bcaea"><td class="memItemLeft" align="right" valign="top">Double_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a29e9ee6dcb1febce8956e497c25bcaea">m_ubt_y</a> {std::numeric_limits&lt;Double_t&gt;::quiet_NaN()}</td></tr>
+<tr class="memitem:ae71bd79470502d6cbaf94b46892b6220" id="r_ae71bd79470502d6cbaf94b46892b6220"><td class="memItemLeft" align="right" valign="top">Double_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae71bd79470502d6cbaf94b46892b6220">m_ubt_z</a> {std::numeric_limits&lt;Double_t&gt;::quiet_NaN()}</td></tr>
+<tr class="memitem:a374ec548faa1c18b685795ec6e1c34fb" id="r_a374ec548faa1c18b685795ec6e1c34fb"><td class="memItemLeft" align="right" valign="top">Double_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a374ec548faa1c18b685795ec6e1c34fb">m_ubt_px</a> {std::numeric_limits&lt;Double_t&gt;::quiet_NaN()}</td></tr>
+<tr class="memitem:addd834a9d9c6d0c910e5d7acc324467b" id="r_addd834a9d9c6d0c910e5d7acc324467b"><td class="memItemLeft" align="right" valign="top">Double_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#addd834a9d9c6d0c910e5d7acc324467b">m_ubt_py</a> {std::numeric_limits&lt;Double_t&gt;::quiet_NaN()}</td></tr>
+<tr class="memitem:a406a7964ed6688281b5ff07169000733" id="r_a406a7964ed6688281b5ff07169000733"><td class="memItemLeft" align="right" valign="top">Double_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a406a7964ed6688281b5ff07169000733">m_ubt_pz</a> {std::numeric_limits&lt;Double_t&gt;::quiet_NaN()}</td></tr>
+<tr class="memitem:a9f33a91aadea48610ea9c756f5c19406" id="r_a9f33a91aadea48610ea9c756f5c19406"><td class="memItemLeft" align="right" valign="top">Double_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9f33a91aadea48610ea9c756f5c19406">m_ubt_path_len</a> {std::numeric_limits&lt;Double_t&gt;::quiet_NaN()}</td></tr>
+<tr class="memitem:a333dc67a908793160b81c4ffa22a9d21" id="r_a333dc67a908793160b81c4ffa22a9d21"><td class="memItemLeft" align="right" valign="top">std::vector&lt; Double_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a333dc67a908793160b81c4ffa22a9d21">m_ubt_cov</a></td></tr>
+<tr class="memitem:a224e5b23b3cf26e9a923f2216101955e" id="r_a224e5b23b3cf26e9a923f2216101955e"><td class="memItemLeft" align="right" valign="top">Bool_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a224e5b23b3cf26e9a923f2216101955e">m_td_valid</a> {false}</td></tr>
+<tr class="memitem:a6b35a648a89b4d68d34c246e8912df27" id="r_a6b35a648a89b4d68d34c246e8912df27"><td class="memItemLeft" align="right" valign="top">Double_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6b35a648a89b4d68d34c246e8912df27">m_td_x</a> {std::numeric_limits&lt;Double_t&gt;::quiet_NaN()}</td></tr>
+<tr class="memitem:a22c0c0efaa700d03f7d7b24c7f935520" id="r_a22c0c0efaa700d03f7d7b24c7f935520"><td class="memItemLeft" align="right" valign="top">Double_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a22c0c0efaa700d03f7d7b24c7f935520">m_td_y</a> {std::numeric_limits&lt;Double_t&gt;::quiet_NaN()}</td></tr>
+<tr class="memitem:a944cb1bc5cb205529a37205d3f236a0e" id="r_a944cb1bc5cb205529a37205d3f236a0e"><td class="memItemLeft" align="right" valign="top">Double_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a944cb1bc5cb205529a37205d3f236a0e">m_td_z</a> {std::numeric_limits&lt;Double_t&gt;::quiet_NaN()}</td></tr>
+<tr class="memitem:a456ba3f2e3635557fa29c386285c3cb0" id="r_a456ba3f2e3635557fa29c386285c3cb0"><td class="memItemLeft" align="right" valign="top">Double_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a456ba3f2e3635557fa29c386285c3cb0">m_td_px</a> {std::numeric_limits&lt;Double_t&gt;::quiet_NaN()}</td></tr>
+<tr class="memitem:a4a38e6d48106d5d8b1bc9b85cc90384f" id="r_a4a38e6d48106d5d8b1bc9b85cc90384f"><td class="memItemLeft" align="right" valign="top">Double_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4a38e6d48106d5d8b1bc9b85cc90384f">m_td_py</a> {std::numeric_limits&lt;Double_t&gt;::quiet_NaN()}</td></tr>
+<tr class="memitem:a4b29d01a47fd4f6529056bc7e48ed8cf" id="r_a4b29d01a47fd4f6529056bc7e48ed8cf"><td class="memItemLeft" align="right" valign="top">Double_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4b29d01a47fd4f6529056bc7e48ed8cf">m_td_pz</a> {std::numeric_limits&lt;Double_t&gt;::quiet_NaN()}</td></tr>
+<tr class="memitem:adacf42e93b03a90c2583e6c9f054d3cd" id="r_adacf42e93b03a90c2583e6c9f054d3cd"><td class="memItemLeft" align="right" valign="top">Double_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adacf42e93b03a90c2583e6c9f054d3cd">m_td_path_len</a> {std::numeric_limits&lt;Double_t&gt;::quiet_NaN()}</td></tr>
+<tr class="memitem:af49a9d53bce668d176ad2d64ec615b33" id="r_af49a9d53bce668d176ad2d64ec615b33"><td class="memItemLeft" align="right" valign="top">std::vector&lt; Double_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af49a9d53bce668d176ad2d64ec615b33">m_td_cov</a></td></tr>
+<tr class="memitem:af9a0f111240ee96212f9589cf77067bc" id="r_af9a0f111240ee96212f9589cf77067bc"><td class="memItemLeft" align="right" valign="top">Double_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af9a0f111240ee96212f9589cf77067bc">m_track_length</a> {std::numeric_limits&lt;Double_t&gt;::quiet_NaN()}</td></tr>
+<tr class="memdesc:af9a0f111240ee96212f9589cf77067bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Path length from the first to the last measurement (cm).  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Fitted track from the ACTS straw tracker fit, in the <a class="el" href="namespaceSHiP.html">SHiP</a> frame.</p>
 <p>The state is taken at the first measurement of the track. Positions are in cm, momenta in GeV. The covariance is the 6x6 matrix of (x, y, z, px, py, pz), stored as its upper triangle in row-major order, so the variances of px, py and pz are elements 15, 18 and 20.</p>
 <p>The class does not depend on ACTS, so reco files can be read without it. </p>
 
-<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00025">25</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00026">26</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
 </div><a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a97b02a1a39789bda00d12d494434cc3f" name="a97b02a1a39789bda00d12d494434cc3f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a97b02a1a39789bda00d12d494434cc3f">&#9670;&#160;</a></span>RecoTrack() <span class="overload">[1/2]</span></h2>
@@ -194,8 +235,8 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a270bc7f14a7e7f956eb718cac93b5f69" name="a270bc7f14a7e7f956eb718cac93b5f69"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a270bc7f14a7e7f956eb718cac93b5f69">&#9670;&#160;</a></span>RecoTrack() <span class="overload">[2/2]</span></h2>
+<a id="afbf65ee8854b3adca88101c0e2e364cc" name="afbf65ee8854b3adca88101c0e2e364cc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afbf65ee8854b3adca88101c0e2e364cc">&#9670;&#160;</a></span>RecoTrack() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -238,6 +279,21 @@ Private Attributes</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">std::vector&lt; Double_t &gt;</td>          <td class="paramname"><span class="paramname"><em>x_fits</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; Double_t &gt;</td>          <td class="paramname"><span class="paramname"><em>y_fits</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; Double_t &gt;</td>          <td class="paramname"><span class="paramname"><em>z_fits</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype">std::vector&lt; Double_t &gt;</td>          <td class="paramname"><span class="paramname"><em>residuals</em></span>, </td>
         </tr>
         <tr>
@@ -248,55 +304,61 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="RecoTrack_8cxx_source.html#l00013">13</a> of file <a class="el" href="RecoTrack_8cxx_source.html">RecoTrack.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   18</span>    : TObject(),</div>
-<div class="line"><span class="lineno">   19</span>      <a class="code hl_variable" href="#ab221dc3fc3923bf922ff282f0f4790b9">m_x</a>(position.X()),</div>
-<div class="line"><span class="lineno">   20</span>      <a class="code hl_variable" href="#a0f1e9ab13ff6543f45cca4c8be2679e5">m_y</a>(position.Y()),</div>
-<div class="line"><span class="lineno">   21</span>      <a class="code hl_variable" href="#abd53ec669757ce8b6fc7c72f92f5c44b">m_z</a>(position.Z()),</div>
-<div class="line"><span class="lineno">   22</span>      <a class="code hl_variable" href="#addcc2b4f196f5fc0ff3da68d52120d62">m_px</a>(<a class="code hl_variable" href="namespacestudy__GammaConv.html#ae7cafac6179ebc8cb6564e8cfc465345">momentum</a>.X()),</div>
-<div class="line"><span class="lineno">   23</span>      <a class="code hl_variable" href="#ad94a246a35babb6c79ea5b13cd9365c3">m_py</a>(<a class="code hl_variable" href="namespacestudy__GammaConv.html#ae7cafac6179ebc8cb6564e8cfc465345">momentum</a>.Y()),</div>
-<div class="line"><span class="lineno">   24</span>      <a class="code hl_variable" href="#a01133da4121b7899bcb9a0210b1a8a16">m_pz</a>(<a class="code hl_variable" href="namespacestudy__GammaConv.html#ae7cafac6179ebc8cb6564e8cfc465345">momentum</a>.Z()),</div>
-<div class="line"><span class="lineno">   25</span>      <a class="code hl_variable" href="#a06d7a1fe4f4c07aa57af85f617835f63">m_charge</a>(<a class="code hl_function" href="#af1bd72b0ea79eade0ce9f75a29448b64">charge</a>),</div>
-<div class="line"><span class="lineno">   26</span>      <a class="code hl_variable" href="#aa58d00e087b5b0118181bd070ecda542">m_chi2</a>(<a class="code hl_function" href="#ab01625cf7788e88939daa2f68e2293d2">chi2</a>),</div>
-<div class="line"><span class="lineno">   27</span>      <a class="code hl_variable" href="#a1e45070f303a837eb70d940b6521b897">m_nDoF</a>(<a class="code hl_function" href="#a9d1cec73aaeb89943ec3b390d1550b81">nDoF</a>),</div>
-<div class="line"><span class="lineno">   28</span>      <a class="code hl_variable" href="#a73dde21b4e331a3e273db36702329968">m_nMeasurements</a>(<a class="code hl_function" href="#ab2574d88cc7f10dc064c21b5c1a7e573">nMeasurements</a>),</div>
-<div class="line"><span class="lineno">   29</span>      <a class="code hl_variable" href="#abcb9fb7f81b1f7fe2ca906419f096e82">m_residuals</a>(std::move(residuals)),</div>
-<div class="line"><span class="lineno">   30</span>      <a class="code hl_variable" href="#ab15f199c7db0adb18bfe45bc9fe3fce6">m_pulls</a>(std::move(pulls)),</div>
-<div class="line"><span class="lineno">   31</span>      <a class="code hl_variable" href="#ad575f3ac74eebda81c38457aaa200beb">m_cov_elements</a>(covariance.begin(), covariance.end()) {</div>
-<div class="line"><span class="lineno">   32</span>  <span class="comment">// Diagonal of the upper triangle of a 6x6 matrix, row-major</span></div>
-<div class="line"><span class="lineno">   33</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacerunPythia8.html#aa6ccf15df5382fe526735a07d97d3cd4">sigma</a> = [&amp;covariance](<span class="keywordtype">int</span> <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a1391b7407359c40dbacead1473f5a96b">index</a>) {</div>
-<div class="line"><span class="lineno">   34</span>    <span class="keywordflow">return</span> std::sqrt(std::max(0.0, covariance[index]));</div>
-<div class="line"><span class="lineno">   35</span>  };</div>
-<div class="line"><span class="lineno">   36</span>  <a class="code hl_variable" href="#ad41aeb55b6e68a1a8732d8f1d31237eb">m_err_x</a> = <a class="code hl_variable" href="namespacerunPythia8.html#aa6ccf15df5382fe526735a07d97d3cd4">sigma</a>(0);</div>
-<div class="line"><span class="lineno">   37</span>  <a class="code hl_variable" href="#aba17b0cab02d40b961f8e16e1b9d65ac">m_err_y</a> = <a class="code hl_variable" href="namespacerunPythia8.html#aa6ccf15df5382fe526735a07d97d3cd4">sigma</a>(6);</div>
-<div class="line"><span class="lineno">   38</span>  <a class="code hl_variable" href="#a4e0a4a87bd9e225d24a470a20d92b74a">m_err_z</a> = <a class="code hl_variable" href="namespacerunPythia8.html#aa6ccf15df5382fe526735a07d97d3cd4">sigma</a>(11);</div>
-<div class="line"><span class="lineno">   39</span>  <a class="code hl_variable" href="#a7c0e25bf0b10da86dc8b216aca450bbd">m_err_px</a> = <a class="code hl_variable" href="namespacerunPythia8.html#aa6ccf15df5382fe526735a07d97d3cd4">sigma</a>(15);</div>
-<div class="line"><span class="lineno">   40</span>  <a class="code hl_variable" href="#a0ca00c874e727111d9972d2da3c0e5ab">m_err_py</a> = <a class="code hl_variable" href="namespacerunPythia8.html#aa6ccf15df5382fe526735a07d97d3cd4">sigma</a>(18);</div>
-<div class="line"><span class="lineno">   41</span>  <a class="code hl_variable" href="#ad1c14e233a7b0dbb4e158e851a6f6c2f">m_err_pz</a> = <a class="code hl_variable" href="namespacerunPythia8.html#aa6ccf15df5382fe526735a07d97d3cd4">sigma</a>(20);</div>
-<div class="line"><span class="lineno">   42</span>}</div>
-<div class="ttc" id="aclassSHiP_1_1RecoTrack_html_a01133da4121b7899bcb9a0210b1a8a16"><div class="ttname"><a href="#a01133da4121b7899bcb9a0210b1a8a16">SHiP::RecoTrack::m_pz</a></div><div class="ttdeci">Double_t m_pz</div><div class="ttdef"><b>Definition</b> <a href="RecoTrack_8h_source.html#l00070">RecoTrack.h:70</a></div></div>
-<div class="ttc" id="aclassSHiP_1_1RecoTrack_html_a06d7a1fe4f4c07aa57af85f617835f63"><div class="ttname"><a href="#a06d7a1fe4f4c07aa57af85f617835f63">SHiP::RecoTrack::m_charge</a></div><div class="ttdeci">Int_t m_charge</div><div class="ttdef"><b>Definition</b> <a href="RecoTrack_8h_source.html#l00071">RecoTrack.h:71</a></div></div>
-<div class="ttc" id="aclassSHiP_1_1RecoTrack_html_a0ca00c874e727111d9972d2da3c0e5ab"><div class="ttname"><a href="#a0ca00c874e727111d9972d2da3c0e5ab">SHiP::RecoTrack::m_err_py</a></div><div class="ttdeci">Double_t m_err_py</div><div class="ttdef"><b>Definition</b> <a href="RecoTrack_8h_source.html#l00076">RecoTrack.h:76</a></div></div>
-<div class="ttc" id="aclassSHiP_1_1RecoTrack_html_a0f1e9ab13ff6543f45cca4c8be2679e5"><div class="ttname"><a href="#a0f1e9ab13ff6543f45cca4c8be2679e5">SHiP::RecoTrack::m_y</a></div><div class="ttdeci">Double_t m_y</div><div class="ttdef"><b>Definition</b> <a href="RecoTrack_8h_source.html#l00066">RecoTrack.h:66</a></div></div>
-<div class="ttc" id="aclassSHiP_1_1RecoTrack_html_a1e45070f303a837eb70d940b6521b897"><div class="ttname"><a href="#a1e45070f303a837eb70d940b6521b897">SHiP::RecoTrack::m_nDoF</a></div><div class="ttdeci">Double_t m_nDoF</div><div class="ttdef"><b>Definition</b> <a href="RecoTrack_8h_source.html#l00079">RecoTrack.h:79</a></div></div>
-<div class="ttc" id="aclassSHiP_1_1RecoTrack_html_a4e0a4a87bd9e225d24a470a20d92b74a"><div class="ttname"><a href="#a4e0a4a87bd9e225d24a470a20d92b74a">SHiP::RecoTrack::m_err_z</a></div><div class="ttdeci">Double_t m_err_z</div><div class="ttdef"><b>Definition</b> <a href="RecoTrack_8h_source.html#l00074">RecoTrack.h:74</a></div></div>
-<div class="ttc" id="aclassSHiP_1_1RecoTrack_html_a73dde21b4e331a3e273db36702329968"><div class="ttname"><a href="#a73dde21b4e331a3e273db36702329968">SHiP::RecoTrack::m_nMeasurements</a></div><div class="ttdeci">UInt_t m_nMeasurements</div><div class="ttdef"><b>Definition</b> <a href="RecoTrack_8h_source.html#l00080">RecoTrack.h:80</a></div></div>
-<div class="ttc" id="aclassSHiP_1_1RecoTrack_html_a7c0e25bf0b10da86dc8b216aca450bbd"><div class="ttname"><a href="#a7c0e25bf0b10da86dc8b216aca450bbd">SHiP::RecoTrack::m_err_px</a></div><div class="ttdeci">Double_t m_err_px</div><div class="ttdef"><b>Definition</b> <a href="RecoTrack_8h_source.html#l00075">RecoTrack.h:75</a></div></div>
-<div class="ttc" id="aclassSHiP_1_1RecoTrack_html_a9d1cec73aaeb89943ec3b390d1550b81"><div class="ttname"><a href="#a9d1cec73aaeb89943ec3b390d1550b81">SHiP::RecoTrack::nDoF</a></div><div class="ttdeci">Double_t nDoF() const</div><div class="ttdef"><b>Definition</b> <a href="RecoTrack_8h_source.html#l00048">RecoTrack.h:48</a></div></div>
-<div class="ttc" id="aclassSHiP_1_1RecoTrack_html_aa58d00e087b5b0118181bd070ecda542"><div class="ttname"><a href="#aa58d00e087b5b0118181bd070ecda542">SHiP::RecoTrack::m_chi2</a></div><div class="ttdeci">Double_t m_chi2</div><div class="ttdef"><b>Definition</b> <a href="RecoTrack_8h_source.html#l00078">RecoTrack.h:78</a></div></div>
-<div class="ttc" id="aclassSHiP_1_1RecoTrack_html_ab01625cf7788e88939daa2f68e2293d2"><div class="ttname"><a href="#ab01625cf7788e88939daa2f68e2293d2">SHiP::RecoTrack::chi2</a></div><div class="ttdeci">Double_t chi2() const</div><div class="ttdef"><b>Definition</b> <a href="RecoTrack_8h_source.html#l00047">RecoTrack.h:47</a></div></div>
-<div class="ttc" id="aclassSHiP_1_1RecoTrack_html_ab15f199c7db0adb18bfe45bc9fe3fce6"><div class="ttname"><a href="#ab15f199c7db0adb18bfe45bc9fe3fce6">SHiP::RecoTrack::m_pulls</a></div><div class="ttdeci">std::vector&lt; Double_t &gt; m_pulls</div><div class="ttdef"><b>Definition</b> <a href="RecoTrack_8h_source.html#l00082">RecoTrack.h:82</a></div></div>
-<div class="ttc" id="aclassSHiP_1_1RecoTrack_html_ab221dc3fc3923bf922ff282f0f4790b9"><div class="ttname"><a href="#ab221dc3fc3923bf922ff282f0f4790b9">SHiP::RecoTrack::m_x</a></div><div class="ttdeci">Double_t m_x</div><div class="ttdef"><b>Definition</b> <a href="RecoTrack_8h_source.html#l00065">RecoTrack.h:65</a></div></div>
-<div class="ttc" id="aclassSHiP_1_1RecoTrack_html_ab2574d88cc7f10dc064c21b5c1a7e573"><div class="ttname"><a href="#ab2574d88cc7f10dc064c21b5c1a7e573">SHiP::RecoTrack::nMeasurements</a></div><div class="ttdeci">UInt_t nMeasurements() const</div><div class="ttdef"><b>Definition</b> <a href="RecoTrack_8h_source.html#l00049">RecoTrack.h:49</a></div></div>
-<div class="ttc" id="aclassSHiP_1_1RecoTrack_html_aba17b0cab02d40b961f8e16e1b9d65ac"><div class="ttname"><a href="#aba17b0cab02d40b961f8e16e1b9d65ac">SHiP::RecoTrack::m_err_y</a></div><div class="ttdeci">Double_t m_err_y</div><div class="ttdef"><b>Definition</b> <a href="RecoTrack_8h_source.html#l00073">RecoTrack.h:73</a></div></div>
-<div class="ttc" id="aclassSHiP_1_1RecoTrack_html_abcb9fb7f81b1f7fe2ca906419f096e82"><div class="ttname"><a href="#abcb9fb7f81b1f7fe2ca906419f096e82">SHiP::RecoTrack::m_residuals</a></div><div class="ttdeci">std::vector&lt; Double_t &gt; m_residuals</div><div class="ttdef"><b>Definition</b> <a href="RecoTrack_8h_source.html#l00081">RecoTrack.h:81</a></div></div>
-<div class="ttc" id="aclassSHiP_1_1RecoTrack_html_abd53ec669757ce8b6fc7c72f92f5c44b"><div class="ttname"><a href="#abd53ec669757ce8b6fc7c72f92f5c44b">SHiP::RecoTrack::m_z</a></div><div class="ttdeci">Double_t m_z</div><div class="ttdef"><b>Definition</b> <a href="RecoTrack_8h_source.html#l00067">RecoTrack.h:67</a></div></div>
-<div class="ttc" id="aclassSHiP_1_1RecoTrack_html_ad1c14e233a7b0dbb4e158e851a6f6c2f"><div class="ttname"><a href="#ad1c14e233a7b0dbb4e158e851a6f6c2f">SHiP::RecoTrack::m_err_pz</a></div><div class="ttdeci">Double_t m_err_pz</div><div class="ttdef"><b>Definition</b> <a href="RecoTrack_8h_source.html#l00077">RecoTrack.h:77</a></div></div>
-<div class="ttc" id="aclassSHiP_1_1RecoTrack_html_ad41aeb55b6e68a1a8732d8f1d31237eb"><div class="ttname"><a href="#ad41aeb55b6e68a1a8732d8f1d31237eb">SHiP::RecoTrack::m_err_x</a></div><div class="ttdeci">Double_t m_err_x</div><div class="ttdef"><b>Definition</b> <a href="RecoTrack_8h_source.html#l00072">RecoTrack.h:72</a></div></div>
-<div class="ttc" id="aclassSHiP_1_1RecoTrack_html_ad575f3ac74eebda81c38457aaa200beb"><div class="ttname"><a href="#ad575f3ac74eebda81c38457aaa200beb">SHiP::RecoTrack::m_cov_elements</a></div><div class="ttdeci">std::vector&lt; Double_t &gt; m_cov_elements</div><div class="ttdef"><b>Definition</b> <a href="RecoTrack_8h_source.html#l00083">RecoTrack.h:83</a></div></div>
-<div class="ttc" id="aclassSHiP_1_1RecoTrack_html_ad94a246a35babb6c79ea5b13cd9365c3"><div class="ttname"><a href="#ad94a246a35babb6c79ea5b13cd9365c3">SHiP::RecoTrack::m_py</a></div><div class="ttdeci">Double_t m_py</div><div class="ttdef"><b>Definition</b> <a href="RecoTrack_8h_source.html#l00069">RecoTrack.h:69</a></div></div>
-<div class="ttc" id="aclassSHiP_1_1RecoTrack_html_addcc2b4f196f5fc0ff3da68d52120d62"><div class="ttname"><a href="#addcc2b4f196f5fc0ff3da68d52120d62">SHiP::RecoTrack::m_px</a></div><div class="ttdeci">Double_t m_px</div><div class="ttdef"><b>Definition</b> <a href="RecoTrack_8h_source.html#l00068">RecoTrack.h:68</a></div></div>
-<div class="ttc" id="aclassSHiP_1_1RecoTrack_html_af1bd72b0ea79eade0ce9f75a29448b64"><div class="ttname"><a href="#af1bd72b0ea79eade0ce9f75a29448b64">SHiP::RecoTrack::charge</a></div><div class="ttdeci">Int_t charge() const</div><div class="ttdef"><b>Definition</b> <a href="RecoTrack_8h_source.html#l00040">RecoTrack.h:40</a></div></div>
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8cxx_source.html#l00014">14</a> of file <a class="el" href="RecoTrack_8cxx_source.html">RecoTrack.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   21</span>    : TObject(),</div>
+<div class="line"><span class="lineno">   22</span>      <a class="code hl_variable" href="#ab221dc3fc3923bf922ff282f0f4790b9">m_x</a>(position.X()),</div>
+<div class="line"><span class="lineno">   23</span>      <a class="code hl_variable" href="#a0f1e9ab13ff6543f45cca4c8be2679e5">m_y</a>(position.Y()),</div>
+<div class="line"><span class="lineno">   24</span>      <a class="code hl_variable" href="#abd53ec669757ce8b6fc7c72f92f5c44b">m_z</a>(position.Z()),</div>
+<div class="line"><span class="lineno">   25</span>      <a class="code hl_variable" href="#addcc2b4f196f5fc0ff3da68d52120d62">m_px</a>(<a class="code hl_variable" href="namespacestudy__GammaConv.html#ae7cafac6179ebc8cb6564e8cfc465345">momentum</a>.X()),</div>
+<div class="line"><span class="lineno">   26</span>      <a class="code hl_variable" href="#ad94a246a35babb6c79ea5b13cd9365c3">m_py</a>(<a class="code hl_variable" href="namespacestudy__GammaConv.html#ae7cafac6179ebc8cb6564e8cfc465345">momentum</a>.Y()),</div>
+<div class="line"><span class="lineno">   27</span>      <a class="code hl_variable" href="#a01133da4121b7899bcb9a0210b1a8a16">m_pz</a>(<a class="code hl_variable" href="namespacestudy__GammaConv.html#ae7cafac6179ebc8cb6564e8cfc465345">momentum</a>.Z()),</div>
+<div class="line"><span class="lineno">   28</span>      <a class="code hl_variable" href="#a06d7a1fe4f4c07aa57af85f617835f63">m_charge</a>(<a class="code hl_function" href="#af1bd72b0ea79eade0ce9f75a29448b64">charge</a>),</div>
+<div class="line"><span class="lineno">   29</span>      <a class="code hl_variable" href="#aa58d00e087b5b0118181bd070ecda542">m_chi2</a>(<a class="code hl_function" href="#ab01625cf7788e88939daa2f68e2293d2">chi2</a>),</div>
+<div class="line"><span class="lineno">   30</span>      <a class="code hl_variable" href="#a1e45070f303a837eb70d940b6521b897">m_nDoF</a>(<a class="code hl_function" href="#a9d1cec73aaeb89943ec3b390d1550b81">nDoF</a>),</div>
+<div class="line"><span class="lineno">   31</span>      <a class="code hl_variable" href="#a73dde21b4e331a3e273db36702329968">m_nMeasurements</a>(<a class="code hl_function" href="#ab2574d88cc7f10dc064c21b5c1a7e573">nMeasurements</a>),</div>
+<div class="line"><span class="lineno">   32</span>      <a class="code hl_variable" href="#abcb9fb7f81b1f7fe2ca906419f096e82">m_residuals</a>(std::move(residuals)),</div>
+<div class="line"><span class="lineno">   33</span>      <a class="code hl_variable" href="#a5d57ab36625b820d1f73acac6890c0fe">m_x_fits</a>(std::move(x_fits)),</div>
+<div class="line"><span class="lineno">   34</span>      <a class="code hl_variable" href="#a79987f5602a12671e817b5ffafd6d4a4">m_y_fits</a>(std::move(y_fits)),</div>
+<div class="line"><span class="lineno">   35</span>      <a class="code hl_variable" href="#ab01948ab95fb93f4cbb71d5f68b3ccc8">m_z_fits</a>(std::move(z_fits)),</div>
+<div class="line"><span class="lineno">   36</span>      <a class="code hl_variable" href="#ab15f199c7db0adb18bfe45bc9fe3fce6">m_pulls</a>(std::move(pulls)),</div>
+<div class="line"><span class="lineno">   37</span>      <a class="code hl_variable" href="#ad575f3ac74eebda81c38457aaa200beb">m_cov_elements</a>(covariance.begin(), covariance.end()) {</div>
+<div class="line"><span class="lineno">   38</span>  <span class="comment">// Diagonal of the upper triangle of a 6x6 matrix, row-major</span></div>
+<div class="line"><span class="lineno">   39</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacerunPythia8.html#aa6ccf15df5382fe526735a07d97d3cd4">sigma</a> = [&amp;covariance](<span class="keywordtype">int</span> <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a1391b7407359c40dbacead1473f5a96b">index</a>) {</div>
+<div class="line"><span class="lineno">   40</span>    <span class="keywordflow">return</span> std::sqrt(std::max(0.0, covariance[index]));</div>
+<div class="line"><span class="lineno">   41</span>  };</div>
+<div class="line"><span class="lineno">   42</span>  <a class="code hl_variable" href="#ad41aeb55b6e68a1a8732d8f1d31237eb">m_err_x</a> = <a class="code hl_variable" href="namespacerunPythia8.html#aa6ccf15df5382fe526735a07d97d3cd4">sigma</a>(0);</div>
+<div class="line"><span class="lineno">   43</span>  <a class="code hl_variable" href="#aba17b0cab02d40b961f8e16e1b9d65ac">m_err_y</a> = <a class="code hl_variable" href="namespacerunPythia8.html#aa6ccf15df5382fe526735a07d97d3cd4">sigma</a>(6);</div>
+<div class="line"><span class="lineno">   44</span>  <a class="code hl_variable" href="#a4e0a4a87bd9e225d24a470a20d92b74a">m_err_z</a> = <a class="code hl_variable" href="namespacerunPythia8.html#aa6ccf15df5382fe526735a07d97d3cd4">sigma</a>(11);</div>
+<div class="line"><span class="lineno">   45</span>  <a class="code hl_variable" href="#a7c0e25bf0b10da86dc8b216aca450bbd">m_err_px</a> = <a class="code hl_variable" href="namespacerunPythia8.html#aa6ccf15df5382fe526735a07d97d3cd4">sigma</a>(15);</div>
+<div class="line"><span class="lineno">   46</span>  <a class="code hl_variable" href="#a0ca00c874e727111d9972d2da3c0e5ab">m_err_py</a> = <a class="code hl_variable" href="namespacerunPythia8.html#aa6ccf15df5382fe526735a07d97d3cd4">sigma</a>(18);</div>
+<div class="line"><span class="lineno">   47</span>  <a class="code hl_variable" href="#ad1c14e233a7b0dbb4e158e851a6f6c2f">m_err_pz</a> = <a class="code hl_variable" href="namespacerunPythia8.html#aa6ccf15df5382fe526735a07d97d3cd4">sigma</a>(20);</div>
+<div class="line"><span class="lineno">   48</span>}</div>
+<div class="ttc" id="aclassSHiP_1_1RecoTrack_html_a01133da4121b7899bcb9a0210b1a8a16"><div class="ttname"><a href="#a01133da4121b7899bcb9a0210b1a8a16">SHiP::RecoTrack::m_pz</a></div><div class="ttdeci">Double_t m_pz</div><div class="ttdef"><b>Definition</b> <a href="RecoTrack_8h_source.html#l00119">RecoTrack.h:119</a></div></div>
+<div class="ttc" id="aclassSHiP_1_1RecoTrack_html_a06d7a1fe4f4c07aa57af85f617835f63"><div class="ttname"><a href="#a06d7a1fe4f4c07aa57af85f617835f63">SHiP::RecoTrack::m_charge</a></div><div class="ttdeci">Int_t m_charge</div><div class="ttdef"><b>Definition</b> <a href="RecoTrack_8h_source.html#l00120">RecoTrack.h:120</a></div></div>
+<div class="ttc" id="aclassSHiP_1_1RecoTrack_html_a0ca00c874e727111d9972d2da3c0e5ab"><div class="ttname"><a href="#a0ca00c874e727111d9972d2da3c0e5ab">SHiP::RecoTrack::m_err_py</a></div><div class="ttdeci">Double_t m_err_py</div><div class="ttdef"><b>Definition</b> <a href="RecoTrack_8h_source.html#l00125">RecoTrack.h:125</a></div></div>
+<div class="ttc" id="aclassSHiP_1_1RecoTrack_html_a0f1e9ab13ff6543f45cca4c8be2679e5"><div class="ttname"><a href="#a0f1e9ab13ff6543f45cca4c8be2679e5">SHiP::RecoTrack::m_y</a></div><div class="ttdeci">Double_t m_y</div><div class="ttdef"><b>Definition</b> <a href="RecoTrack_8h_source.html#l00115">RecoTrack.h:115</a></div></div>
+<div class="ttc" id="aclassSHiP_1_1RecoTrack_html_a1e45070f303a837eb70d940b6521b897"><div class="ttname"><a href="#a1e45070f303a837eb70d940b6521b897">SHiP::RecoTrack::m_nDoF</a></div><div class="ttdeci">Double_t m_nDoF</div><div class="ttdef"><b>Definition</b> <a href="RecoTrack_8h_source.html#l00128">RecoTrack.h:128</a></div></div>
+<div class="ttc" id="aclassSHiP_1_1RecoTrack_html_a4e0a4a87bd9e225d24a470a20d92b74a"><div class="ttname"><a href="#a4e0a4a87bd9e225d24a470a20d92b74a">SHiP::RecoTrack::m_err_z</a></div><div class="ttdeci">Double_t m_err_z</div><div class="ttdef"><b>Definition</b> <a href="RecoTrack_8h_source.html#l00123">RecoTrack.h:123</a></div></div>
+<div class="ttc" id="aclassSHiP_1_1RecoTrack_html_a5d57ab36625b820d1f73acac6890c0fe"><div class="ttname"><a href="#a5d57ab36625b820d1f73acac6890c0fe">SHiP::RecoTrack::m_x_fits</a></div><div class="ttdeci">std::vector&lt; Double_t &gt; m_x_fits</div><div class="ttdef"><b>Definition</b> <a href="RecoTrack_8h_source.html#l00131">RecoTrack.h:131</a></div></div>
+<div class="ttc" id="aclassSHiP_1_1RecoTrack_html_a73dde21b4e331a3e273db36702329968"><div class="ttname"><a href="#a73dde21b4e331a3e273db36702329968">SHiP::RecoTrack::m_nMeasurements</a></div><div class="ttdeci">UInt_t m_nMeasurements</div><div class="ttdef"><b>Definition</b> <a href="RecoTrack_8h_source.html#l00129">RecoTrack.h:129</a></div></div>
+<div class="ttc" id="aclassSHiP_1_1RecoTrack_html_a79987f5602a12671e817b5ffafd6d4a4"><div class="ttname"><a href="#a79987f5602a12671e817b5ffafd6d4a4">SHiP::RecoTrack::m_y_fits</a></div><div class="ttdeci">std::vector&lt; Double_t &gt; m_y_fits</div><div class="ttdef"><b>Definition</b> <a href="RecoTrack_8h_source.html#l00132">RecoTrack.h:132</a></div></div>
+<div class="ttc" id="aclassSHiP_1_1RecoTrack_html_a7c0e25bf0b10da86dc8b216aca450bbd"><div class="ttname"><a href="#a7c0e25bf0b10da86dc8b216aca450bbd">SHiP::RecoTrack::m_err_px</a></div><div class="ttdeci">Double_t m_err_px</div><div class="ttdef"><b>Definition</b> <a href="RecoTrack_8h_source.html#l00124">RecoTrack.h:124</a></div></div>
+<div class="ttc" id="aclassSHiP_1_1RecoTrack_html_a9d1cec73aaeb89943ec3b390d1550b81"><div class="ttname"><a href="#a9d1cec73aaeb89943ec3b390d1550b81">SHiP::RecoTrack::nDoF</a></div><div class="ttdeci">Double_t nDoF() const</div><div class="ttdef"><b>Definition</b> <a href="RecoTrack_8h_source.html#l00050">RecoTrack.h:50</a></div></div>
+<div class="ttc" id="aclassSHiP_1_1RecoTrack_html_aa58d00e087b5b0118181bd070ecda542"><div class="ttname"><a href="#aa58d00e087b5b0118181bd070ecda542">SHiP::RecoTrack::m_chi2</a></div><div class="ttdeci">Double_t m_chi2</div><div class="ttdef"><b>Definition</b> <a href="RecoTrack_8h_source.html#l00127">RecoTrack.h:127</a></div></div>
+<div class="ttc" id="aclassSHiP_1_1RecoTrack_html_ab01625cf7788e88939daa2f68e2293d2"><div class="ttname"><a href="#ab01625cf7788e88939daa2f68e2293d2">SHiP::RecoTrack::chi2</a></div><div class="ttdeci">Double_t chi2() const</div><div class="ttdef"><b>Definition</b> <a href="RecoTrack_8h_source.html#l00049">RecoTrack.h:49</a></div></div>
+<div class="ttc" id="aclassSHiP_1_1RecoTrack_html_ab01948ab95fb93f4cbb71d5f68b3ccc8"><div class="ttname"><a href="#ab01948ab95fb93f4cbb71d5f68b3ccc8">SHiP::RecoTrack::m_z_fits</a></div><div class="ttdeci">std::vector&lt; Double_t &gt; m_z_fits</div><div class="ttdef"><b>Definition</b> <a href="RecoTrack_8h_source.html#l00133">RecoTrack.h:133</a></div></div>
+<div class="ttc" id="aclassSHiP_1_1RecoTrack_html_ab15f199c7db0adb18bfe45bc9fe3fce6"><div class="ttname"><a href="#ab15f199c7db0adb18bfe45bc9fe3fce6">SHiP::RecoTrack::m_pulls</a></div><div class="ttdeci">std::vector&lt; Double_t &gt; m_pulls</div><div class="ttdef"><b>Definition</b> <a href="RecoTrack_8h_source.html#l00134">RecoTrack.h:134</a></div></div>
+<div class="ttc" id="aclassSHiP_1_1RecoTrack_html_ab221dc3fc3923bf922ff282f0f4790b9"><div class="ttname"><a href="#ab221dc3fc3923bf922ff282f0f4790b9">SHiP::RecoTrack::m_x</a></div><div class="ttdeci">Double_t m_x</div><div class="ttdef"><b>Definition</b> <a href="RecoTrack_8h_source.html#l00114">RecoTrack.h:114</a></div></div>
+<div class="ttc" id="aclassSHiP_1_1RecoTrack_html_ab2574d88cc7f10dc064c21b5c1a7e573"><div class="ttname"><a href="#ab2574d88cc7f10dc064c21b5c1a7e573">SHiP::RecoTrack::nMeasurements</a></div><div class="ttdeci">UInt_t nMeasurements() const</div><div class="ttdef"><b>Definition</b> <a href="RecoTrack_8h_source.html#l00051">RecoTrack.h:51</a></div></div>
+<div class="ttc" id="aclassSHiP_1_1RecoTrack_html_aba17b0cab02d40b961f8e16e1b9d65ac"><div class="ttname"><a href="#aba17b0cab02d40b961f8e16e1b9d65ac">SHiP::RecoTrack::m_err_y</a></div><div class="ttdeci">Double_t m_err_y</div><div class="ttdef"><b>Definition</b> <a href="RecoTrack_8h_source.html#l00122">RecoTrack.h:122</a></div></div>
+<div class="ttc" id="aclassSHiP_1_1RecoTrack_html_abcb9fb7f81b1f7fe2ca906419f096e82"><div class="ttname"><a href="#abcb9fb7f81b1f7fe2ca906419f096e82">SHiP::RecoTrack::m_residuals</a></div><div class="ttdeci">std::vector&lt; Double_t &gt; m_residuals</div><div class="ttdef"><b>Definition</b> <a href="RecoTrack_8h_source.html#l00130">RecoTrack.h:130</a></div></div>
+<div class="ttc" id="aclassSHiP_1_1RecoTrack_html_abd53ec669757ce8b6fc7c72f92f5c44b"><div class="ttname"><a href="#abd53ec669757ce8b6fc7c72f92f5c44b">SHiP::RecoTrack::m_z</a></div><div class="ttdeci">Double_t m_z</div><div class="ttdef"><b>Definition</b> <a href="RecoTrack_8h_source.html#l00116">RecoTrack.h:116</a></div></div>
+<div class="ttc" id="aclassSHiP_1_1RecoTrack_html_ad1c14e233a7b0dbb4e158e851a6f6c2f"><div class="ttname"><a href="#ad1c14e233a7b0dbb4e158e851a6f6c2f">SHiP::RecoTrack::m_err_pz</a></div><div class="ttdeci">Double_t m_err_pz</div><div class="ttdef"><b>Definition</b> <a href="RecoTrack_8h_source.html#l00126">RecoTrack.h:126</a></div></div>
+<div class="ttc" id="aclassSHiP_1_1RecoTrack_html_ad41aeb55b6e68a1a8732d8f1d31237eb"><div class="ttname"><a href="#ad41aeb55b6e68a1a8732d8f1d31237eb">SHiP::RecoTrack::m_err_x</a></div><div class="ttdeci">Double_t m_err_x</div><div class="ttdef"><b>Definition</b> <a href="RecoTrack_8h_source.html#l00121">RecoTrack.h:121</a></div></div>
+<div class="ttc" id="aclassSHiP_1_1RecoTrack_html_ad575f3ac74eebda81c38457aaa200beb"><div class="ttname"><a href="#ad575f3ac74eebda81c38457aaa200beb">SHiP::RecoTrack::m_cov_elements</a></div><div class="ttdeci">std::vector&lt; Double_t &gt; m_cov_elements</div><div class="ttdef"><b>Definition</b> <a href="RecoTrack_8h_source.html#l00135">RecoTrack.h:135</a></div></div>
+<div class="ttc" id="aclassSHiP_1_1RecoTrack_html_ad94a246a35babb6c79ea5b13cd9365c3"><div class="ttname"><a href="#ad94a246a35babb6c79ea5b13cd9365c3">SHiP::RecoTrack::m_py</a></div><div class="ttdeci">Double_t m_py</div><div class="ttdef"><b>Definition</b> <a href="RecoTrack_8h_source.html#l00118">RecoTrack.h:118</a></div></div>
+<div class="ttc" id="aclassSHiP_1_1RecoTrack_html_addcc2b4f196f5fc0ff3da68d52120d62"><div class="ttname"><a href="#addcc2b4f196f5fc0ff3da68d52120d62">SHiP::RecoTrack::m_px</a></div><div class="ttdeci">Double_t m_px</div><div class="ttdef"><b>Definition</b> <a href="RecoTrack_8h_source.html#l00117">RecoTrack.h:117</a></div></div>
+<div class="ttc" id="aclassSHiP_1_1RecoTrack_html_af1bd72b0ea79eade0ce9f75a29448b64"><div class="ttname"><a href="#af1bd72b0ea79eade0ce9f75a29448b64">SHiP::RecoTrack::charge</a></div><div class="ttdeci">Int_t charge() const</div><div class="ttdef"><b>Definition</b> <a href="RecoTrack_8h_source.html#l00042">RecoTrack.h:42</a></div></div>
 <div class="ttc" id="anamespacemake__nTuple__SBT_html_a1391b7407359c40dbacead1473f5a96b"><div class="ttname"><a href="namespacemake__nTuple__SBT.html#a1391b7407359c40dbacead1473f5a96b">make_nTuple_SBT.index</a></div><div class="ttdeci">int index</div><div class="ttdef"><b>Definition</b> <a href="make__nTuple__SBT_8py_source.html#l00291">make_nTuple_SBT.py:291</a></div></div>
 <div class="ttc" id="anamespacerunPythia8_html_aa6ccf15df5382fe526735a07d97d3cd4"><div class="ttname"><a href="namespacerunPythia8.html#aa6ccf15df5382fe526735a07d97d3cd4">runPythia8.sigma</a></div><div class="ttdeci">dict sigma</div><div class="ttdef"><b>Definition</b> <a href="runPythia8_8py_source.html#l00187">runPythia8.py:187</a></div></div>
 <div class="ttc" id="anamespacestudy__GammaConv_html_ae7cafac6179ebc8cb6564e8cfc465345"><div class="ttname"><a href="namespacestudy__GammaConv.html#ae7cafac6179ebc8cb6564e8cfc465345">study_GammaConv.momentum</a></div><div class="ttdeci">momentum</div><div class="ttdef"><b>Definition</b> <a href="study__GammaConv_8py_source.html#l00042">study_GammaConv.py:42</a></div></div>
@@ -352,8 +414,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00040">40</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   40</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="#a06d7a1fe4f4c07aa57af85f617835f63">m_charge</a>; }</div>
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00042">42</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   42</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="#a06d7a1fe4f4c07aa57af85f617835f63">m_charge</a>; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -380,13 +442,13 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00047">47</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   47</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="#aa58d00e087b5b0118181bd070ecda542">m_chi2</a>; }</div>
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00049">49</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   49</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="#aa58d00e087b5b0118181bd070ecda542">m_chi2</a>; }</div>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="a8158132ef168f7eb75c444272647c953" name="a8158132ef168f7eb75c444272647c953"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8158132ef168f7eb75c444272647c953">&#9670;&#160;</a></span>ClassDefOverride()</h2>
+<a id="a1dd08e6733cf98c2ee846cd0b644e2c2" name="a1dd08e6733cf98c2ee846cd0b644e2c2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1dd08e6733cf98c2ee846cd0b644e2c2">&#9670;&#160;</a></span>ClassDefOverride()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -402,7 +464,7 @@ Private Attributes</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">1</td>          <td class="paramname"><span class="paramname"><em></em></span>&#160;)</td>
+          <td class="paramtype">2</td>          <td class="paramname"><span class="paramname"><em></em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -437,8 +499,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00044">44</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   44</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="#a7c0e25bf0b10da86dc8b216aca450bbd">m_err_px</a>; }</div>
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00046">46</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   46</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="#a7c0e25bf0b10da86dc8b216aca450bbd">m_err_px</a>; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -465,8 +527,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00045">45</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   45</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="#a0ca00c874e727111d9972d2da3c0e5ab">m_err_py</a>; }</div>
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00047">47</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   47</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="#a0ca00c874e727111d9972d2da3c0e5ab">m_err_py</a>; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -493,8 +555,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00046">46</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   46</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="#ad1c14e233a7b0dbb4e158e851a6f6c2f">m_err_pz</a>; }</div>
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00048">48</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   48</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="#ad1c14e233a7b0dbb4e158e851a6f6c2f">m_err_pz</a>; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -521,8 +583,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00041">41</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   41</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="#ad41aeb55b6e68a1a8732d8f1d31237eb">m_err_x</a>; }</div>
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00043">43</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   43</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="#ad41aeb55b6e68a1a8732d8f1d31237eb">m_err_x</a>; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -549,8 +611,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00042">42</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   42</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="#aba17b0cab02d40b961f8e16e1b9d65ac">m_err_y</a>; }</div>
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00044">44</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   44</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="#aba17b0cab02d40b961f8e16e1b9d65ac">m_err_y</a>; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -577,8 +639,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00043">43</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   43</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="#a4e0a4a87bd9e225d24a470a20d92b74a">m_err_z</a>; }</div>
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00045">45</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   45</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="#a4e0a4a87bd9e225d24a470a20d92b74a">m_err_z</a>; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -603,16 +665,16 @@ Private Attributes</h2></td></tr>
 <p>Extrapolate the track along a straight line to the plane at <span class="tt"><a class="el" href="#ac165f98128fbd9f9f65babb26f6e7e1a">z</a></span> (cm).</p>
 <p>The fitted state is taken at the first measurement, so this is only accurate where the field between that point and <span class="tt"><a class="el" href="#ac165f98128fbd9f9f65babb26f6e7e1a">z</a></span> can be neglected. Returns false if the track is parallel to the plane. </p>
 
-<p class="definition">Definition at line <a class="el" href="RecoTrack_8cxx_source.html#l00044">44</a> of file <a class="el" href="RecoTrack_8cxx_source.html">RecoTrack.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   44</span>                                                                     {</div>
-<div class="line"><span class="lineno">   45</span>  <span class="keywordflow">if</span> (std::abs(<a class="code hl_variable" href="#a01133da4121b7899bcb9a0210b1a8a16">m_pz</a>) &lt; 1e-10) {</div>
-<div class="line"><span class="lineno">   46</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">   47</span>  }</div>
-<div class="line"><span class="lineno">   48</span>  <span class="keyword">const</span> Double_t lambda = (<a class="code hl_function" href="#ac165f98128fbd9f9f65babb26f6e7e1a">z</a> - <a class="code hl_variable" href="#abd53ec669757ce8b6fc7c72f92f5c44b">m_z</a>) / <a class="code hl_variable" href="#a01133da4121b7899bcb9a0210b1a8a16">m_pz</a>;</div>
-<div class="line"><span class="lineno">   49</span>  position.SetXYZ(<a class="code hl_variable" href="#ab221dc3fc3923bf922ff282f0f4790b9">m_x</a> + lambda * <a class="code hl_variable" href="#addcc2b4f196f5fc0ff3da68d52120d62">m_px</a>, <a class="code hl_variable" href="#a0f1e9ab13ff6543f45cca4c8be2679e5">m_y</a> + lambda * <a class="code hl_variable" href="#ad94a246a35babb6c79ea5b13cd9365c3">m_py</a>, <a class="code hl_function" href="#ac165f98128fbd9f9f65babb26f6e7e1a">z</a>);</div>
-<div class="line"><span class="lineno">   50</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">   51</span>}</div>
-<div class="ttc" id="aclassSHiP_1_1RecoTrack_html_ac165f98128fbd9f9f65babb26f6e7e1a"><div class="ttname"><a href="#ac165f98128fbd9f9f65babb26f6e7e1a">SHiP::RecoTrack::z</a></div><div class="ttdeci">Double_t z() const</div><div class="ttdef"><b>Definition</b> <a href="RecoTrack_8h_source.html#l00036">RecoTrack.h:36</a></div></div>
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8cxx_source.html#l00050">50</a> of file <a class="el" href="RecoTrack_8cxx_source.html">RecoTrack.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   50</span>                                                                     {</div>
+<div class="line"><span class="lineno">   51</span>  <span class="keywordflow">if</span> (std::abs(<a class="code hl_variable" href="#a01133da4121b7899bcb9a0210b1a8a16">m_pz</a>) &lt; 1e-10) {</div>
+<div class="line"><span class="lineno">   52</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">   53</span>  }</div>
+<div class="line"><span class="lineno">   54</span>  <span class="keyword">const</span> Double_t lambda = (<a class="code hl_function" href="#ac165f98128fbd9f9f65babb26f6e7e1a">z</a> - <a class="code hl_variable" href="#abd53ec669757ce8b6fc7c72f92f5c44b">m_z</a>) / <a class="code hl_variable" href="#a01133da4121b7899bcb9a0210b1a8a16">m_pz</a>;</div>
+<div class="line"><span class="lineno">   55</span>  position.SetXYZ(<a class="code hl_variable" href="#ab221dc3fc3923bf922ff282f0f4790b9">m_x</a> + lambda * <a class="code hl_variable" href="#addcc2b4f196f5fc0ff3da68d52120d62">m_px</a>, <a class="code hl_variable" href="#a0f1e9ab13ff6543f45cca4c8be2679e5">m_y</a> + lambda * <a class="code hl_variable" href="#ad94a246a35babb6c79ea5b13cd9365c3">m_py</a>, <a class="code hl_function" href="#ac165f98128fbd9f9f65babb26f6e7e1a">z</a>);</div>
+<div class="line"><span class="lineno">   56</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">   57</span>}</div>
+<div class="ttc" id="aclassSHiP_1_1RecoTrack_html_ac165f98128fbd9f9f65babb26f6e7e1a"><div class="ttname"><a href="#ac165f98128fbd9f9f65babb26f6e7e1a">SHiP::RecoTrack::z</a></div><div class="ttdeci">Double_t z() const</div><div class="ttdef"><b>Definition</b> <a href="RecoTrack_8h_source.html#l00038">RecoTrack.h:38</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -639,10 +701,10 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00053">53</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   53</span>                                                           {</div>
-<div class="line"><span class="lineno">   54</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="#ad575f3ac74eebda81c38457aaa200beb">m_cov_elements</a>;</div>
-<div class="line"><span class="lineno">   55</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00061">61</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   61</span>                                                           {</div>
+<div class="line"><span class="lineno">   62</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="#ad575f3ac74eebda81c38457aaa200beb">m_cov_elements</a>;</div>
+<div class="line"><span class="lineno">   63</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -669,8 +731,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00052">52</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   52</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="#ab15f199c7db0adb18bfe45bc9fe3fce6">m_pulls</a>; }</div>
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00060">60</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   60</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="#ab15f199c7db0adb18bfe45bc9fe3fce6">m_pulls</a>; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -699,8 +761,429 @@ Private Attributes</h2></td></tr>
 
 <p>Residuals of the smoothed states, in cm, ordered along the track. </p>
 
-<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00051">51</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   51</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="#abcb9fb7f81b1f7fe2ca906419f096e82">m_residuals</a>; }</div>
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00059">59</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   59</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="#abcb9fb7f81b1f7fe2ca906419f096e82">m_residuals</a>; }</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="abe8c2e216683ab10feea6076a1b07d5f" name="abe8c2e216683ab10feea6076a1b07d5f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abe8c2e216683ab10feea6076a1b07d5f">&#9670;&#160;</a></span>GetTDCovariance()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::vector&lt; Double_t &gt; &amp; SHiP::RecoTrack::GetTDCovariance </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00103">103</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  103</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="#af49a9d53bce668d176ad2d64ec615b33">m_td_cov</a>; }</div>
+<div class="ttc" id="aclassSHiP_1_1RecoTrack_html_af49a9d53bce668d176ad2d64ec615b33"><div class="ttname"><a href="#af49a9d53bce668d176ad2d64ec615b33">SHiP::RecoTrack::m_td_cov</a></div><div class="ttdeci">std::vector&lt; Double_t &gt; m_td_cov</div><div class="ttdef"><b>Definition</b> <a href="RecoTrack_8h_source.html#l00155">RecoTrack.h:155</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a8ecf8fb1871daecc35a18e6c680e6d16" name="a8ecf8fb1871daecc35a18e6c680e6d16"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8ecf8fb1871daecc35a18e6c680e6d16">&#9670;&#160;</a></span>GetTDMomentum()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TVector3 SHiP::RecoTrack::GetTDMomentum </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00098">98</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   98</span>{ <span class="keywordflow">return</span> TVector3(<a class="code hl_variable" href="#a456ba3f2e3635557fa29c386285c3cb0">m_td_px</a>, <a class="code hl_variable" href="#a4a38e6d48106d5d8b1bc9b85cc90384f">m_td_py</a>, <a class="code hl_variable" href="#a4b29d01a47fd4f6529056bc7e48ed8cf">m_td_pz</a>); }</div>
+<div class="ttc" id="aclassSHiP_1_1RecoTrack_html_a456ba3f2e3635557fa29c386285c3cb0"><div class="ttname"><a href="#a456ba3f2e3635557fa29c386285c3cb0">SHiP::RecoTrack::m_td_px</a></div><div class="ttdeci">Double_t m_td_px</div><div class="ttdef"><b>Definition</b> <a href="RecoTrack_8h_source.html#l00151">RecoTrack.h:151</a></div></div>
+<div class="ttc" id="aclassSHiP_1_1RecoTrack_html_a4a38e6d48106d5d8b1bc9b85cc90384f"><div class="ttname"><a href="#a4a38e6d48106d5d8b1bc9b85cc90384f">SHiP::RecoTrack::m_td_py</a></div><div class="ttdeci">Double_t m_td_py</div><div class="ttdef"><b>Definition</b> <a href="RecoTrack_8h_source.html#l00152">RecoTrack.h:152</a></div></div>
+<div class="ttc" id="aclassSHiP_1_1RecoTrack_html_a4b29d01a47fd4f6529056bc7e48ed8cf"><div class="ttname"><a href="#a4b29d01a47fd4f6529056bc7e48ed8cf">SHiP::RecoTrack::m_td_pz</a></div><div class="ttdeci">Double_t m_td_pz</div><div class="ttdef"><b>Definition</b> <a href="RecoTrack_8h_source.html#l00153">RecoTrack.h:153</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="aa922c39a4a5beaa19f4d14d2313b5b35" name="aa922c39a4a5beaa19f4d14d2313b5b35"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa922c39a4a5beaa19f4d14d2313b5b35">&#9670;&#160;</a></span>GetTDPathLength()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Double_t SHiP::RecoTrack::GetTDPathLength </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00107">107</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  107</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="#adacf42e93b03a90c2583e6c9f054d3cd">m_td_path_len</a>; }</div>
+<div class="ttc" id="aclassSHiP_1_1RecoTrack_html_adacf42e93b03a90c2583e6c9f054d3cd"><div class="ttname"><a href="#adacf42e93b03a90c2583e6c9f054d3cd">SHiP::RecoTrack::m_td_path_len</a></div><div class="ttdeci">Double_t m_td_path_len</div><div class="ttdef"><b>Definition</b> <a href="RecoTrack_8h_source.html#l00154">RecoTrack.h:154</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a3f47842ab60bab9c43fe77de25a76526" name="a3f47842ab60bab9c43fe77de25a76526"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3f47842ab60bab9c43fe77de25a76526">&#9670;&#160;</a></span>GetTDPosition()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TVector3 SHiP::RecoTrack::GetTDPosition </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00097">97</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   97</span>{ <span class="keywordflow">return</span> TVector3(<a class="code hl_variable" href="#a6b35a648a89b4d68d34c246e8912df27">m_td_x</a>, <a class="code hl_variable" href="#a22c0c0efaa700d03f7d7b24c7f935520">m_td_y</a>, <a class="code hl_variable" href="#a944cb1bc5cb205529a37205d3f236a0e">m_td_z</a>); }</div>
+<div class="ttc" id="aclassSHiP_1_1RecoTrack_html_a22c0c0efaa700d03f7d7b24c7f935520"><div class="ttname"><a href="#a22c0c0efaa700d03f7d7b24c7f935520">SHiP::RecoTrack::m_td_y</a></div><div class="ttdeci">Double_t m_td_y</div><div class="ttdef"><b>Definition</b> <a href="RecoTrack_8h_source.html#l00149">RecoTrack.h:149</a></div></div>
+<div class="ttc" id="aclassSHiP_1_1RecoTrack_html_a6b35a648a89b4d68d34c246e8912df27"><div class="ttname"><a href="#a6b35a648a89b4d68d34c246e8912df27">SHiP::RecoTrack::m_td_x</a></div><div class="ttdeci">Double_t m_td_x</div><div class="ttdef"><b>Definition</b> <a href="RecoTrack_8h_source.html#l00148">RecoTrack.h:148</a></div></div>
+<div class="ttc" id="aclassSHiP_1_1RecoTrack_html_a944cb1bc5cb205529a37205d3f236a0e"><div class="ttname"><a href="#a944cb1bc5cb205529a37205d3f236a0e">SHiP::RecoTrack::m_td_z</a></div><div class="ttdeci">Double_t m_td_z</div><div class="ttdef"><b>Definition</b> <a href="RecoTrack_8h_source.html#l00150">RecoTrack.h:150</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="aa933e689e8fd99acfea57d73e930a5ab" name="aa933e689e8fd99acfea57d73e930a5ab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa933e689e8fd99acfea57d73e930a5ab">&#9670;&#160;</a></span>GetTrackLength()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Double_t SHiP::RecoTrack::GetTrackLength </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Path length (cm) from the first to the last fitted measurement, NaN if not stored. The UBT to timing detector path is then <a class="el" href="#aa922c39a4a5beaa19f4d14d2313b5b35">GetTDPathLength()</a> + <a class="el" href="#aa933e689e8fd99acfea57d73e930a5ab">GetTrackLength()</a> - <a class="el" href="#a7cf52f472c99c161abee7a32009c7cf3">GetUBTPathLength()</a>. </p>
+
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00111">111</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  111</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="#af9a0f111240ee96212f9589cf77067bc">m_track_length</a>; }</div>
+<div class="ttc" id="aclassSHiP_1_1RecoTrack_html_af9a0f111240ee96212f9589cf77067bc"><div class="ttname"><a href="#af9a0f111240ee96212f9589cf77067bc">SHiP::RecoTrack::m_track_length</a></div><div class="ttdeci">Double_t m_track_length</div><div class="ttdoc">Path length from the first to the last measurement (cm).</div><div class="ttdef"><b>Definition</b> <a href="RecoTrack_8h_source.html#l00157">RecoTrack.h:157</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a146fd1444f6ae375a96707558a299d69" name="a146fd1444f6ae375a96707558a299d69"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a146fd1444f6ae375a96707558a299d69">&#9670;&#160;</a></span>GetUBTCovariance()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::vector&lt; Double_t &gt; &amp; SHiP::RecoTrack::GetUBTCovariance </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Upper triangle of the 6x6 covariance at the plane (empty if not stored); the variances of x, y, px, py and pz are elements 0, 6, 15, 18 and 20 </p>
+
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00102">102</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  102</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="#a333dc67a908793160b81c4ffa22a9d21">m_ubt_cov</a>; }</div>
+<div class="ttc" id="aclassSHiP_1_1RecoTrack_html_a333dc67a908793160b81c4ffa22a9d21"><div class="ttname"><a href="#a333dc67a908793160b81c4ffa22a9d21">SHiP::RecoTrack::m_ubt_cov</a></div><div class="ttdeci">std::vector&lt; Double_t &gt; m_ubt_cov</div><div class="ttdef"><b>Definition</b> <a href="RecoTrack_8h_source.html#l00146">RecoTrack.h:146</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="ad272ee04a10428048d253bd181a1a381" name="ad272ee04a10428048d253bd181a1a381"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad272ee04a10428048d253bd181a1a381">&#9670;&#160;</a></span>GetUBTMomentum()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TVector3 SHiP::RecoTrack::GetUBTMomentum </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00094">94</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   94</span>                                  {</div>
+<div class="line"><span class="lineno">   95</span>    <span class="keywordflow">return</span> TVector3(<a class="code hl_variable" href="#a374ec548faa1c18b685795ec6e1c34fb">m_ubt_px</a>, <a class="code hl_variable" href="#addd834a9d9c6d0c910e5d7acc324467b">m_ubt_py</a>, <a class="code hl_variable" href="#a406a7964ed6688281b5ff07169000733">m_ubt_pz</a>);</div>
+<div class="line"><span class="lineno">   96</span>  }</div>
+<div class="ttc" id="aclassSHiP_1_1RecoTrack_html_a374ec548faa1c18b685795ec6e1c34fb"><div class="ttname"><a href="#a374ec548faa1c18b685795ec6e1c34fb">SHiP::RecoTrack::m_ubt_px</a></div><div class="ttdeci">Double_t m_ubt_px</div><div class="ttdef"><b>Definition</b> <a href="RecoTrack_8h_source.html#l00142">RecoTrack.h:142</a></div></div>
+<div class="ttc" id="aclassSHiP_1_1RecoTrack_html_a406a7964ed6688281b5ff07169000733"><div class="ttname"><a href="#a406a7964ed6688281b5ff07169000733">SHiP::RecoTrack::m_ubt_pz</a></div><div class="ttdeci">Double_t m_ubt_pz</div><div class="ttdef"><b>Definition</b> <a href="RecoTrack_8h_source.html#l00144">RecoTrack.h:144</a></div></div>
+<div class="ttc" id="aclassSHiP_1_1RecoTrack_html_addd834a9d9c6d0c910e5d7acc324467b"><div class="ttname"><a href="#addd834a9d9c6d0c910e5d7acc324467b">SHiP::RecoTrack::m_ubt_py</a></div><div class="ttdeci">Double_t m_ubt_py</div><div class="ttdef"><b>Definition</b> <a href="RecoTrack_8h_source.html#l00143">RecoTrack.h:143</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a7cf52f472c99c161abee7a32009c7cf3" name="a7cf52f472c99c161abee7a32009c7cf3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7cf52f472c99c161abee7a32009c7cf3">&#9670;&#160;</a></span>GetUBTPathLength()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Double_t SHiP::RecoTrack::GetUBTPathLength </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Signed path length (cm): from the first measurement back to the UBT (negative), and from the last measurement on to the timing detector </p>
+
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00106">106</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  106</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="#a9f33a91aadea48610ea9c756f5c19406">m_ubt_path_len</a>; }</div>
+<div class="ttc" id="aclassSHiP_1_1RecoTrack_html_a9f33a91aadea48610ea9c756f5c19406"><div class="ttname"><a href="#a9f33a91aadea48610ea9c756f5c19406">SHiP::RecoTrack::m_ubt_path_len</a></div><div class="ttdeci">Double_t m_ubt_path_len</div><div class="ttdef"><b>Definition</b> <a href="RecoTrack_8h_source.html#l00145">RecoTrack.h:145</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a133a78df0797a8d19be5a3253d0b2dac" name="a133a78df0797a8d19be5a3253d0b2dac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a133a78df0797a8d19be5a3253d0b2dac">&#9670;&#160;</a></span>GetUBTPosition()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TVector3 SHiP::RecoTrack::GetUBTPosition </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00091">91</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   91</span>                                  {</div>
+<div class="line"><span class="lineno">   92</span>    <span class="keywordflow">return</span> TVector3(<a class="code hl_variable" href="#a342e8baeeaa3bd0f489bc6aa4e73bff4">m_ubt_x</a>, <a class="code hl_variable" href="#a29e9ee6dcb1febce8956e497c25bcaea">m_ubt_y</a>, <a class="code hl_variable" href="#ae71bd79470502d6cbaf94b46892b6220">m_ubt_z</a>);</div>
+<div class="line"><span class="lineno">   93</span>  }</div>
+<div class="ttc" id="aclassSHiP_1_1RecoTrack_html_a29e9ee6dcb1febce8956e497c25bcaea"><div class="ttname"><a href="#a29e9ee6dcb1febce8956e497c25bcaea">SHiP::RecoTrack::m_ubt_y</a></div><div class="ttdeci">Double_t m_ubt_y</div><div class="ttdef"><b>Definition</b> <a href="RecoTrack_8h_source.html#l00140">RecoTrack.h:140</a></div></div>
+<div class="ttc" id="aclassSHiP_1_1RecoTrack_html_a342e8baeeaa3bd0f489bc6aa4e73bff4"><div class="ttname"><a href="#a342e8baeeaa3bd0f489bc6aa4e73bff4">SHiP::RecoTrack::m_ubt_x</a></div><div class="ttdeci">Double_t m_ubt_x</div><div class="ttdef"><b>Definition</b> <a href="RecoTrack_8h_source.html#l00139">RecoTrack.h:139</a></div></div>
+<div class="ttc" id="aclassSHiP_1_1RecoTrack_html_ae71bd79470502d6cbaf94b46892b6220"><div class="ttname"><a href="#ae71bd79470502d6cbaf94b46892b6220">SHiP::RecoTrack::m_ubt_z</a></div><div class="ttdeci">Double_t m_ubt_z</div><div class="ttdef"><b>Definition</b> <a href="RecoTrack_8h_source.html#l00141">RecoTrack.h:141</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a7b7d7fd704bb563ea857611e52567ada" name="a7b7d7fd704bb563ea857611e52567ada"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7b7d7fd704bb563ea857611e52567ada">&#9670;&#160;</a></span>GetXFittedPoints()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::vector&lt; Double_t &gt; &amp; SHiP::RecoTrack::GetXFittedPoints </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Fitted smoothed track positions, in cm, in the global <a class="el" href="namespaceSHiP.html">SHiP</a> frame, ordered along the track in increasing z. Only includes the positions that were included in the track fit. </p>
+
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00055">55</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   55</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="#a5d57ab36625b820d1f73acac6890c0fe">m_x_fits</a>; }</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="ad3e5dbdba080ff24eb29e94661089d67" name="ad3e5dbdba080ff24eb29e94661089d67"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad3e5dbdba080ff24eb29e94661089d67">&#9670;&#160;</a></span>GetYFittedPoints()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::vector&lt; Double_t &gt; &amp; SHiP::RecoTrack::GetYFittedPoints </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00056">56</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   56</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="#a79987f5602a12671e817b5ffafd6d4a4">m_y_fits</a>; }</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a666fab64ee9c71fd1de3f73761900296" name="a666fab64ee9c71fd1de3f73761900296"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a666fab64ee9c71fd1de3f73761900296">&#9670;&#160;</a></span>GetZFittedPoints()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::vector&lt; Double_t &gt; &amp; SHiP::RecoTrack::GetZFittedPoints </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00057">57</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   57</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="#ab01948ab95fb93f4cbb71d5f68b3ccc8">m_z_fits</a>; }</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a57c147621487c761974335f522422dc6" name="a57c147621487c761974335f522422dc6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a57c147621487c761974335f522422dc6">&#9670;&#160;</a></span>HasTDExtrapolation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Bool_t SHiP::RecoTrack::HasTDExtrapolation </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00090">90</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   90</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="#a224e5b23b3cf26e9a923f2216101955e">m_td_valid</a>; }</div>
+<div class="ttc" id="aclassSHiP_1_1RecoTrack_html_a224e5b23b3cf26e9a923f2216101955e"><div class="ttname"><a href="#a224e5b23b3cf26e9a923f2216101955e">SHiP::RecoTrack::m_td_valid</a></div><div class="ttdeci">Bool_t m_td_valid</div><div class="ttdef"><b>Definition</b> <a href="RecoTrack_8h_source.html#l00147">RecoTrack.h:147</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="ab216d8cc16cf5d4d499a5fe229f6b9bd" name="ab216d8cc16cf5d4d499a5fe229f6b9bd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab216d8cc16cf5d4d499a5fe229f6b9bd">&#9670;&#160;</a></span>HasUBTExtrapolation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Bool_t SHiP::RecoTrack::HasUBTExtrapolation </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Whether the extrapolations were stored (they are NaN otherwise). </p>
+
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00089">89</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   89</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="#a8eabe145a003c1b98b693e29a06ec834">m_ubt_valid</a>; }</div>
+<div class="ttc" id="aclassSHiP_1_1RecoTrack_html_a8eabe145a003c1b98b693e29a06ec834"><div class="ttname"><a href="#a8eabe145a003c1b98b693e29a06ec834">SHiP::RecoTrack::m_ubt_valid</a></div><div class="ttdeci">Bool_t m_ubt_valid</div><div class="ttdef"><b>Definition</b> <a href="RecoTrack_8h_source.html#l00138">RecoTrack.h:138</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -727,8 +1210,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00048">48</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   48</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="#a1e45070f303a837eb70d940b6521b897">m_nDoF</a>; }</div>
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00050">50</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   50</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="#a1e45070f303a837eb70d940b6521b897">m_nDoF</a>; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -755,8 +1238,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00049">49</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   49</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="#a73dde21b4e331a3e273db36702329968">m_nMeasurements</a>; }</div>
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00051">51</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   51</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="#a73dde21b4e331a3e273db36702329968">m_nMeasurements</a>; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -783,8 +1266,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00037">37</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   37</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="#addcc2b4f196f5fc0ff3da68d52120d62">m_px</a>; }</div>
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00039">39</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   39</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="#addcc2b4f196f5fc0ff3da68d52120d62">m_px</a>; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -811,8 +1294,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00038">38</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   38</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="#ad94a246a35babb6c79ea5b13cd9365c3">m_py</a>; }</div>
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00040">40</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   40</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="#ad94a246a35babb6c79ea5b13cd9365c3">m_py</a>; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -839,8 +1322,116 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00039">39</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   39</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="#a01133da4121b7899bcb9a0210b1a8a16">m_pz</a>; }</div>
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00041">41</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   41</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="#a01133da4121b7899bcb9a0210b1a8a16">m_pz</a>; }</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="ac966d9cbcba2d4aa38b1a2c95085979e" name="ac966d9cbcba2d4aa38b1a2c95085979e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac966d9cbcba2d4aa38b1a2c95085979e">&#9670;&#160;</a></span>SetTDExtrapolation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SHiP::RecoTrack::SetTDExtrapolation </td>
+          <td>(</td>
+          <td class="paramtype">const TVector3 &amp;</td>          <td class="paramname"><span class="paramname"><em>position</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const TVector3 &amp;</td>          <td class="paramname"><span class="paramname"><em>momentum</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; Double_t &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>covariance</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Double_t</td>          <td class="paramname"><span class="paramname"><em>pathLength</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8cxx_source.html#l00094">94</a> of file <a class="el" href="RecoTrack_8cxx_source.html">RecoTrack.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   97</span>                                                        {</div>
+<div class="line"><span class="lineno">   98</span>  setExtrapolation(</div>
+<div class="line"><span class="lineno">   99</span>      position, momentum, covariance, pathLength, <a class="code hl_variable" href="#a224e5b23b3cf26e9a923f2216101955e">m_td_valid</a>,</div>
+<div class="line"><span class="lineno">  100</span>      {&amp;<a class="code hl_variable" href="#a6b35a648a89b4d68d34c246e8912df27">m_td_x</a>, &amp;<a class="code hl_variable" href="#a22c0c0efaa700d03f7d7b24c7f935520">m_td_y</a>, &amp;<a class="code hl_variable" href="#a944cb1bc5cb205529a37205d3f236a0e">m_td_z</a>, &amp;<a class="code hl_variable" href="#a456ba3f2e3635557fa29c386285c3cb0">m_td_px</a>, &amp;<a class="code hl_variable" href="#a4a38e6d48106d5d8b1bc9b85cc90384f">m_td_py</a>, &amp;<a class="code hl_variable" href="#a4b29d01a47fd4f6529056bc7e48ed8cf">m_td_pz</a>, &amp;<a class="code hl_variable" href="#adacf42e93b03a90c2583e6c9f054d3cd">m_td_path_len</a>},</div>
+<div class="line"><span class="lineno">  101</span>      <a class="code hl_variable" href="#af49a9d53bce668d176ad2d64ec615b33">m_td_cov</a>);</div>
+<div class="line"><span class="lineno">  102</span>}</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a2d5aea4fc76313c331e4189f1449f886" name="a2d5aea4fc76313c331e4189f1449f886"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2d5aea4fc76313c331e4189f1449f886">&#9670;&#160;</a></span>SetTrackLength()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SHiP::RecoTrack::SetTrackLength </td>
+          <td>(</td>
+          <td class="paramtype">Double_t</td>          <td class="paramname"><span class="paramname"><em>length</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Path length (cm) through the field from the first to the last fitted measurement (<a class="el" href="classSHiP_1_1ActsStrawTracker.html#a3ea3143d04491f2740d787351c70fc91">ActsStrawTracker::TrackLength</a>) </p>
+
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00086">86</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   86</span>{ <a class="code hl_variable" href="#af9a0f111240ee96212f9589cf77067bc">m_track_length</a> = length; }</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a734cd919b6347b1a5e4dd1ed6b168469" name="a734cd919b6347b1a5e4dd1ed6b168469"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a734cd919b6347b1a5e4dd1ed6b168469">&#9670;&#160;</a></span>SetUBTExtrapolation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SHiP::RecoTrack::SetUBTExtrapolation </td>
+          <td>(</td>
+          <td class="paramtype">const TVector3 &amp;</td>          <td class="paramname"><span class="paramname"><em>position</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const TVector3 &amp;</td>          <td class="paramname"><span class="paramname"><em>momentum</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; Double_t &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>covariance</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Double_t</td>          <td class="paramname"><span class="paramname"><em>pathLength</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Store the track propagated through the field from its first fitted measurement to the UBT, or from its last one to the timing detector, as given by <a class="el" href="classSHiP_1_1ActsStrawTracker.html#a76d2fdd0bf1d76f9e093cdc599ddf95b">ActsStrawTracker::ExtrapolateToZ</a>: position (cm), momentum (GeV), the 6x6 (x, y, z, px, py, pz) covariance as its upper triangle in row-major order (21 elements; empty if not 21) and the signed path length (cm) from that measurement to the plane. </p>
+
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8cxx_source.html#l00084">84</a> of file <a class="el" href="RecoTrack_8cxx_source.html">RecoTrack.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   87</span>                                                         {</div>
+<div class="line"><span class="lineno">   88</span>  setExtrapolation(position, momentum, covariance, pathLength, <a class="code hl_variable" href="#a8eabe145a003c1b98b693e29a06ec834">m_ubt_valid</a>,</div>
+<div class="line"><span class="lineno">   89</span>                   {&amp;<a class="code hl_variable" href="#a342e8baeeaa3bd0f489bc6aa4e73bff4">m_ubt_x</a>, &amp;<a class="code hl_variable" href="#a29e9ee6dcb1febce8956e497c25bcaea">m_ubt_y</a>, &amp;<a class="code hl_variable" href="#ae71bd79470502d6cbaf94b46892b6220">m_ubt_z</a>, &amp;<a class="code hl_variable" href="#a374ec548faa1c18b685795ec6e1c34fb">m_ubt_px</a>, &amp;<a class="code hl_variable" href="#addd834a9d9c6d0c910e5d7acc324467b">m_ubt_py</a>,</div>
+<div class="line"><span class="lineno">   90</span>                    &amp;<a class="code hl_variable" href="#a406a7964ed6688281b5ff07169000733">m_ubt_pz</a>, &amp;<a class="code hl_variable" href="#a9f33a91aadea48610ea9c756f5c19406">m_ubt_path_len</a>},</div>
+<div class="line"><span class="lineno">   91</span>                   <a class="code hl_variable" href="#a333dc67a908793160b81c4ffa22a9d21">m_ubt_cov</a>);</div>
+<div class="line"><span class="lineno">   92</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -867,8 +1458,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00034">34</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   34</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="#ab221dc3fc3923bf922ff282f0f4790b9">m_x</a>; }</div>
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00036">36</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   36</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="#ab221dc3fc3923bf922ff282f0f4790b9">m_x</a>; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -895,8 +1486,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00035">35</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   35</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="#a0f1e9ab13ff6543f45cca4c8be2679e5">m_y</a>; }</div>
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00037">37</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   37</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="#a0f1e9ab13ff6543f45cca4c8be2679e5">m_y</a>; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -923,8 +1514,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00036">36</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   36</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="#abd53ec669757ce8b6fc7c72f92f5c44b">m_z</a>; }</div>
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00038">38</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   38</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="#abd53ec669757ce8b6fc7c72f92f5c44b">m_z</a>; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -949,8 +1540,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00071">71</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   71</span>{0};</div>
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00120">120</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  120</span>{0};</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -974,8 +1565,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00078">78</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   78</span>{0.};</div>
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00127">127</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  127</span>{0.};</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -999,7 +1590,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00083">83</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00135">135</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
 
 </div>
 </div>
@@ -1023,8 +1614,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00075">75</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   75</span>{0.};</div>
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00124">124</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  124</span>{0.};</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1048,8 +1639,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00076">76</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   76</span>{0.};</div>
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00125">125</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  125</span>{0.};</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1073,8 +1664,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00077">77</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   77</span>{0.};</div>
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00126">126</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  126</span>{0.};</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1098,8 +1689,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00072">72</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   72</span>{0.};</div>
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00121">121</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  121</span>{0.};</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1123,8 +1714,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00073">73</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   73</span>{0.};</div>
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00122">122</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  122</span>{0.};</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1148,8 +1739,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00074">74</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   74</span>{0.};</div>
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00123">123</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  123</span>{0.};</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1173,8 +1764,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00079">79</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   79</span>{0.};</div>
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00128">128</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  128</span>{0.};</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1198,8 +1789,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00080">80</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   80</span>{0};</div>
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00129">129</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  129</span>{0};</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1223,7 +1814,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00082">82</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00134">134</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
 
 </div>
 </div>
@@ -1247,8 +1838,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00068">68</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   68</span>{0.};</div>
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00117">117</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  117</span>{0.};</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1272,8 +1863,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00069">69</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   69</span>{0.};</div>
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00118">118</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  118</span>{0.};</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1297,8 +1888,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00070">70</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   70</span>{0.};</div>
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00119">119</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  119</span>{0.};</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1322,8 +1913,483 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00081">81</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00130">130</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
 
+</div>
+</div>
+<a id="af49a9d53bce668d176ad2d64ec615b33" name="af49a9d53bce668d176ad2d64ec615b33"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af49a9d53bce668d176ad2d64ec615b33">&#9670;&#160;</a></span>m_td_cov</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;Double_t&gt; SHiP::RecoTrack::m_td_cov</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00155">155</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+
+</div>
+</div>
+<a id="adacf42e93b03a90c2583e6c9f054d3cd" name="adacf42e93b03a90c2583e6c9f054d3cd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adacf42e93b03a90c2583e6c9f054d3cd">&#9670;&#160;</a></span>m_td_path_len</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Double_t SHiP::RecoTrack::m_td_path_len {std::numeric_limits&lt;Double_t&gt;::quiet_NaN()}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00154">154</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  154</span>{std::numeric_limits&lt;Double_t&gt;::quiet_NaN()};</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a456ba3f2e3635557fa29c386285c3cb0" name="a456ba3f2e3635557fa29c386285c3cb0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a456ba3f2e3635557fa29c386285c3cb0">&#9670;&#160;</a></span>m_td_px</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Double_t SHiP::RecoTrack::m_td_px {std::numeric_limits&lt;Double_t&gt;::quiet_NaN()}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00151">151</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  151</span>{std::numeric_limits&lt;Double_t&gt;::quiet_NaN()};</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a4a38e6d48106d5d8b1bc9b85cc90384f" name="a4a38e6d48106d5d8b1bc9b85cc90384f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4a38e6d48106d5d8b1bc9b85cc90384f">&#9670;&#160;</a></span>m_td_py</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Double_t SHiP::RecoTrack::m_td_py {std::numeric_limits&lt;Double_t&gt;::quiet_NaN()}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00152">152</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  152</span>{std::numeric_limits&lt;Double_t&gt;::quiet_NaN()};</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a4b29d01a47fd4f6529056bc7e48ed8cf" name="a4b29d01a47fd4f6529056bc7e48ed8cf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4b29d01a47fd4f6529056bc7e48ed8cf">&#9670;&#160;</a></span>m_td_pz</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Double_t SHiP::RecoTrack::m_td_pz {std::numeric_limits&lt;Double_t&gt;::quiet_NaN()}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00153">153</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  153</span>{std::numeric_limits&lt;Double_t&gt;::quiet_NaN()};</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a224e5b23b3cf26e9a923f2216101955e" name="a224e5b23b3cf26e9a923f2216101955e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a224e5b23b3cf26e9a923f2216101955e">&#9670;&#160;</a></span>m_td_valid</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Bool_t SHiP::RecoTrack::m_td_valid {false}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00147">147</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  147</span>{<span class="keyword">false</span>};</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a6b35a648a89b4d68d34c246e8912df27" name="a6b35a648a89b4d68d34c246e8912df27"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6b35a648a89b4d68d34c246e8912df27">&#9670;&#160;</a></span>m_td_x</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Double_t SHiP::RecoTrack::m_td_x {std::numeric_limits&lt;Double_t&gt;::quiet_NaN()}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00148">148</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  148</span>{std::numeric_limits&lt;Double_t&gt;::quiet_NaN()};</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a22c0c0efaa700d03f7d7b24c7f935520" name="a22c0c0efaa700d03f7d7b24c7f935520"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a22c0c0efaa700d03f7d7b24c7f935520">&#9670;&#160;</a></span>m_td_y</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Double_t SHiP::RecoTrack::m_td_y {std::numeric_limits&lt;Double_t&gt;::quiet_NaN()}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00149">149</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  149</span>{std::numeric_limits&lt;Double_t&gt;::quiet_NaN()};</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a944cb1bc5cb205529a37205d3f236a0e" name="a944cb1bc5cb205529a37205d3f236a0e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a944cb1bc5cb205529a37205d3f236a0e">&#9670;&#160;</a></span>m_td_z</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Double_t SHiP::RecoTrack::m_td_z {std::numeric_limits&lt;Double_t&gt;::quiet_NaN()}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00150">150</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  150</span>{std::numeric_limits&lt;Double_t&gt;::quiet_NaN()};</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="af9a0f111240ee96212f9589cf77067bc" name="af9a0f111240ee96212f9589cf77067bc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af9a0f111240ee96212f9589cf77067bc">&#9670;&#160;</a></span>m_track_length</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Double_t SHiP::RecoTrack::m_track_length {std::numeric_limits&lt;Double_t&gt;::quiet_NaN()}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Path length from the first to the last measurement (cm). </p>
+
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00157">157</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  157</span>{std::numeric_limits&lt;Double_t&gt;::quiet_NaN()};</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a333dc67a908793160b81c4ffa22a9d21" name="a333dc67a908793160b81c4ffa22a9d21"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a333dc67a908793160b81c4ffa22a9d21">&#9670;&#160;</a></span>m_ubt_cov</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;Double_t&gt; SHiP::RecoTrack::m_ubt_cov</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00146">146</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+
+</div>
+</div>
+<a id="a9f33a91aadea48610ea9c756f5c19406" name="a9f33a91aadea48610ea9c756f5c19406"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9f33a91aadea48610ea9c756f5c19406">&#9670;&#160;</a></span>m_ubt_path_len</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Double_t SHiP::RecoTrack::m_ubt_path_len {std::numeric_limits&lt;Double_t&gt;::quiet_NaN()}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00145">145</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  145</span>{std::numeric_limits&lt;Double_t&gt;::quiet_NaN()};</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a374ec548faa1c18b685795ec6e1c34fb" name="a374ec548faa1c18b685795ec6e1c34fb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a374ec548faa1c18b685795ec6e1c34fb">&#9670;&#160;</a></span>m_ubt_px</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Double_t SHiP::RecoTrack::m_ubt_px {std::numeric_limits&lt;Double_t&gt;::quiet_NaN()}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00142">142</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  142</span>{std::numeric_limits&lt;Double_t&gt;::quiet_NaN()};</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="addd834a9d9c6d0c910e5d7acc324467b" name="addd834a9d9c6d0c910e5d7acc324467b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#addd834a9d9c6d0c910e5d7acc324467b">&#9670;&#160;</a></span>m_ubt_py</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Double_t SHiP::RecoTrack::m_ubt_py {std::numeric_limits&lt;Double_t&gt;::quiet_NaN()}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00143">143</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  143</span>{std::numeric_limits&lt;Double_t&gt;::quiet_NaN()};</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a406a7964ed6688281b5ff07169000733" name="a406a7964ed6688281b5ff07169000733"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a406a7964ed6688281b5ff07169000733">&#9670;&#160;</a></span>m_ubt_pz</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Double_t SHiP::RecoTrack::m_ubt_pz {std::numeric_limits&lt;Double_t&gt;::quiet_NaN()}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00144">144</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  144</span>{std::numeric_limits&lt;Double_t&gt;::quiet_NaN()};</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a8eabe145a003c1b98b693e29a06ec834" name="a8eabe145a003c1b98b693e29a06ec834"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8eabe145a003c1b98b693e29a06ec834">&#9670;&#160;</a></span>m_ubt_valid</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Bool_t SHiP::RecoTrack::m_ubt_valid {false}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00138">138</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  138</span>{<span class="keyword">false</span>};</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a342e8baeeaa3bd0f489bc6aa4e73bff4" name="a342e8baeeaa3bd0f489bc6aa4e73bff4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a342e8baeeaa3bd0f489bc6aa4e73bff4">&#9670;&#160;</a></span>m_ubt_x</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Double_t SHiP::RecoTrack::m_ubt_x {std::numeric_limits&lt;Double_t&gt;::quiet_NaN()}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00139">139</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  139</span>{std::numeric_limits&lt;Double_t&gt;::quiet_NaN()};</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a29e9ee6dcb1febce8956e497c25bcaea" name="a29e9ee6dcb1febce8956e497c25bcaea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a29e9ee6dcb1febce8956e497c25bcaea">&#9670;&#160;</a></span>m_ubt_y</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Double_t SHiP::RecoTrack::m_ubt_y {std::numeric_limits&lt;Double_t&gt;::quiet_NaN()}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00140">140</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  140</span>{std::numeric_limits&lt;Double_t&gt;::quiet_NaN()};</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="ae71bd79470502d6cbaf94b46892b6220" name="ae71bd79470502d6cbaf94b46892b6220"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae71bd79470502d6cbaf94b46892b6220">&#9670;&#160;</a></span>m_ubt_z</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Double_t SHiP::RecoTrack::m_ubt_z {std::numeric_limits&lt;Double_t&gt;::quiet_NaN()}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00141">141</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  141</span>{std::numeric_limits&lt;Double_t&gt;::quiet_NaN()};</div>
+</div><!-- fragment -->
 </div>
 </div>
 <a id="ab221dc3fc3923bf922ff282f0f4790b9" name="ab221dc3fc3923bf922ff282f0f4790b9"></a>
@@ -1346,9 +2412,33 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00065">65</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   65</span>{0.};</div>
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00114">114</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  114</span>{0.};</div>
 </div><!-- fragment -->
+</div>
+</div>
+<a id="a5d57ab36625b820d1f73acac6890c0fe" name="a5d57ab36625b820d1f73acac6890c0fe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5d57ab36625b820d1f73acac6890c0fe">&#9670;&#160;</a></span>m_x_fits</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;Double_t&gt; SHiP::RecoTrack::m_x_fits</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00131">131</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+
 </div>
 </div>
 <a id="a0f1e9ab13ff6543f45cca4c8be2679e5" name="a0f1e9ab13ff6543f45cca4c8be2679e5"></a>
@@ -1371,9 +2461,33 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00066">66</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   66</span>{0.};</div>
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00115">115</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  115</span>{0.};</div>
 </div><!-- fragment -->
+</div>
+</div>
+<a id="a79987f5602a12671e817b5ffafd6d4a4" name="a79987f5602a12671e817b5ffafd6d4a4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a79987f5602a12671e817b5ffafd6d4a4">&#9670;&#160;</a></span>m_y_fits</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;Double_t&gt; SHiP::RecoTrack::m_y_fits</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00132">132</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+
 </div>
 </div>
 <a id="abd53ec669757ce8b6fc7c72f92f5c44b" name="abd53ec669757ce8b6fc7c72f92f5c44b"></a>
@@ -1396,9 +2510,33 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00067">67</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   67</span>{0.};</div>
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00116">116</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  116</span>{0.};</div>
 </div><!-- fragment -->
+</div>
+</div>
+<a id="ab01948ab95fb93f4cbb71d5f68b3ccc8" name="ab01948ab95fb93f4cbb71d5f68b3ccc8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab01948ab95fb93f4cbb71d5f68b3ccc8">&#9670;&#160;</a></span>m_z_fits</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;Double_t&gt; SHiP::RecoTrack::m_z_fits</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="RecoTrack_8h_source.html#l00133">133</a> of file <a class="el" href="RecoTrack_8h_source.html">RecoTrack.h</a>.</p>
+
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>

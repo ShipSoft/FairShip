@@ -104,6 +104,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aeecfa79b76f245fb2ddc2ea7e6ec2491" id="r_aeecfa79b76f245fb2ddc2ea7e6ec2491"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aeecfa79b76f245fb2ddc2ea7e6ec2491">nDoF</a> (self)</td></tr>
 <tr class="memitem:a945e65a4e05f50d8a8fb935b6b500ff9" id="r_a945e65a4e05f50d8a8fb935b6b500ff9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a945e65a4e05f50d8a8fb935b6b500ff9">chi2</a> (self)</td></tr>
 <tr class="memitem:a994c114443ac350e01af599aae6aea76" id="r_a994c114443ac350e01af599aae6aea76"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a994c114443ac350e01af599aae6aea76">charge</a> (self)</td></tr>
+<tr class="memitem:ab56318426356914895c1e2a1f1897e95" id="r_ab56318426356914895c1e2a1f1897e95"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab56318426356914895c1e2a1f1897e95">SetTrackLength</a> (self, length)</td></tr>
+<tr class="memitem:a6c459f5836c2e474c7540fb4395c407a" id="r_a6c459f5836c2e474c7540fb4395c407a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6c459f5836c2e474c7540fb4395c407a">SetUBTExtrapolation</a> (self, position, momentum, covariance, path_length)</td></tr>
+<tr class="memitem:aded917e981a9146544eef4975d4bde3d" id="r_aded917e981a9146544eef4975d4bde3d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aded917e981a9146544eef4975d4bde3d">SetTDExtrapolation</a> (self, position, momentum, covariance, path_length)</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pub-attribs" class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr class="memitem:aa61c2b4f96ee2cc3f8160213f1a2a2a2" id="r_aa61c2b4f96ee2cc3f8160213f1a2a2a2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa61c2b4f96ee2cc3f8160213f1a2a2a2">track_length</a> = length</td></tr>
+<tr class="memitem:a378156075d9c14e42e02a51738a23f23" id="r_a378156075d9c14e42e02a51738a23f23"><td class="memItemLeft" align="right" valign="top">tuple&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a378156075d9c14e42e02a51738a23f23">ubt</a> = (position.Z(), path_length)</td></tr>
+<tr class="memitem:a6a435cce00776a26a13f568ba6f901f7" id="r_a6a435cce00776a26a13f568ba6f901f7"><td class="memItemLeft" align="right" valign="top">tuple&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6a435cce00776a26a13f568ba6f901f7">td</a> = (position.Z(), path_length)</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pro-attribs" class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
@@ -159,7 +168,6 @@ Protected Attributes</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">   37</span>    <span class="keyword">def </span>charge(self):</div>
 <div class="line"><span class="lineno">   38</span>        <span class="keywordflow">return</span> self._charge</div>
 <div class="line"><span class="lineno">   39</span> </div>
-<div class="line"><span class="lineno">   40</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -229,6 +237,115 @@ Protected Attributes</h2></td></tr>
 </div><!-- fragment -->
 </div>
 </div>
+<a id="aded917e981a9146544eef4975d4bde3d" name="aded917e981a9146544eef4975d4bde3d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aded917e981a9146544eef4975d4bde3d">&#9670;&#160;</a></span>SetTDExtrapolation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">test_straw_reco.FakeTrack.SetTDExtrapolation </td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>self</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>position</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>momentum</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>covariance</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>path_length</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="test__straw__reco_8py_source.html#l00046">46</a> of file <a class="el" href="test__straw__reco_8py_source.html">test_straw_reco.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   46</span>    <span class="keyword">def </span>SetTDExtrapolation(self, position, momentum, covariance, path_length):</div>
+<div class="line"><span class="lineno">   47</span>        self.td = (position.Z(), path_length)</div>
+<div class="line"><span class="lineno">   48</span> </div>
+<div class="line"><span class="lineno">   49</span> </div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="ab56318426356914895c1e2a1f1897e95" name="ab56318426356914895c1e2a1f1897e95"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab56318426356914895c1e2a1f1897e95">&#9670;&#160;</a></span>SetTrackLength()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">test_straw_reco.FakeTrack.SetTrackLength </td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>self</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>length</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="test__straw__reco_8py_source.html#l00040">40</a> of file <a class="el" href="test__straw__reco_8py_source.html">test_straw_reco.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   40</span>    <span class="keyword">def </span>SetTrackLength(self, length):</div>
+<div class="line"><span class="lineno">   41</span>        self.track_length = length</div>
+<div class="line"><span class="lineno">   42</span> </div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a6c459f5836c2e474c7540fb4395c407a" name="a6c459f5836c2e474c7540fb4395c407a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6c459f5836c2e474c7540fb4395c407a">&#9670;&#160;</a></span>SetUBTExtrapolation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">test_straw_reco.FakeTrack.SetUBTExtrapolation </td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>self</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>position</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>momentum</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>covariance</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>path_length</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="test__straw__reco_8py_source.html#l00043">43</a> of file <a class="el" href="test__straw__reco_8py_source.html">test_straw_reco.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   43</span>    <span class="keyword">def </span>SetUBTExtrapolation(self, position, momentum, covariance, path_length):</div>
+<div class="line"><span class="lineno">   44</span>        self.ubt = (position.Z(), path_length)</div>
+<div class="line"><span class="lineno">   45</span> </div>
+</div><!-- fragment -->
+</div>
+</div>
 <a name="doc-variable-members" id="doc-variable-members"></a><h2 id="header-doc-variable-members" class="groupheader">Member Data Documentation</h2>
 <a id="a924b8de314136c8b0ff952a88854c8d4" name="a924b8de314136c8b0ff952a88854c8d4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a924b8de314136c8b0ff952a88854c8d4">&#9670;&#160;</a></span>_charge</h2>
@@ -251,6 +368,54 @@ Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="test__straw__reco_8py_source.html#l00026">26</a> of file <a class="el" href="test__straw__reco_8py_source.html">test_straw_reco.py</a>.</p>
+
+</div>
+</div>
+<a id="a6a435cce00776a26a13f568ba6f901f7" name="a6a435cce00776a26a13f568ba6f901f7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6a435cce00776a26a13f568ba6f901f7">&#9670;&#160;</a></span>td</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">tuple test_straw_reco.FakeTrack.td = (position.Z(), path_length)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="test__straw__reco_8py_source.html#l00047">47</a> of file <a class="el" href="test__straw__reco_8py_source.html">test_straw_reco.py</a>.</p>
+
+</div>
+</div>
+<a id="aa61c2b4f96ee2cc3f8160213f1a2a2a2" name="aa61c2b4f96ee2cc3f8160213f1a2a2a2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa61c2b4f96ee2cc3f8160213f1a2a2a2">&#9670;&#160;</a></span>track_length</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">test_straw_reco.FakeTrack.track_length = length</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="test__straw__reco_8py_source.html#l00041">41</a> of file <a class="el" href="test__straw__reco_8py_source.html">test_straw_reco.py</a>.</p>
+
+</div>
+</div>
+<a id="a378156075d9c14e42e02a51738a23f23" name="a378156075d9c14e42e02a51738a23f23"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a378156075d9c14e42e02a51738a23f23">&#9670;&#160;</a></span>ubt</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">tuple test_straw_reco.FakeTrack.ubt = (position.Z(), path_length)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="test__straw__reco_8py_source.html#l00044">44</a> of file <a class="el" href="test__straw__reco_8py_source.html">test_straw_reco.py</a>.</p>
 
 </div>
 </div>

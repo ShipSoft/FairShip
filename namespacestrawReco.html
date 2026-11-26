@@ -104,7 +104,8 @@ Classes</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a69c88e1d0f112542d8f7e14bac54cde5" id="r_a69c88e1d0f112542d8f7e14bac54cde5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a69c88e1d0f112542d8f7e14bac54cde5">make_tracker</a> (geometry, field)</td></tr>
-<tr class="memitem:ad9357af7b62570f2f1fc645a88e64076" id="r_ad9357af7b62570f2f1fc645a88e64076"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad9357af7b62570f2f1fc645a88e64076">runTracking</a> (tracker, candidates, hits, resolution, fit_vertex=True)</td></tr>
+<tr class="memitem:a5ea89e57d8ceb53cf92f787ed861189d" id="r_a5ea89e57d8ceb53cf92f787ed861189d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5ea89e57d8ceb53cf92f787ed861189d">store_extrapolations</a> (tracker, track_index, track, ubt_z=None, td_z=None)</td></tr>
+<tr class="memitem:ab31a69b97d8eb8f2128cba61dc3bb278" id="r_ab31a69b97d8eb8f2128cba61dc3bb278"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab31a69b97d8eb8f2128cba61dc3bb278">runTracking</a> (tracker, candidates, hits, resolution, fit_vertex=True, ubt_z=None, td_z=None)</td></tr>
 <tr class="memitem:af34bb77fc61515442985856029b8afbe" id="r_af34bb77fc61515442985856029b8afbe"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af34bb77fc61515442985856029b8afbe">calculateSBTDOCA</a> (tracker, sbt_digis, selected_indices)</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-var-members" class="groupheader"><a id="var-members" name="var-members"></a>
@@ -152,26 +153,26 @@ with the distance in cm, to match the GenFit
 ShipDigiReco.findVetoHitOnTrack; tracks with no match get
 ``NO_VETO_MATCH``.
 </pre> 
-<p class="definition">Definition at line <a class="el" href="strawReco_8py_source.html#l00128">128</a> of file <a class="el" href="strawReco_8py_source.html">strawReco.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  128</span><span class="keyword">def </span>calculateSBTDOCA(tracker, sbt_digis, selected_indices):</div>
-<div class="line"><span class="lineno">  129</span>    <span class="stringliteral">&quot;&quot;&quot;Match fitted tracks to SBT hits.</span></div>
-<div class="line"><span class="lineno">  130</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  131</span><span class="stringliteral">    Each track is extrapolated to the plane of constant z through every SBT</span></div>
-<div class="line"><span class="lineno">  132</span><span class="stringliteral">    hit. Returns one ``(hitID, distMin)`` per entry of ``selected_indices``,</span></div>
-<div class="line"><span class="lineno">  133</span><span class="stringliteral">    with the distance in cm, to match the GenFit</span></div>
-<div class="line"><span class="lineno">  134</span><span class="stringliteral">    ShipDigiReco.findVetoHitOnTrack; tracks with no match get</span></div>
-<div class="line"><span class="lineno">  135</span><span class="stringliteral">    ``NO_VETO_MATCH``.</span></div>
-<div class="line"><span class="lineno">  136</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  137</span>    hits = [ROOT.TVector3(hit.GetX(), hit.GetY(), hit.GetZ()) <span class="keywordflow">for</span> hit <span class="keywordflow">in</span> sbt_digis]</div>
-<div class="line"><span class="lineno">  138</span>    veto_results = []</div>
-<div class="line"><span class="lineno">  139</span>    <span class="keywordflow">for</span> track <span class="keywordflow">in</span> selected_indices:</div>
-<div class="line"><span class="lineno">  140</span>        hitID, distMin = NO_VETO_MATCH</div>
-<div class="line"><span class="lineno">  141</span>        <span class="keywordflow">for</span> s_idx, hit <span class="keywordflow">in</span> enumerate(hits):</div>
-<div class="line"><span class="lineno">  142</span>            doca = tracker.DistanceToHit(int(track), hit)</div>
-<div class="line"><span class="lineno">  143</span>            <span class="keywordflow">if</span> 0 &lt;= doca &lt; distMin:</div>
-<div class="line"><span class="lineno">  144</span>                hitID, distMin = s_idx, doca</div>
-<div class="line"><span class="lineno">  145</span>        veto_results.append((hitID, distMin))</div>
-<div class="line"><span class="lineno">  146</span>    <span class="keywordflow">return</span> veto_results</div>
+<p class="definition">Definition at line <a class="el" href="strawReco_8py_source.html#l00163">163</a> of file <a class="el" href="strawReco_8py_source.html">strawReco.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  163</span><span class="keyword">def </span>calculateSBTDOCA(tracker, sbt_digis, selected_indices):</div>
+<div class="line"><span class="lineno">  164</span>    <span class="stringliteral">&quot;&quot;&quot;Match fitted tracks to SBT hits.</span></div>
+<div class="line"><span class="lineno">  165</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  166</span><span class="stringliteral">    Each track is extrapolated to the plane of constant z through every SBT</span></div>
+<div class="line"><span class="lineno">  167</span><span class="stringliteral">    hit. Returns one ``(hitID, distMin)`` per entry of ``selected_indices``,</span></div>
+<div class="line"><span class="lineno">  168</span><span class="stringliteral">    with the distance in cm, to match the GenFit</span></div>
+<div class="line"><span class="lineno">  169</span><span class="stringliteral">    ShipDigiReco.findVetoHitOnTrack; tracks with no match get</span></div>
+<div class="line"><span class="lineno">  170</span><span class="stringliteral">    ``NO_VETO_MATCH``.</span></div>
+<div class="line"><span class="lineno">  171</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  172</span>    hits = [ROOT.TVector3(hit.GetX(), hit.GetY(), hit.GetZ()) <span class="keywordflow">for</span> hit <span class="keywordflow">in</span> sbt_digis]</div>
+<div class="line"><span class="lineno">  173</span>    veto_results = []</div>
+<div class="line"><span class="lineno">  174</span>    <span class="keywordflow">for</span> track <span class="keywordflow">in</span> selected_indices:</div>
+<div class="line"><span class="lineno">  175</span>        hitID, distMin = NO_VETO_MATCH</div>
+<div class="line"><span class="lineno">  176</span>        <span class="keywordflow">for</span> s_idx, hit <span class="keywordflow">in</span> enumerate(hits):</div>
+<div class="line"><span class="lineno">  177</span>            doca = tracker.DistanceToHit(int(track), hit)</div>
+<div class="line"><span class="lineno">  178</span>            <span class="keywordflow">if</span> 0 &lt;= doca &lt; distMin:</div>
+<div class="line"><span class="lineno">  179</span>                hitID, distMin = s_idx, doca</div>
+<div class="line"><span class="lineno">  180</span>        veto_results.append((hitID, distMin))</div>
+<div class="line"><span class="lineno">  181</span>    <span class="keywordflow">return</span> veto_results</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -194,21 +195,21 @@ ShipDigiReco.findVetoHitOnTrack; tracks with no match get
       </table>
 </div><div class="memdoc">
 <pre class="fragment">Create the ACTS straw tracker for the loaded geometry and field.</pre> 
-<p class="definition">Definition at line <a class="el" href="strawReco_8py_source.html#l00053">53</a> of file <a class="el" href="strawReco_8py_source.html">strawReco.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   53</span><span class="keyword">def </span>make_tracker(geometry, field):</div>
-<div class="line"><span class="lineno">   54</span>    <span class="stringliteral">&quot;&quot;&quot;Create the ACTS straw tracker for the loaded geometry and field.&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   55</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> hasattr(ROOT.SHiP, <span class="stringliteral">&quot;ActsStrawTracker&quot;</span>):</div>
-<div class="line"><span class="lineno">   56</span>        <span class="keywordflow">raise</span> RuntimeError(<span class="stringliteral">&quot;FairShip was built without ACTS, so the ACTS track fitter is not available&quot;</span>)</div>
-<div class="line"><span class="lineno">   57</span>    tracker = ROOT.SHiP.ActsStrawTracker(geometry, field)</div>
-<div class="line"><span class="lineno">   58</span>    logger.info(<span class="stringliteral">&quot;ACTS straw tracker built with %d straws&quot;</span>, tracker.GetNStraws())</div>
-<div class="line"><span class="lineno">   59</span>    <span class="keywordflow">return</span> tracker</div>
-<div class="line"><span class="lineno">   60</span> </div>
+<p class="definition">Definition at line <a class="el" href="strawReco_8py_source.html#l00054">54</a> of file <a class="el" href="strawReco_8py_source.html">strawReco.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   54</span><span class="keyword">def </span>make_tracker(geometry, field):</div>
+<div class="line"><span class="lineno">   55</span>    <span class="stringliteral">&quot;&quot;&quot;Create the ACTS straw tracker for the loaded geometry and field.&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   56</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> hasattr(ROOT.SHiP, <span class="stringliteral">&quot;ActsStrawTracker&quot;</span>):</div>
+<div class="line"><span class="lineno">   57</span>        <span class="keywordflow">raise</span> RuntimeError(<span class="stringliteral">&quot;FairShip was built without ACTS, so the ACTS track fitter is not available&quot;</span>)</div>
+<div class="line"><span class="lineno">   58</span>    tracker = ROOT.SHiP.ActsStrawTracker(geometry, field)</div>
+<div class="line"><span class="lineno">   59</span>    logger.info(<span class="stringliteral">&quot;ACTS straw tracker built with %d straws&quot;</span>, tracker.GetNStraws())</div>
+<div class="line"><span class="lineno">   60</span>    <span class="keywordflow">return</span> tracker</div>
 <div class="line"><span class="lineno">   61</span> </div>
+<div class="line"><span class="lineno">   62</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="ad9357af7b62570f2f1fc645a88e64076" name="ad9357af7b62570f2f1fc645a88e64076"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad9357af7b62570f2f1fc645a88e64076">&#9670;&#160;</a></span>runTracking()</h2>
+<a id="ab31a69b97d8eb8f2128cba61dc3bb278" name="ab31a69b97d8eb8f2128cba61dc3bb278"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab31a69b97d8eb8f2128cba61dc3bb278">&#9670;&#160;</a></span>runTracking()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -236,7 +237,17 @@ ShipDigiReco.findVetoHitOnTrack; tracks with no match get
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>fit_vertex</em></span><span class="paramdefsep"> = </span><span class="paramdefval">True</span>&#160;)</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>fit_vertex</em></span><span class="paramdefsep"> = </span><span class="paramdefval">True</span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>ubt_z</em></span><span class="paramdefsep"> = </span><span class="paramdefval">None</span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>td_z</em></span><span class="paramdefsep"> = </span><span class="paramdefval">None</span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -246,77 +257,163 @@ With ``candidates`` None, the tracker's own pattern recognition finds
 the tracks. Otherwise ``candidates`` are dicts with ``indices`` into
 ``hits`` (sorted by hit z in place), and each is fitted on its own.
 
+Each track also stores its path length and its extrapolations to the UBT
+plane at ``ubt_z`` and the timing-detector plane at ``td_z`` (cm); a
+plane given as None, e.g. because that detector is not in the geometry,
+is not stored (see ``store_extrapolations``).
+
 Returns the fitted tracks (``SHiP::RecoTrack``, in the order of the
 tracker's track indices), the fitted vertices (``SHiP::RecoVertex``) and,
 per fitted track, the indices into ``hits`` that were used in the fit.
 </pre> 
-<p class="definition">Definition at line <a class="el" href="strawReco_8py_source.html#l00062">62</a> of file <a class="el" href="strawReco_8py_source.html">strawReco.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   62</span><span class="keyword">def </span>runTracking(tracker, candidates, hits, resolution, fit_vertex=True):</div>
-<div class="line"><span class="lineno">   63</span>    <span class="stringliteral">&quot;&quot;&quot;Find or fit tracks and, if the event qualifies, fit their vertex.</span></div>
-<div class="line"><span class="lineno">   64</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">   65</span><span class="stringliteral">    With ``candidates`` None, the tracker&#39;s own pattern recognition finds</span></div>
-<div class="line"><span class="lineno">   66</span><span class="stringliteral">    the tracks. Otherwise ``candidates`` are dicts with ``indices`` into</span></div>
-<div class="line"><span class="lineno">   67</span><span class="stringliteral">    ``hits`` (sorted by hit z in place), and each is fitted on its own.</span></div>
-<div class="line"><span class="lineno">   68</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">   69</span><span class="stringliteral">    Returns the fitted tracks (``SHiP::RecoTrack``, in the order of the</span></div>
-<div class="line"><span class="lineno">   70</span><span class="stringliteral">    tracker&#39;s track indices), the fitted vertices (``SHiP::RecoVertex``) and,</span></div>
-<div class="line"><span class="lineno">   71</span><span class="stringliteral">    per fitted track, the indices into ``hits`` that were used in the fit.</span></div>
-<div class="line"><span class="lineno">   72</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   73</span>    tracker.ClearEvent()</div>
-<div class="line"><span class="lineno">   74</span>    measurements = [tracker.AddMeasurement(h.detector_id, h.drift, resolution) <span class="keywordflow">for</span> h <span class="keywordflow">in</span> hits]</div>
-<div class="line"><span class="lineno">   75</span>    hit_of_measurement = {m: i <span class="keywordflow">for</span> i, m <span class="keywordflow">in</span> enumerate(measurements) <span class="keywordflow">if</span> m &gt;= 0}</div>
-<div class="line"><span class="lineno">   76</span> </div>
-<div class="line"><span class="lineno">   77</span>    <span class="keywordflow">if</span> candidates <span class="keywordflow">is</span> <span class="keywordtype">None</span>:</div>
-<div class="line"><span class="lineno">   78</span>        tracker.FindTracks()</div>
-<div class="line"><span class="lineno">   79</span>        candidates = []</div>
-<div class="line"><span class="lineno">   80</span>    <span class="keywordflow">for</span> cand <span class="keywordflow">in</span> candidates:</div>
-<div class="line"><span class="lineno">   81</span>        cand[<span class="stringliteral">&quot;indices&quot;</span>].sort(key=<span class="keyword">lambda</span> i: hits[i].z)</div>
-<div class="line"><span class="lineno">   82</span> </div>
-<div class="line"><span class="lineno">   83</span>        <span class="comment"># The Kalman filter takes at most one measurement per straw layer</span></div>
-<div class="line"><span class="lineno">   84</span>        used = []</div>
-<div class="line"><span class="lineno">   85</span>        seen_layers = set()</div>
-<div class="line"><span class="lineno">   86</span>        <span class="keywordflow">for</span> idx <span class="keywordflow">in</span> cand[<span class="stringliteral">&quot;indices&quot;</span>]:</div>
-<div class="line"><span class="lineno">   87</span>            <span class="keywordflow">if</span> measurements[idx] &lt; 0:</div>
-<div class="line"><span class="lineno">   88</span>                logger.warning(<span class="stringliteral">&quot;No ACTS surface for straw %d&quot;</span>, hits[idx].detector_id)</div>
-<div class="line"><span class="lineno">   89</span>                <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">   90</span>            <span class="keywordflow">if</span> hits[idx].layer_key <span class="keywordflow">not</span> <span class="keywordflow">in</span> seen_layers:</div>
-<div class="line"><span class="lineno">   91</span>                used.append(idx)</div>
-<div class="line"><span class="lineno">   92</span>                seen_layers.add(hits[idx].layer_key)</div>
-<div class="line"><span class="lineno">   93</span> </div>
-<div class="line"><span class="lineno">   94</span>        <span class="keywordflow">if</span> len(used) &lt; MIN_HITS_PER_TRACK:</div>
-<div class="line"><span class="lineno">   95</span>            logger.debug(<span class="stringliteral">&quot;Skipping track with too few hits: %d&quot;</span>, len(used))</div>
-<div class="line"><span class="lineno">   96</span>            <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">   97</span> </div>
-<div class="line"><span class="lineno">   98</span>        tracker.FitCandidate(ROOT.std.vector(<span class="stringliteral">&quot;int&quot;</span>)([measurements[i] <span class="keywordflow">for</span> i <span class="keywordflow">in</span> used]))</div>
-<div class="line"><span class="lineno">   99</span> </div>
-<div class="line"><span class="lineno">  100</span>    tracks = [tracker.GetTrack(i) <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(tracker.GetNTracks())]</div>
-<div class="line"><span class="lineno">  101</span>    track_hit_indices = [</div>
-<div class="line"><span class="lineno">  102</span>        [hit_of_measurement[m] <span class="keywordflow">for</span> m <span class="keywordflow">in</span> tracker.GetTrackMeasurements(i)] <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(tracker.GetNTracks())</div>
-<div class="line"><span class="lineno">  103</span>    ]</div>
-<div class="line"><span class="lineno">  104</span> </div>
-<div class="line"><span class="lineno">  105</span>    good = [</div>
-<div class="line"><span class="lineno">  106</span>        i</div>
-<div class="line"><span class="lineno">  107</span>        <span class="keywordflow">for</span> i, track <span class="keywordflow">in</span> enumerate(tracks)</div>
-<div class="line"><span class="lineno">  108</span>        <span class="keywordflow">if</span> track.nMeasurements() &gt;= MIN_HITS_PER_TRACK</div>
-<div class="line"><span class="lineno">  109</span>        <span class="keywordflow">and</span> track.nDoF() &gt; 0</div>
-<div class="line"><span class="lineno">  110</span>        <span class="keywordflow">and</span> track.chi2() / track.nDoF() &lt;= MAX_CHI2_NDF</div>
-<div class="line"><span class="lineno">  111</span>    ]</div>
-<div class="line"><span class="lineno">  112</span>    <span class="comment"># A two-track vertex for every opposite-charge pair of good tracks, as in</span></div>
-<div class="line"><span class="lineno">  113</span>    <span class="comment"># the GenFit vertexing</span></div>
-<div class="line"><span class="lineno">  114</span>    vertices = []</div>
-<div class="line"><span class="lineno">  115</span>    <span class="keywordflow">if</span> fit_vertex:</div>
-<div class="line"><span class="lineno">  116</span>        <span class="keywordflow">for</span> i, j <span class="keywordflow">in</span> combinations(good, 2):</div>
-<div class="line"><span class="lineno">  117</span>            <span class="keywordflow">if</span> tracks[i].charge() * tracks[j].charge() &gt;= 0:</div>
-<div class="line"><span class="lineno">  118</span>                <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  119</span>            vertex = ROOT.SHiP.RecoVertex()</div>
-<div class="line"><span class="lineno">  120</span>            <span class="keywordflow">if</span> tracker.FitVertex(ROOT.std.vector(<span class="stringliteral">&quot;int&quot;</span>)([i, j]), vertex):</div>
-<div class="line"><span class="lineno">  121</span>                vertices.append(vertex)</div>
-<div class="line"><span class="lineno">  122</span>            <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  123</span>                logger.debug(<span class="stringliteral">&quot;Vertex fit failed for tracks %d and %d&quot;</span>, i, j)</div>
-<div class="line"><span class="lineno">  124</span> </div>
-<div class="line"><span class="lineno">  125</span>    <span class="keywordflow">return</span> tracks, vertices, track_hit_indices</div>
+<p class="definition">Definition at line <a class="el" href="strawReco_8py_source.html#l00090">90</a> of file <a class="el" href="strawReco_8py_source.html">strawReco.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   90</span><span class="keyword">def </span>runTracking(tracker, candidates, hits, resolution, fit_vertex=True, ubt_z=None, td_z=None):</div>
+<div class="line"><span class="lineno">   91</span>    <span class="stringliteral">&quot;&quot;&quot;Find or fit tracks and, if the event qualifies, fit their vertex.</span></div>
+<div class="line"><span class="lineno">   92</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">   93</span><span class="stringliteral">    With ``candidates`` None, the tracker&#39;s own pattern recognition finds</span></div>
+<div class="line"><span class="lineno">   94</span><span class="stringliteral">    the tracks. Otherwise ``candidates`` are dicts with ``indices`` into</span></div>
+<div class="line"><span class="lineno">   95</span><span class="stringliteral">    ``hits`` (sorted by hit z in place), and each is fitted on its own.</span></div>
+<div class="line"><span class="lineno">   96</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">   97</span><span class="stringliteral">    Each track also stores its path length and its extrapolations to the UBT</span></div>
+<div class="line"><span class="lineno">   98</span><span class="stringliteral">    plane at ``ubt_z`` and the timing-detector plane at ``td_z`` (cm); a</span></div>
+<div class="line"><span class="lineno">   99</span><span class="stringliteral">    plane given as None, e.g. because that detector is not in the geometry,</span></div>
+<div class="line"><span class="lineno">  100</span><span class="stringliteral">    is not stored (see ``store_extrapolations``).</span></div>
+<div class="line"><span class="lineno">  101</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  102</span><span class="stringliteral">    Returns the fitted tracks (``SHiP::RecoTrack``, in the order of the</span></div>
+<div class="line"><span class="lineno">  103</span><span class="stringliteral">    tracker&#39;s track indices), the fitted vertices (``SHiP::RecoVertex``) and,</span></div>
+<div class="line"><span class="lineno">  104</span><span class="stringliteral">    per fitted track, the indices into ``hits`` that were used in the fit.</span></div>
+<div class="line"><span class="lineno">  105</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  106</span>    tracker.ClearEvent()</div>
+<div class="line"><span class="lineno">  107</span>    measurements = [tracker.AddMeasurement(h.detector_id, h.drift, resolution) <span class="keywordflow">for</span> h <span class="keywordflow">in</span> hits]</div>
+<div class="line"><span class="lineno">  108</span>    hit_of_measurement = {m: i <span class="keywordflow">for</span> i, m <span class="keywordflow">in</span> enumerate(measurements) <span class="keywordflow">if</span> m &gt;= 0}</div>
+<div class="line"><span class="lineno">  109</span> </div>
+<div class="line"><span class="lineno">  110</span>    <span class="keywordflow">if</span> candidates <span class="keywordflow">is</span> <span class="keywordtype">None</span>:</div>
+<div class="line"><span class="lineno">  111</span>        tracker.FindTracks()</div>
+<div class="line"><span class="lineno">  112</span>        candidates = []</div>
+<div class="line"><span class="lineno">  113</span>    <span class="keywordflow">for</span> cand <span class="keywordflow">in</span> candidates:</div>
+<div class="line"><span class="lineno">  114</span>        cand[<span class="stringliteral">&quot;indices&quot;</span>].sort(key=<span class="keyword">lambda</span> i: hits[i].z)</div>
+<div class="line"><span class="lineno">  115</span> </div>
+<div class="line"><span class="lineno">  116</span>        <span class="comment"># The Kalman filter takes at most one measurement per straw layer</span></div>
+<div class="line"><span class="lineno">  117</span>        used = []</div>
+<div class="line"><span class="lineno">  118</span>        seen_layers = set()</div>
+<div class="line"><span class="lineno">  119</span>        <span class="keywordflow">for</span> idx <span class="keywordflow">in</span> cand[<span class="stringliteral">&quot;indices&quot;</span>]:</div>
+<div class="line"><span class="lineno">  120</span>            <span class="keywordflow">if</span> measurements[idx] &lt; 0:</div>
+<div class="line"><span class="lineno">  121</span>                logger.warning(<span class="stringliteral">&quot;No ACTS surface for straw %d&quot;</span>, hits[idx].detector_id)</div>
+<div class="line"><span class="lineno">  122</span>                <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  123</span>            <span class="keywordflow">if</span> hits[idx].layer_key <span class="keywordflow">not</span> <span class="keywordflow">in</span> seen_layers:</div>
+<div class="line"><span class="lineno">  124</span>                used.append(idx)</div>
+<div class="line"><span class="lineno">  125</span>                seen_layers.add(hits[idx].layer_key)</div>
 <div class="line"><span class="lineno">  126</span> </div>
-<div class="line"><span class="lineno">  127</span> </div>
+<div class="line"><span class="lineno">  127</span>        <span class="keywordflow">if</span> len(used) &lt; MIN_HITS_PER_TRACK:</div>
+<div class="line"><span class="lineno">  128</span>            logger.debug(<span class="stringliteral">&quot;Skipping track with too few hits: %d&quot;</span>, len(used))</div>
+<div class="line"><span class="lineno">  129</span>            <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  130</span> </div>
+<div class="line"><span class="lineno">  131</span>        tracker.FitCandidate(ROOT.std.vector(<span class="stringliteral">&quot;int&quot;</span>)([measurements[i] <span class="keywordflow">for</span> i <span class="keywordflow">in</span> used]))</div>
+<div class="line"><span class="lineno">  132</span> </div>
+<div class="line"><span class="lineno">  133</span>    tracks = [tracker.GetTrack(i) <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(tracker.GetNTracks())]</div>
+<div class="line"><span class="lineno">  134</span>    <span class="keywordflow">for</span> i, track <span class="keywordflow">in</span> enumerate(tracks):</div>
+<div class="line"><span class="lineno">  135</span>        store_extrapolations(tracker, i, track, ubt_z, td_z)</div>
+<div class="line"><span class="lineno">  136</span>    track_hit_indices = [</div>
+<div class="line"><span class="lineno">  137</span>        [hit_of_measurement[m] <span class="keywordflow">for</span> m <span class="keywordflow">in</span> tracker.GetTrackMeasurements(i)] <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(tracker.GetNTracks())</div>
+<div class="line"><span class="lineno">  138</span>    ]</div>
+<div class="line"><span class="lineno">  139</span> </div>
+<div class="line"><span class="lineno">  140</span>    good = [</div>
+<div class="line"><span class="lineno">  141</span>        i</div>
+<div class="line"><span class="lineno">  142</span>        <span class="keywordflow">for</span> i, track <span class="keywordflow">in</span> enumerate(tracks)</div>
+<div class="line"><span class="lineno">  143</span>        <span class="keywordflow">if</span> track.nMeasurements() &gt;= MIN_HITS_PER_TRACK</div>
+<div class="line"><span class="lineno">  144</span>        <span class="keywordflow">and</span> track.nDoF() &gt; 0</div>
+<div class="line"><span class="lineno">  145</span>        <span class="keywordflow">and</span> track.chi2() / track.nDoF() &lt;= MAX_CHI2_NDF</div>
+<div class="line"><span class="lineno">  146</span>    ]</div>
+<div class="line"><span class="lineno">  147</span>    <span class="comment"># A two-track vertex for every opposite-charge pair of good tracks, as in</span></div>
+<div class="line"><span class="lineno">  148</span>    <span class="comment"># the GenFit vertexing</span></div>
+<div class="line"><span class="lineno">  149</span>    vertices = []</div>
+<div class="line"><span class="lineno">  150</span>    <span class="keywordflow">if</span> fit_vertex:</div>
+<div class="line"><span class="lineno">  151</span>        <span class="keywordflow">for</span> i, j <span class="keywordflow">in</span> combinations(good, 2):</div>
+<div class="line"><span class="lineno">  152</span>            <span class="keywordflow">if</span> tracks[i].charge() * tracks[j].charge() &gt;= 0:</div>
+<div class="line"><span class="lineno">  153</span>                <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  154</span>            vertex = ROOT.SHiP.RecoVertex()</div>
+<div class="line"><span class="lineno">  155</span>            <span class="keywordflow">if</span> tracker.FitVertex(ROOT.std.vector(<span class="stringliteral">&quot;int&quot;</span>)([i, j]), vertex):</div>
+<div class="line"><span class="lineno">  156</span>                vertices.append(vertex)</div>
+<div class="line"><span class="lineno">  157</span>            <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  158</span>                logger.debug(<span class="stringliteral">&quot;Vertex fit failed for tracks %d and %d&quot;</span>, i, j)</div>
+<div class="line"><span class="lineno">  159</span> </div>
+<div class="line"><span class="lineno">  160</span>    <span class="keywordflow">return</span> tracks, vertices, track_hit_indices</div>
+<div class="line"><span class="lineno">  161</span> </div>
+<div class="line"><span class="lineno">  162</span> </div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a5ea89e57d8ceb53cf92f787ed861189d" name="a5ea89e57d8ceb53cf92f787ed861189d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5ea89e57d8ceb53cf92f787ed861189d">&#9670;&#160;</a></span>store_extrapolations()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">strawReco.store_extrapolations </td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>tracker</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>track_index</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>track</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>ubt_z</em></span><span class="paramdefsep"> = </span><span class="paramdefval">None</span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>td_z</em></span><span class="paramdefsep"> = </span><span class="paramdefval">None</span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<pre class="fragment">Store on ``track`` its path length and its extrapolations through the field.
+
+The track is propagated (field only, no material) from its first fitted
+measurement back to the UBT plane at ``ubt_z`` and from its last one on
+to the timing-detector plane at ``td_z`` (cm). A plane given as None, or
+one the propagation cannot reach, is not stored: ``RecoTrack`` then
+reports it as missing (``HasUBTExtrapolation``/``HasTDExtrapolation``
+false). The path length between the first and last measurement is NaN if
+the tracker cannot give it.
+</pre> 
+<p class="definition">Definition at line <a class="el" href="strawReco_8py_source.html#l00063">63</a> of file <a class="el" href="strawReco_8py_source.html">strawReco.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   63</span><span class="keyword">def </span>store_extrapolations(tracker, track_index, track, ubt_z=None, td_z=None):</div>
+<div class="line"><span class="lineno">   64</span>    <span class="stringliteral">&quot;&quot;&quot;Store on ``track`` its path length and its extrapolations through the field.</span></div>
+<div class="line"><span class="lineno">   65</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">   66</span><span class="stringliteral">    The track is propagated (field only, no material) from its first fitted</span></div>
+<div class="line"><span class="lineno">   67</span><span class="stringliteral">    measurement back to the UBT plane at ``ubt_z`` and from its last one on</span></div>
+<div class="line"><span class="lineno">   68</span><span class="stringliteral">    to the timing-detector plane at ``td_z`` (cm). A plane given as None, or</span></div>
+<div class="line"><span class="lineno">   69</span><span class="stringliteral">    one the propagation cannot reach, is not stored: ``RecoTrack`` then</span></div>
+<div class="line"><span class="lineno">   70</span><span class="stringliteral">    reports it as missing (``HasUBTExtrapolation``/``HasTDExtrapolation``</span></div>
+<div class="line"><span class="lineno">   71</span><span class="stringliteral">    false). The path length between the first and last measurement is NaN if</span></div>
+<div class="line"><span class="lineno">   72</span><span class="stringliteral">    the tracker cannot give it.</span></div>
+<div class="line"><span class="lineno">   73</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   74</span>    track.SetTrackLength(tracker.TrackLength(track_index))</div>
+<div class="line"><span class="lineno">   75</span>    <span class="keywordflow">for</span> z, from_last_hit, setter <span class="keywordflow">in</span> (</div>
+<div class="line"><span class="lineno">   76</span>        (ubt_z, <span class="keyword">False</span>, track.SetUBTExtrapolation),</div>
+<div class="line"><span class="lineno">   77</span>        (td_z, <span class="keyword">True</span>, track.SetTDExtrapolation),</div>
+<div class="line"><span class="lineno">   78</span>    ):</div>
+<div class="line"><span class="lineno">   79</span>        <span class="keywordflow">if</span> z <span class="keywordflow">is</span> <span class="keywordtype">None</span>:</div>
+<div class="line"><span class="lineno">   80</span>            <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">   81</span>        position, momentum = ROOT.TVector3(), ROOT.TVector3()</div>
+<div class="line"><span class="lineno">   82</span>        covariance = ROOT.std.vector(<span class="stringliteral">&quot;double&quot;</span>)()</div>
+<div class="line"><span class="lineno">   83</span>        path_length = ctypes.c_double(float(<span class="stringliteral">&quot;nan&quot;</span>))</div>
+<div class="line"><span class="lineno">   84</span>        <span class="keywordflow">if</span> tracker.ExtrapolateToZ(track_index, z, from_last_hit, position, momentum, covariance, path_length):</div>
+<div class="line"><span class="lineno">   85</span>            setter(position, momentum, covariance, path_length.value)</div>
+<div class="line"><span class="lineno">   86</span>        <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">   87</span>            logger.debug(<span class="stringliteral">&quot;Track %d does not reach z = %.1f cm&quot;</span>, track_index, z)</div>
+<div class="line"><span class="lineno">   88</span> </div>
+<div class="line"><span class="lineno">   89</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -333,7 +430,7 @@ per fitted track, the indices into ``hits`` that were used in the fit.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="strawReco_8py_source.html#l00019">19</a> of file <a class="el" href="strawReco_8py_source.html">strawReco.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="strawReco_8py_source.html#l00020">20</a> of file <a class="el" href="strawReco_8py_source.html">strawReco.py</a>.</p>
 
 </div>
 </div>
@@ -349,7 +446,7 @@ per fitted track, the indices into ``hits`` that were used in the fit.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="strawReco_8py_source.html#l00022">22</a> of file <a class="el" href="strawReco_8py_source.html">strawReco.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="strawReco_8py_source.html#l00023">23</a> of file <a class="el" href="strawReco_8py_source.html">strawReco.py</a>.</p>
 
 </div>
 </div>
@@ -365,7 +462,7 @@ per fitted track, the indices into ``hits`` that were used in the fit.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="strawReco_8py_source.html#l00025">25</a> of file <a class="el" href="strawReco_8py_source.html">strawReco.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="strawReco_8py_source.html#l00026">26</a> of file <a class="el" href="strawReco_8py_source.html">strawReco.py</a>.</p>
 
 </div>
 </div>

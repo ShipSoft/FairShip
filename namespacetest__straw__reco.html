@@ -110,6 +110,8 @@ Functions</h2></td></tr>
 <tr class="memitem:adbfdc0f1c313f0f6785c513d706204cb" id="r_adbfdc0f1c313f0f6785c513d706204cb"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adbfdc0f1c313f0f6785c513d706204cb">test_too_few_hits_are_not_fitted</a> ()</td></tr>
 <tr class="memitem:ae9a96013c6a378eb0a33526fbb3aea21" id="r_ae9a96013c6a378eb0a33526fbb3aea21"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae9a96013c6a378eb0a33526fbb3aea21">test_found_tracks_map_back_to_hits</a> ()</td></tr>
 <tr class="memitem:a4c49de9450ad3cfb7b6acc9abf0d1d7e" id="r_a4c49de9450ad3cfb7b6acc9abf0d1d7e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4c49de9450ad3cfb7b6acc9abf0d1d7e">test_vertices_are_fitted_for_opposite_charge_pairs</a> ()</td></tr>
+<tr class="memitem:a4cab001d42d860783790efa9bcffec65" id="r_a4cab001d42d860783790efa9bcffec65"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4cab001d42d860783790efa9bcffec65">test_extrapolations_and_track_length_are_stored</a> ()</td></tr>
+<tr class="memitem:a8e983a1992682d2197b130373c5ded55" id="r_a8e983a1992682d2197b130373c5ded55"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8e983a1992682d2197b130373c5ded55">test_planes_of_missing_detectors_are_not_extrapolated</a> ()</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-var-members" class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
@@ -192,30 +194,30 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__straw__reco_8py_source.html#l00089">89</a> of file <a class="el" href="test__straw__reco_8py_source.html">test_straw_reco.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   89</span><span class="keyword">def </span>test_candidate_hits_are_ordered_in_z_with_one_per_layer():</div>
-<div class="line"><span class="lineno">   90</span>    <span class="comment"># Hit 0 is an unknown straw, so measurement indices are hit indices - 1.</span></div>
-<div class="line"><span class="lineno">   91</span>    <span class="comment"># The last hit shares a straw layer with hit 2 but sits at smaller z, so</span></div>
-<div class="line"><span class="lineno">   92</span>    <span class="comment"># it is kept and hit 2 is not.</span></div>
-<div class="line"><span class="lineno">   93</span>    hits = [make_hit(UNKNOWN_STRAW, 1, 0, 0, z=0.0)]</div>
-<div class="line"><span class="lineno">   94</span>    hits += [make_hit(1000 + i, 1, i // 2, i % 2, z=10.0 * i) <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(MIN_HITS_PER_TRACK + 1)]</div>
-<div class="line"><span class="lineno">   95</span>    hits.append(make_hit(9999, 1, 0, 1, z=5.0))</div>
-<div class="line"><span class="lineno">   96</span>    tracker = FakeTracker()</div>
-<div class="line"><span class="lineno">   97</span>    tracks, vertices, hit_indices = runTracking(</div>
-<div class="line"><span class="lineno">   98</span>        tracker, [{<span class="stringliteral">&quot;indices&quot;</span>: list(reversed(range(len(hits))))}], hits, 0.012, fit_vertex=<span class="keyword">False</span></div>
-<div class="line"><span class="lineno">   99</span>    )</div>
-<div class="line"><span class="lineno">  100</span> </div>
-<div class="line"><span class="lineno">  101</span>    <span class="keyword">assert</span> len(tracks) == 1</div>
-<div class="line"><span class="lineno">  102</span>    <span class="keyword">assert</span> vertices == []</div>
-<div class="line"><span class="lineno">  103</span>    used = [m + 1 <span class="keywordflow">for</span> m <span class="keywordflow">in</span> tracker.candidates[0]]</div>
-<div class="line"><span class="lineno">  104</span>    <span class="keyword">assert</span> used == sorted(used, key=<span class="keyword">lambda</span> i: hits[i].z)</div>
-<div class="line"><span class="lineno">  105</span>    <span class="keyword">assert</span> 0 <span class="keywordflow">not</span> <span class="keywordflow">in</span> used</div>
-<div class="line"><span class="lineno">  106</span>    <span class="keyword">assert</span> len({hits[i].layer_key <span class="keywordflow">for</span> i <span class="keywordflow">in</span> used}) == len(used)</div>
-<div class="line"><span class="lineno">  107</span>    <span class="keyword">assert</span> len(hits) - 1 <span class="keywordflow">in</span> used <span class="keywordflow">and</span> 2 <span class="keywordflow">not</span> <span class="keywordflow">in</span> used</div>
-<div class="line"><span class="lineno">  108</span>    <span class="comment"># The hit indices of the track are those the tracker kept</span></div>
-<div class="line"><span class="lineno">  109</span>    <span class="keyword">assert</span> hit_indices[0] == used[:-1]</div>
-<div class="line"><span class="lineno">  110</span> </div>
-<div class="line"><span class="lineno">  111</span> </div>
+<p class="definition">Definition at line <a class="el" href="test__straw__reco_8py_source.html#l00111">111</a> of file <a class="el" href="test__straw__reco_8py_source.html">test_straw_reco.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  111</span><span class="keyword">def </span>test_candidate_hits_are_ordered_in_z_with_one_per_layer():</div>
+<div class="line"><span class="lineno">  112</span>    <span class="comment"># Hit 0 is an unknown straw, so measurement indices are hit indices - 1.</span></div>
+<div class="line"><span class="lineno">  113</span>    <span class="comment"># The last hit shares a straw layer with hit 2 but sits at smaller z, so</span></div>
+<div class="line"><span class="lineno">  114</span>    <span class="comment"># it is kept and hit 2 is not.</span></div>
+<div class="line"><span class="lineno">  115</span>    hits = [make_hit(UNKNOWN_STRAW, 1, 0, 0, z=0.0)]</div>
+<div class="line"><span class="lineno">  116</span>    hits += [make_hit(1000 + i, 1, i // 2, i % 2, z=10.0 * i) <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(MIN_HITS_PER_TRACK + 1)]</div>
+<div class="line"><span class="lineno">  117</span>    hits.append(make_hit(9999, 1, 0, 1, z=5.0))</div>
+<div class="line"><span class="lineno">  118</span>    tracker = FakeTracker()</div>
+<div class="line"><span class="lineno">  119</span>    tracks, vertices, hit_indices = runTracking(</div>
+<div class="line"><span class="lineno">  120</span>        tracker, [{<span class="stringliteral">&quot;indices&quot;</span>: list(reversed(range(len(hits))))}], hits, 0.012, fit_vertex=<span class="keyword">False</span></div>
+<div class="line"><span class="lineno">  121</span>    )</div>
+<div class="line"><span class="lineno">  122</span> </div>
+<div class="line"><span class="lineno">  123</span>    <span class="keyword">assert</span> len(tracks) == 1</div>
+<div class="line"><span class="lineno">  124</span>    <span class="keyword">assert</span> vertices == []</div>
+<div class="line"><span class="lineno">  125</span>    used = [m + 1 <span class="keywordflow">for</span> m <span class="keywordflow">in</span> tracker.candidates[0]]</div>
+<div class="line"><span class="lineno">  126</span>    <span class="keyword">assert</span> used == sorted(used, key=<span class="keyword">lambda</span> i: hits[i].z)</div>
+<div class="line"><span class="lineno">  127</span>    <span class="keyword">assert</span> 0 <span class="keywordflow">not</span> <span class="keywordflow">in</span> used</div>
+<div class="line"><span class="lineno">  128</span>    <span class="keyword">assert</span> len({hits[i].layer_key <span class="keywordflow">for</span> i <span class="keywordflow">in</span> used}) == len(used)</div>
+<div class="line"><span class="lineno">  129</span>    <span class="keyword">assert</span> len(hits) - 1 <span class="keywordflow">in</span> used <span class="keywordflow">and</span> 2 <span class="keywordflow">not</span> <span class="keywordflow">in</span> used</div>
+<div class="line"><span class="lineno">  130</span>    <span class="comment"># The hit indices of the track are those the tracker kept</span></div>
+<div class="line"><span class="lineno">  131</span>    <span class="keyword">assert</span> hit_indices[0] == used[:-1]</div>
+<div class="line"><span class="lineno">  132</span> </div>
+<div class="line"><span class="lineno">  133</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -234,14 +236,45 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__straw__reco_8py_source.html#l00112">112</a> of file <a class="el" href="test__straw__reco_8py_source.html">test_straw_reco.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  112</span><span class="keyword">def </span>test_drift_distances_are_passed_unsigned():</div>
-<div class="line"><span class="lineno">  113</span>    hits = [make_hit(1000 + i, 1, i // 2, i % 2, z=float(i), drift=0.1 * i) <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(MIN_HITS_PER_TRACK)]</div>
-<div class="line"><span class="lineno">  114</span>    tracker = FakeTracker()</div>
-<div class="line"><span class="lineno">  115</span>    runTracking(tracker, [{<span class="stringliteral">&quot;indices&quot;</span>: list(range(len(hits)))}], hits, 0.012, fit_vertex=<span class="keyword">False</span>)</div>
-<div class="line"><span class="lineno">  116</span>    <span class="keyword">assert</span> [m[1] <span class="keywordflow">for</span> m <span class="keywordflow">in</span> tracker.measurements] == [h.drift <span class="keywordflow">for</span> h <span class="keywordflow">in</span> hits]</div>
-<div class="line"><span class="lineno">  117</span> </div>
-<div class="line"><span class="lineno">  118</span> </div>
+<p class="definition">Definition at line <a class="el" href="test__straw__reco_8py_source.html#l00134">134</a> of file <a class="el" href="test__straw__reco_8py_source.html">test_straw_reco.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  134</span><span class="keyword">def </span>test_drift_distances_are_passed_unsigned():</div>
+<div class="line"><span class="lineno">  135</span>    hits = [make_hit(1000 + i, 1, i // 2, i % 2, z=float(i), drift=0.1 * i) <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(MIN_HITS_PER_TRACK)]</div>
+<div class="line"><span class="lineno">  136</span>    tracker = FakeTracker()</div>
+<div class="line"><span class="lineno">  137</span>    runTracking(tracker, [{<span class="stringliteral">&quot;indices&quot;</span>: list(range(len(hits)))}], hits, 0.012, fit_vertex=<span class="keyword">False</span>)</div>
+<div class="line"><span class="lineno">  138</span>    <span class="keyword">assert</span> [m[1] <span class="keywordflow">for</span> m <span class="keywordflow">in</span> tracker.measurements] == [h.drift <span class="keywordflow">for</span> h <span class="keywordflow">in</span> hits]</div>
+<div class="line"><span class="lineno">  139</span> </div>
+<div class="line"><span class="lineno">  140</span> </div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a4cab001d42d860783790efa9bcffec65" name="a4cab001d42d860783790efa9bcffec65"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4cab001d42d860783790efa9bcffec65">&#9670;&#160;</a></span>test_extrapolations_and_track_length_are_stored()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">test_straw_reco.test_extrapolations_and_track_length_are_stored </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="test__straw__reco_8py_source.html#l00165">165</a> of file <a class="el" href="test__straw__reco_8py_source.html">test_straw_reco.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  165</span><span class="keyword">def </span>test_extrapolations_and_track_length_are_stored():</div>
+<div class="line"><span class="lineno">  166</span>    <span class="comment"># The UBT is reached backwards from the first hit, the timing detector</span></div>
+<div class="line"><span class="lineno">  167</span>    <span class="comment"># forwards from the last; a plane the track cannot reach is not stored</span></div>
+<div class="line"><span class="lineno">  168</span>    hits = [make_hit(1000 + i, 1, 0, 0, z=float(i)) <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(2)]</div>
+<div class="line"><span class="lineno">  169</span>    tracker = FakeTracker(found=[[0], [1]], unreachable_z=(9000.0,))</div>
+<div class="line"><span class="lineno">  170</span>    tracks, _, _ = runTracking(tracker, <span class="keywordtype">None</span>, hits, 0.012, fit_vertex=<span class="keyword">False</span>, ubt_z=3000.0, td_z=9000.0)</div>
+<div class="line"><span class="lineno">  171</span>    <span class="keyword">assert</span> tracker.extrapolations == [(0, 3000.0, <span class="keyword">False</span>), (0, 9000.0, <span class="keyword">True</span>), (1, 3000.0, <span class="keyword">False</span>), (1, 9000.0, <span class="keyword">True</span>)]</div>
+<div class="line"><span class="lineno">  172</span>    <span class="keyword">assert</span> [t.track_length <span class="keywordflow">for</span> t <span class="keywordflow">in</span> tracks] == [100.0, 101.0]</div>
+<div class="line"><span class="lineno">  173</span>    <span class="keyword">assert</span> all(t.ubt == (3000.0, 300.0) <span class="keywordflow">for</span> t <span class="keywordflow">in</span> tracks)</div>
+<div class="line"><span class="lineno">  174</span>    <span class="keyword">assert</span> <span class="keywordflow">not</span> any(hasattr(t, <span class="stringliteral">&quot;td&quot;</span>) <span class="keywordflow">for</span> t <span class="keywordflow">in</span> tracks)</div>
+<div class="line"><span class="lineno">  175</span> </div>
+<div class="line"><span class="lineno">  176</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -260,16 +293,42 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__straw__reco_8py_source.html#l00126">126</a> of file <a class="el" href="test__straw__reco_8py_source.html">test_straw_reco.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  126</span><span class="keyword">def </span>test_found_tracks_map_back_to_hits():</div>
-<div class="line"><span class="lineno">  127</span>    <span class="comment"># With no candidates, the tracker finds the tracks itself</span></div>
-<div class="line"><span class="lineno">  128</span>    hits = [make_hit(UNKNOWN_STRAW, 1, 0, 0, z=0.0)] + [make_hit(1000 + i, 1, 0, 0, z=float(i)) <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(4)]</div>
-<div class="line"><span class="lineno">  129</span>    tracker = FakeTracker(found=[[0, 2], [1, 3]])</div>
-<div class="line"><span class="lineno">  130</span>    tracks, _, hit_indices = runTracking(tracker, <span class="keywordtype">None</span>, hits, 0.012, fit_vertex=<span class="keyword">False</span>)</div>
-<div class="line"><span class="lineno">  131</span>    <span class="keyword">assert</span> len(tracks) == 2</div>
-<div class="line"><span class="lineno">  132</span>    <span class="keyword">assert</span> hit_indices == [[1, 3], [2, 4]]</div>
-<div class="line"><span class="lineno">  133</span> </div>
-<div class="line"><span class="lineno">  134</span> </div>
+<p class="definition">Definition at line <a class="el" href="test__straw__reco_8py_source.html#l00148">148</a> of file <a class="el" href="test__straw__reco_8py_source.html">test_straw_reco.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  148</span><span class="keyword">def </span>test_found_tracks_map_back_to_hits():</div>
+<div class="line"><span class="lineno">  149</span>    <span class="comment"># With no candidates, the tracker finds the tracks itself</span></div>
+<div class="line"><span class="lineno">  150</span>    hits = [make_hit(UNKNOWN_STRAW, 1, 0, 0, z=0.0)] + [make_hit(1000 + i, 1, 0, 0, z=float(i)) <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(4)]</div>
+<div class="line"><span class="lineno">  151</span>    tracker = FakeTracker(found=[[0, 2], [1, 3]])</div>
+<div class="line"><span class="lineno">  152</span>    tracks, _, hit_indices = runTracking(tracker, <span class="keywordtype">None</span>, hits, 0.012, fit_vertex=<span class="keyword">False</span>)</div>
+<div class="line"><span class="lineno">  153</span>    <span class="keyword">assert</span> len(tracks) == 2</div>
+<div class="line"><span class="lineno">  154</span>    <span class="keyword">assert</span> hit_indices == [[1, 3], [2, 4]]</div>
+<div class="line"><span class="lineno">  155</span> </div>
+<div class="line"><span class="lineno">  156</span> </div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a8e983a1992682d2197b130373c5ded55" name="a8e983a1992682d2197b130373c5ded55"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8e983a1992682d2197b130373c5ded55">&#9670;&#160;</a></span>test_planes_of_missing_detectors_are_not_extrapolated()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">test_straw_reco.test_planes_of_missing_detectors_are_not_extrapolated </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="test__straw__reco_8py_source.html#l00177">177</a> of file <a class="el" href="test__straw__reco_8py_source.html">test_straw_reco.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  177</span><span class="keyword">def </span>test_planes_of_missing_detectors_are_not_extrapolated():</div>
+<div class="line"><span class="lineno">  178</span>    hits = [make_hit(1000, 1, 0, 0, z=0.0)]</div>
+<div class="line"><span class="lineno">  179</span>    tracker = FakeTracker(found=[[0]])</div>
+<div class="line"><span class="lineno">  180</span>    tracks, _, _ = runTracking(tracker, <span class="keywordtype">None</span>, hits, 0.012, fit_vertex=<span class="keyword">False</span>)</div>
+<div class="line"><span class="lineno">  181</span>    <span class="keyword">assert</span> tracker.extrapolations == []</div>
+<div class="line"><span class="lineno">  182</span>    <span class="keyword">assert</span> tracks[0].track_length == 100.0</div>
+<div class="line"><span class="lineno">  183</span>    <span class="keyword">assert</span> <span class="keywordflow">not</span> hasattr(tracks[0], <span class="stringliteral">&quot;ubt&quot;</span>) <span class="keywordflow">and</span> <span class="keywordflow">not</span> hasattr(tracks[0], <span class="stringliteral">&quot;td&quot;</span>)</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -288,14 +347,14 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__straw__reco_8py_source.html#l00119">119</a> of file <a class="el" href="test__straw__reco_8py_source.html">test_straw_reco.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  119</span><span class="keyword">def </span>test_too_few_hits_are_not_fitted():</div>
-<div class="line"><span class="lineno">  120</span>    hits = [make_hit(1000 + i, 1, 0, i, z=float(i)) <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(2)]</div>
-<div class="line"><span class="lineno">  121</span>    tracker = FakeTracker()</div>
-<div class="line"><span class="lineno">  122</span>    tracks, _, hit_indices = runTracking(tracker, [{<span class="stringliteral">&quot;indices&quot;</span>: [0, 1]}], hits, 0.012, fit_vertex=<span class="keyword">False</span>)</div>
-<div class="line"><span class="lineno">  123</span>    <span class="keyword">assert</span> tracks == [] <span class="keywordflow">and</span> hit_indices == [] <span class="keywordflow">and</span> tracker.candidates == []</div>
-<div class="line"><span class="lineno">  124</span> </div>
-<div class="line"><span class="lineno">  125</span> </div>
+<p class="definition">Definition at line <a class="el" href="test__straw__reco_8py_source.html#l00141">141</a> of file <a class="el" href="test__straw__reco_8py_source.html">test_straw_reco.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  141</span><span class="keyword">def </span>test_too_few_hits_are_not_fitted():</div>
+<div class="line"><span class="lineno">  142</span>    hits = [make_hit(1000 + i, 1, 0, i, z=float(i)) <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(2)]</div>
+<div class="line"><span class="lineno">  143</span>    tracker = FakeTracker()</div>
+<div class="line"><span class="lineno">  144</span>    tracks, _, hit_indices = runTracking(tracker, [{<span class="stringliteral">&quot;indices&quot;</span>: [0, 1]}], hits, 0.012, fit_vertex=<span class="keyword">False</span>)</div>
+<div class="line"><span class="lineno">  145</span>    <span class="keyword">assert</span> tracks == [] <span class="keywordflow">and</span> hit_indices == [] <span class="keywordflow">and</span> tracker.candidates == []</div>
+<div class="line"><span class="lineno">  146</span> </div>
+<div class="line"><span class="lineno">  147</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -314,13 +373,15 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__straw__reco_8py_source.html#l00135">135</a> of file <a class="el" href="test__straw__reco_8py_source.html">test_straw_reco.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  135</span><span class="keyword">def </span>test_vertices_are_fitted_for_opposite_charge_pairs():</div>
-<div class="line"><span class="lineno">  136</span>    hits = [make_hit(1000 + i, 1, 0, 0, z=float(i)) <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(3)]</div>
-<div class="line"><span class="lineno">  137</span>    tracker = FakeTracker(found=[[0], [1], [2]], charges=[1, -1, 1])</div>
-<div class="line"><span class="lineno">  138</span>    _, vertices, _ = runTracking(tracker, <span class="keywordtype">None</span>, hits, 0.012, fit_vertex=<span class="keyword">True</span>)</div>
-<div class="line"><span class="lineno">  139</span>    <span class="keyword">assert</span> tracker.vertices == [[0, 1], [1, 2]]</div>
-<div class="line"><span class="lineno">  140</span>    <span class="keyword">assert</span> len(vertices) == 2</div>
+<p class="definition">Definition at line <a class="el" href="test__straw__reco_8py_source.html#l00157">157</a> of file <a class="el" href="test__straw__reco_8py_source.html">test_straw_reco.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  157</span><span class="keyword">def </span>test_vertices_are_fitted_for_opposite_charge_pairs():</div>
+<div class="line"><span class="lineno">  158</span>    hits = [make_hit(1000 + i, 1, 0, 0, z=float(i)) <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(3)]</div>
+<div class="line"><span class="lineno">  159</span>    tracker = FakeTracker(found=[[0], [1], [2]], charges=[1, -1, 1])</div>
+<div class="line"><span class="lineno">  160</span>    _, vertices, _ = runTracking(tracker, <span class="keywordtype">None</span>, hits, 0.012, fit_vertex=<span class="keyword">True</span>)</div>
+<div class="line"><span class="lineno">  161</span>    <span class="keyword">assert</span> tracker.vertices == [[0, 1], [1, 2]]</div>
+<div class="line"><span class="lineno">  162</span>    <span class="keyword">assert</span> len(vertices) == 2</div>
+<div class="line"><span class="lineno">  163</span> </div>
+<div class="line"><span class="lineno">  164</span> </div>
 </div><!-- fragment -->
 </div>
 </div>

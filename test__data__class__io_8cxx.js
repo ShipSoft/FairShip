@@ -25,5 +25,6 @@ var test__data__class__io_8cxx =
     [ "test_const_access", "test__data__class__io_8cxx.html#a0f8c3e7da362f42cd1b21fd34e1cd0c4", null ],
     [ "test_const_access", "test__data__class__io_8cxx.html#a80182fe1f94eb90e15572fdaee09ade3", null ],
     [ "test_copyable", "test__data__class__io_8cxx.html#a981501cada487c811b3c6a355a19cdc8", null ],
+    [ "test_recotrack_tree_roundtrip", "test__data__class__io_8cxx.html#aa20a44654a81bd0f64c968ca5874e5af", null ],
     [ "test_vector_operations", "test__data__class__io_8cxx.html#abdf3cded36e97b9cd915198c68939006", null ]
 ];

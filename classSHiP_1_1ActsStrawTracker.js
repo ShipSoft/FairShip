@@ -7,6 +7,7 @@ var classSHiP_1_1ActsStrawTracker =
     [ "AddMeasurement", "classSHiP_1_1ActsStrawTracker.html#a9f4bf5bcef6df04c345c92635b152b9c", null ],
     [ "ClearEvent", "classSHiP_1_1ActsStrawTracker.html#ac348b6d85568897d9755a89882a8b6e5", null ],
     [ "DistanceToHit", "classSHiP_1_1ActsStrawTracker.html#aac6911ad0aa350f26b84627f539be16c", null ],
+    [ "ExtrapolateToZ", "classSHiP_1_1ActsStrawTracker.html#a76d2fdd0bf1d76f9e093cdc599ddf95b", null ],
     [ "FindTracks", "classSHiP_1_1ActsStrawTracker.html#a65160d2483b6e28a7ec6a91eaef11b6c", null ],
     [ "FitCandidate", "classSHiP_1_1ActsStrawTracker.html#a117d637b30c8178c434299928d77c70b", null ],
     [ "FitVertex", "classSHiP_1_1ActsStrawTracker.html#af7112a7b93e0f8c36bb2b99063d94f0c", null ],
@@ -15,5 +16,6 @@ var classSHiP_1_1ActsStrawTracker =
     [ "GetTrack", "classSHiP_1_1ActsStrawTracker.html#aac0fb9ac3ca074b8de16b19256546afc", null ],
     [ "GetTrackMeasurements", "classSHiP_1_1ActsStrawTracker.html#a4d24a66886ec9aacf5f5353d393cf523", null ],
     [ "operator=", "classSHiP_1_1ActsStrawTracker.html#ade9a69e0c2897d9f3c3f80766bcffafe", null ],
+    [ "TrackLength", "classSHiP_1_1ActsStrawTracker.html#a3ea3143d04491f2740d787351c70fc91", null ],
     [ "fImpl", "classSHiP_1_1ActsStrawTracker.html#a58a5d971ff31022dd77620988b73681c", null ]
 ];
