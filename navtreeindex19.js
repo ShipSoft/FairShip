@@ -1,5 +1,6 @@
 var NAVTREEINDEX19 =
 {
+"namespaceCMBG__conf.html#ad95691e78742115af94d2ddc4c3aeecc":[5,0,13,0],
 "namespaceCaloScoringPlaneDetector.html":[5,0,7],
 "namespaceCaloScoringPlaneDetector.html#a9790c5521686dca7d867156fcecf51c8":[5,0,7,1],
 "namespaceMTCDetector.html":[5,0,65],
@@ -248,6 +249,5 @@ var NAVTREEINDEX19 =
 "namespaceana__ShipMuon.html#a4b0bba4dadca42515d4dfc5fc2451aa5":[5,0,3,29],
 "namespaceana__ShipMuon.html#a4c0c13295577eadb3dce5cadf4f0e194":[5,0,3,67],
 "namespaceana__ShipMuon.html#a52725c8bc8e77006c51ea21a7ae18639":[5,0,3,37],
-"namespaceana__ShipMuon.html#a550db34c5b3b15b947bc1694e7b4ea0e":[5,0,3,68],
-"namespaceana__ShipMuon.html#a572d7a276be83768b914021ab9f41902":[5,0,3,76]
+"namespaceana__ShipMuon.html#a550db34c5b3b15b947bc1694e7b4ea0e":[5,0,3,68]
 };

@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['quality_0',['Code Quality',['../md_CHANGELOG.html#autotoc_md88',1,'']]],
-  ['quality_20and_20maintenance_1',['Code Quality and Maintenance',['../md_CHANGELOG.html#autotoc_md79',1,'']]],
-  ['quick_20recipe_2',['Quick recipe',['../dir_c7af8ae1fa24dc0e27242ce21fb42ad9.html#autotoc_md119',1,'']]]
+  ['quality_0',['Code Quality',['../md_CHANGELOG.html#autotoc_md89',1,'']]],
+  ['quality_20and_20maintenance_1',['Code Quality and Maintenance',['../md_CHANGELOG.html#autotoc_md80',1,'']]],
+  ['quick_20recipe_2',['Quick recipe',['../dir_c7af8ae1fa24dc0e27242ce21fb42ad9.html#autotoc_md120',1,'']]]
 ];
