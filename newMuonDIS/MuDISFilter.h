@@ -18,7 +18,6 @@
 #include "TDatabasePDG.h"
 #include "TH1.h"
 #include "TH2.h"
-#include "TROOT.h"
 #include "TVector3.h"
 
 class MagneticTrackPropagator;
@@ -94,10 +93,10 @@ class MuDISFilter {
                             const TString& label = "");
   void init(const int& aEvts, const int& aStart);
 
-  Bool_t InitFile(const char*, int);
-  Bool_t InitFile(const char*);
-  Bool_t InitFiles(const std::vector<std::string>&, int);
-  Bool_t InitFiles(const std::vector<std::string>&);
+  bool InitFile(const char*, int);
+  bool InitFile(const char*);
+  bool InitFiles(const std::vector<std::string>&, int);
+  bool InitFiles(const std::vector<std::string>&);
   void process_file(const std::string& input, const std::string& output);
   void process_file(const std::vector<std::string>& input,
                     const std::string& output);
@@ -171,13 +170,12 @@ class MuDISFilter {
   mutable std::unique_ptr<Pythia8::Pythia> fPythiaDecayer;  //! Runtime decayer
   std::unique_ptr<MagneticTrackPropagator> fPropagator;  //! Runtime transport
   Filter fFilter;  //! User-supplied runtime predicate
-  TChain* ftree;
+  std::unique_ptr<TChain> ftree;
   ShipMuDIS::MuonInBranches finEv;
 
   TTree* fouttree;
   ShipMuDIS::MuonBranches foutEv;
 
-  FairLogger* fLogger;  //!   don't make it persistent, magic ROOT command
   int fnEvts;
   int fstartEvt;
 

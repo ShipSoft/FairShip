@@ -6,6 +6,7 @@
 #define NEWMUONDIS_MUDISDEFS_H_
 
 #include <array>
+#include <cstdint>
 #include <iostream>
 #include <sstream>
 #include <string>
@@ -16,8 +17,7 @@
 #include "FairLogger.h"  // for FairLogger, MESSAGE_ORIGIN
 #include "ShipMCTrack.h"
 #include "TChain.h"  // for TTree
-#include "TROOT.h"
-#include "TTree.h"  // for TTree
+#include "TTree.h"   // for TTree
 #include "TVector3.h"
 #include "TimeDetPoint.h"
 #include "UpstreamTaggerPoint.h"
@@ -171,7 +171,7 @@ struct CBMSimBranches {
     return tree->GetEntries() == 0 || PrepareEntry(tree, 0);
   }
 
-  bool PrepareEntry(TTree* tree, Long64_t entry) {
+  bool PrepareEntry(TTree* tree, std::int64_t entry) {
     Clear();
     if (tree->LoadTree(entry) < 0) return false;
     if (tree->GetTreeNumber() != fTreeNumber) {
@@ -286,16 +286,16 @@ struct MuonDISInBranches {
     for (const auto& value : aVec) {
       lOut << value << " ";
     }
-    lOut << std::endl;
+    lOut << '\n';
     return lOut.str();
   };
 
   std::ostringstream Print(const unsigned& aEvt, const TString& aLabel) {
     std::ostringstream lOut;
     lOut << "------------ print evt " << aEvt << " branch " << aLabel
-         << " -------------" << std::endl
-         << " - nDISevts = " << nDISevts << std::endl
-         << " - wDIS = " << wDIS << std::endl;
+         << " -------------\n"
+         << " - nDISevts = " << nDISevts << '\n'
+         << " - wDIS = " << wDIS << '\n';
     if (DISxsec) lOut << Print(*DISxsec, "DISxsec");
     if (DIStarget) lOut << Print(*DIStarget, "DIStarget");
     if (DISvx) lOut << Print(*DISvx, "DISvx");
@@ -328,7 +328,7 @@ struct MuonInBranches {
     return tree->GetEntries() == 0 || PrepareEntry(tree, 0);
   }
 
-  bool PrepareEntry(TTree* tree, Long64_t entry) {
+  bool PrepareEntry(TTree* tree, std::int64_t entry) {
     Clear();
     if (tree->LoadTree(entry) < 0) return false;
     if (tree->GetTreeNumber() != fTreeNumber) {
