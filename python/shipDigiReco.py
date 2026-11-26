@@ -138,6 +138,11 @@ class ShipDigiReco:
         if self.trackFitter == "acts":
             # straw surfaces from the loaded geometry, and the simulation field
             self.actsTracker = make_tracker(ROOT.gGeoManager, global_variables.fieldMaker.getGlobalField())
+            # Planes the fitted tracks are extrapolated to and stored at:
+            # the UBT and timing-detector z of the geometry, or None (not
+            # stored) for a detector that is not in it
+            self.ubtZ = self._extrapolationZ("UpstreamTagger")
+            self.timeDetZ = self._extrapolationZ("TimeDet")
         else:
             # init geometry and mag. field
             self.geoMat = ROOT.genfit.TGeoMaterialInterface()
@@ -343,7 +348,20 @@ class ShipDigiReco:
             self.strawHits,
             self.sigma_spatial,
             fit_vertex=global_variables.vertexing,
+            ubt_z=self.ubtZ,
+            td_z=self.timeDetZ,
         )
+
+    @staticmethod
+    def _extrapolationZ(detector: str) -> float | None:
+        """The z (cm) of a detector built in this geometry, or None if it was left out."""
+        if detector not in global_variables.modules:
+            logger.info("%s is not in the geometry: its track extrapolations are not stored", detector)
+            return None
+        z = getattr(getattr(global_variables.ShipGeo, detector, None), "z", None)
+        if z is None:
+            logger.warning("No %s.z in the geometry configuration: its track extrapolations are not stored", detector)
+        return z
 
     def _truthCandidates(self) -> list[dict]:
         """Build track candidates from MC truth: the straw hits of each charged MC track.

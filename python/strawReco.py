@@ -9,6 +9,7 @@ the C++ ``SHiP::ActsStrawTracker``; everything here is in the SHiP frame
 (cm, GeV).
 """
 
+import ctypes
 import logging
 from dataclasses import dataclass
 from itertools import combinations
@@ -59,12 +60,44 @@ def make_tracker(geometry, field):
     return tracker
 
 
-def runTracking(tracker, candidates, hits, resolution, fit_vertex=True):
+def store_extrapolations(tracker, track_index, track, ubt_z=None, td_z=None):
+    """Store on ``track`` its path length and its extrapolations through the field.
+
+    The track is propagated (field only, no material) from its first fitted
+    measurement back to the UBT plane at ``ubt_z`` and from its last one on
+    to the timing-detector plane at ``td_z`` (cm). A plane given as None, or
+    one the propagation cannot reach, is not stored: ``RecoTrack`` then
+    reports it as missing (``HasUBTExtrapolation``/``HasTDExtrapolation``
+    false). The path length between the first and last measurement is NaN if
+    the tracker cannot give it.
+    """
+    track.SetTrackLength(tracker.TrackLength(track_index))
+    for z, from_last_hit, setter in (
+        (ubt_z, False, track.SetUBTExtrapolation),
+        (td_z, True, track.SetTDExtrapolation),
+    ):
+        if z is None:
+            continue
+        position, momentum = ROOT.TVector3(), ROOT.TVector3()
+        covariance = ROOT.std.vector("double")()
+        path_length = ctypes.c_double(float("nan"))
+        if tracker.ExtrapolateToZ(track_index, z, from_last_hit, position, momentum, covariance, path_length):
+            setter(position, momentum, covariance, path_length.value)
+        else:
+            logger.debug("Track %d does not reach z = %.1f cm", track_index, z)
+
+
+def runTracking(tracker, candidates, hits, resolution, fit_vertex=True, ubt_z=None, td_z=None):
     """Find or fit tracks and, if the event qualifies, fit their vertex.
 
     With ``candidates`` None, the tracker's own pattern recognition finds
     the tracks. Otherwise ``candidates`` are dicts with ``indices`` into
     ``hits`` (sorted by hit z in place), and each is fitted on its own.
+
+    Each track also stores its path length and its extrapolations to the UBT
+    plane at ``ubt_z`` and the timing-detector plane at ``td_z`` (cm); a
+    plane given as None, e.g. because that detector is not in the geometry,
+    is not stored (see ``store_extrapolations``).
 
     Returns the fitted tracks (``SHiP::RecoTrack``, in the order of the
     tracker's track indices), the fitted vertices (``SHiP::RecoVertex``) and,
@@ -98,6 +131,8 @@ def runTracking(tracker, candidates, hits, resolution, fit_vertex=True):
         tracker.FitCandidate(ROOT.std.vector("int")([measurements[i] for i in used]))
 
     tracks = [tracker.GetTrack(i) for i in range(tracker.GetNTracks())]
+    for i, track in enumerate(tracks):
+        store_extrapolations(tracker, i, track, ubt_z, td_z)
     track_hit_indices = [
         [hit_of_measurement[m] for m in tracker.GetTrackMeasurements(i)] for i in range(tracker.GetNTracks())
     ]

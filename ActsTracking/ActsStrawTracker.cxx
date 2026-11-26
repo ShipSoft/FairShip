@@ -106,6 +106,14 @@ struct StrawMeasurement {
   int sign{1};
 };
 
+/// Whether a track state holds a measurement the fit reached. Not every
+/// measurement given to the fit has one: ACTS skips surfaces it cannot
+/// intersect.
+template <typename TrackState>
+bool isFittedMeasurement(const TrackState& state) {
+  return state.hasCalibrated() && state.hasSmoothed();
+}
+
 /// Upper triangle of a symmetric matrix, row-major
 template <int N, std::size_t M = N * (N + 1) / 2>
 std::array<Double_t, M> upperTriangle(const Acts::SquareMatrix<N>& matrix) {
@@ -343,21 +351,86 @@ struct ActsStrawTracker::Impl {
     return tracks.getTrack(track).createParametersAtReference();
   }
 
-  /// Propagate to `target` in whichever direction reaches it
-  std::optional<Acts::BoundTrackParameters> extrapolate(
-      const Extrapolator& propagator, const Acts::BoundTrackParameters& start,
-      const Acts::Surface& target) const {
-    for (const auto direction :
-         {Acts::Direction::Forward(), Acts::Direction::Backward()}) {
+  /// The measurements of the fitted states of a track, ordered along it
+  std::vector<Int_t> fittedMeasurements(std::size_t track) const {
+    std::vector<Int_t> indices;
+    for (const auto state : tracks.getTrack(track).trackStatesReversed()) {
+      if (isFittedMeasurement(state)) {
+        indices.push_back(static_cast<Int_t>(
+            state.getUncalibratedSourceLink().template get<std::size_t>()));
+      }
+    }
+    std::reverse(indices.begin(), indices.end());
+    return indices;
+  }
+
+  /// Propagate to `target` in whichever direction reaches it, also returning
+  /// the path length (ACTS units), signed: negative when the target is
+  /// reached against the momentum direction
+  std::optional<std::pair<Acts::BoundTrackParameters, double>>
+  extrapolateWithLength(const Extrapolator& propagator,
+                        const Acts::BoundTrackParameters& start,
+                        const Acts::Surface& target) const {
+    // Try first the direction in which the straight line along the momentum
+    // meets the target. A propagation the wrong way only stops at the path
+    // limit, as the void navigator has no world boundary; the other
+    // direction stays as the fallback in case the field changes the answer.
+    const auto intersection =
+        target.intersect(gctx, start.position(gctx), start.direction())
+            .closest();
+    const bool behind =
+        intersection.isValid() && intersection.pathLength() < 0.;
+    const auto first =
+        behind ? Acts::Direction::Backward() : Acts::Direction::Forward();
+    const auto second =
+        behind ? Acts::Direction::Forward() : Acts::Direction::Backward();
+    for (const auto direction : {first, second}) {
       Extrapolator::Options<> options(gctx, mctx);
       options.pathLimit = kPathLimit;
       options.direction = direction;
       auto result = propagator.propagate(start, target, options);
       if (result.ok() && result.value().endParameters.has_value()) {
-        return result.value().endParameters.value();
+        // Take the sign from the direction rather than relying on the
+        // sign convention of the accumulated path length
+        const double sign = direction == Acts::Direction::Forward() ? 1. : -1.;
+        const double length = sign * std::abs(result.value().pathLength);
+        return std::make_pair(result.value().endParameters.value(), length);
       }
     }
     return std::nullopt;
+  }
+
+  /// As extrapolateWithLength(), returning only the parameters
+  std::optional<Acts::BoundTrackParameters> extrapolate(
+      const Extrapolator& propagator, const Acts::BoundTrackParameters& start,
+      const Acts::Surface& target) const {
+    auto result = extrapolateWithLength(propagator, start, target);
+    if (!result) {
+      return std::nullopt;
+    }
+    return std::move(result->first);
+  }
+
+  /// Smoothed parameters at the first (or last) fitted measurement of a
+  /// track; the parameters at the reference surface if it has none
+  Acts::BoundTrackParameters endSmoothedParameters(Int_t track,
+                                                   bool last) const {
+    // Throws for a bad index, like the other track accessors
+    Acts::BoundTrackParameters params = trackParameters(track);
+    const auto proxy = tracks.getTrack(track);
+    // The states run from the last to the first measurement
+    for (const auto state : proxy.trackStatesReversed()) {
+      if (!isFittedMeasurement(state)) {
+        continue;
+      }
+      params = Acts::BoundTrackParameters(
+          state.referenceSurface().getSharedPtr(), state.smoothed(),
+          state.smoothedCovariance(), proxy.particleHypothesis());
+      if (last) {
+        break;
+      }
+    }
+    return params;
   }
 
   ActsStrawGeometry straws;
@@ -382,8 +455,12 @@ struct ActsStrawTracker::Impl {
   Acts::CalibrationContext cctx;
   std::vector<StrawMeasurement> measurements;
   TrackContainer tracks;
-  /// Measurements used in each track
+  /// Measurements given to the final fit of each track, ordered in z. The
+  /// ambiguity resolution in FindTracks counts and compares these.
   std::vector<std::vector<Int_t>> trackMeasurements;
+  /// Measurements of the fitted states of each track, ordered along it: those
+  /// of trackMeasurements less any surface the fit skipped
+  std::vector<std::vector<Int_t>> fittedTrackMeasurements;
 };
 
 ActsStrawTracker::ActsStrawTracker(const TGeoManager* geometry,
@@ -400,6 +477,7 @@ void ActsStrawTracker::ClearEvent() {
   fImpl->measurements.clear();
   fImpl->tracks.clear();
   fImpl->trackMeasurements.clear();
+  fImpl->fittedTrackMeasurements.clear();
 }
 
 Int_t ActsStrawTracker::AddMeasurement(Int_t detectorId, Double_t driftRadius,
@@ -544,7 +622,7 @@ Int_t ActsStrawTracker::Impl::fit(const TrackCandidate& candidate,
     std::vector<std::pair<double, Int_t>> kept;
     const auto proxy = tracks.getTrack(*track);
     for (const auto state : proxy.trackStatesReversed()) {
-      if (!state.hasUncalibratedSourceLink() || !state.hasSmoothed()) {
+      if (!isFittedMeasurement(state)) {
         continue;
       }
       const auto index = static_cast<Int_t>(
@@ -568,6 +646,7 @@ Int_t ActsStrawTracker::Impl::fit(const TrackCandidate& candidate,
     }
     if (!changed || refit == kMaxRefits) {
       trackMeasurements.push_back(indices);
+      fittedTrackMeasurements.push_back(fittedMeasurements(*track));
       return static_cast<Int_t>(*track);
     }
     // Refit from the fitted parameters, with the seed uncertainties so the
@@ -648,6 +727,7 @@ Int_t ActsStrawTracker::FindTracks() {
             });
   impl.tracks.clear();
   impl.trackMeasurements.clear();
+  impl.fittedTrackMeasurements.clear();
   for (const Fitted* f : accepted) {
     impl.fit(candidates[f->candidate], hits);
   }
@@ -662,11 +742,11 @@ Int_t ActsStrawTracker::FitCandidate(const std::vector<Int_t>& measurements) {
 }
 
 std::vector<Int_t> ActsStrawTracker::GetTrackMeasurements(Int_t track) const {
-  if (track < 0 ||
-      static_cast<std::size_t>(track) >= fImpl->trackMeasurements.size()) {
+  if (track < 0 || static_cast<std::size_t>(track) >=
+                       fImpl->fittedTrackMeasurements.size()) {
     throw std::out_of_range("ActsStrawTracker: track index out of range");
   }
-  return fImpl->trackMeasurements[track];
+  return fImpl->fittedTrackMeasurements[track];
 }
 
 Int_t ActsStrawTracker::GetNTracks() const {
@@ -680,8 +760,11 @@ RecoTrack ActsStrawTracker::GetTrack(Int_t track) const {
 
   std::vector<Double_t> residuals;
   std::vector<Double_t> pulls;
+  std::vector<Double_t> xFittedPoints;
+  std::vector<Double_t> yFittedPoints;
+  std::vector<Double_t> zFittedPoints;
   for (const auto state : proxy.trackStatesReversed()) {
-    if (!state.hasCalibrated() || !state.hasSmoothed()) {
+    if (!isFittedMeasurement(state)) {
       continue;
     }
     const double measured = state.template calibrated<1>()(0);
@@ -695,9 +778,17 @@ RecoTrack ActsStrawTracker::GetTrack(Int_t track) const {
     residuals.push_back(residual / ActsFrame::kShipLength);
     pulls.push_back(
         residualVariance > 0. ? residual / std::sqrt(residualVariance) : 0.);
+    const Acts::Vector3 fittedPosition = ActsFrame::positionToShip(
+        tangent(state.referenceSurface(), state.smoothed(), impl.gctx).first);
+    xFittedPoints.push_back(fittedPosition.x());
+    yFittedPoints.push_back(fittedPosition.y());
+    zFittedPoints.push_back(fittedPosition.z());
   }
   std::reverse(residuals.begin(), residuals.end());
   std::reverse(pulls.begin(), pulls.end());
+  std::reverse(xFittedPoints.begin(), xFittedPoints.end());
+  std::reverse(yFittedPoints.begin(), yFittedPoints.end());
+  std::reverse(zFittedPoints.begin(), zFittedPoints.end());
 
   const Acts::Vector3 position =
       ActsFrame::positionToShip(params.position(impl.gctx));
@@ -707,7 +798,9 @@ RecoTrack ActsStrawTracker::GetTrack(Int_t track) const {
                    static_cast<Int_t>(std::lround(params.charge())),
                    upperTriangle<6>(shipCovariance(params, impl.gctx)),
                    proxy.chi2(), proxy.nDoF(), proxy.nMeasurements(),
-                   std::move(residuals), std::move(pulls));
+                   std::move(xFittedPoints), std::move(yFittedPoints),
+                   std::move(zFittedPoints), std::move(residuals),
+                   std::move(pulls));
 }
 
 Bool_t ActsStrawTracker::FitVertex(const std::vector<Int_t>& tracks,
@@ -827,6 +920,50 @@ Double_t ActsStrawTracker::DistanceToHit(Int_t track,
   const auto& local = result->parameters();
   return std::hypot(local[Acts::eBoundLoc0], local[Acts::eBoundLoc1]) /
          ActsFrame::kShipLength;
+}
+
+Bool_t ActsStrawTracker::ExtrapolateToZ(Int_t track, Double_t z,
+                                        Bool_t fromLastHit, TVector3& position,
+                                        TVector3& momentum,
+                                        std::vector<Double_t>& covariance,
+                                        Double_t& pathLength) const {
+  const auto& impl = *fImpl;
+  const auto start = impl.endSmoothedParameters(track, fromLastHit);
+  const auto plane = constantZPlane(ActsFrame::positionToActs(0., 0., z));
+  const auto result =
+      impl.extrapolateWithLength(impl.extrapolator, start, *plane);
+  if (!result) {
+    return false;
+  }
+  const auto& [params, length] = *result;
+  const Acts::Vector3 pos =
+      ActsFrame::positionToShip(params.position(impl.gctx));
+  const Acts::Vector3 mom = ActsFrame::momentumToShip(params.momentum());
+  position.SetXYZ(pos.x(), pos.y(), pos.z());
+  momentum.SetXYZ(mom.x(), mom.y(), mom.z());
+  covariance.clear();
+  if (params.covariance().has_value()) {
+    const auto elements = upperTriangle<6>(shipCovariance(params, impl.gctx));
+    covariance.assign(elements.begin(), elements.end());
+  }
+  pathLength = length / ActsFrame::kShipLength;
+  return true;
+}
+
+Double_t ActsStrawTracker::TrackLength(Int_t track) const {
+  const auto& impl = *fImpl;
+  const auto first = impl.endSmoothedParameters(track, false);
+  const auto last = impl.endSmoothedParameters(track, true);
+  if (&first.referenceSurface() == &last.referenceSurface()) {
+    // a single fitted measurement
+    return std::numeric_limits<Double_t>::quiet_NaN();
+  }
+  const auto result = impl.extrapolateWithLength(impl.extrapolator, first,
+                                                 last.referenceSurface());
+  if (!result) {
+    return std::numeric_limits<Double_t>::quiet_NaN();
+  }
+  return std::abs(result->second) / ActsFrame::kShipLength;
 }
 
 Int_t ActsStrawTracker::GetNStraws() const {

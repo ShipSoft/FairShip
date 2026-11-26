@@ -37,6 +37,15 @@ class FakeTrack:
     def charge(self):
         return self._charge
 
+    def SetTrackLength(self, length):
+        self.track_length = length
+
+    def SetUBTExtrapolation(self, position, momentum, covariance, path_length):
+        self.ubt = (position.Z(), path_length)
+
+    def SetTDExtrapolation(self, position, momentum, covariance, path_length):
+        self.td = (position.Z(), path_length)
+
 
 class FakeTracker:
     """Records what runTracking hands to SHiP::ActsStrawTracker.
@@ -45,13 +54,15 @@ class FakeTracker:
     tracker drops measurements that do not fit the track.
     """
 
-    def __init__(self, found=(), charges=()):
+    def __init__(self, found=(), charges=(), unreachable_z=()):
         self.measurements = []
         self.candidates = []
         self.tracks = []
         self.vertices = []
         self._found = found
         self._charges = charges
+        self._unreachable_z = unreachable_z
+        self.extrapolations = []
 
     def ClearEvent(self):
         self.measurements.clear()
@@ -80,6 +91,17 @@ class FakeTracker:
 
     def GetTrackMeasurements(self, index):
         return self.tracks[index]
+
+    def TrackLength(self, index):
+        return 100.0 + index
+
+    def ExtrapolateToZ(self, index, z, from_last_hit, position, momentum, covariance, path_length):
+        self.extrapolations.append((index, z, from_last_hit))
+        if z in self._unreachable_z:
+            return False
+        position.SetXYZ(0.0, 0.0, z)
+        path_length.value = z / 10.0
+        return True
 
     def FitVertex(self, tracks, vertex):
         self.vertices.append(list(tracks))
@@ -138,3 +160,24 @@ def test_vertices_are_fitted_for_opposite_charge_pairs():
     _, vertices, _ = runTracking(tracker, None, hits, 0.012, fit_vertex=True)
     assert tracker.vertices == [[0, 1], [1, 2]]
     assert len(vertices) == 2
+
+
+def test_extrapolations_and_track_length_are_stored():
+    # The UBT is reached backwards from the first hit, the timing detector
+    # forwards from the last; a plane the track cannot reach is not stored
+    hits = [make_hit(1000 + i, 1, 0, 0, z=float(i)) for i in range(2)]
+    tracker = FakeTracker(found=[[0], [1]], unreachable_z=(9000.0,))
+    tracks, _, _ = runTracking(tracker, None, hits, 0.012, fit_vertex=False, ubt_z=3000.0, td_z=9000.0)
+    assert tracker.extrapolations == [(0, 3000.0, False), (0, 9000.0, True), (1, 3000.0, False), (1, 9000.0, True)]
+    assert [t.track_length for t in tracks] == [100.0, 101.0]
+    assert all(t.ubt == (3000.0, 300.0) for t in tracks)
+    assert not any(hasattr(t, "td") for t in tracks)
+
+
+def test_planes_of_missing_detectors_are_not_extrapolated():
+    hits = [make_hit(1000, 1, 0, 0, z=0.0)]
+    tracker = FakeTracker(found=[[0]])
+    tracks, _, _ = runTracking(tracker, None, hits, 0.012, fit_vertex=False)
+    assert tracker.extrapolations == []
+    assert tracks[0].track_length == 100.0
+    assert not hasattr(tracks[0], "ubt") and not hasattr(tracks[0], "td")
