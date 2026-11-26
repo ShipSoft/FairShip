@@ -35,6 +35,13 @@ namespace u = Acts::UnitConstants;
 // copy number plus 1000 (see strawtubes::ConstructGeometry).
 constexpr int kGasCopyOffset = 1000;
 
+// Bounds of the straw surfaces, far larger than the detector. ACTS stops a
+// propagation at a surface only within its bounds, so physical bounds would
+// make an extrapolation fail for a track passing outside the tube (or beyond
+// its end), and could drop a fitted hit whose track passes just outside the
+// tube wall. Only the point of closest approach to the wire matters here.
+constexpr double kUnboundedExtent = 100 * u::m;
+
 /// A straw component ("straw" for the wall, "gas", "wire") among the daughters
 /// of the volume holding the straws, or nullptr
 const TGeoNode* strawComponent(const TGeoVolume& volume,
@@ -142,9 +149,8 @@ struct Builder {
       throw std::runtime_error("ActsStrawGeometry: straw is not a TGeoTube");
     }
     const int detectorId = node.GetNumber() + kGasCopyOffset;
-    auto bounds = std::make_shared<const Acts::LineBounds>(
-        tube->GetRmax() * ActsFrame::kShipLength,
-        tube->GetDZ() * ActsFrame::kShipLength);
+    auto bounds = std::make_shared<const Acts::LineBounds>(kUnboundedExtent,
+                                                           kUnboundedExtent);
     auto surface = Acts::Surface::makeShared<Acts::StrawSurface>(
         ActsFrame::transformToActs(toTransform(global)), bounds);
     surface->assignSurfaceMaterial(material);

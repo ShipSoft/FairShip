@@ -7,6 +7,9 @@
  * - Classes work with std::vector
  */
 
+#include <array>
+#include <cmath>
+#include <cstdio>
 #include <iostream>
 #include <memory>
 #include <type_traits>
@@ -23,7 +26,9 @@
 #include "ShipMCTrack.h"
 #include "SiliconTargetHit.h"
 #include "SiliconTargetPoint.h"
+#include "TFile.h"
 #include "TTPoint.h"
+#include "TTree.h"
 #include "TargetPoint.h"
 #include "TimeDetHit.h"
 #include "TimeDetPoint.h"
@@ -220,6 +225,142 @@ bool test_vector_operations(const char* class_name) {
   }
 }
 
+// Write RecoTracks to a TTree, as the reconstruction does, and read them back:
+// one with every member set, including the extrapolations and the track
+// length, and one with none of those, which must keep reading as missing
+bool test_recotrack_tree_roundtrip() {
+  std::cout << "Testing SHiP::RecoTrack TTree round trip... ";
+  bool ok = true;
+  const auto fail = [&ok](const char* what) {
+    if (ok) {
+      std::cout << "FAIL" << std::endl;
+    }
+    std::cout << "  " << what << std::endl;
+    ok = false;
+  };
+  const auto same = [](const std::vector<Double_t>& a,
+                       const std::vector<Double_t>& b) { return a == b; };
+
+  std::array<Double_t, 21> covariance{};
+  for (std::size_t i = 0; i < covariance.size(); ++i) {
+    covariance[i] = 0.01 * static_cast<Double_t>(i + 1);
+  }
+  std::vector<Double_t> ubtCov(21), tdCov(21);
+  for (std::size_t i = 0; i < 21; ++i) {
+    ubtCov[i] = 0.1 * static_cast<Double_t>(i + 1);
+    tdCov[i] = -0.2 * static_cast<Double_t>(i + 1);
+  }
+  const std::vector<Double_t> xFits{1.1, 1.2, 1.3};
+  const std::vector<Double_t> yFits{-2.1, -2.2, -2.3};
+  const std::vector<Double_t> zFits{8400., 8402., 8410.};
+  const std::vector<Double_t> residuals{0.01, -0.02, 0.03};
+  const std::vector<Double_t> pulls{0.5, -1.0, 1.5};
+
+  SHiP::RecoTrack full(TVector3(1., 2., 8400.), TVector3(0.1, -0.2, 10.), -1,
+                       covariance, 12.5, 7., 3, xFits, yFits, zFits, residuals,
+                       pulls);
+  // The UBT is upstream of the first hit: a negative path length
+  full.SetUBTExtrapolation(TVector3(0.5, 1.5, 3287.), TVector3(0.1, -0.2, 10.),
+                           ubtCov, -5113.4);
+  full.SetTDExtrapolation(TVector3(3., -4., 9614.), TVector3(0.2, -0.3, 9.9),
+                          tdCov, 1204.6);
+  full.SetTrackLength(2405.7);
+  const SHiP::RecoTrack bare(TVector3(), TVector3(0., 0., 1.), 1, covariance,
+                             1., 1., 2, {}, {}, {}, {}, {});
+
+  const char* filename = "test_RecoTrack_roundtrip.root";
+  {
+    TFile file(filename, "RECREATE");
+    TTree tree("tracks", "RecoTrack round trip");
+    std::vector<SHiP::RecoTrack> tracks{full, bare};
+    tree.Branch("RecoTracks", &tracks, 32000, -1);
+    tree.Fill();
+    file.Write();
+  }
+
+  std::vector<SHiP::RecoTrack>* read = nullptr;
+  TFile file(filename, "READ");
+  auto* tree = file.Get<TTree>("tracks");
+  if (tree == nullptr) {
+    fail("tree not found");
+  } else {
+    tree->SetBranchAddress("RecoTracks", &read);
+    tree->GetEntry(0);
+  }
+  if (ok && (read == nullptr || read->size() != 2)) {
+    fail("two tracks read back");
+  }
+  if (ok) {
+    const SHiP::RecoTrack& t = (*read)[0];
+    if (t.x() != 1. || t.y() != 2. || t.z() != 8400. || t.px() != 0.1 ||
+        t.py() != -0.2 || t.pz() != 10. || t.charge() != -1) {
+      fail("state and charge");
+    }
+    if (t.chi2() != 12.5 || t.nDoF() != 7. || t.nMeasurements() != 3) {
+      fail("fit quality");
+    }
+    if (!same(t.GetCovarianceElements(),
+              std::vector<Double_t>(covariance.begin(), covariance.end()))) {
+      fail("track covariance");
+    }
+    if (!same(t.GetXFittedPoints(), xFits) ||
+        !same(t.GetYFittedPoints(), yFits) ||
+        !same(t.GetZFittedPoints(), zFits)) {
+      fail("fitted points");
+    }
+    if (!same(t.GetResiduals(), residuals) || !same(t.GetPulls(), pulls)) {
+      fail("residuals and pulls");
+    }
+    if (!t.HasUBTExtrapolation() ||
+        t.GetUBTPosition() != TVector3(0.5, 1.5, 3287.) ||
+        t.GetUBTMomentum() != TVector3(0.1, -0.2, 10.) ||
+        !same(t.GetUBTCovariance(), ubtCov) ||
+        t.GetUBTPathLength() != -5113.4) {
+      fail("UBT extrapolation (and the sign of its path length)");
+    }
+    if (!t.HasTDExtrapolation() ||
+        t.GetTDPosition() != TVector3(3., -4., 9614.) ||
+        t.GetTDMomentum() != TVector3(0.2, -0.3, 9.9) ||
+        !same(t.GetTDCovariance(), tdCov) || t.GetTDPathLength() != 1204.6) {
+      fail("timing-detector extrapolation");
+    }
+    if (t.GetTrackLength() != 2405.7) {
+      fail("track length");
+    }
+
+    const SHiP::RecoTrack& b = (*read)[1];
+    if (b.HasUBTExtrapolation() || b.HasTDExtrapolation()) {
+      fail("unset extrapolations read back as stored");
+    }
+    if (!std::isnan(b.GetUBTPosition().Z()) ||
+        !std::isnan(b.GetUBTPathLength()) ||
+        !std::isnan(b.GetTDMomentum().Z()) ||
+        !std::isnan(b.GetTDPathLength()) || !std::isnan(b.GetTrackLength())) {
+      fail("unset extrapolations and track length read back as not NaN");
+    }
+    if (!b.GetUBTCovariance().empty() || !b.GetTDCovariance().empty()) {
+      fail("unset extrapolation covariances read back as not empty");
+    }
+    if (!b.GetXFittedPoints().empty() || !b.GetResiduals().empty()) {
+      fail("empty fitted points read back as not empty");
+    }
+  }
+  file.Close();
+  std::remove(filename);
+
+  // An extrapolation stored without a covariance keeps it empty
+  SHiP::RecoTrack noCov = bare;
+  noCov.SetUBTExtrapolation(TVector3(), TVector3(0., 0., 1.), {}, -1.);
+  if (!noCov.HasUBTExtrapolation() || !noCov.GetUBTCovariance().empty()) {
+    fail("extrapolation without covariance");
+  }
+
+  if (ok) {
+    std::cout << "PASS" << std::endl;
+  }
+  return ok;
+}
+
 int main(int argc, char** argv) {
   std::cout << "\n=== Testing Data Classes for std::vector compatibility ===\n"
             << std::endl;
@@ -239,6 +380,11 @@ int main(int argc, char** argv) {
   if (test_vector_operations<SHiP::RecoTrack>("SHiP::RecoTrack")) passed++;
   total++;
   if (test_vector_operations<SHiP::RecoVertex>("SHiP::RecoVertex")) passed++;
+
+  // Test I/O of the reconstruction output
+  std::cout << "\n--- Reconstruction I/O ---" << std::endl;
+  total++;
+  if (test_recotrack_tree_roundtrip()) passed++;
 
   // Test Hit classes
   std::cout << "\n--- Hit Classes ---" << std::endl;

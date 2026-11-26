@@ -12,6 +12,14 @@ it in future.
 
 ## Unreleased
 
+### Added
+
+* Some extra fields added to the ACTS `RecoTrack`. These are the smoothed hit positions on the track, track length and extrapolation of the track to the UBT and timing detector planes. The `RecoTrack` class version number has been incremented. #1537
+
+### Changed
+
+* The hit lists in `Tracklets` and `fitTrack2MC` now come from fitted states. They therefore leave out any surface that ACTS skipped. #1537
+
 ## 26.11 - 2026-11-26
 
 This release makes ACTS the default for pattern recognition, track fitting and
