@@ -110,6 +110,7 @@ Added</h2>
 <h2 class="doxsection"><a class="anchor" id="autotoc_md10"></a>
 Changed</h2>
 <ul>
+<li>The pixi environment uses Pythia 8.318 instead of 8.312, with ROOT, EvtGen, GENIE and the other packages that link Pythia 8 rebuilt against it. Generator output changes accordingly; <a class="el" href="namespaceSHiP.html">SHiP</a> productions see differences from 8.316 on. ROOT has to match: its EGPythia8 C++ module carries the Pythia 8 headers it was built with, and PyROOT reads Pythia 8 objects through them.</li>
 <li><span class="tt"><a class="el" href="ShipReco_8py.html">ShipReco.py</a></span> uses ACTS for track fitting and vertexing (<span class="tt">--trackFitter acts</span>) and <span class="tt">--patRec Segments</span> for pattern recognition by default. Reco files therefore contain <span class="tt">RecoTracks</span> and <span class="tt">RecoVertices</span> instead of <span class="tt">FitTracks</span>. <span class="tt">--trackFitter <a class="el" href="namespacegenfit.html">genfit</a></span> gives the GenFit chain back, with <span class="tt">AR</span> pattern recognition unless <span class="tt">--patRec</span> says otherwise. <span class="tt"><a class="el" href="run__tracking__benchmark_8py.html">run_tracking_benchmark.py</a></span> has the same defaults.</li>
 </ul>
 <h2 class="doxsection"><a class="anchor" id="autotoc_md11"></a>
