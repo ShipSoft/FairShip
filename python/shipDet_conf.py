@@ -274,6 +274,52 @@ def configure_strawtubes(yaml_file: str, ship_geo) -> None:
     detectorList.append(strawtubes)
 
 
+def configure_upstreamTaggerStraw(yaml_file, ship_geo):
+    with open(yaml_file) as file:
+        config = yaml.safe_load(file)
+
+    ship_geo.ubt_straw_geo = AttrDict(config["UBTStraw"])
+
+    # Straw tubes in decay vessel if vacuum, otherwise outside in air
+    ship_geo.ubt_straw_geo.medium = "vacuums" if ship_geo.DecayVolumeMedium == "vacuums" else "air"
+
+    ship_geo.ubt_straw_geo.frame_material = "DIRCcarbonFiber"
+    ship_geo.ubt_straw_geo.support_material = "DIRCcarbonFiber"    
+
+    ubt_straw = ROOT.UpstreamTaggerStraw(ship_geo.ubt_straw_geo.medium)
+    ubt_straw.SetzPositions(
+        ship_geo.UBTStation1.z,
+    )
+    ubt_straw.SetApertureHeight(ship_geo.ubt_straw_geo.height)
+    ubt_straw.SetStrawDiameter(
+        ship_geo.ubt_straw_geo.outer_straw_diameter,
+        ship_geo.ubt_straw_geo.wall_thickness,
+    )
+    ubt_straw.SetStrawPitch(
+        ship_geo.ubt_straw_geo.straw_pitch,
+        ship_geo.ubt_straw_geo.row_offset,
+    )
+    ubt_straw.SetDeltazRow(ship_geo.ubt_straw_geo.delta_z_row)
+    ubt_straw.SetStereoAngle(ship_geo.ubt_straw_geo.view_angle)
+    ubt_straw.SetWireThickness(ship_geo.ubt_straw_geo.wire_thickness)
+    ubt_straw.SetDeltazView(ship_geo.ubt_straw_geo.delta_z_view)
+    ubt_straw.SetFrameMaterial(ship_geo.ubt_straw_geo.frame_material)
+    ubt_straw.SetSupportMaterial(ship_geo.ubt_straw_geo.support_material)    
+    ubt_straw.SetFrameSize(ship_geo.ubt_straw_geo.frame_width, ship_geo.ubt_straw_geo.frame_height)
+    ubt_straw.SetFrameThickness(ship_geo.ubt_straw_geo.frame_thickness)
+    ubt_straw.SetFrameWallThickness(ship_geo.ubt_straw_geo.frame_wall_thickness)    
+    ubt_straw.SetDeltazMid(ship_geo.ubt_straw_geo.delta_z_mid)
+    ubt_straw.SetSupportSize(ship_geo.ubt_straw_geo.support_width, ship_geo.ubt_straw_geo.support_depth)
+    ubt_straw.SetSupportWallThickness(ship_geo.ubt_straw_geo.support_wall_thickness)
+    
+    # For digitization
+    #    strawtubes.SetStrawResolution(
+    #        ship_geo.strawtubesDigi.v_drift,
+    #        ship_geo.strawtubesDigi.sigma_spatial,
+    #    )
+
+    detectorList.append(ubt_straw)
+
 def check_upstream_tagger_map(ubt_map, ubt_geo) -> None:
     """Check that the UBT map covers exactly the UBT box of the geometry configuration.
 
@@ -690,6 +736,11 @@ def configure(run, ship_geo, geofile: str | None = None):
     else:
         print("Warning: no CaloScoringPlane in this geometry configuration; not building it.")
 
+    # The straw part of the UpstreamTagger
+    if "UpstreamTaggerStraw" not in left_out:
+        configure_upstreamTaggerStraw(os.path.join(os.environ["FAIRSHIP"], "geometry", "ubtstraw_config.yaml"), ship_geo)
+
+    # The tile part of the UpstreamTagger
     if "UpstreamTagger" not in left_out:
         upstreamTagger = ROOT.UpstreamTagger("UpstreamTagger", ROOT.kTRUE)
         upstreamTagger.SetZposition(ship_geo.UpstreamTagger.z)
