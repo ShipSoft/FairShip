@@ -20,6 +20,10 @@ it in future.
 
 * The hit lists in `Tracklets` and `fitTrack2MC` now come from fitted states. They therefore leave out any surface that ACTS skipped. #1537
 
+### Fixed
+
+* The EventCalc, HNL and dark-photon generators now always store their LLP and its decay products in `MCTrack`. Before, the stack treated decay products like secondaries, and the default 100 MeV kinetic-energy cut dropped the soft ones, so about 1% of EventCalc mupi events (HNL, m = 1 GeV) had no muon or no pion. New `ShipStack::KeepTrack()` marks a track to be stored whatever the cuts. #797
+
 ## 26.11 - 2026-11-26
 
 This release makes ACTS the default for pattern recognition, track fitting and

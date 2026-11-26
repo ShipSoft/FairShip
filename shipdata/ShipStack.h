@@ -16,6 +16,7 @@
  **
  ** The filtering criteria for the output tracks are:
  ** - primary tracks are stored in any case.
+ ** - tracks marked with KeepTrack() are stored in any case.
  ** - secondary tracks are stored if they have a minimal number of
  **   points (sum of all detectors) and a minimal energy, or are the
  **
@@ -162,6 +163,13 @@ class ShipStack : public FairGenericStack {
    **/
   void SetSplitSet(Int_t iTrack, Int_t splitSet, Int_t role, Double_t weight);
 
+  /** Store a track in the output whatever the cuts on secondaries.
+   ** Generators use it for the decay products they push, which have a
+   ** mother on the stack and would otherwise be cut like secondaries.
+   *@param iTrack    Particle index on the stack
+   **/
+  void KeepTrack(Int_t iTrack);
+
   /** Increment the point total for the current track.
    ** The count is per track, aggregated across all detectors; iDet is retained
    ** for call-site compatibility but ignored for counting.
@@ -209,6 +217,9 @@ class ShipStack : public FairGenericStack {
     Double_t weight = 0.;
   };
   std::vector<SplitInfo> fSplitSets;  //!
+
+  /** Per particle index: store whatever the cuts (see KeepTrack) **/
+  std::vector<Bool_t> fKeepFlags;  //!
 
   /** Some indizes and counters **/
   Int_t fCurrentTrack;  //! Index of current track

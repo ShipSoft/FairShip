@@ -214,6 +214,7 @@ Bool_t EvtCalcGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
       cpg->AddTrack(pdg_dau, GetDauPx(fTree, iPart), GetDauPy(fTree, iPart),
                     GetDauPz(fTree, iPart), vx_transf, vy_transf, vz_transf, 0.,
                     wanttracking, GetDauE(fTree, iPart), tof, decay_prob);
+      KeepLastTrack();
     }
   }
 

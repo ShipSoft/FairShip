@@ -67,6 +67,12 @@ class Generator : public FairGenerator {
   }
 
  protected:
+  /// Store the track that the last FairPrimaryGenerator::AddTrack call put on
+  /// the stack, whatever the stack's energy and hit cuts. Decay products have
+  /// a mother on the stack, so without this a soft one is cut like a
+  /// secondary and is missing from MCTrack.
+  static void KeepLastTrack();
+
   bool IsInVesselAcceptance(Double_t px, Double_t py, Double_t pz) const {
     if (!fUseVesselAcceptance) return true;
     if (pz <= 0) return false;

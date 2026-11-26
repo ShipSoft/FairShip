@@ -278,6 +278,7 @@ Bool_t DPPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg) {
         // mother of the DP is track 1 (the meson)
         cpg->AddTrack(fDP, px, py, pz, xp * mm + dx, yp * mm + dy, zp * mm, 1,
                       false, e, PythiaTimeToS(tp), w);
+        KeepLastTrack();
 
         // bookkeep the indices of stored particles
         dec_chain.push_back(im);
@@ -367,6 +368,7 @@ Bool_t DPPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg) {
 
     cpg->AddTrack((Int_t)fPythia->event[k].id(), px, py, pz, xS * mm, yS * mm,
                   zS * mm, im, wanttracking, e, PythiaTimeToS(tS), w);
+    KeepLastTrack();
   }
   return kTRUE;
 }
