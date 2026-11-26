@@ -323,6 +323,18 @@ void ShipStack::Reset() {
   fTracks->clear();
   fPointsPerTrack.clear();
   fSplitSets.clear();
+  fKeepFlags.clear();
+}
+
+void ShipStack::KeepTrack(Int_t iTrack) {
+  if (iTrack < 0 || iTrack >= fNParticles) {
+    LOG(error) << "ShipStack::KeepTrack: no particle with index " << iTrack;
+    return;
+  }
+  if (iTrack >= static_cast<Int_t>(fKeepFlags.size())) {
+    fKeepFlags.resize(fNParticles, kFALSE);
+  }
+  fKeepFlags[iTrack] = kTRUE;
 }
 
 void ShipStack::SetSplitSet(Int_t iTrack, Int_t splitSet, Int_t role,
@@ -417,8 +429,10 @@ void ShipStack::SelectTracks() {
     Int_t nPoints =
         i < static_cast<Int_t>(fPointsPerTrack.size()) ? fPointsPerTrack[i] : 0;
 
-    // --> Check for cuts (store primaries in any case)
-    if (iMother < 0) {
+    // --> Check for cuts (store primaries and kept tracks in any case)
+    const Bool_t keep =
+        i < static_cast<Int_t>(fKeepFlags.size()) && fKeepFlags[i];
+    if (iMother < 0 || keep) {
       store = kTRUE;
     } else {
       if (!fStoreSecondaries) {

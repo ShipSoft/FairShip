@@ -283,6 +283,7 @@ Bool_t HNLPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg) {
                       PythiaLengthToCm(xp) + PythiaLengthToCm(dx),
                       PythiaLengthToCm(yp) + PythiaLengthToCm(dy),
                       PythiaLengthToCm(zp), 1, false, e, PythiaTimeToS(tp), w);
+        KeepLastTrack();
       } else {
         cpg->AddTrack(
             (Int_t)fPythia->event[im].id(), pmx, pmy, pmz,
@@ -294,6 +295,7 @@ Bool_t HNLPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg) {
                       PythiaLengthToCm(xp) + PythiaLengthToCm(dx),
                       PythiaLengthToCm(yp) + PythiaLengthToCm(dy),
                       PythiaLengthToCm(zp), 0, false, e, PythiaTimeToS(tp), w);
+        KeepLastTrack();
       }
       // bookkeep the indices of stored particles
       dec_chain.push_back(im);
@@ -360,6 +362,7 @@ Bool_t HNLPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg) {
                   PythiaLengthToCm(xS), PythiaLengthToCm(yS),
                   PythiaLengthToCm(zS), im, wanttracking, e, PythiaTimeToS(tS),
                   w);
+    KeepLastTrack();
     // std::cout <<k<< " insert pdg =" <<fPythia->event[k].id() << " pz = " <<
     // pz << " [GeV] zS = " << zS << " [mm] tS = " << tS << "[mm/c]" <<  endl;
   }
