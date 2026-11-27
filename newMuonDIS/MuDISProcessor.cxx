@@ -10,6 +10,8 @@
 #include <cmath>
 #include <iomanip>
 #include <iostream>
+#include <stdexcept>
+#include <string>
 
 #include "FairLogger.h"
 #include "TMath.h"
@@ -169,6 +171,7 @@ Bool_t MuDISProcessor::InitFiles(const std::vector<std::string>& fileNames,
     LOG(info) << "MuDISProcessor: Initialization successful.";
     return kTRUE;
   }
+  LOG(error) << "MuDISProcessor: " << fileNames.at(0) << " has no cbmsim tree.";
   return kFALSE;
 }
 
@@ -182,16 +185,20 @@ void MuDISProcessor::process_file(const std::vector<std::string>& input,
                                   const std::string& output) {
   Bool_t treeOK = InitFiles(input);
 
+  // Throw rather than return, as MuDISFilter does, so that a failed job
+  // exits non-zero from Python instead of finishing without an output file
   if (!treeOK) {
     LOG(error) << " -- Error reading input files: n=" << input.size();
     if (input.size() > 0) LOG(error) << " first file: " << input[0];
-    return;
+    throw std::runtime_error(
+        "MuDISProcessor: failed to initialize input files");
   }
 
   TFile* outfile = TFile::Open(output.c_str(), "RECREATE");
   if (!outfile) {
     LOG(error) << " -- Error creating outputfile: " << output;
-    return;
+    throw std::runtime_error("MuDISProcessor: cannot create output file " +
+                             output);
   }
   outfile->cd();
   fouttree = new TTree(
@@ -444,7 +451,21 @@ void MuDISProcessor::ProcessMuons() {
     LOG(debug) << " --- Processing event " << iEvent << std::endl;
     if (iEvent % 100 == 0)
       LOG(info) << " --- Processing event " << iEvent << std::endl;
-    if (!finEv.PrepareEntry(ftree, iEvent) || ftree->GetEntry(iEvent) <= 0) {
+    // A chain member without the input branches is skipped on purpose
+    if (!finEv.PrepareEntry(ftree, iEvent)) {
+      LOG(error) << " --- Error reading tree entry: " << iEvent;
+      skipEvt++;
+      continue;
+    }
+    const Int_t nBytes = ftree->GetEntry(iEvent);
+    // An I/O error, more likely with remote inputs, stops the job: skipping
+    // the entry would leave a partial output and exit code 0
+    if (nBytes < 0) {
+      LOG(error) << " --- I/O error reading tree entry: " << iEvent;
+      throw std::runtime_error("MuDISProcessor: I/O error reading entry " +
+                               std::to_string(iEvent));
+    }
+    if (nBytes == 0) {
       LOG(error) << " --- Error reading tree entry: " << iEvent;
       skipEvt++;
       continue;

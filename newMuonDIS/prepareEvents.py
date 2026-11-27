@@ -28,7 +28,7 @@ import time
 from pathlib import Path
 
 import ROOT as r
-from filterEvents import load_muon_shield_field
+from filterEvents import can_open, is_url, load_muon_shield_field
 
 print("Loading ShipMuDIS", flush=True)
 if r.gSystem.Load("libShipMuDIS.so") < 0:
@@ -130,7 +130,15 @@ if not ok:
 
 p = Path(args.inputfile)
 
-if p.is_file():
+# Remote files (e.g. root://) are opened by ROOT. Directories can only be
+# searched on a local filesystem.
+if is_url(args.inputfile):
+    if not can_open(args.inputfile):
+        print(f"Cannot open input: {args.inputfile}")
+        sys.exit(1)
+    muDis.process_file(args.inputfile, args.outputfile)
+
+elif p.is_file():
     muDis.process_file(args.inputfile, args.outputfile)
 
 elif p.is_dir():

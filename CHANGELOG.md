@@ -20,6 +20,11 @@ it in future.
 
 * The hit lists in `Tracklets` and `fitTrack2MC` now come from fitted states. They therefore leave out any surface that ACTS skipped. #1537
 
+### Fixed
+
+* `newMuonDIS/prepareEvents.py` and `filterEvents.py` accept input files given as URLs, such as `root://eospublic.cern.ch//eos/...`, instead of rejecting them because they are not local files. ROOT opens them directly. A directory input still has to be on a local or mounted filesystem.
+* `newMuonDIS/prepareEvents.py` exits with an error when it can't read its input or create its output file, instead of finishing with exit code 0 and no output. `MuDISProcessor::process_file` throws in these cases, as `MuDISFilter::process_file` already did, and a file without a `cbmsim` tree is now reported as such. It also throws on an I/O error while reading an entry, where it used to skip the entry and write a partial output.
+
 ## 26.11 - 2026-11-26
 
 This release makes ACTS the default for pattern recognition, track fitting and

@@ -17,6 +17,23 @@ import ROOT
 ROOT.gROOT.SetBatch(True)
 
 
+def is_url(name):
+    """Return whether name is a URL such as root://, which TFile::Open reads directly."""
+    return "://" in str(name)
+
+
+def can_open(name):
+    """Return whether ROOT can open name, so that a bad URL fails before processing."""
+    try:
+        source = ROOT.TFile.Open(name)
+    except OSError:
+        return False
+    ok = bool(source) and not source.IsZombie()
+    if source:
+        source.Close()
+    return ok
+
+
 def load_spectrometer_field(geometry_file, field_map=None, field_z=None):
     """Use ShipReco's non-VMC field setup, restricted to the SST map.
 
@@ -206,14 +223,19 @@ def main():
         if value is not None and not math.isfinite(value):
             parser.error("Detector and field z positions must be finite")
     auxiliary_paths = {
-        Path(p).expanduser().resolve() for p in (args.geoFile, args.field_map, args.muon_shield_field_map) if p
+        Path(p).expanduser().resolve()
+        for p in (args.geoFile, args.field_map, args.muon_shield_field_map)
+        if p and not is_url(p)
     }
     # Keep these owners alive until filtering finishes, as in ShipReco.py.
     _field_maker = field = shield_field = geometry = None
     if not args.no_detector_acceptance:
-        geometry_path = str(Path(args.geoFile).expanduser().resolve())
-        if not Path(geometry_path).is_file():
-            parser.error(f"Geometry does not exist: {geometry_path}")
+        if is_url(args.geoFile):
+            geometry_path = args.geoFile
+        else:
+            geometry_path = str(Path(args.geoFile).expanduser().resolve())
+            if not Path(geometry_path).is_file():
+                parser.error(f"Geometry does not exist: {geometry_path}")
         geometry = ROOT.TGeoManager.Import(geometry_path)
         if not geometry:
             parser.error(f"Cannot load geometry: {geometry_path}")
@@ -242,6 +264,17 @@ def main():
     seen = set()
     output_path = Path(args.outputfile).resolve()
     for name in args.inputfile:
+        # Remote files (e.g. root://) are opened by ROOT. Directories can only
+        # be searched on a local filesystem.
+        if is_url(name):
+            if not can_open(name):
+                parser.error(f"Cannot open input: {name}")
+            if name == args.outputfile:
+                parser.error(f"Output file is also an input: {name}")
+            if name not in seen:
+                seen.add(name)
+                file_names.append(name)
+            continue
         path = Path(name).expanduser()
         if path.is_dir():
             candidates = sorted(
