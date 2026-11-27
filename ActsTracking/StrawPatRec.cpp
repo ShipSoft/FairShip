@@ -685,9 +685,13 @@ std::optional<TrackCandidate> StrawPatRec::match(
 
 FieldIntegrals StrawPatRec::averageField(const FieldIntegrals& upstream,
                                          const FieldIntegrals& downstream) {
-  return {0.5 * (upstream.bx + downstream.bx),
-          0.5 * (upstream.by + downstream.by),
-          0.5 * (upstream.centre + downstream.centre)};
+  // The centre is the Bx-weighted mean, as in each of the two integrals
+  const double bx = upstream.bx + downstream.bx;
+  const double centre = bx != 0. ? (upstream.bx * upstream.centre +
+                                    downstream.bx * downstream.centre) /
+                                       bx
+                                 : 0.5 * (upstream.centre + downstream.centre);
+  return {0.5 * bx, 0.5 * (upstream.by + downstream.by), centre};
 }
 
 std::vector<TrackCandidate> StrawPatRec::matchSegments(
