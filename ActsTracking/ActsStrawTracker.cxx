@@ -70,10 +70,6 @@ constexpr int kMaxRefits = 3;
 constexpr double kOutlierPull = 5.;
 /// Step of the field integration along the track (cm)
 constexpr double kFieldStep = 5.;
-/// GeV per (T m) for a unit charge
-constexpr double kKick = 0.299792458;
-/// Highest seed momentum (GeV), for tracks with no measurable kink
-constexpr double kMaxSeedMomentum = 1000.;
 /// Fewest measurements a fitted track may keep
 constexpr int kMinFitMeasurements = 10;
 /// Ambiguity resolution between fitted tracks: the weight of a hit against
@@ -636,19 +632,9 @@ Int_t ActsStrawTracker::Impl::fit(const TrackCandidate& candidate,
     indices.push_back(index);
   }
 
-  // Momentum from the kink, with the field integral along this track
-  TrackCandidate refined = candidate;
-  const double integral = fieldIntegrals(candidate.upstream).bx;
-  const double kink = candidate.downstream.ty - candidate.upstream.ty;
-  if (integral != 0. && kink != 0.) {
-    const LineSegment& up = candidate.upstream;
-    const double pz =
-        std::min(std::abs(kKick * integral / kink), kMaxSeedMomentum);
-    refined.momentum = pz * std::sqrt(1. + up.tx * up.tx + up.ty * up.ty);
-    refined.charge = kink / integral > 0. ? 1 : -1;
-  }
+  // The pattern recognition gives the momentum and charge from the kink
   Acts::BoundTrackParameters start =
-      seed(refined, measurements[indices.front()]);
+      seed(candidate, measurements[indices.front()]);
 
   for (int refit = 0;; ++refit) {
     if (static_cast<int>(indices.size()) < kMinFitMeasurements) {
@@ -696,7 +682,7 @@ Int_t ActsStrawTracker::Impl::fit(const TrackCandidate& candidate,
     auto params = proxy.createParametersAtReference();
     start = Acts::BoundTrackParameters(
         params.referenceSurface().getSharedPtr(), params.parameters(),
-        seed(refined, measurements[indices.front()]).covariance(),
+        seed(candidate, measurements[indices.front()]).covariance(),
         params.particleHypothesis());
     tracks.removeTrack(*track);
     std::sort(kept.begin(), kept.end());
