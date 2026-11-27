@@ -15,7 +15,7 @@ it in future.
 ### Added
 
 * Some extra fields added to the ACTS `RecoTrack`. These are the smoothed hit positions on the track, track length and extrapolation of the track to the UBT and timing detector planes. The `RecoTrack` class version number has been incremented. #1537
-* `ShipReco.py --vertexAllTracks` (with `--trackFitter acts`) also fits one vertex from all good tracks of each event with at least two of them and stores it in `RecoVertices`, for studies of samples whose tracks share one vertex. On helium samples of N muons from a common vertex, the impact parameter of the vertex candidate to the target is known to σ68 = 0.69, 0.57, 0.47, 0.39 and 0.29 cm for N = 2, 4, 8, 12 and 20. No such vertex is stored when the fit fails, or for two good tracks whose two-track vertex was already fitted. A same-charge pair gets a vertex in `RecoVertices` but no entry in `Particles`.
+* `ShipReco.py --vertexAllTracks` (with `--trackFitter acts`) also fits one vertex from all good tracks of each event with at least two of them and stores it in `RecoVertices`, for studies of samples whose tracks share one vertex. On helium samples of N muons from a common vertex, the impact parameter of the vertex candidate to the target is known to σ68 = 0.69, 0.57, 0.47, 0.39 and 0.29 cm for N = 2, 4, 8, 12 and 20. No such vertex is stored when the fit fails, or for two good tracks whose two-track vertex was already fitted. A same-charge pair gets a vertex in `RecoVertices` but no entry in `Particles`. A vertex of more than two tracks has no fit quality yet, so its chi2 and nDoF are both 0.
 
 ### Changed
 

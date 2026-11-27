@@ -918,13 +918,15 @@ Bool_t ActsStrawTracker::FitVertex(const std::vector<Int_t>& tracks,
   const Acts::SquareMatrix3 positionCovariance =
       rotation * actsCovariance * rotation.transpose() /
       (ActsFrame::kShipLength * ActsFrame::kShipLength);
-  // Fit quality: the DOCA against its uncertainty for two tracks
+  // Fit quality: the DOCA against its uncertainty for two tracks. There is
+  // none for more tracks, so chi2 and nDoF are 0 and the vertex does not
+  // look like a perfect fit.
   const double docaVariance = propagated(3, 3);
-  const double chi2 =
-      twoTracks && docaVariance > 0. ? baseDoca * baseDoca / docaVariance : 0.;
+  const bool hasChi2 = twoTracks && docaVariance > 0.;
   vertex = RecoVertex(TVector3(position.x(), position.y(), position.z()),
-                      upperTriangle<3>(positionCovariance), chi2,
-                      twoTracks ? 1. : 2. * n - 3.);
+                      upperTriangle<3>(positionCovariance),
+                      hasChi2 ? baseDoca * baseDoca / docaVariance : 0.,
+                      hasChi2 ? 1. : 0.);
 
   for (int i = 0; i < n; ++i) {
     const Acts::Vector3 momentum =
