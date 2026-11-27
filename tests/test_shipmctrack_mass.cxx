@@ -52,6 +52,12 @@ int main() {
              -std::sqrt(pz * pz - eVirtual * eVirtual));
   CheckClose("spacelike energy", virtualGamma.GetEnergy(), eVirtual);
 
+  // spacelike with E = 0: m^2 + P^2 cancels and rounding leaves it slightly
+  // negative, which must not give NaN
+  const ShipMCTrack zeroEnergy = FromFourVector(22, 1., 1., 0., 0.);
+  CheckClose("spacelike mass, E = 0", zeroEnergy.GetMass(), -std::sqrt(2.));
+  CheckClose("spacelike energy, E = 0", zeroEnergy.GetEnergy(), 0.);
+
   // mass not stored (default constructor, old files): PDG mass
   const ShipMCTrack noMass(13, -1, 0., 0., pz, -1., 0., 0., 0., 0., 0, 0, 0,
                            1.);

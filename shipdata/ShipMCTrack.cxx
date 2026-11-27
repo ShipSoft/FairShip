@@ -7,6 +7,8 @@
 // -------------------------------------------------------------------------
 #include "ShipMCTrack.h"
 
+#include <algorithm>  // for std::max
+
 #include "FairLogger.h"    // for FairLogger, etc
 #include "TDatabasePDG.h"  // for TDatabasePDG
 #include "TParticle.h"     // for TParticle
@@ -140,7 +142,9 @@ Double_t ShipMCTrack::GetEnergy() const {
   const Double_t mass = GetMass();
   // a negative mass is spacelike: m^2 = -mass^2 (ROOT convention)
   const Double_t m2 = mass >= 0 ? mass * mass : -mass * mass;
-  return TMath::Sqrt(m2 + fPx * fPx + fPy * fPy + fPz * fPz);
+  // E = 0 makes the sum cancel exactly, and rounding (or the Double32_t
+  // round trip of a file) can leave it just below 0
+  return TMath::Sqrt(std::max(0., m2 + fPx * fPx + fPy * fPy + fPz * fPz));
 }
 // -----   Public method GetMass   -----------------------------------------
 Double_t ShipMCTrack::GetMass() const {
