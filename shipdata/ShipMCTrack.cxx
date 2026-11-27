@@ -7,10 +7,19 @@
 // -------------------------------------------------------------------------
 #include "ShipMCTrack.h"
 
+#include <algorithm>  // for std::max
+
 #include "FairLogger.h"    // for FairLogger, etc
 #include "TDatabasePDG.h"  // for TDatabasePDG
 #include "TParticle.h"     // for TParticle
 #include "TParticlePDG.h"  // for TParticlePDG
+
+namespace {
+// Mass of a default-constructed track, and of tracks read from old files
+// that did not store the mass. Any other negative mass is a spacelike
+// (virtual) particle, stored as -sqrt(P^2 - E^2).
+constexpr Double_t kMassNotStored = -1.;
+}  // namespace
 
 // -----   Default constructor   -------------------------------------------
 ShipMCTrack::ShipMCTrack()
@@ -20,7 +29,7 @@ ShipMCTrack::ShipMCTrack()
       fPx(0.),
       fPy(0.),
       fPz(0.),
-      fM(-1.),
+      fM(kMassNotStored),
       fStartX(0.),
       fStartY(0.),
       fStartZ(0.),
@@ -130,17 +139,16 @@ void ShipMCTrack::Print(Int_t trackId) const {
 // -----   Public method GetEnergy   -----------------------------------------
 
 Double_t ShipMCTrack::GetEnergy() const {
-  if (fM < 0) {
-    // older data, mass not made persistent
-    Double_t mass = GetMass();
-    return TMath::Sqrt(mass * mass + fPx * fPx + fPy * fPy + fPz * fPz);
-  } else {
-    return TMath::Sqrt(fM * fM + fPx * fPx + fPy * fPy + fPz * fPz);
-  }
+  const Double_t mass = GetMass();
+  // a negative mass is spacelike: m^2 = -mass^2 (ROOT convention)
+  const Double_t m2 = mass >= 0 ? mass * mass : -mass * mass;
+  // E = 0 makes the sum cancel exactly, and rounding (or the Double32_t
+  // round trip of a file) can leave it just below 0
+  return TMath::Sqrt(std::max(0., m2 + fPx * fPx + fPy * fPy + fPz * fPz));
 }
 // -----   Public method GetMass   -----------------------------------------
 Double_t ShipMCTrack::GetMass() const {
-  if (fM < 0) {
+  if (fM == kMassNotStored) {
     // older data, mass not made persistent
     if (TDatabasePDG::Instance()) {
       TParticlePDG* particle = TDatabasePDG::Instance()->GetParticle(fPdgCode);
