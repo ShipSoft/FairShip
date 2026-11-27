@@ -185,11 +185,13 @@ Bool_t EvtCalcGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
   if (fn % 100 == 0) LOGF(info, "Info EvtCalcGenerator: event nr %d", fn);
 
   Ndau = GetNdaughters(fTree);
-  // Vertex coordinates in the SHiP reference frame, expressed in [cm]
-  Double_t space_unit_conv = 100.;                                // m to cm
-  Double_t vx_transf = GetVx(fTree) * space_unit_conv;            // units cm
-  Double_t vy_transf = GetVy(fTree) * space_unit_conv;            // units cm
-  Double_t vz_transf = GetVz(fTree) * space_unit_conv + ztarget;  // units cm
+  // Vertex coordinates in the SHiP reference frame, expressed in [cm].
+  // EventCalc measures z from the front face of the target, as FairShip
+  // does (target.z0 = 0), so only the unit changes.
+  Double_t space_unit_conv = 100.;                      // m to cm
+  Double_t vx_transf = GetVx(fTree) * space_unit_conv;  // units cm
+  Double_t vy_transf = GetVy(fTree) * space_unit_conv;  // units cm
+  Double_t vz_transf = GetVz(fTree) * space_unit_conv;  // units cm
 
   Double_t tof = TMath::Sqrt(vx_transf * vx_transf + vy_transf * vy_transf +
                              vz_transf * vz_transf) /
