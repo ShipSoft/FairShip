@@ -15,10 +15,15 @@ it in future.
 ### Added
 
 * Some extra fields added to the ACTS `RecoTrack`. These are the smoothed hit positions on the track, track length and extrapolation of the track to the UBT and timing detector planes. The `RecoTrack` class version number has been incremented. #1537
+* `macro/time_window_display.py` draws the straw tube hits of the time windows built by `macro/make_time_window.py`, colouring them by sub-event (`ShipMCTrack::GetEventID`) in z-x, z-y and x-y views, with the hit count per sub-event in a legend. All windows go to a PDF; `--event` shows one window interactively.
 
 ### Changed
 
 * The hit lists in `Tracklets` and `fitTrack2MC` now come from fitted states. They therefore leave out any surface that ACTS skipped. #1537
+
+### Fixed
+
+* `macro/make_time_window.py` no longer shifts negative point track IDs (`-2` for tracks dropped from `MCTrack`) by the track offset of their sub-event. Such points used to point at a track of an earlier sub-event in the window.
 
 ## 26.11 - 2026-11-26
 
