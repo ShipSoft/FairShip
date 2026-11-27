@@ -20,6 +20,10 @@ it in future.
 
 * The hit lists in `Tracklets` and `fitTrack2MC` now come from fitted states. They therefore leave out any surface that ACTS skipped. #1537
 
+### Fixed
+
+* `run_simScript.py --MuDIS` with `-i/--firstEvent` greater than 0 gave each event the cross section of the wrong DIS entry. The `CrossSection` branch was filled from the input DIS tree starting at entry 0, while `MuDISGenerator` starts at `--firstEvent` and starts again from entry 0 after the last one, so event `i` got the value of entry `i` instead of `(firstEvent + i) % n`, often that of another muon or of the other target (proton or neutron). The branch now comes from the entry the generator read, in the first input file, which is the only one the generator reads. Files made with `--firstEvent 0` are unaffected. The correct value is also stored as the weight of `MCTrack[1]`.
+
 ## 26.11 - 2026-11-26
 
 This release makes ACTS the default for pattern recognition, track fitting and
