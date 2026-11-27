@@ -121,11 +121,11 @@ class FixedTargetGenerator : public SHiP::Generator {
   Int_t nEvents, nEntry, nDsprim, ntotprim;
   Bool_t tauOnly, JpsiMainly, DrellYan, PhotonCollision, G4only, setByHand,
       Debug, withEvtGen, OnlyMuons;
-  FairLogger* fLogger;        //!   don't make it persistent, magic ROOT command
-  Pythia8::Pythia* fPythiaN;  //!
-  Pythia8::Pythia* fPythiaP;  //!
-  Pythia8::EvtGenDecays* evtgenN;  //!
-  Pythia8::EvtGenDecays* evtgenP;  //!
+  FairLogger* fLogger;  //!   don't make it persistent, magic ROOT command
+  Pythia8::Pythia* fPythiaN = nullptr;       //!
+  Pythia8::Pythia* fPythiaP = nullptr;       //!
+  Pythia8::EvtGenDecays* evtgenN = nullptr;  //!
+  Pythia8::EvtGenDecays* evtgenP = nullptr;  //!
   Bool_t withNtuple;  //! special option for Dark Photon physics studies
   TNtuple* fNtuple;   //!
   TString targetName, Option;

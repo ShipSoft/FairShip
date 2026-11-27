@@ -9,7 +9,11 @@
 #include <algorithm>
 #include <array>
 #include <cmath>
+#include <cstdio>
 #include <cstdlib>
+#include <fstream>
+#include <iomanip>
+#include <sstream>
 #include <string>
 #include <vector>
 
@@ -28,6 +32,7 @@
 #include "TMCProcess.h"
 #include "TMath.h"
 #include "TROOT.h"
+#include "TSystem.h"
 
 namespace {
 // B(D_s+ -> tau+ nu_tau), world average (PDG 2024)
@@ -56,6 +61,90 @@ void SetDsToTauNuBR(Pythia8::Pythia* pythia, double br) {
     auto& ch = entry->channel(i);
     ch.bRatio(i == iTauNu ? br : ch.bRatio() * scale);
   }
+}
+
+// EvtGen decays every particle that its decay table knows, instead of
+// Pythia8, so changes to Pythia8's decay tables (SetDsToTauNuBR, tauOnly,
+// JpsiMainly) have to be made in EvtGen as well. They are read as an EvtGen
+// user decay file after USERDECAY.DEC.
+
+// The channel lines of the "Decay <name>" block of an EvtGen decay file.
+std::vector<std::string> ReadDecayBlock(const std::string& file,
+                                        const std::string& name) {
+  std::ifstream in(file);
+  std::vector<std::string> lines;
+  std::string line;
+  bool inBlock = false;
+  while (std::getline(in, line)) {
+    std::istringstream tokens(line.substr(0, line.find('#')));
+    std::string first, second;
+    tokens >> first >> second;
+    if (!inBlock) {
+      inBlock = first == "Decay" && second == name;
+    } else if (first == "Enddecay") {
+      return lines;
+    } else if (!first.empty()) {
+      lines.push_back(line);
+    }
+  }
+  return {};
+}
+
+// D_s+ block of decayFile with the tau+ nu_tau channel set to the branching
+// fraction br. EvtGen normalises the channels to one, so the tau nu channel
+// gets br (S - b) / (1 - br) in a block whose channels add up to S and whose
+// tau nu channel had b.
+std::string DsToTauNuOverride(const std::string& decayFile, double br) {
+  const std::vector<std::string> lines = ReadDecayBlock(decayFile, "D_s+");
+  double sum = 0., tauNu = 0.;
+  int iTauNu = -1;
+  for (size_t i = 0; i < lines.size(); ++i) {
+    std::istringstream tokens(lines[i].substr(0, lines[i].find('#')));
+    double b = 0.;
+    std::string d1, d2, model;
+    tokens >> b >> d1 >> d2 >> model;
+    sum += b;
+    if (d1 == "tau+" && d2 == "nu_tau" &&
+        (model == "SLN;" || model == "SLN" || model == "PHOTOS")) {
+      iTauNu = static_cast<int>(i);
+      tauNu = b;
+    }
+  }
+  if (iTauNu < 0) {
+    LOG(fatal) << "FixedTargetGenerator: no D_s+ -> tau+ nu_tau channel in "
+               << decayFile;
+  }
+  std::ostringstream out;
+  out << "Decay D_s+\n";
+  for (size_t i = 0; i < lines.size(); ++i) {
+    if (static_cast<int>(i) != iTauNu) {
+      out << lines[i] << "\n";
+      continue;
+    }
+    // replace the branching fraction, the first field of the line
+    const size_t start = lines[i].find_first_not_of(" \t");
+    const size_t end = lines[i].find_first_of(" \t", start);
+    out << std::setprecision(9) << br * (sum - tauNu) / (1. - br)
+        << lines[i].substr(end) << "\n";
+  }
+  out << "Enddecay\nCDecay D_s-\n";
+  return out.str();
+}
+
+// Read decays, in EvtGen decay-file syntax, into EvtGen as a user file.
+void ReadEvtGenOverrides(Pythia8::EvtGenDecays* evtgen,
+                         const std::string& decays) {
+  TString path = "FixedTargetGenerator_evtgen";
+  FILE* file = gSystem->TempFileName(path);
+  if (!file) {
+    LOG(fatal) << "FixedTargetGenerator: cannot write EvtGen decay overrides";
+  }
+  const std::string content = decays + "End\n";
+  fwrite(content.data(), 1, content.size(), file);
+  fclose(file);
+  LOG(info) << "FixedTargetGenerator: EvtGen decay overrides\n" << decays;
+  evtgen->readDecayFile(path.Data());
+  gSystem->Unlink(path);
 }
 }  // namespace
 
@@ -417,10 +506,31 @@ Bool_t FixedTargetGenerator::Init() {
                                         ParticleFile.Data(), extPtr);
     evtgenP->readDecayFile(
         UdecayFile.Data());  // will make update of EvtGen with user decay file
+    // The Pythia8 decay-table changes above, in EvtGen. EvtGen's decay table
+    // is shared, so reading them once covers evtgenN too.
+    std::string overrides =
+        tauOnly ? "Decay D_s+\n1.0 tau+ nu_tau SLN;\nEnddecay\nCDecay D_s-\n"
+                : DsToTauNuOverride(DecayFile.Data(), kDsToTauNuBR);
+    if (JpsiMainly) {
+      overrides +=
+          "Decay J/psi\n1.0 mu+ mu- PHOTOS VLL;\nEnddecay\n"
+          "Decay Upsilon\n1.0 mu+ mu- PHOTOS VLL;\nEnddecay\n";
+    }
+    ReadEvtGenOverrides(evtgenP, overrides);
     // use one instance of EvtGen, requires patch to Pythia8Plugins/EvtGen.h
     if (Option == "Primary") {
       evtgenN =
           new Pythia8::EvtGenDecays(fPythiaN, DecayFile.Data(), "", extPtr);
+    }
+    // EvtGen stops Pythia8 from decaying its particles only in its first
+    // decay() call; do that now, so that EvtGen decays them from the first
+    // event on.
+    for (auto [pythia, evtgen] :
+         {std::pair{fPythiaP, evtgenP}, std::pair{fPythiaN, evtgenN}}) {
+      if (evtgen) {
+        pythia->event.reset();
+        evtgen->decay();
+      }
     }
   }
   if (targetFromGeometry) {
@@ -643,6 +753,11 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
                              n_E, n_M, 0., 9.);
     }
     fPythiaP->next();
+    // EvtGen decays the particles in its decay table (in particular charm
+    // and beauty hadrons and tau), as in the primary mode
+    if (withEvtGen) {
+      evtgenP->decay();
+    }
     fPythia = fPythiaP;
   }
   if (withEvtGen) {
