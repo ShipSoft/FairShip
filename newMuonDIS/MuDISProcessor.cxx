@@ -451,7 +451,21 @@ void MuDISProcessor::ProcessMuons() {
     LOG(debug) << " --- Processing event " << iEvent << std::endl;
     if (iEvent % 100 == 0)
       LOG(info) << " --- Processing event " << iEvent << std::endl;
-    if (!finEv.PrepareEntry(ftree, iEvent) || ftree->GetEntry(iEvent) <= 0) {
+    // A chain member without the input branches is skipped on purpose
+    if (!finEv.PrepareEntry(ftree, iEvent)) {
+      LOG(error) << " --- Error reading tree entry: " << iEvent;
+      skipEvt++;
+      continue;
+    }
+    const Int_t nBytes = ftree->GetEntry(iEvent);
+    // An I/O error, more likely with remote inputs, stops the job: skipping
+    // the entry would leave a partial output and exit code 0
+    if (nBytes < 0) {
+      LOG(error) << " --- I/O error reading tree entry: " << iEvent;
+      throw std::runtime_error("MuDISProcessor: I/O error reading entry " +
+                               std::to_string(iEvent));
+    }
+    if (nBytes == 0) {
       LOG(error) << " --- Error reading tree entry: " << iEvent;
       skipEvt++;
       continue;
