@@ -36,6 +36,7 @@ import re
 
 import shipunit as u
 from rootUtils import get_particle
+from scipy.constants import physical_constants
 
 
 def PDGname(particle):
@@ -155,8 +156,9 @@ class constants:
         self.gW2 = self.GF / math.sqrt(2) * 8 * self.MW * self.MW  # SU(2)L gauge coupling squared
         self.s2thetaw = 0.23126  # square sine of the Weinberg angle
         self.t2thetaw = self.s2thetaw / (1 - self.s2thetaw)  # square tan of the Weinberg angle
-        self.heV = 6.58211928 * pow(10.0, -16)  # no units or it messes up!!
-        self.hGeV = self.heV * pow(10.0, -9)  # no units or it messes up!!
+        # reduced Planck constant in eV s and GeV s, without shipunit units
+        self.heV = physical_constants["reduced Planck constant in eV s"][0]
+        self.hGeV = self.heV * 1e-9
         # defined in Eq (30)--(32) of [1511.07436], but without
         # the coupling over sfermion mass, that will come later
         self.GST2 = {

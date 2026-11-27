@@ -9,11 +9,12 @@ import ROOT as r
 # from settings import *
 # from functions import *
 from hnl import mass
+from scipy import constants
 
-# constants
-alphaQED = 1.0 / 137.0
-ccm = 2.99792458e10
-hGeV = 6.58211928 * pow(10.0, -16) * pow(10.0, -9)  # no units or it messes up!!
+# constants, without shipunit units
+alphaQED = constants.fine_structure
+ccm = constants.c * 100  # speed of light in cm/s
+hGeV = constants.physical_constants["reduced Planck constant in eV s"][0] * 1e-9  # GeV s
 
 # utilities
 # sigma(e+e- -> hadrons) / sigma(e+e- -> mu+mu-)

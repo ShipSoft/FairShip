@@ -7,12 +7,12 @@ import sys
 import numpy as np
 import ROOT as r
 from darkphoton import alphaQED
+from rootUtils import get_particle
 from scipy.integrate import dblquad
 
-# proton mass
-mProton = 0.938272081  # GeV/c - PDG2016
-protonEnergy = 400.0  # GeV/c
-protonMomentum = math.sqrt(protonEnergy * protonEnergy - mProton * mProton)
+mProton = get_particle(2212).Mass()  # GeV/c^2
+# beam momentum, as given to the generators with SetMom(400 * u.GeV)
+protonMomentum = 400.0  # GeV/c
 
 
 # VDM FORM FACTOR
