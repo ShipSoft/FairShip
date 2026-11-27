@@ -20,6 +20,10 @@ it in future.
 
 * The hit lists in `Tracklets` and `fitTrack2MC` now come from fitted states. They therefore leave out any surface that ACTS skipped. #1537
 
+### Fixed
+
+* `run_fixedTarget.py` resolves relative `--TARGET_YAML` and `-I/--InputFile` paths against the directory it was started from. The script changes into its work directory before it reads the target configuration or opens the cascade input file, so a relative path such as `geometry/target_config.yaml` was not found. URLs given to `-I`, such as `root://` paths on EOS, are left as they are (#1360).
+
 ## 26.11 - 2026-11-26
 
 This release makes ACTS the default for pattern recognition, track fitting and
