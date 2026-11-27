@@ -23,7 +23,7 @@ var searchData=
   ['update_5fnumeric_5fstat_20',['update_numeric_stat',['../namespacevalidationTools.html#a609e5981bf437388589ab4804356f777',1,'validationTools']]],
   ['updatepointtrackindices_21',['UpdatePointTrackIndices',['../classSHiP_1_1Detector.html#acb1b4c0cb31f66fe01b217b7bd4d0a0c',1,'SHiP::Detector::UpdatePointTrackIndices()'],['../classISTLPointContainer.html#a78a9f8d491c704979d44b27d988049e9',1,'ISTLPointContainer::UpdatePointTrackIndices()']]],
   ['updater_22',['updater',['../structSHiP_1_1ActsStrawTracker_1_1Impl.html#af3ddfcb32941dbb18059041a93329132',1,'SHiP::ActsStrawTracker::Impl']]],
-  ['updates_23',['Detector Geometry Updates',['../md_CHANGELOG.html#autotoc_md75',1,'']]],
+  ['updates_23',['Detector Geometry Updates',['../md_CHANGELOG.html#autotoc_md76',1,'']]],
   ['updatetrackindex_24',['UpdateTrackIndex',['../classShipStack.html#afbe9564e96a068a1be591663b1c5f248',1,'ShipStack']]],
   ['upperironthick_25',['upperIronThick',['../classMTCDetector.html#a5d95ddbeca95c7a451da9e8b6af18e10',1,'MTCDetector']]],
   ['upstream_26',['upstream',['../structSHiP_1_1TrackCandidate.html#a414f77a0293a32d4264d8ed19fef98db',1,'SHiP::TrackCandidate']]],
@@ -56,7 +56,7 @@ var searchData=
   ['uses_5facts_53',['uses_acts',['../namespaceshipTrackAccess.html#a0249a635f725f749dfd31a99b23239ee',1,'shipTrackAccess']]],
   ['usesymmetry_54',['UseSymmetry',['../classShipBFieldMap.html#a8ce60bff834f49ad519b0d381bae4333',1,'ShipBFieldMap']]],
   ['using_20caloscoringplanepid_20directly_55',['Using CaloScoringPlanePID directly',['../dir_603b242ae3468e4f23dd3899c6f4b76d.html#autotoc_md6',1,'']]],
-  ['using_20pixi_56',['Using pixi',['../md_README.html#autotoc_md130',1,'']]],
-  ['using_20the_20pre_20built_20package_57',['Using the pre-built package',['../md_README.html#autotoc_md132',1,'']]],
-  ['utilities_58',['Utilities',['../md_CHANGELOG.html#autotoc_md93',1,'Custom Utilities'],['../md_CHANGELOG.html#autotoc_md65',1,'Tools and Utilities']]]
+  ['using_20pixi_56',['Using pixi',['../md_README.html#autotoc_md131',1,'']]],
+  ['using_20the_20pre_20built_20package_57',['Using the pre-built package',['../md_README.html#autotoc_md133',1,'']]],
+  ['utilities_58',['Utilities',['../md_CHANGELOG.html#autotoc_md94',1,'Custom Utilities'],['../md_CHANGELOG.html#autotoc_md66',1,'Tools and Utilities']]]
 ];

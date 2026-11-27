@@ -1,9 +1,9 @@
 var searchData=
 [
   ['unreleased_0',['Unreleased',['../md_CHANGELOG.html#autotoc_md8',1,'']]],
-  ['updates_1',['Detector Geometry Updates',['../md_CHANGELOG.html#autotoc_md75',1,'']]],
+  ['updates_1',['Detector Geometry Updates',['../md_CHANGELOG.html#autotoc_md76',1,'']]],
   ['using_20caloscoringplanepid_20directly_2',['Using CaloScoringPlanePID directly',['../dir_603b242ae3468e4f23dd3899c6f4b76d.html#autotoc_md6',1,'']]],
-  ['using_20pixi_3',['Using pixi',['../md_README.html#autotoc_md130',1,'']]],
-  ['using_20the_20pre_20built_20package_4',['Using the pre-built package',['../md_README.html#autotoc_md132',1,'']]],
-  ['utilities_5',['Utilities',['../md_CHANGELOG.html#autotoc_md93',1,'Custom Utilities'],['../md_CHANGELOG.html#autotoc_md65',1,'Tools and Utilities']]]
+  ['using_20pixi_3',['Using pixi',['../md_README.html#autotoc_md131',1,'']]],
+  ['using_20the_20pre_20built_20package_4',['Using the pre-built package',['../md_README.html#autotoc_md133',1,'']]],
+  ['utilities_5',['Utilities',['../md_CHANGELOG.html#autotoc_md94',1,'Custom Utilities'],['../md_CHANGELOG.html#autotoc_md66',1,'Tools and Utilities']]]
 ];

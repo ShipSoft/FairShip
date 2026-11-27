@@ -1,5 +1,7 @@
 var NAVTREEINDEX15 =
 {
+"classrpvsusy_1_1RPVSUSYbranchings.html":[5,0,80,1],
+"classrpvsusy_1_1RPVSUSYbranchings.html":[6,0,13,1],
 "classrpvsusy_1_1RPVSUSYbranchings.html#a03dfea10c763058db93c952a72261594":[5,0,80,1,16],
 "classrpvsusy_1_1RPVSUSYbranchings.html#a03dfea10c763058db93c952a72261594":[6,0,13,1,16],
 "classrpvsusy_1_1RPVSUSYbranchings.html#a0bd44ad170549a7182b220a73615987c":[5,0,80,1,4],
@@ -247,7 +249,5 @@ var NAVTREEINDEX15 =
 "classshipVeto_1_1Task.html#a8d20d04edc5fb453748438b944ef7878":[5,0,109,0,14],
 "classshipVeto_1_1Task.html#a8d20d04edc5fb453748438b944ef7878":[6,0,22,0,14],
 "classshipVeto_1_1Task.html#a8ff222f2929866fb82f50f9b9784d8aa":[5,0,109,0,10],
-"classshipVeto_1_1Task.html#a8ff222f2929866fb82f50f9b9784d8aa":[6,0,22,0,10],
-"classshipVeto_1_1Task.html#aa0b765d77a80580bf5d001c39cee3dc8":[5,0,109,0,2],
-"classshipVeto_1_1Task.html#aa0b765d77a80580bf5d001c39cee3dc8":[6,0,22,0,2]
+"classshipVeto_1_1Task.html#a8ff222f2929866fb82f50f9b9784d8aa":[6,0,22,0,10]
 };

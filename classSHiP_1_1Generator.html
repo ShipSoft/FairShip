@@ -129,6 +129,10 @@ Public Member Functions</h2></td></tr>
 Protected Member Functions</h2></td></tr>
 <tr class="memitem:a570b30362f29d5850f263c17e8245313" id="r_a570b30362f29d5850f263c17e8245313"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a570b30362f29d5850f263c17e8245313">IsInVesselAcceptance</a> (Double_t px, Double_t py, Double_t pz) const</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pro-static-methods" class="groupheader"><a id="pro-static-methods" name="pro-static-methods"></a>
+Static Protected Member Functions</h2></td></tr>
+<tr class="memitem:a4829698bd95b24e180d4bb78574a90a7" id="r_a4829698bd95b24e180d4bb78574a90a7"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4829698bd95b24e180d4bb78574a90a7">KeepLastTrack</a> ()</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pro-attribs" class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
 <tr class="memitem:a6bde7e8caba3362285f137dca8af9e71" id="r_a6bde7e8caba3362285f137dca8af9e71"><td class="memItemLeft" align="right" valign="top">std::optional&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6bde7e8caba3362285f137dca8af9e71">fextFile</a></td></tr>
@@ -222,7 +226,7 @@ Protected Attributes</h2></td></tr>
 <div class="line"><span class="lineno">   59</span>    <span class="keyword">auto</span> it = <a class="code hl_variable" href="#abb4be405fddadb2ec463a2ac6335bab8">fCounters</a>.find(name);</div>
 <div class="line"><span class="lineno">   60</span>    <span class="keywordflow">return</span> it == <a class="code hl_variable" href="#abb4be405fddadb2ec463a2ac6335bab8">fCounters</a>.end() ? 0 : it-&gt;second;</div>
 <div class="line"><span class="lineno">   61</span>  }</div>
-<div class="ttc" id="aclassSHiP_1_1Generator_html_abb4be405fddadb2ec463a2ac6335bab8"><div class="ttname"><a href="#abb4be405fddadb2ec463a2ac6335bab8">SHiP::Generator::fCounters</a></div><div class="ttdeci">std::unordered_map&lt; std::string, int64_t &gt; fCounters</div><div class="ttdef"><b>Definition</b> <a href="Generator_8h_source.html#l00082">Generator.h:82</a></div></div>
+<div class="ttc" id="aclassSHiP_1_1Generator_html_abb4be405fddadb2ec463a2ac6335bab8"><div class="ttname"><a href="#abb4be405fddadb2ec463a2ac6335bab8">SHiP::Generator::fCounters</a></div><div class="ttdeci">std::unordered_map&lt; std::string, int64_t &gt; fCounters</div><div class="ttdef"><b>Definition</b> <a href="Generator_8h_source.html#l00088">Generator.h:88</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -424,15 +428,53 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Generator_8h_source.html#l00070">70</a> of file <a class="el" href="Generator_8h_source.html">Generator.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   70</span>                                                                         {</div>
-<div class="line"><span class="lineno">   71</span>    <span class="keywordflow">if</span> (!<a class="code hl_variable" href="#aede7e0e4f6382bcef92e077c3c604c55">fUseVesselAcceptance</a>) <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">   72</span>    <span class="keywordflow">if</span> (pz &lt;= 0) <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">   73</span>    <span class="keywordflow">return</span> std::abs(px / pz) &lt; <a class="code hl_variable" href="#abfce1b44606afe0900df0e4d1ba067f8">fMaxThetaX</a> &amp;&amp; std::abs(py / pz) &lt; <a class="code hl_variable" href="#af7b862e8540b4c07463d07d63b450063">fMaxThetaY</a>;</div>
-<div class="line"><span class="lineno">   74</span>  }</div>
-<div class="ttc" id="aclassSHiP_1_1Generator_html_abfce1b44606afe0900df0e4d1ba067f8"><div class="ttname"><a href="#abfce1b44606afe0900df0e4d1ba067f8">SHiP::Generator::fMaxThetaX</a></div><div class="ttdeci">Double_t fMaxThetaX</div><div class="ttdef"><b>Definition</b> <a href="Generator_8h_source.html#l00078">Generator.h:78</a></div></div>
-<div class="ttc" id="aclassSHiP_1_1Generator_html_aede7e0e4f6382bcef92e077c3c604c55"><div class="ttname"><a href="#aede7e0e4f6382bcef92e077c3c604c55">SHiP::Generator::fUseVesselAcceptance</a></div><div class="ttdeci">bool fUseVesselAcceptance</div><div class="ttdef"><b>Definition</b> <a href="Generator_8h_source.html#l00080">Generator.h:80</a></div></div>
-<div class="ttc" id="aclassSHiP_1_1Generator_html_af7b862e8540b4c07463d07d63b450063"><div class="ttname"><a href="#af7b862e8540b4c07463d07d63b450063">SHiP::Generator::fMaxThetaY</a></div><div class="ttdeci">Double_t fMaxThetaY</div><div class="ttdef"><b>Definition</b> <a href="Generator_8h_source.html#l00079">Generator.h:79</a></div></div>
+<p class="definition">Definition at line <a class="el" href="Generator_8h_source.html#l00076">76</a> of file <a class="el" href="Generator_8h_source.html">Generator.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   76</span>                                                                         {</div>
+<div class="line"><span class="lineno">   77</span>    <span class="keywordflow">if</span> (!<a class="code hl_variable" href="#aede7e0e4f6382bcef92e077c3c604c55">fUseVesselAcceptance</a>) <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">   78</span>    <span class="keywordflow">if</span> (pz &lt;= 0) <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">   79</span>    <span class="keywordflow">return</span> std::abs(px / pz) &lt; <a class="code hl_variable" href="#abfce1b44606afe0900df0e4d1ba067f8">fMaxThetaX</a> &amp;&amp; std::abs(py / pz) &lt; <a class="code hl_variable" href="#af7b862e8540b4c07463d07d63b450063">fMaxThetaY</a>;</div>
+<div class="line"><span class="lineno">   80</span>  }</div>
+<div class="ttc" id="aclassSHiP_1_1Generator_html_abfce1b44606afe0900df0e4d1ba067f8"><div class="ttname"><a href="#abfce1b44606afe0900df0e4d1ba067f8">SHiP::Generator::fMaxThetaX</a></div><div class="ttdeci">Double_t fMaxThetaX</div><div class="ttdef"><b>Definition</b> <a href="Generator_8h_source.html#l00084">Generator.h:84</a></div></div>
+<div class="ttc" id="aclassSHiP_1_1Generator_html_aede7e0e4f6382bcef92e077c3c604c55"><div class="ttname"><a href="#aede7e0e4f6382bcef92e077c3c604c55">SHiP::Generator::fUseVesselAcceptance</a></div><div class="ttdeci">bool fUseVesselAcceptance</div><div class="ttdef"><b>Definition</b> <a href="Generator_8h_source.html#l00086">Generator.h:86</a></div></div>
+<div class="ttc" id="aclassSHiP_1_1Generator_html_af7b862e8540b4c07463d07d63b450063"><div class="ttname"><a href="#af7b862e8540b4c07463d07d63b450063">SHiP::Generator::fMaxThetaY</a></div><div class="ttdeci">Double_t fMaxThetaY</div><div class="ttdef"><b>Definition</b> <a href="Generator_8h_source.html#l00085">Generator.h:85</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a4829698bd95b24e180d4bb78574a90a7" name="a4829698bd95b24e180d4bb78574a90a7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4829698bd95b24e180d4bb78574a90a7">&#9670;&#160;</a></span>KeepLastTrack()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SHiP::Generator::KeepLastTrack </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Store the track that the last FairPrimaryGenerator::AddTrack call put on the stack, whatever the stack's energy and hit cuts. Decay products have a mother on the stack, so without this a soft one is cut like a secondary and is missing from MCTrack. </p>
+
+<p class="definition">Definition at line <a class="el" href="Generator_8cxx_source.html#l00012">12</a> of file <a class="el" href="Generator_8cxx_source.html">Generator.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   12</span>                                  {</div>
+<div class="line"><span class="lineno">   13</span>  <span class="keyword">auto</span>* mc = TVirtualMC::GetMC();</div>
+<div class="line"><span class="lineno">   14</span>  <span class="keyword">auto</span>* <a class="code hl_variable" href="namespacemakeCascade.html#a4af6ee173bd7ee58725a4483fc98f07e">stack</a> = mc ? <span class="keyword">dynamic_cast&lt;</span>ShipStack*<span class="keyword">&gt;</span>(mc-&gt;GetStack()) : nullptr;</div>
+<div class="line"><span class="lineno">   15</span>  <span class="keywordflow">if</span> (!stack) {</div>
+<div class="line"><span class="lineno">   16</span>    LOG(warning) &lt;&lt; <span class="stringliteral">&quot;Generator::KeepLastTrack: no ShipStack, track not kept&quot;</span>;</div>
+<div class="line"><span class="lineno">   17</span>    <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">   18</span>  }</div>
+<div class="line"><span class="lineno">   19</span>  <a class="code hl_variable" href="namespacemakeCascade.html#a4af6ee173bd7ee58725a4483fc98f07e">stack</a>-&gt;KeepTrack(<a class="code hl_variable" href="namespacemakeCascade.html#a4af6ee173bd7ee58725a4483fc98f07e">stack</a>-&gt;GetNtrack() - 1);</div>
+<div class="line"><span class="lineno">   20</span>}</div>
+<div class="ttc" id="anamespacemakeCascade_html_a4af6ee173bd7ee58725a4483fc98f07e"><div class="ttname"><a href="namespacemakeCascade.html#a4af6ee173bd7ee58725a4483fc98f07e">makeCascade.stack</a></div><div class="ttdeci">list stack</div><div class="ttdef"><b>Definition</b> <a href="makeCascade_8py_source.html#l00327">makeCascade.py:327</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -461,7 +503,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Generator_8h_source.html#l00057">57</a> of file <a class="el" href="Generator_8h_source.html">Generator.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   57</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="#a66b0ff652a8c474c9609d2560d91e6ba">fnGeoRejects</a>; }</div>
-<div class="ttc" id="aclassSHiP_1_1Generator_html_a66b0ff652a8c474c9609d2560d91e6ba"><div class="ttname"><a href="#a66b0ff652a8c474c9609d2560d91e6ba">SHiP::Generator::fnGeoRejects</a></div><div class="ttdeci">Int_t fnGeoRejects</div><div class="ttdef"><b>Definition</b> <a href="Generator_8h_source.html#l00081">Generator.h:81</a></div></div>
+<div class="ttc" id="aclassSHiP_1_1Generator_html_a66b0ff652a8c474c9609d2560d91e6ba"><div class="ttname"><a href="#a66b0ff652a8c474c9609d2560d91e6ba">SHiP::Generator::fnGeoRejects</a></div><div class="ttdeci">Int_t fnGeoRejects</div><div class="ttdef"><b>Definition</b> <a href="Generator_8h_source.html#l00087">Generator.h:87</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -568,8 +610,8 @@ Protected Attributes</h2></td></tr>
 <div class="line"><span class="lineno">   40</span>    <a class="code hl_variable" href="#a6bde7e8caba3362285f137dca8af9e71">fextFile</a> = std::move(x);</div>
 <div class="line"><span class="lineno">   41</span>    <a class="code hl_variable" href="#af1d3876ffff4fad3004a73025d609569">firstEvent</a> = <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>;</div>
 <div class="line"><span class="lineno">   42</span>  };</div>
-<div class="ttc" id="aclassSHiP_1_1Generator_html_a6bde7e8caba3362285f137dca8af9e71"><div class="ttname"><a href="#a6bde7e8caba3362285f137dca8af9e71">SHiP::Generator::fextFile</a></div><div class="ttdeci">std::optional&lt; std::string &gt; fextFile</div><div class="ttdef"><b>Definition</b> <a href="Generator_8h_source.html#l00076">Generator.h:76</a></div></div>
-<div class="ttc" id="aclassSHiP_1_1Generator_html_af1d3876ffff4fad3004a73025d609569"><div class="ttname"><a href="#af1d3876ffff4fad3004a73025d609569">SHiP::Generator::firstEvent</a></div><div class="ttdeci">Int_t firstEvent</div><div class="ttdef"><b>Definition</b> <a href="Generator_8h_source.html#l00077">Generator.h:77</a></div></div>
+<div class="ttc" id="aclassSHiP_1_1Generator_html_a6bde7e8caba3362285f137dca8af9e71"><div class="ttname"><a href="#a6bde7e8caba3362285f137dca8af9e71">SHiP::Generator::fextFile</a></div><div class="ttdeci">std::optional&lt; std::string &gt; fextFile</div><div class="ttdef"><b>Definition</b> <a href="Generator_8h_source.html#l00082">Generator.h:82</a></div></div>
+<div class="ttc" id="aclassSHiP_1_1Generator_html_af1d3876ffff4fad3004a73025d609569"><div class="ttname"><a href="#af1d3876ffff4fad3004a73025d609569">SHiP::Generator::firstEvent</a></div><div class="ttdeci">Int_t firstEvent</div><div class="ttdef"><b>Definition</b> <a href="Generator_8h_source.html#l00083">Generator.h:83</a></div></div>
 <div class="ttc" id="anamespaceShipAna_html_aa4bf87f4d17f9d38b1d8f4d009bb54b3"><div class="ttname"><a href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">ShipAna.i</a></div><div class="ttdeci">int i</div><div class="ttdef"><b>Definition</b> <a href="ShipAna_8py_source.html#l00108">ShipAna.py:108</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -632,7 +674,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Generator_8h_source.html#l00082">82</a> of file <a class="el" href="Generator_8h_source.html">Generator.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Generator_8h_source.html#l00088">88</a> of file <a class="el" href="Generator_8h_source.html">Generator.h</a>.</p>
 
 </div>
 </div>
@@ -656,7 +698,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Generator_8h_source.html#l00076">76</a> of file <a class="el" href="Generator_8h_source.html">Generator.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Generator_8h_source.html#l00082">82</a> of file <a class="el" href="Generator_8h_source.html">Generator.h</a>.</p>
 
 </div>
 </div>
@@ -680,7 +722,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Generator_8h_source.html#l00077">77</a> of file <a class="el" href="Generator_8h_source.html">Generator.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Generator_8h_source.html#l00083">83</a> of file <a class="el" href="Generator_8h_source.html">Generator.h</a>.</p>
 
 </div>
 </div>
@@ -704,7 +746,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Generator_8h_source.html#l00078">78</a> of file <a class="el" href="Generator_8h_source.html">Generator.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Generator_8h_source.html#l00084">84</a> of file <a class="el" href="Generator_8h_source.html">Generator.h</a>.</p>
 
 </div>
 </div>
@@ -728,7 +770,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Generator_8h_source.html#l00079">79</a> of file <a class="el" href="Generator_8h_source.html">Generator.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Generator_8h_source.html#l00085">85</a> of file <a class="el" href="Generator_8h_source.html">Generator.h</a>.</p>
 
 </div>
 </div>
@@ -752,7 +794,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Generator_8h_source.html#l00081">81</a> of file <a class="el" href="Generator_8h_source.html">Generator.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Generator_8h_source.html#l00087">87</a> of file <a class="el" href="Generator_8h_source.html">Generator.h</a>.</p>
 
 </div>
 </div>
@@ -776,7 +818,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Generator_8h_source.html#l00080">80</a> of file <a class="el" href="Generator_8h_source.html">Generator.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Generator_8h_source.html#l00086">86</a> of file <a class="el" href="Generator_8h_source.html">Generator.h</a>.</p>
 
 </div>
 </div>

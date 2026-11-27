@@ -1,5 +1,8 @@
 var NAVTREEINDEX31 =
 {
+"structShipMuDIS_1_1MuonDISBranches.html#a3cc582576e742fb088b5872c17f87f12":[6,0,19,0,7],
+"structShipMuDIS_1_1MuonDISBranches.html#a70b796c9e598b937f8b0fcc86e499c80":[5,0,100,0,0],
+"structShipMuDIS_1_1MuonDISBranches.html#a70b796c9e598b937f8b0fcc86e499c80":[6,0,19,0,0],
 "structShipMuDIS_1_1MuonDISBranches.html#a7bc1f372d1b42057bb629f620dcc5c45":[5,0,100,0,5],
 "structShipMuDIS_1_1MuonDISBranches.html#a7bc1f372d1b42057bb629f620dcc5c45":[6,0,19,0,5],
 "structShipMuDIS_1_1MuonDISBranches.html#a891df17158893e8bc6c96223d420be83":[5,0,100,0,12],
@@ -246,7 +249,5 @@ var NAVTREEINDEX31 =
 "veto_8cxx.html#a265f40d0ffca1af0d38fe9a050c98bcf":[7,0,21,1,0],
 "veto_8cxx.html#a644590da60ab4efe07fbda3a260e5407":[7,0,21,1,2],
 "veto_8cxx.html#a7b82ae8775009208066598546951dd22":[7,0,21,1,1],
-"veto_8cxx_source.html":[7,0,21,1],
-"veto_8h.html":[7,0,21,2],
-"veto_8h_source.html":[7,0,21,2]
+"veto_8cxx_source.html":[7,0,21,1]
 };

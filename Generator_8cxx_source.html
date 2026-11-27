@@ -101,9 +101,28 @@ $(function(){initNavTree('Generator_8cxx_source.html','',''); });
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">// Collaboration</span></div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;<a class="code" href="Generator_8h.html">Generator.h</a>&quot;</span></div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><a class="code hl_function" href="classSHiP_1_1Generator.html#acf6419d8aff9fce9fe583d5fd68f79ee">SHiP::Generator::~Generator</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;<a class="code" href="ShipStack_8h.html">ShipStack.h</a>&quot;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &quot;TVirtualMC.h&quot;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><a class="code hl_function" href="classSHiP_1_1Generator.html#acf6419d8aff9fce9fe583d5fd68f79ee">SHiP::Generator::~Generator</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
+<div class="foldopen" id="foldopen00012" data-start="{" data-end="}">
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="classSHiP_1_1Generator.html#a4829698bd95b24e180d4bb78574a90a7">   12</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classSHiP_1_1Generator.html#a4829698bd95b24e180d4bb78574a90a7">SHiP::Generator::KeepLastTrack</a>() {</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>  <span class="keyword">auto</span>* mc = TVirtualMC::GetMC();</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>  <span class="keyword">auto</span>* stack = mc ? <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classShipStack.html">ShipStack</a>*<span class="keyword">&gt;</span>(mc-&gt;GetStack()) : <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>  <span class="keywordflow">if</span> (!stack) {</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    LOG(warning) &lt;&lt; <span class="stringliteral">&quot;Generator::KeepLastTrack: no ShipStack, track not kept&quot;</span>;</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>  }</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>  stack-&gt;KeepTrack(stack-&gt;GetNtrack() - 1);</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>}</div>
+</div>
 <div class="ttc" id="aGenerator_8h_html"><div class="ttname"><a href="Generator_8h.html">Generator.h</a></div></div>
+<div class="ttc" id="aShipStack_8h_html"><div class="ttname"><a href="ShipStack_8h.html">ShipStack.h</a></div></div>
+<div class="ttc" id="aclassSHiP_1_1Generator_html_a4829698bd95b24e180d4bb78574a90a7"><div class="ttname"><a href="classSHiP_1_1Generator.html#a4829698bd95b24e180d4bb78574a90a7">SHiP::Generator::KeepLastTrack</a></div><div class="ttdeci">static void KeepLastTrack()</div><div class="ttdef"><b>Definition</b> <a href="#l00012">Generator.cxx:12</a></div></div>
 <div class="ttc" id="aclassSHiP_1_1Generator_html_acf6419d8aff9fce9fe583d5fd68f79ee"><div class="ttname"><a href="classSHiP_1_1Generator.html#acf6419d8aff9fce9fe583d5fd68f79ee">SHiP::Generator::~Generator</a></div><div class="ttdeci">~Generator() override</div></div>
+<div class="ttc" id="aclassShipStack_html"><div class="ttname"><a href="classShipStack.html">ShipStack</a></div><div class="ttdef"><b>Definition</b> <a href="ShipStack_8h_source.html#l00047">ShipStack.h:47</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 </div><!-- container -->
