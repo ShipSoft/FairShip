@@ -83,3 +83,26 @@ def track_info(track, acts: bool) -> TrackInfo:
     info.sigma_py = math.sqrt(cov[4][4])
     info.sigma_pz = math.sqrt(cov[5][5])
     return info
+
+
+def vertex_daughter_momenta(vertices, daughters) -> dict[int, ROOT.TVector3] | None:
+    """Momenta at the vertex of the daughters of an ACTS particle.
+
+    The particle was made of the tracks with a weight of at least
+    ``RecoVertex::kMinTrackWeight`` in one vertex. A track can be in several
+    vertices, and a vertex also lists its tracks of low weight, so the vertex
+    is the one whose tracks of that weight are exactly ``daughters``. Returns
+    ``None`` if there is no such vertex.
+    """
+    wanted = set(daughters)
+    min_weight = ROOT.SHiP.RecoVertex.kMinTrackWeight
+    for vtx in vertices:
+        ids = list(vtx.trackIds())
+        strong = {t for t, w in zip(ids, vtx.trackWeights()) if w >= min_weight}
+        if strong == wanted:
+            return {
+                t: ROOT.TVector3(vtx.trackPx()[k], vtx.trackPy()[k], vtx.trackPz()[k])
+                for k, t in enumerate(ids)
+                if t in wanted
+            }
+    return None

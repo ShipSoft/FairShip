@@ -186,6 +186,32 @@ if(TARGET ShipActsTracking)
     )
     add_test(NAME ActsMaterial COMMAND testActsMaterial)
 
+    # Multi-vertex finding, on straight tracks from known vertices
+    add_executable(testActsVertexing test_acts_vertexing.cxx)
+    target_link_libraries(
+        testActsVertexing
+        ShipActsTracking
+        Acts::Core
+        FairRoot::Base
+        genfit2
+        FairLogger::FairLogger
+    )
+    add_test(NAME ActsVertexing COMMAND testActsVertexing)
+
+    # Vertex finding through ActsStrawTracker, from straw hits
+    add_executable(testActsFindVertices test_acts_find_vertices.cxx)
+    target_link_libraries(
+        testActsFindVertices
+        ShipActsTracking
+        ShipData
+        Acts::Core
+        ROOT::Geom
+        FairRoot::Base
+        genfit2
+        FairLogger::FairLogger
+    )
+    add_test(NAME ActsFindVertices COMMAND testActsFindVertices)
+
     # Track fits through ActsStrawTracker, from straw hits
     add_executable(testActsTrackFit test_acts_track_fit.cxx)
     target_link_libraries(

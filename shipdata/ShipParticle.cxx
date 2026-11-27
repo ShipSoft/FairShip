@@ -7,6 +7,8 @@
 // -------------------------------------------------------------------------
 #include "ShipParticle.h"
 
+#include <sstream>  // for std::ostringstream
+
 #include "FairLogger.h"      // for FairLogger, etc
 #include "TLorentzVector.h"  // for TLorentzVector
 #include "TVector3.h"        // for TVector3
@@ -17,7 +19,7 @@ ShipParticle::ShipParticle()
       fPdgCode(0),
       fStatusCode(0),
       fMother{0, 0},
-      fDaughter{0, 0},
+      fDaughters{},
       fPx(0.),
       fPy(0.),
       fPz(0.),
@@ -40,7 +42,7 @@ ShipParticle::ShipParticle(Int_t pdg, Int_t status, Int_t mother1,
       fPdgCode(pdg),
       fStatusCode(status),
       fMother{mother1, mother2},
-      fDaughter{daughter1, daughter2},
+      fDaughters{daughter1, daughter2},
       fPx(px),
       fPy(py),
       fPz(pz),
@@ -62,7 +64,29 @@ ShipParticle::ShipParticle(Int_t pdg, Int_t status, Int_t mother1,
       fPdgCode(pdg),
       fStatusCode(status),
       fMother{mother1, mother2},
-      fDaughter{daughter1, daughter2},
+      fDaughters{daughter1, daughter2},
+      fPx(p.Px()),
+      fPy(p.Py()),
+      fPz(p.Pz()),
+      fE(p.E()),
+      fVx(v.X()),
+      fVy(v.Y()),
+      fVz(v.Z()),
+      fVt(v.T()),
+      fCovP{0., 0., 0., 0., 0., 0., 0., 0., 0., 0.},
+      fCovV{0., 0., 0., 0., 0., 0.},
+      fDoca(0.) {}
+// -------------------------------------------------------------------------
+
+// -----   Constructor with any number of daughters   ----------------------
+ShipParticle::ShipParticle(Int_t pdg, Int_t status, Int_t mother1,
+                           Int_t mother2, const std::vector<Int_t>& daughters,
+                           const TLorentzVector& p, const TLorentzVector& v)
+    : TObject(),
+      fPdgCode(pdg),
+      fStatusCode(status),
+      fMother{mother1, mother2},
+      fDaughters(daughters),
       fPx(p.Px()),
       fPy(p.Py()),
       fPz(p.Pz()),
@@ -133,7 +157,11 @@ void ShipParticle::Print(Int_t iTrack) const {
   LOG(info) << "ShipParticle " << iTrack << ":";
   LOG(info) << "  PDG code: " << fPdgCode << ", Status: " << fStatusCode;
   LOG(info) << "  Mothers: " << fMother[0] << ", " << fMother[1];
-  LOG(info) << "  Daughters: " << fDaughter[0] << ", " << fDaughter[1];
+  std::ostringstream daughters;
+  for (const Int_t daughter : fDaughters) {
+    daughters << " " << daughter;
+  }
+  LOG(info) << "  Daughters:" << daughters.str();
   LOG(info) << "  Momentum (" << fPx << ", " << fPy << ", " << fPz << ", " << fE
             << ") GeV";
   LOG(info) << "  Vertex (" << fVx << ", " << fVy << ", " << fVz
