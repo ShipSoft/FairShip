@@ -452,30 +452,6 @@ else:
     prefix = ""
 
 
-def makeProd() -> None:
-    ntot = 736406
-    ncpu = 4
-    n3 = int(ntot / ncpu)
-    cmd = "python $FAIRSHIP/macro/run_simScript.py --MuonBack -f $SHIPSOFT/data/pythia8_Geant4_onlyMuons.root "  # --display"
-    ns = 0
-    prefix = "muon18"
-    for i in range(1, ncpu + 1):
-        d = prefix + str(i)
-        if d not in os.listdir("."):
-            os.system("mkdir " + d)
-    os.chdir("./" + prefix + "1")
-    for i in range(1, ncpu + 1):
-        if i == ncpu:
-            n3 = ntot - i * n3
-        os.system("cp $FAIRSHIP/macro/run_simScript.py .")
-        os.system(cmd + " -n " + str(n3) + " -i " + str(ns) + " > log &")
-        # print " -n "+str(n3)+" -i "+str(ns)
-        ns += n3
-        if i == ncpu:
-            break
-        os.chdir("../" + prefix + str(i + 1))
-
-
 def detMap():
     sGeo = ROOT.gGeoManager
     detList = {}

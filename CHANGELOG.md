@@ -20,6 +20,19 @@ it in future.
 
 * The hit lists in `Tracklets` and `fitTrack2MC` now come from fitted states. They therefore leave out any surface that ACTS skipped. #1537
 
+### Removed
+
+* The unused copy of `makeProd` in `muonShieldOptimization/ana_ShipMuon.py`; `run_prod.makeProd` is the maintained one.
+
+### Fixed
+
+* `eventDisplay.py` extends MC tracks without a decay vertex along their own direction. The step to the end point 10 m away was computed from the absolute z of the end point, so x and y of the end point were wrong for tracks not starting at z = 0.
+* `shipStrawTracking.py` skips points a fitted track cannot be extrapolated to. It replaced a failed Runge-Kutta extrapolation by a straight line, and these points entered the hit residuals and the `rmse_x`/`rmse_y` histograms.
+* `makeCascade.py` seeds the random draws of the cascade (target nucleon, signal probability) with `--seed`, which only seeded Pythia6, so runs could not be reproduced.
+* `extractNeutrinosAndUpdateWeight.py` writes the beauty neutrino histograms in `run4beauty`, which was copied from the muon script and did nothing.
+* `field/convertNoisyMap.py` works with pandas 3, which removed the `delim_whitespace` argument.
+* `analysis_toolkit.dist_to_innerwall` returns 0 for vertices outside the decay volume, as documented. The preselection was not affected.
+
 ## 26.11 - 2026-11-26
 
 This release makes ACTS the default for pattern recognition, track fitting and
