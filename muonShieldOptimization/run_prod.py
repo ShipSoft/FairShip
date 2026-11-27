@@ -7,18 +7,18 @@ import time
 import ROOT
 
 
-def makeProd(prefix, DY, y: bool = False, phiRandom: bool = False, X=None) -> None:
+def makeProd(prefix, y: bool = False, phiRandom: bool = False, X=None) -> None:
     ncpu = 9
     shipsoft = os.environ["SHIPSOFT"].replace("/dev", "")
     if not y:
         f = shipsoft + "/data/pythia8_Geant4_onlyMuons.root"
-        cmd = "python $FAIRSHIP/macro/run_simScript.py --MuonBack -f " + f + " -Y " + str(float(DY))  # --display"
+        cmd = "python $FAIRSHIP/macro/run_simScript.py --MuonBack -f " + f  # --display"
     elif y == "Jpsi":
         f = shipsoft + "/data/pythia8_Geant4_Jpsi_onlyMuons.root"
-        cmd = "python $FAIRSHIP/macro/run_simScript.py --MuonBack -f " + f + " -Y " + str(float(DY))  # --display"
+        cmd = "python $FAIRSHIP/macro/run_simScript.py --MuonBack -f " + f  # --display"
     else:
         f = shipsoft + "/data/pythia8_Geant4_Yandex_onlyMuons.root"
-        cmd = "python $FAIRSHIP/macro/run_simScript.py --MuonBack -f " + f + " -Y " + str(float(DY))  # --display"
+        cmd = "python $FAIRSHIP/macro/run_simScript.py --MuonBack -f " + f  # --display"
     if phiRandom:
         cmd = cmd + " --phiRandom"
     fn = ROOT.TFile(f)
@@ -101,128 +101,128 @@ def makeProd(prefix, DY, y: bool = False, phiRandom: bool = False, X=None) -> No
 #
 # 630-639 10m height, change RPC width 4.5->3.6m
 # 640-649  6m height, change RPC width 4.5->3.6m
-# makeProd("muon59",6,False)  #
-# makeProd("muon60",6,True)    #
-# makeProd("muon61",10,False)    #
-# makeProd("muon62",10,True)     #
+# makeProd("muon59",False)  #
+# makeProd("muon60",True)    #
+# makeProd("muon61",False)    #
+# makeProd("muon62",True)     #
 
-# makeProd("muon63",10,False)     #
-# makeProd("muon64",10,True)     #
-# makeProd("muon65",6,False)     #
-# makeProd("muon66",6,True)     #
+# makeProd("muon63",False)     #
+# makeProd("muon64",True)     #
+# makeProd("muon65",False)     #
+# makeProd("muon66",True)     #
 
 # run more statistics, 61, 62
-# makeProd("muon611",10,False,True)
-# makeProd("muon621",10,True,True)
-# makeProd("muon612",10,False,True)
-# makeProd("muon622",10,True,True)
-# makeProd("muon613",10,False,True)
-# makeProd("muon623",10,True,True)
-# makeProd("muon614",10,False,True)
-# makeProd("muon624",10,True,True)
-# makeProd("muon615",10,False,True)
-# makeProd("muon625",10,True,True)
-# makeProd("muon616",10,False,True)
-# makeProd("muon626",10,True,True)
-# makeProd("muon617",10,False,True)
-# makeProd("muon627",10,True,True)
-# makeProd("muon618",10,False,True)
-# makeProd("muon628",10,True,True)
-# makeProd("muon619",10,False,True)
-# makeProd("muon629",10,True,True)
-# makeProd("muon700",10,False,False) # switch off field of active shielding    # prefix,DY,y=False,phiRandom=False,X=None
-# makeProd("muon710",10,False,False) # start production with beam smeared on r=3cm disk
-# makeProd("muon720",10,True,False)
-# makeProd("muon711",10,False,True) # start production with beam smeared on r=3cm disk
-# makeProd("muon721",10,True,True)
-# makeProd("muon712",10,False,True) # start production with beam smeared on r=3cm disk
-# makeProd("muon722",10,True,True)
-# makeProd("muon713",10,False,True) # start production with beam smeared on r=3cm disk
-# makeProd("muon723",10,True,True)
-# makeProd("muon714",10,False,True) # start production with beam smeared on r=3cm disk
-# makeProd("muon724",10,True,True)
-# makeProd("muon715",10,False,True) # start production with beam smeared on r=3cm disk
-# makeProd("muon725",10,True,True)
-# makeProd("muon716",10,False,True) # start production with beam smeared on r=3cm disk
-# makeProd("muon726",10,True,True)
-# makeProd("muon717",10,False,True) # start production with beam smeared on r=3cm disk
-# makeProd("muon777",10,False,True) # in case the other one does not work 717
-# makeProd("muon727",10,True,True)  # ?
-# makeProd("muon718",10,False,True) # start production with beam smeared on r=3cm disk
-# makeProd("muon728",10,True,True)
-# makeProd("muon719",10,False,True) # start production with beam smeared on r=3cm disk
-# makeProd("muon729",10,True,True)     #
-# makeProd("muon730",10,'Jpsi',False)  # made with E50
-# makeProd("muon731",10,'Jpsi',True)   # made with E50
-# makeProd("muon732",10,'Jpsi',True)   # made with E50
-# makeProd("muon733",10,'Jpsi',True)   # back to pencil beam
-# makeProd("muon630",10,False,True) # test with new muonShield code, 3cm smearing
-# makeProd("muon631",10,False,True) # run with concrete wall enabled as sensitive
-# makeProd("muon632",10,False,True) # run with concrete wall enabled as sensitive, active shielding polarity fixed
+# makeProd("muon611",False,True)
+# makeProd("muon621",True,True)
+# makeProd("muon612",False,True)
+# makeProd("muon622",True,True)
+# makeProd("muon613",False,True)
+# makeProd("muon623",True,True)
+# makeProd("muon614",False,True)
+# makeProd("muon624",True,True)
+# makeProd("muon615",False,True)
+# makeProd("muon625",True,True)
+# makeProd("muon616",False,True)
+# makeProd("muon626",True,True)
+# makeProd("muon617",False,True)
+# makeProd("muon627",True,True)
+# makeProd("muon618",False,True)
+# makeProd("muon628",True,True)
+# makeProd("muon619",False,True)
+# makeProd("muon629",True,True)
+# makeProd("muon700",False,False) # switch off field of active shielding    # prefix,y=False,phiRandom=False,X=None
+# makeProd("muon710",False,False) # start production with beam smeared on r=3cm disk
+# makeProd("muon720",True,False)
+# makeProd("muon711",False,True) # start production with beam smeared on r=3cm disk
+# makeProd("muon721",True,True)
+# makeProd("muon712",False,True) # start production with beam smeared on r=3cm disk
+# makeProd("muon722",True,True)
+# makeProd("muon713",False,True) # start production with beam smeared on r=3cm disk
+# makeProd("muon723",True,True)
+# makeProd("muon714",False,True) # start production with beam smeared on r=3cm disk
+# makeProd("muon724",True,True)
+# makeProd("muon715",False,True) # start production with beam smeared on r=3cm disk
+# makeProd("muon725",True,True)
+# makeProd("muon716",False,True) # start production with beam smeared on r=3cm disk
+# makeProd("muon726",True,True)
+# makeProd("muon717",False,True) # start production with beam smeared on r=3cm disk
+# makeProd("muon777",False,True) # in case the other one does not work 717
+# makeProd("muon727",True,True)  # ?
+# makeProd("muon718",False,True) # start production with beam smeared on r=3cm disk
+# makeProd("muon728",True,True)
+# makeProd("muon719",False,True) # start production with beam smeared on r=3cm disk
+# makeProd("muon729",True,True)     #
+# makeProd("muon730",'Jpsi',False)  # made with E50
+# makeProd("muon731",'Jpsi',True)   # made with E50
+# makeProd("muon732",'Jpsi',True)   # made with E50
+# makeProd("muon733",'Jpsi',True)   # back to pencil beam
+# makeProd("muon630",False,True) # test with new muonShield code, 3cm smearing
+# makeProd("muon631",False,True) # run with concrete wall enabled as sensitive
+# makeProd("muon632",False,True) # run with concrete wall enabled as sensitive, active shielding polarity fixed
 # but wrong geometry
-# makeProd("muon810",10,False,False) # start production with latest geometry
-# makeProd("muon820",10,True,False)
-# makeProd("muon811",10,False,True) #
-# makeProd("muon821",10,True,True)
-##makeProd("muon812",10,False,True) # --< 831  copied back, done 16.3.2015
-# makeProd("muon822",10,True,True)
-# makeProd("muon821",10,True,True)
-# makeProd("muon822",10,True,True)
+# makeProd("muon810",False,False) # start production with latest geometry
+# makeProd("muon820",True,False)
+# makeProd("muon811",False,True) #
+# makeProd("muon821",True,True)
+##makeProd("muon812",False,True) # --< 831  copied back, done 16.3.2015
+# makeProd("muon822",True,True)
+# makeProd("muon821",True,True)
+# makeProd("muon822",True,True)
 #
-# makeProd("muon813",10,False,True) #
-# makeProd("muon823",10,True,True)
+# makeProd("muon813",False,True) #
+# makeProd("muon823",True,True)
 
-# makeProd("muon814",10,False,True) #
-# makeProd("muon824",10,True,True)
-# makeProd("muon815",10,False,True)
-# makeProd("muon825",10,True,True)
-# makeProd("muon816",10,False,True)
-# makeProd("muon826",10,True,True)
-# makeProd("muon817",10,False,True)
-# makeProd("muon827",10,True,True)
-# makeProd("muon818",10,False,True)
-# makeProd("muon828",10,True,True)
-# makeProd("muon819",10,False,True)
-# makeProd("muon829",10,True,True)
-# makeProd("muon910",10,False,True)
-# makeProd("muon920",10,True,True)
-# makeProd("muon911",10,False,True)
-# makeProd("muon921",10,True,True)
+# makeProd("muon814",False,True) #
+# makeProd("muon824",True,True)
+# makeProd("muon815",False,True)
+# makeProd("muon825",True,True)
+# makeProd("muon816",False,True)
+# makeProd("muon826",True,True)
+# makeProd("muon817",False,True)
+# makeProd("muon827",True,True)
+# makeProd("muon818",False,True)
+# makeProd("muon828",True,True)
+# makeProd("muon819",False,True)
+# makeProd("muon829",True,True)
+# makeProd("muon910",False,True)
+# makeProd("muon920",True,True)
+# makeProd("muon911",False,True)
+# makeProd("muon921",True,True)
 
-# makeProd("muon912",10,False,True)
-# makeProd("muon922",10,True,True)
+# makeProd("muon912",False,True)
+# makeProd("muon922",True,True)
 
-# makeProd("muon913",10,False,True)
-# makeProd("muon923",10,True,True)
-# makeProd("muon914",10,False,True)
-# makeProd("muon924",10,True,True)
-# makeProd("muon915",10,False,True)
-# makeProd("muon925",10,True,True)
-# makeProd("muon916",10,False,True)
-# makeProd("muon926",10,True,True)
-# makeProd("muon917",10,False,True)
-# makeProd("muon927",10,True,True)
-# makeProd("muon927",10,True,True,8)
-# makeProd("muon918",10,False,True)
-# makeProd("muon928",10,True,True)
-# makeProd("muon919",10,False,True)
-# makeProd("muon929",10,True,True)
-# makeProd("muon1019",10,False,True)
-# makeProd("muon1029",10,True,True)
-# makeProd("muon1018",10,False,True)
-# makeProd("muon1028",10,True,True)
-# makeProd("muon1017",10,False,True)
-# makeProd("muon1027",10,True,True)
-# makeProd("muon1016",10,False,True)
-# makeProd("muon1026",10,True,True)
-# makeProd("muon1015",10,False,True)
-# makeProd("muon1025",10,True,True)
-# makeProd("muon1014",10,False,True)
-# makeProd("muon1024",10,True,True)
-# makeProd("muon1013",10,False,True)
-# makeProd("muon1023",10,True,True)
-# makeProd("muon1012",10,False,True)
-# makeProd("muon1022",10,True,True)
+# makeProd("muon913",False,True)
+# makeProd("muon923",True,True)
+# makeProd("muon914",False,True)
+# makeProd("muon924",True,True)
+# makeProd("muon915",False,True)
+# makeProd("muon925",True,True)
+# makeProd("muon916",False,True)
+# makeProd("muon926",True,True)
+# makeProd("muon917",False,True)
+# makeProd("muon927",True,True)
+# makeProd("muon927",True,True,8)
+# makeProd("muon918",False,True)
+# makeProd("muon928",True,True)
+# makeProd("muon919",False,True)
+# makeProd("muon929",True,True)
+# makeProd("muon1019",False,True)
+# makeProd("muon1029",True,True)
+# makeProd("muon1018",False,True)
+# makeProd("muon1028",True,True)
+# makeProd("muon1017",False,True)
+# makeProd("muon1027",True,True)
+# makeProd("muon1016",False,True)
+# makeProd("muon1026",True,True)
+# makeProd("muon1015",False,True)
+# makeProd("muon1025",True,True)
+# makeProd("muon1014",False,True)
+# makeProd("muon1024",True,True)
+# makeProd("muon1013",False,True)
+# makeProd("muon1023",True,True)
+# makeProd("muon1012",False,True)
+# makeProd("muon1022",True,True)
 
 
 def copy2EOS() -> None:
