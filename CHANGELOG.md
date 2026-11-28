@@ -19,6 +19,7 @@ it in future.
 ### Changed
 
 * The hit lists in `Tracklets` and `fitTrack2MC` now come from fitted states. They therefore leave out any surface that ACTS skipped. #1537
+* The on/off flags of `run_fixedTarget.py` and `makeCascade.py` that default to off are now plain switches (`store_true`), so their `--no-` forms (`--no-charm`, `--no-G4only`, `--no-AddMuonShield`, ...) are gone. Leaving the flag out does the same. `--AddHadronAbsorberOnly` and `--AddMuonShieldField`, which default to on, keep `--no-AddHadronAbsorberOnly` and `--no-AddMuonShieldField` (#1280).
 
 ### Fixed
 
