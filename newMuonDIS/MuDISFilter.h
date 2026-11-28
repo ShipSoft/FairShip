@@ -80,6 +80,8 @@ class MuDISFilter {
   }
   void SetUsePythiaDecays(bool enabled);
   void SetPythiaDecaySeed(unsigned seed);
+  // Seed the Pythia8 decayer was initialised with (0 without decays).
+  unsigned GetPythiaDecaySeed() const { return fEffectivePythiaDecaySeed; }
   void SetFilterEfficiencyBinning(double xmin, double xmax, unsigned xbins,
                                   double ymin, double ymax, unsigned ybins,
                                   double zmin, double zmax, unsigned zbins);
@@ -168,6 +170,7 @@ class MuDISFilter {
   double fTimingDetectorZ = std::numeric_limits<double>::quiet_NaN();
   bool fUsePythiaDecays = false;
   unsigned fPythiaDecaySeed = 0;
+  unsigned fEffectivePythiaDecaySeed = 0;
   mutable std::unique_ptr<Pythia8::Pythia> fPythiaDecayer;  //! Runtime decayer
   std::unique_ptr<MagneticTrackPropagator> fPropagator;  //! Runtime transport
   Filter fFilter;  //! User-supplied runtime predicate

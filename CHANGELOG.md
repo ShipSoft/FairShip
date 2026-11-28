@@ -15,10 +15,18 @@ it in future.
 ### Added
 
 * Some extra fields added to the ACTS `RecoTrack`. These are the smoothed hit positions on the track, track length and extrapolation of the track to the UBT and timing detector planes. The `RecoTrack` class version number has been incremented. #1537
+* The muon DIS chain in `newMuonDIS/` records where every interaction comes from. `prepareEvents.py` stores for each muon its input file (`muon_srcFile`, an index into the `FileSummary` key `inputFiles`), the entry of its event in that file's `cbmsim` tree, its track and the `RunID` and `EventID` of the event's `MCEventHeader` (`muon_srcEntry`, `muon_srcTrackID`, `muon_srcRunID`, `muon_srcEventID`), and for each interaction its position in that output (`mudis_DISgenIndex_<VOL>`), which `filterEvents.py` keeps. `run_simScript.py --NewMuDIS` writes them to each event as `muDIS_src*` and `muDIS_genIndex`. Both scripts write a `FileSummary` with the summaries of their inputs, the seed actually used (also when it came from the time), the entry range and their options; `MuDISFilter::GetPythiaDecaySeed` gives the Pythia8 decay seed. Files written before can still be filtered and replayed, with these values set to -1. `prepareEvents.py` reads the files of an input directory in sorted order.
+* `run_simScript.py --NewMuDIS` stores the Pythia6 cross section of each interaction in `muDIS_xsec` (mb per nucleon) instead of the -1 placeholder, along with the target nucleon (`muDIS_target`), `muDIS_wDIS` and an event weight `muDIS_weight` = `wDIS` × σ × N_A × 10⁻²⁷ cm²/mb: the muon weight times the interaction probability over the sampled path, divided by the number of interactions generated. The cross section is Pythia6's running estimate (`PARI(1)`) and has not been validated; `newMuonDIS/README.md` gives the definition and its approximations.
+* `run_simScript.py --MuonBack` writes the input event of every output event: the file index in the input chain, the entry in that file, and the `RunID` and `EventID` of its `MCEventHeader` (`muBack_srcFile`, `muBack_srcEntry`, `muBack_srcRunID`, `muBack_srcEventID`; `MuonBackGenerator::RegisterOutputBranches`). When the input is the proton-on-target simulation, this identifies the proton on target behind each muon, which the replay used to lose: the output `MCEventHeader` numbers the replayed events. `prepareEvents.py` carries these identities on as `muon_potRunID` and `muon_potEventID`, and `run_simScript.py --NewMuDIS` as `muDIS_potRunID` and `muDIS_potEventID`. `pythia8-Geant4` ntuple inputs have no event header and give -1. MuonBack replay outputs do not work as `prepareEvents.py` input yet: `MuDISProcessor` takes `MCTrack[0]` as the muon, and in these files it is the parent particle or the primary proton.
 
 ### Changed
 
 * The hit lists in `Tracklets` and `fitTrack2MC` now come from fitted states. They therefore leave out any surface that ACTS skipped. #1537
+* The `run_simScript.py` `FileSummary` also keeps the summary of each input file (`inputFileSummaries`, in the order of `inputFiles`), so the stages behind a file can be traced from the file alone, and records the run's `seed`, `firstEvent` and `nEvents`. Reading, merging and writing summaries moved to `python/file_summary.py`.
+
+### Fixed
+
+* `run_simScript.py` no longer fails at the very end of a run whose input has a `FileSummary` without `PoT`, `EnergyCut` or `prodSite`, or with `EnergyCut` or `prodSite` stored as lists, as `run_simScript.py` itself writes them. Merging such a summary raised `KeyError` or `TypeError` after the simulation had finished. Missing keys are now skipped and lists are merged.
 
 ### Fixed
 
