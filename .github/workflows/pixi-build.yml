@@ -188,6 +188,8 @@ jobs:
         run: pixi run --locked ci-sim-muonback
       - name: Muon background from the scoring plane
         run: pixi run --locked ci-sim-muonback-plane
+      - name: Muon background from the production vertex
+        run: pixi run --locked ci-sim-muonback-origin
       - name: Upload .root artifacts
         uses: actions/upload-artifact@v7
         with:
@@ -195,6 +197,7 @@ jobs:
           path: |
             sim_ci-muonback.root
             sim_ci-muonback-plane.root
+            sim_ci-muonback-origin.root
   run-geofile-loading:
     name: Simulation on a geometry from file
     needs: build
