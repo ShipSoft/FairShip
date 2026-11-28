@@ -4,7 +4,7 @@
 
 void DecayConfig() {
   // This script uses TEvtGenDecayer that handles J/psi with EvtGen
-  // and other particles with TPythia8Decayer
+  // and other particles with Pythia8
 
   // Create the custom EvtGen decayer
   TEvtGenDecayer* decayer = new TEvtGenDecayer();
@@ -45,5 +45,5 @@ void DecayConfig() {
   cout << "EvtGen decay file: " << DecayFile << endl;
   cout << "EvtGen particle file: " << ParticleFile << endl;
   cout << "Particles using EvtGen: J/psi(443), Upsilon(553)" << endl;
-  cout << "Other particles use TPythia8Decayer fallback" << endl;
+  cout << "Other particles are decayed by Pythia8" << endl;
 }

@@ -6,6 +6,7 @@
 import argparse
 import os
 
+import pythia8
 import ROOT
 import rootUtils as ut
 from heavyFlavourScaling import (
@@ -81,8 +82,7 @@ print("Input file: ", FIN, " with ", nEvents, " entries, corresponding to nr-pot
 # nEvents=100
 print("Output ntuples written to: ", FOUT)
 
-P8gen = ROOT.TPythia8()
-P8 = P8gen.Pythia8()
+P8 = pythia8.Pythia("", False)
 P8.readString("ProcessLevel:all = off")
 
 # let strange particle decay in Geant4
@@ -154,7 +154,7 @@ for n in range(nEvents):
     P8.event.append(int(sTree.id), 1, 0, 0, sTree.px, sTree.py, sTree.pz, sTree.E, sTree.M, 0.0, 9.0)
     P8.next()
     # P8.event.list()
-    for n in range(len(P8.event)):
+    for n in range(P8.event.size()):
         # ask for stable particles
         if P8.event[n].isFinal():
             # select neutrinos and mu

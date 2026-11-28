@@ -9,9 +9,11 @@
 #include "TLorentzVector.h"
 #include "TMCProcess.h"
 #include "TParticle.h"
-#include "TPythia8.h"
 #include "TRandom.h"
 #include "TSystem.h"
+
+// Pythia8 includes
+#include "Pythia8/Pythia.h"
 
 // EvtGen includes
 #include "EvtGen/EvtGen.hh"
@@ -25,10 +27,19 @@
 #include "EvtGenBase/EvtVector4R.hh"
 #include "EvtGenExternal/EvtExternalGenList.hh"
 
+namespace {
+// Pythia8 gives vertices in mm and times in mm/c, TParticle in cm and s.
+constexpr double kMmToCm = 0.1;
+constexpr double kMmOverCToS = 1e-3 / 299792458.;
+// Pythia8 accepts Random:seed in [1, 900000000]; 0 and negative values mean
+// a time-based and the default seed respectively.
+constexpr UInt_t kPythiaMaxSeed = 900000000;
+}  // namespace
+
 //_____________________________________________________________________________
 TEvtGenDecayer::TEvtGenDecayer()
     : TVirtualMCDecayer(),
-      fPythia8Decayer(nullptr),
+      fPythia(std::make_unique<Pythia8::Pythia>()),
       fEvtGen(nullptr),
       fDecayFile(""),
       fParticleFile(""),
@@ -37,12 +48,13 @@ TEvtGenDecayer::TEvtGenDecayer()
   // Default constructor
   fEvtGenParticles.clear();
   fEvtGenProducts = new TClonesArray("TParticle");
+  // Decays only: no hard process, no beams.
+  fPythia->readString("ProcessLevel:all = off");
 }
 
 //_____________________________________________________________________________
 TEvtGenDecayer::~TEvtGenDecayer() {
   // Destructor
-  if (fPythia8Decayer) delete fPythia8Decayer;
   if (fEvtGen) delete fEvtGen;
   if (fEvtGenProducts) delete fEvtGenProducts;
 }
@@ -51,24 +63,22 @@ TEvtGenDecayer::~TEvtGenDecayer() {
 void TEvtGenDecayer::Init() {
   // Initialize both EvtGen and Pythia8 decayers
 
-  // Initialize fallback Pythia8 decayer
-  fPythia8Decayer = new TPythia8Decayer();
-  fPythia8Decayer->Init();
+  // Both generators are seeded from ROOT's random number generator, so that
+  // jobs with different seeds get different decays.
+  UInt_t seed = gRandom->GetSeed();
+
+  // Initialize the Pythia8 decayer
+  const UInt_t pythiaSeed = seed == 0 ? 1 : 1 + (seed - 1) % kPythiaMaxSeed;
+  fPythia->readString("Random:setSeed = on");
+  fPythia->readString(Form("Random:seed = %u", pythiaSeed));
+  if (!fPythia->init()) {
+    LOG(fatal) << "TEvtGenDecayer: Pythia8 initialisation failed";
+  }
+  LOG(info) << "TEvtGenDecayer: Pythia8 seeded with " << pythiaSeed;
 
   // Initialize EvtGen if decay files are specified
   if (fDecayFile != "" && fParticleFile != "") {
     // Set up EvtGen random engine with ROOT's random number generator seed
-    UInt_t seed = gRandom->GetSeed();
-
-    // Also seed Pythia8 with the same seed for consistency
-    TPythia8* pythia8 = TPythia8::Instance();
-    if (pythia8) {
-      pythia8->Pythia8()->readString(Form("Random:seed = %u", seed));
-      pythia8->Pythia8()->readString("Random:setSeed = on");
-      pythia8->Pythia8()->init();  // Re-initialize with new seed
-      LOG(debug) << "TEvtGenDecayer: Pythia8 RNG seeded with " << seed;
-    }
-
     EvtRandomEngine* randomEngine = new EvtMTRandomEngine(seed);
     EvtRandom::setRandomEngine(randomEngine);
 
@@ -113,7 +123,6 @@ void TEvtGenDecayer::Init() {
   // Log summary at end of Init
   LOG(info) << "TEvtGenDecayer initialized - EvtGen: "
             << (fEvtGen ? "YES" : "NO")
-            << ", Pythia8 fallback: " << (fPythia8Decayer ? "YES" : "NO")
             << ", Particles configured for EvtGen: " << fEvtGenParticles.size();
 
   for (size_t i = 0; i < fEvtGenParticles.size(); i++) {
@@ -264,8 +273,16 @@ void TEvtGenDecayer::DecayWithPythia8(Int_t pdg, TLorentzVector* p) {
   // Mark that this decay will use Pythia8 products
   fHasEvtGenDecay = kFALSE;
 
-  if (fPythia8Decayer) {
-    fPythia8Decayer->Decay(pdg, p);
+  // The record holds only the decaying particle (no system entry), decayed
+  // in its production vertex at the origin.
+  Pythia8::Event& event = fPythia->event;
+  event.clear();
+  event.append(pdg, 11, 0, 0, p->Px(), p->Py(), p->Pz(), p->E(), p->M());
+  // Geant4 hands over only particles it wants decayed: decay them even if
+  // Pythia8 would keep them stable by default.
+  fPythia->particleData.mayDecay(pdg, true);
+  if (!fPythia->moreDecays()) {
+    LOG(warning) << "TEvtGenDecayer: Pythia8 failed to decay PDG " << pdg;
   }
 }
 
@@ -288,14 +305,28 @@ Int_t TEvtGenDecayer::ImportParticles(TClonesArray* particles) {
     // Reset the flag for next decay
     fHasEvtGenDecay = kFALSE;
     return nParticles;
-  } else {
-    // Fall back to Pythia8
-    LOG(debug1) << "ImportParticles: Delegating to Pythia8";
-    if (fPythia8Decayer) {
-      return fPythia8Decayer->ImportParticles(particles);
-    }
-    return 0;
   }
+  // Pythia8 record: the decaying particle, its decay products and any further
+  // decays. Status 1 marks the final particles, which the VMC tracks.
+  particles->Clear();
+  const Pythia8::Event& event = fPythia->event;
+  int nParticles = 0;
+  for (int i = 0; i < event.size(); i++) {
+    const Pythia8::Particle& part = event[i];
+    new ((*particles)[nParticles++]) TParticle(
+        part.id(), part.isFinal() ? 1 : 0, part.mother1(), part.mother2(),
+        part.daughter1(), part.daughter2(), part.px(), part.py(), part.pz(),
+        part.e(), part.xProd() * kMmToCm, part.yProd() * kMmToCm,
+        part.zProd() * kMmToCm, part.tProd() * kMmOverCToS);
+  }
+  LOG(debug1) << "ImportParticles: Returning " << nParticles
+              << " Pythia8 particles";
+  return nParticles;
+}
+
+//_____________________________________________________________________________
+bool TEvtGenDecayer::ReadString(const char* setting) {
+  return fPythia->readString(setting);
 }
 
 //_____________________________________________________________________________
@@ -316,28 +347,27 @@ void TEvtGenDecayer::AddEvtGenParticle(Int_t pdg) {
 }
 
 //_____________________________________________________________________________
-void TEvtGenDecayer::SetForceDecay(Int_t type) {
-  if (fPythia8Decayer) fPythia8Decayer->SetForceDecay(type);
+void TEvtGenDecayer::SetForceDecay(Int_t /*type*/) {
+  // Forced decay channels are not supported; configure the decay tables with
+  // ReadString (Pythia8) or the EvtGen decay file instead.
+  LOG(warning) << "TEvtGenDecayer::SetForceDecay is not implemented";
 }
 
 //_____________________________________________________________________________
 void TEvtGenDecayer::ForceDecay() {
-  if (fPythia8Decayer) fPythia8Decayer->ForceDecay();
+  LOG(warning) << "TEvtGenDecayer::ForceDecay is not implemented";
 }
 
 //_____________________________________________________________________________
-Float_t TEvtGenDecayer::GetPartialBranchingRatio(Int_t ipart) {
-  if (fPythia8Decayer) return fPythia8Decayer->GetPartialBranchingRatio(ipart);
+Float_t TEvtGenDecayer::GetPartialBranchingRatio(Int_t /*ipart*/) {
   return 0.0;
 }
 
 //_____________________________________________________________________________
 Float_t TEvtGenDecayer::GetLifetime(Int_t kf) {
-  if (fPythia8Decayer) return fPythia8Decayer->GetLifetime(kf);
-  return 0.0;
+  // Proper lifetime in s (Pythia8 tau0 is in mm/c)
+  return fPythia->particleData.tau0(kf) * kMmOverCToS;
 }
 
 //_____________________________________________________________________________
-void TEvtGenDecayer::ReadDecayTable() {
-  if (fPythia8Decayer) fPythia8Decayer->ReadDecayTable();
-}
+void TEvtGenDecayer::ReadDecayTable() {}

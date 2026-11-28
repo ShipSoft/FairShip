@@ -40,12 +40,6 @@ void Config() {
   stack->StoreSecondaries(kTRUE);
   stack->SetMinPoints(0);
   geant4->SetStack(stack);
-  // if(FairRunSim::Instance()->IsExtDecayer()){
-  //    // does not work ! TVirtualMCDecayer* decayer =
-  //    TPythia8Decayer::Instance();
-  //   TVirtualMCDecayer* decayer = TVirtualMCDecayer* TPythia8Decayer();
-  //   geant4->SetExternalDecayer(decayer);
-  // }
 
   /// Customise Geant4 setting
   /// (verbose level, global range cut, ..)
