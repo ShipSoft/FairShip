@@ -19,6 +19,7 @@ it in future.
 ### Changed
 
 * The hit lists in `Tracklets` and `fitTrack2MC` now come from fitted states. They therefore leave out any surface that ACTS skipped. #1537
+* The `shipVeto.Task` decisions (`SBT_decision`, `SBT_plastic_decision`, `SBT_liquid_decision`, `UBT_decision`, `Track_decision`) take the keyword-only arguments `only_track` and `exclude_track` instead of the signed `mcParticle`, which is removed. With `mcParticle`, track 0 (the primary, e.g. the incoming muon of muon DIS) could not be selected: `mcParticle=0` meant no filter, and excluding it would have needed -0. Replace `mcParticle=n` with `only_track=n` for n > 0 and with `exclude_track=-n` for n < 0.
 
 ### Fixed
 
