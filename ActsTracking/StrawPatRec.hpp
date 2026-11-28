@@ -5,6 +5,7 @@
 #ifndef ACTSTRACKING_STRAWPATREC_HPP_
 #define ACTSTRACKING_STRAWPATREC_HPP_
 
+#include <functional>
 #include <optional>
 #include <vector>
 
@@ -32,9 +33,29 @@ struct LineSegment {
   std::vector<int> hits;   ///< positions in the hit list
   std::vector<int> signs;  ///< signed drift distance = sign * drift
   double chi2{0.};
+  /// Covariance of the fitted (x0, tx) and (y0, ty) at z0, from the hit
+  /// uncertainties
+  double varX0{0.}, covX0Tx{0.}, varTx{0.};
+  double varY0{0.}, covY0Ty{0.}, varTy{0.};
 
   double x(double z) const { return x0 + tx * (z - z0); }
   double y(double z) const { return y0 + ty * (z - z0); }
+  /// Variance of x(z) and y(z) from the fit
+  double varX(double z) const {
+    const double dz = z - z0;
+    return varX0 + 2. * dz * covX0Tx + dz * dz * varTx;
+  }
+  double varY(double z) const {
+    const double dz = z - z0;
+    return varY0 + 2. * dz * covY0Ty + dz * dz * varTy;
+  }
+};
+
+/// Field integrals along a straight line through the magnet
+struct FieldIntegrals {
+  double bx{0.};      ///< integral of Bx along z (T m)
+  double by{0.};      ///< integral of By along z (T m)
+  double centre{0.};  ///< z of the centre of the Bx integral (cm)
 };
 
 /// A track candidate: an upstream and a downstream segment matched across
@@ -69,13 +90,22 @@ class StrawPatRec {
     /// of one view alone always gives a straight line, whichever track those
     /// hits are from; only the two views together fix x.
     int minHitsPerStereoView = 2;
-    /// Largest track slopes considered
+    /// Largest track slopes considered. The magnet bends in y, so the slopes
+    /// in x stay smaller: in neutrino DIS events, 0.1% of the reconstructible
+    /// tracks have |tx| > 0.3 downstream of the magnet, 0.01% upstream.
     double maxSlope = 0.6;
+    double maxSlopeX = 0.3;
+    /// Most y lines searched for x lines per pair of stations, the best by
+    /// hits and fit, or all if not positive
+    int maxYLines = 4000;
     /// Uncertainties of the segment match at the bending plane, as
     /// sqrt(a^2 + (b / p)^2) with p in GeV: the straight segments extrapolated
     /// to the bending plane deviate more from the track the lower its
     /// momentum. From truth-matched segments of 2-100 GeV tracks, with the
     /// constant terms widened for busy events, where segments lose hits.
+    /// The fit uncertainties of the two segments are added in quadrature, so
+    /// a segment from a single station, e.g. of a track leaving the straws
+    /// at large angle, is matched with its larger slope uncertainty.
     double matchSigmaX = 0.6;        ///< cm
     double matchSigmaXPerP = 3.;     ///< cm GeV
     double matchSigmaTx = 1.5e-3;    ///< rad
@@ -88,12 +118,24 @@ class StrawPatRec {
     /// are kept for the track fit to decide
     double lowMomentum = 3.;
     double maxLowMomentumMatchChi2 = 400.;
+    /// Lowest momentum of a match (GeV). A segment passing beside the field
+    /// gives a small field integral, so a low momentum and wide uncertainties,
+    /// and would match almost any segment.
+    double minMomentum = 0.2;
     /// Segments sharing more hits than this are the same segment
     int maxSharedHits = 12;
   };
 
-  /// `bendingZ` is the centre of the field integral along z (cm) and
-  /// `fieldIntegral` the integral of Bx along z through the magnet (T m).
+  /// The field integrals along a straight line through the magnet
+  using FieldAlong = std::function<FieldIntegrals(const LineSegment&)>;
+
+  /// Segments are matched with the field integrals along the pair: away from
+  /// the axis the magnet also kicks tracks in x (By), and the centre of the
+  /// kick in y moves. The track bends between the two straight lines, so the
+  /// integrals along both are averaged.
+  StrawPatRec(const Config& config, FieldAlong fieldAlong);
+  /// The same field integrals for every segment: `bendingZ` is the centre
+  /// of the Bx integral (cm) and `fieldIntegral` the integral (T m)
   StrawPatRec(const Config& config, double bendingZ, double fieldIntegral);
 
   /// Find tracks among all hits of the event
@@ -112,11 +154,13 @@ class StrawPatRec {
       const std::vector<LineSegment>& upstream,
       const std::vector<LineSegment>& downstream) const;
   std::optional<TrackCandidate> match(const LineSegment& upstream,
-                                      const LineSegment& downstream) const;
+                                      const LineSegment& downstream,
+                                      const FieldIntegrals& field) const;
+  static FieldIntegrals averageField(const FieldIntegrals& upstream,
+                                     const FieldIntegrals& downstream);
 
   Config m_cfg;
-  double m_bendingZ;
-  double m_fieldIntegral;
+  FieldAlong m_fieldAlong;
 };
 
 /// Signed distance of closest approach between a straight track and a wire,

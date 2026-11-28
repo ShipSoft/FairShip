@@ -71,6 +71,10 @@ class ActsStrawTracker {
   ///
   /// Track IDs in `vertex` are the indices passed in. Returns false if the
   /// fit fails.
+  ///
+  /// The fit quality of a two-track vertex is the DOCA against its
+  /// uncertainty, with one degree of freedom. A vertex of more tracks has no
+  /// fit quality: its chi2 and nDoF are both 0.
   Bool_t FitVertex(const std::vector<Int_t>& tracks, RecoVertex& vertex) const;
 
   /// Distance in cm between a hit and a fitted track at the plane of

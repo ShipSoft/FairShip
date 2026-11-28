@@ -24,8 +24,10 @@
 #include "Acts/EventData/VectorTrackContainer.hpp"
 #include "Acts/Geometry/GeometryContext.hpp"
 #include "Acts/MagneticField/MagneticFieldContext.hpp"
+#include "Acts/Propagator/ActorList.hpp"
 #include "Acts/Propagator/DirectNavigator.hpp"
 #include "Acts/Propagator/EigenStepper.hpp"
+#include "Acts/Propagator/MaterialInteractor.hpp"
 #include "Acts/Propagator/Propagator.hpp"
 #include "Acts/Propagator/VoidNavigator.hpp"
 #include "Acts/Surfaces/PlaneSurface.hpp"
@@ -68,10 +70,6 @@ constexpr int kMaxRefits = 3;
 constexpr double kOutlierPull = 5.;
 /// Step of the field integration along the track (cm)
 constexpr double kFieldStep = 5.;
-/// GeV per (T m) for a unit charge
-constexpr double kKick = 0.299792458;
-/// Highest seed momentum (GeV), for tracks with no measurable kink
-constexpr double kMaxSeedMomentum = 1000.;
 /// Fewest measurements a fitted track may keep
 constexpr int kMinFitMeasurements = 10;
 /// Ambiguity resolution between fitted tracks: the weight of a hit against
@@ -273,6 +271,9 @@ struct ActsStrawTracker::Impl {
         extrapolator(
             Stepper(field), Acts::VoidNavigator(),
             Acts::getDefaultLogger("Extrapolator", Acts::Logging::WARNING)),
+        materialExtrapolator(Stepper(field), Acts::DirectNavigator(),
+                             Acts::getDefaultLogger("MaterialExtrapolator",
+                                                    Acts::Logging::WARNING)),
         tracks(std::make_shared<Acts::VectorTrackContainer>(),
                std::make_shared<Trajectory>()) {
     extensions.surfaceAccessor.connect<&Impl::surfaceOf>(this);
@@ -290,9 +291,9 @@ struct ActsStrawTracker::Impl {
         magnetEnd = std::min(magnetEnd, wire.z);
       }
     }
-    LineSegment axis;
-    const auto [integral, centre] = fieldIntegral(axis);
-    patRec.emplace(StrawPatRec::Config{}, centre, integral);
+    patRec.emplace(StrawPatRec::Config{}, [this](const LineSegment& line) {
+      return fieldIntegrals(line);
+    });
   }
 
   /// Hits for the pattern recognition, from measurement indices
@@ -308,10 +309,9 @@ struct ActsStrawTracker::Impl {
   std::optional<std::size_t> fitOnce(const std::vector<Int_t>& indices,
                                      const Acts::BoundTrackParameters& start);
 
-  /// Integral of Bx along a straight line through the magnet (T m), and the
-  /// z of its centre (cm)
-  std::pair<double, double> fieldIntegral(const LineSegment& line) const {
-    double integral = 0.;
+  /// Integrals of Bx and By along a straight line through the magnet
+  FieldIntegrals fieldIntegrals(const LineSegment& line) const {
+    FieldIntegrals integrals;
     double moment = 0.;
     for (double z = magnetStart; z < magnetEnd; z += kFieldStep) {
       const double zMid = z + kFieldStep / 2.;
@@ -320,11 +320,13 @@ struct ActsStrawTracker::Impl {
       shipField->Field(x, b);
       // kGauss to T, cm to m
       const double bx = 0.1 * b[0] * 0.01 * kFieldStep;
-      integral += bx;
+      integrals.bx += bx;
+      integrals.by += 0.1 * b[1] * 0.01 * kFieldStep;
       moment += bx * zMid;
     }
-    return {integral, integral != 0. ? moment / integral
-                                     : 0.5 * (magnetStart + magnetEnd)};
+    integrals.centre = integrals.bx != 0. ? moment / integrals.bx
+                                          : 0.5 * (magnetStart + magnetEnd);
+    return integrals;
   }
 
   const Acts::Surface* surfaceOf(const Acts::SourceLink& sourceLink) const {
@@ -433,6 +435,29 @@ struct ActsStrawTracker::Impl {
     return params;
   }
 
+  /// Propagate to the plane of constant z `target` at `targetZ` (SHiP, cm),
+  /// with multiple scattering and energy loss in the passive material
+  /// between
+  std::optional<Acts::BoundTrackParameters> extrapolateThroughMaterial(
+      const Acts::BoundTrackParameters& start, const Acts::Surface& target,
+      double targetZ) const {
+    const double startZ = ActsFrame::positionToShip(start.position(gctx)).z();
+    const double pz = ActsFrame::momentumToShip(start.momentum()).z();
+    const bool forward = (targetZ - startZ) * pz > 0.;
+    auto sequence = straws.materialSequence(startZ, targetZ, pz, target);
+    DirectPropagator::Options<Acts::ActorList<Acts::MaterialInteractor>>
+        options(gctx, mctx);
+    options.pathLimit = kPathLimit;
+    options.direction =
+        forward ? Acts::Direction::Forward() : Acts::Direction::Backward();
+    options.navigation.surfaceSequence = std::move(sequence);
+    auto result = materialExtrapolator.propagate(start, target, options);
+    if (result.ok() && result.value().endParameters.has_value()) {
+      return result.value().endParameters.value();
+    }
+    return std::nullopt;
+  }
+
   ActsStrawGeometry straws;
   TVirtualMagField* shipField;
   std::shared_ptr<const ActsShipField> field;
@@ -441,6 +466,8 @@ struct ActsStrawTracker::Impl {
   std::optional<StrawPatRec> patRec;
   KalmanFitter fitter;
   Extrapolator extrapolator;
+  /// Through the passive material, for the extrapolation to vertices
+  DirectPropagator materialExtrapolator;
   Acts::GainMatrixUpdater updater;
   /// The gain-matrix smoother inverts the predicted covariance, which is
   /// nearly singular in the magnet: there, the bending angle is almost fully
@@ -550,8 +577,19 @@ std::optional<std::size_t> ActsStrawTracker::Impl::fitOnce(
     const std::vector<Int_t>& indices,
     const Acts::BoundTrackParameters& start) {
   std::vector<Acts::SourceLink> sourceLinks;
+  // The measurement surfaces, with the passive material between them, in z
   std::vector<const Acts::Surface*> surfaces;
+  const auto& passive = straws.passivePlanes();
+  auto plane = passive.begin();
+  const double zFirst = measurements[indices.front()].wire->z;
+  while (plane != passive.end() && plane->z <= zFirst) {
+    ++plane;
+  }
   for (const Int_t index : indices) {
+    const double z = measurements[index].wire->z;
+    for (; plane != passive.end() && plane->z < z; ++plane) {
+      surfaces.push_back(plane->surface.get());
+    }
     sourceLinks.emplace_back(static_cast<std::size_t>(index));
     surfaces.push_back(measurements[index].surface);
   }
@@ -594,19 +632,9 @@ Int_t ActsStrawTracker::Impl::fit(const TrackCandidate& candidate,
     indices.push_back(index);
   }
 
-  // Momentum from the kink, with the field integral along this track
-  TrackCandidate refined = candidate;
-  const auto [integral, centre] = fieldIntegral(candidate.upstream);
-  const double kink = candidate.downstream.ty - candidate.upstream.ty;
-  if (integral != 0. && kink != 0.) {
-    const LineSegment& up = candidate.upstream;
-    const double pz =
-        std::min(std::abs(kKick * integral / kink), kMaxSeedMomentum);
-    refined.momentum = pz * std::sqrt(1. + up.tx * up.tx + up.ty * up.ty);
-    refined.charge = kink / integral > 0. ? 1 : -1;
-  }
+  // The pattern recognition gives the momentum and charge from the kink
   Acts::BoundTrackParameters start =
-      seed(refined, measurements[indices.front()]);
+      seed(candidate, measurements[indices.front()]);
 
   for (int refit = 0;; ++refit) {
     if (static_cast<int>(indices.size()) < kMinFitMeasurements) {
@@ -654,7 +682,7 @@ Int_t ActsStrawTracker::Impl::fit(const TrackCandidate& candidate,
     auto params = proxy.createParametersAtReference();
     start = Acts::BoundTrackParameters(
         params.referenceSurface().getSharedPtr(), params.parameters(),
-        seed(refined, measurements[indices.front()]).covariance(),
+        seed(candidate, measurements[indices.front()]).covariance(),
         params.particleHypothesis());
     tracks.removeTrack(*track);
     std::sort(kept.begin(), kept.end());
@@ -683,14 +711,18 @@ Int_t ActsStrawTracker::FindTracks() {
   std::vector<Fitted> fitted;
   for (std::size_t i = 0; i < candidates.size(); ++i) {
     const Int_t track = impl.fit(candidates[i], hits);
-    if (track < 0) {
-      continue;
+    if (track >= 0) {
+      const auto proxy = impl.tracks.getTrack(track);
+      if (proxy.nDoF() > 0) {
+        fitted.push_back(
+            {i, proxy.chi2() / proxy.nDoF(), impl.trackMeasurements[track]});
+      }
     }
-    const auto proxy = impl.tracks.getTrack(track);
-    if (proxy.nDoF() > 0) {
-      fitted.push_back(
-          {i, proxy.chi2() / proxy.nDoF(), impl.trackMeasurements[track]});
-    }
+    // Only the fit quality and the hits are needed here, and the accepted
+    // tracks are refitted below, so the fitted states are dropped at once:
+    // a busy event has thousands of candidates
+    impl.tracks.clear();
+    impl.trackMeasurements.clear();
   }
   const auto rank = [](const Fitted& f) {
     return f.chi2PerNdf -
@@ -822,9 +854,11 @@ Bool_t ActsStrawTracker::FitVertex(const std::vector<Int_t>& tracks,
   std::vector<Acts::BoundTrackParameters> atPlane;
   for (int iteration = 0; iteration < kVertexIterations; ++iteration) {
     const auto plane = constantZPlane(point);
+    const double planeZ = ActsFrame::positionToShip(point).z();
     atPlane.clear();
     for (const auto& params : fitted) {
-      auto extrapolated = impl.extrapolate(impl.extrapolator, params, *plane);
+      auto extrapolated =
+          impl.extrapolateThroughMaterial(params, *plane, planeZ);
       if (!extrapolated) {
         return false;
       }
@@ -884,13 +918,15 @@ Bool_t ActsStrawTracker::FitVertex(const std::vector<Int_t>& tracks,
   const Acts::SquareMatrix3 positionCovariance =
       rotation * actsCovariance * rotation.transpose() /
       (ActsFrame::kShipLength * ActsFrame::kShipLength);
-  // Fit quality: the DOCA against its uncertainty for two tracks
+  // Fit quality: the DOCA against its uncertainty for two tracks. There is
+  // none for more tracks, so chi2 and nDoF are 0 and the vertex does not
+  // look like a perfect fit.
   const double docaVariance = propagated(3, 3);
-  const double chi2 =
-      twoTracks && docaVariance > 0. ? baseDoca * baseDoca / docaVariance : 0.;
+  const bool hasChi2 = twoTracks && docaVariance > 0.;
   vertex = RecoVertex(TVector3(position.x(), position.y(), position.z()),
-                      upperTriangle<3>(positionCovariance), chi2,
-                      twoTracks ? 1. : 2. * n - 3.);
+                      upperTriangle<3>(positionCovariance),
+                      hasChi2 ? baseDoca * baseDoca / docaVariance : 0.,
+                      hasChi2 ? 1. : 0.);
 
   for (int i = 0; i < n; ++i) {
     const Acts::Vector3 momentum =

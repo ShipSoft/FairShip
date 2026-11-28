@@ -241,6 +241,10 @@ class ShipDigiReco:
                 logger.debug("Skipping vertex with %d tracks (expected 2)", len(vtx.trackIds()))
                 continue
             t1, t2 = vtx.trackIds()
+            # The particle is neutral: a same-charge pair (possible from
+            # --vertexAllTracks) stays in RecoVertices only.
+            if tracks[t1].charge() * tracks[t2].charge() >= 0:
+                continue
             # The daughters are taken to be muons, as in the GenFit vertexing
             P = ROOT.TLorentzVector()
             covP = np.zeros((4, 4))
@@ -350,6 +354,7 @@ class ShipDigiReco:
             fit_vertex=global_variables.vertexing,
             ubt_z=self.ubtZ,
             td_z=self.timeDetZ,
+            vertex_all_tracks=getattr(global_variables, "vertexAllTracks", False),
         )
 
     @staticmethod
