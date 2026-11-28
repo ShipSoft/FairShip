@@ -109,6 +109,8 @@ def main():
 
     if args.event is not None:
         # Single window, interactive
+        if not 0 <= args.event < n_windows:
+            parser.error(f"--event {args.event} is out of range for {n_windows} windows")
         data = read_window(tree, meta_tree, args.event)
         if data is None:
             print(f"No straw hits in window {args.event}")
