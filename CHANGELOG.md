@@ -43,6 +43,7 @@ ROOT built against the Pythia 8 version they use.
 ### Added
 
 * GENIE (pythia8 build) is now a pixi dependency, so `macro/makeGenieEvents.py` can run `gmkspl`, `gevgen` and `gntpc` in the pixi environment without a separate GENIE installation.
+* Add the x and y components of the impact parameter to the target: `selection_check.impact_parameter_xy` and `impact_parameter_vector` in `experimental/analysis_toolkit.py`, and the `IP0x` and `IP0y` histograms in `ShipAna.py`. They are the components of the vector from the candidate's line of flight to the target point at closest approach, so they combine with its small z component to give the impact parameter (#527).
 
 ### Changed
 
