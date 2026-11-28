@@ -15,6 +15,7 @@ it in future.
 ### Added
 
 * Some extra fields added to the ACTS `RecoTrack`. These are the smoothed hit positions on the track, track length and extrapolation of the track to the UBT and timing detector planes. The `RecoTrack` class version number has been incremented. #1537
+* A weekly `Physics performance` workflow (`workflow_dispatch` too) runs `macro/run_tracking_scan.py` in the pixi environment on GitHub-hosted runners, scanning tracking performance against polar angle and against track multiplicity. The scan points are pinned in the `ci-tracking-scan-theta` and `ci-tracking-scan-ntracks` pixi tasks rather than left to the script's defaults, so results stay comparable across runs and the scans can be rerun locally; the events per point are an input. Each scan uploads `scan_results.json`, `scan_summary.root` and the scan plots.
 
 ### Changed
 

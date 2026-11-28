@@ -139,6 +139,18 @@ cmd = "python examples/analysis_example.py -f sim_ci-test.root -r sim_ci-test_re
 [tasks.ci-tracking-benchmark]
 cmd = "python macro/run_tracking_benchmark.py -n 200 --seed 42 --tag ci-benchmark --output-json tracking_metrics.json"
 
+# Weekly physics performance scan (.github/workflows/physics-performance.yml).
+# The scan points are pinned here rather than left to the script's defaults:
+# the results are compared across runs, so the grid has to stay fixed even if
+# the defaults move.
+[tasks.ci-tracking-scan-theta]
+args = [{ arg = "n_events", default = "500" }]
+cmd = "python macro/run_tracking_scan.py -n {{ n_events }} --scan-mode theta --thetas 0,1,2,3,5,7,10,15,20,30 --mixCharges --seed 42 -o tracking_theta_scan"
+
+[tasks.ci-tracking-scan-ntracks]
+args = [{ arg = "n_events", default = "500" }]
+cmd = "python macro/run_tracking_scan.py -n {{ n_events }} --scan-mode nTracks --nTracksList 1,2,5,10,20 --thetaRange 0,10 --mixCharges --seed 200 -o tracking_nTracks_scan"
+
 [tasks.ci-fixed-target]
 cmd = "python macro/run_fixedTarget.py -n 10 -e 10.0 -r 1"
 
