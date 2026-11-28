@@ -451,6 +451,14 @@ void MuDISProcessor::ProcessMuons() {
     LOG(debug) << " --- Processing event " << iEvent << std::endl;
     if (iEvent % 100 == 0)
       LOG(info) << " --- Processing event " << iEvent << std::endl;
+    // A chain member that can't be opened, or has lost its tree, is an I/O
+    // error and stops the job, like a failed GetEntry below
+    if (ftree->LoadTree(iEvent) < 0) {
+      LOG(error) << " --- Cannot load the input file for entry " << iEvent;
+      throw std::runtime_error(
+          "MuDISProcessor: cannot load the input file for entry " +
+          std::to_string(iEvent));
+    }
     // A chain member without the input branches is skipped on purpose
     if (!finEv.PrepareEntry(ftree, iEvent)) {
       LOG(error) << " --- Error reading tree entry: " << iEvent;
